@@ -43,7 +43,7 @@ class App extends Component {
     }
 
     onNodeRemoved(e) {
-        if (this.state.selected && e.entity.id === this.state.selected.id) {
+        if (this.state.selected && e.entity.getID() === this.state.selected.getID()) {
             this.setState({
                 selected: null
             });

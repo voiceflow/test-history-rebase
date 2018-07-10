@@ -51,7 +51,12 @@ class App extends Component {
     }
 
     onSerialize() {
-        $.post('https://api.getstoryflow.com/diagrams', this.state.engine.getDiagramModel().serializeDiagram());
+        $.ajax({
+            url: 'https://api.getstoryflow.com/diagrams',
+            type: 'POST',
+            dataType: 'json',
+            data: this.state.engine.getDiagramModel().serializeDiagram()
+        });
     }
 
     render() {

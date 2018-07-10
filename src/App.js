@@ -54,8 +54,11 @@ class App extends Component {
         return (
             <div className='App'>
                 <Menu items={[
-                    { text: 'New Story', type: 'story' },
-                    { text: 'New Line', type: 'line' }
+                    { text: 'Story', type: 'story' },
+                    { text: 'Line', type: 'line' },
+                    { text: 'Chapter', type: 'chapter' },
+                    { text: 'Ending', type: 'ending' },
+                    { text: 'Comment', type: 'comment' }
                 ]} />
                 <div
                     className="diagram-layer"
@@ -69,12 +72,21 @@ class App extends Component {
                         var node = null;
                         if (data.type === 'story') {
                             node = new SRD.DefaultNodeModel('New Story', 'red');
-                            node.addOutPort('Intro');
+                            node.addOutPort(' ');
                         } else if (data.type === 'line') {
                             node = new SRD.DefaultNodeModel('New Line', 'blue');
                             node.addInPort(' ');
                             node.sfChoices = [];
                             node.sfInputs = [];
+                        } else if (data.type === 'chapter') {
+                            node = new SRD.DefaultNodeModel('New Chapter', 'green');
+                            node.addInPort(' ');
+                            node.addOutPort(' ');
+                        } else if (data.type === 'ending') {
+                            node = new SRD.DefaultNodeModel('New Ending', 'orange');
+                            node.addInPort(' ');
+                        } else if (data.type === 'comment') {
+                            node = new SRD.DefaultNodeModel('New Comment', 'black');
                         } else {
                             return;
                         }

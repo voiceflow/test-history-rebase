@@ -81,6 +81,14 @@ class Editor extends Component {
                         <label>Title Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
+                    {this.state.node.sfType === 'story' ? <div>
+                        <label>Reprompt Audio: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.sfType === 'story' ? <div>
+                        <label>Ending Audio: <input type="url" name="sfEnding" value={this.state.node.sfEnding} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
                     {this.state.node.sfType === 'line' ? <div>
                         <label>Line Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
@@ -92,6 +100,22 @@ class Editor extends Component {
                     {this.state.node.sfType === 'line' ?
                         <ChoiceInputs choices={this.state.node.sfChoices} inputs={this.state.node.sfInputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
                     : null}
+
+                    {this.state.node.sfType === 'chapter' ? <div>
+                        <label>Chapter Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.sfType === 'chapter' ? <div>
+                        <label>Chapter Prompt: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.sfType === 'ending' ? <div>
+                        <label>Ending Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.sfType === 'ending' ? <div>
+                        <label>Ending Prompt: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
 
                 </form>
             </div>

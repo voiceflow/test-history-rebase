@@ -21,14 +21,33 @@ class App extends Component {
     }
 
     componentDidMount() {
-        var that = this;
-        $('.srd-node-layer').dblclick(function() {
-            var node = that.state.engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
-            that.state.engine.getDiagramModel().clearSelection();
-            that.setState({
+        $('.srd-node-layer').dblclick(() => {
+            var engine = this.state.engine;
+            var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
+            engine.getDiagramModel().clearSelection();
+            this.setState({
+                engine: engine,
                 selected: node
             });
         });
+
+        $('.Menu').click(this.onDiagramUnfocus.bind(this));
+    }
+
+    onDiagramUnfocus() {
+        var engine = this.state.engine;
+        engine.getDiagramModel().clearSelection();
+        this.setState({
+            engine: engine
+        });
+    }
+
+    onNodeRemoved(e) {
+        if (this.state.selected && e.entity.id === this.state.selected.id) {
+            this.setState({
+                selected: null
+            });
+        }
     }
 
     render() {
@@ -36,8 +55,7 @@ class App extends Component {
             <div className='App'>
                 <Menu items={[
                     { text: 'New Story', type: 'story' },
-                    { text: 'New Line', type: 'line' },
-                    { text: 'New Choice', type: 'choice' }
+                    { text: 'New Line', type: 'line' }
                 ]} />
                 <div
                     className="diagram-layer"
@@ -55,15 +73,12 @@ class App extends Component {
                         } else if (data.type === 'line') {
                             node = new SRD.DefaultNodeModel('New Line', 'blue');
                             node.addInPort('Previous');
-                            node.addOutPort('Next');
-                        } else if (data.type === 'choice') {
-                            node = new SRD.DefaultNodeModel('New Choice', 'green');
-                            node.addInPort('Previous');
                             node.sfChoices = [];
                         } else {
                             return;
                         }
                         node.sfType = data.type;
+                        node.addListener({ entityRemoved: this.onNodeRemoved.bind(this) });
                         var points = engine.getRelativeMousePoint(event);
                         node.x = points.x;
                         node.y = points.y;
@@ -76,7 +91,7 @@ class App extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} />
                 </div>
-                { this.state.selected ? <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={(e) => this.setState({ selected: null })} /> : null }
+                { this.state.selected ? <Editor node={this.state.selected} onFocus={this.onDiagramUnfocus.bind(this)} onUpdate={() => this.setState({})} onClose={(e) => this.setState({ selected: null })} /> : null }
             </div>
         );
     }

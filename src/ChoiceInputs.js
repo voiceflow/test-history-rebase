@@ -11,7 +11,7 @@ class ChoiceInputs extends Component {
 
     componentWillReceiveProps(props) {
         this.setState({
-            choices: this.props.choices
+            choices: props.choices
         });
     }
 
@@ -21,7 +21,7 @@ class ChoiceInputs extends Component {
                 <label>
                 Choices:
                     {this.state.choices.map((choice, i) => {
-                        return <div key={i}><input type="text" name="sfChoices" value={choice} onChange={(event) => this.props.onChange(event, i)} /></div>;
+                        return <div key={i}>{i+1}: <input type="text" name="sfChoices" value={choice} onChange={(e) => this.props.onChange(e, i)} /><button onClick={(e) => this.props.onRemove(e, i)}>&times;</button></div>;
                     })}
                     <div><button onClick={this.props.onAdd}>Add Choice</button></div>
                 </label>

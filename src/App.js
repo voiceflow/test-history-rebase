@@ -72,7 +72,7 @@ class App extends Component {
                             node.addOutPort('Intro');
                         } else if (data.type === 'line') {
                             node = new SRD.DefaultNodeModel('New Line', 'blue');
-                            node.addInPort('');
+                            node.addInPort(' ');
                             node.sfChoices = [];
                         } else {
                             return;

@@ -74,6 +74,7 @@ class App extends Component {
                             node = new SRD.DefaultNodeModel('New Line', 'blue');
                             node.addInPort(' ');
                             node.sfChoices = [];
+                            node.sfInputs = [];
                         } else {
                             return;
                         }

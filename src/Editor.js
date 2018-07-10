@@ -37,6 +37,7 @@ class Editor extends Component {
     handleAddChoice(e) {
         var node = this.state.node;
         node.sfChoices.push('New Choice');
+        node.sfInputs.push('');
         node.addOutPort(node.sfChoices.length);
         this.setState({
             node: node
@@ -54,6 +55,7 @@ class Editor extends Component {
             }
         }
         node.sfChoices.splice(i, 1);
+        node.sfInputs.splice(i, 1);
         this.setState({
             node: node
         });
@@ -88,7 +90,7 @@ class Editor extends Component {
                     </div> : null}
 
                     {this.state.node.sfType === 'line' ?
-                        <ChoiceInputs choices={this.state.node.sfChoices} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <ChoiceInputs choices={this.state.node.sfChoices} inputs={this.state.node.sfInputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
                     : null}
 
                 </form>

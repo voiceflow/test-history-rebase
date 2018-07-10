@@ -24,9 +24,9 @@ class Editor extends Component {
     handleChange(e, key = undefined) {
         var node = this.state.node;
         if (key !== undefined) {
-            node[e.target.getAttribute('name')][key] = e.target.value;
+            node.extras[e.target.getAttribute('name')][key] = e.target.value;
         } else {
-            node[e.target.getAttribute('name')] = e.target.value;
+            node.extras[e.target.getAttribute('name')] = e.target.value;
         }
         this.setState({
             node: node
@@ -36,9 +36,9 @@ class Editor extends Component {
 
     handleAddChoice(e) {
         var node = this.state.node;
-        node.sfChoices.push('New Choice');
-        node.sfInputs.push('');
-        node.addOutPort(node.sfChoices.length);
+        node.extras.choices.push('New Choice');
+        node.extras.inputs.push('');
+        node.addOutPort(node.extras.choices.length);
         this.setState({
             node: node
         });
@@ -50,12 +50,12 @@ class Editor extends Component {
         var node = this.state.node;
         for (var name in node.getPorts()) {
             var port = node.getPort(name);
-            if (port.label === node.sfChoices.length) {
+            if (port.label === node.extras.choices.length) {
                 node.removePort(port);
             }
         }
-        node.sfChoices.splice(i, 1);
-        node.sfInputs.splice(i, 1);
+        node.extras.choices.splice(i, 1);
+        node.extras.inputs.splice(i, 1);
         this.setState({
             node: node
         });
@@ -73,48 +73,48 @@ class Editor extends Component {
                         <label>Label: <input type="text" name="name" value={this.state.node.name} onChange={this.handleChange.bind(this)} /></label>
                     </div>
 
-                    {this.state.node.sfType === 'story' ? <div>
-                        <label>Title: <input type="text" name="sfTitle" value={this.state.node.sfTitle} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'story' ? <div>
+                        <label>Title: <input type="text" name="title" value={this.state.node.extras.title} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'story' ? <div>
-                        <label>Title Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'story' ? <div>
+                        <label>Title Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'story' ? <div>
-                        <label>Reprompt Audio: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'story' ? <div>
+                        <label>Reprompt Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'story' ? <div>
-                        <label>Ending Audio: <input type="url" name="sfEnding" value={this.state.node.sfEnding} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'story' ? <div>
+                        <label>Ending Audio: <input type="url" name="ending" value={this.state.node.extras.ending} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'line' ? <div>
-                        <label>Line Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'line' ? <div>
+                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'line' ? <div>
-                        <label>Choice Audio: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'line' ? <div>
+                        <label>Choice Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'line' ?
-                        <ChoiceInputs choices={this.state.node.sfChoices} inputs={this.state.node.sfInputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
+                    {this.state.node.extras.type === 'line' ?
+                        <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
                     : null}
 
-                    {this.state.node.sfType === 'chapter' ? <div>
-                        <label>Chapter Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'chapter' ? <div>
+                        <label>Chapter Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'chapter' ? <div>
-                        <label>Chapter Prompt: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'chapter' ? <div>
+                        <label>Chapter Prompt: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'ending' ? <div>
-                        <label>Ending Audio: <input type="url" name="sfAudio" value={this.state.node.sfAudio} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'ending' ? <div>
+                        <label>Ending Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.sfType === 'ending' ? <div>
-                        <label>Ending Prompt: <input type="url" name="sfPrompt" value={this.state.node.sfPrompt} onChange={this.handleChange.bind(this)} /></label>
+                    {this.state.node.extras.type === 'ending' ? <div>
+                        <label>Ending Prompt: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
                 </form>

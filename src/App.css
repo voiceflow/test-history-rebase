@@ -13,13 +13,17 @@
     color: #333333;
     background-color: #eeeeee;
     opacity: 0.9;
+    text-align: center;
 }
 
 .App .MenuItem {
     width: 100%;
     height: 50px;
     line-height: 50px;
-    text-align: center;
+    border-top: 1px solid #333333;
+}
+
+.App .MenuItem:last-of-type {
     border-bottom: 1px solid #333333;
 }
 

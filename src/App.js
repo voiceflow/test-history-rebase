@@ -50,10 +50,14 @@ class App extends Component {
         }
     }
 
+    onSerialize() {
+        $.post('https://api.getstoryflow.com/diagrams', this.state.engine.getDiagramModel().serializeDiagram());
+    }
+
     render() {
         return (
             <div className='App'>
-                <Menu items={[
+                <Menu onSerialize={this.onSerialize.bind(this)} items={[
                     { text: 'Story', type: 'story' },
                     { text: 'Line', type: 'line' },
                     { text: 'Chapter', type: 'chapter' },
@@ -73,24 +77,42 @@ class App extends Component {
                         if (data.type === 'story') {
                             node = new SRD.DefaultNodeModel('New Story', 'red');
                             node.addOutPort(' ');
+                            node.extras = {
+                                title: '',
+                                audio: '',
+                                prompt: '',
+                                ending: ''
+                            };
                         } else if (data.type === 'line') {
                             node = new SRD.DefaultNodeModel('New Line', 'blue');
                             node.addInPort(' ');
-                            node.sfChoices = [];
-                            node.sfInputs = [];
+                            node.extras = {
+                                audio: '',
+                                prompt: '',
+                                choices: [],
+                                inputs: []
+                            };
                         } else if (data.type === 'chapter') {
                             node = new SRD.DefaultNodeModel('New Chapter', 'green');
                             node.addInPort(' ');
                             node.addOutPort(' ');
+                            node.extras = {
+                                audio: '',
+                                prompt: ''
+                            };
                         } else if (data.type === 'ending') {
                             node = new SRD.DefaultNodeModel('New Ending', 'orange');
                             node.addInPort(' ');
+                            node.extras = {
+                                audio: '',
+                                prompt: ''
+                            };
                         } else if (data.type === 'comment') {
                             node = new SRD.DefaultNodeModel('New Comment', 'black');
                         } else {
                             return;
                         }
-                        node.sfType = data.type;
+                        node.extras.type = data.type;
                         node.addListener({ entityRemoved: this.onNodeRemoved.bind(this) });
                         var points = engine.getRelativeMousePoint(event);
                         node.x = points.x;

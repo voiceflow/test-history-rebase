@@ -23,10 +23,14 @@ class Editor extends Component {
 
     handleChange(e, key = undefined) {
         var node = this.state.node;
-        if (key !== undefined) {
-            node.extras[e.target.getAttribute('name')][key] = e.target.value;
+        var name = e.target.getAttribute('name');
+        var value = e.target.value;
+        if (name === 'name') {
+            node[name] = value;
+        } else if (key !== undefined) {
+            node.extras[name][key] = value;
         } else {
-            node.extras[e.target.getAttribute('name')] = e.target.value;
+            node.extras[name] = value;
         }
         this.setState({
             node: node

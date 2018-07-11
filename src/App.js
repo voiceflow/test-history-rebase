@@ -3,6 +3,7 @@ import $ from 'jquery';
 import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
+import Loader from './Loader';
 import './App.css';
 import 'storm-react-diagrams/dist/style.min.css';
 
@@ -16,7 +17,9 @@ class App extends Component {
 
         this.state = {
             engine: engine,
-            selected: null
+            selected: null,
+            loading: false,
+            diagrams: []
         };
     }
 
@@ -50,11 +53,29 @@ class App extends Component {
         }
     }
 
-    onSerialize() {
-        var diagram = this.state.engine.getDiagramModel().serializeDiagram();
-        for (var i = 0; i < diagram.nodes.length; i++) {
-            if (diagram.nodes[i].extras.type === 'story') {
-                diagram.title = diagram.nodes[i].extras.title;
+    onLoad() {
+        $.ajax({
+            url: 'https://api.getstoryflow.com/diagrams',
+            type: 'GET',
+            dataType: 'json',
+            success: (data) => {
+                this.setState({
+                    loading: true,
+                    diagrams: data
+                });
+            }
+        });
+    }
+
+    onSave() {
+        var data = this.state.engine.getDiagramModel().serializeDiagram();
+        var diagram = {
+            data: JSON.stringify(data),
+            id: data.id
+        }
+        for (var i = 0; i < data.nodes.length; i++) {
+            if (data.nodes[i].extras.type === 'story') {
+                diagram.title = data.nodes[i].extras.title;
                 break;
             }
         }
@@ -66,10 +87,29 @@ class App extends Component {
         });
     }
 
+    onLoadId(id) {
+        $.ajax({
+            url: 'https://api.getstoryflow.com/diagrams/'+id,
+            type: 'GET',
+            dataType: 'json',
+            success: (diagram) => {
+                var engine = this.state.engine;
+                var model = new SRD.DiagramModel();
+                model.deSerializeDiagram(JSON.parse(diagram.data), engine);
+                engine.setDiagramModel(model);
+                this.setState({
+                    engine: engine,
+                    loading: false,
+                    diagrams: []
+                });
+            }
+        });
+    }
+
     render() {
         return (
             <div className='App'>
-                <Menu onSerialize={this.onSerialize.bind(this)} items={[
+                <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} items={[
                     { text: 'Story', type: 'story' },
                     { text: 'Line', type: 'line' },
                     { text: 'Chapter', type: 'chapter' },
@@ -130,7 +170,9 @@ class App extends Component {
                         node.x = points.x;
                         node.y = points.y;
                         engine.getDiagramModel().addNode(node);
-                        this.setState({});
+                        this.setState({
+                            engine: engine
+                        });
                     }}
                     onDragOver={event => {
                         event.preventDefault();
@@ -139,6 +181,7 @@ class App extends Component {
                     <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} />
                 </div>
                 { this.state.selected ? <Editor node={this.state.selected} onFocus={this.onDiagramUnfocus.bind(this)} onUpdate={() => this.setState({})} onClose={(e) => this.setState({ selected: null })} /> : null }
+                { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onFocus={this.onDiagramUnfocus.bind(this)} onClose={(e) => this.setState({ loading: false })} /> : null }
             </div>
         );
     }

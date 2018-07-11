@@ -51,6 +51,13 @@ class App extends Component {
     }
 
     onSerialize() {
+        var diagram = this.state.engine.getDiagramModel().serializeDiagram();
+        for (var i = 0; i < diagram.nodes.length; i++) {
+            if (diagram.nodes[i] === 'story') {
+                diagram.title = diagram.nodes[i].title;
+                break;
+            }
+        }
         $.ajax({
             url: 'https://api.getstoryflow.com/diagrams',
             type: 'POST',

@@ -62,7 +62,7 @@ class App extends Component {
             url: 'https://api.getstoryflow.com/diagrams',
             type: 'POST',
             dataType: 'json',
-            data: this.state.engine.getDiagramModel().serializeDiagram()
+            data: diagram
         });
     }
 

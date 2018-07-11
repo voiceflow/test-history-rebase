@@ -53,7 +53,7 @@ class App extends Component {
     onSerialize() {
         var diagram = this.state.engine.getDiagramModel().serializeDiagram();
         for (var i = 0; i < diagram.nodes.length; i++) {
-            if (diagram.nodes[i] === 'story') {
+            if (diagram.nodes[i].extras.type === 'story') {
                 diagram.title = diagram.nodes[i].extras.title;
                 break;
             }

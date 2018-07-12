@@ -27,7 +27,6 @@ class App extends Component {
         $('.srd-node-layer').click(() => {
             var engine = this.state.engine;
             var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
-            engine.getDiagramModel().clearSelection();
             this.setState({
                 engine: engine,
                 selected: node

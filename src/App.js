@@ -128,7 +128,7 @@ class App extends Component {
                         var node = null;
                         if (data.type === 'story') {
                             node = new SRD.DefaultNodeModel('New Story', 'red');
-                            node.addOutPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 title: '',
                                 audio: '',
@@ -137,7 +137,7 @@ class App extends Component {
                             };
                         } else if (data.type === 'line') {
                             node = new SRD.DefaultNodeModel('New Line', 'blue');
-                            node.addInPort(' ');
+                            node.addInPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
                                 prompt: '',
@@ -146,8 +146,8 @@ class App extends Component {
                             };
                         } else if (data.type === 'chapter') {
                             node = new SRD.DefaultNodeModel('New Chapter', 'green');
-                            node.addInPort(' ');
-                            node.addOutPort(' ');
+                            node.addInPort(' ').setMaximumLinks(1);
+                            node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
                                 prompt: '',
@@ -155,7 +155,7 @@ class App extends Component {
                             };
                         } else if (data.type === 'ending') {
                             node = new SRD.DefaultNodeModel('New Ending', 'orange');
-                            node.addInPort(' ');
+                            node.addInPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
                                 prompt: ''

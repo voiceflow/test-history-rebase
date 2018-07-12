@@ -42,7 +42,7 @@ class Editor extends Component {
         var node = this.state.node;
         node.extras.choices.push('New Choice');
         node.extras.inputs.push('');
-        node.addOutPort(node.extras.choices.length);
+        node.addOutPort(node.extras.choices.length).setMaximumLinks(1);
         this.setState({
             node: node
         });

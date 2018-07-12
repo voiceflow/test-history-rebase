@@ -179,7 +179,7 @@ class App extends Component {
                         event.preventDefault();
                     }}
                 >
-                    <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} />
+                    <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} allowLooseLinks={false} />
                 </div>
                 { this.state.selected ? <Editor node={this.state.selected} onFocus={this.onDiagramUnfocus.bind(this)} onUpdate={() => this.setState({})} onClose={(e) => this.setState({ selected: null })} /> : null }
                 { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onFocus={this.onDiagramUnfocus.bind(this)} onClose={(e) => this.setState({ loading: false })} /> : null }

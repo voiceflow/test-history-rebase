@@ -113,6 +113,10 @@ class Editor extends Component {
                         <label>Chapter Prompt: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
+                    {this.state.node.extras.type === 'chapter' ? <div>
+                        <label>Chapter Number: <input type="number" name="number" value={this.state.node.extras.number} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
                     {this.state.node.extras.type === 'ending' ? <div>
                         <label>Ending Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}

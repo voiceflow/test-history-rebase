@@ -150,7 +150,8 @@ class App extends Component {
                             node.addOutPort(' ');
                             node.extras = {
                                 audio: '',
-                                prompt: ''
+                                prompt: '',
+                                number: ''
                             };
                         } else if (data.type === 'ending') {
                             node = new SRD.DefaultNodeModel('New Ending', 'orange');

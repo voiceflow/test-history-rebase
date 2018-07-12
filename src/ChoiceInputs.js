@@ -10,6 +10,14 @@ class ChoiceInputs extends Component {
         };
     }
 
+    componentDidMount() {
+        $('input, textarea').keypress(function(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+            }
+        });
+    }
+
     componentWillReceiveProps(props) {
         this.setState({
             choices: props.choices,

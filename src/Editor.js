@@ -98,18 +98,6 @@ class Editor extends Component {
                         <label>Ending Audio: <input type="url" name="ending" value={this.state.node.extras.ending} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
-                    {this.state.node.extras.type === 'line' ? <div>
-                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
-                    </div> : null}
-
-                    {this.state.node.extras.type === 'line' ? <div>
-                        <label>Choice Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
-                    </div> : null}
-
-                    {this.state.node.extras.type === 'line' ?
-                        <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
-                    : null}
-
                     {this.state.node.extras.type === 'chapter' ? <div>
                         <label>Chapter Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
@@ -120,6 +108,30 @@ class Editor extends Component {
 
                     {this.state.node.extras.type === 'chapter' ? <div>
                         <label>Chapter Number: <input type="number" name="number" value={this.state.node.extras.number} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.extras.type === 'choice' ? <div>
+                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.extras.type === 'choice' ? <div>
+                        <label>Choice Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.extras.type === 'choice' ?
+                        <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
+                    : null}
+
+                    {this.state.node.extras.type === 'line' ? <div>
+                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.extras.type === 'listen' ? <div>
+                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
+                    </div> : null}
+
+                    {this.state.node.extras.type === 'listen' ? <div>
+                        <label>Choice Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'ending' ? <div>

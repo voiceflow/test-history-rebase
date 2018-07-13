@@ -110,8 +110,10 @@ class App extends Component {
             <div className='App'>
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} items={[
                     { text: 'Story', type: 'story' },
-                    { text: 'Line', type: 'line' },
                     { text: 'Chapter', type: 'chapter' },
+                    { text: 'Choice', type: 'choice' },
+                    { text: 'Line', type: 'line' },
+                    { text: 'Listen', type: 'listen' },
                     { text: 'Ending', type: 'ending' },
                     { text: 'Comment', type: 'comment' }
                 ]} />
@@ -126,7 +128,7 @@ class App extends Component {
                         }
                         var node = null;
                         if (data.type === 'story') {
-                            node = new SRD.DefaultNodeModel('New Story', 'red');
+                            node = new SRD.DefaultNodeModel('New Story', 'purple');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 title: '',
@@ -134,8 +136,17 @@ class App extends Component {
                                 prompt: '',
                                 ending: ''
                             };
-                        } else if (data.type === 'line') {
-                            node = new SRD.DefaultNodeModel('New Line', 'blue');
+                        } else if (data.type === 'chapter') {
+                            node = new SRD.DefaultNodeModel('New Chapter', 'red');
+                            node.addInPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
+                            node.extras = {
+                                audio: '',
+                                prompt: '',
+                                number: ''
+                            };
+                        } else if (data.type === 'choice') {
+                            node = new SRD.DefaultNodeModel('New Choice', 'green');
                             node.addInPort(' ');
                             node.extras = {
                                 audio: '',
@@ -143,14 +154,20 @@ class App extends Component {
                                 choices: [],
                                 inputs: []
                             };
-                        } else if (data.type === 'chapter') {
-                            node = new SRD.DefaultNodeModel('New Chapter', 'green');
+                        } else if (data.type === 'line') {
+                            node = new SRD.DefaultNodeModel('New Line', 'blue');
+                            node.addInPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
+                            node.extras = {
+                                audio: ''
+                            };
+                        } else if (data.type === 'listen') {
+                            node = new SRD.DefaultNodeModel('New Listen', 'yellow');
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
-                                prompt: '',
-                                number: ''
+                                prompt: ''
                             };
                         } else if (data.type === 'ending') {
                             node = new SRD.DefaultNodeModel('New Ending', 'orange');

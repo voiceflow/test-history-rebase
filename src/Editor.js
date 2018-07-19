@@ -90,7 +90,7 @@ class Editor extends Component {
                 contentType: false,
                 success: (res) => {
                     let node = this.state.node;
-                    node.extras.audio = res;
+                    node.extras[name] = res;
                     this.setState({
                         node: node
                     });
@@ -112,36 +112,35 @@ class Editor extends Component {
 
                     {this.state.node.extras.type === 'story' ? <div>
                         <label>Title: <input type="text" name="title" value={this.state.node.extras.title} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Title Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
                         <label>Title Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
-                        <label>Reprompt Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Ending Audio: <input type="url" name="ending" value={this.state.node.extras.ending} onChange={this.handleChange.bind(this)} /></label>
+                        <label>Reprompt Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
+                        <label>Ending Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'ending')}><p>{this.state.node.extras.ending}</p></Dropzone></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'chapter' ? <div>
-                        <label>Chapter Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Chapter Prompt: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
+                        <label>Chapter Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <label>Chapter Prompt: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
                         <label>Chapter Number: <input type="number" name="number" value={this.state.node.extras.number} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'choice' ? <div>
-                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Choice Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
+                        <label>Line Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <label>Choice Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
                         <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div> : null}
 
                     {this.state.node.extras.type === 'line' ? <div>
-                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
+                        <label>Line Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'listen' ? <div>
-                        <label>Line Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Choice Audio: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
+                        <label>Line Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <label>Choice Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'ending' ? <div>
-                        <label>Ending Audio: <input type="url" name="audio" value={this.state.node.extras.audio} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Ending Prompt: <input type="url" name="prompt" value={this.state.node.extras.prompt} onChange={this.handleChange.bind(this)} /></label>
+                        <label>Ending Audio: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <label>Ending Prompt: <Dropzone accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
                     </div> : null}
 
                 </form>

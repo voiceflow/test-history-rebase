@@ -13,7 +13,7 @@ class Editor extends Component {
 
     componentDidMount() {
         $('.Editor').click(this.props.onFocus);
-        $('input').keypress(function(e) {
+        $('input, button').keypress(function(e) {
             if (e.keyCode === 13) {
                 e.preventDefault();
             }
@@ -52,6 +52,11 @@ class Editor extends Component {
             node: node
         });
         this.props.onUpdate();
+        $('input, button').keypress(function(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+            }
+        });
         e.preventDefault();
     }
 

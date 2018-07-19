@@ -7,6 +7,7 @@
     "jquery": "^3.3.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-dropzone": "^4.2.13",
     "react-scripts": "1.1.4",
     "storm-react-diagrams": "^5.2.1"
   },

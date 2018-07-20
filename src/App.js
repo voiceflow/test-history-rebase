@@ -186,9 +186,12 @@ class App extends Component {
                         var points = engine.getRelativeMousePoint(event);
                         node.x = points.x;
                         node.y = points.y;
+                        node.setSelected();
+                        engine.getDiagramModel().clearSelection();
                         engine.getDiagramModel().addNode(node);
                         this.setState({
-                            engine: engine
+                            engine: engine,
+                            selected: node
                         });
                     }}
                     onDragOver={event => {

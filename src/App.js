@@ -114,6 +114,7 @@ class App extends Component {
                     { text: 'Choice', type: 'choice' },
                     { text: 'Line', type: 'line' },
                     { text: 'Listen', type: 'listen' },
+                    { text: 'Retry', type: 'retry' },
                     { text: 'Ending', type: 'ending' },
                     { text: 'Comment', type: 'comment' }
                 ]} />
@@ -134,7 +135,7 @@ class App extends Component {
                                 title: '',
                                 audio: '',
                                 prompt: '',
-                                ending: ''
+                                retry: ''
                             };
                         } else if (data.type === 'chapter') {
                             node = new SRD.DefaultNodeModel('New Chapter', 'red');
@@ -169,12 +170,18 @@ class App extends Component {
                                 audio: '',
                                 prompt: ''
                             };
+                        } else if (data.type === 'retry') {
+                            node = new SRD.DefaultNodeModel('New Retry', 'orange');
+                            node.addInPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
+                            node.extras = {
+                                audio: ''
+                            };
                         } else if (data.type === 'ending') {
-                            node = new SRD.DefaultNodeModel('New Ending', 'orange');
+                            node = new SRD.DefaultNodeModel('New Ending', 'red');
                             node.addInPort(' ');
                             node.extras = {
-                                audio: '',
-                                prompt: ''
+                                audio: ''
                             };
                         } else if (data.type === 'comment') {
                             node = new SRD.DefaultNodeModel('New Comment', 'black');

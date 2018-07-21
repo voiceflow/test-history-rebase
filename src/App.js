@@ -33,7 +33,7 @@ class App extends Component {
             });
         });
 
-        $('.Menu').click(this.onDiagramUnfocus.bind(this));
+        $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
     }
 
     onDiagramUnfocus() {

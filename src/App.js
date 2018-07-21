@@ -134,8 +134,7 @@ class App extends Component {
                             node.extras = {
                                 title: '',
                                 audio: '',
-                                prompt: '',
-                                retry: ''
+                                prompt: ''
                             };
                         } else if (data.type === 'chapter') {
                             node = new SRD.DefaultNodeModel('New Chapter', 'red');

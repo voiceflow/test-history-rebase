@@ -114,7 +114,6 @@ class Editor extends Component {
                         <label>Title: <input type="text" name="title" value={this.state.node.extras.title} onChange={this.handleChange.bind(this)} /></label>
                         <label>Title Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
                         <label>Reprompt Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
-                        <label>Retry Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'retry')}><p>{this.state.node.extras.retry}</p></Dropzone></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'chapter' ? <div>

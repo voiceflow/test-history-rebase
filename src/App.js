@@ -148,6 +148,7 @@ class App extends Component {
                         } else if (data.type === 'choice') {
                             node = new SRD.DefaultNodeModel('New Choice', 'green');
                             node.addInPort(' ');
+                            node.addOutPort('else');
                             node.extras = {
                                 audio: '',
                                 prompt: '',

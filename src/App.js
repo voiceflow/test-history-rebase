@@ -89,7 +89,7 @@ class App extends Component {
     onTest() {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
-            url: 'http://staging.getstoryflow.com/publish/'+id,
+            url: 'https://staging.getstoryflow.com/publish/'+id,
             type: 'POST'
         });
     }

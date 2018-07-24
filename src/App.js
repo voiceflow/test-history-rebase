@@ -52,20 +52,6 @@ class App extends Component {
         }
     }
 
-    onLoad() {
-        $.ajax({
-            url: 'https://api.getstoryflow.com/diagrams',
-            type: 'GET',
-            dataType: 'json',
-            success: (data) => {
-                this.setState({
-                    loading: true,
-                    diagrams: data
-                });
-            }
-        });
-    }
-
     onSave() {
         var data = this.state.engine.getDiagramModel().serializeDiagram();
         var diagram = {
@@ -83,6 +69,36 @@ class App extends Component {
             type: 'POST',
             dataType: 'json',
             data: diagram
+        });
+    }
+
+    onLoad() {
+        $.ajax({
+            url: 'https://api.getstoryflow.com/diagrams',
+            type: 'GET',
+            dataType: 'json',
+            success: (data) => {
+                this.setState({
+                    loading: true,
+                    diagrams: data
+                });
+            }
+        });
+    }
+
+    onTest() {
+        var id = this.state.engine.getDiagramModel().getID();
+        $.ajax({
+            url: 'http://staging.getstoryflow.com/publish/'+id,
+            type: 'POST'
+        });
+    }
+
+    onPublish() {
+        var id = this.state.engine.getDiagramModel().getID();
+        $.ajax({
+            url: 'https://api.getstoryflow.com/publish/'+id,
+            type: 'POST'
         });
     }
 
@@ -108,7 +124,7 @@ class App extends Component {
     render() {
         return (
             <div className='App'>
-                <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} items={[
+                <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
                     { text: 'Story', type: 'story' },
                     { text: 'Chapter', type: 'chapter' },
                     { text: 'Choice', type: 'choice' },

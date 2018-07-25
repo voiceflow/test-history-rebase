@@ -67,8 +67,9 @@ class App extends Component {
         $.ajax({
             url: 'https://api.getstoryflow.com/diagrams',
             type: 'POST',
-            dataType: 'json',
-            data: diagram
+            data: diagram,
+            success: () => { alert('Success'); },
+            error: () => { alert('Error'); }
         });
     }
 
@@ -76,13 +77,13 @@ class App extends Component {
         $.ajax({
             url: 'https://api.getstoryflow.com/diagrams',
             type: 'GET',
-            dataType: 'json',
-            success: (data) => {
+            success: data => {
                 this.setState({
                     loading: true,
                     diagrams: data
                 });
-            }
+            },
+            error: () => { alert('Error'); }
         });
     }
 
@@ -90,7 +91,9 @@ class App extends Component {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
             url: 'https://staging.getstoryflow.com/publish/'+id,
-            type: 'POST'
+            type: 'POST',
+            success: () => { alert('Success'); },
+            error: () => { alert('Error'); }
         });
     }
 
@@ -98,7 +101,9 @@ class App extends Component {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
             url: 'https://api.getstoryflow.com/publish/'+id,
-            type: 'POST'
+            type: 'POST',
+            success: () => { alert('Success'); },
+            error: () => { alert('Error'); }
         });
     }
 
@@ -106,8 +111,7 @@ class App extends Component {
         $.ajax({
             url: 'https://api.getstoryflow.com/diagrams/'+id,
             type: 'GET',
-            dataType: 'json',
-            success: (diagram) => {
+            success: diagram => {
                 var engine = this.state.engine;
                 var model = new SRD.DiagramModel();
                 model.deSerializeDiagram(JSON.parse(diagram.data), engine);
@@ -117,7 +121,8 @@ class App extends Component {
                     loading: false,
                     diagrams: []
                 });
-            }
+            },
+            error: () => { alert('Error'); }
         });
     }
 
@@ -223,8 +228,8 @@ class App extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} allowLooseLinks={false} />
                 </div>
-                { this.state.selected ? <Editor node={this.state.selected} onFocus={this.onDiagramUnfocus.bind(this)} onUpdate={() => this.setState({})} onClose={(e) => this.setState({ selected: null })} /> : null }
-                { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onFocus={this.onDiagramUnfocus.bind(this)} onClose={(e) => this.setState({ loading: false })} /> : null }
+                { this.state.selected ? <Editor node={this.state.selected} onFocus={this.onDiagramUnfocus.bind(this)} onUpdate={() => this.setState({})} onClose={e => this.setState({ selected: null })} /> : null }
+                { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onFocus={this.onDiagramUnfocus.bind(this)} onClose={e => this.setState({ loading: false })} /> : null }
             </div>
         );
     }

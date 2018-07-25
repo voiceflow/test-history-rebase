@@ -68,8 +68,8 @@ class App extends Component {
             url: 'https://api.getstoryflow.com/diagrams',
             type: 'POST',
             data: diagram,
-            success: () => { alert('Success'); },
-            error: () => { alert('Error'); }
+            success: () => { window.alert('Success'); },
+            error: () => { window.alert('Error'); }
         });
     }
 
@@ -83,7 +83,7 @@ class App extends Component {
                     diagrams: data
                 });
             },
-            error: () => { alert('Error'); }
+            error: () => { window.alert('Error'); }
         });
     }
 
@@ -92,19 +92,21 @@ class App extends Component {
         $.ajax({
             url: 'https://staging.getstoryflow.com/publish/'+id,
             type: 'POST',
-            success: () => { alert('Success'); },
-            error: () => { alert('Error'); }
+            success: () => { window.alert('Success'); },
+            error: () => { window.alert('Error'); }
         });
     }
 
     onPublish() {
         var id = this.state.engine.getDiagramModel().getID();
-        $.ajax({
-            url: 'https://api.getstoryflow.com/publish/'+id,
-            type: 'POST',
-            success: () => { alert('Success'); },
-            error: () => { alert('Error'); }
-        });
+        if (window.confirm('Are you ready to publish?')) {
+            $.ajax({
+                url: 'https://api.getstoryflow.com/publish/'+id,
+                type: 'POST',
+                success: () => { window.alert('Success'); },
+                error: () => { window.alert('Error'); }
+            });
+        }
     }
 
     onLoadId(id) {
@@ -122,7 +124,7 @@ class App extends Component {
                     diagrams: []
                 });
             },
-            error: () => { alert('Error'); }
+            error: () => { window.alert('Error'); }
         });
     }
 

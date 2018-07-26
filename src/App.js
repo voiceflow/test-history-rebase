@@ -152,7 +152,7 @@ class App extends Component {
                         }
                         var node = null;
                         if (data.type === 'story') {
-                            node = new SRD.DefaultNodeModel('New Story', 'purple');
+                            node = new SRD.DefaultNodeModel('New Story', 'red');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 title: '',
@@ -160,7 +160,7 @@ class App extends Component {
                                 prompt: ''
                             };
                         } else if (data.type === 'chapter') {
-                            node = new SRD.DefaultNodeModel('New Chapter', 'red');
+                            node = new SRD.DefaultNodeModel('New Chapter', 'purple');
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {

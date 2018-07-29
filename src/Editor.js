@@ -14,8 +14,8 @@ class Editor extends Component {
 
     componentDidMount() {
         $('.Editor').mousedown(this.props.onFocus);
-        $('*').not('textarea').keypress(function(e) {
-            if (e.keyCode === 13 || e.which === 13) {
+        $('*').keypress(function(e) {
+            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'textarea') {
                 e.preventDefault();
             }
         });
@@ -53,8 +53,8 @@ class Editor extends Component {
             node: node
         });
         this.props.onUpdate();
-        $('*').not('textarea').keypress(function(e) {
-            if (e.keyCode === 13 || e.which === 13) {
+        $('*').keypress(function(e) {
+            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'textarea') {
                 e.preventDefault();
             }
         });

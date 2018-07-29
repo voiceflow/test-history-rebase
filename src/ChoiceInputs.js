@@ -12,8 +12,8 @@ class ChoiceInputs extends Component {
     }
 
     componentDidMount() {
-        $('*').not('textarea').keypress(function(e) {
-            if (e.keyCode === 13 || e.which === 13) {
+        $('*').keypress(function(e) {
+            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'textarea') {
                 e.preventDefault();
             }
         });

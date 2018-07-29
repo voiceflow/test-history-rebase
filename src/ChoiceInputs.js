@@ -12,8 +12,8 @@ class ChoiceInputs extends Component {
     }
 
     componentDidMount() {
-        $('input').keypress(function(e) {
-            if (e.keyCode === 13) {
+        $('*').keypress(function(e) {
+            if (e.keyCode === 13 || e.which === 13) {
                 e.preventDefault();
             }
         });

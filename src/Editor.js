@@ -14,8 +14,8 @@ class Editor extends Component {
 
     componentDidMount() {
         $('.Editor').mousedown(this.props.onFocus);
-        $('input, button').keypress(function(e) {
-            if (e.keyCode === 13) {
+        $('*').keypress(function(e) {
+            if (e.keyCode === 13 || e.which === 13) {
                 e.preventDefault();
             }
         });
@@ -53,8 +53,8 @@ class Editor extends Component {
             node: node
         });
         this.props.onUpdate();
-        $('input, button').keypress(function(e) {
-            if (e.keyCode === 13) {
+        $('*').keypress(function(e) {
+            if (e.keyCode === 13 || e.which === 13) {
                 e.preventDefault();
             }
         });

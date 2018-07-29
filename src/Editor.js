@@ -14,7 +14,7 @@ class Editor extends Component {
 
     componentDidMount() {
         $('.Editor').mousedown(this.props.onFocus);
-        $('*').keypress(function(e) {
+        $('*:not(textarea)').keypress(function(e) {
             if (e.keyCode === 13 || e.which === 13) {
                 e.preventDefault();
             }
@@ -53,7 +53,7 @@ class Editor extends Component {
             node: node
         });
         this.props.onUpdate();
-        $('*').keypress(function(e) {
+        $('*:not(textarea)').keypress(function(e) {
             if (e.keyCode === 13 || e.which === 13) {
                 e.preventDefault();
             }
@@ -102,7 +102,7 @@ class Editor extends Component {
 
     render() {
         return (
-            <div className='Editor'>
+            <div className='Editor' key={this.state.node.id}>
                 <button onClick={this.props.onClose}>&times;</button>
                 <form onSubmit={(e) => e.preventDefault()}>
 
@@ -112,37 +112,37 @@ class Editor extends Component {
 
                     {this.state.node.extras.type === 'story' ? <div>
                         <label>Title: <input type="text" name="title" value={this.state.node.extras.title} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Title Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
-                        <label>Reprompt Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
+                        <label>Title Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Reprompt Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'chapter' ? <div>
-                        <label>Chapter Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
-                        <label>Chapter Prompt: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
+                        <label>Chapter Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Chapter Prompt: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
                         <label>Chapter Number: <input type="number" name="number" value={this.state.node.extras.number} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'choice' ? <div>
-                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
-                        <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
+                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
                         <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div> : null}
 
                     {this.state.node.extras.type === 'line' ? <div>
-                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'listen' ? <div>
-                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
-                        <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
+                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'retry' ? <div>
-                        <label>Retry Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Retry Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'ending' ? <div>
-                        <label>Ending Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
+                        <label>Ending Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio></label>
                     </div> : null}
 
                 </form>

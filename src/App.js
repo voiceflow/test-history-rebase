@@ -31,6 +31,7 @@ class App extends Component {
                 engine: engine,
                 selected: node
             });
+            $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
         });
 
         $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
@@ -82,6 +83,7 @@ class App extends Component {
                     loading: true,
                     diagrams: data
                 });
+                $('.Loader').mousedown(this.onDiagramUnfocus.bind(this));
             },
             error: () => { window.alert('Error'); }
         });
@@ -230,8 +232,8 @@ class App extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} allowLooseLinks={false} />
                 </div>
-                { this.state.selected ? <Editor node={this.state.selected} onFocus={this.onDiagramUnfocus.bind(this)} onUpdate={() => this.setState({})} onClose={e => this.setState({ selected: null })} /> : null }
-                { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onFocus={this.onDiagramUnfocus.bind(this)} onClose={e => this.setState({ loading: false })} /> : null }
+                { this.state.selected ? <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={e => this.setState({ selected: null })} /> : null }
+                { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onClose={e => this.setState({ loading: false })} /> : null }
             </div>
         );
     }

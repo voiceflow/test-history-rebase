@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 
 class Loader extends Component {
-    componentDidMount() {
-        $('.Loader').click(this.props.onFocus);
-    }
-
     render() {
         return (
             <div className='Loader'>

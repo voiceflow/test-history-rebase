@@ -13,9 +13,8 @@ class Editor extends Component {
     }
 
     componentDidMount() {
-        $('.Editor').mousedown(this.props.onFocus);
         $('*').keypress(function(e) {
-            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'textarea') {
+            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs') {
                 e.preventDefault();
             }
         });
@@ -54,7 +53,7 @@ class Editor extends Component {
         });
         this.props.onUpdate();
         $('*').keypress(function(e) {
-            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'textarea') {
+            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs') {
                 e.preventDefault();
             }
         });

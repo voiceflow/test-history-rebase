@@ -113,36 +113,47 @@ class Editor extends Component {
                     {this.state.node.extras.type === 'story' ? <div>
                         <label>Title: <input type="text" name="title" value={this.state.node.extras.title} onChange={this.handleChange.bind(this)} /></label>
                         <label>Title Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                         <label>Reprompt Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
+                        <a href={this.state.node.extras.prompt}>Download</a>
                     </div> : null}
 
                     {this.state.node.extras.type === 'chapter' ? <div>
                         <label>Chapter Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                         <label>Chapter Prompt: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
+                        <a href={this.state.node.extras.prompt}>Download</a>
                         <label>Chapter Number: <input type="number" name="number" value={this.state.node.extras.number} onChange={this.handleChange.bind(this)} /></label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'choice' ? <div>
                         <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                         <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
+                        <a href={this.state.node.extras.prompt}>Download</a>
                         <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
                     </div> : null}
 
                     {this.state.node.extras.type === 'line' ? <div>
                         <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                     </div> : null}
 
                     {this.state.node.extras.type === 'listen' ? <div>
                         <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                         <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt}</p></Dropzone></label>
+                        <a href={this.state.node.extras.prompt}>Download</a>
                     </div> : null}
 
                     {this.state.node.extras.type === 'retry' ? <div>
                         <label>Retry Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                     </div> : null}
 
                     {this.state.node.extras.type === 'ending' ? <div>
                         <label>Ending Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio}</p></Dropzone></label>
+                        <a href={this.state.node.extras.audio}>Download</a>
                     </div> : null}
 
                 </form>

@@ -159,6 +159,7 @@ class App extends Component {
                             node.extras = {
                                 title: '',
                                 audio: '',
+                                preview: '',
                                 prompt: ''
                             };
                         } else if (data.type === 'chapter') {

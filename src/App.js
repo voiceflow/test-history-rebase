@@ -226,6 +226,7 @@ class App extends Component {
                             engine: engine,
                             selected: node
                         });
+                        $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
                     }}
                     onDragOver={event => {
                         event.preventDefault();

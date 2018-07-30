@@ -39,8 +39,7 @@ class Editor extends Component {
         }
         this.setState({
             node: node
-        });
-        this.props.onUpdate();
+        }, this.props.onUpdate);
     }
 
     handleAddChoice(e) {
@@ -50,8 +49,7 @@ class Editor extends Component {
         node.addOutPort(node.extras.choices.length).setMaximumLinks(1);
         this.setState({
             node: node
-        });
-        this.props.onUpdate();
+        }, this.props.onUpdate);
         $('*').keypress(function(e) {
             if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs') {
                 e.preventDefault();
@@ -72,8 +70,7 @@ class Editor extends Component {
         node.extras.inputs.splice(i, 1);
         this.setState({
             node: node
-        });
-        this.props.onUpdate();
+        }, this.props.onUpdate);
         e.preventDefault();
     }
 
@@ -92,8 +89,7 @@ class Editor extends Component {
                     node.extras[name] = res;
                     this.setState({
                         node: node
-                    });
-                    this.props.onUpdate();
+                    }, this.props.onUpdate);
                 }
             });
         }

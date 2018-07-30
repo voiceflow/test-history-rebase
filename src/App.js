@@ -30,8 +30,7 @@ class App extends Component {
             this.setState({
                 engine: engine,
                 selected: node
-            });
-            $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
+            }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
         });
 
         $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
@@ -82,8 +81,7 @@ class App extends Component {
                 this.setState({
                     loading: true,
                     diagrams: data
-                });
-                $('.Loader').mousedown(this.onDiagramUnfocus.bind(this));
+                }, () => $('.Loader').mousedown(this.onDiagramUnfocus.bind(this)));
             },
             error: () => { window.alert('Error'); }
         });
@@ -225,8 +223,7 @@ class App extends Component {
                         this.setState({
                             engine: engine,
                             selected: node
-                        });
-                        $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
+                        }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
                     }}
                     onDragOver={event => {
                         event.preventDefault();

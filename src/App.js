@@ -90,7 +90,7 @@ class App extends Component {
     onTest() {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
-            url: '/test/'+id,
+            url: '/publish/staging/'+id,
             type: 'POST',
             success: () => {window.alert('Success');},
             error: () => {window.alert('Error');}
@@ -101,7 +101,7 @@ class App extends Component {
         var id = this.state.engine.getDiagramModel().getID();
         if (window.confirm('Are you ready to publish?')) {
             $.ajax({
-                url: '/publish/'+id,
+                url: '/publish/production/'+id,
                 type: 'POST',
                 success: () => {window.alert('Success');},
                 error: () => {window.alert('Error');}

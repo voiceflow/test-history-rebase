@@ -68,8 +68,8 @@ class App extends Component {
             url: '/diagrams',
             type: 'POST',
             data: diagram,
-            success: () => { window.alert('Success'); },
-            error: () => { window.alert('Error'); }
+            success: () => {window.alert('Success');},
+            error: () => {window.alert('Error');}
         });
     }
 
@@ -83,7 +83,7 @@ class App extends Component {
                     diagrams: data
                 }, () => $('.Loader').mousedown(this.onDiagramUnfocus.bind(this)));
             },
-            error: () => { window.alert('Error'); }
+            error: () => {window.alert('Error');}
         });
     }
 
@@ -92,8 +92,8 @@ class App extends Component {
         $.ajax({
             url: '/test/'+id,
             type: 'POST',
-            success: () => { window.alert('Success'); },
-            error: () => { window.alert('Error'); }
+            success: () => {window.alert('Success');},
+            error: () => {window.alert('Error');}
         });
     }
 
@@ -103,8 +103,8 @@ class App extends Component {
             $.ajax({
                 url: '/publish/'+id,
                 type: 'POST',
-                success: () => { window.alert('Success'); },
-                error: () => { window.alert('Error'); }
+                success: () => {window.alert('Success');},
+                error: () => {window.alert('Error');}
             });
         }
     }
@@ -124,7 +124,7 @@ class App extends Component {
                     diagrams: []
                 });
             },
-            error: () => { window.alert('Error'); }
+            error: () => {window.alert('Error');}
         });
     }
 

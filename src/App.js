@@ -66,7 +66,7 @@ class App extends Component {
             }
         }
         $.ajax({
-            url: 'https://api.getstoryflow.com/diagrams',
+            url: '/diagrams',
             type: 'POST',
             data: diagram,
             success: () => { window.alert('Success'); },
@@ -76,7 +76,7 @@ class App extends Component {
 
     onLoad() {
         $.ajax({
-            url: 'https://api.getstoryflow.com/diagrams',
+            url: '/diagrams',
             type: 'GET',
             success: data => {
                 this.setState({
@@ -92,7 +92,7 @@ class App extends Component {
     onTest() {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
-            url: 'https://staging.getstoryflow.com/publish/'+id,
+            url: '/test/'+id,
             type: 'POST',
             success: () => { window.alert('Success'); },
             error: () => { window.alert('Error'); }
@@ -103,7 +103,7 @@ class App extends Component {
         var id = this.state.engine.getDiagramModel().getID();
         if (window.confirm('Are you ready to publish?')) {
             $.ajax({
-                url: 'https://api.getstoryflow.com/publish/'+id,
+                url: '/publish/'+id,
                 type: 'POST',
                 success: () => { window.alert('Success'); },
                 error: () => { window.alert('Error'); }
@@ -113,7 +113,7 @@ class App extends Component {
 
     onLoadId(id) {
         $.ajax({
-            url: 'https://api.getstoryflow.com/diagrams/'+id,
+            url: '/diagrams/'+id,
             type: 'GET',
             success: diagram => {
                 var engine = this.state.engine;

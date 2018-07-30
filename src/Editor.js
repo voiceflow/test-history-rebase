@@ -82,7 +82,7 @@ class Editor extends Component {
             let data = new FormData();
             data.append(name, files[0]);
             $.ajax({
-                url: 'https://api.getstoryflow.com/audio',
+                url: '/audio',
                 type: 'POST',
                 data: data,
                 processData: false,

@@ -5,7 +5,7 @@ class Loader extends Component {
         return (
             <div className='Loader'>
                 <button onClick={this.props.onClose}>&times;</button>
-                {this.props.diagrams ? this.props.diagrams.map(diagram => {
+                {Array.isArray(this.props.diagrams) ? this.props.diagrams.map(diagram => {
                     return <div key={diagram.id}><button onClick={() => this.props.onLoadId(diagram.id)}>{diagram.title ? diagram.title : diagram.id}</button></div>;
                 }) : null}
             </div>

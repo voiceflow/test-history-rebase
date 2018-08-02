@@ -133,7 +133,6 @@ class App extends Component {
             <div className='App'>
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
                     { text: 'Story', type: 'story' },
-                    { text: 'Chapter', type: 'chapter' },
                     { text: 'Choice', type: 'choice' },
                     { text: 'Line', type: 'line' },
                     { text: 'Listen', type: 'listen' },
@@ -159,15 +158,6 @@ class App extends Component {
                                 audio: '',
                                 preview: '',
                                 prompt: ''
-                            };
-                        } else if (data.type === 'chapter') {
-                            node = new SRD.DefaultNodeModel('New Chapter', 'purple');
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                audio: '',
-                                prompt: '',
-                                number: ''
                             };
                         } else if (data.type === 'choice') {
                             node = new SRD.DefaultNodeModel('New Choice', 'green');

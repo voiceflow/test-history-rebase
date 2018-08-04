@@ -156,16 +156,21 @@ class App extends Component {
                             node.extras = {
                                 title: '',
                                 audio: '',
+                                audioText: '',
                                 preview: '',
-                                prompt: ''
+                                previewText: '',
+                                prompt: '',
+                                promptText: ''
                             };
                         } else if (data.type === 'choice') {
                             node = new SRD.DefaultNodeModel('New Choice', 'green');
                             node.addInPort(' ');
-                            node.addOutPort('else');
+                            node.addOutPort('else').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
+                                audioText: '',
                                 prompt: '',
+                                promptText: '',
                                 choices: [],
                                 inputs: []
                             };
@@ -174,7 +179,8 @@ class App extends Component {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
-                                audio: ''
+                                audio: '',
+                                audioText: ''
                             };
                         } else if (data.type === 'listen') {
                             node = new SRD.DefaultNodeModel('New Listen', 'yellow');
@@ -182,20 +188,24 @@ class App extends Component {
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
-                                prompt: ''
+                                audioText: '',
+                                prompt: '',
+                                promptText: ''
                             };
                         } else if (data.type === 'retry') {
                             node = new SRD.DefaultNodeModel('New Retry', 'orange');
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
-                                audio: ''
+                                audio: '',
+                                audioText: ''
                             };
                         } else if (data.type === 'ending') {
                             node = new SRD.DefaultNodeModel('New Ending', 'red');
                             node.addInPort(' ');
                             node.extras = {
-                                audio: ''
+                                audio: '',
+                                audioText: ''
                             };
                         } else if (data.type === 'comment') {
                             node = new SRD.DefaultNodeModel('New Comment', 'black');

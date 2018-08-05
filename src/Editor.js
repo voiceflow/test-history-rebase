@@ -76,6 +76,7 @@ class Editor extends Component {
 
     onDrop(files, name) {
         if (files.length > 0) {
+            let node = this.state.node;
             let data = new FormData();
             data.append(name, files[0]);
             $.ajax({
@@ -84,8 +85,7 @@ class Editor extends Component {
                 data: data,
                 processData: false,
                 contentType: false,
-                success: (res) => {
-                    let node = this.state.node;
+                success: res => {
                     node.extras[name] = res;
                     this.setState({
                         node: node
@@ -105,10 +105,17 @@ class Editor extends Component {
 
     onGenerate(text, audio) {
         let node = this.state.node;
-        node.extras[audio] = '/'+node.extras[text];
-        this.setState({
-            node: node
-        }, this.props.onUpdate);
+        $.ajax({
+            url: '/generate',
+            type: 'POST',
+            data: node.extras[text],
+            success: res => {
+                node.extras[audio] = res;
+                this.setState({
+                    node: node
+                }, this.props.onUpdate);
+            }
+        });
     }
 
     render() {

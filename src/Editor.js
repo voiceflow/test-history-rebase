@@ -105,7 +105,7 @@ class Editor extends Component {
 
     onGenerate(text, audio) {
         let node = this.state.node;
-        node.extras.audio = '/'+node.extras.text;
+        node.extras[audio] = '/'+node.extras[text];
         this.setState({
             node: node
         }, this.props.onUpdate);

@@ -108,9 +108,9 @@ class Editor extends Component {
         $.ajax({
             url: '/generate',
             type: 'POST',
-            data: node.extras[text],
+            data: {text: node.extras[text]},
             success: res => {
-                node.extras[audio] = res;
+                node.extras[audio] = res.audio;
                 this.setState({
                     node: node
                 }, this.props.onUpdate);

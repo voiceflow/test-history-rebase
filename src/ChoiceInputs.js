@@ -13,7 +13,7 @@ class ChoiceInputs extends Component {
 
     componentDidMount() {
         $('*').keypress(function(e) {
-            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs') {
+            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
                 e.preventDefault();
             }
         });

@@ -110,7 +110,7 @@ class Editor extends Component {
             type: 'POST',
             data: {text: node.extras[text]},
             success: res => {
-                node.extras[audio] = res.audio;
+                node.extras[audio] = res;
                 this.setState({
                     node: node
                 }, this.props.onUpdate);

@@ -181,12 +181,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('audio')}>&times;</button>
                             <textarea
                                 name="audioText"
-                                value={this.state.audioText}
+                                value={this.state.node.extras.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="audioVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.audioVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -219,12 +219,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('preview')}>&times;</button>
                             <textarea
                                 name="previewText"
-                                value={this.state.previewText}
+                                value={this.state.node.extras.previewText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="previewVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.previewVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -257,12 +257,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('prompt')}>&times;</button>
                             <textarea
                                 name="promptText"
-                                value={this.state.promptText}
+                                value={this.state.node.extras.promptText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="promptVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.promptVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -298,12 +298,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('audio')}>&times;</button>
                             <textarea
                                 name="audioText"
-                                value={this.state.audioText}
+                                value={this.state.node.extras.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="audioVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.audioVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -336,12 +336,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('prompt')}>&times;</button>
                             <textarea
                                 name="promptText"
-                                value={this.state.promptText}
+                                value={this.state.node.extras.promptText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="promptVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.promptVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -384,12 +384,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('audio')}>&times;</button>
                             <textarea
                                 name="audioText"
-                                value={this.state.audioText}
+                                value={this.state.node.extras.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="audioVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.audioVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -425,12 +425,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('audio')}>&times;</button>
                             <textarea
                                 name="audioText"
-                                value={this.state.audioText}
+                                value={this.state.node.extras.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="audioVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.audioVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -463,12 +463,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('prompt')}>&times;</button>
                             <textarea
                                 name="promptText"
-                                value={this.state.promptText}
+                                value={this.state.node.extras.promptText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="promptVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.promptVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -504,12 +504,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('audio')}>&times;</button>
                             <textarea
                                 name="audioText"
-                                value={this.state.audioText}
+                                value={this.state.node.extras.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="audioVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.audioVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>
@@ -545,12 +545,12 @@ class Editor extends Component {
                             <button onClick={() => this.onClear('audio')}>&times;</button>
                             <textarea
                                 name="audioText"
-                                value={this.state.audioText}
+                                value={this.state.node.extras.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
                             <select
                                 name="audioVoice"
-                                value={this.state.audioVoice}
+                                value={this.state.node.extras.audioVoice}
                                 onChange={this.handleChange.bind(this)}
                             >
                                 <option value="" selected disabled hidden>Choose Voice</option>

@@ -184,7 +184,11 @@ class Editor extends Component {
                                 value={this.state.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="audioVoice">
+                            <select
+                                name="audioVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -218,7 +222,11 @@ class Editor extends Component {
                                 value={this.state.previewText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="previewVoice">
+                            <select
+                                name="previewVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -252,7 +260,11 @@ class Editor extends Component {
                                 value={this.state.promptText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="promptVoice">
+                            <select
+                                name="promptVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -289,7 +301,11 @@ class Editor extends Component {
                                 value={this.state.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="audioVoice">
+                            <select
+                                name="audioVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -323,7 +339,11 @@ class Editor extends Component {
                                 value={this.state.promptText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="promptVoice">
+                            <select
+                                name="promptVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -367,7 +387,11 @@ class Editor extends Component {
                                 value={this.state.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="audioVoice">
+                            <select
+                                name="audioVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -404,7 +428,11 @@ class Editor extends Component {
                                 value={this.state.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="audioVoice">
+                            <select
+                                name="audioVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -438,7 +466,11 @@ class Editor extends Component {
                                 value={this.state.promptText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="promptVoice">
+                            <select
+                                name="promptVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -475,7 +507,11 @@ class Editor extends Component {
                                 value={this.state.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="audioVoice">
+                            <select
+                                name="audioVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
@@ -512,7 +548,11 @@ class Editor extends Component {
                                 value={this.state.audioText}
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <select name="audioVoice">
+                            <select
+                                name="audioVoice"
+                                value={this.state.audioVoice}
+                                onChange={this.handleChange.bind(this)}
+                            >
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;

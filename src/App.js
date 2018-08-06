@@ -157,10 +157,13 @@ class App extends Component {
                                 title: '',
                                 audio: '',
                                 audioText: '',
+                                audioVoice: '',
                                 preview: '',
                                 previewText: '',
+                                previewVoice: '',
                                 prompt: '',
-                                promptText: ''
+                                promptText: '',
+                                promptVoice: ''
                             };
                         } else if (data.type === 'choice') {
                             node = new SRD.DefaultNodeModel('New Choice', 'green');
@@ -169,8 +172,10 @@ class App extends Component {
                             node.extras = {
                                 audio: '',
                                 audioText: '',
+                                audioVoice: '',
                                 prompt: '',
                                 promptText: '',
+                                promptVoice: '',
                                 choices: [],
                                 inputs: []
                             };
@@ -180,7 +185,8 @@ class App extends Component {
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
-                                audioText: ''
+                                audioText: '',
+                                audioVoice: ''
                             };
                         } else if (data.type === 'listen') {
                             node = new SRD.DefaultNodeModel('New Listen', 'yellow');
@@ -189,8 +195,10 @@ class App extends Component {
                             node.extras = {
                                 audio: '',
                                 audioText: '',
+                                audioVoice: '',
                                 prompt: '',
-                                promptText: ''
+                                promptText: '',
+                                promptVoice: ''
                             };
                         } else if (data.type === 'retry') {
                             node = new SRD.DefaultNodeModel('New Retry', 'orange');
@@ -198,14 +206,16 @@ class App extends Component {
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: '',
-                                audioText: ''
+                                audioText: '',
+                                audioVoice: ''
                             };
                         } else if (data.type === 'ending') {
                             node = new SRD.DefaultNodeModel('New Ending', 'red');
                             node.addInPort(' ');
                             node.extras = {
                                 audio: '',
-                                audioText: ''
+                                audioText: '',
+                                audioVoice: ''
                             };
                         } else if (data.type === 'comment') {
                             node = new SRD.DefaultNodeModel('New Comment', 'black');

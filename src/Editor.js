@@ -90,7 +90,8 @@ class Editor extends Component {
                     this.setState({
                         node: node
                     }, this.props.onUpdate);
-                }
+                },
+                error: () => {window.alert('Error');}
             });
         }
     }
@@ -114,7 +115,8 @@ class Editor extends Component {
                 this.setState({
                     node: node
                 }, this.props.onUpdate);
-            }
+            },
+            error: () => {window.alert('Error');}
         });
     }
 

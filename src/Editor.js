@@ -24,7 +24,7 @@ class Editor extends Component {
             type: 'GET',
             success: res => {
                 this.setState({
-                    voices: JSON.parse(res)
+                    voices: res
                 });
             },
             error: () => {window.alert('Error');}

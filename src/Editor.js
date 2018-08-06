@@ -141,37 +141,389 @@ class Editor extends Component {
                 <form onSubmit={(e) => e.preventDefault()}>
 
                     <div>
-                        <label>Label: <input type="text" name="name" value={this.state.node.name} onChange={this.handleChange.bind(this)} /></label>
+                        <label>
+                            Label:
+                            <input
+                                type="text"
+                                name="name"
+                                value={this.state.node.name}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                        </label>
                     </div>
 
                     {this.state.node.extras.type === 'story' ? <div>
-                        <label>Title: <input type="text" name="title" value={this.state.node.extras.title} onChange={this.handleChange.bind(this)} /></label>
-                        <label>Title Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio><button onClick={() => this.onClear('audio')}>&times;</button><textarea name="audioText" value={this.state.audioText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('audioText', 'audioVoice', 'audio')}>Generate</button></label>
-                        <label>Preview Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'preview')}><p>{this.state.node.extras.preview.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.preview.split('/').pop()} controls><source src={this.state.node.extras.preview} type="audio/mpeg" /></audio><button onClick={() => this.onClear('preview')}>&times;</button><textarea name="previewText" value={this.state.previewText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('previewText', 'previewVoice', 'preview')}>Generate</button></label>
-                        <label>Reprompt Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio><button onClick={() => this.onClear('prompt')}>&times;</button><textarea name="promptText" value={this.state.promptText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('promptText', 'promptVoice', 'prompt')}>Generate</button></label>
+                        <label>
+                            Title:
+                            <input
+                                type="text"
+                                name="title"
+                                value={this.state.node.extras.title}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                        </label>
+                        <label>
+                            Title Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
+                            >
+                                <p>{this.state.node.extras.audio.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.audio.split('/').pop()} controls>
+                                <source src={this.state.node.extras.audio} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <textarea
+                                name="audioText"
+                                value={this.state.audioText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="audioVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('audioText', 'audioVoice', 'audio')}
+                            >
+                                Generate
+                            </button>
+                        </label>
+                        <label>
+                            Preview Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'preview')}
+                            >
+                                <p>{this.state.node.extras.preview.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.preview.split('/').pop()} controls>
+                                <source src={this.state.node.extras.preview} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('preview')}>&times;</button>
+                            <textarea
+                                name="previewText"
+                                value={this.state.previewText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="previewVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('previewText', 'previewVoice', 'preview')}
+                            >
+                                    Generate
+                            </button>
+                        </label>
+                        <label>
+                            Reprompt Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}
+                            >
+                                <p>{this.state.node.extras.prompt.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.prompt.split('/').pop()} controls>
+                                <source src={this.state.node.extras.prompt} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('prompt')}>&times;</button>
+                            <textarea
+                                name="promptText"
+                                value={this.state.promptText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="promptVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('promptText', 'promptVoice', 'prompt')}
+                            >
+                                Generate
+                            </button>
+                        </label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'choice' ? <div>
-                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio><button onClick={() => this.onClear('audio')}>&times;</button><textarea name="audioText" value={this.state.audioText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('audioText', 'audioVoice', 'audio')}>Generate</button></label>
-                        <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio><button onClick={() => this.onClear('prompt')}>&times;</button><textarea name="promptText" value={this.state.promptText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('promptText', 'promptVoice', 'prompt')}>Generate</button></label>
-                        <ChoiceInputs choices={this.state.node.extras.choices} inputs={this.state.node.extras.inputs} onAdd={this.handleAddChoice.bind(this)} onRemove={this.handleRemoveChoice.bind(this)} onChange={this.handleChange.bind(this)} />
+                        <label>
+                            Line Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
+                            >
+                                <p>{this.state.node.extras.audio.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.audio.split('/').pop()} controls>
+                                <source src={this.state.node.extras.audio} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <textarea
+                                name="audioText"
+                                value={this.state.audioText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="audioVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('audioText', 'audioVoice', 'audio')}
+                            >
+                                Generate
+                            </button>
+                        </label>
+                        <label>
+                            Choice Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}
+                            >
+                                <p>{this.state.node.extras.prompt.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.prompt.split('/').pop()} controls>
+                                <source src={this.state.node.extras.prompt} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('prompt')}>&times;</button>
+                            <textarea
+                                name="promptText"
+                                value={this.state.promptText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="promptVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('promptText', 'promptVoice', 'prompt')}
+                            >
+                                Generate
+                            </button>
+                        </label>
+                        <ChoiceInputs
+                            choices={this.state.node.extras.choices}
+                            inputs={this.state.node.extras.inputs}
+                            onAdd={this.handleAddChoice.bind(this)}
+                            onRemove={this.handleRemoveChoice.bind(this)}
+                            onChange={this.handleChange.bind(this)}
+                        />
                     </div> : null}
 
                     {this.state.node.extras.type === 'line' ? <div>
-                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio><button onClick={() => this.onClear('audio')}>&times;</button><textarea name="audioText" value={this.state.audioText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('audioText', 'audioVoice', 'audio')}>Generate</button></label>
+                        <label>
+                            Line Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
+                            >
+                                <p>{this.state.node.extras.audio.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.audio.split('/').pop()} controls>
+                                <source src={this.state.node.extras.audio} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <textarea
+                                name="audioText"
+                                value={this.state.audioText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="audioVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('audioText', 'audioVoice', 'audio')}
+                            >
+                                Generate
+                            </button>
+                        </label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'listen' ? <div>
-                        <label>Line Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio><button onClick={() => this.onClear('audio')}>&times;</button><textarea name="audioText" value={this.state.audioText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('audioText', 'audioVoice', 'audio')}>Generate</button></label>
-                        <label>Choice Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}><p>{this.state.node.extras.prompt.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.prompt.split('/').pop()} controls><source src={this.state.node.extras.prompt} type="audio/mpeg" /></audio><button onClick={() => this.onClear('prompt')}>&times;</button><textarea name="promptText" value={this.state.promptText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('promptText', 'promptVoice', 'prompt')}>Generate</button></label>
+                        <label>
+                            Line Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
+                            >
+                                <p>{this.state.node.extras.audio.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.audio.split('/').pop()} controls>
+                                <source src={this.state.node.extras.audio} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <textarea
+                                name="audioText"
+                                value={this.state.audioText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="audioVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('audioText', 'audioVoice', 'audio')}
+                            >
+                                Generate
+                            </button>
+                        </label>
+                        <label>
+                            Choice Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}
+                            >
+                                <p>{this.state.node.extras.prompt.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.prompt.split('/').pop()} controls>
+                                <source src={this.state.node.extras.prompt} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('prompt')}>&times;</button>
+                            <textarea
+                                name="promptText"
+                                value={this.state.promptText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="promptVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('promptText', 'promptVoice', 'prompt')}
+                            >
+                                Generate
+                            </button>
+                        </label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'retry' ? <div>
-                        <label>Retry Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio><button onClick={() => this.onClear('audio')}>&times;</button><textarea name="audioText" value={this.state.audioText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('audioText', 'audioVoice', 'audio')}>Generate</button></label>
+                        <label>
+                            Retry Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
+                            >
+                                <p>{this.state.node.extras.audio.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.audio.split('/').pop()} controls>
+                                <source src={this.state.node.extras.audio} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <textarea
+                                name="audioText"
+                                value={this.state.audioText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="audioVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('audioText', 'audioVoice', 'audio')}
+                            >
+                                Generate
+                            </button>
+                        </label>
                     </div> : null}
 
                     {this.state.node.extras.type === 'ending' ? <div>
-                        <label>Ending Audio: <Dropzone className="dropzone" activeClassName="active" rejectClassName="reject" multiple={false} disableClick={true} accept="audio/*" onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}><p>{this.state.node.extras.audio.split('/').pop()}</p></Dropzone><audio key={this.state.node.extras.audio.split('/').pop()} controls><source src={this.state.node.extras.audio} type="audio/mpeg" /></audio><button onClick={() => this.onClear('audio')}>&times;</button><textarea name="audioText" value={this.state.audioText} onChange={this.handleChange.bind(this)} /><button onClick={() => this.onGenerate('audioText', 'audio')}>Generate</button></label>
+                        <label>
+                            Ending Audio:
+                            <Dropzone
+                                className="dropzone"
+                                activeClassName="active"
+                                rejectClassName="reject"
+                                multiple={false}
+                                disableClick={true}
+                                accept="audio/*"
+                                onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
+                            >
+                                <p>{this.state.node.extras.audio.split('/').pop()}</p>
+                            </Dropzone>
+                            <audio key={this.state.node.extras.audio.split('/').pop()} controls>
+                                <source src={this.state.node.extras.audio} type="audio/mpeg" />
+                            </audio>
+                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <textarea
+                                name="audioText"
+                                value={this.state.audioText}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            <select name="audioVoice">
+                                <option value="" selected disabled hidden>Choose Voice</option>
+                                {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                }) : null}
+                            </select>
+                            <button onClick={() =>
+                                this.onGenerate('audioText', 'audioVoice', 'audio')}
+                            >
+                                Generate
+                            </button>
+                        </label>
                     </div> : null}
 
                 </form>

@@ -187,7 +187,7 @@ class Editor extends Component {
                             <select name="audioVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -221,7 +221,7 @@ class Editor extends Component {
                             <select name="previewVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -255,7 +255,7 @@ class Editor extends Component {
                             <select name="promptVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -292,7 +292,7 @@ class Editor extends Component {
                             <select name="audioVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -326,7 +326,7 @@ class Editor extends Component {
                             <select name="promptVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -370,7 +370,7 @@ class Editor extends Component {
                             <select name="audioVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -407,7 +407,7 @@ class Editor extends Component {
                             <select name="audioVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -441,7 +441,7 @@ class Editor extends Component {
                             <select name="promptVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -478,7 +478,7 @@ class Editor extends Component {
                             <select name="audioVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>
@@ -515,7 +515,7 @@ class Editor extends Component {
                             <select name="audioVoice">
                                 <option value="" selected disabled hidden>Choose Voice</option>
                                 {Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                    return <option key={voice.Id} value={voice.Id}>voice.Name</option>;
+                                    return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
                             <button onClick={() =>

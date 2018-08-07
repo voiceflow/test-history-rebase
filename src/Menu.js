@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 import MenuItem from './MenuItem';
 
 class Menu extends Component {
@@ -19,7 +20,7 @@ class Menu extends Component {
                     user: res
                 });
             },
-            error: () =>
+            error: () => {
                 this.setState({
                     user: null
                 });

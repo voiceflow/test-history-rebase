@@ -33,6 +33,7 @@ class Menu extends Component {
             <div className='Menu'>
                 <div className='navbar'>
                     <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' />
+                    <p className='navigation'><a href='/admin'>Admin</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='/creator'>Creator</a></p>
                     <p className='user'>{this.state.user || 'Not logged in'}&nbsp;&nbsp;|&nbsp;&nbsp;<a href='/logout'>Log out</a></p>
                 </div>
                 <div className='sidebar'>

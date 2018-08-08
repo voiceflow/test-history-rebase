@@ -13,14 +13,38 @@ class App extends Component {
 
         var engine = new SRD.DiagramEngine();
         engine.installDefaultFactories();
-        engine.setDiagramModel(new SRD.DiagramModel());
+
+        var model = new SRD.DiagramModel();
+
+        var node = new SRD.DefaultNodeModel('New Story', 'red');
+        node.addOutPort(' ').setMaximumLinks(1);
+        node.extras = {
+            title: '',
+            audio: '',
+            audioText: '',
+            audioVoice: '',
+            preview: '',
+            previewText: '',
+            previewVoice: '',
+            prompt: '',
+            promptText: '',
+            promptVoice: ''
+        };
+        node.setLocked(true);
+        node.extras.type = 'story';
+        node.setPosition($(window).width()/3-32, $(window).height()/2-21);
+        node.setSelected();
+        model.addNode(node);
+        engine.setDiagramModel(model);
 
         this.state = {
             engine: engine,
-            selected: null,
+            selected: node,
             loading: false,
             diagrams: []
         };
+        
+        $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
     }
 
     componentDidMount() {
@@ -132,7 +156,6 @@ class App extends Component {
         return (
             <div className='App'>
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
-                    { text: 'Story', type: 'story' },
                     { text: 'Choice', type: 'choice' },
                     { text: 'Line', type: 'line' },
                     { text: 'Listen', type: 'listen' },
@@ -150,22 +173,7 @@ class App extends Component {
                             return;
                         }
                         var node = null;
-                        if (data.type === 'story') {
-                            node = new SRD.DefaultNodeModel('New Story', 'red');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                title: '',
-                                audio: '',
-                                audioText: '',
-                                audioVoice: '',
-                                preview: '',
-                                previewText: '',
-                                previewVoice: '',
-                                prompt: '',
-                                promptText: '',
-                                promptVoice: ''
-                            };
-                        } else if (data.type === 'choice') {
+                        if (data.type === 'choice') {
                             node = new SRD.DefaultNodeModel('New Choice', 'green');
                             node.addInPort(' ');
                             node.addOutPort('else').setMaximumLinks(1);
@@ -239,7 +247,7 @@ class App extends Component {
                         event.preventDefault();
                     }}
                 >
-                    <SRD.DiagramWidget diagramEngine={this.state.engine} maxNumberPointsPerLink={0} allowLooseLinks={false} />
+                    <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false} />
                 </div>
                 { this.state.selected ? <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={e => this.setState({ selected: null })} /> : null }
                 { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onClose={e => this.setState({ loading: false })} /> : null }

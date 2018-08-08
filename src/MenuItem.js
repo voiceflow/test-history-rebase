@@ -9,6 +9,7 @@ class MenuItem extends Component {
                 onDragStart={event => {
                     event.dataTransfer.setData('node', JSON.stringify(this.props.item));
                 }}
+                style={{backgroundColor: this.props.item.menuColor}}
             >
                 {this.props.item.text}
             </div>

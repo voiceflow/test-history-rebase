@@ -156,12 +156,12 @@ class App extends Component {
         return (
             <div className='App'>
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
-                    { text: 'Choice', type: 'choice' },
-                    { text: 'Line', type: 'line' },
-                    { text: 'Listen', type: 'listen' },
-                    { text: 'Retry', type: 'retry' },
-                    { text: 'Ending', type: 'ending' },
-                    { text: 'Comment', type: 'comment' }
+                    { text: 'Choice', type: 'choice', color: 'green', menuColor: 'darkgreen' },
+                    { text: 'Line', type: 'line', color: 'blue', menuColor: 'darkblue' },
+                    { text: 'Listen', type: 'listen', color: 'yellow', menuColor: '#cccc00' },
+                    { text: 'Retry', type: 'retry', color: 'orange', menuColor: 'darkorange' },
+                    { text: 'Ending', type: 'ending', color: 'red', menuColor: 'darkred' },
+                    { text: 'Comment', type: 'comment', color: 'black', menuColor: 'black' }
                 ]} />
                 <div
                     className="diagram-layer"
@@ -172,9 +172,8 @@ class App extends Component {
                         } catch (e) {
                             return;
                         }
-                        var node = null;
+                        var node = new SRD.DefaultNodeModel('New '+data.text, data.color);
                         if (data.type === 'choice') {
-                            node = new SRD.DefaultNodeModel('New Choice', 'green');
                             node.addInPort(' ');
                             node.addOutPort('else').setMaximumLinks(1);
                             node.extras = {
@@ -188,7 +187,6 @@ class App extends Component {
                                 inputs: []
                             };
                         } else if (data.type === 'line') {
-                            node = new SRD.DefaultNodeModel('New Line', 'blue');
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
@@ -197,7 +195,6 @@ class App extends Component {
                                 audioVoice: ''
                             };
                         } else if (data.type === 'listen') {
-                            node = new SRD.DefaultNodeModel('New Listen', 'yellow');
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
@@ -209,7 +206,6 @@ class App extends Component {
                                 promptVoice: ''
                             };
                         } else if (data.type === 'retry') {
-                            node = new SRD.DefaultNodeModel('New Retry', 'orange');
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
@@ -218,17 +214,12 @@ class App extends Component {
                                 audioVoice: ''
                             };
                         } else if (data.type === 'ending') {
-                            node = new SRD.DefaultNodeModel('New Ending', 'red');
                             node.addInPort(' ');
                             node.extras = {
                                 audio: '',
                                 audioText: '',
                                 audioVoice: ''
                             };
-                        } else if (data.type === 'comment') {
-                            node = new SRD.DefaultNodeModel('New Comment', 'black');
-                        } else {
-                            return;
                         }
                         node.extras.type = data.type;
                         node.addListener({ entityRemoved: this.onNodeRemoved.bind(this) });

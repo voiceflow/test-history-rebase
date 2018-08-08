@@ -30,8 +30,8 @@ class App extends Component {
             promptText: '',
             promptVoice: ''
         };
-        node.setLocked(true);
         node.extras.type = 'story';
+        node.addListener({ entityRemoved: e => {e.stopPropagation();} });
         node.setPosition($(window).width()/3-32, $(window).height()/2-21);
         node.setSelected();
         model.addNode(node);

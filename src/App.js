@@ -141,13 +141,14 @@ class App extends Component {
                 var engine = this.state.engine;
                 var model = new SRD.DiagramModel();
                 model.deSerializeDiagram(JSON.parse(diagram.data), engine);
-                let nodes = model.getNodes();
-                for (let i = 0; i < nodes.length; i++) {
+                engine.setDiagramModel(model);
+                var nodes = engine.getDiagramModel().getNodes();
+                for (var i = 0; i < nodes.length; i++) {
                     if (nodes[i].extras.type === 'story') {
+                        console.log(nodes[i]);
                         nodes[i].addListener({ entityRemoved: e => {e.stopPropagation();} });
                     }
                 }
-                engine.setDiagramModel(model);
                 this.setState({
                     engine: engine,
                     loading: false,

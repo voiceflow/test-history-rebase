@@ -143,10 +143,9 @@ class App extends Component {
                 model.deSerializeDiagram(JSON.parse(diagram.data), engine);
                 engine.setDiagramModel(model);
                 var nodes = engine.getDiagramModel().getNodes();
-                for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].extras.type === 'story') {
-                        console.log(nodes[i]);
-                        nodes[i].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                for (var key in nodes) {
+                    if (nodes[key].extras.type === 'story') {
+                        nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
                     }
                 }
                 this.setState({

@@ -178,7 +178,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.audio.split('/').pop()} controls>
                                 <source src={this.state.node.extras.audio} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('audio')}>Clear</button>
                             <textarea
                                 name="audioText"
                                 value={this.state.node.extras.audioText}
@@ -216,7 +216,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.preview.split('/').pop()} controls>
                                 <source src={this.state.node.extras.preview} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('preview')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('preview')}>Clear</button>
                             <textarea
                                 name="previewText"
                                 value={this.state.node.extras.previewText}
@@ -254,7 +254,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.prompt.split('/').pop()} controls>
                                 <source src={this.state.node.extras.prompt} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('prompt')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('prompt')}>Clear</button>
                             <textarea
                                 name="promptText"
                                 value={this.state.node.extras.promptText}
@@ -295,7 +295,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.audio.split('/').pop()} controls>
                                 <source src={this.state.node.extras.audio} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('audio')}>Clear</button>
                             <textarea
                                 name="audioText"
                                 value={this.state.node.extras.audioText}
@@ -333,7 +333,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.prompt.split('/').pop()} controls>
                                 <source src={this.state.node.extras.prompt} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('prompt')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('prompt')}>Clear</button>
                             <textarea
                                 name="promptText"
                                 value={this.state.node.extras.promptText}
@@ -381,7 +381,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.audio.split('/').pop()} controls>
                                 <source src={this.state.node.extras.audio} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('audio')}>Clear</button>
                             <textarea
                                 name="audioText"
                                 value={this.state.node.extras.audioText}
@@ -422,7 +422,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.audio.split('/').pop()} controls>
                                 <source src={this.state.node.extras.audio} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('audio')}>Clear</button>
                             <textarea
                                 name="audioText"
                                 value={this.state.node.extras.audioText}
@@ -460,7 +460,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.prompt.split('/').pop()} controls>
                                 <source src={this.state.node.extras.prompt} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('prompt')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('prompt')}>Clear</button>
                             <textarea
                                 name="promptText"
                                 value={this.state.node.extras.promptText}
@@ -501,7 +501,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.audio.split('/').pop()} controls>
                                 <source src={this.state.node.extras.audio} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('audio')}>Clear</button>
                             <textarea
                                 name="audioText"
                                 value={this.state.node.extras.audioText}
@@ -542,7 +542,7 @@ class Editor extends Component {
                             <audio key={this.state.node.extras.audio.split('/').pop()} controls>
                                 <source src={this.state.node.extras.audio} type="audio/mpeg" />
                             </audio>
-                            <button onClick={() => this.onClear('audio')}>&times;</button>
+                            <button className="clear" onClick={() => this.onClear('audio')}>Clear</button>
                             <textarea
                                 name="audioText"
                                 value={this.state.node.extras.audioText}

@@ -115,6 +115,23 @@ class Editor extends Component {
         }, this.props.onUpdate);
     }
 
+    onEffect(name, effect) {
+        var textArea = $("[name='"+name+"']")[0];
+        var start = textArea.selectionStart;
+        var end = textArea.selectionEnd;
+        var text = this.state.node.extras[name];
+
+        var result = null;
+
+        if (effect === 'break') {
+            result = text.substring(0, start)+text.substring(start, end)+'<break />'+text.substring(end, text.length);
+        }
+
+        var state = {};
+        state[name] = result;
+        this.setState(state);
+    }
+
     onGenerate(text, voice, audio) {
         let node = this.state.node;
         $.ajax({
@@ -194,6 +211,7 @@ class Editor extends Component {
                                     return <option key={voice.Id} value={voice.Id}>{voice.Name}</option>;
                                 }) : null}
                             </select>
+                            <button onClick={() => this.onEffect('audioText', 'break')}>Break</button>
                             <button onClick={() =>
                                 this.onGenerate('audioText', 'audioVoice', 'audio')}
                             >

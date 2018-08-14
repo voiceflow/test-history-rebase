@@ -1,0 +1,173 @@
+.App {
+    width: 100vw;
+    height: 100vh;
+}
+
+.App .Menu .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    height: 60px;
+    color: #ffffff;
+    background-color: #5a5bff;
+    text-align: center;
+}
+
+.App .Menu .navbar .logo {
+    float: left;
+    margin: 0;
+    height: 30px;
+    padding: 15px;
+}
+
+.App .Menu .navbar .navigation {
+    float: left;
+    margin: 0;
+    line-height: 36px;
+    padding: 12px;
+}
+
+.App .Menu .navbar .navigation a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.App .Menu .navbar .user {
+    float: right;
+    margin: 0;
+    line-height: 36px;
+    padding: 12px;
+}
+
+.App .Menu .navbar .user a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.App .Menu .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100px;
+    height: 100%;
+    padding-top: 60px;
+    color: #333333;
+    background-color: #eeeeee;
+    opacity: 0.9;
+    text-align: center;
+}
+
+.App .Menu .sidebar button {
+    width: 75px;
+    height: 25px;
+    margin-top: 10px;
+}
+
+.App .Menu .sidebar .MenuItem {
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    margin: 15px 10px;
+    color: white;
+    border-radius: 5px;
+}
+
+.App .diagram-layer {
+    width: 100%;
+    height: 100%;
+}
+
+.App .srd-diagram {
+    width: 100%;
+    height: 100%;
+    background-color: #333333;
+}
+
+.App .Editor {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    width: 400px;
+    height: 100%;
+    padding: 65px 5px 5px 5px;
+    color: #333333;
+    background-color: #eeeeee;
+    opacity: 0.9;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.App .Editor label {
+    display: inline-block;
+}
+
+.App .Loader {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 500px;
+    height: 500px;
+    color: #333333;
+    background-color: #dddddd;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.dropzone {
+    width: 100%;
+    border: 1px solid #333333;
+    border-radius: 5px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    min-height: 40px;
+}
+
+.dropzone.active {
+    border-color: darkgreen;
+}
+
+.dropzone.reject {
+    border-color: darkred;
+}
+
+.dropzone p {
+    margin: 0 5px;
+    line-height: 30px;
+    white-space: nowrap;
+}
+
+audio {
+    width: 85%;
+}
+
+.clear {
+    width: 15%;
+}
+
+textarea {
+    width: 100%;
+    height: 50px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+label {
+    margin: 10px 0;
+}

@@ -27,7 +27,7 @@ class Editor extends Component {
                     voices: res
                 });
             },
-            error: () => {window.alert('Error');}
+            error: () => {window.alert('Error11');}
         });
     }
 
@@ -102,7 +102,7 @@ class Editor extends Component {
                         node: node
                     }, this.props.onUpdate);
                 },
-                error: () => {window.alert('Error');}
+                error: () => {window.alert('Error22');}
             });
         }
     }
@@ -147,7 +147,7 @@ class Editor extends Component {
                     node: node
                 }, this.props.onUpdate);
             },
-            error: () => {window.alert('Error');}
+            error: () => {window.alert('Error33');}
         });
     }
 

@@ -1,0 +1,54 @@
+const client = require('@sendgrid/client');
+client.setApiKey('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');
+
+const isString = str => typeof str === 'string' || str instanceof String;
+
+const send = (email, name, template, cb) => {
+    if (!isString(email) || !isString(template)) {
+        cb(null);
+
+        return;
+    } else if (!isString(name)) {
+        name = null;
+    }
+    let data = {
+        'template_id': template,
+        'from': {
+            'email': 'braden@getstoryflow.com',
+            'name': 'Braden from Storyflow'
+        },
+        'personalizations': [
+            {
+                'to': [
+                    {
+                        'email': email,
+                        'name': name
+                    }
+                ]
+            }
+        ],
+        'reply_to': {
+            'email': 'braden@getstoryflow.com',
+            'name': 'Braden from Storyflow'
+        }
+    };
+    request = {
+        body: data,
+        method: 'POST',
+        url: '/v3/mail/send'
+    };
+    client.request(request)
+        .then(([
+            response,
+            body
+        ]) => {
+            cb(response);
+        });
+};
+
+const sendSync = (email, name, template) => new Promise(resolve => {
+    send(email, name, template, resolve);
+});
+
+exports.send = send;
+exports.sendSync = sendSync;

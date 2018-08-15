@@ -24,7 +24,7 @@ class Login extends Component {
   }
 
   submit() {
-    AuthenticationService.login(this.state.name, this.state.code, (error) => {
+    AuthenticationService.login(this.state.name, this.state.password, (error) => {
       if(error){
         this.setState({error: true});
         if(this.state.timeout){
@@ -34,7 +34,11 @@ class Login extends Component {
           this.setState({error: false});
         }.bind(this), 5000)})
       }else{
-        this.props.history.push('/');
+        AuthenticationService.check((error) => {
+          if(!error){
+            this.props.history.push('/');
+          }
+        })
       }
     });
   }

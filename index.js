@@ -106,14 +106,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/admin', [
-    ensureLoggedIn(),
-    express.static(path.join(__dirname, 'admin'))
-]);
-app.use('/creator', [
-    ensureLoggedIn(),
-    express.static(path.join(__dirname, 'creator'))
-]);
+// app.use('/admin', [
+//     ensureLoggedIn(),
+//     express.static(path.join(__dirname, 'admin'))
+// ]);
+// app.use('/creator', [
+//     ensureLoggedIn(),
+//     express.static(path.join(__dirname, 'creator'))
+// ]);
 
 app.get('/', (req, res) => res.redirect('/creator'));
 
@@ -128,18 +128,18 @@ app.get('/voices', ensureLoggedIn(), Audio.getVoices);
 app.post('/generate', ensureLoggedIn(), Audio.generate);
 app.post('/audio', ensureLoggedIn(), upload.any(), Audio.upload);
 
-app.get('/register', (req, res) => {
-    res.redirect('https://getstoryflow.com/signup');
-});
-app.get('/login', (req, res) => {
-    res.redirect('https://getstoryflow.com/login');
-});
+// app.get('/register', (req, res) => {
+//     res.redirect('https://getstoryflow.com/signup');
+// });
+// app.get('/login', (req, res) => {
+//     res.redirect('https://getstoryflow.com/login');
+// });
 app.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/login');
 });
 app.get('/me', (req, res) => {
-    res.send(req.user ? req.user.email : null);
+    req.user ? res.send(req.user.email) : res.sendStatus(403);
 });
 app.post('/register', ensureLoggedOut(), (req, res) => {
     let name = req.body.name;
@@ -197,6 +197,11 @@ app.post('/login', passport.authenticate('local', {
     successReturnToOrRedirect: '/',
     faliureRedirect: '/login'
 }));
+
+// Handle React routing, return all requests to React app
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'creator', 'index.html'));
+});
 
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(name + ' running on port ' + port));

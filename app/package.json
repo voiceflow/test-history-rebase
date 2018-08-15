@@ -4,12 +4,17 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.1",
     "jquery": "^3.3.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "react-dropzone": "^4.2.13",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
-    "storm-react-diagrams": "^5.2.1"
+    "reactstrap": "^6.3.1",
+    "storm-react-diagrams": "^5.2.1",
+    "universal-cookie": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -18,5 +23,6 @@
     "eject": "react-scripts eject",
     "postbuild": "mv build ../creator"
   },
-  "proxy": "http://localhost:8080/"
+  "proxy": "http://localhost:8080/",
+  "devDependencies": {}
 }

@@ -23,5 +23,17 @@ export default {
 		if(history){
 			history.push('/login');
 		}
+	},
+	login: (username, password, cb) => {
+		axios.post('/login', {
+			username: username,
+			password: password
+		})
+		.then((response) => {
+			cb(null);
+		})
+		.catch((error) => {
+			cb(error);
+		});
 	}
 }

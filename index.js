@@ -193,10 +193,7 @@ app.post('/register', ensureLoggedOut(), (req, res) => {
         }
     });
 });
-app.post('/login', passport.authenticate('local', {
-    successReturnToOrRedirect: '/',
-    faliureRedirect: '/login'
-}));
+app.post('/login', passport.authenticate('local', {}));
 
 // Handle React routing, return all requests to React app
 app.get('*', function(req, res) {

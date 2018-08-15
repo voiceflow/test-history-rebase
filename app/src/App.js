@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import './App.css';
-import auth from './services/Authentication'
+import AuthenticationService from './services/Authentication'
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +12,7 @@ import { StoryBoard, Login } from './views/pages';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
-    !auth.isAuth() ? (
+    !AuthenticationService.isAuth() ? (
       <Redirect to={{
         pathname: '/login',
         state: { from: props.location }

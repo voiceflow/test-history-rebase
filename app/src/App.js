@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import './App.css';
 import AuthenticationService from './services/Authentication'
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
+import './App.css';
 
 // Pages
 import StoryBoard from './views/pages/StoryBoard/StoryBoard';
 import Account from './views/pages/Account/Account';
+import Admin from './views/pages/Admin/Admin';
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ component: Component, name: name, ...rest }) => (
   <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (
       <Redirect to={{
@@ -19,7 +20,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         state: { from: props.location }
       }}/>
     ) : (
-      <Component {...props}/>
+      <Component {...props} name={name} />
     )
   )}/>
 )
@@ -35,6 +36,8 @@ class App extends Component {
         <Switch>
           <Route exact path="/login" name="Login" component={Account} />
           <Route exact path="/signup" name="SignUp" component={Account} />
+          <PrivateRoute path="/storyboard" name="StoryBoard" component={StoryBoard} />
+          <PrivateRoute path="/admin" name="Admin" component={Admin} />
           <PrivateRoute path="/" name="StoryBoard" component={StoryBoard} />
         </Switch>
       </BrowserRouter>

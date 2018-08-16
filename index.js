@@ -76,7 +76,7 @@ app.use((req, res, next) => {
                 } else if (!secret) {
                     next();
                 } else {
-                    redisClient.expire(userHash, config.expireTime, (err, reply) => {});
+                    redisClient.expire(userHash, config.expire_time);
                     jwt.verify(token, secret, (err, decoded) => {
                         if (err) {
                             next();

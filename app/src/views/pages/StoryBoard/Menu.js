@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
-import AuthenticationService from './../../../services/Authentication';
 import MenuItem from './MenuItem';
 
 class Menu extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            user: null
-        };
-    }
-
-    componentDidMount() {
-        AuthenticationService.check((err, res) => {
-            this.setState({ user: res });
-        });
     }
 
     render() {

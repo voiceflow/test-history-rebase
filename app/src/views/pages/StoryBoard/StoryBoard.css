@@ -66,7 +66,7 @@
 .App .srd-diagram {
     width: 100%;
     height: 100%;
-    background-color: #333333;
+    background-color: #f0f1f5;
 }
 
 .App .Editor {
@@ -76,7 +76,7 @@
     z-index: 5;
     width: 400px;
     height: 100%;
-    padding: 65px 5px 5px 5px;
+    padding: 65px 20px;
     color: #333333;
     background-color: #eeeeee;
     opacity: 0.9;
@@ -86,6 +86,7 @@
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+    overflow: scroll;
 }
 
 .App .Editor label {
@@ -151,4 +152,59 @@ textarea {
 
 label {
     margin: 10px 0;
+}
+
+.srd-default-node {
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border: 1px solid #CCC;
+    /*border-color: #c5c6c9 #bfc0c4 #b0b1b5 !important;*/
+    overflow: hidden;
+    color: #777;
+    padding: 10px 0 10px 0;
+    font-family: inherit;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+}
+
+.srd-default-node__ports {
+    background: transparent;
+}
+
+.srd-default-port--out > .name {
+    margin-right: 5px;
+}
+
+.srd-port {
+    background: rgba(0,0,0,0.1);
+    width: 20px;
+    height: 20px;
+}
+
+.srd-default-port--in > .srd-port {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.srd-default-port--out > .srd-port {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.srd-default-node__name {
+    padding: 0 30px;
+}
+
+.srd-default-node__title {
+    background-color: transparent;
+    /*font-weight: bold;*/
+    padding-bottom: 5px;
+    color: #555;
+}
+
+.srd-node--selected>* {
+    border-color: #80bdff !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25)
 }

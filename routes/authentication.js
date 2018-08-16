@@ -31,7 +31,7 @@ module.exports = (router, docClient, redisClient) => {
 	            user: user
           	}, secret);
 	        redisClient.set([userHash, secret], function (err, response) {
-	        	redisClient.expire(userHash, config.expireTime, (err, reply) => {});
+	        	redisClient.expire(userHash, config.expire_time);
 		        if (err) {
 		            cb(null);
 		        } else {
@@ -45,7 +45,7 @@ module.exports = (router, docClient, redisClient) => {
 	}
 
 	router.get('/session', (req, res) => {
-	    req.user ? res.send(req.user.email) : res.sendStatus(403);
+	    req.user ? res.send(req.user.user) : res.sendStatus(403);
 	});
 
 	router.put('/session', (req, res) => {
@@ -80,7 +80,7 @@ module.exports = (router, docClient, redisClient) => {
 	});
 
 	router.delete('/session', (req, res) => {
-	    const userHash = req.cookies.auth.substring(0, 16);
+	    let userHash = req.cookies.auth.substring(0, 16);
 	    redisClient.del(userHash);
 	    res.sendStatus(200);
 	});

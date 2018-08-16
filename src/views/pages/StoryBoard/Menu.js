@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+import AuthenticationService from './../../../services/Authentication';
 import MenuItem from './MenuItem';
 
 class Menu extends Component {
@@ -12,30 +12,14 @@ class Menu extends Component {
     }
 
     componentDidMount() {
-        $.ajax({
-            url: '/me',
-            type: 'GET',
-            success: res => {
-                this.setState({
-                    user: res
-                });
-            },
-            error: () => {
-                this.setState({
-                    user: null
-                });
-            }
+        AuthenticationService.check((err, res) => {
+            this.setState({ user: res });
         });
     }
 
     render() {
         return (
             <div className='Menu'>
-                <div className='navbar'>
-                    <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' />
-                    <p className='navigation'><a href='/admin'>Admin</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='/creator'>Creator</a></p>
-                    <p className='user'>{this.state.user || 'Not logged in'}&nbsp;&nbsp;|&nbsp;&nbsp;<a href='/logout'>Log out</a></p>
-                </div>
                 <div className='sidebar'>
                     <button onClick={this.props.onSave}>Save</button>
                     <button onClick={this.props.onLoad}>Load</button>

@@ -8,7 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
 
 // Pages
-import { StoryBoard, Login } from './views/pages';
+import StoryBoard from './views/pages/StoryBoard/StoryBoard';
+import Account from './views/pages/Account/Account';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -32,8 +33,9 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/login" name="Login Page" component={Login} />
-          <PrivateRoute path="/" name="StoryBoard Page" component={StoryBoard} />
+          <Route exact path="/login" name="Login" component={Account} />
+          <Route exact path="/signup" name="SignUp" component={Account} />
+          <PrivateRoute path="/" name="StoryBoard" component={StoryBoard} />
         </Switch>
       </BrowserRouter>
     );

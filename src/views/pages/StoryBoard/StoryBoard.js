@@ -5,6 +5,7 @@ import Menu from './Menu';
 import Editor from './Editor';
 import Loader from './Loader';
 import './StoryBoard.css';
+import NavBar from './../../components/NavBar/NavBar'
 import 'storm-react-diagrams/dist/style.min.css';
 
 class StoryBoard extends Component {
@@ -161,6 +162,7 @@ class StoryBoard extends Component {
     render() {
         return (
             <div className='App'>
+                <NavBar />
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
                     { text: 'Choice', type: 'choice', color: 'green', menuColor: 'darkgreen' },
                     { text: 'Line', type: 'line', color: 'blue', menuColor: 'darkblue' },

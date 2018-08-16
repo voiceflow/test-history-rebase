@@ -20,11 +20,19 @@ export default {
 	    });
 	},
 	logout: (history) => {
-		axios.delete('/session');
-		cookies.remove('auth');
-		if(history){
-			history.push('/');
-		}
+		axios.delete('/session')
+		.then((response) => {
+			cookies.remove('auth');
+			if(history){
+				history.push('/');
+			}
+		})
+		.catch((error) => {
+			cookies.remove('auth');
+			if(history){
+				history.push('/');
+			}
+		});
 	},
 	signup: (user, cb) => {
 	    axios.put('/user', user)

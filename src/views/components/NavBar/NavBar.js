@@ -8,6 +8,7 @@ import {
   NavItem,
   NavLink,
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 import './NavBar.css';
 import AuthenticationService from './../../../services/Authentication';
@@ -21,8 +22,17 @@ class NavBar extends Component {
     this.logout = this.logout.bind(this);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
+      tabs: ['StoryBoard', 'Admin'],
+      email: null
     };
+  }
+
+  componentDidMount() {
+      AuthenticationService.check((err, res) => {
+          console.log(res);
+          this.setState({ email: res });
+      });
   }
 
   handleChange = event => {
@@ -52,15 +62,32 @@ class NavBar extends Component {
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
+              <Nav className="mr-auto" navbar>
+                {this.state.tabs.map(function(tab, i){
+                    if(this.props.name === tab){
+                      return (
+                        <NavItem active key={i}>
+                          <NavLink>{tab}</NavLink>
+                        </NavItem>)
+                    }else{
+                      return (
+                        <NavItem key={i}>
+                          <Link to={"/" + tab} className="nav-link">{tab}</Link>
+                        </NavItem>)
+                    }
+                }.bind(this))}
+              </Nav>
               <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <NavLink>{this.state.email}</NavLink>
+                </NavItem>
                 <NavItem>
                   <NavLink onClick={this.logout}>Logout</NavLink>
                 </NavItem>
               </Nav>
             </Collapse>
           </Navbar>
-          <div className="padding">
-          </div>
+          {this.props.padding ? (<div className="padding"></div>) : null}
         </div>
     );
   }

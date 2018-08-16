@@ -4,9 +4,9 @@ import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
 import Loader from './Loader';
-import './StoryBoard.css';
 import NavBar from './../../components/NavBar/NavBar'
 import 'storm-react-diagrams/dist/style.min.css';
+import './StoryBoard.css';
 
 class StoryBoard extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class StoryBoard extends Component {
 
         var model = new SRD.DiagramModel();
 
-        var node = new SRD.DefaultNodeModel('New Story', 'red');
+        var node = new SRD.DefaultNodeModel('New Story', 'white');
         node.addOutPort(' ').setMaximumLinks(1);
         node.extras = {
             title: '',
@@ -162,14 +162,14 @@ class StoryBoard extends Component {
     render() {
         return (
             <div className='App'>
-                <NavBar />
+                <NavBar name={this.props.name} history={this.props.history}/>
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
-                    { text: 'Choice', type: 'choice', color: 'green', menuColor: 'darkgreen' },
-                    { text: 'Line', type: 'line', color: 'blue', menuColor: 'darkblue' },
-                    { text: 'Listen', type: 'listen', color: 'yellow', menuColor: '#cccc00' },
-                    { text: 'Retry', type: 'retry', color: 'orange', menuColor: 'darkorange' },
-                    { text: 'Ending', type: 'ending', color: 'red', menuColor: 'darkred' },
-                    { text: 'Comment', type: 'comment', color: 'black', menuColor: 'black' }
+                    { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
+                    { text: 'Line', type: 'line', color: '#E1F5FE', menuColor: '#29B6F6' },
+                    { text: 'Listen', type: 'listen', color: '#FFFDE7', menuColor: '#FFEE58' },
+                    { text: 'Retry', type: 'retry', color: '#FFF3E0', menuColor: '#FFA726' },
+                    { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
+                    { text: 'Comment', type: 'comment', color: '#FAFAFA', menuColor: '#BDBDBD' }
                 ]} />
                 <div
                     className="diagram-layer"

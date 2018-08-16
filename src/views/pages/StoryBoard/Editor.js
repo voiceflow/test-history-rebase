@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import ChoiceInputs from './ChoiceInputs';
 import Dropzone from 'react-dropzone';
+import {
+  InputGroup,
+  Input,
+  InputGroupAddon
+} from 'reactstrap';
 
 class Editor extends Component {
     constructor(props) {
@@ -154,31 +159,30 @@ class Editor extends Component {
     render() {
         return (
             <div className='Editor' key={this.state.node.id}>
-                <button onClick={this.props.onClose}>&times;</button>
+                <button className="close" onClick={this.props.onClose}>&times;</button>
                 <form onSubmit={(e) => e.preventDefault()}>
-
                     <div>
-                        <label>
-                            Label:
-                            <input
+                        <InputGroup>
+                            <InputGroupAddon addonType="prepend">Label</InputGroupAddon>
+                            <Input placeholder="Label" 
                                 type="text"
                                 name="name"
                                 value={this.state.node.name}
                                 onChange={this.handleChange.bind(this)}
                             />
-                        </label>
+                        </InputGroup>
                     </div>
 
                     {this.state.node.extras.type === 'story' ? <div>
-                        <label>
-                            Title:
-                            <input
+                        <InputGroup>
+                            <InputGroupAddon addonType="prepend">Title</InputGroupAddon>
+                            <Input placeholder="Label" 
                                 type="text"
                                 name="title"
                                 value={this.state.node.extras.title}
                                 onChange={this.handleChange.bind(this)}
                             />
-                        </label>
+                        </InputGroup>
                         <label>
                             Title Audio:
                             <Dropzone

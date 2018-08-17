@@ -12,7 +12,7 @@ import StoryBoard from './views/pages/StoryBoard/StoryBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
 
-const PrivateRoute = ({ component: Component, name: name, ...rest }) => (
+const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (
       <Redirect to={{
@@ -20,7 +20,7 @@ const PrivateRoute = ({ component: Component, name: name, ...rest }) => (
         state: { from: props.location }
       }}/>
     ) : (
-      <Component {...props} name={name} />
+      <Component {...props} name={Name} />
     )
   )}/>
 )

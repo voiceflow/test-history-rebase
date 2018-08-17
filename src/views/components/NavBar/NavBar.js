@@ -23,7 +23,10 @@ class NavBar extends Component {
 
     this.state = {
       isOpen: false,
-      tabs: ['StoryBoard', 'Admin'],
+      tabs: [
+        {link: 'StoryBoard', 'text': 'StoryBoard <i class="fas fa-edit"></i>'}, 
+        {link: 'Admin', text: 'Admin <i class="fas fa-columns"></i>'}
+      ],
       email: null
     };
   }
@@ -57,22 +60,22 @@ class NavBar extends Component {
           <Navbar dark expand="md" className="fixed-top">
             <NavbarBrand href="/">
               <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
-                height="40"
+                height="30"
               />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="mr-auto" navbar>
                 {this.state.tabs.map(function(tab, i){
-                    if(this.props.name === tab){
+                    if(this.props.name === tab.link){
                       return (
                         <NavItem active key={i}>
-                          <NavLink>{tab}</NavLink>
+                          <NavLink dangerouslySetInnerHTML={{__html: tab.text}}></NavLink>
                         </NavItem>)
                     }else{
                       return (
                         <NavItem key={i}>
-                          <Link to={"/" + tab} className="nav-link">{tab}</Link>
+                          <Link to={"/" + tab.link} className="nav-link" dangerouslySetInnerHTML={{__html: tab.text}}></Link>
                         </NavItem>)
                     }
                 }.bind(this))}

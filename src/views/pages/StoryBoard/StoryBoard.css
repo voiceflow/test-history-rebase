@@ -3,6 +3,50 @@
     height: 100vh;
 }
 
+.TitleBar{
+    top: 58px;
+    width: 100%;
+    position: absolute;
+    z-index: 8;
+    display: flex;
+    background-color: #fff;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border-bottom: 1px solid #DDD;
+}
+.TitleBar button.dropdown-toggle{
+    width: 100px;
+    border-radius: 0;
+}
+
+.TitleBar .dropdown-menu {
+    /*transform: translate3d(0px, 50px, 0px) !important;*/
+    border-radius: 0;
+    margin-left: -5px;
+    margin-top: 0px;
+}
+
+.TitleBar input {
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    margin-right: 400px;
+    margin-left: 0px;
+    padding: 7px 20px 7px 20px;
+    transition: background-color .4s ease;
+}
+
+.TitleBar input:focus {
+    outline: 0;
+    background-color: #EFEFEF;
+}
+
+.TitleBar input::placeholder {
+    color: #CCC;
+}
+
 .App .Menu .navbar .navigation {
     float: left;
     margin: 0;
@@ -41,6 +85,9 @@
     background-color: #eeeeee;
     opacity: 0.9;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .App .Menu .sidebar button {
@@ -66,20 +113,20 @@
 .App .srd-diagram {
     width: 100%;
     height: 100%;
-    background-color: #f0f1f5;
+    background-color: #d9dbde;
 }
 
 .App .Editor {
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 5;
+    z-index: 6;
     width: 400px;
     height: 100%;
-    padding: 65px 20px;
+    padding: 115px 25px 65px 25px;
     color: #333333;
-    background-color: #eeeeee;
-    opacity: 0.9;
+    background-color: #fff;
+    /*opacity: 0.9;*/
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -87,6 +134,28 @@
 	-ms-user-select: none;
 	user-select: none;
     overflow: scroll;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border-right: 1px solid #AAA;
+    -webkit-transform: translateX(400px);
+    -moz-transform: translateX(400px);
+    -ms-transform: translateX(400px);
+    -o-transform: translateX(400px);
+    transform: translateX(400px);
+    -webkit-transition: -webkit-transform .4s;
+    -moz-transition: -moz-transform .4s;
+    transition: transform .4s;
+    /* smooth the scrolling on touch devices - webkit browsers */
+    -webkit-overflow-scrolling: touch;
+}
+
+.App .Editor.open {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
 }
 
 .App .Editor label {
@@ -111,21 +180,86 @@
 	user-select: none;
 }
 
-.dropzone {
-    width: 100%;
-    border: 1px solid #333333;
+.controls label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.controls hr {
+    margin-bottom: 5px;
+    border-top: 2px solid #DDD;
+}
+
+/*.controls label>.button {
+    font-weight: normal;
+    padding: 1px 5px;
+    color: #AAA;
     border-radius: 5px;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    font-size: 13px;
+    margin: 0 2px;
+}
+
+.controls label>.button.active {
+    font-weight: normal;
+    padding: 1px 5px;
+    color: #FFF;
+    background-color: #007bff;
+}*/
+
+.dropzone, .audio-box {
+    width: 100%;
+    overflow: visible;
     min-height: 40px;
+    transition: all .2s ease-in-out;
+    height: 112px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 10px;
+    position: relative;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border: 1px solid #DDD;
+    border-radius: 5px;
+}
+
+.audio-box>button{
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    border-radius: 0;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.audio-box>div{
+    margin-bottom: 10px;
+}
+
+.dropzone.active, .dropzone:hover {
+    transform: scale(1.01);
+    opacity: 0.8;
 }
 
 .dropzone.active {
-    border-color: darkgreen;
+    border-color: #28a745!important;
 }
 
 .dropzone.reject {
-    border-color: darkred;
+    border-color: #dc3545!important;
+    background-color: #FBE9E7;
+}
+
+.dropzone .rejected-file {
+    display: none;
+}
+
+.dropzone.reject .prompt{
+    display: none;
+}
+
+.dropzone.reject .rejected-file {
+    display: block;
 }
 
 .dropzone p {
@@ -134,20 +268,68 @@
     white-space: nowrap;
 }
 
-audio {
-    width: 85%;
+.subtitle {
+    display: block;
+    cursor: pointer;
+    margin: 0;
+    color: #999;
+}
+
+.prompt {
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #BBB;
+}
+
+.prompt b {
+    color: #777;
 }
 
 .clear {
     width: 15%;
 }
 
+.text-to-voice{
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-top: 10px;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+}
+
+.textarea-collapse {
+    margin-bottom: 5px;
+}
+
 textarea {
     width: 100%;
-    height: 50px;
+    border-radius: 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    resize: none;
+    border: none;
+    padding: 2px 0;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+textarea::placeholder{
+    color: #CCC;
+}
+
+.select-box{
+    flex: 1;
+}
+
+.select-box>div{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 label {
@@ -162,7 +344,7 @@ label {
     /*border-color: #c5c6c9 #bfc0c4 #b0b1b5 !important;*/
     overflow: hidden;
     color: #777;
-    padding: 10px 0 10px 0;
+    padding: 7px 0 10px 0;
     font-family: inherit;
     /*display: flex;*/
     /*flex-direction: row;*/
@@ -174,6 +356,7 @@ label {
 
 .srd-default-port--out > .name {
     margin-right: 5px;
+    font-size: 14px;
 }
 
 .srd-port {
@@ -198,8 +381,9 @@ label {
 
 .srd-default-node__title {
     background-color: transparent;
-    /*font-weight: bold;*/
+    font-weight: bold;
     padding-bottom: 5px;
+    font-size: 14px;
     color: #555;
 }
 
@@ -208,3 +392,127 @@ label {
     outline: 0;
     box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25)
 }
+
+button.close{
+    float: none;
+    display: block;
+}
+
+.top {
+    margin: 10px 0 10px 0;
+}
+
+.property{
+    display: flex;
+    justify-content: space-between;
+}
+
+#label-label{
+    color: #BBB;
+    font-size: 14px;
+    margin: 0;
+    display: block;
+}
+
+#label {
+    border: none;
+    /*margin-left: 10px;*/
+    flex-grow: 1;
+    background-color: transparent;
+    border-bottom: 3px dashed #AAA;
+    font-size: 20px;
+    /*line-height: 24px;*/
+    color: #555;
+    width: 100%;
+    transition: border-color .4s ease;
+}
+
+#label::placeholder {
+    color: #CCC;
+}
+
+#label:focus{
+    outline: 0;
+    box-shadow: 0;
+    border-color: #007bff;
+}
+
+.block {
+    padding: 1px 8px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+}
+
+.block.story {
+    border: 1px solid #DDD;
+    background-color: #fff;
+    color: #616161;
+}
+
+.block.listen {
+    border: 1px solid #FFF59D;
+    background-color: #FFF59D;
+    color: #F57F17;
+}
+
+.block.choice {
+    border: 1px solid #C8E6C9;
+    background-color: #C8E6C9;
+    color: #1B5E20;
+}
+
+.block.retry {
+    border: 1px solid #FFCC80;
+    background-color: #FFCC80;
+    color: #E65100;
+}
+
+.block.line {
+    border: 1px solid #B3E5FC;
+    background-color: #B3E5FC;
+    color: #01579B;
+}
+
+.block.ending {
+    border: 1px solid #FFAB91;
+    background-color: #FFAB91;
+    color: #BF360C;
+}
+
+.block.comment {
+    border: 1px solid #EEEEEE;
+    background-color: #EEEEEE;
+    color: #212121;
+}
+
+.choice-block {
+    width: 100%;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+}
+
+.choice-title {
+    display: flex;
+    width: 100%;
+}
+
+.choice-title span {
+    padding: 5px;
+    font-weight: bold;
+}
+
+.choice-title input{
+    flex: 1;
+    border: none;
+}
+
+.choice-title input:focus{
+    outline: none;
+}
+
+

@@ -4,9 +4,10 @@ import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
 import Loader from './Loader';
-import NavBar from './../../components/NavBar/NavBar'
+import NavBar from './../../components/NavBar/NavBar';
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
+import TitleBar from './TitleBar';
 
 class StoryBoard extends Component {
     constructor(props) {
@@ -41,21 +42,32 @@ class StoryBoard extends Component {
         this.state = {
             engine: engine,
             selected: node,
+            open: true,
             loading: false,
-            diagrams: []
+            diagrams: [],
+            story: node
         };
         
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
+    }
+
+    handleUpdateTitle(title) {
+        let node = this.state.story;
+        node.extras.title = title;
+        this.setState({story: node});
     }
 
     componentDidMount() {
         $('.srd-node-layer').click(() => {
             var engine = this.state.engine;
             var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
-            this.setState({
-                engine: engine,
-                selected: node
-            }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
+            if(node){
+                this.setState({
+                    engine: engine,
+                    selected: node,
+                    open: true,
+                }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
+            }
         });
 
         $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
@@ -72,7 +84,8 @@ class StoryBoard extends Component {
     onNodeRemoved(e) {
         if (this.state.selected && e.entity.getID() === this.state.selected.getID()) {
             this.setState({
-                selected: null
+                selected: null,
+                open: false
             });
         }
     }
@@ -83,12 +96,13 @@ class StoryBoard extends Component {
             data: JSON.stringify(data),
             id: data.id
         }
-        for (var i = 0; i < data.nodes.length; i++) {
-            if (data.nodes[i].extras.type === 'story') {
-                diagram.title = data.nodes[i].extras.title;
-                break;
-            }
-        }
+        diagram.title = this.state.story.extras.title;
+        // for (var i = 0; i < data.nodes.length; i++) {
+        //     if (data.nodes[i].extras.type === 'story') {
+        //         diagram.title = data.nodes[i].extras.title;
+        //         break;
+        //     }
+        // }
         $.ajax({
             url: '/diagrams',
             type: 'POST',
@@ -166,11 +180,12 @@ class StoryBoard extends Component {
                 <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
                     { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'line', color: '#E1F5FE', menuColor: '#29B6F6' },
-                    { text: 'Listen', type: 'listen', color: '#FFFDE7', menuColor: '#FFEE58' },
+                    { text: 'Listen', type: 'listen', color: '#FFFDE7', menuColor: '#FBC02D' },
                     { text: 'Retry', type: 'retry', color: '#FFF3E0', menuColor: '#FFA726' },
                     { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
-                    { text: 'Comment', type: 'comment', color: '#FAFAFA', menuColor: '#BDBDBD' }
+                    { text: 'Comment', type: 'comment', color: 'rgba(255,255,255,0.5)', menuColor: '#BDBDBD' }
                 ]} />
+                <TitleBar story={this.state.story} onUpdate={() => this.setState({})}/>
                 <div
                     className="diagram-layer"
                     onDrop={event => {
@@ -239,7 +254,8 @@ class StoryBoard extends Component {
                         engine.getDiagramModel().addNode(node);
                         this.setState({
                             engine: engine,
-                            selected: node
+                            selected: node,
+                            open: true
                         }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
                     }}
                     onDragOver={event => {
@@ -248,7 +264,9 @@ class StoryBoard extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false} />
                 </div>
-                { this.state.selected ? <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={e => this.setState({ selected: null })} /> : null }
+                { this.state.selected ? <div className={'Editor' + (this.state.open ? ' open' : '') }>
+                     <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={e => this.setState({ open: false })} />
+                </div> : null }
                 { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onClose={e => this.setState({ loading: false })} /> : null }
             </div>
         );

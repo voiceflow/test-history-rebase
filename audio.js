@@ -1,7 +1,9 @@
 const path = require('path');
 const fs = require('fs');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 const AWS = require('aws-sdk');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 AWS.config.loadFromPath('./aws-config.json');
 

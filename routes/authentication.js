@@ -23,13 +23,14 @@ module.exports = (router, docClient, redisClient) => {
 		});
 	}
 
-	function createLogin(id, user, cb) {
+	function createLogin(data, cb) {
 		generateUserHash(function(userHash){
 	        let secret = crypto.randomBytes(256).toString('hex');
 	        // cache the token
 	        const token = jwt.sign({
-	        	id: id,
-	            user: user
+	        	id: data.id,
+	            user: data.email,
+	            admin: !!data.admin
           	}, secret);
 	        redisClient.set([userHash, secret], function (err, response) {
 	        	redisClient.expire(userHash, config.expire_time);
@@ -66,7 +67,7 @@ module.exports = (router, docClient, redisClient) => {
 		        if (data.Item) {
 		            bcrypt.compare(password, data.Item.password, (err, success) => {
 		                if (success) {
-		                	createLogin(data.Item.id, data.Item.email, (credentials) => {
+		                	createLogin(data.Item, (credentials) => {
 		                		res.status(200).send(credentials.userHash + credentials.token);
 		                	});
 		                } else {
@@ -81,8 +82,10 @@ module.exports = (router, docClient, redisClient) => {
 	});
 
 	router.delete('/session', (req, res) => {
-	    let userHash = req.cookies.auth.substring(0, 16);
-	    redisClient.del(userHash);
+		if(req.cookies.auth){
+			let userHash = req.cookies.auth.substring(0, 16);
+	    	redisClient.del(userHash);
+		}
 	    res.sendStatus(200);
 	});
 
@@ -129,7 +132,7 @@ module.exports = (router, docClient, redisClient) => {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
 		                        } else {
-							    	createLogin(id, email, (credentials) => {
+							    	createLogin({id: id, email: email, admin: false}, (credentials) => {
 		                            	res.status(200).send(credentials.userHash + credentials.token);
 		                            });
 		                        }

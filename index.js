@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'app', 'build')));
 const Diagram = require('./diagram.js');
 const Problem = require('./error.js');
 const Audio = require('./audio.js');
+const Story = require('./story.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -110,6 +111,10 @@ app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
+
+app.get('/stories/:env', Story.getStories);
+app.post('/feature/:env/:id', ensureLoggedIn(), Story.featureStory);
+app.delete('/stories/:env/:id', ensureLoggedIn(), Story.deleteStory);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 

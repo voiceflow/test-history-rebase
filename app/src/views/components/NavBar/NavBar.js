@@ -33,7 +33,6 @@ class NavBar extends Component {
 
   componentDidMount() {
       AuthenticationService.check((err, res) => {
-          console.log(res);
           this.setState({ email: res });
       });
   }

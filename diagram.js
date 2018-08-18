@@ -85,6 +85,10 @@ const setDiagram = (req, res) => {
         return;
     }
 
+    if (diagram.title.trim() === "" || !diagram.title.trim()){
+        diagram.title = "Unnamed Story";
+    }
+
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Item: diagram

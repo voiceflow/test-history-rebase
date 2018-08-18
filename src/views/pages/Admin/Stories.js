@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import { Row, Col } from 'reactstrap';
 
 class Stories extends Component {
     constructor(props) {
@@ -79,31 +80,37 @@ class Stories extends Component {
 
     render() {
         return (
-            <div className='Stories content'>
-                <div className='environment'>
-                    <p>Staging</p>
-                    <ul>
-                        {Array.isArray(this.state.staging) ? this.state.staging.map(story => {
-                            return <li key={story.id} style={{ fontWeight: story.featured ? 'bold' : 'normal' }}>
-                                {story.title ? story.title : story.id}
-                                <button onClick={() => this.onRemoveStaging(story.id)}>Remove</button>
-                                <button onClick={() => this.onFeatureStaging(story.id)}>Feature</button>
-                            </li>;
-                        }) : null}
-                    </ul>
-                </div>
-                <div className='environment'>
-                    <p>Production</p>
-                    <ul>
-                        {Array.isArray(this.state.production) ? this.state.production.map(story => {
-                            return <li key={story.id} style={{ fontWeight: story.featured ? 'bold' : 'normal' }}>
-                                {story.title ? story.title : story.id}
-                                <button onClick={() => this.onRemoveProduction(story.id)}>Remove</button>
-                                <button onClick={() => this.onFeatureProduction(story.id)}>Feature</button>
-                            </li>;
-                        }) : null}
-                    </ul>
-                </div>
+            <div className='Stories content mt-5'>
+                <Row>
+                    <Col>
+                        <div className='environment'>
+                            <p>Staging</p>
+                            <ul>
+                                {Array.isArray(this.state.staging) ? this.state.staging.map(story => {
+                                    return <li key={story.id} style={{ fontWeight: story.featured ? 'bold' : 'normal' }}>
+                                        {story.title ? story.title : story.id}
+                                        <button onClick={() => this.onRemoveStaging(story.id)}>Remove</button>
+                                        <button onClick={() => this.onFeatureStaging(story.id)}>Feature</button>
+                                    </li>;
+                                }) : null}
+                            </ul>
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className='environment'>
+                            <p>Production</p>
+                            <ul>
+                                {Array.isArray(this.state.production) ? this.state.production.map(story => {
+                                    return <li key={story.id} style={{ fontWeight: story.featured ? 'bold' : 'normal' }}>
+                                        {story.title ? story.title : story.id}
+                                        <button onClick={() => this.onRemoveProduction(story.id)}>Remove</button>
+                                        <button onClick={() => this.onFeatureProduction(story.id)}>Feature</button>
+                                    </li>;
+                                }) : null}
+                            </ul>
+                        </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

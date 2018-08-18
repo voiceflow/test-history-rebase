@@ -237,7 +237,7 @@ class Choice extends Component {
                     <label>
                         Choice Audio
                     </label>
-                    {this.state.node.extras.audio.length > 0 ? 
+                    {this.state.node.extras.prompt.length > 0 ? 
                     <div className="audio-box">
                         <button className="btn btn-danger" onClick={() => this.onClear('prompt')}>&times;</button>
                         <div>{this.state.node.extras.prompt.split('/').pop().split('-').pop()}</div>

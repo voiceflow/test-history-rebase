@@ -95,24 +95,32 @@ class StoryBoard extends Component {
     }
 
     onSave() {
-        this.setState({saving: "Saving..."});
-        var data = this.state.engine.getDiagramModel().serializeDiagram();
-        var diagram = {
-            id: data.id,
-            title: this.state.title,
-            data: JSON.stringify(data),
-        }
+        try {
+            this.setState({saving: "Saving..."});
+            var engine = this.state.engine;
+            var model = engine.getDiagramModel();
+            var data = model.serializeDiagram();
+            model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
 
-        $.ajax({
-            url: '/diagrams',
-            type: 'POST',
-            data: diagram,
-            success: () => {
-                this.onLoad();
-                this.setState({saving: "Saved"});
-            },
-            error: () => {window.alert('Error1');}
-        });
+            var diagram = {
+                id: data.id,
+                title: this.state.title,
+                data: JSON.stringify(data),
+            }
+
+            $.ajax({
+                url: '/diagrams',
+                type: 'POST',
+                data: diagram,
+                success: () => {
+                    this.onLoad();
+                    this.setState({saving: "Saved"});
+                },
+                error: () => {window.alert('Error1');}
+            });
+        } catch (e) {
+            window.alert('Error0');
+        }
     }
 
     onLoad() {

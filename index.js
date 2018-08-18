@@ -42,6 +42,8 @@ const upload = multer({
     })
 });
 
+app.use(express.static(path.join(__dirname, 'app', 'build')));
+
 const Diagram = require('./diagram.js');
 const Problem = require('./error.js');
 const Audio = require('./audio.js');
@@ -121,7 +123,7 @@ app.use('/', authentication);
 
 // Handle React routing, return all requests to React app
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'creator', 'index.html'));
+  res.sendFile(path.join(__dirname, 'app', 'build', 'index.html'));
 });
 
 // eslint-disable-next-line no-console

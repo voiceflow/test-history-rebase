@@ -15,16 +15,21 @@
     box-shadow: 0 1px 16px rgba(0,0,0,.1);
     border-bottom: 1px solid #DDD;
 }
-.TitleBar button.dropdown-toggle{
-    width: 100px;
+.TitleBar .main-menu-btn{
+    width: 90px;
     border-radius: 0;
+}
+
+.TitleBar .main-menu-btn-group {
+    padding-left: 10px;
+    background-color: #333;
 }
 
 .TitleBar .dropdown-menu {
     /*transform: translate3d(0px, 50px, 0px) !important;*/
-    border-radius: 0;
+/*    border-radius: 0;
     margin-left: -5px;
-    margin-top: 0px;
+    margin-top: 0px;*/
 }
 
 .TitleBar input {
@@ -32,10 +37,16 @@
     background-color: transparent;
     border: none;
     flex: 1;
-    margin-right: 400px;
     margin-left: 0px;
     padding: 7px 20px 7px 20px;
     transition: background-color .4s ease;
+}
+
+.TitleBar .status {
+    width: 400px;
+    line-height: 49px;
+    color: #AAA;
+    padding-left: 10px;
 }
 
 .TitleBar input:focus {
@@ -45,6 +56,19 @@
 
 .TitleBar input::placeholder {
     color: #CCC;
+}
+
+.load-btn {
+    outline: none !important;
+    display: flex;
+    justify-content: space-between;
+    padding-right: .5rem;
+    align-items: center;
+}
+
+.projects-menu {
+    padding: 0 !important;
+    overflow: hidden;
 }
 
 .App .Menu .navbar .navigation {
@@ -82,12 +106,21 @@
     height: 100%;
     padding-top: 60px;
     color: #333333;
-    background-color: #eeeeee;
-    opacity: 0.9;
+    /*opacity: 0.9;*/
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.App .Menu .sidebar .blocks {
+    background-color: #eeeeee;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.App .Menu .sidebar .block-title {
+    margin-top: 10px;
 }
 
 .App .Menu .sidebar button {
@@ -97,10 +130,11 @@
 }
 
 .App .Menu .sidebar .MenuItem {
+    cursor: pointer;
     width: 80px;
     height: 40px;
     line-height: 40px;
-    margin: 15px 10px;
+    margin: 10px 10px;
     color: white;
     border-radius: 5px;
 }
@@ -123,7 +157,7 @@
     z-index: 6;
     width: 400px;
     height: 100%;
-    padding: 115px 25px 65px 25px;
+    padding: 112px 25px 65px 25px;
     color: #333333;
     background-color: #fff;
     /*opacity: 0.9;*/

@@ -188,7 +188,7 @@ class Choice extends Component {
                         activeClassName="active"
                         rejectClassName="reject"
                         multiple={false}
-                        disableClick={true}
+                        disableClick={false}
                         accept="audio/*"
                         onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
                     >
@@ -251,7 +251,7 @@ class Choice extends Component {
                         activeClassName="active"
                         rejectClassName="reject"
                         multiple={false}
-                        disableClick={true}
+                        disableClick={false}
                         accept="audio/*"
                         onDrop={(accepted, rejected) => this.onDrop(accepted, 'prompt')}
                     >

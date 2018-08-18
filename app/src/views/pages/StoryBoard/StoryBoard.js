@@ -3,7 +3,7 @@ import $ from 'jquery';
 import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
-import Loader from './Loader';
+// import Loader from './Loader';
 import NavBar from './../../components/NavBar/NavBar';
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
@@ -21,7 +21,6 @@ class StoryBoard extends Component {
         var node = new SRD.DefaultNodeModel('New Story', 'white');
         node.addOutPort(' ').setMaximumLinks(1);
         node.extras = {
-            title: '',
             audio: '',
             audioText: '',
             audioVoice: '',
@@ -43,18 +42,23 @@ class StoryBoard extends Component {
             engine: engine,
             selected: node,
             open: true,
-            loading: false,
+            modal: false,
             diagrams: [],
-            story: node
+            title: "",
+            saving: ""
         };
         
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
+        this.toggle = this.toggle.bind(this);
+        this.onLoad = this.onLoad.bind(this);
+
+        this.onLoad();
     }
 
-    handleUpdateTitle(title) {
-        let node = this.state.story;
-        node.extras.title = title;
-        this.setState({story: node});
+    toggle() {
+        this.setState({
+            modal: !this.state.modal
+        });
     }
 
     componentDidMount() {
@@ -91,23 +95,22 @@ class StoryBoard extends Component {
     }
 
     onSave() {
+        this.setState({saving: "Saving..."});
         var data = this.state.engine.getDiagramModel().serializeDiagram();
         var diagram = {
+            id: data.id,
+            title: this.state.title,
             data: JSON.stringify(data),
-            id: data.id
         }
-        diagram.title = this.state.story.extras.title;
-        // for (var i = 0; i < data.nodes.length; i++) {
-        //     if (data.nodes[i].extras.type === 'story') {
-        //         diagram.title = data.nodes[i].extras.title;
-        //         break;
-        //     }
-        // }
+
         $.ajax({
             url: '/diagrams',
             type: 'POST',
             data: diagram,
-            success: () => {window.alert('Success');},
+            success: () => {
+                this.onLoad();
+                this.setState({saving: "Saved"});
+            },
             error: () => {window.alert('Error1');}
         });
     }
@@ -118,7 +121,7 @@ class StoryBoard extends Component {
             type: 'GET',
             success: data => {
                 this.setState({
-                    loading: true,
+                    modal: true,
                     diagrams: data
                 }, () => $('.Loader').mousedown(this.onDiagramUnfocus.bind(this)));
             },
@@ -149,6 +152,7 @@ class StoryBoard extends Component {
     }
 
     onLoadId(id) {
+        console.log(id);
         $.ajax({
             url: '/diagrams/'+id,
             type: 'GET',
@@ -165,8 +169,9 @@ class StoryBoard extends Component {
                 }
                 this.setState({
                     engine: engine,
-                    loading: false,
-                    diagrams: []
+                    modal: false,
+                    diagrams: [],
+                    title: diagram.title
                 });
             },
             error: () => {window.alert('Error5');}
@@ -177,7 +182,7 @@ class StoryBoard extends Component {
         return (
             <div className='App'>
                 <NavBar name={this.props.name} history={this.props.history}/>
-                <Menu onSave={this.onSave.bind(this)} onLoad={this.onLoad.bind(this)} onTest={this.onTest.bind(this)} onPublish={this.onPublish.bind(this)} items={[
+                <Menu items={[
                     { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'line', color: '#E1F5FE', menuColor: '#29B6F6' },
                     { text: 'Listen', type: 'listen', color: '#FFFDE7', menuColor: '#FBC02D' },
@@ -185,7 +190,18 @@ class StoryBoard extends Component {
                     { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
                     { text: 'Comment', type: 'comment', color: 'rgba(255,255,255,0.5)', menuColor: '#BDBDBD' }
                 ]} />
-                <TitleBar story={this.state.story} onUpdate={() => this.setState({})}/>
+                <TitleBar 
+                    title={this.state.title} 
+                    onUpdateTitle={(e) => {this.setState({title: e.target.value});}}
+                    onSave={this.onSave.bind(this)} 
+                    onLoad={this.onLoad.bind(this)} 
+                    onTest={this.onTest.bind(this)} 
+                    onPublish={this.onPublish.bind(this)}
+                    diagrams={this.state.diagrams}
+                    onLoadId={this.onLoadId.bind(this)}
+                    onSelected={this.onLoad}
+                    saving={this.state.saving}
+                />
                 <div
                     className="diagram-layer"
                     onDrop={event => {
@@ -267,7 +283,6 @@ class StoryBoard extends Component {
                 { this.state.selected ? <div className={'Editor' + (this.state.open ? ' open' : '') }>
                      <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={e => this.setState({ open: false })} />
                 </div> : null }
-                { this.state.loading ? <Loader diagrams={this.state.diagrams} onLoadId={this.onLoadId.bind(this)} onClose={e => this.setState({ loading: false })} /> : null }
             </div>
         );
     }

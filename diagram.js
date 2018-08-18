@@ -15,7 +15,6 @@ const getDiagrams = (req, res) => {
 
         return;
     }
-
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         ProjectionExpression: 'id, title'

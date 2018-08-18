@@ -23,11 +23,12 @@ module.exports = (router, docClient, redisClient) => {
 		});
 	}
 
-	function createLogin(user, cb) {
+	function createLogin(id, user, cb) {
 		generateUserHash(function(userHash){
 	        let secret = crypto.randomBytes(256).toString('hex');
 	        // cache the token
 	        const token = jwt.sign({
+	        	id: id,
 	            user: user
           	}, secret);
 	        redisClient.set([userHash, secret], function (err, response) {
@@ -65,7 +66,7 @@ module.exports = (router, docClient, redisClient) => {
 		        if (data.Item) {
 		            bcrypt.compare(password, data.Item.password, (err, success) => {
 		                if (success) {
-		                	createLogin(data.Item.email, (credentials) => {
+		                	createLogin(data.Item.id, data.Item.email, (credentials) => {
 		                		res.status(200).send(credentials.userHash + credentials.token);
 		                	});
 		                } else {
@@ -112,22 +113,23 @@ module.exports = (router, docClient, redisClient) => {
 		                    console.log(err);
 		                    res.status(500).send('Password Error');
 		                } else {
+		                	let id = uuidv1();
 		                    let params = {
 		                        TableName: 'com.getstoryflow.users.production',
 		                        Item: {
 		                            email: email,
 		                            password: hash,
-		                            id: uuidv1(),
+		                            id: id,
 		                            name: name,
 		                            createdAt: new Date().toISOString()
 		                        }
 		                    };
-		                    docClient.put(params, err => {
+		                    docClient.put(params, (err, data) => {
 		                        if (err) {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
 		                        } else {
-		                            createLogin(email, (credentials) => {
+							    	createLogin(id, email, (credentials) => {
 		                            	res.status(200).send(credentials.userHash + credentials.token);
 		                            });
 		                        }

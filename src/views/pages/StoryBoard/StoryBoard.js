@@ -175,11 +175,12 @@ class StoryBoard extends Component {
                         nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
                     }
                 }
+                let title = diagram.title ? diagram.title : "Unnamed Story";
                 this.setState({
                     engine: engine,
                     modal: false,
                     diagrams: [],
-                    title: diagram.title
+                    title: title
                 });
             },
             error: () => {window.alert('Error5');}

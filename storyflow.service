@@ -2,7 +2,7 @@
 Description=Storyflow
 
 [Service]
-ExecStart=/srv/storyflow-server/index.js
+ExecStart=/srv/storyflow-creator/index.js
 Restart=always
 User=nobody
 Group=nobody

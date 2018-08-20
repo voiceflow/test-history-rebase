@@ -26,12 +26,16 @@ module.exports = (router, docClient, redisClient) => {
 	function createLogin(data, cb) {
 		generateUserHash(function(userHash){
 	        let secret = crypto.randomBytes(256).toString('hex');
-	        // cache the token
-	        const token = jwt.sign({
+
+	        let user = {
 	        	id: data.id,
-	            user: data.email,
+	            email: data.email,
+	            name: data.name,
 	            admin: !!data.admin
-          	}, secret);
+          	}
+
+	        // cache the token
+	        const token = jwt.sign(user, secret);
 	        redisClient.set([userHash, secret], function (err, response) {
 	        	redisClient.expire(userHash, config.expire_time);
 		        if (err) {
@@ -39,7 +43,8 @@ module.exports = (router, docClient, redisClient) => {
 		        } else {
 		          	cb({
 		          		token: token,
-	                    userHash: userHash
+	                    userHash: userHash,
+	                    user: user
 		          	});
 		        }
 	        });
@@ -47,7 +52,7 @@ module.exports = (router, docClient, redisClient) => {
 	}
 
 	router.get('/session', (req, res) => {
-	    req.user ? res.send(req.user.user) : res.sendStatus(403);
+	    req.user ? res.send(req.user) : res.sendStatus(403);
 	});
 
 	router.put('/session', (req, res) => {
@@ -68,7 +73,10 @@ module.exports = (router, docClient, redisClient) => {
 		            bcrypt.compare(password, data.Item.password, (err, success) => {
 		                if (success) {
 		                	createLogin(data.Item, (credentials) => {
-		                		res.status(200).send(credentials.userHash + credentials.token);
+		                		res.status(200).send({
+                            		token: credentials.userHash + credentials.token,
+                            		user: credentials.user
+                            	});
 		                	});
 		                } else {
 		                    res.status(400).send("Username or Password Incorrect");
@@ -132,8 +140,11 @@ module.exports = (router, docClient, redisClient) => {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
 		                        } else {
-							    	createLogin({id: id, email: email, admin: false}, (credentials) => {
-		                            	res.status(200).send(credentials.userHash + credentials.token);
+							    	createLogin({id: id, email: email, name: name, admin: false }, (credentials) => {
+		                            	res.status(200).send({
+		                            		token: credentials.userHash + credentials.token,
+		                            		user: credentials.user
+		                            	});
 		                            });
 		                        }
 		                    });

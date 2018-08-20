@@ -12,6 +12,7 @@ import {Link} from 'react-router-dom';
 
 import './NavBar.css';
 import AuthenticationService from './../../../services/Authentication';
+import Intercom from 'react-intercom';
 
 class NavBar extends Component {
 
@@ -27,13 +28,17 @@ class NavBar extends Component {
         {link: 'StoryBoard', 'text': 'StoryBoard <i class="fas fa-edit"></i>'}, 
         {link: 'Admin', text: 'Admin <i class="fas fa-columns"></i>'}
       ],
-      email: null
+      user: AuthenticationService.getUser()
     };
   }
 
   componentDidMount() {
       AuthenticationService.check((err, res) => {
-          this.setState({ email: res });
+          if(err && this.props.history){
+            this.props.history.push('/login');
+          }else{
+            this.setState({ user: res });
+          }
       });
   }
 
@@ -54,6 +59,13 @@ class NavBar extends Component {
   }
 
   render() {
+
+    let intercom_user = this.state.user ? {
+      user_id: this.state.user.id,
+      name: this.state.user.name,
+      email: this.state.user.email
+    } : null;
+
     return (
         <div>
           <Navbar dark expand="md" className="fixed-top">
@@ -81,7 +93,7 @@ class NavBar extends Component {
               </Nav>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink>{this.state.email}</NavLink>
+                  <NavLink>{this.state.user.email}</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink onClick={this.logout}>Logout</NavLink>
@@ -90,6 +102,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {this.props.padding ? (<div className="padding"></div>) : null}
+          {this.props.intercom ? (<Intercom appID="vw911b0m" {...intercom_user}/>) : null}
         </div>
     );
   }

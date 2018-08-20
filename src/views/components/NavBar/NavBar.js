@@ -25,7 +25,7 @@ class NavBar extends Component {
     this.state = {
       isOpen: false,
       tabs: [
-        {link: 'StoryBoard', 'text': 'StoryBoard <i class="fas fa-edit"></i>'}, 
+        {link: 'StoryBoard', 'text': 'Storyboard <i class="fas fa-edit"></i>'}, 
         {link: 'Admin', text: 'Admin <i class="fas fa-columns"></i>'}
       ],
       user: AuthenticationService.getUser()

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import { Row, Col } from 'reactstrap';
+import ReactTable from "react-table";
+import 'react-table/react-table.css'
+import './Admin.css';
 
 class Stories extends Component {
     constructor(props) {
@@ -84,30 +87,86 @@ class Stories extends Component {
                 <Row>
                     <Col>
                         <div className='environment'>
-                            <p>Staging</p>
-                            <ul>
-                                {Array.isArray(this.state.staging) ? this.state.staging.map(story => {
-                                    return <li key={story.id} style={{ fontWeight: story.featured ? 'bold' : 'normal' }}>
-                                        {story.title ? story.title : story.id}
-                                        <button onClick={() => this.onRemoveStaging(story.id)}>Remove</button>
-                                        <button onClick={() => this.onFeatureStaging(story.id)}>Feature</button>
-                                    </li>;
-                                }) : null}
-                            </ul>
+                            <h1>Staging</h1>
+                            { Array.isArray(this.state.staging) ?
+                            <ReactTable
+                                defaultPageSize={10}
+                                showPageSizeOptions={false}
+                                className="-highlight -striped"
+                                data= {this.state.staging}
+                                columns= {[{
+                                    Header: "Title",
+                                    accessor: "title",
+                                    className: "pl-3",
+                                    minWidth: 200
+                                }, {
+                                    Header: "Featured",
+                                    accessor: "featured",
+                                    className: "text-center",
+                                    maxWidth: 80,
+                                    Cell: row => {
+                                        return <small>{row.value ? <i className="fas fa-circle text-success"></i> : <i className="fas fa-circle text-warning"></i>}</small>
+                                    }
+                                }, {
+                                    Header: "Remove",
+                                    className: "text-center",
+                                    accessor: "id",
+                                    Cell: row => {
+                                        return <button className="btn btn-danger" onClick={() => this.onRemoveStaging(row.value)}>Delete <i className="fas fa-exclamation-circle"></i></button>
+                                    },
+                                    sortable: false
+                                }, {
+                                    Header: "Feature",
+                                    className: "text-center",
+                                    accessor: "id",
+                                    Cell: row => {
+                                        return <button className="btn btn-outline-primary" onClick={() => this.onFeatureStaging(row.value)}>Feature</button>
+                                    },
+                                    sortable: false
+                                }]} 
+                            /> : null }
                         </div>
                     </Col>
                     <Col>
                         <div className='environment'>
-                            <p>Production</p>
-                            <ul>
-                                {Array.isArray(this.state.production) ? this.state.production.map(story => {
-                                    return <li key={story.id} style={{ fontWeight: story.featured ? 'bold' : 'normal' }}>
-                                        {story.title ? story.title : story.id}
-                                        <button onClick={() => this.onRemoveProduction(story.id)}>Remove</button>
-                                        <button onClick={() => this.onFeatureProduction(story.id)}>Feature</button>
-                                    </li>;
-                                }) : null}
-                            </ul>
+                            <h1>Production</h1>
+                                { Array.isArray(this.state.production) ?
+                                <ReactTable
+                                    defaultPageSize={10}
+                                    showPageSizeOptions={false}
+                                    className="-highlight -striped"
+                                    data= {this.state.production}
+                                    columns= {[{
+                                        Header: "Title",
+                                        accessor: "title",
+                                        className: "pl-3",
+                                        minWidth: 200
+                                    }, {
+                                        Header: "Featured",
+                                        accessor: "featured",
+                                        className: "text-center",
+                                        maxWidth: 80,
+                                        Cell: row => {
+                                            return <small>{row.value ? <i className="fas fa-circle text-success"></i> : <i className="fas fa-circle text-warning"></i>}</small>
+                                        }
+                                    }, {
+                                        Header: "Remove",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        Cell: row => {
+                                            return <button className="btn btn-danger" onClick={() => this.onRemoveProduction(row.value)}>Delete <i className="fas fa-exclamation-circle"></i></button>
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "Feature",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        Cell: row => {
+                                            return <button className="btn btn-outline-primary" onClick={() => this.onFeatureProduction(row.value)}>Feature</button>
+                                        },
+                                        sortable: false
+                                    }]} 
+                                /> : null }
                         </div>
                     </Col>
                 </Row>

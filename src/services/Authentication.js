@@ -3,7 +3,19 @@ import axios from 'axios';
 
 const cookies = new Cookies();
 
+const default_user = {
+		email: null,
+		name: null,
+		id: null,
+		admin: false
+};
+
+var user_detail = default_user;
+
 export default {
+	getUser: () => {
+		return user_detail;
+	},
 	isAuth: () => {
 		return !!cookies.get('auth');
 	},
@@ -12,6 +24,7 @@ export default {
 		// this person has credentials that are valid
 		axios.get('/session')
 		.then((response) => {
+			user_detail = response.data;
 	      	cb(false, response.data);
 	    })
 	    .catch((error) => {
@@ -20,6 +33,7 @@ export default {
 	    });
 	},
 	logout: (history) => {
+		user_detail = default_user;
 		axios.delete('/session')
 		.then((response) => {
 			cookies.remove('auth');
@@ -37,7 +51,8 @@ export default {
 	signup: (user, cb) => {
 	    axios.put('/user', user)
 	    .then((response) => {
-	    	cookies.set('auth', response.data);
+	    	cookies.set('auth', response.data.token);
+	    	user_detail = response.data.user;
 	    	cb(null);
 	    })
 	    .catch((error) => {
@@ -47,7 +62,8 @@ export default {
 	login: (user, cb) => {
 	    axios.put('/session', user)
 	    .then((response) => {
-	    	cookies.set('auth', response.data);
+	    	cookies.set('auth', response.data.token);
+	    	user_detail = response.data.user;
 	    	cb(null);
 	    })
 	    .catch((error) => {

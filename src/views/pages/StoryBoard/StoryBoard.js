@@ -190,7 +190,7 @@ class StoryBoard extends Component {
     render() {
         return (
             <div className='App'>
-                <NavBar name={this.props.name} history={this.props.history}/>
+                <NavBar name={this.props.name} history={this.props.history} intercom/>
                 <Menu items={[
                     { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'line', color: '#E1F5FE', menuColor: '#29B6F6' },

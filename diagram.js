@@ -28,6 +28,14 @@ const getDiagrams = (req, res) => {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else {
+            data.Items.sort((a, b) => {
+                let keyA = a.title,
+                    keyB = b.title;
+                // Compare the 2 dates
+                if(keyA < keyB) return -1;
+                if(keyA > keyB) return 1;
+                return 0;
+            });
             res.send(data.Items);
         }
     });

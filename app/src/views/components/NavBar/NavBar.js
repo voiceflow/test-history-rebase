@@ -14,6 +14,13 @@ import './NavBar.css';
 import AuthenticationService from './../../../services/Authentication';
 import Intercom from 'react-intercom';
 
+const no_show = ['login', 'signup'];
+
+const getPage = (path) => {
+  let base = path.split('/');
+  return base[1].toLowerCase();
+}
+
 class NavBar extends Component {
 
   constructor(props) {
@@ -25,21 +32,30 @@ class NavBar extends Component {
     this.state = {
       isOpen: false,
       tabs: [
-        {link: 'StoryBoard', 'text': 'Storyboard <i class="fas fa-edit"></i>'}, 
-        {link: 'Admin', text: 'Admin <i class="fas fa-columns"></i>'}
+        {link: 'storyboard', 'text': 'Storyboard'}, 
+        {link: 'dashboard', 'text': 'Dashboard'}, 
       ],
-      user: AuthenticationService.getUser()
+      user: AuthenticationService.getUser(),
     };
   }
 
   componentDidMount() {
-      AuthenticationService.check((err, res) => {
-          if(err && this.props.history){
-            this.props.history.push('/login');
-          }else{
-            this.setState({ user: res });
-          }
-      });
+      let page_name = getPage(this.props.location.pathname);
+
+      if(!no_show.includes(page_name)){
+        AuthenticationService.check((err, res) => {
+            if(err && this.props.history){
+              this.props.history.push('/login');
+            }else{
+              this.setState({ user: res });
+              if(this.state.user.admin){
+                let tabs = this.state.tabs;
+                tabs.push({link: 'admin', text: 'Admin <i class="fas fa-columns"></i>'});
+                this.setState({tabs: tabs});
+              }
+            }
+        });
+      }
   }
 
   handleChange = event => {
@@ -58,6 +74,11 @@ class NavBar extends Component {
     AuthenticationService.logout(this.props.history);
   }
 
+  preventDefault(e){
+    e.preventDefault();
+    return false;
+  }
+
   render() {
 
     let intercom_user = this.state.user ? {
@@ -66,22 +87,25 @@ class NavBar extends Component {
       email: this.state.user.email
     } : null;
 
+    let page_name = getPage(this.props.location.pathname);
+
     return (
+        no_show.includes(page_name) ? null :
         <div>
-          <Navbar dark expand="md" className="fixed-top">
+          <Navbar dark expand="md" className={"fixed-top " + page_name}>
             <NavbarBrand href="/">
               <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
-                height="30"
+                height="25"
               />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="mr-auto" navbar>
                 {this.state.tabs.map(function(tab, i){
-                    if(this.props.name === tab.link){
+                    if(page_name === tab.link){
                       return (
-                        <NavItem active key={i}>
-                          <NavLink dangerouslySetInnerHTML={{__html: tab.text}}></NavLink>
+                        <NavItem key={i}>
+                          <NavLink dangerouslySetInnerHTML={{__html: tab.text}} active></NavLink>
                         </NavItem>)
                     }else{
                       return (
@@ -89,7 +113,7 @@ class NavBar extends Component {
                           <Link to={"/" + tab.link} className="nav-link" dangerouslySetInnerHTML={{__html: tab.text}}></Link>
                         </NavItem>)
                     }
-                }.bind(this))}
+                })}
               </Nav>
               <Nav className="ml-auto" navbar>
                 <NavItem>

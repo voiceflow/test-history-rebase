@@ -4,10 +4,11 @@ import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
 // import Loader from './Loader';
-import NavBar from './../../components/NavBar/NavBar';
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
+import LoadingModal from './../../components/Modals/LoadingModal';
+import { Prompt } from 'react-router'
 
 class StoryBoard extends Component {
     constructor(props) {
@@ -42,26 +43,29 @@ class StoryBoard extends Component {
             engine: engine,
             selected: node,
             open: true,
-            modal: false,
             diagrams: [],
             title: "",
-            saving: ""
+            loading_modal: false,
+            error_modal: false,
+            saving: false,
+            saved: true,
+            last_save: false
         };
         
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
-        this.toggle = this.toggle.bind(this);
+
         this.onLoad = this.onLoad.bind(this);
-
-        this.onLoad();
-    }
-
-    toggle() {
-        this.setState({
-            modal: !this.state.modal
-        });
+        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
     }
 
     componentDidMount() {
+        this.onLoad();
+        let split = this.props.location.pathname.split('/');
+        
+        if(split.length === 3){
+            this.onLoadId(split[2], true);
+        }
+        
         $('.srd-node-layer').click(() => {
             var engine = this.state.engine;
             var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
@@ -114,12 +118,26 @@ class StoryBoard extends Component {
                 data: diagram,
                 success: () => {
                     this.onLoad();
-                    this.setState({saving: "Saved"});
+                    this.setState({
+                        saving: false,
+                        saved: true,
+                        last_save: Date.now()
+                    });
                 },
-                error: () => {window.alert('Error1');}
+                error: () => {
+                    this.setState({
+                        saving: false,
+                        loading_modal: true,
+                        error_modal: "Error Saving to Cloud (Check Logs)"
+                    });
+                }
             });
         } catch (e) {
-            window.alert('Error0');
+            console.log(e);
+            this.setState({
+                loading_modal: true,
+                error_modal: "Error Saving - Project Structure (Check Logs)"
+            });
         }
     }
 
@@ -129,11 +147,12 @@ class StoryBoard extends Component {
             type: 'GET',
             success: data => {
                 this.setState({
-                    modal: true,
                     diagrams: data
                 }, () => $('.Loader').mousedown(this.onDiagramUnfocus.bind(this)));
             },
-            error: () => {window.alert('Error2');}
+            error: (e) => {
+                console.log(e);
+            }
         });
     }
 
@@ -143,7 +162,13 @@ class StoryBoard extends Component {
             url: '/publish/staging/'+id,
             type: 'POST',
             success: () => {window.alert('Success');},
-            error: () => {window.alert('Error3');}
+            error: (e) => {
+                console.log(e);
+                this.setState({
+                    loading_modal: true,
+                    error_modal: "Server Error - Unable to Test"
+                });
+            }
         });
     }
 
@@ -154,43 +179,81 @@ class StoryBoard extends Component {
                 url: '/publish/production/'+id,
                 type: 'POST',
                 success: () => {window.alert('Success');},
-                error: () => {window.alert('Error4');}
+                error: (e) => {
+                    console.log(e);
+                    this.setState({
+                        loading_modal: true,
+                        error_modal: "Server Error - Unable to Publish"
+                    });
+                }
             });
         }
     }
 
-    onLoadId(id) {
-        console.log(id);
+    onLoadId(id, url) {
+        if(!!!url){
+            this.props.history.push('/storyboard/' + id);
+        }
+        this.setState({loading_modal: true, error_modal: false});
         $.ajax({
             url: '/diagrams/'+id,
             type: 'GET',
             success: diagram => {
                 var engine = this.state.engine;
                 var model = new SRD.DiagramModel();
-                model.deSerializeDiagram(JSON.parse(diagram.data), engine);
-                engine.setDiagramModel(model);
-                var nodes = engine.getDiagramModel().getNodes();
-                for (var key in nodes) {
-                    if (nodes[key].extras.type === 'story') {
-                        nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
-                    }
+
+                let diagram_json = false;
+                try {
+                    diagram_json = JSON.parse(diagram.data);
+                } catch (e) {
+                    console.log(e);
                 }
-                let title = diagram.title ? diagram.title : "Unnamed Story";
-                this.setState({
-                    engine: engine,
-                    modal: false,
-                    diagrams: [],
-                    title: title
-                });
+                if(diagram_json){
+                    model.deSerializeDiagram(JSON.parse(diagram.data), engine);
+                    engine.setDiagramModel(model);
+                    var nodes = engine.getDiagramModel().getNodes();
+                    for (var key in nodes) {
+                        if (nodes[key].extras.type === 'story') {
+                            nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                        }
+                    }
+                    let title = diagram.title ? diagram.title : "Unnamed Story";
+
+                    this.setState({
+                        engine: engine,
+                        title: title,
+                        last_save: diagram.last_save,
+                        loading_modal: false,
+                    });
+
+                    this.setState({saved: true});
+                }else{
+                    this.setState({error_modal: "Could Not Open Project - Corrupted File"});
+                }
             },
-            error: () => {window.alert('Error5');}
+            error: () => {this.setState({error_modal: "Could Not Retrieve Project"});}
         });
+    }
+
+    dismissLoadingModal() {
+        this.setState({
+            loading_modal: false
+        });
+        this.props.history.push('/storyboard');
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(this.state.saved){
+            if(prevState.engine.getDiagramModel() !== this.state.engine.getDiagramModel() || prevState.title !== this.state.title){
+                this.setState({saved: false});
+            }
+        }
     }
 
     render() {
         return (
             <div className='App'>
-                <NavBar name={this.props.name} history={this.props.history} intercom/>
+                <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 <Menu items={[
                     { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'line', color: '#E1F5FE', menuColor: '#29B6F6' },
@@ -208,8 +271,9 @@ class StoryBoard extends Component {
                     onPublish={this.onPublish.bind(this)}
                     diagrams={this.state.diagrams}
                     onLoadId={this.onLoadId.bind(this)}
-                    onSelected={this.onLoad}
                     saving={this.state.saving}
+                    saved={this.state.saved}
+                    last_save={this.state.last_save}
                 />
                 <div
                     className="diagram-layer"
@@ -289,8 +353,9 @@ class StoryBoard extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false} />
                 </div>
-                { this.state.selected ? <div className={'Editor' + (this.state.open ? ' open' : '') }>
-                     <Editor node={this.state.selected} onUpdate={() => this.setState({})} onClose={e => this.setState({ open: false })} />
+                { this.state.selected ? 
+                <div className={'Editor' + (this.state.open ? ' open' : '') }>
+                     <Editor node={this.state.selected} onUpdate={() => {this.setState({})}} onClose={e => this.setState({ open: false })} />
                 </div> : null }
             </div>
         );

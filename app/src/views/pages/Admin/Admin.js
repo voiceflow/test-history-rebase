@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Stories from './Stories';
 import Errors from './Errors';
-import NavBar from './../../components/NavBar/NavBar'
 import { Container } from 'reactstrap';
 
 class Admin extends Component {
@@ -26,8 +25,7 @@ class Admin extends Component {
 
     render() {
         return (
-            <div className='App' history={this.props.history}>
-                <NavBar name={this.props.name} history={this.props.history} padding/>
+            <div className='App padding'>
                 <Container>
                     {this.getContent()}
                 </Container>

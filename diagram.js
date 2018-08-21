@@ -12,12 +12,11 @@ const Audio = require('./audio.js');
 const getDiagrams = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
-
         return;
     }
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
-        ProjectionExpression: 'id, title'
+        ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
     };
     if (!req.user.admin) {
         params.FilterExpression = 'creator = :creator';
@@ -96,6 +95,8 @@ const setDiagram = (req, res) => {
     if (diagram.title.trim() === "" || !diagram.title.trim()){
         diagram.title = "Unnamed Story";
     }
+
+    diagram.last_save = Date.now();
 
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',

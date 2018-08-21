@@ -10,6 +10,7 @@
     "server": "node index.js",
     "client": "cd app && npm run start",
     "redis": "redis-server",
+    "update": "cd app && npm install",
     "dev": "concurrently --kill-others-on-fail \"node index\" \"cd app && npm run start\""
   },
   "repository": {

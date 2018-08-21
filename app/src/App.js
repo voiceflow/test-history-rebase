@@ -8,9 +8,11 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 
 // Pages
-import StoryBoard from './views/pages/StoryBoard/StoryBoard';
+import StoryBoard from './views/pages/Storyboard/StoryBoard';
+import DashBoard from './views/pages/Dashboard/DashBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
+import NavBar from './views/components/NavBar/NavBar'
 
 const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (
@@ -33,13 +35,26 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/login" name="Login" component={Account} />
-          <Route exact path="/signup" name="SignUp" component={Account} />
-          <PrivateRoute path="/storyboard" name="StoryBoard" component={StoryBoard} />
-          <PrivateRoute path="/admin" name="Admin" component={Admin} />
-          <PrivateRoute path="/" name="StoryBoard" component={StoryBoard} />
-        </Switch>
+        <div id="body">
+          <Route render={(props) => {
+            return (<NavBar {...props}/>)
+          }} />
+          <Switch>
+            <Route exact path="/login" name="Login" component={Account} />
+            <Route exact path="/signup" name="SignUp" component={Account} />
+            <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
+            <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
+            <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
+            <PrivateRoute path="/admin" name="Admin" component={Admin} />
+            <Route exact path="/" render={() => (
+              AuthenticationService.isAuth() ? (
+                <Redirect to="/storyboard"/>
+              ) : (
+                <Redirect to="/login"/>
+              )
+            )}/>
+          </Switch>
+        </div>
       </BrowserRouter>
     );
   }

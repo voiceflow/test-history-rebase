@@ -2,6 +2,6 @@ body {
   margin: 0;
   padding: 0;
 }
-html, body, #root{
+html, body, #root, #body{
   height: 100%;
 }

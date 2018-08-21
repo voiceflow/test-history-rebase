@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import moment from 'moment';
 
 class TitleBar extends Component {
     constructor(props) {
@@ -30,6 +31,8 @@ class TitleBar extends Component {
     }
 
     render() {
+        let saved = (this.props.saved ? "" : "*") + (this.props.last_save ? " Last saved " + moment(this.props.last_save).format('MMM Do, h:mm a') : "");
+
         return (
             <div className="TitleBar">
                 <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="main-menu-btn-group">
@@ -38,7 +41,7 @@ class TitleBar extends Component {
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem onClick={this.props.onSave}>Save</DropdownItem>
-                        <UncontrolledDropdown direction="right" isOpen={this.state.projects} toggle={() => { this.props.onSelected(); this.setState({ projects : !this.state.projects }); }}>
+                        <UncontrolledDropdown direction="right" isOpen={this.state.projects} toggle={() => { this.props.onLoad(); this.setState({ projects : !this.state.projects }); }}>
                             <DropdownToggle tag="button" caret className="dropdown-item load-btn">
                                 Load
                             </DropdownToggle>
@@ -60,7 +63,11 @@ class TitleBar extends Component {
                     placeholder="Story Title"
                 />
                 <div className="status">
-                    {this.props.saving}
+                    {this.props.saving ?
+                        <div><i className="fas fa-sync-alt fa-spin"></i> {"Saving..."}</div>
+                        :
+                        (saved)
+                    }
                 </div>
             </div>
         );

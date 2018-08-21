@@ -7,6 +7,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
     "jquery": "^3.3.1",
+    "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-autosize-textarea": "^4.0.0",
     "react-dom": "^16.4.2",
@@ -18,7 +19,7 @@
     "react-table": "^6.8.6",
     "react-textarea-autosize": "^7.0.4",
     "reactstrap": "^6.3.1",
-    "storm-react-diagrams": "^5.2.1",
+    "storm-react-diagrams": "github:DecathectZero/react-diagrams",
     "universal-cookie": "^2.2.0"
   },
   "scripts": {

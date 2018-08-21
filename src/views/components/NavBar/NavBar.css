@@ -1,6 +1,55 @@
-nav {
+.navbar {
 	background-color: #5a5bff;
 }
-.padding {
-	padding-top: 66px;
+
+.nav-link {
+	padding-top: 18px;
+	padding-bottom: 17px;
+	cursor: pointer;
+}
+
+.navbar {
+	padding: 0rem 1rem;
+	-webkit-transition : background-color 800ms ease;
+	-moz-transition : background-color 800ms ease;
+	-o-transition : background-color 800ms ease;
+	transition : background-color 800ms ease;
+}
+
+.navbar.storyboard {
+	background-color: #5a5bff;
+}
+
+.navbar.admin {
+	background-color: #333;
+}
+
+.navbar.dashboard {
+	background-color: #2196F3;
+}
+
+@media(min-width: 845px){
+	.nav-link {
+		padding-top: 14px;
+		padding-bottom: 17px;
+	}
+
+	.nav-link {
+		border-top: 4px solid transparent;
+		-webkit-transition : all 200ms ease-out;
+		-moz-transition : all 200ms ease-out;
+		-o-transition : all 200ms ease-out;
+		transition : all 200ms ease-out;
+	}
+
+	.nav-link.active {
+		border-color: #fff !important;
+		cursor: default !important;
+		background-color: transparent !important;
+	}
+
+	.nav-link:focus, .nav-link:hover {
+		border-color: #D84315;
+		background-color: rgba(255,255,255,0.1);
+	}
 }

@@ -234,7 +234,7 @@ class Listen extends Component {
                     </div>
                     </Dropzone>}
                     <div className="text-to-voice">
-                        <div className="subtitle" onClick={() => this.toggleCollapse("promptTextCollapse")}>Text to Speech {this.state.node.extras.promptTextCollapse ? <i class="fas fa-caret-down"></i> : <i class="fas fa-caret-right"></i>}</div>
+                        <div className="subtitle" onClick={() => this.toggleCollapse("promptTextCollapse")}>Text to Speech {this.state.node.extras.promptTextCollapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}</div>
                         <Collapse isOpen={this.state.node.extras.promptTextCollapse}>
                             <div className="textarea-collapse">
                                 <Textarea

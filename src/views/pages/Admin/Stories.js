@@ -92,7 +92,7 @@ class Stories extends Component {
                             <ReactTable
                                 defaultPageSize={10}
                                 showPageSizeOptions={false}
-                                className="-highlight -striped"
+                                className="-highlight -striped mt-4"
                                 data= {this.state.staging}
                                 columns= {[{
                                     Header: "Title",
@@ -134,7 +134,7 @@ class Stories extends Component {
                                 <ReactTable
                                     defaultPageSize={10}
                                     showPageSizeOptions={false}
-                                    className="-highlight -striped"
+                                    className="-highlight -striped mt-4"
                                     data= {this.state.production}
                                     columns= {[{
                                         Header: "Title",

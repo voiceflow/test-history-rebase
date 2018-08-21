@@ -10,6 +10,8 @@ import TitleBar from './TitleBar';
 import LoadingModal from './../../components/Modals/LoadingModal';
 import { Prompt } from 'react-router'
 
+import { BlockNodeModel } from './SRD/BlockNodeModel';
+
 class StoryBoard extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +21,7 @@ class StoryBoard extends Component {
 
         var model = new SRD.DiagramModel();
 
-        var node = new SRD.DefaultNodeModel('New Story', 'white');
+        var node = new BlockNodeModel('New Story', 'white');
         node.addOutPort(' ').setMaximumLinks(1);
         node.extras = {
             audio: '',
@@ -51,6 +53,11 @@ class StoryBoard extends Component {
             saved: true,
             last_save: false
         };
+
+        this.unsave = this.unsave.bind(this);
+
+        model.addListener({nodesUpdated: this.unsave});
+        model.addListener({linksUpdated: this.unsave});
         
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
 
@@ -210,13 +217,16 @@ class StoryBoard extends Component {
                 }
                 if(diagram_json){
                     model.deSerializeDiagram(JSON.parse(diagram.data), engine);
-                    engine.setDiagramModel(model);
-                    var nodes = engine.getDiagramModel().getNodes();
+                    model.addListener({nodesUpdated: this.unsave});
+                    model.addListener({linksUpdated: this.unsave});
+                    var nodes = model.getNodes();
                     for (var key in nodes) {
                         if (nodes[key].extras.type === 'story') {
+                            nodes[key].clearListeners();
                             nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
                         }
                     }
+                    engine.setDiagramModel(model);
                     let title = diagram.title ? diagram.title : "Unnamed Story";
 
                     this.setState({
@@ -242,17 +252,21 @@ class StoryBoard extends Component {
         this.props.history.push('/storyboard');
     }
 
-    componentDidUpdate(prevProps, prevState){
+    unsave() {
         if(this.state.saved){
-            if(prevState.engine.getDiagramModel() !== this.state.engine.getDiagramModel() || prevState.title !== this.state.title){
-                this.setState({saved: false});
-            }
+            this.setState({saved: false});
         }
     }
 
     render() {
         return (
             <div className='App'>
+                <Prompt
+                    when={!this.state.saved}
+                    message={location =>
+                        `Are you sure you want to leave without saving?`
+                    }
+                ></Prompt>
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 <Menu items={[
                     { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
@@ -264,7 +278,7 @@ class StoryBoard extends Component {
                 ]} />
                 <TitleBar 
                     title={this.state.title} 
-                    onUpdateTitle={(e) => {this.setState({title: e.target.value});}}
+                    onUpdateTitle={(e) => {this.setState({title: e.target.value}); this.unsave()}}
                     onSave={this.onSave.bind(this)} 
                     onLoad={this.onLoad.bind(this)} 
                     onTest={this.onTest.bind(this)} 
@@ -284,7 +298,7 @@ class StoryBoard extends Component {
                         } catch (e) {
                             return;
                         }
-                        var node = new SRD.DefaultNodeModel('New '+data.text, data.color);
+                        var node = new BlockNodeModel('New '+data.text, data.color);
                         if (data.type === 'choice') {
                             node.addInPort(' ');
                             node.addOutPort('else').setMaximumLinks(1);
@@ -351,11 +365,11 @@ class StoryBoard extends Component {
                         event.preventDefault();
                     }}
                 >
-                    <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false} />
+                    <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
                 </div>
                 { this.state.selected ? 
                 <div className={'Editor' + (this.state.open ? ' open' : '') }>
-                     <Editor node={this.state.selected} onUpdate={() => {this.setState({})}} onClose={e => this.setState({ open: false })} />
+                     <Editor node={this.state.selected} onUpdate={this.unsave} onClose={e => this.setState({ open: false })} />
                 </div> : null }
             </div>
         );

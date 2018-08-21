@@ -112,6 +112,36 @@ const setDiagram = (req, res) => {
     });
 };
 
+const deleteDiagram = (req, res) => {
+    if (!req.user) {
+        res.sendStatus(401);
+        return;
+    }
+    let params = {
+        TableName: 'com.getstoryflow.diagrams.production',
+        Key: {'id': req.params.id}
+    };
+    docClient.get(params, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(err.statusCode);
+        } else if (data.Item) {
+            if (data.Item.creator !== req.user.id && !req.user.admin) {
+                res.sendStatus(403);
+                return;
+            }
+            docClient.delete(params, err => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(err.statusCode);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+    }); 
+}
+
 const publish = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
@@ -242,5 +272,6 @@ const publish = (req, res) => {
 
 exports.getDiagrams = getDiagrams;
 exports.getDiagram = getDiagram;
+exports.deleteDiagram = deleteDiagram;
 exports.setDiagram = setDiagram;
 exports.publish = publish;

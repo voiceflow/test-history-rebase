@@ -25,7 +25,7 @@ class LoadingModal extends Component {
               </div>
               :
               <div>
-                <h5>Loading Project</h5>
+                <h5>Loading...</h5>
                 <hr/>
                 <h1><i className="fas fa-sync-alt fa-spin"></i></h1>
               </div>

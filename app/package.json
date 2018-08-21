@@ -19,7 +19,7 @@
     "react-table": "^6.8.6",
     "react-textarea-autosize": "^7.0.4",
     "reactstrap": "^6.3.1",
-    "storm-react-diagrams": "github:DecathectZero/react-diagrams",
+    "storm-react-diagrams": "^5.2.1",
     "universal-cookie": "^2.2.0"
   },
   "scripts": {

@@ -109,6 +109,7 @@ const ensureLoggedOut = () => {
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);
+app.delete('/diagrams/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
 

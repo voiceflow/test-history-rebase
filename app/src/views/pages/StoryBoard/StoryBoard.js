@@ -87,6 +87,20 @@ class StoryBoard extends Component {
         });
 
         $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
+
+        $(document).keydown(function(event) {
+                // If Control or Command key is pressed and the S key is pressed
+                // run save function. 83 is the key code for S.
+                if((event.ctrlKey || event.metaKey) && event.which === 83) {
+                    event.preventDefault();
+                    // Save Function
+                    if(!this.state.saved){
+                        this.onSave();
+                    }
+                    return false;
+                };
+            }.bind(this)
+        );
     }
 
     onDiagramUnfocus() {

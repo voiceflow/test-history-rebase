@@ -1,40 +1,37 @@
-.navbar {
-	background-color: #5a5bff;
-}
-
-.nav-link {
+#navbar .nav-link {
 	padding-top: 18px;
 	padding-bottom: 17px;
 	cursor: pointer;
 }
 
-.navbar {
+#navbar  {
 	padding: 0rem 1rem;
 	-webkit-transition : background-color 800ms ease;
 	-moz-transition : background-color 800ms ease;
 	-o-transition : background-color 800ms ease;
 	transition : background-color 800ms ease;
-}
-
-.navbar.storyboard {
 	background-color: #5a5bff;
 }
 
-.navbar.admin {
+#navbar .storyboard {
+	background-color: #5a5bff;
+}
+
+#navbar .admin {
 	background-color: #333;
 }
 
-.navbar.dashboard {
+#navbar .dashboard {
 	background-color: #2196F3;
 }
 
 @media(min-width: 845px){
-	.nav-link {
+	#navbar .nav-link {
 		padding-top: 14px;
 		padding-bottom: 17px;
 	}
 
-	.nav-link {
+	#navbar .nav-link {
 		border-top: 4px solid transparent;
 		-webkit-transition : all 200ms ease-out;
 		-moz-transition : all 200ms ease-out;
@@ -42,13 +39,13 @@
 		transition : all 200ms ease-out;
 	}
 
-	.nav-link.active {
+	#navbar .nav-link.active {
 		border-color: #fff !important;
 		cursor: default !important;
 		background-color: transparent !important;
 	}
 
-	.nav-link:focus, .nav-link:hover {
+	#navbar .nav-link:focus, #navbar .nav-link:hover {
 		border-color: #D84315;
 		background-color: rgba(255,255,255,0.1);
 	}

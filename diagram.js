@@ -147,7 +147,7 @@ const publish = (req, res) => {
         res.sendStatus(401);
 
         return;
-    } else if (req.params.env === 'production' && !req.user.admin) {
+    } else if (!req.user.admin) {
         res.sendStatus(403);
 
         return;
@@ -180,10 +180,12 @@ const publish = (req, res) => {
                 creator: creator,
                 lines: {}
             };
+            
+            story.title = data.Item.title;
+
             for (let i = 0; i < diagram.nodes.length; i++) {
                 let node = diagram.nodes[i];
                 if (node.extras.type === 'story') {
-                    story.title = node.extras.title;
                     story.startId = node.id;
                     story.audio = node.extras.audio;
                     story.preview = node.extras.preview;

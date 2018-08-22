@@ -92,7 +92,7 @@ class NavBar extends Component {
     return (
         no_show.includes(page_name) ? null :
         <div>
-          <Navbar dark expand="md" className={"fixed-top " + page_name}>
+          <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <NavbarBrand href="/">
               <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
                 height="25"

@@ -16,7 +16,7 @@ class LoadingModal extends Component {
           <ModalBody className="text-center">
             {this.props.error ? 
               <div>
-                <h5><i class="fas fa-exclamation-triangle text-danger"></i> Error</h5>
+                <h5><i className="fas fa-exclamation-triangle text-danger"></i> Error</h5>
                 <Alert color="danger">
                   {this.props.error}
                 </Alert>

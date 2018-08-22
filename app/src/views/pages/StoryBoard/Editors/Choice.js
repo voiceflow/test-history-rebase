@@ -73,7 +73,9 @@ class Choice extends Component {
         var node = this.state.node;
         node.extras.choices.push('New Choice');
         node.extras.inputs.push('');
-        node.addOutPort(node.extras.choices.length).setMaximumLinks(1);
+        let test = node.addOutPort(node.extras.choices.length);
+        test.setMaximumLinks(1);
+        console.log(test);
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -82,6 +84,7 @@ class Choice extends Component {
                 e.preventDefault();
             }
         });
+        this.props.repaint();
         e.preventDefault();
     }
 
@@ -89,6 +92,8 @@ class Choice extends Component {
         var node = this.state.node;
         for (var name in node.getPorts()) {
             var port = node.getPort(name);
+            let links = port.getLinks();
+            console.log(links);
             if (port.label === node.extras.choices.length) {
                 node.removePort(port);
             }
@@ -98,6 +103,7 @@ class Choice extends Component {
         this.setState({
             node: node
         }, this.props.onUpdate);
+        this.props.repaint();
         e.preventDefault();
     }
 

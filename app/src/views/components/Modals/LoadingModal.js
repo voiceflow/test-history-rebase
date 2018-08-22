@@ -22,13 +22,23 @@ class LoadingModal extends Component {
                 </Alert>
                 <hr/>
                 <Button color="primary" onClick={this.props.dismiss}>Return <i class="fas fa-undo"></i></Button>
-              </div>
-              :
+              </div> : null
+            }
+            {this.props.success ? 
+              <div>
+                <Alert color="success">
+                  {this.props.success}
+                </Alert>
+                <hr/>
+                <Button color="primary" onClick={this.props.dismiss}>Return <i class="fas fa-undo"></i></Button>
+              </div> : null
+            }
+            {!this.props.error && !this.props.success ? 
               <div>
                 <h5>Loading...</h5>
                 <hr/>
                 <h1><i className="fas fa-sync-alt fa-spin"></i></h1>
-              </div>
+              </div> : null
             }
           </ModalBody>
         </Modal>

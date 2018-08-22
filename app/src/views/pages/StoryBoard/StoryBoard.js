@@ -62,6 +62,7 @@ class StoryBoard extends Component {
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
 
         this.onLoad = this.onLoad.bind(this);
+        this.repaint = this.repaint.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
     }
 
@@ -105,6 +106,10 @@ class StoryBoard extends Component {
         }
     }
 
+    repaint() {
+        this.state.engine.repaintCanvas();
+    }
+
     onSave() {
         try {
             this.setState({saving: "Saving..."});
@@ -120,7 +125,7 @@ class StoryBoard extends Component {
             }
 
             $.ajax({
-                url: '/diagrams',
+                url: '/diagram',
                 type: 'POST',
                 data: diagram,
                 success: () => {
@@ -203,7 +208,7 @@ class StoryBoard extends Component {
         }
         this.setState({loading_modal: true, error_modal: false});
         $.ajax({
-            url: '/diagrams/'+id,
+            url: '/diagram/'+id,
             type: 'GET',
             success: diagram => {
                 var engine = this.state.engine;
@@ -220,11 +225,15 @@ class StoryBoard extends Component {
                     model.addListener({nodesUpdated: this.unsave});
                     model.addListener({linksUpdated: this.unsave});
                     var nodes = model.getNodes();
-                    for (var key in nodes) {
+                    for (let key in nodes) {
                         if (nodes[key].extras.type === 'story') {
                             nodes[key].clearListeners();
                             nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
                         }
+                    }
+                    var links = model.getLinks();
+                    for (let key in links) {
+                        links[key].setColor("#AAA");
                     }
                     engine.setDiagramModel(model);
                     let title = diagram.title ? diagram.title : "Unnamed Story";
@@ -369,7 +378,12 @@ class StoryBoard extends Component {
                 </div>
                 { this.state.selected ? 
                 <div className={'Editor' + (this.state.open ? ' open' : '') }>
-                     <Editor node={this.state.selected} onUpdate={this.unsave} onClose={e => this.setState({ open: false })} />
+                     <Editor 
+                        node={this.state.selected} 
+                        onUpdate={this.unsave} 
+                        onClose={e => this.setState({ open: false })} 
+                        repaint={this.repaint}
+                    />
                 </div> : null }
             </div>
         );

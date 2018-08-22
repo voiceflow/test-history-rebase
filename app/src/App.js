@@ -37,7 +37,7 @@ class App extends Component {
       <BrowserRouter>
         <div id="body">
           <Route render={(props) => {
-            return (<NavBar {...props}/>)
+            return (AuthenticationService.isAuth() ? <NavBar {...props}/> : null)
           }} />
           <Switch>
             <Route exact path="/login" name="Login" component={Account} />

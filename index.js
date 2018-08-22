@@ -48,6 +48,7 @@ const Diagram = require('./diagram.js');
 const Problem = require('./error.js');
 const Audio = require('./audio.js');
 const Story = require('./story.js');
+const Review = require('./routes/review.js')(docClient);
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -62,6 +63,7 @@ app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
 }));
+
 app.use(cookieParser());
 
 app.use((req, res, next) => {
@@ -108,10 +110,17 @@ const ensureLoggedOut = () => {
 }
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
-app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);
-app.delete('/diagrams/:id', ensureLoggedIn(), Diagram.deleteDiagram);
-app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
+app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
+app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
+app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
+
+app.post('/review/:id', ensureLoggedIn(), Review.setReview);
+
+// TO REMOVE SOON
+app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);
+app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
+/* unRESTful STUFF TO REMOVE */
 
 app.get('/stories/:env', Story.getStories);
 app.post('/feature/:env/:id', ensureLoggedIn(), Story.featureStory);

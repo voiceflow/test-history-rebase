@@ -190,6 +190,8 @@ const deleteStory = (req, res) => {
                     res.sendStatus(200);
                 }
             });
+        }else{
+            res.setStatus(404);
         }
     });
 };

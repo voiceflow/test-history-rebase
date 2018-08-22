@@ -21,7 +21,7 @@ class LoadingModal extends Component {
                   {this.props.error}
                 </Alert>
                 <hr/>
-                <Button color="primary" onClick={this.props.dismiss}>Return <i class="fas fa-undo"></i></Button>
+                <Button color="primary" onClick={this.props.dismiss}>Return <i className="fas fa-undo"></i></Button>
               </div> : null
             }
             {this.props.success ? 
@@ -30,7 +30,7 @@ class LoadingModal extends Component {
                   {this.props.success}
                 </Alert>
                 <hr/>
-                <Button color="primary" onClick={this.props.dismiss}>Return <i class="fas fa-undo"></i></Button>
+                <Button color="primary" onClick={this.props.dismiss}>Return <i className="fas fa-undo"></i></Button>
               </div> : null
             }
             {!this.props.error && !this.props.success ? 

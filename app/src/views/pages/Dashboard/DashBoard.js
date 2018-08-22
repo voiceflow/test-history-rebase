@@ -14,16 +14,19 @@ class DashBoard extends Component {
 
         this.state = {
             diagrams: [],
+            reviews: [],
             loading: false,
             error: false,
             success: false
         }
 
         this.onLoad = this.onLoad.bind(this);
+        this.onLoadReviews = this.onLoadReviews.bind(this);
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
 
         this.onLoad();
+        this.onLoadReviews();
     }
 
     onLoad() {
@@ -42,9 +45,25 @@ class DashBoard extends Component {
         });
     }
 
+    onLoadReviews() {
+        $.ajax({
+            url: '/reviews',
+            type: 'GET',
+            success: data => {
+                this.setState({
+                    reviews: data,
+                    loading: false
+                });
+            },
+            error: () => {
+                window.alert('Error2');
+            }
+        });
+    }
+
     dismissLoadingModal() {
         this.setState({
-            loading_modal: false
+            loading: false
         });
     }
 
@@ -75,6 +94,7 @@ class DashBoard extends Component {
             type: 'POST',
             success: () => {
                 this.setState({ success: "Your story has been successfully sent for review!" });
+                this.onLoadReviews();
             },
             error: () => {
                 this.setState({ error: "Unable to Submit" });
@@ -86,12 +106,12 @@ class DashBoard extends Component {
         return (
             <div className='App padding'>
                 <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
-                <Container className="mt-5">
+                <Container className="my-5">
                     <div>
                         <h1>My Drafts</h1>
                         { Array.isArray(this.state.diagrams) ?
                         <ReactTable
-                            defaultPageSize={10}
+                            defaultPageSize={5}
                             showPageSizeOptions={false}
                             className="-highlight -striped mt-4"
                             data= {this.state.diagrams}
@@ -142,7 +162,47 @@ class DashBoard extends Component {
                             }]} 
                         /> : null }
                     </div>
-                    <div>
+                    <div className="py-5">
+                        <h1>Under Review</h1>
+                        { Array.isArray(this.state.reviews) ?
+                        <ReactTable
+                            defaultPageSize={5}
+                            showPageSizeOptions={false}
+                            className="-highlight -striped mt-4"
+                            data= {this.state.reviews}
+                            columns= {[{
+                                Header: "Title",
+                                accessor: "title",
+                                className: "pl-3",
+                                minWidth: 200
+                            }, {
+                                Header: "Status",
+                                accessor: "status",
+                                className: "pl-3",
+                                maxWidth: 100
+                            }, {
+                                Header: "Submitted At",
+                                accessor: "submitted",
+                                maxWidth: 200,
+                                className: "text-center text-muted",
+                                Cell: row => {
+                                    if(row.value){
+                                        return moment(row.value).format('MMM Do YYYY, h:mm a');
+                                    }else{
+                                        return "a long time ago";
+                                    }
+                                }
+                            }, {
+                                Header: "Remove",
+                                className: "text-center",
+                                accessor: "id",
+                                maxWidth: 100,
+                                Cell: row => {
+                                    return <button className="btn btn-danger" onClick={() => this.onDeleteDiagram(row.value)}>Cancel</button>
+                                },
+                                sortable: false
+                            }]} 
+                        /> : null }
                     </div>
                 </Container>
             </div>

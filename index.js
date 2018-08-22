@@ -116,6 +116,7 @@ app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
 
 app.post('/review/:id', ensureLoggedIn(), Review.setReview);
+app.get('/reviews', ensureLoggedIn(), Review.getReviews);
 
 // TO REMOVE SOON
 app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);

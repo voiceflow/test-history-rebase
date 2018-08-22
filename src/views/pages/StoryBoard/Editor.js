@@ -80,7 +80,12 @@ class Editor extends Component {
                     <Story node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
 
                     {this.state.node.extras.type === 'choice' ?  
-                    <Choice node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
+                    <Choice 
+                        node={this.state.node} 
+                        voices={this.state.voices} 
+                        onUpdate={() => this.setState({}, this.props.onUpdate)}
+                        repaint={this.props.repaint}
+                    /> : null}
 
                     {this.state.node.extras.type === 'line' ? 
                     <Line node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}

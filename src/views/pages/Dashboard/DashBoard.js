@@ -15,7 +15,8 @@ class DashBoard extends Component {
         this.state = {
             diagrams: [],
             loading: false,
-            error: false
+            error: false,
+            success: false
         }
 
         this.onLoad = this.onLoad.bind(this);
@@ -45,7 +46,6 @@ class DashBoard extends Component {
         this.setState({
             loading_modal: false
         });
-        this.props.history.push('/storyboard');
     }
 
     onDeleteDiagram(id) {
@@ -54,7 +54,7 @@ class DashBoard extends Component {
             error: false
         });
         $.ajax({
-            url: '/diagrams/'+id,
+            url: '/diagram/'+id,
             type: 'DELETE',
             success: () => {
                 this.onLoad() 
@@ -65,10 +65,27 @@ class DashBoard extends Component {
         });
     }
 
+    onSubmitDiagram(id) {
+        this.setState({
+            loading: true,
+            error: false
+        });
+        $.ajax({
+            url: '/review/'+id,
+            type: 'POST',
+            success: () => {
+                this.setState({ success: "Your story has been successfully sent for review!" });
+            },
+            error: () => {
+                this.setState({ error: "Unable to Submit" });
+            }
+        });
+    }
+
     render() {
         return (
             <div className='App padding'>
-                <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal}/>
+                <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
                 <Container className="mt-5">
                     <div>
                         <h1>My Drafts</h1>
@@ -119,7 +136,7 @@ class DashBoard extends Component {
                                 accessor: "id",
                                 maxWidth: 90,
                                 Cell: row => {
-                                    return <button className="btn btn-outline-primary" onClick={() => this.onFeatureStaging(row.value)}>Submit</button>
+                                    return <button className="btn btn-outline-primary" onClick={() => this.onSubmitDiagram(row.value)}>Submit</button>
                                 },
                                 sortable: false
                             }]} 

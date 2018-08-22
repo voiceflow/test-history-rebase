@@ -233,7 +233,7 @@ class StoryBoard extends Component {
                     }
                     var links = model.getLinks();
                     for (let key in links) {
-                        links[key].setColor("#AAA");
+                        links[key].setColor("#CCC");
                     }
                     engine.setDiagramModel(model);
                     let title = diagram.title ? diagram.title : "Unnamed Story";

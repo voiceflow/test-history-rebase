@@ -41,7 +41,7 @@ class NavBar extends Component {
 
   componentDidMount() {
       let page_name = getPage(this.props.location.pathname);
-      console.log(this.state.user);
+      // console.log(this.state.user);
       if(!no_show.includes(page_name)){
         AuthenticationService.check((err, res) => {
             if(err && this.props.history){

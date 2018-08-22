@@ -10,14 +10,20 @@ import TitleBar from './TitleBar';
 import LoadingModal from './../../components/Modals/LoadingModal';
 import { Prompt } from 'react-router'
 
-import { BlockNodeModel } from './SRD/BlockNodeModel';
+import { BlockNodeModel } from './SRD/models/BlockNodeModel';
+import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
+import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
+import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
 class StoryBoard extends Component {
     constructor(props) {
         super(props);
 
         var engine = new SRD.DiagramEngine();
-        engine.installDefaultFactories();
+        engine.registerLabelFactory(new SRD.DefaultLabelFactory());
+        engine.registerNodeFactory(new BlockNodeFactory());
+        engine.registerLinkFactory(new BlockLinkFactory());
+        engine.registerPortFactory(new BlockPortFactory());
 
         var model = new SRD.DiagramModel();
 

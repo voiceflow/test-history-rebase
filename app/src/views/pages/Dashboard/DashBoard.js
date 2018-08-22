@@ -123,7 +123,7 @@ class DashBoard extends Component {
                         </nav>
                     </div>
                     <Col>
-                        <div className="Container my-5">
+                        <div className="Container my-5 px-md-3 px-lg-5">
                             <div id="diagrams">
                                 <h1>My Drafts</h1>
                                 { Array.isArray(this.state.diagrams) ?

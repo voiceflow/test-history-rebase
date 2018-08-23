@@ -254,11 +254,11 @@ class DashBoard extends Component {
                                         Header: "Status",
                                         accessor: "status",
                                         className: "pl-3 text-center",
-                                        maxWidth: 140,
+                                        maxWidth: 200,
                                         Cell: row => {
                                             if(row.value === "submitted"){
                                                 return (<span className="text-muted"><small><i className="fas fa-circle text-warning mr-1"></i></small>  Submitted</span>);
-                                            }else if(row.value === "reviewing"){
+                                            }else if(row.value === "under_review"){
                                                 return (<span className="text-muted"><small><i className="fas fa-circle text-primary mr-1"></i></small>  Under Review</span>);
                                             }else if(row.value === "published"){
                                                 return (<span className="text-muted"><small><i className="fas fa-circle text-success mr-1"></i></small>  Published</span>);

@@ -46,7 +46,8 @@
     width: 400px;
     line-height: 49px;
     color: #AAA;
-    padding-left: 10px;
+    padding-right: 28px;
+    text-align: right;
 }
 
 .TitleBar input:focus {

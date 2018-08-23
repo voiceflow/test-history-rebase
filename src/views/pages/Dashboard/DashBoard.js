@@ -10,6 +10,7 @@ import './DashBoard.css';
 import $ from 'jquery';
 
 import LoadingModal from './../../components/Modals/LoadingModal';
+import ConfirmModal from './../../components/Modals/ConfirmModal';
 
 class DashBoard extends Component {
     constructor(props) {
@@ -20,10 +21,12 @@ class DashBoard extends Component {
             reviews: [],
             loading: false,
             error: false,
-            success: false
+            success: false,
+            confirm: false
         }
 
         this.onLoad = this.onLoad.bind(this);
+        this.toggleConfirm = this.toggleConfirm.bind(this);
         this.onLoadReviews = this.onLoadReviews.bind(this);
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
@@ -48,15 +51,17 @@ class DashBoard extends Component {
         });
     }
 
-    onLoadReviews() {
+    onLoadReviews(stop_load) {
         $.ajax({
             url: '/reviews',
             type: 'GET',
             success: data => {
                 this.setState({
-                    reviews: data,
-                    loading: false
+                    reviews: data
                 });
+                if(stop_load){
+                    this.setState({ loading: false });
+                }
             },
             error: () => {
                 window.alert('Error2');
@@ -72,25 +77,67 @@ class DashBoard extends Component {
 
     onDeleteDiagram(id) {
         this.setState({
-            loading: true,
-            error: false
-        });
-        $.ajax({
-            url: '/diagram/'+id,
-            type: 'DELETE',
-            success: () => {
-                this.onLoad() 
-            },
-            error: () => {
-                this.setState({ error: "Unable to Delete" });
+            confirm: {
+                text: "Are you sure you want to delete this diagram? Diagrams can not be recovered",
+                confirm: () => {
+                    this.setState({
+                        loading: true,
+                        error: false,
+                        success: false,
+                        confirm: false
+                    });
+                    $.ajax({
+                        url: '/diagram/'+id,
+                        type: 'DELETE',
+                        success: () => {
+                            this.onLoad() 
+                        },
+                        error: (e) => {
+                            this.setState({ error: "Unable to Delete" });
+                        }
+                    });
+                }
             }
         });
     }
 
+    onDeleteReview(id) {
+        this.setState({
+            confirm: {
+                text: "Are you sure you want to remove this Review?",
+                confirm: () => {
+                    this.setState({
+                        error: false,
+                        success: false,
+                        loading: true,
+                        confirm: false
+                    });
+                    $.ajax({
+                        url: '/review/'+id,
+                        type: 'DELETE',
+                        success: () => {
+                            this.onLoadReviews(true) 
+                        },
+                        error: (e) => {
+                            console.log(e);
+                            if(e.status === 409){
+                                this.setState({ error: "Can't remove while being reviewed" });
+                            }else{
+                                this.setState({ error: "Unable to Remove" });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
     onSubmitDiagram(id) {
         this.setState({
             loading: true,
-            error: false
+            error: false,
+            success: false
         });
         $.ajax({
             url: '/review/'+id,
@@ -99,16 +146,28 @@ class DashBoard extends Component {
                 this.setState({ success: "Your story has been successfully sent for review!" });
                 this.onLoadReviews();
             },
-            error: () => {
-                this.setState({ error: "Unable to Submit" });
+            error: (e) => {
+                console.log(e);
+                if(e.status === 409){
+                    this.setState({ error: "Already Submitted for Review" });
+                }else{
+                    this.setState({ error: "Unable to Submit" });
+                }
             }
+        });
+    }
+
+    toggleConfirm() {
+        this.setState({
+            confirm: false
         });
     }
 
     render() {
         return (
-            <div className='App padding'>
+            <div className='Window'>
                 <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
+                <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
                 <Row className="mx-0 w-100">
                     <div id="dash-nav-container" className="d-none d-lg-block">
                         <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
@@ -129,7 +188,6 @@ class DashBoard extends Component {
                                 { Array.isArray(this.state.diagrams) ?
                                 <ReactTable
                                     defaultPageSize={5}
-                                    showPageSizeOptions={false}
                                     className="-highlight -striped mt-4"
                                     data= {this.state.diagrams}
                                     columns= {[{
@@ -195,8 +253,21 @@ class DashBoard extends Component {
                                     }, {
                                         Header: "Status",
                                         accessor: "status",
-                                        className: "pl-3",
-                                        maxWidth: 100
+                                        className: "pl-3 text-center",
+                                        maxWidth: 140,
+                                        Cell: row => {
+                                            if(row.value === "submitted"){
+                                                return (<span className="text-muted"><small><i className="fas fa-circle text-warning mr-1"></i></small>  Submitted</span>);
+                                            }else if(row.value === "reviewing"){
+                                                return (<span className="text-muted"><small><i className="fas fa-circle text-primary mr-1"></i></small>  Under Review</span>);
+                                            }else if(row.value === "published"){
+                                                return (<span className="text-muted"><small><i className="fas fa-circle text-success mr-1"></i></small>  Published</span>);
+                                            }else if(row.value === "declined"){
+                                                return (<span className="text-muted"><small><i className="fas fa-circle text-danger mr-1"></i></small>  Declined</span>);
+                                            }else{
+                                                return (<span className="text-muted"><small><i className="fas fa-circle text-warning mr-1"></i></small>  Error</span>);
+                                            }
+                                        }
                                     }, {
                                         Header: "Submitted At",
                                         accessor: "submitted",
@@ -215,7 +286,7 @@ class DashBoard extends Component {
                                         accessor: "id",
                                         maxWidth: 100,
                                         Cell: row => {
-                                            return <button className="btn btn-danger" onClick={() => this.onDeleteDiagram(row.value)}>Cancel</button>
+                                            return <button className="btn btn-danger" onClick={() => this.onDeleteReview(row.value)}>Cancel</button>
                                         },
                                         sortable: false
                                     }]} 

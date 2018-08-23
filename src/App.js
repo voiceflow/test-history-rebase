@@ -44,6 +44,7 @@ class App extends Component {
             <Route exact path="/signup" name="SignUp" component={Account} />
             <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
             <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
+            <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
             <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
             <PrivateRoute path="/admin" name="Admin" component={Admin} />
             <Route exact path="/" render={() => (

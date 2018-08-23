@@ -51,9 +51,15 @@ class TitleBar extends Component {
                                 }) : null }
                             </DropdownMenu>
                         </UncontrolledDropdown>
-                        <DropdownItem onClick={this.props.onTest}>Test</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem onClick={this.props.onPublish}>Publish</DropdownItem>
+                        {
+                            this.props.admin ? 
+                            <div>
+                                <DropdownItem onClick={this.props.onTest}>Test</DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={this.props.onPublish}>Publish</DropdownItem>
+                            </div>
+                            : null
+                        }
                     </DropdownMenu>
                 </ButtonDropdown>
                 <input

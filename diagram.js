@@ -297,6 +297,9 @@ const publishReview = (req, res) => {
     };
 
     renderStory(params, req, res, () => {
+        if( req.params.env != 'production'){
+            return;
+        }
         let update_params = {
             TableName: 'com.getstoryflow.reviews.staging',
             Key: { id: req.params.id },

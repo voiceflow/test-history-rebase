@@ -120,9 +120,11 @@ app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
+app.post('/publish/review/:env/:id', ensureLoggedIn(), Diagram.publishReview);
 
 app.get('/review/:id', ensureAdmin(), Review.getReview);
 app.post('/review/:id', ensureLoggedIn(), Review.setReview);
+app.post('/review', ensureLoggedIn(), Review.saveReview);
 app.patch('/review/:id', ensureAdmin(), Review.updateReview);
 app.delete('/review/:id', ensureLoggedIn(), Review.deleteReview);
 app.get('/reviews', ensureLoggedIn(), Review.getReviews);

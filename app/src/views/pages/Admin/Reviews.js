@@ -197,45 +197,42 @@ class Reviews extends Component {
                                     className: "pl-3",
                                     minWidth: 200
                                 }, {
-                                    Header: "Status",
-                                    accessor: "status",
-                                    className: "pl-3",
-                                    maxWidth: 140,
-                                    Cell: row => {
-                                        if(row.value === "submitted"){
-                                            return (<span className="text-muted"><small><i className="fas fa-circle text-warning mr-2"></i></small>  Submitted</span>);
-                                        }else if(row.value === "reviewing"){
-                                            return (<span className="text-muted"><small><i className="fas fa-circle text-primary mr-2"></i></small>  Under Review</span>);
-                                        }else if(row.value === "published"){
-                                            return (<span className="text-muted"><small><i className="fas fa-circle text-success mr-2"></i></small>  Published</span>);
-                                        }else if(row.value === "declined"){
-                                            return (<span className="text-muted"><small><i className="fas fa-circle text-warning mr-2"></i></small>  Declined</span>);
-                                        }else{
-                                            return (<span className="text-muted"><small><i className="fas fa-circle text-warning mr-2"></i></small>  Error</span>);
-                                        }
-                                    }
-                                }, {
                                     Header: "Submitted At",
                                     accessor: "submitted",
                                     maxWidth: 200,
                                     className: "text-center text-muted",
                                     Cell: row => {
                                         if(row.value){
-                                            return moment(row.value).format('DD/MM/YY, HH:mm');
+                                            return moment(row.value).format('YYYY MM/DD HH:mm');
                                         }else{
                                             return "unknown";
                                         }
                                     }
                                 }, {
-                                    Header: "Remove",
+                                    Header: "Decline",
                                     className: "text-center",
                                     accessor: "id",
                                     maxWidth: 100,
                                     Cell: row => {
-                                        return <button className="btn btn-danger" onClick={() => this.onDeleteReview(row.value)}>Cancel</button>
+                                        return <button className="btn btn-outline-danger border-none" onClick={() => this.onDeclineReview(row.value)}>Decline</button>
                                     },
                                     sortable: false
-                                }]} 
+                                }, {
+                                    Header: "Review",
+                                    className: "text-center",
+                                    accessor: "id",
+                                    maxWidth: 100,
+                                    Cell: row => {
+                                        return <Link to={"/storyboard/review/" + row.value} className="btn btn-outline-primary border-none">Review</Link>
+                                    },
+                                    sortable: false
+                                }]}
+                                SubComponent={row => {
+                                    let og = row.row._original;
+                                    return (
+                                      <div className="p-2 pl-4"><span className="text-muted">Author - </span> {og.name} | {og.email}</div>
+                                    );
+                                  }}
                             /> : null }
                         </div>
                     </Col>

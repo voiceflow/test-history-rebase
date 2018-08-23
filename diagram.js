@@ -142,21 +142,7 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const publish = (req, res) => {
-    if (!req.user) {
-        res.sendStatus(401);
-
-        return;
-    } else if (!req.user.admin) {
-        res.sendStatus(403);
-
-        return;
-    }
-
-    let params = {
-        TableName: 'com.getstoryflow.diagrams.production',
-        Key: {'id': req.params.id}
-    };
+const renderStory = (params, req, res, success) => {
     docClient.get(params, (err, data) => {
         if (err) {
             console.log(err);
@@ -264,11 +250,70 @@ const publish = (req, res) => {
                         Audio.updateTitles(stories, req.params.env);
                     });
                     res.sendStatus(200);
+                    if(success){
+                        success();
+                    }
                 }
             });
         } else {
             res.sendStatus(404);
         }
+    });
+}
+
+const publish = (req, res) => {
+    if (!req.user || !req.params.id) {
+        res.sendStatus(401);
+
+        return;
+    } else if (!req.user.admin) {
+        res.sendStatus(403);
+
+        return;
+    }
+
+    let params = {
+        TableName: 'com.getstoryflow.diagrams.production',
+        Key: {'id': req.params.id}
+    };
+
+    renderStory(params, req, res);
+};
+
+const publishReview = (req, res) => {
+    if (!req.user || !req.params.id) {
+        res.sendStatus(401);
+
+        return;
+    } else if (!req.user.admin) {
+        res.sendStatus(403);
+
+        return;
+    }
+
+    let params = {
+        TableName: 'com.getstoryflow.reviews.staging',
+        Key: {'id': req.params.id}
+    };
+
+    renderStory(params, req, res, () => {
+        let update_params = {
+            TableName: 'com.getstoryflow.reviews.staging',
+            Key: { id: req.params.id },
+            UpdateExpression: "set #status = :s",
+            ExpressionAttributeValues:{
+                ":s" : "published"
+            },
+            ExpressionAttributeNames:{
+                "#status": "status"
+            }
+        };
+
+        docClient.update(update_params, function(err, data) {
+            if (err) {
+                console.log(err);
+            }
+        });
     });
 };
 
@@ -277,3 +322,4 @@ exports.getDiagram = getDiagram;
 exports.deleteDiagram = deleteDiagram;
 exports.setDiagram = setDiagram;
 exports.publish = publish;
+exports.publishReview = publishReview;

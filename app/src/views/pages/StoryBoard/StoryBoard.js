@@ -160,11 +160,11 @@ class StoryBoard extends Component {
             }
 
             $.ajax({
-                url: '/diagram',
+                url: this.state.review ? '/review' : '/diagram',
                 type: 'POST',
                 data: diagram,
                 success: () => {
-                    this.onLoad();
+                    // this.onLoad();
                     this.setState({
                         saving: false,
                         saved: true,
@@ -206,7 +206,7 @@ class StoryBoard extends Component {
     onTest() {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
-            url: '/publish/staging/'+id,
+            url: this.state.review ? ('/publish/review/staging/'+id) : ('/publish/staging/'+id),
             type: 'POST',
             success: () => {window.alert('Success');},
             error: (e) => {
@@ -223,7 +223,7 @@ class StoryBoard extends Component {
         var id = this.state.engine.getDiagramModel().getID();
         if (window.confirm('Are you ready to publish?')) {
             $.ajax({
-                url: '/publish/production/'+id,
+                url: this.state.review ? ('/publish/review/production/'+id) : ('/publish/production/'+id),
                 type: 'POST',
                 success: () => {window.alert('Success');},
                 error: (e) => {
@@ -265,12 +265,21 @@ class StoryBoard extends Component {
             engine.setDiagramModel(model);
             let title = diagram.title ? diagram.title : "Unnamed Story";
 
+            if(!review){
+                review = false;
+            }else{
+                review = {
+                    name: diagram.name,
+                    email: diagram.email
+                }
+            }
+
             this.setState({
                 engine: engine,
                 title: title,
                 last_save: diagram.last_save,
                 loading_modal: false,
-                review: !!review
+                review: review
             });
 
             this.setState({saved: true});
@@ -322,7 +331,7 @@ class StoryBoard extends Component {
 
     render() {
         return (
-            <div className='App'>
+            <div className={'App' + (this.state.review ? " review" : "")} >
                 <Prompt
                     when={!this.state.saved}
                     message={location =>
@@ -352,6 +361,15 @@ class StoryBoard extends Component {
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                 />
+                { this.state.review ? 
+                    <div id="review">
+                        <h5 className="mb-0">Review Mode</h5>
+                        <small>
+                        <i>{this.state.review.name}</i><br/>
+                        <i>{this.state.review.email}</i>
+                        </small>
+                    </div> : null
+                }
                 <div
                     className="diagram-layer"
                     onDrop={event => {

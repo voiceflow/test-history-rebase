@@ -93,7 +93,7 @@ class NavBar extends Component {
         no_show.includes(page_name) ? null :
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
-            <NavbarBrand href="/">
+            <NavbarBrand href="https://www.getstoryflow.com" target="_blank">
               <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
                 height="25"
               />

@@ -1,4 +1,11 @@
 div.rt-tr {
   align-items: center;
+}
+
+div.rt-td {
+  white-space: unset !important;
+}
+
+div.rt-tr-group {
   min-height: 51.59px;
 }

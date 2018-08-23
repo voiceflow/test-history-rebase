@@ -5,3 +5,7 @@ body {
 html, body, #root, #body{
   height: 100%;
 }
+
+.border-none {
+	border: none !important;
+}

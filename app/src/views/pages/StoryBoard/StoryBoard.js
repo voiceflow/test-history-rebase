@@ -15,6 +15,8 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
+import AuthenticationService from "./../../../services/Authentication";
+
 class StoryBoard extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +59,9 @@ class StoryBoard extends Component {
             error_modal: false,
             saving: false,
             saved: true,
-            last_save: false
+            last_save: false,
+            admin: false,
+            review: false
         };
 
         this.unsave = this.unsave.bind(this);
@@ -70,6 +74,15 @@ class StoryBoard extends Component {
         this.onLoad = this.onLoad.bind(this);
         this.repaint = this.repaint.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
+        this.loadDiagram = this.loadDiagram.bind(this);
+
+        AuthenticationService.check((err, res) => {
+            if(err && this.props.history){
+              this.props.history.push('/login');
+            }else{
+              this.setState({ admin: res.admin });
+            }
+        });
     }
 
     componentDidMount() {
@@ -78,6 +91,8 @@ class StoryBoard extends Component {
         
         if(split.length === 3){
             this.onLoadId(split[2], true);
+        }else if(split.length === 4 && split[2] === 'review'){
+            this.onLoadReview(split[3]);
         }
         
         $('.srd-node-layer').click(() => {
@@ -222,6 +237,48 @@ class StoryBoard extends Component {
         }
     }
 
+    loadDiagram(diagram, review) {
+        var engine = this.state.engine;
+        var model = new SRD.DiagramModel();
+
+        let diagram_json = false;
+        try {
+            diagram_json = JSON.parse(diagram.data);
+        } catch (e) {
+            console.log(e);
+        }
+        if(diagram_json){
+            model.deSerializeDiagram(diagram_json, engine);
+            model.addListener({nodesUpdated: this.unsave});
+            model.addListener({linksUpdated: this.unsave});
+            var nodes = model.getNodes();
+            for (let key in nodes) {
+                if (nodes[key].extras.type === 'story') {
+                    nodes[key].clearListeners();
+                    nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                }
+            }
+            var links = model.getLinks();
+            for (let key in links) {
+                links[key].setColor("#CCC");
+            }
+            engine.setDiagramModel(model);
+            let title = diagram.title ? diagram.title : "Unnamed Story";
+
+            this.setState({
+                engine: engine,
+                title: title,
+                last_save: diagram.last_save,
+                loading_modal: false,
+                review: !!review
+            });
+
+            this.setState({saved: true});
+        }else{
+            this.setState({error_modal: "Could Not Open Project - Corrupted File"});
+        }
+    }
+
     onLoadId(id, url) {
         if(!!!url){
             this.props.history.push('/storyboard/' + id);
@@ -231,44 +288,20 @@ class StoryBoard extends Component {
             url: '/diagram/'+id,
             type: 'GET',
             success: diagram => {
-                var engine = this.state.engine;
-                var model = new SRD.DiagramModel();
+                this.loadDiagram(diagram);
+            },
+            error: () => {this.setState({error_modal: "Could Not Retrieve Project"});}
+        });
+    }
 
-                let diagram_json = false;
-                try {
-                    diagram_json = JSON.parse(diagram.data);
-                } catch (e) {
-                    console.log(e);
-                }
-                if(diagram_json){
-                    model.deSerializeDiagram(JSON.parse(diagram.data), engine);
-                    model.addListener({nodesUpdated: this.unsave});
-                    model.addListener({linksUpdated: this.unsave});
-                    var nodes = model.getNodes();
-                    for (let key in nodes) {
-                        if (nodes[key].extras.type === 'story') {
-                            nodes[key].clearListeners();
-                            nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
-                        }
-                    }
-                    var links = model.getLinks();
-                    for (let key in links) {
-                        links[key].setColor("#CCC");
-                    }
-                    engine.setDiagramModel(model);
-                    let title = diagram.title ? diagram.title : "Unnamed Story";
-
-                    this.setState({
-                        engine: engine,
-                        title: title,
-                        last_save: diagram.last_save,
-                        loading_modal: false,
-                    });
-
-                    this.setState({saved: true});
-                }else{
-                    this.setState({error_modal: "Could Not Open Project - Corrupted File"});
-                }
+    onLoadReview(id) {
+        // this.props.history.push('/storyboard/' + id);
+        this.setState({loading_modal: true, error_modal: false});
+        $.ajax({
+            url: '/review/'+id,
+            type: 'GET',
+            success: diagram => {
+                this.loadDiagram(diagram, true);
             },
             error: () => {this.setState({error_modal: "Could Not Retrieve Project"});}
         });
@@ -317,6 +350,7 @@ class StoryBoard extends Component {
                     saving={this.state.saving}
                     saved={this.state.saved}
                     last_save={this.state.last_save}
+                    admin={this.state.admin}
                 />
                 <div
                     className="diagram-layer"

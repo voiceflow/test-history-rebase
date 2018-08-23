@@ -102,6 +102,12 @@ const ensureLoggedIn = () => {
         else res.sendStatus(401);
     }
 }
+const ensureAdmin = () => {
+    return (req, res, next) => {
+        if(req.user && req.user.admin) next();
+        else res.sendStatus(401);
+    }
+}
 const ensureLoggedOut = () => {
     return (req, res, next) => {
         if(req.user) res.redirect('/');
@@ -115,7 +121,10 @@ app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
 
+app.get('/review/:id', ensureAdmin(), Review.getReview);
 app.post('/review/:id', ensureLoggedIn(), Review.setReview);
+app.patch('/review/:id', ensureAdmin(), Review.updateReview);
+app.delete('/review/:id', ensureLoggedIn(), Review.deleteReview);
 app.get('/reviews', ensureLoggedIn(), Review.getReviews);
 
 // TO REMOVE SOON
@@ -124,8 +133,8 @@ app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
 /* unRESTful STUFF TO REMOVE */
 
 app.get('/stories/:env', Story.getStories);
-app.post('/feature/:env/:id', ensureLoggedIn(), Story.featureStory);
-app.delete('/stories/:env/:id', ensureLoggedIn(), Story.deleteStory);
+app.post('/feature/:env/:id', ensureAdmin(), Story.featureStory);
+app.delete('/stories/:env/:id', ensureAdmin(), Story.deleteStory);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 

@@ -218,36 +218,42 @@ const featureStory = (req, res) => {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else {
+            let not_featured = true;
             data.Items.forEach(story => {
-                if (story.id !== req.params.id) {
-                    let uParams = {
-                        TableName: 'com.getstoryflow.stories.'+req.params.env,
-                        Key: {'id': story.id},
-                        UpdateExpression: 'set featured = :false',
-                        ExpressionAttributeValues: {':false': false}
-                    };
-                    docClient.update(uParams, err => {
-                        if (err) {
-                            console.log(err);
-                            res.sendStatus(err.statusCode);
-                        }
-                    });
+                let uParams = {
+                    TableName: 'com.getstoryflow.stories.'+req.params.env,
+                    Key: {'id': story.id},
+                    UpdateExpression: 'set featured = :false',
+                    ExpressionAttributeValues: {':false': false}
+                };
+                docClient.update(uParams, err => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(err.statusCode);
+                    }
+                });
+                if (story.id === req.params.id) {
+                    not_featured = false;
                 }
             });
-            let fParams = {
-                TableName: 'com.getstoryflow.stories.'+req.params.env,
-                Key: {'id': req.params.id},
-                UpdateExpression: 'set featured = :true',
-                ExpressionAttributeValues: {':true': true}
-            };
-            docClient.update(fParams, err => {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(err.statusCode);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
+            if(not_featured){
+                let fParams = {
+                    TableName: 'com.getstoryflow.stories.'+req.params.env,
+                    Key: {'id': req.params.id},
+                    UpdateExpression: 'set featured = :true',
+                    ExpressionAttributeValues: {':true': true}
+                };
+                docClient.update(fParams, err => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(err.statusCode);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }else{
+                res.sendStatus(200);
+            }
         }
     });
 };

@@ -182,7 +182,7 @@ const deleteReview = (req, res) => {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
-            if(data.Item.status !== "reviewing" || req.user.admin){
+            if(data.Item.status !== "under_review" || req.user.admin){
                 docClient.delete(params, err => {
                     if (err) {
                         console.log(err);
@@ -192,7 +192,7 @@ const deleteReview = (req, res) => {
                     }
                 });
             } else {
-                res.status(409);
+                res.sendStatus(409);
             }
         }else{
             res.sendStatus(404);

@@ -71,7 +71,7 @@ class MultiLine extends Component {
 
         let lines = [];
         this.state.node.extras.lines.forEach((line) => {
-            if(line.audio && line.trim().length && line.audio !== ''){
+            if(line.audio && line.audio !== ''){
                 lines.push(line.audio);
             }
         });

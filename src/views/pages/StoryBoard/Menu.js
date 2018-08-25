@@ -14,7 +14,11 @@ class Menu extends Component {
                         <h3 className='block-title text-muted'><i className="fas fa-cube"></i></h3>
                         <hr className='mt-1'/>
                         {this.props.items.map((item, i) => {
-                            return <MenuItem key={i} item={item} />;
+                            if(item === 'hr'){
+                                return <hr key={i}/>;
+                            }else{
+                                return <MenuItem key={i} item={item} />;
+                            }
                         })}
                     </div>
                 </div>

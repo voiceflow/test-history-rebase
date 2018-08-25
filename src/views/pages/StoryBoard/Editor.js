@@ -8,6 +8,7 @@ import Ending from './Editors/Ending';
 import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
 import Story from './Editors/Story';
+import RandomBlock from './Editors/Random';
 
 class Editor extends Component {
     constructor(props) {
@@ -112,6 +113,9 @@ class Editor extends Component {
 
                     {this.state.node.extras.type === 'listen' ? 
                     <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
+
+                    {this.state.node.extras.type === 'random' ? 
+                    <RandomBlock node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} /> : null}
 
                     {this.state.node.extras.type === 'retry' ? 
                     <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}

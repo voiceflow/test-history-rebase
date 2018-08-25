@@ -84,8 +84,7 @@ class Choice extends Component {
         var node = this.state.node;
         for (var name in node.getPorts()) {
             var port = node.getPort(name);
-            let links = port.getLinks();
-            console.log(links);
+
             if (port.label === node.extras.choices.length) {
                 node.removePort(port);
             }

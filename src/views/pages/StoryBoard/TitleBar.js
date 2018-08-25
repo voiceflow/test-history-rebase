@@ -66,7 +66,7 @@ class TitleBar extends Component {
                     name="story"
                     onChange={this.props.onUpdateTitle}
                     value={this.props.title}
-                    placeholder="Story Title"
+                    placeholder="Project Title"
                 />
                 <div className="status">
                     {this.props.saving ?

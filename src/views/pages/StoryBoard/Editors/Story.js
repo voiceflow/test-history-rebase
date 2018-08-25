@@ -269,7 +269,7 @@ class Story extends Component {
                 <hr/>
                 <div>
                     <label>
-                        Choice Audio
+                        Error Audio
                     </label>
                     {this.state.node.extras.prompt.length > 0 ? 
                     <div className="audio-box">

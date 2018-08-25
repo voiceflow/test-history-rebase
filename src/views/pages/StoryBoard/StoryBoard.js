@@ -34,7 +34,7 @@ class StoryBoard extends Component {
         if(split.length === 2 && split[1].toLowerCase() === "storyboard"){
             var model = new SRD.DiagramModel();
 
-            var node = new BlockNodeModel('New Story', 'white');
+            var node = new BlockNodeModel('Start', '#FBE9E7');
             node.addOutPort(' ').setMaximumLinks(1);
             node.extras = {
                 audio: '',
@@ -362,7 +362,9 @@ class StoryBoard extends Component {
                 <Menu items={[
                     { text: 'Choice', type: 'choicenew', color: '#E8F5E9', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'multiline', color: '#E1F5FE', menuColor: '#29B6F6' },
-                    { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' }
+                    { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
+                    'hr',
+                    { text: 'Random', type: 'random', color: '#FFFDE7', menuColor: '#FBC02D' }
                 ]} />
                 <TitleBar 
                     title={this.state.title} 
@@ -430,6 +432,12 @@ class StoryBoard extends Component {
                                 audio: '',
                                 audioText: '',
                                 audioVoice: ''
+                            };
+                        } if (data.type === 'random') {
+                            node.addInPort(" ");
+                            node.addOutPort(1).setMaximumLinks(1);
+                            node.extras = {
+                                paths: 1
                             };
                         }
                         node.extras.type = data.type;

@@ -93,7 +93,7 @@ const setDiagram = (req, res) => {
     }
 
     if (diagram.title.trim() === "" || !diagram.title.trim()){
-        diagram.title = "Unnamed Story";
+        diagram.title = "Unnamed Project";
     }
 
     diagram.last_save = Date.now();
@@ -185,6 +185,13 @@ const renderStory = (params, req, res, success) => {
                     story.lines[node.id] = {
                         audio: node.extras.audio,
                         nextId: links[nextLink]
+                    };
+                } else if (node.extras.type === 'random') {
+                    let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => links[port.links[0]]);
+                    story.lines[node.id] = {
+                        random: true,
+                        nextIds: list,
+                        nextId: list.length > 0 ? list[0] : null
                     };
                 } else if (node.extras.type === 'choice') {
                     story.lines[node.id] = {

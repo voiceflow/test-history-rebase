@@ -27,6 +27,10 @@ export class BlockPortModel extends PortModel {
 		});
 	}
 
+	setLabel(label) {
+		this.label = label;
+	}
+
 	link(port: PortModel): LinkModel {
 		let link = this.createLinkModel();
 		link.setSourcePort(this);
@@ -43,20 +47,6 @@ export class BlockPortModel extends PortModel {
 
 	removeLink(link: LinkModel) {
 		delete this.links[link.getID()];
-	}
-
-	fuckLinkModel(): LinkModel | null {
-		if (_.isFinite(this.maximumLinks)) {
-			let numberOfLinks: number = _.size(this.links);
-			// console.log("MAX: " + this.maximumLinks);
-			// console.log(numberOfLinks);
-			if (this.maximumLinks === 1 && numberOfLinks >= 1) {
-				return _.values(this.links)[0];
-			} else if (numberOfLinks >= this.maximumLinks) {
-				return null;
-			}
-		}
-		return null;
 	}
 
 	createLinkModel(): LinkModel {

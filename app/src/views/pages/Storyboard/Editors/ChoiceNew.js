@@ -67,7 +67,7 @@ class ChoiceNew extends Component {
         node.extras.inputs.push('');
         let test = node.addOutPort(node.extras.choices.length);
         test.setMaximumLinks(1);
-        console.log(test);
+
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -84,10 +84,10 @@ class ChoiceNew extends Component {
         var node = this.state.node;
         for (var name in node.getPorts()) {
             var port = node.getPort(name);
-            let links = port.getLinks();
-            console.log(links);
+
             if (port.label === node.extras.choices.length) {
                 node.removePort(port);
+                break;
             }
         }
         node.extras.choices.splice(i, 1);

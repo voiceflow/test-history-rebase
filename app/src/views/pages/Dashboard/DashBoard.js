@@ -243,7 +243,7 @@ class DashBoard extends Component {
                                 /> : null }
                             </div>
                             <div id="reviews" className="py-5">
-                                <h1>Under Review</h1>
+                                <h1>Under Review/Published</h1>
                                 { Array.isArray(this.state.reviews) ?
                                 <ReactTable
                                     defaultPageSize={5}

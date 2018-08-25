@@ -67,14 +67,19 @@ class MultiLine extends Component {
     }
 
     concat(){
-        this.setState({loading: true});
-
         let lines = [];
         this.state.node.extras.lines.forEach((line) => {
             if(line.audio && line.audio !== ''){
                 lines.push(line.audio);
             }
         });
+
+        if(lines.length <= 1){
+            return;
+        }
+
+        this.setState({loading: true});
+
 
         $.ajax({
             url: '/concat',
@@ -132,7 +137,7 @@ class MultiLine extends Component {
                         newAudio={this.handleNewAudio}
                     />
                 })}
-                { (this.state.node.extras.lines.length < 5) ? <div className="mt-3"><button className="btn btn-outline-secondary btn-block" onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div> : null}
+                <div className="mt-3"><button className="btn btn-outline-secondary btn-block" onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div>
             </div>
         );
     }

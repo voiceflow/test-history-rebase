@@ -25,7 +25,9 @@ class Reviews extends Component {
         this.onLoadReviews = this.onLoadReviews.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.onDeclineReview = this.onDeclineReview.bind(this);
+    }
 
+    componentDidMount() {
         this.onLoadReviews();
     }
 
@@ -33,31 +35,32 @@ class Reviews extends Component {
         this.setState({
             loading: true,
             error: false
-        });
-        $.ajax({
-            url: '/reviews',
-            type: 'GET',
-            success: data => {
-                let reviews = [];
-                let under_reviews = [];
-                data.forEach((review) => {
-                    if(review.status==="submitted"){
-                        reviews.push(review);
-                    }else if(review.status==="under_review"){
-                        under_reviews.push(review);
-                    }
-                })
-                this.setState({
-                    loading: false,
-                    reviews: reviews,
-                    under_reviews: under_reviews
-                });
-            },
-            error: () => {
-                this.setState({
-                    error: "Can't load reviews"
-                });
-            }
+        }, () => {
+            $.ajax({
+                url: '/reviews',
+                type: 'GET',
+                success: data => {
+                    let reviews = [];
+                    let under_reviews = [];
+                    data.forEach((review) => {
+                        if(review.status==="submitted"){
+                            reviews.push(review);
+                        }else if(review.status==="under_review"){
+                            under_reviews.push(review);
+                        }
+                    })
+                    this.setState({
+                        loading: false,
+                        reviews: reviews,
+                        under_reviews: under_reviews
+                    });
+                },
+                error: () => {
+                    this.setState({
+                        error: "Can't load reviews"
+                    });
+                }
+            });
         });
     }
 

@@ -27,48 +27,67 @@ class StoryBoard extends Component {
         engine.registerLinkFactory(new BlockLinkFactory());
         engine.registerPortFactory(new BlockPortFactory());
 
-        var model = new SRD.DiagramModel();
-
-        var node = new BlockNodeModel('New Story', 'white');
-        node.addOutPort(' ').setMaximumLinks(1);
-        node.extras = {
-            audio: '',
-            audioText: '',
-            audioVoice: '',
-            preview: '',
-            previewText: '',
-            previewVoice: '',
-            prompt: '',
-            promptText: '',
-            promptVoice: ''
-        };
-        node.extras.type = 'story';
-        node.addListener({ entityRemoved: e => {e.stopPropagation();} });
-        node.setPosition($(window).width()/3-32, $(window).height()/2-21);
-        node.setSelected();
-        model.addNode(node);
-        engine.setDiagramModel(model);
-
-        this.state = {
-            engine: engine,
-            selected: node,
-            open: true,
-            diagrams: [],
-            title: "",
-            loading_modal: false,
-            error_modal: false,
-            saving: false,
-            saved: true,
-            last_save: false,
-            admin: false,
-            review: false
-        };
+        let split = this.props.location.pathname.split('/');
 
         this.unsave = this.unsave.bind(this);
-
-        model.addListener({nodesUpdated: this.unsave});
-        model.addListener({linksUpdated: this.unsave});
         
+        if(split.length === 2 && split[1].toLowerCase() === "storyboard"){
+            var model = new SRD.DiagramModel();
+
+            var node = new BlockNodeModel('New Story', 'white');
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                audio: '',
+                audioText: '',
+                audioVoice: '',
+                preview: '',
+                previewText: '',
+                previewVoice: '',
+                prompt: '',
+                promptText: '',
+                promptVoice: ''
+            };
+            node.extras.type = 'story';
+            node.addListener({ entityRemoved: e => {e.stopPropagation();} });
+            node.setPosition($(window).width()/3-32, $(window).height()/2-21);
+            node.setSelected();
+            model.addNode(node);
+            engine.setDiagramModel(model);
+
+            this.state = {
+                engine: engine,
+                selected: node,
+                open: true,
+                diagrams: [],
+                title: "",
+                loading_modal: false,
+                error_modal: false,
+                saving: false,
+                saved: true,
+                last_save: false,
+                admin: false,
+                review: false
+            };
+
+            model.addListener({nodesUpdated: this.unsave});
+            model.addListener({linksUpdated: this.unsave});
+        }else{
+            this.state = {
+                engine: engine,
+                selected: null,
+                open: false,
+                diagrams: [],
+                title: "",
+                loading_modal: false,
+                error_modal: false,
+                saving: false,
+                saved: true,
+                last_save: false,
+                admin: false,
+                review: false
+            };     
+        }
+
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
 
         this.onLoad = this.onLoad.bind(this);
@@ -275,6 +294,7 @@ class StoryBoard extends Component {
             }
 
             this.setState({
+                open: false,
                 engine: engine,
                 title: title,
                 last_save: diagram.last_save,
@@ -340,12 +360,9 @@ class StoryBoard extends Component {
                 ></Prompt>
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 <Menu items={[
-                    { text: 'Choice', type: 'choice', color: '#E8F5E9', menuColor: '#66BB6A' },
-                    { text: 'Line', type: 'line', color: '#E1F5FE', menuColor: '#29B6F6' },
-                    { text: 'Listen', type: 'listen', color: '#FFFDE7', menuColor: '#FBC02D' },
-                    { text: 'Retry', type: 'retry', color: '#FFF3E0', menuColor: '#FFA726' },
-                    { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
-                    { text: 'Comment', type: 'comment', color: 'rgba(255,255,255,0.5)', menuColor: '#BDBDBD' }
+                    { text: 'Choice', type: 'choicenew', color: '#E8F5E9', menuColor: '#66BB6A' },
+                    { text: 'Line', type: 'multiline', color: '#E1F5FE', menuColor: '#29B6F6' },
+                    { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' }
                 ]} />
                 <TitleBar 
                     title={this.state.title} 
@@ -380,7 +397,7 @@ class StoryBoard extends Component {
                             return;
                         }
                         var node = new BlockNodeModel('New '+data.text, data.color);
-                        if (data.type === 'choice') {
+                        if (data.type === 'choicenew') {
                             node.addInPort(' ');
                             node.addOutPort('else').setMaximumLinks(1);
                             node.extras = {
@@ -393,32 +410,19 @@ class StoryBoard extends Component {
                                 choices: [],
                                 inputs: []
                             };
-                        } else if (data.type === 'line') {
+                        } else if (data.type === 'multiline') {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
-                                audio: '',
-                                audioText: '',
-                                audioVoice: ''
-                            };
-                        } else if (data.type === 'listen') {
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                audio: '',
-                                audioText: '',
-                                audioVoice: '',
-                                prompt: '',
-                                promptText: '',
-                                promptVoice: ''
-                            };
-                        } else if (data.type === 'retry') {
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                audio: '',
-                                audioText: '',
-                                audioVoice: ''
+                                audio: false,
+                                lines: [{
+                                    textCollapse: false,
+                                    collapse: true,
+                                    text: '',
+                                    audio: false,
+                                    voice: false,
+                                    title: 'Line Audio'
+                                }],
                             };
                         } else if (data.type === 'ending') {
                             node.addInPort(' ');
@@ -448,7 +452,6 @@ class StoryBoard extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
                 </div>
-                { this.state.selected ? 
                 <div className={'Editor' + (this.state.open ? ' open' : '') }>
                      <Editor 
                         node={this.state.selected} 
@@ -456,7 +459,7 @@ class StoryBoard extends Component {
                         onClose={e => this.setState({ open: false })} 
                         repaint={this.repaint}
                     />
-                </div> : null }
+                </div>
             </div>
         );
     }

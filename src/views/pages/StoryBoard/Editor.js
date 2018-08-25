@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import Line from './Editors/Line';
+import MultiLine from './Editors/MultiLine';
 import Choice from './Editors/Choice';
+import ChoiceNew from './Editors/ChoiceNew';
 import Ending from './Editors/Ending';
 import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
@@ -58,13 +60,20 @@ class Editor extends Component {
     }
 
     render() {
+
+        if(!this.state.node){
+            return <div></div>;
+        }
+        
+        let type = this.state.node.extras.type === "multiline" ? "line" : this.state.node.extras.type;
+
         return (
             <div key={this.state.node.id}>
                 <form onSubmit={(e) => e.preventDefault()} className="controls">
                     <div className="top">
                         <div className="property">
                             <button className="close" onClick={this.props.onClose}>&times;</button>
-                            <div className={"block " + this.state.node.extras.type}>{this.state.node.extras.type} block</div>
+                            <div className={"block " + type}>{type} block</div>
                         </div>
                         <div>
                             <input id="label" placeholder="Block Label" 
@@ -77,27 +86,38 @@ class Editor extends Component {
                     </div>
 
                     {this.state.node.extras.type === 'story' ? 
-                    <Story node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
+                    <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
 
                     {this.state.node.extras.type === 'choice' ?  
                     <Choice 
                         node={this.state.node} 
                         voices={this.state.voices} 
-                        onUpdate={() => this.setState({}, this.props.onUpdate)}
+                        onUpdate={this.props.onUpdate}
+                        repaint={this.props.repaint}
+                    /> : null}
+
+                    {this.state.node.extras.type === 'choicenew' ?  
+                    <ChoiceNew
+                        node={this.state.node} 
+                        voices={this.state.voices} 
+                        onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     /> : null}
 
                     {this.state.node.extras.type === 'line' ? 
-                    <Line node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
+                    <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
+
+                    {this.state.node.extras.type === 'multiline' ? 
+                    <MultiLine node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
 
                     {this.state.node.extras.type === 'listen' ? 
-                    <Listen node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
+                    <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
 
                     {this.state.node.extras.type === 'retry' ? 
-                    <Retry node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
+                    <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
 
                     {this.state.node.extras.type === 'ending' ?  
-                    <Ending node={this.state.node} voices={this.state.voices} onUpdate={() => this.setState({}, this.props.onUpdate)}/> : null}
+                    <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
 
                 </form>
             </div>

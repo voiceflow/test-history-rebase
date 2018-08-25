@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import Textarea from 'react-textarea-autosize';
 
 class ChoiceInputs extends Component {
@@ -10,14 +9,6 @@ class ChoiceInputs extends Component {
             choices: this.props.choices,
             inputs: this.props.inputs
         };
-    }
-
-    componentDidMount() {
-        $('*').keypress(function(e) {
-            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
-                e.preventDefault();
-            }
-        });
     }
 
     componentWillReceiveProps(props) {

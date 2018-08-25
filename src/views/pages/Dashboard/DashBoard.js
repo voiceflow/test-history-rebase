@@ -30,7 +30,9 @@ class DashBoard extends Component {
         this.onLoadReviews = this.onLoadReviews.bind(this);
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
+    }
 
+    componentDidMount() {
         this.onLoad();
         this.onLoadReviews();
     }
@@ -45,8 +47,9 @@ class DashBoard extends Component {
                     loading: false
                 });
             },
-            error: () => {
-                window.alert('Error2');
+            error: (e) => {
+                console.log(e);
+                window.alert('Error22');
             }
         });
     }
@@ -63,8 +66,10 @@ class DashBoard extends Component {
                     this.setState({ loading: false });
                 }
             },
-            error: () => {
-                window.alert('Error2');
+            error: (e) => {
+                console.log("reviews");
+                console.log(e);
+                window.alert('Error33');
             }
         });
     }
@@ -90,7 +95,7 @@ class DashBoard extends Component {
                         url: '/diagram/'+id,
                         type: 'DELETE',
                         success: () => {
-                            this.onLoad() 
+                            this.onLoad();
                         },
                         error: (e) => {
                             this.setState({ error: "Unable to Delete" });
@@ -116,7 +121,7 @@ class DashBoard extends Component {
                         url: '/review/'+id,
                         type: 'DELETE',
                         success: () => {
-                            this.onLoadReviews(true) 
+                            this.onLoadReviews(true);
                         },
                         error: (e) => {
                             console.log(e);

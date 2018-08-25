@@ -20,14 +20,6 @@ class Story extends Component {
         this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
-    componentDidMount() {
-        $('*').keypress(function(e) {
-            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
-                e.preventDefault();
-            }
-        });
-    }
-
     componentWillReceiveProps(props) {
         this.setState({
             node: props.node,

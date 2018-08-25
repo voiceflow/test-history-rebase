@@ -11,7 +11,9 @@ class Stories extends Component {
             staging: [],
             production: []
         };
+    }
 
+    componentDidMount() {
         this.refreshStories();
     }
 

@@ -196,6 +196,33 @@ const renderStory = (params, req, res, success) => {
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
                     };
+                } else if (node.extras.type === 'choicenew') {
+                    story.lines[node.id] = {
+                        audio: null,
+                        prompt: node.extras.prompt,
+                        choices: node.extras.choices,
+                        inputs: node.extras.inputs.map(input => input.split('\n')),
+                        elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
+                        // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
+                        nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
+                    };
+                } else if (node.extras.type === 'multiline') {
+                    let nextLink = null;
+                    for (let j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+                    let audio = null;
+                    if(node.extras.audio){
+                        audio = node.extras.audio;
+                    }else if(node.extras.lines[0].audio){
+                        audio = node.extras.lines[0].audio;
+                    }
+                    story.lines[node.id] = {
+                        audio: audio,
+                        nextId: links[nextLink]
+                    };
                 } else if (node.extras.type === 'line') {
                     let nextLink = null;
                     for (let j = 0; j < node.ports.length; j++) {

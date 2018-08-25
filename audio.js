@@ -3,6 +3,8 @@ const fs = require('fs');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 const AWS = require('aws-sdk');
+const randomstring = require("randomstring");
+
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 AWS.config.loadFromPath('./aws-config.json');
@@ -175,7 +177,90 @@ const generate = (req, res) => {
     }
 };
 
+const concat = (req, res) => {
+    if(!Array.isArray(req.body.lines)){
+        res.sendStatus(400);
+        return;
+    }
+
+    let dir = path.join(__dirname, 'tmp', Date.now().toString());
+    fs.existsSync(dir) || fs.mkdirSync(dir);
+
+    let files = [];
+    let count = 0;
+
+    let lines = req.body.lines;
+    lines.forEach(line => {
+        let key = path.basename(line);
+        let file = fs.createWriteStream(path.join(dir, key));
+        files.push(path.join(dir, key));
+        let params = {
+            Bucket: 'com.getstoryflow.audio.production',
+            Key: key
+        };
+        s3.getObject(params, (err, data) => {
+            if (err) {
+                console.log(err);
+                res.sendStatus(500);
+                return;
+            }
+            file.write(data.Body);
+            file.end();
+            count++;
+            if (count === lines.length) {
+                let command = ffmpeg();
+                let filename = randomstring.generate(8) + '.mp3';
+
+                for (let i = 0; i < files.length; i++) {
+                    command.input(files[i]);
+                }
+                command.on('error', err => {
+                    console.log(err);
+                    res.sendStatus(500);
+                });
+                command.on('end', () => {
+                    fs.readFile(path.join(dir, filename), (err, data) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        } else if (!data) {
+                            return;
+                        }
+                        let params = {
+                            Bucket: 'com.getstoryflow.audio.production',
+                            Key: filename
+                        };
+
+                        let upload = s3Stream.upload(params);
+                        upload.maxPartSize(20971520);
+                        upload.concurrentParts(5);
+                        upload.on('error', err => {
+                            console.log(err);
+                            res.sendStatus(500);
+                        });
+
+                        upload.on('uploaded', (details) => {
+                            res.send(details.Location);
+                            rimraf(dir);
+                        })
+                            // .audioChannels(2)
+                            // .audioCodec('libmp3lame')
+                            // .audioBitrate('48k')
+                            // .audioFrequency(16000)
+                        ffmpeg()
+                            .format('mp3')
+                            .input(path.join(dir, filename))
+                            .pipe(upload);
+                    });
+                });
+                command.mergeToFile(path.join(dir, filename), dir);
+            }
+        });
+    });
+};
+
 exports.upload = upload;
 exports.updateTitles = updateTitles;
 exports.getVoices = getVoices;
 exports.generate = generate;
+exports.concat = concat;

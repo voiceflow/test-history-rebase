@@ -143,6 +143,7 @@ app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 app.get('/voices', ensureLoggedIn(), Audio.getVoices);
 app.post('/generate', ensureLoggedIn(), Audio.generate);
 app.post('/audio', ensureLoggedIn(), upload.any(), Audio.upload);
+app.post('/concat', ensureLoggedIn(), Audio.concat);
 
 // all the authentication routes
 const authentication = require('./routes/authentication')(express.Router(), docClient, redisClient);

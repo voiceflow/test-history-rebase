@@ -283,7 +283,7 @@
     background-color: #007bff;
 }*/
 
-.dropzone, .audio-box {
+.dropzone, .audio-box, .combined-box {
     width: 100%;
     overflow: visible;
     min-height: 40px;
@@ -302,6 +302,14 @@
     border-radius: 5px;
 }
 
+.combined-box {
+    background-color: #B3E5FC;
+    font-weight: bold;
+    color: #01579B;
+    border: none !important;
+    margin-bottom: 20px;
+}
+
 .audio-box>button{
     position: absolute;
     top: -1px;
@@ -310,7 +318,7 @@
     border-bottom-left-radius: 3px;
     border-top-right-radius: 3px;
 }
-.audio-box>div{
+.audio-box>div, .combined-box>div{
     margin-bottom: 10px;
 }
 
@@ -591,6 +599,30 @@ button.close{
 
 .choice-title input:focus{
     outline: none;
+}
+
+.multi-title-block{
+    display: flex;
+}
+.multi-title-block>div>span{
+    margin-right: 5px;
+}
+.multi-title-block>div>span>i{
+    width: 10px;
+}
+.multi-title {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 0;
+    flex: 1;
+    margin-right: 15px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.multiline hr{
+    margin: 0px;
 }
 
 

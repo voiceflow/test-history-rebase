@@ -47,7 +47,7 @@ class TitleBar extends Component {
                             </DropdownToggle>
                             <DropdownMenu className="projects-menu">
                                 {Array.isArray(this.props.diagrams) ? this.props.diagrams.map(diagram => {
-                                    return <DropdownItem key={diagram.id} onClick={() => this.props.onLoadId(diagram.id)}>{diagram.title ? diagram.title : diagram.id}</DropdownItem>;
+                                    return <DropdownItem key={diagram.id} onClick={() => {this.props.onLoadId(diagram.id); this.setState({ dropdownOpen : false })}}>{diagram.title ? diagram.title : diagram.id}</DropdownItem>;
                                 }) : null }
                             </DropdownMenu>
                         </UncontrolledDropdown>

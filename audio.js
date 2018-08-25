@@ -226,31 +226,46 @@ const concat = (req, res) => {
                         } else if (!data) {
                             return;
                         }
-                        let params = {
+                        let base64data = new Buffer(data, 'binary');
+                        let uploadParams = {
                             Bucket: 'com.getstoryflow.audio.production',
-                            Key: filename
+                            Key: filename,
+                            Body: base64data
                         };
-
-                        let upload = s3Stream.upload(params);
-                        upload.maxPartSize(20971520);
-                        upload.concurrentParts(5);
-                        upload.on('error', err => {
-                            console.log(err);
-                            res.sendStatus(500);
-                        });
-
-                        upload.on('uploaded', (details) => {
-                            res.send(details.Location);
+                        s3.upload(uploadParams, (err, data) => {
+                            if (err) {
+                                console.log(err);
+                                return;
+                            }
+                            res.send(data.Location);
                             rimraf(dir);
-                        })
-                            // .audioChannels(2)
-                            // .audioCodec('libmp3lame')
-                            // .audioBitrate('48k')
-                            // .audioFrequency(16000)
-                        ffmpeg()
-                            .format('mp3')
-                            .input(path.join(dir, filename))
-                            .pipe(upload);
+                        });
+                        // let params = {
+                        //     Bucket: 'com.getstoryflow.audio.production',
+                        //     Key: filename
+                        // };
+
+                        // let upload = s3Stream.upload(params);
+                        // upload.maxPartSize(20971520);
+                        // upload.concurrentParts(5);
+                        // upload.on('error', err => {
+                        //     console.log(err);
+                        //     res.sendStatus(500);
+                        // });
+
+                        // upload.on('uploaded', (details) => {
+                        //     res.send(details.Location);
+                        //     rimraf(dir);
+                        // })
+
+                        // ffmpeg()
+                        //     .format('mp3')
+                        //     .input(path.join(dir, filename))
+                        //     .audioChannels(2)
+                        //     .audioCodec('libmp3lame')
+                        //     .audioBitrate('48k')
+                        //     .audioFrequency(16000)
+                        //     .pipe(upload);
                     });
                 });
                 command.mergeToFile(path.join(dir, filename), dir);

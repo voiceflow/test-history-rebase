@@ -60,7 +60,7 @@ const getReview = (req, res) => {
 }
 
 const setReview = (req, res) => {
-    if (!req.params.id) {
+    if (!req.params.id || !req.body.envs) {
         res.sendStatus(400);
         return;
     }
@@ -88,6 +88,7 @@ const setReview = (req, res) => {
                     // already submitted for review
                     res.sendStatus(409);
                 }else{
+                    data.Item.envs = req.body.envs;
                     let review = {
                         TableName: 'com.getstoryflow.reviews.staging',
                         Item: data.Item

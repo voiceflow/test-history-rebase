@@ -47,7 +47,7 @@ const convert = (key, env = 'production') => {
         .audioChannels(2)
         .audioCodec('libmp3lame')
         .audioBitrate('48k')
-        .audioFrequency(22050)
+        .audioFrequency(16000)
         .pipe(upload);
 };
 

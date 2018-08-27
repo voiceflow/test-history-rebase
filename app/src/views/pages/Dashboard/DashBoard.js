@@ -24,7 +24,8 @@ class DashBoard extends Component {
             error: false,
             success: false,
             confirm: false,
-            openEnv: false
+            openEnv: false,
+            id: null
         }
 
         this.onLoad = this.onLoad.bind(this);
@@ -33,6 +34,7 @@ class DashBoard extends Component {
         this.onLoadReviews = this.onLoadReviews.bind(this);
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
+        this.onSubmitDiagram = this.onSubmitDiagram.bind(this);
     }
 
     componentDidMount() {
@@ -147,15 +149,22 @@ class DashBoard extends Component {
     }
 
 
-    onSubmitDiagram(id) {
+    onSubmitDiagram(env) {
+        let id = this.state.id;
+        if(!id) return;
         this.setState({
             loading: true,
             error: false,
-            success: false
+            success: false,
+            openEnv: false,
+            id: null
         });
         $.ajax({
             url: '/review/'+id,
             type: 'POST',
+            data: {
+                envs: env
+            },
             success: () => {
                 this.setState({ success: "Your story has been successfully sent for review!" });
                 this.onLoadReviews();
@@ -182,7 +191,7 @@ class DashBoard extends Component {
             <div className='Window'>
                 <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
-                <EnvironmentModal open={this.state.openEnv} toggle={this.toggleEnv}/>
+                <EnvironmentModal open={this.state.openEnv} toggle={this.toggleEnv} handleConfirm={this.onSubmitDiagram}/>
                 <Row className="mx-0 w-100">
                     <div id="dash-nav-container" className="d-none d-lg-block">
                         <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
@@ -246,7 +255,7 @@ class DashBoard extends Component {
                                         accessor: "id",
                                         maxWidth: 90,
                                         Cell: row => {
-                                            return <button className="btn btn-outline-primary" onClick={this.toggleEnv}>Submit</button>
+                                            return <button className="btn btn-outline-primary" onClick={() => {this.toggleEnv(); this.setState({id: row.value})}}>Submit</button>
                                         },
                                         sortable: false
                                     }]} 

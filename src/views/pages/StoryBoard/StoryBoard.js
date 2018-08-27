@@ -289,7 +289,8 @@ class StoryBoard extends Component {
             }else{
                 review = {
                     name: diagram.name,
-                    email: diagram.email
+                    email: diagram.email,
+                    envs: diagram.envs
                 }
             }
 
@@ -383,8 +384,13 @@ class StoryBoard extends Component {
                 { this.state.review ? 
                     <div id="review">
                         <h5 className="mb-0">Review Mode</h5>
+                        <small><b>Requested Environments:</b><br/>
+                            {Array.isArray(this.state.review.envs) ? this.state.review.envs.map((env, i) => {
+                                return <span key={i}>* {env}<br/></span>
+                            }) : null}
+                        </small>
                         <small>
-                        <i>{this.state.review.name}</i><br/>
+                        <i>{this.state.review.name ? this.state.review.name : "No Account Name"}</i><br/>
                         <i>{this.state.review.email}</i>
                         </small>
                     </div> : null

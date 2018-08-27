@@ -33,12 +33,28 @@
 	width: 150px;
 }
 
+.rotate .selected .front, .rotate .selected .back {
+	border: 8px solid #4CAF50;
+/*	-webkit-box-shadow: inset 0px 0px 32px 6px rgba(76,175,80,1);
+	-moz-box-shadow: inset 0px 0px 32px 6px rgba(76,175,80,1);
+	box-shadow: inset 0px 0px 32px 6px rgba(76,175,80,1);*/
+}
+
 .rotate .front.sandbox {
 	background-color: #333;
 }
 .rotate .front.storyflow {
     background-image: -webkit-linear-gradient(270deg, rgba(103, 17, 255, .62), rgba(75, 83, 251, .94)), url("/images/kids.jpg");
     background-image: linear-gradient(180deg, rgba(103, 17, 255, .62), rgba(75, 83, 251, .94)), url("/images/kids.jpg");
+    background-position: 0px 0px, 50% 50%;
+    background-size: auto, cover;
+    background-repeat: repeat, no-repeat;
+}
+
+.rotate .front.kids {
+	/*cursor: default !important;*/
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.7)), url("/images/kids-soon.png");
+    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.7)), url("/images/kids-soon.png");
     background-position: 0px 0px, 50% 50%;
     background-size: auto, cover;
     background-repeat: repeat, no-repeat;
@@ -69,6 +85,7 @@
   /*margin: 1rem;*/
   cursor: pointer;
   padding: 0;
+  padding: .5rem 1rem;
 }
 
 .rotate .container{
@@ -76,6 +93,7 @@
           transform-style: preserve-3d;
 	-webkit-perspective: 1000px;
 	        perspective: 1000px;
+	        padding: 0 !important;
 }
 
 .rotate .front,

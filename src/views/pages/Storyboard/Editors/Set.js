@@ -20,6 +20,15 @@ class SetBlock extends Component {
         this.deleteVariable = this.deleteVariable.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.handleExpression = this.handleExpression.bind(this);
+    }
+
+    handleExpression(event){
+        let node = this.state.node;
+        node.extras.expression = event.target.value
+        this.setState({
+          node: node
+        });
     }
 
     componentWillReceiveProps(props) {
@@ -80,7 +89,7 @@ class SetBlock extends Component {
                     <span> to:</span>
                 </div>
                 <InputGroup>
-                    <Input placeholder="" />
+                    <Input placeholder="value" value={this.state.node.extras.expression} onChange={this.handleExpression} />
                 </InputGroup>
                 <hr/>
                 <FormGroup className="mb-0">

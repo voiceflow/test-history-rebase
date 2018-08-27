@@ -178,6 +178,7 @@ class StoryBoard extends Component {
             var diagram = {
                 id: data.id,
                 title: this.state.title,
+                variables: this.state.variables,
                 data: JSON.stringify(data),
             }
 
@@ -302,7 +303,8 @@ class StoryBoard extends Component {
                 title: title,
                 last_save: diagram.last_save,
                 loading_modal: false,
-                review: review
+                review: review,
+                variables: diagram.variables
             });
 
             this.setState({saved: true});

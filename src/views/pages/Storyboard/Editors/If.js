@@ -14,6 +14,7 @@ class IfBlock extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.handleExpression = this.handleExpression.bind(this);
         this.setOperation = this.setOperation.bind(this);
         this.toggle = this.toggle.bind(this);
     }
@@ -37,6 +38,14 @@ class IfBlock extends Component {
         });
     }
 
+    handleExpression(event){
+        let node = this.state.node;
+        node.extras.expression = event.target.value
+        this.setState({
+          node: node
+        });
+    }
+
     handleSelection(selected){
         let node = this.state.node;
         node.extras.variable = selected.value;
@@ -51,7 +60,7 @@ class IfBlock extends Component {
         if(operations.includes(operation)){
             let node = this.state.node;
 
-            
+            node.extras.operation = operation;
 
             this.setState({
                 node: node
@@ -102,7 +111,7 @@ class IfBlock extends Component {
                     </DropdownMenu>
                 </Dropdown>
                 <InputGroup>
-                    <Input placeholder="" />
+                    <Input placeholder="value" value={this.state.node.extras.expression} onChange={this.handleExpression} />
                 </InputGroup>
             </div>
         );

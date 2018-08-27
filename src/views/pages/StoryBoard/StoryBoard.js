@@ -59,6 +59,7 @@ class StoryBoard extends Component {
                 selected: node,
                 open: true,
                 diagrams: [],
+                variables: [],
                 title: "",
                 loading_modal: false,
                 error_modal: false,
@@ -77,6 +78,7 @@ class StoryBoard extends Component {
                 selected: null,
                 open: false,
                 diagrams: [],
+                variables: [],
                 title: "",
                 loading_modal: false,
                 error_modal: false,
@@ -94,6 +96,7 @@ class StoryBoard extends Component {
         this.repaint = this.repaint.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
+        this.setVariables = this.setVariables.bind(this);
 
         AuthenticationService.check((err, res) => {
             if(err && this.props.history){
@@ -349,6 +352,13 @@ class StoryBoard extends Component {
         }
     }
 
+    setVariables(variables) {
+        this.setState({
+            variables: variables,
+            saved: false
+        });
+    }
+
     render() {
         return (
             <div className={'App' + (this.state.review ? " review" : "")} >
@@ -364,7 +374,9 @@ class StoryBoard extends Component {
                     { text: 'Line', type: 'multiline', color: '#E1F5FE', menuColor: '#29B6F6' },
                     { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
                     'hr',
-                    { text: 'Random', type: 'random', color: '#FFFDE7', menuColor: '#FBC02D' }
+                    { text: 'Random', type: 'random', color: '#FFFDE7', menuColor: '#FBC02D' },
+                    { text: 'Set', type: 'set', color: '#F3E5F5', menuColor: '#8E24AA' },
+                    { text: 'If', type: 'if', color: '#B2DFDB', menuColor: '#00695C' }
                 ]} />
                 <TitleBar 
                     title={this.state.title} 
@@ -433,11 +445,27 @@ class StoryBoard extends Component {
                                 audioText: '',
                                 audioVoice: ''
                             };
-                        } if (data.type === 'random') {
+                        } else if (data.type === 'random') {
                             node.addInPort(" ");
                             node.addOutPort(1).setMaximumLinks(1);
                             node.extras = {
                                 paths: 1
+                            };
+                        } else if (data.type === 'set') {
+                            node.addInPort(" ");
+                            node.addOutPort(" ").setMaximumLinks(1);
+                            node.extras = {
+                                variable: null,
+                                operation: null
+                            };
+                        } else if (data.type === 'if') {
+                            node.addInPort(" ");
+                            node.addOutPort('true').setMaximumLinks(1);
+                            node.addOutPort('false').setMaximumLinks(1);
+                            node.extras = {
+                                variable: null,
+                                operation: "=",
+                                check: null
                             };
                         }
                         node.extras.type = data.type;
@@ -466,6 +494,8 @@ class StoryBoard extends Component {
                         onUpdate={this.unsave} 
                         onClose={e => this.setState({ open: false })} 
                         repaint={this.repaint}
+                        variables={this.state.variables}
+                        onVariable={this.setVariables}
                     />
                 </div>
             </div>

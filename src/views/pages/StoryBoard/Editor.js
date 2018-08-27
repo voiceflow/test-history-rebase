@@ -9,6 +9,8 @@ import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
 import Story from './Editors/Story';
 import RandomBlock from './Editors/Random';
+import SetBlock from './Editors/Set';
+import IfBlock from './Editors/If';
 
 class Editor extends Component {
     constructor(props) {
@@ -18,6 +20,8 @@ class Editor extends Component {
             node: this.props.node,
             voices: []
         };
+
+        this.BlockViewer = this.BlockViewer.bind(this)
     }
 
     componentDidMount() {
@@ -60,12 +64,51 @@ class Editor extends Component {
         }, this.props.onUpdate);
     }
 
+    BlockViewer() {
+        switch(this.state.node.extras.type) {
+            case 'story':
+                return <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>;
+            case 'choice':
+                return <Choice 
+                        node={this.state.node} 
+                        voices={this.state.voices} 
+                        onUpdate={this.props.onUpdate}
+                        repaint={this.props.repaint}
+                    />;
+            case 'choicenew':
+                return <ChoiceNew
+                        node={this.state.node} 
+                        voices={this.state.voices} 
+                        onUpdate={this.props.onUpdate}
+                        repaint={this.props.repaint}
+                    />
+            case 'line':
+                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            case 'multiline':
+                return <MultiLine node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            case 'set':
+                return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable}/>
+            case 'if':
+                return <IfBlock node={this.state.node} variables={this.props.variables}/>
+            case 'listen':
+                return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            case 'random':
+                return <RandomBlock node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} />
+            case 'retry':
+                return <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            case 'ending':
+                return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            default:
+              return null;
+        }
+    }
+
     render() {
 
         if(!this.state.node){
             return <div></div>;
         }
-        
+
         let type = this.state.node.extras.type === "multiline" ? "line" : this.state.node.extras.type;
 
         return (
@@ -85,44 +128,7 @@ class Editor extends Component {
                             />
                         </div>
                     </div>
-
-                    {this.state.node.extras.type === 'story' ? 
-                    <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
-
-                    {this.state.node.extras.type === 'choice' ?  
-                    <Choice 
-                        node={this.state.node} 
-                        voices={this.state.voices} 
-                        onUpdate={this.props.onUpdate}
-                        repaint={this.props.repaint}
-                    /> : null}
-
-                    {this.state.node.extras.type === 'choicenew' ?  
-                    <ChoiceNew
-                        node={this.state.node} 
-                        voices={this.state.voices} 
-                        onUpdate={this.props.onUpdate}
-                        repaint={this.props.repaint}
-                    /> : null}
-
-                    {this.state.node.extras.type === 'line' ? 
-                    <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
-
-                    {this.state.node.extras.type === 'multiline' ? 
-                    <MultiLine node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
-
-                    {this.state.node.extras.type === 'listen' ? 
-                    <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
-
-                    {this.state.node.extras.type === 'random' ? 
-                    <RandomBlock node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} /> : null}
-
-                    {this.state.node.extras.type === 'retry' ? 
-                    <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
-
-                    {this.state.node.extras.type === 'ending' ?  
-                    <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/> : null}
-
+                    {this.BlockViewer()}
                 </form>
             </div>
         );

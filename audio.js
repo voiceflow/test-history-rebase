@@ -47,7 +47,7 @@ const convert = (key, env = 'production') => {
         .audioChannels(2)
         .audioCodec('libmp3lame')
         .audioBitrate('48k')
-        .audioFrequency(16000)
+        .audioFrequency(22050)
         .pipe(upload);
 };
 
@@ -264,11 +264,16 @@ const concat = (req, res) => {
                         //     .audioChannels(2)
                         //     .audioCodec('libmp3lame')
                         //     .audioBitrate('48k')
-                        //     .audioFrequency(16000)
+                        //     .audioFrequency(22050)
                         //     .pipe(upload);
                     });
                 });
+
                 command.mergeToFile(path.join(dir, filename), dir);
+                command.audioChannels(2);
+                command.audioCodec('libmp3lame');
+                command.audioBitrate('48k');
+                command.audioFrequency(16000);
             }
         });
     });

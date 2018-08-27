@@ -5,6 +5,7 @@ import moment from 'moment'
 import 'react-table/react-table.css'
 import { Link } from 'react-router-dom'
 import Scrollspy from 'react-scrollspy'
+import EnvironmentModal from './EnvironmentModal'
 import './DashBoard.css';
 
 import $ from 'jquery';
@@ -22,11 +23,13 @@ class DashBoard extends Component {
             loading: false,
             error: false,
             success: false,
-            confirm: false
+            confirm: false,
+            openEnv: false
         }
 
         this.onLoad = this.onLoad.bind(this);
         this.toggleConfirm = this.toggleConfirm.bind(this);
+        this.toggleEnv = this.toggleEnv.bind(this);
         this.onLoadReviews = this.onLoadReviews.bind(this);
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
@@ -35,6 +38,12 @@ class DashBoard extends Component {
     componentDidMount() {
         this.onLoad();
         this.onLoadReviews();
+    }
+
+    toggleEnv() {
+        this.setState({
+            openEnv: !this.state.openEnv
+        })
     }
 
     onLoad() {
@@ -173,6 +182,7 @@ class DashBoard extends Component {
             <div className='Window'>
                 <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
+                <EnvironmentModal open={this.state.openEnv} toggle={this.toggleEnv}/>
                 <Row className="mx-0 w-100">
                     <div id="dash-nav-container" className="d-none d-lg-block">
                         <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
@@ -236,7 +246,7 @@ class DashBoard extends Component {
                                         accessor: "id",
                                         maxWidth: 90,
                                         Cell: row => {
-                                            return <button className="btn btn-outline-primary" onClick={() => this.onSubmitDiagram(row.value)}>Submit</button>
+                                            return <button className="btn btn-outline-primary" onClick={this.toggleEnv}>Submit</button>
                                         },
                                         sortable: false
                                     }]} 

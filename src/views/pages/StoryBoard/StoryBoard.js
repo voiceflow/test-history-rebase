@@ -297,6 +297,11 @@ class StoryBoard extends Component {
                 }
             }
 
+            let variables = []
+            if(diagram.variables){
+                variables = diagram.variables;
+            }
+
             this.setState({
                 open: false,
                 engine: engine,
@@ -304,7 +309,7 @@ class StoryBoard extends Component {
                 last_save: diagram.last_save,
                 loading_modal: false,
                 review: review,
-                variables: diagram.variables
+                variables: variables
             });
 
             this.setState({saved: true});

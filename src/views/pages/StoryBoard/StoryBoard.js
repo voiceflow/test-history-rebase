@@ -238,11 +238,12 @@ class StoryBoard extends Component {
         });
     }
 
-    onPublish() {
+    onPublish(env) {
+        if(!["production", "sandbox"].includes(env)) return;
         var id = this.state.engine.getDiagramModel().getID();
         if (window.confirm('Are you ready to publish?')) {
             $.ajax({
-                url: this.state.review ? ('/publish/review/production/'+id) : ('/publish/production/'+id),
+                url: this.state.review ? ('/publish/review/' + env + '/' + id) : ('/publish/' + env + '/' + id),
                 type: 'POST',
                 success: () => {window.alert('Success');},
                 error: (e) => {

@@ -14,6 +14,7 @@ class IfBlock extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.setOperation = this.setOperation.bind(this);
         this.toggle = this.toggle.bind(this);
     }
 
@@ -43,6 +44,19 @@ class IfBlock extends Component {
         this.setState({
             node: node
         }, this.props.onUpdate);
+    }
+
+    setOperation(operation){
+        let operations = ["=", "<", ">"];
+        if(operations.includes(operation)){
+            let node = this.state.node;
+
+            
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        }
     }
 
     render() {
@@ -82,9 +96,9 @@ class IfBlock extends Component {
                       {operator()}
                     </DropdownToggle>
                     <DropdownMenu className="plain-dropdown-menu">
-                      <DropdownItem>= equals to</DropdownItem>
-                      <DropdownItem>{"< smaller than"}</DropdownItem>
-                      <DropdownItem>{"> greater than"}</DropdownItem>
+                      <DropdownItem onClick={() => this.setOperation("=")}>= equals to</DropdownItem>
+                      <DropdownItem onClick={() => this.setOperation("<")}>{"< smaller than"}</DropdownItem>
+                      <DropdownItem onClick={() => this.setOperation(">")}>{"> greater than"}</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
                 <InputGroup>

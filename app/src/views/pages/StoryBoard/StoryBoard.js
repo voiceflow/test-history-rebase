@@ -456,7 +456,7 @@ class StoryBoard extends Component {
                             node.addOutPort(" ").setMaximumLinks(1);
                             node.extras = {
                                 variable: null,
-                                operation: null
+                                expression: null
                             };
                         } else if (data.type === 'if') {
                             node.addInPort(" ");
@@ -465,7 +465,7 @@ class StoryBoard extends Component {
                             node.extras = {
                                 variable: null,
                                 operation: "=",
-                                check: null
+                                expression: null
                             };
                         }
                         node.extras.type = data.type;

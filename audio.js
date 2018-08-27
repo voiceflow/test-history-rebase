@@ -52,6 +52,7 @@ const convert = (key, env = 'production') => {
 };
 
 const updateTitles = (stories, env) => {
+    if(!Array.isArray(stories) || stories.length < 1) return;
     let dir = path.join(__dirname, 'tmp', Date.now().toString());
     fs.existsSync(dir) || fs.mkdirSync(dir);
 
@@ -105,15 +106,17 @@ const updateTitles = (stories, env) => {
                         s3.upload(uploadParams, (err, data) => {
                             if (err) {
                                 console.log(err);
-
                                 return;
                             }
-                            convert('_titles.mp3', env);
                             rimraf(dir);
                         });
                     });
                 });
                 command.mergeToFile(path.join(dir, '_titles.mp3'), dir);
+                command.audioChannels(2);
+                command.audioCodec('libmp3lame');
+                command.audioBitrate('48k');
+                command.audioFrequency(16000);
             }
         });
     });
@@ -240,32 +243,6 @@ const concat = (req, res) => {
                             res.send(data.Location);
                             rimraf(dir);
                         });
-                        // let params = {
-                        //     Bucket: 'com.getstoryflow.audio.production',
-                        //     Key: filename
-                        // };
-
-                        // let upload = s3Stream.upload(params);
-                        // upload.maxPartSize(20971520);
-                        // upload.concurrentParts(5);
-                        // upload.on('error', err => {
-                        //     console.log(err);
-                        //     res.sendStatus(500);
-                        // });
-
-                        // upload.on('uploaded', (details) => {
-                        //     res.send(details.Location);
-                        //     rimraf(dir);
-                        // })
-
-                        // ffmpeg()
-                        //     .format('mp3')
-                        //     .input(path.join(dir, filename))
-                        //     .audioChannels(2)
-                        //     .audioCodec('libmp3lame')
-                        //     .audioBitrate('48k')
-                        //     .audioFrequency(22050)
-                        //     .pipe(upload);
                     });
                 });
 

@@ -137,6 +137,8 @@ app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
 app.get('/stories/:env', Story.getStories);
 app.post('/feature/:env/:id', ensureAdmin(), Story.featureStory);
 app.delete('/stories/:env/:id', ensureAdmin(), Story.deleteStory);
+app.post('/list/:env/:id', ensureAdmin(), Story.listStory);
+app.delete('/list/:env/:id', ensureAdmin(), Story.unlistStory);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 

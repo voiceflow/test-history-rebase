@@ -61,9 +61,9 @@ class TitleBar extends Component {
                                         Publish
                                     </DropdownToggle>
                                     <DropdownMenu className="projects-menu">
-                                        <DropdownItem onClick={this.props.onTest}>Sandbox</DropdownItem>
-                                        <DropdownItem onClick={this.props.onTest}>Storyflow</DropdownItem>
-                                        <DropdownItem onClick={this.props.onTest}>Storyflow Kids</DropdownItem>
+                                        <DropdownItem onClick={()=>{this.props.onPublish("sandbox");this.setState({publish: false})}}>Sandbox</DropdownItem>
+                                        <DropdownItem onClick={()=>{this.props.onPublish("production");this.setState({publish: false})}}>Storyflow</DropdownItem>
+                                        <DropdownItem disabled>Storyflow Kids</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </div>

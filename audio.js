@@ -61,7 +61,9 @@ const updateTitles = (stories, env) => {
     stories.forEach(story => {
         if (!story.preview) {
             count++;
-
+            if (count === stories.length) {
+                uploadConcatPreviews(dir, files, env);
+            }
             return;
         }
         let key = path.basename(story.preview);
@@ -81,46 +83,49 @@ const updateTitles = (stories, env) => {
             file.end();
             count++;
             if (count === stories.length) {
-                let command = ffmpeg();
-                for (let i = 0; i < files.length; i++) {
-                    command.input(files[i]);
-                }
-                command.on('error', err => {
-                    console.log(err);
-                });
-                command.on('end', () => {
-                    fs.readFile(path.join(dir, '_titles.mp3'), (err, data) => {
-                        if (err) {
-                            console.log(err);
-
-                            return;
-                        } else if (!data) {
-                            return;
-                        }
-                        let base64data = new Buffer(data, 'binary');
-                        let uploadParams = {
-                            Bucket: 'com.getstoryflow.audio.'+env,
-                            Key: '_titles.mp3',
-                            Body: base64data
-                        };
-                        s3.upload(uploadParams, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return;
-                            }
-                            rimraf(dir);
-                        });
-                    });
-                });
-                command.mergeToFile(path.join(dir, '_titles.mp3'), dir);
-                command.audioChannels(2);
-                command.audioCodec('libmp3lame');
-                command.audioBitrate('48k');
-                command.audioFrequency(16000);
+                uploadConcatPreviews(dir, files, env);
             }
         });
     });
 };
+
+const uploadConcatPreviews = (dir, files, env) => {
+    let command = ffmpeg();
+    for (let i = 0; i < files.length; i++) {
+        command.input(files[i]);
+    }
+    command.on('error', err => {
+        console.log(err);
+    });
+    command.on('end', () => {
+        fs.readFile(path.join(dir, '_titles.mp3'), (err, data) => {
+            if (err) {
+                console.log(err);
+
+                return;
+            } else if (!data) {
+                return;
+            }
+            let base64data = new Buffer(data, 'binary');
+            let uploadParams = {
+                Bucket: 'com.getstoryflow.audio.'+env,
+                Key: '_titles.mp3',
+                Body: base64data
+            };
+            s3.upload(uploadParams, (err, data) => {
+                if (err) {
+                    console.log(err);
+                }
+                rimraf(dir);
+            });
+        });
+    });
+    command.mergeToFile(path.join(dir, '_titles.mp3'), dir);
+    command.audioChannels(2);
+    command.audioCodec('libmp3lame');
+    command.audioBitrate('48k');
+    command.audioFrequency(16000);
+}
 
 const upload = (req, res) => {
     if (req.files.length > 0) {
@@ -205,56 +210,65 @@ const concat = (req, res) => {
             if (err) {
                 console.log(err);
                 res.sendStatus(500);
-                return;
-            }
-            file.write(data.Body);
-            file.end();
-            count++;
-            if (count === lines.length) {
-                let command = ffmpeg();
-                let filename = randomstring.generate(8) + '.mp3';
-
-                for (let i = 0; i < files.length; i++) {
-                    command.input(files[i]);
+                count++;
+                if (count === lines.length) {
+                    uploadConcatLines(dir, files, res);
                 }
-                command.on('error', err => {
-                    console.log(err);
-                    res.sendStatus(500);
-                });
-                command.on('end', () => {
-                    fs.readFile(path.join(dir, filename), (err, data) => {
-                        if (err) {
-                            console.log(err);
-                            return;
-                        } else if (!data) {
-                            return;
-                        }
-                        let base64data = new Buffer(data, 'binary');
-                        let uploadParams = {
-                            Bucket: 'com.getstoryflow.audio.production',
-                            Key: filename,
-                            Body: base64data
-                        };
-                        s3.upload(uploadParams, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return;
-                            }
-                            res.send(data.Location);
-                            rimraf(dir);
-                        });
-                    });
-                });
-
-                command.mergeToFile(path.join(dir, filename), dir);
-                command.audioChannels(2);
-                command.audioCodec('libmp3lame');
-                command.audioBitrate('48k');
-                command.audioFrequency(16000);
+                return;
+            }else{
+                file.write(data.Body);
+                file.end();
+                count++;
+                if (count === lines.length) {
+                    uploadConcatLines(dir, files, res);
+                }
             }
         });
     });
 };
+
+const uploadConcatLines = (dir, files, res) => {
+    let command = ffmpeg();
+    let filename = randomstring.generate(8) + '.mp3';
+
+    for (let i = 0; i < files.length; i++) {
+        command.input(files[i]);
+    }
+    command.on('error', err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+    command.on('end', () => {
+        fs.readFile(path.join(dir, filename), (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            } else if (!data) {
+                return;
+            }
+            let base64data = new Buffer(data, 'binary');
+            let uploadParams = {
+                Bucket: 'com.getstoryflow.audio.production',
+                Key: filename,
+                Body: base64data
+            };
+            s3.upload(uploadParams, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                res.send(data.Location);
+                rimraf(dir);
+            });
+        });
+    });
+
+    command.mergeToFile(path.join(dir, filename), dir);
+    command.audioChannels(2);
+    command.audioCodec('libmp3lame');
+    command.audioBitrate('48k');
+    command.audioFrequency(16000);
+}
 
 exports.upload = upload;
 exports.updateTitles = updateTitles;

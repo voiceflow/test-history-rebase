@@ -269,6 +269,26 @@ const renderStory = (params, req, res, success) => {
                     story.lines[node.id] = {
                         audio: node.extras.audio
                     };
+                } else if (node.extras.type === 'set') {
+                    let nextLink = null;
+                    for (let j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+                    story.lines[node.id] = {
+                        variable: node.extras.variable,
+                        expression: node.extras.expression,
+                        nextId: links[nextLink]
+                    };
+                } else if (node.extras.type === 'if') {
+                    story.lines[node.id] = {
+                        variable: node.extras.variable,
+                        operation: node.extras.operation,
+                        expression: node.extras.expression,
+                        trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
+                        falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
+                    };
                 }
             }
             let params = {

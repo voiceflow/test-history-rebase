@@ -242,11 +242,12 @@ class StoryBoard extends Component {
         });
     }
 
-    onPublish() {
+    onPublish(env) {
+        if(!["production", "sandbox"].includes(env)) return;
         var id = this.state.engine.getDiagramModel().getID();
         if (window.confirm('Are you ready to publish?')) {
             $.ajax({
-                url: this.state.review ? ('/publish/review/production/'+id) : ('/publish/production/'+id),
+                url: this.state.review ? ('/publish/review/' + env + '/' + id) : ('/publish/' + env + '/' + id),
                 type: 'POST',
                 success: () => {window.alert('Success');},
                 error: (e) => {
@@ -293,7 +294,8 @@ class StoryBoard extends Component {
             }else{
                 review = {
                     name: diagram.name,
-                    email: diagram.email
+                    email: diagram.email,
+                    envs: diagram.envs
                 }
             }
 
@@ -402,8 +404,13 @@ class StoryBoard extends Component {
                 { this.state.review ? 
                     <div id="review">
                         <h5 className="mb-0">Review Mode</h5>
+                        <small><b>Requested Environments:</b><br/>
+                            {Array.isArray(this.state.review.envs) ? this.state.review.envs.map((env, i) => {
+                                return <span key={i}>* {env}<br/></span>
+                            }) : null}
+                        </small>
                         <small>
-                        <i>{this.state.review.name}</i><br/>
+                        <i>{this.state.review.name ? this.state.review.name : "No Account Name"}</i><br/>
                         <i>{this.state.review.email}</i>
                         </small>
                     </div> : null

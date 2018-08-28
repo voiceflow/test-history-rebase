@@ -300,9 +300,6 @@ const renderStory = (params, req, res, success) => {
                     console.log(err);
                     res.sendStatus(err.statusCode);
                 } else {
-                    Story.getStoriesInternal(req.params.env, stories => {
-                        Audio.updateTitles(stories, req.params.env);
-                    });
                     res.sendStatus(200);
                     if(success){
                         success();
@@ -351,7 +348,7 @@ const publishReview = (req, res) => {
     };
 
     renderStory(params, req, res, () => {
-        if( req.params.env != 'production'){
+        if( req.params.env != 'production' || req.params.env != 'sandbox'){
             return;
         }
         let update_params = {

@@ -9,84 +9,75 @@ class Stories extends Component {
 
         this.state = {
             staging: [],
-            production: []
+            production: [],
+            sandbox: []
         };
+
+        this.refresh = this.refresh.bind(this);
+        this.onRemove = this.onRemove.bind(this);
+        this.onFeature = this.onFeature.bind(this);
+        this.onList = this.onList.bind(this);
+        this.onUnlist = this.onUnlist.bind(this);
     }
 
     componentDidMount() {
-        this.refreshStories();
+        this.refresh('staging');
+        this.refresh('production');
+        this.refresh('sandbox');
     }
 
-    scrollToBottom() {
-        let s = $('.Stories');
-        s.scrollTop(s.prop("scrollHeight"));
-    }
-
-    refreshStories() {
+    refresh(env){
         $.ajax({
-            url: '/stories/staging',
+            url: '/stories/' + env,
             type: 'GET',
             success: stories => {
                 this.setState({
-                    staging: stories
-                }, this.scrollToBottom.bind(this));
-            },
-            error: () => {window.alert('Error');}
-        });
-        $.ajax({
-            url: '/stories/production',
-            type: 'GET',
-            success: stories => {
-                this.setState({
-                    production: stories
-                }, this.scrollToBottom.bind(this));
+                    [env]: stories
+                });
             },
             error: () => {window.alert('Error');}
         });
     }
 
-    onRemoveStaging(id) {
+    onRemove(env, id) {
         this.props.onConfirmUpdate({
-            text: "Are you sure you want to remove this story from staging?",
+            text: "Are you sure you want to remove this story from "+ env +"?",
             confirm: () => {
                 $.ajax({
-                    url: '/stories/staging/'+id,
+                    url: '/stories/' + env + '/' + id,
                     type: 'DELETE',
-                    success: this.refreshStories.bind(this),
+                    success: () => this.refresh(env),
                     error: () => {window.alert('Error');}
                 });
             }
         });
     }
 
-    onFeatureStaging(id) {
+    onFeature(env, id) {
         $.ajax({
-            url: '/feature/staging/'+id,
+            url: '/feature/' + env + '/'+id,
             type: 'POST',
-            success: this.refreshStories.bind(this),
+            success: () => this.refresh(env),
             error: () => {window.alert('Error');}
         });
     }
 
-    onRemoveProduction(id) {
-        this.props.onConfirmUpdate({
-            text: "Are you sure you want to remove this story from production?",
-            confirm: () => {
-                $.ajax({
-                    url: '/stories/production/'+id,
-                    type: 'DELETE',
-                    success: this.refreshStories.bind(this),
-                    error: () => {window.alert('Error');}
-                });
-            }
+    onList(env, id){
+        // console.log("FUCL");
+        // console.log(env, id);
+        $.ajax({
+            url: '/list/' + env + '/'+id,
+            type: 'POST',
+            success: () => this.refresh(env),
+            error: () => {window.alert('Error');}
         });
     }
 
-    onFeatureProduction(id) {
+    onUnlist(env, id){
         $.ajax({
-            url: '/feature/production/'+id,
-            type: 'POST',
-            success: this.refreshStories.bind(this),
+            url: '/list/' + env + '/'+id,
+            type: 'DELETE',
+            success: () => this.refresh(env),
             error: () => {window.alert('Error');}
         });
     }
@@ -105,12 +96,18 @@ class Stories extends Component {
                                 className="-highlight -striped mt-4"
                                 data= {this.state.staging}
                                 columns= {[{
-                                    Header: "Featured",
+                                    Header: "Listed",
                                     accessor: "featured",
                                     className: "text-center",
                                     maxWidth: 80,
                                     Cell: row => {
-                                        return <small>{row.value ? <i className="fas fa-circle text-success"></i> : <i className="fas fa-circle text-warning"></i>}</small>
+                                        if(row.value){
+                                            return <i className="fas fa-circle text-primary"></i>
+                                        }else if(row.original.listed){
+                                            return <i className="fas fa-circle text-success"></i>
+                                        }else{
+                                            return <i className="fas fa-circle text-warning"></i>
+                                        }
                                     }
                                 }, {
                                     Header: "Title",
@@ -123,7 +120,7 @@ class Stories extends Component {
                                     accessor: "id",
                                     maxWidth: 80,
                                     Cell: row => {
-                                        return <button className="btn btn-outline-danger border-none" onClick={() => this.onRemoveStaging(row.value)}>Delete</button>
+                                        return <button className="btn btn-outline-danger border-none" onClick={() => this.onRemove("staging", row.value)}>Delete</button>
                                     },
                                     sortable: false
                                 }, {
@@ -132,10 +129,23 @@ class Stories extends Component {
                                     accessor: "id",
                                     maxWidth: 90,
                                     Cell: row => {
-                                        if(row.row.featured){
-                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeatureStaging(row.value)}>Cancel</button>
+                                        if(row.original.featured){
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeature("staging", row.value)}>Cancel</button>
                                         }else{
-                                            return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeatureStaging(row.value)}>Feature</button>
+                                            return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeature("staging", row.value)}>Feature</button>
+                                        }
+                                    },
+                                    sortable: false
+                                }, {
+                                    Header: "List",
+                                    className: "text-center",
+                                    accessor: "id",
+                                    maxWidth: 90,
+                                    Cell: row => {
+                                        if(row.original.listed){
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("staging", row.value)}>Unlist</button>
+                                        }else{
+                                            return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("staging", row.value)}>List</button>
                                         }
                                     },
                                     sortable: false
@@ -145,7 +155,7 @@ class Stories extends Component {
                     </Col>
                     <Col>
                         <div className='environment mt-5' id="production">
-                            <h1>Production</h1>
+                            <h1>Storyflow</h1>
                                 { Array.isArray(this.state.production) ?
                                 <ReactTable
                                     defaultPageSize={10}
@@ -153,12 +163,18 @@ class Stories extends Component {
                                     className="-highlight -striped mt-4"
                                     data= {this.state.production}
                                     columns= {[{
-                                        Header: "Featured",
+                                        Header: "Listed",
                                         accessor: "featured",
                                         className: "text-center",
                                         maxWidth: 80,
                                         Cell: row => {
-                                            return <small>{row.value ? <i className="fas fa-circle text-success"></i> : <i className="fas fa-circle text-warning"></i>}</small>
+                                            if(row.value){
+                                                return <i className="fas fa-circle text-primary"></i>
+                                            }else if(row.original.listed){
+                                                return <i className="fas fa-circle text-success"></i>
+                                            }else{
+                                                return <i className="fas fa-circle text-warning"></i>
+                                            }
                                         }
                                     }, {
                                         Header: "Title",
@@ -171,7 +187,7 @@ class Stories extends Component {
                                         accessor: "id",
                                         maxWidth: 80,
                                         Cell: row => {
-                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onRemoveStaging(row.value)}>Delete</button>
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onRemove("production", row.value)}>Delete</button>
                                         },
                                         sortable: false
                                     }, {
@@ -181,9 +197,89 @@ class Stories extends Component {
                                         maxWidth: 90,
                                         Cell: row => {
                                             if(row.row.featured){
-                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeatureStaging(row.value)}>Cancel</button>
+                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeature("production", row.value)}>Cancel</button>
                                             }else{
-                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeatureStaging(row.value)}>Feature</button>
+                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeature("production", row.value)}>Feature</button>
+                                            }
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "List",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 90,
+                                        Cell: row => {
+                                            if(row.original.listed){
+                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("production", row.value)}>Unlist</button>
+                                            }else{
+                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("production", row.value)}>List</button>
+                                            }
+                                        },
+                                        sortable: false
+                                    }]} 
+                                /> : null }
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className='environment mt-5' id="sandbox">
+                            <h1>Sandbox</h1>
+                                { Array.isArray(this.state.sandbox) ?
+                                <ReactTable
+                                    defaultPageSize={10}
+                                    showPageSizeOptions={false}
+                                    className="-highlight -striped mt-4"
+                                    data= {this.state.sandbox}
+                                    columns= {[{
+                                        Header: "Listed",
+                                        accessor: "featured",
+                                        className: "text-center",
+                                        maxWidth: 80,
+                                        Cell: row => {
+                                            if(row.value){
+                                                return <i className="fas fa-circle text-primary"></i>
+                                            }else if(row.original.listed){
+                                                return <i className="fas fa-circle text-success"></i>
+                                            }else{
+                                                return <i className="fas fa-circle text-warning"></i>
+                                            }
+                                        }
+                                    }, {
+                                        Header: "Title",
+                                        accessor: "title",
+                                        className: "pl-3",
+                                        minWidth: 200
+                                    }, {
+                                        Header: "Remove",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 80,
+                                        Cell: row => {
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onRemove("sandbox", row.value)}>Delete</button>
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "Feature",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 90,
+                                        Cell: row => {
+                                            if(row.row.featured){
+                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeature("sandbox", row.value)}>Cancel</button>
+                                            }else{
+                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeature("sandbox", row.value)}>Feature</button>
+                                            }
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "List",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 90,
+                                        Cell: row => {
+                                            if(row.original.listed){
+                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("sandbox", row.value)}>Unlist</button>
+                                            }else{
+                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("sandbox", row.value)}>List</button>
                                             }
                                         },
                                         sortable: false

@@ -56,7 +56,7 @@ const getScoreSync = (a, b) => new Promise(resolve => {
 const getStories = (req, res) => {
     let params = {
         TableName: 'com.getstoryflow.stories.'+req.params.env,
-        ProjectionExpression: 'id, title, preview, featured'
+        ProjectionExpression: 'id, title, preview, featured, listed'
     };
     if (!req.user.admin) {
         params.FilterExpression = 'creator = :creator';
@@ -191,7 +191,7 @@ const deleteStory = (req, res) => {
                 }
             });
         }else{
-            res.setStatus(404);
+            res.sendStatus(404);
         }
     });
 };
@@ -199,11 +199,9 @@ const deleteStory = (req, res) => {
 const featureStory = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
-
         return;
     } else if (!req.user.admin) {
         res.sendStatus(403);
-
         return;
     }
 
@@ -258,7 +256,87 @@ const featureStory = (req, res) => {
     });
 };
 
+const listStory = (req, res) => {
+    if (!req.user || !req.params.id || !req.params.env) {
+        res.sendStatus(401);
+        return;
+    } else if (!req.user.admin) {
+        res.sendStatus(403);
+        return;
+    }
+
+    let id = req.params.id;
+
+    let uParams = {
+        TableName: 'com.getstoryflow.stories.'+req.params.env,
+        Key: {'id': id},
+        UpdateExpression: 'set listed = :true',
+        ExpressionAttributeValues: {':true': true}
+    };
+    docClient.update(uParams, err => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(err.statusCode);
+        }
+        let sParams = {
+            TableName: 'com.getstoryflow.stories.'+req.params.env,
+            ProjectionExpression: 'id',
+            FilterExpression: 'listed = :true',
+            ExpressionAttributeValues: {':true': true}
+        };
+        docClient.scan(sParams, (err, data) => {
+            if(err){
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+                Audio.updateTitles(data.Items, req.params.env);
+            }
+        });
+    });
+}
+
+const unlistStory = (req, res) => {
+    if (!req.user || !req.params.id || !req.params.env) {
+        res.sendStatus(401);
+        return;
+    } else if (!req.user.admin) {
+        res.sendStatus(403);
+        return;
+    }
+
+    let id = req.params.id;
+
+    let uParams = {
+        TableName: 'com.getstoryflow.stories.'+req.params.env,
+        Key: {'id': id},
+        UpdateExpression: 'set listed = :false',
+        ExpressionAttributeValues: {':false': false}
+    };
+    docClient.update(uParams, err => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(err.statusCode);
+        }
+        let sParams = {
+            TableName: 'com.getstoryflow.stories.'+req.params.env,
+            ProjectionExpression: 'id',
+            FilterExpression: 'listed = :true',
+            ExpressionAttributeValues: {':true': true}
+        };
+        docClient.scan(sParams, (err, data) => {
+            if(err){
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+                Audio.updateTitles(data.Items, req.params.env);
+            }
+        });
+    });
+}
+
 exports.getStories = getStories;
 exports.getStoriesInternal = getStoriesInternal;
 exports.deleteStory = deleteStory;
 exports.featureStory = featureStory;
+exports.listStory = listStory;
+exports.unlistStory = unlistStory;

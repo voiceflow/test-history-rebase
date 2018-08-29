@@ -7,24 +7,37 @@ import moment from 'moment';
 import Select from 'react-select';
 import './TestModal.css'
 
+const default_state = {
+  story: null,
+  input: "",
+  line: null,
+  variables: [],
+  testing: true
+}
+
 class TestModal extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      story: null,
-      input: "",
-      line: null,
       error: null,
+      input: "",
       inputs: [],
       audio: null,
       started: false,
       data: null,
       selected_line: null,
-      nodes: null,
-      variables: []
+      nodes: [],
+      story_state: {
+        story: false,
+        input: "",
+        line: null,
+        variables: [],
+        testing: true
+      }
     }
+
     this.updateState = this.updateState.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputSubmit = this.inputSubmit.bind(this);
@@ -38,10 +51,12 @@ class TestModal extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.testing_info !== this.props.testing_info){
-      if(!this.state.story){
+      if(!this.state.story_state.story){
+        let story_state = this.state.story_state;
+        story_state.story = nextProps.testing_info.id;
         this.setState({
-          story: nextProps.testing_info.id,
-          nodes: nextProps.testing_info.nodes
+          nodes: nextProps.testing_info.nodes,
+          story_state: story_state
         });
       }
     }
@@ -73,10 +88,12 @@ class TestModal extends React.Component {
         audio: null
       });
       if(ended){
+        let next_state = default_state;
+        next_state.story = this.state.story_state.story;
         this.setState({
           started: false,
           inputs: [],
-          line: null
+          story_state: next_state
         })
       }
       return;
@@ -112,18 +129,15 @@ class TestModal extends React.Component {
     audio.play();
   }
 
-  updateState(input, story, line, start){
-    let data = {
-      input: input,
-      story: story,
-      line: line,
-      testing: true
-    }
+  updateState(start){
+    let data = this.state.story_state;
+
     if(start){
       data.testing = {
-        line: line ? line : "START"
+        line: this.state.story_state.line ? this.state.story_state.line : "START"
       };
     }
+
     $.ajax({
         url: 'https://testing.getstoryflow.com/state/staging',
         type: 'POST',
@@ -131,8 +145,7 @@ class TestModal extends React.Component {
         success: (res) => {
           if(res.line) {
             this.setState({
-              line: res.line,
-              variables: res.variables
+              story_state: res
             });
           }
           if(res.output && res.output.length > 0){
@@ -162,13 +175,21 @@ class TestModal extends React.Component {
 
   inputSubmit(e){
     e.preventDefault();
-    this.updateState(this.state.input, this.state.story, this.state.line);
+    let story_state = this.state.story_state;
+    story_state.input = this.state.input;
     let inputs = this.state.inputs;
+
     inputs.push({
       self: this.state.input,
       time: moment().format('h:mm:ss A')
     });
-    this.setState({input: "", inputs: inputs});
+
+    this.setState({
+      input: "", 
+      inputs: inputs,
+      story_state: story_state
+    }, this.updateState);
+
     return false;
   }
 
@@ -187,17 +208,19 @@ class TestModal extends React.Component {
 
   startline(){
     if(!this.state.selected_line) return;
+    let story_state = this.state.story_state;
+    story_state.line = this.state.selected_line.value
     this.setState({
       started: true,
-      line: this.state.selected_line.value
-    }, () => {this.updateState(this.state.input, this.state.story, this.state.line, true)});
+      story_state: story_state
+    }, () => {this.updateState(true)});
   }
 
   beginning(){
     this.setState({
       started: true
     });
-    this.updateState(this.state.input, this.state.story, this.state.line, true);
+    this.updateState(true);
   }
 
   render() {
@@ -206,7 +229,7 @@ class TestModal extends React.Component {
         <ModalBody className="text-center env-modal">
           <h5>Test Your Project</h5>
           <hr className="mb-0"/>
-          { this.state.story ? 
+          { this.state.story_state.story ? 
             <div>
               { this.state.started ? 
                 <div>

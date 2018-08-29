@@ -235,6 +235,27 @@ class StoryBoard extends Component {
         }
     }
 
+    publish(env, cb) {
+        var id = this.state.engine.getDiagramModel().getID();
+        if (cb ? true : window.confirm('Are you ready to publish?')) {
+            $.ajax({
+                url: this.state.review ? ('/publish/review/' + env + '/' + id) : ('/publish/' + env + '/' + id),
+                type: 'POST',
+                success: () => {
+                    cb ? cb(false, id) : window.alert('Success');
+                },
+                error: (e) => {
+                    console.log(e);
+                    this.setState({
+                        loading_modal: true,
+                        error_modal: "Server Error - Unable to Publish"
+                    });
+                    cb(true);
+                }
+            });
+        }
+    }
+
     loadDiagram(diagram, review) {
         var engine = this.state.engine;
         var model = new SRD.DiagramModel();
@@ -344,7 +365,7 @@ class StoryBoard extends Component {
 
     toggleTestModal() {
         this.setState({
-            testing_id: false,
+            testing_info: false,
             testing_modal: !this.state.testing_modal
         });
     }

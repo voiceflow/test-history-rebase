@@ -167,7 +167,7 @@ class StoryBoard extends Component {
             var model = engine.getDiagramModel();
             let id = model.getID();
             var data = JSON.stringify(model.serializeDiagram());
-            model.deSerializeDiagram(JSON.parse(data), engine);
+            // model.deSerializeDiagram(JSON.parse(data), engine);
 
             var diagram = {
                 id: id,
@@ -371,6 +371,7 @@ class StoryBoard extends Component {
     }
 
     onTest() {
+        this.state.engine.getDiagramModel().clearSelection();
         this.toggleTestModal();
         this.onPublish("staging", (err, id) => {
             if(err){
@@ -383,7 +384,7 @@ class StoryBoard extends Component {
                 let engine = this.state.engine;
                 let model = engine.getDiagramModel();
                 let data = model.serializeDiagram();
-                model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+                // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
                 
                 let nodes = [];
                 data.nodes.forEach((node) => {

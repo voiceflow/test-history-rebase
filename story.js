@@ -280,7 +280,7 @@ const listStory = (req, res) => {
         }
         let sParams = {
             TableName: 'com.getstoryflow.stories.'+req.params.env,
-            ProjectionExpression: 'id',
+            ProjectionExpression: 'id, preview',
             FilterExpression: 'listed = :true',
             ExpressionAttributeValues: {':true': true}
         };
@@ -319,7 +319,7 @@ const unlistStory = (req, res) => {
         }
         let sParams = {
             TableName: 'com.getstoryflow.stories.'+req.params.env,
-            ProjectionExpression: 'id',
+            ProjectionExpression: 'id, preview',
             FilterExpression: 'listed = :true',
             ExpressionAttributeValues: {':true': true}
         };

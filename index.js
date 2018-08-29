@@ -54,6 +54,7 @@ const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
 
 app.use(cors());
+
 app.use(helmet());
 
 app.use(bodyParser.json({

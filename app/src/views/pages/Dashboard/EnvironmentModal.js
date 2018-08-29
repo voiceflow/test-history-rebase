@@ -59,10 +59,11 @@ class EnvironmentModal extends React.Component {
               </div>
             </div>
             <div className="col" onTouchStart={() => this.classList.toggle('hover')}>
-              <div className={"container" + (this.state.kids ? " selected" : "")}>
+              <div onClick={() => this.toggle("kids")} className={"container" + (this.state.kids ? " selected" : "")}>
                 <div className="front kids">
                   <div className="inner">
-                    <h3><u>Coming Soon</u></h3>
+                    <img src="/images/logo_storyflow.png" alt="storyflow"/>
+                    <h2>Kids</h2>
                   </div>
                 </div>
                 <div className="back">

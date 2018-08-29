@@ -78,7 +78,8 @@ class StoryBoard extends Component {
             admin: false,
             review: false,
             testing_modal: false,
-            testing_info: false
+            testing_info: false,
+            variables: []
         };
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));

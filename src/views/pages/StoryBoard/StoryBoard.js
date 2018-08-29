@@ -15,7 +15,7 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
-import AuthenticationService from "./../../../services/Authentication";
+import AuthenticationService from './../../../services/Authentication';
 
 class StoryBoard extends Component {
     constructor(props) {
@@ -30,8 +30,8 @@ class StoryBoard extends Component {
         let split = this.props.location.pathname.split('/');
 
         this.unsave = this.unsave.bind(this);
-        
-        if(split.length === 2 && split[1].toLowerCase() === "storyboard"){
+
+        if (split.length === 2 && split[1].toLowerCase() === 'storyboard') {
             var model = new SRD.DiagramModel();
 
             var node = new BlockNodeModel('Start', '#FBE9E7');
@@ -60,7 +60,7 @@ class StoryBoard extends Component {
                 open: true,
                 diagrams: [],
                 variables: [],
-                title: "",
+                title: '',
                 loading_modal: false,
                 error_modal: false,
                 saving: false,
@@ -70,16 +70,16 @@ class StoryBoard extends Component {
                 review: false
             };
 
-            model.addListener({nodesUpdated: this.unsave});
-            model.addListener({linksUpdated: this.unsave});
-        }else{
+            model.addListener({ nodesUpdated: this.unsave });
+            model.addListener({ linksUpdated: this.unsave });
+        } else {
             this.state = {
                 engine: engine,
                 selected: null,
                 open: false,
                 diagrams: [],
                 variables: [],
-                title: "",
+                title: '',
                 loading_modal: false,
                 error_modal: false,
                 saving: false,
@@ -87,7 +87,7 @@ class StoryBoard extends Component {
                 last_save: false,
                 admin: false,
                 review: false
-            };     
+            };
         }
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
@@ -99,10 +99,10 @@ class StoryBoard extends Component {
         this.setVariables = this.setVariables.bind(this);
 
         AuthenticationService.check((err, res) => {
-            if(err && this.props.history){
-              this.props.history.push('/login');
-            }else{
-              this.setState({ admin: res.admin });
+            if (err && this.props.history) {
+                this.props.history.push('/login');
+            } else {
+                this.setState({ admin: res.admin });
             }
         });
     }
@@ -110,21 +110,21 @@ class StoryBoard extends Component {
     componentDidMount() {
         this.onLoad();
         let split = this.props.location.pathname.split('/');
-        
-        if(split.length === 3){
+
+        if (split.length === 3) {
             this.onLoadId(split[2], true);
-        }else if(split.length === 4 && split[2] === 'review'){
+        } else if (split.length === 4 && split[2] === 'review') {
             this.onLoadReview(split[3]);
         }
-        
+
         $('.srd-node-layer').click(() => {
             var engine = this.state.engine;
             var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
-            if(node){
+            if (node) {
                 this.setState({
                     engine: engine,
                     selected: node,
-                    open: true,
+                    open: true
                 }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
             }
         });
@@ -132,17 +132,18 @@ class StoryBoard extends Component {
         $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
 
         $(document).keydown(function(event) {
-                // If Control or Command key is pressed and the S key is pressed
-                // run save function. 83 is the key code for S.
-                if((event.ctrlKey || event.metaKey) && event.which === 83) {
-                    event.preventDefault();
-                    // Save Function
-                    if(!this.state.saved){
-                        this.onSave();
-                    }
-                    return false;
-                };
-            }.bind(this)
+            // If Control or Command key is pressed and the S key is pressed
+            // run save function. 83 is the key code for S.
+            if ((event.ctrlKey || event.metaKey) && event.which === 83) {
+                event.preventDefault();
+                // Save Function
+                if (!this.state.saved) {
+                    this.onSave();
+                }
+
+                return false;
+            }
+        }.bind(this)
         );
     }
 
@@ -169,7 +170,7 @@ class StoryBoard extends Component {
 
     onSave() {
         try {
-            this.setState({saving: "Saving..."});
+            this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
             var model = engine.getDiagramModel();
             var data = model.serializeDiagram();
@@ -179,7 +180,7 @@ class StoryBoard extends Component {
                 id: data.id,
                 title: this.state.title,
                 variables: this.state.variables,
-                data: JSON.stringify(data),
+                data: JSON.stringify(data)
             }
 
             $.ajax({
@@ -198,7 +199,7 @@ class StoryBoard extends Component {
                     this.setState({
                         saving: false,
                         loading_modal: true,
-                        error_modal: "Error Saving to Cloud (Check Logs)"
+                        error_modal: 'Error Saving to Cloud (Check Logs)'
                     });
                 }
             });
@@ -206,7 +207,7 @@ class StoryBoard extends Component {
             console.log(e);
             this.setState({
                 loading_modal: true,
-                error_modal: "Error Saving - Project Structure (Check Logs)"
+                error_modal: 'Error Saving - Project Structure (Check Logs)'
             });
         }
     }
@@ -229,32 +230,35 @@ class StoryBoard extends Component {
     onTest() {
         var id = this.state.engine.getDiagramModel().getID();
         $.ajax({
-            url: this.state.review ? ('/publish/review/staging/'+id) : ('/publish/staging/'+id),
+            url: this.state.review ? '/publish/review/staging/'+id : '/publish/staging/'+id,
             type: 'POST',
             success: () => {window.alert('Success');},
             error: (e) => {
                 console.log(e);
                 this.setState({
                     loading_modal: true,
-                    error_modal: "Server Error - Unable to Test"
+                    error_modal: 'Server Error - Unable to Test'
                 });
             }
         });
     }
 
     onPublish(env) {
-        if(!["production", "sandbox"].includes(env)) return;
+        if (![
+            'production',
+            'sandbox'
+        ].includes(env)) {return;}
         var id = this.state.engine.getDiagramModel().getID();
         if (window.confirm('Are you ready to publish?')) {
             $.ajax({
-                url: this.state.review ? ('/publish/review/' + env + '/' + id) : ('/publish/' + env + '/' + id),
+                url: this.state.review ? '/publish/review/' + env + '/' + id : '/publish/' + env + '/' + id,
                 type: 'POST',
                 success: () => {window.alert('Success');},
                 error: (e) => {
                     console.log(e);
                     this.setState({
                         loading_modal: true,
-                        error_modal: "Server Error - Unable to Publish"
+                        error_modal: 'Server Error - Unable to Publish'
                     });
                 }
             });
@@ -271,10 +275,10 @@ class StoryBoard extends Component {
         } catch (e) {
             console.log(e);
         }
-        if(diagram_json){
+        if (diagram_json) {
             model.deSerializeDiagram(diagram_json, engine);
-            model.addListener({nodesUpdated: this.unsave});
-            model.addListener({linksUpdated: this.unsave});
+            model.addListener({ nodesUpdated: this.unsave });
+            model.addListener({ linksUpdated: this.unsave });
             var nodes = model.getNodes();
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story') {
@@ -284,14 +288,14 @@ class StoryBoard extends Component {
             }
             var links = model.getLinks();
             for (let key in links) {
-                links[key].setColor("#CCC");
+                links[key].setColor('#CCC');
             }
             engine.setDiagramModel(model);
-            let title = diagram.title ? diagram.title : "Unnamed Story";
+            let title = diagram.title ? diagram.title : 'Unnamed Story';
 
-            if(!review){
+            if (!review) {
                 review = false;
-            }else{
+            } else {
                 review = {
                     name: diagram.name,
                     email: diagram.email,
@@ -300,7 +304,7 @@ class StoryBoard extends Component {
             }
 
             let variables = []
-            if(diagram.variables){
+            if (diagram.variables) {
                 variables = diagram.variables;
             }
 
@@ -314,37 +318,37 @@ class StoryBoard extends Component {
                 variables: variables
             });
 
-            this.setState({saved: true});
-        }else{
-            this.setState({error_modal: "Could Not Open Project - Corrupted File"});
+            this.setState({ saved: true });
+        } else {
+            this.setState({ error_modal: 'Could Not Open Project - Corrupted File' });
         }
     }
 
     onLoadId(id, url) {
-        if(!!!url){
+        if (!url) {
             this.props.history.push('/storyboard/' + id);
         }
-        this.setState({loading_modal: true, error_modal: false});
+        this.setState({ loading_modal: true, error_modal: false });
         $.ajax({
             url: '/diagram/'+id,
             type: 'GET',
             success: diagram => {
                 this.loadDiagram(diagram);
             },
-            error: () => {this.setState({error_modal: "Could Not Retrieve Project"});}
+            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
     }
 
     onLoadReview(id) {
         // this.props.history.push('/storyboard/' + id);
-        this.setState({loading_modal: true, error_modal: false});
+        this.setState({ loading_modal: true, error_modal: false });
         $.ajax({
             url: '/review/'+id,
             type: 'GET',
             success: diagram => {
                 this.loadDiagram(diagram, true);
             },
-            error: () => {this.setState({error_modal: "Could Not Retrieve Project"});}
+            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
     }
 
@@ -356,8 +360,8 @@ class StoryBoard extends Component {
     }
 
     unsave() {
-        if(this.state.saved){
-            this.setState({saved: false});
+        if (this.state.saved) {
+            this.setState({ saved: false });
         }
     }
 
@@ -370,11 +374,10 @@ class StoryBoard extends Component {
 
     render() {
         return (
-            <div className={'App' + (this.state.review ? " review" : "")} >
+            <div className={'App' + (this.state.review ? ' review' : '')} >
                 <Prompt
                     when={!this.state.saved}
-                    message={location =>
-                        `Are you sure you want to leave without saving?`
+                    message={location => 'Are you sure you want to leave without saving?'
                     }
                 ></Prompt>
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
@@ -387,12 +390,12 @@ class StoryBoard extends Component {
                     { text: 'Set', type: 'set', color: '#F3E5F5', menuColor: '#8E24AA' },
                     { text: 'If', type: 'if', color: '#B2DFDB', menuColor: '#00695C' }
                 ]} />
-                <TitleBar 
-                    title={this.state.title} 
-                    onUpdateTitle={(e) => {this.setState({title: e.target.value}); this.unsave()}}
-                    onSave={this.onSave.bind(this)} 
-                    onLoad={this.onLoad.bind(this)} 
-                    onTest={this.onTest.bind(this)} 
+                <TitleBar
+                    title={this.state.title}
+                    onUpdateTitle={(e) => {this.setState({ title: e.target.value }); this.unsave()}}
+                    onSave={this.onSave.bind(this)}
+                    onLoad={this.onLoad.bind(this)}
+                    onTest={this.onTest.bind(this)}
                     onPublish={this.onPublish.bind(this)}
                     diagrams={this.state.diagrams}
                     onLoadId={this.onLoadId.bind(this)}
@@ -401,8 +404,8 @@ class StoryBoard extends Component {
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                 />
-                { this.state.review ? 
-                    <div id="review">
+                { this.state.review
+                    ? <div id="review">
                         <h5 className="mb-0">Review Mode</h5>
                         <small><b>Requested Environments:</b><br/>
                             {Array.isArray(this.state.review.envs) ? this.state.review.envs.map((env, i) => {
@@ -410,8 +413,8 @@ class StoryBoard extends Component {
                             }) : null}
                         </small>
                         <small>
-                        <i>{this.state.review.name ? this.state.review.name : "No Account Name"}</i><br/>
-                        <i>{this.state.review.email}</i>
+                            <i>{this.state.review.name ? this.state.review.name : 'No Account Name'}</i><br/>
+                            <i>{this.state.review.email}</i>
                         </small>
                     </div> : null
                 }
@@ -443,14 +446,16 @@ class StoryBoard extends Component {
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 audio: false,
-                                lines: [{
-                                    textCollapse: false,
-                                    collapse: true,
-                                    text: '',
-                                    audio: false,
-                                    voice: false,
-                                    title: 'Line Audio'
-                                }],
+                                lines: [
+                                    {
+                                        textCollapse: false,
+                                        collapse: true,
+                                        text: '',
+                                        audio: false,
+                                        voice: false,
+                                        title: 'Line Audio'
+                                    }
+                                ]
                             };
                         } else if (data.type === 'ending') {
                             node.addInPort(' ');
@@ -460,25 +465,25 @@ class StoryBoard extends Component {
                                 audioVoice: ''
                             };
                         } else if (data.type === 'random') {
-                            node.addInPort(" ");
+                            node.addInPort(' ');
                             node.addOutPort(1).setMaximumLinks(1);
                             node.extras = {
                                 paths: 1
                             };
                         } else if (data.type === 'set') {
-                            node.addInPort(" ");
-                            node.addOutPort(" ").setMaximumLinks(1);
+                            node.addInPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 variable: null,
                                 expression: null
                             };
                         } else if (data.type === 'if') {
-                            node.addInPort(" ");
+                            node.addInPort(' ');
                             node.addOutPort('true').setMaximumLinks(1);
                             node.addOutPort('false').setMaximumLinks(1);
                             node.extras = {
                                 variable: null,
-                                operation: "=",
+                                operation: '==',
                                 expression: null
                             };
                         }
@@ -503,10 +508,10 @@ class StoryBoard extends Component {
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
                 </div>
                 <div className={'Editor' + (this.state.open ? ' open' : '') }>
-                     <Editor 
-                        node={this.state.selected} 
-                        onUpdate={this.unsave} 
-                        onClose={e => this.setState({ open: false })} 
+                    <Editor
+                        node={this.state.selected}
+                        onUpdate={this.unsave}
+                        onClose={e => this.setState({ open: false })}
                         repaint={this.repaint}
                         variables={this.state.variables}
                         onVariable={this.setVariables}

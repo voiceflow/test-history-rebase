@@ -1,0 +1,267 @@
+/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
+
+import React from 'react';
+import { Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form } from 'reactstrap';
+import $ from 'jquery';
+import moment from 'moment';
+import Select from 'react-select';
+import './TestModal.css'
+
+class TestModal extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      story: null,
+      input: "",
+      line: null,
+      error: null,
+      inputs: [],
+      audio: null,
+      started: false,
+      data: null,
+      selected_line: null,
+      nodes: null,
+      variables: []
+    }
+    this.updateState = this.updateState.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.inputSubmit = this.inputSubmit.bind(this);
+    this.removeAudio = this.removeAudio.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.recursivePlay = this.recursivePlay.bind(this);
+    this.beginning = this.beginning.bind(this);
+    this.handleLineSelection = this.handleLineSelection.bind(this);
+    this.startline = this.startline.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.testing_info !== this.props.testing_info){
+      if(!this.state.story){
+        this.setState({
+          story: nextProps.testing_info.id,
+          nodes: nextProps.testing_info.nodes
+        });
+      }
+    }
+  }
+
+  removeAudio(){
+    if(this.state.audio){
+      let audio = this.state.audio;
+      audio.onended = null;
+      audio.ontimeupdate = null;
+      audio.onloadedmetadata = null;
+      this.state.audio.pause();
+      this.state.audio.removeAttribute('src');
+      this.state.audio.load();
+      this.setState({
+        audio: null
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    this.removeAudio();
+  }
+
+  // Super Janky recusive function to play audio
+  recursivePlay(index, urls, ended){
+    if(index >= urls.length ) {
+      this.setState({
+        audio: null
+      });
+      if(ended){
+        this.setState({
+          started: false,
+          inputs: [],
+          line: null
+        })
+      }
+      return;
+    };
+    let audio = new Audio(urls[index]);
+    this.setState({
+      audio: audio
+    });
+    audio.onended = () => {
+      this.recursivePlay(index + 1, urls, ended);
+      audio.ontimeupdate = null;
+      audio.onended = null;
+      audio.onloadedmetadata = null;
+      audio.pause();
+      audio.removeAttribute('src');
+      audio.load();
+    }
+    audio.onloadedmetadata = () => {
+      let inputs = this.state.inputs;
+      let index = inputs.push({
+        src: audio.src.split('/').pop().split('-').pop(),
+        currentTime: 0,
+        duration: audio.duration,
+        time: moment().format('h:mm:ss A')
+      });
+      this.setState({inputs: inputs});
+      audio.ontimeupdate = () => {
+        let inputs = this.state.inputs;
+        inputs[index - 1].currentTime = audio.currentTime;
+        this.setState({inputs: inputs});
+      }
+    }
+    audio.play();
+  }
+
+  updateState(input, story, line, start){
+    let data = {
+      input: input,
+      story: story,
+      line: line,
+      testing: true
+    }
+    if(start){
+      data.testing = {
+        line: line ? line : "START"
+      };
+    }
+    $.ajax({
+        url: 'https://testing.getstoryflow.com/state/staging',
+        type: 'POST',
+        data: data,
+        success: (res) => {
+          if(res.line) {
+            this.setState({
+              line: res.line,
+              variables: res.variables
+            });
+          }
+          if(res.output && res.output.length > 0){
+            // TYLER'S SUPER JANKY AUDIO THING
+            let m,
+            urls = [],
+            rex = /<audio[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
+            while((m = rex.exec(res.output))){
+              urls.push(m[1]);
+            }
+
+            this.removeAudio();
+            this.recursivePlay(0, urls, res.ending);
+          }
+        },
+        error: (err) => {
+            this.setState({
+              error: err
+            });
+        }
+    });
+  }
+
+  handleChange (evt) {
+    this.setState({ [evt.target.name]: evt.target.value });
+  }
+
+  inputSubmit(e){
+    e.preventDefault();
+    this.updateState(this.state.input, this.state.story, this.state.line);
+    let inputs = this.state.inputs;
+    inputs.push({
+      self: this.state.input,
+      time: moment().format('h:mm:ss A')
+    });
+    this.setState({input: "", inputs: inputs});
+    return false;
+  }
+
+  onKeyDown(event){
+    // 'keypress' event misbehaves on mobile so we track 'Enter' key via 'keydown' event
+    if (event.key === 'Enter') {
+      this.inputSubmit(event);
+    }
+  }
+
+  handleLineSelection(selectedOption){
+    this.setState({
+      selected_line: selectedOption 
+    });
+  }
+
+  startline(){
+    if(!this.state.selected_line) return;
+    this.setState({
+      started: true,
+      line: this.state.selected_line.value
+    }, () => {this.updateState(this.state.input, this.state.story, this.state.line, true)});
+  }
+
+  beginning(){
+    this.setState({
+      started: true
+    });
+    this.updateState(this.state.input, this.state.story, this.state.line, true);
+  }
+
+  render() {
+    return (
+      <Modal isOpen={this.props.open}>
+        <ModalBody className="text-center env-modal">
+          <h5>Test Your Project</h5>
+          <hr className="mb-0"/>
+          { this.state.story ? 
+            <div>
+              { this.state.started ? 
+                <div>
+                  <div className="chatbox">
+                    <div className="chats">
+                      {this.state.inputs.map((chat, i) => {
+                        if(chat.self){
+                          return <div className="mt-2 text-right" key={i}>
+                            <div className="self-message message border rounded p-2 align-self-start">
+                              <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-primary">{chat.time}</small></p>
+                            </div>
+                          </div>
+                        }else{
+                          return <div className="mt-2 text-left" key={i}>
+                            <div className="message border rounded align-self-start">
+                              <div className="message-container p-2">
+                                <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-primary">{chat.time}</small></p>
+                              </div>
+                              <div className="message-progress" style={{width: ((chat.currentTime/chat.duration) * 100)+"%"}}>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      })}
+                    </div>
+                  </div>
+                  <Form onSubmit={this.inputSubmit}>
+                    <InputGroup>
+                      <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                      <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
+                    </InputGroup>
+                  </Form>
+                </div> :
+                <div className="pt-3">
+                  <h5><b>Start Project from the very Beginning</b></h5>
+                  <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
+                  <hr/>
+                  <h5><b>Start From a Specific Point in the Project</b></h5>
+                  <Select
+                    className="text-left mb-2" 
+                    value={this.state.selected_line}
+                    onChange={this.handleLineSelection}
+                    options={this.state.nodes} />
+                  <Button color="primary" onClick={this.startline} size="lg" block><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp; Start From Block</Button>
+                </div>
+              }
+            </div> : <div className="p-5"><h1><i className="fas fa-sync-alt fa-spin"></i></h1></div>
+          }
+        </ModalBody>
+        <ModalFooter className="justify-content-center">
+          <Button color="danger" onClick={this.props.toggle}>Exit</Button>
+        </ModalFooter>
+      </Modal>
+    );
+  }
+}
+
+export default TestModal;

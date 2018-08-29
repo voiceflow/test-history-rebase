@@ -8,6 +8,7 @@ import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import LoadingModal from './../../components/Modals/LoadingModal';
+import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel';
@@ -30,11 +31,14 @@ class StoryBoard extends Component {
         let split = this.props.location.pathname.split('/');
 
         this.unsave = this.unsave.bind(this);
+        
+        let node = null;
+        let open = false;
 
-        if (split.length === 2 && split[1].toLowerCase() === 'storyboard') {
+        if(split.length === 2 && split[1].toLowerCase() === "storyboard"){
             var model = new SRD.DiagramModel();
 
-            var node = new BlockNodeModel('Start', '#FBE9E7');
+            node = new BlockNodeModel('Start', '#FBE9E7');
             node.addOutPort(' ').setMaximumLinks(1);
             node.extras = {
                 audio: '',
@@ -54,41 +58,28 @@ class StoryBoard extends Component {
             model.addNode(node);
             engine.setDiagramModel(model);
 
-            this.state = {
-                engine: engine,
-                selected: node,
-                open: true,
-                diagrams: [],
-                variables: [],
-                title: '',
-                loading_modal: false,
-                error_modal: false,
-                saving: false,
-                saved: true,
-                last_save: false,
-                admin: false,
-                review: false
-            };
+            open = true;
 
-            model.addListener({ nodesUpdated: this.unsave });
-            model.addListener({ linksUpdated: this.unsave });
-        } else {
-            this.state = {
-                engine: engine,
-                selected: null,
-                open: false,
-                diagrams: [],
-                variables: [],
-                title: '',
-                loading_modal: false,
-                error_modal: false,
-                saving: false,
-                saved: true,
-                last_save: false,
-                admin: false,
-                review: false
-            };
+            model.addListener({nodesUpdated: this.unsave});
+            model.addListener({linksUpdated: this.unsave});
         }
+
+        this.state = {
+            engine: engine,
+            selected: node,
+            open: open,
+            diagrams: [],
+            title: "",
+            loading_modal: false,
+            error_modal: false,
+            saving: false,
+            saved: true,
+            last_save: false,
+            admin: false,
+            review: false,
+            testing_modal: false,
+            testing_info: false
+        };
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
 
@@ -97,6 +88,7 @@ class StoryBoard extends Component {
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
+        this.toggleTestModal = this.toggleTestModal.bind(this);
 
         AuthenticationService.check((err, res) => {
             if (err && this.props.history) {
@@ -168,19 +160,20 @@ class StoryBoard extends Component {
         this.state.engine.repaintCanvas();
     }
 
-    onSave() {
+    onSave(cb) {
         try {
             this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
             var model = engine.getDiagramModel();
-            var data = model.serializeDiagram();
-            model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+            let id = model.getID();
+            var data = JSON.stringify(model.serializeDiagram());
+            model.deSerializeDiagram(JSON.parse(data), engine);
 
             var diagram = {
-                id: data.id,
+                id: id,
                 title: this.state.title,
                 variables: this.state.variables,
-                data: JSON.stringify(data)
+                data: data
             }
 
             $.ajax({
@@ -194,6 +187,7 @@ class StoryBoard extends Component {
                         saved: true,
                         last_save: Date.now()
                     });
+                    if(typeof cb === "function") cb(false);
                 },
                 error: () => {
                     this.setState({
@@ -201,6 +195,7 @@ class StoryBoard extends Component {
                         loading_modal: true,
                         error_modal: 'Error Saving to Cloud (Check Logs)'
                     });
+                    if(typeof cb === "function") cb(true);
                 }
             });
         } catch (e) {
@@ -209,6 +204,7 @@ class StoryBoard extends Component {
                 loading_modal: true,
                 error_modal: 'Error Saving - Project Structure (Check Logs)'
             });
+            if(typeof cb === "function") cb(false);
         }
     }
 
@@ -227,41 +223,15 @@ class StoryBoard extends Component {
         });
     }
 
-    onTest() {
-        var id = this.state.engine.getDiagramModel().getID();
-        $.ajax({
-            url: this.state.review ? '/publish/review/staging/'+id : '/publish/staging/'+id,
-            type: 'POST',
-            success: () => {window.alert('Success');},
-            error: (e) => {
-                console.log(e);
-                this.setState({
-                    loading_modal: true,
-                    error_modal: 'Server Error - Unable to Test'
-                });
-            }
-        });
-    }
-
-    onPublish(env) {
-        if (![
-            'production',
-            'sandbox'
-        ].includes(env)) {return;}
-        var id = this.state.engine.getDiagramModel().getID();
-        if (window.confirm('Are you ready to publish?')) {
-            $.ajax({
-                url: this.state.review ? '/publish/review/' + env + '/' + id : '/publish/' + env + '/' + id,
-                type: 'POST',
-                success: () => {window.alert('Success');},
-                error: (e) => {
-                    console.log(e);
-                    this.setState({
-                        loading_modal: true,
-                        error_modal: 'Server Error - Unable to Publish'
-                    });
-                }
+    onPublish(env, cb) {
+        if(!["production", "sandbox", "staging", "kids"].includes(env)) return;
+        if(!this.state.saved){
+            this.onSave((err) => {
+                if(err){ cb(false); return;}
+                this.publish(env, cb);
             });
+        }else{
+            this.publish(env, cb);
         }
     }
 
@@ -372,6 +342,47 @@ class StoryBoard extends Component {
         });
     }
 
+    toggleTestModal() {
+        this.setState({
+            testing_id: false,
+            testing_modal: !this.state.testing_modal
+        });
+    }
+
+    onTest() {
+        this.toggleTestModal();
+        this.onPublish("staging", (err, id) => {
+            if(err){
+                this.setState({
+                    error_modal: "Could Not Render Your Project",
+                    loading_modal: true,
+                    testing_modal: false
+                });
+            }else{
+                let engine = this.state.engine;
+                let model = engine.getDiagramModel();
+                let data = model.serializeDiagram();
+                model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+                
+                let nodes = [];
+                data.nodes.forEach((node) => {
+                    if(node.extras && node.extras.type !== "story" && node.extras.type !== "ending"){
+                        nodes.push({
+                            value: node.id,
+                            label: node.name
+                        });               
+                    }
+                });
+                this.setState({
+                    testing_info: {
+                        id: id,
+                        nodes: nodes
+                    }
+                });
+            }
+        });
+    }
+
     render() {
         return (
             <div className={'App' + (this.state.review ? ' review' : '')} >
@@ -381,6 +392,12 @@ class StoryBoard extends Component {
                     }
                 ></Prompt>
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
+                {this.state.testing_modal ? 
+                    <TestModal 
+                        open={this.state.testing_modal} 
+                        toggle={this.toggleTestModal} 
+                        testing_info={this.state.testing_info} /> 
+                : null}
                 <Menu items={[
                     { text: 'Choice', type: 'choicenew', color: '#E8F5E9', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'multiline', color: '#E1F5FE', menuColor: '#29B6F6' },

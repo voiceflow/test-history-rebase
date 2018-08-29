@@ -101,13 +101,10 @@ module.exports = (router, docClient, redisClient) => {
 	    let name = req.body.name;
 	    let email = req.body.email;
 	    let password = req.body.password;
-	    let code = req.body.code;
 
-	    if (!name || !email || !password || !code) {
+	    if (!name || !email || !password) {
 	        res.status(400).send("Form not filled");
-	    }else if(!codes.includes(code)) {
-	        res.status(400).send("Invalid Access Code");
-	    }else{
+	     } else {
 	        email = email.trim().toLowerCase();
 	        let params = {
 	            TableName: 'com.getstoryflow.users.production',

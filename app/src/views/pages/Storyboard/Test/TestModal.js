@@ -81,6 +81,17 @@ class TestModal extends React.Component {
     this.removeAudio();
   }
 
+  handleEnd(){
+    let next_state = default_state;
+    // keep the story id the same though
+    next_state.story = this.state.story_state.story;
+    this.setState({
+      started: false,
+      inputs: [],
+      story_state: next_state
+    })
+  }
+
   // Super Janky recusive function to play audio
   recursivePlay(index, urls, ended){
     if(index >= urls.length ) {
@@ -88,13 +99,7 @@ class TestModal extends React.Component {
         audio: null
       });
       if(ended){
-        let next_state = default_state;
-        next_state.story = this.state.story_state.story;
-        this.setState({
-          started: false,
-          inputs: [],
-          story_state: next_state
-        })
+        this.handleEnd();
       }
       return;
     };
@@ -143,7 +148,7 @@ class TestModal extends React.Component {
         type: 'POST',
         data: data,
         success: (res) => {
-          if(res.line) {
+          if(res.line && !res.ending) {
             this.setState({
               story_state: res
             });
@@ -159,6 +164,8 @@ class TestModal extends React.Component {
 
             this.removeAudio();
             this.recursivePlay(0, urls, res.ending);
+          }else if(res.ending){
+            this.handleEnd();
           }
         },
         error: (err) => {

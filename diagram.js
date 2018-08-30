@@ -317,7 +317,7 @@ const publish = (req, res) => {
         res.sendStatus(401);
 
         return;
-    } else if (!req.user.admin) {
+    } else if (!(req.params.env === "testing") && !req.user.admin) {
         res.sendStatus(403);
 
         return;

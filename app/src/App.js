@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import AuthenticationService from './services/Authentication'
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import AuthenticationService from './services/Authentication';
+import ReactGA from 'react-ga';
+import { createBrowserHistory } from 'history';
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,6 +29,13 @@ const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
+ReactGA.initialize('UA-124745244-1');
+const history = createBrowserHistory();
+history.listen((location, action) => {
+  ReactGA.set({ page: location.pathname })
+  ReactGA.pageview(location.pathname)
+});
+
 class App extends Component {
 
   componentDidMount() {
@@ -34,7 +43,7 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <div id="body">
           <Route render={(props) => {
             return (AuthenticationService.isAuth() ? <NavBar {...props}/> : null)
@@ -56,7 +65,7 @@ class App extends Component {
             )}/>
           </Switch>
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 }

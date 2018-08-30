@@ -225,7 +225,7 @@ class StoryBoard extends Component {
     }
 
     onPublish(env, cb) {
-        if(!["production", "sandbox", "staging", "kids"].includes(env)) return;
+        if(!["production", "sandbox", "staging", "kids", "testing"].includes(env)) return;
         if(!this.state.saved){
             this.onSave((err) => {
                 if(err){ cb(false); return;}
@@ -374,7 +374,7 @@ class StoryBoard extends Component {
     onTest() {
         this.state.engine.getDiagramModel().clearSelection();
         this.toggleTestModal();
-        this.onPublish("staging", (err, id) => {
+        this.onPublish("testing", (err, id) => {
             if(err){
                 this.setState({
                     error_modal: "Could Not Render Your Project",

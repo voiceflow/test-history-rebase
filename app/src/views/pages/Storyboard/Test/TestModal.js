@@ -143,8 +143,11 @@ class TestModal extends React.Component {
       };
     }
 
+    let local = false;
+    let url = local ? "http://localhost:4000/state/testing" : "https://testing.getstoryflow.com/state/testing"
+
     $.ajax({
-        url: 'https://testing.getstoryflow.com/state/staging',
+        url: url,
         type: 'POST',
         data: data,
         success: (res) => {

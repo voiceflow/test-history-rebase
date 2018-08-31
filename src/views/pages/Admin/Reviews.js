@@ -37,7 +37,7 @@ class Reviews extends Component {
             error: false
         }, () => {
             $.ajax({
-                url: '/reviews',
+                url: '/reviews?author=1',
                 type: 'GET',
                 success: data => {
                     let reviews = [];

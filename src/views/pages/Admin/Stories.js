@@ -155,7 +155,7 @@ class Stories extends Component {
                         </div>
                     </Col>
                     <Col>
-                        <div className='environment mt-5' id="production">
+                        <div className='environment mt-5' id="storyflow">
                             <h1>Storyflow</h1>
                                 { Array.isArray(this.state.production) ?
                                 <ReactTable

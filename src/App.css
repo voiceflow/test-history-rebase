@@ -23,6 +23,33 @@ body {
 .split-page{
     display: flex;
 }
+#dash-nav .nav-pills .nav-item.active .nav-link {
+    color: #fff;
+    background-color: #007bff !important;
+}
+
+#dash-nav .nav-item {
+    width: 100%;
+}
+
+#dash-nav {
+    position: fixed;
+    height: 100%;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border-right: 1px solid #DDD;
+    width: 200px;
+}
+
+#dash-nav .nav-pills {
+    width: 100%;
+}
+
+#dash-nav-container {
+    height: 100%;
+    padding-right: 200px;
+}
 /*.modal-content:before {
     content: '';
     width: 100%;

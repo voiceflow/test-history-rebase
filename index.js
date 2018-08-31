@@ -170,8 +170,12 @@ app.use('/', authentication);
 
 // Handle React routing, return all requests to React app
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'app', 'build', 'index.html'));
+    res.redirect('/');
 });
+
+app.get('/', (req,res) => {
+    res.sendFile(path.join(__dirname, 'app', 'build', 'index.html'));
+})
 
 // eslint-disable-next-line no-console
 app.listen(port, () => console.log(name + ' running on port ' + port));

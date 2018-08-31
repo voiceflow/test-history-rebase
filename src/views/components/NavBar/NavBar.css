@@ -25,6 +25,10 @@
 	background-color: #2196F3;
 }
 
+#navbar.analytics {
+	background-color: #43A047;
+}
+
 @media(min-width: 845px){
 	#navbar .nav-link {
 		padding-top: 14px;

@@ -22,22 +22,36 @@ const getDiagrams = (req, res) => {
         params.FilterExpression = 'creator = :creator';
         params.ExpressionAttributeValues = {':creator': req.user.id};
     }
-    docClient.scan(params, (err, data) => {
+
+    let items = [];
+
+    docClient.scan(params, onScan);
+
+    function onScan(err, data) {
         if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
         } else {
-            data.Items.sort((a, b) => {
-                let keyA = a.title,
-                    keyB = b.title;
-                // Compare the 2 dates
-                if(keyA < keyB) return -1;
-                if(keyA > keyB) return 1;
-                return 0;
+            data.Items.forEach(function(item) {
+               items.push(item);
             });
-            res.send(data.Items);
+
+            // continue scanning if we have more items
+            if (typeof data.LastEvaluatedKey != "undefined") {
+                params.ExclusiveStartKey = data.LastEvaluatedKey;
+                docClient.scan(params, onScan);
+            }else{
+                items.sort((a, b) => {
+                    let keyA = a.title,
+                        keyB = b.title;
+                    // Compare the 2 dates
+                    if(keyA < keyB) return -1;
+                    if(keyA > keyB) return 1;
+                    return 0;
+                });
+                res.send(items);
+            }
         }
-    });
+    }
 };
 
 const getDiagram = (req, res) => {
@@ -158,7 +172,7 @@ const renderStory = (params, req, res, success) => {
             }
 
             let links = {};
-            for (let i = 0; i < diagram.links.length; i++) {
+            for (var i = 0; i < diagram.links.length; i++) {
                 links[diagram.links[i].id] = diagram.links[i].target;
             }
             let story = {
@@ -169,7 +183,7 @@ const renderStory = (params, req, res, success) => {
             
             story.title = data.Item.title;
 
-            for (let i = 0; i < diagram.nodes.length; i++) {
+            for (var i = 0; i < diagram.nodes.length; i++) {
                 let node = diagram.nodes[i];
                 if (node.extras.type === 'story') {
                     story.startId = node.id;
@@ -177,7 +191,7 @@ const renderStory = (params, req, res, success) => {
                     story.preview = node.extras.preview;
                     story.prompt = node.extras.prompt;
                     let nextLink = null;
-                    for (let j = 0; j < node.ports.length; j++) {
+                    for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
@@ -215,7 +229,7 @@ const renderStory = (params, req, res, success) => {
                     };
                 } else if (node.extras.type === 'multiline') {
                     let nextLink = null;
-                    for (let j = 0; j < node.ports.length; j++) {
+                    for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
@@ -232,7 +246,7 @@ const renderStory = (params, req, res, success) => {
                     };
                 } else if (node.extras.type === 'line') {
                     let nextLink = null;
-                    for (let j = 0; j < node.ports.length; j++) {
+                    for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
@@ -243,7 +257,7 @@ const renderStory = (params, req, res, success) => {
                     };
                 } else if (node.extras.type === 'listen') {
                     let nextLink = null;
-                    for (let j = 0; j < node.ports.length; j++) {
+                    for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
@@ -255,7 +269,7 @@ const renderStory = (params, req, res, success) => {
                     };
                 } else if (node.extras.type === 'retry') {
                     let nextLink = null;
-                    for (let j = 0; j < node.ports.length; j++) {
+                    for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
@@ -271,7 +285,7 @@ const renderStory = (params, req, res, success) => {
                     };
                 } else if (node.extras.type === 'set') {
                     let nextLink = null;
-                    for (let j = 0; j < node.ports.length; j++) {
+                    for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }

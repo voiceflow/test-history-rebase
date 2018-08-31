@@ -121,51 +121,58 @@ const getReviews = (req, res) => {
         params.FilterExpression = 'creator = :creator';
         params.ExpressionAttributeValues = {':creator': req.user.id};
     }
-    docClient.scan(params, (err, data) => {
+
+    let reviews = [];
+
+    docClient.scan(params, onScan);
+
+    function onScan(err, data) {
         if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+            res.sendStatus(500);
         } else {
-            data.Items.sort((a, b) => {
-                let keyA = a.title,
-                    keyB = b.title;
-                // Compare the 2 dates
-                if(keyA < keyB) return -1;
-                if(keyA > keyB) return 1;
-                return 0;
+            data.Items.forEach(function(item) {
+               reviews.push(item);
             });
-            if(req.user.admin){
-                let length = data.Items.length;
-                let items = []
-                data.Items.forEach((review, index) => {
-                    let author_params = {
-                        TableName: 'com.getstoryflow.users.production',
-                        IndexName: "idIndex",
-                        KeyConditionExpression: "id = :k",
-                        ExpressionAttributeValues: {
-                            ":k": review.creator
-                        },
-                        ScanIndexForward: false
-                    }
-                    docClient.query(author_params, (err, authors) => {
-                        if(!err && authors.Items){
-                            let author = authors.Items[0];
-                            review.email = author.email;
-                            review.name = author.name;
-                        }else{
-                            console.log(err);
-                        }
-                        items.push(review);
-                        if(items.length == length){
-                            res.send(items);
-                        }
-                    });
-                });
+
+            // continue scanning if we have more items
+            if (typeof data.LastEvaluatedKey != "undefined") {
+                params.ExclusiveStartKey = data.LastEvaluatedKey;
+                docClient.scan(params, onScan);
             }else{
-                res.send(data.Items);
+                if(req.query.author && req.user.admin){
+                    let length = reviews.length;
+                    let items = [];
+                    reviews.forEach((review, index) => {
+                        let author_params = {
+                            TableName: 'com.getstoryflow.users.production',
+                            IndexName: "idIndex",
+                            KeyConditionExpression: "id = :k",
+                            ExpressionAttributeValues: {
+                                ":k": review.creator
+                            },
+                            ScanIndexForward: false
+                        }
+                        docClient.query(author_params, (err, authors) => {
+                            if(!err && authors.Items){
+                                let author = authors.Items[0];
+                                review.email = author.email;
+                                review.name = author.name;
+                            }else{
+                                console.log(err);
+                            }
+                            items.push(review);
+                            if(items.length == length){
+                                res.send(items);
+                            }
+                        });
+                    });
+                }else{
+                    res.send(reviews);
+                }
             }
         }
-    });
+    }
 }
 
 const deleteReview = (req, res) => {

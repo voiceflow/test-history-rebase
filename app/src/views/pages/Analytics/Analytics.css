@@ -1,0 +1,25 @@
+body {
+	/*background-color: red !important;*/
+}
+
+.date-bar {
+	width: 100%;
+	margin-bottom: 3rem;
+	background-color: #fff;
+	display: flex;
+	padding-top: 10px;
+	padding-bottom: 15px;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border-bottom: 1px solid #DDD;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #EEE;
+}
+
+.date-bar h1{
+	margin-bottom: 0;
+	color: #AAA;
+	font-style: italic;
+}

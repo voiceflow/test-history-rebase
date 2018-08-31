@@ -144,6 +144,7 @@ app.get('/reviews', ensureLoggedIn(), Review.getReviews);
 
 app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
 app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
+// app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
 // app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
 
 // TO REMOVE SOON

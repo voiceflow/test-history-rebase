@@ -20,6 +20,9 @@ body {
 .modal-footer{
 	background-color: #F3F3F3;
 }
+.split-page{
+    display: flex;
+}
 /*.modal-content:before {
     content: '';
     width: 100%;

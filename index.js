@@ -21,6 +21,17 @@ const docClient = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
 });
 
+// create SQL client for analytics
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    user: 'StoryflowUser',
+    host: 'storyflow-db.cmzdhv5svqny.us-east-1.rds.amazonaws.com',
+    database: 'storyflow_analytics',
+    password: '2p20RuU1D',
+    port: 5432
+});
+
 // Create a Redis Client for sessions
 const redisClient = process.env.PROD ? redis.createClient({
     host: config.redisClusterHost,
@@ -48,6 +59,7 @@ const Diagram = require('./diagram.js');
 const Problem = require('./error.js');
 const Audio = require('./audio.js');
 const Story = require('./story.js');
+const Analytics = require('./routes/analytics.js')(docClient, pool);
 const Review = require('./routes/review.js')(docClient);
 
 const port = 8080;
@@ -129,6 +141,10 @@ app.post('/review', ensureLoggedIn(), Review.saveReview);
 app.patch('/review/:id', ensureAdmin(), Review.updateReview);
 app.delete('/review/:id', ensureLoggedIn(), Review.deleteReview);
 app.get('/reviews', ensureLoggedIn(), Review.getReviews);
+
+app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
+app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
+// app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
 
 // TO REMOVE SOON
 app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);

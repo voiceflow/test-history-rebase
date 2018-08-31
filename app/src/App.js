@@ -14,6 +14,7 @@ import StoryBoard from './views/pages/Storyboard/StoryBoard';
 import DashBoard from './views/pages/Dashboard/DashBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
+import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar'
 
 const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
@@ -46,7 +47,7 @@ class App extends Component {
       <Router history={history}>
         <div id="body">
           <Route render={(props) => {
-            return (AuthenticationService.isAuth() ? <NavBar {...props}/> : null)
+            return (AuthenticationService.isAuth() ? <NavBar intercom {...props}/> : null)
           }} />
           <Switch>
             <Route exact path="/login" name="Login" component={Account} />
@@ -56,6 +57,7 @@ class App extends Component {
             <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
             <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
             <PrivateRoute path="/admin" name="Admin" component={Admin} />
+            <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
             <Route exact path="/" render={() => (
               AuthenticationService.isAuth() ? (
                 <Redirect to="/storyboard"/>

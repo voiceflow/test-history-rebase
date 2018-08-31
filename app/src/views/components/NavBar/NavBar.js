@@ -32,8 +32,8 @@ class NavBar extends Component {
     this.state = {
       isOpen: false,
       tabs: [
-        {link: 'storyboard', 'text': 'Storyboard'}, 
-        {link: 'dashboard', 'text': 'Dashboard'}, 
+        {link: 'storyboard', 'text': <span>Storyboard</span>}, 
+        {link: 'dashboard', 'text': <span>Dashboard</span>}, 
       ],
       user: AuthenticationService.getUser(),
     };
@@ -50,7 +50,8 @@ class NavBar extends Component {
               this.setState({ user: res });
               if(this.state.user.admin){
                 let tabs = this.state.tabs;
-                tabs.push({link: 'admin', text: 'Admin <i class="fas fa-columns"></i>'});
+                tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
+                tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
                 this.setState({tabs: tabs});
               }
             }
@@ -105,12 +106,12 @@ class NavBar extends Component {
                     if(page_name === tab.link){
                       return (
                         <NavItem key={i}>
-                          <NavLink dangerouslySetInnerHTML={{__html: tab.text}} active></NavLink>
+                          <NavLink active>{tab.text}</NavLink>
                         </NavItem>)
                     }else{
                       return (
                         <NavItem key={i}>
-                          <Link to={"/" + tab.link} className="nav-link" dangerouslySetInnerHTML={{__html: tab.text}}></Link>
+                          <Link to={"/" + tab.link} className="nav-link">{tab.text}</Link>
                         </NavItem>)
                     }
                 })}

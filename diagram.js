@@ -27,9 +27,6 @@ const getDiagrams = (req, res) => {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else {
-            data.Items.forEach((item) => {
-                console.log(item.title);
-            });
             data.Items.sort((a, b) => {
                 let keyA = a.title,
                     keyB = b.title;

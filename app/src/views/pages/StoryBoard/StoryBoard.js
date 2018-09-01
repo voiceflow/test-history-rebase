@@ -454,13 +454,13 @@ class StoryBoard extends Component {
                         testing_info={this.state.testing_info} /> 
                 : null}
                 <Menu items={[
-                    { text: 'Choice', type: 'choicenew', color: '#E8F5E9', menuColor: '#66BB6A' },
-                    { text: 'Line', type: 'multiline', color: '#E1F5FE', menuColor: '#29B6F6' },
-                    { text: 'Ending', type: 'ending', color: '#FBE9E7', menuColor: '#FF7043' },
+                    { text: 'Choice', type: 'choicenew', menuColor: '#66BB6A' },
+                    { text: 'Line', type: 'multiline', menuColor: '#29B6F6' },
+                    { text: 'Ending', type: 'ending', menuColor: '#FF7043' },
                     'hr',
-                    { text: 'Random', type: 'random', color: '#FFFDE7', menuColor: '#FBC02D' },
-                    { text: 'Set', type: 'set', color: '#F3E5F5', menuColor: '#8E24AA' },
-                    { text: 'If', type: 'if', color: '#B2DFDB', menuColor: '#00695C' }
+                    { text: 'Random', type: 'random', menuColor: '#FBC02D' },
+                    { text: 'Set', type: 'set', menuColor: '#8E24AA' },
+                    { text: 'If', type: 'if', menuColor: '#00695C' }
                 ]} />
                 <TitleBar
                     title={this.state.title}

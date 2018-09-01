@@ -22,9 +22,14 @@ const docClient = new AWS.DynamoDB.DocumentClient({
 });
 
 // create SQL client for analytics
-const { Pool } = require('pg');
+const pg = require('pg');
 
-const pool = new Pool({
+var types = pg.types;
+types.setTypeParser(1114, function(stringValue) {
+    return new Date(stringValue + "+0000");
+});
+
+const pool = new pg.Pool({
     user: 'StoryflowUser',
     host: 'storyflow-db.cmzdhv5svqny.us-east-1.rds.amazonaws.com',
     database: 'storyflow_analytics',
@@ -144,8 +149,12 @@ app.get('/reviews', ensureLoggedIn(), Review.getReviews);
 
 app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
 app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
-// app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
-// app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
+app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStories);
+app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);
+app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
+app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
+app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
+app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 
 // TO REMOVE SOON
 app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);

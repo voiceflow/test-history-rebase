@@ -160,116 +160,118 @@ class Reviews extends Component {
                         </Scrollspy>
                     </nav>
                 </div>
-                <Row className="mx-0 w-100 px-md-5 pt-5">
-                    <Col id="reviews">
-                        <div className='environment mb-5' id="submitted">
-                            <h1>Submitted For Review</h1>
-                            { Array.isArray(this.state.reviews) ?
-                            <ReactTable
-                                defaultPageSize={5}
-                                showPageSizeOptions={false}
-                                className="-highlight -striped mt-4"
-                                data= {this.state.reviews}
-                                columns= {[{
-                                    Header: "Title",
-                                    accessor: "title",
-                                    className: "pl-3",
-                                    minWidth: 200
-                                }, {
-                                    Header: "Submitted At",
-                                    accessor: "submitted",
-                                    maxWidth: 200,
-                                    className: "text-center text-muted",
-                                    Cell: row => {
-                                        if(row.value){
-                                            return moment(row.value).format('YYYY MM/DD HH:mm');
-                                        }else{
-                                            return "unknown";
+                <div className="Left-Padding"> 
+                    <Row className="mx-0 w-100 px-md-5 pt-5">
+                        <Col id="reviews">
+                            <div className='environment mb-5' id="submitted">
+                                <h1>Submitted For Review</h1>
+                                { Array.isArray(this.state.reviews) ?
+                                <ReactTable
+                                    defaultPageSize={5}
+                                    showPageSizeOptions={false}
+                                    className="-highlight -striped mt-4"
+                                    data= {this.state.reviews}
+                                    columns= {[{
+                                        Header: "Title",
+                                        accessor: "title",
+                                        className: "pl-3",
+                                        minWidth: 200
+                                    }, {
+                                        Header: "Submitted At",
+                                        accessor: "submitted",
+                                        maxWidth: 200,
+                                        className: "text-center text-muted",
+                                        Cell: row => {
+                                            if(row.value){
+                                                return moment(row.value).format('YYYY MM/DD HH:mm');
+                                            }else{
+                                                return "unknown";
+                                            }
                                         }
-                                    }
-                                }, {
-                                    Header: "Decline",
-                                    className: "text-center",
-                                    accessor: "id",
-                                    maxWidth: 100,
-                                    Cell: row => {
-                                        return <button className="btn btn-outline-danger border-none" onClick={() => this.onDeclineReview(row.value)}>Decline</button>
-                                    },
-                                    sortable: false
-                                }, {
-                                    Header: "Review",
-                                    className: "text-center",
-                                    accessor: "id",
-                                    maxWidth: 100,
-                                    Cell: row => {
-                                        return <Link to={"/storyboard/review/" + row.value} className="btn btn-outline-primary border-none">Review</Link>
-                                    },
-                                    sortable: false
-                                }]}
-                                SubComponent={row => {
-                                    let og = row.row._original;
-                                    return (
-                                      <div className="p-2 pl-4"><span className="text-muted">Author - </span> {og.name} | {og.email}</div>
-                                    );
-                                  }}
-                            /> : null }
-                        </div>
-                    </Col>
-                    <Col>
-                        <div id="reviewing">
-                            <h1>Under Review</h1>
-                            { Array.isArray(this.state.under_reviews) ?
-                            <ReactTable
-                                defaultPageSize={5}
-                                showPageSizeOptions={false}
-                                className="-highlight -striped mt-4"
-                                data= {this.state.under_reviews}
-                                columns= {[{
-                                    Header: "Title",
-                                    accessor: "title",
-                                    className: "pl-3",
-                                    minWidth: 200
-                                }, {
-                                    Header: "Submitted At",
-                                    accessor: "submitted",
-                                    maxWidth: 200,
-                                    className: "text-center text-muted",
-                                    Cell: row => {
-                                        if(row.value){
-                                            return moment(row.value).format('YYYY MM/DD HH:mm');
-                                        }else{
-                                            return "unknown";
+                                    }, {
+                                        Header: "Decline",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 100,
+                                        Cell: row => {
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onDeclineReview(row.value)}>Decline</button>
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "Review",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 100,
+                                        Cell: row => {
+                                            return <Link to={"/storyboard/review/" + row.value} className="btn btn-outline-primary border-none">Review</Link>
+                                        },
+                                        sortable: false
+                                    }]}
+                                    SubComponent={row => {
+                                        let og = row.row._original;
+                                        return (
+                                          <div className="p-2 pl-4"><span className="text-muted">Author - </span> {og.name} | {og.email}</div>
+                                        );
+                                      }}
+                                /> : null }
+                            </div>
+                        </Col>
+                        <Col>
+                            <div id="reviewing">
+                                <h1>Under Review</h1>
+                                { Array.isArray(this.state.under_reviews) ?
+                                <ReactTable
+                                    defaultPageSize={5}
+                                    showPageSizeOptions={false}
+                                    className="-highlight -striped mt-4"
+                                    data= {this.state.under_reviews}
+                                    columns= {[{
+                                        Header: "Title",
+                                        accessor: "title",
+                                        className: "pl-3",
+                                        minWidth: 200
+                                    }, {
+                                        Header: "Submitted At",
+                                        accessor: "submitted",
+                                        maxWidth: 200,
+                                        className: "text-center text-muted",
+                                        Cell: row => {
+                                            if(row.value){
+                                                return moment(row.value).format('YYYY MM/DD HH:mm');
+                                            }else{
+                                                return "unknown";
+                                            }
                                         }
-                                    }
-                                }, {
-                                    Header: "Decline",
-                                    className: "text-center",
-                                    accessor: "id",
-                                    maxWidth: 100,
-                                    Cell: row => {
-                                        return <button className="btn btn-outline-danger border-none" onClick={() => this.onDeclineReview(row.value)}>Decline</button>
-                                    },
-                                    sortable: false
-                                }, {
-                                    Header: "Review",
-                                    className: "text-center",
-                                    accessor: "id",
-                                    maxWidth: 100,
-                                    Cell: row => {
-                                        return <Link to={"/storyboard/review/" + row.value} className="btn btn-outline-primary border-none">Review</Link>
-                                    },
-                                    sortable: false
-                                }]}
-                                SubComponent={row => {
-                                    let og = row.row._original;
-                                    return (
-                                      <div className="p-2 pl-4"><span className="text-muted">Author - </span> {og.name} | {og.email}</div>
-                                    );
-                                  }}
-                            /> : null }
-                        </div>
-                    </Col>
-                </Row>
+                                    }, {
+                                        Header: "Decline",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 100,
+                                        Cell: row => {
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onDeclineReview(row.value)}>Decline</button>
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "Review",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 100,
+                                        Cell: row => {
+                                            return <Link to={"/storyboard/review/" + row.value} className="btn btn-outline-primary border-none">Review</Link>
+                                        },
+                                        sortable: false
+                                    }]}
+                                    SubComponent={row => {
+                                        let og = row.row._original;
+                                        return (
+                                          <div className="p-2 pl-4"><span className="text-muted">Author - </span> {og.name} | {og.email}</div>
+                                        );
+                                      }}
+                                /> : null }
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         );
     }

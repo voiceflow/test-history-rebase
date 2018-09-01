@@ -36,6 +36,7 @@ class NavBar extends Component {
         {link: 'dashboard', 'text': <span>Dashboard</span>}, 
       ],
       user: AuthenticationService.getUser(),
+      loaded: false
     };
   }
 
@@ -47,7 +48,7 @@ class NavBar extends Component {
             if(err && this.props.history){
               this.props.history.push('/login');
             }else{
-              this.setState({ user: res });
+              this.setState({ user: res, loaded: true });
               if(this.state.user.admin){
                 let tabs = this.state.tabs;
                 tabs.push({link: 'reviews', text: <span>Reviews <i className="fas fa-clipboard-list"></i></span>});
@@ -88,7 +89,6 @@ class NavBar extends Component {
       name: this.state.user.name,
       email: this.state.user.email
     } : null;
-
     let page_name = getPage(this.props.location.pathname);
 
     return (
@@ -128,7 +128,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {this.props.padding ? (<div className="padding"></div>) : null}
-          {this.props.intercom ? (<Intercom appID="vw911b0m" {...intercom_user}/>) : null}
+          {(this.state.loaded && !this.state.user.admin) ? (<Intercom appID="vw911b0m" {...intercom_user}/>) : null}
         </div>
     );
   }

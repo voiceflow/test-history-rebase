@@ -42,13 +42,23 @@ body {
     width: 200px;
 }
 
-#dash-nav .nav-pills {
+.Left-Padding{
+    height: 100%;
+    padding-left: 200px;
     width: 100%;
 }
 
-#dash-nav-container {
-    height: 100%;
-    padding-right: 200px;
+#dash-nav-container{
+    padding: 0 !important;
+}
+
+@media(max-width: 991px){
+    .Left-Padding{
+        padding-left: 0px;
+    }
+}
+#dash-nav .nav-pills {
+    width: 100%;
 }
 /*.modal-content:before {
     content: '';

@@ -147,7 +147,7 @@ class Account extends Component {
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
-                    <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Passwords" required minLength="8"/>
+                    <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
                   <Button block color="primary" type="submit">Create Account</Button>
                   <hr/>

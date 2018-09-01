@@ -14,6 +14,7 @@ import $ from 'jquery';
 
 import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
+import ClipBoard from './../../components/ClipBoard';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './Analytics.css';
@@ -288,7 +289,13 @@ class Analytics extends Component {
                                     maxWidth: 80
                                 }, {
                                     Header: "Email",
-                                    accessor: "email"
+                                    accessor: "email",
+                                    Cell: row => {
+                                        return <ClipBoard
+                                            id={"email" + row.original.id}
+                                            value={row.value}
+                                        />
+                                    }
                                 }, {
                                     Header: "First Name",
                                     accessor: "first_name"
@@ -324,7 +331,7 @@ class Analytics extends Component {
                                     className: "text-center",
                                     Cell: row => {
                                         if(row.value){
-                                            return moment(row.value).format('YYYY MM/DD HH:mm a');
+                                            return moment(row.value).fromNow();
                                         }else{
                                             return "unknown";
                                         }

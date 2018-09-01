@@ -51,19 +51,20 @@ class TitleBar extends Component {
                                 }) : null }
                             </DropdownMenu>
                         </UncontrolledDropdown>
+                        <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
                         {
                             this.props.admin ? 
                             <div>
-                                <DropdownItem onClick={this.props.onTest}>Test (Staging)</DropdownItem>
                                 <DropdownItem divider />
                                 <UncontrolledDropdown direction="right" isOpen={this.state.publish} toggle={() => { this.setState({ publish : !this.state.publish }); }}>
                                     <DropdownToggle tag="button" caret className="dropdown-item load-btn">
                                         Publish
                                     </DropdownToggle>
                                     <DropdownMenu className="projects-menu">
+                                        <DropdownItem onClick={()=>{this.props.onPublish("staging");this.setState({publish: false})}}>Test (Staging)</DropdownItem>
                                         <DropdownItem onClick={()=>{this.props.onPublish("sandbox");this.setState({publish: false})}}>Sandbox</DropdownItem>
                                         <DropdownItem onClick={()=>{this.props.onPublish("production");this.setState({publish: false})}}>Storyflow</DropdownItem>
-                                        <DropdownItem disabled>Storyflow Kids</DropdownItem>
+                                        <DropdownItem onClick={()=>{this.props.onPublish("kids");this.setState({publish: false})}}>Storyflow Kids</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </div>

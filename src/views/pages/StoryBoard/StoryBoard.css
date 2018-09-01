@@ -571,6 +571,18 @@ button.close{
     color: #212121;
 }
 
+.block.set {
+    border: 1px solid #E1BEE7;
+    background-color: #E1BEE7;
+    color: #6A1B9A;
+}
+
+.block.random {
+    border: 1px solid #FFF9C4;
+    background-color: #FFF9C4;
+    color: #F9A825;
+}
+
 .choice-block {
     width: 100%;
     border: 1px solid #DDD;
@@ -625,4 +637,103 @@ button.close{
     margin: 0px;
 }
 
+.variables {
+/*    max-height: 117px;
+    overflow: scroll;*/
+}
 
+.variable-group {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.variable-group>span{
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.variable-box {
+    flex: 1;
+    z-index: 4;
+}
+.variable-box__control {
+    background-color: #E1BEE7 !important;
+}
+.variable-box__control--is-focused {
+    border-color: #6A1B9A !important;
+    box-shadow: 0 0 0 1px #6A1B9A !important;
+}
+
+.variable-box__placeholder, 
+.variable-box__dropdown-indicator, 
+.variable-box__single-value,
+.variable-box__value-container--has-value>div {
+    color: #6A1B9A !important;
+}
+
+.variable-box__indicator-separator {
+    background-color: #6A1B9A !important;
+}
+
+.variable_tag>span:hover {
+    color: #D50000!important;
+}
+
+.variable_tag>span {
+    margin-left: 1px;
+    padding: 4px;
+    font-size: .8rem;
+    color: #B71C1C!important;
+    cursor: pointer;
+}
+
+.variable_tag {
+    vertical-align: middle;
+    background-color: #E1BEE7;
+    color: #6A1B9A;
+    padding: 5px 5px 5px 10px;
+    border-radius: .25rem;
+    display: inline-block;
+    margin: 3px 0 2px;
+    cursor: default;
+    margin-right: 5px;
+}
+
+.new_var {
+    background-color: #6A1B9A;
+    color: #E1BEE7;
+    border-color: #6A1B9A
+}
+
+.down-arrow {
+    color: #E1BEE7;
+    margin: 10px 0 0 0;
+}
+
+.plain-dropdown {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 0px;
+}
+.plain-dropdown:hover, .show>.plain-dropdown{
+    background-color: transparent !important;
+    color: #777 !important;
+    border:none;
+    outline: none;
+    box-shadow: none !important;
+}
+.plain-dropdown:focus, .plain-dropdown:active {
+    box-shadow: none !important;
+}
+.plain-dropdown-menu {
+    margin-top: -8px;
+    margin-left: -1px;
+}
+.plain-dropdown i {
+    margin-right: 5px;
+}

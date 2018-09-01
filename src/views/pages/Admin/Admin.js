@@ -4,9 +4,7 @@ import Stories from './Stories';
 import { Col } from 'reactstrap';
 import Scrollspy from 'react-scrollspy'
 import 'react-table/react-table.css'
-import './../Dashboard/DashBoard.css'
 import './Admin.css';
-import Reviews from './Reviews'
 
 // import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
@@ -46,26 +44,28 @@ class Admin extends Component {
         return (
             <div className='Window' id="reviews">
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
-                <div className="mx-0 w-100 d-flex">
-                    <div id="dash-nav-container" className="d-none d-lg-block">
-                        <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
-                            <Scrollspy items={ ['staging', 'submitted'] } className="nav nav-pills" currentClassName="active">
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#staging">Staging/Production</a>
-                                </li>
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#submitted">Reviews</a>
-                                </li>
-                            </Scrollspy>
-                        </nav>
-                    </div>   
+                <div id="dash-nav-container" className="d-none d-lg-block">
+                    <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
+                        <Scrollspy items={ ['staging', 'storyflow', 'sandbox', 'kids'] } className="nav nav-pills" currentClassName="active">
+                            <li className="nav-item">
+                              <a className="nav-link" href="#staging">Staging</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#storyflow">Storyflow</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#sandbox">Sandbox</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#kids">Kids</a>
+                            </li>
+                        </Scrollspy>
+                    </nav>
+                </div>   
+                <div className="mx-0 w-100 d-flex Left-Padding">
                     <Col>
                         <div className="Container mb-5 px-md-5">
                             <Stories onConfirmUpdate={this.confirmUpdate}/>
-                        </div>
-                        <hr/>
-                        <div className="Container mb-5 px-md-5">
-                            <Reviews onConfirmUpdate={this.confirmUpdate}/>
                         </div>
                     </Col>
                 </div>

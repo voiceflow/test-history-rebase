@@ -436,6 +436,41 @@ label {
     /*flex-direction: row;*/
 }
 
+.srd-default-node.choice{
+    background-color: #E8F5E9;
+}
+
+.srd-default-node.line{
+    background-color: #E1F5FE;
+}
+.srd-default-node.story, .srd-default-node.ending{
+    background-color: #FBE9E7;
+}
+
+.srd-default-node.random {
+    background-color: #FFFDE7;
+}
+
+.srd-default-node.set {
+    background-color: #F3E5F5;
+}
+
+.srd-default-node.if {
+    background-color: #B2DFDB;
+}
+
+.srd-default-node.retry {
+    background-color: #FFE0B2;
+}
+
+.srd-default-node.listen {
+    background-color: #FFF59D;
+}
+
+.srd-default-node.comment {
+    background-color: #F5F5F5;
+}
+
 .srd-default-node .block-reads {
     position: absolute;
     top: -22px;

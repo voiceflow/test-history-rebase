@@ -44,25 +44,25 @@ class Admin extends Component {
         return (
             <div className='Window' id="reviews">
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
-                <div className="mx-0 w-100 d-flex">
-                    <div id="dash-nav-container" className="d-none d-lg-block">
-                        <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
-                            <Scrollspy items={ ['staging', 'storyflow', 'sandbox', 'kids'] } className="nav nav-pills" currentClassName="active">
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#staging">Staging</a>
-                                </li>
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#storyflow">Storyflow</a>
-                                </li>
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#sandbox">Sandbox</a>
-                                </li>
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#kids">Kids</a>
-                                </li>
-                            </Scrollspy>
-                        </nav>
-                    </div>   
+                <div id="dash-nav-container" className="d-none d-lg-block">
+                    <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
+                        <Scrollspy items={ ['staging', 'storyflow', 'sandbox', 'kids'] } className="nav nav-pills" currentClassName="active">
+                            <li className="nav-item">
+                              <a className="nav-link" href="#staging">Staging</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#storyflow">Storyflow</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#sandbox">Sandbox</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#kids">Kids</a>
+                            </li>
+                        </Scrollspy>
+                    </nav>
+                </div>   
+                <div className="mx-0 w-100 d-flex Left-Padding">
                     <Col>
                         <div className="Container mb-5 px-md-5">
                             <Stories onConfirmUpdate={this.confirmUpdate}/>

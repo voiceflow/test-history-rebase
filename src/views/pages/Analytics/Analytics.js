@@ -8,6 +8,7 @@ import Scrollspy from 'react-scrollspy'
 import CountUp from 'react-countup';
 import ReactChartkick, { LineChart } from 'react-chartkick'
 import Chart from 'chart.js'
+import User from './User'
 
 import $ from 'jquery';
 
@@ -31,28 +32,65 @@ class Analytics extends Component {
             stories: [],
             aggregate: null,
             startDate: moment('08302018', 'MMDDYYYY'),
-            endDate: moment()
+            endDate: moment(),
+            env: 'production',
+            data: {},
+            users: []
         }
 
         this.toggleConfirm = this.toggleConfirm.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.handleStartChange = this.handleStartChange.bind(this);
+        this.handleEndChange = this.handleEndChange.bind(this);
     }
 
     componentDidMount() {
-        this.getStories('production');
-        this.getAggregate('production');
+        this.getStories(this.state.env);
+        this.getAggregate(this.state.env);
+        this.getReads(this.state.env);
+        this.getUsers(this.state.env);
+    }
+
+    resetForDate(){
+        let start = this.state.startDate.valueOf();
+        let end = this.state.endDate.valueOf();
+        this.getStories(this.state.env, start, end);
+        this.getReads(this.state.env, start, end);
     }
 
     handleStartChange(date) {
         this.setState({
           startDate: date
+        }, this.resetForDate);
+    }
+
+    handleEndChange(date) {
+        this.setState({
+          endDate: date
+        }, this.resetForDate);
+    }
+
+    getUsers(env){
+        let url = '/analytics/' + env + '/users';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: users => {
+                this.setState({
+                    users: users 
+                });
+            },
+            error: () => {
+                window.alert('Error');
+            }
         });
     }
 
     getStories(env, start, end){
+        let url = '/analytics/' + env + '/stories';
+        if(start && end) url +=  ("/" + start + "/" + end);
         $.ajax({
-            url: '/analytics/' + env + '/stories',
+            url: url,
             type: 'GET',
             success: stories => {
                 this.setState({
@@ -68,7 +106,28 @@ class Analytics extends Component {
         });
     }
 
-    getAggregate(env, start, end){
+    getReads(env, start, end){
+        let url = '/analytics/' + env + '/reads';
+        if(start && end) url +=  ("/" + start + "/" + end);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: reads => {
+                let points = {}
+                reads.forEach((read) => {
+                    points[read.s] = read.count
+                });
+                this.setState({
+                    data: points
+                });
+            },
+            error: () => {
+                window.alert('Error');
+            }
+        });
+    }
+
+    getAggregate(env){
         $.ajax({
             url: '/analytics/' + env + '/aggregate',
             type: 'GET',
@@ -108,21 +167,27 @@ class Analytics extends Component {
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
                 <div id="dash-nav-container" className="d-none d-lg-block">
                     <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
-                        <Scrollspy items={ ['aggregates', 'stories'] } className="nav nav-pills" currentClassName="active">
+                        <Scrollspy items={ ['reads', 'stories', 'aggregates', 'users'] } className="nav nav-pills" currentClassName="active">
                             <li className="nav-item">
-                              <a className="nav-link" href="#aggregates">Aggregates</a>
+                              <a className="nav-link" href="#reads">Stories/Time</a>
                             </li>
                             <li className="nav-item">
                               <a className="nav-link" href="#stories">Stories</a>
                             </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#aggregates">Aggregates</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#users">Users</a>
+                            </li>
                         </Scrollspy>
                     </nav>
                 </div>
-                <Row className="mx-0 w-100">
+                <Row className="mx-0 w-100 Left-Padding">
                     <div className="date-bar px-md-5">
                         <h1>Storyflow Analytics</h1>
                         <div className="d-flex">
-                            <div>
+                            <div className="mr-3">
                                 Start Date 
                                 <DatePicker
                                     selected={this.state.startDate}
@@ -138,15 +203,43 @@ class Analytics extends Component {
                             </div>
                         </div>
                     </div>
-                    <Row className="px-md-5">
-                    <Col xs="12" id="aggregates">
+                    <Row className="analytics-row px-md-5 m-0">
+                    <Col xs="12" className="mb-5" id="reads">
+                        <h1>Stories Started over Time</h1>
+                        <hr/>
+                        <LineChart data={this.state.data} xtitle="Time" ytitle="Stories Started" download={true} />
+                    </Col>
+                    <Col className="mb-5" id="stories">
+                        <h1>Story Analytics</h1>
+                            { Array.isArray(this.state.stories) ?
+                            <ReactTable
+                                defaultPageSize={10}
+                                showPageSizeOptions={false}
+                                className="-highlight -striped mt-4"
+                                data= {this.state.stories}
+                                columns= {[{
+                                    Header: "Title",
+                                    accessor: "title",
+                                    className: "pl-3",
+                                }, {
+                                    Header: "Starts",
+                                    accessor: "count",
+                                    minWidth: 200
+                                }, {
+                                    Header: "Completion",
+                                    accessor: "completion",
+                                    minWidth: 200
+                                }]} 
+                            /> : null }
+                    </Col>
+                    <Col xs="12" id="aggregates" className="mb-5">
                         <h1>How are we doing?</h1>
                         <hr/>
                         <CardDeck>
                           <Card>
                             <CardBody>
                               <h1>{this.state.aggregate ? <CountUp start={0} end={this.state.aggregate.users} /> : 0}</h1>
-                              <CardTitle>Total Users</CardTitle>
+                              <CardTitle>Total Unique Users</CardTitle>
                             </CardBody>
                           </Card>
                           <Card>
@@ -176,27 +269,47 @@ class Analytics extends Component {
                         </CardDeck>
                         <hr/>
                     </Col>
-                    <Col className="mb-5" id="stories">
-                        <h1>Story Analytics</h1>
-                            { Array.isArray(this.state.stories) ?
+                    <Col className="mb-5" id="users">
+                        <h1>Users</h1>
+                            { Array.isArray(this.state.users) ?
                             <ReactTable
-                                defaultPageSize={10}
-                                showPageSizeOptions={false}
+                                defaultPageSize={30}
                                 className="-highlight -striped mt-4"
-                                data= {this.state.stories}
+                                data= {this.state.users}
                                 columns= {[{
-                                    Header: "Title",
-                                    accessor: "title",
-                                    className: "pl-3",
+                                    Header: "Email",
+                                    accessor: "email",
+                                    className: "pl-3"
                                 }, {
-                                    Header: "Starts",
-                                    accessor: "count",
-                                    minWidth: 200
+                                    Header: "First Name",
+                                    accessor: "first_name"
                                 }, {
-                                    Header: "Completion",
-                                    accessor: "completion",
-                                    minWidth: 200
-                                }]} 
+                                    Header: "Sessions",
+                                    accessor: "sessions",
+                                    maxWidth: 100
+                                }, {
+                                    Header: "Utterances",
+                                    accessor: "utterances",
+                                    maxWidth: 100
+                                }, {
+                                    Header: "Joined",
+                                    accessor: "join_date",
+                                    className: "text-center",
+                                    Cell: row => {
+                                        if(row.value){
+                                            return moment(row.value).format('YYYY MM/DD HH:mm a');
+                                        }else{
+                                            return "unknown";
+                                        }
+                                    },
+                                }]}
+                                SubComponent={(row) => {
+                                    row = row.original;
+                                    return <User
+                                                id={row.user_id}
+                                                env={this.state.env}
+                                            />
+                                }}
                             /> : null }
                     </Col>
                 </Row>

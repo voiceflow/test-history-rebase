@@ -1,0 +1,52 @@
+.message {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-right: 18px;
+    padding-left: 0;
+    display: inline-flex;
+    -webkit-box-align: flex-start;
+    -ms-flex-align: flex-start;
+    align-items: flex-start;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.self-message {
+    background-color: #ddf2ff;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
+.chatbox {
+    height: 444px;
+    width: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-bottom: 10px;
+}
+
+.chats {
+    width: 100%;
+}
+.message-container{
+    z-index: 10;
+}
+.message-container p{
+    font-weight: bold;
+}
+.message-container p>i{
+    margin-right: 5px;
+}
+
+.message-progress{
+    z-index: 9;
+    position: absolute;
+    height: 110%;
+    background-color: #EEE;
+    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s;
+}

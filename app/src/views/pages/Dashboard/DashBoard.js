@@ -192,19 +192,19 @@ class DashBoard extends Component {
                 <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
                 <EnvironmentModal open={this.state.openEnv} toggle={this.toggleEnv} handleConfirm={this.onSubmitDiagram}/>
-                <Row className="mx-0 w-100">
-                    <div id="dash-nav-container" className="d-none d-lg-block">
-                        <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
-                            <Scrollspy items={ ['diagrams', 'reviews'] } className="nav nav-pills" currentClassName="active">
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#diagrams">Drafts</a>
-                                </li>
-                                <li className="nav-item">
-                                  <a className="nav-link" href="#reviews">Review</a>
-                                </li>
-                            </Scrollspy>
-                        </nav>
-                    </div>
+                <div id="dash-nav-container" className="d-none d-lg-block">
+                    <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
+                        <Scrollspy items={ ['diagrams', 'reviews'] } className="nav nav-pills" currentClassName="active">
+                            <li className="nav-item">
+                              <a className="nav-link" href="#diagrams">Drafts</a>
+                            </li>
+                            <li className="nav-item">
+                              <a className="nav-link" href="#reviews">Review</a>
+                            </li>
+                        </Scrollspy>
+                    </nav>
+                </div>
+                <Row className="mx-0 w-100 Left-Padding">
                     <Col>
                         <div className="Container my-5 px-md-3 px-lg-5">
                             <div id="diagrams">

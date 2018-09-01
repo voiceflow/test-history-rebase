@@ -11,6 +11,7 @@
 	-o-transition : background-color 800ms ease;
 	transition : background-color 800ms ease;
 	background-color: #5a5bff;
+	min-height: 59px;
 }
 
 #navbar.storyboard {
@@ -23,6 +24,15 @@
 
 #navbar.dashboard {
 	background-color: #2196F3;
+}
+
+#navbar.analytics {
+	background-color: #43A047;
+}
+.navbar-toggler{
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
 }
 
 @media(min-width: 845px){

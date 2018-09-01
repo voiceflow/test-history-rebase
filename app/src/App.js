@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import AuthenticationService from './services/Authentication'
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import AuthenticationService from './services/Authentication';
+import ReactGA from 'react-ga';
+import { createBrowserHistory } from 'history';
 
 // Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,6 +14,8 @@ import StoryBoard from './views/pages/Storyboard/StoryBoard';
 import DashBoard from './views/pages/Dashboard/DashBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
+import Reviews from './views/pages/Reviews/Reviews';
+import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar'
 
 const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
@@ -27,6 +31,13 @@ const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
+ReactGA.initialize('UA-124745244-1');
+const history = createBrowserHistory();
+history.listen((location, action) => {
+  ReactGA.set({ page: location.pathname })
+  ReactGA.pageview(location.pathname)
+});
+
 class App extends Component {
 
   componentDidMount() {
@@ -34,10 +45,10 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <div id="body">
           <Route render={(props) => {
-            return (AuthenticationService.isAuth() ? <NavBar {...props}/> : null)
+            return (AuthenticationService.isAuth() ? <NavBar intercom {...props}/> : null)
           }} />
           <Switch>
             <Route exact path="/login" name="Login" component={Account} />
@@ -47,6 +58,8 @@ class App extends Component {
             <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
             <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
             <PrivateRoute path="/admin" name="Admin" component={Admin} />
+            <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
+            <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
             <Route exact path="/" render={() => (
               AuthenticationService.isAuth() ? (
                 <Redirect to="/storyboard"/>
@@ -56,7 +69,7 @@ class App extends Component {
             )}/>
           </Switch>
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 }

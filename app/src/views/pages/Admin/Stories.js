@@ -24,6 +24,7 @@ class Stories extends Component {
         this.refresh('staging');
         this.refresh('production');
         this.refresh('sandbox');
+        this.refresh('kids');
     }
 
     refresh(env){
@@ -154,7 +155,7 @@ class Stories extends Component {
                         </div>
                     </Col>
                     <Col>
-                        <div className='environment mt-5' id="production">
+                        <div className='environment mt-5' id="storyflow">
                             <h1>Storyflow</h1>
                                 { Array.isArray(this.state.production) ?
                                 <ReactTable
@@ -280,6 +281,73 @@ class Stories extends Component {
                                                 return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("sandbox", row.value)}>Unlist</button>
                                             }else{
                                                 return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("sandbox", row.value)}>List</button>
+                                            }
+                                        },
+                                        sortable: false
+                                    }]} 
+                                /> : null }
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className='environment mt-5' id="kids">
+                            <h1>Storyflow Kids</h1>
+                                { Array.isArray(this.state.kids) ?
+                                <ReactTable
+                                    defaultPageSize={10}
+                                    showPageSizeOptions={false}
+                                    className="-highlight -striped mt-4"
+                                    data= {this.state.kids}
+                                    columns= {[{
+                                        Header: "Listed",
+                                        accessor: "featured",
+                                        className: "text-center",
+                                        maxWidth: 80,
+                                        Cell: row => {
+                                            if(row.value){
+                                                return <i className="fas fa-circle text-primary"></i>
+                                            }else if(row.original.listed){
+                                                return <i className="fas fa-circle text-success"></i>
+                                            }else{
+                                                return <i className="fas fa-circle text-warning"></i>
+                                            }
+                                        }
+                                    }, {
+                                        Header: "Title",
+                                        accessor: "title",
+                                        className: "pl-3",
+                                        minWidth: 200
+                                    }, {
+                                        Header: "Remove",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 80,
+                                        Cell: row => {
+                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onRemove("kids", row.value)}>Delete</button>
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "Feature",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 90,
+                                        Cell: row => {
+                                            if(row.row.featured){
+                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeature("kids", row.value)}>Cancel</button>
+                                            }else{
+                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeature("kids", row.value)}>Feature</button>
+                                            }
+                                        },
+                                        sortable: false
+                                    }, {
+                                        Header: "List",
+                                        className: "text-center",
+                                        accessor: "id",
+                                        maxWidth: 90,
+                                        Cell: row => {
+                                            if(row.original.listed){
+                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("kids", row.value)}>Unlist</button>
+                                            }else{
+                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("kids", row.value)}>List</button>
                                             }
                                         },
                                         sortable: false

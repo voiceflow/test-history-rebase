@@ -32,10 +32,11 @@ class NavBar extends Component {
     this.state = {
       isOpen: false,
       tabs: [
-        {link: 'storyboard', 'text': 'Storyboard'}, 
-        {link: 'dashboard', 'text': 'Dashboard'}, 
+        {link: 'storyboard', 'text': <span>Storyboard</span>},
+        {link: 'dashboard', 'text': <span>Dashboard</span>}, 
       ],
       user: AuthenticationService.getUser(),
+      loaded: false
     };
   }
 
@@ -47,10 +48,12 @@ class NavBar extends Component {
             if(err && this.props.history){
               this.props.history.push('/login');
             }else{
-              this.setState({ user: res });
+              this.setState({ user: res, loaded: true });
               if(this.state.user.admin){
                 let tabs = this.state.tabs;
-                tabs.push({link: 'admin', text: 'Admin <i class="fas fa-columns"></i>'});
+                tabs.push({link: 'reviews', text: <span>Reviews <i className="fas fa-clipboard-list"></i></span>});
+                tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
+                tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
                 this.setState({tabs: tabs});
               }
             }
@@ -86,7 +89,6 @@ class NavBar extends Component {
       name: this.state.user.name,
       email: this.state.user.email
     } : null;
-
     let page_name = getPage(this.props.location.pathname);
 
     return (
@@ -105,12 +107,12 @@ class NavBar extends Component {
                     if(page_name === tab.link){
                       return (
                         <NavItem key={i}>
-                          <NavLink dangerouslySetInnerHTML={{__html: tab.text}} active></NavLink>
+                          <NavLink active>{tab.text}</NavLink>
                         </NavItem>)
                     }else{
                       return (
                         <NavItem key={i}>
-                          <Link to={"/" + tab.link} className="nav-link" dangerouslySetInnerHTML={{__html: tab.text}}></Link>
+                          <Link to={"/" + tab.link} className="nav-link">{tab.text}</Link>
                         </NavItem>)
                     }
                 })}
@@ -126,7 +128,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {this.props.padding ? (<div className="padding"></div>) : null}
-          {this.props.intercom ? (<Intercom appID="vw911b0m" {...intercom_user}/>) : null}
+          {(this.state.loaded && !this.state.user.admin) ? (<Intercom appID="vw911b0m" {...intercom_user}/>) : null}
         </div>
     );
   }

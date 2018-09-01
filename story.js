@@ -10,49 +10,6 @@ const docClient = new AWS.DynamoDB.DocumentClient({
 
 const Audio = require('./audio.js');
 
-const getScore = (a, b, callback) => {
-    if (a && b) {
-        let data = JSON.stringify({
-            text1: a,
-            text2: b,
-            clean: false
-        });
-
-        let options = {
-            hostname: 'rxnlp-core.p.mashape.com',
-            port: 443,
-            path: '/computeSimilarity',
-            method: 'POST',
-            headers: {
-                'X-Mashape-Key': 'n56hWN1K21mshaH099rKC3XDoUuTp1AI2xcjsn2vmqI9Yr1Pza',
-                'Content-Type': 'application/json',
-                'Content-Length': data.length,
-                'Accept': 'application/json'
-            }
-        };
-
-        let req = https.request(options, res => {
-            let body = '';
-
-            res.on('data', d => {
-                body += d;
-            });
-
-            res.on('end', () => {
-                callback(JSON.parse(body).jaccard);
-            });
-        });
-        req.write(data);
-        req.end();
-    } else {
-        callback(0);
-    }
-};
-
-const getScoreSync = (a, b) => new Promise(resolve => {
-    getScore(a, b, resolve);
-});
-
 const getStories = (req, res) => {
     let params = {
         TableName: 'com.getstoryflow.stories.'+req.params.env,
@@ -62,29 +19,29 @@ const getStories = (req, res) => {
         params.FilterExpression = 'creator = :creator';
         params.ExpressionAttributeValues = {':creator': req.user.id};
     }
-    docClient.scan(params, (err, data) => {
-        if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
-        } else {
-            res.send(data.Items);
-        }
-    });
-};
 
-const getStoriesInternal = (env, cb) => {
-    let params = {
-        TableName: 'com.getstoryflow.stories.'+env,
-        ProjectionExpression: 'id, title, preview, featured'
-    };
-    docClient.scan(params, (err, data) => {
+    let items = [];
+
+    docClient.scan(params, onScan);
+
+    function onScan(err, data) {
         if (err) {
-            console.log(err);
-            cb(null);
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+            res.sendStatus(500);
         } else {
-            cb(data.Items);
+            data.Items.forEach(function(item) {
+               items.push(item);
+            });
+
+            // continue scanning if we have more items
+            if (typeof data.LastEvaluatedKey != "undefined") {
+                params.ExclusiveStartKey = data.LastEvaluatedKey;
+                docClient.scan(params, onScan);
+            }else{
+                res.send(items);
+            }
         }
-    });
+    }
 };
 
 const getStory = (id, env, callback) => {
@@ -102,46 +59,6 @@ const getStory = (id, env, callback) => {
             callback(null);
         }
     });
-};
-
-const getSelection = (input, env, callback) => {
-    if (input) {
-        getStoriesInternal(env, async stories => {
-            let best = 0;
-            let bestI = 0;
-            let score = 0;
-            for (let i = 0; i < stories.length; i++) {
-                score = await getScoreSync(input, stories[i].title);
-                if (score > best) {
-                    best = score;
-                    bestI = i;
-                }
-            }
-            score = await getScoreSync(input, 'start featured story');
-            if (score > best) {
-                best = score;
-                bestI = -1;
-            }
-            score = await getScoreSync(input, 'list all stories');
-            if (score > best) {
-                best = score;
-                bestI = -2;
-            }
-            if (best > 0) {
-                if (bestI === -1) {
-                    callback('featured');
-                } else if (bestI === -2) {
-                    callback('list');
-                } else {
-                    callback(stories[bestI].id);
-                }
-            } else {
-                callback('list');
-            }
-        });
-    } else {
-        callback(null);
-    }
 };
 
 const log = (state, env) => {
@@ -256,6 +173,39 @@ const featureStory = (req, res) => {
     });
 };
 
+const listStories = (req, res) => {
+    let sParams = {
+        TableName: 'com.getstoryflow.stories.'+req.params.env,
+        ProjectionExpression: 'id, preview',
+        FilterExpression: 'listed = :true',
+        ExpressionAttributeValues: {':true': true}
+    };
+
+    let items = [];
+
+    docClient.scan(sParams, onScan);
+
+    function onScan(err, data) {
+        if (err) {
+            res.sendStatus(500);
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            data.Items.forEach(function(item) {
+               items.push(item);
+            });
+
+            // continue scanning if we have more items
+            if (typeof data.LastEvaluatedKey != "undefined") {
+                sParams.ExclusiveStartKey = data.LastEvaluatedKey;
+                docClient.scan(sParams, onScan);
+            }else{
+                res.sendStatus(200);
+                Audio.updateTitles(items, req.params.env);
+            }
+        }
+    }
+}
+
 const listStory = (req, res) => {
     if (!req.user || !req.params.id || !req.params.env) {
         res.sendStatus(401);
@@ -277,21 +227,10 @@ const listStory = (req, res) => {
         if (err) {
             console.log(err);
             res.sendStatus(err.statusCode);
+            return;
         }
-        let sParams = {
-            TableName: 'com.getstoryflow.stories.'+req.params.env,
-            ProjectionExpression: 'id, preview',
-            FilterExpression: 'listed = :true',
-            ExpressionAttributeValues: {':true': true}
-        };
-        docClient.scan(sParams, (err, data) => {
-            if(err){
-                res.sendStatus(500);
-            }else{
-                res.sendStatus(200);
-                Audio.updateTitles(data.Items, req.params.env);
-            }
-        });
+
+        listStories(req, res);
     });
 }
 
@@ -316,26 +255,14 @@ const unlistStory = (req, res) => {
         if (err) {
             console.log(err);
             res.sendStatus(err.statusCode);
+            return;
         }
-        let sParams = {
-            TableName: 'com.getstoryflow.stories.'+req.params.env,
-            ProjectionExpression: 'id, preview',
-            FilterExpression: 'listed = :true',
-            ExpressionAttributeValues: {':true': true}
-        };
-        docClient.scan(sParams, (err, data) => {
-            if(err){
-                res.sendStatus(500);
-            }else{
-                res.sendStatus(200);
-                Audio.updateTitles(data.Items, req.params.env);
-            }
-        });
+        
+        listStories(req, res);
     });
 }
 
 exports.getStories = getStories;
-exports.getStoriesInternal = getStoriesInternal;
 exports.deleteStory = deleteStory;
 exports.featureStory = featureStory;
 exports.listStory = listStory;

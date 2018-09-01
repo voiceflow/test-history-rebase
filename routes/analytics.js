@@ -120,7 +120,16 @@ const getReads = (req, res) => {
 }
 
 const getUsers = (req, res) => {
-    let sql = `SELECT * FROM users`
+    let sql = `
+    SELECT
+        u.*,
+        COUNT(*),
+        COUNT(nullif(s.finished, false)) AS finished
+    FROM
+        users u
+        INNER JOIN story_read s ON s.user_id = u.user_id
+        GROUP BY
+            u.user_id`
 
     pool.query(sql, (err, result) => {
         if(err){ res.status(500).send(err); return;}

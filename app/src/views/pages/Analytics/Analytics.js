@@ -77,7 +77,12 @@ class Analytics extends Component {
             type: 'GET',
             success: users => {
                 this.setState({
-                    users: users 
+                    users: users.map(user => {
+                        user.finished = parseInt(user.finished, 10);
+                        user.count = parseInt(user.count, 10);
+                        user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
+                        return user
+                    })
                 });
             },
             error: () => {
@@ -167,15 +172,15 @@ class Analytics extends Component {
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
                 <div id="dash-nav-container" className="d-none d-lg-block">
                     <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
-                        <Scrollspy items={ ['reads', 'stories', 'aggregates', 'users'] } className="nav nav-pills" currentClassName="active">
+                        <Scrollspy items={ ['aggregates', 'reads', 'stories', 'users'] } className="nav nav-pills" currentClassName="active">
+                            <li className="nav-item">
+                              <a className="nav-link" href="#aggregates">Aggregates</a>
+                            </li>
                             <li className="nav-item">
                               <a className="nav-link" href="#reads">Stories/Time</a>
                             </li>
                             <li className="nav-item">
                               <a className="nav-link" href="#stories">Stories</a>
-                            </li>
-                            <li className="nav-item">
-                              <a className="nav-link" href="#aggregates">Aggregates</a>
                             </li>
                             <li className="nav-item">
                               <a className="nav-link" href="#users">Users</a>
@@ -204,34 +209,6 @@ class Analytics extends Component {
                         </div>
                     </div>
                     <Row className="analytics-row px-md-5 m-0">
-                    <Col xs="12" className="mb-5" id="reads">
-                        <h1>Stories Started over Time</h1>
-                        <hr/>
-                        <LineChart data={this.state.data} xtitle="Time" ytitle="Stories Started" download={true} />
-                    </Col>
-                    <Col className="mb-5" id="stories">
-                        <h1>Story Analytics</h1>
-                            { Array.isArray(this.state.stories) ?
-                            <ReactTable
-                                defaultPageSize={10}
-                                showPageSizeOptions={false}
-                                className="-highlight -striped mt-4"
-                                data= {this.state.stories}
-                                columns= {[{
-                                    Header: "Title",
-                                    accessor: "title",
-                                    className: "pl-3",
-                                }, {
-                                    Header: "Starts",
-                                    accessor: "count",
-                                    minWidth: 200
-                                }, {
-                                    Header: "Completion",
-                                    accessor: "completion",
-                                    minWidth: 200
-                                }]} 
-                            /> : null }
-                    </Col>
                     <Col xs="12" id="aggregates" className="mb-5">
                         <h1>How are we doing?</h1>
                         <hr/>
@@ -269,7 +246,35 @@ class Analytics extends Component {
                         </CardDeck>
                         <hr/>
                     </Col>
-                    <Col className="mb-5" id="users">
+                    <Col xs="12" className="mb-5" id="reads">
+                        <h1>Stories Started over Time</h1>
+                        <hr/>
+                        <LineChart data={this.state.data} xtitle="Time" ytitle="Stories Started" download={true} />
+                    </Col>
+                    <Col className="mb-5" id="stories">
+                        <h1>Story Analytics</h1>
+                            { Array.isArray(this.state.stories) ?
+                            <ReactTable
+                                defaultPageSize={10}
+                                showPageSizeOptions={false}
+                                className="-highlight -striped mt-4"
+                                data= {this.state.stories}
+                                columns= {[{
+                                    Header: "Title",
+                                    accessor: "title",
+                                    className: "pl-3",
+                                }, {
+                                    Header: "Starts",
+                                    accessor: "count",
+                                    minWidth: 200
+                                }, {
+                                    Header: "Completion",
+                                    accessor: "completion",
+                                    minWidth: 200
+                                }]} 
+                            /> : null }
+                    </Col>
+                    <Col className="mb-5" id="users" xs="12">
                         <h1>Users</h1>
                             { Array.isArray(this.state.users) ?
                             <ReactTable
@@ -277,19 +282,41 @@ class Analytics extends Component {
                                 className="-highlight -striped mt-4"
                                 data= {this.state.users}
                                 columns= {[{
+                                    Header: "ID",
+                                    accessor: "id",
+                                    className: "pl-3",
+                                    maxWidth: 80
+                                }, {
                                     Header: "Email",
-                                    accessor: "email",
-                                    className: "pl-3"
+                                    accessor: "email"
                                 }, {
                                     Header: "First Name",
                                     accessor: "first_name"
                                 }, {
+                                    Header: "Rate",
+                                    accessor: "completion",
+                                    className: "text-center",
+                                    maxWidth: 100,
+                                    style: {backgroundColor: "#C8E6C9"}
+                                }, {
+                                    Header: "Started",
+                                    accessor: "count",
+                                    className: "text-center",
+                                    maxWidth: 100,
+                                },{
+                                    Header: "Finished",
+                                    accessor: "finished",
+                                    className: "text-center",
+                                    maxWidth: 100,
+                                }, {
                                     Header: "Sessions",
                                     accessor: "sessions",
+                                    className: "text-center",
                                     maxWidth: 100
                                 }, {
                                     Header: "Utterances",
                                     accessor: "utterances",
+                                    className: "text-center",
                                     maxWidth: 100
                                 }, {
                                     Header: "Joined",

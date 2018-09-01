@@ -27,6 +27,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 	render() {
 		return (
 			<div {...this.getProps()} style={{ background: this.props.node.color }}>
+				{this.props.node.extras && this.props.node.extras.reads ? <div className="block-reads">{this.props.node.extras.reads}</div> : null}
 				<div className={this.bem("__title")}>
 					<div className={this.bem("__name")}>{this.props.node.name}</div>
 				</div>

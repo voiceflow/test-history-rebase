@@ -436,6 +436,16 @@ label {
     /*flex-direction: row;*/
 }
 
+.srd-default-node .block-reads {
+    position: absolute;
+    top: -22px;
+    font-size: 14px;
+}
+
+.srd-default-node .block-reads::after {
+    content: " Reads";
+}
+
 .srd-default-node__ports {
     background: transparent;
 }

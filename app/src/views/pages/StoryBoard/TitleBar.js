@@ -56,6 +56,7 @@ class TitleBar extends Component {
                             this.props.admin ? 
                             <div>
                                 <DropdownItem divider />
+                                <DropdownItem onClick={this.props.onLoadLines}>Update User Flow</DropdownItem>
                                 <UncontrolledDropdown direction="right" isOpen={this.state.publish} toggle={() => { this.setState({ publish : !this.state.publish }); }}>
                                     <DropdownToggle tag="button" caret className="dropdown-item load-btn">
                                         Publish

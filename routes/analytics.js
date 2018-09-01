@@ -191,7 +191,37 @@ const getUserStoriesData = (req, res) => {
     });
 }
 
+const getStoryLines = (req, res) => {
+    if(!req.params.id){
+        req.sendStatus(400);
+        return;
+    }
+
+    let sql = `
+        SELECT
+            line_id,
+            SUM(hits)
+        FROM
+            lines
+        WHERE
+            story_id = $1
+        GROUP BY
+            line_id, story_id`
+
+    pool.query(sql, [req.params.id], (err, result) => {
+        if(err || result.rows.length < 1) { 
+            res.status(500).send(err); console.log(err); return; 
+        }
+        let lines = {}
+        result.rows.forEach((line) => {
+            lines[line.line_id] = line.sum
+        })
+        res.send(lines);
+    });
+}
+
 return {
+    getStoryLines: getStoryLines,
     getStories: getStories,
     getAggregate: getAggregate,
     getReads: getReads,

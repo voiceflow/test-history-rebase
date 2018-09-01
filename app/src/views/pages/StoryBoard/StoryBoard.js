@@ -85,6 +85,7 @@ class StoryBoard extends Component {
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
 
         this.onLoad = this.onLoad.bind(this);
+        this.loadLines = this.loadLines.bind(this);
         this.repaint = this.repaint.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
@@ -255,6 +256,37 @@ class StoryBoard extends Component {
                 }
             });
         }
+    }
+
+    loadLines() {
+        let engine = this.state.engine;
+        let model = engine.getDiagramModel();
+        let id = model.getID();
+        $.ajax({
+            url: '/analytics/story/' + id + '/lines',
+            type: 'GET',
+            success: (data) => {
+                var nodes = model.getNodes();
+                for (let key in nodes) {
+                    if(data[key]){
+                        nodes[key].extras.reads = data[key];
+                    }else{ 
+                        nodes[key].extras.reads = 0;
+                    }
+                }
+                engine.setDiagramModel(model);
+                this.setState({
+                    engine: engine
+                });
+            },
+            error: (e) => {
+                console.log(e);
+                this.setState({
+                    loading_modal: true,
+                    error_modal: "Unable to load Line data"
+                });
+            }
+        });
     }
 
     loadDiagram(diagram, review) {
@@ -443,6 +475,7 @@ class StoryBoard extends Component {
                     saved={this.state.saved}
                     last_save={this.state.last_save}
                     admin={this.state.admin}
+                    onLoadLines={this.loadLines}
                 />
                 { this.state.review
                     ? <div id="review">

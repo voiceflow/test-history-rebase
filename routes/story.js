@@ -1,14 +1,9 @@
-const AWS = require('aws-sdk');
 const https = require('https');
 const uuidv1 = require('uuid/v1');
 
-AWS.config.loadFromPath('./aws-config.json');
-
-const docClient = new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true
-});
-
 const Audio = require('./audio.js');
+
+module.exports = (docClient, pool) => {
 
 const getStories = (req, res) => {
     let params = {
@@ -39,6 +34,36 @@ const getStories = (req, res) => {
                 docClient.scan(params, onScan);
             }else{
                 res.send(items);
+            }
+        }
+    }
+};
+
+const getStoriesInternal = (env, cb) => {
+    let params = {
+        TableName: 'com.getstoryflow.stories.'+env,
+        ProjectionExpression: 'id, title, preview, featured'
+    };
+
+    let stories = [];
+
+    docClient.scan(params, onScan);
+
+    function onScan(err, data) {
+        if (err) {
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+            cb(null);
+        } else {
+            data.Items.forEach(function(story) {
+               stories.push(story);
+            });
+
+            // continue scanning if we have more items
+            if (typeof data.LastEvaluatedKey != "undefined") {
+                params.ExclusiveStartKey = data.LastEvaluatedKey;
+                docClient.scan(params, onScan);
+            }else{
+                cb(stories);
             }
         }
     }
@@ -101,10 +126,11 @@ const deleteStory = (req, res) => {
                     console.log(err);
                     res.sendStatus(err.statusCode);
                 } else {
+                    res.sendStatus(200);
+                    pool.query('DELETE FROM stories WHERE story_id = $1 AND env= $2', [req.params.id, req.params.env]);
                     getStoriesInternal(req.params.env, stories => {
                         Audio.updateTitles(stories, req.params.env);
                     });
-                    res.sendStatus(200);
                 }
             });
         }else{
@@ -262,8 +288,10 @@ const unlistStory = (req, res) => {
     });
 }
 
-exports.getStories = getStories;
-exports.deleteStory = deleteStory;
-exports.featureStory = featureStory;
-exports.listStory = listStory;
-exports.unlistStory = unlistStory;
+return {
+    getStories: getStories,
+    deleteStory: deleteStory,
+    featureStory: featureStory,
+    listStory: listStory,
+    unlistStory: unlistStory
+}}

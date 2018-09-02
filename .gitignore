@@ -7,5 +7,5 @@ src/app/components/.DS_Store
 node_modules
 .vscode
 dump.rdb
-tmp/*
-!tmp/.gitkeep
+routes/tmp/*
+!routes/tmp/.gitkeep

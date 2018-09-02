@@ -1,6 +1,3 @@
-const Story = require('./story.js');
-const Audio = require('./audio.js');
-
 module.exports = (docClient, pool) => {
 
 const getDiagrams = (req, res) => {

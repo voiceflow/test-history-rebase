@@ -1,13 +1,7 @@
-const AWS = require('aws-sdk');
-
-AWS.config.loadFromPath('./aws-config.json');
-
-const docClient = new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true
-});
-
 const Story = require('./story.js');
 const Audio = require('./audio.js');
+
+module.exports = (docClient, pool) => {
 
 const getDiagrams = (req, res) => {
     if (!req.user) {
@@ -177,6 +171,7 @@ const renderStory = (params, req, res, success) => {
             }
             let story = {
                 id: diagram.id,
+                env: req.params.env,
                 creator: creator,
                 lines: {}
             };
@@ -306,7 +301,7 @@ const renderStory = (params, req, res, success) => {
                 }
             }
             let params = {
-                TableName: 'com.getstoryflow.stories.'+req.params.env,
+                TableName: 'com.getstoryflow.stories.'+ story.env,
                 Item: story
             };
             docClient.put(params, err => {
@@ -314,14 +309,47 @@ const renderStory = (params, req, res, success) => {
                     console.log(err);
                     res.sendStatus(err.statusCode);
                 } else {
-                    res.sendStatus(200);
-                    if(success){
-                        success();
-                    }
+                    // Add the story to SQL as well
+                    addStory(story, (err) => {
+                        if(err){
+                            console.log(err);
+                            res.status(500).send(err);
+                            return;
+                        }else{
+                            res.sendStatus(200);
+                            if(success && typeof success == "function"){
+                                success();
+                            }
+                        }
+                    })
                 }
             });
         } else {
             res.sendStatus(404);
+        }
+    });
+}
+
+const addStory = (story, cb) => {
+    pool.query('SELECT 1 FROM stories WHERE story_id = $1 AND env = $2 LIMIT 1', [story.id, story.env], (err,res) => {
+        if(err || res.rows.length < 1){
+            pool.query('INSERT INTO stories (story_id, env, title, preview, creator) VALUES ($1, $2, $3, $4, $5)', 
+                [story.id, story.env, story.title, story.preview, story.creator], (err,res) => {
+                if(err) {
+                    cb(err);
+                }else{
+                    cb();
+                }
+            })
+        }else{
+            pool.query('UPDATE stories SET preview = $1, creator = $2, title = $3 WHERE story_id = $4 AND env = $5', 
+                [story.preview, story.creator, story.title, story.id, story.env], (err,res) => {
+                if(err) {
+                    cb(err);
+                }else{
+                    cb(false);
+                }
+            })
         }
     });
 }
@@ -385,9 +413,11 @@ const publishReview = (req, res) => {
     });
 };
 
-exports.getDiagrams = getDiagrams;
-exports.getDiagram = getDiagram;
-exports.deleteDiagram = deleteDiagram;
-exports.setDiagram = setDiagram;
-exports.publish = publish;
-exports.publishReview = publishReview;
+return {
+    getDiagrams: getDiagrams,
+    getDiagram: getDiagram,
+    deleteDiagram: deleteDiagram,
+    setDiagram: setDiagram,
+    publish: publish,
+    publishReview: publishReview
+}}

@@ -60,10 +60,10 @@ const upload = multer({
 
 app.use(express.static(path.join(__dirname, 'app', 'build')));
 
-const Diagram = require('./diagram.js');
-const Problem = require('./error.js');
-const Audio = require('./audio.js');
-const Story = require('./story.js');
+const Diagram = require('./routes/diagram.js')(docClient, pool);
+const Problem = require('./routes/error.js');
+const Audio = require('./routes/audio.js');
+const Story = require('./routes/story.js');
 const Analytics = require('./routes/analytics.js')(docClient, pool);
 const Review = require('./routes/review.js')(docClient);
 

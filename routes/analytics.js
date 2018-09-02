@@ -129,7 +129,9 @@ const getUsers = (req, res) => {
         users u
         INNER JOIN story_read s ON s.user_id = u.user_id
         GROUP BY
-            u.user_id`
+            u.user_id
+        ORDER BY
+            u.join_date DESC`
 
     pool.query(sql, (err, result) => {
         if(err){ res.status(500).send(err); return;}

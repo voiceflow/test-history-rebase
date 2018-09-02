@@ -43,5 +43,8 @@
     "redis": "^2.8.0",
     "s3-upload-stream": "^1.0.7",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0"
   }
 }

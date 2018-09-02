@@ -29,7 +29,7 @@ const getStories = (req, res) => {
         FROM
             story_read sr
             INNER JOIN stories s ON sr.story_id = s.story_id
-            WHERE sr.env = $1 AND sr.start_time < $2 AND sr.start_time > $3
+            WHERE sr.env = $1 AND s.env = $1 AND sr.start_time < $2 AND sr.start_time > $3
             GROUP BY
                 s.title, s.story_id, s.env;`
 
@@ -48,7 +48,7 @@ const getStories = (req, res) => {
         FROM
             story_read sr
             INNER JOIN stories s ON sr.story_id = s.story_id
-            WHERE sr.env = $1
+            WHERE sr.env = $1 AND s.env = $1
             GROUP BY
                 s.title, s.story_id, s.env;`
 

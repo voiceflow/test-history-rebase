@@ -93,6 +93,7 @@ const getReads = (req, res) => {
         return;
     }
 
+    let period = "day";
     if(req.params.start && req.params.end){
         let start = new Date(parseInt(req.params.start, 10));
         let end = new Date(parseInt(req.params.end, 10));
@@ -102,7 +103,13 @@ const getReads = (req, res) => {
             return;
         }
 
-        let sql = `SELECT COUNT(*), DATE_TRUNC('hour', start_time) AS s FROM story_read WHERE start_time < $1 AND start_time > $2 AND env = $3 GROUP BY DATE_TRUNC('hour', start_time)`
+        var timeDiff = end.getTime() - start.getTime();
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        if(diffDays <= 2){
+            period = "hour";
+        }
+
+        let sql = `SELECT COUNT(*), DATE_TRUNC('${period}', start_time) AS s FROM story_read WHERE start_time < $1 AND start_time > $2 AND env = $3 GROUP BY s`
 
         pool.query(sql, [end, start, req.params.env], (err, result) => {
             if(err){ res.status(500).send(err); return;} 
@@ -110,7 +117,7 @@ const getReads = (req, res) => {
         });
     }else{
 
-        let sql = `SELECT COUNT(*), DATE_TRUNC('hour', start_time) AS s FROM story_read WHERE env = $1 GROUP BY DATE_TRUNC('hour', start_time)`
+        let sql = `SELECT COUNT(*), DATE_TRUNC('${period}', start_time) AS s FROM story_read WHERE env = $1 GROUP BY s`
 
         pool.query(sql, [req.params.env], (err, result) => {
             if(err){ res.status(500).send(err); console.log(err); return;} 
@@ -124,7 +131,8 @@ const getUsers = (req, res) => {
     SELECT
         u.*,
         COUNT(*),
-        COUNT(nullif(s.finished, false)) AS finished
+        COUNT(nullif(s.finished, false)) AS finished,
+        MAX(s.start_time) AS last_seen
     FROM
         users u
         INNER JOIN story_read s ON s.user_id = u.user_id

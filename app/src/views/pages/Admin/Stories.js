@@ -97,15 +97,13 @@ class Stories extends Component {
                                 className="-highlight -striped mt-4"
                                 data= {this.state.staging}
                                 columns= {[{
-                                    Header: "Listed",
+                                    Header: "Featured",
                                     accessor: "featured",
                                     className: "text-center",
                                     maxWidth: 80,
                                     Cell: row => {
                                         if(row.value){
                                             return <i className="fas fa-circle text-primary"></i>
-                                        }else if(row.original.listed){
-                                            return <i className="fas fa-circle text-success"></i>
                                         }else{
                                             return <i className="fas fa-circle text-warning"></i>
                                         }
@@ -137,24 +135,11 @@ class Stories extends Component {
                                         }
                                     },
                                     sortable: false
-                                }, {
-                                    Header: "List",
-                                    className: "text-center",
-                                    accessor: "id",
-                                    maxWidth: 90,
-                                    Cell: row => {
-                                        if(row.original.listed){
-                                            return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("staging", row.value)}>Unlist</button>
-                                        }else{
-                                            return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("staging", row.value)}>List</button>
-                                        }
-                                    },
-                                    sortable: false
                                 }]} 
                             /> : null }
                         </div>
                     </Col>
-                    <Col>
+                    <Col xs="6">
                         <div className='environment mt-5' id="storyflow">
                             <h1>Storyflow</h1>
                                 { Array.isArray(this.state.production) ?
@@ -164,15 +149,13 @@ class Stories extends Component {
                                     className="-highlight -striped mt-4"
                                     data= {this.state.production}
                                     columns= {[{
-                                        Header: "Listed",
+                                        Header: "Featured",
                                         accessor: "featured",
                                         className: "text-center",
                                         maxWidth: 80,
                                         Cell: row => {
                                             if(row.value){
                                                 return <i className="fas fa-circle text-primary"></i>
-                                            }else if(row.original.listed){
-                                                return <i className="fas fa-circle text-success"></i>
                                             }else{
                                                 return <i className="fas fa-circle text-warning"></i>
                                             }
@@ -204,19 +187,6 @@ class Stories extends Component {
                                             }
                                         },
                                         sortable: false
-                                    }, {
-                                        Header: "List",
-                                        className: "text-center",
-                                        accessor: "id",
-                                        maxWidth: 90,
-                                        Cell: row => {
-                                            if(row.original.listed){
-                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("production", row.value)}>Unlist</button>
-                                            }else{
-                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("production", row.value)}>List</button>
-                                            }
-                                        },
-                                        sortable: false
                                     }]} 
                                 /> : null }
                         </div>
@@ -231,15 +201,13 @@ class Stories extends Component {
                                     className="-highlight -striped mt-4"
                                     data= {this.state.sandbox}
                                     columns= {[{
-                                        Header: "Listed",
+                                        Header: "Featured",
                                         accessor: "featured",
                                         className: "text-center",
                                         maxWidth: 80,
                                         Cell: row => {
                                             if(row.value){
                                                 return <i className="fas fa-circle text-primary"></i>
-                                            }else if(row.original.listed){
-                                                return <i className="fas fa-circle text-success"></i>
                                             }else{
                                                 return <i className="fas fa-circle text-warning"></i>
                                             }
@@ -271,19 +239,6 @@ class Stories extends Component {
                                             }
                                         },
                                         sortable: false
-                                    }, {
-                                        Header: "List",
-                                        className: "text-center",
-                                        accessor: "id",
-                                        maxWidth: 90,
-                                        Cell: row => {
-                                            if(row.original.listed){
-                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("sandbox", row.value)}>Unlist</button>
-                                            }else{
-                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("sandbox", row.value)}>List</button>
-                                            }
-                                        },
-                                        sortable: false
                                     }]} 
                                 /> : null }
                         </div>
@@ -298,15 +253,13 @@ class Stories extends Component {
                                     className="-highlight -striped mt-4"
                                     data= {this.state.kids}
                                     columns= {[{
-                                        Header: "Listed",
+                                        Header: "Featured",
                                         accessor: "featured",
                                         className: "text-center",
                                         maxWidth: 80,
                                         Cell: row => {
                                             if(row.value){
                                                 return <i className="fas fa-circle text-primary"></i>
-                                            }else if(row.original.listed){
-                                                return <i className="fas fa-circle text-success"></i>
                                             }else{
                                                 return <i className="fas fa-circle text-warning"></i>
                                             }
@@ -335,19 +288,6 @@ class Stories extends Component {
                                                 return <button className="btn btn-outline-danger border-none" onClick={() => this.onFeature("kids", row.value)}>Cancel</button>
                                             }else{
                                                 return <button className="btn btn-outline-primary border-none" onClick={() => this.onFeature("kids", row.value)}>Feature</button>
-                                            }
-                                        },
-                                        sortable: false
-                                    }, {
-                                        Header: "List",
-                                        className: "text-center",
-                                        accessor: "id",
-                                        maxWidth: 90,
-                                        Cell: row => {
-                                            if(row.original.listed){
-                                                return <button className="btn btn-outline-danger border-none" onClick={() => this.onUnlist("kids", row.value)}>Unlist</button>
-                                            }else{
-                                                return <button className="btn btn-outline-primary border-none" onClick={() => this.onList("kids", row.value)}>List</button>
                                             }
                                         },
                                         sortable: false

@@ -326,6 +326,17 @@ class Analytics extends Component {
                                     className: "text-center",
                                     maxWidth: 100
                                 }, {
+                                    Header: "Last Story",
+                                    accessor: "last_seen",
+                                    className: "text-center",
+                                    Cell: row => {
+                                        if(row.value){
+                                            return moment(row.value).fromNow();
+                                        }else{
+                                            return "unknown";
+                                        }
+                                    },
+                                }, {
                                     Header: "Joined",
                                     accessor: "join_date",
                                     className: "text-center",

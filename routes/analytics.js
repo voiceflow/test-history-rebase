@@ -137,7 +137,8 @@ const getUsers = (req, res) => {
         users u
         INNER JOIN story_read s ON s.user_id = u.user_id
         GROUP BY
-            u.user_id
+            u.user_id,
+            u.env
         ORDER BY
             u.join_date DESC`
 

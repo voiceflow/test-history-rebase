@@ -24,14 +24,16 @@ const getStories = (req, res) => {
             s.title,
             s.story_id,
             s.env,
+            s.upvotes,
+            s.downvotes,
             COUNT(s.story_id), 
             CONCAT((COUNT(nullif(sr.finished, false))*100 / COUNT(*)), '%') AS completion
         FROM
             story_read sr
-            INNER JOIN stories s ON sr.story_id = s.story_id
+            INNER JOIN stories s ON sr.story_id = s.story_id AND s.env = sr.env
             WHERE sr.env = $1 AND s.env = $1 AND sr.start_time < $2 AND sr.start_time > $3
             GROUP BY
-                s.title, s.story_id, s.env;`
+                s.story_id, s.env;`
 
         pool.query(sql, [req.params.env, end, start], (err, result) => {
             if(err){ res.status(500).send(err); console.log(err);return;} 
@@ -43,6 +45,8 @@ const getStories = (req, res) => {
             s.title,
             s.story_id,
             s.env,
+            s.upvotes,
+            s.downvotes,
             COUNT(s.story_id), 
             CONCAT((COUNT(nullif(sr.finished, false))*100 / COUNT(*)), '%') AS completion
         FROM
@@ -50,7 +54,7 @@ const getStories = (req, res) => {
             INNER JOIN stories s ON sr.story_id = s.story_id
             WHERE sr.env = $1 AND s.env = $1
             GROUP BY
-                s.title, s.story_id, s.env;`
+                s.story_id, s.env;`
 
         pool.query(sql, [req.params.env], (err, result) => {
             if(err){ res.status(500).send(err); return; }
@@ -127,6 +131,11 @@ const getReads = (req, res) => {
 }
 
 const getUsers = (req, res) => {
+    if(!req.params.env){
+        req.sendStatus(400);
+        return;
+    }
+
     let sql = `
     SELECT
         u.*,
@@ -135,14 +144,15 @@ const getUsers = (req, res) => {
         MAX(s.start_time) AS last_seen
     FROM
         users u
-        INNER JOIN story_read s ON s.user_id = u.user_id
+        INNER JOIN story_read s ON s.user_id = u.user_id AND s.env = u.env
+        WHERE s.env = $1 AND u.env = $1
         GROUP BY
             u.user_id,
             u.env
         ORDER BY
             u.join_date DESC`
 
-    pool.query(sql, (err, result) => {
+    pool.query(sql, [req.params.env], (err, result) => {
         if(err){ res.status(500).send(err); return;}
         res.send(result.rows);
     });

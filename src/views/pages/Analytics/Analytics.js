@@ -272,6 +272,18 @@ class Analytics extends Component {
                                     Header: "Completion",
                                     accessor: "completion",
                                     minWidth: 200
+                                }, {
+                                    Header: "Upvotes",
+                                    accessor: "upvotes",
+                                    maxWidth: 200
+                                }, {
+                                    Header: "Downvotes",
+                                    accessor: "downvotes",
+                                    maxWidth: 200
+                                }, {
+                                    Header: "Score",
+                                    accessor: "total",
+                                    maxWidth: 200
                                 }]} 
                             /> : null }
                     </Col>

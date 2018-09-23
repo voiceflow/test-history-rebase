@@ -176,7 +176,7 @@ app.post('/audio', ensureLoggedIn(), upload.any(), Audio.upload);
 app.post('/concat', ensureLoggedIn(), Audio.concat);
 
 // all the authentication routes
-const authentication = require('./routes/authentication')(express.Router(), docClient, redisClient);
+const authentication = require('./routes/authentication')(express.Router(), docClient, pool, redisClient);
 app.use('/', authentication);
 
 // Handle React routing, return all requests to React app

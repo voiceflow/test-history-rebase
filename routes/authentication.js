@@ -6,7 +6,7 @@ const codes = require('./../config/codes');
 const config = require('./../config/config');
 const uuidv1 = require('uuid/v1');
 
-module.exports = (router, docClient, redisClient) => {
+module.exports = (router, docClient, pool, redisClient) => {
 
 	// recursive loop to keep looking for user hash if there are duplicates
 	function generateUserHash(callback) {
@@ -61,18 +61,14 @@ module.exports = (router, docClient, redisClient) => {
 		}else{
 		    let email = req.body.email.trim().toLowerCase();
 		    let password = req.body.password;
-		    let params = {
-		        TableName: 'com.getstoryflow.users.production',
-		        Key: {'email': email}
-		    };
-		    docClient.get(params, (err, data) => {
+		    pool.query('SELECT * FROM creators WHERE email = $1 LIMIT 1', [email], (err, data) => {
 		        if (err) {
 		            res.status(500).send("Something Went Wrong");
 		        }
-		        if (data.Item) {
-		            bcrypt.compare(password, data.Item.password, (err, success) => {
+		        if (data.rows.length !== 0) {
+		            bcrypt.compare(password, data.rows[0].password, (err, success) => {
 		                if (success) {
-		                	createLogin(data.Item, (credentials) => {
+		                	createLogin(data.rows[0], (credentials) => {
 		                		res.status(200).send({
                             		token: credentials.userHash + credentials.token,
                             		user: credentials.user
@@ -85,7 +81,7 @@ module.exports = (router, docClient, redisClient) => {
 		        } else {
 		            res.status(400).send("Username or Password Incorrect");
 		        }
-		    });		
+		    });	
 		}
 	});
 
@@ -106,33 +102,21 @@ module.exports = (router, docClient, redisClient) => {
 	        res.status(400).send("Form not filled");
 	     } else {
 	        email = email.trim().toLowerCase();
-	        let params = {
-	            TableName: 'com.getstoryflow.users.production',
-	            Key: {'email': email}
-	        };
-	        docClient.get(params, (err, data) => {
-	            if (err) {
-	                res.status(500).send("Unable to Access Database");
-	            } else if (data.Item) {
-	                res.status(409).send("This Email Already Exists");
-	            } else {
+	        pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
+	        	if(err){
+	        		console.log(err);
+	        		res.status(500).send("Unable to Access Database");
+	        	}else if(result.rows.length !== 0){
+	        		res.status(409).send("This Email Already Exists");
+	        	}else{
 	                bcrypt.hash(password, 10, (err, hash) => {
 		                if (err) {
 		                    console.log(err);
 		                    res.status(500).send('Password Error');
 		                } else {
 		                	let id = uuidv1();
-		                    let params = {
-		                        TableName: 'com.getstoryflow.users.production',
-		                        Item: {
-		                            email: email,
-		                            password: hash,
-		                            id: id,
-		                            name: name,
-		                            createdAt: new Date().toISOString()
-		                        }
-		                    };
-		                    docClient.put(params, (err, data) => {
+		                	pool.query('INSERT INTO creators (id, name, email, password) VALUES ($1, $2, $3, $4)', 
+		                		[id, name, email, hash], (err, result1) => {
 		                        if (err) {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
@@ -144,10 +128,10 @@ module.exports = (router, docClient, redisClient) => {
 		                            	});
 		                            });
 		                        }
-		                    });
+	                		});
 		                }
-	                });
-	            }
+		            });
+	        	}
 	        });
 	    }
 	});

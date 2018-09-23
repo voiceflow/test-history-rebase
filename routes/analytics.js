@@ -170,7 +170,7 @@ const getUserStories = (req, res) => {
         COUNT(*)
     FROM
         story_read s
-        INNER JOIN stories st ON st.story_id = s.story_id
+        INNER JOIN stories st ON st.story_id = s.story_id AND st.env = s.env
         WHERE
             s.user_id = $1
             AND s.env = $2

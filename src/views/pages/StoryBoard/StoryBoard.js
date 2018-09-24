@@ -91,17 +91,21 @@ class StoryBoard extends Component {
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
-
-        AuthenticationService.check((err, res) => {
-            if (err && this.props.history) {
-                this.props.history.push('/login');
-            } else {
-                this.setState({ admin: res.admin });
-            }
-        });
     }
 
     componentDidMount() {
+        if(AuthenticationService.isAuth()){
+            AuthenticationService.check((err, res) => {
+                if (err && this.props.history) {
+                    this.props.history.push('/login');
+                } else {
+                    this.setState({ admin: res.admin });
+                }
+            });
+        }else{
+            this.props.history.push('/login');
+        }
+        
         this.onLoad();
         let split = this.props.location.pathname.split('/');
 

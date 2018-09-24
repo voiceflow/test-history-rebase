@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardDeck, CardTitle, CardBody} from 'reactstrap';
+import { Row, Col, Card, CardDeck, CardTitle, CardBody, Nav, NavItem, NavLink, Alert, InputGroup, Input, InputGroupAddon, InputGroupText} from 'reactstrap';
 import ReactTable from "react-table";
 import DatePicker from 'react-datepicker';
 import moment from 'moment'
@@ -8,7 +8,7 @@ import Scrollspy from 'react-scrollspy'
 import CountUp from 'react-countup';
 import ReactChartkick, { LineChart } from 'react-chartkick'
 import Chart from 'chart.js'
-import User from './User'
+import UserTable from './UserTable'
 
 import $ from 'jquery';
 
@@ -36,7 +36,13 @@ class Analytics extends Component {
             endDate: moment(),
             env: 'production',
             data: {},
-            users: []
+            users: [],
+            high: [],
+            medium: [],
+            low: [],
+            dead: [],
+            bucket: 0,
+            search: ''
         }
 
         this.toggleConfirm = this.toggleConfirm.bind(this);
@@ -50,6 +56,7 @@ class Analytics extends Component {
         this.getAggregate(this.state.env);
         this.getReads(this.state.env);
         this.getUsers(this.state.env);
+        this.getBucketUsers(this.state.env);
     }
 
     resetForDate(){
@@ -84,6 +91,32 @@ class Analytics extends Component {
                         user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
                         return user
                     })
+                });
+            },
+            error: () => {
+                window.alert('Error');
+            }
+        });
+    }
+
+    getBucketUsers(env){
+        let url = '/analytics/' + env + '/users/bucket';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: users => {
+                console.log(users);
+                users = users.map(user => {
+                    user.finished = parseInt(user.finished, 10);
+                    user.count = parseInt(user.count, 10);
+                    user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
+                    return user
+                });
+                this.setState({
+                    high: users.filter(user => user.count >= 5 ),
+                    medium: users.filter(user => user.count >= 2 && user.count < 5),
+                    low: users.filter(user => user.count === 1 ),
+                    dead: users.filter(user => user.count === 0 ),
                 });
             },
             error: () => {
@@ -166,7 +199,58 @@ class Analytics extends Component {
         });
     }
 
+
+    setBucket(bucket){
+        if(this.state.bucket !== bucket){
+            this.setState({
+                bucket: bucket,
+                search: ''
+            });
+        }
+    }
+
+    handleChange = event => {
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+    }
+
     render() {
+        let users = [];
+        let desc = '';
+        let bucket = this.state.bucket;
+        let search = this.state.search.toLowerCase();
+        if(search.length > 0){
+            bucket = 0;
+        }
+        switch(bucket){
+            case 1:
+                users = this.state.high;
+                desc = 'who have read 5 or more stories in the past 7 days'
+                break;
+            case 2:
+                users = this.state.medium;
+                desc = 'who have read 2 to 4 stories in the past 7 days'
+                break;
+            case 3:
+                users = this.state.low;
+                desc = 'who have read 1 story in the past 7 days'
+                break;
+            case 4:
+                users = this.state.dead;
+                desc = 'who have read 0 stories in the past 7 days'
+                break;
+            default:
+                users = search.length > 0 ? this.state.users.filter(user => {
+                    if(user.email.toLowerCase().indexOf(search) !== -1){
+                        return true;
+                    }else if(user.first_name.toLowerCase().indexOf(search) !== -1){
+                        return true;
+                    }
+                    return false;
+                }) : this.state.users;
+        }
+
         return (
             <div className='Window split-page'>
                 <LoadingModal open={this.state.loading} error={this.state.error} dismiss={this.dismissLoadingModal} success={this.state.success}/>
@@ -289,85 +373,40 @@ class Analytics extends Component {
                     </Col>
                     <Col className="mb-5" id="users" xs="12">
                         <h1>Users</h1>
-                            { Array.isArray(this.state.users) ?
-                            <ReactTable
-                                defaultPageSize={30}
-                                className="-highlight -striped mt-4"
-                                data= {this.state.users}
-                                columns= {[{
-                                    Header: "ID",
-                                    accessor: "id",
-                                    className: "pl-3",
-                                    maxWidth: 80
-                                }, {
-                                    Header: "Email",
-                                    accessor: "email",
-                                    Cell: row => {
-                                        return <ClipBoard
-                                            id={"email" + row.original.id}
-                                            value={row.value}
-                                        />
-                                    }
-                                }, {
-                                    Header: "First Name",
-                                    accessor: "first_name"
-                                }, {
-                                    Header: "Rate",
-                                    accessor: "completion",
-                                    className: "text-center",
-                                    maxWidth: 100,
-                                    style: {backgroundColor: "#C8E6C9"}
-                                }, {
-                                    Header: "Started",
-                                    accessor: "count",
-                                    className: "text-center",
-                                    maxWidth: 100,
-                                },{
-                                    Header: "Finished",
-                                    accessor: "finished",
-                                    className: "text-center",
-                                    maxWidth: 100,
-                                }, {
-                                    Header: "Sessions",
-                                    accessor: "sessions",
-                                    className: "text-center",
-                                    maxWidth: 100
-                                }, {
-                                    Header: "Utterances",
-                                    accessor: "utterances",
-                                    className: "text-center",
-                                    maxWidth: 100
-                                }, {
-                                    Header: "Last Story",
-                                    accessor: "last_seen",
-                                    className: "text-center",
-                                    Cell: row => {
-                                        if(row.value){
-                                            return moment(row.value).fromNow();
-                                        }else{
-                                            return "unknown";
-                                        }
-                                    },
-                                }, {
-                                    Header: "Joined",
-                                    accessor: "join_date",
-                                    className: "text-center",
-                                    Cell: row => {
-                                        if(row.value){
-                                            return moment(row.value).fromNow();
-                                        }else{
-                                            return "unknown";
-                                        }
-                                    },
-                                }]}
-                                SubComponent={(row) => {
-                                    row = row.original;
-                                    return <User
-                                                id={row.user_id}
-                                                env={this.state.env}
-                                            />
-                                }}
-                            /> : null }
+                            <InputGroup className="mt-2 mb-3">
+                                <InputGroupAddon addonType="prepend"><InputGroupText><i className="fas fa-search"></i></InputGroupText></InputGroupAddon>
+                                <Input placeholder="Search by Email/Name" value={this.state.search} onChange={this.handleChange} name="search"/>
+                            </InputGroup>
+                            <Nav tabs>
+                              <NavItem>
+                                <NavLink active={bucket === 0} href="#" onClick={(e)=>{this.setBucket(0); e.preventDefault(); return false;}}>
+                                    All Users
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink active={bucket === 1} href="#" onClick={(e)=>{this.setBucket(1); e.preventDefault(); return false;}}>
+                                    High
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink active={bucket === 2} href="#" onClick={(e)=>{this.setBucket(2); e.preventDefault(); return false;}}>
+                                    Medium
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink active={bucket === 3} href="#" onClick={(e)=>{this.setBucket(3); e.preventDefault(); return false;}}>
+                                    Low
+                                </NavLink>
+                              </NavItem>
+                              <NavItem>
+                                <NavLink active={bucket === 4} href="#" onClick={(e)=>{this.setBucket(4); e.preventDefault(); return false;}}>
+                                    Dead <i className="fas fa-skull"/>
+                                </NavLink>
+                              </NavItem>
+                            </Nav>
+                            <p className="p-3 mb-0"><b>{users.length} Users</b> {desc}</p>
+                            {bucket > 0 ? <Alert color="warning">Stats are only for the past 7 days</Alert> : null}
+                            <UserTable env={this.state.env} users={users}/>
                     </Col>
                 </Row>
                 </Row>

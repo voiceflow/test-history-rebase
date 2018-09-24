@@ -153,6 +153,7 @@ app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStori
 app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);
 app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
 app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
+app.get('/analytics/:env/users/bucket', ensureAdmin(), Analytics.getBucketUsers);
 app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
 app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);

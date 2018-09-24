@@ -144,7 +144,7 @@ const getUsers = (req, res) => {
         MAX(s.start_time) AS last_seen
     FROM
         users u
-        INNER JOIN story_read s ON s.user_id = u.user_id AND s.env = u.env
+        LEFT JOIN story_read s ON s.user_id = u.user_id AND s.env = u.env
         WHERE s.env = $1 AND u.env = $1
         GROUP BY
             u.user_id,
@@ -241,12 +241,48 @@ const getStoryLines = (req, res) => {
     });
 }
 
+const getBucketUsers = (req, res) => {
+    if(!req.params.env){
+        req.sendStatus(400);
+        return;
+    }
+
+    let sql = `
+    SELECT
+        u.*,
+        COUNT(nullif(s.finished, NULL)) AS count,
+        COUNT(nullif(s.finished, FALSE)) AS finished,
+        MAX(s.start_time) AS last_seen
+    FROM
+        users u
+        LEFT JOIN (
+            SELECT
+                *
+            FROM
+                story_read
+            WHERE
+                start_time > (NOW() - INTERVAL '7 DAYS')) s ON s.user_id = u.user_id
+            AND s.env = u.env
+        WHERE
+            u.env = $1
+        GROUP BY
+            u.user_id, u.env
+        ORDER BY
+            u.join_date DESC`
+
+    pool.query(sql, [req.params.env], (err, result) => {
+        if(err){ res.status(500).send(err); return;}
+        res.send(result.rows);
+    });
+}
+
 return {
     getStoryLines: getStoryLines,
     getStories: getStories,
     getAggregate: getAggregate,
     getReads: getReads,
     getUsers: getUsers,
+    getBucketUsers: getBucketUsers,
     getUserStories: getUserStories,
     getUserStoriesData: getUserStoriesData
 }

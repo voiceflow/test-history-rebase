@@ -32,19 +32,19 @@ export default {
 	      	cb(error, null);
 	    });
 	},
-	logout: (history) => {
+	logout: (cb) => {
 		user_detail = default_user;
 		axios.delete('/session')
 		.then((response) => {
 			cookies.remove('auth');
-			if(history){
-				history.push('/');
+			if(cb){
+				cb();
 			}
 		})
 		.catch((error) => {
 			cookies.remove('auth');
-			if(history){
-				history.push('/');
+			if(cb){
+				cb();
 			}
 		});
 	},

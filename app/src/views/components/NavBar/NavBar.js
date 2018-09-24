@@ -41,9 +41,10 @@ class NavBar extends Component {
   }
 
   componentDidMount() {
-      let page_name = getPage(this.props.location.pathname);
-      // console.log(this.state.user);
-      if(!no_show.includes(page_name)){
+    let page_name = getPage(this.props.location.pathname);
+
+    if(!no_show.includes(page_name)){
+      if(AuthenticationService.isAuth()){
         AuthenticationService.check((err, res) => {
             if(err && this.props.history){
               this.props.history.push('/login');
@@ -58,7 +59,10 @@ class NavBar extends Component {
               }
             }
         });
+      }else{
+        this.props.history.push('/login');
       }
+    }
   }
 
   handleChange = event => {
@@ -74,12 +78,22 @@ class NavBar extends Component {
   }
 
   logout() {
-    AuthenticationService.logout(this.props.history);
+    AuthenticationService.logout(() => {
+      this.props.history.push('/login');
+    });
   }
 
   preventDefault(e){
     e.preventDefault();
     return false;
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.location.pathname !== this.props.location.pathname){
+      this.setState({
+        user: AuthenticationService.getUser()
+      });
+    }
   }
 
   render() {

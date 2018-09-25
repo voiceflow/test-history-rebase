@@ -115,9 +115,10 @@ const getReviews = (req, res) => {
         return;
     }
     let params = {
-        TableName: 'com.getstoryflow.reviews.staging'
+        TableName: 'com.getstoryflow.reviews.staging',
     };
-    if (!req.user.admin) {
+
+    if(!req.user.admin){
         params.FilterExpression = 'creator = :creator';
         params.ExpressionAttributeValues = {':creator': req.user.id};
     }
@@ -140,7 +141,7 @@ const getReviews = (req, res) => {
                 params.ExclusiveStartKey = data.LastEvaluatedKey;
                 docClient.scan(params, onScan);
             }else{
-                if(req.query.author && req.user.admin){
+                if(req.query.author && req.user.admin && reviews.length !== 0){
                     let length = reviews.length;
                     let items = [];
                     reviews.forEach((review, index) => {

@@ -14,8 +14,6 @@ import './NavBar.css';
 import AuthenticationService from './../../../services/Authentication';
 import Intercom from 'react-intercom';
 
-const no_show = ['login', 'signup'];
-
 const getPage = (path) => {
   let base = path.split('/');
   return base[1].toLowerCase();
@@ -41,27 +39,12 @@ class NavBar extends Component {
   }
 
   componentDidMount() {
-    let page_name = getPage(this.props.location.pathname);
-
-    if(!no_show.includes(page_name)){
-      if(AuthenticationService.isAuth()){
-        AuthenticationService.check((err, res) => {
-            if(err && this.props.history){
-              this.props.history.push('/login');
-            }else{
-              this.setState({ user: res, loaded: true });
-              if(this.state.user.admin){
-                let tabs = this.state.tabs;
-                tabs.push({link: 'reviews', text: <span>Reviews <i className="fas fa-clipboard-list"></i></span>});
-                tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
-                tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
-                this.setState({tabs: tabs});
-              }
-            }
-        });
-      }else{
-        this.props.history.push('/login');
-      }
+    if(this.state.user.admin){
+      let tabs = this.state.tabs;
+      tabs.push({link: 'reviews', text: <span>Reviews <i className="fas fa-clipboard-list"></i></span>});
+      tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
+      tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
+      this.setState({tabs: tabs});
     }
   }
 
@@ -88,14 +71,6 @@ class NavBar extends Component {
     return false;
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.location.pathname !== this.props.location.pathname){
-      this.setState({
-        user: AuthenticationService.getUser()
-      });
-    }
-  }
-
   render() {
 
     let intercom_user = this.state.user ? {
@@ -106,7 +81,6 @@ class NavBar extends Component {
     let page_name = getPage(this.props.location.pathname);
 
     return (
-        no_show.includes(page_name) ? null :
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <NavbarBrand href="https://www.getstoryflow.com" target="_blank">

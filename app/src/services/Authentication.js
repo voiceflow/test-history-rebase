@@ -10,11 +10,13 @@ const default_user = {
 		admin: false
 };
 
-var user_detail = default_user;
+declare var user_detail;
+
+window.user_detail = default_user;
 
 export default {
 	getUser: () => {
-		return user_detail;
+		return window.user_detail;
 	},
 	isAuth: () => {
 		return !!cookies.get('auth');
@@ -24,7 +26,7 @@ export default {
 		// this person has credentials that are valid
 		axios.get('/session')
 		.then((response) => {
-			user_detail = response.data;
+			window.user_detail = response.data;
 	      	cb(false, response.data);
 	    })
 	    .catch((error) => {
@@ -33,7 +35,7 @@ export default {
 	    });
 	},
 	logout: (cb) => {
-		user_detail = default_user;
+		window.user_detail = default_user;
 		axios.delete('/session')
 		.then((response) => {
 			cookies.remove('auth');
@@ -52,7 +54,7 @@ export default {
 	    axios.put('/user', user)
 	    .then((response) => {
 	    	cookies.set('auth', response.data.token);
-	    	user_detail = response.data.user;
+	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
 	    .catch((error) => {
@@ -63,7 +65,7 @@ export default {
 	    axios.put('/session', user)
 	    .then((response) => {
 	    	cookies.set('auth', response.data.token);
-	    	user_detail = response.data.user;
+	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
 	    .catch((error) => {

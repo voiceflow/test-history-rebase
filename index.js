@@ -61,6 +61,7 @@ const upload = multer({
 app.use(express.static(path.join(__dirname, 'app', 'build')));
 
 const Diagram = require('./routes/diagram.js')(docClient, pool);
+const World = require('./routes/world.js')(docClient, pool);
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
 const Story = require('./routes/story.js')(docClient, pool);
@@ -132,6 +133,11 @@ const ensureLoggedOut = () => {
         else next();
     }
 }
+
+app.get('/worlds', ensureLoggedIn(), World.getWorlds);
+app.post('/world', ensureLoggedIn(), World.setWorld);
+app.delete('/world/:id', ensureLoggedIn(), World.deleteWorld);
+app.get('/world/:id/stories', ensureLoggedIn(), World.getDiagrams);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);

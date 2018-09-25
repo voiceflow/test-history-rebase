@@ -40,26 +40,58 @@ history.listen((location, action) => {
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: AuthenticationService.isAuth()
+    }
+
+    if(AuthenticationService.isAuth()){
+        AuthenticationService.check((err, res) => {
+            if (err) {
+                history.push('/login');
+            } else {
+                this.setState({ 
+                  loading: false 
+                });
+            }
+        });
+    }else{
+        history.push('/login');
+    }
+  }
+
   componentDidMount() {
+
   }
 
   render() {
+    let routes = this.state.loading ? 
+    <div className='super-center h-100 w-100'>
+        <div className="text-center">
+            <h1><i className="fas fa-sync-alt fa-spin mb-3"/></h1>
+            <hr/>
+            <h5>Loading Login Information</h5>
+        </div>
+    </div> :
+    <div>
+      <NavBar intercom history={history} location={{pathname:'yeboi'}}/>
+      <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
+      <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
+      <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
+      <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
+      <PrivateRoute path="/admin" name="Admin" component={Admin} />
+      <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
+      <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
+    </div>
+
     return (
       <Router history={history}>
         <div id="body">
-          <Route render={(props) => {
-            return (AuthenticationService.isAuth() ? <NavBar intercom {...props}/> : null)
-          }} />
           <Switch>
             <Route exact path="/login" name="Login" component={Account} />
             <Route exact path="/signup" name="SignUp" component={Account} />
-            <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
-            <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
-            <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
-            <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
-            <PrivateRoute path="/admin" name="Admin" component={Admin} />
-            <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
-            <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
             <Route exact path="/" render={() => (
               AuthenticationService.isAuth() ? (
                 <Redirect to="/storyboard"/>
@@ -67,6 +99,7 @@ class App extends Component {
                 <Redirect to="/login"/>
               )
             )}/>
+            {routes}
           </Switch>
         </div>
       </Router>

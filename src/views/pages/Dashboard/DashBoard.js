@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 import ReactTable from "react-table";
 import moment from 'moment'
 import 'react-table/react-table.css'
@@ -12,12 +12,14 @@ import $ from 'jquery';
 
 import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
+import WorldModal from './WorldModal';
 
 class DashBoard extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            worlds: [],
             diagrams: [],
             reviews: [],
             loading: false,
@@ -25,7 +27,8 @@ class DashBoard extends Component {
             success: false,
             confirm: false,
             openEnv: false,
-            id: null
+            id: null,
+            dropdownOpen: false
         }
 
         this.onLoad = this.onLoad.bind(this);
@@ -35,11 +38,19 @@ class DashBoard extends Component {
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.onSubmitDiagram = this.onSubmitDiagram.bind(this);
+        this.toggleDropDown = this.toggleDropDown.bind(this);
     }
 
     componentDidMount() {
         this.onLoad();
         this.onLoadReviews();
+        this.onLoadWorlds();
+    }
+
+    toggleDropDown() {
+        this.setState({
+          dropdownOpen: !this.state.dropdownOpen
+        });
     }
 
     toggleEnv() {
@@ -55,6 +66,23 @@ class DashBoard extends Component {
             success: data => {
                 this.setState({
                     diagrams: data,
+                    loading: false
+                });
+            },
+            error: (e) => {
+                console.log(e);
+                window.alert('Error22');
+            }
+        });
+    }
+
+    onLoadWorlds() {
+        $.ajax({
+            url: '/worlds',
+            type: 'GET',
+            success: data => {
+                this.setState({
+                    worlds: data,
                     loading: false
                 });
             },
@@ -194,7 +222,10 @@ class DashBoard extends Component {
                 <EnvironmentModal open={this.state.openEnv} toggle={this.toggleEnv} handleConfirm={this.onSubmitDiagram}/>
                 <div id="dash-nav-container" className="d-none d-lg-block">
                     <nav id="dash-nav" className="navbar navbar-light bg-light flex-column p-3">
-                        <Scrollspy items={ ['diagrams', 'reviews'] } className="nav nav-pills" currentClassName="active">
+                        <Scrollspy items={ ['worlds', 'diagrams', 'reviews'] } className="nav nav-pills" currentClassName="active">
+                            <li className="nav-item">
+                              <a className="nav-link" href="#worlds">Worlds</a>
+                            </li>
                             <li className="nav-item">
                               <a className="nav-link" href="#diagrams">Drafts</a>
                             </li>
@@ -207,6 +238,29 @@ class DashBoard extends Component {
                 <Row className="mx-0 w-100 Left-Padding">
                     <Col>
                         <div className="Container my-5 px-md-3 px-lg-5">
+                            <div id="worlds">
+                                <h1>My Worlds</h1>
+                                <WorldModal/>
+                                { Array.isArray(this.state.worlds) ?
+                                <ReactTable
+                                    defaultPageSize={5}
+                                    className="-highlight -striped mt-4 mb-5"
+                                    data= {this.state.diagrams}
+                                    columns= {[{
+                                        Header: "World Name",
+                                        accessor: "name",
+                                    }, {
+                                        Header: "Platform",
+                                        accessor: "env",
+                                    }, {
+                                        Header: "Preview",
+                                        accessor: "name",
+                                    }, {
+                                        Header: "Stories",
+                                        accessor: "stories",
+                                    }]} 
+                                /> : null }
+                            </div>
                             <div id="diagrams">
                                 <h1>My Drafts</h1>
                                 { Array.isArray(this.state.diagrams) ?

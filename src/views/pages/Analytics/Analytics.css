@@ -27,3 +27,7 @@ body {
 .analytics-row{
 	max-width: 100% !important;
 }
+
+.app-user {
+	background-color: #BBDEFB !important;
+}

@@ -6,19 +6,22 @@ import moment from 'moment'
 
 class UserTable extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-  }
-
   render() {
     return (
       <ReactTable
           defaultPageSize={30}
           className="-highlight -striped"
           data = {this.props.users}
+          getTrProps={(state, row) => {
+            if (row && row.original && !row.original.user_id.startsWith('amzn1.ask.account')) {
+              console.log(row);
+              return {
+                className: 'app-user'
+              }
+            }else{
+              return {}
+            }
+          }}
           columns= {[{
               Header: "ID",
               accessor: "id",

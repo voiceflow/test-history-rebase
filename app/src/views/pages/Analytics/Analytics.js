@@ -14,7 +14,6 @@ import $ from 'jquery';
 
 import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
-import ClipBoard from './../../components/ClipBoard';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './Analytics.css';
@@ -105,7 +104,7 @@ class Analytics extends Component {
             url: url,
             type: 'GET',
             success: users => {
-                console.log(users);
+                // console.log(users);
                 users = users.map(user => {
                     user.finished = parseInt(user.finished, 10);
                     user.count = parseInt(user.count, 10);

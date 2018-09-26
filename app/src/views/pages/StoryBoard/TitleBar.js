@@ -8,7 +8,9 @@ class TitleBar extends Component {
 
         this.state = {
             dropdownOpen: false,
-            projects: false
+            projects: false,
+            publish: false,
+            world: false
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,7 +34,7 @@ class TitleBar extends Component {
 
     render() {
         let saved = (this.props.saved ? "" : "*") + (this.props.last_save ? " Last saved " + moment(this.props.last_save).format('MMM Do, h:mm a') : "");
-
+        // <DropdownItem onClick={()=>{}}>Submit for Review</DropdownItem>
         return (
             <div className="TitleBar">
                 <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="main-menu-btn-group">
@@ -52,10 +54,10 @@ class TitleBar extends Component {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                         <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
+                        <DropdownItem divider />
                         {
                             this.props.admin ? 
                             <div>
-                                <DropdownItem divider />
                                 <DropdownItem onClick={this.props.onLoadLines}>Update User Flow</DropdownItem>
                                 <UncontrolledDropdown direction="right" isOpen={this.state.publish} toggle={() => { this.setState({ publish : !this.state.publish }); }}>
                                     <DropdownToggle tag="button" caret className="dropdown-item load-btn">

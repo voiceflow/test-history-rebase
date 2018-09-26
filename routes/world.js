@@ -1,3 +1,5 @@
+const config = require('../config/config');
+
 module.exports = (docClient, pool) => {
 
 const getWorlds = (req, res) => {
@@ -5,7 +7,17 @@ const getWorlds = (req, res) => {
         res.sendStatus(401);
         return;
     }
-    pool.query('SELECT w.*, COUNT(nullif(s.story_id, NULL)) AS stories FROM worlds w LEFT JOIN stories s ON w.world_id = s.world WHERE w.creator = $1 GROUP BY w.world_id', [req.user.id], (err, data) => {
+    pool.query(`
+        SELECT
+            w.*,
+            COUNT(nullif(s.story_id, NULL)) AS stories
+        FROM
+            worlds w
+            LEFT JOIN stories s ON w.world_id = s.world AND w.env = s.env
+        WHERE
+            w.creator = $1
+        GROUP BY
+            w.world_id`, [req.user.id], (err, data) => {
         if(err){
             console.log(err);
             res.sendStatus(500);
@@ -30,18 +42,18 @@ const deleteWorld = (req, res) => {
 };
 
 const setWorld = (req, res) => {
-    if (!req.user || !req.body.name) {
+    if (!req.user || !req.body.name || !req.body.env || !config.env.includes(req.body.env)) {
         res.sendStatus(401);
         return;
     }
     let name = req.body.name;
-    pool.query('SELECT 1 FROM worlds WHERE creator = $1 AND LOWER(name) = $2 LIMIT 1', [req.user.id, req.body.name.toLowerCase()], (err, data) => {
+    pool.query('SELECT 1 FROM worlds WHERE creator = $1 AND env = $2 AND LOWER(name) = $3 LIMIT 1', [req.user.id, req.body.env, req.body.name.toLowerCase()], (err, data) => {
         if(err){
             res.sendStatus(500);
         }else if(data.rows.length > 0){
             res.sendStatus(200);
         }else{
-            pool.query('INSERT INTO worlds (name, creator) VALUES ($1, $2)', [req.body.name, req.user.id], (err, res) => {
+            pool.query('INSERT INTO worlds (name, creator, env) VALUES ($1, $2, $3)', [req.body.name, req.user.id, req.body.env], (err, data) => {
                 if(err){ res.sendStatus(500); }
                 else { res.sendStatus(200) }
             });

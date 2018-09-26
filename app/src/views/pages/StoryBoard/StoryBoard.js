@@ -75,7 +75,7 @@ class StoryBoard extends Component {
             saving: false,
             saved: true,
             last_save: false,
-            admin: false,
+            admin: AuthenticationService.isAdmin(),
             review: false,
             testing_modal: false,
             testing_info: false,
@@ -94,19 +94,8 @@ class StoryBoard extends Component {
     }
 
     componentDidMount() {
-        if(AuthenticationService.isAuth()){
-            AuthenticationService.check((err, res) => {
-                if (err && this.props.history) {
-                    this.props.history.push('/login');
-                } else {
-                    this.setState({ admin: res.admin });
-                }
-            });
-        }else{
-            this.props.history.push('/login');
-        }
-        
         this.onLoad();
+
         let split = this.props.location.pathname.split('/');
 
         if (split.length === 3) {
@@ -484,10 +473,8 @@ class StoryBoard extends Component {
                 { this.state.review
                     ? <div id="review">
                         <h5 className="mb-0">Review Mode</h5>
-                        <small><b>Requested Environments:</b><br/>
-                            {Array.isArray(this.state.review.envs) ? this.state.review.envs.map((env, i) => {
-                                return <span key={i}>* {env}<br/></span>
-                            }) : null}
+                        <small><b>Requested Environment</b><br/>
+                            {this.state.review.envs ? <span>* {this.state.review.envs}<br/></span> : null}
                         </small>
                         <small>
                             <i>{this.state.review.name ? this.state.review.name : 'No Account Name'}</i><br/>

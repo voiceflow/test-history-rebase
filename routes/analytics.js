@@ -139,13 +139,13 @@ const getUsers = (req, res) => {
     let sql = `
     SELECT
         u.*,
-        COUNT(*),
+        COUNT(nullif(s.finished, NULL)),
         COUNT(nullif(s.finished, false)) AS finished,
         MAX(s.start_time) AS last_seen
     FROM
         users u
         LEFT JOIN story_read s ON s.user_id = u.user_id AND s.env = u.env
-        WHERE s.env = $1 AND u.env = $1
+        WHERE u.env = $1
         GROUP BY
             u.user_id,
             u.env
@@ -192,23 +192,27 @@ const getUserStoriesData = (req, res) => {
 
     let sql = `
         SELECT
-            COUNT(*),
-            DATE_TRUNC('hour', start_time) AS s
+            s.title,
+            sr.start_time
         FROM
-            story_read
+            story_read sr
+        INNER JOIN 
+            stories s ON s.story_id = sr.story_id AND s.env = sr.env
         WHERE
             user_id = $1
-            AND env = $2
-        GROUP BY
-            DATE_TRUNC('hour', start_time)`
+            AND sr.env = $2
+        ORDER BY sr.start_time DESC`
 
     pool.query(sql, [req.params.id, req.params.env], (err, result) => {
         if(err){ res.status(500).send(err); return; }
-        let points = {}
+        let data = [];
         result.rows.forEach((read) => {
-            points[read.s] = read.count
+            data.push({
+                title: read.title,
+                time: read.start_time
+            });
         });
-        res.send(points);
+        res.send(data);
     });
 }
 
@@ -247,28 +251,43 @@ const getBucketUsers = (req, res) => {
         return;
     }
 
-    let sql = `
-    SELECT
-        u.*,
-        COUNT(nullif(s.finished, NULL)) AS count,
-        COUNT(nullif(s.finished, FALSE)) AS finished,
-        MAX(s.start_time) AS last_seen
-    FROM
-        users u
-        LEFT JOIN (
-            SELECT
-                *
-            FROM
-                story_read
-            WHERE
-                start_time > (NOW() - INTERVAL '7 DAYS')) s ON s.user_id = u.user_id
+    let sql = `    
+        SELECT
+            u.*,
+            COUNT(nullif(s.finished, NULL)),
+            COUNT(nullif(s.finished, FALSE)) AS finished,
+            seven.last_seven,
+            MAX(s.start_time) AS last_seen
+        FROM
+            users u
+            LEFT JOIN story_read s ON s.user_id = u.user_id
             AND s.env = u.env
-        WHERE
-            u.env = $1
-        GROUP BY
-            u.user_id, u.env
-        ORDER BY
-            u.join_date DESC`
+            INNER JOIN (
+                    SELECT
+                        u.user_id,
+                        u.env,
+                        COUNT(nullif(s.finished, NULL)) AS last_seven
+                    FROM
+                        users u
+                    LEFT JOIN (
+                        SELECT
+                            *
+                        FROM
+                            story_read
+                        WHERE
+                            start_time > (NOW() - INTERVAL '7 DAYS')) s ON s.user_id = u.user_id
+                        AND s.env = u.env
+                    WHERE
+                        u.env = $1
+                    GROUP BY
+                        u.user_id, u.env) seven ON seven.user_id = u.user_id
+                    AND seven.env = u.env
+                WHERE
+                    u.env = $1
+                GROUP BY
+                    u.user_id, u.env, seven.last_seven
+                ORDER BY
+                    u.join_date DESC`
 
     pool.query(sql, [req.params.env], (err, result) => {
         if(err){ res.status(500).send(err); return;}

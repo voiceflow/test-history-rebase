@@ -31,6 +31,19 @@ const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
+const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
+  <Route {...rest} render={props => (
+    AuthenticationService.isAuth() ? (
+      <Redirect to={{
+        pathname: '/storyboard',
+        state: { from: props.location }
+      }}/>
+    ) : (
+      <Component {...props} name={Name} />
+    )
+  )}/>
+)
+
 ReactGA.initialize('UA-124745244-1');
 const history = createBrowserHistory();
 history.listen((location, action) => {
@@ -44,7 +57,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      loading: AuthenticationService.isAuth()
+      loading: AuthenticationService.isAuth(),
+      session: false
     }
 
     if(AuthenticationService.isAuth()){
@@ -53,56 +67,56 @@ class App extends Component {
                 history.push('/login');
             } else {
                 this.setState({ 
-                  loading: false 
+                  loading: false,
+                  session: true
                 });
             }
         });
     }else{
         history.push('/login');
     }
-  }
 
-  componentDidMount() {
-
+    history.listen((location, action) => {
+      this.setState({
+        session: AuthenticationService.isAuth()
+      });
+    })
   }
 
   render() {
-    let routes = this.state.loading ? 
-    <div className='super-center h-100 w-100'>
-        <div className="text-center">
-            <h1><i className="fas fa-sync-alt fa-spin mb-3"/></h1>
-            <hr/>
-            <h5>Loading Login Information</h5>
-        </div>
-    </div> :
-    <div>
-      <NavBar intercom history={history} location={{pathname:'yeboi'}}/>
-      <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
-      <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
-      <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
-      <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
-      <PrivateRoute path="/admin" name="Admin" component={Admin} />
-      <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
-      <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
-    </div>
-
     return (
-      <Router history={history}>
-        <div id="body">
-          <Switch>
-            <Route exact path="/login" name="Login" component={Account} />
-            <Route exact path="/signup" name="SignUp" component={Account} />
-            <Route exact path="/" render={() => (
-              AuthenticationService.isAuth() ? (
-                <Redirect to="/storyboard"/>
-              ) : (
-                <Redirect to="/login"/>
-              )
-            )}/>
-            {routes}
-          </Switch>
-        </div>
-      </Router>
+      this.state.loading ? 
+        <div className='super-center h-100 w-100'>
+            <div className="text-center">
+                <h1><img className="fa-spin" src='/sync.svg' height='42' width='42' alt='loading'/></h1>
+                <h5>Loading...</h5>
+            </div>
+        </div> :
+        <Router history={history}>
+          <div id="body">
+            { this.state.session ? <Route render={(props) => {
+                  return <NavBar intercom {...props}/>
+            }} /> : null }
+              <Switch>
+                <PublicRoute exact path="/login" name="Login" component={Account} />
+                <PublicRoute exact path="/signup" name="SignUp" component={Account} />
+                <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
+                <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
+                <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
+                <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
+                <PrivateRoute path="/admin" name="Admin" component={Admin} />
+                <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
+                <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
+                <Route exact path="/" render={() => (
+                  AuthenticationService.isAuth() ? (
+                    <Redirect to="/storyboard"/>
+                  ) : (
+                    <Redirect to="/login"/>
+                  )
+                )}/>
+              </Switch>
+          </div>
+        </Router>
     );
   }
 }

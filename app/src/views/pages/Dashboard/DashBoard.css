@@ -60,7 +60,11 @@
   /*margin: 1rem;*/
   cursor: pointer;
   padding: 0;
-  padding: .5rem 1rem;
+  padding: 10px 15px;
+}
+
+.rotate.cols.rotate-noedge{
+  margin: 0 -10px 0 -10px;
 }
 
 .rotate .container{

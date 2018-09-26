@@ -171,9 +171,9 @@ class Story extends Component {
                         >
                             <div>
                                 <div className="prompt">
-                                    <b>Drag and Drop Files here</b><br/>
+                                    <b>Drag and Drop Image here</b><br/>
                                     <small>OR</small><br/>
-                                    <i className="fas fa-plus-circle"></i> Add Files
+                                    <i className="fas fa-plus-circle"></i> Add Image
                                 </div>
                                 <div className="rejected-file text-danger">
                                     <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>

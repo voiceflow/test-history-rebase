@@ -385,22 +385,22 @@ class Analytics extends Component {
                               </NavItem>
                               <NavItem>
                                 <NavLink active={bucket === 1} href="#" onClick={(e)=>{this.setBucket(1); e.preventDefault(); return false;}}>
-                                    High
+                                    High ({((this.state.high.length/this.state.users.length) * 100).toFixed(2) + '%'})
                                 </NavLink>
                               </NavItem>
                               <NavItem>
                                 <NavLink active={bucket === 2} href="#" onClick={(e)=>{this.setBucket(2); e.preventDefault(); return false;}}>
-                                    Medium
+                                    Medium ({((this.state.medium.length/this.state.users.length) * 100).toFixed(2) + '%'})
                                 </NavLink>
                               </NavItem>
                               <NavItem>
                                 <NavLink active={bucket === 3} href="#" onClick={(e)=>{this.setBucket(3); e.preventDefault(); return false;}}>
-                                    Low
+                                    Low ({((this.state.low.length/this.state.users.length) * 100).toFixed(2) + '%'})
                                 </NavLink>
                               </NavItem>
                               <NavItem>
                                 <NavLink active={bucket === 4} href="#" onClick={(e)=>{this.setBucket(4); e.preventDefault(); return false;}}>
-                                    Dead <i className="fas fa-skull"/>
+                                    Dead <i className="fas fa-skull"/> ({((this.state.dead.length/this.state.users.length) * 100).toFixed(2) + '%'})
                                 </NavLink>
                               </NavItem>
                             </Nav>

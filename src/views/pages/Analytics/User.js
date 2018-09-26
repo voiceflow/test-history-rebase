@@ -71,7 +71,7 @@ class User extends Component {
                                 <div>
                                     <b>Stories Read</b>
                                     {(this.state.stories && this.state.stories.length > 0) ? this.state.stories.map((story, i) => {
-                                        return <div key={i}>{moment(story.time).format('YYYY MM DD HH:mm')} - <b>{story.title}<b/></div>
+                                        return <div key={i}>{moment(story.time).format('YYYY MM DD HH:mm')} <b>{story.title}</b></div>
                                     })
                                     : <div><i>No Stories Read at all :(</i></div>}
                                 </div>

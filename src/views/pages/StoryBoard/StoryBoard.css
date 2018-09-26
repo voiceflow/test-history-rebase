@@ -283,7 +283,7 @@
     background-color: #007bff;
 }*/
 
-.dropzone, .audio-box, .combined-box {
+.dropzone, .audio-box, .image-box, .combined-box {
     width: 100%;
     overflow: visible;
     min-height: 40px;
@@ -302,6 +302,12 @@
     border-radius: 5px;
 }
 
+.image-box {
+    height: 300px;
+    background-position: center center;
+    background-size: cover;
+}
+
 .combined-box {
     background-color: #B3E5FC;
     font-weight: bold;
@@ -310,7 +316,7 @@
     margin-bottom: 20px;
 }
 
-.audio-box>button{
+.audio-box>button, .image-box>button{
     position: absolute;
     top: -1px;
     right: -1px;

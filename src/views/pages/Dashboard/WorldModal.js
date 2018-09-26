@@ -68,7 +68,6 @@ class ModalExample extends React.Component {
     return false;
   }
 
-
   render() {
     return (
       <div>

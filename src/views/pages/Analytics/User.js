@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import moment from 'moment'
 import { Alert } from 'reactstrap';
-import 'react-table/react-table.css'
 import moment from 'moment'
 
 import $ from 'jquery';

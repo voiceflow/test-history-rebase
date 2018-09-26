@@ -182,6 +182,9 @@ app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 app.get('/voices', ensureLoggedIn(), Audio.getVoices);
 app.post('/generate', ensureLoggedIn(), Audio.generate);
 app.post('/audio', ensureLoggedIn(), upload.any(), Audio.upload);
+app.post('/image', ensureLoggedIn(), upload.any(), (req, res) => {
+    res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+req.files[0].key);
+});
 app.post('/concat', ensureLoggedIn(), Audio.concat);
 
 // all the authentication routes

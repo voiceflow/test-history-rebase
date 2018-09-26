@@ -82,6 +82,28 @@ class Story extends Component {
         }
     }
 
+    onDropImage(files, name) {
+        if (files.length > 0) {
+            let node = this.state.node;
+            let data = new FormData();
+            data.append(name, files[0]);
+            $.ajax({
+                url: '/image',
+                type: 'POST',
+                data: data,
+                processData: false,
+                contentType: false,
+                success: res => {
+                    node.extras[name] = res;
+                    this.setState({
+                        node: node
+                    }, this.props.onUpdate);
+                },
+                error: () => {window.alert('Error22');}
+            });
+        }
+    }
+
     onClear(name) {
         let node = this.state.node;
         node.extras[name] = '';
@@ -126,22 +148,40 @@ class Story extends Component {
         });
     }
 
-    // <div className="group">
-    //                     <InputGroup>
-    //                         <InputGroupAddon addonType="prepend">Title</InputGroupAddon>
-    //                         <Input placeholder="Label" 
-    //                             type="text"
-    //                             name="title"
-    //                             value={this.state.node.extras.title}
-    //                             onChange={this.handleChange.bind(this)}
-    //                         />
-    //                     </InputGroup>
-    //                 </div>
-
     render() {
         return (
             <div key={this.state.node.id}>
                 <div>
+                    <label>
+                        Story Image
+                    </label>
+                    { this.state.node.extras.image ? 
+                        <div className="image-box" style={{backgroundImage: `url(${this.state.node.extras.image})`}}>
+                            <button className="btn btn-danger" onClick={() => this.onClear('image')}>&times;</button>
+                        </div>
+                        :
+                        <Dropzone
+                            className="dropzone"
+                            activeClassName="active"
+                            rejectClassName="reject"
+                            multiple={false}
+                            disableClick={false}
+                            accept="image/jpeg, image/png"
+                            onDrop={(accepted, rejected) => this.onDropImage(accepted, 'image')}
+                        >
+                            <div>
+                                <div className="prompt">
+                                    <b>Drag and Drop Files here</b><br/>
+                                    <small>OR</small><br/>
+                                    <i className="fas fa-plus-circle"></i> Add Files
+                                </div>
+                                <div className="rejected-file text-danger">
+                                    <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>
+                                </div>
+                            </div>
+                        </Dropzone>
+                    }
+                    <hr/>
                     <label>
                         Title Audio
                     </label>

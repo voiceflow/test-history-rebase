@@ -172,7 +172,8 @@ const renderStory = (params, req, res, success) => {
                 env: req.params.env,
                 world: req.params.world_id,
                 creator: creator,
-                lines: {}
+                lines: {},
+                image: null
             };
             
             story.title = data.Item.title;
@@ -184,6 +185,7 @@ const renderStory = (params, req, res, success) => {
                     story.audio = node.extras.audio;
                     story.preview = node.extras.preview;
                     story.prompt = node.extras.prompt;
+                    story.image = node.extras.image;
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
@@ -332,8 +334,8 @@ const renderStory = (params, req, res, success) => {
 const addStory = (story, cb) => {
     pool.query('SELECT 1 FROM stories WHERE story_id = $1 AND env = $2 LIMIT 1', [story.id, story.env], (err,res) => {
         if(err || res.rows.length < 1){
-            pool.query('INSERT INTO stories (story_id, env, title, preview, creator, world) VALUES ($1, $2, $3, $4, $5, $6)', 
-                [story.id, story.env, story.title, story.preview, story.creator, story.world], (err,res) => {
+            pool.query('INSERT INTO stories (story_id, env, title, preview, creator, world, image) VALUES ($1, $2, $3, $4, $5, $6)', 
+                [story.id, story.env, story.title, story.preview, story.creator, story.world, story.image], (err,res) => {
                 if(err) {
                     cb(err);
                 }else{
@@ -341,8 +343,8 @@ const addStory = (story, cb) => {
                 }
             })
         }else{
-            pool.query('UPDATE stories SET preview = $1, creator = $2, title = $3, world = $6 WHERE story_id = $4 AND env = $5', 
-                [story.preview, story.creator, story.title, story.id, story.env, story.world], (err,res) => {
+            pool.query('UPDATE stories SET preview = $1, creator = $2, title = $3, world = $6, image = $7 WHERE story_id = $4 AND env = $5', 
+                [story.preview, story.creator, story.title, story.id, story.env, story.world, story.image], (err,res) => {
                 if(err) {
                     cb(err);
                 }else{

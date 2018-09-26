@@ -68,7 +68,6 @@ class StoryBoard extends Component {
             engine: engine,
             selected: node,
             open: open,
-            diagrams: [],
             title: "",
             loading_modal: false,
             error_modal: false,
@@ -84,18 +83,16 @@ class StoryBoard extends Component {
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
 
-        this.onLoad = this.onLoad.bind(this);
         this.loadLines = this.loadLines.bind(this);
         this.repaint = this.repaint.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
+        this.publishToWorld = this.publishToWorld.bind(this);
     }
 
     componentDidMount() {
-        this.onLoad();
-
         let split = this.props.location.pathname.split('/');
 
         if (split.length === 3) {
@@ -203,21 +200,6 @@ class StoryBoard extends Component {
         }
     }
 
-    onLoad() {
-        $.ajax({
-            url: '/diagrams',
-            type: 'GET',
-            success: data => {
-                this.setState({
-                    diagrams: data
-                }, () => $('.Loader').mousedown(this.onDiagramUnfocus.bind(this)));
-            },
-            error: (e) => {
-                console.log(e);
-            }
-        });
-    }
-
     onPublish(env, cb) {
         if(!["production", "sandbox", "staging", "kids", "testing"].includes(env)) return;
         if(!this.state.saved){
@@ -249,6 +231,24 @@ class StoryBoard extends Component {
                 }
             });
         }
+    }
+
+    publishToWorld(world_id, cb) {
+        var id = this.state.engine.getDiagramModel().getID();
+        $.ajax({
+            url: '/publish/world/' + world_id + '/' + id,
+            type: 'POST',
+            success: () => {
+                window.alert('Success');
+            },
+            error: (e) => {
+                console.log(e);
+                this.setState({
+                    loading_modal: true,
+                    error_modal: "Server Error - Unable to Publish"
+                });
+            }
+        });
     }
 
     loadLines() {
@@ -459,16 +459,15 @@ class StoryBoard extends Component {
                     title={this.state.title}
                     onUpdateTitle={(e) => {this.setState({ title: e.target.value }); this.unsave()}}
                     onSave={this.onSave.bind(this)}
-                    onLoad={this.onLoad.bind(this)}
                     onTest={this.onTest.bind(this)}
                     onPublish={this.onPublish.bind(this)}
-                    diagrams={this.state.diagrams}
                     onLoadId={this.onLoadId.bind(this)}
                     saving={this.state.saving}
                     saved={this.state.saved}
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
+                    onPublishWorld={this.publishToWorld}
                 />
                 { this.state.review
                     ? <div id="review">

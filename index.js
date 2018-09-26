@@ -137,7 +137,8 @@ const ensureLoggedOut = () => {
 app.get('/worlds', ensureLoggedIn(), World.getWorlds);
 app.post('/world', ensureLoggedIn(), World.setWorld);
 app.delete('/world/:id', ensureLoggedIn(), World.deleteWorld);
-app.get('/world/:id/stories', ensureLoggedIn(), World.getDiagrams);
+app.patch('/world/:id', ensureLoggedIn(), World.updateAudio);
+app.get('/world/:id/stories', ensureLoggedIn(), World.getStories);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
@@ -145,6 +146,7 @@ app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
 app.post('/publish/review/:env/:id', ensureLoggedIn(), Diagram.publishReview);
+app.post('/publish/world/:world_id/:id', ensureLoggedIn(), Diagram.publishWorld);
 
 app.get('/review/:id', ensureAdmin(), Review.getReview);
 app.post('/review/:id', ensureLoggedIn(), Review.setReview);

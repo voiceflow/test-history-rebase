@@ -6,6 +6,7 @@ import 'react-table/react-table.css'
 import { Link } from 'react-router-dom'
 import Scrollspy from 'react-scrollspy'
 import EnvironmentModal from './EnvironmentModal'
+import WorldPreview from './WorldPreview'
 import './DashBoard.css';
 
 import $ from 'jquery';
@@ -13,6 +14,7 @@ import $ from 'jquery';
 import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import WorldModal from './WorldModal';
+import World from './World';
 
 class DashBoard extends Component {
     constructor(props) {
@@ -282,8 +284,10 @@ class DashBoard extends Component {
                                         Header: "Platform",
                                         accessor: "env",
                                     }, {
-                                        Header: "Preview",
+                                        Header: "Preview Audio",
                                         accessor: "preview",
+                                        Cell: row => <WorldPreview audio={row.value} world_id={row.original.world_id}/>,
+                                        minWidth: 160
                                     }, {
                                         Header: "Stories",
                                         accessor: "stories",
@@ -295,7 +299,13 @@ class DashBoard extends Component {
                                             return <button className="btn btn-danger" onClick={() => this.onDeleteWorld(row.value)}>Delete</button>
                                         },
                                         sortable: false
-                                    },]} 
+                                    }]}
+
+                                    SubComponent={(row) => {
+                                        return <World
+                                            world_id={row.original.world_id}
+                                        />
+                                    }} 
                                 /> : null }
                             </div>
                             <div id="diagrams">

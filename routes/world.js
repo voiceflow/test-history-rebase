@@ -61,13 +61,38 @@ const setWorld = (req, res) => {
     });
 };
 
-const getDiagrams = (req, res) => {
-    res.sendStatus(200);
+const updateAudio = (req, res) => {
+    if (!req.user || !req.params.id) {
+        res.sendStatus(401);
+        return;
+    }
+    pool.query('UPDATE worlds SET preview = $1 WHERE creator = $2 AND world_id=$3', [req.body.preview, req.user.id, req.params.id], (err, data) => {
+        if(err){
+            res.sendStatus(500);
+        }else{
+            res.sendStatus(200);
+        }
+    });
+}
+
+const getStories = (req, res) => {
+    if (!req.user || !req.params.id) {
+        res.sendStatus(401);
+        return;
+    }
+    pool.query('SELECT s.* FROM worlds w INNER JOIN stories s ON s.world=w.world_id WHERE w.creator = $1 AND w.world_id = $2', [req.user.id, req.params.id], (err, data) => {
+        if(err){
+            res.sendStatus(500);
+        }else{
+            res.send(data.rows);
+        }
+    });
 }
 
 return {
     getWorlds: getWorlds,
     deleteWorld: deleteWorld,
     setWorld: setWorld,
-    getDiagrams: getDiagrams
+    updateAudio: updateAudio,
+    getStories: getStories
 }}

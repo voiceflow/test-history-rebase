@@ -170,6 +170,7 @@ const renderStory = (params, req, res, success) => {
             let story = {
                 id: diagram.id,
                 env: req.params.env,
+                world: req.params.world_id,
                 creator: creator,
                 lines: {}
             };
@@ -331,8 +332,8 @@ const renderStory = (params, req, res, success) => {
 const addStory = (story, cb) => {
     pool.query('SELECT 1 FROM stories WHERE story_id = $1 AND env = $2 LIMIT 1', [story.id, story.env], (err,res) => {
         if(err || res.rows.length < 1){
-            pool.query('INSERT INTO stories (story_id, env, title, preview, creator) VALUES ($1, $2, $3, $4, $5)', 
-                [story.id, story.env, story.title, story.preview, story.creator], (err,res) => {
+            pool.query('INSERT INTO stories (story_id, env, title, preview, creator, world) VALUES ($1, $2, $3, $4, $5, $6)', 
+                [story.id, story.env, story.title, story.preview, story.creator, story.world], (err,res) => {
                 if(err) {
                     cb(err);
                 }else{
@@ -340,8 +341,8 @@ const addStory = (story, cb) => {
                 }
             })
         }else{
-            pool.query('UPDATE stories SET preview = $1, creator = $2, title = $3 WHERE story_id = $4 AND env = $5', 
-                [story.preview, story.creator, story.title, story.id, story.env], (err,res) => {
+            pool.query('UPDATE stories SET preview = $1, creator = $2, title = $3, world = $6 WHERE story_id = $4 AND env = $5', 
+                [story.preview, story.creator, story.title, story.id, story.env, story.world], (err,res) => {
                 if(err) {
                     cb(err);
                 }else{
@@ -411,11 +412,35 @@ const publishReview = (req, res) => {
     });
 };
 
+const publishWorld = (req, res) => {
+    if (!req.user || !req.params.id || !req.params.world_id) {
+        res.sendStatus(401);
+        return;
+    } else if (!req.user.admin) {
+        res.sendStatus(403);
+        return;
+    }
+
+    pool.query('SELECT env FROM worlds WHERE world_id = $1 LIMIT 1', [req.params.world_id], (err, data) => {
+        if(err || data.rows.length === 0){
+            res.sendStatus(500);
+        }else{
+            req.params.env = data.rows[0].env;
+            let params = {
+                TableName: 'com.getstoryflow.diagrams.production',
+                Key: {'id': req.params.id}
+            };
+            renderStory(params, req, res);
+        }
+    });
+};
+
 return {
     getDiagrams: getDiagrams,
     getDiagram: getDiagram,
     deleteDiagram: deleteDiagram,
     setDiagram: setDiagram,
     publish: publish,
-    publishReview: publishReview
+    publishReview: publishReview,
+    publishWorld: publishWorld
 }}

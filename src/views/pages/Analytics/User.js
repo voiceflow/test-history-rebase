@@ -4,6 +4,7 @@ import { Alert } from 'reactstrap';
 import 'react-table/react-table.css'
 import ReactChartkick, { LineChart } from 'react-chartkick'
 import Chart from 'chart.js'
+import moment from 'moment'
 
 import $ from 'jquery';
 
@@ -27,7 +28,7 @@ class User extends Component {
     }
 
     getUserStories(env) {
-        let url = '/analytics/' + env + '/user/' + this.props.id + '/stories';
+        let url = '/analytics/' + env + '/user/' + this.props.id + '/stories/data';
         $.ajax({
             url: url,
             type: 'GET',
@@ -70,12 +71,10 @@ class User extends Component {
                                 <div>
                                     <b>Stories Read</b>
                                     {(this.state.stories && this.state.stories.length > 0) ? this.state.stories.map((story, i) => {
-                                        return <div key={i}>{story.title}: {story.count}</div>
+                                        return <div key={i}>{moment(story.time).format('YYYY MM DD HH:mm')} - <b>{story.title}<b/></div>
                                     })
                                     : <div><i>No Stories Read at all :(</i></div>}
                                 </div>
-                                <hr/>
-                                <LineChart data={'/analytics/' + this.props.env + '/user/' + this.props.id + '/stories/data'} xtitle="Time" ytitle="Stories Started"/>
                             </div>
                         }
                     </div>

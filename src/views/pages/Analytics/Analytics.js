@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, CardDeck, CardTitle, CardBody, Nav, NavItem, NavLink, Alert, InputGroup, Input, InputGroupAddon, InputGroupText} from 'reactstrap';
+import { Row, Col, Card, CardDeck, CardTitle, CardBody, Nav, NavItem, NavLink, InputGroup, Input, InputGroupAddon, InputGroupText} from 'reactstrap';
 import ReactTable from "react-table";
 import DatePicker from 'react-datepicker';
 import moment from 'moment'
@@ -87,7 +87,7 @@ class Analytics extends Component {
                     users: users.map(user => {
                         user.finished = parseInt(user.finished, 10);
                         user.count = parseInt(user.count, 10);
-                        user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
+                        user.count === 0 ? user.completion = 0 : user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
                         return user
                     })
                 });
@@ -108,14 +108,15 @@ class Analytics extends Component {
                 users = users.map(user => {
                     user.finished = parseInt(user.finished, 10);
                     user.count = parseInt(user.count, 10);
-                    user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
+                    user.last_seven = parseInt(user.last_seven, 10);
+                    user.count === 0 ? user.completion = 0 : user.completion = parseInt((user.finished*100/user.count).toFixed(0), 10);
                     return user
                 });
                 this.setState({
-                    high: users.filter(user => user.count >= 5 ),
-                    medium: users.filter(user => user.count >= 2 && user.count < 5),
-                    low: users.filter(user => user.count === 1 ),
-                    dead: users.filter(user => user.count === 0 ),
+                    high: users.filter(user => user.last_seven >= 5 ),
+                    medium: users.filter(user => user.last_seven >= 2 && user.last_seven < 5),
+                    low: users.filter(user => user.last_seven === 1 ),
+                    dead: users.filter(user => user.last_seven === 0 ),
                 });
             },
             error: () => {
@@ -404,7 +405,6 @@ class Analytics extends Component {
                               </NavItem>
                             </Nav>
                             <p className="p-3 mb-0"><b>{users.length} Users</b> {desc}</p>
-                            {bucket > 0 ? <Alert color="warning">Stats are only for the past 7 days</Alert> : null}
                             <UserTable env={this.state.env} users={users}/>
                     </Col>
                 </Row>

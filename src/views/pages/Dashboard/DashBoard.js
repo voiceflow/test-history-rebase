@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import ReactTable from "react-table";
 import moment from 'moment'
 import 'react-table/react-table.css'
@@ -32,10 +32,12 @@ class DashBoard extends Component {
         }
 
         this.onLoad = this.onLoad.bind(this);
+        this.onLoadWorlds = this.onLoadWorlds.bind(this);
         this.toggleConfirm = this.toggleConfirm.bind(this);
         this.toggleEnv = this.toggleEnv.bind(this);
         this.onLoadReviews = this.onLoadReviews.bind(this);
         this.onDeleteDiagram = this.onDeleteDiagram.bind(this);
+        this.onDeleteWorld = this.onDeleteWorld.bind(this);
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.onSubmitDiagram = this.onSubmitDiagram.bind(this);
         this.toggleDropDown = this.toggleDropDown.bind(this);
@@ -145,6 +147,32 @@ class DashBoard extends Component {
         });
     }
 
+    onDeleteWorld(id) {
+        this.setState({
+            confirm: {
+                text: <span>Are you sure you want to delete this World?<br/><br/> all stories in this world will no longer associated</span>,
+                confirm: () => {
+                    this.setState({
+                        loading: true,
+                        error: false,
+                        success: false,
+                        confirm: false
+                    });
+                    $.ajax({
+                        url: '/world/'+id,
+                        type: 'DELETE',
+                        success: () => {
+                            this.onLoadWorlds();
+                        },
+                        error: (e) => {
+                            this.setState({ error: "Unable to Delete" });
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     onDeleteReview(id) {
         this.setState({
             confirm: {
@@ -240,12 +268,13 @@ class DashBoard extends Component {
                         <div className="Container my-5 px-md-3 px-lg-5">
                             <div id="worlds">
                                 <h1>My Worlds</h1>
-                                <WorldModal/>
+                                <hr/>
+                                <WorldModal update={this.onLoadWorlds}/>
                                 { Array.isArray(this.state.worlds) ?
                                 <ReactTable
                                     defaultPageSize={5}
-                                    className="-highlight -striped mt-4 mb-5"
-                                    data= {this.state.diagrams}
+                                    className="-highlight -striped mt-4 mb-5 text-center"
+                                    data= {this.state.worlds}
                                     columns= {[{
                                         Header: "World Name",
                                         accessor: "name",
@@ -254,11 +283,19 @@ class DashBoard extends Component {
                                         accessor: "env",
                                     }, {
                                         Header: "Preview",
-                                        accessor: "name",
+                                        accessor: "preview",
                                     }, {
                                         Header: "Stories",
                                         accessor: "stories",
-                                    }]} 
+                                    }, {
+                                        Header: "Remove",
+                                        accessor: "world_id",
+                                        maxWidth: 100,
+                                        Cell: row => {
+                                            return <button className="btn btn-danger" onClick={() => this.onDeleteWorld(row.value)}>Delete</button>
+                                        },
+                                        sortable: false
+                                    },]} 
                                 /> : null }
                             </div>
                             <div id="diagrams">

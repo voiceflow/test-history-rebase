@@ -15,6 +15,9 @@ declare var user_detail;
 window.user_detail = default_user;
 
 export default {
+	isAdmin: () => {
+		return user_detail.admin;
+	},
 	getUser: () => {
 		return window.user_detail;
 	},

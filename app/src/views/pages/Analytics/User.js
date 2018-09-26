@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 // import moment from 'moment'
 import { Alert } from 'reactstrap';
 import 'react-table/react-table.css'
-import ReactChartkick, { LineChart } from 'react-chartkick'
-import Chart from 'chart.js'
 import moment from 'moment'
 
 import $ from 'jquery';
 
 import './Analytics.css';
-
-ReactChartkick.addAdapter(Chart);
 
 class User extends Component {
     constructor(props) {
@@ -47,20 +43,6 @@ class User extends Component {
         });
     }
 
-    // <Table>
-    //     <thead>
-    //       <tr>
-    //         <th>Title</th>
-    //         <th>Number of Times Read</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //         {this.state.stories ? this.state.stories.map((story) => {
-    //             return <tr><td>{story.title}</td><td>{story.count}</td></tr>
-    //         })
-    //         : null}
-    //     </tbody>
-    // </Table>
     render() {
         return (
             <div className="p-4" style={{backgroundColor: '#C8E6C9'}}>

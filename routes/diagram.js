@@ -334,7 +334,7 @@ const renderStory = (params, req, res, success) => {
 const addStory = (story, cb) => {
     pool.query('SELECT 1 FROM stories WHERE story_id = $1 AND env = $2 LIMIT 1', [story.id, story.env], (err,res) => {
         if(err || res.rows.length < 1){
-            pool.query('INSERT INTO stories (story_id, env, title, preview, creator, world, image) VALUES ($1, $2, $3, $4, $5, $6)', 
+            pool.query('INSERT INTO stories (story_id, env, title, preview, creator, world, image) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
                 [story.id, story.env, story.title, story.preview, story.creator, story.world, story.image], (err,res) => {
                 if(err) {
                     cb(err);

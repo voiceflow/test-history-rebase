@@ -58,13 +58,6 @@ const upload = multer({
     })
 });
 
-// pool.query('SELECT id, creator_id FROM creator', (err,data) => {
-//     data.rows.forEach(creator => {
-//         let id = creator.id;
-
-//     })
-// })
-
 app.use(express.static(path.join(__dirname, 'app', 'build')));
 
 const Diagram = require('./routes/diagram.js')(docClient, pool);

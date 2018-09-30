@@ -154,13 +154,13 @@ const renderStory = (params, req, res, success) => {
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
             let diagram = JSON.parse(data.Item.data);
-            let creator = data.Item.creator;
+            let creator = req.user.id;
+            // let creator = data.Item.creator;
 
-            if (creator !== req.user.id && !req.user.admin) {
-                res.sendStatus(403);
-
-                return;
-            }
+            // if (creator !== req.user.id && !req.user.admin) {
+            //     res.sendStatus(403);
+            //     return;
+            // }
 
             let links = {};
             for (var i = 0; i < diagram.links.length; i++) {

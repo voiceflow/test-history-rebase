@@ -94,7 +94,6 @@ const setDiagram = (req, res) => {
         diagram.creator = req.user.id;
     } else if (diagram.creator !== req.user.id && !req.user.admin) {
         res.sendStatus(403);
-
         return;
     }
 
@@ -334,7 +333,7 @@ const renderStory = (params, req, res, success) => {
 const addStory = (story, cb) => {
     pool.query('SELECT 1 FROM stories WHERE story_id = $1 AND env = $2 LIMIT 1', [story.id, story.env], (err,res) => {
         if(err || res.rows.length < 1){
-            pool.query('INSERT INTO stories (story_id, env, title, preview, creator, world, image) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
+            pool.query('INSERT INTO stories (story_id, env, title, preview, creator_id, world, image) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
                 [story.id, story.env, story.title, story.preview, story.creator, story.world, story.image], (err,res) => {
                 if(err) {
                     cb(err);
@@ -343,7 +342,7 @@ const addStory = (story, cb) => {
                 }
             })
         }else{
-            pool.query('UPDATE stories SET preview = $1, creator = $2, title = $3, world = $6, image = $7 WHERE story_id = $4 AND env = $5', 
+            pool.query('UPDATE stories SET preview = $1, creator_id = $2, title = $3, world = $6, image = $7 WHERE story_id = $4 AND env = $5', 
                 [story.preview, story.creator, story.title, story.id, story.env, story.world, story.image], (err,res) => {
                 if(err) {
                     cb(err);

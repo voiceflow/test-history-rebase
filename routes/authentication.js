@@ -64,11 +64,16 @@ module.exports = (router, docClient, pool, redisClient) => {
 		    pool.query('SELECT * FROM creators WHERE email = $1 LIMIT 1', [email], (err, data) => {
 		        if (err) {
 		            res.status(500).send("Something Went Wrong");
-		        }
-		        if (data.rows.length !== 0) {
-		            bcrypt.compare(password, data.rows[0].password, (err, success) => {
+		        }else if (data.rows.length !== 0) {
+		        	let row = data.rows[0];
+		            bcrypt.compare(password, row.password, (err, success) => {
 		                if (success) {
-		                	createLogin(data.rows[0], (credentials) => {
+		                	createLogin({
+		                		id: row.creator_id,
+		                		email: row.email,
+		                		name: row.name,
+		                		admin: row.admin
+		                	}, (credentials) => {
 		                		res.status(200).send({
                             		token: credentials.userHash + credentials.token,
                             		user: credentials.user
@@ -114,14 +119,13 @@ module.exports = (router, docClient, pool, redisClient) => {
 		                    console.log(err);
 		                    res.status(500).send('Password Error');
 		                } else {
-		                	let id = uuidv1();
-		                	pool.query('INSERT INTO creators (id, name, email, password) VALUES ($1, $2, $3, $4)', 
-		                		[id, name, email, hash], (err, result1) => {
+		                	pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3)', 
+		                		[name, email, hash], (err, insert_result) => {
 		                        if (err) {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
 		                        } else {
-							    	createLogin({id: id, email: email, name: name, admin: false }, (credentials) => {
+							    	createLogin({id: insert_result[0].id, email: email, name: name, admin: false }, (credentials) => {
 		                            	res.status(200).send({
 		                            		token: credentials.userHash + credentials.token,
 		                            		user: credentials.user

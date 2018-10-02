@@ -1,3 +1,5 @@
+const Util = require('./../config/util');
+
 module.exports = (docClient, pool) => {
 
 const getDiagrams = (req, res) => {
@@ -207,7 +209,7 @@ const renderStory = (params, req, res, success) => {
                         audio: node.extras.audio,
                         prompt: node.extras.prompt,
                         choices: node.extras.choices,
-                        inputs: node.extras.inputs.map(input => input.split('\n')),
+                        inputs: node.extras.inputs.map(input => input.split('\n').map(i => Util.numsToWords(i))),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
@@ -217,7 +219,7 @@ const renderStory = (params, req, res, success) => {
                         audio: null,
                         prompt: node.extras.prompt,
                         choices: node.extras.choices,
-                        inputs: node.extras.inputs.map(input => input.split('\n')),
+                        inputs: node.extras.inputs.map(input => input.split('\n').map(i => Util.numsToWords(i))),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])

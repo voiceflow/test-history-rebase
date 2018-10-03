@@ -202,7 +202,7 @@ const renderStory = (params, req, res, success) => {
                     story.lines[node.id] = {
                         random: node.extras.smart ? 2 : 1,
                         nextIds: list,
-                        nextId: list.length > 0 ? list[0] : null
+                        id: node.id
                     };
                 } else if (node.extras.type === 'choice') {
                     story.lines[node.id] = {

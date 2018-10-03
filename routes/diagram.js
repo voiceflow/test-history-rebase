@@ -200,7 +200,7 @@ const renderStory = (params, req, res, success) => {
                 } else if (node.extras.type === 'random') {
                     let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => links[port.links[0]]);
                     story.lines[node.id] = {
-                        random: true,
+                        random: node.extras.smart ? 2 : 1,
                         nextIds: list,
                         nextId: list.length > 0 ? list[0] : null
                     };

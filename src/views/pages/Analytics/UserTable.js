@@ -36,6 +36,16 @@ class UserTable extends Component {
                   />
               }
           }, {
+              Header: "AMZN ID",
+              accessor: "user_id",
+              maxWidth: 200,
+              Cell: row => {
+                  return <ClipBoard
+                      id={"user" + row.original.id}
+                      value={row.value}
+                  />
+              }
+          }, {
               Header: "First Name",
               accessor: "first_name"
           }, {

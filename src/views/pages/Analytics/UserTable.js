@@ -40,9 +40,10 @@ class UserTable extends Component {
               accessor: "user_id",
               maxWidth: 200,
               Cell: row => {
+                let split = row.value.split('.');
                   return <ClipBoard
                       id={"user" + row.original.id}
-                      value={row.value}
+                      value={split.length > 3 ? split[3] : split[2]}
                   />
               }
           }, {

@@ -246,6 +246,8 @@ class Analytics extends Component {
                         return true;
                     }else if(user.first_name.toLowerCase().indexOf(search) !== -1){
                         return true;
+                    }else if(user.user_id.toLowerCase().indexOf(search) !== -1){
+                        return true;
                     }
                     return false;
                 }) : this.state.users;
@@ -375,7 +377,7 @@ class Analytics extends Component {
                         <h1>Users</h1>
                             <InputGroup className="mt-2 mb-3">
                                 <InputGroupAddon addonType="prepend"><InputGroupText><i className="fas fa-search"></i></InputGroupText></InputGroupAddon>
-                                <Input placeholder="Search by Email/Name" value={this.state.search} onChange={this.handleChange} name="search"/>
+                                <Input placeholder="Search by Email/Name/AMZN ID" value={this.state.search} onChange={this.handleChange} name="search"/>
                             </InputGroup>
                             <Nav tabs>
                               <NavItem>

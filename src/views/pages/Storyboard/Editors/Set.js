@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import Select from 'react-select';
-
-const valid = (str) => {
-    if(!str || str.length > 16) return false;
-    return /([^\s])/.test(str);
-}
+import Expression from './Expression'
+import Expressionfy from './Expressionfy';
+import isVarName from 'is-var-name';
 
 class SetBlock extends Component {
     constructor(props) {
         super(props);
 
+        let node = this.props.node;
+
+        if(!node.extras.expression || !node.extras.expression.type){
+            node.extras.expression = {
+                type: 'value',
+                value: '',
+                depth: 0
+            }
+        }
+
         this.state = {
-            node: this.props.node,
+            node: node,
             new_var: ""
         };
 
@@ -20,15 +28,7 @@ class SetBlock extends Component {
         this.deleteVariable = this.deleteVariable.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
-        this.handleExpression = this.handleExpression.bind(this);
-    }
-
-    handleExpression(event){
-        let node = this.state.node;
-        node.extras.expression = event.target.value
-        this.setState({
-          node: node
-        });
+        this.onUpdate = this.onUpdate.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -40,12 +40,14 @@ class SetBlock extends Component {
     addVariable (){
         let variables = this.props.variables;
         let new_var = this.state.new_var;
-        if(valid(new_var) && !variables.includes(new_var)){
+        if(isVarName(new_var) && !variables.includes(new_var)){
             variables.unshift(new_var);
             this.props.onVariable(variables);
             this.setState({
                 new_var: ""
             })
+        }else{
+            alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters');
         }
     }
 
@@ -71,7 +73,14 @@ class SetBlock extends Component {
         }, this.props.onUpdate);
     }
 
+    onUpdate(){
+        this.setState({
+            node: this.state.node
+        }, this.props.onUpdate);
+    }
+
     render() {
+        let show = !(this.state.node.extras.expression.type === 'value' || this.state.node.extras.expression.type === 'variable');
         return (
             <div key={this.state.node.id}>
                 <div className="variable-group">
@@ -88,9 +97,8 @@ class SetBlock extends Component {
                     />
                     <span> to:</span>
                 </div>
-                <InputGroup>
-                    <Input placeholder="value" value={this.state.node.extras.expression} onChange={this.handleExpression} />
-                </InputGroup>
+                { show ? <Expressionfy expression={this.state.node.extras.expression} />:null}
+                <Expression expression={this.state.node.extras.expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
                 <hr/>
                 <FormGroup className="mb-0">
                     <Label>Add New Variable</Label>

@@ -87,9 +87,9 @@ class Editor extends Component {
             case 'multiline':
                 return <MultiLine node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
-                return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable}/>
+                return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable} onUpdate={this.props.onUpdate}/>
             case 'if':
-                return <IfBlock node={this.state.node} variables={this.props.variables}/>
+                return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
             case 'listen':
                 return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':

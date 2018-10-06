@@ -1,0 +1,106 @@
+.type-button {
+    border-radius: 20px;
+    margin-left: 5px;
+    padding: 2px 5px;
+    font-size: 10px;
+    background-color: rgba(0,0,0,0.2);
+    /*opacity: 0.4;*/
+    height: 20px;
+    border: none;
+}
+.dropdown{
+	display: flex;
+	align-items: center;
+}
+.expression-block>.operator {
+	display: flex;
+	padding: 7px 35px 7px 5px;
+	align-items: center;
+	justify-content: space-between;
+}
+.expression-block>.operator>.dropdown>.type-button{
+	margin-left: 10px;
+}
+.variable-box__control{
+	border: none !important;
+}
+
+.expression-block {
+	padding: 5px 4px;
+	border: 1px solid;
+	border-radius: 6px;
+	color: #FFF;
+}
+
+.expression-block.plus,.expression-block.minus{
+	background-color: #81C784;
+	border-color: #4CAF50;
+}
+.expression-block.divide, .expression-block.times{
+	background-color: #4CAF50;
+	border-color: #43A047;
+}
+.expression-block.greater, .expression-block.equals, .expression-block.less{
+	background-color: #FDD835;
+	border-color: #F57F17;
+}
+
+.expression-block.and{
+	background-color: #FFA726;
+	border-color: #F57C00;
+}
+.expression-block.or{
+	background-color: #03A9F4;
+	border-color: #0288D1;
+}
+
+.expression-block.not{
+	padding-top: 0px !important;
+	background-color: #EF5350;
+	border-color: #E64A19;
+}
+
+.brackets>.variable{
+	background-color: #E1BEE7;
+	color: #6A1B9A;
+	border-radius: 5px;
+	padding: 2px 4px 4px 4px;
+}
+.brackets>.NaN{
+	background-color: #FFAB91;
+	color: #BF360C;
+	border-radius: 5px;
+	padding: 2px 4px 4px 4px;
+	cursor: pointer;
+}
+.brackets>.NaN:after{
+	content: 'NaN';
+}
+.brackets>.NaN:hover:after{
+	content: 'Not a Number';
+}
+.expressionfy i{
+	font-size: 12px;
+}
+.brackets>.or{
+	color: #03A9F4;
+}
+.brackets>.and{
+	color: #FFA726;
+}
+.brackets>.not{
+	color: #EF5350;
+}
+.brackets>.unknown{
+	color: #F57F17;
+	font-weight: bold;
+}
+.expressionfy{
+	line-height: 28px;
+	padding: 5px 8px;
+	border-radius: 5px;
+	border: 1px solid #DDD;
+	margin-bottom: 10px;
+}
+
+

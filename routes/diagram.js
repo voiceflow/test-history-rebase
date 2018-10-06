@@ -1,4 +1,68 @@
 const Util = require('./../config/util');
+const isVarName = require('is-var-name');
+
+const expressionfy = (expression, depth=0) => {
+    if(depth > 8){
+        // return a blank
+        return 0;
+    }else if(expression.type == 'value'){
+        let value = expression.value.toString();
+        if(!expression.value){
+            return 0;
+        }else if(isNaN(value)){
+            return '"' + value.replace(/"/g, "'") + '"';
+        }else{
+            return parseInt(value, 10);
+        }
+    }else if(expression.type == 'variable'){
+        if(isVarName(expression.value)){
+            return `v["${expression.value}"]`
+        }else{
+            return 0
+        }
+    }else{
+        let string = '(';
+
+        if(expression.type == 'not'){
+            string += `!${expressionfy(expression.value)}`
+        }else if(expression.type == 'and'){
+            string += `${expressionfy(expression.value[0])} && ${expressionfy(expression.value[1])}`
+        }else if(expression.type == 'or'){
+            string += `${expressionfy(expression.value[0])} || ${expressionfy(expression.value[1])}`
+        }else if(expression.type == 'plus'){
+            string += `${expressionfy(expression.value[0])} + ${expressionfy(expression.value[1])}`
+        }else if(expression.type == 'minus'){
+            let first = expressionfy(expression.value[0]);
+            // if(isNaN(first) && !(/(v\[\")\w+(\"])/.test(first))) return 0;
+            let second = expressionfy(expression.value[1]);
+            // if(isNaN(second) && !(/(v\[\")\w+(\"])/.test(second))) return 0;
+
+            string += `${first} - ${second}`
+        }else if(expression.type == 'times'){
+            let first = expressionfy(expression.value[0]);
+            // if(isNaN(first) && !(/(v\[\")\w+(\"])/.test(first))) return 0;
+            let second = expressionfy(expression.value[1]);
+            // if(isNaN(second) && !(/(v\[\")\w+(\"])/.test(second))) return 0;
+
+            string += `${first} * ${second}`
+        }else if(expression.type == 'divide'){
+            let first = expressionfy(expression.value[0]);
+            // if(isNaN(first) && !(/(v\[\")\w+(\"])/.test(first))) return 0;
+            let second = expressionfy(expression.value[1]);
+            // if((isNaN(second) && !(/(v\[\")\w+(\"])/.test(second))) || second == 0) return 0;
+
+            string += `${first} / ${second}`
+        }else if(expression.type == 'greater'){
+            string += `${expressionfy(expression.value[0])} > ${expressionfy(expression.value[1])}`
+        }else if(expression.type == 'less'){
+            string += `${expressionfy(expression.value[0])} < ${expressionfy(expression.value[1])}`
+        }else if(expression.type == 'equals'){
+            string += `${expressionfy(expression.value[0])} == ${expressionfy(expression.value[1])}`
+        }
+
+        return (string + ')');
+    }
+}
 
 module.exports = (docClient, pool) => {
 
@@ -289,14 +353,12 @@ const renderStory = (params, req, res, success) => {
                     }
                     story.lines[node.id] = {
                         variable: node.extras.variable,
-                        expression: node.extras.expression,
+                        expression: expressionfy(node.extras.expression),
                         nextId: links[nextLink]
                     };
                 } else if (node.extras.type === 'if') {
                     story.lines[node.id] = {
-                        variable: node.extras.variable,
-                        operation: node.extras.operation,
-                        expression: node.extras.expression,
+                        expression: expressionfy(node.extras.expression),
                         trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
                         falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
                     };

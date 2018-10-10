@@ -449,6 +449,7 @@ class StoryBoard extends Component {
                 <Menu items={[
                     { text: 'Choice', type: 'choicenew', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'multiline', menuColor: '#29B6F6' },
+                    { text: 'Speak', type: 'speak', menuColor: '#0097A7' },
                     { text: 'Ending', type: 'ending', menuColor: '#FF7043' },
                     'hr',
                     { text: 'Random', type: 'random', menuColor: '#FBC02D' },
@@ -519,6 +520,12 @@ class StoryBoard extends Component {
                                         title: 'Line Audio'
                                     }
                                 ]
+                            };
+                        } else if (data.type === 'speak') {
+                            node.addInPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
+                            node.extras = {
+                                raw: null
                             };
                         } else if (data.type === 'ending') {
                             node.addInPort(' ');

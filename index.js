@@ -58,7 +58,7 @@ const upload = multer({
     })
 });
 
-app.use(express.static(path.join(__dirname, 'app', 'build')));
+// app.use(express.static(path.join(__dirname, 'app', 'build')));
 
 const Diagram = require('./routes/diagram.js')(docClient, pool);
 const World = require('./routes/world.js')(docClient, pool);

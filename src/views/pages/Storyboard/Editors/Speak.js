@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import {
-  AtomicBlockUtils,
   Editor,
   EditorState,
   RichUtils,
@@ -106,7 +105,7 @@ class Speak extends Component {
             this.setState({
                 editorState: editorState,
                 node: node
-            })
+            }, this.props.onUpdate);
         };
         this.handleSelection = this.handleSelection.bind(this);
         this.handleKeyCommand = this.handleKeyCommand.bind(this);
@@ -155,6 +154,8 @@ class Speak extends Component {
             },
             () => { setTimeout(() => focus(), 0) }
         );
+
+        this.props.onUpdate();
 
         // const editorState = this.state.editorState;
         // const contentState = editorState.getCurrentContent();

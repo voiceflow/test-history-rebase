@@ -12,6 +12,7 @@ import RandomBlock from './Editors/Random';
 import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
 import Speak from './Editors/Speak';
+import Capture from './Editors/Capture';
 
 class Editor extends Component {
     constructor(props) {
@@ -100,7 +101,9 @@ class Editor extends Component {
             case 'ending':
                 return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'speak':
-                return <Speak node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+            case 'capture':
+                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             default:
               return null;
         }

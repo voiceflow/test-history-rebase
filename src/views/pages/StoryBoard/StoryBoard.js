@@ -450,6 +450,7 @@ class StoryBoard extends Component {
                     { text: 'Choice', type: 'choicenew', menuColor: '#66BB6A' },
                     { text: 'Line', type: 'multiline', menuColor: '#29B6F6' },
                     { text: 'Speak', type: 'speak', menuColor: '#0097A7' },
+                    { text: 'Capture', type: 'capture', menuColor: '#D84315' },
                     { text: 'Ending', type: 'ending', menuColor: '#FF7043' },
                     'hr',
                     { text: 'Random', type: 'random', menuColor: '#FBC02D' },
@@ -555,6 +556,12 @@ class StoryBoard extends Component {
                                 variable: null,
                                 operation: '==',
                                 expression: ""
+                            };
+                        } else if (data.type === 'capture') {
+                            node.addInPort(' ');
+                            node.addOutPort(' ').setMaximumLinks(1);
+                            node.extras = {
+                                variable: null
                             };
                         }
                         node.extras.type = data.type;

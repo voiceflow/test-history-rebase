@@ -11,18 +11,18 @@ const expressionfy = (expression, depth=0) => {
         if(!expression.value){
             return 0;
         }else if(isNaN(value)){
-            return '"' + value.replace(/"/g, "'") + '"';
+            return "'" + value.replace(/'/g, '\"') + "'";
         }else{
             return parseInt(value, 10);
         }
     }else if(expression.type == 'variable'){
         if(isVarName(expression.value)){
-            return `v["${expression.value}"]`
+            return `v['${expression.value}']`
         }else{
             return 0
         }
     }else{
-        let string = '(';
+        let string = "(";
 
         if(expression.type == 'not'){
             string += `!${expressionfy(expression.value)}`
@@ -61,7 +61,7 @@ const expressionfy = (expression, depth=0) => {
             string += `${expressionfy(expression.value[0])} == ${expressionfy(expression.value[1])}`
         }
 
-        return (string + ')');
+        return (string + ")");
     }
 }
 

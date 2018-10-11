@@ -402,6 +402,7 @@ const renderStory = (params, req, res, success) => {
 
                     story.lines[node.id] = {
                         variable: node.extras.variable,
+                        prompt: true,
                         nextId: links[nextLink]
                     }
                 }

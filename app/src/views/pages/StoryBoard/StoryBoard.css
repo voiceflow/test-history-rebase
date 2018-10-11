@@ -457,6 +457,10 @@ label {
     background-color: #FFFDE7;
 }
 
+.srd-default-node.capture {
+    background-color: #FFCCBC;
+}
+
 .srd-default-node.set {
     background-color: #F3E5F5;
 }

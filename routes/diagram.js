@@ -282,7 +282,7 @@ const renderStory = (params, req, res, success) => {
                 } else if (node.extras.type === 'choicenew') {
                     story.lines[node.id] = {
                         audio: null,
-                        prompt: node.extras.prompt,
+                        prompt: node.extras.prompt ? node.extras.prompt : true,
                         choices: node.extras.choices,
                         inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i } ).map(i => Util.numsToWords(i))),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
@@ -380,23 +380,6 @@ const renderStory = (params, req, res, success) => {
 
                     markdownstring = "'" + markdownstring + ".'";
 
-                    // let output = "`";
-
-                    // if(raw && raw.blocks){
-                    //     raw.blocks.forEach(block => {
-                    //         let offset = 0;
-                    //         let text = block.text.replace("`", "'");
-
-                    //         block.entityRanges.forEach(entity => {
-
-                    //         });
-
-                    //         output = output + ". " + text;
-                    //     });
-                    // }
-
-                    // output += "`";
-
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
@@ -406,6 +389,19 @@ const renderStory = (params, req, res, success) => {
 
                     story.lines[node.id] = {
                         speak: markdownstring,
+                        nextId: links[nextLink]
+                    }
+                } else if (node.extras.type === 'capture') {
+
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    story.lines[node.id] = {
+                        variable: node.extras.variable,
                         nextId: links[nextLink]
                     }
                 }

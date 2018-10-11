@@ -1,4 +1,5 @@
 const Util = require('./../config/util');
+const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
 
 const expressionfy = (expression, depth=0) => {
@@ -362,6 +363,51 @@ const renderStory = (params, req, res, success) => {
                         trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
                         falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
                     };
+                } else if (node.extras.type === 'speak') {
+
+                    let markdownstring = draftToMarkdown(node.extras.raw, {
+                        entityItems: {
+                            VARIABLE: {
+                                open: entity => {
+                                    return "' + v['"
+                                },
+                                close: entity => {
+                                    return "'] + '"
+                                }
+                            }
+                        }
+                    });
+
+                    markdownstring = "'" + markdownstring + ".'";
+
+                    // let output = "`";
+
+                    // if(raw && raw.blocks){
+                    //     raw.blocks.forEach(block => {
+                    //         let offset = 0;
+                    //         let text = block.text.replace("`", "'");
+
+                    //         block.entityRanges.forEach(entity => {
+
+                    //         });
+
+                    //         output = output + ". " + text;
+                    //     });
+                    // }
+
+                    // output += "`";
+
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    story.lines[node.id] = {
+                        speak: markdownstring,
+                        nextId: links[nextLink]
+                    }
                 }
             }
             let params = {

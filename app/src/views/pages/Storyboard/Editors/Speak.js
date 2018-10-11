@@ -50,7 +50,9 @@ function myBlockStyleFn(contentBlock) {
 
 const variableSpan = (props) => {
     return (
-      <span data-offset-key={props.offsetkey} className="variable-block" contentEditable="false">&nbsp;&nbsp;{props.children}&nbsp;&nbsp;</span>
+      <span data-offset-key={props.offsetkey} className="variable-block" contentEditable="false">
+        &nbsp;&nbsp;{props.decoratedText}&nbsp;&nbsp;
+      </span>
     );
 };
 
@@ -99,7 +101,7 @@ class Speak extends Component {
 
         this.onChange = (editorState) => {
             let node = this.state.node;
-            node.extras.raw = convertToRaw(editorState);
+            node.extras.raw = convertToRaw(editorState.getCurrentContent());
 
             this.setState({
                 editorState: editorState,
@@ -144,7 +146,7 @@ class Speak extends Component {
 
         let node = this.state.node;
 
-        node.extras.raw = convertToRaw(lastEditor);
+        node.extras.raw = convertToRaw(lastEditor.getCurrentContent());
 
         this.setState(
             {
@@ -172,7 +174,8 @@ class Speak extends Component {
 
     componentWillUnmount(){
         let node = this.state.node;
-        node.extras.raw = convertToRaw(this.state.editorState);
+        node.extras.raw = convertToRaw(this.state.editorState.getCurrentContent());
+        // console.log(node.extras.raw);
     }
 
     render() {

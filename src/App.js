@@ -11,6 +11,7 @@ import './App.css';
 
 // Pages
 import StoryBoard from './views/pages/Storyboard/StoryBoard';
+import OldDashBoard from './views/pages/Dashboard/OldDashBoard';
 import DashBoard from './views/pages/Dashboard/DashBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
@@ -104,12 +105,13 @@ class App extends Component {
                 <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
                 <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
+                <PrivateRoute path="/olddashboard" name="Dashboard" component={OldDashBoard} />
                 <PrivateRoute path="/admin" name="Admin" component={Admin} />
                 <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
                 <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
-                    <Redirect to="/storyboard"/>
+                    <Redirect to="/dashboard"/>
                   ) : (
                     <Redirect to="/login"/>
                   )

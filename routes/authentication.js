@@ -119,13 +119,14 @@ module.exports = (router, docClient, pool, redisClient) => {
 		                    console.log(err);
 		                    res.status(500).send('Password Error');
 		                } else {
-		                	pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3)', 
+		                	pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3) RETURNING creator_id', 
 		                		[name, email, hash], (err, insert_result) => {
 		                        if (err) {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
 		                        } else {
-							    	createLogin({id: insert_result[0].id, email: email, name: name, admin: false }, (credentials) => {
+		                        	console.log(insert_result);
+							    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, (credentials) => {
 		                            	res.status(200).send({
 		                            		token: credentials.userHash + credentials.token,
 		                            		user: credentials.user

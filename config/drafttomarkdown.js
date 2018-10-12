@@ -5,7 +5,7 @@ const TRAILING_WHITESPACE = /[ \u0020\t]*$/;
 // - Back tics  (see https://github.com/Rosey/markdown-draft-js/issues/52#issuecomment-388458017)
 // - Complex markdown, like links or images. Not sure it's even worth it, because if you're typing
 // that into draft chances are you know its markdown and maybe expect it convert? :/
-const MARKDOWN_STYLE_CHARACTERS = /(\*|_|~|\\|'|`)/;
+// const MARKDOWN_STYLE_CHARACTERS = /(\*|_|~|\\|'|`)/;
 
 // I hate this a bit, being outside of the function’s scope
 // but can’t think of a better way to keep track of how many ordered list
@@ -18,8 +18,27 @@ const MARKDOWN_STYLE_CHARACTERS = /(\*|_|~|\\|'|`)/;
 // 2. Item two
 // 3. Item three
 // And so on.
+
 var orderedListNumber = {},
     previousOrderedListDepth = 0;
+
+const _escape = function (word) {
+    if (typeof(word) === "string") {
+        word = word.replace(/&/g, '&amp;');
+        word = word.replace(/</g, '&lt;');
+        word = word.replace(/>/g, '&gt;');
+        word = word.replace(/"/g, '&quot;');
+        word = word.replace(/'/g, '&apos;');
+        return word;
+    }
+    if (typeof(word) === "number") {
+        return word;
+    }
+    if (typeof(word) === "boolean") {
+        return word;
+    }
+    throw new Error('received invalid type ' + typeof(word));
+};
 
 // A map of draftjs block types -> markdown open and close characters
 // Both the open and close methods must exist, even if they simply return an empty string.
@@ -364,14 +383,14 @@ function renderBlock(block, index, rawDraftObject, options) {
         // Similar work has to be done for codeblocks.
       } else {
         // Escaping inline markdown characters
-        character = character.replace(MARKDOWN_STYLE_CHARACTERS, '\\$1');
+        character = _escape(character);
 
         // Special escape logic for blockquotes and heading characters
-        if (characterIndex === 0 && character === '#' && block.text[1] && block.text[1] === ' ') {
-          character = character.replace('#', '\\#');
-        } else if (characterIndex === 0 && character === '>') {
-          character = character.replace('>', '\\>');
-        }
+        // if (characterIndex === 0 && character === '#' && block.text[1] && block.text[1] === ' ') {
+        //   character = character.replace('#', '\\#');
+        // } else if (characterIndex === 0 && character === '>') {
+        //   character = character.replace('>', '\\>');
+        // }
       }
     }
 
@@ -401,7 +420,7 @@ function renderBlock(block, index, rawDraftObject, options) {
     markdownString += (customStyleItems[type] || StyleItems[type]).close(block);
   }
 
-  let period = markdownString.substr(-1) === '.' ? ' ' : '. '
+  let period = markdownString.substr(-1).match(/^[.,:!?]/) ? ' ' : '. '
 
   // Determine how many newlines to add - generally we want 2, but for list items we just want one when they are succeeded by another list item.
   if (SingleNewlineAfterBlock.indexOf(type) !== -1 && rawDraftObject.blocks[index + 1] && SingleNewlineAfterBlock.indexOf(rawDraftObject.blocks[index + 1].type) !== -1) {

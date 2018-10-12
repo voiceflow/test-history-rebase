@@ -101,11 +101,14 @@ module.exports = (router, docClient, pool, redisClient) => {
 	router.put('/user', (req, res) => {
 	    let name = req.body.name;
 	    let email = req.body.email;
-	    let password = req.body.password;
+		let password = req.body.password;
+		let code = req.body.code;
 
 	    if (!name || !email || !password) {
 	        res.status(400).send("Form not filled");
-	     } else {
+	     } else if(!codes.includes(code)) {
+	        res.status(400).send("Invalid Access Code");
+		 } else {
 	        email = email.trim().toLowerCase();
 	        pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
 	        	if(err){

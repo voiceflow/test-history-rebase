@@ -125,7 +125,7 @@ module.exports = (router, docClient, pool, redisClient) => {
 		                            console.log(err);
 		                            res.status(500).send('Something Went Wrong');
 		                        } else {
-		                        	console.log(insert_result);
+		                        	// console.log(insert_result);
 							    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, (credentials) => {
 		                            	res.status(200).send({
 		                            		token: credentials.userHash + credentials.token,

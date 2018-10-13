@@ -363,7 +363,7 @@ class StoryBoard extends Component {
     }
 
     createSkill(name){
-        this.props.onSave(id => {
+        this.onSave(id => {
             if(id){
                 axios.post('/skill', {
                   name: name,
@@ -371,12 +371,12 @@ class StoryBoard extends Component {
                 })
                 .then(res => {
                   this.setState({
-                    skillname: name,
-                    newSkill: null
+                    newSkill: false,
+                    skillname: name
                   })
                 })
                 .catch(err => {
-                  
+                  this.setState({ error_modal: 'Could Not Create Project - Error' });
                 })
             }
         });
@@ -390,7 +390,9 @@ class StoryBoard extends Component {
                         modal={this.state.newSkill}
                         toggle={()=>this.setState({newSkill: false})} 
                         createSkill={this.createSkill}
-                        onClose={() => this.props.history.push('/dashboard')}/>
+                        onClose={this.state.newSkill ? 
+                            () => this.props.history.push('/dashboard') : 
+                            () => this.setState({newSkill: null})}/>
                 }
                 <Prompt
                     when={!this.state.saved}

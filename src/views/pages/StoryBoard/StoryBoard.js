@@ -107,7 +107,7 @@ class StoryBoard extends Component {
     componentDidMount() {
 
         if(!this.state.newSkill && this.state.diagram_id){
-            this.onLoadId(this.props.computedMatch.params.id);
+            this.onLoadId(this.state.diagram_id);
         }
 
         $('.srd-node-layer').click(() => {
@@ -363,6 +363,9 @@ class StoryBoard extends Component {
     }
 
     createSkill(name){
+        if(!name){
+            name = 'New Skill';
+        }
         this.onSave(id => {
             if(id){
                 axios.post('/skill', {
@@ -373,7 +376,8 @@ class StoryBoard extends Component {
                   this.setState({
                     newSkill: false,
                     skillname: name
-                  })
+                  });
+                  cookies.set('diagram', id);
                 })
                 .catch(err => {
                   this.setState({ error_modal: 'Could Not Create Project - Error' });

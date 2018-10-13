@@ -86,7 +86,7 @@ class ModalExample extends React.Component {
               className="create-skill" 
               color="primary" block 
               size="lg" 
-              onClick={this.props.createSkill}>
+              onClick={() => this.props.createSkill(this.state.name)}>
               <i className="fas fa-plus mr-2"/> Create Skill
             </Button>
           </div>

@@ -1,5 +1,63 @@
+/*GLOBAL CSS*/
+
 body {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Roboto', sans-serif;
+    background: #F5F5F5 !important;
+}
+
+button:focus{
+    outline: none;
+}
+
+label {
+    margin: 0px !important;
+}
+
+.subheader {
+    position: fixed;
+    top: 59px;
+    background-color: #fff;
+    width: 100%;
+    /*padding: 10px;*/
+    display: flex;
+    align-items: center;
+    /*height: 50px;*/
+    padding: 10px 15px;
+    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    border-bottom: 1px solid #DDD;
+    justify-content: space-between;
+}
+
+.subheader-title {
+    font-size: 1.2rem;
+}
+
+.subheader-right {
+    width: 500px;
+    display: flex;
+}
+
+.display-5 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+.hr-label {
+    font-size: 1rem;
+    color: #CCC;
+    /*font-weight: normal;*/
+    margin-top: 1.5rem;
+    /*margin-bottom: -10px;*/
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
+.text-mute {
+    color: #666;
 }
 
 .super-center {
@@ -23,9 +81,9 @@ body {
 	padding-top: .5rem;
 	border: none;
 }
-.modal-footer{
+/*.modal-footer{
 	background-color: #F3F3F3;
-}
+}*/
 .split-page{
     display: flex;
 }

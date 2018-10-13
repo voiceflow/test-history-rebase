@@ -3,20 +3,24 @@ import $ from 'jquery';
 import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
+import axios from 'axios';
 // import Loader from './Loader';
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import LoadingModal from './../../components/Modals/LoadingModal';
+import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
-import { Prompt } from 'react-router'
+import { Prompt } from 'react-router';
+
+import Cookies from 'universal-cookie';
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel';
-import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
-import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
-import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
+import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
+import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
+import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 
-import AuthenticationService from './../../../services/Authentication';
+const cookies = new Cookies();
 
 class StoryBoard extends Component {
     constructor(props) {
@@ -28,17 +32,25 @@ class StoryBoard extends Component {
         engine.registerLinkFactory(new BlockLinkFactory());
         engine.registerPortFactory(new BlockPortFactory());
 
-        let split = this.props.location.pathname.split('/');
-
         this.unsave = this.unsave.bind(this);
         
-        let node = null;
-        let open = false;
+        let node, open;
+        let id = cookies.get('diagram');
 
-        if(split.length === 2 && split[1].toLowerCase() === "storyboard"){
+        if (this.props.computedMatch && this.props.computedMatch.params.id) {
+            id = this.props.computedMatch.params.id;
+        }else if(id){
+            this.props.history.push('/storyboard/' + id);
+        }else if(!this.props.new){
+            this.props.history.push('/storyboard/new');
+        }
+
+        if(!id){
             var model = new SRD.DiagramModel();
 
-            node = new BlockNodeModel('Start', '#FBE9E7');
+            id = model.getID();
+
+            node = new BlockNodeModel('Start Block', '#FBE9E7');
             node.addOutPort(' ').setMaximumLinks(1);
             node.extras = {
                 audio: '',
@@ -69,16 +81,16 @@ class StoryBoard extends Component {
             selected: node,
             open: open,
             title: "",
+            diagram_id: id,
             loading_modal: false,
             error_modal: false,
             saving: false,
             saved: true,
             last_save: false,
-            admin: AuthenticationService.isAdmin(),
-            review: false,
             testing_modal: false,
             testing_info: false,
-            variables: []
+            variables: [],
+            newSkill: this.props.new ? true : !id
         };
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
@@ -89,16 +101,13 @@ class StoryBoard extends Component {
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
-        this.publishToWorld = this.publishToWorld.bind(this);
+        this.createSkill = this.createSkill.bind(this);    
     }
 
     componentDidMount() {
-        let split = this.props.location.pathname.split('/');
 
-        if (split.length === 3) {
-            this.onLoadId(split[2], true);
-        } else if (split.length === 4 && split[2] === 'review') {
-            this.onLoadReview(split[3]);
+        if(!this.state.newSkill && this.state.diagram_id){
+            this.onLoadId(this.props.computedMatch.params.id);
         }
 
         $('.srd-node-layer').click(() => {
@@ -127,8 +136,7 @@ class StoryBoard extends Component {
 
                 return false;
             }
-        }.bind(this)
-        );
+        }.bind(this));
     }
 
     onDiagramUnfocus() {
@@ -169,7 +177,7 @@ class StoryBoard extends Component {
             }
 
             $.ajax({
-                url: this.state.review ? '/review' : '/diagram',
+                url: '/diagram',
                 type: 'POST',
                 data: diagram,
                 success: () => {
@@ -179,7 +187,7 @@ class StoryBoard extends Component {
                         saved: true,
                         last_save: Date.now()
                     });
-                    if(typeof cb === "function") cb(false);
+                    if(typeof cb === "function") cb(id);
                 },
                 error: () => {
                     this.setState({
@@ -187,7 +195,7 @@ class StoryBoard extends Component {
                         loading_modal: true,
                         error_modal: 'Error Saving to Cloud (Check Logs)'
                     });
-                    if(typeof cb === "function") cb(true);
+                    if(typeof cb === "function") cb(null);
                 }
             });
         } catch (e) {
@@ -196,59 +204,8 @@ class StoryBoard extends Component {
                 loading_modal: true,
                 error_modal: 'Error Saving - Project Structure (Check Logs)'
             });
-            if(typeof cb === "function") cb(false);
+            if(typeof cb === "function") cb(null);
         }
-    }
-
-    onPublish(env, cb) {
-        if(!["production", "sandbox", "staging", "kids", "testing"].includes(env)) return;
-        if(!this.state.saved){
-            this.onSave((err) => {
-                if(err){ cb(false); return;}
-                this.publish(env, cb);
-            });
-        }else{
-            this.publish(env, cb);
-        }
-    }
-
-    publish(env, cb) {
-        var id = this.state.engine.getDiagramModel().getID();
-        if (cb ? true : window.confirm('Are you ready to publish?')) {
-            $.ajax({
-                url: this.state.review ? ('/publish/review/' + env + '/' + id) : ('/publish/' + env + '/' + id),
-                type: 'POST',
-                success: () => {
-                    cb ? cb(false, id) : window.alert('Success');
-                },
-                error: (e) => {
-                    console.log(e);
-                    this.setState({
-                        loading_modal: true,
-                        error_modal: "Server Error - Unable to Publish"
-                    });
-                    cb(true);
-                }
-            });
-        }
-    }
-
-    publishToWorld(world_id, cb) {
-        var id = this.state.engine.getDiagramModel().getID();
-        $.ajax({
-            url: '/publish/world/' + world_id + '/' + id,
-            type: 'POST',
-            success: () => {
-                window.alert('Success');
-            },
-            error: (e) => {
-                console.log(e);
-                this.setState({
-                    loading_modal: true,
-                    error_modal: "Server Error - Unable to Publish"
-                });
-            }
-        });
     }
 
     loadLines() {
@@ -282,7 +239,7 @@ class StoryBoard extends Component {
         });
     }
 
-    loadDiagram(diagram, review) {
+    loadDiagram(diagram) {
         var engine = this.state.engine;
         var model = new SRD.DiagramModel();
 
@@ -310,16 +267,6 @@ class StoryBoard extends Component {
             engine.setDiagramModel(model);
             let title = diagram.title ? diagram.title : 'Unnamed Story';
 
-            if (!review) {
-                review = false;
-            } else {
-                review = {
-                    name: diagram.name,
-                    email: diagram.email,
-                    envs: diagram.envs
-                }
-            }
-
             let variables = []
             if (diagram.variables) {
                 variables = diagram.variables;
@@ -331,7 +278,6 @@ class StoryBoard extends Component {
                 title: title,
                 last_save: diagram.last_save,
                 loading_modal: false,
-                review: review,
                 variables: variables
             });
 
@@ -341,29 +287,14 @@ class StoryBoard extends Component {
         }
     }
 
-    onLoadId(id, url) {
-        if (!url) {
-            this.props.history.push('/storyboard/' + id);
-        }
+    onLoadId(id) {
         this.setState({ loading_modal: true, error_modal: false });
         $.ajax({
             url: '/diagram/'+id,
             type: 'GET',
             success: diagram => {
                 this.loadDiagram(diagram);
-            },
-            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
-        });
-    }
-
-    onLoadReview(id) {
-        // this.props.history.push('/storyboard/' + id);
-        this.setState({ loading_modal: true, error_modal: false });
-        $.ajax({
-            url: '/review/'+id,
-            type: 'GET',
-            success: diagram => {
-                this.loadDiagram(diagram, true);
+                cookies.set('diagram', id);
             },
             error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
@@ -399,46 +330,73 @@ class StoryBoard extends Component {
     onTest() {
         this.state.engine.getDiagramModel().clearSelection();
         this.toggleTestModal();
-        this.onPublish("testing", (err, id) => {
-            if(err){
-                this.setState({
-                    error_modal: "Could Not Render Your Project",
-                    loading_modal: true,
-                    testing_modal: false
-                });
-            }else{
-                let engine = this.state.engine;
-                let model = engine.getDiagramModel();
-                let data = model.serializeDiagram();
-                // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+        // this.onPublish("testing", (err, id) => {
+        //     if(err){
+        //         this.setState({
+        //             error_modal: "Could Not Render Your Project",
+        //             loading_modal: true,
+        //             testing_modal: false
+        //         });
+        //     }else{
+        //         let engine = this.state.engine;
+        //         let model = engine.getDiagramModel();
+        //         let data = model.serializeDiagram();
+        //         // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
                 
-                let nodes = [];
-                data.nodes.forEach((node) => {
-                    if(node.extras && node.extras.type !== "story" && node.extras.type !== "ending"){
-                        nodes.push({
-                            value: node.id,
-                            label: node.name
-                        });               
-                    }
-                });
-                this.setState({
-                    testing_info: {
-                        id: id,
-                        nodes: nodes
-                    }
-                });
+        //         let nodes = [];
+        //         data.nodes.forEach((node) => {
+        //             if(node.extras && node.extras.type !== "story" && node.extras.type !== "ending"){
+        //                 nodes.push({
+        //                     value: node.id,
+        //                     label: node.name
+        //                 });               
+        //             }
+        //         });
+        //         this.setState({
+        //             testing_info: {
+        //                 id: id,
+        //                 nodes: nodes
+        //             }
+        //         });
+        //     }
+        // });
+    }
+
+    createSkill(name){
+        this.props.onSave(id => {
+            if(id){
+                axios.post('/skill', {
+                  name: name,
+                  diagram: id
+                })
+                .then(res => {
+                  this.setState({
+                    skillname: name,
+                    newSkill: null
+                  })
+                })
+                .catch(err => {
+                  
+                })
             }
         });
     }
 
     render() {
         return (
-            <div className={'App' + (this.state.review ? ' review' : '')} >
+            <div className='App' >
+                { this.state.newSkill === null ? null : 
+                    <SkillModal 
+                        modal={this.state.newSkill}
+                        toggle={()=>this.setState({newSkill: false})} 
+                        createSkill={this.createSkill}
+                        onClose={() => this.props.history.push('/dashboard')}/>
+                }
                 <Prompt
                     when={!this.state.saved}
                     message={location => 'Are you sure you want to leave without saving?'
                     }
-                ></Prompt>
+                />
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 {this.state.testing_modal ? 
                     <TestModal 
@@ -462,27 +420,13 @@ class StoryBoard extends Component {
                     onUpdateTitle={(e) => {this.setState({ title: e.target.value }); this.unsave()}}
                     onSave={this.onSave.bind(this)}
                     onTest={this.onTest.bind(this)}
-                    onPublish={this.onPublish.bind(this)}
                     onLoadId={this.onLoadId.bind(this)}
                     saving={this.state.saving}
                     saved={this.state.saved}
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
-                    onPublishWorld={this.publishToWorld}
                 />
-                { this.state.review
-                    ? <div id="review">
-                        <h5 className="mb-0">Review Mode</h5>
-                        <small><b>Requested Environment</b><br/>
-                            {this.state.review.envs ? <span>* {this.state.review.envs}<br/></span> : null}
-                        </small>
-                        <small>
-                            <i>{this.state.review.name ? this.state.review.name : 'No Account Name'}</i><br/>
-                            <i>{this.state.review.email}</i>
-                        </small>
-                    </div> : null
-                }
                 <div
                     className="diagram-layer"
                     onDrop={event => {
@@ -584,16 +528,15 @@ class StoryBoard extends Component {
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
                 </div>
-                <div className={'Editor' + (this.state.open ? ' open' : '') }>
-                    <Editor
-                        node={this.state.selected}
-                        onUpdate={this.unsave}
-                        onClose={e => this.setState({ open: false })}
-                        repaint={this.repaint}
-                        variables={this.state.variables}
-                        onVariable={this.setVariables}
-                    />
-                </div>
+                <Editor
+                    open={this.state.open}
+                    node={this.state.selected}
+                    onUpdate={this.unsave}
+                    onClose={e => this.setState({ open: false })}
+                    repaint={this.repaint}
+                    variables={this.state.variables}
+                    onVariable={this.setVariables}
+                />
             </div>
         );
     }

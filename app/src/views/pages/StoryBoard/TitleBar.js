@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 import moment from 'moment';
-import axios from 'axios'
+// import axios from 'axios'
 
 class TitleBar extends Component {
     constructor(props) {
@@ -19,11 +19,6 @@ class TitleBar extends Component {
         this.handleChange = this.handleChange.bind(this);
 
         this.toggle = this.toggle.bind(this);
-        this.onLoadWorlds = this.onLoadWorlds.bind(this);
-        this.onLoad = this.onLoad.bind(this);
-
-        this.onLoad();
-        this.onLoadWorlds();
     }
 
     handleChange(e) {
@@ -37,30 +32,6 @@ class TitleBar extends Component {
     toggle() {
         this.setState({
           dropdownOpen: !this.state.dropdownOpen
-        });
-    }
-
-    onLoad() {
-        axios.get('/diagrams')
-        .then(res => {
-            this.setState({
-                diagrams: res.data
-            });
-        })
-        .catch(e => {
-            console.log(e);
-        });
-    }
-
-    onLoadWorlds() {
-        axios.get('/worlds')
-        .then(res => {
-            this.setState({
-                worlds: res.data
-            });
-        })
-        .catch(e => {
-            console.log(e);
         });
     }
 
@@ -86,32 +57,11 @@ class TitleBar extends Component {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                         <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
-                        <DropdownItem divider />
                         {
                             this.props.admin ? 
                             <div>
+                                <DropdownItem divider />
                                 <DropdownItem onClick={this.props.onLoadLines}>Update User Flow</DropdownItem>
-                                <UncontrolledDropdown direction="right" isOpen={this.state.publish} toggle={() => { this.setState({ publish : !this.state.publish }); }}>
-                                    <DropdownToggle tag="button" caret className="dropdown-item load-btn">
-                                        Publish
-                                    </DropdownToggle>
-                                    <DropdownMenu className="projects-menu">
-                                        <DropdownItem onClick={()=>{this.props.onPublish("staging");this.setState({dropdownOpen : false})}}>Test (Staging)</DropdownItem>
-                                        <DropdownItem onClick={()=>{this.props.onPublish("sandbox");this.setState({dropdownOpen : false})}}>Sandbox</DropdownItem>
-                                        <DropdownItem onClick={()=>{this.props.onPublish("production");this.setState({dropdownOpen : false})}}>Storyflow</DropdownItem>
-                                        <DropdownItem onClick={()=>{this.props.onPublish("kids");this.setState({dropdownOpen : false})}}>Storyflow Kids</DropdownItem>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
-                                <UncontrolledDropdown direction="right" isOpen={this.state.worlds_open} toggle={() => { this.setState({ worlds_open : !this.state.worlds_open }); }}>
-                                    <DropdownToggle tag="button" caret className="dropdown-item load-btn">
-                                        Publish to World
-                                    </DropdownToggle>
-                                    <DropdownMenu className="projects-menu">
-                                        { this.state.worlds.length !== 0 ? this.state.worlds.map(world => {
-                                            return <DropdownItem key={world.world_id} onClick={() => {this.props.onPublishWorld(world.world_id); this.setState({ dropdownOpen : false })}}>{world.name}</DropdownItem>;
-                                        }) : <DropdownItem disabled>No Worlds</DropdownItem> }
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
                             </div>
                             : null
                         }

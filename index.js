@@ -62,6 +62,7 @@ app.use(express.static(path.join(__dirname, 'app', 'build')));
 
 const Diagram = require('./routes/diagram.js')(docClient, pool);
 const World = require('./routes/world.js')(docClient, pool);
+const Skill = require('./routes/skill.js')(docClient, pool);
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
 const Story = require('./routes/story.js')(docClient, pool);
@@ -85,6 +86,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
+// Middleware for Authentication
 app.use((req, res, next) => {
     if(!req.cookies.auth){
         next();
@@ -139,6 +141,10 @@ app.post('/world', ensureLoggedIn(), World.setWorld);
 app.delete('/world/:id', ensureLoggedIn(), World.deleteWorld);
 app.patch('/world/:id', ensureLoggedIn(), World.updateAudio);
 app.get('/world/:id/stories', ensureLoggedIn(), World.getStories);
+
+app.get('/skills', ensureLoggedIn(), Skill.getSkills);
+app.post('/skill', ensureLoggedIn(), Skill.setSkill);
+app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);

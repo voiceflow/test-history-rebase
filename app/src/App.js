@@ -17,9 +17,9 @@ import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
 import Reviews from './views/pages/Reviews/Reviews';
 import Analytics from './views/pages/Analytics/Analytics';
-import NavBar from './views/components/NavBar/NavBar'
+import NavBar from './views/components/NavBar/NavBar';
 
-const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
+const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (
       <Redirect to={{
@@ -27,7 +27,7 @@ const PrivateRoute = ({ component: Component, name: Name, ...rest }) => (
         state: { from: props.location }
       }}/>
     ) : (
-      <Component {...props} name={Name} />
+      <Component {...props} {...rest} user={AuthenticationService.getUser()}/>
     )
   )}/>
 )
@@ -36,7 +36,7 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (
     AuthenticationService.isAuth() ? (
       <Redirect to={{
-        pathname: '/storyboard',
+        pathname: '/dashboard',
         state: { from: props.location }
       }}/>
     ) : (
@@ -81,7 +81,7 @@ class App extends Component {
       this.setState({
         session: AuthenticationService.isAuth()
       });
-    })
+    });
   }
 
   render() {
@@ -101,10 +101,10 @@ class App extends Component {
               <Switch>
                 <PublicRoute exact path="/login" name="Login" component={Account} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Account} />
-                <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
+                <PrivateRoute exact path="/storyboard/new" name="Storyboard" new component={StoryBoard}/>
                 <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
-                <PrivateRoute path="/storyboard/review/:id" name="Storyboard" component={StoryBoard} />
-                <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard} />
+                <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
+                <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/olddashboard" name="Dashboard" component={OldDashBoard} />
                 <PrivateRoute path="/admin" name="Admin" component={Admin} />
                 <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />

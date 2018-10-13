@@ -74,5 +74,5 @@ export default {
 	    .catch((error) => {
 	    	cb(error);
 	    });
-	},
+	}
 }

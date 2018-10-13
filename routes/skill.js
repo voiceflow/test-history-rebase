@@ -44,15 +44,20 @@ const setSkill = (req, res) => {
         return;
     }
     let name = req.body.name;
-    pool.query('SELECT 1 FROM skills WHERE creator_id = $1 AND LOWER(name) = $2 LIMIT 1', [req.user.id, req.body.name.toLowerCase()], (err, data) => {
+    pool.query('SELECT 1 FROM skills WHERE creator_id = $1 AND LOWER(name) = $2 LIMIT 1', [req.user.id, name.toLowerCase()], (err, data) => {
         if(err){
+            console.error(err);
             res.sendStatus(500);
         }else if(data.rows.length > 0){
             res.sendStatus(200);
         }else{
-            pool.query('INSERT INTO skills (name, diagram, creator_id) VALUES ($1, $2)', [req.body.name, req.body.diagram, req.user.id], (err, data) => {
-                if(err){ res.sendStatus(500); }
-                else { res.sendStatus(200) }
+            pool.query('INSERT INTO skills (name, diagram, creator_id) VALUES ($1, $2, $3)', [name, req.body.diagram, req.user.id], (err, data) => {
+                if(err){
+                    console.error(err); 
+                    res.sendStatus(500); 
+                } else { 
+                    res.sendStatus(200) 
+                }
             });
         }
     });

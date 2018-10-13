@@ -118,7 +118,7 @@ class Editor extends Component {
         let type = this.state.node.extras.type === "multiline" ? "line" : this.state.node.extras.type;
 
         return (
-            <div key={this.state.node.id}>
+            <div key={this.state.node.id} className={"Editor" + (this.props.open ? ' open':'')}>
                 <form onSubmit={(e) => e.preventDefault()} className="controls">
                     <div className="top">
                         <div className="property">

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Scrollspy from 'react-scrollspy'
 import EnvironmentModal from './EnvironmentModal'
 import WorldPreview from './WorldPreview'
-import './DashBoard.css';
+// import './OldDashBoard.css';
 
 import $ from 'jquery';
 

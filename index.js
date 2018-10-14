@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const npmPackage = require('./package.json');
-
+  
 const express = require('express');
 const app = express();
 const path = require('path');

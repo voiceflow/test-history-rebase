@@ -14,7 +14,71 @@ declare var user_detail;
 
 window.user_detail = default_user;
 
+let appId = "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e";
+
+var options={response_type:"code", scope:"alexa::ask:skills:readwrite alexa::ask:models:readwrite"}
+
+const load = () => new Promise((resolve) => {
+  // @TODO: handle errors
+  if (document.getElementById('amazon-sdk')) {
+    return resolve()
+  }
+
+  const firstJS = document.getElementsByTagName('script')[ 0 ]
+  const js = document.createElement('script')
+
+  js.src = '//api-cdn.amazon.com/sdk/login1.js'
+  js.id = 'amazon-sdk'
+  js.async = true
+
+  window.onAmazonLoginReady = () => {
+    window.amazon.Login.setClientId(appId)
+
+    return resolve()
+  }
+
+  if (!firstJS) {
+    document.appendChild(js)
+  } else {
+    firstJS.parentNode.appendChild(js)
+  }
+})
+
+/**
+ * Checks if user is logged in to app through Amazon.
+ * Requires SDK to be loaded first.
+ * @see https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/javascript_sdk_reference.html#authorize
+ */
+const login = () => new Promise((resolve, reject) => {
+  	window.amazon.Login.authorize(options, (response) => {
+	    if (response.error) {
+	      	reject();
+	    }else{
+	    	axios.get('/session/amazon/' + response.code)
+	    	.then(res => {
+	    		resolve();
+	    	})
+	    	.catch(err => {
+	    		console.error(err);
+	    		reject(err);
+	    	});
+	    }
+  	})
+});
+
+/**
+ * Trigger Amazon logout.
+ * Requires SDK to be loaded first.
+ * @see https://developer.amazon.com/docs/login-with-amazon/javascript-sdk-reference.html#logout
+ */
+const logout = () => new Promise((resolve) => {
+  window.amazon.Login.logout()
+  return resolve()
+})
+
 export default {
+	amazon_load: load,
+	amazon_login: login,
 	isAdmin: () => {
 		return user_detail.admin;
 	},
@@ -24,29 +88,39 @@ export default {
 	isAuth: () => {
 		return !!cookies.get('auth');
 	},
+	AmazonAccessToken: cb => {
+		axios.get('/session/access_token')
+		.then(res => {
+			cb(res.data.access_token);
+		})
+		.catch(err => {
+			// console.error(err);
+			cb(null);
+		});
+	},
 	check: (cb) => {
 		// req.user on backend will contain user info if
 		// this person has credentials that are valid
 		axios.get('/session')
-		.then((response) => {
+		.then(response => {
 			window.user_detail = response.data;
 	      	cb(false, response.data);
 	    })
-	    .catch((error) => {
+	    .catch(err => {
 	    	cookies.remove('auth');
-	      	cb(error, null);
+	      	cb(err, null);
 	    });
 	},
 	logout: (cb) => {
 		window.user_detail = default_user;
 		axios.delete('/session')
-		.then((response) => {
+		.then(response => {
 			cookies.remove('auth');
 			if(cb){
 				cb();
 			}
 		})
-		.catch((error) => {
+		.catch(err => {
 			cookies.remove('auth');
 			if(cb){
 				cb();
@@ -55,24 +129,24 @@ export default {
 	},
 	signup: (user, cb) => {
 	    axios.put('/user', user)
-	    .then((response) => {
+	    .then(response => {
 	    	cookies.set('auth', response.data.token);
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
-	    .catch((error) => {
-	    	cb(error);
+	    .catch(err => {
+	    	cb(err);
 	    });
 	},
 	login: (user, cb) => {
 	    axios.put('/session', user)
-	    .then((response) => {
+	    .then(response => {
 	    	cookies.set('auth', response.data.token);
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
-	    .catch((error) => {
-	    	cb(error);
+	    .catch(err => {
+	    	cb(err);
 	    });
 	}
 }

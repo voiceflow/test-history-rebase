@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, ModalBody, Button, Input } from 'reactstrap';
-import axios from 'axios';
 
 // import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
@@ -32,7 +31,7 @@ const templates = [
   }
 ]
 
-class ModalExample extends React.Component {
+class SkillModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,7 +77,7 @@ class ModalExample extends React.Component {
               onChange={this.handleChange}
               placeholder="Skill Name" 
               bsSize="lg" />
-          <div className="hr-label">Templates</div>
+          <div className="templates">Templates</div>
           <SkillTemplates templates={templates} onUpdate={this.changeTemplate} template={this.state.template}/>
           
           <div className="text-center my-3">
@@ -86,7 +85,7 @@ class ModalExample extends React.Component {
               className="create-skill" 
               color="primary" block 
               size="lg" 
-              onClick={this.props.createSkill}>
+              onClick={() => this.props.createSkill(this.state.name)}>
               <i className="fas fa-plus mr-2"/> Create Skill
             </Button>
           </div>
@@ -97,4 +96,4 @@ class ModalExample extends React.Component {
   }
 }
 
-export default ModalExample;
+export default SkillModal;

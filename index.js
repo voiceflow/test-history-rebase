@@ -14,6 +14,8 @@ const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const config = require('./config/config');
 const redis = require('redis');
+const fs = require('fs');
+const https = require('https');
 
 AWS.config.loadFromPath('./aws-config.json');
 
@@ -108,6 +110,8 @@ app.use((req, res, next) => {
                             next();
                         } else {
                             req.user = decoded;
+                            req.secret = secret;
+                            req.userHash = userHash;
                             next();
                         }
                     });
@@ -143,8 +147,10 @@ app.patch('/world/:id', ensureLoggedIn(), World.updateAudio);
 app.get('/world/:id/stories', ensureLoggedIn(), World.getStories);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
+app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.post('/skill', ensureLoggedIn(), Skill.setSkill);
-app.post('/skill/:id/publish', buildJSON(), Skill.buildSkills);
+app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
+app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
@@ -204,5 +210,14 @@ app.get('*', function(req, res) {
 });
 
 // eslint-disable-next-line no-console
-app.listen(port, () => console.log(name + ' running on port ' + port));
+// eslint-disable-next-line no-console
+if(process.env.SECURE){
+    var options = {
+        key: fs.readFileSync('config/server.key'),
+        cert: fs.readFileSync('config/server.crt'),
+    };
+    https.createServer(options, app).listen(443);
+}else{
+    app.listen(port, () => console.log(name + ' running on port ' + port));
+}
 

@@ -34,21 +34,32 @@ class StoryBoard extends Component {
 
         this.unsave = this.unsave.bind(this);
         
-        let node, open;
-        let id = cookies.get('diagram');
+        let node, open, diagram_id, skill_id;
 
-        if (this.props.computedMatch && this.props.computedMatch.params.id) {
-            id = this.props.computedMatch.params.id;
-        }else if(id){
-            this.props.history.push('/storyboard/' + id);
-        }else if(!this.props.new){
-            this.props.history.push('/storyboard/new');
+        let last_session = cookies.get('last_session');
+        let url = this.props.computedMatch;
+
+        let newSkill = this.props.new;
+
+        if(!newSkill){
+            if (url && url.params.skill_id && url.params.diagram_id) {
+                skill_id = url.params.skill_id;
+                diagram_id = url.params.diagram_id;
+            }else if(last_session){
+                this.props.history.push('/storyboard/' + last_session.skill_id + '/' + last_session.diagram_id);
+                skill_id = last_session.skill_id;
+                diagram_id = last_session.diagram_id;
+            }else{
+                this.props.history.push('/storyboard/new');
+            }
         }
 
-        if(!id){
+        if(!diagram_id || !skill_id){
+            newSkill = true;
+
             var model = new SRD.DiagramModel();
 
-            id = model.getID();
+            diagram_id = model.getID();
 
             node = new BlockNodeModel('Start Block', '#FBE9E7');
             node.addOutPort(' ').setMaximumLinks(1);
@@ -80,9 +91,13 @@ class StoryBoard extends Component {
             engine: engine,
             selected: node,
             open: open,
-            title: "",
-            diagram_id: id,
-            loading_modal: false,
+            diagram_name: '',
+            skill: {
+                skill_id: skill_id,
+                name: '...'
+            },
+            diagram_id: diagram_id,
+            loading_modal: !newSkill,
             error_modal: false,
             saving: false,
             saved: true,
@@ -90,7 +105,7 @@ class StoryBoard extends Component {
             testing_modal: false,
             testing_info: false,
             variables: [],
-            newSkill: this.props.new ? true : !id
+            newSkill: newSkill
         };
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
@@ -101,14 +116,15 @@ class StoryBoard extends Component {
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
-        this.createSkill = this.createSkill.bind(this);    
+        this.createSkill = this.createSkill.bind(this);
+        this.publish = this.publish.bind(this);
+
+        if(!this.state.newSkill){
+            this.onLoadSkill(this.state.skill.skill_id);
+        } 
     }
 
     componentDidMount() {
-
-        if(!this.state.newSkill && this.state.diagram_id){
-            this.onLoadId(this.props.computedMatch.params.id);
-        }
 
         $('.srd-node-layer').click(() => {
             var engine = this.state.engine;
@@ -171,10 +187,13 @@ class StoryBoard extends Component {
 
             var diagram = {
                 id: id,
-                title: this.state.title,
+                title: this.state.diagram_name,
                 variables: this.state.variables,
-                data: data
+                data: data,
+                skill: this.state.skill.skill_id
             }
+
+            // console.log(diagram);
 
             $.ajax({
                 url: '/diagram',
@@ -265,7 +284,6 @@ class StoryBoard extends Component {
                 links[key].setColor('#CCC');
             }
             engine.setDiagramModel(model);
-            let title = diagram.title ? diagram.title : 'Unnamed Story';
 
             let variables = []
             if (diagram.variables) {
@@ -275,7 +293,7 @@ class StoryBoard extends Component {
             this.setState({
                 open: false,
                 engine: engine,
-                title: title,
+                diagram_name: diagram.title ? diagram.title : 'Unnamed Story',
                 last_save: diagram.last_save,
                 loading_modal: false,
                 variables: variables
@@ -287,14 +305,30 @@ class StoryBoard extends Component {
         }
     }
 
-    onLoadId(id) {
-        this.setState({ loading_modal: true, error_modal: false });
+    onLoadSkill(skill_id){
         $.ajax({
-            url: '/diagram/'+id,
+            url: '/skill/'+skill_id,
+            type: 'GET',
+            success: skill => {
+                this.setState({
+                    skill: skill
+                }, this.onLoadId(this.state.diagram_id));
+            },
+            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
+        });
+    }
+
+    onLoadId(diagram_id) {
+        $.ajax({
+            url: '/diagram/'+diagram_id,
             type: 'GET',
             success: diagram => {
                 this.loadDiagram(diagram);
-                cookies.set('diagram', id);
+
+                cookies.set('last_session', {
+                    skill_id: this.state.skill.skill_id,
+                    diagram_id: diagram_id
+                });
             },
             error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
@@ -304,7 +338,7 @@ class StoryBoard extends Component {
         this.setState({
             loading_modal: false
         });
-        this.props.history.push('/storyboard');
+        this.props.history.push('/dashboard');
     }
 
     unsave() {
@@ -363,36 +397,64 @@ class StoryBoard extends Component {
     }
 
     createSkill(name){
-        this.onSave(id => {
-            if(id){
+        if(!name){
+            name = 'New Skill';
+        }
+        this.onSave(diagram_id => {
+            if(diagram_id){
                 axios.post('/skill', {
                   name: name,
-                  diagram: id
+                  diagram: diagram_id
                 })
                 .then(res => {
-                  this.setState({
-                    newSkill: false,
-                    skillname: name
-                  })
+                    let skill_id = res.data.id;
+                    cookies.set('last_session', {
+                        skill_id: skill_id,
+                        diagram_id: diagram_id
+                    });
+                    this.setState({
+                        newSkill: 0,
+                        skill: {
+                            skill_id: skill_id,
+                            name: name
+                        },
+                        diagram_id: diagram_id
+                    });
                 })
                 .catch(err => {
-                  this.setState({ error_modal: 'Could Not Create Project - Error' });
+                    this.setState({ error_modal: 'Could Not Create Project - Error' });
                 })
             }
         });
     }
 
+    publish() {
+        this.onSave(diagram_id => {
+            this.props.history.push('/publish/' + this.state.skill.skill_id);
+        });
+    }
+
     render() {
+        // if(this.state.loading_modal) {
+        //     return <div className='super-center h-100 w-100'>
+        //         <div className="text-center">
+        //             <h1><img className="fa-spin" src='/sync.svg' height='42' width='42' alt='loading'/></h1>
+        //             <h5>Loading...</h5>
+        //         </div>
+        //     </div>
+        // }
+
         return (
             <div className='App' >
                 { this.state.newSkill === null ? null : 
                     <SkillModal 
-                        modal={this.state.newSkill}
+                        modal={!!this.state.newSkill}
                         toggle={()=>this.setState({newSkill: false})} 
                         createSkill={this.createSkill}
-                        onClose={this.state.newSkill ? 
+                        onClose={this.state.newSkill === false ? 
                             () => this.props.history.push('/dashboard') : 
-                            () => this.setState({newSkill: null})}/>
+                            () => this.setState({newSkill: null})}
+                    />
                 }
                 <Prompt
                     when={!this.state.saved}
@@ -418,8 +480,9 @@ class StoryBoard extends Component {
                     { text: 'If', type: 'if', menuColor: '#00695C' }
                 ]} />
                 <TitleBar
-                    title={this.state.title}
-                    onUpdateTitle={(e) => {this.setState({ title: e.target.value }); this.unsave()}}
+                    title={this.state.diagram_name}
+                    skill={this.state.skill}
+                    onUpdateTitle={(e) => {this.setState({ diagram_name: e.target.value }); this.unsave()}}
                     onSave={this.onSave.bind(this)}
                     onTest={this.onTest.bind(this)}
                     onLoadId={this.onLoadId.bind(this)}
@@ -428,6 +491,7 @@ class StoryBoard extends Component {
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
+                    publish={this.publish}
                 />
                 <div
                     className="diagram-layer"

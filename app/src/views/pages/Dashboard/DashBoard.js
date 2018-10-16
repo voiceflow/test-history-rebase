@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 // import moment from 'moment'
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
+import Masonry from 'react-masonry-component';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
+import { InputGroup, Input, Button } from 'reactstrap';
 // import CardMedia from '@material-ui/core/CardMedia';
 
 // import EnvironmentModal from './EnvironmentModal'
@@ -14,6 +15,7 @@ import './DashBoard.css';
 import axios from 'axios';
 
 import ConfirmModal from './../../components/Modals/ConfirmModal';
+import SkillCard from './Skill/SkillCard';
 
 class DashBoard extends Component {
     constructor(props) {
@@ -27,6 +29,13 @@ class DashBoard extends Component {
         }
 
         this.onLoadSkills = this.onLoadSkills.bind(this);
+        this.openSkill = this.openSkill.bind(this);
+    }
+
+    openSkill(skill, diagram){
+        setTimeout(() => { 
+            this.props.history.push(`/storyboard/${skill}/${diagram}`);
+        }, 100);
     }
 
     componentDidMount() {
@@ -116,22 +125,32 @@ class DashBoard extends Component {
                         <Link to="/storyboard/new">Create New Skill</Link>
                     </div>
         }else{
-
+            skills = <Masonry elementType='div' className="skills-container">
+                {this.state.skills.map((skill, i) => 
+                    <SkillCard
+                        key={i}
+                        skill={skill}
+                        open={this.openSkill}
+                    />)}
+            </Masonry>
         }
 
         return (
             <div className='Window'>
-                <div className="subheader dashboard">
-                    <span className="subheader-title">Welcome <b>{this.props.user.name}</b></span>
-                    <div className="subheader-right">
-                        <InputGroup className="mr-2">
-                            <Input placeholder="Search for Skills"/>
-                        </InputGroup>
-                        <Link to="/storyboard/new"><Button color="primary" onClick={this.props.newSkill}><i className="fas fa-plus"/> New Project</Button></Link>
+                <div className="subheader">
+                    <div className="container space-between">
+                        <span className="subheader-title">Welcome <b>{this.props.user.name}</b></span>
+                        <div className="subheader-right">
+                            <InputGroup className="mr-2">
+                                <Input placeholder="Search for Skills"/>
+                            </InputGroup>
+                            <Link to="/storyboard/new"><Button color="primary" onClick={this.props.newSkill}><i className="fas fa-plus"/> New Project</Button></Link>
+                        </div>
                     </div>
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
-                <div className="container mt-4">
+                <div className="my-5 pt-4 container">
+                    <div className="hr-label"><i className="fas fa-angle-right"/> Skills</div>
                     <hr/>
                     {skills}
                 </div>

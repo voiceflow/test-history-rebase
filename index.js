@@ -144,6 +144,7 @@ app.get('/world/:id/stories', ensureLoggedIn(), World.getStories);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.post('/skill', ensureLoggedIn(), Skill.setSkill);
+app.post('/skill/:id/publish', buildJSON(), Skill.buildSkills);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);

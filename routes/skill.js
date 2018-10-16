@@ -58,6 +58,73 @@ const setSkill = (req, res) => {
     });
 };
 
+const builtSkill = (req,res) => {
+    
+    if(!req.params.id){
+        res.sendStatus(401);
+        return;
+    }
+
+    // let name = req.body.name;
+
+    pool.query('SELECT summary FROM skills WHERE skills.skill_id = $2;', [req.user.id])
+
+    let amznJSON = 
+    {
+        "vendorId": vendorID,
+        "manifest": {
+            "publishingInformation": {
+                "locales": {
+                    "en-US": {
+                        "summary": summary,
+                        "examplePhrases": [
+                            "Alexa, open sample skill.",
+                            "Alexa, turn on kitchen lights.",
+                            "Alexa, blink kitchen lights."
+                        ],
+                        // "keywords": [
+                        //     "Smart Home",
+                        //     "Lights",
+                        //     "Smart Devices"
+                        // ],
+
+                        "keywords": keywordsArr
+                        "name": "Sample custom skill name.",
+                        "description": "This skill has basic and advanced smart devices control features."
+                    }
+                },
+                "isAvailableWorldwide": false,
+                "testingInstructions": testingInstructions,
+                "category": "SMART_HOME",
+                "distributionCountries": [
+                    "US",
+                    "GB"
+                ]
+            },
+            "apis": {
+                "custom": {
+                    "endpoint": {
+                        "uri": "arn:aws:lambda:us-east-1:032174894474:function:ask-custom-custome_cert"
+                    }
+                }
+            },
+            "manifestVersion": "1.0",
+            "privacyAndCompliance": {
+                "allowsPurchases": allowsPurchases,
+                "locales": {
+                    "en-US": {
+                        "termsOfUseUrl": "http://www.termsofuse.sampleskill.com",
+                        "privacyPolicyUrl": "http://www.myprivacypolicy.sampleskill.com"
+                    }
+                },
+                "isExportCompliant": isExportCompliant,
+                "isChildDirected": isChildDirected,
+                "usesPersonalInfo": doesUsePersonalInfo
+            }
+        }
+    }
+}
+
 return {
     getSkills: getSkills,
     deleteSkill: deleteSkill,

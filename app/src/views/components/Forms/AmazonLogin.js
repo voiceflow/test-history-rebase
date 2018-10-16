@@ -15,8 +15,12 @@ class Button extends Component{
 	}
 
 	triggerLogin(){
-		this.props.updateLogin(1);
-		AuthenticationService.amazon_login();
+		let that = this;
+		that.props.updateLogin(1);
+		AuthenticationService.amazon_login().then(
+			() => that.props.updateLogin(2),
+			() => that.props.updateLogin(-1),
+		)
 	}
 
 	render(){

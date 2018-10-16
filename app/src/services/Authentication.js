@@ -49,29 +49,22 @@ const load = () => new Promise((resolve) => {
  * Requires SDK to be loaded first.
  * @see https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/javascript_sdk_reference.html#authorize
  */
-const checkLogin = () => new Promise((resolve, reject) => {
-  window.amazon.Login.authorize(options, (response) => {
-    if (response.error) {
-      return reject({
-        provider: 'amazon',
-        type: 'auth',
-        description: 'Authentication failed',
-        error: response
-      })
-    }
-
-    console.log(response);
-    resolve('yeet');
-  })
-})
-
-/**
- * Trigger Amazon login process.
- * Requires SDK to be loaded first.
- */
 const login = () => new Promise((resolve, reject) => {
-  return checkLogin().then(resolve, reject)
-})
+  	window.amazon.Login.authorize(options, (response) => {
+	    if (response.error) {
+	      	reject();
+	    }else{
+	    	axios.get('/session/amazon/' + response.code)
+	    	.then(res => {
+	    		resolve();
+	    	})
+	    	.catch(err => {
+	    		console.error(err);
+	    		reject(err);
+	    	});
+	    }
+  	})
+});
 
 /**
  * Trigger Amazon logout.
@@ -95,32 +88,39 @@ export default {
 	isAuth: () => {
 		return !!cookies.get('auth');
 	},
-	Amazon: () => {
-		return window.user_detail.amazon && (window.user_detail.amazon.expiry < Date.now());
+	AmazonAccessToken: cb => {
+		axios.get('/session/access_token')
+		.then(res => {
+			cb(res.data.access_token);
+		})
+		.catch(err => {
+			// console.error(err);
+			cb(null);
+		});
 	},
 	check: (cb) => {
 		// req.user on backend will contain user info if
 		// this person has credentials that are valid
 		axios.get('/session')
-		.then((response) => {
+		.then(response => {
 			window.user_detail = response.data;
 	      	cb(false, response.data);
 	    })
-	    .catch((error) => {
+	    .catch(err => {
 	    	cookies.remove('auth');
-	      	cb(error, null);
+	      	cb(err, null);
 	    });
 	},
 	logout: (cb) => {
 		window.user_detail = default_user;
 		axios.delete('/session')
-		.then((response) => {
+		.then(response => {
 			cookies.remove('auth');
 			if(cb){
 				cb();
 			}
 		})
-		.catch((error) => {
+		.catch(err => {
 			cookies.remove('auth');
 			if(cb){
 				cb();
@@ -129,24 +129,24 @@ export default {
 	},
 	signup: (user, cb) => {
 	    axios.put('/user', user)
-	    .then((response) => {
+	    .then(response => {
 	    	cookies.set('auth', response.data.token);
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
-	    .catch((error) => {
-	    	cb(error);
+	    .catch(err => {
+	    	cb(err);
 	    });
 	},
 	login: (user, cb) => {
 	    axios.put('/session', user)
-	    .then((response) => {
+	    .then(response => {
 	    	cookies.set('auth', response.data.token);
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
-	    .catch((error) => {
-	    	cb(error);
+	    .catch(err => {
+	    	cb(err);
 	    });
 	}
 }

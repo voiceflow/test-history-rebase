@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const codes = require('./../config/codes');
 const config = require('./../config/config');
 const uuidv1 = require('uuid/v1');
+const axios = require('axios');
 
 module.exports = (router, docClient, pool, redisClient) => {
 
@@ -51,9 +52,76 @@ module.exports = (router, docClient, pool, redisClient) => {
       	});
 	}
 
-	router.get('/session/amazon/:id', (req, res) => {
-	    if(req.user && req.params.id){
+	// Gets the Amazon Login Access Token for Skill publishing
+	router.get('/session/access_token', (req, res) => {
+		if(!req.user){
+			res.sendStatus(401);
+		}else{
+			redisClient.get(`t_${req.user.id}`, function(err, token) {
+				if(err){
+					console.error(err);
+					res.sendStatus(500);
+				}else if(token === null){
+					res.sendStatus(404);
+				}else{
+					token = JSON.parse(token);
+					if(token.expires_in < Date.now()){
+						axios.post('https://api.amazon.com/auth/o2/token', {
+							grant_type: "refresh_token",
+							refresh_token: data.refresh_token
+						})
+						.then(result => {
+				    		let data = {
+				    			expire: Date.now() + (result.data.expires_in * 1000),
+				    			access_token: result.data.access_token,
+				    			refresh_token: result.data.refresh_token
+				    		}
+				    		redisClient.set(`t_${req.user.id}`, JSON.stringify(data), (err) => {
+				    			if(err){
+				    				console.error(err);
+				    			}else{
+				    				res.sendStatus(200);
+				    			}
+				    		});
+						})
+						.catch(err => {
+							console.error(err);
+							res.sendStatus(500);
+						});
+					}else{
+						res.send(token.access_token);
+					}
+				}
+			});
+		}
+	});
 
+	router.get('/session/amazon/:code', (req, res) => {
+	    if(req.user && req.params.code){
+	    	axios.post('https://api.amazon.com/auth/o2/token', {
+	    		grant_type: "authorization_code",
+	    		code: req.params.code,
+	    		client_id: "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e",
+	    		client_secret: "74dc2ec3fa8560a2a20600fae4ab0a36e89f3bfe507221fd73dc51b16b35c49e"
+	    	})
+	    	.then(result => {
+	    		let data = {
+	    			expire: Date.now() + (result.data.expires_in * 1000),
+	    			access_token: result.data.access_token,
+	    			refresh_token: result.data.refresh_token
+	    		}
+	    		redisClient.set(`t_${req.user.id}`, JSON.stringify(data), (err) => {
+	    			if(err){
+	    				console.error(err);
+	    			}else{
+	    				res.sendStatus(200);
+	    			}
+	    		});
+	    	})
+	    	.catch(err => {
+	    		console.error(err);
+	    		res.sendStatus(500);
+	    	})
 	    }else{
 	    	res.sendStatus(401);
 	    }

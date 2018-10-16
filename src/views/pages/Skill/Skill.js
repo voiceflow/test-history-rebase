@@ -23,7 +23,9 @@ import categories from './../../../services/Categories';
 const stage_title = [
     "Login Developer with Amazon",
     "Verifying",
-    "Privacy & Compliance"
+    "Privacy & Compliance",
+    "Publishing",
+    "Awaiting Review"
 ]
 
 class Skill extends Component {
@@ -49,8 +51,10 @@ class Skill extends Component {
         this.handleSelection = this.handleSelection.bind(this);
         this.toggle = this.toggle.bind(this);
         this.togglePublish = this.togglePublish.bind(this);
+        this.closePublish = this.closePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
+        this.onPublish = this.onPublish.bind(this);
     }
 
     componentWillMount() {
@@ -98,6 +102,28 @@ class Skill extends Component {
             [type]: value,
             saved: false
         })
+    }
+
+    onPublish(){
+        this.save(true, ()=>{
+            this.setState({
+                stage: 3
+            });
+            axios.post('/skill/' + this.state.skill_id + '/publish')
+            .then(res => {
+                this.setState({
+                    stage: 4
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                this.setState({
+                    publish: false,
+                    stage: 2,
+                    error: 'Publishing Error'
+                })
+            })
+        });
     }
 
     save(publish=false, cb){
@@ -165,14 +191,15 @@ class Skill extends Component {
     }
 
     togglePublish() {
+        this.setState({
+            publish: !this.state.publish
+        });
+    }
+
+    closePublish() {
         if(this.state.stage === 1){
             this.setState({
-                publish: !this.state.publish,
                 stage: 0
-            });
-        }else{
-            this.setState({
-                publish: !this.state.publish
             });
         }
     }
@@ -230,10 +257,10 @@ class Skill extends Component {
             content = <div>
                 {this.state.stage === -1 ? <Alert color="danger">Login With Amazon Failed</Alert> : null}
                 <AmazonLogin
-                updateLogin={(stage) => this.setState({stage: stage})}
+                    updateLogin={(stage) => this.setState({stage: stage})}
                 />
             </div>
-        }else if(this.state.stage === 1){
+        }else if(this.state.stage === 1 || this.state.stage === 3){
             content = <h1><i className="fas fa-sync-alt fa-spin"/></h1>
         }else if(this.state.stage === 2){
             content = <div>
@@ -249,8 +276,10 @@ class Skill extends Component {
                         placeholder="Any Particular Testing Instructions for Amazon Approval Process"
                     />
                 </Paper>
-                <Button color="primary" onClick={this.togglePublish} block>Submit To Alexa</Button>
+                <Button color="primary" onClick={this.onPublish} block>Submit To Alexa</Button>
             </div>
+        }else if(this.state.stage === 4){
+            content = <Alert>Congratulations 😊 Your Skill Has been Published</Alert>
         }
 
         if(!this.state.loaded) return null;
@@ -267,7 +296,13 @@ class Skill extends Component {
                     </div>
                 </div>
 
-                <Modal isOpen={!!this.state.publish} toggle={this.togglePublish} className={this.props.className} centered size="lg">
+                <Modal 
+                    isOpen={!!this.state.publish} 
+                    toggle={this.togglePublish} 
+                    className={this.props.className} 
+                    centered 
+                    size="lg"
+                    onClosed={this.closePublish}>
                     <ModalBody>
                         <div className="d-flex justify-content-between">
                             <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>×</button>

@@ -10,9 +10,13 @@
 .add-skill h2{
 	font-weight: lighter;
 }
-.Window hr {
-    border-color: #555;
+
+.hr-label {
+  margin-bottom: -10px;
+  font-size: 1.5rem;
+  color: #BBB;
 }
+
 .banner {
     flex-direction: row;
     justify-content: center;
@@ -235,4 +239,101 @@
 .rotate .front .inner span{
   color: #999;
   font-weight: 300;
+}
+
+/* STORY CARD */
+
+.skills-container{
+  margin: 0 -10px;
+}
+
+.skill-card-container{
+    width: 25%;
+    padding: 10px;
+}
+.skill-card{
+    background: #fff;
+    border: none !important;
+    transition-duration: 172ms;
+    will-change: transform, box-shadow;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.05) !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+.skill-card:hover{
+    box-shadow: 0 10px 20px rgba(220,220,220,0.5) !important;
+    transform: translateY(-2px);
+    color: inherit;
+}
+.skill-card .card-action {
+  width: 100%;
+}
+
+.skill-card .card-actions {
+  display: flex;
+    /*align-items: center;*/
+    /*justify-content: center;*/
+    overflow: hidden;
+  padding-bottom: 10px;
+}
+
+.skill-card .card-footer {
+    border: none !important;
+    background-color: #fff !important;
+}
+
+.skill-card .no-image {
+  background-repeat: repeat !important;
+  background-size: auto !important;
+  background-color: #DFDBE5;
+}
+
+.skill-card .card-image {
+  height: 200px;
+  background-size: 100%;
+  background-position: center center;
+    background-size: cover;
+/*    border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;*/
+    transition-duration: 172ms;
+    will-change: transform;
+}
+.skill-card .card:hover .card-image, .storytable-row:hover .card-image{
+    transform: scale(1.05);
+}
+.skill-card .card-action:hover .card-image{
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.3);
+}
+.skill-card .play{
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 200px;
+    z-index: 999;
+    color: #fff;
+    font-size: 64px;
+    align-items: center;
+    justify-content: center;
+}
+.skill-card .card-action:hover .play{
+    display: flex;
+}
+
+.skill-card .no-overflow {
+  /*overflow: hidden;*/
+}
+/*@media(max-width: 1547px){
+  .skill-card-container{
+        width: 25%;
+  }
+}*/
+@media(max-width: 1200px){
+  .skill-card-container{
+        width: calc(100%/3);
+  }
+}
+@media(max-width: 798px){
+    .skill-card-container{
+        width: 100%;
+    }
 }

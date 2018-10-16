@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 import moment from 'moment';
+
 // import axios from 'axios'
 
 class TitleBar extends Component {
@@ -57,6 +58,7 @@ class TitleBar extends Component {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                         <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
+                        <DropdownItem onClick={this.props.publish}>Publish Skill</DropdownItem>
                         {
                             this.props.admin ? 
                             <div>
@@ -67,11 +69,14 @@ class TitleBar extends Component {
                         }
                     </DropdownMenu>
                 </ButtonDropdown>
+                <div className="skill-name">
+                    {this.props.skill.name}
+                </div>
                 <input
                     name="story"
                     onChange={this.props.onUpdateTitle}
                     value={this.props.title}
-                    placeholder="Project Title"
+                    placeholder="Diagram Name"
                 />
                 <div className="status">
                     {this.props.saving ?

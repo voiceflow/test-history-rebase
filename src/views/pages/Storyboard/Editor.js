@@ -27,11 +27,11 @@ class Editor extends Component {
     }
 
     componentDidMount() {
-        $('*').keypress(function(e) {
-            if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
-                e.preventDefault();
-            }
-        });
+        // $('*').keypress(function(e) {
+        //     if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
+        //         e.preventDefault();
+        //     }
+        // });
         $.ajax({
             url: '/voices',
             type: 'GET',
@@ -111,31 +111,29 @@ class Editor extends Component {
 
     render() {
 
-        if(!this.state.node){
-            return <div></div>;
-        }
-
-        let type = this.state.node.extras.type === "multiline" ? "line" : this.state.node.extras.type;
+        const type = this.state.node ? (this.state.node.extras.type === "multiline" ? "line" : this.state.node.extras.type) : null;
 
         return (
-            <div key={this.state.node.id} className={"Editor" + (this.props.open ? ' open':'')}>
-                <form onSubmit={(e) => e.preventDefault()} className="controls">
-                    <div className="top">
-                        <div className="property">
-                            <button className="close" onClick={this.props.onClose}>&times;</button>
-                            <div className={"block " + type}>{type} block</div>
+            <div className={"Editor" + (this.props.open && type ? ' open':'')}>
+                {type ?
+                    <form onSubmit={(e) => e.preventDefault()} className="controls">
+                        <div className="top">
+                            <div className="property">
+                                <button className="close" onClick={this.props.onClose}>&times;</button>
+                                <div className={"block " + type}>{type} block</div>
+                            </div>
+                            <div>
+                                <input id="label" placeholder="Block Label" 
+                                    type="text"
+                                    name="name"
+                                    value={this.state.node.name}
+                                    onChange={this.handleChange.bind(this)}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <input id="label" placeholder="Block Label" 
-                                type="text"
-                                name="name"
-                                value={this.state.node.name}
-                                onChange={this.handleChange.bind(this)}
-                            />
-                        </div>
-                    </div>
-                    {this.BlockViewer()}
-                </form>
+                        {this.BlockViewer()}
+                    </form> 
+                : null}
             </div>
         );
     }

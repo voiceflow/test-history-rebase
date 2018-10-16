@@ -1,6 +1,7 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
+const {docClient, pool} = require('./../services');
 
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
@@ -64,8 +65,6 @@ const expressionfy = (expression, depth=0) => {
         return (string + ")");
     }
 }
-
-module.exports = (docClient, pool) => {
 
 const getDiagrams = (req, res) => {
     if (!req.user) {
@@ -541,7 +540,7 @@ const publishWorld = (req, res) => {
     });
 };
 
-return {
+module.exports = {
     getDiagrams: getDiagrams,
     getDiagram: getDiagram,
     deleteDiagram: deleteDiagram,
@@ -549,4 +548,4 @@ return {
     publish: publish,
     publishReview: publishReview,
     publishWorld: publishWorld
-}}
+}

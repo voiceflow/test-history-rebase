@@ -66,16 +66,6 @@ const login = () => new Promise((resolve, reject) => {
   	})
 });
 
-/**
- * Trigger Amazon logout.
- * Requires SDK to be loaded first.
- * @see https://developer.amazon.com/docs/login-with-amazon/javascript-sdk-reference.html#logout
- */
-const logout = () => new Promise((resolve) => {
-  window.amazon.Login.logout()
-  return resolve()
-})
-
 export default {
 	amazon_load: load,
 	amazon_login: login,

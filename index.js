@@ -8,68 +8,19 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-const AWS = require('aws-sdk');
-const config = require('./config/config');
-const redis = require('redis');
 const fs = require('fs');
 const https = require('https');
+const {upload, redisClient, jwt, config} = require('./services');
 
-AWS.config.loadFromPath('./aws-config.json');
-
-const docClient = new AWS.DynamoDB.DocumentClient({
-    convertEmptyValues: true
-});
-
-// create SQL client for analytics
-const pg = require('pg');
-
-var types = pg.types;
-types.setTypeParser(1114, function(stringValue) {
-    return new Date(stringValue + "+0000");
-});
-
-const pool = new pg.Pool({
-    user: 'StoryflowUser',
-    host: 'storyflow-db.cmzdhv5svqny.us-east-1.rds.amazonaws.com',
-    database: 'storyflow_analytics',
-    password: '2p20RuU1D',
-    port: 5432
-});
-
-// Create a Redis Client for sessions
-const redisClient = process.env.PROD ? redis.createClient({
-    host: config.redisClusterHost,
-    port: config.redisClusterPort
-}) : redis.createClient();
-
-const s3 = new AWS.S3();
-
-const upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: 'com.getstoryflow.audio.production',
-        key: (req, file, cb) => {
-            cb(null, Date.now().toString()+'-'+file.originalname
-                .toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w\-.]+/g, ''));
-        }
-    })
-});
-
-app.use(express.static(path.join(__dirname, 'app', 'build')));
-
-const Diagram = require('./routes/diagram.js')(docClient, pool);
-const World = require('./routes/world.js')(docClient, pool);
-const Skill = require('./routes/skill.js')(docClient, pool);
+// IMPORT ROUTES
+const Diagram = require('./routes/diagram.js');
+const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
-const Story = require('./routes/story.js')(docClient, pool);
-const Analytics = require('./routes/analytics.js')(docClient, pool);
-const Review = require('./routes/review.js')(docClient);
+const Story = require('./routes/story.js');
+const Analytics = require('./routes/analytics.js')
+const Review = require('./routes/review.js');
+const Authentication = require('./routes/authentication');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -87,6 +38,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, 'app', 'build')));
 
 // Middleware for Authentication
 app.use((req, res, next) => {
@@ -140,11 +93,12 @@ const ensureLoggedOut = () => {
     }
 }
 
-app.get('/worlds', ensureLoggedIn(), World.getWorlds);
-app.post('/world', ensureLoggedIn(), World.setWorld);
-app.delete('/world/:id', ensureLoggedIn(), World.deleteWorld);
-app.patch('/world/:id', ensureLoggedIn(), World.updateAudio);
-app.get('/world/:id/stories', ensureLoggedIn(), World.getStories);
+app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.getAccessToken);
+app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
+app.get('/session', Authentication.getSession);
+app.put('/session', Authentication.putSession);
+app.delete('/session', Authentication.deleteSession);
+app.put('/user', Authentication.putUser);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
@@ -160,13 +114,6 @@ app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
 app.post('/publish/review/:env/:id', ensureLoggedIn(), Diagram.publishReview);
 app.post('/publish/world/:world_id/:id', ensureLoggedIn(), Diagram.publishWorld);
-
-app.get('/review/:id', ensureAdmin(), Review.getReview);
-app.post('/review/:id', ensureLoggedIn(), Review.setReview);
-app.post('/review', ensureLoggedIn(), Review.saveReview);
-app.patch('/review/:id', ensureAdmin(), Review.updateReview);
-app.delete('/review/:id', ensureLoggedIn(), Review.deleteReview);
-app.get('/reviews', ensureLoggedIn(), Review.getReviews);
 
 app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
 app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
@@ -199,10 +146,6 @@ app.post('/image', ensureLoggedIn(), upload.any(), (req, res) => {
     res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+req.files[0].key);
 });
 app.post('/concat', ensureLoggedIn(), Audio.concat);
-
-// all the authentication routes
-const authentication = require('./routes/authentication')(express.Router(), docClient, pool, redisClient);
-app.use('/', authentication);
 
 // Handle React routing, return all requests to React app
 app.get('*', function(req, res) {

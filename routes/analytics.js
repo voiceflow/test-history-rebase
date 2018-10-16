@@ -2,7 +2,7 @@ Date.prototype.isValid = function() {
   return isFinite(this);
 }
 
-module.exports = (docClient, pool) => {
+const {docClient, pool} = require('./../services');
 
 const getStories = (req, res) => {
     if(!req.params.env){
@@ -295,7 +295,7 @@ const getBucketUsers = (req, res) => {
     });
 }
 
-return {
+module.exports = {
     getStoryLines: getStoryLines,
     getStories: getStories,
     getAggregate: getAggregate,
@@ -304,5 +304,4 @@ return {
     getBucketUsers: getBucketUsers,
     getUserStories: getUserStories,
     getUserStoriesData: getUserStoriesData
-}
 }

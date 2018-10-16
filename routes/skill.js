@@ -3,7 +3,7 @@ const Hashids = require('hashids');
 
 var hashids = new Hashids('XW1B36YGG8', 10);
 
-module.exports = (docClient, pool) => {
+const {docClient, pool} = require('./../services');
 
 const getSkills = (req, res) => {
     if (!req.user) {
@@ -166,88 +166,78 @@ const buildSkill = (req,res) => {
      if (!req.params.id) {
          res.sendStatus(401);
      }
-     let id = hashids.decode(req.params.id)[0];
 
+     let id = hashids.decode(req.params.id)[0];
     
      pool.query('SELECT * FROM skills WHERE skills.skill_id = $1;', [id], (err, data) => {
         if(err){
             console.error(err); 
             res.sendStatus(500); 
         } else { 
+            let r = data.rows[0];
+            let summary = r.summary;
+            let testingInstructions = r.instructions;
+            let allowsPurchases = r.purchase;
+            let isExportCompliant = r.export;
+            let isChildDirected = r.copa;
+            let category = r.purchase;
+            let skillCategory = r.skill;
+            let doesUsePersonalInfo = r.personal;
+            let invocations = r.invocations;
 
-            let summary = data.rows[0].summary;
-            let testingInstructions = data.rows[0].instructions;
-            let allowsPurchases = data.rows[0].purchase;
-            let isExportCompliant = data.rows[0].export;
-            let isChildDirected = data.rows[0].copa;
-            let category = data.rows[0].purchase;
-            let skillCategory = data.rows[0].skill;
-            let doesUsePersonalInfo = data.rows[0].personal;
-
-     let amznJSON = 
-        {
-         "vendorId": vendorID,
-         "manifest": {
-             "publishingInformation": {
-                 "locales": {
-                     "en-US": {
-                         "summary": summary,
-                         "examplePhrases": [
-                             "Alexa, open sample skill.",
-                             "Alexa, turn on kitchen lights.",
-                             "Alexa, blink kitchen lights."
-                         ],
-                         // "keywords": [
-                         //     "Smart Home",
-                         //     "Lights",
-                         //     "Smart Devices"
-                         // ],
- 
-                         "keywords": keywordsArr,
-                         "name": "Sample custom skill name.",
-                         "description": "This skill has basic and advanced smart devices control features."
-                     }
-                 },
-                 "isAvailableWorldwide": false,
-                 "testingInstructions": testingInstructions,
-                 "category": skillCategory,
-                 "distributionCountries": [
-                     "US",
-                     "GB"
-                 ]
-             },
-             "apis": {
-                 "custom": {
-                     "endpoint": {
-                         "uri": `https://app.getstoryflow.com/state/${id}/update`
+             let amznJSON = {
+                 "vendorId": 'MVMX1EPB9U1M6',
+                 "manifest": {
+                     "publishingInformation": {
+                         "locales": {
+                             "en-US": {
+                                 "summary": summary,
+                                 "examplePhrases": invocations,
+                                 "keywords": keywordsArr,
+                                 "name": "Sample custom skill name.",
+                                 "description": "This skill has basic and advanced smart devices control features."
+                             }
+                         },
+                         "isAvailableWorldwide": false,
+                         "testingInstructions": testingInstructions,
+                         "category": skillCategory,
+                         "distributionCountries": [
+                             "US",
+                             "GB"
+                         ]
+                     },
+                     "apis": {
+                         "custom": {
+                             "endpoint": {
+                                 "uri": `https://app.getstoryflow.com/skill/${id}`
+                             }
+                         }
+                     },
+                     "manifestVersion": "1.0",
+                     "privacyAndCompliance": {
+                         "allowsPurchases": allowsPurchases,
+                         "locales": {
+                             "en-US": {
+                                 "termsOfUseUrl": "https://getstoryflow.com",
+                                 "privacyPolicyUrl": "https://getstoryflow.com"
+                             }
+                         },
+                         "isExportCompliant": isExportCompliant,
+                         "isChildDirected": isChildDirected,
+                         "usesPersonalInfo": doesUsePersonalInfo
                      }
                  }
-             },
-             "manifestVersion": "1.0",
-             "privacyAndCompliance": {
-                 "allowsPurchases": allowsPurchases,
-                 "locales": {
-                     "en-US": {
-                         "termsOfUseUrl": "http://www.termsofuse.sampleskill.com",
-                         "privacyPolicyUrl": "http://www.myprivacypolicy.sampleskill.com"
-                     }
-                 },
-                 "isExportCompliant": isExportCompliant,
-                 "isChildDirected": isChildDirected,
-                 "usesPersonalInfo": doesUsePersonalInfo
-             }
-         }
-    }
-        res.send(amznJSON); 
+            }
+            
         }
     });     
 }
 
-return {
+module.exports = {
     patchSkill: patchSkill,
     getSkills: getSkills,
     getSkill: getSkill,
     deleteSkill: deleteSkill,
     setSkill: setSkill,
     buildSkill: buildSkill
-}}
+}

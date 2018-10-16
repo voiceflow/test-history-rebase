@@ -3,7 +3,7 @@ const uuidv1 = require('uuid/v1');
 
 const Audio = require('./audio.js');
 
-module.exports = (docClient, pool) => {
+const {docClient, pool} = require('./../services');
 
 const getStories = (req, res) => {
     let params = {
@@ -288,10 +288,10 @@ const unlistStory = (req, res) => {
     });
 }
 
-return {
+module.exports = {
     getStories: getStories,
     deleteStory: deleteStory,
     featureStory: featureStory,
     listStory: listStory,
     unlistStory: unlistStory
-}}
+}

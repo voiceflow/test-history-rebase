@@ -147,11 +147,9 @@ const getDiagram = (req, res) => {
 const setDiagram = (req, res) => {
     if (!req.body) {
         res.sendStatus(400);
-
         return;
     } else if (!req.user) {
         res.sendStatus(401);
-
         return;
     }
 
@@ -165,7 +163,7 @@ const setDiagram = (req, res) => {
     }
 
     if (diagram.title.trim() === "" || !diagram.title.trim()){
-        diagram.title = "Unnamed Project";
+        diagram.title = "Unnamed Diagram";
     }
 
     diagram.last_save = Date.now();

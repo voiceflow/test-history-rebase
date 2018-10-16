@@ -11,13 +11,15 @@ import './App.css';
 
 // Pages
 import StoryBoard from './views/pages/Storyboard/StoryBoard';
-import OldDashBoard from './views/pages/Dashboard/OldDashBoard';
 import DashBoard from './views/pages/Dashboard/DashBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
 import Reviews from './views/pages/Reviews/Reviews';
 import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar';
+import Skill from './views/pages/Skill/Skill'
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -89,23 +91,23 @@ class App extends Component {
       this.state.loading ? 
         <div className='super-center h-100 w-100'>
             <div className="text-center">
-                <h1><img className="fa-spin" src='/sync.svg' height='42' width='42' alt='loading'/></h1>
+                <CircularProgress size={50} />
                 <h5>Loading...</h5>
             </div>
         </div> :
         <Router history={history}>
           <div id="body">
             { this.state.session ? <Route render={(props) => {
-                  return <NavBar intercom {...props}/>
+                  return <NavBar {...props}/>
             }} /> : null }
               <Switch>
                 <PublicRoute exact path="/login" name="Login" component={Account} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Account} />
                 <PrivateRoute exact path="/storyboard/new" name="Storyboard" new component={StoryBoard}/>
-                <PrivateRoute path="/storyboard/:id" name="Storyboard" component={StoryBoard} />
-                <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard} />
+                <PrivateRoute path="/storyboard/:skill_id/:diagram_id" name="Storyboard" component={StoryBoard}/>
+                <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard}/>
+                <PrivateRoute path="/publish/:id" name="Skill Dashboard" component={Skill}/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/olddashboard" name="Dashboard" component={OldDashBoard} />
                 <PrivateRoute path="/admin" name="Admin" component={Admin} />
                 <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
                 <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />

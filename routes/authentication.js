@@ -51,6 +51,14 @@ module.exports = (router, docClient, pool, redisClient) => {
       	});
 	}
 
+	router.get('/session/amazon/:id', (req, res) => {
+	    if(req.user && req.params.id){
+
+	    }else{
+	    	res.sendStatus(401);
+	    }
+	});
+
 	router.get('/session', (req, res) => {
 	    req.user ? res.send(req.user) : res.sendStatus(403);
 	});

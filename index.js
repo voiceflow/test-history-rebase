@@ -143,7 +143,9 @@ app.patch('/world/:id', ensureLoggedIn(), World.updateAudio);
 app.get('/world/:id/stories', ensureLoggedIn(), World.getStories);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
+app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.post('/skill', ensureLoggedIn(), Skill.setSkill);
+app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);

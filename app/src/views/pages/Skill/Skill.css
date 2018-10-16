@@ -1,0 +1,65 @@
+.icon-image {
+	width: 200px;
+	height: 200px;
+}
+
+.icon-image>.dropzone{
+	height: 100%;
+}
+.icon-image>.image-box{
+	height: 100%;
+	width: 100%;
+	display: block;
+}
+.icon-image.small-icon>.image-box {
+	padding: 50px;
+}
+.icon-image.large-icon>.image-box {
+	padding: 10px;
+}
+.icon-image>.image-box>.image{
+	height: 100%;
+	width: 100%;
+	background-position: center center;
+    background-size: cover;
+    border-radius: 100px;
+    border: 1px solid #AAA;
+}
+
+.multiple .input-group {
+	margin: 15px 0;
+}
+
+.Window.skill .form-group{
+	margin-top: 1rem;
+}
+
+.Window.skill .form-group label{
+	margin-bottom: 5px !important;
+}
+
+.Window.skill>.container{
+	padding-top: 80px;
+	padding-bottom: 6rem;
+}
+
+.Window.skill input::placeholder, textarea::placeholder{
+	color: #CCC !important;
+}
+
+.LoginWithAmazon{
+    display: inline-block;
+    cursor: pointer;
+}
+.unpressed {
+    display: block;
+}
+.pressed {
+    display: none;
+}
+.LoginWithAmazon:hover .unpressed {
+    display: none;
+}
+.LoginWithAmazon:hover .pressed {
+    display: block;
+}

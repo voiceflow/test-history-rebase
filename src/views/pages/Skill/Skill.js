@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import axios from 'axios';
 
-import { Button, Form, FormGroup, Label, Input, Modal, ModalBody } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Modal, ModalBody, Alert } from 'reactstrap';
 import Checkbox from '@material-ui/core/Checkbox';
 import MUFormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
@@ -38,7 +38,7 @@ class Skill extends Component {
                 saved: true,
                 skill_id: this.props.computedMatch.params.id,
                 error: null,
-                stage: AuthenticationService.Amazon() ? 2 : 0,
+                stage: 1,
                 publish: false
             }
         } else {
@@ -51,6 +51,14 @@ class Skill extends Component {
         this.togglePublish = this.togglePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
+    }
+
+    componentWillMount() {
+        AuthenticationService.AmazonAccessToken(token => {
+            this.setState({
+                stage: (token === null) ? 0 : 2
+            });
+        })
     }
 
     componentDidMount() {
@@ -219,9 +227,12 @@ class Skill extends Component {
         let content;
 
         if(this.state.stage === 0 || this.state.stage === -1){
-            content = <AmazonLogin
+            content = <div>
+                {this.state.stage === -1 ? <Alert color="danger">Login With Amazon Failed</Alert> : null}
+                <AmazonLogin
                 updateLogin={(stage) => this.setState({stage: stage})}
-            />
+                />
+            </div>
         }else if(this.state.stage === 1){
             content = <h1><i className="fas fa-sync-alt fa-spin"/></h1>
         }else if(this.state.stage === 2){
@@ -260,8 +271,8 @@ class Skill extends Component {
                     <ModalBody>
                         <div className="d-flex justify-content-between">
                             <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>×</button>
-                            {content}
                         </div>
+                        {content}
                     </ModalBody>
                 </Modal>
 

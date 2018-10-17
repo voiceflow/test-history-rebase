@@ -21,6 +21,7 @@ const Story = require('./routes/story.js');
 const Analytics = require('./routes/analytics.js')
 const Review = require('./routes/review.js');
 const Authentication = require('./routes/authentication');
+const Code = require('./config/codes.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -125,6 +126,7 @@ app.get('/analytics/:env/users/bucket', ensureAdmin(), Analytics.getBucketUsers)
 app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
 app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
+app.get('/code', ensureAdmin(), Code.generateCode);
 
 // TO REMOVE SOON
 app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);

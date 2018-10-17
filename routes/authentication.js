@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const uuidv1 = require('uuid/v1');
 const axios = require('axios');
 const {jwt, docClient, pool, redisClient, config} = require('./../services');
-const codes = require('./../config/codes');
+const Codes = require('./../config/codes');
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -167,7 +167,7 @@ const deleteSession = (req, res) => {
     res.sendStatus(200);
 };
 
-const putUser = (req, res) => {
+const putUser = async (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
 	let password = req.body.password;
@@ -175,7 +175,7 @@ const putUser = (req, res) => {
 
     if (!name || !email || !password) {
         res.status(400).send("Form not filled");
-     } else if(!codes.includes(code)) {
+     } else if(!(await Codes.checkCodes(code))) {
         res.status(400).send("Invalid Access Code");
 	 } else {
         email = email.trim().toLowerCase();

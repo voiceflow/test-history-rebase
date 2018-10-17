@@ -201,7 +201,7 @@ const manifest = (r, encoded_id) => {
              "apis": {
                  "custom": {
                      "endpoint": {
-                         "uri": `https://app.getstoryflow.com/skill/${encoded_id}`,
+                         "uri": `https://app.getstoryflow.com/state/skill/${encoded_id}`,
                          "sslCertificateType": "Trusted"
                      }
                  }

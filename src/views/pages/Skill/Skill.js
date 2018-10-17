@@ -333,6 +333,7 @@ class Skill extends Component {
                                 <Label>Small Icon *</Label>
                                 <Image 
                                     className='icon-image small-icon'
+                                    path='/small_icon'
                                     image={this.state.small_icon} 
                                     update={(url) => this.setState({small_icon: url})}/>
                             </div>
@@ -340,6 +341,7 @@ class Skill extends Component {
                                 <Label>Large Icon *</Label>
                                 <Image 
                                     className='icon-image large-icon'
+                                    path='/large_icon'
                                     image={this.state.large_icon} 
                                     update={(url) => this.setState({large_icon: url})}/>
                             </div>
@@ -373,8 +375,9 @@ class Skill extends Component {
                            <Multiple
                                 list={this.state.invocations}
                                 max={3}
+                                prepend="Alexa,"
                                 update={(list) => this.setState({invocations: list, saved: false})}
-                                placeholder={"Alexa, open/start/turn on " + this.state.name}
+                                placeholder={"open/start/turn on " + this.state.name}
                                 add={<span><i className="fas fa-plus"/> Add Invocation</span>}
                            />
                         </FormGroup>

@@ -14,7 +14,7 @@ class Image extends Component {
         if (files.length > 0) {
             let data = new FormData();
             data.append('image', files[0]);
-            axios.post('/image', data)
+            axios.post('/image' + (this.props.path ? this.props.path : ''), data)
             .then(res => {
             	this.props.update(res.data);
             })

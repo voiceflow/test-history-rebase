@@ -20,13 +20,14 @@ import AuthenticationService from './../../../services/Authentication';
 
 import categories from './../../../services/Categories';
 
-const stage_title = [
-    "Login Developer with Amazon",
-    "Verifying",
-    "Privacy & Compliance",
-    "Publishing",
-    "Awaiting Review"
-]
+const stage_title = {
+    "0": "Login Developer with Amazon",
+    "1": "Verifying",
+    "2": "Privacy & Compliance",
+    "3": "Rendering",
+    "4": "Publishing",
+    "10": "Awaiting Review"
+}
 
 class Skill extends Component {
 
@@ -106,21 +107,33 @@ class Skill extends Component {
 
     onPublish(){
         this.save(true, ()=>{
-            this.setState({
-                stage: 3
-            });
-            axios.post('/skill/' + this.state.skill_id + '/publish')
+            this.setState({stage: 3});
+
+            axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
             .then(res => {
-                this.setState({
-                    stage: 4
-                });
+                this.setState({stage: 4});
+
+                axios.post(`/skill/${this.state.skill_id}/publish`)
+                .then(res => {
+                    this.setState({
+                        stage: 10
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.setState({
+                        publish: false,
+                        stage: 2,
+                        error: 'Publishing Error'
+                    })
+                })
             })
             .catch(err => {
                 console.error(err);
                 this.setState({
                     publish: false,
                     stage: 2,
-                    error: 'Publishing Error'
+                    error: 'Rendering Error'
                 })
             })
         });
@@ -278,7 +291,7 @@ class Skill extends Component {
                 </Paper>
                 <Button color="primary" onClick={this.onPublish} block>Submit To Alexa</Button>
             </div>
-        }else if(this.state.stage === 4){
+        }else if(this.state.stage === 10){
             content = <Alert>Congratulations 😊 Your Skill Has been Published</Alert>
         }
 

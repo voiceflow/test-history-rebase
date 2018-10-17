@@ -2,7 +2,7 @@ const interactionModel = (invocation) => {
 	return {
 	    "interactionModel": {
 	        "languageModel": {
-	            "invocationName": invocation,
+	            "invocationName": invocation.toLowerCase(),
 	            "intents": [
 	                {
 	                    "name": "AMAZON.CancelIntent",
@@ -35,7 +35,7 @@ const interactionModel = (invocation) => {
 	                    ]
 	                },
 	                {
-	                    "name": "StoryLineIntent",
+	                    "name": "StoryFlowIntent",
 	                    "slots": [
 	                        {
 	                            "name": "content",
@@ -174,7 +174,7 @@ const interactionModel = (invocation) => {
 }
 
 const manifest = (r, encoded_id) => {
-    r.invocations = r.invocations.value.map(item => ('Alexa, ' + item));
+    r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
     r.keywords = r.keywords.split(",").map(item => item.trim());
 
     return {
@@ -202,7 +202,7 @@ const manifest = (r, encoded_id) => {
                  "custom": {
                      "endpoint": {
                          "uri": `https://app.getstoryflow.com/state/skill/${encoded_id}`,
-                         "sslCertificateType": "Trusted"
+                         "sslCertificateType": "Wildcard"
                      }
                  }
              },

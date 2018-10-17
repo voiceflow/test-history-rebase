@@ -1,10 +1,7 @@
-const Hashids = require('hashids');
 const axios = require('axios');
-const {docClient, pool, config} = require('./../services');
+const {docClient, pool, config, hashids} = require('./../services');
 const {AccessToken} = require('./authentication');
 const JSONs = require('./../config/amazon_json');
-
-const hashids = new Hashids(config.id_hash, 10);
 
 const locales = ["en-CA", "en-AU", "en-GB", "en-US", "en-IN"];
 
@@ -230,40 +227,6 @@ const buildSkill = async (req,res) => {
                         amzn_id = request.data.skillId;
 
                         await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
-
-                        let model = JSONs.interactionModel(r.inv_name);
-
-                        const iterate = (depth) => {
-                            if(depth === 3){
-                                res.sendStatus(500);
-                                return;
-                            }else{
-                                setTimeout(()=> {
-
-                                    axios.request({
-                                        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
-                                        method: 'PUT',
-                                        headers: {
-                                            Authorization: token
-                                        },
-                                        data: model
-                                    })
-                                    .then(response => {
-                                        res.sendStatus(200);
-                                    })
-                                    .catch(err => {
-                                        if(err.response.status === 404){
-                                            iterate(depth + 1);
-                                        }else{
-                                            res.status(500).send(err.response.data);
-                                        }
-                                    });
-                                    
-                                }, 2000);
-                            }
-                        }
-
-                        iterate(0);
                     }else{
                         let request = await axios.request({
                             url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
@@ -273,9 +236,42 @@ const buildSkill = async (req,res) => {
                             },
                             data: manifest
                         });
-
-                        res.sendStatus(200);
                     }
+
+                    let model = JSONs.interactionModel(r.inv_name);
+
+                    const iterate = (depth) => {
+                        if(depth === 3){
+                            res.sendStatus(500);
+                            return;
+                        }else{
+                            setTimeout(()=> {
+
+                                axios.request({
+                                    url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
+                                    method: 'PUT',
+                                    headers: {
+                                        Authorization: token
+                                    },
+                                    data: model
+                                })
+                                .then(response => {
+                                    res.sendStatus(200);
+                                })
+                                .catch(err => {
+                                    if(err.response.status === 404){
+                                        iterate(depth + 1);
+                                    }else{
+                                        console.error('please');
+                                        res.status(500).send(err.response.data);
+                                    }
+                                });
+                                
+                            }, 2000);
+                        }
+                    }
+
+                    iterate(0);
 
                 } catch(err) {
                     if(err.response){

@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
-const {docClient, pool} = require('./../services');
+const {docClient, pool, hashids} = require('./../services');
 
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
@@ -154,6 +154,8 @@ const setDiagram = (req, res) => {
 
     let diagram = req.body;
 
+    diagram.skill = hashids.decode(diagram.skill)[0];
+
     if (!diagram.creator) {
         diagram.creator = req.user.id;
     } else if (diagram.creator !== req.user.id && !req.user.admin) {
@@ -186,6 +188,7 @@ const deleteDiagram = (req, res) => {
         res.sendStatus(401);
         return;
     }
+
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': req.params.id}
@@ -211,44 +214,39 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const renderStory = (params, req, res, success) => {
+const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
+
+    let params = {
+        TableName: 'com.getstoryflow.diagrams.production',
+        Key: {'id': diagram_id}
+    };
+
     docClient.get(params, (err, data) => {
         if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
-        } else if (data.Item) {
-            let diagram = JSON.parse(data.Item.data);
-            let creator = req.user.id;
-            // let creator = data.Item.creator;
+            console.error(err);
+            resolve(500);
+        } else if (data.Item && data.Item.skill === skill_id) {
 
-            // if (creator !== req.user.id && !req.user.admin) {
-            //     res.sendStatus(403);
-            //     return;
-            // }
+            let diagram = JSON.parse(data.Item.data);
 
             let links = {};
+
             for (var i = 0; i < diagram.links.length; i++) {
                 links[diagram.links[i].id] = diagram.links[i].target;
             }
+
             let story = {
-                id: diagram.id,
-                env: req.params.env,
-                world: req.params.world_id,
-                creator: creator,
+                id: diagram_id,
+                skill_id: skill_id,
+                name: data.Item.title,
                 lines: {},
-                image: null
             };
-            
-            story.title = data.Item.title;
 
             for (var i = 0; i < diagram.nodes.length; i++) {
                 let node = diagram.nodes[i];
                 if (node.extras.type === 'story') {
                     story.startId = node.id;
-                    story.audio = node.extras.audio;
-                    story.preview = node.extras.preview;
                     story.prompt = node.extras.prompt;
-                    story.image = node.extras.image;
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
@@ -266,17 +264,7 @@ const renderStory = (params, req, res, success) => {
                         nextIds: list,
                         id: node.id
                     };
-                } else if (node.extras.type === 'choice') {
-                    story.lines[node.id] = {
-                        audio: node.extras.audio,
-                        prompt: node.extras.prompt,
-                        choices: node.extras.choices,
-                        inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i } ).map(i => Util.numsToWords(i))),
-                        elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
-                        // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
-                        nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
-                    };
-                } else if (node.extras.type === 'choicenew') {
+                } else if (node.extras.type === 'choicenew' || node.extras.type === 'choice') {
                     story.lines[node.id] = {
                         audio: null,
                         prompt: node.extras.prompt ? node.extras.prompt : true,
@@ -286,7 +274,7 @@ const renderStory = (params, req, res, success) => {
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
                     };
-                } else if (node.extras.type === 'multiline') {
+                } else if (node.extras.type === 'multiline' || node.extras.type === 'line') {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
@@ -301,17 +289,6 @@ const renderStory = (params, req, res, success) => {
                     }
                     story.lines[node.id] = {
                         audio: audio,
-                        nextId: links[nextLink]
-                    };
-                } else if (node.extras.type === 'line') {
-                    let nextLink = null;
-                    for (var j = 0; j < node.ports.length; j++) {
-                        if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
-                        }
-                    }
-                    story.lines[node.id] = {
-                        audio: node.extras.audio,
                         nextId: links[nextLink]
                     };
                 } else if (node.extras.type === 'listen') {
@@ -405,7 +382,7 @@ const renderStory = (params, req, res, success) => {
                 }
             }
             let params = {
-                TableName: 'com.getstoryflow.stories.'+ story.env,
+                TableName: 'com.getstoryflow.stories.sandbox',
                 Item: story
             };
             docClient.put(params, err => {
@@ -416,38 +393,35 @@ const renderStory = (params, req, res, success) => {
                     // Add the story to SQL as well
                     addStory(story, (err) => {
                         if(err){
-                            console.log(err);
-                            res.status(500).send(err);
+                            console.error(err);
+                            resolve(500)
                             return;
                         }else{
-                            res.sendStatus(200);
-                            if(success && typeof success == "function"){
-                                success();
-                            }
+                            resolve(200);
                         }
                     })
                 }
             });
         } else {
-            res.sendStatus(404);
+            resolve(404);
         }
     });
-}
+});
 
 const addStory = (story, cb) => {
-    pool.query('SELECT 1 FROM stories WHERE story_id = $1 AND env = $2 LIMIT 1', [story.id, story.env], (err,res) => {
+    pool.query('SELECT 1 FROM diagrams WHERE id = $1 LIMIT 1', [story.id], (err,res) => {
         if(err || res.rows.length < 1){
-            pool.query('INSERT INTO stories (story_id, env, title, preview, creator_id, world, image) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
-                [story.id, story.env, story.title, story.preview, story.creator, story.world, story.image], (err,res) => {
+            pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
+                [story.id, story.name, story.skill_id], (err,res) => {
                 if(err) {
                     cb(err);
                 }else{
-                    cb();
+                    cb(false);
                 }
             })
         }else{
-            pool.query('UPDATE stories SET preview = $1, creator_id = $2, title = $3, world = $6, image = $7 WHERE story_id = $4 AND env = $5', 
-                [story.preview, story.creator, story.title, story.id, story.env, story.world, story.image], (err,res) => {
+            pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', 
+                [story.name, story.skill_id], (err,res) => {
                 if(err) {
                     cb(err);
                 }else{
@@ -458,86 +432,17 @@ const addStory = (story, cb) => {
     });
 }
 
-const publish = (req, res) => {
-    if (!req.user || !req.params.id) {
+const publish = async (req, res) => {
+    if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
         res.sendStatus(401);
-
-        return;
-    } else if (!(req.params.env === "testing") && !req.user.admin) {
-        res.sendStatus(403);
-
         return;
     }
 
-    let params = {
-        TableName: 'com.getstoryflow.diagrams.production',
-        Key: {'id': req.params.id}
-    };
+    let skill_id = hashids.decode(req.params.skill_id)[0];
 
-    renderStory(params, req, res);
-};
+    let status = await renderDiagram(req.params.diagram_id, skill_id);
 
-const publishReview = (req, res) => {
-    if (!req.user || !req.params.id) {
-        res.sendStatus(401);
-
-        return;
-    } else if (!req.user.admin) {
-        res.sendStatus(403);
-
-        return;
-    }
-
-    let params = {
-        TableName: 'com.getstoryflow.reviews.staging',
-        Key: {'id': req.params.id}
-    };
-
-    renderStory(params, req, res, () => {
-        if( req.params.env != 'production' || req.params.env != 'sandbox'){
-            return;
-        }
-        let update_params = {
-            TableName: 'com.getstoryflow.reviews.staging',
-            Key: { id: req.params.id },
-            UpdateExpression: "set #status = :s",
-            ExpressionAttributeValues:{
-                ":s" : "published"
-            },
-            ExpressionAttributeNames:{
-                "#status": "status"
-            }
-        };
-
-        docClient.update(update_params, function(err, data) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    });
-};
-
-const publishWorld = (req, res) => {
-    if (!req.user || !req.params.id || !req.params.world_id) {
-        res.sendStatus(401);
-        return;
-    } else if (!req.user.admin) {
-        res.sendStatus(403);
-        return;
-    }
-
-    pool.query('SELECT env FROM worlds WHERE world_id = $1 LIMIT 1', [req.params.world_id], (err, data) => {
-        if(err || data.rows.length === 0){
-            res.sendStatus(500);
-        }else{
-            req.params.env = data.rows[0].env;
-            let params = {
-                TableName: 'com.getstoryflow.diagrams.production',
-                Key: {'id': req.params.id}
-            };
-            renderStory(params, req, res);
-        }
-    });
+    res.sendStatus(status);
 };
 
 module.exports = {
@@ -545,7 +450,5 @@ module.exports = {
     getDiagram: getDiagram,
     deleteDiagram: deleteDiagram,
     setDiagram: setDiagram,
-    publish: publish,
-    publishReview: publishReview,
-    publishWorld: publishWorld
+    publish: publish
 }

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import Line from './Editors/Line';
-import MultiLine from './Editors/MultiLine';
 import Choice from './Editors/Choice';
-import ChoiceNew from './Editors/ChoiceNew';
 import Ending from './Editors/Ending';
 import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
@@ -71,14 +69,7 @@ class Editor extends Component {
             case 'story':
                 return <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>;
             case 'choice':
-                return <Choice 
-                        node={this.state.node} 
-                        voices={this.state.voices} 
-                        onUpdate={this.props.onUpdate}
-                        repaint={this.props.repaint}
-                    />;
-            case 'choicenew':
-                return <ChoiceNew
+                return <Choice
                         node={this.state.node} 
                         voices={this.state.voices} 
                         onUpdate={this.props.onUpdate}
@@ -86,8 +77,6 @@ class Editor extends Component {
                     />
             case 'line':
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
-            case 'multiline':
-                return <MultiLine node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
                 return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable} onUpdate={this.props.onUpdate}/>
             case 'if':
@@ -111,7 +100,7 @@ class Editor extends Component {
 
     render() {
 
-        const type = this.state.node ? (this.state.node.extras.type === "multiline" ? "line" : this.state.node.extras.type) : null;
+        const type = this.state.node ? this.state.node.extras.type : null;
 
         return (
             <div className={"Editor" + (this.props.open && type ? ' open':'')}>

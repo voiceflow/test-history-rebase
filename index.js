@@ -112,9 +112,7 @@ app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
-app.post('/publish/:env/:id', ensureLoggedIn(), Diagram.publish);
-app.post('/publish/review/:env/:id', ensureLoggedIn(), Diagram.publishReview);
-app.post('/publish/world/:world_id/:id', ensureLoggedIn(), Diagram.publishWorld);
+app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 
 app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
 app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);

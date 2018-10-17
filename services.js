@@ -7,6 +7,9 @@ const multerS3Transform = require('multer-s3-transform');
 const pg = require('pg');
 const config = require('./config/config');
 const sharp = require('sharp');
+const Hashids = require('hashids');
+
+const hashids = new Hashids(config.id_hash, 10);
 
 AWS.config.loadFromPath('./aws-config.json');
 
@@ -91,6 +94,7 @@ module.exports = {
     jwt: jwt,
     config: config,
     s3: s3,
-    uploadResize: uploadResize
+    uploadResize: uploadResize,
+    hashids: hashids
 }
 

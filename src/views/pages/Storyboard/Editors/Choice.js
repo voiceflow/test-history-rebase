@@ -67,7 +67,7 @@ class Choice extends Component {
         node.extras.inputs.push('');
         let test = node.addOutPort(node.extras.choices.length);
         test.setMaximumLinks(1);
-        console.log(test);
+
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -87,6 +87,7 @@ class Choice extends Component {
 
             if (port.label === node.extras.choices.length) {
                 node.removePort(port);
+                break;
             }
         }
         node.extras.choices.splice(i, 1);
@@ -167,69 +168,6 @@ class Choice extends Component {
     render() {
         return (
             <div key={this.state.node.id}>
-                <div>
-                    <label>
-                        Line Audio
-                    </label>
-                    {this.state.node.extras.audio.length > 0 ? 
-                    <div className="audio-box">
-                        <button className="btn btn-danger" onClick={() => this.onClear('audio')}>&times;</button>
-                        <div>{this.state.node.extras.audio.split('/').pop().split('-').pop()}</div>
-                        <audio key={this.state.node.extras.audio.split('/').pop()} controls>
-                            <source src={this.state.node.extras.audio} type="audio/mpeg" />
-                        </audio>
-                    </div>
-                    :
-                    <Dropzone
-                        className="dropzone"
-                        activeClassName="active"
-                        rejectClassName="reject"
-                        multiple={false}
-                        disableClick={false}
-                        accept="audio/*"
-                        onDrop={(accepted, rejected) => this.onDrop(accepted, 'audio')}
-                    >
-                    <div>
-                        <div className="prompt">
-                            <b>Drag and Drop Files here</b><br/>
-                            <small>OR</small><br/>
-                            <i className="fas fa-plus-circle"></i> Add Files
-                        </div>
-                        <div className="rejected-file text-danger">
-                            <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>
-                        </div>
-                    </div>
-                    </Dropzone>}
-                    <div className="text-to-voice">
-                        <div className="subtitle" onClick={() => this.toggleCollapse("audioTextCollapse")}>Text to Speech {this.state.node.extras.audioTextCollapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}</div>
-                        <Collapse isOpen={this.state.node.extras.audioTextCollapse}>
-                            <div className="textarea-collapse">
-                                <Textarea
-                                    name="audioText"
-                                    value={this.state.node.extras.audioText}
-                                    onChange={this.handleChange}
-                                    minRows={2}
-                                    placeholder="Enter text you want to convert here"
-                                />
-                                <div className="btn-group w-100">
-                                    <Select
-                                        placeholder="Select Voice"
-                                        className="select-box"
-                                        value={this.state.node.extras.audioVoice ? {label: this.state.node.extras.audioVoice, value: this.state.node.extras.audioVoice} : null}
-                                        onChange={this.handleSelection}
-                                        options={Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                            return {label: voice.Name, value: voice.Id, target: "audioVoice"}
-                                        }) : null}
-                                    />
-                                    <button className="btn btn-primary" onClick={() => this.onGenerate('audioText', 'audioVoice', 'audio')}>
-                                        Generate
-                                    </button>
-                                </div>
-                            </div>
-                        </Collapse>
-                    </div>
-                </div>
-                <hr/>
                 <div>
                     <label>
                         Choice Audio

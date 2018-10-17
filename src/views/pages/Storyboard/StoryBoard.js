@@ -469,8 +469,8 @@ class StoryBoard extends Component {
                         testing_info={this.state.testing_info} /> 
                 : null}
                 <Menu items={[
-                    { text: 'Choice', type: 'choicenew', menuColor: '#66BB6A' },
-                    { text: 'Line', type: 'multiline', menuColor: '#29B6F6' },
+                    { text: 'Choice', type: 'choice', menuColor: '#66BB6A' },
+                    { text: 'Line', type: 'line', menuColor: '#29B6F6' },
                     { text: 'Speak', type: 'speak', menuColor: '#0097A7' },
                     { text: 'Capture', type: 'capture', menuColor: '#D84315' },
                     { text: 'Ending', type: 'ending', menuColor: '#FF7043' },
@@ -503,7 +503,7 @@ class StoryBoard extends Component {
                             return;
                         }
                         var node = new BlockNodeModel('New '+data.text, data.color);
-                        if (data.type === 'choicenew') {
+                        if (data.type === 'choice') {
                             node.addInPort(' ');
                             node.addOutPort('else').setMaximumLinks(1);
                             node.extras = {
@@ -516,7 +516,7 @@ class StoryBoard extends Component {
                                 choices: [],
                                 inputs: []
                             };
-                        } else if (data.type === 'multiline') {
+                        } else if (data.type === 'line') {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {

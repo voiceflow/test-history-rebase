@@ -146,7 +146,7 @@ class Skill extends Component {
 
         axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
             name: s.name,
-            amzn_id: s.amzn_id,
+            inv_name: s.inv_name,
             summary: s.summary,
             description: s.description,
             keywords: s.keywords,
@@ -321,8 +321,12 @@ class Skill extends Component {
                     <hr/>
                      <Form>
                         <FormGroup>
-                          <Label>Skill Name *</Label>
-                          <Input type="text" name="name" placeholder="Skill Name" value={this.state.name} onChange={this.handleChange} />
+                          <Label>Skill Display Name *</Label>
+                          <Input type="text" name="name" placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
+                        </FormGroup>
+                        <FormGroup>
+                          <Label>Invocation Name *</Label>
+                          <Input type="text" name="inv_name" placeholder="Story Flow" value={this.state.inv_name} onChange={this.handleChange} />
                         </FormGroup>
                         <div className="d-flex mb-4">
                             <div>
@@ -368,7 +372,7 @@ class Skill extends Component {
                            <Label>Skill Invocations *</Label>
                            <Multiple
                                 list={this.state.invocations}
-                                max={5}
+                                max={3}
                                 update={(list) => this.setState({invocations: list, saved: false})}
                                 placeholder={"Alexa, open/start/turn on " + this.state.name}
                                 add={<span><i className="fas fa-plus"/> Add Invocation</span>}
@@ -377,7 +381,7 @@ class Skill extends Component {
                         <hr/>
                         <FormGroup>
                           <Label>Keywords (Search Tags) <small>optional</small></Label>
-                          <Input type="text" name="keywords" placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.summary} onChange={this.handleChange} />
+                          <Input type="text" name="keywords" placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
                         </FormGroup>
                       </Form>
                 </div>

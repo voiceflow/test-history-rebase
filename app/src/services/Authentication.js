@@ -79,9 +79,9 @@ export default {
 		return !!cookies.get('auth');
 	},
 	AmazonAccessToken: cb => {
-		axios.get('/session/access_token')
+		axios.get('/session/amazon/access_token')
 		.then(res => {
-			cb(res.data.access_token);
+			cb(true);
 		})
 		.catch(err => {
 			// console.error(err);

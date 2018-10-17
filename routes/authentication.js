@@ -50,19 +50,21 @@ function createLogin(data, cb) {
 }
 
 // Gets the Amazon Login Access Token for Skill publishing
-const getAccessToken = (req, res) => {
-	redisClient.get(`t_${req.user.id}`, function(err, token) {
+const AccessToken = (user_id, cb) => {
+	redisClient.get(`t_${user_id}`, function(err, token) {
 		if(err){
 			console.error(err);
-			res.sendStatus(500);
+			cb(null);
 		}else if(token === null){
-			res.sendStatus(404);
+			cb(null);
 		}else{
 			token = JSON.parse(token);
-			if(token.expires_in < Date.now()){
+			if(token.expire < Date.now()){
 				axios.post('https://api.amazon.com/auth/o2/token', {
 					grant_type: "refresh_token",
-					refresh_token: data.refresh_token
+		    		client_id: config.client_id,
+    				client_secret: config.client_secret,
+					refresh_token: token.refresh_token
 				})
 				.then(result => {
 		    		let data = {
@@ -70,32 +72,43 @@ const getAccessToken = (req, res) => {
 		    			access_token: result.data.access_token,
 		    			refresh_token: result.data.refresh_token
 		    		}
-		    		redisClient.set(`t_${req.user.id}`, JSON.stringify(data), (err) => {
+		    		redisClient.set(`t_${user_id}`, JSON.stringify(data), (err) => {
 		    			if(err){
 		    				console.error(err);
+		    				cb(null);
 		    			}else{
-		    				res.sendStatus(200);
+		    				cb(data.access_token);
 		    			}
 		    		});
 				})
 				.catch(err => {
 					console.error(err);
-					res.sendStatus(500);
+					cb(null);
 				});
 			}else{
-				res.send(token.access_token);
+				cb(token.access_token);
 			}
 		}
 	});
-};
+}
+
+const hasAccessToken = (req, res) => {
+	AccessToken(req.user.id, token => {
+		if(token === null){
+			res.sendStatus(404);
+		}else{
+			res.sendStatus(200);
+		}
+	})
+}
 
 const getAmazonCode = (req, res) => {
     if(req.params.code){
     	axios.post('https://api.amazon.com/auth/o2/token', {
     		grant_type: "authorization_code",
     		code: req.params.code,
-    		client_id: "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e",
-    		client_secret: "74dc2ec3fa8560a2a20600fae4ab0a36e89f3bfe507221fd73dc51b16b35c49e"
+    		client_id: config.client_id,
+			client_secret: config.client_secret
     	})
     	.then(result => {
     		let data = {
@@ -214,10 +227,11 @@ const putUser = (req, res) => {
 };
 
 module.exports = {
-	getAccessToken:getAccessToken,
-	getAmazonCode:getAmazonCode,
-	getSession:getSession,
-	putSession:putSession,
-	deleteSession:deleteSession,
-	putUser:putUser
+	AccessToken: AccessToken,
+	hasAccessToken: hasAccessToken,
+	getAmazonCode: getAmazonCode,
+	getSession: getSession,
+	putSession: putSession,
+	deleteSession: deleteSession,
+	putUser: putUser
 }

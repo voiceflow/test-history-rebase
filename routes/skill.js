@@ -1,9 +1,12 @@
-const config = require('../config/config');
 const Hashids = require('hashids');
+const axios = require('axios');
+const {docClient, pool, config} = require('./../services');
+const {AccessToken} = require('./authentication');
+const JSONs = require('./../config/amazon_json');
 
-var hashids = new Hashids('XW1B36YGG8', 10);
+const hashids = new Hashids('XW1B36YGG8', 10);
 
-const {docClient, pool} = require('./../services');
+const locales = ["en-CA", "en-AU", "en-GB", "en-US", "en-IN"];
 
 const getSkills = (req, res) => {
     if (!req.user) {
@@ -109,7 +112,7 @@ const patchSkill = (req, res) => {
             UPDATE skills 
             SET
             name = $2,
-            amzn_id = $3,
+            inv_name = $3,
             summary = $4, 
             description = $5, 
             keywords = $6, 
@@ -124,7 +127,7 @@ const patchSkill = (req, res) => {
             export = $15, 
             instructions = $16
             WHERE skill_id = $1`, 
-            [id, b.name, b.amzn_id, b.summary, b.description, b.keywords, 
+            [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
             {value: b.invocations}, b.small_icon, b.large_icon, b.category, 
             b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions], (err) => {
             if(err){
@@ -139,7 +142,7 @@ const patchSkill = (req, res) => {
             UPDATE skills 
             SET
             name = $2,
-            amzn_id = $3,
+            inv_name = $3,
             summary = $4, 
             description = $5, 
             keywords = $6, 
@@ -148,7 +151,7 @@ const patchSkill = (req, res) => {
             large_icon = $9, 
             category = $10
             WHERE skill_id = $1`, 
-            [id, b.name, b.amzn_id, b.summary, b.description, b.keywords, 
+            [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
             {value: b.invocations}, b.small_icon, b.large_icon, b.category], (err) => {
             if(err){
                 console.log(err);
@@ -160,7 +163,7 @@ const patchSkill = (req, res) => {
     }
 }
 
-const buildSkill = (req,res) => {
+const buildSkill = async (req,res) => {
      // let name = req.body.name;
 
      if (!req.params.id) {
@@ -168,69 +171,74 @@ const buildSkill = (req,res) => {
      }
 
      let id = hashids.decode(req.params.id)[0];
-    
-     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1;', [id], (err, data) => {
-        if(err){
-            console.error(err); 
-            res.sendStatus(500); 
-        } else { 
-            let r = data.rows[0];
-            let summary = r.summary;
-            let testingInstructions = r.instructions;
-            let allowsPurchases = r.purchase;
-            let isExportCompliant = r.export;
-            let isChildDirected = r.copa;
-            let category = r.purchase;
-            let skillCategory = r.skill;
-            let doesUsePersonalInfo = r.personal;
-            let invocations = r.invocations;
 
-             let amznJSON = {
-                 "vendorId": 'MVMX1EPB9U1M6',
-                 "manifest": {
-                     "publishingInformation": {
-                         "locales": {
-                             "en-US": {
-                                 "summary": summary,
-                                 "examplePhrases": invocations,
-                                 "keywords": keywordsArr,
-                                 "name": "Sample custom skill name.",
-                                 "description": "This skill has basic and advanced smart devices control features."
-                             }
-                         },
-                         "isAvailableWorldwide": false,
-                         "testingInstructions": testingInstructions,
-                         "category": skillCategory,
-                         "distributionCountries": [
-                             "US",
-                             "GB"
-                         ]
-                     },
-                     "apis": {
-                         "custom": {
-                             "endpoint": {
-                                 "uri": `https://app.getstoryflow.com/skill/${id}`
-                             }
-                         }
-                     },
-                     "manifestVersion": "1.0",
-                     "privacyAndCompliance": {
-                         "allowsPurchases": allowsPurchases,
-                         "locales": {
-                             "en-US": {
-                                 "termsOfUseUrl": "https://getstoryflow.com",
-                                 "privacyPolicyUrl": "https://getstoryflow.com"
-                             }
-                         },
-                         "isExportCompliant": isExportCompliant,
-                         "isChildDirected": isChildDirected,
-                         "usesPersonalInfo": doesUsePersonalInfo
-                     }
-                 }
-            }
-            
+     AccessToken(req.user.id, token => {
+        if(token === null){
+            res.sendStatus(401);
+            return;
         }
-    });     
+    
+        pool.query('SELECT * FROM skills WHERE skills.skill_id = $1;', [id], async (err, data) => {
+            if(err){
+                console.error(err); 
+                res.sendStatus(500); 
+            } else { 
+                
+                let r = data.rows[0];
+
+                let amzn_id = r.amzn_id;
+                let manifest = JSONs.manifest(r);
+
+                try{
+                    if(!amzn_id){
+                        manifest.vendorId = "MVMX1EPB9U1M6";
+
+                        let request = await axios.request({
+                            url: 'https://api.amazonalexa.com/v1/skills',
+                            method: 'POST',
+                            headers: {
+                                Authorization: token
+                            },
+                            data: manifest
+                        });
+                        amzn_id = request.data.skillId;
+                        await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
+                    }else{
+                        await axios.request({
+                            url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                            method: 'PUT',
+                            headers: {
+                                Authorization: token
+                            },
+                            data: manifest
+                        });
+                    }
+
+                    let model = JSONs.interactionModel(r.inv_name);
+
+                    await axios.request({
+                        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
+                        method: 'PUT',
+                        headers: {
+                            Authorization: token
+                        },
+                        data: model
+                    });
+
+                    res.sendStatus(200);
+
+                } catch(err) {
+                    if(err.response){
+                        console.log(err.response);
+                        console.error(JSON.stringify(err.response.data));
+                    }else{
+                        console.error(err);
+                    }
+                    res.sendStatus(500);
+                }
+            }
+        }); 
+    });    
 }
 
 module.exports = {

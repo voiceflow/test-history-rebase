@@ -4,7 +4,7 @@ const {docClient, pool, config} = require('./../services');
 const {AccessToken} = require('./authentication');
 const JSONs = require('./../config/amazon_json');
 
-const hashids = new Hashids('XW1B36YGG8', 10);
+const hashids = new Hashids(config.id_hash, 10);
 
 const locales = ["en-CA", "en-AU", "en-GB", "en-US", "en-IN"];
 
@@ -144,7 +144,7 @@ const patchSkill = (req, res) => {
             name = $2,
             inv_name = $3,
             summary = $4, 
-            description = $5, 
+            description = $5,
             keywords = $6, 
             invocations = $7, 
             small_icon = $8, 
@@ -164,13 +164,13 @@ const patchSkill = (req, res) => {
 }
 
 const buildSkill = async (req,res) => {
-     // let name = req.body.name;
 
      if (!req.params.id) {
          res.sendStatus(401);
      }
 
      let id = hashids.decode(req.params.id)[0];
+     let original_id = req.params.id;
 
      AccessToken(req.user.id, token => {
         if(token === null){
@@ -178,7 +178,7 @@ const buildSkill = async (req,res) => {
             return;
         }
     
-        pool.query('SELECT * FROM skills WHERE skills.skill_id = $1;', [id], async (err, data) => {
+        pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
             if(err){
                 console.error(err); 
                 res.sendStatus(500); 
@@ -187,9 +187,34 @@ const buildSkill = async (req,res) => {
                 let r = data.rows[0];
 
                 let amzn_id = r.amzn_id;
-                let manifest = JSONs.manifest(r);
+                let manifest = JSONs.manifest(r, original_id);
 
                 try{
+                    if(amzn_id){
+                        try{
+                            let request = await axios.request({
+                                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                                method: 'GET',
+                                headers: {
+                                    Authorization: token
+                                }
+                            });
+                            if (request.data.manifest && 
+                                request.data.manifest.lastUpdateRequest &&
+                                request.data.manifest.lastUpdateRequest.status === 'FAILED'){
+                                amzn_id = null;
+                            }
+                            // console.log(JSON.stringify(request.data.manifest));
+                        }catch(err){
+                            if(err.response.status === 404){
+                                amzn_id = null;
+                            }else if(err.response){
+                                console.log(err.response);
+                                console.error(JSON.stringify(err.response.data));
+                            }
+                        }
+                    }
+
                     if(!amzn_id){
                         manifest.vendorId = "MVMX1EPB9U1M6";
 
@@ -201,10 +226,46 @@ const buildSkill = async (req,res) => {
                             },
                             data: manifest
                         });
+
                         amzn_id = request.data.skillId;
+
                         await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
+
+                        let model = JSONs.interactionModel(r.inv_name);
+
+                        const iterate = (depth) => {
+                            if(depth === 3){
+                                res.sendStatus(500);
+                                return;
+                            }else{
+                                setTimeout(()=> {
+
+                                    axios.request({
+                                        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
+                                        method: 'PUT',
+                                        headers: {
+                                            Authorization: token
+                                        },
+                                        data: model
+                                    })
+                                    .then(response => {
+                                        res.sendStatus(200);
+                                    })
+                                    .catch(err => {
+                                        if(err.response.status === 404){
+                                            iterate(depth + 1);
+                                        }else{
+                                            res.status(500).send(err.response.data);
+                                        }
+                                    });
+                                    
+                                }, 2000);
+                            }
+                        }
+
+                        iterate(0);
                     }else{
-                        await axios.request({
+                        let request = await axios.request({
                             url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
                             method: 'PUT',
                             headers: {
@@ -212,20 +273,9 @@ const buildSkill = async (req,res) => {
                             },
                             data: manifest
                         });
+
+                        res.sendStatus(200);
                     }
-
-                    let model = JSONs.interactionModel(r.inv_name);
-
-                    await axios.request({
-                        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
-                        method: 'PUT',
-                        headers: {
-                            Authorization: token
-                        },
-                        data: model
-                    });
-
-                    res.sendStatus(200);
 
                 } catch(err) {
                     if(err.response){

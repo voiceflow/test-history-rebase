@@ -37,9 +37,10 @@ const generateCode = (req,res) => {
 
 	let item = {
 		code : crypto.randomBytes(8).toString('hex'),
-		userId : req.body.userId,
+		userId : req.user.id,
 		used : false
 	};
+	
 	let params = {
 		TableName: 'com.getstoryflow.creator.codes',
 		Item: item

@@ -41,20 +41,26 @@ class Multiple extends Component {
 
         return <div className="multiple">
             {this.props.list.map((element, i) =>
-              <InputGroup key={i}>
-                <span className="px-2 font-weight-bold">{i + 1}.</span>
-                <Input 
-                    name={i} 
-                    value={this.props.list[i]} 
-                    onChange={this.handleChange}
-                    placeholder={this.props.placeholder}
-                />
-                { this.props.list.length > 1 ?
-                    <InputGroupAddon addonType="append">
-                        <Button onClick={()=>this.delete(i)}>×</Button>
-                    </InputGroupAddon> : null
-                }
-              </InputGroup>
+                <div key={i} className="super-center">
+                    <span className="px-2 font-weight-bold">{i + 1}.</span>
+                    <InputGroup>
+                        {this.props.prepend ? 
+                            <InputGroupAddon addonType="prepend">{this.props.prepend}</InputGroupAddon> :
+                            null
+                        }
+                        <Input 
+                            name={i} 
+                            value={this.props.list[i]} 
+                            onChange={this.handleChange}
+                            placeholder={this.props.placeholder}
+                        />
+                        { this.props.list.length > 1 ?
+                            <InputGroupAddon addonType="append">
+                                <Button onClick={()=>this.delete(i)}>×</Button>
+                            </InputGroupAddon> : null
+                        }
+                  </InputGroup>
+                </div>
             )}
 
             { this.props.max && this.props.list.length >= this.props.max ? null :

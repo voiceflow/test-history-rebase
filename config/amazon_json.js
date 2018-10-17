@@ -173,11 +173,11 @@ const interactionModel = (invocation) => {
 	}
 }
 
-const manifest = (r) => {
-    r.invocations = r.invocations.value;
+const manifest = (r, encoded_id) => {
+    r.invocations = r.invocations.value.map(item => ('Alexa, ' + item));
     r.keywords = r.keywords.split(",").map(item => item.trim());
 
-    return amznJSON = {
+    return {
      	"manifest": {
              "publishingInformation": {
                  "locales": {
@@ -186,7 +186,9 @@ const manifest = (r) => {
                          "examplePhrases": r.invocations,
                          "keywords": r.keywords,
                          "name": r.name,
-                         "description": r.description
+                         "description": r.description,
+                         "smallIconUri": r.small_icon,
+                         "largeIconUri": r.large_icon
                      }
                  },
                  "isAvailableWorldwide": false,
@@ -199,7 +201,8 @@ const manifest = (r) => {
              "apis": {
                  "custom": {
                      "endpoint": {
-                         "uri": `https://app.getstoryflow.com/skill/${r.skill_id}`
+                         "uri": `https://app.getstoryflow.com/skill/${encoded_id}`,
+                         "sslCertificateType": "Trusted"
                      }
                  }
              },
@@ -214,7 +217,8 @@ const manifest = (r) => {
                  },
                  "isExportCompliant": r.export,
                  "isChildDirected": r.copa,
-                 "usesPersonalInfo": r.personal
+                 "usesPersonalInfo": r.personal,
+                 "containsAds": r.ads
              }
          }
     }

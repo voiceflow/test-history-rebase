@@ -3,8 +3,10 @@ const AWS = require('aws-sdk');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const multerS3Transform = require('multer-s3-transform');
 const pg = require('pg');
 const config = require('./config/config');
+const sharp = require('sharp');
 
 AWS.config.loadFromPath('./aws-config.json');
 
@@ -47,12 +49,48 @@ const upload = multer({
     })
 });
 
+const uploadResize = (x, y) => {
+    return multer({
+        storage: multerS3Transform({
+            s3: s3,
+            bucket: 'com.getstoryflow.api.images',
+            shouldTransform: function (req, file, cb) {
+                cb(null, /^image/i.test(file.mimetype))
+            },
+            transforms: [{
+                id: 'image',
+                key: function (req, file, cb) {
+
+                    let fileSplit = file.originalname.split('.');
+
+                    let filename = (Date.now().toString()+
+                        '-'+
+                        (fileSplit.slice(0, fileSplit.length - 1)
+                        .join('.')
+                        .toLowerCase()
+                        .replace(/\s+/g, '-')
+                        .replace(/[^\w\-.]+/g, ''))) + '.png'
+
+                    cb(null, filename);
+                },
+                transform: function (req, file, cb) {
+                    cb(null, sharp().resize(x, y).png())
+                }
+            }]
+        })
+    })
+}
+
+const s3Stream = require('s3-upload-stream')(s3);
+
 module.exports = {
     upload: upload,
     docClient: docClient,
     pool: pool,
     redisClient: redisClient,
     jwt: jwt,
-    config: config
+    config: config,
+    s3: s3,
+    uploadResize: uploadResize
 }
 

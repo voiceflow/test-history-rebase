@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const https = require('https');
-const {upload, redisClient, jwt, config} = require('./services');
+const {upload, uploadResize, redisClient, jwt, config} = require('./services');
 
 // IMPORT ROUTES
 const Diagram = require('./routes/diagram.js');
@@ -144,9 +144,19 @@ app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 app.get('/voices', ensureLoggedIn(), Audio.getVoices);
 app.post('/generate', ensureLoggedIn(), Audio.generate);
 app.post('/audio', ensureLoggedIn(), upload.any(), Audio.upload);
+
+app.post('/image/large_icon', uploadResize(512,512).single('image'), (req, res) => {
+    let filename = req.file.transforms[0].key;
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
+});
+app.post('/image/small_icon', uploadResize(108,108).single('image'), (req, res) => {
+    let filename = req.file.transforms[0].key;
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
+});
 app.post('/image', ensureLoggedIn(), upload.any(), (req, res) => {
     res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+req.files[0].key);
 });
+
 app.post('/concat', ensureLoggedIn(), Audio.concat);
 
 // Handle React routing, return all requests to React app

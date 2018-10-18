@@ -254,7 +254,6 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         }
                     }
                     story.lines[node.id] = {
-                        audio: node.extras.audio,
                         nextId: links[nextLink]
                     };
                 } else if (node.extras.type === 'random') {

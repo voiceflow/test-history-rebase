@@ -75,7 +75,16 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
+            case 'newchoice':
+                return <Choice
+                        node={this.state.node} 
+                        voices={this.state.voices} 
+                        onUpdate={this.props.onUpdate}
+                        repaint={this.props.repaint}
+                    />
             case 'line':
+                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            case 'multiline':
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
                 return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable} onUpdate={this.props.onUpdate}/>

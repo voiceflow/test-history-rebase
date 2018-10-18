@@ -75,7 +75,7 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
-            case 'newchoice':
+            case 'choicenew':
                 return <Choice
                         node={this.state.node} 
                         voices={this.state.voices} 

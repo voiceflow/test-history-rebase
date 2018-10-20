@@ -259,22 +259,24 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     };
                 } else if (node.extras.type === 'command') {
 
-                    let nextLink = null;
-                    for (var j = 0; j < node.ports.length; j++) {
-                        if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                    if(node.extras.commands){
+                        let nextLink = null;
+                        for (var j = 0; j < node.ports.length; j++) {
+                            if (!node.ports[j].in) {
+                                [nextLink] = node.ports[j].links;
+                            }
                         }
-                    }
 
-                    let nextId = links[nextLink];
-                    let commands = node.extras.commands.split('\n').filter(i => { return !!i });
+                        let nextId = links[nextLink];
+                        let commands = node.extras.commands.split('\n').filter(i => { return !!i });
 
-                    commands.forEach(command => {
-                        story.commands.push({
-                            string: command,
-                            value: nextId
+                        commands.forEach(command => {
+                            story.commands.push({
+                                string: command,
+                                value: nextId
+                            });
                         });
-                    });
+                    }
 
                 } else if (node.extras.type === 'random') {
                     let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => links[port.links[0]]);
@@ -285,7 +287,6 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     };
                 } else if (node.extras.type === 'choicenew' || node.extras.type === 'choice') {
                     story.lines[node.id] = {
-                        audio: null,
                         prompt: node.extras.prompt ? node.extras.prompt : true,
                         choices: node.extras.choices,
                         inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i })),

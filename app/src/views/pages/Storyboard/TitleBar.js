@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
-import moment from 'moment';
+// import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import MUIButton from '@material-ui/core/Button';
+// import {Link} from 'react-router-dom';
 
 // import axios from 'axios'
 
@@ -36,54 +37,64 @@ class TitleBar extends Component {
         });
     }
 
+                //     <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="main-menu-btn-group">
+                //     <DropdownToggle caret className="main-menu-btn">
+                //       Project
+                //     </DropdownToggle>
+                //     <DropdownMenu>
+                //         <DropdownItem onClick={this.props.onSave}>Save</DropdownItem>
+                //         <UncontrolledDropdown direction="right" isOpen={this.state.projects} toggle={() => { this.setState({ projects : !this.state.projects }); }}>
+                //             <DropdownToggle tag="button" caret className="dropdown-item load-btn">
+                //                 Load
+                //             </DropdownToggle>
+                //             <DropdownMenu className="projects-menu">
+                //                 { this.state.diagrams.length !== 0 ? this.state.diagrams.map(diagram => {
+                //                     return <DropdownItem key={diagram.id} onClick={() => {this.props.onLoadId(diagram.id); this.setState({ dropdownOpen : false })}}>{diagram.title ? diagram.title : diagram.id}</DropdownItem>;
+                //                 }) : <DropdownItem disabled>No Diagrams Saved</DropdownItem> }
+                //             </DropdownMenu>
+                //         </UncontrolledDropdown>
+                //         <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
+                //         <DropdownItem onClick={this.props.publish}>Publish Skill</DropdownItem>
+                //         {
+                //             this.props.admin ? 
+                //             <div>
+                //                 <DropdownItem divider />
+                //                 <DropdownItem onClick={this.props.onLoadLines}>Update User Flow</DropdownItem>
+                //             </div>
+                //             : null
+                //         }
+                //     </DropdownMenu>
+                // </ButtonDropdown>
+
+                //                 <input
+                //     name="story"
+                //     onChange={this.props.onUpdateTitle}
+                //     value={this.props.title}
+                //     placeholder="Diagram Name"
+                // />
+                // <div className="status">
+                //     {this.props.saving ?
+                //         <div><i className="fas fa-sync-alt fa-spin"></i> {"Saving..."}</div>
+                //         :
+                //         (saved)
+                //     }
+                // </div>
+
     render() {
-        let saved = (this.props.saved ? "" : "*") + (this.props.last_save ? " Last saved " + moment(this.props.last_save).format('MMM Do, h:mm a') : "");
         // <DropdownItem onClick={()=>{}}>Submit for Review</DropdownItem>
         return (
             <div className="TitleBar">
-                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="main-menu-btn-group">
-                    <DropdownToggle caret className="main-menu-btn">
-                      Project
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem onClick={this.props.onSave}>Save</DropdownItem>
-                        <UncontrolledDropdown direction="right" isOpen={this.state.projects} toggle={() => { this.setState({ projects : !this.state.projects }); }}>
-                            <DropdownToggle tag="button" caret className="dropdown-item load-btn">
-                                Load
-                            </DropdownToggle>
-                            <DropdownMenu className="projects-menu">
-                                { this.state.diagrams.length !== 0 ? this.state.diagrams.map(diagram => {
-                                    return <DropdownItem key={diagram.id} onClick={() => {this.props.onLoadId(diagram.id); this.setState({ dropdownOpen : false })}}>{diagram.title ? diagram.title : diagram.id}</DropdownItem>;
-                                }) : <DropdownItem disabled>No Diagrams Saved</DropdownItem> }
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
-                        <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
-                        <DropdownItem onClick={this.props.publish}>Publish Skill</DropdownItem>
-                        {
-                            this.props.admin ? 
-                            <div>
-                                <DropdownItem divider />
-                                <DropdownItem onClick={this.props.onLoadLines}>Update User Flow</DropdownItem>
-                            </div>
-                            : null
-                        }
-                    </DropdownMenu>
-                </ButtonDropdown>
-                <div className="skill-name">
-                    {this.props.skill.name}
+                <div className="title-group">
+                    <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
+                    <MUIButton variant="contained" className="white-btn publish-btn" onClick={this.props.publish}>Publish 
+                        <span className="button-circle"><i className="fab fa-amazon"/></span>
+                    </MUIButton>
                 </div>
-                <input
-                    name="story"
-                    onChange={this.props.onUpdateTitle}
-                    value={this.props.title}
-                    placeholder="Diagram Name"
-                />
-                <div className="status">
-                    {this.props.saving ?
-                        <div><i className="fas fa-sync-alt fa-spin"></i> {"Saving..."}</div>
-                        :
-                        (saved)
-                    }
+                <div className="project">
+                    <div className="skill-name">
+                        {this.props.skill.name}
+                    </div>
+                    <MUIButton variant="extendedFab" className="white-btn play" onClick={this.save}><i className="fas fa-play"/></MUIButton>
                 </div>
             </div>
         );

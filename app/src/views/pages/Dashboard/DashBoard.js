@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
+import MUIButton from '@material-ui/core/Button';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { InputGroup, Input, Button } from 'reactstrap';
+// import { InputGroup, Input, Button } from 'reactstrap';
 // import CardMedia from '@material-ui/core/CardMedia';
 
 // import EnvironmentModal from './EnvironmentModal'
@@ -102,6 +103,10 @@ class DashBoard extends Component {
         });
     }
 
+                            //     <InputGroup className="mr-2">
+                            //     <Input placeholder="Search for Skills"/>
+                            // </InputGroup>
+
                     //     <div className="banner mb-3">
                     //     <h1 className="display-4">Welcome {this.props.user.name}</h1>
                     // </div>
@@ -139,19 +144,24 @@ class DashBoard extends Component {
             <div className='Window'>
                 <div className="subheader">
                     <div className="container space-between">
-                        <span className="subheader-title">Welcome <b>{this.props.user.name}</b></span>
+                        <span className="subheader-title">
+                            <b>Dashboard</b>
+                            <div className="hr-label">
+                                <small><i className="far fa-user mr-1"></i></small>{' '} 
+                                {this.props.user.name}{' '}
+                                <small><i className="far fa-chevron-right"/></small>{' '} 
+                                <span className="text-secondary">Skills</span>
+                            </div>
+                        </span>
                         <div className="subheader-right">
-                            <InputGroup className="mr-2">
-                                <Input placeholder="Search for Skills"/>
-                            </InputGroup>
-                            <Link to="/storyboard/new"><Button color="primary" onClick={this.props.newSkill}><i className="fas fa-plus"/> New Project</Button></Link>
+                            <Link to="/storyboard/new">
+                                <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</MUIButton>
+                            </Link>
                         </div>
                     </div>
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
-                <div className="my-5 pt-4 container">
-                    <div className="hr-label"><i className="fas fa-angle-right"/> Skills</div>
-                    <hr/>
+                <div className="my-5 pt-5 container">
                     {skills}
                 </div>
             </div>

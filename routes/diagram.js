@@ -240,6 +240,7 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                 skill_id: skill_id,
                 name: data.Item.title,
                 lines: {},
+                commands: []
             };
 
             for (var i = 0; i < diagram.nodes.length; i++) {
@@ -256,6 +257,25 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     story.lines[node.id] = {
                         nextId: links[nextLink]
                     };
+                } else if (node.extras.type === 'command') {
+
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    let nextId = links[nextLink];
+                    let commands = node.extras.commands.map(input => input.split('\n').filter(i => { return !!i });
+
+                    commands.forEach(command => {
+                        story.commands.push({
+                            command: command,
+                            nextId: nextId
+                        });
+                    });
+
                 } else if (node.extras.type === 'random') {
                     let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => links[port.links[0]]);
                     story.lines[node.id] = {
@@ -268,7 +288,7 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         audio: null,
                         prompt: node.extras.prompt ? node.extras.prompt : true,
                         choices: node.extras.choices,
-                        inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i } ).map(i => Util.numsToWords(i))),
+                        inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i }),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])

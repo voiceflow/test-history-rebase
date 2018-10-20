@@ -3,6 +3,7 @@ import $ from 'jquery';
 import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
+import moment from 'moment';
 import axios from 'axios';
 // import Loader from './Loader';
 import 'storm-react-diagrams/dist/style.min.css';
@@ -281,7 +282,7 @@ class StoryBoard extends Component {
             }
             var links = model.getLinks();
             for (let key in links) {
-                links[key].setColor('#CCC');
+                links[key].setColor('#E3E9EE');
             }
             engine.setDiagramModel(model);
 
@@ -468,17 +469,9 @@ class StoryBoard extends Component {
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} /> 
                 : null}
-                <Menu items={[
-                    { text: 'Choice', type: 'choice', menuColor: '#66BB6A' },
-                    { text: 'Line', type: 'line', menuColor: '#29B6F6' },
-                    { text: 'Speak', type: 'speak', menuColor: '#0097A7' },
-                    { text: 'Capture', type: 'capture', menuColor: '#D84315' },
-                    { text: 'Ending', type: 'ending', menuColor: '#FF7043' },
-                    'hr',
-                    { text: 'Random', type: 'random', menuColor: '#FBC02D' },
-                    { text: 'Set', type: 'set', menuColor: '#8E24AA' },
-                    { text: 'If', type: 'if', menuColor: '#00695C' }
-                ]} />
+                <Menu 
+                    lastSave ={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
+                />
                 <TitleBar
                     title={this.state.diagram_name}
                     skill={this.state.skill}
@@ -498,12 +491,13 @@ class StoryBoard extends Component {
                     onDrop={event => {
                         var engine = this.state.engine;
                         try {
-                            var data = JSON.parse(event.dataTransfer.getData('node'));
+                            var type = event.dataTransfer.getData('node');
                         } catch (e) {
                             return;
                         }
-                        var node = new BlockNodeModel('New '+data.text, data.color);
-                        if (data.type === 'choice') {
+                        var upper = type.charAt(0).toUpperCase() + type.substr(1);
+                        var node = new BlockNodeModel(upper);
+                        if (type === 'choice') {
                             node.addInPort(' ');
                             node.addOutPort('else').setMaximumLinks(1);
                             node.extras = {
@@ -516,7 +510,7 @@ class StoryBoard extends Component {
                                 choices: [],
                                 inputs: []
                             };
-                        } else if (data.type === 'line') {
+                        } else if (type === 'audio') {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
@@ -532,33 +526,38 @@ class StoryBoard extends Component {
                                     }
                                 ]
                             };
-                        } else if (data.type === 'speak') {
+                        } else if (type === 'speak') {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 raw: null
                             };
-                        } else if (data.type === 'ending') {
+                        } else if (type === 'command') {
+                            node.addOutPort(' ').setMaximumLinks(1);
+                            node.extras = {
+                                commands: ''
+                            };
+                        } else if (type === 'ending') {
                             node.addInPort(' ');
                             node.extras = {
                                 audio: '',
                                 audioText: '',
                                 audioVoice: ''
                             };
-                        } else if (data.type === 'random') {
+                        } else if (type === 'random') {
                             node.addInPort(' ');
                             node.addOutPort(1).setMaximumLinks(1);
                             node.extras = {
                                 paths: 1
                             };
-                        } else if (data.type === 'set') {
+                        } else if (type === 'set') {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 variable: null,
                                 expression: ""
                             };
-                        } else if (data.type === 'if') {
+                        } else if (type === 'if') {
                             node.addInPort(' ');
                             node.addOutPort('true').setMaximumLinks(1);
                             node.addOutPort('false').setMaximumLinks(1);
@@ -567,14 +566,14 @@ class StoryBoard extends Component {
                                 operation: '==',
                                 expression: ""
                             };
-                        } else if (data.type === 'capture') {
+                        } else if (type === 'capture') {
                             node.addInPort(' ');
                             node.addOutPort(' ').setMaximumLinks(1);
                             node.extras = {
                                 variable: null
                             };
                         }
-                        node.extras.type = data.type;
+                        node.extras.type = type;
                         node.addListener({ entityRemoved: this.onNodeRemoved.bind(this) });
                         var points = engine.getRelativeMousePoint(event);
                         node.x = points.x;

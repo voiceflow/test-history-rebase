@@ -1,16 +1,236 @@
 /*GLOBAL CSS*/
 
+@font-face {
+    font-family: "Proxima Nova Bold";
+    src: url("/fonts/Proxima Nova Bold.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Proxima Nova Bold It";
+    src: url("/fonts/Proxima Nova Bold It.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Proxima Nova Light";
+    src: url("/fonts/Proxima Nova Light.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Proxima Nova Light It";
+    src: url("/fonts/Proxima Nova Light It.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Proxima Nova Reg";
+    src: url("/fonts/Proxima Nova Reg.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Proxima Nova Reg It";
+    src: url("/fonts/Proxima Nova Reg It.eot");
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-	font-family: 'Roboto', sans-serif;
-    background: #F5F5F5 !important;
+	font-family: 'Proxima Nova', sans-serif;
+    background: #F5F9FA !important;
+    color: #545D6D;
 }
 
 button:focus{
     outline: none;
 }
+.close{
+    color: #95a6bd;
+}
+.btn-default {
+    border: solid 1px #CCD5E0;
+    color: #CCD5E0;
+}
+.btn-default:hover{
+    background-color: #CCD5E0;
+    color: #95a6bd;
+}
+
+.normal-btn{
+    text-transform: none !important;
+    color: #94A6BD !important;
+}
+.no-underline{
+    text-decoration: none !important;
+}
+
+.white-btn{
+    padding: 10px 25px !important;
+    font-weight: normal !important;
+    color: #95a6bd !important;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
+    background-color: #ffffff !important;
+    text-transform: none !important;
+    border: 1px solid #E2E9EC !important;
+}
+.white-btn:hover{
+    background-color: #EEE;
+    box-shadow: 0 5px 10px 0 rgba(118, 186, 255, 0.17) !important;
+}
+
+.purple-btn{
+    padding: 10px 25px !important;
+    color: #fff !important;
+    font-weight: normal !important;
+    box-shadow: 0 2px 4px 0 rgba(66, 83, 255, 0.23) !important;
+    background-color: #4253ff !important;
+    text-transform: none !important;
+}
+
+.purple-btn:hover{
+    background-color: #3041ed !important;
+    box-shadow: 0 5px 10px 0 rgba(66, 83, 255, 0.23) !important;
+}
 
 label {
-    margin: 0px !important;
+    color: #545D6D;
+    /*margin: 0px !important;*/
+}
+
+.input-select>div{
+    font-weight: lighter !important; 
+    border-color: #E2E9EC !important;
+}
+input, textarea, .text-to-voice, .choice-block {
+    background-color: #FFF;
+    color: #545D6D;
+    border: 1px solid #E2E9EC;
+}
+input::placeholder, textarea::placeholder {
+    font-weight: lighter !important;
+}
+
+.dash-button {
+    border: solid 1px #E3E8FA;
+    background-color: transparent;
+    color: #4253FF;
+    padding: 10px;
+}
+.dash-button:hover {
+    color: #4253FF;
+    background-color: #E3E8FA;
+    /*border-style: solid;*/
+    border: solid 1px #E3E8FA;
+}
+
+.input-group-text, .input-ground-prepend{
+    border-color: #E2E9EC;
+}
+
+.dropzone, .audio-box, .image-box, .combined-box {
+    width: 100%;
+    overflow: visible;
+    min-height: 40px;
+    transition: all .2s ease-in-out;
+    height: 112px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px 10px;
+    position: relative;
+/*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
+    border: 1px dashed #E2E9EC;
+    border-radius: 5px;
+    background-color: #FFF;
+}
+
+.prompt {
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: #D1D8E2;
+    font-size: 0.8rem;
+}
+
+.prompt b {
+    font-size: 1rem;
+    color: #95A6BD;
+    font-weight: normal;
+}
+
+.dropzone img{
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+}
+
+.image-box {
+    height: 300px;
+    background-position: center center;
+    background-size: cover;
+}
+
+.combined-box {
+    background-color: #B3E5FC;
+    font-weight: bold;
+    color: #01579B;
+    border: none !important;
+    margin-bottom: 20px;
+}
+
+.audio-box>button, .image-box>button{
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    border-radius: 0;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.audio-box>div, .combined-box>div{
+    margin-bottom: 10px;
+}
+
+.dropzone.active, .dropzone:hover {
+    transform: scale(1.01);
+    opacity: 0.8;
+}
+
+.dropzone.active {
+    border-color: #28a745!important;
+}
+
+.dropzone.reject {
+    border-color: #dc3545!important;
+    background-color: #FBE9E7;
+}
+
+.dropzone .rejected-file {
+    display: none;
+}
+
+.dropzone.reject .prompt{
+    display: none;
+}
+
+.dropzone.reject .rejected-file {
+    display: block;
+}
+
+.dropzone p {
+    margin: 0 5px;
+    line-height: 30px;
+    white-space: nowrap;
 }
 
 .input-group {
@@ -26,23 +246,31 @@ label {
 .subheader {
     position: fixed;
     top: 59px;
-    background-color: #fff;
+    background-color: #F5F9FA;
     width: 100%;
     /*padding: 10px;*/
     display: flex;
     align-items: center;
     /*height: 50px;*/
-    padding: 10px 0;
-    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
+    padding: 20px 0;
+/*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
-    box-shadow: 0 1px 16px rgba(0,0,0,.1);
-    border-bottom: 1px solid #DDD;
+    box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
+    border-bottom: 1px solid #E2E9EC;
     justify-content: space-between;
     z-index: 1000;
 }
 
+.subheader-title b{
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: #545D6D;
+}
+
 .subheader-title {
     font-size: 1.2rem;
+    align-items: center;
+    display: flex;
 }
 
 .subheader-right {
@@ -61,8 +289,8 @@ label {
     text-transform: capitalize;
 }
 
-.text-mute {
-    color: #666;
+.text-muted {
+    color: #95a6bd !important;
 }
 
 .super-center {

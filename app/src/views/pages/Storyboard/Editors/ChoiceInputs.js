@@ -25,7 +25,7 @@ class ChoiceInputs extends Component {
                     return (
                         <div key={i} className="choice-block">
                             <div className="choice-title">
-                                <span>#{i+1}</span>
+                                <span>{i+1}</span>
                                 <input type="text" name="choices" value={choice} onChange={e => this.props.onChange(e, i)} />
                                 <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                             </div>
@@ -37,7 +37,7 @@ class ChoiceInputs extends Component {
                             />
                         </div> )
                 }) : null}
-                <div><button className="btn btn-outline-secondary btn-block" onClick={this.props.onAdd}>Add Choice <i className="fas fa-plus-circle ml-1"></i></button></div>
+                <div><button className="btn btn-default btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }

@@ -70,12 +70,6 @@ class Editor extends Component {
             case 'story':
                 return <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>;
             case 'choice':
-                return <Choice
-                        node={this.state.node} 
-                        voices={this.state.voices} 
-                        onUpdate={this.props.onUpdate}
-                        repaint={this.props.repaint}
-                    />
             case 'choicenew':
                 return <Choice
                         node={this.state.node} 

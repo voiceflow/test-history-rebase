@@ -21,8 +21,7 @@ class Listen extends Component {
 
     componentWillReceiveProps(props) {
         this.setState({
-            node: props.node,
-            voices: props.voices
+            node: props.node
         });
     }
 
@@ -128,7 +127,7 @@ class Listen extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <div>
                     <label>
                         Line Audio

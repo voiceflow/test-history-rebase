@@ -20,10 +20,11 @@ class Ending extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node,
-            voices: props.voices
-        });
+        if(props.node.id !== this.state.node.id){
+            this.setState({
+                node: props.node
+            });
+        }
     }
 
     handleChange(e, key = undefined) {
@@ -127,7 +128,7 @@ class Ending extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <div>
                     <label>
                         Ending Audio

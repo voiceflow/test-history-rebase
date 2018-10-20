@@ -186,14 +186,15 @@
     font-weight: bold;
 }
 
-.App .Menu .block-title h3{
-    font-weight: 400;
+.App .Menu .block-title h5{
+    font-weight: normal;
+    font-size: 1.6rem;
     color: #545D6D;
 }
 
 .App .Menu .block-title p {
     color: #95a6bd;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
 }
 
 .App .Menu .sidebar {
@@ -228,8 +229,8 @@
 }
 
 .App .Menu .sidebar .block-title {
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin-top: 0px;
+    margin-bottom: 20px;
     font-weight: lighter;
 }
 

@@ -4,13 +4,15 @@ class MenuItem extends Component {
     render() {
         return (
             <div
-                className='MenuItem'
+                className={'MenuItem ' + this.props.item.type}
                 draggable={true}
                 onDragStart={event => {
-                    event.dataTransfer.setData('node', JSON.stringify(this.props.item));
+                    event.dataTransfer.setData('node', this.props.item.type);
                 }}
-                style={{backgroundColor: this.props.item.menuColor}}
             >
+                <div className="MenuIcon">
+                    {this.props.item.icon}
+                </div>
                 {this.props.item.text}
             </div>
         );

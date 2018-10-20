@@ -45,9 +45,10 @@ class Image extends Component {
             >
                 <div>
                     <div className="prompt">
-                        <b>Drag and Drop Image here</b><br/>
+                        <img src="/images/img.png" alt="media"/><br/>
+                        <b>Drag-n-Drop Image</b><br/>
                         <small>OR</small><br/>
-                        <i className="fas fa-plus-circle"></i> Add Image
+                        Click to add
                     </div>
                     <div className="rejected-file text-danger">
                         <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>

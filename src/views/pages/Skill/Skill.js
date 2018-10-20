@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { Button, Form, FormGroup, Label, Input, Modal, ModalBody, Alert } from 'reactstrap';
+import MUIButton from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import MUFormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
@@ -15,6 +16,7 @@ import ErrorModal from './../../components/Modals/ErrorModal';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
 import Select from 'react-select';
 import './Skill.css';
+import {Link} from 'react-router-dom'
 
 import AuthenticationService from './../../../services/Authentication';
 
@@ -116,7 +118,8 @@ class Skill extends Component {
                 axios.post(`/skill/${this.state.skill_id}/publish`)
                 .then(res => {
                     this.setState({
-                        stage: 10
+                        stage: 10,
+                        publish: false
                     });
                 })
                 .catch(err => {
@@ -218,6 +221,21 @@ class Skill extends Component {
     }
 
     render() {
+        if(this.state.stage === 10){
+            return <div className="super-center h-100">
+                <div className="success-page d-flex">
+                    <div className="success-text">
+                        <h1>Congrats! <span role="img" aria-label="happy">☺️</span></h1>
+                        <p className="text-muted">
+                            Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via email.
+                        </p>
+                        <Link to="/dashboard"><MUIButton variant="contained" className="purple-btn">Dashboard</MUIButton></Link>
+                        <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({stage: 11})}>Return to Project</MUIButton>
+                    </div>
+                    <img src="/images/success.svg" alt="success"/>
+                </div>
+            </div>
+        }
 
         let compliance = [{
                 value: 'purchase',
@@ -291,8 +309,6 @@ class Skill extends Component {
                 </Paper>
                 <Button color="primary" onClick={this.onPublish} block>Submit To Alexa</Button>
             </div>
-        }else if(this.state.stage === 10){
-            content = <Alert>Congratulations 😊 Your Skill Has been Published</Alert>
         }
 
         if(!this.state.loaded) return null;
@@ -301,10 +317,18 @@ class Skill extends Component {
             <div className='Window skill'>
                 <div className="subheader">
                     <div className="container space-between">
-                        <span className="subheader-title">Publish Skill Settings</span>
+                        <span className="subheader-title">
+                            <b>Publish</b>
+                            <div className="hr-label">
+                                <small><i className="far fa-user mr-1"></i></small> {this.props.user.name}{' '}
+                                <small><i className="far fa-chevron-right"/></small>{' '}
+                                <span className="text-secondary">{this.state.name}</span>{' '}
+                                <small> - created {moment(this.state.created).fromNow()}</small>
+                            </div>
+                        </span>
                         <div className="subheader-right">
-                            <Button color="primary" className="mr-1" onClick={this.save}>Save {this.state.saved ? '':'*'}</Button>
-                            <Button color="success" onClick={() => this.setState({publish: true})}>Publish</Button>
+                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
+                            <MUIButton variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></MUIButton>
                         </div>
                     </div>
                 </div>
@@ -326,12 +350,7 @@ class Skill extends Component {
 
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
-                <div className='container'>
-                    <h1 className='display-5'>
-                        <b>{this.state.name}</b>
-                    </h1>
-                    <small>Created {moment(this.state.created).fromNow()}</small>
-                    <hr/>
+                <div className='container mt-3'>
                      <Form>
                         <FormGroup>
                           <Label>Skill Display Name *</Label>
@@ -377,6 +396,7 @@ class Skill extends Component {
                         <FormGroup>
                             <Label>Category *</Label>
                             <Select
+                                className="input-select"
                                 name="category"
                                 value={this.state.category}
                                 onChange={this.handleSelection}

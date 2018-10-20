@@ -14,7 +14,7 @@
 	min-height: 59px;
 }
 
-#navbar.storyboard {
+/*#navbar.storyboard {
 	background-color: #5a5bff;
 }
 
@@ -33,7 +33,7 @@
 	border: none !important;
 	outline: none !important;
 	box-shadow: none !important;
-}
+}*/
 
 @media(min-width: 845px){
 	#navbar .nav-link {

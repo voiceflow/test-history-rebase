@@ -11,6 +11,7 @@ import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
 import Speak from './Editors/Speak';
 import Capture from './Editors/Capture';
+import Command from './Editors/Command';
 
 class Editor extends Component {
     constructor(props) {
@@ -83,7 +84,7 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'line':
-                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+            case 'audio': 
             case 'multiline':
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
@@ -102,6 +103,8 @@ class Editor extends Component {
                 return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             case 'capture':
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+            case 'command':
+                return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             default:
               return null;
         }

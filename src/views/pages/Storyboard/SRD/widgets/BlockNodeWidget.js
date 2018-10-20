@@ -17,28 +17,17 @@ export interface BlockNodeState {}
 export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> {
 	constructor(props: BlockNodeProps) {
 		super("srd-default-node", props);
-
-		let type = null;
-
-		if(props.node.extras && props.node.extras.type){
-			type = props.node.extras.type;
-			if(type==="multiline") type = "line";
-			if(type==="choicenew") type = "choice";
-		}
-
-		this.state = {
-			type: type
-		};
 	}
 
 	generatePort(port) {
 		return <BlockPortLabel model={port} key={port.id} />;
 	}
-
+	
+	// {this.props.node.extras && this.props.node.extras.reads ? <div className="block-reads">{this.props.node.extras.reads}</div> : null}
+	
 	render() {
 		return (
-			<div {...this.getProps()} className={"srd-default-node " + this.state.type}>
-				{this.props.node.extras && this.props.node.extras.reads ? <div className="block-reads">{this.props.node.extras.reads}</div> : null}
+			<div className={"srd-default-node " + this.props.node.extras.type}>
 				<div className={this.bem("__title")}>
 					<div className={this.bem("__name")}>{this.props.node.name}</div>
 				</div>

@@ -271,8 +271,8 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
 
                     commands.forEach(command => {
                         story.commands.push({
-                            command: command,
-                            nextId: nextId
+                            string: command,
+                            value: nextId
                         });
                     });
 

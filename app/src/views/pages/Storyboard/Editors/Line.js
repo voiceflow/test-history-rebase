@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MultiLineInput from './MultiLineInput';
+import MultiLineInput from './components/MultiLineInput';
 import $ from 'jquery';
 import { Collapse } from 'reactstrap';
 
@@ -20,10 +20,11 @@ class Line extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node,
-            voices: props.voices
-        });
+        if(props.node.id !== this.state.node.id){
+            this.setState({
+                node: props.node
+            });
+        }
     }
 
     handleAddLine() {
@@ -110,7 +111,7 @@ class Line extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <Collapse isOpen={(!!this.state.node.extras.audio || !!this.state.loading)}>
                     { this.state.node.extras.audio || this.state.loading ?
                         <div>{ this.state.loading ? 

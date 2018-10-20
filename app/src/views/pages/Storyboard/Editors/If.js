@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Expression from './Expression';
-import Expressionfy from './Expressionfy';
+import Expression from './components/Expression';
+import Expressionfy from './components/Expressionfy';
 
 class IfBlock extends Component {
     constructor(props) {
@@ -24,9 +24,21 @@ class IfBlock extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node
-        });
+        if(props.node.id !== this.state.node.id){
+            let node = props.node;
+
+            if(!node.extras.expression || !node.extras.expression.type){
+                node.extras.expression = {
+                    type: 'value',
+                    value: '',
+                    depth: 0
+                }
+            }
+
+            this.setState({
+                node: props.node
+            });
+        }
     }
 
     onUpdate(){
@@ -39,7 +51,7 @@ class IfBlock extends Component {
         let show = !(this.state.node.extras.expression.type === 'value' || this.state.node.extras.expression.type === 'variable');
 
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <label>If </label>
                 { show ? <Expressionfy expression={this.state.node.extras.expression} />:null}
                 <Expression expression={this.state.node.extras.expression} variables={this.props.variables} onUpdate={this.onUpdate}/>

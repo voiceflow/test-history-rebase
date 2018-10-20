@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import ChoiceInputs from './ChoiceInputs';
-import AudioDrop from './AudioDrop';
-import TextVoice from './TextVoice';
+import ChoiceInputs from './components/ChoiceInputs';
 
 class Choice extends Component {
     constructor(props) {
@@ -16,10 +14,11 @@ class Choice extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node,
-            voices: props.voices
-        });
+        if(props.node.id !== this.state.node.id){
+            this.setState({
+                node: props.node
+            });
+        }
     }
 
     handleChange(e, key = undefined) {
@@ -74,7 +73,7 @@ class Choice extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <label>
                     Choices
                 </label>

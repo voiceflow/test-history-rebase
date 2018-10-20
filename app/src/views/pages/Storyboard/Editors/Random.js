@@ -75,7 +75,7 @@ class RandomBlock extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <InputGroup className="my-3">
                     <label className="input-group-text w-100 m-0 text-left">
                         <Input addon type="checkbox" checked={!!this.state.node.extras.smart} onChange={this.handleInputChange}/>

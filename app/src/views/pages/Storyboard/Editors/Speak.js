@@ -70,17 +70,17 @@ function getEntityStrategy(mutability) {
     };
 }
 
+const compositeDecorator = new CompositeDecorator([
+    {
+        strategy: getEntityStrategy('IMMUTABLE'),
+        component: variableSpan
+    }
+]);
+
 class Speak extends Component {
 
     constructor(props) {
         super(props);
-
-        const compositeDecorator = new CompositeDecorator([
-            {
-                strategy: getEntityStrategy('IMMUTABLE'),
-                component: variableSpan
-            }
-        ]);
 
         let node = this.props.node;
         
@@ -109,6 +109,24 @@ class Speak extends Component {
         };
         this.handleSelection = this.handleSelection.bind(this);
         this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    }
+
+    componentWillReceiveProps(props) {
+        if(props.node.id !== this.state.node.id){
+            let node = props.node;
+            
+            let editorState;
+            if(!node.extras.raw){
+                editorState = EditorState.createEmpty(compositeDecorator);
+            }else{
+                editorState = EditorState.createWithContent(convertFromRaw(node.extras.raw), compositeDecorator);
+            }
+
+            this.setState({
+                editorState: editorState,
+                node: node
+            });
+        }
     }
 
     handleKeyCommand(command) {
@@ -181,7 +199,7 @@ class Speak extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <label>Speech</label>
                 {this.props.variables.length === 0 ? null : 
                     <Select

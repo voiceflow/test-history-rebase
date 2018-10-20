@@ -13,9 +13,11 @@ class Capture extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node
-        });
+        if(props.node.id !== this.state.node.id){
+            this.setState({
+                node: props.node
+            });
+        }
     }
 
     handleSelection(selected){
@@ -29,7 +31,7 @@ class Capture extends Component {
 
     render() {
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <label>Capture Input to: </label>
                 <Select
                     classNamePrefix="variable-box"

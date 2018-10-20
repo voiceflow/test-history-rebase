@@ -20,6 +20,14 @@ class Command extends Component {
         }, this.props.onUpdate);
     }
 
+    componentWillReceiveProps(props) {
+        if(props.node.id !== this.state.node.id){
+            this.setState({
+                node: props.node
+            });
+        }
+    }
+
     render() {
         return (
             <div>

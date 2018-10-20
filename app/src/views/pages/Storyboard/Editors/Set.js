@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import Select from 'react-select';
-import Expression from './Expression'
-import Expressionfy from './Expressionfy';
+import Expression from './components/Expression'
+import Expressionfy from './components/Expressionfy';
 import isVarName from 'is-var-name';
 
 class SetBlock extends Component {
     constructor(props) {
         super(props);
-
         let node = this.props.node;
 
         if(!node.extras.expression || !node.extras.expression.type){
@@ -32,9 +31,21 @@ class SetBlock extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node
-        });
+        if(props.node.id !== this.state.node.id){
+            let node = props.node;
+
+            if(!node.extras.expression || !node.extras.expression.type){
+                node.extras.expression = {
+                    type: 'value',
+                    value: '',
+                    depth: 0
+                }
+            }
+
+            this.setState({
+                node: props.node
+            });
+        }
     }
 
     addVariable (){
@@ -81,8 +92,9 @@ class SetBlock extends Component {
 
     render() {
         let show = !(this.state.node.extras.expression.type === 'value' || this.state.node.extras.expression.type === 'variable');
+        console.log(this.state.node.extras.expression);
         return (
-            <div key={this.state.node.id}>
+            <div>
                 <div className="variable-group">
                     <span>Set </span>
                     <Select

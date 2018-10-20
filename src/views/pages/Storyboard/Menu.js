@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
 
 const sections = [{
@@ -22,7 +22,7 @@ const sections = [{
                    // <div className="mt-5">
                      //   <small><a href="https://getstoryflow.com">STORY SCHOOL <i className="fas fa-question-circle"/></a></small>
                    // </div>
-class Menu extends Component {
+class Menu extends PureComponent {
     // constructor(props) {
     //     super(props);
     // }

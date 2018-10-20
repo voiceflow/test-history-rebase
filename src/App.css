@@ -274,7 +274,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .subheader-right {
-    width: 500px;
+    /*width: 500px;*/
     display: flex;
     justify-content: flex-end;
 }

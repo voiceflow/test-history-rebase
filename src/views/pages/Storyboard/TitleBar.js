@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 // import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 // import {Link} from 'react-router-dom';
 
 // import axios from 'axios'
 
-class TitleBar extends Component {
+class TitleBar extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -13,9 +13,7 @@ class TitleBar extends Component {
             dropdownOpen: false,
             projects: false,
             publish: false,
-            worlds_open: false,
-            diagrams: [],
-            worlds: []
+            diagrams: []
         }
 
         this.handleChange = this.handleChange.bind(this);

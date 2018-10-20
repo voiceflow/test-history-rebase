@@ -32,8 +32,6 @@ class StoryBoard extends Component {
         engine.registerNodeFactory(new BlockNodeFactory());
         engine.registerLinkFactory(new BlockLinkFactory());
         engine.registerPortFactory(new BlockPortFactory());
-
-        this.unsave = this.unsave.bind(this);
         
         let node, open, diagram_id, skill_id;
 
@@ -119,6 +117,11 @@ class StoryBoard extends Component {
         this.toggleTestModal = this.toggleTestModal.bind(this);
         this.createSkill = this.createSkill.bind(this);
         this.publish = this.publish.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onTest = this.onTest.bind(this);
+        this.onNodeRemoved = this.onNodeRemoved.bind(this);
+        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
+        this.unsave = this.unsave.bind(this);
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
@@ -135,11 +138,11 @@ class StoryBoard extends Component {
                     engine: engine,
                     selected: node,
                     open: true
-                }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
+                }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
             }
         });
 
-        $('.Menu').mousedown(this.onDiagramUnfocus.bind(this));
+        $('.Menu').mousedown(this.onDiagramUnfocus)
 
         $(document).keydown(function(event) {
             // If Control or Command key is pressed and the S key is pressed
@@ -174,7 +177,7 @@ class StoryBoard extends Component {
     }
 
     repaint() {
-        this.state.engine.repaintCanvas();
+        // this.state.engine.repaintCanvas();
     }
 
     onSave(cb) {
@@ -447,7 +450,7 @@ class StoryBoard extends Component {
 
         return (
             <div className='App' >
-                { this.state.newSkill === null ? null : 
+                { this.state.newSkill ?  
                     <SkillModal 
                         modal={!!this.state.newSkill}
                         toggle={()=>this.setState({newSkill: false})} 
@@ -455,7 +458,7 @@ class StoryBoard extends Component {
                         onClose={this.state.newSkill === false ? 
                             () => this.props.history.push('/dashboard') : 
                             () => this.setState({newSkill: null})}
-                    />
+                    /> : null
                 }
                 <Prompt
                     when={!this.state.saved}
@@ -475,10 +478,8 @@ class StoryBoard extends Component {
                 <TitleBar
                     title={this.state.diagram_name}
                     skill={this.state.skill}
-                    onUpdateTitle={(e) => {this.setState({ diagram_name: e.target.value }); this.unsave()}}
-                    onSave={this.onSave.bind(this)}
-                    onTest={this.onTest.bind(this)}
-                    onLoadId={this.onLoadId.bind(this)}
+                    onSave={this.onSave}
+                    onTest={this.onTest}
                     saving={this.state.saving}
                     saved={this.state.saved}
                     last_save={this.state.last_save}
@@ -574,7 +575,7 @@ class StoryBoard extends Component {
                             };
                         }
                         node.extras.type = type;
-                        node.addListener({ entityRemoved: this.onNodeRemoved.bind(this) });
+                        node.addListener({ entityRemoved: this.onNodeRemoved });
                         var points = engine.getRelativeMousePoint(event);
                         node.x = points.x;
                         node.y = points.y;
@@ -585,7 +586,7 @@ class StoryBoard extends Component {
                             engine: engine,
                             selected: node,
                             open: true
-                        }, () => $('.Editor').mousedown(this.onDiagramUnfocus.bind(this)));
+                        }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
                     }}
                     onDragOver={event => {
                         event.preventDefault();

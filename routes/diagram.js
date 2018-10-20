@@ -267,7 +267,7 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     }
 
                     let nextId = links[nextLink];
-                    let commands = node.extras.commands.map(input => input.split('\n').filter(i => { return !!i }));
+                    let commands = node.extras.commands.split('\n').filter(i => { return !!i });
 
                     commands.forEach(command => {
                         story.commands.push({

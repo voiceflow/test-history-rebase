@@ -267,7 +267,7 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     }
 
                     let nextId = links[nextLink];
-                    let commands = node.extras.commands.map(input => input.split('\n').filter(i => { return !!i });
+                    let commands = node.extras.commands.map(input => input.split('\n').filter(i => { return !!i }));
 
                     commands.forEach(command => {
                         story.commands.push({
@@ -288,7 +288,7 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         audio: null,
                         prompt: node.extras.prompt ? node.extras.prompt : true,
                         choices: node.extras.choices,
-                        inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i }),
+                        inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i })),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button, Modal, ModalBody, Alert } from 'reactstrap';
 
-class LoadingModal extends Component {
+class LoadingModal extends PureComponent {
 
   // constructor(props) {
   //   super(props);

@@ -92,7 +92,7 @@ class SetBlock extends Component {
 
     render() {
         let show = !(this.state.node.extras.expression.type === 'value' || this.state.node.extras.expression.type === 'variable');
-        console.log(this.state.node.extras.expression);
+
         return (
             <div>
                 <div className="variable-group">

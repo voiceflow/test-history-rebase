@@ -75,52 +75,16 @@ class Choice extends Component {
     render() {
         return (
             <div key={this.state.node.id}>
-                <div>
-                    <label>
-                        Choice Audio
-                    </label>
-                    <AudioDrop
-                        audio={this.state.node.extras.prompt}
-                        update={(audio) => {
-                            let node = this.state.node;
-                            node.extras.prompt = audio;
-                            this.setState({node: node});
-                        }}
-                    />
-                    <TextVoice
-                        text={this.state.node.extras.promptText}
-                        voices={this.state.voices}
-                        voice={this.state.node.extras.promptVoice}
-                        updateText={(e) => {
-                            let node = this.state.node;
-                            node.extras.promptText = e.target.value;
-                            this.setState({node: node});
-                        }}
-                        updateVoice={(selected) => {
-                            let node = this.state.node;
-                            node.extras.promptVoice = selected.value;
-                            this.setState({node: node});
-                        }}
-                        updateAudio={(audio) => {
-                            let node = this.state.node;
-                            node.extras.prompt = audio;
-                            this.setState({node: node});
-                        }}
-                    />
-                </div>
-                <hr/>
-                <div>
-                    <label>
-                        Choices
-                    </label>
-                    <ChoiceInputs
-                        choices={this.state.node.extras.choices}
-                        inputs={this.state.node.extras.inputs}
-                        onAdd={this.handleAddChoice.bind(this)}
-                        onRemove={this.handleRemoveChoice.bind(this)}
-                        onChange={this.handleChange.bind(this)}
-                    />
-                </div>
+                <label>
+                    Choices
+                </label>
+                <ChoiceInputs
+                    choices={this.state.node.extras.choices}
+                    inputs={this.state.node.extras.inputs}
+                    onAdd={this.handleAddChoice.bind(this)}
+                    onRemove={this.handleRemoveChoice.bind(this)}
+                    onChange={this.handleChange.bind(this)}
+                />
             </div>
         );
     }

@@ -20,6 +20,7 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
+// import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
 

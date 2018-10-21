@@ -16,9 +16,10 @@ const sections = [{
         { text: 'Set', type: 'set', icon: <i className="fas fa-code"/> },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
-        { text: 'Diagram', type: 'diagram', icon: <i className="fas fa-clone"/> }
     ]
 }];
+
+// { text: 'Diagram', type: 'diagram', icon: <i className="fas fa-clone"/> }
                    // <div className="mt-5">
                      //   <small><a href="https://getstoryflow.com">STORY SCHOOL <i className="fas fa-question-circle"/></a></small>
                    // </div>

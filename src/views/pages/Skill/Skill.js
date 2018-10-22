@@ -68,7 +68,7 @@ class Skill extends Component {
         // token ? 2 : 0
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
-                stage: 0
+                stage: 5
             });
         })
     }
@@ -349,12 +349,14 @@ class Skill extends Component {
         }else if(this.state.stage === 5 || this.state.stage === 6){
             content = <div>
                 Your Amazon Account needs to set up developer settings to Publish Skills.
-                <a href="https://developer.amazon.com/login.html" className="btn btn-primary btn-block" target="_blank"  rel="noopener noreferrer">
-                    Developer Sign Up
-                </a>
-                <Button color="primary" onClick={this.checkVendor}>
-                    <i className="fas fa-sync-alt"/> Check Again
-                </Button>
+                <div className="mt-3">
+                    <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank"  rel="noopener noreferrer">
+                        Developer Sign Up
+                    </a>
+                    <Button color="info" onClick={this.checkVendor}>
+                        <i className="fas fa-sync-alt"/> Check Again
+                    </Button>
+                </div>
             </div>
         }
 

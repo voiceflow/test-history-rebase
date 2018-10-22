@@ -161,6 +161,7 @@ app.post('/concat', ensureLoggedIn(), Audio.concat);
 // Handle React routing, return all requests to React app
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'app', 'build', 'index.html'));
+  res.end();
 });
 
 // eslint-disable-next-line no-console

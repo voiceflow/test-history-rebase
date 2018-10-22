@@ -333,7 +333,7 @@ class StoryBoard extends Component {
                 cookies.set('last_session', {
                     skill_id: this.state.skill.skill_id,
                     diagram_id: diagram_id
-                });
+                }, {path: '/'});
             },
             error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
@@ -416,7 +416,7 @@ class StoryBoard extends Component {
                     cookies.set('last_session', {
                         skill_id: skill_id,
                         diagram_id: diagram_id
-                    });
+                    }, {path: '/'});
                     this.setState({
                         newSkill: 0,
                         skill: {

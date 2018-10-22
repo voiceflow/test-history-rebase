@@ -129,7 +129,7 @@ export default {
 	signup: (user, cb) => {
 	    axios.put('/user', user)
 	    .then(response => {
-	    	cookies.set('auth', response.data.token);
+	    	cookies.set('auth', response.data.token, {path: '/'});
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
@@ -140,7 +140,7 @@ export default {
 	login: (user, cb) => {
 	    axios.put('/session', user)
 	    .then(response => {
-	    	cookies.set('auth', response.data.token);
+	    	cookies.set('auth', response.data.token, {path: '/'});
 	    	cookies.remove('last_session');
 	    	window.user_detail = response.data.user;
 	    	cb(null);

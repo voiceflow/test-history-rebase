@@ -222,9 +222,10 @@ const buildSkill = async (req,res) => {
                             }
                         });
 
-                        if(Array.isArray(vendor_request.data) && vendor_request.data.length !== 0){
-                            manifest.vendorId = vendor_request.data[0].id;
-                            console.log(vendor_request.data);
+                        let vendors = vendor_request.data.vendors;
+                        if(Array.isArray(vendors) && vendors.length !== 0){
+                            manifest.vendorId = vendors[0].id;
+                            console.log(vendors);
                         }else{
                             throw ({
                                 type: "Vendor Id Error",

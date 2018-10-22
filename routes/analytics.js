@@ -4,16 +4,68 @@ Date.prototype.isValid = function() {
 
 const {docClient, pool} = require('./../services');
 
+const getUsers = (req,res) => {
+    if (!req.params.skillId) {
+        req.sendStatus(400);
+        return
+    }
+
+    let skillId = req.params.skill_id;
+
+    if (skillId) {
+        console.log(skillId);
+        if (req.params.weekly) {
+            let sql = `
+            SELECT 
+                COUNT(*) 
+                FROM sessions
+                WHERE sessions.skill_id = 10
+                AND sessions.time < (NOW() - INTERVAL '7 DAYS');
+            `
+            
+            pool.query(sql, [req.params.weekly], (err, result) => {
+                if (err) {
+                    res.status(500).send(err);
+                    console.log(err);
+                    return
+                }
+                console.log(result);
+                res.response(result.rows);
+            })
+        }
+        let sql = `
+        SELECT 
+            COUNT(DISTINCT user_id) 
+            FROM sessions
+            WHERE sessions.skill_id = 10;
+        `
+
+        pool.query(sql, [skillId], (err, result) => {
+            if(err) {
+                res.status(500).send(err);
+                console.log(err);
+                return
+            }
+            console.log(result);
+            res.response(result.rows);
+            }
+        );
+    } else {
+        console.log('error no skill id');
+    }
+}
+
+
 const getStories = (req, res) => {
     if(!req.params.env){
         req.sendStatus(400);
         return;
     }
-
+ 
     if(req.params.start && req.params.end){
         let start = new Date(parseInt(req.params.start, 10));
         let end = new Date(parseInt(req.params.end, 10));
-
+        console.log(req);
         if(start == 'Invalid Date' || end == 'Invalid Date' || start > end){
             res.sendStatus(400);
             return;

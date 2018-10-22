@@ -115,6 +115,7 @@ app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 
 app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
+app.get('/analytics/:skill_id/', ensureAdmin(), Analytics.getUsersLOL);
 app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
 app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStories);
 app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);

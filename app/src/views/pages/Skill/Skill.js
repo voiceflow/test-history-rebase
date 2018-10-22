@@ -65,10 +65,10 @@ class Skill extends Component {
     }
 
     componentWillMount() {
-        // token ? 2 : 0
+        // 
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
-                stage: 5
+                stage: token ? 2 : 0
             });
         })
     }

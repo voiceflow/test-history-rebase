@@ -30,7 +30,8 @@ class NavBar extends Component {
     this.state = {
       isOpen: false,
       tabs: [
-        {link: 'dashboard', 'text': <span>Dashboard</span>}
+        {link: 'dashboard', 'text': <span>Dashboard</span>},
+        {link: 'storyboard', 'text': <span>Storyboard</span>}
       ],
       user: AuthenticationService.getUser(),
       loaded: false

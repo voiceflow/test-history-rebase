@@ -221,11 +221,13 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
         Key: {'id': diagram_id}
     };
 
+    let testing = (skill_id==="TEST");
+
     docClient.get(params, (err, data) => {
         if (err) {
             console.error(err);
             resolve(500);
-        } else if (data.Item && data.Item.skill === skill_id) {
+        } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
             let diagram = JSON.parse(data.Item.data);
 
@@ -406,13 +408,15 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                 }
             }
             let params = {
-                TableName: 'com.getstoryflow.stories.sandbox',
+                TableName: `com.getstoryflow.skills.${testing ? 'testing' : 'live'}`,
                 Item: story
             };
             docClient.put(params, err => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(err.statusCode);
+                } else if(testing) {
+                    resolve(200);
                 } else {
                     // Add the story to SQL as well
                     addStory(story, (err) => {
@@ -469,10 +473,22 @@ const publish = async (req, res) => {
     res.sendStatus(status);
 };
 
+const publishTest = async (req, res) => {
+    if (!req.user || !req.params.diagram_id) {
+        res.sendStatus(401);
+        return;
+    }
+
+    let status = await renderDiagram(req.params.diagram_id, 'TEST');
+
+    res.sendStatus(status);
+};
+
 module.exports = {
     getDiagrams: getDiagrams,
     getDiagram: getDiagram,
     deleteDiagram: deleteDiagram,
     setDiagram: setDiagram,
-    publish: publish
+    publish: publish,
+    publishTest: publishTest
 }

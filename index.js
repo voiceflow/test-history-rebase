@@ -17,7 +17,6 @@ const Diagram = require('./routes/diagram.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
-const Story = require('./routes/story.js');
 const Analytics = require('./routes/analytics.js')
 const Review = require('./routes/review.js');
 const Authentication = require('./routes/authentication');
@@ -113,6 +112,7 @@ app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
+app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 
 app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
@@ -126,17 +126,6 @@ app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStor
 app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 app.get('/code', ensureAdmin(), Code.generateCode);
-
-// TO REMOVE SOON
-app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);
-app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
-/* unRESTful STUFF TO REMOVE */
-
-app.get('/stories/:env', Story.getStories);
-app.post('/feature/:env/:id', ensureAdmin(), Story.featureStory);
-app.delete('/stories/:env/:id', ensureAdmin(), Story.deleteStory);
-app.post('/list/:env/:id', ensureAdmin(), Story.listStory);
-app.delete('/list/:env/:id', ensureAdmin(), Story.unlistStory);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 

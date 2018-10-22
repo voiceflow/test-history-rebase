@@ -371,12 +371,12 @@ class Skill extends Component {
                 <div className="subheader">
                     <div className="container space-between">
                         <span className="subheader-title">
-                            <b>Publish</b>
+                            <b>Settings</b>
                             <div className="hr-label">
                                 <small><i className="far fa-user mr-1"></i></small> {this.props.user.name}{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '}
                                 <span className="text-secondary">{this.state.name}</span>{' '}
-                                <small> - created {moment(this.state.created).fromNow()}</small>
+                                <small> / created {moment(this.state.created).fromNow()}</small>
                             </div>
                         </span>
                         <div className="subheader-right">

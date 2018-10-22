@@ -369,36 +369,40 @@ class StoryBoard extends Component {
     onTest() {
         this.state.engine.getDiagramModel().clearSelection();
         this.toggleTestModal();
-        // this.onPublish("testing", (err, id) => {
-        //     if(err){
-        //         this.setState({
-        //             error_modal: "Could Not Render Your Project",
-        //             loading_modal: true,
-        //             testing_modal: false
-        //         });
-        //     }else{
-        //         let engine = this.state.engine;
-        //         let model = engine.getDiagramModel();
-        //         let data = model.serializeDiagram();
-        //         // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+
+        this.onSave(diagram_id => {
+            axios.post(`/diagram/${diagram_id}/test/publish`)
+            .then(() => {
+                let engine = this.state.engine;
+                let model = engine.getDiagramModel();
+                let data = model.serializeDiagram();
+                // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
                 
-        //         let nodes = [];
-        //         data.nodes.forEach((node) => {
-        //             if(node.extras && node.extras.type !== "story" && node.extras.type !== "ending"){
-        //                 nodes.push({
-        //                     value: node.id,
-        //                     label: node.name
-        //                 });               
-        //             }
-        //         });
-        //         this.setState({
-        //             testing_info: {
-        //                 id: id,
-        //                 nodes: nodes
-        //             }
-        //         });
-        //     }
-        // });
+                let nodes = [];
+                data.nodes.forEach((node) => {
+                    if(node.extras && node.extras.type !== "story"){
+                        nodes.push({
+                            value: node.id,
+                            label: node.name
+                        });               
+                    }
+                });
+                this.setState({
+                    testing_info: {
+                        id: diagram_id,
+                        nodes: nodes
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err.response);
+                this.setState({
+                    error_modal: "Could Not Render Your Project",
+                    loading_modal: true,
+                    testing_modal: false
+                });
+            });
+        });
     }
 
     createSkill(name){

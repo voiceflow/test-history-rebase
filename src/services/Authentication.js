@@ -132,6 +132,7 @@ export default {
 	    axios.put('/session', user)
 	    .then(response => {
 	    	cookies.set('auth', response.data.token);
+	    	cookies.remove('last_session');
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })

@@ -37,6 +37,7 @@ class NavBar extends Component {
       loaded: false
     };
   }
+  // {link: 'storyboard', 'text': <span>Storyboard</span>},
 
   componentDidMount() {
     if(this.state.user.admin){

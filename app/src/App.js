@@ -14,7 +14,6 @@ import StoryBoard from './views/pages/Storyboard/StoryBoard';
 import DashBoard from './views/pages/Dashboard/DashBoard';
 import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
-import Reviews from './views/pages/Reviews/Reviews';
 import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar';
 import Skill from './views/pages/Skill/Skill'
@@ -109,7 +108,6 @@ class App extends Component {
                 <PrivateRoute path="/publish/:id" name="Skill Dashboard" component={Skill}/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} />
-                <PrivateRoute path="/reviews" name="Reviews" component={Reviews} />
                 <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (

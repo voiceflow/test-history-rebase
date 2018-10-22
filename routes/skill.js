@@ -206,14 +206,32 @@ const buildSkill = async (req,res) => {
                             if(err.response.status === 404){
                                 amzn_id = null;
                             }else if(err.response){
-                                console.log(err.response);
+                                console.error(err.response.status);
                                 console.error(JSON.stringify(err.response.data));
                             }
                         }
                     }
 
                     if(!amzn_id){
-                        manifest.vendorId = "MVMX1EPB9U1M6";
+
+                        let vendor_request = await axios.request({
+                            url: 'https://api.amazonalexa.com/v1/vendors',
+                            method: 'GET',
+                            headers: {
+                                Authorization: token
+                            }
+                        });
+
+                        if(Array.isArray(vendor_request.data) && vendor_request.data.length !== 0){
+                            manifest.vendorId = vendor_request.data[0].id;
+                            console.log(vendor_request.data);
+                        }else{
+                            throw ({
+                                type: "Vendor Id Error",
+                                data: vendor_request.data
+                            });
+                        }
+                        
 
                         let request = await axios.request({
                             url: 'https://api.amazonalexa.com/v1/skills',
@@ -275,7 +293,7 @@ const buildSkill = async (req,res) => {
 
                 } catch(err) {
                     if(err.response){
-                        console.log(err.response);
+                        console.error(err.response.status);
                         console.error(JSON.stringify(err.response.data));
                     }else{
                         console.error(err);

@@ -359,25 +359,29 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     };
                 } else if (node.extras.type === 'speak') {
 
-                    let markdownstring = draftToMarkdown(node.extras.raw, {
-                        entityItems: {
-                            VARIABLE: {
-                                open: entity => {
-                                    return "' + v['"
-                                },
-                                close: entity => {
-                                    return "'] + '"
+                    let markdownstring = '';
+                    let nextLink = null;
+                    
+                    if(node.extras.raw){
+                        markdownstring = draftToMarkdown(node.extras.raw, {
+                            entityItems: {
+                                VARIABLE: {
+                                    open: entity => {
+                                        return "' + v['"
+                                    },
+                                    close: entity => {
+                                        return "'] + '"
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
 
-                    markdownstring = "'" + markdownstring + ".'";
+                        markdownstring = "'" + markdownstring + ".'";
 
-                    let nextLink = null;
-                    for (var j = 0; j < node.ports.length; j++) {
-                        if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                        for (var j = 0; j < node.ports.length; j++) {
+                            if (!node.ports[j].in) {
+                                [nextLink] = node.ports[j].links;
+                            }
                         }
                     }
 

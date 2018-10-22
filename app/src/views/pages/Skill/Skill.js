@@ -230,7 +230,7 @@ class Skill extends Component {
                             Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via email.
                         </p>
                         <Link to="/dashboard"><MUIButton variant="contained" className="purple-btn">Dashboard</MUIButton></Link>
-                        <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({stage: 11})}>Return to Project</MUIButton>
+                        <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({stage: 2})}>Return to Project</MUIButton>
                     </div>
                     <img src="/images/success.svg" alt="success"/>
                 </div>
@@ -358,7 +358,7 @@ class Skill extends Component {
                         </FormGroup>
                         <FormGroup>
                           <Label>Invocation Name *</Label>
-                          <Input type="text" name="inv_name" placeholder="Story Flow" value={this.state.inv_name} onChange={this.handleChange} />
+                          <Input type="text" name="inv_name" placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
                         </FormGroup>
                         <div className="d-flex mb-4">
                             <div>

@@ -228,7 +228,7 @@ const buildSkill = async (req,res) => {
                         }else{
                             throw ({
                                 type: "Vendor Id Error",
-                                data: JSON.stringify(vendor_request.data);
+                                data: JSON.stringify(vendor_request.data)
                             });
                         }
                         

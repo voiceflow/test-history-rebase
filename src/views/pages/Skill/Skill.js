@@ -23,11 +23,14 @@ import AuthenticationService from './../../../services/Authentication';
 import categories from './../../../services/Categories';
 
 const stage_title = {
+    "-1": "Login Failed",
     "0": "Login Developer with Amazon",
     "1": "Verifying",
     "2": "Privacy & Compliance",
     "3": "Rendering",
     "4": "Publishing",
+    "5": "Developer Account",
+    "6": "Checking Vendor",
     "10": "Awaiting Review"
 }
 
@@ -58,12 +61,14 @@ class Skill extends Component {
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
+        this.checkVendor = this.checkVendor.bind(this);
     }
 
     componentWillMount() {
+        // token ? 2 : 0
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
-                stage: (token === null) ? 0 : 2
+                stage: 0
             });
         })
     }
@@ -123,12 +128,18 @@ class Skill extends Component {
                     });
                 })
                 .catch(err => {
-                    console.error(err);
-                    this.setState({
-                        publish: false,
-                        stage: 2,
-                        error: 'Publishing Error'
-                    })
+                    if(err.response.status === 404){
+                        // No Vendor ID/Amazon Developer Account
+                        this.setState({
+                            stage: 5
+                        });
+                    }else{
+                        this.setState({
+                            publish: false,
+                            stage: 2,
+                            error: 'Publishing Error'
+                        });
+                    }
                 })
             })
             .catch(err => {
@@ -139,6 +150,19 @@ class Skill extends Component {
                     error: 'Rendering Error'
                 })
             })
+        });
+    }
+
+    checkVendor(){
+        this.setState({stage: 6});
+
+        axios.get('/session/vendor')
+        .then(() => {
+            this.setState({stage: 2});
+        })
+        .catch(err => {
+            console.error(err);
+            this.setState({stage: 5});
         });
     }
 
@@ -221,6 +245,7 @@ class Skill extends Component {
     }
 
     render() {
+        // Success Screen
         if(this.state.stage === 10){
             return <div className="super-center h-100">
                 <div className="success-page d-flex">
@@ -237,65 +262,77 @@ class Skill extends Component {
             </div>
         }
 
-        let compliance = [{
-                value: 'purchase',
-                text: 'Does this skill allow users to make purchases or spend real money?'
-            }, {
-                value: 'personal',
-                text: 'Does this Alexa skill collect users\' personal information?'
-            }, {
-                value: 'copa',
-                text: 'Is this skill directed to or does it target children under the age of 13?'
-            }, {
-                value: 'ads',
-                text: 'Does this skill contain advertising?'
-            }, {
-                value: 'export',
-                text: "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
-                yes: 'I certify',
-                no: 'I do not certify'
-            }].map((form, i) => {
-                return <Paper className="p-3 my-3" key={i}>
-                    {form.text}
-                    <MUFormGroup row>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                  checked={this.state[form.value]}
-                                  onChange={() => this.onRadio(form.value, true)}
-                                  color="primary"
-                                />
-                            }
-                          label={form.yes ? form.yes : "Yes"}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                  checked={!this.state[form.value]}
-                                  onChange={() => this.onRadio(form.value, false)}
-                                  color="primary"
-                                />
-                            }
-                            label={form.no ? form.no : "No"}
-                        />
-                    </MUFormGroup>
-                </Paper>
-            })
-
         let content;
-
         if(this.state.stage === 0 || this.state.stage === -1){
             content = <div>
-                {this.state.stage === -1 ? <Alert color="danger">Login With Amazon Failed</Alert> : null}
+                {this.state.stage === -1 ? 
+                    <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null
+                }
                 <AmazonLogin
-                    updateLogin={(stage) => this.setState({stage: stage})}
+                    updateLogin={(stage) => {
+                        if(stage === 2){
+                            this.checkVendor();
+                        }else{
+                            this.setState({stage: stage});
+                        }
+                    }}
                 />
             </div>
-        }else if(this.state.stage === 1 || this.state.stage === 3){
-            content = <h1><i className="fas fa-sync-alt fa-spin"/></h1>
-        }else if(this.state.stage === 2){
+        }else if(this.state.stage === 1 || 
+            this.state.stage === 3 ||
+            this.state.stage === 4 ||
+            this.state.stage === 6){
             content = <div>
-                {compliance}
+                    <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                    <p className="loading">{stage_title[this.state.stage]}</p>
+            </div>
+        }else if(this.state.stage === 2){
+            content = <div className="MUIform">
+                {[{
+                    value: 'purchase',
+                    text: 'Does this skill allow users to make purchases or spend real money?'
+                }, {
+                    value: 'personal',
+                    text: 'Does this Alexa skill collect users\' personal information?'
+                }, {
+                    value: 'copa',
+                    text: 'Is this skill directed to or does it target children under the age of 13?'
+                }, {
+                    value: 'ads',
+                    text: 'Does this skill contain advertising?'
+                }, {
+                    value: 'export',
+                    text: "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
+                    yes: 'I certify',
+                    no: 'I do not certify'
+                }].map((form, i) => {
+                    return (
+                        <Paper className="p-3 my-3" key={i}>
+                            {form.text}
+                            <MUFormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                          checked={this.state[form.value]}
+                                          onChange={() => this.onRadio(form.value, true)}
+                                          color="primary"
+                                        />
+                                    }
+                                  label={form.yes ? form.yes : "Yes"}
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                          checked={!this.state[form.value]}
+                                          onChange={() => this.onRadio(form.value, false)}
+                                          color="primary"
+                                        />
+                                    }
+                                    label={form.no ? form.no : "No"}
+                                />
+                            </MUFormGroup>
+                        </Paper>)
+                })}
                 <Paper className="p-3 my-3">
                    <Label>Testing Instructions</Label> 
                    <Textarea
@@ -308,6 +345,16 @@ class Skill extends Component {
                     />
                 </Paper>
                 <Button color="primary" onClick={this.onPublish} block>Submit To Alexa</Button>
+            </div>
+        }else if(this.state.stage === 5 || this.state.stage === 6){
+            content = <div>
+                Your Amazon Account needs to set up developer settings to Publish Skills.
+                <a href="https://developer.amazon.com/login.html" className="btn btn-primary btn-block" target="_blank"  rel="noopener noreferrer">
+                    Developer Sign Up
+                </a>
+                <Button color="primary" onClick={this.checkVendor}>
+                    <i className="fas fa-sync-alt"/> Check Again
+                </Button>
             </div>
         }
 
@@ -334,9 +381,9 @@ class Skill extends Component {
                 </div>
 
                 <Modal 
-                    isOpen={!!this.state.publish} 
+                    isOpen={this.state.publish} 
                     toggle={this.togglePublish} 
-                    className={this.props.className} 
+                    className="stage_modal" 
                     centered 
                     size="lg"
                     onClosed={this.closePublish}>
@@ -344,7 +391,9 @@ class Skill extends Component {
                         <div className="d-flex justify-content-between">
                             <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>×</button>
                         </div>
-                        {content}
+                        <div className="modal-info">
+                            {content}
+                        </div>
                     </ModalBody>
                 </Modal>
 

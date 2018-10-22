@@ -97,6 +97,7 @@ const ensureLoggedOut = () => {
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.get('/session', Authentication.getSession);
+app.get('/session/vendor', Authentication.getVendor);
 app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);

@@ -28,6 +28,20 @@ class StoryBoard extends Component {
     constructor(props) {
         super(props);
 
+        this.loadLines = this.loadLines.bind(this);
+        this.repaint = this.repaint.bind(this);
+        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
+        this.loadDiagram = this.loadDiagram.bind(this);
+        this.setVariables = this.setVariables.bind(this);
+        this.toggleTestModal = this.toggleTestModal.bind(this);
+        this.createSkill = this.createSkill.bind(this);
+        this.publish = this.publish.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onTest = this.onTest.bind(this);
+        this.onNodeRemoved = this.onNodeRemoved.bind(this);
+        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
+        this.unsave = this.unsave.bind(this);
+
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
         engine.registerNodeFactory(new BlockNodeFactory());
@@ -109,20 +123,6 @@ class StoryBoard extends Component {
         };
 
         $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
-
-        this.loadLines = this.loadLines.bind(this);
-        this.repaint = this.repaint.bind(this);
-        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
-        this.loadDiagram = this.loadDiagram.bind(this);
-        this.setVariables = this.setVariables.bind(this);
-        this.toggleTestModal = this.toggleTestModal.bind(this);
-        this.createSkill = this.createSkill.bind(this);
-        this.publish = this.publish.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.onTest = this.onTest.bind(this);
-        this.onNodeRemoved = this.onNodeRemoved.bind(this);
-        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
-        this.unsave = this.unsave.bind(this);
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);

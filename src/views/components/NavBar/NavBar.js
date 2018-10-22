@@ -41,7 +41,6 @@ class NavBar extends Component {
   componentDidMount() {
     if(this.state.user.admin){
       let tabs = this.state.tabs;
-      tabs.push({link: 'reviews', text: <span>Reviews <i className="fas fa-clipboard-list"></i></span>});
       tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
       tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
       this.setState({tabs: tabs});

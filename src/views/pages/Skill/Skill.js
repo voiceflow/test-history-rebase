@@ -65,7 +65,7 @@ class Skill extends Component {
     }
 
     componentWillMount() {
-        // 
+        // token ? 2 : 0
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
                 stage: token ? 2 : 0
@@ -348,8 +348,12 @@ class Skill extends Component {
             </div>
         }else if(this.state.stage === 5 || this.state.stage === 6){
             content = <div>
-                Your Amazon Account needs to set up developer settings to Publish Skills.
-                <div className="mt-3">
+                Your Amazon Account needs to set up developer settings to Publish Skills
+                <span className="text-muted text-center font-italic">
+                    Press "Create your Amazon Developer account"<br/> 
+                    and sign up with the same email as your Amazon Account.
+                </span>
+                <div className="my-3">
                     <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank"  rel="noopener noreferrer">
                         Developer Sign Up
                     </a>

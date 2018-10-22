@@ -7,12 +7,14 @@ import moment from 'moment';
 import Select from 'react-select';
 import './TestModal.css'
 
-const default_state = {
-  story: null,
-  input: "",
-  line: null,
-  variables: [],
-  testing: true
+const default_state = () => {
+  return {
+    diagrams: null,
+    input: "",
+    line: null,
+    variables: [],
+    testing: true
+  }
 }
 
 class TestModal extends React.Component {
@@ -29,13 +31,7 @@ class TestModal extends React.Component {
       data: null,
       selected_line: null,
       nodes: [],
-      story_state: {
-        story: false,
-        input: "",
-        line: null,
-        variables: [],
-        testing: true
-      }
+      story_state: default_state()
     }
 
     this.updateState = this.updateState.bind(this);
@@ -49,18 +45,20 @@ class TestModal extends React.Component {
     this.startline = this.startline.bind(this);
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.testing_info !== this.props.testing_info){
-      if(!this.state.story_state.story){
-        let story_state = this.state.story_state;
-        story_state.story = nextProps.testing_info.id;
-        this.setState({
-          nodes: nextProps.testing_info.nodes,
-          story_state: story_state
-        });
-      }
-    }
-  }
+  // componentWillReceiveProps(nextProps){
+  //   if(nextProps.testing_info !== this.props.testing_info){
+  //     if(!this.state.story_state.story){
+  //       let story_state = this.state.story_state;
+  //       story_state.diagrams = [{
+  //         id: nextProps.testing_info.id
+  //       }]
+  //       this.setState({
+  //         nodes: nextProps.testing_info.nodes,
+  //         story_state: story_state
+  //       });
+  //     }
+  //   }
+  // }
 
   removeAudio(){
     if(this.state.audio){
@@ -82,13 +80,11 @@ class TestModal extends React.Component {
   }
 
   handleEnd(){
-    let next_state = default_state;
     // keep the story id the same though
-    next_state.story = this.state.story_state.story;
     this.setState({
       started: false,
       inputs: [],
-      story_state: next_state
+      story_state: default_state()
     })
   }
 
@@ -139,18 +135,20 @@ class TestModal extends React.Component {
 
     if(start){
       data.testing = {
-        line: this.state.story_state.line ? this.state.story_state.line : "START"
+        line: this.state.story_state.line ? this.state.story_state.line : "START",
       };
+      data.diagrams = [{id: this.props.testing_info.id}]
     }
 
-    let local = false;
-    let url = local ? "http://localhost:4000/state/testing" : "https://testing.getstoryflow.com/state/testing"
+    let local = true;
+    let url = local ? "http://localhost:4000/state/test" : "https://testing.getstoryflow.com/state/test"
 
     $.ajax({
         url: url,
         type: 'POST',
         data: data,
         success: (res) => {
+          console.log(res);
           if(res.line && !res.ending) {
             this.setState({
               story_state: res
@@ -239,7 +237,7 @@ class TestModal extends React.Component {
         <ModalBody className="text-center env-modal">
           <h5>Test Your Project</h5>
           <hr className="mb-0"/>
-          { this.state.story_state.story ? 
+          { this.props.testing_info !== null ? 
             <div>
               { this.state.started ? 
                 <div>

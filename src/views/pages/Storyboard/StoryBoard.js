@@ -182,7 +182,7 @@ class StoryBoard extends Component {
     }
 
     repaint() {
-        // this.state.engine.repaintCanvas();
+        this.state.engine.repaintCanvas();
     }
 
     onSave(cb) {

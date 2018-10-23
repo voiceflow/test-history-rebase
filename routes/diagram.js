@@ -296,23 +296,26 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
                     };
-                } else if (node.extras.type === 'multiline' || node.extras.type === 'line') {
-                    let nextLink = null;
+                } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
+                    let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
                     }
-                    let audio = null;
+
+                    let audio;
                     if(node.extras.audio){
                         audio = node.extras.audio;
                     }else if(node.extras.lines[0].audio){
                         audio = node.extras.lines[0].audio;
                     }
+
                     story.lines[node.id] = {
                         audio: audio,
                         nextId: links[nextLink]
                     };
+
                 } else if (node.extras.type === 'listen') {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -378,7 +381,9 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                             }
                         });
 
-                        markdownstring = "'" + markdownstring + ".'";
+                        let period = markdownstring.substr(-1).match(/[.,:!?]/) ? ' ' : '. '
+
+                        markdownstring = "'" + markdownstring + period + "'";
 
                         for (var j = 0; j < node.ports.length; j++) {
                             if (!node.ports[j].in) {
@@ -404,6 +409,18 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         variable: node.extras.variable,
                         prompt: true,
                         nextId: links[nextLink]
+                    }
+                } else {
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+                    if(nextLink){
+                        story.lines[node.id] = {
+                            nextId: links[nextLink]
+                        }
                     }
                 }
             }

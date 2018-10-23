@@ -9,6 +9,7 @@
     "bootstrap": "^4.1.1",
     "chart.js": "^2.7.3",
     "draft-js": "^0.10.5",
+    "html-parse-stringify": "^1.0.3",
     "is-var-name": "^2.0.0",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",

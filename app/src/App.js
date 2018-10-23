@@ -89,6 +89,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(history.location.pathname);
     return (
       this.state.loading ? 
         <div className='super-center h-100 w-100'>

@@ -41,9 +41,13 @@ const getTotalUsers = (req,res) => {
 
 const getWeeklyUsers = (req,res) => {
 
-    let weeklyActive = req.params.weekly;
+    // let weeklyActive = req.params.weekly;
     let skillId = req.params.skill_id
 
+    if (!skillId) {
+        res.sendStatus(400);
+        return
+    }
         let sql = `
             SELECT 
             COUNT(*) 
@@ -65,10 +69,13 @@ const getWeeklyUsers = (req,res) => {
 
 const getMonthlyUsers = (req,res) => {
 
-    let monthlyActive = req.params.monthly;
+    // let monthlyActive = req.params.monthly;
     let skillId = req.params.skill_id;
 
-        if (monthlyActive) {
+        if (!skillId) {
+            res.sendStatus(400);
+            return
+        }
             let sql = `
                 SELECT 
                 COUNT(*) FROM sessions
@@ -85,7 +92,6 @@ const getMonthlyUsers = (req,res) => {
             console.log(result);
             res.send(result.rows);
         });
-    }
 }
 
 const getSessions = (req,res) => {
@@ -105,10 +111,11 @@ const getSessions = (req,res) => {
         if (err) {
             res.status(500).send(err);
             console.log(err);
-            res.send(result.rows);
+            return
         }
-    })
-    
+        console.log(result);
+        res.send(result.rows);
+    });
 }
 
 // const getStories = (req, res) => {
@@ -170,33 +177,33 @@ const getSessions = (req,res) => {
 //     }
 // }
 
-const getAggregate = async (req, res) => {
-    const { env } = req.params;
+// const getAggregate = async (req, res) => {
+//     const { env } = req.params;
 
-    let users, utterances, sessions, started, finished;
-    let query = await pool.query('SELECT COUNT(*) AS users, SUM(utterances) AS utterances, SUM(sessions) AS sessions FROM users').catch((err) => { console.log(err); });
+//     let users, utterances, sessions, started, finished;
+//     let query = await pool.query('SELECT COUNT(*) AS users, SUM(utterances) AS utterances, SUM(sessions) AS sessions FROM users').catch((err) => { console.log(err); });
     
-    if(query){
-        users = query.rows[0].users;
-        utterances = query.rows[0].utterances;
-        sessions = query.rows[0].sessions;
-    }
+//     if(query){
+//         users = query.rows[0].users;
+//         utterances = query.rows[0].utterances;
+//         sessions = query.rows[0].sessions;
+//     }
 
-    query = await pool.query('SELECT COUNT(*) AS started, COUNT(nullif(finished, false)) AS finished FROM story_read WHERE env = $1', [env]).catch((err) => { console.log(err); });
+//     query = await pool.query('SELECT COUNT(*) AS started, COUNT(nullif(finished, false)) AS finished FROM story_read WHERE env = $1', [env]).catch((err) => { console.log(err); });
     
-    if(query){
-        started = query.rows[0].started;
-        finished = query.rows[0].finished;
-    }
+//     if(query){
+//         started = query.rows[0].started;
+//         finished = query.rows[0].finished;
+//     }
 
-    res.send({
-        users: users,
-        utterances: utterances,
-        sessions: sessions,
-        started: started,
-        finished: finished
-    });
-}
+//     res.send({
+//         users: users,
+//         utterances: utterances,
+//         sessions: sessions,
+//         started: started,
+//         finished: finished
+//     });
+// }
 
 // const getReads = (req, res) => {
 //     if(!req.params.env){
@@ -237,120 +244,120 @@ const getAggregate = async (req, res) => {
 //     }
 // }
 
-const getUsers = (req, res) => {
-    if(!req.params.env){
-        req.sendStatus(400);
-        return;
-    }
+// const getUsers = (req, res) => {
+//     if(!req.params.env){
+//         req.sendStatus(400);
+//         return;
+//     }
 
-    let sql = `
-    SELECT
-        u.*,
-        COUNT(nullif(s.finished, NULL)),
-        COUNT(nullif(s.finished, false)) AS finished,
-        MAX(s.start_time) AS last_seen
-    FROM
-        users u
-        LEFT JOIN story_read s ON s.user_id = u.user_id AND s.env = u.env
-        WHERE u.env = $1
-        GROUP BY
-            u.user_id,
-            u.env
-        ORDER BY
-            u.join_date DESC`
+//     let sql = `
+//     SELECT
+//         u.*,
+//         COUNT(nullif(s.finished, NULL)),
+//         COUNT(nullif(s.finished, false)) AS finished,
+//         MAX(s.start_time) AS last_seen
+//     FROM
+//         users u
+//         LEFT JOIN story_read s ON s.user_id = u.user_id AND s.env = u.env
+//         WHERE u.env = $1
+//         GROUP BY
+//             u.user_id,
+//             u.env
+//         ORDER BY
+//             u.join_date DESC`
 
-    pool.query(sql, [req.params.env], (err, result) => {
-        if(err){ res.status(500).send(err); return;}
-        res.send(result.rows);
-    });
-}
+//     pool.query(sql, [req.params.env], (err, result) => {
+//         if(err){ res.status(500).send(err); return;}
+//         res.send(result.rows);
+//     });
+// }
 
-const getUserStories = (req, res) => {
-    if(!req.params.env || !req.params.id){
-        req.sendStatus(400);
-        return;
-    }
+// const getUserStories = (req, res) => {
+//     if(!req.params.env || !req.params.id){
+//         req.sendStatus(400);
+//         return;
+//     }
 
-    let sql = `
-    SELECT
-        st.title,
-        COUNT(*)
-    FROM
-        story_read s
-        INNER JOIN stories st ON st.story_id = s.story_id AND st.env = s.env
-        WHERE
-            s.user_id = $1
-            AND s.env = $2
-        GROUP BY
-            st.story_id,
-            st.title`
+//     let sql = `
+//     SELECT
+//         st.title,
+//         COUNT(*)
+//     FROM
+//         story_read s
+//         INNER JOIN stories st ON st.story_id = s.story_id AND st.env = s.env
+//         WHERE
+//             s.user_id = $1
+//             AND s.env = $2
+//         GROUP BY
+//             st.story_id,
+//             st.title`
 
-    pool.query(sql, [req.params.id, req.params.env], (err, result) => {
-        if(err){ res.status(500).send(err); return;}
-        res.send(result.rows);
-    });
-}
+//     pool.query(sql, [req.params.id, req.params.env], (err, result) => {
+//         if(err){ res.status(500).send(err); return;}
+//         res.send(result.rows);
+//     });
+// }
 
-const getUserStoriesData = (req, res) => {
-    if(!req.params.env || !req.params.id){
-        req.sendStatus(400);
-        return;
-    }
+// const getUserStoriesData = (req, res) => {
+//     if(!req.params.env || !req.params.id){
+//         req.sendStatus(400);
+//         return;
+//     }
 
-    let sql = `
-        SELECT
-            s.title,
-            sr.start_time
-        FROM
-            story_read sr
-        INNER JOIN 
-            stories s ON s.story_id = sr.story_id AND s.env = sr.env
-        WHERE
-            user_id = $1
-            AND sr.env = $2
-        ORDER BY sr.start_time DESC`
+//     let sql = `
+//         SELECT
+//             s.title,
+//             sr.start_time
+//         FROM
+//             story_read sr
+//         INNER JOIN 
+//             stories s ON s.story_id = sr.story_id AND s.env = sr.env
+//         WHERE
+//             user_id = $1
+//             AND sr.env = $2
+//         ORDER BY sr.start_time DESC`
 
-    pool.query(sql, [req.params.id, req.params.env], (err, result) => {
-        if(err){ res.status(500).send(err); return; }
-        let data = [];
-        result.rows.forEach((read) => {
-            data.push({
-                title: read.title,
-                time: read.start_time
-            });
-        });
-        res.send(data);
-    });
-}
+//     pool.query(sql, [req.params.id, req.params.env], (err, result) => {
+//         if(err){ res.status(500).send(err); return; }
+//         let data = [];
+//         result.rows.forEach((read) => {
+//             data.push({
+//                 title: read.title,
+//                 time: read.start_time
+//             });
+//         });
+//         res.send(data);
+//     });
+// }
 
-const getStoryLines = (req, res) => {
-    if(!req.params.id){
-        req.sendStatus(400);
-        return;
-    }
+// const getStoryLines = (req, res) => {
+//     if(!req.params.id){
+//         req.sendStatus(400);
+//         return;
+//     }
 
-    let sql = `
-        SELECT
-            line_id,
-            SUM(hits)
-        FROM
-            lines
-        WHERE
-            story_id = $1
-        GROUP BY
-            line_id, story_id`
+//     let sql = `
+//         SELECT
+//             line_id,
+//             SUM(hits)
+//         FROM
+//             lines
+//         WHERE
+//             story_id = $1
+//         GROUP BY
+//             line_id, story_id`
 
-    pool.query(sql, [req.params.id], (err, result) => {
-        if(err || result.rows.length < 1) { 
-            res.status(500).send(err); console.log(err); return; 
-        }
-        let lines = {}
-        result.rows.forEach((line) => {
-            lines[line.line_id] = line.sum
-        })
-        res.send(lines);
-    });
-}
+//     pool.query(sql, [req.params.id], (err, result) => {
+//         if(err || result.rows.length < 1) { 
+//             res.status(500).send(err); console.log(err); return; 
+//         }
+//         let lines = {}
+//         result.rows.forEach((line) => {
+//             lines[line.line_id] = line.sum
+//         })
+//         res.send(lines);
+//     });
+// }
 
 // const getBucketUsers = (req, res) => {
 //     if(!req.params.env){
@@ -405,9 +412,10 @@ const getStoryLines = (req, res) => {
 module.exports = {
     // getStoryLines: getStoryLines,
     // getStories: getStories,
-    getAggregate: getAggregate,
+    // getAggregate: getAggregate,
     // getReads: getReads,
     // getUsers: getUsers,
+    getSessions: getSessions,
     getTotalUsers: getTotalUsers,
     getWeeklyUsers: getWeeklyUsers,
     getMonthlyUsers: getMonthlyUsers

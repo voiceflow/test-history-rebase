@@ -62,7 +62,12 @@ class Editor extends Component {
         }
         this.setState({
             node: node
-        }, this.props.onUpdate);
+        }, () => {
+            this.props.onUpdate();
+            if(name === 'name'){
+                this.props.repaint();
+            }
+        });
     }
 
     BlockViewer() {

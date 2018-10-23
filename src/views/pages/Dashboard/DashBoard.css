@@ -304,6 +304,15 @@
   background-repeat: repeat !important;
   background-size: auto !important;
   background-color: #F1F5F8;
+  display: flex;
+  justify-content: center;
+  color: #94A6BD;
+  align-items: center;
+}
+
+.skill-card .no-image>h1 {
+  font-size: 48px;
+  font-weight: lighter;
 }
 
 .skill-card .card-image {

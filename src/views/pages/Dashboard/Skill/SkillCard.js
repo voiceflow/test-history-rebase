@@ -11,12 +11,17 @@ class SkillCard extends React.Component {
 
   render() {
     let image = this.props.skill.image;
-
+// style={{backgroundImage: `linear-gradient(${Math.floor(Math.random() * 360)}deg , rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}), rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}))`}}
     return (
       <div className="skill-card-container">
         <Card className='skill-card'>
           <CardActionArea className="card-action" onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>
-            <div style={{backgroundImage: `url(${image ? image : '/img/placeholder.svg'})`}} className= {(image ? '' : 'no-image ') + 'card-image'}/>
+            { image ?
+              <div style={{backgroundImage: `url(${image})`}} className='card-image'/> :
+              <div className='no-image card-image' >
+                <h1>{ this.props.skill.name.match(/\b(\w)/g).join('') }</h1>
+              </div>
+            }
             <CardContent>
               <h5>
                 {this.props.skill.name}

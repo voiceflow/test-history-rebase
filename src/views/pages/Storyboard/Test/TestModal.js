@@ -1,11 +1,12 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react';
-import { Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert } from 'reactstrap';
 import $ from 'jquery';
 import moment from 'moment';
 import Select from 'react-select';
 import './TestModal.css'
+import {parse} from 'html-parse-stringify';
 
 const default_state = () => {
   return {
@@ -31,7 +32,8 @@ class TestModal extends React.Component {
       data: null,
       selected_line: null,
       nodes: [],
-      story_state: default_state()
+      story_state: default_state(),
+      ended: false,
     }
 
     this.updateState = this.updateState.bind(this);
@@ -43,6 +45,15 @@ class TestModal extends React.Component {
     this.beginning = this.beginning.bind(this);
     this.handleLineSelection = this.handleLineSelection.bind(this);
     this.startline = this.startline.bind(this);
+    this.handleRestart = this.handleRestart.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(this.props.testing_info === false && !!nextProps.testing_info){
+      this.setState({
+          nodes: nextProps.testing_info.nodes
+      });
+    }
   }
 
   // componentWillReceiveProps(nextProps){
@@ -82,8 +93,16 @@ class TestModal extends React.Component {
   handleEnd(){
     // keep the story id the same though
     this.setState({
+      ended: true
+    })
+  }
+
+ handleRestart(){
+    // keep the story id the same though
+    this.setState({
       started: false,
       inputs: [],
+      ended: false,
       story_state: default_state()
     })
   }
@@ -99,38 +118,56 @@ class TestModal extends React.Component {
       }
       return;
     };
-    let audio = new Audio(urls[index]);
-    this.setState({
-      audio: audio
-    });
-    audio.onended = () => {
-      this.recursivePlay(index + 1, urls, ended);
-      audio.ontimeupdate = null;
-      audio.onended = null;
-      audio.onloadedmetadata = null;
-      audio.pause();
-      audio.removeAttribute('src');
-      audio.load();
-    }
-    audio.onloadedmetadata = () => {
+
+    let b = urls[index];
+
+    if(b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src){
+      let audio = new Audio(b.attrs.src);
+
+      this.setState({
+        audio: audio
+      });
+
+      audio.onended = () => {
+        this.recursivePlay(index + 1, urls, ended);
+        audio.ontimeupdate = null;
+        audio.onended = null;
+        audio.onloadedmetadata = null;
+        audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
+      }
+      audio.onloadedmetadata = () => {
+        let inputs = this.state.inputs;
+        let index = inputs.push({
+          src: audio.src.split('/').pop().split('-').pop(),
+          currentTime: 0,
+          duration: audio.duration,
+          time: moment().format('h:mm:ss A')
+        });
+        this.setState({inputs: inputs});
+        audio.ontimeupdate = () => {
+          let inputs = this.state.inputs;
+          inputs[index - 1].currentTime = audio.currentTime;
+          this.setState({inputs: inputs});
+        }
+      }
+      audio.play();
+    }else if(b.type==='text' && b.content){
       let inputs = this.state.inputs;
-      let index = inputs.push({
-        src: audio.src.split('/').pop().split('-').pop(),
-        currentTime: 0,
-        duration: audio.duration,
+      inputs.push({
+        text: b.content,
         time: moment().format('h:mm:ss A')
       });
-      this.setState({inputs: inputs});
-      audio.ontimeupdate = () => {
-        let inputs = this.state.inputs;
-        inputs[index - 1].currentTime = audio.currentTime;
-        this.setState({inputs: inputs});
-      }
+      this.setState({inputs: inputs}, () => {
+        this.recursivePlay(index + 1, urls, ended);
+      });
+    }else{
+      this.handleEnd();
     }
-    audio.play();
   }
 
-  updateState(start){
+  updateState(start=false){
     let data = this.state.story_state;
 
     if(start){
@@ -148,7 +185,7 @@ class TestModal extends React.Component {
         type: 'POST',
         data: data,
         success: (res) => {
-          console.log(res);
+ 
           if(res.line && !res.ending) {
             this.setState({
               story_state: res
@@ -156,15 +193,18 @@ class TestModal extends React.Component {
           }
           if(res.output && res.output.length > 0){
             // TYLER'S SUPER JANKY AUDIO THING
-            let m,
-            urls = [],
-            rex = /<audio[^>]+src="?([^"\s]+)"?[^>]*\/>/g;
-            while((m = rex.exec(res.output))){
-              urls.push(m[1]);
-            }
 
-            this.removeAudio();
-            this.recursivePlay(0, urls, res.ending);
+            let dom = parse(res.output);
+            console.log(dom);
+
+            if(dom && dom.length > 0 && dom[0].type === 'tag' && 
+              dom[0].name === 'ssml' && dom[0].children && dom[0].children.length !== 0){
+              this.removeAudio();
+              this.recursivePlay(0, dom[0].children, res.ending);
+            }else{
+              this.handleEnd();
+            }
+            
           }else if(res.ending){
             this.handleEnd();
           }
@@ -183,20 +223,30 @@ class TestModal extends React.Component {
 
   inputSubmit(e){
     e.preventDefault();
-    let story_state = this.state.story_state;
-    story_state.input = this.state.input;
-    let inputs = this.state.inputs;
 
-    inputs.push({
-      self: this.state.input,
-      time: moment().format('h:mm:ss A')
-    });
+    if(this.state.input === 'SKIP LINE'){
+      if(this.state.audio !== null){
+        this.state.audio.onended()
+      }
+      this.setState({
+        input: ""
+      });
+    }else{
+      let story_state = this.state.story_state;
+      story_state.input = this.state.input;
+      let inputs = this.state.inputs;
 
-    this.setState({
-      input: "", 
-      inputs: inputs,
-      story_state: story_state
-    }, this.updateState);
+      inputs.push({
+        self: this.state.input,
+        time: moment().format('h:mm:ss A')
+      });
+
+      this.setState({
+        input: "", 
+        inputs: inputs,
+        story_state: story_state
+      }, this.updateState);
+    }
 
     return false;
   }
@@ -237,10 +287,11 @@ class TestModal extends React.Component {
         <ModalBody className="text-center env-modal">
           <h5>Test Your Project</h5>
           <hr className="mb-0"/>
-          { this.props.testing_info !== null ? 
+          { this.props.testing_info !== false ? 
             <div>
               { this.state.started ? 
-                <div>
+                <React.Fragment>
+                  { this.state.ended ? <Alert onClick={this.handleRestart} color="warning">This Diagram has Ended - Click to Reset</Alert> : null }
                   <div className="chatbox">
                     <div className="chats">
                       {this.state.inputs.map((chat, i) => {
@@ -248,6 +299,12 @@ class TestModal extends React.Component {
                           return <div className="mt-2 text-right" key={i}>
                             <div className="self-message message border rounded p-2 align-self-start">
                               <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-primary">{chat.time}</small></p>
+                            </div>
+                          </div>
+                        }else if(chat.text){
+                          return <div className="mt-2 text-left" key={i}>
+                            <div className="message border rounded p-2 align-self-start">
+                              <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-primary">{chat.time}</small></p>
                             </div>
                           </div>
                         }else{
@@ -270,7 +327,7 @@ class TestModal extends React.Component {
                       <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
                     </InputGroup>
                   </Form>
-                </div> :
+                </React.Fragment> :
                 <div className="pt-3">
                   <h5><b>Start Project from the very Beginning</b></h5>
                   <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>

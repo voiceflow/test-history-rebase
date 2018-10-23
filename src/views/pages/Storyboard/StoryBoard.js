@@ -53,7 +53,7 @@ class StoryBoard extends Component {
         let last_session = cookies.get('last_session');
         let url = this.props.computedMatch;
 
-        let newSkill = this.props.new;
+        let newSkill = !!this.props.new;
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
@@ -94,6 +94,7 @@ class StoryBoard extends Component {
             node.setSelected();
             model.addNode(node);
             engine.setDiagramModel(model);
+            engine.setSuperSelect(node);
 
             open = true;
 
@@ -103,7 +104,6 @@ class StoryBoard extends Component {
 
         this.state = {
             engine: engine,
-            selected: node,
             open: open,
             diagram_name: '',
             skill: {
@@ -122,7 +122,7 @@ class StoryBoard extends Component {
             newSkill: newSkill
         };
 
-        $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
+        $('.Editor').mousedown(this.onDiagramUnfocus);
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
@@ -132,18 +132,19 @@ class StoryBoard extends Component {
     componentDidMount() {
 
         $('.srd-node-layer').click(() => {
-            var engine = this.state.engine;
-            var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
-            if (node) {
+            let engine = this.state.engine;
+            let selected = engine.getDiagramModel().getSelectedItems("node");
+            // console.log(selected);
+            if (selected.length === 1) {
+                engine.setSuperSelect(selected[0]);
                 this.setState({
                     engine: engine,
-                    selected: node,
                     open: true
                 }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
             }
         });
 
-        $('.Menu').mousedown(this.onDiagramUnfocus)
+        // $('.Menu').mousedown(this.onDiagramUnfocus)
 
         $(document).keydown(function(event) {
             // If Control or Command key is pressed and the S key is pressed
@@ -161,11 +162,14 @@ class StoryBoard extends Component {
     }
 
     onDiagramUnfocus() {
-        var engine = this.state.engine;
-        engine.getDiagramModel().clearSelection();
-        this.setState({
-            engine: engine
-        });
+        let engine = this.state.engine;
+        if(engine.hasRepaint()){
+            engine.getDiagramModel().clearSelection();
+
+            this.setState({
+                engine: engine
+            });
+        }
     }
 
     onNodeRemoved(e) {
@@ -455,7 +459,7 @@ class StoryBoard extends Component {
 
         return (
             <div className='App' >
-                { this.state.newSkill ?  
+                { this.state.newSkill !== null ?  
                     <SkillModal 
                         modal={!!this.state.newSkill}
                         toggle={()=>this.setState({newSkill: false})} 
@@ -587,9 +591,9 @@ class StoryBoard extends Component {
                         node.setSelected();
                         engine.getDiagramModel().clearSelection();
                         engine.getDiagramModel().addNode(node);
+                        engine.setSuperSelect(node);
                         this.setState({
                             engine: engine,
-                            selected: node,
                             open: true
                         }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
                     }}
@@ -601,7 +605,7 @@ class StoryBoard extends Component {
                 </div>
                 <Editor
                     open={this.state.open}
-                    node={this.state.selected}
+                    node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}
                     onClose={e => this.setState({ open: false })}
                     repaint={this.repaint}

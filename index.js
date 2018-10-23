@@ -114,17 +114,19 @@ app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 
-app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
-app.get('/analytics/:skill_id/', ensureAdmin(), Analytics.getUsersLOL);
-app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
-app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStories);
-app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);
-app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
-app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
-app.get('/analytics/:env/users/bucket', ensureAdmin(), Analytics.getBucketUsers);
-app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
-app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
-app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
+// app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
+app.get('/analytics/:skill_id/totalUsers', ensureAdmin(), Analytics.getTotalUsers);
+app.get('/analytics/:skill_id/weekly', ensureAdmin(), Analytics.getWeeklyUsers);
+app.get('/analytics/:skill_id/monthly', ensureAdmin(), Analytics.getMonthlyUsers);
+// app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
+// app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStories);
+// app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);
+// app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
+// app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
+// app.get('/analytics/:env/users/bucket', ensureAdmin(), Analytics.getBucketUsers);
+// app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
+// app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
+// app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 app.get('/code', ensureAdmin(), Code.generateCode);
 
 // TO REMOVE SOON

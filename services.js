@@ -26,7 +26,7 @@ types.setTypeParser(1114, function(stringValue) {
 const pool = new pg.Pool({
     user: 'StoryflowUser',
     host: 'storyflow-db.cmzdhv5svqny.us-east-1.rds.amazonaws.com',
-    database: 'storyflow_analytics',
+    database: 'skill_analytics',
     password: '2p20RuU1D',
     port: 5432
 });

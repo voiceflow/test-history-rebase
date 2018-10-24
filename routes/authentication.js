@@ -5,6 +5,7 @@ const uuidv1 = require('uuid/v1');
 const axios = require('axios');
 const {jwt, docClient, pool, redisClient, config} = require('./../services');
 const Codes = require('./../config/codes');
+const Mail = require('./mail.js');
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -210,13 +211,24 @@ const putUser = async (req, res) => {
 	                            console.log(err);
 	                            res.status(500).send('Something Went Wrong');
 	                        } else {
+								
 	                        	// console.log(insert_result);
 						    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, (credentials) => {
 	                            	res.status(200).send({
 	                            		token: credentials.userHash + credentials.token,
-	                            		user: credentials.user
-	                            	});
-	                            });
+										user: credentials.user
+										
+									});
+									
+									let codesArr = Codes.generateCodesArr(credentials.user);
+									console.log(codesArr);
+									let template = 'd-9ba04cdf70894f489147057e71d2c5c9';
+									Mail.send(email, name, codesArr, template, (err) => {
+										console.log(err);
+									});
+								});
+								
+								
 	                        }
                 		});
 	                }

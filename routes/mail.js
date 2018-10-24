@@ -3,7 +3,7 @@ client.setApiKey('SG.o6kPgjwOTOC6R5FPq7lUtA.Qtvn7u2EGOtAKYqH3PBBw6lB0Scmp2NxIdZZ
 
 const isString = str => typeof str === 'string' || str instanceof String;
 
-const send = (email, name, template, cb) => {
+const send = (email, name, codesArr, template, cb) => {
     if (!isString(email) || !isString(template)) {
         cb(null);
 
@@ -22,7 +22,10 @@ const send = (email, name, template, cb) => {
                 'to': [
                     {
                         'email': email,
-                        'name': name
+                        'name': name,
+                        'code1': codesArr[0],
+                        'code2': codesArr[1],
+                        'code3': codesArr[2]
                     }
                 ]
             }

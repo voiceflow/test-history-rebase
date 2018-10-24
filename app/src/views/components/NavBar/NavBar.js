@@ -33,8 +33,7 @@ class NavBar extends Component {
         {link: 'dashboard', 'text': <span>Dashboard</span>},
         {link: 'storyboard', 'text': <span>Storyboard</span>}
       ],
-      user: AuthenticationService.getUser(),
-      loaded: false
+      user: AuthenticationService.getUser()
     };
   }
   // {link: 'storyboard', 'text': <span>Storyboard</span>},
@@ -117,7 +116,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {this.props.padding ? (<div className="padding"></div>) : null}
-          {(this.state.loaded && !this.state.user.admin) ? (<Intercom appID="vw911b0m" {...intercom_user}/>) : null}
+          <Intercom appID="vw911b0m" {...intercom_user}/>
         </div>
     );
   }

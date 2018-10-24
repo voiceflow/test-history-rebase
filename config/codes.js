@@ -81,8 +81,8 @@ const generateCodesArr = async (user_id, num=3) => {
 
 const endpoint = async (req, res) => {
 	try{
-		let codes = generateCodesArr(req.user.id, req.params.num);
-		res.send(codes);
+		let codes = await generateCodesArr(req.user.id, req.params.num);
+		res.send(codes.join("\n"));
 	}catch{
 		res.sendStatus(500);
 	}

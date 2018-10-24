@@ -122,11 +122,11 @@ class StoryBoard extends Component {
             newSkill: newSkill
         };
 
-        $('.Editor').mousedown(this.onDiagramUnfocus);
-
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
-        } 
+        }
+
+        $('.Editor').mousedown(this.onDiagramUnfocus); 
     }
 
     componentDidMount() {
@@ -140,7 +140,7 @@ class StoryBoard extends Component {
                 this.setState({
                     engine: engine,
                     open: true
-                }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
+                });
             }
         });
 
@@ -600,7 +600,7 @@ class StoryBoard extends Component {
                         this.setState({
                             engine: engine,
                             open: true
-                        }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
+                        });
                     }}
                     onDragOver={event => {
                         event.preventDefault();

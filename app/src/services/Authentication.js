@@ -3,16 +3,14 @@ import axios from 'axios';
 
 const cookies = new Cookies();
 
-const default_user = {
-		email: null,
-		name: null,
-		id: null,
-		admin: false
-};
-
 declare var user_detail;
 
-window.user_detail = default_user;
+window.user_detail = {
+	email: null,
+	name: null,
+	id: null,
+	admin: false
+}
 
 let appId = "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e";
 
@@ -97,12 +95,23 @@ export default {
 	      	cb(false, response.data);
 	    })
 	    .catch(err => {
+	    	window.user_detail = {
+				email: null,
+				name: null,
+				id: null,
+				admin: false
+			}
 	    	cookies.remove('auth');
 	      	cb(err, null);
 	    });
 	},
 	logout: (cb) => {
-		window.user_detail = default_user;
+		window.user_detail = {
+			email: null,
+			name: null,
+			id: null,
+			admin: false
+		}
 		axios.delete('/session')
 		.then(response => {
 			cookies.remove('auth');
@@ -120,7 +129,7 @@ export default {
 	signup: (user, cb) => {
 	    axios.put('/user', user)
 	    .then(response => {
-	    	cookies.set('auth', response.data.token);
+	    	cookies.set('auth', response.data.token, {path: '/'});
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })
@@ -131,7 +140,8 @@ export default {
 	login: (user, cb) => {
 	    axios.put('/session', user)
 	    .then(response => {
-	    	cookies.set('auth', response.data.token);
+	    	cookies.set('auth', response.data.token, {path: '/'});
+	    	cookies.remove('last_session');
 	    	window.user_detail = response.data.user;
 	    	cb(null);
 	    })

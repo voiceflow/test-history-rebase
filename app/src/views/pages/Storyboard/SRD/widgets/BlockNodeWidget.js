@@ -29,7 +29,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 		return (
 			<div className={"srd-default-node " + this.props.node.extras.type}>
 				<div className={this.bem("__title")}>
-					<div className={this.bem("__name")}>{this.props.node.name}</div>
+					<div className={this.bem("__name")}>{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}</div>
 				</div>
 				<div className={this.bem("__ports")}>
 					<div className={this.bem("__in")}>

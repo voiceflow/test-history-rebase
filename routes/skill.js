@@ -162,14 +162,14 @@ const patchSkill = (req, res) => {
 
 const buildSkill = async (req,res) => {
 
-     if (!req.params.id) {
-         res.sendStatus(401);
-     }
+    if (!req.params.id) {
+        res.sendStatus(401);
+    }
 
-     let id = hashids.decode(req.params.id)[0];
-     let original_id = req.params.id;
+    let id = hashids.decode(req.params.id)[0];
+    let original_id = req.params.id;
 
-     AccessToken(req.user.id, token => {
+    AccessToken(req.user.id, token => {
         if(token === null){
             res.sendStatus(401);
             return;
@@ -206,14 +206,32 @@ const buildSkill = async (req,res) => {
                             if(err.response.status === 404){
                                 amzn_id = null;
                             }else if(err.response){
-                                console.log(err.response);
+                                console.error(err.response.status);
                                 console.error(JSON.stringify(err.response.data));
                             }
                         }
                     }
 
                     if(!amzn_id){
-                        manifest.vendorId = "MVMX1EPB9U1M6";
+
+                        let vendor_request = await axios.request({
+                            url: 'https://api.amazonalexa.com/v1/vendors',
+                            method: 'GET',
+                            headers: {
+                                Authorization: token
+                            }
+                        });
+
+                        let vendors = vendor_request.data.vendors;
+                        if(Array.isArray(vendors) && vendors.length !== 0){
+                            manifest.vendorId = vendors[0].id;
+                        }else{
+                            throw ({
+                                type: "VendorIdError",
+                                data: JSON.stringify(vendor_request.data)
+                            });
+                        }
+                        
 
                         let request = await axios.request({
                             url: 'https://api.amazonalexa.com/v1/skills',
@@ -228,6 +246,7 @@ const buildSkill = async (req,res) => {
 
                         await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
                     }else{
+
                         let request = await axios.request({
                             url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
                             method: 'PUT',
@@ -262,25 +281,29 @@ const buildSkill = async (req,res) => {
                                     if(err.response.status === 404){
                                         iterate(depth + 1);
                                     }else{
-                                        console.error('please');
                                         res.status(500).send(err.response.data);
                                     }
                                 });
                                 
-                            }, 2000);
+                            }, 3000);
                         }
                     }
 
                     iterate(0);
 
                 } catch(err) {
-                    if(err.response){
-                        console.log(err.response);
-                        console.error(JSON.stringify(err.response.data));
+                    if(err.type === "VendorIdError"){
+                        // console.error(err);
+                        res.sendStatus(404);
                     }else{
-                        console.error(err);
+                        if(err.response){
+                            console.error(err.response.status);
+                            console.error(JSON.stringify(err.response.data));
+                        }else{
+                            console.error(err);
+                        }
+                        res.sendStatus(500);
                     }
-                    res.sendStatus(500);
                 }
             }
         }); 

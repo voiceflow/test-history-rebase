@@ -20,12 +20,27 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
+// import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
 
 class StoryBoard extends Component {
     constructor(props) {
         super(props);
+
+        this.loadLines = this.loadLines.bind(this);
+        this.repaint = this.repaint.bind(this);
+        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
+        this.loadDiagram = this.loadDiagram.bind(this);
+        this.setVariables = this.setVariables.bind(this);
+        this.toggleTestModal = this.toggleTestModal.bind(this);
+        this.createSkill = this.createSkill.bind(this);
+        this.publish = this.publish.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onTest = this.onTest.bind(this);
+        this.onNodeRemoved = this.onNodeRemoved.bind(this);
+        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
+        this.unsave = this.unsave.bind(this);
 
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
@@ -38,7 +53,7 @@ class StoryBoard extends Component {
         let last_session = cookies.get('last_session');
         let url = this.props.computedMatch;
 
-        let newSkill = this.props.new;
+        let newSkill = !!this.props.new;
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
@@ -79,6 +94,7 @@ class StoryBoard extends Component {
             node.setSelected();
             model.addNode(node);
             engine.setDiagramModel(model);
+            engine.setSuperSelect(node);
 
             open = true;
 
@@ -88,7 +104,6 @@ class StoryBoard extends Component {
 
         this.state = {
             engine: engine,
-            selected: node,
             open: open,
             diagram_name: '',
             skill: {
@@ -107,21 +122,7 @@ class StoryBoard extends Component {
             newSkill: newSkill
         };
 
-        $('.Editor').mousedown(this.onDiagramUnfocus.bind(this));
-
-        this.loadLines = this.loadLines.bind(this);
-        this.repaint = this.repaint.bind(this);
-        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
-        this.loadDiagram = this.loadDiagram.bind(this);
-        this.setVariables = this.setVariables.bind(this);
-        this.toggleTestModal = this.toggleTestModal.bind(this);
-        this.createSkill = this.createSkill.bind(this);
-        this.publish = this.publish.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.onTest = this.onTest.bind(this);
-        this.onNodeRemoved = this.onNodeRemoved.bind(this);
-        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
-        this.unsave = this.unsave.bind(this);
+        $('.Editor').mousedown(this.onDiagramUnfocus);
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
@@ -131,18 +132,19 @@ class StoryBoard extends Component {
     componentDidMount() {
 
         $('.srd-node-layer').click(() => {
-            var engine = this.state.engine;
-            var node = engine.getDiagramModel().getNode($('.srd-node--selected').data('nodeid'));
-            if (node) {
+            let engine = this.state.engine;
+            let selected = engine.getDiagramModel().getSelectedItems("node");
+            // console.log(selected);
+            if (selected.length === 1) {
+                engine.setSuperSelect(selected[0]);
                 this.setState({
                     engine: engine,
-                    selected: node,
                     open: true
                 }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
             }
         });
 
-        $('.Menu').mousedown(this.onDiagramUnfocus)
+        // $('.Menu').mousedown(this.onDiagramUnfocus)
 
         $(document).keydown(function(event) {
             // If Control or Command key is pressed and the S key is pressed
@@ -160,11 +162,14 @@ class StoryBoard extends Component {
     }
 
     onDiagramUnfocus() {
-        var engine = this.state.engine;
-        engine.getDiagramModel().clearSelection();
-        this.setState({
-            engine: engine
-        });
+        let engine = this.state.engine;
+        if(engine.hasRepaint()){
+            engine.getDiagramModel().clearSelection();
+
+            this.setState({
+                engine: engine
+            });
+        }
     }
 
     onNodeRemoved(e) {
@@ -177,7 +182,7 @@ class StoryBoard extends Component {
     }
 
     repaint() {
-        // this.state.engine.repaintCanvas();
+        this.state.engine.repaintCanvas();
     }
 
     onSave(cb) {
@@ -332,7 +337,7 @@ class StoryBoard extends Component {
                 cookies.set('last_session', {
                     skill_id: this.state.skill.skill_id,
                     diagram_id: diagram_id
-                });
+                }, {path: '/'});
             },
             error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
@@ -368,36 +373,40 @@ class StoryBoard extends Component {
     onTest() {
         this.state.engine.getDiagramModel().clearSelection();
         this.toggleTestModal();
-        // this.onPublish("testing", (err, id) => {
-        //     if(err){
-        //         this.setState({
-        //             error_modal: "Could Not Render Your Project",
-        //             loading_modal: true,
-        //             testing_modal: false
-        //         });
-        //     }else{
-        //         let engine = this.state.engine;
-        //         let model = engine.getDiagramModel();
-        //         let data = model.serializeDiagram();
-        //         // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+
+        this.onSave(diagram_id => {
+            axios.post(`/diagram/${diagram_id}/test/publish`)
+            .then(() => {
+                let engine = this.state.engine;
+                let model = engine.getDiagramModel();
+                let data = model.serializeDiagram();
+                // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
                 
-        //         let nodes = [];
-        //         data.nodes.forEach((node) => {
-        //             if(node.extras && node.extras.type !== "story" && node.extras.type !== "ending"){
-        //                 nodes.push({
-        //                     value: node.id,
-        //                     label: node.name
-        //                 });               
-        //             }
-        //         });
-        //         this.setState({
-        //             testing_info: {
-        //                 id: id,
-        //                 nodes: nodes
-        //             }
-        //         });
-        //     }
-        // });
+                let nodes = [];
+                data.nodes.forEach((node) => {
+                    if(node.extras && node.extras.type !== "story"){
+                        nodes.push({
+                            value: node.id,
+                            label: node.name
+                        });               
+                    }
+                });
+                this.setState({
+                    testing_info: {
+                        id: diagram_id,
+                        nodes: nodes
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err.response);
+                this.setState({
+                    error_modal: "Could Not Render Your Project",
+                    loading_modal: true,
+                    testing_modal: false
+                });
+            });
+        });
     }
 
     createSkill(name){
@@ -415,7 +424,7 @@ class StoryBoard extends Component {
                     cookies.set('last_session', {
                         skill_id: skill_id,
                         diagram_id: diagram_id
-                    });
+                    }, {path: '/'});
                     this.setState({
                         newSkill: 0,
                         skill: {
@@ -450,7 +459,7 @@ class StoryBoard extends Component {
 
         return (
             <div className='App' >
-                { this.state.newSkill ?  
+                { this.state.newSkill !== null ?  
                     <SkillModal 
                         modal={!!this.state.newSkill}
                         toggle={()=>this.setState({newSkill: false})} 
@@ -582,9 +591,9 @@ class StoryBoard extends Component {
                         node.setSelected();
                         engine.getDiagramModel().clearSelection();
                         engine.getDiagramModel().addNode(node);
+                        engine.setSuperSelect(node);
                         this.setState({
                             engine: engine,
-                            selected: node,
                             open: true
                         }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
                     }}
@@ -596,7 +605,7 @@ class StoryBoard extends Component {
                 </div>
                 <Editor
                     open={this.state.open}
-                    node={this.state.selected}
+                    node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}
                     onClose={e => this.setState({ open: false })}
                     repaint={this.repaint}

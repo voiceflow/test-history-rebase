@@ -17,7 +17,6 @@ const Diagram = require('./routes/diagram.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
-const Story = require('./routes/story.js');
 const Analytics = require('./routes/analytics.js')
 const Review = require('./routes/review.js');
 const Authentication = require('./routes/authentication');
@@ -97,6 +96,7 @@ const ensureLoggedOut = () => {
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.get('/session', Authentication.getSession);
+app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);
@@ -112,6 +112,7 @@ app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
+app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 
 // app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
@@ -129,17 +130,6 @@ app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 // app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 app.get('/code', ensureAdmin(), Code.generateCode);
-
-// TO REMOVE SOON
-app.get('/diagrams/:id', ensureLoggedIn(), Diagram.getDiagram);
-app.post('/diagrams', ensureLoggedIn(), Diagram.setDiagram);
-/* unRESTful STUFF TO REMOVE */
-
-app.get('/stories/:env', Story.getStories);
-app.post('/feature/:env/:id', ensureAdmin(), Story.featureStory);
-app.delete('/stories/:env/:id', ensureAdmin(), Story.deleteStory);
-app.post('/list/:env/:id', ensureAdmin(), Story.listStory);
-app.delete('/list/:env/:id', ensureAdmin(), Story.unlistStory);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 
@@ -164,6 +154,7 @@ app.post('/concat', ensureLoggedIn(), Audio.concat);
 // Handle React routing, return all requests to React app
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'app', 'build', 'index.html'));
+  res.end();
 });
 
 // eslint-disable-next-line no-console

@@ -221,11 +221,13 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
         Key: {'id': diagram_id}
     };
 
+    let testing = (skill_id==="TEST");
+
     docClient.get(params, (err, data) => {
         if (err) {
             console.error(err);
             resolve(500);
-        } else if (data.Item && data.Item.skill === skill_id) {
+        } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
             let diagram = JSON.parse(data.Item.data);
 
@@ -294,23 +296,26 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
                     };
-                } else if (node.extras.type === 'multiline' || node.extras.type === 'line') {
-                    let nextLink = null;
+                } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
+                    let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
                         }
                     }
-                    let audio = null;
+
+                    let audio;
                     if(node.extras.audio){
                         audio = node.extras.audio;
                     }else if(node.extras.lines[0].audio){
                         audio = node.extras.lines[0].audio;
                     }
+
                     story.lines[node.id] = {
                         audio: audio,
                         nextId: links[nextLink]
                     };
+
                 } else if (node.extras.type === 'listen') {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -359,25 +364,31 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                     };
                 } else if (node.extras.type === 'speak') {
 
-                    let markdownstring = draftToMarkdown(node.extras.raw, {
-                        entityItems: {
-                            VARIABLE: {
-                                open: entity => {
-                                    return "' + v['"
-                                },
-                                close: entity => {
-                                    return "'] + '"
+                    let markdownstring = '';
+                    let nextLink = null;
+                    
+                    if(node.extras.raw){
+                        markdownstring = draftToMarkdown(node.extras.raw, {
+                            entityItems: {
+                                VARIABLE: {
+                                    open: entity => {
+                                        return "' + v['"
+                                    },
+                                    close: entity => {
+                                        return "'] + '"
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
 
-                    markdownstring = "'" + markdownstring + ".'";
+                        let period = markdownstring.substr(-1).match(/[.,:!?]/) ? ' ' : '. '
 
-                    let nextLink = null;
-                    for (var j = 0; j < node.ports.length; j++) {
-                        if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                        markdownstring = "'" + markdownstring + period + "'";
+
+                        for (var j = 0; j < node.ports.length; j++) {
+                            if (!node.ports[j].in) {
+                                [nextLink] = node.ports[j].links;
+                            }
                         }
                     }
 
@@ -399,16 +410,30 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
                         prompt: true,
                         nextId: links[nextLink]
                     }
+                } else {
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+                    if(nextLink){
+                        story.lines[node.id] = {
+                            nextId: links[nextLink]
+                        }
+                    }
                 }
             }
             let params = {
-                TableName: 'com.getstoryflow.stories.sandbox',
+                TableName: `com.getstoryflow.skills.${testing ? 'testing' : 'live'}`,
                 Item: story
             };
             docClient.put(params, err => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(err.statusCode);
+                } else if(testing) {
+                    resolve(200);
                 } else {
                     // Add the story to SQL as well
                     addStory(story, (err) => {
@@ -465,10 +490,22 @@ const publish = async (req, res) => {
     res.sendStatus(status);
 };
 
+const publishTest = async (req, res) => {
+    if (!req.user || !req.params.diagram_id) {
+        res.sendStatus(401);
+        return;
+    }
+
+    let status = await renderDiagram(req.params.diagram_id, 'TEST');
+
+    res.sendStatus(status);
+};
+
 module.exports = {
     getDiagrams: getDiagrams,
     getDiagram: getDiagram,
     deleteDiagram: deleteDiagram,
     setDiagram: setDiagram,
-    publish: publish
+    publish: publish,
+    publishTest: publishTest
 }

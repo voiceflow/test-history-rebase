@@ -63,7 +63,6 @@ class SkillModal extends React.Component {
 // </Card>
   render() {
     return (
-      <div>
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} size="lg" centered onClosed={this.props.onClose}>
           <div className="modal-header justify-content-center">
             <h1 className="display-5">Create New Skill</h1>
@@ -91,7 +90,6 @@ class SkillModal extends React.Component {
           </div>
           </ModalBody>
         </Modal>
-      </div>
     );
   }
 }

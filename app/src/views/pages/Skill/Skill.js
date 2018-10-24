@@ -23,11 +23,14 @@ import AuthenticationService from './../../../services/Authentication';
 import categories from './../../../services/Categories';
 
 const stage_title = {
+    "-1": "Login Failed",
     "0": "Login Developer with Amazon",
     "1": "Verifying",
     "2": "Privacy & Compliance",
     "3": "Rendering",
     "4": "Publishing",
+    "5": "Developer Account",
+    "6": "Checking Vendor",
     "10": "Awaiting Review"
 }
 
@@ -58,12 +61,14 @@ class Skill extends Component {
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
+        this.checkVendor = this.checkVendor.bind(this);
     }
 
     componentWillMount() {
+        // token ? 2 : 0
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
-                stage: (token === null) ? 0 : 2
+                stage: token ? 2 : 0
             });
         })
     }
@@ -123,12 +128,18 @@ class Skill extends Component {
                     });
                 })
                 .catch(err => {
-                    console.error(err);
-                    this.setState({
-                        publish: false,
-                        stage: 2,
-                        error: 'Publishing Error'
-                    })
+                    if(err.response.status === 404){
+                        // No Vendor ID/Amazon Developer Account
+                        this.setState({
+                            stage: 5
+                        });
+                    }else{
+                        this.setState({
+                            publish: false,
+                            stage: 2,
+                            error: 'Publishing Error'
+                        });
+                    }
                 })
             })
             .catch(err => {
@@ -139,6 +150,19 @@ class Skill extends Component {
                     error: 'Rendering Error'
                 })
             })
+        });
+    }
+
+    checkVendor(){
+        this.setState({stage: 6});
+
+        axios.get('/session/vendor')
+        .then(() => {
+            this.setState({stage: 2});
+        })
+        .catch(err => {
+            console.error(err);
+            this.setState({stage: 5});
         });
     }
 
@@ -221,6 +245,7 @@ class Skill extends Component {
     }
 
     render() {
+        // Success Screen
         if(this.state.stage === 10){
             return <div className="super-center h-100">
                 <div className="success-page d-flex">
@@ -230,72 +255,84 @@ class Skill extends Component {
                             Your skill has been successfully submitted for review to the Amazon Skill store. You will be updated on the status of your skill via email.
                         </p>
                         <Link to="/dashboard"><MUIButton variant="contained" className="purple-btn">Dashboard</MUIButton></Link>
-                        <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({stage: 11})}>Return to Project</MUIButton>
+                        <MUIButton variant="contained" className="white-btn ml-3" onClick={() => this.setState({stage: 2})}>Return to Project</MUIButton>
                     </div>
                     <img src="/images/success.svg" alt="success"/>
                 </div>
             </div>
         }
 
-        let compliance = [{
-                value: 'purchase',
-                text: 'Does this skill allow users to make purchases or spend real money?'
-            }, {
-                value: 'personal',
-                text: 'Does this Alexa skill collect users\' personal information?'
-            }, {
-                value: 'copa',
-                text: 'Is this skill directed to or does it target children under the age of 13?'
-            }, {
-                value: 'ads',
-                text: 'Does this skill contain advertising?'
-            }, {
-                value: 'export',
-                text: "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
-                yes: 'I certify',
-                no: 'I do not certify'
-            }].map((form, i) => {
-                return <Paper className="p-3 my-3" key={i}>
-                    {form.text}
-                    <MUFormGroup row>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                  checked={this.state[form.value]}
-                                  onChange={() => this.onRadio(form.value, true)}
-                                  color="primary"
-                                />
-                            }
-                          label={form.yes ? form.yes : "Yes"}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                  checked={!this.state[form.value]}
-                                  onChange={() => this.onRadio(form.value, false)}
-                                  color="primary"
-                                />
-                            }
-                            label={form.no ? form.no : "No"}
-                        />
-                    </MUFormGroup>
-                </Paper>
-            })
-
         let content;
-
         if(this.state.stage === 0 || this.state.stage === -1){
             content = <div>
-                {this.state.stage === -1 ? <Alert color="danger">Login With Amazon Failed</Alert> : null}
+                {this.state.stage === -1 ? 
+                    <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null
+                }
                 <AmazonLogin
-                    updateLogin={(stage) => this.setState({stage: stage})}
+                    updateLogin={(stage) => {
+                        if(stage === 2){
+                            this.checkVendor();
+                        }else{
+                            this.setState({stage: stage});
+                        }
+                    }}
                 />
             </div>
-        }else if(this.state.stage === 1 || this.state.stage === 3){
-            content = <h1><i className="fas fa-sync-alt fa-spin"/></h1>
-        }else if(this.state.stage === 2){
+        }else if(this.state.stage === 1 || 
+            this.state.stage === 3 ||
+            this.state.stage === 4 ||
+            this.state.stage === 6){
             content = <div>
-                {compliance}
+                    <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                    <p className="loading">{stage_title[this.state.stage]}</p>
+            </div>
+        }else if(this.state.stage === 2){
+            content = <div className="MUIform">
+                {[{
+                    value: 'purchase',
+                    text: 'Does this skill allow users to make purchases or spend real money?'
+                }, {
+                    value: 'personal',
+                    text: 'Does this Alexa skill collect users\' personal information?'
+                }, {
+                    value: 'copa',
+                    text: 'Is this skill directed to or does it target children under the age of 13?'
+                }, {
+                    value: 'ads',
+                    text: 'Does this skill contain advertising?'
+                }, {
+                    value: 'export',
+                    text: "This Alexa skill may be imported to and exported from the United States and all other countries and regions in which Amazon operates their program or in which you've authorized sales to end users (without the need for us to obtain any license or clearance or take any other action) and is in full compliance with all applicable laws and regulations governing imports and exports, including those applicable to software that makes use of encryption technology.",
+                    yes: 'I certify',
+                    no: 'I do not certify'
+                }].map((form, i) => {
+                    return (
+                        <Paper className="p-3 my-3" key={i}>
+                            {form.text}
+                            <MUFormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                          checked={this.state[form.value]}
+                                          onChange={() => this.onRadio(form.value, true)}
+                                          color="primary"
+                                        />
+                                    }
+                                  label={form.yes ? form.yes : "Yes"}
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                          checked={!this.state[form.value]}
+                                          onChange={() => this.onRadio(form.value, false)}
+                                          color="primary"
+                                        />
+                                    }
+                                    label={form.no ? form.no : "No"}
+                                />
+                            </MUFormGroup>
+                        </Paper>)
+                })}
                 <Paper className="p-3 my-3">
                    <Label>Testing Instructions</Label> 
                    <Textarea
@@ -309,6 +346,22 @@ class Skill extends Component {
                 </Paper>
                 <Button color="primary" onClick={this.onPublish} block>Submit To Alexa</Button>
             </div>
+        }else if(this.state.stage === 5 || this.state.stage === 6){
+            content = <div>
+                Your Amazon Account needs to set up developer settings to Publish Skills
+                <span className="text-muted text-center font-italic">
+                    Press "Create your Amazon Developer account"<br/> 
+                    and sign up with the same email as your Amazon Account.
+                </span>
+                <div className="my-3">
+                    <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank"  rel="noopener noreferrer">
+                        Developer Sign Up
+                    </a>
+                    <Button color="info" onClick={this.checkVendor}>
+                        <i className="fas fa-sync-alt"/> Check Again
+                    </Button>
+                </div>
+            </div>
         }
 
         if(!this.state.loaded) return null;
@@ -318,12 +371,12 @@ class Skill extends Component {
                 <div className="subheader">
                     <div className="container space-between">
                         <span className="subheader-title">
-                            <b>Publish</b>
+                            <b>Settings</b>
                             <div className="hr-label">
                                 <small><i className="far fa-user mr-1"></i></small> {this.props.user.name}{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '}
                                 <span className="text-secondary">{this.state.name}</span>{' '}
-                                <small> - created {moment(this.state.created).fromNow()}</small>
+                                <small> / created {moment(this.state.created).fromNow()}</small>
                             </div>
                         </span>
                         <div className="subheader-right">
@@ -334,9 +387,9 @@ class Skill extends Component {
                 </div>
 
                 <Modal 
-                    isOpen={!!this.state.publish} 
+                    isOpen={this.state.publish} 
                     toggle={this.togglePublish} 
-                    className={this.props.className} 
+                    className="stage_modal" 
                     centered 
                     size="lg"
                     onClosed={this.closePublish}>
@@ -344,7 +397,9 @@ class Skill extends Component {
                         <div className="d-flex justify-content-between">
                             <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>×</button>
                         </div>
-                        {content}
+                        <div className="modal-info">
+                            {content}
+                        </div>
                     </ModalBody>
                 </Modal>
 
@@ -358,7 +413,7 @@ class Skill extends Component {
                         </FormGroup>
                         <FormGroup>
                           <Label>Invocation Name *</Label>
-                          <Input type="text" name="inv_name" placeholder="Story Flow" value={this.state.inv_name} onChange={this.handleChange} />
+                          <Input type="text" name="inv_name" placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
                         </FormGroup>
                         <div className="d-flex mb-4">
                             <div>

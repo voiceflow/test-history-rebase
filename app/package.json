@@ -9,8 +9,10 @@
     "bootstrap": "^4.1.1",
     "chart.js": "^2.7.3",
     "draft-js": "^0.10.5",
+    "html-parse-stringify": "^1.0.3",
     "is-var-name": "^2.0.0",
     "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "react": "^16.5.2",
     "react-autosize-textarea": "^5.0.0",
@@ -32,7 +34,7 @@
     "react-table": "^6.8.6",
     "react-textarea-autosize": "^7.0.4",
     "reactstrap": "^6.5.0",
-    "storm-react-diagrams": "^5.2.1",
+    "storm-react-diagrams": "github:DecathectZero/react-diagrams",
     "universal-cookie": "^3.0.4"
   },
   "scripts": {

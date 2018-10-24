@@ -226,6 +226,36 @@ const putUser = async (req, res) => {
     }
 };
 
+const getVendor = async (req, res) => {
+	AccessToken(req.user.id, token => {
+		if(!token){
+			res.sendStatus(401);
+		}else{
+		    axios.request({
+		        url: 'https://api.amazonalexa.com/v1/vendors',
+		        method: 'GET',
+		        headers: {
+		            Authorization: token
+		        }
+		    })
+		    .then(vendor_request => {
+				let vendors = vendor_request.data.vendors;
+
+				if(Array.isArray(vendors) && vendors.length !== 0){
+				    res.send(vendors[0].id);
+				}else{
+				    res.sendStatus(404);
+				}
+
+		    })
+		    .catch(err => {
+		    	console.error(err.response.data);
+		    	res.sendStatus(500);
+		    })
+		}
+	})
+}
+
 module.exports = {
 	AccessToken: AccessToken,
 	hasAccessToken: hasAccessToken,
@@ -233,5 +263,6 @@ module.exports = {
 	getSession: getSession,
 	putSession: putSession,
 	deleteSession: deleteSession,
-	putUser: putUser
+	putUser: putUser,
+	getVendor: getVendor
 }

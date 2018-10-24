@@ -31,17 +31,17 @@ class NavBar extends Component {
       isOpen: false,
       tabs: [
         {link: 'dashboard', 'text': <span>Dashboard</span>},
-        {link: 'storyboard', 'text': <span>Storyboard</span>},
+        {link: 'storyboard', 'text': <span>Storyboard</span>}
       ],
       user: AuthenticationService.getUser(),
       loaded: false
     };
   }
+  // {link: 'storyboard', 'text': <span>Storyboard</span>},
 
   componentDidMount() {
     if(this.state.user.admin){
       let tabs = this.state.tabs;
-      tabs.push({link: 'reviews', text: <span>Reviews <i className="fas fa-clipboard-list"></i></span>});
       tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
       tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
       this.setState({tabs: tabs});
@@ -62,6 +62,7 @@ class NavBar extends Component {
 
   logout() {
     AuthenticationService.logout(() => {
+      console.log("logout");
       this.props.history.push('/login');
     });
   }

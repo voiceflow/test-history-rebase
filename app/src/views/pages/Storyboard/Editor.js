@@ -119,7 +119,7 @@ class Editor extends Component {
                     <form onSubmit={(e) => e.preventDefault()} className="controls">
                         <div className="top">
                             <div className="property">
-                                <button className="close" onClick={this.props.onClose}>&times;</button>
+                                <div className="close" onClick={this.props.close}>&times;</div>
                                 <div className={"block " + type}>{type} block</div>
                             </div>
                             <div>

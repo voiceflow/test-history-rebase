@@ -11,6 +11,10 @@ const send = (email, name, codesArr, template, cb) => {
     } else if (!isString(name)) {
         name = null;
     }
+    console.log(codesArr[0]);
+    console.log(codesArr[1]);
+    console.log(codesArr[2]);
+
     let data = {
         'template_id': template,
         'from': {
@@ -23,11 +27,13 @@ const send = (email, name, codesArr, template, cb) => {
                     {
                         'email': email,
                         'name': name,
-                        'code1': codesArr[0],
-                        'code2': codesArr[1],
-                        'code3': codesArr[2]
                     }
-                ]
+                ],
+                "substitutions": {
+                    "-code1-": 'code1',
+                    "-code2-": 'code2',
+                    "-code3-": 'code3'
+                }
             }
         ],
         'reply_to': {
@@ -46,6 +52,9 @@ const send = (email, name, codesArr, template, cb) => {
             body
         ]) => {
             cb(response);
+        })
+        .catch(err => {
+            console.log(JSON.stringify(err.response.body));
         });
 };
 

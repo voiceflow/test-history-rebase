@@ -122,11 +122,9 @@ class StoryBoard extends Component {
             newSkill: newSkill
         };
 
-        $('.Editor').mousedown(this.onDiagramUnfocus);
-
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
-        } 
+        }
     }
 
     componentDidMount() {
@@ -140,9 +138,11 @@ class StoryBoard extends Component {
                 this.setState({
                     engine: engine,
                     open: true
-                }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
+                });
             }
         });
+
+        $('.Editor').mousedown(this.onDiagramUnfocus);
 
         // $('.Menu').mousedown(this.onDiagramUnfocus)
 
@@ -162,14 +162,7 @@ class StoryBoard extends Component {
     }
 
     onDiagramUnfocus() {
-        let engine = this.state.engine;
-        if(engine.hasRepaint()){
-            engine.getDiagramModel().clearSelection();
-
-            this.setState({
-                engine: engine
-            });
-        }
+        this.state.engine.getDiagramModel().clearSelection();
     }
 
     onNodeRemoved(e) {
@@ -183,6 +176,10 @@ class StoryBoard extends Component {
 
     repaint() {
         this.state.engine.repaintCanvas();
+        // console.log("repaint", this.state.engine.getSuperSelect().extras.type);
+        // this.setState({
+        //     engine: this.state.engine
+        // });
     }
 
     onSave(cb) {
@@ -595,7 +592,7 @@ class StoryBoard extends Component {
                         this.setState({
                             engine: engine,
                             open: true
-                        }, () => $('.Editor').mousedown(this.onDiagramUnfocus));
+                        });
                     }}
                     onDragOver={event => {
                         event.preventDefault();
@@ -607,7 +604,7 @@ class StoryBoard extends Component {
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}
-                    onClose={e => this.setState({ open: false })}
+                    close={e => this.setState({ open: false })}
                     repaint={this.repaint}
                     variables={this.state.variables}
                     onVariable={this.setVariables}

@@ -329,7 +329,7 @@
     transform: scale(1.05);
 }
 .skill-card .card-action:hover .card-image{
-    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.3);
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.01);
 }
 .skill-card .play{
     position: absolute;

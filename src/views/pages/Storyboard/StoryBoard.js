@@ -125,8 +125,6 @@ class StoryBoard extends Component {
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
         }
-
-        $('.Editor').mousedown(this.onDiagramUnfocus); 
     }
 
     componentDidMount() {
@@ -143,6 +141,8 @@ class StoryBoard extends Component {
                 });
             }
         });
+
+        $('.Editor').mousedown(this.onDiagramUnfocus);
 
         // $('.Menu').mousedown(this.onDiagramUnfocus)
 
@@ -162,15 +162,7 @@ class StoryBoard extends Component {
     }
 
     onDiagramUnfocus() {
-        let engine = this.state.engine;
-        let model = engine.getDiagramModel();
-        if(model.getSelectedItems().length !== 0){
-            model.clearSelection();
-            // engine.enableRepaintEntities([]);
-            // this.setState({
-            //     engine: engine
-            // });
-        }
+        this.state.engine.getDiagramModel().clearSelection();
     }
 
     onNodeRemoved(e) {
@@ -612,7 +604,7 @@ class StoryBoard extends Component {
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}
-                    onClose={e => this.setState({ open: false })}
+                    close={e => this.setState({ open: false })}
                     repaint={this.repaint}
                     variables={this.state.variables}
                     onVariable={this.setVariables}

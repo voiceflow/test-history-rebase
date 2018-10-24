@@ -163,12 +163,13 @@ class StoryBoard extends Component {
 
     onDiagramUnfocus() {
         let engine = this.state.engine;
-        if(engine.hasRepaint()){
-            engine.getDiagramModel().clearSelection();
-
-            this.setState({
-                engine: engine
-            });
+        let model = engine.getDiagramModel();
+        if(model.getSelectedItems().length !== 0){
+            model.clearSelection();
+            // engine.enableRepaintEntities([]);
+            // this.setState({
+            //     engine: engine
+            // });
         }
     }
 
@@ -183,6 +184,10 @@ class StoryBoard extends Component {
 
     repaint() {
         this.state.engine.repaintCanvas();
+        // console.log("repaint", this.state.engine.getSuperSelect().extras.type);
+        // this.setState({
+        //     engine: this.state.engine
+        // });
     }
 
     onSave(cb) {

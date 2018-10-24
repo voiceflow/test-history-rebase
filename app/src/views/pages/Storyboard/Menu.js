@@ -30,7 +30,7 @@ class Menu extends PureComponent {
 
     render() {
         return (
-            <div className='Menu'>
+            <div className='Menu no-select'>
                 <div className='sidebar'>
                     <p className="saved">{this.props.lastSave}</p>
                     <hr/>

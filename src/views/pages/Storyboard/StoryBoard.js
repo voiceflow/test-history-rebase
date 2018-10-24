@@ -430,6 +430,7 @@ class StoryBoard extends Component {
                         },
                         diagram_id: diagram_id
                     });
+                    this.props.history.push(`/storyboard/${skill_id}/${diagram_id}`);
                 })
                 .catch(err => {
                     this.setState({ error_modal: 'Could Not Create Project - Error' });

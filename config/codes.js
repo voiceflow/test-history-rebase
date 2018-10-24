@@ -4,7 +4,7 @@ const {docClient} = require('./../services');
 const checkCodes = (code) => new Promise(resolve => {
 	let params = {
 		TableName: 'com.getstoryflow.creator.codes',
-		Key: {"code": code}
+		Key: {"code": code.toUpperCase()}
 	};
 
 	// if (!req.user.admin) {
@@ -17,25 +17,23 @@ const checkCodes = (code) => new Promise(resolve => {
 		if (err) {
 			console.log(err);
 			resolve(false);
-		} else if (data.Item && ((data.Item.code).toUpperCase() === (accessCode).toUpperCase()))  {
-			resolve(true);					
-				
-				console.log(data.Item);
-				data.Item.used = true;
-				console.log(data.Item);
-				params = {
-					TableName: 'com.getstoryflow.creator.codes',
-					Item: data.Item
+		} else if (data.Item)  {
+
+			data.Item.used = true;
+
+			params = {
+				TableName: 'com.getstoryflow.creator.codes',
+				Item: data.Item
+			}
+
+			docClient.put(params, err => {
+				if(err){
+					console.error(err);
+					resolve(false);
+				}else{
+					resolve(true);
 				}
-				console.log('params:');
-				docClient.put(params, err => {
-					if(err){
-						console.log(err);
-						resolve(false);
-					}else{
-						resolve(true);
-					}
-				});
+			});
 		} else {
 			console.log(accessCode);
 			console.log(data.Item);
@@ -49,17 +47,16 @@ const checkCodes = (code) => new Promise(resolve => {
 const generateCode = (user_id) => new Promise(resolve => {
 	
 	let item = {
-		code : crypto.randomBytes(4).toString('hex'),
+		code : crypto.randomBytes(4).toString('hex').toUpperCase(),
 		userId : user_id,
 		used : false
 	};
 
-	
 	let params = {
 		TableName: 'com.getstoryflow.creator.codes',
 		Item: item
 	}
-	console.log(params);
+	// console.log(params);
 
 	docClient.put(params, err => {
 		if (err) {
@@ -71,16 +68,10 @@ const generateCode = (user_id) => new Promise(resolve => {
 	});
 });
 
-const generateCodesArr = async (user_id) => {
-	
-	// let numCodes = 3;
-	// let numStart = 1
-	// let codesArr = Array(numCodes - numStart +1)
-	// 	.fill()
-	// 	.map(() => (await generateCode(user_id)));
+const generateCodesArr = async (user_id, num=3) => {
 
 	let codes = [];
-	for(var i = 0; i < 3; i++){
+	for(var i = 0; i < num; i++){
 		let code = await generateCode(user_id);
 		codes.push(code)
 	}
@@ -88,7 +79,17 @@ const generateCodesArr = async (user_id) => {
 	return codes;
 }
 
+const endpoint = async (req, res) => {
+	try{
+		let codes = generateCodesArr(req.params.num);
+		res.send(codes);
+	}catch{
+		res.sendStatus(500);
+	}
+}
+
 module.exports = {
+	endpoint: endpoint,
 	checkCodes: checkCodes,	
 	generateCode: generateCode,
 	generateCodesArr: generateCodesArr

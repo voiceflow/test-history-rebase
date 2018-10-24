@@ -129,7 +129,7 @@ app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 // app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
 // app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
-app.get('/code', ensureAdmin(), Code.generateCode);
+app.get('/code/:num', ensureAdmin(), Code.endpoint);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 

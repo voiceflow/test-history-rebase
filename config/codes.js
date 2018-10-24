@@ -70,6 +70,8 @@ const generateCode = (user_id) => new Promise(resolve => {
 
 const generateCodesArr = async (user_id, num=3) => {
 
+	if(num > 100) num = 100;
+
 	let codes = [];
 	for(var i = 0; i < num; i++){
 		let code = await generateCode(user_id);

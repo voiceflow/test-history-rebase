@@ -1,5 +1,6 @@
-const client = require('@sendgrid/client');
-client.setApiKey('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');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
+sgMail.setSubstitutionWrappers('-', '-');
 
 const isString = str => typeof str === 'string' || str instanceof String;
 
@@ -11,12 +12,10 @@ const send = (email, name, codesArr, template, cb) => {
     } else if (!isString(name)) {
         name = null;
     }
-    console.log(codesArr[0]);
-    console.log(codesArr[1]);
-    console.log(codesArr[2]);
+    // console.log(codesArr[0]);
+    // console.log(codesArr[1]);
+    // console.log(codesArr[2]);
 
-
-    
     let data = {
         'template_id': template,
         'from': {
@@ -31,7 +30,7 @@ const send = (email, name, codesArr, template, cb) => {
                         'name': name,
                     }
                 ],
-                "dynamic_template_data": {
+                "substitutions": {
                     "code1": codesArr[0],
                     "code2": codesArr[1],
                     "code3": codesArr[2]
@@ -44,21 +43,27 @@ const send = (email, name, codesArr, template, cb) => {
         }
     };
 
-    request = {
-        body: data,
-        method: 'POST',
-        url: '/v3/mail/send'
-    };
-    client.request(request)
-        .then(([
-            response,
-            body
-        ]) => {
-            cb(response);
-        })
-        .catch(err => {
-            console.log(JSON.stringify(err.response.body));
-        });
+    // request = {
+    //     body: data,
+    //     method: 'POST',
+    //     url: '/v3/mail/send'
+    // };
+
+    try{
+        sgMail.send(data);
+    }catch(err){
+        console.log(JSON.stringify(err.response.body));
+    }
+    // client.request(request)
+    //     .then(([
+    //         response,
+    //         body
+    //     ]) => {
+    //         cb(response);
+    //     })
+    //     .catch(err => {
+    //         console.log(JSON.stringify(err.response.body));
+    //     });
 };
 
 const sendSync = (email, name, template) => new Promise(resolve => {

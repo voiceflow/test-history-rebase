@@ -213,19 +213,18 @@ const putUser = async (req, res) => {
 	                        } else {
 								
 	                        	// console.log(insert_result);
-						    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, (credentials) => {
+						    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, async (credentials) => {
 	                            	res.status(200).send({
 	                            		token: credentials.userHash + credentials.token,
 										user: credentials.user
 										
 									});
 									
-									// let codesArr = Codes.generateCodesArr(credentials.user);
-									// console.log(codesArr);
-									// let template = 'd-9ba04cdf70894f489147057e71d2c5c9';
-									// Mail.send(email, name, codesArr, template, (err) => {
-									// 	console.log(err);
-									// });
+									let codesArr = await Codes.generateCodesArr(credentials.user);
+									let template = 'd-9ba04cdf70894f489147057e71d2c5c9';
+									Mail.send(email, name, codesArr, template, (err) => {
+										console.log(err);
+									});
 								});
 								
 								

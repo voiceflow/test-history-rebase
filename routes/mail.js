@@ -15,6 +15,8 @@ const send = (email, name, codesArr, template, cb) => {
     console.log(codesArr[1]);
     console.log(codesArr[2]);
 
+
+    
     let data = {
         'template_id': template,
         'from': {
@@ -29,10 +31,10 @@ const send = (email, name, codesArr, template, cb) => {
                         'name': name,
                     }
                 ],
-                "substitutions": {
-                    "-code1-": 'code1',
-                    "-code2-": 'code2',
-                    "-code3-": 'code3'
+                "dynamic_template_data": {
+                    "code1": codesArr[0],
+                    "code2": codesArr[1],
+                    "code3": codesArr[2]
                 }
             }
         ],
@@ -41,6 +43,7 @@ const send = (email, name, codesArr, template, cb) => {
             'name': 'Braden from Storyflow'
         }
     };
+
     request = {
         body: data,
         method: 'POST',

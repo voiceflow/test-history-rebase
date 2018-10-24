@@ -51,6 +51,23 @@ body {
 button:focus{
     outline: none;
 }
+.text-dark {
+    color: #545D6D !important;
+}
+.horizontal-center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
 .close{
     color: #95a6bd;
 }
@@ -94,10 +111,12 @@ button:focus{
     background-color: #4253ff !important;
     text-transform: none !important;
 }
-
 .purple-btn:hover{
     background-color: #3041ed !important;
     box-shadow: 0 5px 10px 0 rgba(66, 83, 255, 0.23) !important;
+}
+.card {
+    border: 1px solid #E2E9EC;
 }
 
 label {

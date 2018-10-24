@@ -29,6 +29,10 @@
 	padding: 5px 4px;
 	border: 1px solid;
 	border-radius: 6px;
+	/*color: #FFF;*/
+}
+
+.operator {
 	color: #FFF;
 }
 

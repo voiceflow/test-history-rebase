@@ -123,12 +123,41 @@ class DashBoard extends Component {
                         </div>
                      </div>
         }else if(this.state.skills.length === 0){
-            skills = <div className="text-center mt-5">
-                        <h1 className="display-5 text-mute">
-                            <i className="far fa-frown"/> No Skills Found
-                        </h1>
-                        <Link to="/storyboard/new">Create New Skill</Link>
+            // skills = <div className="text-center mt-5">
+            //             <h1 className="display-5 text-mute">
+            //                 <i className="far fa-frown"/> No Skills Found
+            //             </h1>
+            //             <Link to="/storyboard/new">Create New Skill</Link>
+            //         </div>
+            skills = <div className="super-center w-100 text-muted mt-5">
+                <div className="horizontal-center mt-5">
+                    <div className="card">
+                      <div className="card-body p-4">
+                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="200"/><br/>
+                        <Link to="/storyboard/new" className="no-underline">
+                            <MUIButton varient="contained" className="purple-btn w-100">Create Skill</MUIButton>
+                        </Link>
+                      </div>
                     </div>
+                    <span className="mx-5">OR</span>
+                    <div className="d-flex">
+                        <img src="/images/clipboard-icon.svg" alt="list" height="90"/><br/>
+                        <div className="ml-3">
+                            <h5 className="text-dark">Getting Started</h5>
+                            <p className="mb-1">
+                                Learn about the tool<br/>
+                                and how blocks work
+                            </p>
+                            <small>
+                                <a href="https://getstoryflow.com/storyschool" className="text-muted" target="_blank" rel="noopener noreferrer">
+                                    <b>STORY SCHOOL</b>
+                                    <i className="fal fa-long-arrow-right ml-1"/>
+                                </a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+             </div>
         }else{
             skills = <Masonry elementType='div' className="skills-container">
                 {this.state.skills.map((skill, i) => 
@@ -154,7 +183,7 @@ class DashBoard extends Component {
                             </div>
                         </span>
                         <div className="subheader-right">
-                            <Link to="/storyboard/new">
+                            <Link to="/storyboard/new" className="no-underline">
                                 <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</MUIButton>
                             </Link>
                         </div>

@@ -74,7 +74,8 @@ export default {
 		return window.user_detail;
 	},
 	isAuth: () => {
-		return !!cookies.get('auth');
+		return !!cookies.get('auth', {path: '/'});
+		// return window.user_detail.id !== null;
 	},
 	AmazonAccessToken: cb => {
 		axios.get('/session/amazon/access_token')
@@ -101,7 +102,7 @@ export default {
 				id: null,
 				admin: false
 			}
-	    	cookies.remove('auth');
+	    	cookies.remove('auth', {path: '/'});
 	      	cb(err, null);
 	    });
 	},
@@ -114,13 +115,13 @@ export default {
 		}
 		axios.delete('/session')
 		.then(response => {
-			cookies.remove('auth');
+			cookies.remove('auth', {path: '/'});
 			if(cb){
 				cb();
 			}
 		})
 		.catch(err => {
-			cookies.remove('auth');
+			cookies.remove('auth', {path: '/'});
 			if(cb){
 				cb();
 			}

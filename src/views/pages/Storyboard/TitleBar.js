@@ -81,7 +81,7 @@ class TitleBar extends PureComponent {
     render() {
         // <DropdownItem onClick={()=>{}}>Submit for Review</DropdownItem>
         return (
-            <div className="TitleBar">
+            <div className="TitleBar no-select">
                 <div className="title-group">
                     <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
                     <MUIButton variant="contained" className="white-btn publish-btn" onClick={this.props.publish}>Publish 

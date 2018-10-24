@@ -220,12 +220,12 @@ const putUser = async (req, res) => {
 										
 									});
 									
-									let codesArr = Codes.generateCodesArr(credentials.user);
-									console.log(codesArr);
-									let template = 'd-9ba04cdf70894f489147057e71d2c5c9';
-									Mail.send(email, name, codesArr, template, (err) => {
-										console.log(err);
-									});
+									// let codesArr = Codes.generateCodesArr(credentials.user);
+									// console.log(codesArr);
+									// let template = 'd-9ba04cdf70894f489147057e71d2c5c9';
+									// Mail.send(email, name, codesArr, template, (err) => {
+									// 	console.log(err);
+									// });
 								});
 								
 								

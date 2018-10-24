@@ -17,15 +17,25 @@ const checkCodes = (code) => new Promise(resolve => {
 		if (err) {
 			console.log(err);
 			resolve(false);
-		} else if (data.Item && ((data.Item.code).toUpperCase() === (accessCode).toUpperCase()))  {
-				resolve(true);
-
+		} else if (data.Item && ((data.Item.code).toUpperCase() === (accessCode).toUpperCase()) && data.Item.used === 'false')  {
+			resolve(true);					
+				
+				console.log(data.Item);
 				data.Item.used = true;
+				console.log(data.Item);
 				params = {
 					TableName: 'com.getstoryflow.creator.codes',
 					Item: data.Item
 				}
-				docClient.put(params);
+				console.log('params:');
+				docClient.put(params, err => {
+					if(err){
+						console.log(err);
+						resolve(false);
+					}else{
+						resolve(true);
+					}
+				});
 		} else {
 			console.log('Invalid Item');
 			resolve(false)
@@ -34,9 +44,9 @@ const checkCodes = (code) => new Promise(resolve => {
 });
 
 const generateCode = (req,res) => {
-
+	
 	let item = {
-		code : crypto.randomBytes(8).toString('hex'),
+		code : crypto.randomBytes(4).toString('hex'),
 		userId : req.user.id,
 		used : false
 	};
@@ -45,6 +55,7 @@ const generateCode = (req,res) => {
 		TableName: 'com.getstoryflow.creator.codes',
 		Item: item
 	}
+	console.log(params);
 
 	docClient.put(params, err => {
 		if (err) {

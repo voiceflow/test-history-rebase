@@ -17,7 +17,7 @@ const checkCodes = (code) => new Promise(resolve => {
 		if (err) {
 			console.log(err);
 			resolve(false);
-		} else if (data.Item && ((data.Item.code).toUpperCase() === (accessCode).toUpperCase()) && data.Item.used === 'false')  {
+		} else if (data.Item && ((data.Item.code).toUpperCase() === (accessCode).toUpperCase()))  {
 			resolve(true);					
 				
 				console.log(data.Item);

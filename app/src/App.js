@@ -78,7 +78,7 @@ class App extends Component {
             }
         });
     }else{
-        history.push('/login');
+        history.push('/signup');
     }
 
     history.listen((location, action) => {
@@ -107,6 +107,7 @@ class App extends Component {
                 <PublicRoute exact path="/login" name="Login" component={Account} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Account} />
                 <PrivateRoute exact path="/storyboard/new" name="Storyboard" new component={StoryBoard}/>
+                <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Storyboard" preview component={StoryBoard}/>
                 <PrivateRoute path="/storyboard/:skill_id/:diagram_id" name="Storyboard" component={StoryBoard}/>
                 <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard}/>
                 <PrivateRoute path="/publish/:id" name="Skill Dashboard" component={Skill}/>
@@ -117,7 +118,7 @@ class App extends Component {
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>
                   ) : (
-                    <Redirect to="/login"/>
+                    <Redirect to="/signup"/>
                   )
                 )}/>
               </Switch>

@@ -130,9 +130,8 @@ const getDiagram = (req, res) => {
         } else if (data.Item) {
             let diagram = data.Item;
 
-            if (diagram.creator !== req.user.id && !req.user.admin) {
+            if (diagram.preview === false) {
                 res.sendStatus(403);
-
                 return;
             }
 
@@ -143,23 +142,24 @@ const getDiagram = (req, res) => {
     });
 };
 
-const setDiagram = (req, res) => {
+const setDiagram = async (req, res) => {
     if (!req.body) {
         res.sendStatus(400);
-        return;
-    } else if (!req.user) {
-        res.sendStatus(401);
         return;
     }
 
     let diagram = req.body;
-
     diagram.skill = hashids.decode(diagram.skill)[0];
 
-    if (!diagram.creator) {
-        diagram.creator = req.user.id;
-    } else if (diagram.creator !== req.user.id && !req.user.admin) {
-        res.sendStatus(403);
+    try{
+        let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill]);
+        if(result.rows.length === 0 || result.rows[0].creator_id !== req.user.id){
+            res.sendStatus(403);
+            return;
+        }
+    }catch(err){
+        console.error(err);
+        res.sendStatus(500);
         return;
     }
 
@@ -184,11 +184,6 @@ const setDiagram = (req, res) => {
 };
 
 const deleteDiagram = (req, res) => {
-    if (!req.user) {
-        res.sendStatus(401);
-        return;
-    }
-
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': req.params.id}
@@ -214,7 +209,7 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
+const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve) => {
 
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
@@ -228,6 +223,11 @@ const renderDiagram = async (diagram_id, skill_id) => new Promise((resolve) => {
             console.error(err);
             resolve(500);
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
+
+            if (data.Item.creator !== user.id && !user.admin) {
+                res.sendStatus(403);
+                return;
+            }
 
             let diagram = JSON.parse(data.Item.data);
 
@@ -485,7 +485,7 @@ const publish = async (req, res) => {
 
     let skill_id = hashids.decode(req.params.skill_id)[0];
 
-    let status = await renderDiagram(req.params.diagram_id, skill_id);
+    let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
 
     res.sendStatus(status);
 };
@@ -496,7 +496,7 @@ const publishTest = async (req, res) => {
         return;
     }
 
-    let status = await renderDiagram(req.params.diagram_id, 'TEST');
+    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST');
 
     res.sendStatus(status);
 };

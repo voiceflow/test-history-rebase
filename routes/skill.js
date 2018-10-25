@@ -37,16 +37,30 @@ const getSkill = (req, res) => {
     }
 
     let id = hashids.decode(req.params.id)[0];
+    let sql;
+    let params;
+    if(req.query.simple){
+        sql = `
+            SELECT
+                name
+            FROM
+                skills
+            WHERE
+                skill_id = $1 LIMIT 1`;
+        params = [id];
+    }else{
+        sql = `
+            SELECT
+                *
+            FROM
+                skills
+            WHERE
+                skill_id = $1 AND
+                creator_id = $2 LIMIT 1`;
+        params = [id, req.user.id];
+    }
 
-    pool.query(`
-        SELECT
-            *
-        FROM
-            skills
-        WHERE
-            skill_id = $1 AND
-            creator_id = $2 LIMIT 1`, 
-        [id, req.user.id], (err, data) => {
+    pool.query( sql, params, (err, data) => {
         if(err){
             console.error(err);
             res.sendStatus(500);
@@ -294,7 +308,7 @@ const buildSkill = async (req,res) => {
                 } catch(err) {
                     if(err.type === "VendorIdError"){
                         // console.error(err);
-                        res.sendStatus(404);
+                        res.sendStatus(403);
                     }else{
                         if(err.response){
                             console.error(err.response.status);

@@ -114,24 +114,24 @@ class Editor extends Component {
         const type = this.state.node ? this.state.node.extras.type : null;
 
         return (
-            <div className={"Editor" + (this.props.open && type ? ' open':'')}>
+            <div id="Editor" className={(this.props.open && type ? 'open':'')}>
                 {type ?
                     <form onSubmit={(e) => e.preventDefault()} className="controls">
                         <div className="top">
                             <div className="property">
-                                <div className="close" onClick={this.props.close}>&times;</div>
+                                <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
                                 <div className={"block " + type}>{type} block</div>
                             </div>
-                            <div>
-                                <input id="label" placeholder="Block Label" 
-                                    type="text"
-                                    name="name"
-                                    value={this.state.node.name}
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            </div>
                         </div>
-                        {this.BlockViewer()}
+                        <div id="editor-section">
+                            <input id="label" placeholder="Block Label" 
+                                type="text"
+                                name="name"
+                                value={this.state.node.name}
+                                onChange={this.handleChange.bind(this)}
+                            />
+                            {this.BlockViewer()}
+                        </div>
                     </form> 
                 : null}
             </div>

@@ -82,12 +82,14 @@ class TitleBar extends PureComponent {
         // <DropdownItem onClick={()=>{}}>Submit for Review</DropdownItem>
         return (
             <div className="TitleBar no-select">
-                <div className="title-group">
-                    <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
-                    <MUIButton variant="contained" className="white-btn publish-btn" onClick={this.props.publish}>Publish 
-                        <span className="button-circle"><i className="fab fa-amazon"/></span>
-                    </MUIButton>
-                </div>
+                {this.props.preview ? null : 
+                    <div className="title-group">
+                        <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
+                        <MUIButton variant="contained" className="white-btn publish-btn" onClick={this.props.publish}>Publish 
+                            <span className="button-circle"><i className="fab fa-amazon"/></span>
+                        </MUIButton>
+                    </div>
+                }
                 <div className="project">
                     <div className="skill-name">
                         {this.props.skill.name}

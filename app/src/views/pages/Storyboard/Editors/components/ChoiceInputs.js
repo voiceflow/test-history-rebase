@@ -26,7 +26,6 @@ class ChoiceInputs extends Component {
                         <div key={i} className="choice-block">
                             <div className="choice-title">
                                 <span>{i+1}</span>
-                                <input type="text" name="choices" value={choice} onChange={e => this.props.onChange(e, i)} />
                                 <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                             </div>
                             <Textarea 

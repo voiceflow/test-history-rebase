@@ -226,10 +226,10 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
             resolve(500);
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
-            // if (data.Item.creator !== user.id && !user.admin) {
-            //     resolve(403);
-            //     return;
-            // }
+            if (data.Item.creator !== user.id && !user.admin) {
+                resolve(403);
+                return;
+            }
 
             let diagram = JSON.parse(data.Item.data);
 

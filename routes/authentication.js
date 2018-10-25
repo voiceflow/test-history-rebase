@@ -221,8 +221,8 @@ const putUser = async (req, res) => {
 									});
 									
 									let codesArr = await Codes.generateCodesArr(credentials.user);
-									let template = 'd-9ba04cdf70894f489147057e71d2c5c9';
-									Mail.send(email, name, codesArr, template, (err) => {
+									
+									Mail.sendCodes(email, name, codesArr, (err) => {
 										console.log(err);
 									});
 								});

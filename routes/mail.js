@@ -1,15 +1,9 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
-sgMail.setSubstitutionWrappers('-', '-');
+sgMail.setSubstitutionWrappers('-','-');
 
-const isString = str => typeof str === 'string' || str instanceof String;
-
-const send = (email, name, codesArr, template, cb) => {
-    if (!isString(email) || !isString(template)) {
-        cb(null);
-
-        return;
-    } else if (!isString(name)) {
+const sendCodes = (email, name, codesArr, cb) => {
+    if (typeof name !== 'string') {
         name = null;
     }
     // console.log(codesArr[0]);
@@ -17,7 +11,7 @@ const send = (email, name, codesArr, template, cb) => {
     // console.log(codesArr[2]);
 
     let data = {
-        'template_id': template,
+        'template_id': 'd-9ba04cdf70894f489147057e71d2c5c9',
         'from': {
             'email': 'braden@getstoryflow.com',
             'name': 'Braden from Storyflow'
@@ -30,10 +24,10 @@ const send = (email, name, codesArr, template, cb) => {
                         'name': name,
                     }
                 ],
-                "substitutions": {
-                    "code1": codesArr[0],
-                    "code2": codesArr[1],
-                    "code3": codesArr[2]
+                "dynamic_template_data": {
+                    "CODE1": codesArr[0],
+                    "CODE2": codesArr[1],
+                    "CODE3": codesArr[2]
                 }
             }
         ],
@@ -66,9 +60,5 @@ const send = (email, name, codesArr, template, cb) => {
     //     });
 };
 
-const sendSync = (email, name, template) => new Promise(resolve => {
-    send(email, name, template, resolve);
-});
+exports.sendCodes = sendCodes;
 
-exports.send = send;
-exports.sendSync = sendSync;

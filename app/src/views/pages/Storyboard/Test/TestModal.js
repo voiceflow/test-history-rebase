@@ -195,7 +195,7 @@ class TestModal extends React.Component {
             // TYLER'S SUPER JANKY AUDIO THING
 
             let dom = parse(res.output);
-            console.log(dom);
+            // console.log(dom);
 
             if(dom && dom.length > 0 && dom[0].type === 'tag' && 
               dom[0].name === 'ssml' && dom[0].children && dom[0].children.length !== 0){

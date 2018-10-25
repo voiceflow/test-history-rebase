@@ -225,7 +225,7 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
             if (data.Item.creator !== user.id && !user.admin) {
-                res.sendStatus(403);
+                resolve(403);
                 return;
             }
 
@@ -344,7 +344,7 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                     story.lines[node.id] = {
                         audio: node.extras.audio
                     };
-                } else if (node.extras.type === 'set') {
+                } else if (node.extras.type === 'set' || node.extras.type === 'variable') {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {

@@ -87,6 +87,7 @@ class Editor extends Component {
             case 'multiline':
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
+            case 'variable':
                 return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable} onUpdate={this.props.onUpdate}/>
             case 'if':
                 return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>

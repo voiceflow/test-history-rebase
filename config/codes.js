@@ -19,21 +19,25 @@ const checkCodes = (code) => new Promise(resolve => {
 			resolve(false);
 		} else if (data.Item)  {
 
-			data.Item.used = true;
+			if(data.Item.used){
+				resolve(false);
+			}else{
+				data.Item.used = true;
 
-			params = {
-				TableName: 'com.getstoryflow.creator.codes',
-				Item: data.Item
-			}
-
-			docClient.put(params, err => {
-				if(err){
-					console.error(err);
-					resolve(false);
-				}else{
-					resolve(true);
+				params = {
+					TableName: 'com.getstoryflow.creator.codes',
+					Item: data.Item
 				}
-			});
+
+				docClient.put(params, err => {
+					if(err){
+						console.error(err);
+						resolve(false);
+					}else{
+						resolve(true);
+					}
+				});
+			}
 		} else {
 			console.log(accessCode);
 			console.log(data.Item);

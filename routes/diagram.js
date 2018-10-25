@@ -156,6 +156,8 @@ const setDiagram = async (req, res) => {
         if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id){
             res.sendStatus(403);
             return;
+        }else{
+            diagram.creator = req.user.id;
         }
     }catch(err){
         console.error(err);

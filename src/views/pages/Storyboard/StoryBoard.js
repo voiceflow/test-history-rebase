@@ -129,6 +129,7 @@ class StoryBoard extends Component {
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
+            // this.onLoadId('6cd76bb5-6d47-454f-b393-fb6bcb6505fe');
         }
     }
 
@@ -530,7 +531,7 @@ class StoryBoard extends Component {
                 node.extras = {
                     paths: 1
                 };
-            } else if (type === 'set') {
+            } else if (type === 'set' || type === 'variable') {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.extras = {

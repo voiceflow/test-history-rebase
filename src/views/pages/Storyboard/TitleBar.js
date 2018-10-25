@@ -94,7 +94,7 @@ class TitleBar extends PureComponent {
                     <div className="skill-name">
                         {this.props.skill.name}
                     </div>
-                    <MUIButton variant="extendedFab" className="white-btn play" onClick={this.props.onTest}><i className="fas fa-play"/></MUIButton>
+                    <MUIButton variant="extendedFab" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><i className="fas fa-play"/></span></MUIButton>
                 </div>
             </div>
         );

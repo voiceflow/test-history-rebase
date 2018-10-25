@@ -41,6 +41,11 @@ class StoryBoard extends Component {
         this.onNodeRemoved = this.onNodeRemoved.bind(this);
         this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
         this.unsave = this.unsave.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+        this.runTest = this.runTest.bind(this);
+
+        // preview mode
+        this.preview = !!this.props.preview;
 
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
@@ -50,7 +55,7 @@ class StoryBoard extends Component {
         
         let node, open, diagram_id, skill_id;
 
-        let last_session = cookies.get('last_session');
+        let last_session = cookies.get('last_session', {path: '/'});
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
@@ -68,7 +73,7 @@ class StoryBoard extends Component {
             }
         }
 
-        if(!diagram_id || !skill_id){
+        if(!this.preview && (!diagram_id || !skill_id)){
             newSkill = true;
 
             var model = new SRD.DiagramModel();
@@ -129,7 +134,7 @@ class StoryBoard extends Component {
 
     componentDidMount() {
 
-        $('.srd-node-layer').click(() => {
+        $('#diagram').click((e) => {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
             // console.log(selected);
@@ -142,23 +147,30 @@ class StoryBoard extends Component {
             }
         });
 
-        $('.Editor').mousedown(this.onDiagramUnfocus);
+        $('#Editor').mousedown(this.onDiagramUnfocus);
 
-        // $('.Menu').mousedown(this.onDiagramUnfocus)
-
-        $(document).keydown(function(event) {
-            // If Control or Command key is pressed and the S key is pressed
-            // run save function. 83 is the key code for S.
-            if ((event.ctrlKey || event.metaKey) && event.which === 83) {
-                event.preventDefault();
-                // Save Function
-                if (!this.state.saved) {
-                    this.onSave();
-                }
-
+        if(this.preview){
+            $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 
+                '#editor-section', 
+                function(e){
+                e.preventDefault();
                 return false;
-            }
-        }.bind(this));
+            });
+        }else{
+            $(document).keydown(function(event) {
+                // If Control or Command key is pressed and the S key is pressed
+                // run save function. 83 is the key code for S.
+                if ((event.ctrlKey || event.metaKey) && event.which === 83) {
+                    event.preventDefault();
+                    // Save Function
+                    if (!this.state.saved) {
+                        this.onSave();
+                    }
+
+                    return false;
+                }
+            }.bind(this));
+        }
     }
 
     onDiagramUnfocus() {
@@ -199,29 +211,23 @@ class StoryBoard extends Component {
                 skill: this.state.skill.skill_id
             }
 
-            // console.log(diagram);
-
-            $.ajax({
-                url: '/diagram',
-                type: 'POST',
-                data: diagram,
-                success: () => {
-                    // this.onLoad();
-                    this.setState({
-                        saving: false,
-                        saved: true,
-                        last_save: Date.now()
-                    });
-                    if(typeof cb === "function") cb(id);
-                },
-                error: () => {
-                    this.setState({
-                        saving: false,
-                        loading_modal: true,
-                        error_modal: 'Error Saving to Cloud (Check Logs)'
-                    });
-                    if(typeof cb === "function") cb(null);
-                }
+            axios.post('/diagram', diagram)
+            .then(() => {
+                this.setState({
+                    saving: false,
+                    saved: true,
+                    last_save: Date.now()
+                });
+                if(typeof cb === "function") cb(id);
+            })
+            .catch(err => {
+                console.log(err.response);
+                this.setState({
+                    saving: false,
+                    loading_modal: true,
+                    error_modal: 'Error Saving to Cloud (Check Logs)'
+                });
+                if(typeof cb === "function") cb(null);
             });
         } catch (e) {
             console.log(e);
@@ -313,14 +319,14 @@ class StoryBoard extends Component {
 
     onLoadSkill(skill_id){
         $.ajax({
-            url: '/skill/'+skill_id,
+            url: '/skill/'+skill_id+'?simple=1',
             type: 'GET',
             success: skill => {
                 this.setState({
                     skill: skill
                 }, this.onLoadId(this.state.diagram_id));
             },
-            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
+            error: () => this.setState({ error_modal: 'Could Not Retrieve Project' })
         });
     }
 
@@ -331,10 +337,12 @@ class StoryBoard extends Component {
             success: diagram => {
                 this.loadDiagram(diagram);
 
-                cookies.set('last_session', {
-                    skill_id: this.state.skill.skill_id,
-                    diagram_id: diagram_id
-                }, {path: '/'});
+                if(!this.preview){
+                    cookies.set('last_session', {
+                        skill_id: this.state.skill.skill_id,
+                        diagram_id: diagram_id
+                    }, {path: '/'});
+                }
             },
             error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
         });
@@ -367,43 +375,55 @@ class StoryBoard extends Component {
         });
     }
 
+    runTest() {
+        let engine = this.state.engine;
+        let model = engine.getDiagramModel();
+        let data = model.serializeDiagram();
+        // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+        
+        let nodes = [];
+        data.nodes.forEach((node) => {
+            if(node.extras && node.extras.type !== "story"){
+                nodes.push({
+                    value: node.id,
+                    label: node.name
+                });               
+            }
+        });
+        this.setState({
+            testing_info: {
+                id: this.state.diagram_id,
+                nodes: nodes
+            }
+        });
+    }
+
     onTest() {
         this.state.engine.getDiagramModel().clearSelection();
         this.toggleTestModal();
 
-        this.onSave(diagram_id => {
-            axios.post(`/diagram/${diagram_id}/test/publish`)
-            .then(() => {
-                let engine = this.state.engine;
-                let model = engine.getDiagramModel();
-                let data = model.serializeDiagram();
-                // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
-                
-                let nodes = [];
-                data.nodes.forEach((node) => {
-                    if(node.extras && node.extras.type !== "story"){
-                        nodes.push({
-                            value: node.id,
-                            label: node.name
-                        });               
-                    }
-                });
-                this.setState({
-                    testing_info: {
-                        id: diagram_id,
-                        nodes: nodes
-                    }
-                });
-            })
-            .catch(err => {
-                console.log(err.response);
-                this.setState({
-                    error_modal: "Could Not Render Your Project",
-                    loading_modal: true,
-                    testing_modal: false
-                });
+        if(this.preview){
+            this.runTest();
+        }else{
+            this.onSave(diagram_id => {
+                if(diagram_id === null){
+                    this.setState({
+                        testing_modal: false
+                    });
+                }else{
+                    axios.post(`/diagram/${diagram_id}/test/publish`)
+                    .then(this.runTest)
+                    .catch(err => {
+                        console.log(err.response);
+                        this.setState({
+                            error_modal: "Could Not Render Your Project",
+                            loading_modal: true,
+                            testing_modal: false
+                        });
+                    });
+                }
             });
-        });
+        }
     }
 
     createSkill(name){
@@ -445,6 +465,108 @@ class StoryBoard extends Component {
         });
     }
 
+    onDrop(event) {
+        if(this.preview) return;
+
+        var engine = this.state.engine;
+        try {
+            var type = event.dataTransfer.getData('node');
+        } catch (e) {
+            return;
+        }
+        var upper = type.charAt(0).toUpperCase() + type.substr(1);
+        var node = new BlockNodeModel(upper);
+        if (type === 'choice') {
+            node.addInPort(' ');
+            node.addOutPort('else').setMaximumLinks(1);
+            node.extras = {
+                audio: '',
+                audioText: '',
+                audioVoice: '',
+                prompt: '',
+                promptText: '',
+                promptVoice: '',
+                choices: [],
+                inputs: []
+            };
+        } else if (type === 'audio') {
+            node.addInPort(' ');
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                audio: false,
+                lines: [
+                    {
+                        textCollapse: false,
+                        collapse: true,
+                        text: '',
+                        audio: false,
+                        voice: false,
+                        title: 'Line Audio'
+                    }
+                ]
+            };
+        } else if (type === 'speak') {
+            node.addInPort(' ');
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                raw: null
+            };
+        } else if (type === 'command') {
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                commands: ''
+            };
+        } else if (type === 'ending') {
+            node.addInPort(' ');
+            node.extras = {
+                audio: '',
+                audioText: '',
+                audioVoice: ''
+            };
+        } else if (type === 'random') {
+            node.addInPort(' ');
+            node.addOutPort(1).setMaximumLinks(1);
+            node.extras = {
+                paths: 1
+            };
+        } else if (type === 'set') {
+            node.addInPort(' ');
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                variable: null,
+                expression: ""
+            };
+        } else if (type === 'if') {
+            node.addInPort(' ');
+            node.addOutPort('true').setMaximumLinks(1);
+            node.addOutPort('false').setMaximumLinks(1);
+            node.extras = {
+                variable: null,
+                operation: '==',
+                expression: ""
+            };
+        } else if (type === 'capture') {
+            node.addInPort(' ');
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                variable: null
+            };
+        }
+        node.extras.type = type;
+        node.addListener({ entityRemoved: this.onNodeRemoved });
+        var points = engine.getRelativeMousePoint(event);
+        node.x = points.x;
+        node.y = points.y;
+        node.setSelected();
+        engine.getDiagramModel().clearSelection();
+        engine.getDiagramModel().addNode(node);
+        engine.setSuperSelect(node);
+        this.setState({
+            engine: engine,
+            open: true
+        });
+    }
+
     render() {
         // if(this.state.loading_modal) {
         //     return <div className='super-center h-100 w-100'>
@@ -479,10 +601,13 @@ class StoryBoard extends Component {
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} /> 
                 : null}
-                <Menu 
-                    lastSave ={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
-                />
+                {this.preview ? null :
+                    <Menu 
+                        lastSave ={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
+                    />
+                }
                 <TitleBar
+                    preview={this.preview}
                     title={this.state.diagram_name}
                     skill={this.state.skill}
                     onSave={this.onSave}
@@ -495,109 +620,10 @@ class StoryBoard extends Component {
                     publish={this.publish}
                 />
                 <div
-                    className="diagram-layer"
-                    onDrop={event => {
-                        var engine = this.state.engine;
-                        try {
-                            var type = event.dataTransfer.getData('node');
-                        } catch (e) {
-                            return;
-                        }
-                        var upper = type.charAt(0).toUpperCase() + type.substr(1);
-                        var node = new BlockNodeModel(upper);
-                        if (type === 'choice') {
-                            node.addInPort(' ');
-                            node.addOutPort('else').setMaximumLinks(1);
-                            node.extras = {
-                                audio: '',
-                                audioText: '',
-                                audioVoice: '',
-                                prompt: '',
-                                promptText: '',
-                                promptVoice: '',
-                                choices: [],
-                                inputs: []
-                            };
-                        } else if (type === 'audio') {
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                audio: false,
-                                lines: [
-                                    {
-                                        textCollapse: false,
-                                        collapse: true,
-                                        text: '',
-                                        audio: false,
-                                        voice: false,
-                                        title: 'Line Audio'
-                                    }
-                                ]
-                            };
-                        } else if (type === 'speak') {
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                raw: null
-                            };
-                        } else if (type === 'command') {
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                commands: ''
-                            };
-                        } else if (type === 'ending') {
-                            node.addInPort(' ');
-                            node.extras = {
-                                audio: '',
-                                audioText: '',
-                                audioVoice: ''
-                            };
-                        } else if (type === 'random') {
-                            node.addInPort(' ');
-                            node.addOutPort(1).setMaximumLinks(1);
-                            node.extras = {
-                                paths: 1
-                            };
-                        } else if (type === 'set') {
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                variable: null,
-                                expression: ""
-                            };
-                        } else if (type === 'if') {
-                            node.addInPort(' ');
-                            node.addOutPort('true').setMaximumLinks(1);
-                            node.addOutPort('false').setMaximumLinks(1);
-                            node.extras = {
-                                variable: null,
-                                operation: '==',
-                                expression: ""
-                            };
-                        } else if (type === 'capture') {
-                            node.addInPort(' ');
-                            node.addOutPort(' ').setMaximumLinks(1);
-                            node.extras = {
-                                variable: null
-                            };
-                        }
-                        node.extras.type = type;
-                        node.addListener({ entityRemoved: this.onNodeRemoved });
-                        var points = engine.getRelativeMousePoint(event);
-                        node.x = points.x;
-                        node.y = points.y;
-                        node.setSelected();
-                        engine.getDiagramModel().clearSelection();
-                        engine.getDiagramModel().addNode(node);
-                        engine.setSuperSelect(node);
-                        this.setState({
-                            engine: engine,
-                            open: true
-                        });
-                    }}
-                    onDragOver={event => {
-                        event.preventDefault();
-                    }}
+                    id="diagram"
+                    className={this.preview ? " no-padding" : ""}
+                    onDrop={this.onDrop}
+                    onDragOver={e => e.preventDefault()}
                 >
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
                 </div>

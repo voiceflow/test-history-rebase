@@ -68,7 +68,7 @@ class Skill extends Component {
         // token ? 2 : 0
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
-                stage: token ? 2 : 0
+                stage: 0
             });
         })
     }
@@ -128,7 +128,7 @@ class Skill extends Component {
                     });
                 })
                 .catch(err => {
-                    if(err.response.status === 404){
+                    if(err.status === 403 || err.response.status === 403){
                         // No Vendor ID/Amazon Developer Account
                         this.setState({
                             stage: 5

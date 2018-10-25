@@ -321,10 +321,13 @@
 /*.App .Menu .sidebar .MenuItem:hover>.MenuIcon{
 }*/
 
-.App .diagram-layer {
+.App #diagram {
     width: 100%;
     height: 100%;
     padding-left: 180px;
+}
+.App #diagram.no-padding {
+    padding-left: 0 !important;
 }
 
 .App .srd-diagram {
@@ -340,7 +343,7 @@
     border-width: 3px !important;
 }
 
-.App.review .diagram-layer {
+.App.review #diagram {
     /*border: 10px solid #D84315;*/
 }
 .App.review .TitleBar{
@@ -365,7 +368,7 @@
     word-break: break-all;
 }
 
-.App .Editor {
+.App #Editor {
     position: fixed;
     top: 0;
     right: 0;
@@ -396,7 +399,7 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.App .Editor.open {
+.App #Editor.open {
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
     -ms-transform: translateX(0);
@@ -404,7 +407,7 @@
     transform: translateX(0);
 }
 
-.App .Editor label {
+.App #Editor label {
     display: inline-block;
     font-weight: 400;
     color: #95a6bd;
@@ -474,7 +477,7 @@
     margin-bottom: 5px;
 }
 
-.Editor textarea, textarea.blank {
+#Editor textarea, textarea.blank {
     width: 100%;
     border-radius: 5px;
     -webkit-box-sizing: border-box;
@@ -485,11 +488,11 @@
     padding: 2px 0;
 }
 
-.Editor textarea:focus, textarea.blank:focus {
+#Editor textarea:focus, textarea.blank:focus {
     outline: none;
 }
 
-.Editor textarea::placeholder, textarea.blank::placeholder{
+#Editor textarea::placeholder, textarea.blank::placeholder{
     color: #CCC;
 }
 
@@ -756,14 +759,18 @@ button.close{
 
 .choice-title {
     display: flex;
+    justify-content: space-between;
     width: 100%;
+    margin-bottom: 5px;
 }
 
 .choice-title span {
     /*padding: 5px 10px 0px 10px;*/
     padding-top: 2px;
     height: 22px;
-    width: 22px;
+    /*width: 22px;*/
+    padding-left: 7px;
+    padding-right: 7px;
     text-align: center;
     line-height: 18px;
     border-radius: 3px;
@@ -771,9 +778,9 @@ button.close{
     background-color: rgba(63, 81, 181, 0.08);
     color: #94A6BD;
     font-weight: bold;
-    font-size: 0.7rem;
+    font-size: 16px;
     margin-right: 5px;
-    margin-left: -8px;
+    margin-left: -7px;
 }
 
 .choice-title input{

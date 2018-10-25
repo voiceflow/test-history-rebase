@@ -153,7 +153,7 @@ const setDiagram = async (req, res) => {
 
     try{
         let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill]);
-        if(result.rows.length === 0 || result.rows[0].creator_id !== req.user.id){
+        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id){
             res.sendStatus(403);
             return;
         }

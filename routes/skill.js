@@ -349,7 +349,7 @@ const certifySkill = (req, res) => {
         }
 
         const iterate = (depth) => {
-            if(depth === 4){
+            if(depth === 3){
                 res.status(500).send({
                     message: "Skill is taking too long to be certified"
                 });
@@ -368,13 +368,15 @@ const certifySkill = (req, res) => {
                     })
                     .catch(err => {
                         // console.log(JSON.stringify(err.response.data));
-                        if(err.response.status === 404){
+                        if(err.response.status === 403){
                             iterate(depth + 1);
                         }else{
+                            console.log(err.response.status);
+                            // console.log(JSON.stringify(err.response.data));
                             res.status(500).send(err.response.data);
                         }
                     });
-                }, 5000);
+                }, 10000);
             }
         }
 

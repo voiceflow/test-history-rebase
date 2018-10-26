@@ -376,6 +376,10 @@ input::placeholder, textarea::placeholder {
 #dash-nav .nav-pills {
     width: 100%;
 }
+
+.modal {
+  overflow-y:auto;
+}
 /*.modal-content:before {
     content: '';
     width: 100%;

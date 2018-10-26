@@ -33,6 +33,7 @@ const stage_title = {
     "6": "Checking Vendor",
     "8": "Submit For Review",
     "7": "Building and Submitting",
+    "9": "Privacy & Compliance Ext.",
     "10": "Awaiting Review"
 }
 
@@ -50,7 +51,8 @@ class Skill extends Component {
                 error: null,
                 stage: 1,
                 publish: false,
-                amzn_id: null
+                amzn_id: null,
+                stage_error: null
             }
         } else {
             this.props.history.push('/dashboard');
@@ -66,6 +68,8 @@ class Skill extends Component {
         this.onPublish = this.onPublish.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
+
+        this.privacyTop = React.createRef();
     }
 
     componentWillMount() {
@@ -144,31 +148,45 @@ class Skill extends Component {
         });
     }
 
+    scrollToTop(){
+        this.privacyTop.current.scrollIntoView(true);
+    }
+
     onPublish(){
         this.save(true, ()=>{
 
             let s = this.state;
             let category = (s.category && s.category.value ? s.category.value : null);
+            
             if(!(s.name && s.summary && s.description && s.invocations[0] && 
                 s.small_icon && s.large_icon && category)){
                 this.setState({
-                    publish: false,
-                    error: 'Please fill all required fields before publishing'
+                    stage_error: {
+                        stage: 2,
+                        message: 'Please fill all required fields before publishing'
+                    }
                 });
+                this.scrollToTop();
                 return;
             }
             if(!s.export){
                 this.setState({
-                    publish: false,
-                    error: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance'
+                    stage_error: {
+                        stage: 2,
+                        message: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance'
+                    }
                 });
+                this.scrollToTop();
                 return;
             }
             if(!s.instructions){
                 this.setState({
-                    publish: false,
-                    error: 'Please Provide Testing Instructions'
+                    stage_error: {
+                        stage: 2,
+                        message: 'Please Provide Testing Instructions'
+                    }
                 });
+                this.scrollToTop();
                 return;
             }
 
@@ -340,6 +358,9 @@ class Skill extends Component {
             </div>
         }else if(this.state.stage === 2){
             content = <div className="MUIform">
+                {this.state.stage_error && this.state.stage_error.stage === 2 ?
+                    <Alert color="danger">{this.state.stage_error.message}</Alert> : null
+                }
                 {[{
                     value: 'purchase',
                     text: 'Does this skill allow users to make purchases or spend real money?'
@@ -396,7 +417,7 @@ class Skill extends Component {
                         placeholder="Any Particular Testing Instructions for Amazon Approval Process"
                     />
                 </Paper>
-                <Button color="primary" onClick={this.onPublish} block>Submit To Alexa</Button>
+                <Button color="primary" onClick={this.onPublish} block>Submit to Alexa</Button>
             </div>
         }else if(this.state.stage === 5 || this.state.stage === 6){
             content = <div>
@@ -464,7 +485,7 @@ class Skill extends Component {
                     size="lg"
                     onClosed={this.closePublish}>
                     <ModalBody>
-                        <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between" ref={this.privacyTop}>
                             <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>×</button>
                         </div>
                         <div className="modal-info">

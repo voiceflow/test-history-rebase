@@ -31,7 +31,8 @@ const stage_title = {
     "4": "Publishing",
     "5": "Developer Account",
     "6": "Checking Vendor",
-    "7": "Certifying",
+    "8": "Submit For Review",
+    "7": "Building and Submitting",
     "10": "Awaiting Review"
 }
 
@@ -48,7 +49,8 @@ class Skill extends Component {
                 skill_id: this.props.computedMatch.params.id,
                 error: null,
                 stage: 1,
-                publish: false
+                publish: false,
+                amzn_id: null
             }
         } else {
             this.props.history.push('/dashboard');
@@ -63,6 +65,7 @@ class Skill extends Component {
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
+        this.onCertify = this.onCertify.bind(this);
     }
 
     componentWillMount() {
@@ -125,6 +128,22 @@ class Skill extends Component {
         });
     }
 
+    onCertify(){
+        this.setState({
+            stage: 7
+        });
+        axios.post(`/amazon/${this.state.amzn_id}/certify`)
+        .then(() => {
+            this.setState({
+                stage: 10,
+                publish: false
+            });
+        })
+        .catch(err => {
+            this.handleError(err, 'Certifcation Error');
+        });
+    }
+
     onPublish(){
         this.save(true, ()=>{
 
@@ -161,17 +180,9 @@ class Skill extends Component {
 
                 axios.post(`/skill/${this.state.skill_id}/publish`)
                 .then(res => {
-                    this.setState({stage: 7});
-
-                    axios.post(`/amazon/${res.data}/certify`)
-                    .then(() => {
-                        this.setState({
-                            stage: 10,
-                            publish: false
-                        });
-                    })
-                    .catch(err => {
-                        this.handleError(err, 'Certifcation Error');
+                    this.setState({
+                        stage: 8,
+                        amzn_id: res.data
                     });
                 })
                 .catch(err => {
@@ -400,6 +411,24 @@ class Skill extends Component {
                     </a>
                     <Button color="info" onClick={this.checkVendor}>
                         <i className="fas fa-sync-alt"/> Check Again
+                    </Button>
+                </div>
+            </div>
+        }else if(this.state.stage === 8){
+            content = <div>
+                <img src="/images/preview.svg" alt="Success" height="160"/>
+                <br/>
+                You Skill Has been uploaded to Alexa Development!
+                <span className="text-muted text-center">
+                    You may test on the Alexa Simulator or Submit your Skill for review
+                </span>
+                <div className="my-3">
+                    <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/en_US/`} 
+                    className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                        Test on Alexa Simulator
+                    </a>
+                    <Button color="info" onClick={this.onCertify}>
+                        Submit for Review
                     </Button>
                 </div>
             </div>

@@ -185,7 +185,9 @@ const buildSkill = async (req,res) => {
 
     AccessToken(req.user.id, token => {
         if(token === null){
-            res.sendStatus(401);
+            res.status(401).send({
+                message: "Invalid Amazon Login Token"
+            });
             return;
         }
     
@@ -275,7 +277,9 @@ const buildSkill = async (req,res) => {
 
                     const iterate = (depth) => {
                         if(depth === 3){
-                            res.sendStatus(500);
+                            res.status(500).send({
+                                message: "Skill is taking too long to be initialized"
+                            });
                             return;
                         }else{
                             setTimeout(()=> {
@@ -289,13 +293,19 @@ const buildSkill = async (req,res) => {
                                     data: model
                                 })
                                 .then(response => {
-                                    res.sendStatus(200);
+                                    res.send(amzn_id);
                                 })
                                 .catch(err => {
-                                    if(err.response.status === 404){
-                                        iterate(depth + 1);
+                                    if(err.response){
+                                        if(err.response.status === 404){
+                                            iterate(depth + 1);
+                                        }else{
+                                            console.error(err.response.data);
+                                            res.status(500).send(err.response.data);
+                                        }
                                     }else{
-                                        res.status(500).send(err.response.data);
+                                        console.log(err);
+                                        res.sendStatus(500);
                                     }
                                 });
                                 
@@ -311,17 +321,65 @@ const buildSkill = async (req,res) => {
                         res.sendStatus(403);
                     }else{
                         if(err.response){
-                            console.error(err.response.status);
+                            // console.error(err.response.status);
                             console.error(JSON.stringify(err.response.data));
+                            res.status(500).send(err.response.data);
                         }else{
                             console.error(err);
+                            res.sendStatus(500);
                         }
-                        res.sendStatus(500);
                     }
                 }
             }
         }); 
     });    
+}
+
+const certifySkill = (req, res) => {
+    if (!req.params.amzn_id) {
+        res.sendStatus(401);
+    }
+
+    AccessToken(req.user.id, token => {
+        if(token === null){
+            res.status(401).send({
+                message: "Invalid Amazon Login Token"
+            });
+            return;
+        }
+
+        const iterate = (depth) => {
+            if(depth === 4){
+                res.status(500).send({
+                    message: "Skill is taking too long to be certified"
+                });
+                return;
+            }else{
+                setTimeout(()=> {
+                    axios.request({
+                        url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
+                        method: 'POST',
+                        headers: {
+                            Authorization: token
+                        }
+                    })
+                    .then(response => {
+                        res.sendStatus(200);
+                    })
+                    .catch(err => {
+                        // console.log(JSON.stringify(err.response.data));
+                        if(err.response.status === 404){
+                            iterate(depth + 1);
+                        }else{
+                            res.status(500).send(err.response.data);
+                        }
+                    });
+                }, 5000);
+            }
+        }
+
+        iterate(0);
+    });
 }
 
 module.exports = {
@@ -330,5 +388,6 @@ module.exports = {
     getSkill: getSkill,
     deleteSkill: deleteSkill,
     setSkill: setSkill,
-    buildSkill: buildSkill
+    buildSkill: buildSkill,
+    certifySkill: certifySkill
 }

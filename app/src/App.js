@@ -78,7 +78,9 @@ class App extends Component {
             }
         });
     }else{
-        history.push('/signup');
+        if(history.location.pathname !== '/login'){
+          history.push('/signup');
+        }
     }
 
     history.listen((location, action) => {

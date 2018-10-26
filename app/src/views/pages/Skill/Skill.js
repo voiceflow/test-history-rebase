@@ -31,6 +31,7 @@ const stage_title = {
     "4": "Publishing",
     "5": "Developer Account",
     "6": "Checking Vendor",
+    "7": "Certifying",
     "10": "Awaiting Review"
 }
 
@@ -112,8 +113,46 @@ class Skill extends Component {
         })
     }
 
+    handleError(err, default_error){
+        console.error(err);
+        this.setState({
+            publish: false,
+            stage: 2,
+            error: ((
+                err.response && 
+                err.response.data && 
+                err.response.data.message) ? err.response.data : default_error)
+        });
+    }
+
     onPublish(){
         this.save(true, ()=>{
+
+            let s = this.state;
+            let category = (s.category && s.category.value ? s.category.value : null);
+            if(!(s.name && s.summary && s.description && s.invocations[0] && 
+                s.small_icon && s.large_icon && category)){
+                this.setState({
+                    publish: false,
+                    error: 'Please fill all required fields before publishing'
+                });
+                return;
+            }
+            if(!s.export){
+                this.setState({
+                    publish: false,
+                    error: 'Please Certify Alexa Skill Import/Export in Privacy/Complicance'
+                });
+                return;
+            }
+            if(!s.instructions){
+                this.setState({
+                    publish: false,
+                    error: 'Please Provide Testing Instructions'
+                });
+                return;
+            }
+
             this.setState({stage: 3});
 
             axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
@@ -122,9 +161,17 @@ class Skill extends Component {
 
                 axios.post(`/skill/${this.state.skill_id}/publish`)
                 .then(res => {
-                    this.setState({
-                        stage: 10,
-                        publish: false
+                    this.setState({stage: 7});
+
+                    axios.post(`/amazon/${res.data}/certify`)
+                    .then(() => {
+                        this.setState({
+                            stage: 10,
+                            publish: false
+                        });
+                    })
+                    .catch(err => {
+                        this.handleError(err, 'Certifcation Error');
                     });
                 })
                 .catch(err => {
@@ -134,21 +181,12 @@ class Skill extends Component {
                             stage: 5
                         });
                     }else{
-                        this.setState({
-                            publish: false,
-                            stage: 2,
-                            error: 'Publishing Error'
-                        });
+                        this.handleError(err, 'Publishing Error');
                     }
                 })
             })
             .catch(err => {
-                console.error(err);
-                this.setState({
-                    publish: false,
-                    stage: 2,
-                    error: 'Rendering Error'
-                })
+                this.handleError(err, 'Rendering Error');
             })
         });
     }
@@ -263,7 +301,7 @@ class Skill extends Component {
         }
 
         let content;
-        if(this.state.stage === 0 || this.state.stage === -1){
+        if(this.state.stage === 0 || this.state.stage === -1) {
             content = <div>
                 {this.state.stage === -1 ? 
                     <Alert color="danger">Login With Amazon Failed - Try Again.</Alert> : null
@@ -278,10 +316,13 @@ class Skill extends Component {
                     }}
                 />
             </div>
-        }else if(this.state.stage === 1 || 
+        } else if (
+            this.state.stage === 1 || 
             this.state.stage === 3 ||
             this.state.stage === 4 ||
-            this.state.stage === 6){
+            this.state.stage === 6 ||
+            this.state.stage === 7 
+        ){
             content = <div>
                     <h1><i className="fas fa-sync-alt fa-spin"/></h1>
                     <p className="loading">{stage_title[this.state.stage]}</p>

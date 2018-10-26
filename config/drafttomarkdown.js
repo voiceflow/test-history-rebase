@@ -24,11 +24,11 @@ var orderedListNumber = {},
 
 const _escape = function (word) {
     if (typeof(word) === "string") {
-        word = word.replace(/&/g, '&amp;');
-        word = word.replace(/</g, '&lt;');
-        word = word.replace(/>/g, '&gt;');
-        word = word.replace(/"/g, '&quot;');
-        word = word.replace(/'/g, '&apos;');
+        word = word.replace(/&/g, 'ampersand');
+        // word = word.replace(/</g, '&lt;');
+        // word = word.replace(/>/g, '&gt;');
+        word = word.replace(/"/g, '\\\"');
+        word = word.replace(/'/g, '\\\'');
         return word;
     }
     if (typeof(word) === "number") {

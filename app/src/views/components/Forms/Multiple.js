@@ -51,6 +51,7 @@ class Multiple extends Component {
                         <Input 
                             name={i} 
                             value={this.props.list[i]} 
+                            disabled={this.props.isDisabled}
                             onChange={this.handleChange}
                             placeholder={this.props.placeholder}
                         />
@@ -63,7 +64,7 @@ class Multiple extends Component {
                 </div>
             )}
 
-            { this.props.max && this.props.list.length >= this.props.max ? null :
+            { (this.props.max && this.props.list.length >= this.props.max) || this.props.isDisabled? null :
                 <Button block color='primary' className="dash-button" onClick={this.add}>{this.props.add}</Button>
             }
         </div>;

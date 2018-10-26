@@ -108,6 +108,7 @@ app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
+app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 

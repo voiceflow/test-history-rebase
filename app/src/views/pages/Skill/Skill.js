@@ -13,6 +13,7 @@ import moment from 'moment';
 import Image from './../../components/Uploads/Image';
 import Multiple from './../../components/Forms/Multiple';
 import ErrorModal from './../../components/Modals/ErrorModal';
+import ConfirmModal from './../../components/Modals/ConfirmModal';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
 import Select from 'react-select';
 import './Skill.css';
@@ -34,8 +35,12 @@ const stage_title = {
     "8": "Submit For Review",
     "7": "Building and Submitting",
     "9": "Privacy & Compliance Ext.",
-    "10": "Awaiting Review"
+    "10": "Submitted for Review",
+    "11": "Awaiting Review",
+    "12": "Confirming Withdraw"
 }
+
+const disabled_stages = new Set([11,12]);
 
 class Skill extends Component {
 
@@ -52,7 +57,8 @@ class Skill extends Component {
                 stage: 1,
                 publish: false,
                 amzn_id: null,
-                stage_error: null
+                stage_error: null,
+                displayingConfirmWithdraw: false
             }
         } else {
             this.props.history.push('/dashboard');
@@ -62,10 +68,12 @@ class Skill extends Component {
         this.handleSelection = this.handleSelection.bind(this);
         this.toggle = this.toggle.bind(this);
         this.togglePublish = this.togglePublish.bind(this);
+        this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this);
         this.closePublish = this.closePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
+        this.onWithdraw = this.onWithdraw.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
 
@@ -132,6 +140,24 @@ class Skill extends Component {
         });
     }
 
+    onWithdraw(){
+        axios.post(`/amazon/${this.state.amzn_id}/withdraw`)
+        .then(() => {
+            this.setState({
+                stage: 0,
+                displayingConfirmWithdraw: false
+            });
+            // TODO: add a withdrawn alert
+        })
+        .catch(err => {
+            this.handleError(err, 'Withdrawal Error');
+            this.setState({
+                stage: 11
+            });
+        });
+    
+    }
+
     onCertify(){
         this.setState({
             stage: 7
@@ -139,7 +165,7 @@ class Skill extends Component {
         axios.post(`/amazon/${this.state.amzn_id}/certify`)
         .then(() => {
             this.setState({
-                stage: 10,
+                stage: 11,
                 publish: false
             });
         })
@@ -278,10 +304,12 @@ class Skill extends Component {
     }
 
     handleChange(event){
-        this.setState({
-            saved: false,
-            [event.target.name]: event.target.value
-        });
+        if(this.state.stage !== 11){ 
+            this.setState({
+                saved: false,
+                [event.target.name]: event.target.value
+            });
+        }
     }
 
     handleSelection(value){
@@ -301,6 +329,23 @@ class Skill extends Component {
         this.setState({
             publish: !this.state.publish
         });
+    }
+
+    toggleConfirmWithdraw() {
+        if(!this.state.displayingConfirmWithdraw){
+            this.setState({
+                displayingConfirmWithdraw: {
+                    text: "Are you sure you want to withdraw this Skill?",
+                    confirm: this.onWithdraw
+                },
+                stage: 12
+            });
+        }else{
+            this.setState({
+                displayingConfirmWithdraw: false,
+                stage: 11
+            }); 
+        }
     }
 
     closePublish() {
@@ -330,6 +375,8 @@ class Skill extends Component {
         }
 
         let content;
+        // TODO: fix this hardcoded locale
+        let alexaDashboardUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${this.state.amzn_id}/development/en_US/dashboard`;
         if(this.state.stage === 0 || this.state.stage === -1) {
             content = <div>
                 {this.state.stage === -1 ? 
@@ -470,10 +517,13 @@ class Skill extends Component {
                                 <small> / created {moment(this.state.created).fromNow()}</small>
                             </div>
                         </span>
-                        <div className="subheader-right">
-                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-                            <MUIButton variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></MUIButton>
-                        </div>
+                        {disabled_stages.has(this.state.stage)?
+                            null:
+                            <div className="subheader-right">
+                                <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
+                                <MUIButton variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></MUIButton>
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -494,23 +544,43 @@ class Skill extends Component {
                     </ModalBody>
                 </Modal>
 
+                //JUMP HERE
+                <ConfirmModal 
+                    confirm = {this.state.displayingConfirmWithdraw}
+                    toggle={this.toggleConfirmWithdraw}
+                />
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
                 <div className='container mt-3'>
+                    {disabled_stages.has(this.state.stage)?
+                        <div className="alert alert-success" role="alert">
+                            <div className="row">
+                                <div className="col-8">
+                                    <h3>This skill is currently in review so you cannot edit it.</h3>
+                                </div>
+                                <div className="col-4">
+                                    <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl}>Visit Dashboard</MUIButton>
+                                    <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw} block>Withdraw Skill</MUIButton>
+                                </div>
+                            </div>
+                        </div>
+                    :null}
+
                      <Form>
                         <FormGroup>
                           <Label>Skill Display Name *</Label>
-                          <Input type="text" name="name" placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
+                          <Input type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
                         </FormGroup>
                         <FormGroup>
                           <Label>Invocation Name *</Label>
-                          <Input type="text" name="inv_name" placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
+                          <Input type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
                         </FormGroup>
                         <div className="d-flex mb-4">
                             <div>
                                 <Label>Small Icon *</Label>
                                 <Image 
                                     className='icon-image small-icon'
+                                    isDisabled={disabled_stages.has(this.state.stage)}
                                     path='/small_icon'
                                     image={this.state.small_icon} 
                                     update={(url) => this.setState({small_icon: url})}/>
@@ -519,6 +589,7 @@ class Skill extends Component {
                                 <Label>Large Icon *</Label>
                                 <Image 
                                     className='icon-image large-icon'
+                                    isDisabled={disabled_stages.has(this.state.stage)}
                                     path='/large_icon'
                                     image={this.state.large_icon} 
                                     update={(url) => this.setState({large_icon: url})}/>
@@ -526,13 +597,14 @@ class Skill extends Component {
                         </div>
                         <FormGroup>
                           <Label>Summary *</Label>
-                          <Input type="text" name="summary" placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
+                          <Input type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
                         </FormGroup>
                         <FormGroup>
                            <Label>Description *</Label> 
                            <Textarea
                                 name="description"
                                 className="form-control"
+                                disabled={disabled_stages.has(this.state.stage)}
                                 value={this.state.description}
                                 onChange={this.handleChange}
                                 minRows={3}
@@ -544,6 +616,7 @@ class Skill extends Component {
                             <Select
                                 className="input-select"
                                 name="category"
+                                isDisabled={disabled_stages.has(this.state.stage)}
                                 value={this.state.category}
                                 onChange={this.handleSelection}
                                 options={categories}
@@ -556,6 +629,7 @@ class Skill extends Component {
                                 max={3}
                                 prepend="Alexa,"
                                 update={(list) => this.setState({invocations: list, saved: false})}
+                                isDisabled={disabled_stages.has(this.state.stage)}
                                 placeholder={"open/start/turn on " + this.state.name}
                                 add={<span><i className="fas fa-plus"/> Add Invocation</span>}
                            />
@@ -563,7 +637,7 @@ class Skill extends Component {
                         <hr/>
                         <FormGroup>
                           <Label>Keywords (Search Tags) <small>optional</small></Label>
-                          <Input type="text" name="keywords" placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+                          <Input type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
                         </FormGroup>
                       </Form>
                 </div>

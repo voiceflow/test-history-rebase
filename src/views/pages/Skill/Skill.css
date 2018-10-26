@@ -26,6 +26,10 @@
     border: 1px solid #AAA;
 }
 
+.disabled-image>.image-box{
+	background-color: #e9ecef;
+}
+
 .multiple .input-group {
 	margin: 15px 0;
 }

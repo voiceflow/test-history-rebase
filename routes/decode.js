@@ -1,9 +1,7 @@
-const {hashids} = require('../services.js');
+const {hashids} = require('./../services');
 
 const decodeId = (req, res) => {
-    let skillId = req.params.id
-    
-    res.send(hashids.decode(skillId)[0]);
+    res.send(hashids.encode(req.params.id)[0]);
 }
 
 module.exports = {

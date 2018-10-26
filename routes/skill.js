@@ -175,7 +175,6 @@ const patchSkill = (req, res) => {
 }
 
 const buildSkill = async (req,res) => {
-
     if (!req.params.id) {
         res.sendStatus(401);
     }
@@ -293,7 +292,30 @@ const buildSkill = async (req,res) => {
                                     data: model
                                 })
                                 .then(response => {
-                                    res.send(amzn_id);
+                                    // Check whether building before certifying
+                                    const getSkillStatus = (depth) => {
+                                        setTimeout(() => {
+                                            axios.request({
+                                                url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
+                                                method: 'GET',
+                                                headers: {
+                                                    Authorization: token
+                                                }
+                                            })
+                                            .then(response => {
+                                                if(response.hasOwnProperty('violations')){
+                                                    getSkillStatus(depth + 1);
+                                                }else{
+                                                    res.send(amzn_id);
+                                                }
+                                            })
+                                            .catch(err => {
+                                                console.log(err.response.status);
+                                                res.status(500).send(err.response.data);
+                                            });
+                                        }, 10000);
+                                    }
+                                    getSkillStatus(0);
                                 })
                                 .catch(err => {
                                     if(err.response){
@@ -347,40 +369,83 @@ const certifySkill = (req, res) => {
             });
             return;
         }
-
-        const iterate = (depth) => {
-            if(depth === 3){
-                res.status(500).send({
-                    message: "Skill is taking too long to be certified"
-                });
-                return;
-            }else{
-                setTimeout(()=> {
-                    axios.request({
-                        url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
-                        method: 'POST',
-                        headers: {
-                            Authorization: token
-                        }
-                    })
-                    .then(response => {
-                        res.sendStatus(200);
-                    })
-                    .catch(err => {
-                        // console.log(JSON.stringify(err.response.data));
-                        if(err.response.status === 403){
-                            iterate(depth + 1);
-                        }else{
-                            console.log(err.response.status);
-                            // console.log(JSON.stringify(err.response.data));
-                            res.status(500).send(err.response.data);
-                        }
-                    });
-                }, 10000);
+        
+        axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
+            method: 'POST',
+            headers: {
+                Authorization: token
             }
-        }
+        })
+        .then(response => {
+            pool.query(`
+                UPDATE skills 
+                SET
+                stage = $2
+                WHERE amzn_id = $1`, 
+                [req.params.amzn_id, 11], 
+                (err) => {
+                    if(err){
+                        console.log(err);
+                        res.sendStatus(500);
+                    }else{
+                        res.sendStatus(200);
+                    }
+                }
+            );
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        });
+    });
+}
 
-        iterate(0);
+const withdrawSkill = (req, res) => {
+    if (!req.params.amzn_id) {
+        res.sendStatus(401);
+    }
+
+    AccessToken(req.user.id, token => {
+        if(token === null){
+            res.status(401).send({
+                message: "Invalid Amazon Login Token"
+            });
+            return;
+        }
+        
+        axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/withdraw`,
+            method: 'POST',
+            headers: {
+                Authorization: token,
+            },
+            data: {
+                //TODO: make this custom, not hardcoded
+                reason: 'MORE_FEATURES'
+            }
+        })
+        .then(response => {
+             pool.query(`
+                UPDATE skills 
+                SET
+                stage = $2
+                WHERE amzn_id = $1`, 
+                [req.params.amzn_id, 0], 
+                (err) => {
+                    if(err){
+                        console.log(err);
+                        res.sendStatus(500);
+                    }else{
+                        res.sendStatus(200);
+                    }
+                }
+            );
+        })
+        .catch(err => {
+            console.log(err.response.status);
+            res.status(500).send(err.response.data);
+        });
     });
 }
 
@@ -391,5 +456,6 @@ module.exports = {
     deleteSkill: deleteSkill,
     setSkill: setSkill,
     buildSkill: buildSkill,
-    certifySkill: certifySkill
+    certifySkill: certifySkill,
+    withdrawSkill: withdrawSkill
 }

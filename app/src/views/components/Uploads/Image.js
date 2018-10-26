@@ -27,11 +27,11 @@ class Image extends Component {
 
 	render() {
 
-        return <div className={this.props.className}>
+        return <div className={this.props.className + (this.props.isDisabled ? ' disabled-image' : '')}>
         { this.props.image ? 
             <div className="image-box">
             	<div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
-                <button className="btn btn-danger" onClick={() => this.props.update(null)}>&times;</button>
+                <button className="btn btn-danger" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
             </div>
             :
             <Dropzone

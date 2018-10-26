@@ -21,6 +21,7 @@ const Analytics = require('./routes/analytics.js')
 const Review = require('./routes/review.js');
 const Authentication = require('./routes/authentication');
 const Code = require('./config/codes.js');
+const Decode = require('./routes/decode.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -93,6 +94,7 @@ const ensureLoggedOut = () => {
     }
 }
 
+
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.get('/session', Authentication.getSession);
@@ -100,6 +102,7 @@ app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);
+app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);

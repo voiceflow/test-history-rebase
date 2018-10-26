@@ -89,7 +89,8 @@ const endpoint = async (req, res) => {
 	try{
 		let codes = await generateCodesArr(req.user.id, req.params.num);
 		res.send(codes.join("<br/>"));
-	}catch{
+	}catch(err) {
+		console.log(err);
 		res.sendStatus(500);
 	}
 }

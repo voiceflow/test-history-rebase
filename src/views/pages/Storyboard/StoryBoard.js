@@ -13,6 +13,7 @@ import LoadingModal from './../../components/Modals/LoadingModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
+import blank_template from './../../../assets/templates/blank';
 
 import Cookies from 'universal-cookie';
 
@@ -53,12 +54,13 @@ class StoryBoard extends Component {
         engine.registerLinkFactory(new BlockLinkFactory());
         engine.registerPortFactory(new BlockPortFactory());
         
-        let node, open, diagram_id, skill_id;
+        let open, diagram_id, skill_id;
 
         let last_session = cookies.get('last_session', {path: '/'});
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
+        let variables = [];
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
@@ -74,37 +76,57 @@ class StoryBoard extends Component {
         }
 
         if(!this.preview && (!diagram_id || !skill_id)){
+
             newSkill = true;
-
-            var model = new SRD.DiagramModel();
-
-            diagram_id = model.getID();
-
-            node = new BlockNodeModel('Start Block', '#FBE9E7');
-            node.addOutPort(' ').setMaximumLinks(1);
-            node.extras = {
-                audio: '',
-                audioText: '',
-                audioVoice: '',
-                preview: '',
-                previewText: '',
-                previewVoice: '',
-                prompt: '',
-                promptText: '',
-                promptVoice: ''
-            };
-            node.extras.type = 'story';
-            node.addListener({ entityRemoved: e => {e.stopPropagation();} });
-            node.setPosition($(window).width()/3-32, $(window).height()/2-21);
-            node.setSelected();
-            model.addNode(node);
-            engine.setDiagramModel(model);
-            engine.setSuperSelect(node);
-
             open = true;
+
+            let model = new SRD.DiagramModel();
+
+            model.deSerializeDiagram(blank_template, engine);
+
+            model.resetID();
+
+            let nodes = model.getNodes();
+            for (let key in nodes) {
+                if (nodes[key].extras.type === 'story') {
+                    nodes[key].clearListeners();
+                    nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                }
+            }
+
+            variables.push('user_name');
+
+            engine.setDiagramModel(model);
 
             model.addListener({nodesUpdated: this.unsave});
             model.addListener({linksUpdated: this.unsave});
+
+            // var model = new SRD.DiagramModel();
+
+            // diagram_id = model.getID();
+
+            // node = new BlockNodeModel('Start Block', '#FBE9E7');
+            // node.addOutPort(' ').setMaximumLinks(1);
+            // node.extras = {
+            //     audio: '',
+            //     audioText: '',
+            //     audioVoice: '',
+            //     preview: '',
+            //     previewText: '',
+            //     previewVoice: '',
+            //     prompt: '',
+            //     promptText: '',
+            //     promptVoice: ''
+            // };
+            // node.extras.type = 'story';
+            // node.addListener({ entityRemoved: e => {e.stopPropagation();} });
+            // node.setPosition($(window).width()/3-32, $(window).height()/2-21);
+            // node.setSelected();
+            // model.addNode(node);
+            // engine.setDiagramModel(model);
+            // engine.setSuperSelect(node);
+
+            // open = true;
         }
 
         this.state = {
@@ -123,7 +145,7 @@ class StoryBoard extends Component {
             last_save: false,
             testing_modal: false,
             testing_info: false,
-            variables: [],
+            variables: variables,
             newSkill: newSkill
         };
 

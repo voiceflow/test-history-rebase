@@ -32,7 +32,7 @@ const stage_title = {
     "5": "Developer Account",
     "6": "Checking Vendor",
     "8": "Submit For Review",
-    "7": "Certifying",
+    "7": "Building and Submitting",
     "10": "Awaiting Review"
 }
 

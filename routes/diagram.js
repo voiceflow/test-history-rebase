@@ -383,9 +383,9 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                             }
                         });
 
-                        let period = markdownstring.substr(-1).match(/[.,:!?]/) ? ' ' : '. '
+                        // let period = markdownstring.substr(-1).match(/[.,:!?]/) ? ' ' : '. '
 
-                        markdownstring = "'" + markdownstring + period + "'";
+                        markdownstring = "'" + markdownstring + "'";
 
                         for (var j = 0; j < node.ports.length; j++) {
                             if (!node.ports[j].in) {

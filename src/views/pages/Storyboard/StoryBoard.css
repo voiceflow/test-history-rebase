@@ -206,6 +206,14 @@
     font-weight: normal;
     font-size: 1.6rem;
     color: #545D6D;
+    transition: color 0.1s ease;
+    cursor: pointer;
+}
+
+.App .Menu .block-title h5:hover{
+    color: #95a6bd;
+    /*text-decoration: underline;*/
+    /*border-bottom: 1px solid #545D6D;*/
 }
 
 .App .Menu .block-title p {
@@ -257,6 +265,15 @@
     margin-top: 10px;
 }
 
+/*.App .Menu .sidebar .menuitem-container {
+    display: flex;
+    align-items: center;
+}
+
+.App .Menu .sidebar .menuitem-container>i {
+    width: 10%;
+}
+*/
 .App .Menu .sidebar .MenuItem {
     cursor: pointer;
     overflow: hidden;
@@ -267,6 +284,7 @@
     transition: background-color .2s cubic-bezier(0.4, 0.2, 0.2, 1);
     backface-visibility: hidden;
     color: #95a6bd;
+    width: 90%;
     background-color: #fff;
 }
 
@@ -288,6 +306,26 @@
     color: #fff;
     border-radius: 5px;
     margin-right: 11px;
+}
+
+.helpMenu.MenuItem {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+}
+.helpMenu.MenuItem>.MenuIcon {
+    border-radius: 5px;
+    margin-right: 10px;
+    /*padding: 10px;*/
+    width: 60px;
+    text-align: center;
+    height: 55px;
+    line-height: 55px;
+    color: #fff;
+}
+.helpMenu.MenuItem h5{
+    width: 100%;
+    margin-bottom: 0;
 }
 
 .App .Menu .sidebar .MenuItem.choice:hover {

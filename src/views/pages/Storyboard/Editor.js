@@ -121,7 +121,10 @@ class Editor extends Component {
                         <div className="top">
                             <div className="property">
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
-                                <div className={"block " + type}>{type} block</div>
+                                <div className="super-center">
+                                    <i className="far fa-question-circle mr-1" onClick={() => this.props.setHelp({type: this.state.node.extras.type})}/>
+                                    <div className={"block " + type}>{type} block</div>
+                                </div>
                             </div>
                         </div>
                         <div id="editor-section">

@@ -35,14 +35,14 @@ class Menu extends PureComponent {
                     <p className="saved">{this.props.lastSave}</p>
                     <hr/>
                     <div className='block-title'>
-                        <h5>Blocks</h5>
+                        <h5 onClick={this.props.helpModal}>Blocks <small><i className="far fa-question-circle"/></small></h5>
                         <p className="font-weight-light">Drag-n-drop blocks into your flow <i className="far fa-arrow-right"/></p>
                     </div>
                     {sections.map((section, i) => {
                         return <div key={i} className="section">
                             <span className="section-title">{section.title}</span>
                             {section.items.map((item, i) => {
-                                return <MenuItem key={i} item={item} />;
+                                return <MenuItem item={item} key={i} />;
                             })}
                         </div>
                     })}

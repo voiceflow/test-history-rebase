@@ -4,16 +4,16 @@ self.__precacheManifest = [
     "url": "/static/media/fa-regular-400.4921d601.woff"
   },
   {
-    "revision": "3962dfe3c063907c1682",
-    "url": "/static/css/main.7a2e7286.chunk.css"
+    "revision": "2b7fe2bb13895653f508",
+    "url": "/static/css/main.8748f2b4.chunk.css"
   },
   {
     "revision": "21041d25656d3dfe5fab8e2cf6a25e98",
     "url": "/static/media/fa-light-300.21041d25.svg"
   },
   {
-    "revision": "49108ad590c3b87c6355",
-    "url": "/static/js/1.49108ad5.chunk.js"
+    "revision": "61bc3dd2b54f27f545b7",
+    "url": "/static/js/1.61bc3dd2.chunk.js"
   },
   {
     "revision": "229c360febb4351a89df",
@@ -52,20 +52,20 @@ self.__precacheManifest = [
     "url": "/static/media/fa-solid-900.f903b9cf.woff"
   },
   {
-    "revision": "3962dfe3c063907c1682",
-    "url": "/static/js/main.3962dfe3.chunk.js"
+    "revision": "2b7fe2bb13895653f508",
+    "url": "/static/js/main.2b7fe2bb.chunk.js"
   },
   {
     "revision": "3339f634acf8daa5f03820e386c4277b",
     "url": "/static/media/fa-light-300.3339f634.woff"
   },
   {
-    "revision": "1819f7c917a488a6883378a60c8983e9",
-    "url": "/static/media/fa-solid-900.1819f7c9.eot"
-  },
-  {
     "revision": "ff7b7c547433e1205f6049ede50be677",
     "url": "/static/media/fa-solid-900.ff7b7c54.ttf"
+  },
+  {
+    "revision": "1819f7c917a488a6883378a60c8983e9",
+    "url": "/static/media/fa-solid-900.1819f7c9.eot"
   },
   {
     "revision": "e341059f165b89663654789e7805fddf",
@@ -76,12 +76,12 @@ self.__precacheManifest = [
     "url": "/static/media/fa-regular-400.b8108686.ttf"
   },
   {
-    "revision": "f1caac93e5bcd05bbc482de1eac9fc33",
-    "url": "/static/media/fa-light-300.f1caac93.eot"
-  },
-  {
     "revision": "6b10a2c1d5fd06b0a1d42bdc8b681508",
     "url": "/static/media/fa-light-300.6b10a2c1.ttf"
+  },
+  {
+    "revision": "f1caac93e5bcd05bbc482de1eac9fc33",
+    "url": "/static/media/fa-light-300.f1caac93.eot"
   },
   {
     "revision": "0cf67050e81ba6cac7c8bc3611432a71",
@@ -96,11 +96,11 @@ self.__precacheManifest = [
     "url": "/static/media/fa-regular-400.0b87a5d6.svg"
   },
   {
-    "revision": "49108ad590c3b87c6355",
+    "revision": "61bc3dd2b54f27f545b7",
     "url": "/static/css/1.26cf8cf5.chunk.css"
   },
   {
-    "revision": "4b8b4ccf2dc3ab3e259de7644e50b7ac",
+    "revision": "5d4fee928268c14b8db46a9850cbdab0",
     "url": "/index.html"
   }
 ];

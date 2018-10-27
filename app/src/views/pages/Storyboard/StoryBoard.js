@@ -10,6 +10,7 @@ import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import LoadingModal from './../../components/Modals/LoadingModal';
+import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
@@ -146,7 +147,8 @@ class StoryBoard extends Component {
             testing_modal: false,
             testing_info: false,
             variables: variables,
-            newSkill: newSkill
+            newSkill: newSkill,
+            help: null
         };
 
         if(!this.state.newSkill){
@@ -604,6 +606,11 @@ class StoryBoard extends Component {
 
         return (
             <div className='App' >
+                <HelpModal 
+                    help={this.state.help}
+                    toggle={()=>this.setState({help: null})}
+                    setHelp={(help) => this.setState({help: help})}
+                />
                 { this.state.newSkill !== null ?  
                     <SkillModal 
                         modal={!!this.state.newSkill}
@@ -628,7 +635,8 @@ class StoryBoard extends Component {
                 : null}
                 {this.preview ? null :
                     <Menu 
-                        lastSave ={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
+                        lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
+                        helpModal={()=>this.setState({help: true})}
                     />
                 }
                 <TitleBar
@@ -660,6 +668,7 @@ class StoryBoard extends Component {
                     repaint={this.repaint}
                     variables={this.state.variables}
                     onVariable={this.setVariables}
+                    setHelp={(help) => this.setState({help: help})}
                 />
             </div>
         );

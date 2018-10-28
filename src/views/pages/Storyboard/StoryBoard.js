@@ -15,6 +15,7 @@ import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
+import new_template from './../../../assets/templates/new';
 
 import Cookies from 'universal-cookie';
 
@@ -25,6 +26,14 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
+
+const generateID = () => {
+    return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}
 
 class StoryBoard extends Component {
     constructor(props) {
@@ -45,6 +54,9 @@ class StoryBoard extends Component {
         this.unsave = this.unsave.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.runTest = this.runTest.bind(this);
+        this.createDiagram = this.createDiagram.bind(this);
+        this.enterFlow = this.enterFlow.bind(this);
+        this.diagram_stack = [];
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -56,6 +68,7 @@ class StoryBoard extends Component {
         engine.registerPortFactory(new BlockPortFactory());
         
         let open, diagram_id, skill_id;
+        let diagram_name = '';
 
         let last_session = cookies.get('last_session', {path: '/'});
         let url = this.props.computedMatch;
@@ -77,15 +90,14 @@ class StoryBoard extends Component {
         }
 
         if(!this.preview && (!diagram_id || !skill_id)){
-
             newSkill = true;
             open = true;
 
             let model = new SRD.DiagramModel();
+            let blank = blank_template;
+            blank.id = generateID();
 
-            model.deSerializeDiagram(blank_template, engine);
-
-            model.resetID();
+            model.deSerializeDiagram(blank, engine);
 
             let nodes = model.getNodes();
             for (let key in nodes) {
@@ -102,42 +114,18 @@ class StoryBoard extends Component {
             model.addListener({nodesUpdated: this.unsave});
             model.addListener({linksUpdated: this.unsave});
 
-            // var model = new SRD.DiagramModel();
-
-            // diagram_id = model.getID();
-
-            // node = new BlockNodeModel('Start Block', '#FBE9E7');
-            // node.addOutPort(' ').setMaximumLinks(1);
-            // node.extras = {
-            //     audio: '',
-            //     audioText: '',
-            //     audioVoice: '',
-            //     preview: '',
-            //     previewText: '',
-            //     previewVoice: '',
-            //     prompt: '',
-            //     promptText: '',
-            //     promptVoice: ''
-            // };
-            // node.extras.type = 'story';
-            // node.addListener({ entityRemoved: e => {e.stopPropagation();} });
-            // node.setPosition($(window).width()/3-32, $(window).height()/2-21);
-            // node.setSelected();
-            // model.addNode(node);
-            // engine.setDiagramModel(model);
-            // engine.setSuperSelect(node);
-
-            // open = true;
+            diagram_name = 'ROOT'
         }
 
         this.state = {
             engine: engine,
             open: open,
-            diagram_name: '',
+            diagram_name: diagram_name,
             skill: {
                 skill_id: skill_id,
                 name: '...'
             },
+            diagrams: [],
             diagram_id: diagram_id,
             loading_modal: !newSkill,
             error_modal: false,
@@ -154,6 +142,17 @@ class StoryBoard extends Component {
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
             // this.onLoadId('6cd76bb5-6d47-454f-b393-fb6bcb6505fe');
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        let url = nextProps.computedMatch;
+        if (url && url.params.diagram_id && url.params.diagram_id !== this.state.diagram_id) {
+            let diagram_id = url.params.diagram_id;
+            this.diagram_stack.push(diagram_id);
+            this.setState({
+                diagram_id: diagram_id
+            }, () => this.onLoadId(diagram_id))
         }
     }
 
@@ -342,22 +341,39 @@ class StoryBoard extends Component {
         }
     }
 
-    onLoadSkill(skill_id){
-        $.ajax({
-            url: '/skill/'+skill_id+'?simple=1',
-            type: 'GET',
-            success: skill => {
+    onLoadDiagrams(){
+        if(this.preview){
+            this.onLoadId(this.state.diagram_id);
+        }else{
+            axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
+            .then(res => {
                 this.setState({
-                    skill: skill
-                }, this.onLoadId(this.state.diagram_id));
-            },
-            error: () => this.setState({ error_modal: 'Could Not Retrieve Project' })
-        });
+                    diagrams: res.data
+                }, () => this.onLoadId(this.state.diagram_id))
+            })
+            .catch(err => {
+                console.error(err.response);
+                this.setState({ error_modal: 'Could Not Retrieve Project Diagrams' });
+            });
+        }
+    }
+
+    onLoadSkill(skill_id){
+        axios.get('/skill/'+skill_id+'?simple=1')
+        .then(res => {
+            this.setState({
+                skill: res.data
+            }, this.onLoadDiagrams);
+        })
+        .catch(err => {
+            console.error(err.response);
+            this.setState({ error_modal: 'Could Not Retrieve Project' });
+        })
     }
 
     onLoadId(diagram_id) {
         $.ajax({
-            url: '/diagram/'+diagram_id,
+            url: '/diagram/'+ diagram_id,
             type: 'GET',
             success: diagram => {
                 this.loadDiagram(diagram);
@@ -484,9 +500,57 @@ class StoryBoard extends Component {
         });
     }
 
+    // Create a new diagram from the flow block
+    createDiagram(node){
+        this.setState({
+            loading_modal: true
+        });
+
+        let id = generateID();
+
+        node.extras.diagram_id = id;
+
+        this.onSave(() => {
+            // Generate a new diagram, save it, and go to it
+
+            let template = new_template;
+            template.id = id;
+            console.log(template);
+            let skill_id = this.state.skill.skill_id;
+            let data = JSON.stringify(template);
+
+            var diagram = {
+                id: id,
+                title: 'New Flow',
+                variables: [],
+                data: data,
+                skill: skill_id
+            }
+
+            axios.post('/diagram', diagram)
+            .then(() => {
+                this.props.history.push(`/storyboard/${skill_id}/${id}`);
+            })
+            .catch(err => {
+                console.log(err.response);
+                this.setState({
+                    saving: false,
+                    loading_modal: true,
+                    error_modal: 'Unable to create new Flow'
+                });
+            });
+        });
+    }
+
     publish() {
         this.onSave(diagram_id => {
             this.props.history.push('/publish/' + this.state.skill.skill_id);
+        });
+    }
+
+    enterFlow(new_diagram_id) {
+        this.onSave(() => {
+            this.props.history.push(`/storyboard/${this.state.skill.skill_id}/${new_diagram_id}`);
         });
     }
 
@@ -536,6 +600,14 @@ class StoryBoard extends Component {
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.extras = {
                     raw: null
+                };
+            } else if (type === 'flow') {
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+                node.extras = {
+                    diagram_id: null,
+                    inputs: [],
+                    outputs: []
                 };
             } else if (type === 'command') {
                 node.addOutPort(' ').setMaximumLinks(1);
@@ -669,6 +741,9 @@ class StoryBoard extends Component {
                     variables={this.state.variables}
                     onVariable={this.setVariables}
                     setHelp={(help) => this.setState({help: help})}
+                    diagrams={this.state.diagrams}
+                    createDiagram={this.createDiagram}
+                    enterFlow={this.enterFlow}
                 />
             </div>
         );

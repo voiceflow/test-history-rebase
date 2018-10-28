@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
+import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
 import Ending from './Editors/Ending';
 import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
 import Story from './Editors/Story';
-import RandomBlock from './Editors/Random';
+import Random from './Editors/Random';
 import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
 import Speak from './Editors/Speak';
 import Capture from './Editors/Capture';
 import Command from './Editors/Command';
+import Diagram from './Editors/Diagram';
 
 class Editor extends Component {
     constructor(props) {
@@ -31,16 +32,18 @@ class Editor extends Component {
         //         e.preventDefault();
         //     }
         // });
-        $.ajax({
-            url: '/voices',
-            type: 'GET',
-            success: res => {
-                this.setState({
-                    voices: res
-                });
-            },
-            error: () => {window.alert('Error11');}
-        });
+
+        axios.get('/voices')
+        .then(res => {
+            this.setState({
+                voices: res.data
+            });
+        })
+        .catch(err => {
+            console.error(err.response);
+            window.alert('Couldn\'t Retrieve Voices');
+        })
+
     }
 
     componentWillReceiveProps(props) {
@@ -94,7 +97,7 @@ class Editor extends Component {
             case 'listen':
                 return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':
-                return <RandomBlock node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} />
+                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} />
             case 'retry':
                 return <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'ending':
@@ -105,6 +108,14 @@ class Editor extends Component {
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             case 'command':
                 return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
+            case 'flow':
+                return <Diagram node={this.state.node} 
+                    onUpdate={this.props.onUpdate} 
+                    variables={this.props.variables} 
+                    createDiagram={this.props.createDiagram}
+                    diagrams={this.props.diagrams}
+                    enterFlow={this.props.enterFlow}
+                />
             default:
               return null;
         }
@@ -121,19 +132,26 @@ class Editor extends Component {
                         <div className="top">
                             <div className="property">
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
-                                <div className="super-center">
-                                    <i className="far fa-question-circle mr-1" onClick={() => this.props.setHelp({type: this.state.node.extras.type})}/>
-                                    <div className={"block " + type}>{type} block</div>
+                                <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
+                                    {type} block <i className="fas fa-question-circle mr-1"/>
                                 </div>
                             </div>
                         </div>
                         <div id="editor-section">
-                            <input id="label" placeholder="Block Label" 
-                                type="text"
-                                name="name"
-                                value={this.state.node.name}
-                                onChange={this.handleChange.bind(this)}
-                            />
+                            {this.state.node.extras.type === 'flow' ? 
+                                <div id="label">
+                                    {this.state.node.extras.diagram_id ? 
+                                        this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id).name : 
+                                    "Add Flow"}
+                                </div>
+                                : 
+                                <input id="label" placeholder="Block Label" 
+                                    type="text"
+                                    name="name"
+                                    value={this.state.node.name}
+                                    onChange={this.handleChange.bind(this)}
+                                />
+                            }
                             {this.BlockViewer()}
                         </div>
                     </form> 

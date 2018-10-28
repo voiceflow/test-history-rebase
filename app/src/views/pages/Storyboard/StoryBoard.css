@@ -83,7 +83,7 @@
 }
 
 .TitleBar .skill-name {
-    padding: 7px 20px 7px 20px;
+    padding: 7px 20px 7px 10px;
     font-size: 24px;
     font-weight: 300;
     color: #95a6bd;
@@ -139,7 +139,7 @@
 
 .TitleBar .title-group {
     position: absolute;
-    left: 195px;
+    left: 252px;
     top: 12px;
 }
 
@@ -207,28 +207,81 @@
     font-size: 1.6rem;
     color: #545D6D;
     transition: color 0.1s ease;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
-.App .Menu .block-title h5:hover{
-    color: #95a6bd;
+/*.App .Menu .block-title h5:hover{*/
+    /*color: #95a6bd;*/
     /*text-decoration: underline;*/
     /*border-bottom: 1px solid #545D6D;*/
-}
+/*}*/
 
 .App .Menu .block-title p {
     color: #95a6bd;
     font-size: 0.95rem;
 }
 
-.App .Menu .sidebar {
+.App .Menu {
+}
+
+.toolbar{
+    padding-top: 59px;
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(118, 186, 255, 0.17);
+    /*border-right: 1px solid #EEE;*/
+}
+
+.toolbar>div{
+    display: flex;
+    flex-direction: column;
+}
+
+.tool.border-top-none {
+    border-top: none !important; 
+}
+
+.toolbar>.spacer{
+    flex: 1;
+}
+
+.toolbar .tool{
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45px;
+    font-size: 1.2rem;
+    color: #95a6bd;
+    cursor: pointer;
+    /*transition: all .4s cubic-bezier(0.4, 0.2, 0.2, 1);*/
+}
+
+.toolbar .tool:hover{
+    background-color: #95a6bd;
+    color: #fff;
+}
+
+.top-down>.tool{
+    border-bottom: 1px solid #EEE;
+}
+
+.bottom-up>.tool{
+    border-top: 1px solid #EEE;
+}
+
+.App .Menu #sidebar {
     position: fixed;
     top: 0;
-    left: 0;
+    left: 40px;
     z-index: 5;
-    width: 180px;
+    width: 200px;
     height: 100%;
-    padding: 77px 20px 120px 20px;
+    padding: 0px 20px 120px 20px;
     overflow: scroll;
     /*opacity: 0.9;*/
     /*text-align: center;*/
@@ -237,44 +290,62 @@
     /*justify-content: center;*/
     box-shadow: 0 4px 8px 0 rgba(118, 186, 255, 0.17);
     background-color: #fff;
+    -webkit-transform: translateX(-200px);
+    -moz-transform: translateX(-200px);
+    -ms-transform: translateX(-200px);
+    -o-transform: translateX(-200px);
+    transform: translateX(-200px);
+    -webkit-transition: -webkit-transform .3s;
+    -moz-transition: -moz-transform .3s;
+    transition: transform .3s;
+    /* smooth the scrolling on touch devices - webkit browsers */
+    -webkit-overflow-scrolling: touch;
 }
 
-.App .Menu .sidebar .section-title{
+.App .Menu #sidebar.open {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.App .Menu #sidebar .section-title{
     text-transform: uppercase;
     font-size: 0.75rem;
     /*font-weight: bold;*/
     color: #95a6bd;
 }
 
-.App .Menu .sidebar .blocks {
+.App .Menu #sidebar .blocks {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border: 1px solid #DDD;
     border-left: none !important;
 }
 
-.App .Menu .sidebar .block-title {
+.App .Menu #sidebar .block-title {
     margin-top: 0px;
     margin-bottom: 20px;
     font-weight: lighter;
 }
 
-.App .Menu .sidebar button {
+.App .Menu #sidebar button {
     width: 75px;
     height: 25px;
     margin-top: 10px;
 }
 
-/*.App .Menu .sidebar .menuitem-container {
+/*.App .Menu #sidebar .menuitem-container {
     display: flex;
     align-items: center;
 }
 
-.App .Menu .sidebar .menuitem-container>i {
+.App .Menu #sidebar .menuitem-container>i {
     width: 10%;
 }
 */
-.App .Menu .sidebar .MenuItem {
+.App .Menu #sidebar .MenuItem {
     cursor: pointer;
     overflow: hidden;
     border-radius: 5px;
@@ -288,13 +359,13 @@
     background-color: #fff;
 }
 
-.App .Menu .sidebar .MenuItem:hover {
+.App .Menu #sidebar .MenuItem:hover {
     transform: translateZ(0);
 /*    transform: scale(1.04);*/
     transform: translateY(-2px);
 }
 
-.App .Menu .sidebar .MenuItem .MenuIcon {
+.App .Menu #sidebar .MenuItem .MenuIcon {
     display: inline-block;
     justify-content: center;
     align-items: center;
@@ -328,57 +399,57 @@
     margin-bottom: 0;
 }
 
-.App .Menu .sidebar .MenuItem.choice:hover {
+.App .Menu #sidebar .MenuItem.choice:hover {
     background-color: #E8F5E9;
 } .MenuItem.choice>.MenuIcon {
     background-color: #81C784;
 }
-.App .Menu .sidebar .MenuItem.speak:hover {
+.App .Menu #sidebar .MenuItem.speak:hover {
     background-color: #E0F7FA;
 } .MenuItem.speak>.MenuIcon {
     background-color: #4DD0E1;
 }
-.App .Menu .sidebar .MenuItem.audio:hover {
+.App .Menu #sidebar .MenuItem.audio:hover {
     background-color: #E3F2FD;
 } .MenuItem.audio>.MenuIcon {
     background-color: #64B5F6;
 }
-.App .Menu .sidebar .MenuItem.random:hover {
+.App .Menu #sidebar .MenuItem.random:hover {
     background-color: #FFFDE7;
 } .MenuItem.random>.MenuIcon {
     background-color: #FFD54F;
 }
-.App .Menu .sidebar .MenuItem.set:hover {
+.App .Menu #sidebar .MenuItem.set:hover {
     background-color: #F3E5F5;
 } .MenuItem.set>.MenuIcon {
     background-color: #9575CD;
 }
-.App .Menu .sidebar .MenuItem.variable:hover {
+.App .Menu #sidebar .MenuItem.variable:hover {
     background-color: #F3E5F5;
 } .MenuItem.variable>.MenuIcon {
     background-color: #9575CD;
 }
-.App .Menu .sidebar .MenuItem.if:hover {
+.App .Menu #sidebar .MenuItem.if:hover {
     background-color: #E0F2F1;
 } .MenuItem.if>.MenuIcon {
     background-color: #80CBC4;
 }
-.App .Menu .sidebar .MenuItem.capture:hover {
+.App .Menu #sidebar .MenuItem.capture:hover {
     background-color: #FBE9E7;
 } .MenuItem.capture>.MenuIcon {
     background-color: #FF8A65;
 }
-.App .Menu .sidebar .MenuItem.command:hover {
+.App .Menu #sidebar .MenuItem.command:hover {
     background-color: #FFEBEE;
 } .MenuItem.command>.MenuIcon {
     background-color: #EF5350;
 }
-.App .Menu .sidebar .MenuItem.flow:hover {
+.App .Menu #sidebar .MenuItem.flow:hover {
     background-color: #FAFAFA;
 } .MenuItem.flow>.MenuIcon {
     background-color: #BDBDBD;
 }
-/*.App .Menu .sidebar .MenuItem:hover>.MenuIcon{
+/*.App .Menu #sidebar .MenuItem:hover>.MenuIcon{
 }*/
 
 .App #diagram {
@@ -1052,6 +1123,6 @@ button.close{
     }
     .TitleBar{
         display: block;
-        padding-left: 180px;
+        padding-left: 250px;
     }
 }

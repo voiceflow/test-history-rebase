@@ -529,6 +529,10 @@ class StoryBoard extends Component {
 
             axios.post('/diagram', diagram)
             .then(() => {
+                this.state.diagrams.push({
+                    name: 'New Flow',
+                    id: id
+                });
                 this.props.history.push(`/storyboard/${skill_id}/${id}`);
             })
             .catch(err => {

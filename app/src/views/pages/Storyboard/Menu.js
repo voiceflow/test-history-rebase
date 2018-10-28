@@ -57,6 +57,25 @@ class Menu extends PureComponent {
                 // </div>
 
     render() {
+
+        let content;
+        if(this.state.tab === 'blocks'){
+            content = sections.map((section, i) => {
+                return <div key={i} className="section">
+                    <span className="section-title">{section.title}</span>
+                    {section.items.map((item, i) => {
+                        return <MenuItem item={item} key={i} />;
+                    })}
+                </div>
+            })
+        }else if(this.state.tab === 'flows'){
+            content = this.props.diagrams.map(diagram => 
+                <div className="diagram-block">
+                    {diagram.name}
+                </div>
+            );
+        }
+
         return (
             <div className="Menu">
                 <div className='toolbar'>
@@ -83,20 +102,11 @@ class Menu extends PureComponent {
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>
                     <p className="saved">{this.props.lastSave}</p>
                     <hr/>
-                    <div className='block-title'>
-                        <div className="" onClick={() => this.setState({open: false})}>
-                            <h5 className="mb-0">Blocks</h5>
-                            <div className="close pr-1 pl-3 py-3">×</div>
-                        </div>
+                    <div className='block-title' onClick={() => this.setState({open: false})}>
+                        <h5 className="mb-0">{this.state.tab}</h5>
+                        <div className="close pr-1 pl-3 py-3">×</div>
                     </div>
-                    {sections.map((section, i) => {
-                        return <div key={i} className="section">
-                            <span className="section-title">{section.title}</span>
-                            {section.items.map((item, i) => {
-                                return <MenuItem item={item} key={i} />;
-                            })}
-                        </div>
-                    })}
+                    {content}
                 </div>
             </div>
         );

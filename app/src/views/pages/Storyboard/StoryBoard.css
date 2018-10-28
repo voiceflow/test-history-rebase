@@ -202,12 +202,31 @@
     font-weight: bold;
 }
 
+.App .Menu #sidebar .block-title {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-weight: lighter;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid #E2E9EC;
+    color: #545D6D;
+}
+
+/*.App .Menu #sidebar .block-title:hover {
+    color: #95a6bd;
+}
+*/
+.App .Menu #sidebar .block-title:hover .close{
+    color: #545D6D !important;
+}
+
 .App .Menu .block-title h5{
     font-weight: normal;
     font-size: 1.6rem;
-    color: #545D6D;
-    transition: color 0.1s ease;
-    /*cursor: pointer;*/
+    text-transform: capitalize;
+/*    transition: color 0.3s ease;*/
 }
 
 /*.App .Menu .block-title h5:hover{*/
@@ -322,12 +341,6 @@
     border-bottom-right-radius: 5px;
     border: 1px solid #DDD;
     border-left: none !important;
-}
-
-.App .Menu #sidebar .block-title {
-    margin-top: 0px;
-    margin-bottom: 20px;
-    font-weight: lighter;
 }
 
 .App .Menu #sidebar button {

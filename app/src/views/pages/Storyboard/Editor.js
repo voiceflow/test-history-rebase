@@ -141,7 +141,10 @@ class Editor extends Component {
                             {this.state.node.extras.type === 'flow' ? 
                                 <div id="label">
                                     {this.state.node.extras.diagram_id ? 
-                                        this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id).name : 
+                                    (()=>{ 
+                                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
+                                        return (block ? block.name : 'New Flow') 
+                                    })() : 
                                     "Add Flow"}
                                 </div>
                                 : 

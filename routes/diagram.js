@@ -393,7 +393,7 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                         diagram_id: node.extras.diagram_id,
                         variable_map: {
                             inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
-                            outputs: node.extras.output.filter(output => (output.arg1 && output.arg2)).map(output => [input.arg1, input.arg2]),
+                            outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [input.arg1, input.arg2]),
                         },
                         nextId: links[nextLink]
                     };

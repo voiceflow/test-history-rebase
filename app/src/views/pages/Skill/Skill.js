@@ -736,7 +736,7 @@ class Skill extends Component {
                             </div>
                             <div className="col-9 d-flex">
                                 <div>
-                                    <label classname="mt-0"><b>Small icon</b> *</label>
+                                    <label className="mt-0"><b>Small icon</b> *</label>
                                     <Image 
                                         className='icon-image small-icon'
                                         isDisabled={disabled_stages.has(this.state.stage)}
@@ -745,7 +745,7 @@ class Skill extends Component {
                                         update={(url) => this.setState({small_icon: url})}/>
                                 </div>
                                 <div className="pl-3">
-                                    <label classname="mt-0"><b>Large icon</b> *</label>
+                                    <label className="mt-0"><b>Large icon</b> *</label>
                                     <Image 
                                         className='icon-image large-icon'
                                         isDisabled={disabled_stages.has(this.state.stage)}

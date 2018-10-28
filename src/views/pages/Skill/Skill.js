@@ -37,7 +37,8 @@ const stage_title = {
     "9": "Privacy & Compliance Ext.",
     "10": "Submitted for Review",
     "11": "Awaiting Review",
-    "12": "Confirming Withdraw"
+    "12": "Confirming Withdraw",
+    "13": "Confirming Delete"
 }
 
 const disabled_stages = new Set([11,12]);
@@ -58,7 +59,8 @@ class Skill extends Component {
                 publish: false,
                 amzn_id: null,
                 stage_error: null,
-                displayingConfirmWithdraw: false
+                displayingConfirmWithdraw: false,
+                displayingConfirmDelete: false
             }
         } else {
             this.props.history.push('/dashboard');
@@ -69,11 +71,13 @@ class Skill extends Component {
         this.toggle = this.toggle.bind(this);
         this.togglePublish = this.togglePublish.bind(this);
         this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this);
+        this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
         this.closePublish = this.closePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
         this.onWithdraw = this.onWithdraw.bind(this);
+        this.onDelete = this.onDelete.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
 
@@ -147,7 +151,6 @@ class Skill extends Component {
                 stage: 0,
                 displayingConfirmWithdraw: false
             });
-            // TODO: add a withdrawn alert
         })
         .catch(err => {
             this.handleError(err, 'Withdrawal Error');
@@ -155,7 +158,19 @@ class Skill extends Component {
                 stage: 11
             });
         });
-    
+    }
+
+    onDelete(){
+        axios.delete(`/skill/${this.state.skill_id}`)
+        .then(() => {
+            this.props.history.push('/dashboard');
+        })
+        .catch(err => {
+            this.handleError(err, "Deletion Error");
+            this.setState({
+                stage: 0
+            });
+        });
     }
 
     onCertify(){
@@ -345,6 +360,23 @@ class Skill extends Component {
                 displayingConfirmWithdraw: false,
                 stage: 11
             }); 
+        }
+    }
+
+    toggleConfirmDelete() {
+        if(!this.state.displayingConfirmDelete){
+            this.setState({
+                displayingConfirmDelete: {
+                    text: "Are you sure you want to delete this Skill? This action cannot be undone and will delete all resources this Skill currently depends on.",
+                    confirm: this.onDelete
+                },
+                stage: 13
+            });
+        }else{
+            this.setState({
+                displayingConfirmDelete: false,
+                stage: 0
+            });
         }
     }
 
@@ -545,7 +577,11 @@ class Skill extends Component {
                 </Modal>
                 <ConfirmModal 
                     confirm = {this.state.displayingConfirmWithdraw}
-                    toggle={this.toggleConfirmWithdraw}
+                    toggle = {this.toggleConfirmWithdraw}
+                />
+                <ConfirmModal
+                    confirm = {this.state.displayingConfirmDelete}
+                    toggle = {this.toggleConfirmDelete}
                 />
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
@@ -555,7 +591,7 @@ class Skill extends Component {
                             <div className="d-flex justify-content-between align-items-center">
                                 <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
                                 <div>
-                                    <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl}>Visit Dashboard</MUIButton>
+                                    <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl} target="_blank">Visit Dashboard</MUIButton>
                                     <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
                                 </div>
                             </div>
@@ -636,6 +672,12 @@ class Skill extends Component {
                           <Input type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
                         </FormGroup>
                       </Form>
+                    {!disabled_stages.has(this.state.stage)?
+                        <div className="subheader-right">
+                            <MUIButton variant="contained" className="btn mr-3" color="secondary"  onClick={this.toggleConfirmDelete}>Delete Skill</MUIButton>
+                        </div>
+                        :null
+                    }
                 </div>
             </div>
         );

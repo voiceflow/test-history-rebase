@@ -20,12 +20,12 @@ class DiagramVariables extends Component {
                                 return {label: variable, value: variable}
                             }) : null}
                         />
-                        {this.props.reverse ? <i className="far fa-arrow-left"/> : <i className="far fa-arrow-right"/>}
+                        <i className="far fa-arrow-right"/>
                         <Select
                             classNamePrefix="new-variable-box"
                             className="map-box"
                             value={this.props.arguments.arg2}
-                            placeholder={this.props.arg2_options.length > 0 ? "Flow Variable" : "No Variables Exist [!]"}
+                            placeholder="Flow Variable"
                             options={Array.isArray(this.props.arg2_options) ? this.props.arg2_options.map(variable => {
                                 return {label: variable, value: variable}
                             }) : null}

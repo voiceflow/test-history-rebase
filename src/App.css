@@ -392,3 +392,14 @@ input::placeholder, textarea::placeholder {
     display: block;
     position: absolute;
 }*/
+
+#publish-status {
+    top: 135px;
+    width: 200px;
+}
+
+@media(max-width: 1550px){
+    #publish-status {
+        visibility: hidden;
+    }
+}

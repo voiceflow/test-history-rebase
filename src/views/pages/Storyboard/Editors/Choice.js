@@ -11,6 +11,8 @@ class Choice extends Component {
         };
         
         this.handleChange = this.handleChange.bind(this);
+        this.handleAddChoice = this.handleAddChoice.bind(this);
+        this.handleRemoveChoice = this.handleRemoveChoice.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -80,9 +82,9 @@ class Choice extends Component {
                 <ChoiceInputs
                     choices={this.state.node.extras.choices}
                     inputs={this.state.node.extras.inputs}
-                    onAdd={this.handleAddChoice.bind(this)}
-                    onRemove={this.handleRemoveChoice.bind(this)}
-                    onChange={this.handleChange.bind(this)}
+                    onAdd={this.handleAddChoice}
+                    onRemove={this.handleRemoveChoice}
+                    onChange={this.handleChange}
                 />
             </div>
         );

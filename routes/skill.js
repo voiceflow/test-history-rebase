@@ -80,12 +80,40 @@ const deleteSkill = (req, res) => {
     }
 
     let id = hashids.decode(req.params.id)[0];
+    pool.query('SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err, results) => {
+        // Delete off Amazon
+        if(results.rows[0].amzn_id){
+            AccessToken(req.user.id, token => {
+                if(token === null){
+                    res.status(401).send({
+                        message: "Invalid Amazon Login Token"
+                    });
+                    return;
+                }
+    
+                axios.request({
+                    url: `https://api.amazonalexa.com/v1/skills/${results.rows[0].amzn_id}`,
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                .then(response => {
+                    // Successfully deleted
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            });
 
-    pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
-        if(err){
-            res.sendStatus(500);
-        }else{
-            res.sendStatus(200);
+            // Delete off our servers
+            pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
+                if(err){
+                    res.sendStatus(500);
+                }else{
+                    res.sendStatus(200);
+                }
+            });
         }
     });
 };
@@ -369,35 +397,57 @@ const certifySkill = (req, res) => {
             });
             return;
         }
-        
-        axios.request({
-            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
-            method: 'POST',
-            headers: {
-                Authorization: token
-            }
-        })
-        .then(response => {
-            pool.query(`
-                UPDATE skills 
-                SET
-                stage = $2
-                WHERE amzn_id = $1`, 
-                [req.params.amzn_id, 11], 
-                (err) => {
-                    if(err){
-                        console.log(err);
-                        res.sendStatus(500);
-                    }else{
-                        res.sendStatus(200);
+        // Check whether building before certifying
+        const getSkillStatus = (depth) => {
+            setTimeout(() => {
+                axios.request({
+                    url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/stages/development/manifest`,
+                    method: 'GET',
+                    headers: {
+                        Authorization: token
                     }
-                }
-            );
-        })
-        .catch(err => {
-            console.log(err);
-            res.sendStatus(500);
-        });
+                })
+                .then(response => {
+                    if(response.hasOwnProperty('violations')){
+                        getSkillStatus(depth + 1);
+                    }else{
+                        axios.request({
+                            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
+                            method: 'POST',
+                            headers: {
+                                Authorization: token
+                            }
+                        })
+                        .then(response => {
+                            pool.query(`
+                                UPDATE skills 
+                                SET
+                                stage = $2
+                                WHERE amzn_id = $1`, 
+                                [req.params.amzn_id, 11], 
+                                (err) => {
+                                    if(err){
+                                        console.log(err);
+                                        res.sendStatus(500);
+                                    }else{
+                                        res.sendStatus(200);
+                                    }
+                                }
+                            );
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.sendStatus(500);
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.log(err.response.status);
+                    res.status(500).send(err.response.data);
+                });
+            }, 10000);
+        }
+        getSkillStatus(0);
     });
 }
 

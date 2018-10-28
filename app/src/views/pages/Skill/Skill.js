@@ -585,6 +585,103 @@ class Skill extends Component {
                 />
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
+                <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border pt-0 pb-0 rounded" id="publish-status">
+                    <div className="row justify-content-center">
+                        <h3>Status</h3>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.name?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Display Name</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.inv_name?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Invocation Name</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.small_icon && this.state.large_icon?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Icons</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.summary?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Summary</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.description?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Description</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.category?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Category</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.invocations[0]?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Invocations</p>
+                        </div>
+                    </div>
+                </span>
+
                 <div className='container mt-3'>
                     {disabled_stages.has(this.state.stage)?
                         <div className="alert alert-success mb-4" role="alert">
@@ -600,77 +697,186 @@ class Skill extends Component {
 
                      <Form>
                         <FormGroup>
-                          <Label>Skill Display Name *</Label>
-                          <Input type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
-                        </FormGroup>
-                        <FormGroup>
-                          <Label>Invocation Name *</Label>
-                          <Input type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
-                        </FormGroup>
-                        <div className="d-flex mb-4">
-                            <div>
-                                <Label>Small Icon *</Label>
-                                <Image 
-                                    className='icon-image small-icon'
-                                    isDisabled={disabled_stages.has(this.state.stage)}
-                                    path='/small_icon'
-                                    image={this.state.small_icon} 
-                                    update={(url) => this.setState({small_icon: url})}/>
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Display Name </b>*</Label>
+                                </div>
                             </div>
-                            <div className="pl-3">
-                                <Label>Large Icon *</Label>
-                                <Image 
-                                    className='icon-image large-icon'
-                                    isDisabled={disabled_stages.has(this.state.stage)}
-                                    path='/large_icon'
-                                    image={this.state.large_icon} 
-                                    update={(url) => this.setState({large_icon: url})}/>
+                            <div className="row">
+                                <div className="col-3">
+                                    <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on Storyflow.</p>
+                                </div>
+                                <div className="col-9">
+                                    <Input type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
+                                </div>
+                            </div>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Invocation Name</b> *</Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3">
+                                    <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to interact with your Skill. For example, "Alexa open <i>Duck Tales</i>".</p>
+                                </div>
+                                <div className="col-9"> 
+                                    <Input type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
+                                </div>
+                            </div>
+                        </FormGroup>
+
+                        <div className="d-flex row">
+                            <div className="col-3">
+                                <p className="text-secondary mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
+                            </div>
+                            <div className="col-9 d-flex">
+                                <div>
+                                    <label classname="mt-0"><b>Small icon</b> *</label>
+                                    <Image 
+                                        className='icon-image small-icon'
+                                        isDisabled={disabled_stages.has(this.state.stage)}
+                                        path='/small_icon'
+                                        image={this.state.small_icon} 
+                                        update={(url) => this.setState({small_icon: url})}/>
+                                </div>
+                                <div className="pl-3">
+                                    <label classname="mt-0"><b>Large icon</b> *</label>
+                                    <Image 
+                                        className='icon-image large-icon'
+                                        isDisabled={disabled_stages.has(this.state.stage)}
+                                        path='/large_icon'
+                                        image={this.state.large_icon} 
+                                        update={(url) => this.setState({large_icon: url})}/>
+                                </div>
                             </div>
                         </div>
-                        <FormGroup>
-                          <Label>Summary *</Label>
-                          <Input type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
+                                     
+                        <FormGroup className="mt-0">
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Summary </b>*</Label>
+                                </div>
+                            </div> 
+                            <div className="row">
+                                <div className="col-3">
+                                    <p className="text-secondary">
+                                        <b>Summary</b> is a one sentence description of your amazing Skill. 
+                                    </p>
+                                </div>
+                                <div className="col-9">
+                                    <Input type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
+                                </div>
+                            </div>
                         </FormGroup>
+
                         <FormGroup>
-                           <Label>Description *</Label> 
-                           <Textarea
-                                name="description"
-                                className="form-control"
-                                disabled={disabled_stages.has(this.state.stage)}
-                                value={this.state.description}
-                                onChange={this.handleChange}
-                                minRows={3}
-                                placeholder="Skill Description"
-                            />
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Description</b> *</Label> 
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-3">
+                                    <p className="text-secondary">
+                                        <b>Description</b> is where you can provide a more detailed explanation of your Skill. 
+                                    </p>
+                                </div>
+                                <div className="col-9">
+                                    <Textarea
+                                        name="description"
+                                        className="form-control"
+                                        disabled={disabled_stages.has(this.state.stage)}
+                                        value={this.state.description}
+                                        onChange={this.handleChange}
+                                        minRows={3}
+                                        placeholder="Skill Description"
+                                    />
+                                </div>
+                            </div>
                         </FormGroup>
+
                         <FormGroup>
-                            <Label>Category *</Label>
-                            <Select
-                                className="input-select"
-                                name="category"
-                                isDisabled={disabled_stages.has(this.state.stage)}
-                                value={this.state.category}
-                                onChange={this.handleSelection}
-                                options={categories}
-                            />
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Category *</b></Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3">
+                                    <p className="text-secondary">
+                                        <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
+                                    </p>
+                                </div>
+                                <div className="col-9">
+                                    <Select
+                                        className="input-select"
+                                        name="category"
+                                        isDisabled={disabled_stages.has(this.state.stage)}
+                                        value={this.state.category}
+                                        onChange={this.handleSelection}
+                                        options={categories}
+                                    />
+                                </div>
+                            </div>
                         </FormGroup>
-                        <FormGroup>
-                           <Label>Skill Invocations *</Label>
-                           <Multiple
-                                list={this.state.invocations}
-                                max={3}
-                                prepend="Alexa,"
-                                update={(list) => this.setState({invocations: list, saved: false})}
-                                isDisabled={disabled_stages.has(this.state.stage)}
-                                placeholder={"open/start/turn on " + this.state.name}
-                                add={<span><i className="fas fa-plus"/> Add Invocation</span>}
-                           />
+
+                        
+                        <FormGroup className="mt-0">
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Invocations *</b></Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 mt-3">
+                                    <p className="text-secondary"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
+                                </div>
+                                <div className="col-9">
+                                    <Multiple
+                                        className="mt-0"
+                                        list={this.state.invocations}
+                                        max={3}
+                                        prepend="Alexa,"
+                                        update={(list) => this.setState({invocations: list, saved: false})}
+                                        isDisabled={disabled_stages.has(this.state.stage)}
+                                        placeholder={"open/start/turn on " + this.state.name}
+                                        add={<span><i className="fas fa-plus"/> Add Invocation</span>}
+                                    />
+                                </div>
+                            </div>
                         </FormGroup>
+
                         <hr/>
-                        <FormGroup>
-                          <Label>Keywords (Search Tags) <small>optional</small></Label>
-                          <Input type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+    
+                        <FormGroup className="mt-0">
+                            <div className="row">
+                                <div className="col-3"></div>
+                                <div className="col-9">
+                                    <Label><b>Keywords </b>(Search Tags) <small>optional</small></Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3">
+                                    <p className="text-secondary">
+                                        <b>Keywords</b> are words that will help your Skill be found when users are searching. Try to use words that pertain to your Skill.
+                                    </p> 
+                                </div>
+                                <div className="col-9">
+                                    <Input type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+                                </div>
+                            </div> 
                         </FormGroup>
+
                       </Form>
                     {!disabled_stages.has(this.state.stage)?
                         <div className="subheader-right">

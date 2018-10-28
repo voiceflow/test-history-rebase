@@ -85,7 +85,7 @@ class StoryBoard extends Component {
 
             model.deSerializeDiagram(blank_template, engine);
 
-            model.resetID();
+            // model.resetID();
 
             let nodes = model.getNodes();
             for (let key in nodes) {

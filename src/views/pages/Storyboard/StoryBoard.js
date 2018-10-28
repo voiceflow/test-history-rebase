@@ -56,7 +56,6 @@ class StoryBoard extends Component {
         this.runTest = this.runTest.bind(this);
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
-        this.diagram_stack = [];
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -650,6 +649,7 @@ class StoryBoard extends Component {
                     variable: null
                 };
             }
+            this.state.engine.stopMove();
             node.extras.type = type;
             node.addListener({ entityRemoved: this.onNodeRemoved });
             var points = engine.getRelativeMousePoint(event);
@@ -709,6 +709,7 @@ class StoryBoard extends Component {
                     <Menu 
                         lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
                         helpModal={()=>this.setState({help: true})}
+                        diagrams={this.state.diagrams}
                     />
                 }
                 <TitleBar

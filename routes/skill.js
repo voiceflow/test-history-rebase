@@ -31,7 +31,7 @@ const getSkills = (req, res) => {
 };
 
 const getSkill = (req, res) => {
-    if (!req.user || !req.params.id) {
+    if (!req.params.id) {
         res.sendStatus(401);
         return;
     }
@@ -72,6 +72,28 @@ const getSkill = (req, res) => {
         }
     });
 };
+
+const getDiagrams = (req, res) => {
+    if (!req.params.id) {
+        res.sendStatus(401);
+        return;
+    }
+
+    let sql = `SELECT d.id, d.name FROM diagrams d
+        INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`
+
+    let id = hashids.decode(req.params.id)[0];
+
+    pool.query(sql, [id], (err, data) => {
+        if(err){
+            console.error(err);
+            console.trace();
+            res.sendStatus(500);
+        }else{
+            res.send(data.rows);
+        }
+    });
+}
 
 const deleteSkill = (req, res) => {
     if (!req.user || !req.params.id) {
@@ -500,6 +522,7 @@ const withdrawSkill = (req, res) => {
 }
 
 module.exports = {
+    getDiagrams: getDiagrams,
     patchSkill: patchSkill,
     getSkills: getSkills,
     getSkill: getSkill,

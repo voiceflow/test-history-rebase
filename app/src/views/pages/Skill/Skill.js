@@ -585,7 +585,7 @@ class Skill extends Component {
                 />
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
-                <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border pt-0 pb-0 rounded" id="publish-status">
+                <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
                     <div className="row justify-content-center">
                         <h3>Status</h3>
                     </div>
@@ -698,13 +698,13 @@ class Skill extends Component {
                      <Form>
                         <FormGroup>
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Display Name </b>*</Label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-3">
+                                <div className="col-3 publish-info">
                                     <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on Storyflow.</p>
                                 </div>
                                 <div className="col-9">
@@ -715,13 +715,13 @@ class Skill extends Component {
 
                         <FormGroup>
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Invocation Name</b> *</Label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-3">
+                                <div className="col-3 publish-info">
                                     <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to interact with your Skill. For example, "Alexa open <i>Duck Tales</i>".</p>
                                 </div>
                                 <div className="col-9"> 
@@ -731,7 +731,7 @@ class Skill extends Component {
                         </FormGroup>
 
                         <div className="d-flex row">
-                            <div className="col-3">
+                            <div className="col-3 publish-info">
                                 <p className="text-secondary mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
                             </div>
                             <div className="col-9 d-flex">
@@ -758,13 +758,13 @@ class Skill extends Component {
                                      
                         <FormGroup className="mt-0">
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Summary </b>*</Label>
                                 </div>
                             </div> 
                             <div className="row">
-                                <div className="col-3">
+                                <div className="col-3 publish-info">
                                     <p className="text-secondary">
                                         <b>Summary</b> is a one sentence description of your amazing Skill. 
                                     </p>
@@ -777,14 +777,14 @@ class Skill extends Component {
 
                         <FormGroup>
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Description</b> *</Label> 
                                 </div>
                             </div>
 
                             <div className="row">
-                                <div className="col-3">
+                                <div className="col-3 publish-info">
                                     <p className="text-secondary">
                                         <b>Description</b> is where you can provide a more detailed explanation of your Skill. 
                                     </p>
@@ -805,13 +805,13 @@ class Skill extends Component {
 
                         <FormGroup>
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Category *</b></Label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-3">
+                                <div className="col-3 publish-info">
                                     <p className="text-secondary">
                                         <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
                                     </p>
@@ -832,13 +832,13 @@ class Skill extends Component {
                         
                         <FormGroup className="mt-0">
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Invocations *</b></Label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-3 mt-3">
+                                <div className="col-3 mt-3 publish-info">
                                     <p className="text-secondary"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
                                 </div>
                                 <div className="col-9">
@@ -860,13 +860,13 @@ class Skill extends Component {
     
                         <FormGroup className="mt-0">
                             <div className="row">
-                                <div className="col-3"></div>
+                                <div className="col-3 publish-info"></div>
                                 <div className="col-9">
                                     <Label><b>Keywords </b>(Search Tags) <small>optional</small></Label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-3">
+                                <div className="col-3 publish-info">
                                     <p className="text-secondary">
                                         <b>Keywords</b> are words that will help your Skill be found when users are searching. Try to use words that pertain to your Skill.
                                     </p> 

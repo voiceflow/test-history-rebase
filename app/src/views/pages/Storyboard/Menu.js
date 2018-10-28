@@ -16,6 +16,7 @@ const sections = [{
         { text: 'Variable', type: 'variable', icon: <i className="fas fa-code"/> },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> }
     ]
 }];
 

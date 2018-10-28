@@ -105,6 +105,7 @@ app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
+app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
@@ -114,6 +115,7 @@ app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
+app.get('/diagram/:id/variables', ensureLoggedIn(), Diagram.getVariables);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);

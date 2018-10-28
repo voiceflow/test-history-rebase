@@ -182,6 +182,10 @@ input::placeholder, textarea::placeholder {
     font-size: 0.8rem;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .prompt b {
     font-size: 1rem;
     color: #95A6BD;

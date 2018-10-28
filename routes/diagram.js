@@ -66,6 +66,25 @@ const expressionfy = (expression, depth=0) => {
     }
 }
 
+const getVariables = (req, res) => {
+    let params = {
+        TableName: 'com.getstoryflow.diagrams.production',
+        Key: {'id': req.params.id},
+        ProjectionExpression: 'variables'
+    }
+
+    docClient.get(params, (err, data) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(err.statusCode);
+        } else if (data.Item) {
+            res.send(data.Item.variables);
+        } else {
+            res.sendStatus(404);
+        }
+    });
+}
+
 const getDiagrams = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
@@ -166,7 +185,7 @@ const setDiagram = async (req, res) => {
     }
 
     if (diagram.title.trim() === "" || !diagram.title.trim()){
-        diagram.title = "Unnamed Diagram";
+        diagram.title = "New Flow";
     }
 
     diagram.last_save = Date.now();
@@ -175,12 +194,30 @@ const setDiagram = async (req, res) => {
         TableName: 'com.getstoryflow.diagrams.production',
         Item: diagram
     };
-    docClient.put(params, err => {
+    docClient.put(params, async(err) => {
         if (err) {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else {
-            res.sendStatus(200);
+            try{
+                // check if diagram exists
+                let diagram_sql = await pool.query('SELECT name FROM diagrams WHERE id = $1 LIMIT 1', [diagram.id]);
+
+                // if it doesn't insert row
+                if(diagram_sql.rows.length === 0){
+                    await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
+                        [diagram.id, diagram.title, diagram.skill]);
+                // if the name changed, update it
+                }else if(diagram_sql.rows[0].name !== diagram.title){
+                    await pool.query('UPDATE diagrams SET name = $1 WHERE id = $1', [diagram.id]);
+                }
+                res.sendStatus(200); 
+                
+            }catch(e){
+                console.error(e);
+                console.trace();
+                res.sendStatus(500);
+            }
         }
     });
 };
@@ -504,6 +541,7 @@ const publishTest = async (req, res) => {
 };
 
 module.exports = {
+    getVariables: getVariables,
     getDiagrams: getDiagrams,
     getDiagram: getDiagram,
     deleteDiagram: deleteDiagram,

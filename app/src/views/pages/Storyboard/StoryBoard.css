@@ -373,9 +373,9 @@
 } .MenuItem.command>.MenuIcon {
     background-color: #EF5350;
 }
-.App .Menu .sidebar .MenuItem.diagram:hover {
+.App .Menu .sidebar .MenuItem.flow:hover {
     background-color: #FAFAFA;
-} .MenuItem.diagram>.MenuIcon {
+} .MenuItem.flow>.MenuIcon {
     background-color: #BDBDBD;
 }
 /*.App .Menu .sidebar .MenuItem:hover>.MenuIcon{
@@ -589,6 +589,10 @@ label {
     /*flex-direction: row;*/
 }
 
+.srd-default-node.flow {
+    background-color: #DDD;
+}
+
 .srd-default-node.choice, .srd-default-node.choicenew{
     /*border-color: #A5D6A7;*/
     background-color: #E8F5E9;
@@ -745,6 +749,31 @@ button.close{
     padding: 1px 8px;
     border-radius: 5px;
     border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.block.flow {
+    border: 1px solid #ccc;
+    background-color: #ccc;
+    color: #555;
+}
+
+.block.if {
+    border: 1px solid #B2DFDB;
+    background-color: #B2DFDB;
+    color: #00796B;
+}
+
+.block.capture {
+    border: 1px solid #FFE0B2;
+    background-color: #FFE0B2;
+    color: #F57C00;
+}
+
+.block.command {
+    border: 1px solid #FFCDD2;
+    background-color: #FFCDD2;
+    color: #B71C1C;
 }
 
 .block.story {
@@ -777,7 +806,7 @@ button.close{
     color: #E65100;
 }
 
-.block.line {
+.block.audio {
     border: 1px solid #B3E5FC;
     background-color: #B3E5FC;
     color: #01579B;
@@ -805,6 +834,12 @@ button.close{
     border: 1px solid #FFF9C4;
     background-color: #FFF9C4;
     color: #F9A825;
+}
+
+.block.variable {
+    border: 1px solid #D1C4E9;
+    background-color: #D1C4E9;
+    color: #512DA8;
 }
 
 .choice-block {
@@ -990,6 +1025,26 @@ button.close{
 .public-DraftEditor-content div{
     display: inline-block;
 }*/
+
+#Editor .variable_map{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+#Editor .variable_map>i{
+    margin: 0px 5px;
+}
+
+#Editor .variable_map.reverse{
+    flex-direction: row-reverse;
+}
+
+#Editor .variable_map>.map-box{
+    flex: 1;
+}
+
 @media(max-width: 1400px){
     .TitleBar .title-group{
         top: 60px !important;

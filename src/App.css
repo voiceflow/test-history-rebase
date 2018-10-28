@@ -68,7 +68,13 @@ button:focus{
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .close{
+    font-weight: normal;
     color: #95a6bd;
 }
 .btn-default {

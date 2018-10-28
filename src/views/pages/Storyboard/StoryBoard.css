@@ -1030,7 +1030,8 @@ button.close{
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin-bottom: 10px;
+    flex: 1;
+    /*margin-bottom: 10px;*/
 }
 
 #Editor .variable_map>i{

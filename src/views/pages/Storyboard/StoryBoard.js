@@ -55,6 +55,8 @@ class StoryBoard extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.runTest = this.runTest.bind(this);
         this.createDiagram = this.createDiagram.bind(this);
+        this.enterFlow = this.enterFlow.bind(this);
+        this.diagram_stack = [];
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -92,10 +94,10 @@ class StoryBoard extends Component {
             open = true;
 
             let model = new SRD.DiagramModel();
+            let blank = blank_template;
+            blank.id = generateID();
 
-            model.deSerializeDiagram(blank_template, engine);
-
-            model.resetID();
+            model.deSerializeDiagram(blank, engine);
 
             let nodes = model.getNodes();
             for (let key in nodes) {
@@ -146,9 +148,11 @@ class StoryBoard extends Component {
     componentWillReceiveProps(nextProps){
         let url = nextProps.computedMatch;
         if (url && url.params.diagram_id && url.params.diagram_id !== this.state.diagram_id) {
+            let diagram_id = url.params.diagram_id;
+            this.diagram_stack.push(diagram_id);
             this.setState({
-                diagram_id: url.params.diagram_id
-            }, () => this.onLoadId(url.params.diagram_id))
+                diagram_id: diagram_id
+            }, () => this.onLoadId(diagram_id))
         }
     }
 
@@ -544,6 +548,12 @@ class StoryBoard extends Component {
         });
     }
 
+    enterFlow(new_diagram_id) {
+        this.onSave(() => {
+            this.props.history.push(`/storyboard/${this.state.skill.skill_id}/${new_diagram_id}`);
+        });
+    }
+
     onDrop(event) {
         if(this.preview) return;
 
@@ -733,7 +743,7 @@ class StoryBoard extends Component {
                     setHelp={(help) => this.setState({help: help})}
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}
-                    skill={this.state.skill}
+                    enterFlow={this.enterFlow}
                 />
             </div>
         );

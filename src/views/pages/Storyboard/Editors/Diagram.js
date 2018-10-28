@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Button} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
 import DiagramVariables from './components/DiagramVariables';
 // import Expressionfy from './components/Expressionfy';
 
@@ -102,9 +101,7 @@ class DiagramBlock extends Component {
                     </React.Fragment>
                     : 
                     <React.Fragment>
-                        <Link to={`/storyboard/${this.props.skill.skill_id}/${this.state.node.extras.diagram_id}`}>
-                            <Button block>Enter Flow <i className="fas fa-sign-in"/></Button>
-                        </Link>
+                        <Button block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow <i className="fas fa-sign-in"/></Button>
                         <hr/>
                         <label>Input Variables</label>
                         <DiagramVariables

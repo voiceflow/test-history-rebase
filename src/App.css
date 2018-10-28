@@ -403,3 +403,9 @@ input::placeholder, textarea::placeholder {
         visibility: hidden;
     }
 }
+
+@media(max-width: 860px){
+    .publish-info {
+        visibility: hidden;
+    }
+}

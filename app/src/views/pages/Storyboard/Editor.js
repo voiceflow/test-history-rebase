@@ -114,7 +114,7 @@ class Editor extends Component {
                     variables={this.props.variables} 
                     createDiagram={this.props.createDiagram}
                     diagrams={this.props.diagrams}
-                    skill={this.props.skill}
+                    enterFlow={this.props.enterFlow}
                 />
             default:
               return null;

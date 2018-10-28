@@ -379,6 +379,25 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                         retry: true,
                         nextId: links[nextLink]
                     };
+                } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
+                    
+                    let nextLink = null;
+
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    story.lines[node.id] = {
+                        diagram_id: node.extras.diagram_id,
+                        variable_map: {
+                            inputs: node.extras.inputs.map(input => [input.arg1, input.arg2]),
+                            outputs: node.extras.output.map(output => [input.arg1, input.arg2]),
+                        },
+                        nextId: links[nextLink]
+                    };
+
                 } else if (node.extras.type === 'ending') {
                     story.lines[node.id] = {
                         audio: node.extras.audio

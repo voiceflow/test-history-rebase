@@ -189,11 +189,9 @@ const putUser = async (req, res) => {
 
     if (!name || !email || !password) {
         res.status(400).send("Form not filled");
-	 } 
-	//  else if(!(await Codes.checkCodes(code))) {
-    //     res.status(400).send("Invalid Access Code");
-	//  } 
-	 else {
+ 	} else if(!(await Codes.checkCodes(code))) {
+        res.status(400).send("Invalid Access Code");
+ 	} else {
         email = email.trim().toLowerCase();
         pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
         	if(err){

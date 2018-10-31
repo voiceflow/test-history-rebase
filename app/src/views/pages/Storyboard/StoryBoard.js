@@ -49,13 +49,13 @@ class StoryBoard extends Component {
         this.publish = this.publish.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onTest = this.onTest.bind(this);
-        this.onNodeRemoved = this.onNodeRemoved.bind(this);
         this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
         this.unsave = this.unsave.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.runTest = this.runTest.bind(this);
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
+        this.removeNode = this.removeNode.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -144,6 +144,14 @@ class StoryBoard extends Component {
         }
     }
 
+    removeNode(){
+        let selected = this.state.engine.getSuperSelect();
+        this.state.engine.stopMove();
+        if(selected){
+            selected.remove();
+        }
+    }
+
     componentWillReceiveProps(nextProps){
         let url = nextProps.computedMatch;
         if (url && url.params.diagram_id && url.params.diagram_id !== this.state.diagram_id) {
@@ -197,15 +205,6 @@ class StoryBoard extends Component {
 
     onDiagramUnfocus() {
         this.state.engine.getDiagramModel().clearSelection();
-    }
-
-    onNodeRemoved(e) {
-        if (this.state.selected && e.entity.getID() === this.state.selected.getID()) {
-            this.setState({
-                selected: null,
-                open: false
-            });
-        }
     }
 
     repaint() {
@@ -397,7 +396,16 @@ class StoryBoard extends Component {
         this.props.history.push('/dashboard');
     }
 
-    unsave() {
+    unsave(e) {
+        if(e && e.node && !e.isCreated){
+            let selected = this.state.engine.getSuperSelect();
+            if(selected && e.node.id === selected.getID()){
+                this.setState({
+                    open: false
+                });
+            }
+        }
+
         if (this.state.saved) {
             this.setState({ saved: false });
         }
@@ -682,7 +690,6 @@ class StoryBoard extends Component {
             }
             this.state.engine.stopMove();
             node.extras.type = type;
-            node.addListener({ entityRemoved: this.onNodeRemoved });
             var points = engine.getRelativeMousePoint(event);
             node.x = points.x;
             node.y = points.y;
@@ -778,6 +785,7 @@ class StoryBoard extends Component {
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}
                     enterFlow={this.enterFlow}
+                    removeNode={this.removeNode}
                 />
             </div>
         );

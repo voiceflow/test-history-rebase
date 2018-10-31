@@ -864,11 +864,30 @@ button.close{
     border-color: #007bff;
 }
 
+.delete-block{
+    padding: 2px 9px;
+    border-radius: 5px;
+    background-color: #E53935;
+    color: #FFF;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.delete-block:hover{
+    background-color: #EF5350;
+}
+
 .block {
-    padding: 1px 8px;
+    padding: 1px 3px 1px 8px;
     border-radius: 5px;
     border: 1px solid #fff;
     cursor: pointer;
+}
+
+.block>i{
+    margin-top: 2px;
+    position: relative;
+    top: 1px;
 }
 
 .block.flow {

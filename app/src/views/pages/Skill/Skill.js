@@ -879,9 +879,13 @@ class Skill extends Component {
 
                       </Form>
                     {!disabled_stages.has(this.state.stage)?
-                        <div className="subheader-right">
-                            <MUIButton variant="contained" className="btn mr-3" color="secondary"  onClick={this.toggleConfirmDelete}>Delete Skill</MUIButton>
-                        </div>
+                        <React.Fragment>
+                            <hr/>
+                            <Alert color="danger between">
+                                <span>Delete This Skill (This action can not be undone)</span>
+                                <Button color="danger" onClick={this.toggleConfirmDelete}>Delete Skill</Button>
+                            </Alert>
+                        </React.Fragment>
                         :null
                     }
                 </div>

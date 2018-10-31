@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
-import axios from 'axios';
-import Select from 'react-select';
-import DiagramVariables from './components/DiagramVariables';
+// import axios from 'axios';
+// import Select from 'react-select';
+// import DiagramVariables from './components/DiagramVariables';
 // import Expressionfy from './components/Expressionfy';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];

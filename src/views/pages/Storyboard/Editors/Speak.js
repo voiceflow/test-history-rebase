@@ -50,7 +50,7 @@ function myBlockStyleFn(contentBlock) {
 const variableSpan = (props) => {
     return (
       <span data-offset-key={props.offsetkey} className="variable-block" contentEditable="false">
-        &nbsp;&nbsp;{props.decoratedText}&nbsp;&nbsp;
+        &nbsp;{props.decoratedText}&nbsp;
       </span>
     );
 };

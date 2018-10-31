@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
-import { Link } from 'react-router-dom'
+import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
+import isVarName from 'is-var-name';
 
 const sections = [{
     title: 'Basic',
@@ -17,18 +18,16 @@ const sections = [{
         { text: 'Variable', type: 'variable', icon: <i className="fas fa-code"/> },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> }
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
     ]
 }];
 
-// { text: 'Diagram', type: 'diagram', icon: <i className="fas fa-clone"/> }
-                   // <div className="mt-5">
-                     //   <small><a href="https://getstoryflow.com">STORY SCHOOL <i className="fas fa-question-circle"/></a></small>
-                   // </div>
+// { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
-    {tab: "flows", icon: <i className="fas fa-clone"/>}
+    {tab: "flows", icon: <i className="fas fa-clone"/>},
+    {tab: "variables", icon: <i className="fas fa-code"/>}
 ]
 
 class Menu extends PureComponent {
@@ -37,31 +36,58 @@ class Menu extends PureComponent {
 
         this.state = {
             open: true,
-            tab: 'blocks'
+            tab: 'blocks',
+            new_var: ''
         }
 
         this.openTab = this.openTab.bind(this);
+        this.addVariable = this.addVariable.bind(this);
+        this.deleteVariable = this.deleteVariable.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    openTab(tab) {
+    handleChange(event){
         this.setState({
-            open: true,
-            tab: tab
+            [event.target.name]: event.target.value
         });
     }
 
+    openTab(tab) {
+        if(tab !== this.state.tab || !this.state.open){
+            this.setState({
+                open: true,
+                tab: tab
+            });
+        }
+    }
 
+    addVariable (){
+        let variables = this.props.variables;
+        let new_var = this.state.new_var;
+        if(isVarName(new_var) && !variables.includes(new_var)){
+            variables.unshift(new_var);
+            this.props.onVariable(variables);
+            this.setState({
+                new_var: ""
+            })
+        }else{
+            alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters');
+        }
+    }
 
-                // <div className='no-select'>
-
-                // </div>
+    deleteVariable(variable){
+        let variables = this.props.variables;
+        let index = variables.indexOf(variable);
+        if (index !== -1) variables.splice(index, 1);
+        this.props.onVariable(variables);
+    }
 
     render() {
 
         let content;
         if(this.state.tab === 'blocks'){
             content = sections.map((section, i) => {
-                return <div key={i} className="section">
+                return <div key={i} className="section no-select">
                     <span className="section-title">{section.title}</span>
                     {section.items.map((item, i) => {
                         return <MenuItem item={item} key={i} />;
@@ -69,20 +95,41 @@ class Menu extends PureComponent {
                 </div>
             })
         }else if(this.state.tab === 'flows'){
-            content = this.props.diagrams.map(diagram => 
-                <div className="diagram-block">
+            content = this.props.diagrams.map((diagram, i) => 
+                <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
                     {diagram.name}
                 </div>
             );
+        }else if(this.state.tab === 'variables'){
+            content =   <React.Fragment>
+                <FormGroup className="mb-0">
+                    <Label>Add New Variable</Label>
+                    <InputGroup>
+                        <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
+                        <InputGroupAddon addonType="append"><Button onClick={this.addVariable} className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                    </InputGroup>
+                </FormGroup>
+                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                <div>
+                    <Label>Variables</Label>
+                    <div className="variables">
+                        {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
+                          return <div key={i} className="variable_tag">{variable} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
+                        }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
+                    </div>
+                </div>
+            </React.Fragment>
         }
 
         return (
             <div className="Menu">
                 <div className='toolbar'>
                     <div className="top-down">
-                        {tabs.map(tab => {
+                        {tabs.map((tab, i) => {
                             return (
-                                <div className="tool" onClick={() => this.openTab(tab.tab)}>
+                                <div key={i} 
+                                className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
+                                onClick={() => this.openTab(tab.tab)}>
                                     {tab.icon}
                                 </div>
                             )
@@ -102,7 +149,7 @@ class Menu extends PureComponent {
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>
                     <p className="saved">{this.props.lastSave}</p>
                     <hr/>
-                    <div className='block-title' onClick={() => this.setState({open: false})}>
+                    <div className='block-title no-select' onClick={() => this.setState({open: false})}>
                         <h5 className="mb-0">{this.state.tab}</h5>
                         <div className="close pr-1 pl-3 py-3">×</div>
                     </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert } from 'reactstrap';
-import $ from 'jquery';
+import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
 import './TestModal.css'
@@ -13,7 +13,6 @@ const default_state = () => {
     diagrams: null,
     input: "",
     line: null,
-    variables: [],
     testing: true
   }
 }
@@ -177,43 +176,39 @@ class TestModal extends React.Component {
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
-    let local = false;
+    let local = true;
     let url = local ? "http://localhost:4000/state/test" : "https://testing.getstoryflow.com/state/test"
 
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: (res) => {
- 
-          if(res.line && !res.ending) {
-            this.setState({
-              story_state: res
-            });
-          }
-          if(res.output && res.output.length > 0){
-            // TYLER'S SUPER JANKY AUDIO THING
+    axios.post(url, data)
+    .then(res => {
+      res = res.data;
 
-            let dom = parse(res.output);
-            // console.log(dom);
+      if(res.line && !res.ending) {
+        this.setState({
+          story_state: res
+        });
+      }
+      if(res.output && res.output.length > 0){
+        // TYLER'S SUPER JANKY AUDIO THING
 
-            if(dom && dom.length > 0 && dom[0].type === 'tag' && 
-              dom[0].name === 'ssml' && dom[0].children && dom[0].children.length !== 0){
-              this.removeAudio();
-              this.recursivePlay(0, dom[0].children, res.ending);
-            }else{
-              this.handleEnd();
-            }
-            
-          }else if(res.ending){
-            this.handleEnd();
-          }
-        },
-        error: (err) => {
-            this.setState({
-              error: err
-            });
+        let dom = parse(res.output);
+
+        if(dom && dom.length > 0 && dom[0].type === 'tag' && 
+          dom[0].name === 'ssml' && dom[0].children){
+          this.removeAudio();
+          this.recursivePlay(0, dom[0].children, res.ending);
+        }else{
+          this.handleEnd();
         }
+        
+      }else if(res.ending){
+        this.handleEnd();
+      }
+    })
+    .catch(err => {
+      this.setState({
+        error: err
+      });
     });
   }
 

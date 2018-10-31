@@ -19,6 +19,7 @@ class DiagramBlock extends Component {
         this.onUpdate = this.onUpdate.bind(this);
         this.handleAddMap = this.handleAddMap.bind(this);
         this.handleRemoveMap = this.handleRemoveMap.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
     }
 
     componentWillMount() {
@@ -74,13 +75,25 @@ class DiagramBlock extends Component {
     }
 
     handleRemoveMap(io, i) {
-        var node = this.state.node;
+        let node = this.state.node;
 
         node.extras[io].splice(i, 1);
 
         this.setState({
             node: node
         }, this.props.onUpdate);
+    }
+
+    handleSelection(io, i, arg, value) {
+        let node = this.state.node;
+
+        if(node.extras[io][i][arg] !== value){
+            node.extras[io][i][arg] = value;
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        }
     }
 
     render() {
@@ -93,6 +106,11 @@ class DiagramBlock extends Component {
                         </Button>
                         {this.props.diagrams && this.props.diagrams.length > 0 ? 
                             <Select
+                                onChange={(selected) => {
+                                    let node = this.state.node;
+                                    node.extras.diagram_id = selected.value;
+                                    this.props.enterFlow(selected.value);
+                                }}
                                 options={this.props.diagrams.map(diagram => {
                                     return {label: diagram.name, value: diagram.id}
                                 })}
@@ -110,6 +128,7 @@ class DiagramBlock extends Component {
                             arguments={this.state.node.extras.inputs}
                             onAdd={() => this.handleAddMap('inputs')}
                             onRemove={(i) => this.handleRemoveMap('inputs', i)}
+                            handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
                         /> 
                         <hr/>
                         <label>Output Variables</label>
@@ -120,6 +139,7 @@ class DiagramBlock extends Component {
                             arguments={this.state.node.extras.outputs}
                             onAdd={() => this.handleAddMap('outputs')}
                             onRemove={(i) => this.handleRemoveMap('outputs', i)}
+                            handleSelection={(i, arg, value) => this.handleSelection('outputs', i, arg, value)}
                         />
                     </React.Fragment>
                 }

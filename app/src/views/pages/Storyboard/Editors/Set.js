@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import Select from 'react-select';
 import Expression from './components/Expression'
 import Expressionfy from './components/Expressionfy';
-import isVarName from 'is-var-name';
 
 class SetBlock extends Component {
     constructor(props) {
@@ -19,12 +17,9 @@ class SetBlock extends Component {
         }
 
         this.state = {
-            node: node,
-            new_var: ""
+            node: node
         };
 
-        this.addVariable = this.addVariable.bind(this);
-        this.deleteVariable = this.deleteVariable.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
@@ -46,27 +41,6 @@ class SetBlock extends Component {
                 node: props.node
             });
         }
-    }
-
-    addVariable (){
-        let variables = this.props.variables;
-        let new_var = this.state.new_var;
-        if(isVarName(new_var) && !variables.includes(new_var)){
-            variables.unshift(new_var);
-            this.props.onVariable(variables);
-            this.setState({
-                new_var: ""
-            })
-        }else{
-            alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters');
-        }
-    }
-
-    deleteVariable(variable){
-        let variables = this.props.variables;
-        let index = variables.indexOf(variable);
-        if (index !== -1) variables.splice(index, 1);
-        this.props.onVariable(variables);
     }
 
     handleChange(event){
@@ -111,23 +85,6 @@ class SetBlock extends Component {
                 </div>
                 { show ? <Expressionfy expression={this.state.node.extras.expression} />:null}
                 <Expression expression={this.state.node.extras.expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
-                <hr/>
-                <FormGroup className="mb-0">
-                    <Label>Add New Variable</Label>
-                    <InputGroup>
-                        <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
-                        <InputGroupAddon addonType="append"><Button onClick={this.addVariable} className="new_var">Add <i className="fas fa-plus-circle ml-1"/></Button></InputGroupAddon>
-                    </InputGroup>
-                </FormGroup>
-                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
-                <div>
-                    <Label>Variables</Label>
-                    <div className="variables">
-                        {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
-                          return <div key={i} className="variable_tag">{variable} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
-                        }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
-                    </div>
-                </div>
             </div>
         );
     }

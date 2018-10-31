@@ -248,20 +248,28 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set())) => new Promise((resolve) => {
 
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': diagram_id}
     };
 
+    if(depth > 10){
+        resolve(413);
+        return;
+    }
+
     let testing = (skill_id==="TEST");
 
-    docClient.get(params, (err, data) => {
+    docClient.get(params, async (err, data) => {
         if (err) {
             console.error(err);
             resolve(500);
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
+
+            // Add to set of rendered diagrams to prevent looping
+            rendered_set.add(diagram_id);
 
             if (data.Item.creator !== user.id && !user.admin) {
                 resolve(403);
@@ -284,6 +292,7 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                 commands: []
             };
 
+            // Iterate through every block in the diagram
             for (var i = 0; i < diagram.nodes.length; i++) {
                 let node = diagram.nodes[i];
                 if (node.extras.type === 'story') {
@@ -381,8 +390,24 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                     };
                 } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
                     
-                    let nextLink = null;
+                    // Check if this diagram has been rendered already
+                    if(!rendered_set.has(node.extras.diagram_id)){
+                        let result;
+                        try{
+                            // console.log('going in', node.extras.diagram_id);
+                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set);
+                        }catch(err){
+                            resolve(500);
+                            return;
+                        }
 
+                        if(result !== 200){
+                            resolve(result);
+                            return;
+                        }
+                    }
+
+                    let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
                             [nextLink] = node.ports[j].links;
@@ -393,7 +418,7 @@ const renderDiagram = async (user, diagram_id, skill_id) => new Promise((resolve
                         diagram_id: node.extras.diagram_id,
                         variable_map: {
                             inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
-                            outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [input.arg1, input.arg2]),
+                            outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
                         },
                         nextId: links[nextLink]
                     };

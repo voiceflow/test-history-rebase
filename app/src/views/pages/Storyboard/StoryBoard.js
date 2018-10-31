@@ -148,7 +148,6 @@ class StoryBoard extends Component {
         let url = nextProps.computedMatch;
         if (url && url.params.diagram_id && url.params.diagram_id !== this.state.diagram_id) {
             let diagram_id = url.params.diagram_id;
-            this.diagram_stack.push(diagram_id);
             this.setState({
                 diagram_id: diagram_id
             }, () => this.onLoadId(diagram_id))
@@ -222,12 +221,13 @@ class StoryBoard extends Component {
             this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
             var model = engine.getDiagramModel();
-            let id = model.getID();
-            var data = JSON.stringify(model.serializeDiagram());
+            let serialize = model.serializeDiagram();
+            serialize.id = this.state.diagram_id;
+            var data = JSON.stringify(serialize);
             // model.deSerializeDiagram(JSON.parse(data), engine);
 
             var diagram = {
-                id: id,
+                id: this.state.diagram_id,
                 title: this.state.diagram_name,
                 variables: this.state.variables,
                 data: data,
@@ -241,7 +241,7 @@ class StoryBoard extends Component {
                     saved: true,
                     last_save: Date.now()
                 });
-                if(typeof cb === "function") cb(id);
+                if(typeof cb === "function") cb(this.state.diagram_id);
             })
             .catch(err => {
                 console.log(err.response);
@@ -318,6 +318,8 @@ class StoryBoard extends Component {
             for (let key in links) {
                 links[key].setColor('#E3E9EE');
             }
+            
+            engine.stopMove();
             engine.setDiagramModel(model);
 
             let variables = []
@@ -470,32 +472,39 @@ class StoryBoard extends Component {
         if(!name){
             name = 'New Skill';
         }
-        this.onSave(diagram_id => {
-            if(diagram_id){
-                axios.post('/skill', {
-                  name: name,
-                  diagram: diagram_id
-                })
-                .then(res => {
-                    let skill_id = res.data.id;
-                    cookies.set('last_session', {
-                        skill_id: skill_id,
-                        diagram_id: diagram_id
-                    }, {path: '/'});
-                    this.setState({
-                        newSkill: 0,
-                        skill: {
-                            skill_id: skill_id,
-                            name: name
-                        },
-                        diagram_id: diagram_id
+
+        let diagram_id = generateID();
+
+        axios.post('/skill', {
+          name: name,
+          diagram: diagram_id
+        })
+        .then(res => {
+            let skill_id = res.data.id;
+            cookies.set('last_session', {
+                skill_id: skill_id,
+                diagram_id: diagram_id
+            }, {path: '/'});
+
+            this.setState({
+                skill: {
+                    skill_id: skill_id,
+                    name: name
+                },
+                newSkill: 0,
+                diagram_id: diagram_id
+            }, () => {
+                this.onSave(() => {
+                    this.state.diagrams.push({
+                        id: diagram_id,
+                        name: 'ROOT'
                     });
                     this.props.history.push(`/storyboard/${skill_id}/${diagram_id}`);
                 })
-                .catch(err => {
-                    this.setState({ error_modal: 'Could Not Create Project - Error' });
-                })
-            }
+            });
+        })
+        .catch(err => {
+            this.setState({ error_modal: 'Could Not Create Project - Error' });
         });
     }
 
@@ -509,12 +518,12 @@ class StoryBoard extends Component {
 
         node.extras.diagram_id = id;
 
+        // save the current diagram
         this.onSave(() => {
-            // Generate a new diagram, save it, and go to it
 
+            // Generate a new diagram, save it, and go to it
             let template = new_template;
             template.id = id;
-            console.log(template);
             let skill_id = this.state.skill.skill_id;
             let data = JSON.stringify(template);
 
@@ -552,9 +561,11 @@ class StoryBoard extends Component {
     }
 
     enterFlow(new_diagram_id) {
-        this.onSave(() => {
-            this.props.history.push(`/storyboard/${this.state.skill.skill_id}/${new_diagram_id}`);
-        });
+        if(new_diagram_id !== this.state.diagram_id){
+            this.onSave(() => {
+                this.props.history.push(`/storyboard/${this.state.skill.skill_id}/${new_diagram_id}`);
+            });
+        }
     }
 
     onDrop(event) {
@@ -566,8 +577,14 @@ class StoryBoard extends Component {
         } catch (e) {
             return;
         }
-        var upper = type.charAt(0).toUpperCase() + type.substr(1);
-        var node = new BlockNodeModel(upper);
+
+        var node;
+        if(type === 'api'){
+            node = new BlockNodeModel('API')
+        }else{
+            node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
+        }
+
         if(type){
             if (type === 'choice') {
                 node.addInPort(' ');
@@ -646,6 +663,16 @@ class StoryBoard extends Component {
                     operation: '==',
                     expression: ""
                 };
+            } else if (type === 'api') {
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+                node.addOutPort('fail').setMaximumLinks(1);
+                node.extras = {
+                    url: '',
+                    method: 'GET',
+                    inputs: [],
+                    outputs: []
+                };
             } else if (type === 'capture') {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
@@ -714,6 +741,9 @@ class StoryBoard extends Component {
                         lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
                         helpModal={()=>this.setState({help: true})}
                         diagrams={this.state.diagrams}
+                        enterFlow={this.enterFlow}
+                        variables={this.state.variables}
+                        onVariable={this.setVariables}
                     />
                 }
                 <TitleBar
@@ -744,7 +774,6 @@ class StoryBoard extends Component {
                     close={e => this.setState({ open: false })}
                     repaint={this.repaint}
                     variables={this.state.variables}
-                    onVariable={this.setVariables}
                     setHelp={(help) => this.setState({help: help})}
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}

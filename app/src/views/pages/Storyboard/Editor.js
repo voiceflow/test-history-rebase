@@ -13,6 +13,7 @@ import Speak from './Editors/Speak';
 import Capture from './Editors/Capture';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
+import API from './Editors/API';
 
 class Editor extends Component {
     constructor(props) {
@@ -91,7 +92,7 @@ class Editor extends Component {
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
             case 'variable':
-                return <SetBlock node={this.state.node} variables={this.props.variables} onVariable={this.props.onVariable} onUpdate={this.props.onUpdate}/>
+                return <SetBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
             case 'if':
                 return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
             case 'listen':
@@ -116,6 +117,8 @@ class Editor extends Component {
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
                 />
+            case 'api':
+                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             default:
               return null;
         }

@@ -135,8 +135,13 @@ class Editor extends Component {
                         <div className="top">
                             <div className="property">
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
-                                <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
-                                    {type} block <i className="fas fa-question-circle mr-1"/>
+                                <div className="d-flex">
+                                    <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
+                                        {type} block <i className="fas fa-question-circle mr-1"/>
+                                    </div>
+                                    <div className="delete-block" onClick={this.props.removeNode}>
+                                        <i className="fas fa-trash"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

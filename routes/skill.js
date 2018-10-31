@@ -127,16 +127,16 @@ const deleteSkill = (req, res) => {
                     console.log(err);
                 });
             });
-
-            // Delete off our servers
-            pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
-                if(err){
-                    res.sendStatus(500);
-                }else{
-                    res.sendStatus(200);
-                }
-            });
         }
+        
+        // Delete off our servers
+        pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
+            if(err){
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+            }
+        });
     });
 };
 

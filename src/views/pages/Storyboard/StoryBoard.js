@@ -56,6 +56,7 @@ class StoryBoard extends Component {
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
         this.removeNode = this.removeNode.bind(this);
+        this.buildDiagrams = null;
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -223,6 +224,28 @@ class StoryBoard extends Component {
             let serialize = model.serializeDiagram();
             serialize.id = this.state.diagram_id;
             var data = JSON.stringify(serialize);
+
+            let sub_diagrams = [];
+            for(let node of serialize.nodes){
+                if(node.extras.type === 'flow' && node.extras.diagram_id){
+                    sub_diagrams.push(node.extras.diagram_id);
+                }
+            }
+
+            for (var i = 0; i < this.state.diagrams.length; i++) {
+                let diagrams = this.state.diagrams;
+                if(diagrams[i].id === this.state.diagram_id){
+                    diagrams[i].sub_diagrams = sub_diagrams;
+                }
+                this.setState({
+                    diagrams: diagrams
+                }, () => {
+                    if(this.buildDiagrams !== null){
+                        this.buildDiagrams();
+                    }
+                });
+            }
+
             // model.deSerializeDiagram(JSON.parse(data), engine);
 
             var diagram = {
@@ -230,7 +253,8 @@ class StoryBoard extends Component {
                 title: this.state.diagram_name,
                 variables: this.state.variables,
                 data: data,
-                skill: this.state.skill.skill_id
+                skill: this.state.skill.skill_id,
+                sub_diagrams: JSON.stringify(sub_diagrams)
             }
 
             axios.post('/diagram', diagram)
@@ -329,7 +353,7 @@ class StoryBoard extends Component {
             this.setState({
                 open: false,
                 engine: engine,
-                diagram_name: diagram.title ? diagram.title : 'Unnamed Story',
+                diagram_name: diagram.title ? diagram.title : 'New Flow',
                 last_save: diagram.last_save,
                 loading_modal: false,
                 variables: variables
@@ -348,8 +372,23 @@ class StoryBoard extends Component {
             axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
             .then(res => {
                 this.setState({
-                    diagrams: res.data
-                }, () => this.onLoadId(this.state.diagram_id))
+                    diagrams: res.data.map(flow => {
+                        try {
+                            return {
+                                id: flow.id,
+                                name: flow.name,
+                                sub_diagrams: JSON.parse(flow.sub_diagrams)
+                            }
+                        } catch(err) {
+                            return {
+                                id: flow.id,
+                                name: flow.name
+                            }
+                        }
+                    })
+                }, () => {
+                    this.onLoadId(this.state.diagram_id);
+                });
             })
             .catch(err => {
                 console.error(err.response);
@@ -383,6 +422,10 @@ class StoryBoard extends Component {
                         skill_id: this.state.skill.skill_id,
                         diagram_id: diagram_id
                     }, {path: '/'});
+                }
+
+                if(this.buildDiagrams !== null){
+                    this.buildDiagrams();
                 }
             },
             error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
@@ -743,16 +786,16 @@ class StoryBoard extends Component {
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} /> 
                 : null}
-                {this.preview ? null :
-                    <Menu 
-                        lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
-                        helpModal={()=>this.setState({help: true})}
-                        diagrams={this.state.diagrams}
-                        enterFlow={this.enterFlow}
-                        variables={this.state.variables}
-                        onVariable={this.setVariables}
-                    />
-                }
+                <Menu 
+                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
+                    helpModal={() => this.setState({help: true})}
+                    diagrams={this.state.diagrams}
+                    current={this.state.diagram_id}
+                    enterFlow={this.enterFlow}
+                    variables={this.state.variables}
+                    onVariable={this.setVariables}
+                    build={fn => this.buildDiagrams = fn}
+                />
                 <TitleBar
                     preview={this.preview}
                     title={this.state.diagram_name}

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import isVarName from 'is-var-name';
+import FlowButton from './FlowButton';
 
 const sections = [{
     title: 'Basic',
@@ -18,10 +19,11 @@ const sections = [{
         { text: 'Variable', type: 'variable', icon: <i className="fas fa-code"/> },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> }
     ]
 }];
+
+// { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
@@ -36,13 +38,80 @@ class Menu extends PureComponent {
         this.state = {
             open: true,
             tab: 'blocks',
-            new_var: ''
+            new_var: '',
+            tree: null
         }
 
         this.openTab = this.openTab.bind(this);
         this.addVariable = this.addVariable.bind(this);
         this.deleteVariable = this.deleteVariable.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.buildTree = this.buildTree.bind(this);
+        this.updateTree = this.updateTree.bind(this);
+        this.visited = new Set();
+    }
+
+    componentDidMount() {
+        this.props.build(this.updateTree);
+    }
+
+    // <div 
+    //     onClick={active ? null : (()=>this.props.enterFlow(node.id))} 
+    //     className={'diagram-block' + (active ? ' active': '')}>
+    //     {node.name}
+    // </div>
+
+    buildTree(node, depth=0){
+
+        // Array.isArray(sub_diagrams) && sub_diagrams.length > 0
+        this.visited.add(node.id);
+
+        if(depth < 4) {
+            return (<React.Fragment>
+
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow}/>
+
+                {(() => {
+                    let sub_diagrams;
+                    if(node.sub_diagrams){
+                        sub_diagrams = node.sub_diagrams;
+                    }
+
+                    if(Array.isArray(sub_diagrams) && sub_diagrams.length !== 0){
+                        
+                        return sub_diagrams.map((diagram_id, i) => {
+                            let block = this.props.diagrams.find(d => d.id === diagram_id);
+
+                            if(block){
+                                return <div className="sub-diagram" key={i}>
+                                    <div className="sub-column">
+                                        {this.buildTree(block, depth+1)}
+                                    </div>
+                                </div>;
+                            }else{
+                                return null;
+                            }
+                        })
+                    }
+                })()}
+            </React.Fragment>)
+
+        } else {
+            return <div className='diagram-block'>...</div>;
+        }
+    }
+
+    updateTree() {
+        // console.log('updateTree');
+        // console.log(this.props.diagrams);
+        for(let diagram of this.props.diagrams){
+            if(diagram.name === 'ROOT'){
+                this.visited = new Set();
+                this.setState({
+                    tree: this.buildTree(diagram)
+                });
+            }
+        }
     }
 
     handleChange(event){
@@ -94,13 +163,42 @@ class Menu extends PureComponent {
                 </div>
             })
         }else if(this.state.tab === 'flows'){
-            content = this.props.diagrams.map((diagram, i) => 
-                <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
-                    {diagram.name}
-                </div>
-            );
+            // content = this.props.diagrams.map((diagram, i) => 
+            //     <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
+            //         {diagram.name}
+            //     </div>
+            // );
+
+            let unused = [];
+
+            for(let diagram of this.props.diagrams){
+                if(!this.visited.has(diagram.id)){
+                    let block = this.props.diagrams.find(d => d.id === diagram.id);
+                    if (block) { 
+                        unused.push(
+                            <FlowButton 
+                                key={block.id}
+                                flow={block} 
+                                active={this.props.current} 
+                                enterFlow={this.props.enterFlow}
+                            />);
+                    }
+                }
+            }
+
+            content = <React.Fragment>
+                <label>Project Flows</label>
+                {this.state.tree}
+                {unused.length === 0 ? null : <React.Fragment>
+                    <hr className='mb-2 mt-4'/>
+                    <label>Other Flows</label>
+                    {unused.map((diagram, i) => {
+                        return diagram;
+                    })}
+                </React.Fragment>}
+            </React.Fragment>;
         }else if(this.state.tab === 'variables'){
-            content =   <React.Fragment>
+            content = <React.Fragment>
                 <FormGroup className="mb-0">
                     <Label>Add New Variable</Label>
                     <InputGroup>

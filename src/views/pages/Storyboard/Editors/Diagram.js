@@ -97,6 +97,18 @@ class DiagramBlock extends Component {
     }
 
     render() {
+        let options;
+        if(!this.state.node.extras.diagram_id){
+            options = this.props.diagrams
+            .filter(diagram => diagram.name !== 'ROOT')
+            .map(diagram => {
+                return {
+                    value: diagram.id,
+                    label: diagram.name
+                }
+            });
+        }
+
         return (
             <div>
                 {!this.state.node.extras.diagram_id ? 
@@ -106,14 +118,13 @@ class DiagramBlock extends Component {
                         </Button>
                         {this.props.diagrams && this.props.diagrams.length > 0 ? 
                             <Select
+                                className='mt-2'
                                 onChange={(selected) => {
                                     let node = this.state.node;
                                     node.extras.diagram_id = selected.value;
                                     this.props.enterFlow(selected.value);
                                 }}
-                                options={this.props.diagrams.map(diagram => {
-                                    return {label: diagram.name, value: diagram.id}
-                                })}
+                                options={options}
                             />
                         : null}
                     </React.Fragment>

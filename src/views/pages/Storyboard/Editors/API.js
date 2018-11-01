@@ -83,8 +83,8 @@ class API extends Component {
         }
     }
 
-                //     <label>Inputs</label>
-                // <label>Outputs</label>
+    // <label>Inputs</label>
+    // <label>Outputs</label>
 
     render() {
         return (

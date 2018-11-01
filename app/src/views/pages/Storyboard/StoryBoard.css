@@ -139,7 +139,7 @@
 
 .TitleBar .title-group {
     position: absolute;
-    left: 252px;
+    left: 292px;
     top: 12px;
 }
 
@@ -240,9 +240,6 @@
     font-size: 0.95rem;
 }
 
-.App .Menu {
-}
-
 .toolbar{
     padding-top: 59px;
     position: fixed;
@@ -305,26 +302,76 @@
     border-top: 1px solid#E2E9EC;
 }
 
-.diagram-block {
-    padding: 5px 10px;
-    background-color: #F5F8F9;
-    border-radius: 5px;
-    color: #95A6BD;
-    margin-bottom: 5px;
-    cursor: pointer;
+.sub-diagram {
+    /*padding-left: 20px;*/
+    /*align-items: center;*/
+    display: flex;
+    /*flex-wrap: wrap;*/
+    /*width: calc(100% - 21px);*/
+    width: 100%;
 }
 
-.diagram-block:hover{
+.sub-diagram::before {
+    content: '↳';
+    margin-top: 3px;
+    margin-right: 5px;
+}
+
+.diagram-text {
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.sub-diagram .diagram-block>.btn-block {
+    width: calc(100% - 22px);
+}
+
+.sub-column {
+    width: 100%;
+}
+
+.diagram-block {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.diagram-block>button{
+    padding-left: 6px;
+    padding-right: 6px;
+    text-align: left;
+    font-size: 12px !important;
+}
+.diagram-block>input{
+    padding: 0px 6px;
+    height: 32px;
+    font-size: 12px !important;
+}
+.diagram-block .diagram-edit{
+    padding-left: 4px;
+    padding-right: 3px;
+    font-size: 12px !important;
+}
+
+/*.diagram-block:hover{
     background-color: #95A6BD;
     color: #fff;
-}
+}*/
+
+/*.diagram-block.active{
+    background-color: #95A6BD;
+    color: #fff;
+    cursor: default;
+}*/
 
 .App .Menu #sidebar {
     position: fixed;
     top: 0;
     left: 40px;
     z-index: 5;
-    width: 200px;
+    width: 240px;
     height: 100%;
     padding: 0px 20px 120px 20px;
     overflow: scroll;
@@ -335,11 +382,11 @@
     /*justify-content: center;*/
     box-shadow: 0 4px 8px 0 rgba(118, 186, 255, 0.17);
     background-color: #fff;
-    -webkit-transform: translateX(-200px);
-    -moz-transform: translateX(-200px);
-    -ms-transform: translateX(-200px);
-    -o-transform: translateX(-200px);
-    transform: translateX(-200px);
+    -webkit-transform: translateX(-240px);
+    -moz-transform: translateX(-240px);
+    -ms-transform: translateX(-240px);
+    -o-transform: translateX(-240px);
+    transform: translateX(-240px);
     -webkit-transition: -webkit-transform .3s;
     -moz-transition: -moz-transform .3s;
     transition: transform .3s;
@@ -867,14 +914,15 @@ button.close{
 .delete-block{
     padding: 2px 9px;
     border-radius: 5px;
-    background-color: #E53935;
-    color: #FFF;
+    /*background-color: #E53935;*/
+    /*color: #EF5350;*/
     margin-left: 4px;
     cursor: pointer;
 }
 
 .delete-block:hover{
     background-color: #EF5350;
+    color: #fff;
 }
 
 .block {

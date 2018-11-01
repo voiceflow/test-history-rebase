@@ -161,6 +161,22 @@ const getDiagram = (req, res) => {
     });
 };
 
+const updateName = async (req, res) => {
+    if(!req.body || !req.body.name){
+        res.sendStatus(401);
+        return;
+    }
+
+    pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', 
+        [req.body.name, req.params.id], (err) => {
+        if(err){
+            res.sendStatus(500);
+        }else{
+            res.sendStatus(200);
+        }
+    });
+}
+
 const setDiagram = async (req, res) => {
     if (!req.body) {
         res.sendStatus(400);
@@ -194,6 +210,7 @@ const setDiagram = async (req, res) => {
         TableName: 'com.getstoryflow.diagrams.production',
         Item: diagram
     };
+
     docClient.put(params, async(err) => {
         if (err) {
             console.log(err);
@@ -208,8 +225,8 @@ const setDiagram = async (req, res) => {
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
                         [diagram.id, diagram.title, diagram.skill]);
                 // if the name changed, update it
-                }else if(diagram_sql.rows[0].name !== diagram.title){
-                    await pool.query('UPDATE diagrams SET name = $1 WHERE id = $1', [diagram.id]);
+                }else if(diagram_sql.rows[0].name !== diagram.title || diagram_sql.rows[0].sub_diagrams !== diagram.sub_diagrams){
+                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
                 }
                 res.sendStatus(200); 
                 
@@ -585,6 +602,7 @@ const publishTest = async (req, res) => {
 };
 
 module.exports = {
+    updateName: updateName,
     getVariables: getVariables,
     getDiagrams: getDiagrams,
     getDiagram: getDiagram,

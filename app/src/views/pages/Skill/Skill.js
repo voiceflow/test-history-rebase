@@ -849,7 +849,7 @@ class Skill extends Component {
                                         prepend="Alexa,"
                                         update={(list) => this.setState({invocations: list, saved: false})}
                                         isDisabled={disabled_stages.has(this.state.stage)}
-                                        placeholder={"open/start/turn on " + this.state.name}
+                                        placeholder={"open/start/launch " + this.state.name}
                                         add={<span><i className="fas fa-plus"/> Add Invocation</span>}
                                     />
                                 </div>

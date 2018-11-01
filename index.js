@@ -118,6 +118,7 @@ app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.get('/diagram/:id/variables', ensureLoggedIn(), Diagram.getVariables);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
+app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);
 app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 

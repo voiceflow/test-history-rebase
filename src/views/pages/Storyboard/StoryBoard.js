@@ -722,7 +722,10 @@ class StoryBoard extends Component {
                     url: '',
                     method: 'GET',
                     inputs: [],
-                    outputs: []
+                    outputs: [],
+                    headers: [],
+                    body: [],
+                    params: []
                 };
             } else if (type === 'capture') {
                 node.addInPort(' ');

@@ -18,10 +18,7 @@ class API extends Component {
             node: this.props.node,
             variables: [],
             dropdownOpen: false,
-            type: 'headers',
-            body: [],
-            headers: [],
-            params: []
+            type: 'headers'
         };
 
         this.toggle = this.toggle.bind(this);
@@ -92,10 +89,13 @@ class API extends Component {
 
     handleAddPair(type){
         var node = this.state.node;
+        console.log(node.extras)
         node.extras[type].push({
             key: '',
             val: ''
         });
+        node.extras.inputs.push('');
+
 
         this.setState({
             node: node
@@ -137,7 +137,7 @@ class API extends Component {
         let pairContent = 
             <APIInputs
                 type={this.state.type}
-                pairs={this.state[this.state.type]}
+                pairs={this.state.node.extras[this.state.type]}
                 onAdd={() => this.handleAddPair(this.state.type)}
                 onRemove={(i) => this.handleRemovePair(this.state.type, i)}
             />

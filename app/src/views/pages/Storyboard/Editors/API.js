@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
+import { Nav, NavItem, NavLink, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input } from 'reactstrap';
+import APIInputs from './components/APIInputs.js';
 // import axios from 'axios';
 // import Select from 'react-select';
 // import DiagramVariables from './components/DiagramVariables';
@@ -16,7 +17,11 @@ class API extends Component {
         this.state = {
             node: this.props.node,
             variables: [],
-            dropdownOpen: false
+            dropdownOpen: false,
+            type: 'headers',
+            body: [],
+            headers: [],
+            params: []
         };
 
         this.toggle = this.toggle.bind(this);
@@ -24,6 +29,8 @@ class API extends Component {
         this.handleAddMap = this.handleAddMap.bind(this);
         this.handleRemoveMap = this.handleRemoveMap.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.handleAddPair = this.handleAddPair.bind(this);
+        this.handleRemovePair = this.handleRemovePair.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -83,10 +90,58 @@ class API extends Component {
         }
     }
 
+    handleAddPair(type){
+        var node = this.state.node;
+        node.extras[type].push({
+            key: '',
+            val: ''
+        });
+
+        this.setState({
+            node: node
+        }, this.props.onUpdate);
+    }
+
+    handleRemovePair(type, key) {
+        let node = this.state.node;
+
+        delete node.extras[type][key];
+
+        this.setState({
+            node: node
+        }, this.props.onUpdate);
+    }
+
     // <label>Inputs</label>
     // <label>Outputs</label>
 
     render() {
+        let content;
+        if (this.state.type === 'headers') {
+            content =
+                <div>
+                    Pipsum bipsum
+                </div>
+        }else if (this.state.type === 'body'){
+            content = 
+                <div>
+                    Lickem dicksum
+                </div>
+        }else if (this.state.type === 'params'){
+            content =
+                <div>
+                    WEoe
+                </div>
+        }
+
+        let pairContent = 
+            <APIInputs
+                type={this.state.type}
+                pairs={this.state[this.state.type]}
+                onAdd={() => this.handleAddPair(this.state.type)}
+                onRemove={(i) => this.handleRemovePair(this.state.type, i)}
+            />
+
         return (
             <React.Fragment>
                 <label>METHOD</label>
@@ -110,7 +165,22 @@ class API extends Component {
                     onChange={(e) => this.handleUpdate('url', e.target.value)}
                 />
                 <br/>
-                <hr/>
+                
+                <Nav tabs>
+                    <NavItem onClick={() => this.setState({type: 'headers'})}>
+                        <NavLink href="#" active={this.state.type === 'headers'}>Headers</NavLink>
+                    </NavItem>
+                    <NavItem onClick={() => {if (this.state.node.extras.method !== 'GET') this.setState({type: 'body'})}}> 
+                        <NavLink href="#" active={this.state.type === 'body'} disabled={this.state.node.extras.method === 'GET'}>Body</NavLink>
+                    </NavItem>
+                    <NavItem onClick={() => this.setState({type: 'params'})}> 
+                        <NavLink href="#" active={this.state.type === 'params'}>Params</NavLink>
+                    </NavItem>
+
+                </Nav>
+                
+                {content}
+                {pairContent}
 
             </React.Fragment>
         );

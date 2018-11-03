@@ -19,11 +19,10 @@ const sections = [{
         { text: 'Variable', type: 'variable', icon: <i className="fas fa-code"/> },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> }
-    ]
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
+   ]
 }];
-
-// { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},

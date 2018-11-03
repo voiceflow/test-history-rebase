@@ -1,8 +1,6 @@
 # Setup Instructions
 Run npm install in main directory and app directory. React front-end code is in app dir.
 
--npm run redis
-
--sudo npm run server
-
--npm run client
+-npm run redis   
+-sudo npm run server   
+-npm run client  

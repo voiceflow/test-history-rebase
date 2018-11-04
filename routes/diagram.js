@@ -511,13 +511,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: links[nextLink]
                     }
                 } else if (node.extras.type === 'api') {
-                    let nextLink = null;
-                    for (var j = 0; j < node.ports.length; j++) {
-                        if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
-                        }
-                    }
-
                     story.lines[node.id] = {
                         body: node.extras.body,
                         headers: node.extras.headers,
@@ -525,7 +518,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         url: node.extras.url,
                         method: node.extras.method,
                         mapping: node.extras.mapping,
-                        nextId: links[nextLink]
+                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
+                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                     };
 
                 } else {

@@ -724,7 +724,9 @@ class StoryBoard extends Component {
                     headers: [],
                     body: [],
                     params: [],
-                    mapping: []
+                    mapping: [],
+                    success_id: '',
+                    failure_id: ''
                 };
             } else if (type === 'capture') {
                 node.addInPort(' ');

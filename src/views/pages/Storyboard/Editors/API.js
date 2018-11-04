@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Nav, NavItem, NavLink, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
-// import axios from 'axios';
-// import Select from 'react-select';
-// import DiagramVariables from './components/DiagramVariables';
-// import Expressionfy from './components/Expressionfy';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -111,7 +107,6 @@ class API extends Component {
 
     handleAddPairMapping(){
         var node = this.state.node;
-        console.log(node.extras)
         node.extras.mapping.push({
             path: '',
             var: ''
@@ -125,8 +120,6 @@ class API extends Component {
 
     handleRemovePairMapping(i) {
         let node = this.state.node;
-        console.log(i)
-        console.log(node.extras.mapping)
         node.extras.mapping.splice(i, 1);
         node.extras.inputs = node.extras.mapping;
         console.log(node.extras.mapping)

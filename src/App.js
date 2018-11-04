@@ -16,7 +16,8 @@ import Account from './views/pages/Account/Account';
 import Admin from './views/pages/Admin/Admin';
 import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar';
-import Skill from './views/pages/Skill/Skill'
+import Skill from './views/pages/Skill/Skill';
+import Marketplace from './views/pages/Marketplace/Marketplace';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -116,6 +117,7 @@ class App extends Component {
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} />
                 <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
+                <PrivateRoute path="/marketplace" name="Marketplace" component={Marketplace} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

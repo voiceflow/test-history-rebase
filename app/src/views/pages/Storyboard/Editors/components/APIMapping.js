@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap';
 
-class APIInputs extends Component {
+class APIMapping extends Component {
     constructor(props) {
         super(props);
 
@@ -29,8 +29,8 @@ class APIInputs extends Component {
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input placeholder="key" onChange={e => this.props.onChange(e, i, 'key')} value={this.state.pairs[i]['key']}/>
-                                    <Input placeholder="value" onChange={e => this.props.onChange(e, i, 'val')} value={this.state.pairs[i]['val']}/>
+                                    <Input placeholder="object path" onChange={e => this.props.onChange(e, i, 'path')} value={this.state.pairs[i]['path']}/>
+                                    <Input placeholder="flow variable" onChange={e => this.props.onChange(e, i, 'var')} value={this.state.pairs[i]['var']}/>
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
                                             <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
@@ -40,7 +40,7 @@ class APIInputs extends Component {
                             </div> )
                     }) : null}
                     <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
-                        <i className="far fa-plus"></i> Add Pair
+                        <i className="far fa-plus"></i> Add Mapping
                     </button>
                 </div>
 
@@ -49,4 +49,4 @@ class APIInputs extends Component {
     }
 }
 
-export default APIInputs;
+export default APIMapping;

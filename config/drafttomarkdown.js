@@ -411,6 +411,9 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
     if (range.offset + range.length === block.text.length) {
       var entity = rawDraftObject.entityMap[range.key];
       if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+        if(entity.type==='{mention'){
+          markdownString = markdownString.slice(0, -1);
+        }
         markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
       }
     }

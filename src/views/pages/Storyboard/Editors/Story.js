@@ -20,14 +20,6 @@ class Story extends Component {
         this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleChange(e, key = undefined) {
         var node = this.state.node;
         var name = e.target.getAttribute('name');
@@ -155,6 +147,8 @@ class Story extends Component {
                 <div>
                     <label>
                         Error Audio
+                        <br/>
+                        <small className="text-muted font-italic">Default thing to say if user input not understood</small>
                     </label>
                     {this.state.node.extras.prompt.length > 0 ? 
                     <div className="audio-box">

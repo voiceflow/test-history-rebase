@@ -211,7 +211,7 @@ class Menu extends PureComponent {
                     <Label>Variables</Label>
                     <div className="variables">
                         {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
-                          return <div key={i} className="variable_tag">{variable} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
+                          return <div key={i} className="variable_tag">{'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
                         }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
                     </div>
                 </div>

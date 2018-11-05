@@ -25,24 +25,6 @@ class SetBlock extends Component {
         this.onUpdate = this.onUpdate.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            let node = props.node;
-
-            if(!node.extras.expression || !node.extras.expression.type){
-                node.extras.expression = {
-                    type: 'value',
-                    value: '',
-                    depth: 0
-                }
-            }
-
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleChange(event){
         this.setState({
           [event.target.name]: event.target.value
@@ -75,10 +57,10 @@ class SetBlock extends Component {
                         classNamePrefix="variable-box"
                         placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                         className="variable-box"
-                        value={this.state.node.extras.variable ? {label: this.state.node.extras.variable, value: this.state.node.extras.variable} : null}
+                        value={this.state.node.extras.variable ? {label: '{' + this.state.node.extras.variable + '}', value: this.state.node.extras.variable} : null}
                         onChange={this.handleSelection}
                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                            return {label: variable, value: variable}
+                            return {label: '{' + variable + '}', value: variable}
                         }) : null}
                     />
                     <span> to:</span>

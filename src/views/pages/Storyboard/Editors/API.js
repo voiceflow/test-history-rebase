@@ -26,14 +26,6 @@ class API extends Component {
         this.handleSelection = this.handleSelection.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleUpdate(name, value) {
         let node = this.state.node;
         node.extras[name] = value;

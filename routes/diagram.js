@@ -474,7 +474,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         raw = node.extras.raw;
                     }
 
-                    console.log(raw);
                     if(raw){
                         markdownstring = draftToMarkdown(raw, {
                             entityItems: {
@@ -495,10 +494,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                     }
                                 }
                             }
-                        });
+                        }, true);
                         markdownstring = "'" + markdownstring + "'";
                     }
-                    console.log(markdownstring);
 
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {

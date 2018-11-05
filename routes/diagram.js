@@ -467,10 +467,26 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     let markdownstring = '';
                     let nextLink = null;
                     
-                    if(node.extras.raw){
-                        markdownstring = draftToMarkdown(node.extras.raw, {
+                    let raw;
+                    if(node.extras.rawContent){
+                        raw = node.extras.rawContent;
+                    }else{
+                        raw = node.extras.raw;
+                    }
+
+                    console.log(raw);
+                    if(raw){
+                        markdownstring = draftToMarkdown(raw, {
                             entityItems: {
                                 VARIABLE: {
+                                    open: entity => {
+                                        return "' + v['"
+                                    },
+                                    close: entity => {
+                                        return "'] + '"
+                                    }
+                                },
+                                '{mention': {
                                     open: entity => {
                                         return "' + v['"
                                     },
@@ -480,15 +496,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                 }
                             }
                         });
-
-                        // let period = markdownstring.substr(-1).match(/[.,:!?]/) ? ' ' : '. '
-
                         markdownstring = "'" + markdownstring + "'";
+                    }
+                    console.log(markdownstring);
 
-                        for (var j = 0; j < node.ports.length; j++) {
-                            if (!node.ports[j].in) {
-                                [nextLink] = node.ports[j].links;
-                            }
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
                         }
                     }
 

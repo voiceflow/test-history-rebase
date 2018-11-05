@@ -38,13 +38,11 @@ class VariableText extends Component {
     }
 
     componentWillReceiveProps(props) {
-        // if(props.state !== this.state){
-        //     console.log('eey');
-        //     this.state = props.state;
-        //     this.setState({
-        //         editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
-        //     });
-        // }
+        if(props.change !== this.props.change){
+            this.setState({
+                editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
+            });
+        }
     }
 
     componentWillUnmount(){

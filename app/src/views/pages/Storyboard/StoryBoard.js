@@ -339,7 +339,7 @@ class StoryBoard extends Component {
             }
             var links = model.getLinks();
             for (let key in links) {
-                links[key].setColor('#E3E9EE');
+                links[key].setColor('#555D6D');
             }
             
             engine.stopMove();

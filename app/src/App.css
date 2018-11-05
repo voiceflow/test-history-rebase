@@ -99,10 +99,10 @@ button:focus{
     font-weight: normal !important;
     color: #95a6bd !important;
     border-radius: 3px;
-    box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
+    box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.01) !important;
     background-color: #ffffff !important;
     text-transform: none !important;
-    border: 1px solid #E2E9EC !important;
+    border: 1px solid #555D6D !important;
 }
 .white-btn:hover{
     background-color: #EEE;
@@ -135,9 +135,8 @@ label {
     border-color: #E2E9EC !important;
 }
 input, textarea, .text-to-voice, .choice-block {
-    background-color: #FFF;
+    background-color: #414552;
     color: #545D6D;
-    border: 1px solid #E2E9EC;
 }
 input::placeholder, textarea::placeholder {
     font-weight: lighter !important;
@@ -175,16 +174,16 @@ input::placeholder, textarea::placeholder {
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-    border: 1px dashed #E2E9EC;
+    border: 1px dashed #ffffff4d;
     border-radius: 5px;
-    background-color: #FFF;
+    background-color: #414552;
 }
 
 .prompt {
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    color: #D1D8E2;
+    color: #717c8a;
     font-size: 0.8rem;
 }
 
@@ -194,7 +193,6 @@ input::placeholder, textarea::placeholder {
 
 .prompt b {
     font-size: 1rem;
-    color: #95A6BD;
     font-weight: normal;
 }
 

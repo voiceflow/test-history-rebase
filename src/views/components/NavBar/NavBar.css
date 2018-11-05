@@ -10,8 +10,9 @@
 	-moz-transition : background-color 800ms ease;
 	-o-transition : background-color 800ms ease;
 	transition : background-color 800ms ease;
-	background-color: #5a5bff;
+	background-color: #2B2E3C;
 	min-height: 59px;
+    border-bottom: 1px solid #3a3c4a; 
 }
 
 /*#navbar.storyboard {
@@ -34,6 +35,17 @@
 	outline: none !important;
 	box-shadow: none !important;
 }*/
+#navbar .nav-link.active {
+    color: #3858F5;
+}
+
+#navbar .nav-link {
+    color: #555D6D;
+    margin-right: 20px;
+    margin-left: 20px;
+    font-size: 16px;
+    
+}
 
 @media(min-width: 845px){
 	#navbar .nav-link {
@@ -50,13 +62,14 @@
 	}
 
 	#navbar .nav-link.active {
-		border-color: #fff !important;
+		border-color: #3858F5 !important;
 		cursor: default !important;
 		background-color: transparent !important;
+        
 	}
 
 	#navbar .nav-link:focus, #navbar .nav-link:hover {
-		border-color: #D84315;
+		border-color: #E1E2E6;
 		background-color: rgba(255,255,255,0.1);
 	}
 }

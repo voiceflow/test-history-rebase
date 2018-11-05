@@ -25,25 +25,25 @@ class Speak extends Component {
         }
     }
 
-    componentWillUnmount(){
-        // let node = this.state.node;
-        // node.extras.raw = convertToRaw(this.state.editorState.getCurrentContent());
-    }
-
     render() {
         return (
             <div>
-                <label>Speech</label>
-                <VariableText
-                    state={this.state.node.id}
-                    focus 
-                    raw={this.state.node.extras.raw}
-                    variables={this.props.variables}
-                    updateRaw={(raw) => {
-                        let node = this.state.node; 
-                        node.extras.raw = raw;
-                    }}
-                />
+                <label className="mb-0">Speech</label><br/>
+                <small className="text-muted">{'Use {variable} to add Variables'}</small>
+                <div className="mt-1">
+                    <VariableText
+                        key={this.state.node.id}
+                        raw={this.state.node.extras.rawContent}
+                        variables={this.props.variables}
+                        updateRaw={(raw) => {
+                            let node = this.state.node; 
+                            node.extras.rawContent = raw;
+                            this.setState({
+                                node: node
+                            })
+                        }}
+                    />
+                </div>
             </div>
         );
     }

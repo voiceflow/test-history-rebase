@@ -8,53 +8,43 @@ import Editor from 'draft-js-plugins-editor';
 
 import 'draft-js-mention-plugin/lib/plugin.css';
 
-const mentionPlugin = createMentionPlugin({
-    supportWhitespace: false,
-    entityMutability: 'IMMUTABLE',
-    mentionTrigger: '{',
-    mentionRegExp: '[\\w_-]*',
-    mentionPrefix: '{',
-    mentionSuffix: '}',
-    mentionComponent: (mentionProps) => (
-        <span className='variable-block'>
-          {mentionProps.children}
-        </span>
-    )
-});
 // const singleLinePlugin = createSingleLinePlugin({
 //     stripEntities: false
 // });
-const plugins = [mentionPlugin];
-const { MentionSuggestions } = mentionPlugin;
 
 class VariableText extends Component {
 
     constructor(props) {
         super(props);
-        
-        this.state = props.state;
+
+        this.mentionPlugin = createMentionPlugin({
+            supportWhitespace: false,
+            entityMutability: 'IMMUTABLE',
+            mentionTrigger: '{',
+            mentionRegExp: '[\\w_-]*',
+            mentionPrefix: '{',
+            mentionSuffix: '}',
+            mentionComponent: (mentionProps) => (
+                <span className='variable-block'>
+                  {mentionProps.children}
+                </span>
+            )
+        });
 
         this.state = {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
             suggestions: this.props.variables.map(v => {return {name: v}})
         };
-
-        this.setDomEditorRef = ref => this.domEditor = ref;
-    }
-
-    componentDidMount(){
-        if(this.props.focus && this.editor){
-            this.editor.focus();
-        }
     }
 
     componentWillReceiveProps(props) {
-        if(props.state !== this.state){
-            this.state = props.state;
-            this.setState({
-                editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
-            });
-        }
+        // if(props.state !== this.state){
+        //     console.log('eey');
+        //     this.state = props.state;
+        //     this.setState({
+        //         editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
+        //     });
+        // }
     }
 
     componentWillUnmount(){
@@ -79,14 +69,17 @@ class VariableText extends Component {
     }
 
     render() {
+
+        const { MentionSuggestions } = this.mentionPlugin;
+        const plugins = [this.mentionPlugin];
+
         return (
             <div className="editor">
                 <Editor
                     plugins={plugins}
                     editorState={this.state.editorState}
                     onChange={this.onChange}
-                    laceholder='What would you like to say...'
-                    ref={this.setDomEditorRef}
+                    placeholder='What would you like to say?'
                     // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions

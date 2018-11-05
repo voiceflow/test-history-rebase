@@ -1119,11 +1119,24 @@ button.close{
     flex: 1;
     z-index: 4;
 }
+/*.variable-block::before{
+    content: '{'
+}
+.variable-block::after{
+    content: '}'
+}*/
 .variable-block {
     background-color: #E1BEE7;
     color: #6A1B9A;
-    padding: 1px 0px 4px 0px;
+/*    padding: 1px 0px 4px 0px;
     border-radius: 3px;
+    color: #575f67;*/
+    cursor: pointer;
+    display: inline-block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+    text-decoration: none;
 }
 .variable-box__control {
     background-color: #E1BEE7 !important;
@@ -1236,6 +1249,21 @@ button.close{
     padding: 0px;
     margin-top: -1px;
     padding-left: 5px;
+}
+
+.editor {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  cursor: text;
+  padding: 16px;
+  border-radius: 2px;
+  margin-bottom: 2em;
+  box-shadow: inset 0px 1px 8px -3px #ABABAB;
+  background: #fefefe;
+}
+
+.editor :global(.public-DraftEditor-content) {
+  min-height: 140px;
 }
 
 @media(max-width: 1400px){

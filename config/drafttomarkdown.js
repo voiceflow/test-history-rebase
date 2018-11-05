@@ -228,7 +228,7 @@ function isEmptyBlock(block) {
  *
  * @return {String} markdown string
 **/
-function renderBlock(block, index, rawDraftObject, options) {
+function renderBlock(block, index, rawDraftObject, options, periods) {
   var openInlineStyles = [],
       markdownToAdd = [];
   var markdownString = '',
@@ -276,6 +276,9 @@ function renderBlock(block, index, rawDraftObject, options) {
       if (range.offset + range.length === characterIndex) {
         var entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+          if(entity.type==='{mention'){
+            markdownString = markdownString.slice(0, -1);
+          }
           markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
         }
       }
@@ -338,11 +341,16 @@ function renderBlock(block, index, rawDraftObject, options) {
       }
     });
 
+    let skip = false;
+
     // Open any entity tags that need opening
     block.entityRanges.forEach(function (range, rangeIndex) {
       if (range.offset === characterIndex) {
         var entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+          if(entity.type==='{mention'){
+            skip = true;
+          }
           var entityToAdd = (customEntityItems[entity.type] || EntityItems[entity.type]).open(entity);
           markdownToAdd.push({
             type: 'entity',
@@ -393,8 +401,9 @@ function renderBlock(block, index, rawDraftObject, options) {
         // }
       }
     }
-
-    markdownString += character;
+    if(!skip) {
+      markdownString += character;
+    }
   });
 
   // Close any remaining entity tags
@@ -402,6 +411,9 @@ function renderBlock(block, index, rawDraftObject, options) {
     if (range.offset + range.length === block.text.length) {
       var entity = rawDraftObject.entityMap[range.key];
       if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+        if(entity.type==='{mention'){
+          markdownString = markdownString.slice(0, -1);
+        }
         markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
       }
     }
@@ -420,22 +432,24 @@ function renderBlock(block, index, rawDraftObject, options) {
     markdownString += (customStyleItems[type] || StyleItems[type]).close(block);
   }
 
-  let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
+  if(periods){
+    let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
 
-  // Determine how many newlines to add - generally we want 2, but for list items we just want one when they are succeeded by another list item.
-  if (SingleNewlineAfterBlock.indexOf(type) !== -1 && rawDraftObject.blocks[index + 1] && SingleNewlineAfterBlock.indexOf(rawDraftObject.blocks[index + 1].type) !== -1) {
-    markdownString += period;
-  } else if (rawDraftObject.blocks[index + 1]) {
-    if (rawDraftObject.blocks[index].text) {
-      if (type === 'unstyled' && options.preserveNewlines) {
-        markdownString += period;
-      } else if (!options.preserveNewlines) {
-        markdownString += period;
-      } else {
+    // Determine how many newlines to add - generally we want 2, but for list items we just want one when they are succeeded by another list item.
+    if (SingleNewlineAfterBlock.indexOf(type) !== -1 && rawDraftObject.blocks[index + 1] && SingleNewlineAfterBlock.indexOf(rawDraftObject.blocks[index + 1].type) !== -1) {
+      markdownString += period;
+    } else if (rawDraftObject.blocks[index + 1]) {
+      if (rawDraftObject.blocks[index].text) {
+        if (type === 'unstyled' && options.preserveNewlines) {
+          markdownString += period;
+        } else if (!options.preserveNewlines) {
+          markdownString += period;
+        } else {
+          markdownString += period;
+        }
+      } else if (options.preserveNewlines) {
         markdownString += period;
       }
-    } else if (options.preserveNewlines) {
-      markdownString += period;
     }
   }
 
@@ -452,11 +466,11 @@ function renderBlock(block, index, rawDraftObject, options) {
  *
  * @return {String} markdown string
 **/
-function draftToMarkdown(rawDraftObject, options) {
+function draftToMarkdown(rawDraftObject, options, periods=false) {
   options = options || {};
   var markdownString = '';
   rawDraftObject.blocks.forEach(function (block, index) {
-    markdownString += renderBlock(block, index, rawDraftObject, options);
+    markdownString += renderBlock(block, index, rawDraftObject, options, periods);
   });
 
   orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.

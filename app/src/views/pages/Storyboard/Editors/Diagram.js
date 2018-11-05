@@ -26,14 +26,6 @@ class DiagramBlock extends Component {
         this.getDiagramVariables();
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            this.setState({
-                node: props.node
-            }, this.getDiagramVariables);
-        }
-    }
-
     getDiagramVariables(){
         let diagram_id = this.state.node.extras.diagram_id;
         // diagram_id = '5f33383b-a9a8-4a85-9fa5-16bdad17b37f';

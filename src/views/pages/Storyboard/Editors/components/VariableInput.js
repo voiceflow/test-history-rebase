@@ -37,14 +37,13 @@ class VariableInput extends Component {
         };
     }
 
-    // componentWillReceiveProps(props) {
-    //     if(props.state !== this.state){
-    //         this.state = props.state;
-    //         this.setState({
-    //             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
-    //         });
-    //     }
-    // }
+    componentWillReceiveProps(props) {
+        if(props.change !== this.props.change){
+            this.setState({
+                editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
+            });
+        }
+    }
 
     componentWillUnmount(){
         this.props.updateRaw(convertToRaw(this.state.editorState.getCurrentContent()));

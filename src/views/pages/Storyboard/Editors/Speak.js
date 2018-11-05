@@ -32,15 +32,12 @@ class Speak extends Component {
                 <small className="text-muted">{'Use {variable} to add Variables'}</small>
                 <div className="mt-1">
                     <VariableText
-                        key={this.state.node.id}
+                        change={this.state.node.id}
                         raw={this.state.node.extras.rawContent}
                         variables={this.props.variables}
                         updateRaw={(raw) => {
                             let node = this.state.node; 
                             node.extras.rawContent = raw;
-                            this.setState({
-                                node: node
-                            })
                         }}
                     />
                 </div>

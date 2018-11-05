@@ -136,7 +136,7 @@ class Editor extends Component {
         return (
             <div id="Editor" className={(this.props.open && type ? 'open':'')}>
                 {type ?
-                    <form onSubmit={(e) => e.preventDefault()} className="controls">
+                    <form onSubmit={(e) => e.preventDefault()} className="controls" key={this.state.node.id}>
                         <div className="top">
                             <div className="property">
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>

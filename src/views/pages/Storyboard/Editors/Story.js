@@ -20,14 +20,6 @@ class Story extends Component {
         this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleChange(e, key = undefined) {
         var node = this.state.node;
         var name = e.target.getAttribute('name');

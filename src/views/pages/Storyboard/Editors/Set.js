@@ -25,24 +25,6 @@ class SetBlock extends Component {
         this.onUpdate = this.onUpdate.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            let node = props.node;
-
-            if(!node.extras.expression || !node.extras.expression.type){
-                node.extras.expression = {
-                    type: 'value',
-                    value: '',
-                    depth: 0
-                }
-            }
-
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleChange(event){
         this.setState({
           [event.target.name]: event.target.value

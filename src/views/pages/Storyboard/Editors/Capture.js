@@ -12,14 +12,6 @@ class Capture extends Component {
         this.handleSelection = this.handleSelection.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleSelection(selected){
         let node = this.state.node;
         node.extras.variable = selected.value;

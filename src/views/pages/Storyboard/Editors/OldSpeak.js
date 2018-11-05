@@ -111,24 +111,6 @@ class Speak extends Component {
         this.handleKeyCommand = this.handleKeyCommand.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            let node = props.node;
-            
-            let editorState;
-            if(!node.extras.raw){
-                editorState = EditorState.createEmpty(compositeDecorator);
-            }else{
-                editorState = EditorState.createWithContent(convertFromRaw(node.extras.raw), compositeDecorator);
-            }
-
-            this.setState({
-                editorState: editorState,
-                node: node
-            });
-        }
-    }
-
     handleKeyCommand(command) {
 
         const {editorState} = this.state;

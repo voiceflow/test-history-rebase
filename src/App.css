@@ -47,7 +47,15 @@ body {
     background: #F5F9FA !important;
     color: #545D6D;
 }
-
+.btn-default {
+    border: solid 1px #555D6D !important;
+    color: #95a6bd !important;
+    background-color: transparent!important;
+}
+.btn-default:hover{
+    background-color: #3A3C4A !important;
+    color: #95a6bd;
+}
 button:focus{
     outline: none;
 }
@@ -76,16 +84,12 @@ button:focus{
 .close{
     font-weight: normal;
     color: #95a6bd;
+    text-shadow: none;
 }
-.btn-default {
-    border: solid 1px #CCD5E0;
-    color: #CCD5E0;
+.close:hover{
+    color: #fff !important;
+    text-shadow: none;
 }
-.btn-default:hover{
-    background-color: #CCD5E0;
-    color: #95a6bd;
-}
-
 .normal-btn{
     text-transform: none !important;
     color: #94A6BD !important;
@@ -105,10 +109,10 @@ button:focus{
     border: 1px solid #555D6D !important;
 }
 .white-btn:hover{
-    background-color: #EEE;
-    box-shadow: 0 5px 10px 0 rgba(118, 186, 255, 0.17) !important;
+    background-color: #EEE !important;
+    box-shadow: 5px 10px #888888;
+        
 }
-
 .purple-btn{
     padding: 10px 25px !important;
     color: #fff !important;
@@ -135,7 +139,7 @@ label {
     border-color: #E2E9EC !important;
 }
 input, textarea, .text-to-voice, .choice-block {
-    background-color: #414552;
+    background-color: #3A3C4A;
     color: #545D6D;
 }
 input::placeholder, textarea::placeholder {
@@ -174,16 +178,16 @@ input::placeholder, textarea::placeholder {
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-    border: 1px dashed #ffffff4d;
+    border: 1px dashed #95a6bd;
     border-radius: 5px;
-    background-color: #414552;
+    background-color: #3A3C4A;
 }
 
 .prompt {
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    color: #717c8a;
+    color: #95a6bd;
     font-size: 0.8rem;
 }
 
@@ -317,7 +321,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .text-muted {
-    color: #95a6bd !important;
+    color: #545A69 !important;
 }
 
 .super-center {

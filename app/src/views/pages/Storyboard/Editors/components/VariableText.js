@@ -77,7 +77,7 @@ class VariableText extends Component {
                     plugins={plugins}
                     editorState={this.state.editorState}
                     onChange={this.onChange}
-                    placeholder='What would you like to say?'
+                    placeholder='Tell Alexa what to say'
                     // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions

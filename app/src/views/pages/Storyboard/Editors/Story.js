@@ -147,6 +147,8 @@ class Story extends Component {
                 <div>
                     <label>
                         Error Audio
+                        <br/>
+                        <small className="text-muted font-italic">Default thing to say if user input not understood</small>
                     </label>
                     {this.state.node.extras.prompt.length > 0 ? 
                     <div className="audio-box">

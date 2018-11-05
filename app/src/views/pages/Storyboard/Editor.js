@@ -7,8 +7,10 @@ import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
+import Variable from './Editors/Variable';
 import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
+import OldIfBlock from './Editors/OldIf';
 import Speak from './Editors/Speak';
 import OldSpeak from './Editors/OldSpeak';
 import Capture from './Editors/Capture';
@@ -92,10 +94,15 @@ class Editor extends Component {
             case 'multiline':
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
-            case 'variable':
                 return <SetBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+            case 'variable':
+                return <Variable node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
             case 'if':
-                return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                if(this.state.node.extras.expressions){
+                    return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                }else{
+                    return <OldIfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                }
             case 'listen':
                 return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':

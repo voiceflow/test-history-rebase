@@ -434,23 +434,7 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
 
   if(periods){
     let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
-
-    // Determine how many newlines to add - generally we want 2, but for list items we just want one when they are succeeded by another list item.
-    if (SingleNewlineAfterBlock.indexOf(type) !== -1 && rawDraftObject.blocks[index + 1] && SingleNewlineAfterBlock.indexOf(rawDraftObject.blocks[index + 1].type) !== -1) {
-      markdownString += period;
-    } else if (rawDraftObject.blocks[index + 1]) {
-      if (rawDraftObject.blocks[index].text) {
-        if (type === 'unstyled' && options.preserveNewlines) {
-          markdownString += period;
-        } else if (!options.preserveNewlines) {
-          markdownString += period;
-        } else {
-          markdownString += period;
-        }
-      } else if (options.preserveNewlines) {
-        markdownString += period;
-      }
-    }
+    markdownString += period;
   }
 
   return markdownString;

@@ -191,10 +191,10 @@ class TestModal extends React.Component {
       if(res.output && res.output.length > 0){
         // TYLER'S SUPER JANKY AUDIO THING
 
-        let dom = parse(res.output);
+        let dom = parse('<speak>' + res.output + '</speak>');
 
         if(dom && dom.length > 0 && dom[0].type === 'tag' && 
-          dom[0].name === 'ssml' && dom[0].children){
+          dom[0].name === 'speak' && dom[0].children){
           this.removeAudio();
           this.recursivePlay(0, dom[0].children, res.ending);
         }else{

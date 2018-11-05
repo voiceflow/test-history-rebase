@@ -14,7 +14,7 @@ const expressionfy = (expression, depth=0) => {
         }else if(isNaN(value)){
             return "'" + value.replace(/'/g, '\"') + "'";
         }else{
-            return parseInt(value, 10);
+            return (value * 1);
         }
     }else if(expression.type == 'variable'){
         if(isVarName(expression.value)){
@@ -359,7 +359,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i })),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
-                        nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
+                        nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
+                            let link = links[port.links[0]];
+                            return link ? link : null;
+                        })
                     };
                 } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
                     let nextLink;
@@ -451,17 +454,44 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             [nextLink] = node.ports[j].links;
                         }
                     }
-                    story.lines[node.id] = {
-                        variable: node.extras.variable,
-                        expression: expressionfy(node.extras.expression),
-                        nextId: links[nextLink]
-                    };
+
+                    if(node.extras.sets){
+                        story.lines[node.id] = {
+                            sets: node.extras.sets.map(block => {
+                                return {
+                                    variable: block.variable,
+                                    expression: expressionfy(block.expression)
+                                }
+                            }),
+                            nextId: links[nextLink]
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            variable: node.extras.variable,
+                            expression: expressionfy(node.extras.expression),
+                            nextId: links[nextLink]
+                        };
+                    }
                 } else if (node.extras.type === 'if') {
-                    story.lines[node.id] = {
-                        expression: expressionfy(node.extras.expression),
-                        trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
-                        falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
-                    };
+                    if(node.extras.expressions){
+                        story.lines[node.id] = {
+                            expressions: node.extras.expressions.map(expression => {
+                                let rendered = expressionfy(expression);
+                                return rendered ? rendered : false
+                            }),
+                            elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
+                            nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
+                                let link = links[port.links[0]];
+                                return link ? link : null;
+                            })
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            expression: expressionfy(node.extras.expression),
+                            trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
+                            falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
+                        };
+                    }
                 } else if (node.extras.type === 'speak') {
 
                     let markdownstring = '';

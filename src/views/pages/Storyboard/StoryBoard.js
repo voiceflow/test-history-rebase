@@ -670,7 +670,7 @@ class StoryBoard extends Component {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.extras = {
-                    raw: null
+                    rawContent: null
                 };
             } else if (type === 'flow') {
                 node.addInPort(' ');

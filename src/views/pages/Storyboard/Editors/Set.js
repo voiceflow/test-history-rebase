@@ -1,43 +1,31 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
-import Expression from './components/Expression'
-import Expressionfy from './components/Expressionfy';
+import SetExpression from './components/SetExpression';
 
 class SetBlock extends Component {
     constructor(props) {
         super(props);
+
         let node = this.props.node;
 
-        if(!node.extras.expression || !node.extras.expression.type){
-            node.extras.expression = {
-                type: 'value',
-                value: '',
-                depth: 0
-            }
+        if(!Array.isArray(node.extras.sets) || node.extras.sets.length === 0){
+        	node.extras.sets = [{
+        		variable: null,
+        		expression: {
+	                type: 'value',
+	                value: '',
+	                depth: 0
+	            }
+        	}]
         }
 
         this.state = {
             node: node
         };
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSelection = this.handleSelection.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
-    }
-
-    handleChange(event){
-        this.setState({
-          [event.target.name]: event.target.value
-        });
-    }
-
-    handleSelection(selected){
-        let node = this.state.node;
-        node.extras.variable = selected.value;
-
-        this.setState({
-            node: node
-        }, this.props.onUpdate);
+        this.handleAddBlock = this.handleAddBlock.bind(this);
+        this.handleRemoveBlock = this.handleRemoveBlock.bind(this);
+        this.handleSelection = this.handleSelection.bind(this);
     }
 
     onUpdate(){
@@ -46,27 +34,69 @@ class SetBlock extends Component {
         }, this.props.onUpdate);
     }
 
-    render() {
-        let show = !(this.state.node.extras.expression.type === 'value' || this.state.node.extras.expression.type === 'variable');
+    handleAddBlock() {
+        var node = this.state.node;
 
+        if(node.extras.sets.length < 20){
+            node.extras.sets.push({
+        		variable: null,
+        		expression: {
+                    type: 'value',
+                    value: '',
+                    depth: 0
+                }
+            });
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        }
+    }
+
+    handleRemoveBlock(i) {
+        let node = this.state.node;
+
+        if(node.extras.sets.length > 1){
+            node.extras.sets.splice(i, 1);
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        }
+    }
+
+    handleSelection(i, value) {
+        let node = this.state.node;
+
+        if(node.extras.sets[i].variable !== value){
+            node.extras.sets[i].variable = value;
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        }
+    }
+
+    render() {
         return (
             <div>
-                <div className="variable-group">
-                    <span>Set </span>
-                    <Select
-                        classNamePrefix="variable-box"
-                        placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
-                        className="variable-box"
-                        value={this.state.node.extras.variable ? {label: '{' + this.state.node.extras.variable + '}', value: this.state.node.extras.variable} : null}
-                        onChange={this.handleSelection}
-                        options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                            return {label: '{' + variable + '}', value: variable}
-                        }) : null}
-                    />
-                    <span> to:</span>
-                </div>
-                { show ? <Expressionfy expression={this.state.node.extras.expression} />:null}
-                <Expression expression={this.state.node.extras.expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
+            	{this.state.node.extras.sets.map((block, i) => {
+            		return (
+            			<SetExpression
+            				key={i}
+            				block={block}
+		                	onRemove={() => this.handleRemoveBlock(i)}
+		                	onSelection={(selected) => this.handleSelection(i, selected.value)}
+		                	onUpdate={this.onUpdate}
+		                	variables={this.props.variables}
+	                	/>
+	                )
+            	})}
+                { this.state.node.extras.sets.length < 20 ?
+                    <button className="btn btn-default btn-block" onClick={this.handleAddBlock}>
+                        <i className="far fa-plus"></i> Add Variable Set
+                    </button> : null
+                }
             </div>
         );
     }

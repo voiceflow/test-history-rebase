@@ -138,9 +138,17 @@ label {
     font-weight: lighter !important; 
     border-color: #E2E9EC !important;
 }
+<<<<<<< HEAD
 input, textarea, .text-to-voice, .choice-block {
     background-color: #3A3C4A;
     color: #545D6D;
+=======
+input, textarea, .text-to-voice, .choice-block, .solid-border{
+    background-color: #FFF;
+    color: #545D6D;
+    border: 1px solid #E2E9EC;
+    border-radius: 3px;
+>>>>>>> origin/master
 }
 input::placeholder, textarea::placeholder {
     font-weight: lighter !important;

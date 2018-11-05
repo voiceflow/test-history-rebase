@@ -30,8 +30,6 @@ class VariableInput extends Component {
 
     constructor(props) {
         super(props);
-        
-        this.state = props.state;
 
         this.state = {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
@@ -39,14 +37,14 @@ class VariableInput extends Component {
         };
     }
 
-    componentWillReceiveProps(props) {
-        if(props.state !== this.state){
-            this.state = props.state;
-            this.setState({
-                editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
-            });
-        }
-    }
+    // componentWillReceiveProps(props) {
+    //     if(props.state !== this.state){
+    //         this.state = props.state;
+    //         this.setState({
+    //             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty()
+    //         });
+    //     }
+    // }
 
     componentWillUnmount(){
         this.props.updateRaw(convertToRaw(this.state.editorState.getCurrentContent()));
@@ -71,7 +69,7 @@ class VariableInput extends Component {
 
     render() {
         return (
-            <div className="editor">
+            <div className="variable-input-field">
                 <Editor
                     plugins={plugins}
                     editorState={this.state.editorState}

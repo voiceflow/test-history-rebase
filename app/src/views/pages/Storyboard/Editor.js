@@ -10,6 +10,7 @@ import Random from './Editors/Random';
 import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
 import Speak from './Editors/Speak';
+import OldSpeak from './Editors/OldSpeak';
 import Capture from './Editors/Capture';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
@@ -104,7 +105,11 @@ class Editor extends Component {
             case 'ending':
                 return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'speak':
-                return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                if(this.state.node.extras.rawContent === undefined){
+                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                } else {
+                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                }
             case 'capture':
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             case 'command':

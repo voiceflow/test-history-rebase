@@ -698,21 +698,26 @@ class StoryBoard extends Component {
                 node.extras = {
                     paths: 1
                 };
-            } else if (type === 'set' || type === 'variable') {
+            } else if (type === 'variable') {
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+                node.extras = {};
+            } else if (type === 'set') {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.extras = {
-                    variable: null,
-                    expression: ""
+                    sets: []
                 };
             } else if (type === 'if') {
                 node.addInPort(' ');
-                node.addOutPort('true').setMaximumLinks(1);
-                node.addOutPort('false').setMaximumLinks(1);
+                node.addOutPort('else').setMaximumLinks(1);
+                node.addOutPort('1').setMaximumLinks(1);
                 node.extras = {
-                    variable: null,
-                    operation: '==',
-                    expression: ""
+                    expressions: [{
+                        type: 'value',
+                        value: '',
+                        depth: 0
+                    }]
                 };
             } else if (type === 'api') {
                 node.addInPort(' ');

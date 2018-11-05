@@ -1169,6 +1169,20 @@ button.close{
     margin-bottom: 5px;
 }
 
+.square-bubble {
+    padding-top: 3px;
+    height: 22px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+    line-height: 18px;
+    border-radius: 3px;
+    background-color: #F1F3F9;
+    color: #94A6BD;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .choice-title span {
     /*padding: 5px 10px 0px 10px;*/
     padding-top: 1px;
@@ -1227,16 +1241,30 @@ button.close{
     overflow: scroll;*/
 }
 
+.set-block {
+    margin-bottom: 10px;
+    padding: 10px;
+    position: relative;
+}
+
 .variable-group {
     display: flex;
     align-items: center;
-    margin-top: 20px;
     margin-bottom: 10px;
+    /*margin-top: 20px;*/
+}
+.variable-group>.variable-box {
+    max-width: 180px;
+    margin-right: 5px;
+}
+.set-block > .close {
+    line-height: 18px;
 }
 
 .variable-group>span{
     font-weight: bold;
-    margin: 0 10px;
+    margin-right: 5px;
+    margin-left: 2px;
 }
 
 .variable-box {

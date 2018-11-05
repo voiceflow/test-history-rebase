@@ -8,12 +8,8 @@ class IfBlock extends Component {
 
         let node = this.props.node;
 
-        if(!node.extras.expression || !node.extras.expression.type){
-            node.extras.expression = {
-                type: 'value',
-                value: '',
-                depth: 0
-            }
+        if(!Array.isArray(node.extras.expressions)){
+            node.extras.expressions = []
         }
 
         this.state = {
@@ -21,24 +17,8 @@ class IfBlock extends Component {
         };
 
         this.onUpdate = this.onUpdate.bind(this);
-    }
-
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            let node = props.node;
-
-            if(!node.extras.expression || !node.extras.expression.type){
-                node.extras.expression = {
-                    type: 'value',
-                    value: '',
-                    depth: 0
-                }
-            }
-
-            this.setState({
-                node: props.node
-            });
-        }
+        this.handleAddBlock = this.handleAddBlock.bind(this);
+        this.handleRemoveBlock = this.handleRemoveBlock.bind(this);
     }
 
     onUpdate(){
@@ -47,14 +27,90 @@ class IfBlock extends Component {
         }, this.props.onUpdate);
     }
 
-    render() {
-        let show = !(this.state.node.extras.expression.type === 'value' || this.state.node.extras.expression.type === 'variable');
+    handleAddBlock() {
+        var node = this.state.node;
 
+        if(node.extras.expressions.length < 5){
+            node.extras.expressions.push({
+                type: 'value',
+                value: '',
+                depth: 0
+            });
+
+            // Remove the else port and add it back in so that it is always on the bottom
+            // for (var name in node.getPorts()) {
+            //     let port = node.getPort(name);
+            //     if (port.label === 'else') {
+            //         elseport = port;
+            //         node.removePort(port, false);
+            //         break;
+            //     }
+            // }
+
+            node.addOutPort(node.extras.expressions.length).setMaximumLinks(1);
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+
+            this.props.repaint();
+        }
+    }
+
+    handleRemoveBlock(i) {
+        let node = this.state.node;
+
+        if(node.extras.expressions.length > 1){
+
+            for (var name in node.getPorts()) {
+                var port = node.getPort(name);
+
+                if (port.label === node.extras.expressions.length) {
+                    node.removePort(port);
+                    break;
+                }
+            }
+
+            node.extras.expressions.splice(i, 1);
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+
+            this.props.repaint();
+        }
+    }
+
+
+    render() {
         return (
             <div>
-                <label>If </label>
-                { show ? <Expressionfy expression={this.state.node.extras.expression} />:null}
-                <Expression expression={this.state.node.extras.expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
+                <p>
+                    <small className="text-muted">If Statements Evaluated in Numerical Order</small>
+                </p>
+                {this.state.node.extras.expressions.map((expression, i) => {
+                    let show = !(expression.type === 'value' || expression.type === 'variable');
+
+                    return (
+                        <div key={i} className="solid-border set-block">
+                            {this.state.node.extras.expressions.length > 1 ?
+                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}>×</div> 
+                                : null 
+                            }
+                            <div className="variable-group">
+                                <div className="square-bubble mr-1">{i + 1}</div><span>If </span>
+                            </div>
+                            { show ? <Expressionfy expression={expression} />:null}
+                            <Expression expression={expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
+                        </div>
+                    )
+                })}
+
+                { this.state.node.extras.expressions.length < 5 ?
+                    <button className="btn btn-default btn-block" onClick={this.handleAddBlock}>
+                        <i className="far fa-plus"></i> Add If Statement
+                    </button> : null
+                }
             </div>
         );
     }

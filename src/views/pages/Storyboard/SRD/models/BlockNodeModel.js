@@ -13,7 +13,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 	addOutPort(label: string): BlockPortModel {
 		return this.addPort(new BlockPortModel(false, Toolkit.UID(), label));
 	}
-
+	
 	removePort(port: PortModel) {
 		//clear the parent node reference
 		if (this.ports[port.name]) {

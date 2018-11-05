@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import createSingleLinePlugin from 'draft-js-single-line-plugin';
+// import createSingleLinePlugin from 'draft-js-single-line-plugin';
+// import createMentionPlugin, { defaultSuggestionsFilter } from './../../../../../assets/draft-js-mention/lib';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
@@ -20,13 +21,13 @@ const mentionPlugin = createMentionPlugin({
         </span>
     )
 });
-const singleLinePlugin = createSingleLinePlugin({
-    stripEntities: false
-});
-const plugins = [mentionPlugin, singleLinePlugin];
+// const singleLinePlugin = createSingleLinePlugin({
+//     stripEntities: false
+// });
+const plugins = [mentionPlugin];
 const { MentionSuggestions } = mentionPlugin;
 
-class VariableInput extends Component {
+class VariableText extends Component {
 
     constructor(props) {
         super(props);
@@ -37,6 +38,14 @@ class VariableInput extends Component {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
             suggestions: this.props.variables.map(v => {return {name: v}})
         };
+
+        this.setDomEditorRef = ref => this.domEditor = ref;
+    }
+
+    componentDidMount(){
+        if(this.props.focus && this.editor){
+            this.editor.focus();
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -76,8 +85,9 @@ class VariableInput extends Component {
                     plugins={plugins}
                     editorState={this.state.editorState}
                     onChange={this.onChange}
-                    placeholder='What would you like to say...'
-                    blockRenderMap={singleLinePlugin.blockRenderMap}
+                    laceholder='What would you like to say...'
+                    ref={this.setDomEditorRef}
+                    // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions
                   onSearchChange={this.onSearchChange}
@@ -89,4 +99,4 @@ class VariableInput extends Component {
     }
 }
 
-export default VariableInput;
+export default VariableText;

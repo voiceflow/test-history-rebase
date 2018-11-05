@@ -163,10 +163,10 @@ class Expression extends Component {
                             classNamePrefix="variable-box"
                             placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                             className="variable-box"
-                            value={this.state.expression.value ? {label: this.state.expression.value, value: this.state.expression.value} : null}
+                            value={this.state.expression.value ? {label: '{' + this.state.expression.value + '}', value: this.state.expression.value} : null}
                             onChange={this.handleSelection}
                             options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                return {label: variable, value: variable}
+                                return {label: '{' + variable + '}', value: variable}
                             }) : null}
                         />
                         {dropdown}

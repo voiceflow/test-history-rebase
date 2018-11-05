@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Select from 'react-select';
-
 import 'draft-js/dist/Draft.css'
 
 import VariableText from './components/VariableText';
@@ -16,15 +14,6 @@ class Speak extends Component {
         };
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            let node = props.node;
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     render() {
         return (
             <div>
@@ -32,15 +21,11 @@ class Speak extends Component {
                 <small className="text-muted">{'Use {variable} to add Variables'}</small>
                 <div className="mt-1">
                     <VariableText
-                        key={this.state.node.id}
                         raw={this.state.node.extras.rawContent}
                         variables={this.props.variables}
                         updateRaw={(raw) => {
                             let node = this.state.node; 
                             node.extras.rawContent = raw;
-                            this.setState({
-                                node: node
-                            })
                         }}
                     />
                 </div>

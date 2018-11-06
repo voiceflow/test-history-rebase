@@ -1,3 +1,71 @@
+
+.purple-btn:hover{
+    background-color: #3a4ff2 !important;
+    
+}
+
+.white-btn{
+    background-color: #424B60 !important
+
+}
+.white-btn:hover{
+    background-color: #424B60 !important;
+    color: #fff !important;
+
+}
+.alert-danger{
+    color: red;
+    background-color: #ff000024;
+    border-color: red;
+}
+.form-control{
+    background-color: #ffffff0a !important;
+    border: 1px solid #555D6D !important;
+    color: #fff !important;
+}
+.input-group-text, .input-ground-prepend{
+    background-color: #455afb !important;
+    border: 1px solid #455afb !important;
+    color: #fff !important;
+}
+.text-success{
+    color:#455AFB !important;
+}
+.bg-white{
+    background-color: #2B2E3B !important;
+    border: none !important;
+    color: #95a6bd;
+}
+   
+
+.MuiCardContent-root-77{
+    background-color: #2B2E3C !important;
+    color: #94A6BD !important;
+}
+
+.MuiCardActions-root-78{
+    background-color: #2B2E3C;
+}
+
+.skill-card .no-image{
+    background-repeat: repeat !important;
+    background-size: auto !important;
+    background-color: #2B2E3C;
+    display: flex;
+    justify-content: center;
+    color: #94A6BD;
+    align-items: center;
+    border-bottom: 1px solid #3842549e;
+}
+
+.MuiCardContent-root-377{
+    background-color: #2B2E3C;
+    color: #94A6BD;
+    
+}
+.text-secondary{
+    color: #95a6bd70 !important;
+}
 .icon-image {
 	width: 200px;
 	height: 200px;
@@ -45,10 +113,6 @@
 .Window.skill>.container{
 	padding-top: 80px;
 	padding-bottom: 6rem;
-}
-
-.Window.skill input::placeholder, textarea::placeholder{
-	color: #CCC !important;
 }
 
 .LoginWithAmazon{

@@ -45,8 +45,10 @@
 body {
 	font-family: 'Proxima Nova', sans-serif;
     background: #F5F9FA !important;
-    color: #545D6D;
+    color: #95a6bd;
+
 }
+
 .btn-default {
     border: solid 1px #555D6D !important;
     color: #95a6bd !important;
@@ -138,33 +140,33 @@ label {
     font-weight: lighter !important; 
     border-color: #E2E9EC !important;
 }
-<<<<<<< HEAD
+
 input, textarea, .text-to-voice, .choice-block {
-    background-color: #3A3C4A;
+    background-color: #ffffff0d;
     color: #545D6D;
-=======
-input, textarea, .text-to-voice, .choice-block, .solid-border{
-    background-color: #FFF;
-    color: #545D6D;
-    border: 1px solid #E2E9EC;
+}
+.solid-border{
+    background-color: #3A3C4A!important;
+    color: #95a6bd;
+    border: 1px solid #525969;
     border-radius: 3px;
->>>>>>> origin/master
 }
 input::placeholder, textarea::placeholder {
-    font-weight: lighter !important;
+/*    font-weight: lighter !important;*/
+    color:#95a6bd87 !important;
 }
 
 .dash-button {
-    border: solid 1px #E3E8FA;
+    border: dashed 1px #455afb;
     background-color: transparent;
-    color: #4253FF;
+    color: #455afb;
     padding: 10px;
 }
 .dash-button:hover {
-    color: #4253FF;
-    background-color: #E3E8FA;
+    color: #fff;
+    background-color: #4253FF;
     /*border-style: solid;*/
-    border: solid 1px #E3E8FA;
+    border: dashed 1px #455afb;
 }
 
 .input-group-text, .input-ground-prepend{
@@ -188,7 +190,7 @@ input::placeholder, textarea::placeholder {
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
     border: 1px dashed #95a6bd;
     border-radius: 5px;
-    background-color: #3A3C4A;
+    background-color: #ffffff0d;
 }
 
 .prompt {
@@ -285,7 +287,7 @@ input::placeholder, textarea::placeholder {
 .subheader {
     position: fixed;
     top: 59px;
-    background-color: #F5F9FA;
+    background-color: #353F55;
     width: 100%;
     /*padding: 10px;*/
     display: flex;
@@ -295,15 +297,16 @@ input::placeholder, textarea::placeholder {
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-    border-bottom: 1px solid #E2E9EC;
+/*    border-bottom: 1px solid #E2E9EC;*/
     justify-content: space-between;
     z-index: 1000;
+    border-bottom: 1px solid #55586f45;
 }
 
 .subheader-title b{
   font-size: 1.5rem;
   font-weight: normal;
-  color: #545D6D;
+  color: #fff;
 }
 
 .subheader-title {
@@ -346,6 +349,7 @@ input::placeholder, textarea::placeholder {
 	width: 100%;
 	min-height: 100%;
 	padding-top: 58px;
+    background-color: #343F55;
 }
 
 .modal-content{

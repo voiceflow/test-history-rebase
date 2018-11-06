@@ -27,54 +27,61 @@
 
 .expression-block {
 	padding: 5px 4px;
-	border: 1px solid;
+/*	border: 1px solid;*/
 	border-radius: 6px;
 	/*color: #FFF;*/
 }
 
 .operator {
-	color: #FFF;
+	color: #95a6bd;
 }
 
 .expression-block.plus,.expression-block.minus{
-	background-color: #81C784;
-	border-color: #4CAF50;
+	background-color: #2B2E3B;
+	border: 0.5px solid #555D6D;
 }
 .expression-block.divide, .expression-block.times{
-	background-color: #4CAF50;
-	border-color: #43A047;
+	background-color: #2b2e3b;
+	border-color: #2b2e3b;
+    border: 0.5px solid #555D6D;
 }
 .expression-block.greater, .expression-block.equals, .expression-block.less{
-	background-color: #FDD835;
-	border-color: #F57F17;
+	background-color: #2b2e3b;
+	border-color: #2b2e3b;
+    border: 0.5px solid #555D6D;
 }
 
 .expression-block.and{
-	background-color: #FFA726;
-	border-color: #F57C00;
+	background-color: #2b2e3b;
+	border-color: #2b2e3b;
+    border: 0.5px solid #555D6D;
 }
 .expression-block.or{
-	background-color: #03A9F4;
-	border-color: #0288D1;
+	background-color: #2b2e3b;
+	border-color: #2b2e3b;
+    border: 0.5px solid #555D6D;
 }
 
 .expression-block.not{
 	padding-top: 0px !important;
-	background-color: #EF5350;
-	border-color: #E64A19;
+	background-color: #2b2e3b;
+	border-color: #2b2e3b;
+    border: 0.5px solid #555D6D;
 }
 
 .brackets>.variable{
-	background-color: #E1BEE7;
-	color: #6A1B9A;
-	border-radius: 5px;
-	padding: 2px 4px 4px 4px;
+	background-color: #4865e9;
+	color: #fff;
+	border-radius: 30px;
+/*    border: 1px solid #555D6D;*/
+	padding: 3px 10px 6px 10px;
 }
 .brackets>.NaN{
-	background-color: #FFAB91;
-	color: #BF360C;
-	border-radius: 5px;
-	padding: 2px 4px 4px 4px;
+	background-color: #ff000024;
+	color: red;
+    border: 1px solid red;
+	border-radius: 360px;
+	padding: 3px 10px 6px 10px;
 	cursor: pointer;
 }
 .brackets>.NaN:after{
@@ -96,14 +103,14 @@
 	color: #EF5350;
 }
 .brackets>.unknown{
-	color: #F57F17;
+	color: #4865e9;
 	font-weight: bold;
 }
 .expressionfy{
 	line-height: 28px;
 	padding: 5px 8px;
 	border-radius: 5px;
-	border: 1px solid #DDD;
+	border: 1.3px dashed #4865E9;
 	margin-bottom: 10px;
 }
 

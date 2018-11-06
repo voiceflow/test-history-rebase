@@ -53,7 +53,7 @@
 }
 
 .Menu .saved{
-    margin-top: 2px;
+    margin-top: 100px;
     font-size: 11px;
     margin-bottom: 15px;
     color: #C5D6Ed;
@@ -1145,7 +1145,6 @@ button.close{
 
 .variable-box {
     flex: 1;
-    z-index: 4;
 }
 /*.variable-block::before{
     content: '{'
@@ -1168,6 +1167,9 @@ button.close{
 }
 .variable-box__control {
     background-color: #E1BEE7 !important;
+}
+.variable-box__menu {
+    z-index: 1500;
 }
 .variable-box__control--is-focused {
     border-color: #6A1B9A !important;
@@ -1300,6 +1302,6 @@ button.close{
     }
     .TitleBar{
         display: block;
-        padding-left: 250px;
+        padding-left: 290px;
     }
 }

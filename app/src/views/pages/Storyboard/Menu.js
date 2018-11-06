@@ -245,7 +245,6 @@ class Menu extends PureComponent {
                 </div>
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>
                     <p className="saved">{this.props.lastSave}</p>
-                    <hr/>
                     <div className='block-title no-select' onClick={() => this.setState({open: false})}>
                         <h5 className="mb-0">{this.state.tab}</h5>
                         <div className="close pr-1 pl-3 py-3">×</div>

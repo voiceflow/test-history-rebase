@@ -141,6 +141,7 @@
     position: absolute;
     left: 292px;
     top: 12px;
+    margin-top: 10px;
 }
 
 .TitleBar .status {
@@ -158,6 +159,11 @@
 
 .TitleBar input::placeholder {
     color: #CCC;
+}
+
+.TitleBar .debug-toggle {
+    color: #CCC;
+    margin-left: 15px;
 }
 
 .load-btn {

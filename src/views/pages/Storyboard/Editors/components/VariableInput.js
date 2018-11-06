@@ -56,26 +56,52 @@ class VariableInput extends Component {
     };
 
     onAddMention = () => {
-        if(!this.editor) return;
+        // if(!this.editor) return;
 
         setTimeout(() => {
-            let e = new Event('keypress', {
-                bubbles: true,
-                which: 65,
-                code: 'KeyA',
-                key: 'a'
-            });
 
-            console.log(e);
+            // console.log(window.emit('keydown', {keyCode: 40}));
 
-            console.dir(this.editor);
+            // let e = document.createEvent('KeyboardEvent');
+            // e.initKeyEvent("keydown",       // typeArg,                                                           
+            //     true,             // canBubbleArg,                                                        
+            //     true,             // cancelableArg,                                                       
+            //     null,             // viewArg,  Specifies UIEvent.view. This value may be null.     
+            //     false,            // ctrlKeyArg,                                                               
+            //     false,            // altKeyArg,                                                        
+            //     false,            // shiftKeyArg,                                                      
+            //     false,            // metaKeyArg,                                                       
+            //     40,               // keyCodeArg,                                                      
+            // 0);              // charCodeArg);
 
-            this.editor.editor.editorContainer.dispatchEvent(e);
-            this.editor.editor.editor.dispatchEvent(e);
+            // let e = new Event('keydown', {
+            //     bubbles: true,
+            //     which: 40,
+            //     code: 'ArrowDown',
+            //     key: 'ArrowDown'
+            // });
 
-            this.editor.editor._handler.onKeyDown(this.editor.editor, e);
-            this.editor.editor._onKeyDown(e);
-            this.editor.editor._onKeyPress(e);
+            // let e2 = new Event('selectionchange');
+
+            // console.log(document.activeElement);
+            var textEvent = document.createEvent('TextEvent');
+            textEvent.initTextEvent ('textInput', true, true, null, 'yeet');                    
+            document.activeElement.dispatchEvent(textEvent);
+
+            // document.activeElement.dispatchInteractiveEvent(e);
+
+            // document.activeElement.dispatchEvent(e2);
+
+            // console.log(e);
+
+            // console.dir(this.editor);
+
+            // this.editor.editor.editorContainer.dispatchEvent(e);
+            // this.editor.editor.editor.dispatchEvent(e);
+
+            // this.editor.editor._handler.onKeyDown(this.editor.editor, e);
+            // this.editor.editor._onKeyDown(e);
+            // this.editor.editor._onKeyPress(e);
 
             // const editorState = this.state.editorState;
             // const contentState = editorState.getCurrentContent();
@@ -135,7 +161,6 @@ class VariableInput extends Component {
                         onChange={this.onChange}
                         placeholder={this.props.placeholder}
                         blockRenderMap={this.singleLinePlugin.blockRenderMap}
-                        ref={(element) => { this.editor = element; }}
                     />
                 </div>
                 <MentionSuggestions

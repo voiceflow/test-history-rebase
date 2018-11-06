@@ -31,6 +31,9 @@ class VariableInput extends Component {
             )
         });
 
+        // document.onkeydown = function(e) { console.log("Keypress changed!", e); };
+        // document.onselectionchange = function(e) { console.log("selection change!", e); };
+
         this.singleLinePlugin = createSingleLinePlugin({
             stripEntities: false
         });
@@ -55,95 +58,27 @@ class VariableInput extends Component {
         });
     };
 
-    onAddMention = () => {
+    onAddMention = (e) => {
         // if(!this.editor) return;
 
         setTimeout(() => {
+            if(!document.activeElement) return;
 
-            // console.log(window.emit('keydown', {keyCode: 40}));
+            let scroller = document.activeElement.getElementsByClassName("public-DraftStyleDefault-block")[0];
 
-            // let e = document.createEvent('KeyboardEvent');
-            // e.initKeyEvent("keydown",       // typeArg,                                                           
-            //     true,             // canBubbleArg,                                                        
-            //     true,             // cancelableArg,                                                       
-            //     null,             // viewArg,  Specifies UIEvent.view. This value may be null.     
-            //     false,            // ctrlKeyArg,                                                               
-            //     false,            // altKeyArg,                                                        
-            //     false,            // shiftKeyArg,                                                      
-            //     false,            // metaKeyArg,                                                       
-            //     40,               // keyCodeArg,                                                      
-            // 0);              // charCodeArg);
+            let width = 0;
+            let elementWidth = scroller.offsetWidth;
 
-            // let e = new Event('keydown', {
-            //     bubbles: true,
-            //     which: 40,
-            //     code: 'ArrowDown',
-            //     key: 'ArrowDown'
-            // });
+            scroller.childNodes.forEach(node => {
+                width += node.offsetWidth;
+            })
 
-            // let e2 = new Event('selectionchange');
+            let scrollDistance = (e.name.length + 2) * 9;
 
-            // console.log(document.activeElement);
-            var textEvent = document.createEvent('TextEvent');
-            textEvent.initTextEvent ('textInput', true, true, null, 'yeet');                    
-            document.activeElement.dispatchEvent(textEvent);
-
-            // document.activeElement.dispatchInteractiveEvent(e);
-
-            // document.activeElement.dispatchEvent(e2);
-
-            // console.log(e);
-
-            // console.dir(this.editor);
-
-            // this.editor.editor.editorContainer.dispatchEvent(e);
-            // this.editor.editor.editor.dispatchEvent(e);
-
-            // this.editor.editor._handler.onKeyDown(this.editor.editor, e);
-            // this.editor.editor._onKeyDown(e);
-            // this.editor.editor._onKeyPress(e);
-
-            // const editorState = this.state.editorState;
-            // const contentState = editorState.getCurrentContent();
-            // const selectionState = editorState.getSelection();
-            // const anchorKey = selectionState.getStartKey();
-            // const offSet = selectionState.getStartOffset();
-
-            // const selection = editorState.getSelection();
-            // const text = Modifier.insertText(contentState, selection, ' ');
-            // const es = EditorState.push(editorState, text, 'insert-fragment');
-            // this.setState({
-            //     editorState: EditorState.acceptSelection(
-            //         editorState,
-            //         new SelectionState({
-            //             anchorKey: currentContentBlock.getKey(),
-            //             anchorOffset: 0,
-            //             focusKey: currentContentBlock.getKey(),
-            //             focusOffset: 0,
-            //             isBackward: false
-            //         })
-            //     )
-            // });
-
-            // const afterSelectionMove = EditorState.acceptSelection(
-            //     editorState,
-            //     new SelectionState({
-            //         anchorKey: anchorKey,
-            //         anchorOffset: offSet,
-            //         focusKey: anchorKey,
-            //         focusOffset: offSet,
-            //         isBackward: false
-            //     })
-            // )
-
-            // const final = EditorState.forceSelection(
-            //     afterSelectionMove,
-            //     afterSelectionMove.getSelection()
-            // )
-
-            // this.setState({
-            //     editorState: final
-            // });
+            scroller.scrollLeft += scrollDistance;
+            // if((width - (elementWidth + scroller.scrollLeft)) < scrollDistance){
+            //     scroller.scrollLeft += scrollDistance;
+            // }
 
         }, 0);
     }

@@ -151,7 +151,7 @@ class API extends Component {
                 }}
             />
         let bodyInputNavTabs = 
-            <Nav tabs>
+            <Nav tabs className="mb-3">
                 <NavItem onClick={() => {
                         const node = this.state.node;
                         node.extras.bodyInputType = 'keyValue';
@@ -209,7 +209,7 @@ class API extends Component {
                 <hr/>
 
                 
-                <Nav tabs>
+                <Nav tabs className="mb-3">
                     <NavItem onClick={() => this.setState({type: 'headers'})}>
                         <NavLink href="#" active={this.state.type === 'headers'}>
                             Headers

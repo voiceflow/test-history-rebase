@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Nav, NavItem, NavLink, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
+import VariableText from './components/VariableText';
+import VariableInput from './components/VariableInput';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -13,7 +15,7 @@ class API extends Component {
         // props.variables is for variables of the current diagram
         this.state = {
             node: this.props.node,
-            variables: [],
+            variables: this.props.variables,
             dropdownOpen: false,
             type: 'headers',
             popoverOpen: false,
@@ -114,15 +116,14 @@ class API extends Component {
         let node = this.state.node;
         node.extras.mapping.splice(i, 1);
         node.extras.inputs = node.extras.mapping;
-        console.log(node.extras.mapping)
         this.setState({
             node: node
         }, this.props.onUpdate);
     }
 
-    handleKVMappingChange(e, i, inputType) {
+    handleKVMappingChange(new_value, i, inputType) {
         var node = this.state.node;
-        node.extras.mapping[i][inputType] = e.target.value;
+        node.extras.mapping[i][inputType] = new_value;
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -133,18 +134,50 @@ class API extends Component {
             <APIInputs
                 type={this.state.type}
                 pairs={this.state.node.extras[this.state.type]}
+                variables={this.props.variables}
                 onAdd={() => this.handleAddPair(this.state.type)}
                 onRemove={(e, i) => this.handleRemovePair(this.state.type, i)}
                 onChange={this.handleKVChange}
             />
+        let rawBodyInput = 
+            <VariableText
+                raw={this.state.node.extras.rawContent}
+                variables={this.props.variables}
+                updateRaw={(raw) => {
+                    let node = this.state.node; 
+                    node.extras.rawContent = raw;
+                    this.setState({
+                        node: node
+                    })
+                }}
+            />
+        let bodyInputNavTabs = 
+            <Nav tabs>
+                <NavItem onClick={() => {
+                        const node = this.state.node;
+                        node.extras.bodyInputType = 'keyValue';
+                        this.setState({ node: node })
+                        }}>
+                    <NavLink href="#" active={this.state.node.extras.bodyInputType === 'keyValue'}>
+                        Key Value Input
+                    </NavLink>
+                </NavItem>
+                <NavItem onClick={() => {
+                        const node = this.state.node;
+                        node.extras.bodyInputType = 'rawInput';
+                        this.setState({ node: node })
+                        }}> 
+                    <NavLink href="#" active={this.state.node.extras.bodyInputType === 'rawInput'}>
+                        Raw Input
+                    </NavLink>
+                </NavItem>
+            </Nav>
 
         return (
             <React.Fragment>
                 <label>
                     METHOD
                 </label>
-
-                
 
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
@@ -156,19 +189,26 @@ class API extends Component {
                             <DropdownMenu>
                                 {methods.map((method, i) => {
                                     if(method === this.state.node.extras.method){
-                                        return <DropdownItem disabled>{method}</DropdownItem>
+                                        return <DropdownItem key={i} disabled>{method}</DropdownItem>
                                     }else{
-                                        return <DropdownItem onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
+                                        return <DropdownItem key={i} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
                                     }
                                 })}
                             </DropdownMenu>
                         </ButtonDropdown>
                         </InputGroupText>
                     </InputGroupAddon>
-                    <Input
-                        value={this.state.node.extras.url}
+                    <VariableInput
+                        raw={this.state.node.extras.url}
+                        variables={this.props.variables}
+                        updateRaw={(raw) => {
+                            let node = this.state.node; 
+                            node.extras.url = raw;
+                            this.setState({
+                                node: node
+                            })
+                        }}
                         placeholder="URL Endpoint"
-                        onChange={(e) => this.handleUpdate('url', e.target.value)}
                     />
                 </InputGroup>
                 <hr/>
@@ -188,15 +228,18 @@ class API extends Component {
                     </NavItem>
                 </Nav>
 
-                {pairContent}
+                {this.state.type === 'body' ? bodyInputNavTabs : null}
+
+                { (this.state.type === 'body' && this.state.node.extras.bodyInputType === 'rawInput') ? rawBodyInput : pairContent}
                 <hr/>
 
-                <label>Variable Mapping</label>
+                <label>VARIABLE MAPPING</label>
                 <APIMapping
                     pairs={this.state.node.extras.mapping}
                     onAdd={() => this.handleAddPairMapping()}
                     onRemove={(e, i) => this.handleRemovePairMapping(i)}
                     onChange={this.handleKVMappingChange}
+                    variables={this.state.variables}
                 />
 
             </React.Fragment>

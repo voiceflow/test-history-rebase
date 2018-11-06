@@ -728,6 +728,8 @@ class StoryBoard extends Component {
                     method: 'GET',
                     headers: [],
                     body: [],
+                    rawContent: '',
+                    bodyInputType: 'keyValue',
                     params: [],
                     mapping: [],
                     success_id: '',

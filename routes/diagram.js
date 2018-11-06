@@ -553,6 +553,30 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: links[nextLink]
                     }
                 } else if (node.extras.type === 'api') {
+
+                    let formattedRawContent;
+                    formattedRawContent = draftToMarkdown(node.extras.rawContent, {
+                        entityItems: {
+                            VARIABLE: {
+                                open: entity => {
+                                    return "' + v['"
+                                },
+                                close: entity => {
+                                    return "'] + '"
+                                }
+                            },
+                            '{mention': {
+                                open: entity => {
+                                    return "' + v['"
+                                },
+                                close: entity => {
+                                    return "'] + '"
+                                }
+                            }
+                        }
+                    });
+                    formattedRawContent = "'" + formattedRawContent + "'";
+
                     story.lines[node.id] = {
                         body: node.extras.body,
                         headers: node.extras.headers,
@@ -560,9 +584,12 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         url: node.extras.url,
                         method: node.extras.method,
                         mapping: node.extras.mapping,
+                        bodyInputType: node.extras.bodyInputType,
+                        rawContent: formattedRawContent,
                         success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
                         fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                     };
+                    console.log("DIAGRAM NODE EXTRAS", node.extras.rawContent, formattedRawContent);
 
                 } else {
                     let nextLink = null;

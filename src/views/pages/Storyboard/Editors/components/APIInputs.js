@@ -21,17 +21,17 @@ class APIInputs extends Component {
         return (
             <React.Fragment>
                 <div>
-                    {Array.isArray(this.state.pairs) ? this.state.pairs.map((choice, i) => {
+                    {Array.isArray(this.state.pairs) ? this.state.pairs.map((pair, i) => {
                         return (
-                            <div key={i} className="mb-2">
+                            <div key={pair.index} className="mb-2">
                                 <InputGroup>
                                     <InputGroupAddon addonType="prepend">
                                         <InputGroupText>
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <VariableInput placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={this.state.pairs[i]['key']}/>
-                                    <VariableInput placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={this.state.pairs[i]['val']}/>
+                                    <VariableInput className="form-control" placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={pair.key}/>
+                                    <VariableInput className="form-control" placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={pair.val}/>
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
                                             <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>

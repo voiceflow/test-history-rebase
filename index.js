@@ -22,6 +22,7 @@ const Review = require('./routes/review.js');
 const Authentication = require('./routes/authentication');
 const Code = require('./config/codes.js');
 const Decode = require('./routes/decode.js');
+const Marketplace = require('./routes/marketplace.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -136,6 +137,8 @@ app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 // app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
 // app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
+
+app.get('/marketplace/', ensureLoggedIn(), Marketplace.getModules);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

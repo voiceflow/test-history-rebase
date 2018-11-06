@@ -234,6 +234,9 @@ class Menu extends PureComponent {
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
+                        <a className="tool no-underline" href="/marketplace" rel="noopener noreferrer">
+                            <i className="fas fa-store-alt"/>
+                        </a>
                         <a className="tool no-underline" href="https://getstoryflow.com/storyschool" 
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>

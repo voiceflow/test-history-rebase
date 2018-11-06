@@ -1,19 +1,73 @@
 import React, { Component } from 'react';
+import Module from './Module';
+import BannerCarousel from './BannerCarousel';
+import Masonry from 'react-masonry-component';
+import './Marketplace.css';
+import { ButtonGroup, Button } from 'reactstrap';
+
+import axios from 'axios';
 
 class Marketplace extends Component {
-	constructor(props){
-		super(props);
+    constructor(props) {
+        super(props);
 
-		console.log("Yeet");
-	}
+        this.state = {
+            modules: [],
+            loading: false
+        }
 
-	render() {
-		return (
-			<div>
-				HWHEHEHHE
-			</div>
-		)
-	}
+        this.onLoadModules = this.onLoadModules.bind(this);
+    }
+
+    componentDidMount() {
+        this.onLoadModules();
+    }
+
+    onLoadModules() {
+        axios.get('/marketplace')
+        .then(res => {
+            this.setState({
+                modules: res.data,
+                loading: false
+            });
+        })
+        .catch( error => {
+            console.log(error);
+        });
+    }
+
+    //TODO: change the modules given to BannerCarousel to banner modules
+    //onLoadBannerModules
+
+    render() {
+        return (
+            <div className='Window'>
+
+
+                <div className="sidenav">
+                    <ButtonGroup vertical>
+                        <Button>Real Shit?</Button>
+                        <Button>For Real</Button>
+                        <Button>Yayayayaya</Button>
+                    </ButtonGroup>
+                </div>
+
+                <div className="marketplace-main">
+                    <BannerCarousel
+                        modules={this.state.modules}
+                    />
+                    <Masonry elementType='div' className="skills-container">
+                        {this.state.modules.map((module, i) => 
+                            <Module
+                                key={i}
+                                module={module}
+                            />
+                        )}
+                    </Masonry>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Marketplace;

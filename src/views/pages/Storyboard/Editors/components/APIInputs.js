@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import VariableInput from './VariableInput';
 
 class APIInputs extends Component {

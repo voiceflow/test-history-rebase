@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import createSingleLinePlugin from 'draft-js-single-line-plugin';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { EditorState, convertFromRaw, convertToRaw, SelectionState } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 
 import 'draft-js-mention-plugin/lib/plugin.css';
@@ -56,40 +56,70 @@ class VariableInput extends Component {
     };
 
     onAddMention = () => {
-        if(this.editor){
-            // IVE SPENT 2 HOURS ON THIS
-            // console.dir(this.editor)
-            // this.editor.editor.blur();
-            // this.editor.editor.focus();
-            // this.editor.editor._handler.onKeyDown(this.editor.editor,{
-            //     which: 40,
-            //     code: 'ArrowDown',
-            //     key: 'ArrowDown',
-            //     preventDefault: ()=>{console.log("preventDefault")}
+        if(!this.editor) return;
+
+        setTimeout(() => {
+            let e = new Event('keypress', {
+                bubbles: true,
+                which: 65,
+                code: 'KeyA',
+                key: 'a'
+            });
+
+            console.log(e);
+
+            console.dir(this.editor);
+
+            this.editor.editor.editorContainer.dispatchEvent(e);
+            this.editor.editor.editor.dispatchEvent(e);
+
+            this.editor.editor._handler.onKeyDown(this.editor.editor, e);
+            this.editor.editor._onKeyDown(e);
+            this.editor.editor._onKeyPress(e);
+
+            // const editorState = this.state.editorState;
+            // const contentState = editorState.getCurrentContent();
+            // const selectionState = editorState.getSelection();
+            // const anchorKey = selectionState.getStartKey();
+            // const offSet = selectionState.getStartOffset();
+
+            // const selection = editorState.getSelection();
+            // const text = Modifier.insertText(contentState, selection, ' ');
+            // const es = EditorState.push(editorState, text, 'insert-fragment');
+            // this.setState({
+            //     editorState: EditorState.acceptSelection(
+            //         editorState,
+            //         new SelectionState({
+            //             anchorKey: currentContentBlock.getKey(),
+            //             anchorOffset: 0,
+            //             focusKey: currentContentBlock.getKey(),
+            //             focusOffset: 0,
+            //             isBackward: false
+            //         })
+            //     )
             // });
-            // this.editor.editor._handler.onKeyDown(this.editor.editor,{
-            //     which: 65,
-            //     code: 'KeyA',
-            //     key: 'a',
-            //     preventDefault: ()=>{console.log("preventDefault")}
+
+            // const afterSelectionMove = EditorState.acceptSelection(
+            //     editorState,
+            //     new SelectionState({
+            //         anchorKey: anchorKey,
+            //         anchorOffset: offSet,
+            //         focusKey: anchorKey,
+            //         focusOffset: offSet,
+            //         isBackward: false
+            //     })
+            // )
+
+            // const final = EditorState.forceSelection(
+            //     afterSelectionMove,
+            //     afterSelectionMove.getSelection()
+            // )
+
+            // this.setState({
+            //     editorState: final
             // });
-            // this.editor.editor._onKeyDown({
-            //     which: 65,
-            //     code: 'KeyA',
-            //     key: 'a',
-            //     preventDefault: ()=>{console.log("preventDefault")}
-            // });
-            // this.editor.editor.props.handleKeyCommand({
-            //     which: 40,
-            //     code: 'ArrowDown',
-            //     key: 'ArrowDown',
-            //     preventDefault: ()=>{console.log("preventDefault")}
-            // }, this.state.editorState);
-            // this.setState({editorState: this.state.editorState});
-            // let currentState = this.state.editorState;
-            // var selectionState = this.state.editorState.getSelection();
-            // this.setState({editorState: EditorState.forceSelection(currentState, selectionState)});
-        }
+
+        }, 0);
     }
 
     render() {

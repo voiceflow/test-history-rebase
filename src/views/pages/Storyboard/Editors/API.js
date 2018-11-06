@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Nav, NavItem, NavLink, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
 import VariableText from './components/VariableText';
@@ -71,7 +71,7 @@ class API extends Component {
     handleAddPair(type){
         var node = this.state.node;
         node.extras[type].push({
-            index: randomstring.generate(7),
+            index: randomstring.generate(10),
             key: '',
             val: ''
         });
@@ -82,12 +82,9 @@ class API extends Component {
     }
 
     handleRemovePair(type, i) {
-        console.log(type);
         let node = this.state.node;
-        // console.log(JSON.stringify(node.extras[type].map(e=>e.key.blocks[0].text)));
         node.extras[type].splice(i, 1);
-        // console.log(JSON.stringify(node.extras[type].map(e=>e.key.blocks[0].text)));
-
+        
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -181,24 +178,20 @@ class API extends Component {
                     URL Endpoint
                 </label>
                 <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                        <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                            <DropdownToggle caret color="link" className="link-button">
-                              {this.state.node.extras.method}
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                {methods.map((method, i) => {
-                                    if(method === this.state.node.extras.method){
-                                        return <DropdownItem key={i} disabled>{method}</DropdownItem>
-                                    }else{
-                                        return <DropdownItem key={i} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
-                                    }
-                                })}
-                            </DropdownMenu>
-                        </ButtonDropdown>
-                        </InputGroupText>
-                    </InputGroupAddon>
+                    <InputGroupButtonDropdown addonType="prepend" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                        <DropdownToggle caret>
+                          {this.state.node.extras.method}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {methods.map((method, i) => {
+                                if(method === this.state.node.extras.method){
+                                    return <DropdownItem key={i} disabled>{method}</DropdownItem>
+                                }else{
+                                    return <DropdownItem key={i} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
+                                }
+                            })}
+                        </DropdownMenu>
+                    </InputGroupButtonDropdown>
                     <VariableInput
                         className='form-control'
                         raw={this.state.node.extras.url}

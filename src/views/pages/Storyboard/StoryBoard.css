@@ -52,13 +52,13 @@
     margin-top: 0px;*/
 }
 
-.Menu .saved{
-    margin-top: 60px;
+/*.Menu .saved{
+    margin-top: 70px;
     font-size: 11px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     color: #C5D6Ed;
 }
-
+*/
 .Menu hr{
     width: 100%;
     margin-top: 0px;
@@ -373,7 +373,7 @@
     z-index: 5;
     width: 240px;
     height: 100%;
-    padding: 0px 20px 120px 20px;
+    padding: 60px 20px 120px 20px;
     overflow: scroll;
     /*opacity: 0.9;*/
     /*text-align: center;*/

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap';
+import VariableInput from './VariableInput';
 
 class APIInputs extends Component {
     constructor(props) {
@@ -29,8 +30,8 @@ class APIInputs extends Component {
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input placeholder="key" onChange={e => this.props.onChange(e, i, 'key')} value={this.state.pairs[i]['key']}/>
-                                    <Input placeholder="value" onChange={e => this.props.onChange(e, i, 'val')} value={this.state.pairs[i]['val']}/>
+                                    <VariableInput placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={this.state.pairs[i]['key']}/>
+                                    <VariableInput placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={this.state.pairs[i]['val']}/>
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
                                             <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>

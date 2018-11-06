@@ -33,7 +33,7 @@ class APIMapping extends Component {
                                     <Input placeholder="object path" onChange={e => this.props.onChange(e.target.value, i, 'path')} value={this.state.pairs[i]['path']}/>
                                     <Select
                                         classNamePrefix="variable-box"
-                                        placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
+                                        placeholder="Variable"
                                         className="variable-box"
                                         value={this.state.pairs[i]['var'] ? {value: this.state.pairs[i]['var'], label: this.state.pairs[i]['var']} : null}
                                         onChange={e => this.props.onChange(e.value, i, 'var')} 

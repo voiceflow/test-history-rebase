@@ -7,25 +7,6 @@ import Editor from 'draft-js-plugins-editor';
 
 import 'draft-js-mention-plugin/lib/plugin.css';
 
-const mentionPlugin = createMentionPlugin({
-    supportWhitespace: false,
-    entityMutability: 'IMMUTABLE',
-    mentionTrigger: '{',
-    mentionRegExp: '[\\w_-]*',
-    mentionPrefix: '{',
-    mentionSuffix: '}',
-    mentionComponent: (mentionProps) => (
-        <span className='variable-block'>
-          {mentionProps.children}
-        </span>
-    )
-});
-const singleLinePlugin = createSingleLinePlugin({
-    stripEntities: false
-});
-const plugins = [mentionPlugin, singleLinePlugin];
-const { MentionSuggestions } = mentionPlugin;
-
 class VariableInput extends Component {
 
     constructor(props) {
@@ -35,11 +16,31 @@ class VariableInput extends Component {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
             suggestions: this.props.variables.map(v => {return {name: v}})
         };
+
+        this.mentionPlugin = createMentionPlugin({
+            supportWhitespace: false,
+            entityMutability: 'IMMUTABLE',
+            mentionTrigger: '{',
+            mentionRegExp: '[\\w_-]*',
+            mentionPrefix: '{',
+            mentionSuffix: '}',
+            mentionComponent: (mentionProps) => (
+                <span className='variable-block'>
+                  {mentionProps.children}
+                </span>
+            )
+        });
+
+        this.singleLinePlugin = createSingleLinePlugin({
+            stripEntities: false
+        });
+
+        this.onAddMention = this.onAddMention.bind(this);
     }
 
-    componentWillUnmount(){
-        this.props.updateRaw(convertToRaw(this.state.editorState.getCurrentContent()));
-    }
+    // componentWillUnmount(){
+        // this.props.updateRaw(convertToRaw(this.state.editorState.getCurrentContent()));
+    // }
 
     onSearchChange = ({ value }) => {
         this.setState({
@@ -55,25 +56,64 @@ class VariableInput extends Component {
     };
 
     onAddMention = () => {
-        // get the mention object selected
+        if(this.editor){
+            // IVE SPENT 2 HOURS ON THIS
+            // console.dir(this.editor)
+            // this.editor.editor.blur();
+            // this.editor.editor.focus();
+            // this.editor.editor._handler.onKeyDown(this.editor.editor,{
+            //     which: 40,
+            //     code: 'ArrowDown',
+            //     key: 'ArrowDown',
+            //     preventDefault: ()=>{console.log("preventDefault")}
+            // });
+            // this.editor.editor._handler.onKeyDown(this.editor.editor,{
+            //     which: 65,
+            //     code: 'KeyA',
+            //     key: 'a',
+            //     preventDefault: ()=>{console.log("preventDefault")}
+            // });
+            // this.editor.editor._onKeyDown({
+            //     which: 65,
+            //     code: 'KeyA',
+            //     key: 'a',
+            //     preventDefault: ()=>{console.log("preventDefault")}
+            // });
+            // this.editor.editor.props.handleKeyCommand({
+            //     which: 40,
+            //     code: 'ArrowDown',
+            //     key: 'ArrowDown',
+            //     preventDefault: ()=>{console.log("preventDefault")}
+            // }, this.state.editorState);
+            // this.setState({editorState: this.state.editorState});
+            // let currentState = this.state.editorState;
+            // var selectionState = this.state.editorState.getSelection();
+            // this.setState({editorState: EditorState.forceSelection(currentState, selectionState)});
+        }
     }
 
     render() {
+        const { MentionSuggestions } = this.mentionPlugin;
+        const plugins = [this.mentionPlugin, this.singleLinePlugin];
+
         return (
-            <div className="variable-input-field">
-                <Editor
-                    plugins={plugins}
-                    editorState={this.state.editorState}
-                    onChange={this.onChange}
-                    placeholder='What would you like to say...'
-                    blockRenderMap={singleLinePlugin.blockRenderMap}
-                />
+            <React.Fragment>
+                <div className={`variable-input-field ${this.props.className}`}>
+                    <Editor
+                        plugins={plugins}
+                        editorState={this.state.editorState}
+                        onChange={this.onChange}
+                        placeholder={this.props.placeholder}
+                        blockRenderMap={this.singleLinePlugin.blockRenderMap}
+                        ref={(element) => { this.editor = element; }}
+                    />
+                </div>
                 <MentionSuggestions
                   onSearchChange={this.onSearchChange}
                   suggestions={this.state.suggestions}
                   onAddMention={this.onAddMention}
                 />
-            </div>
+            </React.Fragment>
         );
     }
 }

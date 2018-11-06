@@ -33,6 +33,7 @@ class TestModal extends React.Component {
       nodes: [],
       story_state: default_state(),
       ended: false,
+      last_diagram: ""
     }
 
     this.updateState = this.updateState.bind(this);
@@ -176,6 +177,7 @@ class TestModal extends React.Component {
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
+    // winstonc
     let local = true;
     let url = local ? "http://localhost:4000/state/test" : "https://testing.getstoryflow.com/state/test"
 
@@ -191,6 +193,14 @@ class TestModal extends React.Component {
       if(res.output && res.output.length > 0){
         // TYLER'S SUPER JANKY AUDIO THING
 
+        if (res.diagrams.length > 0) {
+          const current_diagram = res.diagrams[res.diagrams.length-1]['id'];
+          this.setState({
+            last_diagram: current_diagram
+          })
+        }
+        const vars = res.diagram_states[this.state.last_diagram];
+        console.log(vars.variables);
         let dom = parse('<speak>' + res.output + '</speak>');
 
         if(dom && dom.length > 0 && dom[0].type === 'tag' && 

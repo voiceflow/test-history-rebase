@@ -17,6 +17,7 @@
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "randomstring": "^1.1.5",
     "react": "^16.5.2",
     "react-autosize-textarea": "^5.0.0",
     "react-chartkick": "^0.3.0",

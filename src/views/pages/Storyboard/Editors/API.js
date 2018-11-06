@@ -4,6 +4,7 @@ import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
 import VariableText from './components/VariableText';
 import VariableInput from './components/VariableInput';
+import randomstring from 'randomstring';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -70,10 +71,10 @@ class API extends Component {
     handleAddPair(type){
         var node = this.state.node;
         node.extras[type].push({
+            index: randomstring.generate(7),
             key: '',
             val: ''
         });
-        node.extras.inputs = node.extras[type];
 
         this.setState({
             node: node
@@ -81,19 +82,20 @@ class API extends Component {
     }
 
     handleRemovePair(type, i) {
+        console.log(type);
         let node = this.state.node;
-
+        // console.log(JSON.stringify(node.extras[type].map(e=>e.key.blocks[0].text)));
         node.extras[type].splice(i, 1);
-        node.extras.inputs = node.extras[type];
+        // console.log(JSON.stringify(node.extras[type].map(e=>e.key.blocks[0].text)));
 
         this.setState({
             node: node
         }, this.props.onUpdate);
     }
 
-    handleKVChange(e, i, inputType) {
+    handleKVChange(raw, i, inputType) {
         var node = this.state.node;
-        node.extras[this.state.type][i][inputType] = e.target.value;
+        node.extras[this.state.type][i][inputType] = raw;
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -105,7 +107,6 @@ class API extends Component {
             path: '',
             var: ''
         });
-        node.extras.inputs = node.extras.mapping;
 
         this.setState({
             node: node
@@ -115,7 +116,7 @@ class API extends Component {
     handleRemovePairMapping(i) {
         let node = this.state.node;
         node.extras.mapping.splice(i, 1);
-        node.extras.inputs = node.extras.mapping;
+
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -132,6 +133,7 @@ class API extends Component {
     render() {
         let pairContent = 
             <APIInputs
+                key={this.state.type}
                 type={this.state.type}
                 pairs={this.state.node.extras[this.state.type]}
                 variables={this.props.variables}
@@ -176,9 +178,8 @@ class API extends Component {
         return (
             <React.Fragment>
                 <label>
-                    METHOD
+                    URL Endpoint
                 </label>
-
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>
@@ -199,6 +200,7 @@ class API extends Component {
                         </InputGroupText>
                     </InputGroupAddon>
                     <VariableInput
+                        className='form-control'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
                         updateRaw={(raw) => {

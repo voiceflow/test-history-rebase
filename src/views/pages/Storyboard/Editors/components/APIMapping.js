@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap';
+import Select from 'react-select';
 
 class APIMapping extends Component {
     constructor(props) {
@@ -29,8 +30,17 @@ class APIMapping extends Component {
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input placeholder="object path" onChange={e => this.props.onChange(e, i, 'path')} value={this.state.pairs[i]['path']}/>
-                                    <Input placeholder="flow variable" onChange={e => this.props.onChange(e, i, 'var')} value={this.state.pairs[i]['var']}/>
+                                    <Input placeholder="object path" onChange={e => this.props.onChange(e.target.value, i, 'path')} value={this.state.pairs[i]['path']}/>
+                                    <Select
+                                        classNamePrefix="variable-box"
+                                        placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
+                                        className="variable-box"
+                                        value={this.state.pairs[i]['var'] ? {value: this.state.pairs[i]['var'], label: this.state.pairs[i]['var']} : null}
+                                        onChange={e => this.props.onChange(e.value, i, 'var')} 
+                                        options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
+                                            return {label: variable, value: variable}
+                                        }) : null}
+                                    />
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
                                             <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>

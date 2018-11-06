@@ -726,8 +726,14 @@ class StoryBoard extends Component {
                 node.extras = {
                     url: '',
                     method: 'GET',
-                    inputs: [],
-                    outputs: []
+                    headers: [],
+                    body: [],
+                    rawContent: '',
+                    bodyInputType: 'keyValue',
+                    params: [],
+                    mapping: [],
+                    success_id: '',
+                    failure_id: ''
                 };
             } else if (type === 'capture') {
                 node.addInPort(' ');

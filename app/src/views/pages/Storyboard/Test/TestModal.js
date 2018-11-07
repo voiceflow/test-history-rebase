@@ -198,9 +198,8 @@ class TestModal extends React.Component {
             last_diagram: current_diagram
           })
         }
-        const vars = res.diagram_states[this.state.last_diagram];
-        console.log(vars.variables);
-        let dom = parse('<speak>' + res.output + '</speak>');
+        console.log(res.debugVars, res.output);
+        let dom = parse('<speak>' + res.output + '</speak><debug>' + res.debugVars + '</debug>');
 
         if(dom && dom.length > 0 && dom[0].type === 'tag' && 
           dom[0].name === 'speak' && dom[0].children){

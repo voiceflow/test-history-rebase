@@ -2,7 +2,41 @@
     width: 100vw;
     height: 100vh;
 }
-
+.btn-primary{
+    background-color: #455AFB;
+    border: 1px solid #455AFB;
+    color: #fff;
+}
+.btn-primary:hover{
+    background-color: #3a4ff2;
+    border: 1px solid #3a4ff2;
+}
+.nav-tabs .nav-link.active{
+    background-color: #455AFB;
+    border: 1px solid #455AFB;
+    border-bottom: #414552;
+    color: #fff;
+}
+.nav-tabs .nav-link.active:hover{
+    background-color: #3a4ff2;
+    border: 1px solid #3a4ff2;
+}
+.nav-link{
+    color: #95a6bd;
+    
+}
+.nav-link:hover{
+    color: #95a6bd;    
+}
+.nav-tabs{
+    border-bottom: 1px solid #414552;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+    color: #fff;
+    
+    
+    
+}
 .templates {
     font-size: 1rem;
     color: #CCC;
@@ -54,13 +88,13 @@
     margin-top: 0px;*/
 }
 
-.Menu .saved{
-    margin-top: 100px;
+/*.Menu .saved{
+    margin-top: 70px;
     font-size: 11px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     color: #C5D6Ed;
 }
-
+*/
 .Menu hr{
     width: 100%;
     margin-top: 0px;
@@ -159,6 +193,10 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     font-size: 16px;
     height: 26px;
     margin-left: 10px;
+}
+.draftJsMentionPlugin__mentionSuggestionsEntryFocused__3LcTd{
+    background-color: #4865E9;
+    color:#fff;
 }
 
 .TitleBar .title-group {
@@ -569,7 +607,9 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
  
 }
 .App .Menu #sidebar .MenuItem.api:hover {
-    background-color: #EFF5FF
+    background-color: #555D6D;
+    color: #fff;
+    
 } .MenuItem.api>.MenuIcon {
     background-color: #555D6D;
     color: #fff;
@@ -850,7 +890,7 @@ label {
     overflow: hidden;
     padding: 3px 0px 0px 0px;
     font-family: inherit;
-    color: #545D6D;
+    color: #95a6bd;
     border-radius: 2px;
     min-width: 90px;
     -webkit-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
@@ -868,7 +908,7 @@ label {
 }
 
 .srd-default-node.api{
-    background-color: #F48FB1;
+    background-color: #1e1e1e;
 }
 
 .srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline{
@@ -887,6 +927,7 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
 .srd-default-node>.srd-default-node__title {
     background-color: #2B2E3C;
     padding: 5px 0;
+    color: #95a6bd;
 }
 
 .srd-default-node>.srd-default-node__ports {
@@ -1040,7 +1081,9 @@ button.close{
 #label:focus{
     outline: 0;
     box-shadow: 0;
-    border-color: #fff;
+    border-color: #95a6bd !important;
+    color: #95a6bd !important;
+    
 }
 .delete-block{
     padding: 2px 9px;
@@ -1258,6 +1301,28 @@ button.close{
     margin-bottom: 10px;
     /*margin-top: 20px;*/
 }
+.variable-input-field ::-webkit-scrollbar { 
+    display: none;
+}
+
+.variable-input-field {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    height: auto !important
+    /*overflow-x: auto;*/
+    /*overflow-y: hidden;*/
+}
+.variable-input-field .public-DraftStyleDefault-block {
+    display: flex;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    overflow-x: auto;
+    white-space: pre;
+    /*display: inline-block;*/
+}
+.DraftEditor-editorContainer, .DraftEditor-root, .public-DraftEditor-content{
+    height: auto;
+}
 .variable-group>.variable-box {
     max-width: 180px;
     margin-right: 5px;
@@ -1423,6 +1488,10 @@ button.close{
 
 .editor :global(.public-DraftEditor-content) {
   min-height: 88px;
+}
+
+.input-group .variable-box__control {
+    border-radius: 0 !important;
 }
 
 @media(max-width: 1400px){

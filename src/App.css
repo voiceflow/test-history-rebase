@@ -62,7 +62,7 @@ button:focus{
     outline: none;
 }
 .text-dark {
-    color: #545D6D !important;
+    color: #94A6BD !important;
 }
 .horizontal-center {
     display: flex;
@@ -85,8 +85,10 @@ button:focus{
 }
 .close{
     font-weight: normal;
-    color: #95a6bd;
+    color: #95a6bd !important;
     text-shadow: none;
+    opacity: .99 !important;
+    
 }
 .close:hover{
     color: #fff !important;
@@ -95,6 +97,18 @@ button:focus{
 .normal-btn{
     text-transform: none !important;
     color: #94A6BD !important;
+
+}
+
+.skill-card a.no-underline>button{
+    background-color: #ffffff14;
+/*    border: 0.2px solid #fff;*/
+    margin-left: 5px;
+}
+.skill-card a.no-underline>button:hover{
+    background-color: #4865e9;
+/*    border: 1px solid #4865e9;*/
+    color: #FFF !important;
 }
 .no-underline{
     text-decoration: none !important;
@@ -151,7 +165,7 @@ input, textarea, .text-to-voice, .choice-block {
     border: 1px solid #525969;
     border-radius: 3px;
 }
-input::placeholder, textarea::placeholder {
+input::placeholder, textarea::placeholder, .public-DraftEditorPlaceholder-inner {
 /*    font-weight: lighter !important;*/
     color:#95a6bd87 !important;
 }
@@ -332,7 +346,7 @@ input::placeholder, textarea::placeholder {
 }
 
 .text-muted {
-    color: #545A69 !important;
+    color: #95a6bd70 !important;
 }
 
 .super-center {

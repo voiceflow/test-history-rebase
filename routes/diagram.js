@@ -306,6 +306,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 skill_id: skill_id,
                 name: data.Item.title,
                 lines: {},
+                variables: data.Item.variables,
                 commands: []
             };
 

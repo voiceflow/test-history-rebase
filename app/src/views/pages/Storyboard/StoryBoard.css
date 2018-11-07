@@ -1233,6 +1233,11 @@ button.close{
     margin-right: 5px;
 }
 
+.variable_tag.default{
+    background-color: #B39DDB;
+    padding: 3px 7px;
+}
+
 .new_var {
     background-color: #6A1B9A;
     color: #E1BEE7;

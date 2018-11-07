@@ -26,6 +26,7 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
+const defaultVariables = ['sessions', 'user_id', 'timestamp']
 
 const generateID = () => {
     return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -74,7 +75,7 @@ class StoryBoard extends Component {
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
-        let variables = [];
+        let variables = defaultVariables.slice(0);
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
@@ -345,9 +346,13 @@ class StoryBoard extends Component {
             engine.stopMove();
             engine.setDiagramModel(model);
 
-            let variables = []
-            if (diagram.variables) {
-                variables = diagram.variables;
+            let variables = defaultVariables.slice(0);
+            if (Array.isArray(diagram.variables)) {
+                diagram.variables.forEach(v => {
+                    if(!variables.includes(v)){
+                        variables.push(v);
+                    }
+                });
             }
 
             this.setState({
@@ -581,7 +586,7 @@ class StoryBoard extends Component {
             var diagram = {
                 id: id,
                 title: 'New Flow',
-                variables: [],
+                variables: defaultVariables.slice(0),
                 data: data,
                 skill: skill_id
             }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Clipboard from 'react-clipboard.js';
+import Clipboard from './ClipBoardSource';
 import { Tooltip } from 'reactstrap';
 
 class ClipBoard extends Component {
@@ -9,32 +9,41 @@ class ClipBoard extends Component {
     this.toggle = this.toggle.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.state = {
-      tooltipOpen: false
+      tooltipOpen: false,
+      copied: false
     };
   }
 
   toggle() {
     this.setState({
-      tooltipOpen: false
+      tooltipOpen: !this.state.tooltipOpen,
+      copied: false
     });
   }
 
   onSuccess() {
     this.setState({
-    	tooltipOpen: true
+    	tooltipOpen: true,
+      copied: true
     })
   }
 
   render() {
     return (
-      <div id={this.props.id} style={{cursor: "pointer"}}>
-      	<Clipboard data-clipboard-text={this.props.value} onSuccess={this.onSuccess} component="p" className="mb-0">
-	        {this.props.value}
+      <React.Fragment>
+      	<Clipboard
+          id={this.props.id}
+          style={{cursor: "pointer"}}
+          data-clipboard-text={this.props.value} 
+          onSuccess={this.onSuccess} 
+          component={this.props.component} 
+          className={this.props.className}>
+            {this.props.children}
       	</Clipboard>
-        <Tooltip placement="left" isOpen={this.state.tooltipOpen} target={this.props.id} toggle={this.toggle}>
-          Copied!
+        <Tooltip placement="bottom" isOpen={this.state.tooltipOpen} target={this.props.id} toggle={this.toggle}>
+          {this.state.copied ? 'Copied!' : 'Copy to Clipboard'}
         </Tooltip>
-      </div>
+      </React.Fragment>
     );
   }
 }

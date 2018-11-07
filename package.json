@@ -21,7 +21,6 @@
     "react": "^16.5.2",
     "react-autosize-textarea": "^5.0.0",
     "react-chartkick": "^0.3.0",
-    "react-clipboard.js": "^2.0.1",
     "react-countup": "^4.0.0-alpha.6",
     "react-datepicker": "^1.7.0",
     "react-dom": "^16.5.2",

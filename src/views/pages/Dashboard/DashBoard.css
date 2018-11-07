@@ -24,9 +24,11 @@
 .success-text {
   padding-top: 100px;
 }
+/*
 .MuiCardContent-root-234{
     background-color: aqua;
 }
+*/
 
 .banner {
     flex-direction: row;
@@ -43,6 +45,10 @@
     background-position: 102% 125%, 0px 80%, 0px 0px;
     background-repeat: no-repeat, no-repeat, repeat;
     text-align: center;
+}
+.card{
+    background-color: #2b2e3d;
+    border: none;
 }
 .close-absolute {
 	position: absolute;
@@ -263,14 +269,14 @@
     padding: 10px;
 }
 .skill-card{
-    background: #fff;
+    background-color: #2B2E3C !important;
 /*    border: 1px solid #E2E9EC;*/
     transition-duration: 172ms;
     will-change: transform, box-shadow;
     -webkit-box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
 -moz-box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
 box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
-    background-color: #ffffff !important;
+/*    background-color: #ffffff !important;*/
     border-radius: 6px !important;
     overflow: hidden;
 }
@@ -282,7 +288,7 @@ box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
     -webkit-box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54);
 -moz-box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54);
 box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54);
-    background-color: #ffffff !important;
+/*    background-color: #ffffff !important;*/
     transform: translateY(-2px);
     color: inherit;
 }

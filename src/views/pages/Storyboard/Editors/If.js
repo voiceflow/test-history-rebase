@@ -98,7 +98,7 @@ class IfBlock extends Component {
                                 : null 
                             }
                             <div className="variable-group">
-                                <div className="square-bubble mr-1">{i + 1}</div><span>If </span>
+                                <div className="square-bubble mr-1">{i + 1}</div><span>{i === 0 ? '' : 'Else '} If </span>
                             </div>
                             { show ? <Expressionfy expression={expression} />:null}
                             <Expression expression={expression} variables={this.props.variables} onUpdate={this.onUpdate}/>

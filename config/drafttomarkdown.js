@@ -24,7 +24,6 @@ var orderedListNumber = {},
 
 const _escape = function (word) {
     if (typeof(word) === "string") {
-        word = word.replace(/&/g, 'ampersand');
         // word = word.replace(/</g, '&lt;');
         // word = word.replace(/>/g, '&gt;');
         word = word.replace(/"/g, '\\\"');
@@ -391,6 +390,9 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
         // Similar work has to be done for codeblocks.
       } else {
         // Escaping inline markdown characters
+        if (periods) {
+          character = character.replace(/&/g, 'ampersand');
+        }
         character = _escape(character);
 
         // Special escape logic for blockquotes and heading characters

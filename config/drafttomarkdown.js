@@ -192,17 +192,7 @@ const StyleItems = {
 //
 // Both the open and close methods must exist, even if they simply return an empty string.
 // They should always return a string.
-const EntityItems = {
-  'LINK': {
-    open: function (entity) {
-      return '[';
-    },
-
-    close: function (entity) {
-      return `](${entity.data.url || entity.data.href})`;
-    }
-  }
-}
+const EntityItems = {}
 
 // Bit of a hack - we normally want a double newline after a block,
 // but for list items we just want one (unless it's the _last_ list item in a group.)

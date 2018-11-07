@@ -3,8 +3,9 @@ import { DiagramEngine, DefaultLinkWidget, AbstractLinkFactory } from "storm-rea
 import { BlockLinkModel } from './../models/BlockLinkModel'
 
 export class BlockLinkFactory extends AbstractLinkFactory<BlockLinkModel> {
-	constructor() {
+	constructor(color) {
 		super("default");
+		this.color = color || '#E3E9EE';
 	}
 
 	generateReactWidget(diagramEngine: DiagramEngine, link: BlockLinkModel): JSX.Element {
@@ -23,7 +24,7 @@ export class BlockLinkFactory extends AbstractLinkFactory<BlockLinkModel> {
 			<path
 				className={selected ? widget.bem("--path-selected") : ""}
 				strokeWidth={model.width}
-				stroke={model.color}
+				stroke={this.color}
 				d={path}
 			/>
 		);

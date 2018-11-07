@@ -1327,6 +1327,12 @@ button.close{
     border-radius: 0 !important;
 }
 
+.share-btn {
+    border: none !important;
+    padding: 10px 15px !important;
+    min-width: 0 !important;
+}
+
 @media(max-width: 1400px){
     .TitleBar .title-group{
         top: 60px !important;

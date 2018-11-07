@@ -568,10 +568,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         });
                     }
 
+                    let headers = []
                     if (!_.isNil(node.extras.headers)) {
                         node.extras.headers.forEach(param_map => {
-                            param_map.val = convertToStringForSafeEval(param_map.val);
-                            param_map.key = convertToStringForSafeEval(param_map.key);
+                            if(param_map.val && param_map.key){
+                                headers.push({
+                                    val: convertToStringForSafeEval(param_map.val),
+                                    key: convertToStringForSafeEval(param_map.key)
+                                })
+                            }
                         });
                     }
 
@@ -589,7 +594,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     
                     story.lines[node.id] = {
                         body: node.extras.body,
-                        headers: node.extras.headers,
+                        headers: headers,
                         params: node.extras.params,
                         url: formattedUrl,
                         method: node.extras.method,

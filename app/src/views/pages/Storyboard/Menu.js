@@ -136,7 +136,7 @@ class Menu extends PureComponent {
         let variables = this.props.variables;
         let new_var = this.state.new_var;
         if(isVarName(new_var) && !variables.includes(new_var)){
-            variables.unshift(new_var);
+            variables.push(new_var);
             this.props.onVariable(variables);
             this.setState({
                 new_var: ""

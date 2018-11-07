@@ -176,7 +176,7 @@ class TestModal extends React.Component {
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
-    let local = true;
+    let local = false;
     let url = local ? "http://localhost:4000/state/test" : "https://testing.getstoryflow.com/state/test"
 
     axios.post(url, data)

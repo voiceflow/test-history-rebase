@@ -2,6 +2,7 @@ const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
 const {docClient, pool, hashids} = require('./../services');
+const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
@@ -306,6 +307,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 skill_id: skill_id,
                 name: data.Item.title,
                 lines: {},
+                variables: data.Item.variables,
                 commands: []
             };
 
@@ -552,6 +554,57 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         prompt: true,
                         nextId: links[nextLink]
                     }
+                } else if (node.extras.type === 'api') {
+
+                    let formattedRawContent = '';
+                    if (!_.isNil(node.extras.rawContent)) {
+                        formattedRawContent = convertToStringForSafeEval(node.extras.rawContent);
+                    }
+
+                    if (!_.isNil(node.extras.params)) {
+                        node.extras.params.forEach(param_map => {
+                            param_map.val = convertToStringForSafeEval(param_map.val);
+                            param_map.key = convertToStringForSafeEval(param_map.key);
+                        });
+                    }
+
+                    let headers = []
+                    if (!_.isNil(node.extras.headers)) {
+                        node.extras.headers.forEach(param_map => {
+                            if(param_map.val && param_map.key){
+                                headers.push({
+                                    val: convertToStringForSafeEval(param_map.val),
+                                    key: convertToStringForSafeEval(param_map.key)
+                                })
+                            }
+                        });
+                    }
+
+                    if (!_.isNil(node.extras.body)) {
+                        node.extras.body.forEach(param_map => {
+                            param_map.val = convertToStringForSafeEval(param_map.val);
+                            param_map.key = convertToStringForSafeEval(param_map.key);
+                        });
+                    }
+
+                    let formattedUrl = '';
+                    if (!_.isNil(node.extras.url)) {
+                        formattedUrl = convertToStringForSafeEval(node.extras.url);
+                    }
+                    
+                    story.lines[node.id] = {
+                        body: node.extras.body,
+                        headers: headers,
+                        params: node.extras.params,
+                        url: formattedUrl,
+                        method: node.extras.method,
+                        mapping: node.extras.mapping,
+                        bodyInputType: node.extras.bodyInputType,
+                        rawContent: formattedRawContent,
+                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
+                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                    };
+
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -564,7 +617,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: links[nextLink]
                         }
                     }
-                }
+                } 
             }
             let params = {
                 TableName: `com.getstoryflow.skills.${testing ? 'testing' : 'live'}`,
@@ -626,7 +679,6 @@ const publish = async (req, res) => {
     }
 
     let skill_id = hashids.decode(req.params.skill_id)[0];
-
     let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
 
     res.sendStatus(status);
@@ -642,6 +694,30 @@ const publishTest = async (req, res) => {
 
     res.sendStatus(status);
 };
+
+const convertToStringForSafeEval = function(s) {
+    let formattedStr = draftToMarkdown(s, {
+        entityItems: {
+            VARIABLE: {
+                open: entity => {
+                    return "' + v['"
+                },
+                close: entity => {
+                    return "'] + '"
+                }
+            },
+            '{mention': {
+                open: entity => {
+                    return "' + v['"
+                },
+                close: entity => {
+                    return "'] + '"
+                }
+            }
+        }
+    });
+    return "'" + formattedStr + "'";
+}
 
 module.exports = {
     updateName: updateName,

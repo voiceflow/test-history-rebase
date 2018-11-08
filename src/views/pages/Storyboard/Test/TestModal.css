@@ -1,3 +1,7 @@
+td {
+    padding: 0 15px 0 0;
+}
+
 .message {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -27,6 +31,24 @@
     display: flex;
     flex-direction: column-reverse;
     margin-bottom: 10px;
+}
+
+.debug {
+    background-color: #FF91A4;
+    color: #000000;
+}
+
+.debug-headers {
+    font-weight: bold;
+}
+
+.variable-header {
+    font-weight: bold;
+}
+
+.variables-table {
+    height: 100px;
+    overflow: auto;
 }
 
 .chats {

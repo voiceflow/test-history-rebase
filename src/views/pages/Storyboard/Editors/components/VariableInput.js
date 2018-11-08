@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import createSingleLinePlugin from 'draft-js-single-line-plugin';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 
-import { EditorState, convertFromRaw, convertToRaw, SelectionState } from 'draft-js';
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 
 import 'draft-js-mention-plugin/lib/plugin.css';
@@ -66,12 +66,12 @@ class VariableInput extends Component {
 
             let scroller = document.activeElement.getElementsByClassName("public-DraftStyleDefault-block")[0];
 
-            let width = 0;
-            let elementWidth = scroller.offsetWidth;
+            // let width = 0;
+            // let elementWidth = scroller.offsetWidth;
 
-            scroller.childNodes.forEach(node => {
-                width += node.offsetWidth;
-            })
+            // scroller.childNodes.forEach(node => {
+            //     width += node.offsetWidth;
+            // })
 
             let scrollDistance = (e.name.length + 2) * 9;
 

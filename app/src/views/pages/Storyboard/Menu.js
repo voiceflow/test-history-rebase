@@ -136,7 +136,7 @@ class Menu extends PureComponent {
         let variables = this.props.variables;
         let new_var = this.state.new_var;
         if(isVarName(new_var) && !variables.includes(new_var)){
-            variables.unshift(new_var);
+            variables.push(new_var);
             this.props.onVariable(variables);
             this.setState({
                 new_var: ""
@@ -241,9 +241,13 @@ class Menu extends PureComponent {
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
-                        <a className="tool no-underline" href="https://getstoryflow.com/storyschool" 
+                        <a className="tool no-underline" href="https://intercom.help/flowschool" 
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>
+                        </a>
+                        <a className="tool no-underline" href="https://www.facebook.com/groups/199476704186240/" 
+                        target="_blank" rel="noopener noreferrer">
+                            <i className="fab fa-facebook-f"/>
                         </a>
                         <div className="tool" onClick={this.props.helpModal}>
                             <i className="fas fa-question-circle"/>
@@ -260,7 +264,6 @@ class Menu extends PureComponent {
             </div>
         );
     }
-    // <p className="saved">{this.props.lastSave}</p>
 }
 
 export default Menu;

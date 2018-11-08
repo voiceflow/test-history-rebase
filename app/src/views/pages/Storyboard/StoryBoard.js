@@ -23,10 +23,12 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
+
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
-const defaultVariables = ['sessions', 'user_id', 'timestamp']
+const defaultVariables = ['sessions', 'user_id', 'timestamp'];
+const line_color = '#E3E9EE';
 
 const generateID = () => {
     return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -65,7 +67,7 @@ class StoryBoard extends Component {
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
         engine.registerNodeFactory(new BlockNodeFactory());
-        engine.registerLinkFactory(new BlockLinkFactory());
+        engine.registerLinkFactory(new BlockLinkFactory(line_color));
         engine.registerPortFactory(new BlockPortFactory());
         
         let open, diagram_id, skill_id;
@@ -104,8 +106,13 @@ class StoryBoard extends Component {
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story') {
                     nodes[key].clearListeners();
-                    nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
+            }
+
+            var links = model.getLinks();
+            for (let key in links) {
+                links[key].setColor(line_color);
             }
 
             variables.push('user_name');
@@ -335,12 +342,12 @@ class StoryBoard extends Component {
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story') {
                     nodes[key].clearListeners();
-                    nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
             }
             var links = model.getLinks();
             for (let key in links) {
-                links[key].setColor('#E3E9EE');
+                links[key].setColor(line_color);
             }
             
             engine.stopMove();
@@ -634,12 +641,7 @@ class StoryBoard extends Component {
             return;
         }
 
-        var node;
-        if(type === 'api'){
-            node = new BlockNodeModel('API')
-        }else{
-            node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
-        }
+        var node = type === 'api' ? new BlockNodeModel('API') : new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
 
         if(type){
             if (type === 'choice') {
@@ -803,7 +805,6 @@ class StoryBoard extends Component {
                         testing_info={this.state.testing_info} /> 
                 : null}
                 <Menu 
-                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
                     helpModal={() => this.setState({help: true})}
                     diagrams={this.state.diagrams}
                     current={this.state.diagram_id}
@@ -813,6 +814,7 @@ class StoryBoard extends Component {
                     build={fn => this.buildDiagrams = fn}
                 />
                 <TitleBar
+                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
                     preview={this.preview}
                     title={this.state.diagram_name}
                     skill={this.state.skill}
@@ -824,6 +826,7 @@ class StoryBoard extends Component {
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
                     publish={this.publish}
+                    diagram_id={this.state.diagram_id}
                 />
                 <div
                     id="diagram"

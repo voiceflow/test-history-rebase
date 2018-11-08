@@ -2,6 +2,10 @@
     width: 100vw;
     height: 100vh;
 }
+.select-box{
+/*    background-color: aqua !important;*/
+    color: #95a6bd;
+}
 .btn-primary{
     background-color: #455AFB;
     border: 1px solid #455AFB;
@@ -31,11 +35,10 @@
 .nav-tabs{
     border-bottom: 1px solid #414552;
 }
-.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+.nav-tabs .nav-link, .nav-tabs .nav-link:hover{
     color: #fff;
-    
-    
-    
+/*    background-color: #3A3C4A;*/
+    border: none !important;
 }
 .templates {
     font-size: 1rem;
@@ -388,16 +391,16 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
 }
 
 .btn-secondary{
-    background-color: #3A3C4A;
-    border: none;
-    color: #95a6bd;
-    border: 1px;
+    background-color: #4660F2;
+    border: 1px solid #4660F2;
+    color: #fff;
+    
 }
 
 .btn-secondary:hover{
-    background-color: #474C5B;
-    border: none;
-    color: #95a6bd;
+    background-color: #3a4ff2;
+    border: 1px solid #3a4ff2;
+    color: #fff;
 }
 
 .btn-secondary.disabled{
@@ -418,6 +421,9 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     display: block;
     text-overflow: ellipsis;
     width: 100%;
+}
+.modal-content{
+    background-color: #2B2E3C;
 }
 
 .sub-diagram .diagram-block>.btn-block {
@@ -462,6 +468,23 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     color: #fff;
     cursor: default;
 }*/
+.new-variable-box__control{
+    background-color: #3A3C4A !important;
+    color: #95a6bd !important;
+    border: 1px solid #555D6D !important;
+}
+.new-variable-box__placeholder{
+    color: #95a6bd !important;
+}
+.new-variable-box__dropdown-indicator{
+    color: #95a6bd !important;
+}
+.new-variable-box__indicator-separator{
+    display: none !important;
+}
+.variable-box__indicator-separator{
+   display: none !important; 
+}
 .new_var {
     background-color: #4865E9;
     color: #fff;
@@ -582,6 +605,8 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     display: flex;
     padding: 5px;
     align-items: center;
+    background-color: #333644;
+    box-shadow: none !important;
 }
 .helpMenu.MenuItem>.MenuIcon {
     border-radius: 5px;
@@ -765,7 +790,7 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
 
 .App #Editor label {
     display: inline-block;
-    font-weight: 400;
+    font-weight: 700;
     color: #95a6bd !important;
     margin-bottom: 5px !important;
     border: none;
@@ -867,7 +892,7 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     border-bottom-right-radius: 0;
 }
 .btn-outline-secondary{
-    color: #545D6D;
+    color: #95a6bd;
     background-color: transparent;
     background-image: none;
     border-color: #545D6D !important;
@@ -1039,12 +1064,24 @@ box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
     padding: 2px;
 /*    transition-timing-function: ease;*/ 
 }
+.stage_modal .modal-info>.MUIform>div{
+    background-color: #333644;
+    box-shadow: none;
+}
 
 button.close{
     float: none;
     display: block;
 }
-
+.modal-header{
+    border-bottom: 1px solid #555D6D;
+}
+.modal-footer{
+    border-top: 1px solid #555D6D;
+}
+.rotate .front:after, .rotate .back:after{
+    opacity: 100%;
+}
 .top {
     margin: 10px 0 10px 0;
 }

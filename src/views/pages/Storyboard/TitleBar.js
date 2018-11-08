@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
-// import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
-// import {Link} from 'react-router-dom';
-
-// import axios from 'axios'
+import ClipBoard from './../../components/ClipBoard';
 
 class TitleBar extends PureComponent {
     constructor(props) {
@@ -13,12 +11,14 @@ class TitleBar extends PureComponent {
             dropdownOpen: false,
             projects: false,
             publish: false,
-            diagrams: []
+            diagrams: [],
+            share: false,
         }
 
         this.handleChange = this.handleChange.bind(this);
 
         this.toggle = this.toggle.bind(this);
+        this.toggleShare = this.toggleShare.bind(this);
     }
 
     handleChange(e) {
@@ -35,59 +35,47 @@ class TitleBar extends PureComponent {
         });
     }
 
-                //     <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="main-menu-btn-group">
-                //     <DropdownToggle caret className="main-menu-btn">
-                //       Project
-                //     </DropdownToggle>
-                //     <DropdownMenu>
-                //         <DropdownItem onClick={this.props.onSave}>Save</DropdownItem>
-                //         <UncontrolledDropdown direction="right" isOpen={this.state.projects} toggle={() => { this.setState({ projects : !this.state.projects }); }}>
-                //             <DropdownToggle tag="button" caret className="dropdown-item load-btn">
-                //                 Load
-                //             </DropdownToggle>
-                //             <DropdownMenu className="projects-menu">
-                //                 { this.state.diagrams.length !== 0 ? this.state.diagrams.map(diagram => {
-                //                     return <DropdownItem key={diagram.id} onClick={() => {this.props.onLoadId(diagram.id); this.setState({ dropdownOpen : false })}}>{diagram.title ? diagram.title : diagram.id}</DropdownItem>;
-                //                 }) : <DropdownItem disabled>No Diagrams Saved</DropdownItem> }
-                //             </DropdownMenu>
-                //         </UncontrolledDropdown>
-                //         <DropdownItem onClick={this.props.onTest}>Test&nbsp;&nbsp;<i className="fas fa-flask"></i></DropdownItem>
-                //         <DropdownItem onClick={this.props.publish}>Publish Skill</DropdownItem>
-                //         {
-                //             this.props.admin ? 
-                //             <div>
-                //                 <DropdownItem divider />
-                //                 <DropdownItem onClick={this.props.onLoadLines}>Update User Flow</DropdownItem>
-                //             </div>
-                //             : null
-                //         }
-                //     </DropdownMenu>
-                // </ButtonDropdown>
-
-                //                 <input
-                //     name="story"
-                //     onChange={this.props.onUpdateTitle}
-                //     value={this.props.title}
-                //     placeholder="Diagram Name"
-                // />
-                // <div className="status">
-                //     {this.props.saving ?
-                //         <div><i className="fas fa-sync-alt fa-spin"></i> {"Saving..."}</div>
-                //         :
-                //         (saved)
-                //     }
-                // </div>
+    toggleShare() {
+        this.setState({
+            share: !this.state.share
+        });
+    }
 
     render() {
-        // <DropdownItem onClick={()=>{}}>Submit for Review</DropdownItem>
+        let link = `https://creator.getstoryflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
+        
         return (
             <div className="TitleBar no-select">
                 {this.props.preview ? null : 
                     <div className="title-group">
-                        <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
-                        <MUIButton variant="contained" className="white-btn publish-btn" onClick={this.props.publish}>Publish 
-                            <span className="button-circle"><i className="fab fa-amazon"/></span>
-                        </MUIButton>
+                        <div>
+                            <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
+                            <MUIButton variant="contained" className="white-btn publish-btn mr-2" onClick={this.props.publish}>Publish 
+                                <span className="button-circle"><i className="fab fa-amazon"/></span>
+                            </MUIButton>
+                            <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
+                                <i className="fas fa-share-square"/>
+                            </MUIButton>
+                            <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
+                                <PopoverHeader>Share Link</PopoverHeader>
+                                <PopoverBody>
+                                    <InputGroup>
+                                        <InputGroupAddon addonType="prepend" id="copyShare">
+                                            <ClipBoard 
+                                                component="button" 
+                                                className="btn btn-secondary" 
+                                                value={link}
+                                                id="shareLink"
+                                            >
+                                                <i className="fas fa-copy"/>
+                                            </ClipBoard>
+                                        </InputGroupAddon>
+                                        <Input readOnly value={link}/>
+                                    </InputGroup>
+                                </PopoverBody>
+                            </Popover>
+                        </div>
+                        <div className="last-save text-muted">{this.props.lastSave}</div>
                     </div>
                 }
                 <div className="project">

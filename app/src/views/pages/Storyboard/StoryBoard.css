@@ -20,10 +20,10 @@
     display: flex;
     justify-content: center;
     /*background: rgb(246,249,250);*/
-    background: linear-gradient(180deg, #f6f9fa, rgba(246,249,250,0.9));
-    -webkit-box-shadow: 0px 5px 56px 16px rgba(246,249,250,1);
-    -moz-box-shadow: 0px 5px 56px 16px rgba(246,249,250,1);
-    box-shadow: 0px 5px 56px 16px rgba(246,249,250,1);
+    background: linear-gradient(180deg, #f6f9fa, rgba(246,249,250,0.98));
+    -webkit-box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
+    -moz-box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
+    box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
 }
 .TitleBar-shadow{
     width: 100%;
@@ -52,13 +52,13 @@
     margin-top: 0px;*/
 }
 
-.Menu .saved{
-    margin-top: 2px;
+/*.Menu .saved{
+    margin-top: 70px;
     font-size: 11px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     color: #C5D6Ed;
 }
-
+*/
 .Menu hr{
     width: 100%;
     margin-top: 0px;
@@ -141,6 +141,12 @@
     position: absolute;
     left: 292px;
     top: 12px;
+}
+
+.last-save {
+    font-size: .8rem;
+    padding-left: 0px;
+    padding-top: 5px;
 }
 
 .TitleBar .status {
@@ -373,7 +379,7 @@
     z-index: 5;
     width: 240px;
     height: 100%;
-    padding: 0px 20px 120px 20px;
+    padding: 60px 20px 120px 20px;
     overflow: scroll;
     /*opacity: 0.9;*/
     /*text-align: center;*/
@@ -1045,6 +1051,20 @@ button.close{
     margin-bottom: 5px;
 }
 
+.square-bubble {
+    padding-top: 3px;
+    height: 22px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-align: center;
+    line-height: 18px;
+    border-radius: 3px;
+    background-color: #F1F3F9;
+    color: #94A6BD;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .choice-title span {
     /*padding: 5px 10px 0px 10px;*/
     padding-top: 3px;
@@ -1103,30 +1123,81 @@ button.close{
     overflow: scroll;*/
 }
 
+.set-block {
+    margin-bottom: 10px;
+    padding: 10px;
+    position: relative;
+}
+
 .variable-group {
     display: flex;
     align-items: center;
-    margin-top: 20px;
     margin-bottom: 10px;
+    /*margin-top: 20px;*/
+}
+.variable-input-field ::-webkit-scrollbar { 
+    display: none;
+}
+
+.variable-input-field {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    height: auto !important
+    /*overflow-x: auto;*/
+    /*overflow-y: hidden;*/
+}
+.variable-input-field .public-DraftStyleDefault-block {
+    display: flex;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    overflow-x: auto;
+    white-space: pre;
+    /*display: inline-block;*/
+}
+.DraftEditor-editorContainer, .DraftEditor-root, .public-DraftEditor-content{
+    height: auto;
+}
+.variable-group>.variable-box {
+    max-width: 180px;
+    margin-right: 5px;
+}
+.set-block > .close {
+    line-height: 18px;
 }
 
 .variable-group>span{
     font-weight: bold;
-    margin: 0 10px;
+    margin-right: 5px;
+    margin-left: 2px;
 }
 
 .variable-box {
     flex: 1;
-    z-index: 4;
 }
+/*.variable-block::before{
+    content: '{'
+}
+.variable-block::after{
+    content: '}'
+}*/
 .variable-block {
     background-color: #E1BEE7;
     color: #6A1B9A;
-    padding: 1px 0px 4px 0px;
+/*    padding: 1px 0px 4px 0px;
     border-radius: 3px;
+    color: #575f67;*/
+    cursor: pointer;
+    display: inline-block;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 2px;
+    text-decoration: none;
 }
 .variable-box__control {
     background-color: #E1BEE7 !important;
+}
+.variable-box__menu {
+    z-index: 1500;
 }
 .variable-box__control--is-focused {
     border-color: #6A1B9A !important;
@@ -1166,6 +1237,11 @@ button.close{
     margin: 3px 0 2px;
     cursor: default;
     margin-right: 5px;
+}
+
+.variable_tag.default{
+    background-color: #B39DDB;
+    padding: 3px 7px;
 }
 
 .new_var {
@@ -1238,12 +1314,37 @@ button.close{
     padding-left: 5px;
 }
 
+.editor {
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  cursor: text;
+  padding: 7px 8px;
+  border-radius: 2px;
+  margin-bottom: 2em;
+  box-shadow: inset 0px 1px 8px -3px #ABABAB;
+  background: #fefefe;
+}
+
+.editor :global(.public-DraftEditor-content) {
+  min-height: 88px;
+}
+
+.input-group .variable-box__control {
+    border-radius: 0 !important;
+}
+
+.share-btn {
+    border: none !important;
+    padding: 10px 15px !important;
+    min-width: 0 !important;
+}
+
 @media(max-width: 1400px){
     .TitleBar .title-group{
-        top: 60px !important;
+        top: 57px !important;
     }
     .TitleBar{
         display: block;
-        padding-left: 250px;
+        padding-left: 290px;
     }
 }

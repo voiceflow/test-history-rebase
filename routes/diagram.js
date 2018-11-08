@@ -2,6 +2,7 @@ const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
 const {docClient, pool, hashids} = require('./../services');
+const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
@@ -14,7 +15,7 @@ const expressionfy = (expression, depth=0) => {
         }else if(isNaN(value)){
             return "'" + value.replace(/'/g, '\"') + "'";
         }else{
-            return parseInt(value, 10);
+            return (value * 1);
         }
     }else if(expression.type == 'variable'){
         if(isVarName(expression.value)){
@@ -306,6 +307,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 skill_id: skill_id,
                 name: data.Item.title,
                 lines: {},
+                variables: data.Item.variables,
                 commands: []
             };
 
@@ -363,7 +365,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i })),
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
-                        nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => links[port.links[0]])
+                        nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
+                            let link = links[port.links[0]];
+                            return link ? link : null;
+                        })
                     };
                 } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
                     let nextLink;
@@ -455,24 +460,58 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             [nextLink] = node.ports[j].links;
                         }
                     }
-                    story.lines[node.id] = {
-                        variable: node.extras.variable,
-                        expression: expressionfy(node.extras.expression),
-                        nextId: links[nextLink]
-                    };
+
+                    if(node.extras.sets){
+                        story.lines[node.id] = {
+                            sets: node.extras.sets.map(block => {
+                                return {
+                                    variable: block.variable,
+                                    expression: expressionfy(block.expression)
+                                }
+                            }),
+                            nextId: links[nextLink]
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            variable: node.extras.variable,
+                            expression: expressionfy(node.extras.expression),
+                            nextId: links[nextLink]
+                        };
+                    }
                 } else if (node.extras.type === 'if') {
-                    story.lines[node.id] = {
-                        expression: expressionfy(node.extras.expression),
-                        trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
-                        falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
-                    };
+                    if(node.extras.expressions){
+                        story.lines[node.id] = {
+                            expressions: node.extras.expressions.map(expression => {
+                                let rendered = expressionfy(expression);
+                                return rendered ? rendered : false
+                            }),
+                            elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
+                            nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
+                                let link = links[port.links[0]];
+                                return link ? link : null;
+                            })
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            expression: expressionfy(node.extras.expression),
+                            trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
+                            falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
+                        };
+                    }
                 } else if (node.extras.type === 'speak') {
 
                     let markdownstring = '';
                     let nextLink = null;
                     
-                    if(node.extras.raw){
-                        markdownstring = draftToMarkdown(node.extras.raw, {
+                    let raw;
+                    if(node.extras.rawContent){
+                        raw = node.extras.rawContent;
+                    }else{
+                        raw = node.extras.raw;
+                    }
+
+                    if(raw){
+                        markdownstring = draftToMarkdown(raw, {
                             entityItems: {
                                 VARIABLE: {
                                     open: entity => {
@@ -481,18 +520,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                     close: entity => {
                                         return "'] + '"
                                     }
+                                },
+                                '{mention': {
+                                    open: entity => {
+                                        return "' + v['"
+                                    },
+                                    close: entity => {
+                                        return "'] + '"
+                                    }
                                 }
                             }
-                        });
-
-                        // let period = markdownstring.substr(-1).match(/[.,:!?]/) ? ' ' : '. '
-
+                        }, true);
                         markdownstring = "'" + markdownstring + "'";
+                    }
 
-                        for (var j = 0; j < node.ports.length; j++) {
-                            if (!node.ports[j].in) {
-                                [nextLink] = node.ports[j].links;
-                            }
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
                         }
                     }
 
@@ -514,6 +558,57 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         prompt: true,
                         nextId: links[nextLink]
                     }
+                } else if (node.extras.type === 'api') {
+
+                    let formattedRawContent = '';
+                    if (!_.isNil(node.extras.rawContent)) {
+                        formattedRawContent = convertToStringForSafeEval(node.extras.rawContent);
+                    }
+
+                    if (!_.isNil(node.extras.params)) {
+                        node.extras.params.forEach(param_map => {
+                            param_map.val = convertToStringForSafeEval(param_map.val);
+                            param_map.key = convertToStringForSafeEval(param_map.key);
+                        });
+                    }
+
+                    let headers = []
+                    if (!_.isNil(node.extras.headers)) {
+                        node.extras.headers.forEach(param_map => {
+                            if(param_map.val && param_map.key){
+                                headers.push({
+                                    val: convertToStringForSafeEval(param_map.val),
+                                    key: convertToStringForSafeEval(param_map.key)
+                                })
+                            }
+                        });
+                    }
+
+                    if (!_.isNil(node.extras.body)) {
+                        node.extras.body.forEach(param_map => {
+                            param_map.val = convertToStringForSafeEval(param_map.val);
+                            param_map.key = convertToStringForSafeEval(param_map.key);
+                        });
+                    }
+
+                    let formattedUrl = '';
+                    if (!_.isNil(node.extras.url)) {
+                        formattedUrl = convertToStringForSafeEval(node.extras.url);
+                    }
+                    
+                    story.lines[node.id] = {
+                        body: node.extras.body,
+                        headers: headers,
+                        params: node.extras.params,
+                        url: formattedUrl,
+                        method: node.extras.method,
+                        mapping: node.extras.mapping,
+                        bodyInputType: node.extras.bodyInputType,
+                        rawContent: formattedRawContent,
+                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
+                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                    };
+
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -526,7 +621,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: links[nextLink]
                         }
                     }
-                }
+                } 
             }
             let render_type;
             if(!type){
@@ -594,7 +689,6 @@ const publish = async (req, res) => {
     }
 
     let skill_id = hashids.decode(req.params.skill_id)[0];
-
     let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
 
     res.sendStatus(status);
@@ -610,6 +704,30 @@ const publishTest = async (req, res) => {
 
     res.sendStatus(status);
 };
+
+const convertToStringForSafeEval = function(s) {
+    let formattedStr = draftToMarkdown(s, {
+        entityItems: {
+            VARIABLE: {
+                open: entity => {
+                    return "' + v['"
+                },
+                close: entity => {
+                    return "'] + '"
+                }
+            },
+            '{mention': {
+                open: entity => {
+                    return "' + v['"
+                },
+                close: entity => {
+                    return "'] + '"
+                }
+            }
+        }
+    });
+    return "'" + formattedStr + "'";
+}
 
 module.exports = {
     updateName: updateName,

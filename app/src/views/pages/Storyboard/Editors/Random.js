@@ -14,12 +14,6 @@ class RandomBlock extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node
-        });
-    }
-
     handleAddPath() {
         let node = this.state.node;
 

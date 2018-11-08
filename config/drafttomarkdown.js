@@ -24,7 +24,6 @@ var orderedListNumber = {},
 
 const _escape = function (word) {
     if (typeof(word) === "string") {
-        word = word.replace(/&/g, 'ampersand');
         // word = word.replace(/</g, '&lt;');
         // word = word.replace(/>/g, '&gt;');
         word = word.replace(/"/g, '\\\"');
@@ -193,17 +192,7 @@ const StyleItems = {
 //
 // Both the open and close methods must exist, even if they simply return an empty string.
 // They should always return a string.
-const EntityItems = {
-  'LINK': {
-    open: function (entity) {
-      return '[';
-    },
-
-    close: function (entity) {
-      return `](${entity.data.url || entity.data.href})`;
-    }
-  }
-}
+const EntityItems = {}
 
 // Bit of a hack - we normally want a double newline after a block,
 // but for list items we just want one (unless it's the _last_ list item in a group.)
@@ -228,7 +217,7 @@ function isEmptyBlock(block) {
  *
  * @return {String} markdown string
 **/
-function renderBlock(block, index, rawDraftObject, options) {
+function renderBlock(block, index, rawDraftObject, options, periods) {
   var openInlineStyles = [],
       markdownToAdd = [];
   var markdownString = '',
@@ -276,6 +265,9 @@ function renderBlock(block, index, rawDraftObject, options) {
       if (range.offset + range.length === characterIndex) {
         var entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+          if(entity.type==='{mention'){
+            markdownString = markdownString.slice(0, -1);
+          }
           markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
         }
       }
@@ -338,11 +330,16 @@ function renderBlock(block, index, rawDraftObject, options) {
       }
     });
 
+    let skip = false;
+
     // Open any entity tags that need opening
     block.entityRanges.forEach(function (range, rangeIndex) {
       if (range.offset === characterIndex) {
         var entity = rawDraftObject.entityMap[range.key];
         if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+          if(entity.type==='{mention'){
+            skip = true;
+          }
           var entityToAdd = (customEntityItems[entity.type] || EntityItems[entity.type]).open(entity);
           markdownToAdd.push({
             type: 'entity',
@@ -383,6 +380,9 @@ function renderBlock(block, index, rawDraftObject, options) {
         // Similar work has to be done for codeblocks.
       } else {
         // Escaping inline markdown characters
+        if (periods) {
+          character = character.replace(/&/g, 'ampersand');
+        }
         character = _escape(character);
 
         // Special escape logic for blockquotes and heading characters
@@ -393,8 +393,9 @@ function renderBlock(block, index, rawDraftObject, options) {
         // }
       }
     }
-
-    markdownString += character;
+    if(!skip) {
+      markdownString += character;
+    }
   });
 
   // Close any remaining entity tags
@@ -402,6 +403,9 @@ function renderBlock(block, index, rawDraftObject, options) {
     if (range.offset + range.length === block.text.length) {
       var entity = rawDraftObject.entityMap[range.key];
       if (customEntityItems[entity.type] || EntityItems[entity.type]) {
+        if(entity.type==='{mention'){
+          markdownString = markdownString.slice(0, -1);
+        }
         markdownString += (customEntityItems[entity.type] || EntityItems[entity.type]).close(entity);
       }
     }
@@ -420,23 +424,9 @@ function renderBlock(block, index, rawDraftObject, options) {
     markdownString += (customStyleItems[type] || StyleItems[type]).close(block);
   }
 
-  let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
-
-  // Determine how many newlines to add - generally we want 2, but for list items we just want one when they are succeeded by another list item.
-  if (SingleNewlineAfterBlock.indexOf(type) !== -1 && rawDraftObject.blocks[index + 1] && SingleNewlineAfterBlock.indexOf(rawDraftObject.blocks[index + 1].type) !== -1) {
+  if(periods){
+    let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
     markdownString += period;
-  } else if (rawDraftObject.blocks[index + 1]) {
-    if (rawDraftObject.blocks[index].text) {
-      if (type === 'unstyled' && options.preserveNewlines) {
-        markdownString += period;
-      } else if (!options.preserveNewlines) {
-        markdownString += period;
-      } else {
-        markdownString += period;
-      }
-    } else if (options.preserveNewlines) {
-      markdownString += period;
-    }
   }
 
   return markdownString;
@@ -452,11 +442,11 @@ function renderBlock(block, index, rawDraftObject, options) {
  *
  * @return {String} markdown string
 **/
-function draftToMarkdown(rawDraftObject, options) {
+function draftToMarkdown(rawDraftObject, options, periods=false) {
   options = options || {};
   var markdownString = '';
   rawDraftObject.blocks.forEach(function (block, index) {
-    markdownString += renderBlock(block, index, rawDraftObject, options);
+    markdownString += renderBlock(block, index, rawDraftObject, options, periods);
   });
 
   orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.

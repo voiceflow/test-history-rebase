@@ -802,7 +802,9 @@ class StoryBoard extends Component {
                     <TestModal 
                         open={this.state.testing_modal} 
                         toggle={this.toggleTestModal} 
-                        testing_info={this.state.testing_info} /> 
+                        testing_info={this.state.testing_info} 
+                        diagrams={this.state.diagrams}
+                    /> 
                 : null}
                 <Menu 
                     helpModal={() => this.setState({help: true})}

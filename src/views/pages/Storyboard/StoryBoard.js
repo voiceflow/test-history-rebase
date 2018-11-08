@@ -802,10 +802,11 @@ class StoryBoard extends Component {
                     <TestModal 
                         open={this.state.testing_modal} 
                         toggle={this.toggleTestModal} 
-                        testing_info={this.state.testing_info} /> 
+                        testing_info={this.state.testing_info} 
+                        diagrams={this.state.diagrams}
+                    /> 
                 : null}
                 <Menu 
-                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "Saved " + moment(this.state.last_save).fromNow() : "Last Save")}
                     helpModal={() => this.setState({help: true})}
                     diagrams={this.state.diagrams}
                     current={this.state.diagram_id}
@@ -815,6 +816,7 @@ class StoryBoard extends Component {
                     build={fn => this.buildDiagrams = fn}
                 />
                 <TitleBar
+                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
                     preview={this.preview}
                     title={this.state.diagram_name}
                     skill={this.state.skill}

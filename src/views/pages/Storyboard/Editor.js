@@ -7,9 +7,12 @@ import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
+import Variable from './Editors/Variable';
 import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
+import OldIfBlock from './Editors/OldIf';
 import Speak from './Editors/Speak';
+import OldSpeak from './Editors/OldSpeak';
 import Capture from './Editors/Capture';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
@@ -24,7 +27,8 @@ class Editor extends Component {
             voices: []
         };
 
-        this.BlockViewer = this.BlockViewer.bind(this)
+        this.BlockViewer = this.BlockViewer.bind(this);
+        this.renderTitle = this.renderTitle.bind(this);
     }
 
     componentDidMount() {
@@ -77,7 +81,7 @@ class Editor extends Component {
     BlockViewer() {
         switch(this.state.node.extras.type) {
             case 'story':
-                return <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>;
+                return <Story/>;
             case 'choice':
             case 'choicenew':
                 return <Choice
@@ -91,10 +95,15 @@ class Editor extends Component {
             case 'multiline':
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
-            case 'variable':
                 return <SetBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+            case 'variable':
+                return <Variable node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
             case 'if':
-                return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                if(this.state.node.extras.expressions){
+                    return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                }else{
+                    return <OldIfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                }
             case 'listen':
                 return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':
@@ -104,7 +113,11 @@ class Editor extends Component {
             case 'ending':
                 return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'speak':
-                return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                if(this.state.node.extras.rawContent === undefined){
+                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                } else {
+                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                }
             case 'capture':
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             case 'command':
@@ -124,6 +137,29 @@ class Editor extends Component {
         }
     }
 
+    renderTitle(){
+        switch(this.state.node.extras.type) {
+            case 'story':
+                return (<div id="label">Start Block</div>)
+            case 'flow':
+                return (<div id="label">
+                    {this.state.node.extras.diagram_id ? 
+                    (()=>{ 
+                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
+                        return (block ? block.name : 'New Flow') 
+                    })() : 
+                    "Add Flow"}
+                </div>);
+            default:
+              return (<input id="label" placeholder="Block Label" 
+                    type="text"
+                    name="name"
+                    value={this.state.node.name}
+                    onChange={this.handleChange.bind(this)}
+                />);
+        }
+    }
+
     render() {
 
         const type = this.state.node ? this.state.node.extras.type : null;
@@ -131,7 +167,7 @@ class Editor extends Component {
         return (
             <div id="Editor" className={(this.props.open && type ? 'open':'')}>
                 {type ?
-                    <form onSubmit={(e) => e.preventDefault()} className="controls">
+                    <form onSubmit={(e) => e.preventDefault()} className="controls" key={this.state.node.id}>
                         <div className="top">
                             <div className="property">
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
@@ -146,23 +182,7 @@ class Editor extends Component {
                             </div>
                         </div>
                         <div id="editor-section">
-                            {this.state.node.extras.type === 'flow' ? 
-                                <div id="label">
-                                    {this.state.node.extras.diagram_id ? 
-                                    (()=>{ 
-                                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
-                                        return (block ? block.name : 'New Flow') 
-                                    })() : 
-                                    "Add Flow"}
-                                </div>
-                                : 
-                                <input id="label" placeholder="Block Label" 
-                                    type="text"
-                                    name="name"
-                                    value={this.state.node.name}
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            }
+                            {this.renderTitle()}
                             {this.BlockViewer()}
                         </div>
                     </form> 

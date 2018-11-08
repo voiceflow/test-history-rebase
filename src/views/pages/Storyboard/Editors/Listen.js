@@ -19,12 +19,6 @@ class Listen extends Component {
         this.toggleCollapse = this.toggleCollapse.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            node: props.node
-        });
-    }
-
     handleChange(e, key = undefined) {
         var node = this.state.node;
         var name = e.target.getAttribute('name');

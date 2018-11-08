@@ -160,6 +160,7 @@ class MultiLineInput extends Component {
                                 />
                                 <div className="btn-group w-100">
                                     <Select
+                                        classNamePrefix="select-box"
                                         placeholder="Select Voice"
                                         className="select-box"
                                         value={this.state.line.voice ? {label: this.state.line.voice, value: this.state.line.voice} : null}

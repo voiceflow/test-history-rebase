@@ -27,7 +27,8 @@ class Editor extends Component {
             voices: []
         };
 
-        this.BlockViewer = this.BlockViewer.bind(this)
+        this.BlockViewer = this.BlockViewer.bind(this);
+        this.renderTitle = this.renderTitle.bind(this);
     }
 
     componentDidMount() {
@@ -80,7 +81,7 @@ class Editor extends Component {
     BlockViewer() {
         switch(this.state.node.extras.type) {
             case 'story':
-                return <Story node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>;
+                return <Story/>;
             case 'choice':
             case 'choicenew':
                 return <Choice
@@ -136,6 +137,29 @@ class Editor extends Component {
         }
     }
 
+    renderTitle(){
+        switch(this.state.node.extras.type) {
+            case 'story':
+                return (<div id="label">Start Block</div>)
+            case 'flow':
+                return (<div id="label">
+                    {this.state.node.extras.diagram_id ? 
+                    (()=>{ 
+                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
+                        return (block ? block.name : 'New Flow') 
+                    })() : 
+                    "Add Flow"}
+                </div>);
+            default:
+              return (<input id="label" placeholder="Block Label" 
+                    type="text"
+                    name="name"
+                    value={this.state.node.name}
+                    onChange={this.handleChange.bind(this)}
+                />);
+        }
+    }
+
     render() {
 
         const type = this.state.node ? this.state.node.extras.type : null;
@@ -158,23 +182,7 @@ class Editor extends Component {
                             </div>
                         </div>
                         <div id="editor-section">
-                            {this.state.node.extras.type === 'flow' ? 
-                                <div id="label">
-                                    {this.state.node.extras.diagram_id ? 
-                                    (()=>{ 
-                                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
-                                        return (block ? block.name : 'New Flow') 
-                                    })() : 
-                                    "Add Flow"}
-                                </div>
-                                : 
-                                <input id="label" placeholder="Block Label" 
-                                    type="text"
-                                    name="name"
-                                    value={this.state.node.name}
-                                    onChange={this.handleChange.bind(this)}
-                                />
-                            }
+                            {this.renderTitle()}
                             {this.BlockViewer()}
                         </div>
                     </form> 

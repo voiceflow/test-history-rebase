@@ -2,6 +2,7 @@ const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
 const {docClient, pool, hashids} = require('./../services');
+const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
@@ -306,6 +307,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 skill_id: skill_id,
                 name: data.Item.title,
                 lines: {},
+                variables: data.Item.variables,
                 commands: []
             };
 
@@ -554,34 +556,47 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                 } else if (node.extras.type === 'api') {
 
-                    let formattedRawContent;
-                    formattedRawContent = draftToMarkdown(node.extras.rawContent, {
-                        entityItems: {
-                            VARIABLE: {
-                                open: entity => {
-                                    return "' + v['"
-                                },
-                                close: entity => {
-                                    return "'] + '"
-                                }
-                            },
-                            '{mention': {
-                                open: entity => {
-                                    return "' + v['"
-                                },
-                                close: entity => {
-                                    return "'] + '"
-                                }
-                            }
-                        }
-                    });
-                    formattedRawContent = "'" + formattedRawContent + "'";
+                    let formattedRawContent = '';
+                    if (!_.isNil(node.extras.rawContent)) {
+                        formattedRawContent = convertToStringForSafeEval(node.extras.rawContent);
+                    }
 
+                    if (!_.isNil(node.extras.params)) {
+                        node.extras.params.forEach(param_map => {
+                            param_map.val = convertToStringForSafeEval(param_map.val);
+                            param_map.key = convertToStringForSafeEval(param_map.key);
+                        });
+                    }
+
+                    let headers = []
+                    if (!_.isNil(node.extras.headers)) {
+                        node.extras.headers.forEach(param_map => {
+                            if(param_map.val && param_map.key){
+                                headers.push({
+                                    val: convertToStringForSafeEval(param_map.val),
+                                    key: convertToStringForSafeEval(param_map.key)
+                                })
+                            }
+                        });
+                    }
+
+                    if (!_.isNil(node.extras.body)) {
+                        node.extras.body.forEach(param_map => {
+                            param_map.val = convertToStringForSafeEval(param_map.val);
+                            param_map.key = convertToStringForSafeEval(param_map.key);
+                        });
+                    }
+
+                    let formattedUrl = '';
+                    if (!_.isNil(node.extras.url)) {
+                        formattedUrl = convertToStringForSafeEval(node.extras.url);
+                    }
+                    
                     story.lines[node.id] = {
                         body: node.extras.body,
-                        headers: node.extras.headers,
+                        headers: headers,
                         params: node.extras.params,
-                        url: node.extras.url,
+                        url: formattedUrl,
                         method: node.extras.method,
                         mapping: node.extras.mapping,
                         bodyInputType: node.extras.bodyInputType,
@@ -589,7 +604,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
                         fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                     };
-                    console.log("DIAGRAM NODE EXTRAS", node.extras.rawContent, formattedRawContent);
 
                 } else {
                     let nextLink = null;
@@ -680,6 +694,30 @@ const publishTest = async (req, res) => {
 
     res.sendStatus(status);
 };
+
+const convertToStringForSafeEval = function(s) {
+    let formattedStr = draftToMarkdown(s, {
+        entityItems: {
+            VARIABLE: {
+                open: entity => {
+                    return "' + v['"
+                },
+                close: entity => {
+                    return "'] + '"
+                }
+            },
+            '{mention': {
+                open: entity => {
+                    return "' + v['"
+                },
+                close: entity => {
+                    return "'] + '"
+                }
+            }
+        }
+    });
+    return "'" + formattedStr + "'";
+}
 
 module.exports = {
     updateName: updateName,

@@ -8,6 +8,8 @@ import Select from 'react-select';
 import './TestModal.css'
 import {parse} from 'html-parse-stringify';
 
+const local = true;
+
 const default_state = () => {
   return {
     diagrams: null,
@@ -112,15 +114,14 @@ class TestModal extends React.Component {
       this.setState({
         audio: null
       });
-      if(ended){
-        this.handleEnd();
-      }
+      this.handleEnd();
       return;
     };
 
     let b = urls[index];
 
     if(b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src){
+      // AUDIO TAGS
       let audio = new Audio(b.attrs.src);
 
       this.setState({
@@ -153,6 +154,7 @@ class TestModal extends React.Component {
       }
       audio.play();
     }else if(b.type==='text' && b.content){
+      // TEXT TYPE
       let inputs = this.state.inputs;
       inputs.push({
         text: b.content,
@@ -162,7 +164,7 @@ class TestModal extends React.Component {
         this.recursivePlay(index + 1, urls, ended);
       });
     }else{
-      this.handleEnd();
+      this.recursivePlay(index + 1, urls, ended);
     }
   }
 
@@ -176,8 +178,6 @@ class TestModal extends React.Component {
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
-    // winstonc
-    let local = true;
     let url = local ? "http://localhost:4000/state/test" : "https://testing.getstoryflow.com/state/test"
 
     axios.post(url, data)

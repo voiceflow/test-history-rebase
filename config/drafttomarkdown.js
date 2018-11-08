@@ -24,7 +24,6 @@ var orderedListNumber = {},
 
 const _escape = function (word) {
     if (typeof(word) === "string") {
-        word = word.replace(/&/g, 'ampersand');
         // word = word.replace(/</g, '&lt;');
         // word = word.replace(/>/g, '&gt;');
         word = word.replace(/"/g, '\\\"');
@@ -193,17 +192,7 @@ const StyleItems = {
 //
 // Both the open and close methods must exist, even if they simply return an empty string.
 // They should always return a string.
-const EntityItems = {
-  'LINK': {
-    open: function (entity) {
-      return '[';
-    },
-
-    close: function (entity) {
-      return `](${entity.data.url || entity.data.href})`;
-    }
-  }
-}
+const EntityItems = {}
 
 // Bit of a hack - we normally want a double newline after a block,
 // but for list items we just want one (unless it's the _last_ list item in a group.)
@@ -391,6 +380,9 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
         // Similar work has to be done for codeblocks.
       } else {
         // Escaping inline markdown characters
+        if (periods) {
+          character = character.replace(/&/g, 'ampersand');
+        }
         character = _escape(character);
 
         // Special escape logic for blockquotes and heading characters

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Nav, NavItem, NavLink, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
 import VariableText from './components/VariableText';
@@ -228,7 +228,7 @@ class API extends Component {
                 { (this.state.type === 'body' && this.state.node.extras.bodyInputType === 'rawInput') ? rawBodyInput : pairContent}
                 <hr/>
 
-                <label>VARIABLE MAPPING</label>
+                <label>Result Variable Mapping</label>
                 <APIMapping
                     pairs={this.state.node.extras.mapping}
                     onAdd={() => this.handleAddPairMapping()}

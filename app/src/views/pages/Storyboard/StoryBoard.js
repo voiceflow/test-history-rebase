@@ -23,9 +23,12 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
+
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
+const defaultVariables = ['sessions', 'user_id', 'timestamp'];
+const line_color = '#555D6D';
 
 const generateID = () => {
     return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -64,7 +67,7 @@ class StoryBoard extends Component {
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
         engine.registerNodeFactory(new BlockNodeFactory());
-        engine.registerLinkFactory(new BlockLinkFactory());
+        engine.registerLinkFactory(new BlockLinkFactory(line_color));
         engine.registerPortFactory(new BlockPortFactory());
         
         let open, diagram_id, skill_id;
@@ -74,7 +77,7 @@ class StoryBoard extends Component {
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
-        let variables = [];
+        let variables = defaultVariables.slice(0);
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
@@ -103,8 +106,13 @@ class StoryBoard extends Component {
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story') {
                     nodes[key].clearListeners();
-                    nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
+            }
+
+            var links = model.getLinks();
+            for (let key in links) {
+                links[key].setColor(line_color);
             }
 
             variables.push('user_name');
@@ -334,20 +342,24 @@ class StoryBoard extends Component {
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story') {
                     nodes[key].clearListeners();
-                    nodes[key].addListener({ entityRemoved: e => {e.stopPropagation();} });
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
             }
             var links = model.getLinks();
             for (let key in links) {
-                links[key].setColor('#555D6D');
+                links[key].setColor(line_color);
             }
             
             engine.stopMove();
             engine.setDiagramModel(model);
 
-            let variables = []
-            if (diagram.variables) {
-                variables = diagram.variables;
+            let variables = defaultVariables.slice(0);
+            if (Array.isArray(diagram.variables)) {
+                diagram.variables.forEach(v => {
+                    if(!variables.includes(v)){
+                        variables.push(v);
+                    }
+                });
             }
 
             this.setState({
@@ -581,7 +593,7 @@ class StoryBoard extends Component {
             var diagram = {
                 id: id,
                 title: 'New Flow',
-                variables: [],
+                variables: defaultVariables.slice(0),
                 data: data,
                 skill: skill_id
             }
@@ -629,12 +641,7 @@ class StoryBoard extends Component {
             return;
         }
 
-        var node;
-        if(type === 'api'){
-            node = new BlockNodeModel('API')
-        }else{
-            node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
-        }
+        var node = type === 'api' ? new BlockNodeModel('API') : new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
 
         if(type){
             if (type === 'choice') {
@@ -728,7 +735,7 @@ class StoryBoard extends Component {
                     method: 'GET',
                     headers: [],
                     body: [],
-                    rawContent: '',
+                    rawContent: null,
                     bodyInputType: 'keyValue',
                     params: [],
                     mapping: [],
@@ -819,6 +826,7 @@ class StoryBoard extends Component {
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
                     publish={this.publish}
+                    diagram_id={this.state.diagram_id}
                 />
                 <div
                     id="diagram"

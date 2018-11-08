@@ -19,14 +19,6 @@ class Line extends Component {
         this.concat = this.concat.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        if(props.node.id !== this.state.node.id){
-            this.setState({
-                node: props.node
-            });
-        }
-    }
-
     handleAddLine() {
         var node = this.state.node;
         if(node.extras.lines.length < 5 ){

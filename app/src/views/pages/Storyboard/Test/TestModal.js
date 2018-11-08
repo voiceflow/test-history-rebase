@@ -8,7 +8,7 @@ import Select from 'react-select';
 import './TestModal.css'
 import {parse} from 'html-parse-stringify';
 
-const local = false;
+const local = true;
 
 const default_state = () => {
   return {

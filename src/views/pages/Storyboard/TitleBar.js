@@ -3,8 +3,6 @@ import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 
-// import axios from 'axios'
-
 class TitleBar extends PureComponent {
     constructor(props) {
         super(props);
@@ -50,31 +48,34 @@ class TitleBar extends PureComponent {
             <div className="TitleBar no-select">
                 {this.props.preview ? null : 
                     <div className="title-group">
-                        <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
-                        <MUIButton variant="contained" className="white-btn publish-btn mr-2" onClick={this.props.publish}>Publish 
-                            <span className="button-circle"><i className="fab fa-amazon"/></span>
-                        </MUIButton>
-                        <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
-                            <i className="fas fa-share-square"/>
-                        </MUIButton>
-                        <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
-                            <PopoverHeader>Share Link</PopoverHeader>
-                            <PopoverBody>
-                                <InputGroup>
-                                    <InputGroupAddon addonType="prepend" id="copyShare">
-                                        <ClipBoard 
-                                            component="button" 
-                                            className="btn btn-secondary" 
-                                            value={link}
-                                            id="shareLink"
-                                        >
-                                            <i className="fas fa-copy"/>
-                                        </ClipBoard>
-                                    </InputGroupAddon>
-                                    <Input readOnly value={link}/>
-                                </InputGroup>
-                            </PopoverBody>
-                        </Popover>
+                        <div>
+                            <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
+                            <MUIButton variant="contained" className="white-btn publish-btn mr-2" onClick={this.props.publish}>Publish 
+                                <span className="button-circle"><i className="fab fa-amazon"/></span>
+                            </MUIButton>
+                            <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
+                                <i className="fas fa-share-square"/>
+                            </MUIButton>
+                            <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
+                                <PopoverHeader>Share Link</PopoverHeader>
+                                <PopoverBody>
+                                    <InputGroup>
+                                        <InputGroupAddon addonType="prepend" id="copyShare">
+                                            <ClipBoard 
+                                                component="button" 
+                                                className="btn btn-secondary" 
+                                                value={link}
+                                                id="shareLink"
+                                            >
+                                                <i className="fas fa-copy"/>
+                                            </ClipBoard>
+                                        </InputGroupAddon>
+                                        <Input readOnly value={link}/>
+                                    </InputGroup>
+                                </PopoverBody>
+                            </Popover>
+                        </div>
+                        <div className="last-save text-muted">{this.props.lastSave}</div>
                     </div>
                 }
                 <div className="project">

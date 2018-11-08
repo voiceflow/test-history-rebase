@@ -143,6 +143,12 @@
     top: 12px;
 }
 
+.last-save {
+    font-size: .8rem;
+    padding-left: 0px;
+    padding-top: 5px;
+}
+
 .TitleBar .status {
     width: 400px;
     line-height: 49px;
@@ -1335,7 +1341,7 @@ button.close{
 
 @media(max-width: 1400px){
     .TitleBar .title-group{
-        top: 60px !important;
+        top: 57px !important;
     }
     .TitleBar{
         display: block;

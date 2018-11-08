@@ -2,6 +2,15 @@ td {
     padding: 0 15px 0 0;
 }
 
+.test-modal{
+    padding-bottom: 0px;
+    padding-top: 0px;
+    height: 508px;
+}
+.test-modal>.row{
+    height: 100%;
+}
+
 .message {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -31,11 +40,63 @@ td {
     display: flex;
     flex-direction: column-reverse;
     margin-bottom: 10px;
+    padding: 0px 15px;
+}
+
+.var-table {
+    table-layout: fixed;
+}
+.var-table td, .var-table th{
+    font-size: 0.8rem;
+    vertical-align: middle;
+    padding: 4px 0px;
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+}
+.var-table td.v>span {
+    border-radius: .25rem;
+    background-color: #E1BEE7;
+    color: #6A1B9A;
+    padding: 4px;
+}
+
+.test-sidebar {
+    /*background-color: #CCC;*/
+    border-left: 1px solid #e9ecef;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+.test-sidebar p.list-group-item {
+    padding: 10px 5px;
+}
+.test-sidebar h4{
+    margin-bottom: 0;
+}
+.debug-switch {
+    border-bottom: 1px solid #e9ecef;
+    /*margin-bottom: 10px;*/
+}
+
+.sidebar-scroll {
+    overflow-y: scroll;
 }
 
 .debug {
     background-color: #FF91A4;
     color: #000000;
+    padding: 2px 8px !important;
+}
+
+.debug small {
+    text-transform: uppercase;
+    margin: 0px;
+}
+.debug p {
+    margin-top: -8px;
+    margin-bottom: 2px;
 }
 
 .debug-headers {

@@ -140,7 +140,7 @@
 .TitleBar .title-group {
     position: absolute;
     left: 292px;
-    top: 12px;
+    top: 0px;
     margin-top: 10px;
 }
 
@@ -165,11 +165,6 @@
 
 .TitleBar input::placeholder {
     color: #CCC;
-}
-
-.TitleBar .debug-toggle {
-    color: #CCC;
-    margin-left: 15px;
 }
 
 .load-btn {
@@ -1347,7 +1342,7 @@ button.close{
 
 @media(max-width: 1400px){
     .TitleBar .title-group{
-        top: 57px !important;
+        top: 47px !important;
     }
     .TitleBar{
         display: block;

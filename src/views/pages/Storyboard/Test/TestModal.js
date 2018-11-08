@@ -1,15 +1,16 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react';
-import { Button, Modal, ModalBody, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert } from 'reactstrap';
+import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap';
 import axios from 'axios';
 import moment from 'moment';
 import Select from 'react-select';
 import './TestModal.css'
 import {parse} from 'html-parse-stringify';
-const _ = require('lodash');
+import Switch from '@material-ui/core/Switch';
+// const _ = require('lodash');
 
-const local = true;
+const local = false;
 
 const default_state = () => {
   return {
@@ -50,6 +51,7 @@ class TestModal extends React.Component {
     this.handleLineSelection = this.handleLineSelection.bind(this);
     this.startline = this.startline.bind(this);
     this.handleRestart = this.handleRestart.bind(this);
+    this.getVariables = this.getVariables.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -59,21 +61,6 @@ class TestModal extends React.Component {
       });
     }
   }
-
-  // componentWillReceiveProps(nextProps){
-  //   if(nextProps.testing_info !== this.props.testing_info){
-  //     if(!this.state.story_state.story){
-  //       let story_state = this.state.story_state;
-  //       story_state.diagrams = [{
-  //         id: nextProps.testing_info.id
-  //       }]
-  //       this.setState({
-  //         nodes: nextProps.testing_info.nodes,
-  //         story_state: story_state
-  //       });
-  //     }
-  //   }
-  // }
 
   removeAudio(){
     if(this.state.audio){
@@ -117,7 +104,9 @@ class TestModal extends React.Component {
       this.setState({
         audio: null
       });
-      this.handleEnd();
+      if(ended){
+        this.handleEnd();
+      }
       return;
     };
 
@@ -166,24 +155,26 @@ class TestModal extends React.Component {
       this.setState({inputs: inputs}, () => {
         this.recursivePlay(index + 1, urls, ended);
       });
+    }else if(b.type==='tag' && b.name === 'debug'){
+      this.addDebugBlock(b);
+      this.recursivePlay(index + 1, urls, ended);
     }else{
       this.recursivePlay(index + 1, urls, ended);
     }
   }
 
-  addDebugBlock(children) {
-    children.forEach((element) => {
+  addDebugBlock(block) {
       let inputs = this.state.inputs;
-      const debugInfo = JSON.parse(element.content);
-      console.log(debugInfo)
+
+      let text = block.children && block.children[0] && block.children[0].content ? block.children[0].content : '';
+      
       inputs.push({
-        text: debugInfo.text,
-        time: moment().format('h:mm:ss A'),
-        variables: debugInfo.variables,
-        line: debugInfo.line
+        debug: block.attrs.type,
+        text: text,
+        time: moment().format('h:mm:ss A')
       });
+
       this.setState({inputs: inputs});
-    })
   }
 
   updateState(start=false){
@@ -216,21 +207,30 @@ class TestModal extends React.Component {
             last_diagram: current_diagram
           })
         }
-        let dom = parse(res.output);
+        // console.log(res.output);
+        let dom = parse('<speak>' + res.output + '</speak>');
 
-        if (dom) {
-          dom.forEach((element) => {
-            if(element.type === 'tag' && 
-              element.name === 'speak' && element.children){
-              this.removeAudio();
-              this.recursivePlay(0, element.children, res.ending);
-            }else if (element.type === 'tag' && element.name === 'debug') {
-              this.addDebugBlock(element.children)
-            } else {
-              this.handleEnd();
-            }
-          })
+        if(dom && dom.length > 0 && dom[0].type === 'tag' && 
+          dom[0].name === 'speak' && dom[0].children){
+          this.removeAudio();
+          this.recursivePlay(0, dom[0].children, res.ending);
+        }else{
+          this.handleEnd();
         }
+
+        // if (dom) {
+        //   dom.forEach((element) => {
+        //     if(element.type === 'tag' && 
+        //       element.name === 'speak' && element.children){
+        //       this.removeAudio();
+        //       this.recursivePlay(0, element.children, res.ending);
+        //     }else if (element.type === 'tag' && element.name === 'debug') {
+        //       this.addDebugBlock(element.children)
+        //     } else {
+        //       this.handleEnd();
+        //     }
+        //   })
+        // }
         
       }else if(res.ending){
         this.handleEnd();
@@ -307,113 +307,152 @@ class TestModal extends React.Component {
     this.updateState(true);
   }
 
+  getVariables(){
+    let state = this.state.story_state;
+    let diagram_id = this.state.last_diagram;
+    if(state){
+      if(!state.diagram_states || !state.diagram_states[diagram_id]){
+        return null;
+      }
+      let variables = state.diagram_states[diagram_id].variables;
+      let v_array = [];
+      for (var key in variables) {
+          if (variables.hasOwnProperty(key)) {
+              v_array.push({
+                name: key,
+                value: variables[key]
+              })
+          }
+      }
+      return (<Table className="var-table">
+        <tbody>
+          {v_array.map(v => <tr key={v.name}>
+            <td className="v"><span>{`{${v.name}}`}</span></td>
+            <td>{v.value}</td>
+          </tr>)}
+        </tbody>
+      </Table>)
+    }
+  }
+
   render() {
+
+    let flow;
+    if(this.state.last_diagram){
+      let find = this.props.diagrams.find(d => d.id === this.state.last_diagram)
+      if(find){
+        flow = find.name;
+      }
+    }
+
     return (
-      <Modal isOpen={this.props.open}>
-        <ModalBody className="text-center env-modal">
-          <h5>Test Your Project</h5>
-          <hr className="mb-0"/>
+      <Modal isOpen={this.props.open} size='lg'>
+        <ModalHeader toggle={this.props.toggle}>Project Testing</ModalHeader>
+        <ModalBody className="text-center env-modal test-modal">
           { this.props.testing_info !== false ? 
-            <div>
-              { this.state.started ? 
-                <React.Fragment>
-                  { this.state.ended ? <Alert onClick={this.handleRestart} color="warning">This Diagram has Ended - Click to Reset</Alert> : null }
-                  <div className="chatbox">
-                    <div className="chats">
-                      {this.state.inputs.map((chat, i) => {
-                        if(chat.self){
-                          return <div className="mt-2 text-right" key={i}>
-                            <div className="self-message message border rounded p-2 align-self-start">
-                              <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-primary">{chat.time}</small></p>
-                            </div>
-                          </div>
-                        }else if(chat.variables){
-                          if (!this.state.debug) {
-                            return
-                          }
-                          return <div className="mt-2 text-left" key={i}>
-                            <div className="message border rounded p-2 align-self-start debug">
-                              <table>
-                                <tbody>
-                                  <tr><td><p className="px-1 text-left">{chat.text}</p></td></tr>
-                                  <tr><td><h6 className='variable-header'>Variables</h6></td></tr>
-                                  <tr><td><div className='variables-table'>
-                                    <table>
-                                      <thead>
-                                          <tr>
-                                              <th className='debug-headers'>Name</th>
-                                              <th className='debug-headers'>Value</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                        {chat.variables.map(((variable, i) => {
-                                          let key = variable[0]
-                                          let val = variable[1]
-                                          if (val === null) {
-                                            val = 'null'
-                                          }
-                                          if (key === null) {
-                                            key = 'null'
-                                          }
-                                          return <tr key={i}>
-                                              <td>{key}</td>
-                                              <td>{val}</td>
-                                          </tr>
-                                        }))}
-                                      </tbody>
-                                    </table>
-                                  </div></td></tr>
-                                  <tr><td><p className="mb-0"><small className="text-primary">{chat.time}</small></p></td></tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        }else if(chat.text){
-                          return <div className="mt-2 text-left" key={i}>
-                            <div className="message border rounded p-2 align-self-start">
-                              <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-primary">{chat.time}</small></p>
-                            </div>
-                          </div>
-                        }else{
-                          return <div className="mt-2 text-left" key={i}>
-                            <div className="message border rounded align-self-start">
-                              <div className="message-container p-2">
-                                <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-primary">{chat.time}</small></p>
+            <React.Fragment>
+              <div className="row">
+                <div className="col-sm-8 p-0">
+                  { this.state.started ? 
+                    <React.Fragment>
+                      <div className="chatbox px-3">
+                        <div className="chats">
+                          {this.state.inputs.map((chat, i) => {
+                            if(chat.self){
+                              return <div className="mt-2 text-right" key={i}>
+                                <div className="self-message message border rounded p-2 align-self-start">
+                                  <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-primary">{chat.time}</small></p>
+                                </div>
                               </div>
-                              <div className="message-progress" style={{width: ((chat.currentTime/chat.duration) * 100)+"%"}}>
+                            }else if(chat.debug){
+                              if (!this.state.debug) {
+                                return null
+                              }
+                              return <div className="mt-2 text-left" key={i}>
+                                <div className="message border rounded p-2 align-self-start debug">
+                                  <div className="mb-0 px-1 text-left">
+                                    <small>{chat.debug}</small>
+                                    <p>
+                                      {chat.text}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        }
-                      })}
+                            }else if(chat.text){
+                              return <div className="mt-2 text-left" key={i}>
+                                <div className="message border rounded p-2 align-self-start">
+                                  <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-primary">{chat.time}</small></p>
+                                </div>
+                              </div>
+                            }else{
+                              return <div className="mt-2 text-left" key={i}>
+                                <div className="message border rounded align-self-start">
+                                  <div className="message-container p-2">
+                                    <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-primary">{chat.time}</small></p>
+                                  </div>
+                                  <div className="message-progress" style={{width: ((chat.currentTime/chat.duration) * 100)+"%"}}>
+                                  </div>
+                                </div>
+                              </div>
+                            }
+                          })}
+                        </div>
+                      </div>
+                      <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
+                        <InputGroup>
+                          <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                          <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
+                        </InputGroup>
+                      </Form>
+                    </React.Fragment> :
+                    <div className="p-3">
+                      <h5><b>Start Project from the very Beginning</b></h5>
+                      <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
+                      <hr/>
+                      <h5><b>Start From a Specific Point in the Project</b></h5>
+                      <Select
+                        className="text-left mb-2" 
+                        value={this.state.selected_line}
+                        onChange={this.handleLineSelection}
+                        options={this.state.nodes} />
+                      <Button color="primary" onClick={this.startline} size="lg" block><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp; Start From Block</Button>
                     </div>
-                  </div>
-                  <Form onSubmit={this.inputSubmit}>
-                    <InputGroup>
-                      <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
-                      <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
-                    </InputGroup>
-                  </Form>
-                </React.Fragment> :
-                <div className="pt-3">
-                  <h5><b>Start Project from the very Beginning</b></h5>
-                  <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
-                  <hr/>
-                  <h5><b>Start From a Specific Point in the Project</b></h5>
-                  <Select
-                    className="text-left mb-2" 
-                    value={this.state.selected_line}
-                    onChange={this.handleLineSelection}
-                    options={this.state.nodes} />
-                  <Button color="primary" onClick={this.startline} size="lg" block><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp; Start From Block</Button>
+                  }
                 </div>
-              }
-            </div> : <div className="p-5"><h1><i className="fas fa-sync-alt fa-spin"></i></h1></div>
+                <div className="col-sm-4 text-left test-sidebar">
+                  { this.state.ended ? <Alert onClick={this.handleRestart} color="warning" className="mb-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> : null }
+                  <h4>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</h4>
+                  <div className="debug-switch">
+                      Debug Mode <i className="fas fa-bug"></i>
+                      <Switch
+                        checked={this.state.debug}
+                        onChange={() => this.setState({debug: !this.state.debug})}
+                        value={this.state.debug}
+                      />
+                  </div>
+                  { this.state.started && this.state.debug ?
+                    <React.Fragment>
+                      <small className="py-2">Current Flow: <b>{flow}</b></small>
+                      <div className="sidebar-scroll">
+                        {this.getVariables()}
+                      </div>
+                    </React.Fragment>:
+                    <div className="sidebar-scroll">
+                      <ListGroup flush>
+                        <ListGroupItem tag="p">This Test Tool simulates voice apps in the browser</ListGroupItem>
+                        <ListGroupItem tag="p">You don't have to wait for the speech to complete before typing or saying your next response</ListGroupItem>
+                        <ListGroupItem tag="p">SSML tags are not displayed but will work in production on Google/Alexa</ListGroupItem>
+                        <ListGroupItem tag="p">Debug Mode shows you block by block paths/variables</ListGroupItem>
+                      </ListGroup>
+                    </div>
+                  }
+                </div>
+              </div>
+            </React.Fragment> : <div className="p-5"><h1><i className="fas fa-sync-alt fa-spin"></i></h1></div>
           }
         </ModalBody>
         <ModalFooter className="justify-content-center">
           <Button color="danger" onClick={this.props.toggle}>Exit</Button>
-          <Button className="debug-button" onClick={() => this.setState({debug: !this.state.debug})}><i className="fas fa-bug"></i> Debug</Button>
         </ModalFooter>
       </Modal>
     );

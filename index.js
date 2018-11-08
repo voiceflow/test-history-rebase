@@ -139,6 +139,11 @@ app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 
 app.get('/marketplace/', ensureLoggedIn(), Marketplace.getModules);
+app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules);
+app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification);
+app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification);
+app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification);
+app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

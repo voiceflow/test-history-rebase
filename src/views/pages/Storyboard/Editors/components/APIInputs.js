@@ -1,0 +1,53 @@
+import React, { Component } from 'react';
+import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import VariableInput from './VariableInput';
+
+class APIInputs extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            pairs: this.props.pairs
+        };
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            pairs: props.pairs
+        });
+    }
+
+    render() {
+        return (
+            <React.Fragment>
+                <div>
+                    {Array.isArray(this.state.pairs) ? this.state.pairs.map((pair, i) => {
+                        return (
+                            <div key={pair.index} className="mb-2">
+                                <InputGroup>
+                                    <InputGroupAddon addonType="prepend">
+                                        <InputGroupText>
+                                            {i+1}
+                                        </InputGroupText>
+                                    </InputGroupAddon>
+                                    <VariableInput className="form-control" placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={pair.key}/>
+                                    <VariableInput className="form-control" placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={pair.val}/>
+                                    <InputGroupAddon addonType="append">
+                                        <InputGroupText>
+                                            <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                                        </InputGroupText>
+                                    </InputGroupAddon>
+                                </InputGroup>
+                            </div> )
+                    }) : null}
+                    <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
+                        <i className="far fa-plus"></i> Add Pair
+                    </button>
+                </div>
+
+            </React.Fragment>
+        );
+    }
+}
+
+export default APIInputs;

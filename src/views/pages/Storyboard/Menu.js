@@ -4,6 +4,12 @@ import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 're
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 
+const defaultVariables = {
+    'sessions': 'The Number of times a particular user has opened the app',
+    'user_id': 'The user\'s Amazon/Google unique id',
+    'timestamp': 'UNIX timestamp (number of seconds since January 1st, 1970 at UTC.)'
+}
+
 const sections = [{
     title: 'Basic',
     items: [
@@ -19,11 +25,10 @@ const sections = [{
         { text: 'Set', type: 'set', icon: <i className="fas fa-code"/> },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> }
-    ]
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
+   ]
 }];
-
-// { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
@@ -102,8 +107,6 @@ class Menu extends PureComponent {
     }
 
     updateTree() {
-        // console.log('updateTree');
-        // console.log(this.props.diagrams);
         for(let diagram of this.props.diagrams){
             if(diagram.name === 'ROOT'){
                 this.visited = new Set();
@@ -133,7 +136,7 @@ class Menu extends PureComponent {
         let variables = this.props.variables;
         let new_var = this.state.new_var;
         if(isVarName(new_var) && !variables.includes(new_var)){
-            variables.unshift(new_var);
+            variables.push(new_var);
             this.props.onVariable(variables);
             this.setState({
                 new_var: ""
@@ -211,7 +214,11 @@ class Menu extends PureComponent {
                     <Label>Variables</Label>
                     <div className="variables">
                         {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
-                          return <div key={i} className="variable_tag">{'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
+                            if(defaultVariables[variable]){
+                                return <div key={variable} className="variable_tag default">{'{' + variable + '}'}</div>
+                            }else{
+                                return <div key={variable} className="variable_tag">{'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
+                            }
                         }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
                     </div>
                 </div>
@@ -225,8 +232,8 @@ class Menu extends PureComponent {
                         {tabs.map((tab, i) => {
                             return (
                                 <div key={i} 
-                                className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
-                                onClick={() => this.openTab(tab.tab)}>
+                                    className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
+                                    onClick={() => this.openTab(tab.tab)}>
                                     {tab.icon}
                                 </div>
                             )
@@ -244,8 +251,6 @@ class Menu extends PureComponent {
                     </div>
                 </div>
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>
-                    <p className="saved">{this.props.lastSave}</p>
-                    <hr/>
                     <div className='block-title no-select' onClick={() => this.setState({open: false})}>
                         <h5 className="mb-0">{this.state.tab}</h5>
                         <div className="close pr-1 pl-3 py-3">×</div>
@@ -255,6 +260,7 @@ class Menu extends PureComponent {
             </div>
         );
     }
+    // <p className="saved">{this.props.lastSave}</p>
 }
 
 export default Menu;

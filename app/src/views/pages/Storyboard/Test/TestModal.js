@@ -7,6 +7,7 @@ import moment from 'moment';
 import Select from 'react-select';
 import './TestModal.css'
 import {parse} from 'html-parse-stringify';
+const _ = require('lodash');
 
 const default_state = () => {
   return {
@@ -33,7 +34,8 @@ class TestModal extends React.Component {
       nodes: [],
       story_state: default_state(),
       ended: false,
-      last_diagram: ""
+      last_diagram: "",
+      debug: false
     }
 
     this.updateState = this.updateState.bind(this);
@@ -167,6 +169,21 @@ class TestModal extends React.Component {
     }
   }
 
+  addDebugBlock(children) {
+    children.forEach((element) => {
+      let inputs = this.state.inputs;
+      const debugInfo = JSON.parse(element.content);
+      console.log(debugInfo)
+      inputs.push({
+        text: debugInfo.text,
+        time: moment().format('h:mm:ss A'),
+        variables: debugInfo.variables,
+        line: debugInfo.line
+      });
+      this.setState({inputs: inputs});
+    })
+  }
+
   updateState(start=false){
     let data = this.state.story_state;
 
@@ -198,15 +215,20 @@ class TestModal extends React.Component {
             last_diagram: current_diagram
           })
         }
-        console.log(res.debugVars, res.output);
-        let dom = parse('<speak>' + res.output + '</speak><debug>' + res.debugVars + '</debug>');
+        let dom = parse(res.output);
 
-        if(dom && dom.length > 0 && dom[0].type === 'tag' && 
-          dom[0].name === 'speak' && dom[0].children){
-          this.removeAudio();
-          this.recursivePlay(0, dom[0].children, res.ending);
-        }else{
-          this.handleEnd();
+        if (dom) {
+          dom.forEach((element) => {
+            if(element.type === 'tag' && 
+              element.name === 'speak' && element.children){
+              this.removeAudio();
+              this.recursivePlay(0, element.children, res.ending);
+            }else if (element.type === 'tag' && element.name === 'debug') {
+              this.addDebugBlock(element.children)
+            } else {
+              this.handleEnd();
+            }
+          })
         }
         
       }else if(res.ending){
@@ -304,6 +326,47 @@ class TestModal extends React.Component {
                               <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-primary">{chat.time}</small></p>
                             </div>
                           </div>
+                        }else if(chat.variables){
+                          if (!this.state.debug) {
+                            return
+                          }
+                          return <div className="mt-2 text-left" key={i}>
+                            <div className="message border rounded p-2 align-self-start debug">
+                              <table>
+                                <tbody>
+                                  <tr><td><p className="px-1 text-left">{chat.text}</p></td></tr>
+                                  <tr><td><h6 className='variable-header'>Variables</h6></td></tr>
+                                  <tr><td><div className='variables-table'>
+                                    <table>
+                                      <thead>
+                                          <tr>
+                                              <th className='debug-headers'>Name</th>
+                                              <th className='debug-headers'>Value</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        {chat.variables.map(((variable, i) => {
+                                          let key = variable[0]
+                                          let val = variable[1]
+                                          if (val === null) {
+                                            val = 'null'
+                                          }
+                                          if (key === null) {
+                                            key = 'null'
+                                          }
+                                          return <tr key={i}>
+                                              <td>{key}</td>
+                                              <td>{val}</td>
+                                          </tr>
+                                        }))}
+                                      </tbody>
+                                    </table>
+                                  </div></td></tr>
+                                  <tr><td><p className="mb-0"><small className="text-primary">{chat.time}</small></p></td></tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         }else if(chat.text){
                           return <div className="mt-2 text-left" key={i}>
                             <div className="message border rounded p-2 align-self-start">
@@ -349,6 +412,7 @@ class TestModal extends React.Component {
         </ModalBody>
         <ModalFooter className="justify-content-center">
           <Button color="danger" onClick={this.props.toggle}>Exit</Button>
+          <Button className="debug-button" onClick={() => this.setState({debug: !this.state.debug})}><i className="fas fa-bug"></i> Debug</Button>
         </ModalFooter>
       </Modal>
     );

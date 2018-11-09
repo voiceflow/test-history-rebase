@@ -16,4 +16,6 @@ hooks:
   ApplicationStop:
     - location: scripts/stop_service.sh
       runas: root
+    - location: scripts/remove_archives.sh
+      runas: root
 runas: root

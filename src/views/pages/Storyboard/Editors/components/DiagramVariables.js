@@ -20,7 +20,7 @@ class DiagramVariables extends Component {
                             />
                             <i className="far fa-arrow-right"/>
                             <Select
-                                classNamePrefix="new-variable-box"
+                                classNamePrefix="select-box"
                                 className="map-box"
                                 value={argument.arg2 ? {label: '{' + argument.arg2 + '}', variable: argument.arg2} : null}
                                 onChange={(selected)=>this.props.handleSelection(i, 'arg2', selected.value)}

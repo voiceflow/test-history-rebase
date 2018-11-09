@@ -110,6 +110,7 @@ class DiagramBlock extends Component {
                         </Button>
                         {this.props.diagrams && this.props.diagrams.length > 0 ? 
                             <Select
+                                classNamePrefix="select-box"
                                 className='mt-2'
                                 onChange={(selected) => {
                                     let node = this.state.node;

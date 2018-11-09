@@ -7,29 +7,29 @@ import { Modal, ModalBody, Button, Input } from 'reactstrap';
 // import CardContent from '@material-ui/core/CardContent';
 // import TextField from '@material-ui/core/TextField';
 
-import SkillTemplates from './SkillTemplates'
+// import SkillTemplates from './SkillTemplates'
 
-const templates = [
-  {
-    name: 'Blank',
-    value: 'blank',
-    description: 'Start off with an empty canvas',
-  },
-  {
-    name: 'Game',
-    value: 'game',
-    description: 'Adventure game with many winding paths',
-    image: '/images/templates/game-controller.svg',
-    soon: true
-  },
-  {
-    name: 'Story',
-    value: 'story',
-    description: 'Create an interactive story with many endings',
-    image: '/images/templates/open-book.svg',
-    soon: true
-  }
-]
+// const templates = [
+//   {
+//     name: 'Blank',
+//     value: 'blank',
+//     description: 'Start off with an empty canvas',
+//   },
+//   {
+//     name: 'Game',
+//     value: 'game',
+//     description: 'Adventure game with many winding paths',
+//     image: '/images/templates/game-controller.svg',
+//     soon: true
+//   },
+//   {
+//     name: 'Story',
+//     value: 'story',
+//     description: 'Create an interactive story with many endings',
+//     image: '/images/templates/open-book.svg',
+//     soon: true
+//   }
+// ]
 
 class SkillModal extends React.Component {
   constructor(props) {
@@ -63,22 +63,21 @@ class SkillModal extends React.Component {
 // </Card>
   render() {
     return (
-        <Modal isOpen={this.props.modal} toggle={this.props.toggle} size="lg" centered onClosed={this.props.onClose}>
+        <Modal isOpen={this.props.modal} toggle={this.props.toggle} centered onClosed={this.props.onClose}>
           <div className="modal-header justify-content-center">
             <h1 className="display-5">Create New Skill</h1>
             <button type="button" className="close close-absolute" onClick={this.props.toggle}>×</button>
           </div>
-          <ModalBody className="p-5">
-            <Input 
+          <ModalBody className="p-4">
+            <Input
               type="text" 
               name="name"
               value={this.state.name}
               onChange={this.handleChange}
               placeholder="Skill Name" 
-              bsSize="lg" />
-          <div className="templates">Templates</div>
-          <SkillTemplates templates={templates} onUpdate={this.changeTemplate} template={this.state.template}/>
-          
+              bsSize="lg"
+              ref={c => (this._input = c)}
+            />
           <div className="text-center my-3">
             <Button 
               className="create-skill" 

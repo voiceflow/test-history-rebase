@@ -72,9 +72,9 @@
 .brackets>.variable{
 	background-color: #4865e9;
 	color: #fff;
-	border-radius: 30px;
+	border-radius: 5px;
 /*    border: 1px solid #555D6D;*/
-	padding: 3px 10px 6px 10px;
+	padding: 3px 5px 3px 5px;
 }
 .brackets>.NaN{
 	background-color: #ff000024;

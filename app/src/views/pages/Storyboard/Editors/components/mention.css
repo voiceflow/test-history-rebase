@@ -20,7 +20,8 @@
   background: #455261;
 }
 .mentionSuggestionsEntry {
-  padding: 7px 10px 3px 10px;
+  padding: 7px 10px 0px 10px;
+  color: #95a6bd;
   /*transition: background-color 0.4s cubic-bezier(.27,1.27,.48,.56);*/
 }
 
@@ -29,8 +30,9 @@
 }
 */
 .mentionSuggestionsEntryFocused {
-  padding: 7px 10px 3px 10px;
-  background-color: #e6f3ff;
+  padding: 7px 10px 0px 10px;
+  background-color: #4865e9;
+  color: #fff;
 }
 
 .mentionSuggestionsEntryText {
@@ -51,14 +53,13 @@
   border-radius: 12px;
 }
 .mentionSuggestions {
-  border: 1px solid #eee;
   margin-top: 0.4em;
   position: absolute;
   min-width: 220px;
   max-width: 440px;
-  background: #fff;
   border-radius: 2px;
-  box-shadow: 0px 4px 30px 0px rgba(220,220,220,1);
+  box-shadow: 0 0 0 1px hsla(0,0%,0%,0.1), 0 4px 11px hsla(0,0%,0%,0.1);
+  background-color: #373F53;
   cursor: pointer;
   padding-top: 8px;
   padding-bottom: 8px;

@@ -14,9 +14,9 @@
 
 }
 .alert-danger{
-    color: red;
+    color: #ff004e;
     background-color: #ff000024;
-    border-color: red;
+    border-color: #ff004e;
 }
 .form-control{
     background-color: #ffffff0a !important;
@@ -36,7 +36,9 @@
     border: none !important;
     color: #95a6bd;
 }
-   
+.text-danger{
+    color: #ff0053 !important;
+}  
 
 .MuiCardContent-root-77{
     background-color: #2B2E3C !important;

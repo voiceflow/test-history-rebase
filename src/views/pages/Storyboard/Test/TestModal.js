@@ -10,7 +10,7 @@ import {parse} from 'html-parse-stringify';
 import Switch from '@material-ui/core/Switch';
 // const _ = require('lodash');
 
-const local = true;
+const local = false;
 
 const default_state = () => {
   return {

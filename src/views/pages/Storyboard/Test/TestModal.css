@@ -59,10 +59,10 @@ td {
     overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
 }
 .var-table td.v>span {
-    border-radius: 100px;
+    border-radius: 5px;
     background-color: #455afb;
     color: #fff;
-    padding: 4px;
+    padding: 4px 3px;
     margin-top: 3px !important;
 }
 

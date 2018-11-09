@@ -29,10 +29,10 @@ class Capture extends Component {
                     classNamePrefix="variable-box"
                     placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                     className="variable-box"
-                    value={this.state.node.extras.variable ? {label: this.state.node.extras.variable, value: this.state.node.extras.variable} : null}
+                    value={this.state.node.extras.variable ? {label: '{' + this.state.node.extras.variable + '}', value: this.state.node.extras.variable} : null}
                     onChange={this.handleSelection}
                     options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                        return {label: variable, value: variable}
+                        return {label: '{' + variable + '}', value: variable}
                     }) : null}
                 />
             </div>

@@ -281,7 +281,7 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
 
 .App .Menu #sidebar .block-title {
     margin-top: 0px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     font-weight: lighter;
     display: flex;
     justify-content: space-between;
@@ -415,12 +415,6 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     color: #fff;
 }
 
-.btn-secondary.disabled{
-    color: #fff !important;
-    background-color: #455afb !important;
-    border: 1px solid #455afb !important;
-}
-
 .sub-diagram::before {
     content: '↳';
     margin-top: 3px;
@@ -457,8 +451,17 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     text-align: left;
     font-size: 12px !important;
     background-color: #3a3c4a !important;
-    border: #95a6bd !important;
     color: #95a6bd !important;
+    border: 1px solid #3A3C4A !important;
+}
+.diagram-block>button:hover, .diagram-block>button:active{
+    background-color: #2B2E3C !important;
+    /*border: none !important;*/
+}
+.diagram-block>button.btn-secondary.disabled{
+    color: #fff !important;
+    background-color: #455afb !important;
+    border: 1px solid #455afb !important;;
 }
 .diagram-block>input{
     padding: 0px 6px;
@@ -468,11 +471,13 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
 .diagram-block .diagram-edit{
     padding-left: 4px;
     padding-right: 3px;
+    padding-top: 5px;
     font-size: 13px !important;
     color: #95a6bd !important;
     background-color: #3A3C4A !important;
+    border: 1px solid #3A3C4A !important;
+    border: none;
 }
-
 /*.diagram-block:hover{
     background-color: #95A6BD;
     color: #fff;
@@ -519,8 +524,7 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     width: 240px;
     height: 100%;
     border-right: 1px solid #414552;
-    padding: 60px 20px 120px 20px;
-    overflow: scroll;
+    padding: 60px 0px 0px 0px;
     /*opacity: 0.9;*/
     /*text-align: center;*/
     display: flex;
@@ -539,6 +543,17 @@ box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.3) !important;
     /* smooth the scrolling on touch devices - webkit browsers */
     -webkit-overflow-scrolling: touch;
 
+}
+.App .Menu #sidebar>*{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.App .Menu #sidebar .sidebar-content{
+    overflow-y: scroll;
+    overflow-x: visible;
+    padding-top: 20px;
+    padding-bottom: 60px;
 }
 
 .App .Menu #sidebar.open {
@@ -997,9 +1012,22 @@ label {
     color: #95a6bd;
     border-radius: 2px;
     min-width: 90px;
+    transform: scale(1);
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-in;
     -webkit-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
     -moz-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
     box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
+}
+
+.srd-node--selected>.srd-default-node {
+    border-color: #E2E9EC !important;
+    outline: 0;
+    -webkit-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
+    -moz-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
+    box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
+    transform: scale(1.15);
+    padding: 3px 2px 2px 2px;
 }
 
 .srd-default-node.flow {
@@ -1023,8 +1051,8 @@ label {
     border: 1px solid #2B2E3C !important;
     border-radius: 3px;
     -webkit-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
--moz-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
+    -moz-box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
+    box-shadow: 0px 0px 22px -6px rgba(1,25,71,0.56);
     /*color: #fff !important;*/
 }
 
@@ -1131,18 +1159,6 @@ background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);}
     background: rgba(0,0,0,0.3) !important;
 }
 
-.srd-node--selected>* {
-    border-color: #E2E9EC !important;
-    outline: 0;
-    -webkit-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
--moz-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.10);
-    transform: scale(1.15);
-    transition-duration: 0.25s;
-    transition-timing-function: ease-out-in;
-    padding: 2px;
-/*    transition-timing-function: ease;*/ 
-}
 .stage_modal .modal-info>.MUIform>div{
     background-color: #333644;
     box-shadow: none;
@@ -1636,6 +1652,13 @@ button.close{
     border: none !important;
     padding: 10px 15px !important;
     min-width: 0 !important;
+}
+
+#widget-bar{
+    position: absolute;
+    bottom: 20px;
+    left: 295px;
+    z-index: 5;
 }
 
 @media(max-width: 1400px){

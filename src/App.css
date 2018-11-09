@@ -99,7 +99,14 @@ button:focus{
     color: #94A6BD !important;
 
 }
-
+.btn-danger{
+    color: #fff !important;
+    background-color: #ff0053 !important;
+}
+btn-danger:hover{
+    color: #fff !important;
+    background-color: #e00049 !important;
+}
 .skill-card a.no-underline>button{
     background-color: #ffffff14;
 /*    border: 0.2px solid #fff;*/

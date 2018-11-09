@@ -18,6 +18,12 @@ class VariableInput extends Component {
         };
 
         this.mentionPlugin = createMentionPlugin({
+            theme: {
+                mentionSuggestions: 'mentionSuggestions',
+                mentionSuggestionsEntry: 'mentionSuggestionsEntry',
+                mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
+                mentionSuggestionsEntryText: 'mentionSuggestionsEntryText'
+            },
             supportWhitespace: false,
             entityMutability: 'IMMUTABLE',
             mentionTrigger: '{',

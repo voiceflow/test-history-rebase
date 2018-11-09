@@ -411,6 +411,7 @@ class TestModal extends React.Component {
                       <hr/>
                       <h6><b>Start From a Specific Point in the Project</b></h6>
                       <Select
+                        classNamePrefix="select-box"
                         className="text-left mb-2" 
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}

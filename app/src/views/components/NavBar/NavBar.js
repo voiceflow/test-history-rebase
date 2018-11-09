@@ -39,12 +39,12 @@ class NavBar extends Component {
   // {link: 'storyboard', 'text': <span>Storyboard</span>},
 
   componentDidMount() {
-    if(this.state.user.admin){
-      let tabs = this.state.tabs;
-      tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
-      tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
-      this.setState({tabs: tabs});
-    }
+    // if(this.state.user.admin){
+    //   let tabs = this.state.tabs;
+    //   tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
+    //   tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
+    //   this.setState({tabs: tabs});
+    // }
   }
 
   handleChange = event => {

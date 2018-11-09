@@ -16,6 +16,7 @@ import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
+import { Button, ButtonGroup } from 'reactstrap';
 
 import Cookies from 'universal-cookie';
 
@@ -59,6 +60,8 @@ class StoryBoard extends Component {
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
         this.removeNode = this.removeNode.bind(this);
+        this.zoomIn = this.zoomIn.bind(this);
+        this.zoomOut = this.zoomOut.bind(this);
         this.buildDiagrams = null;
 
         // preview mode
@@ -144,13 +147,42 @@ class StoryBoard extends Component {
             testing_info: false,
             variables: variables,
             newSkill: newSkill,
-            help: null
+            help: null,
+            helpOpen: false
         };
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
             // this.onLoadId('6cd76bb5-6d47-454f-b393-fb6bcb6505fe');
         }
+    }
+
+    zoomOut(){
+        let engine = this.state.engine;
+        let model = engine.getDiagramModel();
+        let zoom = model.getZoomLevel();
+        if(zoom - 15 > 15){
+            model.setZoomLevel(zoom - 15);
+        }else{
+            model.setZoomLevel(15);
+        }
+        this.setState({
+            engine: engine
+        });
+    }
+
+    zoomIn(){
+        let engine = this.state.engine;
+        let model = engine.getDiagramModel();
+        let zoom = model.getZoomLevel();
+        if(zoom + 15 < 150){
+            model.setZoomLevel(zoom + 15);
+        }else{
+            model.setZoomLevel(150);
+        }
+        this.setState({
+            engine: engine
+        });
     }
 
     removeNode(){
@@ -752,8 +784,8 @@ class StoryBoard extends Component {
             this.state.engine.stopMove();
             node.extras.type = type;
             var points = engine.getRelativeMousePoint(event);
-            node.x = points.x;
-            node.y = points.y;
+            node.x = points.x-(node.name.length*4.5 + 30);
+            node.y = points.y-30;
             node.setSelected();
             engine.getDiagramModel().clearSelection();
             engine.getDiagramModel().addNode(node);
@@ -777,9 +809,10 @@ class StoryBoard extends Component {
 
         return (
             <div className='App' >
-                <HelpModal 
+                <HelpModal
+                    open={this.state.helpOpen}
                     help={this.state.help}
-                    toggle={()=>this.setState({help: null})}
+                    toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
                     setHelp={(help) => this.setState({help: help})}
                 />
                 { this.state.newSkill !== null ?  
@@ -807,7 +840,7 @@ class StoryBoard extends Component {
                     /> 
                 : null}
                 <Menu 
-                    helpModal={() => this.setState({help: true})}
+                    helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     current={this.state.diagram_id}
                     enterFlow={this.enterFlow}
@@ -836,6 +869,12 @@ class StoryBoard extends Component {
                     onDrop={this.onDrop}
                     onDragOver={e => e.preventDefault()}
                 >
+                    <div id="widget-bar">
+                        <ButtonGroup>
+                            <Button onClick={this.zoomIn}><i className="far fa-plus"/></Button>
+                            <Button onClick={this.zoomOut}><i className="far fa-minus"/></Button>
+                        </ButtonGroup>
+                    </div>
                     <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
                 </div>
                 <Editor
@@ -845,7 +884,7 @@ class StoryBoard extends Component {
                     close={e => this.setState({ open: false })}
                     repaint={this.repaint}
                     variables={this.state.variables}
-                    setHelp={(help) => this.setState({help: help})}
+                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}
                     enterFlow={this.enterFlow}

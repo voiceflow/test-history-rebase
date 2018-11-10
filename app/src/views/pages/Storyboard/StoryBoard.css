@@ -1352,6 +1352,7 @@ button.close{
         top: 47px !important;
     }
     .TitleBar{
+        height: 105px;
         display: block;
         padding-left: 290px;
     }

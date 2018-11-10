@@ -10,13 +10,12 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 
 // Pages
-import StoryBoard from './views/pages/Storyboard/StoryBoard';
-import DashBoard from './views/pages/Dashboard/DashBoard';
-import Account from './views/pages/Account/Account';
-import Admin from './views/pages/Admin/Admin';
-import Analytics from './views/pages/Analytics/Analytics';
-import NavBar from './views/components/NavBar/NavBar';
-import Skill from './views/pages/Skill/Skill'
+import StoryBoard from './views/pages/Storyboard';
+import DashBoard from './views/pages/Dashboard';
+import Business from './views/pages/Business';
+import Account from './views/pages/Account';
+import NavBar from './views/components/NavBar';
+import Skill from './views/pages/Skill'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -110,10 +109,11 @@ class App extends Component {
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Storyboard" preview component={StoryBoard}/>
                 <PrivateRoute path="/storyboard/:skill_id/:diagram_id" name="Storyboard" component={StoryBoard}/>
                 <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard}/>
+                <PrivateRoute path="/business/email/template/:id" name="Business" component={Business} page='template'/>
+                <PrivateRoute path="/business/email" name="Business" component={Business} page='email'/>
+                <PrivateRoute path="/business" name="Business" component={Business} page='default'/>
                 <PrivateRoute path="/publish/:id" name="Skill Dashboard" component={Skill}/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/admin" name="Admin" component={Admin} />
-                <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

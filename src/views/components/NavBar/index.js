@@ -30,13 +30,13 @@ class NavBar extends Component {
     this.state = {
       isOpen: false,
       tabs: [
-        {link: 'dashboard', 'text': <span>Dashboard</span>},
-        {link: 'storyboard', 'text': <span>Storyboard</span>}
+        {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
+        {link: '/storyboard', 'text': <React.Fragment>Storyboard</React.Fragment>},
+        {link: '/business', 'text': <React.Fragment>Business</React.Fragment>}
       ],
       user: AuthenticationService.getUser()
     };
   }
-  // {link: 'storyboard', 'text': <span>Storyboard</span>},
 
   componentDidMount() {
     // if(this.state.user.admin){
@@ -78,7 +78,7 @@ class NavBar extends Component {
       name: this.state.user.name,
       email: this.state.user.email
     } : null;
-    let page_name = getPage(this.props.location.pathname);
+    let page_name = '/' + getPage(this.props.location.pathname);
 
     return (
         <div>
@@ -100,7 +100,7 @@ class NavBar extends Component {
                     }else{
                       return (
                         <NavItem key={i}>
-                          <Link to={"/" + tab.link} className="nav-link">{tab.text}</Link>
+                          <Link to={tab.link} className="nav-link">{tab.text}</Link>
                         </NavItem>)
                     }
                 })}

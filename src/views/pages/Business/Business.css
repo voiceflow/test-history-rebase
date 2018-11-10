@@ -1,0 +1,43 @@
+.business.Window{
+	height: 100%;
+	display: flex;
+}
+/*.business.Window > .row {
+	height: 100%;
+}*/
+.business.Window  .business-page {
+	height: 100%;
+	overflow-x: scroll;
+	flex: 1;
+}
+.business.Window  .sidebar {
+	background-color: #fff;
+	width: 160px;
+	border-right: 1px solid #E2E9EC;
+}
+
+.business.Window  .sidebar>.title {
+	font-weight: lighter;
+	padding: 10px 20px;
+	font-size: 22px;
+	border-bottom: 1px solid #E2E9EC;
+}
+
+.business.Window  .sidebar>.sidebar-option {
+	padding: 10px 20px;
+	display: block;
+	transition: background-color 0.1s linear;
+	text-decoration: none;
+	cursor: pointer;
+	color: #94A6BD;
+}
+
+.business.Window  .sidebar>.sidebar-option:hover {
+	background-color: #F5F9FA;
+}
+
+.business.Window  .sidebar>.sidebar-option.active {
+	cursor: default;
+	background-color: #94A6BD !important;
+	color: #fff !important;
+}

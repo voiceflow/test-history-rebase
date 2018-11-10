@@ -24,17 +24,12 @@ td {
     max-width: 100%;
     position: relative;
     overflow: hidden;
-    border: 1px solid #555D6D !important;
-    border-radius: 15px 15px 15px 0px !important;
 }
 .self-message {
-    background-color: #313B72 !important;
-    border: 1px solid #455AFB !important;
+    background-color: #ddf2ff;
     -webkit-box-align: end;
     -ms-flex-align: end;
     align-items: flex-end;
-    color: #fff;
-    border-radius: 15px 15px 0px 15px !important;
 }
 
 .chatbox {
@@ -59,11 +54,10 @@ td {
     overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
 }
 .var-table td.v>span {
-    border-radius: 5px;
-    background-color: #455afb;
-    color: #fff;
-    padding: 4px 3px;
-    margin-top: 3px !important;
+    border-radius: .25rem;
+    background-color: #E1BEE7;
+    color: #6A1B9A;
+    padding: 4px;
 }
 
 .test-sidebar {
@@ -83,30 +77,22 @@ td {
 }
 .debug-switch {
     border-bottom: 1px solid #e9ecef;
-    border-radius: 3px !important;
     /*margin-bottom: 10px;*/
 }
 
 .sidebar-scroll {
     overflow-y: scroll;
 }
-.debug{
-    background-color: #455AFB !important;
+
+.debug {
+    background-color: #FF91A4;
+    color: #000000;
     padding: 2px 8px !important;
-/*    border-radius: 300px !important;*/
-    color: #fff !important;
-    border: 1px solid #455AFB !important;
-    border-radius: 3px !important;
-    
 }
-.table td, .table th{
-    border-top: none !important;
- 
-}
+
 .debug small {
     text-transform: uppercase;
     margin: 0px;
-    color: #ffffff50;
 }
 .debug p {
     margin-top: -8px;
@@ -125,11 +111,7 @@ td {
     height: 100px;
     overflow: auto;
 }
-.alert-warning{
-    background-color: #455afb;
-    color: #fff;
-    border: none;
-}
+
 .chats {
     width: 100%;
 }
@@ -147,7 +129,7 @@ td {
     z-index: 9;
     position: absolute;
     height: 110%;
-    background-color: #555D6D;
+    background-color: #EEE;
     -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
     transition: width 1s;
 }

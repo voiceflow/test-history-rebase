@@ -784,6 +784,10 @@ label {
     background-color: #F48FB1;
 }
 
+.srd-default-node.module{
+    background-color: #6CD132;
+}
+
 .srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline{
     background-color: #E1F5FE;
 }

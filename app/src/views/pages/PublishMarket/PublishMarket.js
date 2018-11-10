@@ -11,6 +11,7 @@ import axios from 'axios';
 import '../Skill/Skill.css';
 import categories from './../../../services/Categories';
 import types from './../../../services/Types';
+import APIMapping from '../Storyboard/Editors/components/APIMapping';
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -26,7 +27,12 @@ class PublishMarket extends Component {
                 type: 'Flow',
                 error: '',
                 in_review: false,
-                displayingConfirmWithdraw: false
+                title: '',
+                module_icon: '',
+                displayingConfirmWithdraw: false,
+                color: '',
+                input_mapping: [],
+                output_mapping: []
             }
         } else {
             this.props.history.push('/dashboard');
@@ -82,6 +88,9 @@ class PublishMarket extends Component {
     			}
     		}
 
+            res.data.input_mapping = JSON.parse(res.data.input_mapping);
+            res.data.output_mapping = JSON.parse(res.data.output_mapping);
+
     		this.setState({
     			...res.data
     		});
@@ -108,11 +117,15 @@ class PublishMarket extends Component {
         axios.patch('/marketplace/cert/' + this.state.skill_id, {
             title: s.title,
             descr: s.descr,
-            card_img: s.card_icon,
+            card_icon: s.card_icon,
             creator_id: this.props.user.id,
             category: category,
             type: type,
-            overview: s.overview
+            overview: s.overview,
+            module_icon: s.module_icon,
+            color: s.color,
+            input_mapping: JSON.stringify(s.input_mapping),
+            output_mapping: JSON.stringify(s.output_mapping)
         })
         .then(res => {
             this.setState({
@@ -257,7 +270,20 @@ class PublishMarket extends Component {
                     <hr className="mt-0"></hr>
                     <div className="row">
                         <div className="col-2">
-                            {this.state.card_img?
+                            {this.state.module_icon?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Module Icon</p>
+                        </div>
+                    </div>
+                    <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.card_icon?
                                 <i className="fal fa-check-circle text-success"></i>
                                 :
                                 <i className="fal fa-times-circle text-danger"></i>
@@ -381,6 +407,23 @@ class PublishMarket extends Component {
                             </div>
 						</FormGroup>
 
+                        <div className="d-flex row">
+                            <div className="col-3 publish-info">
+                                <p className="text-secondary mt-5"><b>Module icon</b> will be displayed for your module in the Voiceflow editor.</p>
+                            </div>
+                            <div className="col-9 d-flex">
+                                <div>
+                                    <label className="mt-0"><b>Module icon</b> *</label>
+                                    <Image 
+                                        className='icon-image small-icon'
+                                        path='/module_icon'
+                                        isDisabled={this.state.in_review}
+                                        image={this.state.module_icon} 
+                                        update={(url) => this.setState({module_icon: url})}/>
+                                </div>
+                            </div>
+                        </div>
+
 						<div className="d-flex row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary mt-5"><b>Card icon</b> will be displayed for your module in our Marketplace.</p>
@@ -450,6 +493,31 @@ class PublishMarket extends Component {
                             </div>
                         </FormGroup>
 
+                        <FormGroup>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label><b>Block Color </b>*</Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="mb-0 text-secondary"><b>Block color</b> is the hexcode color your block will appear as.</p>
+                                </div>
+                                <div className="col-9">
+                                    <Input type="text" name="color" placeholder="6CD132" value={this.state.color} disabled={this.state.in_review} onChange={this.handleChange}/>
+                                </div>
+                            </div>
+                        </FormGroup>
+
+                        <label>Input Variable Mapping</label>
+                        <APIMapping
+                            pairs={this.state.input_mapping}
+                            onAdd={() => this.handleAddPairMapping()}
+                            onRemove={(e, i) => this.handleRemovePairMapping(i)}
+                            onChange={this.handleKVMappingChange}
+                            variables={this.state.variables}
+                        />
 					</Form>
 				</div>
 			</div>

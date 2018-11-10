@@ -1,6 +1,7 @@
 const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram');
 
+const module_limit = 10;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){
 		rows[i].skill_id = hashids.encode(rows[i].skill_id);
@@ -9,9 +10,10 @@ const hashIds = (rows) => {
 	}
 }
 
+
 const getModules = (req, res) => {
-	pool.query('SELECT * FROM modules ORDER BY created LIMIT 10', 
-        [], (err, data) => {
+	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id LIMIT $1', 
+        [module_limit], (err, data) => {
         if(err){
             res.sendStatus(500);
         }else{
@@ -143,8 +145,8 @@ const saveCertification = (req, res) => {
 
 	const createNewModule = (skill_id) => {
 		pool.query(
-			`INSERT INTO modules (title, descr, card_img, creator_id, skill_id, category, type, overview) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, 
-			[req.body.title, req.body.descr, req.body.card_img, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview],
+			`INSERT INTO modules (title, descr, card_icon, creator_id, skill_id, category, type, overview, module_icon, color, input_mapping, output_mapping) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
+			[req.body.title, req.body.descr, req.body.card_icon, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input_mapping, req.body.output_mapping],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -158,8 +160,8 @@ const saveCertification = (req, res) => {
 
 	const updateModule = (skill_id, module_id) => {
 		pool.query(
-			`UPDATE modules SET title = $1, descr = $2, card_img = $3, category = $4, type = $5, overview = $6 WHERE module_id = $7`, 
-			[req.body.title, req.body.descr, req.body.card_img, req.body.category, req.body.type, req.body.overview, module_id],
+			`UPDATE modules SET title = $1, descr = $2, card_icon = $3, category = $4, type = $5, overview = $6, module_icon = $7, color = $8, input_mapping = $9, output_mapping = $10 WHERE module_id = $11`, 
+			[req.body.title, req.body.descr, req.body.card_icon, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input_mapping, req.body.output_mapping, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -324,7 +326,7 @@ const giveAccess = (req, res) => {
 const getModule = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0];
 
-	pool.query(`SELECT title, descr, card_img, name, email, category, type, overview FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
+	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input_mapping, output_mapping FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
@@ -341,7 +343,7 @@ const getModule = (req, res) => {
 const getCertModule = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT title, descr, card_img, name, email, category, type, overview FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
+	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input_mapping, output_mapping FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
@@ -353,6 +355,39 @@ const getCertModule = (req, res) => {
 			}
 		}
 	});
+}
+
+const getUserModules = (req, res) => {
+	let user_id = req.user.id;
+			// `SELECT user_modules.module_id, title, descr, module_icon, diagram_id, version_id FROM user_modules 
+		//  INNER JOIN modules ON user_modules.module_id = modules.module_id 
+		//  INNER JOIN versions ON modules.module_id = versions.module_id 
+		//  WHERE versions.cert_approved IS NOT NULL AND user_modules.creator_id = $1
+		//  AND versions.cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = )
+		//  `,
+	pool.query(
+		`
+		 SELECT modules.module_id, modules.title, modules.module_icon, ultimate_versions.version_id, ultimate_versions.diagram_id, modules.color, modules.input_mapping, modules.output_mapping
+		 FROM 
+		 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
+		 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
+		 		INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
+		 	) AS ultimate_versions 
+		 INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
+		 INNER JOIN user_modules ON modules.module_id = user_modules.module_id
+		 WHERE user_modules.creator_id = $1
+		`,
+		[user_id],
+		(err, data) => {
+			if(err){
+				console.log(err);
+				res.sendStatus(500);
+			}else{
+				hashIds(data.rows);
+				res.send(data.rows);
+			}
+		}
+	);
 }
 
 module.exports = {
@@ -367,5 +402,6 @@ module.exports = {
 	hasAccess: hasAccess,
 	removeAccess: removeAccess,
 	giveCertification: giveCertification,
-	getCertModule: getCertModule
+	getCertModule: getCertModule,
+	getUserModules: getUserModules
 }

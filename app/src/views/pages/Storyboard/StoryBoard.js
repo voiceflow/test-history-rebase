@@ -61,6 +61,7 @@ class StoryBoard extends Component {
         this.enterFlow = this.enterFlow.bind(this);
         this.removeNode = this.removeNode.bind(this);
         this.buildDiagrams = null;
+        this.loadUserModules = this.loadUserModules.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -145,7 +146,8 @@ class StoryBoard extends Component {
             testing_info: false,
             variables: variables,
             newSkill: newSkill,
-            help: null
+            help: null,
+            user_modules: null
         };
 
         if(!this.state.newSkill){
@@ -211,6 +213,25 @@ class StoryBoard extends Component {
                 }
             }.bind(this));
         }
+
+        this.loadUserModules();
+    }
+
+    loadUserModules(){
+        axios.get('/marketplace/user_module')
+        .then(res => {
+            this.setState({
+                user_modules: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                loading_modal: true,
+                error_modal: 'Error retrieving modules'
+            });
+        });
     }
 
     onDiagramUnfocus() {
@@ -755,6 +776,20 @@ class StoryBoard extends Component {
                 node.extras = {
                     variable: null
                 };
+            } else if (type === 'module'){
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+
+                let data = JSON.parse(event.dataTransfer.getData('data'));
+                node.extras = {
+                    diagram_id: data.diagram_id,
+                    inputs: data.diagram_inputmap,
+                    outputs: data.diagram_outputmap,
+                    version_id: data.version_id,
+                    module_id: data.module_id,
+                    module_icon: data.module_icon,
+                    color: data.color
+                }
             }
             this.state.engine.stopMove();
             node.extras.type = type;
@@ -786,7 +821,7 @@ class StoryBoard extends Component {
             <div className='App' >
                 <HelpModal 
                     help={this.state.help}
-                    toggle={()=>this.setState({help: null})}
+                    toggle={()=> this.setState({help: null})}
                     setHelp={(help) => this.setState({help: help})}
                 />
                 { this.state.newSkill !== null ?  
@@ -819,6 +854,7 @@ class StoryBoard extends Component {
                     variables={this.state.variables}
                     onVariable={this.setVariables}
                     build={fn => this.buildDiagrams = fn}
+                    user_modules={this.state.user_modules}
                 />
                 <TitleBar
                     lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}

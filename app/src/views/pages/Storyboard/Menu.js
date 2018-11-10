@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
+import ModuleItem from './ModuleItem';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
@@ -225,7 +226,12 @@ class Menu extends PureComponent {
                 </div>
             </React.Fragment>
         }else if(this.state.tab === 'modules'){
-            
+            content = 
+            <div>
+            {this.props.user_modules.map((user_module, i) => {
+                return <ModuleItem module={user_module} key={i} />;
+            })}
+            </div>
         }
 
         return (

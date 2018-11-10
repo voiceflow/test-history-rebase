@@ -64,7 +64,7 @@ class HelpModal extends React.Component {
                       // {result.video ? <iframe width="560" height="315" src={result.video} frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe> : null }
 
     return (
-      <Modal isOpen={!!this.props.help} toggle={this.props.toggle}>
+      <Modal isOpen={this.props.open} toggle={this.props.toggle}>
         <ModalBody>
           {this.props.help && this.props.help.type ? 
             <React.Fragment>

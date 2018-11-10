@@ -406,11 +406,12 @@ class TestModal extends React.Component {
                       </Form>
                     </React.Fragment> :
                     <div className="p-3">
-                      <h5><b>Start Project from the very Beginning</b></h5>
+                      <h6><b>Start Project from the very Beginning</b></h6>
                       <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
                       <hr/>
-                      <h5><b>Start From a Specific Point in the Project</b></h5>
+                      <h6><b>Start From a Specific Point in the Project</b></h6>
                       <Select
+                        classNamePrefix="select-box"
                         className="text-left mb-2" 
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}

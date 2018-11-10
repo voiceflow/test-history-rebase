@@ -132,7 +132,8 @@ class Menu extends PureComponent {
         }
     }
 
-    addVariable (){
+    addVariable (e){
+        if(e) e.preventDefault();
         let variables = this.props.variables;
         let new_var = this.state.new_var;
         if(isVarName(new_var) && !variables.includes(new_var)){
@@ -144,6 +145,7 @@ class Menu extends PureComponent {
         }else{
             alert('Invalid Variable: Variables must start with a character and can not contain spaces or special characters');
         }
+        return false
     }
 
     deleteVariable(variable){
@@ -202,13 +204,15 @@ class Menu extends PureComponent {
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
             content = <React.Fragment>
-                <FormGroup className="mb-0">
-                    <Label>Add New Variable</Label>
-                    <InputGroup>
-                        <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
-                        <InputGroupAddon addonType="append"><Button onClick={this.addVariable} className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
-                    </InputGroup>
-                </FormGroup>
+                <form onSubmit={this.addVariable}>
+                    <FormGroup className="mb-0">
+                        <Label>Add New Variable</Label>
+                        <InputGroup>
+                            <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
+                            <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                        </InputGroup>
+                    </FormGroup>
+                </form>
                 <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
                 <div>
                     <Label>Variables</Label>
@@ -255,11 +259,15 @@ class Menu extends PureComponent {
                     </div>
                 </div>
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>
-                    <div className='block-title no-select' onClick={() => this.setState({open: false})}>
-                        <h5 className="mb-0">{this.state.tab}</h5>
-                        <div className="close pr-1 pl-3 py-3">×</div>
+                    <div>
+                        <div className='block-title no-select' onClick={() => this.setState({open: false})}>
+                            <h5 className="mb-0">{this.state.tab}</h5>
+                            <div className="close pr-1 pl-3 py-3">×</div>
+                        </div>
                     </div>
-                    {content}
+                    <div className="sidebar-content">
+                        {content}
+                    </div>
                 </div>
             </div>
         );

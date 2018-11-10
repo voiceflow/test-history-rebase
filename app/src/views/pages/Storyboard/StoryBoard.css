@@ -607,12 +607,12 @@
     padding: 72px 25px 65px 25px;
     background-color: #fff;
     /*opacity: 0.9;*/
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     overflow: scroll;
     box-shadow: 0 4px 8px 0 rgba(118, 186, 255, 0.17);
     border-right: 1px solid #AAA;
@@ -653,12 +653,12 @@
     height: 500px;
     color: #333333;
     background-color: #dddddd;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .controls hr {
@@ -1338,6 +1338,13 @@ button.close{
     border: none !important;
     padding: 10px 15px !important;
     min-width: 0 !important;
+}
+
+#widget-bar{
+    position: absolute;
+    bottom: 20px;
+    left: 295px;
+    z-index: 5;
 }
 
 @media(max-width: 1400px){

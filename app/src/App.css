@@ -43,7 +43,7 @@
 }
 
 body {
-	font-family: 'Proxima Nova', sans-serif;
+    font-family: 'Proxima Nova', sans-serif;
     background: #F5F9FA !important;
     color: #545D6D;
 }
@@ -330,22 +330,22 @@ input::placeholder, textarea::placeholder {
 }
 
 .padding {
-	padding-top: 58px;
+    padding-top: 58px;
 }
 
 .Window {
-	width: 100%;
-	min-height: 100%;
-	padding-top: 58px;
+    width: 100%;
+    min-height: 100%;
+    padding-top: 58px;
 }
 
 .modal-content{
-	/*overflow: hidden;*/
-	padding-top: .5rem;
-	border: none;
+    /*overflow: hidden;*/
+    padding-top: .5rem;
+    border: none;
 }
 /*.modal-footer{
-	background-color: #F3F3F3;
+    background-color: #F3F3F3;
 }*/
 .split-page{
     display: flex;

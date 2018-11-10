@@ -1,54 +1,54 @@
 .icon-image {
-	width: 200px;
-	height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .icon-image>.dropzone{
-	height: 100%;
+  height: 100%;
 }
 .icon-image>.image-box{
-	height: 100%;
-	width: 100%;
-	display: block;
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 .icon-image.small-icon>.image-box {
-	padding: 50px;
+  padding: 50px;
 }
 .icon-image.large-icon>.image-box {
-	padding: 10px;
+  padding: 10px;
 }
 .icon-image>.image-box>.image{
-	height: 100%;
-	width: 100%;
-	background-position: center center;
+  height: 100%;
+  width: 100%;
+  background-position: center center;
     background-size: cover;
     border-radius: 100px;
     border: 1px solid #AAA;
 }
 
 .disabled-image>.image-box{
-	background-color: #e9ecef;
+  background-color: #e9ecef;
 }
 
 .multiple .input-group {
-	margin: 15px 0;
+  margin: 15px 0;
 }
 
 .Window.skill .form-group{
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .Window.skill .form-group label{
-	margin-bottom: 5px !important;
+  margin-bottom: 5px !important;
 }
 
 .Window.skill>.container{
-	padding-top: 80px;
-	padding-bottom: 6rem;
+  padding-top: 80px;
+  padding-bottom: 6rem;
 }
 
 .Window.skill input::placeholder, textarea::placeholder{
-	color: #CCC !important;
+  color: #CCC !important;
 }
 
 .LoginWithAmazon{
@@ -93,22 +93,22 @@
   }
 }
 .stage_modal .modal-info>div{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 200px;
 }
 .stage_modal .modal-info>h1{
-	font-size: 3rem;
+  font-size: 3rem;
 }
 .stage_modal .modal-body>.d-flex.justify-content-between {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .stage_modal .modal-info>.MUIform>div{
-	width: 100%;
-	margin: 5px 0px !important;
+  width: 100%;
+  margin: 5px 0px !important;
 }
 .stage_modal .modal-info>.MUIform>.btn{
-	margin-top: 10px !important;
+  margin-top: 10px !important;
 }

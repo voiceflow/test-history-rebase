@@ -1,14 +1,14 @@
 .add-skill {
-	background-image: linear-gradient( 89.8deg,  rgba(39,115,255,1) 4.3%, rgba(62,211,232,1) 101.4% ) !important;
-/*	background-color: #8EC5FC !important;
-	background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%) !important;*/
-	color: #fff !important;
+  background-image: linear-gradient( 89.8deg,  rgba(39,115,255,1) 4.3%, rgba(62,211,232,1) 101.4% ) !important;
+/*  background-color: #8EC5FC !important;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%) !important;*/
+  color: #fff !important;
 }
 /*.MuiCardActionArea-root-29:hover .MuiCardActionArea-focusHighlight-31{
-	opacity: 0.1 !important;
+  opacity: 0.1 !important;
 }*/
 .add-skill h2{
-	font-weight: lighter;
+  font-weight: lighter;
 }
 
 
@@ -44,9 +44,9 @@
     text-align: center;
 }
 .close-absolute {
-	position: absolute;
-	right: 30px;
-	font-size: 2.5rem;
+  position: absolute;
+  right: 30px;
+  font-size: 2.5rem;
 }
 
 .rotate .front.sandbox {

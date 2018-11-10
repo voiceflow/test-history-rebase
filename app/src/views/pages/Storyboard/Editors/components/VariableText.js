@@ -5,6 +5,7 @@ import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
+import './mention.css'
 
 import 'draft-js-mention-plugin/lib/plugin.css';
 
@@ -19,6 +20,12 @@ class VariableText extends Component {
 
         this.mentionPlugin = createMentionPlugin({
             supportWhitespace: false,
+            theme: {
+                mentionSuggestions: 'mentionSuggestions',
+                mentionSuggestionsEntry: 'mentionSuggestionsEntry',
+                mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
+                mentionSuggestionsEntryText: 'mentionSuggestionsEntryText'
+            },
             entityMutability: 'IMMUTABLE',
             mentionTrigger: '{',
             mentionRegExp: '[\\w_-]*',
@@ -77,7 +84,7 @@ class VariableText extends Component {
                     plugins={plugins}
                     editorState={this.state.editorState}
                     onChange={this.onChange}
-                    placeholder='What would you like to say?'
+                    placeholder='Tell Alexa what to say'
                     // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions

@@ -116,8 +116,7 @@ class Account extends Component {
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <div className="p-4 p-md-5">
-                  <h1>Login</h1>
-                  <h4 className="text-muted mb-3">Use your username and password to access the Storyflow creator tool</h4>
+                  <h2>Login</h2>
                   {login_error}
                   <FormGroup>
                     <Label for="email">Email</Label>
@@ -134,8 +133,8 @@ class Account extends Component {
               </Form>
               <Form id="signup-form" onSubmit={this.signupSubmit}>
                 <div className="p-4 p-md-5">
-                  <h1>Sign Up</h1>
-                  <h4 className="text-muted  mb-3">Create your Storyflow account and get building!</h4>
+                  <h2>Sign Up</h2>
+                  <p className="text-muted  mb-3">Create your Storyflow account and get building!</p>
                   {signup_error}
                   <FormGroup>
                     <Label for="name">Name</Label>
@@ -158,16 +157,6 @@ class Account extends Component {
                   <p>Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></p>
                 </div>
               </Form>
-            </div>
-            <div id="side-image">
-                <div id="image1">
-                  <h3><b><i>"Storyflow makes creating and sharing content for this new medium seamless"</i></b></h3>
-                  <br/>
-                  <h5>Chris Marley</h5>
-                  <h5><b>Explorer Academy</b></h5>
-                </div>
-                <div id="image2">
-                </div>
             </div>
         </div>
       </div>

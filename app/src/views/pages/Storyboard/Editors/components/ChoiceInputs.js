@@ -32,7 +32,7 @@ class ChoiceInputs extends Component {
                                 name="inputs" 
                                 value={this.state.inputs[i]} 
                                 onChange={e => this.props.onChange(e, i)}
-                                placeholder="Add Choice Prompts Here" 
+                                placeholder="Enter user reply" 
                             />
                         </div> )
                 }) : null}

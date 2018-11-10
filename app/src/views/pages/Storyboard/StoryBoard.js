@@ -16,6 +16,7 @@ import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
+import { Button, ButtonGroup } from 'reactstrap';
 
 import Cookies from 'universal-cookie';
 
@@ -59,6 +60,7 @@ class StoryBoard extends Component {
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
         this.removeNode = this.removeNode.bind(this);
+        this.zoom = this.zoom.bind(this);
         this.buildDiagrams = null;
 
         // preview mode
@@ -144,13 +146,60 @@ class StoryBoard extends Component {
             testing_info: false,
             variables: variables,
             newSkill: newSkill,
-            help: null
+            help: null,
+            helpOpen: false
         };
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id);
             // this.onLoadId('6cd76bb5-6d47-454f-b393-fb6bcb6505fe');
         }
+    }
+
+    zoom(delta){
+        let engine = this.state.engine;
+        let diagramModel = engine.getDiagramModel();
+        const oldZoomFactor = diagramModel.getZoomLevel() / 100;
+        let scrollDelta = delta / 60;
+
+        if(scrollDelta < 0){
+            if (diagramModel.getZoomLevel() + scrollDelta > 10) {
+                diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta);
+            }else{
+                diagramModel.setZoomLevel(10)
+            }
+        }else{
+            if (diagramModel.getZoomLevel() + scrollDelta < 150) {
+                diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta);
+            }else{
+                diagramModel.setZoomLevel(150)
+            }
+        }
+
+        const zoomFactor = diagramModel.getZoomLevel() / 100;
+
+        const boundingRect = engine.canvas.getBoundingClientRect();
+        const clientWidth = boundingRect.width;
+        const clientHeight = boundingRect.height;
+        // compute difference between rect before and after scroll
+        const widthDiff = clientWidth * zoomFactor - clientWidth * oldZoomFactor;
+        const heightDiff = clientHeight * zoomFactor - clientHeight * oldZoomFactor;
+        // compute mouse coords relative to canvas
+        const clientX = clientWidth/2 - boundingRect.left;
+        const clientY = clientHeight/2 - boundingRect.top;
+
+        // compute width and height increment factor
+        const xFactor = (clientX - diagramModel.getOffsetX()) / oldZoomFactor / clientWidth;
+        const yFactor = (clientY - diagramModel.getOffsetY()) / oldZoomFactor / clientHeight;
+
+        diagramModel.setOffset(
+            diagramModel.getOffsetX() - widthDiff * xFactor,
+            diagramModel.getOffsetY() - heightDiff * yFactor
+        );
+
+        this.setState({
+            engine: engine
+        });
     }
 
     removeNode(){
@@ -752,8 +801,8 @@ class StoryBoard extends Component {
             this.state.engine.stopMove();
             node.extras.type = type;
             var points = engine.getRelativeMousePoint(event);
-            node.x = points.x;
-            node.y = points.y;
+            node.x = points.x-(node.name.length*4.5 + 30);
+            node.y = points.y-30;
             node.setSelected();
             engine.getDiagramModel().clearSelection();
             engine.getDiagramModel().addNode(node);
@@ -777,9 +826,10 @@ class StoryBoard extends Component {
 
         return (
             <div className='App' >
-                <HelpModal 
+                <HelpModal
+                    open={this.state.helpOpen}
                     help={this.state.help}
-                    toggle={()=>this.setState({help: null})}
+                    toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
                     setHelp={(help) => this.setState({help: help})}
                 />
                 { this.state.newSkill !== null ?  
@@ -807,7 +857,7 @@ class StoryBoard extends Component {
                     /> 
                 : null}
                 <Menu 
-                    helpModal={() => this.setState({help: true})}
+                    helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     current={this.state.diagram_id}
                     enterFlow={this.enterFlow}
@@ -836,7 +886,16 @@ class StoryBoard extends Component {
                     onDrop={this.onDrop}
                     onDragOver={e => e.preventDefault()}
                 >
-                    <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
+                    <div id="widget-bar">
+                        <ButtonGroup>
+                            <Button onClick={()=>this.zoom(1000)}><i className="far fa-plus"/></Button>
+                            <Button onClick={()=>this.zoom(-1000)}><i className="far fa-minus"/></Button>
+                        </ButtonGroup>
+                    </div>
+                    <SRD.DiagramWidget
+                        diagramEngine={this.state.engine} 
+                        allowLooseLinks={false}
+                    />
                 </div>
                 <Editor
                     open={this.state.open}
@@ -845,7 +904,7 @@ class StoryBoard extends Component {
                     close={e => this.setState({ open: false })}
                     repaint={this.repaint}
                     variables={this.state.variables}
-                    setHelp={(help) => this.setState({help: help})}
+                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}
                     enterFlow={this.enterFlow}

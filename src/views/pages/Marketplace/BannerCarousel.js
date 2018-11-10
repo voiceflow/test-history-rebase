@@ -20,7 +20,7 @@ class BannerCarousel extends Component{
 			<div className="row">
 				<div className="col-sm">
 					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex - 1, this.props.modules.length)})}}>
-						<i class="fas fa-angle-left"></i>
+						<i className="fas fa-angle-left"></i>
 					</Button>
 				</div>
 
@@ -34,7 +34,7 @@ class BannerCarousel extends Component{
 
 				<div className="col-sm">
 					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex + 1, this.props.modules.length)})}}>
-						<i class="fas fa-angle-right"></i>
+						<i className="fas fa-angle-right"></i>
 					</Button>
 				</div>
 			</div>

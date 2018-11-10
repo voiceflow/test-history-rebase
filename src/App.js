@@ -18,6 +18,8 @@ import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar';
 import Skill from './views/pages/Skill/Skill';
 import Marketplace from './views/pages/Marketplace/Marketplace';
+import ModulePage from './views/pages/Marketplace/ModulePage';
+import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -113,11 +115,13 @@ class App extends Component {
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Storyboard" preview component={StoryBoard}/>
                 <PrivateRoute path="/storyboard/:skill_id/:diagram_id" name="Storyboard" component={StoryBoard}/>
                 <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard}/>
-                <PrivateRoute path="/publish/:id" name="Skill Dashboard" component={Skill}/>
+                <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={Skill}/>
+                <PrivateRoute path="/publish/market/:id" name="Skill Dashboard" component={PublishMarket}/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} />
                 <PrivateRoute path="/analytics" name="Analytics" component={Analytics} />
-                <PrivateRoute path="/marketplace" name="Marketplace" component={Marketplace} />
+                <PrivateRoute path="/market/:module_id" name="Marketplace" component={ModulePage} />
+                <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

@@ -43,6 +43,7 @@ class NavBar extends Component {
       let tabs = this.state.tabs;
       tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
       tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
+      tabs.push({link: 'market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>});
       this.setState({tabs: tabs});
     }
   }

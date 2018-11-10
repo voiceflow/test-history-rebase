@@ -13,6 +13,7 @@ class Marketplace extends Component {
 
         this.state = {
             modules: [],
+            featured_modules: [],
             loading: false
         }
 
@@ -34,16 +35,22 @@ class Marketplace extends Component {
         .catch( error => {
             console.log(error);
         });
-    }
 
-    //TODO: change the modules given to BannerCarousel to banner modules
-    //onLoadBannerModules
+        axios.get('/marketplace/featured')
+        .then(res => {
+            this.setState({
+                featured_modules: res.data,
+                loading:false
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
 
     render() {
         return (
-            <div className='Window'>
-
-
+            <div className="Window">
                 <div className="sidenav">
                     <ButtonGroup vertical>
                         <Button>Real Shit?</Button>
@@ -54,13 +61,14 @@ class Marketplace extends Component {
 
                 <div className="marketplace-main">
                     <BannerCarousel
-                        modules={this.state.modules}
+                        modules={this.state.featured_modules}
                     />
                     <Masonry elementType='div' className="skills-container">
                         {this.state.modules.map((module, i) => 
                             <Module
                                 key={i}
                                 module={module}
+                                onClick={() => {this.props.history.push('/market/' + module.module_id)}}
                             />
                         )}
                     </Masonry>

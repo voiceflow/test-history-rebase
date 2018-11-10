@@ -888,66 +888,6 @@ class Skill extends Component {
                         </React.Fragment>
                         :null
                     }
-
-
-                    <div>
-                    
-                    <Button onClick={
-                        () => {
-                            axios.post(`/marketplace/cert/${this.state.skill_id}`)
-                            .then(res => {
-                                console.log('sent');
-                            })
-                            .catch( error => {
-                                console.log(error);
-                            });
-                        }
-                    }>
-                    Request Cert
-                    </Button>
-                    <br></br>
-                    <Button onClick={
-                        () => {
-                            axios.delete(`/marketplace/cert/${this.state.skill_id}`)
-                            .then(res => {
-                                console.log(this.state.skill_id);
-                            })
-                            .catch( error => {
-                                console.log(error);
-                            });
-                        }
-                    }>
-                    Delete Cert
-                    </Button>
-                    <br></br>
-                    <Button onClick={
-                        () => {
-                            axios.post(`/marketplace/user_module/10`)
-                            .then(res => {
-                                console.log("yeet");
-                            })
-                            .catch( error => {
-                                console.log(error);
-                            });
-                        }
-                    }>
-                    Give user access
-                    </Button>
-                    <br></br>
-                    <Button onClick={
-                        () => {
-                            axios.put(`/marketplace/cert/${this.state.skill_id}`)
-                            .then(res => {
-                                console.log("yeet");
-                            })
-                            .catch( error => {
-                                console.log(error);
-                            });
-                        }
-                    }>
-                    Give cert
-                    </Button>
-                    </div>
                 </div>
             </div>
         );

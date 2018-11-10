@@ -140,10 +140,16 @@ app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 
 app.get('/marketplace/', ensureLoggedIn(), Marketplace.getModules);
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules);
+app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule);
+app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus);
+app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule);
 app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification);
 app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification);
 app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification);
+app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCertification);
 app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess);
+app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess);
+app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

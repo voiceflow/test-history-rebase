@@ -17,6 +17,7 @@ import Capture from './Editors/Capture';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
+import Module from './Editors/Module';
 
 class Editor extends Component {
     constructor(props) {
@@ -132,6 +133,8 @@ class Editor extends Component {
                 />
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+            case 'module':
+                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             default:
               return null;
         }

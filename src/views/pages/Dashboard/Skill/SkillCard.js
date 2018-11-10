@@ -29,7 +29,7 @@ class SkillCard extends React.Component {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Link to={"/publish/" + this.props.skill.skill_id} className="no-underline">
+            <Link to={"/publish/amzn/" + this.props.skill.skill_id} className="no-underline">
               <Button size="small" color="primary" className="normal-btn">
                 <i className="far fa-ellipsis-v mr-2"/> Settings
               </Button>

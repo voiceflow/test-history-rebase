@@ -49,7 +49,8 @@ class StoryBoard extends Component {
         this.setVariables = this.setVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
         this.createSkill = this.createSkill.bind(this);
-        this.publish = this.publish.bind(this);
+        this.publishAMZN = this.publishAMZN.bind(this);
+        this.publishMarket = this.publishMarket.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onTest = this.onTest.bind(this);
         this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
@@ -617,9 +618,15 @@ class StoryBoard extends Component {
         });
     }
 
-    publish() {
+    publishAMZN() {
         this.onSave(diagram_id => {
-            this.props.history.push('/publish/' + this.state.skill.skill_id);
+            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id);
+        });
+    }
+
+    publishMarket() {
+        this.onSave(diagram_id => {
+            this.props.history.push('/publish/market/' + this.state.skill.skill_id);
         });
     }
 
@@ -825,7 +832,8 @@ class StoryBoard extends Component {
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
-                    publish={this.publish}
+                    publishAMZN={this.publishAMZN}
+                    publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
                 />
                 <div

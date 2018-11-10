@@ -33,7 +33,8 @@ const sections = [{
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
     {tab: "flows", icon: <i className="fas fa-clone"/>},
-    {tab: "variables", icon: <i className="fas fa-code"/>}
+    {tab: "variables", icon: <i className="fas fa-code"/>},
+    {tab: "modules", icon: <i className="fas fa-layer-group"/>}
 ]
 
 class Menu extends PureComponent {
@@ -223,6 +224,8 @@ class Menu extends PureComponent {
                     </div>
                 </div>
             </React.Fragment>
+        }else if(this.state.tab === 'modules'){
+            
         }
 
         return (
@@ -241,7 +244,7 @@ class Menu extends PureComponent {
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
-                        <a className="tool no-underline" href="/marketplace" rel="noopener noreferrer">
+                        <a className="tool no-underline" href="/market" rel="noopener noreferrer">
                             <i className="fas fa-store-alt"/>
                         </a>
                         <a className="tool no-underline" href="https://intercom.help/flowschool"

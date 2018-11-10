@@ -1,15 +1,17 @@
 .add-skill {
-	background-image: linear-gradient( 89.8deg,  rgba(39,115,255,1) 4.3%, rgba(62,211,232,1) 101.4% ) !important;
-/*	background-color: #8EC5FC !important;
-	background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%) !important;*/
-	color: #fff !important;
+  background-image: linear-gradient( 89.8deg,  rgba(39,115,255,1) 4.3%, rgba(62,211,232,1) 101.4% ) !important;
+/*  background-color: #8EC5FC !important;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%) !important;*/
+  color: #fff !important;
 }
 /*.MuiCardActionArea-root-29:hover .MuiCardActionArea-focusHighlight-31{
-	opacity: 0.1 !important;
+  opacity: 0.1 !important;
 }*/
 .add-skill h2{
-	font-weight: lighter;
+  font-weight: lighter;
 }
+
+
 .hr-label {
   display: inline-block;
   margin-left: 25px;
@@ -24,11 +26,6 @@
 .success-text {
   padding-top: 100px;
 }
-/*
-.MuiCardContent-root-234{
-    background-color: aqua;
-}
-*/
 
 .banner {
     flex-direction: row;
@@ -46,14 +43,10 @@
     background-repeat: no-repeat, no-repeat, repeat;
     text-align: center;
 }
-.card{
-    background-color: #2b2e3d;
-    border: none;
-}
 .close-absolute {
-	position: absolute;
-	right: 30px;
-	font-size: 2.5rem;
+  position: absolute;
+  right: 30px;
+  font-size: 2.5rem;
 }
 
 .rotate .front.sandbox {
@@ -269,19 +262,13 @@
     padding: 10px;
 }
 .skill-card{
-    background-color: #2B2E3C !important;
-/*    border: 1px solid #E2E9EC;*/
+    background: #fff;
+    border: 1px solid #E2E9EC;
     transition-duration: 172ms;
     will-change: transform, box-shadow;
-    -webkit-box-shadow: 0px 3px 17px 0px rgba(0,0,0,0.15)!important;
--moz-box-shadow: 0px 3px 17px 0px rgba(0,0,0,0.15)!important;
-box-shadow: 0px 3px 17px 0px rgba(0,0,0,0.15) !important;
-/*
-    -webkit-box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
--moz-box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
-box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
-*/
-/*    background-color: #ffffff !important;*/
+    -webkit-box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
+    box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
+    background-color: #ffffff !important;
     border-radius: 6px !important;
     overflow: hidden;
 }
@@ -290,10 +277,9 @@ box-shadow: 0px 7px 25px -1px rgba(0,0,0,0.54);
   margin-bottom: 0px;
 }
 .skill-card:hover{
-    -webkit-box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54)!important;
--moz-box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54)!important;
-box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54)!important;
-/*    background-color: #ffffff !important;*/
+    -webkit-box-shadow: 0 10px 20px 0 rgba(118, 186, 255, 0.17) !important;
+    box-shadow: 0 10px 20px 0 rgba(118, 186, 255, 0.17) !important;
+    background-color: #ffffff !important;
     transform: translateY(-2px);
     color: inherit;
 }
@@ -317,7 +303,7 @@ box-shadow: 0px 15px 42px -8px rgba(0,0,0,0.54)!important;
 .skill-card .no-image {
   background-repeat: repeat !important;
   background-size: auto !important;
-  background-color: #2B2E3C;
+  background-color: #F1F5F8;
   display: flex;
   justify-content: center;
   color: #94A6BD;

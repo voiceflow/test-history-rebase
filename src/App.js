@@ -18,8 +18,6 @@ import Analytics from './views/pages/Analytics/Analytics';
 import NavBar from './views/components/NavBar/NavBar';
 import Skill from './views/pages/Skill/Skill'
 
-import CircularProgress from '@material-ui/core/CircularProgress';
-
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (
@@ -96,7 +94,7 @@ class App extends Component {
       this.state.loading ? 
         <div className='super-center h-100 w-100'>
             <div className="text-center">
-                <CircularProgress size={50} />
+                <h1><i className="fas fa-sync-alt fa-spin"/></h1>
                 <h5>Loading...</h5>
             </div>
         </div> :

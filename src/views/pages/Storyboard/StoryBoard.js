@@ -29,7 +29,7 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 
 const cookies = new Cookies();
 const defaultVariables = ['sessions', 'user_id', 'timestamp'];
-const line_color = '#555D6D';
+const line_color = '#E3E9EE';
 
 const generateID = () => {
     return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -60,8 +60,7 @@ class StoryBoard extends Component {
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
         this.removeNode = this.removeNode.bind(this);
-        this.zoomIn = this.zoomIn.bind(this);
-        this.zoomOut = this.zoomOut.bind(this);
+        this.zoom = this.zoom.bind(this);
         this.buildDiagrams = null;
 
         // preview mode
@@ -157,29 +156,47 @@ class StoryBoard extends Component {
         }
     }
 
-    zoomOut(){
+    zoom(delta){
         let engine = this.state.engine;
-        let model = engine.getDiagramModel();
-        let zoom = model.getZoomLevel();
-        if(zoom - 15 > 15){
-            model.setZoomLevel(zoom - 15);
-        }else{
-            model.setZoomLevel(15);
-        }
-        this.setState({
-            engine: engine
-        });
-    }
+        let diagramModel = engine.getDiagramModel();
+        const oldZoomFactor = diagramModel.getZoomLevel() / 100;
+        let scrollDelta = delta / 60;
 
-    zoomIn(){
-        let engine = this.state.engine;
-        let model = engine.getDiagramModel();
-        let zoom = model.getZoomLevel();
-        if(zoom + 15 < 150){
-            model.setZoomLevel(zoom + 15);
+        if(scrollDelta < 0){
+            if (diagramModel.getZoomLevel() + scrollDelta > 10) {
+                diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta);
+            }else{
+                diagramModel.setZoomLevel(10)
+            }
         }else{
-            model.setZoomLevel(150);
+            if (diagramModel.getZoomLevel() + scrollDelta < 150) {
+                diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta);
+            }else{
+                diagramModel.setZoomLevel(150)
+            }
         }
+
+        const zoomFactor = diagramModel.getZoomLevel() / 100;
+
+        const boundingRect = engine.canvas.getBoundingClientRect();
+        const clientWidth = boundingRect.width;
+        const clientHeight = boundingRect.height;
+        // compute difference between rect before and after scroll
+        const widthDiff = clientWidth * zoomFactor - clientWidth * oldZoomFactor;
+        const heightDiff = clientHeight * zoomFactor - clientHeight * oldZoomFactor;
+        // compute mouse coords relative to canvas
+        const clientX = clientWidth/2 - boundingRect.left;
+        const clientY = clientHeight/2 - boundingRect.top;
+
+        // compute width and height increment factor
+        const xFactor = (clientX - diagramModel.getOffsetX()) / oldZoomFactor / clientWidth;
+        const yFactor = (clientY - diagramModel.getOffsetY()) / oldZoomFactor / clientHeight;
+
+        diagramModel.setOffset(
+            diagramModel.getOffsetX() - widthDiff * xFactor,
+            diagramModel.getOffsetY() - heightDiff * yFactor
+        );
+
         this.setState({
             engine: engine
         });
@@ -871,11 +888,14 @@ class StoryBoard extends Component {
                 >
                     <div id="widget-bar">
                         <ButtonGroup>
-                            <Button onClick={this.zoomIn}><i className="far fa-plus"/></Button>
-                            <Button onClick={this.zoomOut}><i className="far fa-minus"/></Button>
+                            <Button onClick={()=>this.zoom(1000)}><i className="far fa-plus"/></Button>
+                            <Button onClick={()=>this.zoom(-1000)}><i className="far fa-minus"/></Button>
                         </ButtonGroup>
                     </div>
-                    <SRD.DiagramWidget diagramEngine={this.state.engine} allowLooseLinks={false}/>
+                    <SRD.DiagramWidget
+                        diagramEngine={this.state.engine} 
+                        allowLooseLinks={false}
+                    />
                 </div>
                 <Editor
                     open={this.state.open}

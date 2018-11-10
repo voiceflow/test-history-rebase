@@ -1,120 +1,54 @@
-
-.purple-btn:hover{
-    background-color: #3a4ff2 !important;
-    
-}
-
-.white-btn{
-    background-color: #424B60 !important
-
-}
-.white-btn:hover{
-    background-color: #424B60 !important;
-    color: #fff !important;
-
-}
-.alert-danger{
-    color: #ff004e;
-    background-color: #ff000024;
-    border-color: #ff004e;
-}
-.form-control{
-    background-color: #ffffff0a !important;
-    border: 1px solid #555D6D !important;
-    color: #fff !important;
-}
-.input-group-text, .input-ground-prepend{
-    background-color: #455afb !important;
-    border: 1px solid #455afb !important;
-    color: #fff !important;
-}
-.text-success{
-    color:#455AFB !important;
-}
-.bg-white{
-    background-color: #2B2E3B !important;
-    border: none !important;
-    color: #95a6bd;
-}
-.text-danger{
-    color: #ff0053 !important;
-}  
-
-.MuiCardContent-root-77{
-    background-color: #2B2E3C !important;
-    color: #94A6BD !important;
-}
-
-.MuiCardActions-root-78{
-    background-color: #2B2E3C;
-}
-
-.skill-card .no-image{
-    background-repeat: repeat !important;
-    background-size: auto !important;
-    background-color: #2B2E3C;
-    display: flex;
-    justify-content: center;
-    color: #94A6BD;
-    align-items: center;
-    border-bottom: 1px solid #3842549e;
-}
-
-.MuiCardContent-root-377{
-    background-color: #2B2E3C;
-    color: #94A6BD;
-    
-}
-.text-secondary{
-    color: #95a6bd70 !important;
-}
 .icon-image {
-	width: 200px;
-	height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .icon-image>.dropzone{
-	height: 100%;
+  height: 100%;
 }
 .icon-image>.image-box{
-	height: 100%;
-	width: 100%;
-	display: block;
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 .icon-image.small-icon>.image-box {
-	padding: 50px;
+  padding: 50px;
 }
 .icon-image.large-icon>.image-box {
-	padding: 10px;
+  padding: 10px;
 }
 .icon-image>.image-box>.image{
-	height: 100%;
-	width: 100%;
-	background-position: center center;
+  height: 100%;
+  width: 100%;
+  background-position: center center;
     background-size: cover;
     border-radius: 100px;
     border: 1px solid #AAA;
 }
 
 .disabled-image>.image-box{
-/*	background-color: #e9ecef;*/
+  background-color: #e9ecef;
 }
 
 .multiple .input-group {
-	margin: 15px 0;
+  margin: 15px 0;
 }
 
 .Window.skill .form-group{
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .Window.skill .form-group label{
-	margin-bottom: 5px !important;
+  margin-bottom: 5px !important;
 }
 
 .Window.skill>.container{
-	padding-top: 80px;
-	padding-bottom: 6rem;
+  padding-top: 80px;
+  padding-bottom: 6rem;
+}
+
+.Window.skill input::placeholder, textarea::placeholder{
+  color: #CCC !important;
 }
 
 .LoginWithAmazon{
@@ -159,22 +93,22 @@
   }
 }
 .stage_modal .modal-info>div{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 200px;
 }
 .stage_modal .modal-info>h1{
-	font-size: 3rem;
+  font-size: 3rem;
 }
 .stage_modal .modal-body>.d-flex.justify-content-between {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .stage_modal .modal-info>.MUIform>div{
-	width: 100%;
-	margin: 5px 0px !important;
+  width: 100%;
+  margin: 5px 0px !important;
 }
 .stage_modal .modal-info>.MUIform>.btn{
-	margin-top: 10px !important;
+  margin-top: 10px !important;
 }

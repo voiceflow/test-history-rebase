@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
+import { FormGroup, Label, Input } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import moment from 'moment';
 import Textarea from 'react-textarea-autosize';
 import Image from './../../components/Uploads/Image';
 import Select from 'react-select';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
+import VariableMap from './VariableMap';
 
 import axios from 'axios';
 import '../Skill/Skill.css';
 import categories from './../../../services/Categories';
 import types from './../../../services/Types';
-import APIMapping from '../Storyboard/Editors/components/APIMapping';
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -31,8 +31,8 @@ class PublishMarket extends Component {
                 module_icon: '',
                 displayingConfirmWithdraw: false,
                 color: '',
-                input_mapping: [],
-                output_mapping: []
+                input: [],
+                output: []
             }
         } else {
             this.props.history.push('/dashboard');
@@ -46,6 +46,10 @@ class PublishMarket extends Component {
         this.save = this.save.bind(this);
         this.publish = this.publish.bind(this);
         this.onLoad = this.onLoad.bind(this);
+        this.handleAddVar = this.handleAddVar.bind(this);
+        this.handleRemoveVar = this.handleRemoveVar.bind(this);
+        this.handleVarChange = this.handleVarChange.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
 	}
 
 	handleTypeSelection(value) {
@@ -69,6 +73,12 @@ class PublishMarket extends Component {
         });
     }
 
+    handleUpdate(){
+        this.setState({
+            saved: false
+        });
+    }
+
     onLoad(){
     	axios.get('/marketplace/cert/' + this.state.skill_id)
     	.then(res => {
@@ -88,8 +98,8 @@ class PublishMarket extends Component {
     			}
     		}
 
-            res.data.input_mapping = JSON.parse(res.data.input_mapping);
-            res.data.output_mapping = JSON.parse(res.data.output_mapping);
+            res.data.input = JSON.parse(res.data.input);
+            res.data.output = JSON.parse(res.data.output);
 
     		this.setState({
     			...res.data
@@ -107,6 +117,8 @@ class PublishMarket extends Component {
     	})
     	.catch(res => {
     	});
+
+
     }
 
     save(){
@@ -124,8 +136,8 @@ class PublishMarket extends Component {
             overview: s.overview,
             module_icon: s.module_icon,
             color: s.color,
-            input_mapping: JSON.stringify(s.input_mapping),
-            output_mapping: JSON.stringify(s.output_mapping)
+            input: JSON.stringify(s.input),
+            output: JSON.stringify(s.output)
         })
         .then(res => {
             this.setState({
@@ -190,6 +202,38 @@ class PublishMarket extends Component {
 
     componentDidMount() {
         this.onLoad();
+    }
+
+    handleAddVar(type){
+        let var_array = this.state[type];
+        var_array.push('')
+
+        this.setState({
+            type: var_array
+        }, this.handleUpdate);
+
+        console.log(this.state)
+    }
+
+    handleRemoveVar(i, type) {
+        let var_array = this.state[type];
+        var_array.splice(i, 1);
+
+        this.setState({
+            type: var_array
+        }, this.handleUpdate);
+    }
+
+    handleVarChange(val, i, type) {
+        console.log(val)
+        console.log(i)
+        console.log(type)
+        let var_array = this.state[type];
+        var_array[i] = val        
+        this.setState({
+            type: var_array
+        }, this.handleUpdate);
+        console.log(this.state)
     }
 
 	render(){
@@ -335,190 +379,224 @@ class PublishMarket extends Component {
 		            	null
 		            }
 
-					<Form>
-						<FormGroup>
-							<div className="row">
-	                            <div className="col-3 publish-info"></div>
-	                            <div className="col-9">
-	                                <Label><b>Module Title </b>*</Label>
-	                            </div>
-	                        </div>
-	                        <div className="row">
-	                            <div className="col-3 publish-info">
-	                                <p className="mb-0 text-secondary"><b>Module Title</b> is what we display for your skill on the Marketplace.</p>
-	                            </div>
-	                            <div className="col-9">
-	                                <Input type="text" name="title" placeholder="Storyflow - Interactive Story Adventures" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange}/>
-	                            </div>
-	                        </div>
-						</FormGroup>
-
-						<FormGroup>
-							<div className="row">
-	                            <div className="col-3 publish-info"></div>
-	                            <div className="col-9">
-	                                <Label><b>Description </b>*</Label>
-	                            </div>
-	                        </div>
-	                        <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="text-secondary">
-                                        <b>Description</b> is a summary of your module that shows on your module's card on the Marketplace. 
-                                    </p>
-                                </div>
-                                <div className="col-9">
-                                    <Textarea
-                                        name="descr"
-                                        className="form-control"
-                                        disabled={this.state.in_review}
-                                        value={this.state.descr}
-                                        onChange={this.handleChange}
-                                        minRows={3}
-                                        placeholder="Module description"
-                                    />
-                                </div>
-                            </div>
-						</FormGroup>
-
-						<FormGroup>
-							<div className="row">
-	                            <div className="col-3 publish-info"></div>
-	                            <div className="col-9">
-	                                <Label><b>Overview </b>*</Label>
-	                            </div>
-	                        </div>
-	                        <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="text-secondary">
-                                        <b>Overview</b> is a detailed description of your module. Feel free to put as much information in this section! 
-                                    </p>
-                                </div>
-                                <div className="col-9">
-                                    <Textarea
-                                        name="overview"
-                                        className="form-control"
-                                        disabled={this.state.in_review}
-                                        value={this.state.overview}
-                                        onChange={this.handleChange}
-                                        minRows={3}
-                                        placeholder="Module overview"
-                                    />
-                                </div>
-                            </div>
-						</FormGroup>
-
-                        <div className="d-flex row">
-                            <div className="col-3 publish-info">
-                                <p className="text-secondary mt-5"><b>Module icon</b> will be displayed for your module in the Voiceflow editor.</p>
-                            </div>
-                            <div className="col-9 d-flex">
-                                <div>
-                                    <label className="mt-0"><b>Module icon</b> *</label>
-                                    <Image 
-                                        className='icon-image small-icon'
-                                        path='/module_icon'
-                                        isDisabled={this.state.in_review}
-                                        image={this.state.module_icon} 
-                                        update={(url) => this.setState({module_icon: url})}/>
-                                </div>
+					<FormGroup>
+						<div className="row">
+                            <div className="col-3 publish-info"></div>
+                            <div className="col-9">
+                                <Label><b>Module Title </b>*</Label>
                             </div>
                         </div>
-
-						<div className="d-flex row">
+                        <div className="row">
                             <div className="col-3 publish-info">
-                                <p className="text-secondary mt-5"><b>Card icon</b> will be displayed for your module in our Marketplace.</p>
+                                <p className="mb-0 text-secondary"><b>Module Title</b> is what we display for your skill on the Marketplace.</p>
                             </div>
-                            <div className="col-9 d-flex">
-                                <div>
-                                    <label className="mt-0"><b>Card icon</b> *</label>
-                                    <Image 
-                                        className='icon-image small-icon'
-                                        path='/card_icon'
-                                        isDisabled={this.state.in_review}
-                                        image={this.state.card_icon} 
-                                        update={(url) => this.setState({card_icon: url})}/>
-                                </div>
+                            <div className="col-9">
+                                <Input type="text" name="title" placeholder="Storyflow - Interactive Story Adventures" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange}/>
                             </div>
                         </div>
+					</FormGroup>
 
-                        <FormGroup>
-                            <div className="row">
-                                <div className="col-3 publish-info"></div>
-                                <div className="col-9">
-                                    <Label><b>Type *</b></Label>
-                                </div>
+					<FormGroup>
+						<div className="row">
+                            <div className="col-3 publish-info"></div>
+                            <div className="col-9">
+                                <Label><b>Description </b>*</Label>
                             </div>
-                            <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="text-secondary">
-                                        Modules can be one of two <b>types</b>, either a Flow or a Template. If another creator users your Flow, they won't be able to dive into your flow diagram, whereas with a template they can.
-                                    </p>
-                                </div>
-                                <div className="col-9">
-                                    <Select
-                                        className="input-select"
-                                        name="type"
-                                        isDisabled={this.state.in_review}
-                                        value={this.state.type}
-                                        onChange={this.handleTypeSelection}
-                                        options={types}
-                                    />
-                                </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-3 publish-info">
+                                <p className="text-secondary">
+                                    <b>Description</b> is a summary of your module that shows on your module's card on the Marketplace. 
+                                </p>
                             </div>
-                        </FormGroup>
+                            <div className="col-9">
+                                <Textarea
+                                    name="descr"
+                                    className="form-control"
+                                    disabled={this.state.in_review}
+                                    value={this.state.descr}
+                                    onChange={this.handleChange}
+                                    minRows={3}
+                                    placeholder="Module description"
+                                />
+                            </div>
+                        </div>
+					</FormGroup>
 
-                        <FormGroup>
-                            <div className="row">
-                                <div className="col-3 publish-info"></div>
-                                <div className="col-9">
-                                    <Label><b>Category *</b></Label>
-                                </div>
+					<FormGroup>
+						<div className="row">
+                            <div className="col-3 publish-info"></div>
+                            <div className="col-9">
+                                <Label><b>Overview </b>*</Label>
                             </div>
-                            <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="text-secondary">
-                                        <b>Category</b> helps users find your module more easily so choose the category that best applies to your module.
-                                    </p>
-                                </div>
-                                <div className="col-9">
-                                    <Select
-                                        className="input-select"
-                                        name="category"
-                                        isDisabled={this.state.in_review}
-                                        value={this.state.category}
-                                        onChange={this.handleCategorySelection}
-                                        options={categories}
-                                    />
-                                </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-3 publish-info">
+                                <p className="text-secondary">
+                                    <b>Overview</b> is a detailed description of your module. Feel free to put as much information in this section! 
+                                </p>
                             </div>
-                        </FormGroup>
+                            <div className="col-9">
+                                <Textarea
+                                    name="overview"
+                                    className="form-control"
+                                    disabled={this.state.in_review}
+                                    value={this.state.overview}
+                                    onChange={this.handleChange}
+                                    minRows={3}
+                                    placeholder="Module overview"
+                                />
+                            </div>
+                        </div>
+					</FormGroup>
 
-                        <FormGroup>
-                            <div className="row">
-                                <div className="col-3 publish-info"></div>
-                                <div className="col-9">
-                                    <Label><b>Block Color </b>*</Label>
-                                </div>
+                    <div className="d-flex row">
+                        <div className="col-3 publish-info">
+                            <p className="text-secondary mt-5"><b>Module icon</b> will be displayed for your module in the Voiceflow editor.</p>
+                        </div>
+                        <div className="col-9 d-flex">
+                            <div>
+                                <label className="mt-0"><b>Module icon</b> *</label>
+                                <Image 
+                                    className='icon-image small-icon'
+                                    path='/module_icon'
+                                    isDisabled={this.state.in_review}
+                                    image={this.state.module_icon} 
+                                    update={(url) => this.setState({module_icon: url})}/>
                             </div>
-                            <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="mb-0 text-secondary"><b>Block color</b> is the hexcode color your block will appear as.</p>
-                                </div>
-                                <div className="col-9">
-                                    <Input type="text" name="color" placeholder="6CD132" value={this.state.color} disabled={this.state.in_review} onChange={this.handleChange}/>
-                                </div>
-                            </div>
-                        </FormGroup>
+                        </div>
+                    </div>
 
-                        <label>Input Variable Mapping</label>
-                        <APIMapping
-                            pairs={this.state.input_mapping}
-                            onAdd={() => this.handleAddPairMapping()}
-                            onRemove={(e, i) => this.handleRemovePairMapping(i)}
-                            onChange={this.handleKVMappingChange}
-                            variables={this.state.variables}
-                        />
-					</Form>
+					<div className="d-flex row">
+                        <div className="col-3 publish-info">
+                            <p className="text-secondary mt-5"><b>Card icon</b> will be displayed for your module in our Marketplace.</p>
+                        </div>
+                        <div className="col-9 d-flex">
+                            <div>
+                                <label className="mt-0"><b>Card icon</b> *</label>
+                                <Image 
+                                    className='icon-image small-icon'
+                                    path='/card_icon'
+                                    isDisabled={this.state.in_review}
+                                    image={this.state.card_icon} 
+                                    update={(url) => this.setState({card_icon: url})}/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <FormGroup>
+                        <div className="row">
+                            <div className="col-3 publish-info"></div>
+                            <div className="col-9">
+                                <Label><b>Type *</b></Label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-3 publish-info">
+                                <p className="text-secondary">
+                                    Modules can be one of two <b>types</b>, either a Flow or a Template. If another creator users your Flow, they won't be able to dive into your flow diagram, whereas with a template they can.
+                                </p>
+                            </div>
+                            <div className="col-9">
+                                <Select
+                                    className="input-select"
+                                    name="type"
+                                    isDisabled={this.state.in_review}
+                                    value={this.state.type}
+                                    onChange={this.handleTypeSelection}
+                                    options={types}
+                                />
+                            </div>
+                        </div>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <div className="row">
+                            <div className="col-3 publish-info"></div>
+                            <div className="col-9">
+                                <Label><b>Category *</b></Label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-3 publish-info">
+                                <p className="text-secondary">
+                                    <b>Category</b> helps users find your module more easily so choose the category that best applies to your module.
+                                </p>
+                            </div>
+                            <div className="col-9">
+                                <Select
+                                    className="input-select"
+                                    name="category"
+                                    isDisabled={this.state.in_review}
+                                    value={this.state.category}
+                                    onChange={this.handleCategorySelection}
+                                    options={categories}
+                                />
+                            </div>
+                        </div>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <div className="row">
+                            <div className="col-3 publish-info"></div>
+                            <div className="col-9">
+                                <Label><b>Block Color </b>*</Label>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-3 publish-info">
+                                <p className="mb-0 text-secondary"><b>Block color</b> is the hexcode color your block will appear as.</p>
+                            </div>
+                            <div className="col-9">
+                                <Input type="text" name="color" placeholder="6CD132" value={this.state.color} disabled={this.state.in_review} onChange={this.handleChange}/>
+                            </div>
+                        </div>
+                    </FormGroup>
+
+                    <div className="row">
+                        <div className="col-3 publish-info"></div>
+                        <div className="col-9">
+                            <Label>Input Variables</Label>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-3 publish-info">
+                            <p className="mb-0 text-secondary"><b>Input variables</b> are the variables that will be available for input mapping when users use your module.</p>
+                        </div>
+                        <div className="col-9">
+                            <VariableMap
+                                pairs={this.state.input}
+                                onAdd={(e, type) => this.handleAddVar('input')}
+                                onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
+                                onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
+                                type='input'
+                                variables={this.state.variables}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-3 publish-info"></div>
+                        <div className="col-9">
+                            <Label>Output Variables</Label>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-3 publish-info">
+                            <p className="mb-0 text-secondary"><b>Output variables</b> are the variables that will be available for output mapping when users use your module.</p>
+                        </div>
+                        <div className="col-9">
+                            <VariableMap
+                                pairs={this.state.output}
+                                onAdd={(e, type) => this.handleAddVar('output')}
+                                onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
+                                onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
+                                type='output'
+                                variables={this.state.variables}
+                            />
+                        </div>
+                    </div>
+                    
 				</div>
 			</div>
 		);

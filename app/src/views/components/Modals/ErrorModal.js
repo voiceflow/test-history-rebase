@@ -3,9 +3,6 @@ import { Button, Modal, ModalBody, Alert } from 'reactstrap';
 
 class ErrorModal extends Component {
 
-  componentDidMount() {
-  }
-
   render() {
     if(!this.props.error) return null;
 

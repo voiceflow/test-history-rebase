@@ -94,8 +94,16 @@ button:focus{
     text-decoration: none !important;
 }
 
+.no-padding-row{
+    margin: 0px !important;
+}
+.no-padding-row>div{
+    padding: 0 !important;
+}
+
 .white-btn{
     padding: 10px 25px !important;
+    height: 43px;
     font-weight: normal !important;
     color: #95a6bd !important;
     border-radius: 3px;

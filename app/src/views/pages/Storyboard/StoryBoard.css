@@ -97,9 +97,23 @@
 }
 
 .TitleBar .publish-btn {
-    padding: 5px 7px 5px 20px !important;
+    padding: 5px 20px 5px 20px !important;
+    margin-right: 0px;
     border: none !important;
 }
+
+.TitleBar .platform-dropdown {
+    padding: 0px 0px 0px 0px;
+    width: 150px !important;
+}
+
+.TitleBar .platform-btn {
+    padding: 5px 20px 5px 20px;
+    border: none !important;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
 .TitleBar .publish-btn .button-circle{
     background-color: #F5F9FA;
     border-radius: 5px;

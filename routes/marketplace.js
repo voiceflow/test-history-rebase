@@ -145,8 +145,8 @@ const saveCertification = (req, res) => {
 
 	const createNewModule = (skill_id) => {
 		pool.query(
-			`INSERT INTO modules (title, descr, card_icon, creator_id, skill_id, category, type, overview, module_icon, color, input_mapping, output_mapping) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
-			[req.body.title, req.body.descr, req.body.card_icon, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input_mapping, req.body.output_mapping],
+			`INSERT INTO modules (title, descr, card_icon, creator_id, skill_id, category, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
+			[req.body.title, req.body.descr, req.body.card_icon, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -160,8 +160,8 @@ const saveCertification = (req, res) => {
 
 	const updateModule = (skill_id, module_id) => {
 		pool.query(
-			`UPDATE modules SET title = $1, descr = $2, card_icon = $3, category = $4, type = $5, overview = $6, module_icon = $7, color = $8, input_mapping = $9, output_mapping = $10 WHERE module_id = $11`, 
-			[req.body.title, req.body.descr, req.body.card_icon, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input_mapping, req.body.output_mapping, module_id],
+			`UPDATE modules SET title = $1, descr = $2, card_icon = $3, category = $4, type = $5, overview = $6, module_icon = $7, color = $8, input = $9, output = $10 WHERE module_id = $11`, 
+			[req.body.title, req.body.descr, req.body.card_icon, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -208,10 +208,12 @@ const giveCertification = (req, res) => {
 				if(data.rows.length > 0){
 					let market_id = data.rows[0].version_id + '-' + hashids.encode(skill_id);
 					let status = await renderDiagram(req.user, data.rows[0].diagram_id, skill_id, undefined, undefined, 'market', market_id);
+					let input = data.rows[0].input;
+					let output = data.rows[0].output;
 					if(status === 200){
 						pool.query(
-							`UPDATE versions, modules SET diagram_id = $1, cert_approved = now() WHERE versions.module_id = modules.module_id AND skill_id = $2 AND cert_approved IS NULL`,
-							[market_id, skill_id],
+							`UPDATE versions, modules SET diagram_id = $1, cert_approved = now(), input = $3, output = $4 WHERE versions.module_id = modules.module_id AND skill_id = $2 AND cert_approved IS NULL`,
+							[market_id, skill_id, input, output],
 							(err, data) => {
 								if(err){
 									console.log(err);
@@ -326,7 +328,7 @@ const giveAccess = (req, res) => {
 const getModule = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0];
 
-	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input_mapping, output_mapping FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
+	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
@@ -343,13 +345,49 @@ const getModule = (req, res) => {
 const getCertModule = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input_mapping, output_mapping FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
+	const retrieveVariables = (row) => {
+		pool.query(
+			`SELECT diagram FROM skills WHERE skill_id = $1`, 
+			[skill_id],
+			(err, data) =>{
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					if(data.rows.length > 0){
+						let params = {
+					        TableName: 'com.getstoryflow.diagrams.production',
+					        Key: {'id': data.rows[0].diagram}
+					    };
+					    docClient.get(params, (err, data) => {
+					        if (err) {
+					            console.log(err);
+					            res.sendStatus(err.statusCode);
+					        } else if (data.Item) {
+					            let diagram = data.Item;
+
+					            row.variables = diagram.variables;
+					            res.send(row);
+					        } else {
+					            res.sendStatus(404);
+					        }
+					    });
+					}else{
+						res.send(row);
+					}
+				}
+			}
+		);
+	}
+
+	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
 		}else{
 			if(data.rows.length > 0){
-				res.send(data.rows[0]);
+				//res.send(data.rows[0]);
+				retrieveVariables(data.rows[0]);
 			}else{
 				res.send(false);
 			}
@@ -359,20 +397,15 @@ const getCertModule = (req, res) => {
 
 const getUserModules = (req, res) => {
 	let user_id = req.user.id;
-			// `SELECT user_modules.module_id, title, descr, module_icon, diagram_id, version_id FROM user_modules 
-		//  INNER JOIN modules ON user_modules.module_id = modules.module_id 
-		//  INNER JOIN versions ON modules.module_id = versions.module_id 
-		//  WHERE versions.cert_approved IS NOT NULL AND user_modules.creator_id = $1
-		//  AND versions.cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = )
-		//  `,
+
 	pool.query(
 		`
-		 SELECT modules.module_id, modules.title, modules.module_icon, ultimate_versions.version_id, ultimate_versions.diagram_id, modules.color, modules.input_mapping, modules.output_mapping
+		 SELECT modules.module_id, modules.title, modules.module_icon, ultimate_versions.version_id, ultimate_versions.diagram_id, modules.color, modules.input, modules.output
 		 FROM 
 		 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
 		 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
 		 		INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
-		 	) AS ultimate_versions 
+		 	) AS ultimate_versions  
 		 INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
 		 INNER JOIN user_modules ON modules.module_id = user_modules.module_id
 		 WHERE user_modules.creator_id = $1

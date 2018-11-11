@@ -39,7 +39,7 @@ const generateID = () => {
     });
 }
 
-class StoryBoard extends Component {
+class Canvas extends Component {
     constructor(props) {
         super(props);
 
@@ -88,11 +88,11 @@ class StoryBoard extends Component {
                 skill_id = url.params.skill_id;
                 diagram_id = url.params.diagram_id;
             }else if(last_session){
-                this.props.history.push('/storyboard/' + last_session.skill_id + '/' + last_session.diagram_id);
+                this.props.history.push('/canvas/' + last_session.skill_id + '/' + last_session.diagram_id);
                 skill_id = last_session.skill_id;
                 diagram_id = last_session.diagram_id;
             }else{
-                this.props.history.push('/storyboard/new');
+                this.props.history.push('/canvas/new');
             }
         }
 
@@ -633,7 +633,7 @@ class StoryBoard extends Component {
                         id: diagram_id,
                         name: 'ROOT'
                     });
-                    this.props.history.push(`/storyboard/${skill_id}/${diagram_id}`);
+                    this.props.history.push(`/canvas/${skill_id}/${diagram_id}`);
                 })
             });
         })
@@ -675,7 +675,7 @@ class StoryBoard extends Component {
                     name: 'New Flow',
                     id: id
                 });
-                this.props.history.push(`/storyboard/${skill_id}/${id}`);
+                this.props.history.push(`/canvas/${skill_id}/${id}`);
             })
             .catch(err => {
                 console.log(err.response);
@@ -703,7 +703,7 @@ class StoryBoard extends Component {
     enterFlow(new_diagram_id) {
         if(new_diagram_id !== this.state.diagram_id){
             this.onSave(() => {
-                this.props.history.push(`/storyboard/${this.state.skill.skill_id}/${new_diagram_id}`);
+                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`);
             });
         }
     }
@@ -968,4 +968,4 @@ class StoryBoard extends Component {
     }
 }
 
-export default StoryBoard;
+export default Canvas;

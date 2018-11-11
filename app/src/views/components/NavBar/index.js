@@ -31,7 +31,7 @@ class NavBar extends Component {
       isOpen: false,
       tabs: [
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
-        {link: '/storyboard', 'text': <React.Fragment>Storyboard</React.Fragment>},
+        {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
         {link: '/market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>}
       ],

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import DiagramVariables from './components/DiagramVariables';
 
 class Module extends Component {
     constructor(props) {
@@ -8,6 +9,7 @@ class Module extends Component {
         this.state = {
             node: this.props.node
         };
+        console.log(this.state.node)
 
         this.handleChange= this.handleChange.bind(this);
     }
@@ -23,11 +25,25 @@ class Module extends Component {
     render() {
         return (
             <div>
-                <label>Commands</label>
-                <Textarea
-                    value={this.state.node.extras.commands}
-                    onChange={this.handleChange}
-                    placeholder="eg.&#10;STOP&#10;RESET&#10;RESTART&#10;(new command each line)"
+                <label>Input Variables</label>
+                <DiagramVariables
+                    arg1_options={this.props.variables}
+                    arg2_options={this.state.node.inputs}
+                    arguments={this.state.node.extras.inputs}
+                    onAdd={() => this.handleAddMap('inputs')}
+                    onRemove={(i) => this.handleRemoveMap('inputs', i)}
+                    handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
+                /> 
+                <hr/>
+                <label>Output Variables</label>
+                <DiagramVariables
+                    reverse
+                    arg1_options={this.props.variables}
+                    arg2_options={this.state.variables}
+                    arguments={this.state.node.extras.outputs}
+                    onAdd={() => this.handleAddMap('outputs')}
+                    onRemove={(i) => this.handleRemoveMap('outputs', i)}
+                    handleSelection={(i, arg, value) => this.handleSelection('outputs', i, arg, value)}
                 />
             </div>
         );

@@ -101,6 +101,12 @@ button:focus{
     padding: 0 !important;
 }
 
+.anti-btn {
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+}
+
 .white-btn{
     padding: 10px 25px !important;
     height: 43px;

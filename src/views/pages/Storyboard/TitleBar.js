@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, DropdownMenu, DropdownItem, ButtonDropdown, DropdownToggle } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, DropdownMenu, DropdownItem, Dropdown, DropdownToggle } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 
@@ -52,13 +52,17 @@ class TitleBar extends PureComponent {
                         <div>
                             <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
 
-                            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                                <DropdownToggle>Publish</DropdownToggle>
+                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block mr-2">
+                                <DropdownToggle className="anti-btn" tag="div">
+                                    <MUIButton variant="contained" className="white-btn share-btn">
+                                        Publish
+                                    </MUIButton>
+                                </DropdownToggle>
                                 <DropdownMenu className="platform-dropdown">
-                                    <DropdownItem className="white-btn platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon fa-pull-right"/></span></DropdownItem>
-                                    <DropdownItem className="white-btn platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
+                                    <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon fa-pull-right"/></span></DropdownItem>
+                                    <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
                                 </DropdownMenu>
-                            </ButtonDropdown>
+                            </Dropdown>
 
                             <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
                                 <i className="fas fa-share-square"/>

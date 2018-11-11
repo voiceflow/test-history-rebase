@@ -104,8 +104,9 @@ class Templates extends Component {
                                         <CardActionArea className="template-card-action"
                                             onClick={()=>this.props.history.push('/business/email/template/' + template.template_id)}>
                                             <div>
-                                                <small className="text-muted"><b>id:</b> |{template.template_id}</small>
                                                 <h5>{template.title}</h5>
+                                                <small className="text-muted"><b>id:</b> {template.template_id}</small><br/>
+                                                <small className="text-muted"><b>subject:</b> {template.subject ? template.subject : <span className="empty-badge">EMPTY</span>}</small>
                                             </div>
                                         </CardActionArea>
                                         <div className="template-card-delete" onClick={()=>{

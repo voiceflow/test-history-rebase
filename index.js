@@ -145,8 +145,9 @@ app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.pub
 // app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 
-app.get('/marketplace/', ensureLoggedIn(), Marketplace.getModules);
+app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules);
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules);
+app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules);
 app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule);
 app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus);
 app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule);
@@ -174,6 +175,15 @@ app.post('/image/small_icon', uploadResize(108,108).single('image'), (req, res) 
     let filename = req.file.transforms[0].key;
     res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
 });
+app.post('/image/module_icon', uploadResize(40,40).single('image'), (req, res) => {
+    let filename = req.file.transforms[0].key;
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
+});
+app.post('/image/card_icon', uploadResize(108,108).single('image'), (req, res) => {
+    let filename = req.file.transforms[0].key;
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
+});
+
 app.post('/image', ensureLoggedIn(), upload.any(), (req, res) => {
     res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+req.files[0].key);
 });

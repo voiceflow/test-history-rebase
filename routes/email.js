@@ -1,4 +1,5 @@
 const { pool, hashids } = require('./../services');
+const isVarName = require('is-var-name');
 
 exports.getTemplate = (req, res) => {
 	let id = hashids.decode(req.params.id)[0];
@@ -38,10 +39,37 @@ exports.getTemplates = (req, res) => {
 
 exports.setTemplate = (req, res) => {
 	let id = hashids.decode(req.params.id)[0];
+
+	// match all variables inside the email and put them to a list
+	let variables = new Set();
+
+	let regex = /\{([^{}]*)\}/g;
+
+	// Check the body and title for variables
+	if(req.body.content){
+		let match = regex.exec(req.body.content);
+		while (match != null) {
+			if(isVarName(match[1])){
+		    	variables.add(match[1]);
+		    }
+		    match = regex.exec(req.body.content);
+		}
+	}
+	if(req.body.subject){
+		let match = regex.exec(req.body.subject);
+		while (match != null) {
+			if(isVarName(match[1])){
+		    	variables.add(match[1]);
+		    }
+		    match = regex.exec(req.body.subject);
+		}
+	}
+
+	variables = JSON.stringify(Array.from(variables));
 	if(id){
 		pool.query(
-		'UPDATE email_templates SET title = $2, content = $3, sender = $4, modified = NOW() WHERE creator_id = $1 AND template_id = $5',
-		[req.user.id, req.body.title, req.body.content, req.body.sender, id], (err, result) => {
+		'UPDATE email_templates SET title = $2, content = $3, sender = $4, modified = NOW(), variables=$5, subject=$6 WHERE creator_id = $1 AND template_id = $7',
+		[req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, id], (err, result) => {
 			if(err){
 				res.sendStatus(500);
 				console.error(err)
@@ -52,8 +80,8 @@ exports.setTemplate = (req, res) => {
 		});
 	}else{
 		pool.query(
-		'INSERT INTO email_templates (creator_id, title, content, sender) VALUES ($1, $2, $3, $4) RETURNING template_id',
-		[req.user.id, req.body.title, req.body.content, req.body.sender], (err, result) => {
+		'INSERT INTO email_templates (creator_id, title, content, sender, variables, subject) VALUES ($1, $2, $3, $4, $5, $6) RETURNING template_id',
+		[req.user.id, req.body.title, req.body.content, req.body.sender, variables, subject], (err, result) => {
 			if(err){
 				res.sendStatus(500);
 				console.error(err)

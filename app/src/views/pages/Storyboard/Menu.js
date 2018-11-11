@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
+import ModuleItem from './ModuleItem';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
@@ -27,7 +28,7 @@ const sections = [{
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
-        { text: 'Mail', type: 'api', icon: <i className="far fa-envelope"/> }
+        { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
    ]
 }];
 
@@ -230,7 +231,12 @@ class Menu extends PureComponent {
                 </div>
             </React.Fragment>
         }else if(this.state.tab === 'modules'){
-            
+            content = 
+            <div>
+            {this.props.user_modules.map((user_module, i) => {
+                return <ModuleItem module={user_module} key={i} />;
+            })}
+            </div>
         }
 
         return (

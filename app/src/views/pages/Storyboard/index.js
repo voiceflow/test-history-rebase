@@ -841,8 +841,8 @@ class StoryBoard extends Component {
                 let data = JSON.parse(event.dataTransfer.getData('data'));
                 node.extras = {
                     diagram_id: data.diagram_id,
-                    inputs: data.diagram_inputmap,
-                    outputs: data.diagram_outputmap,
+                    inputs: data.input,
+                    outputs: data.output,
                     version_id: data.version_id,
                     module_id: data.module_id,
                     module_icon: data.module_icon,

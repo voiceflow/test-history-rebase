@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import axios from 'axios';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
 import './Business.css';
 import Template from './Template';
 import Templates from './Templates';
+import Home from './Home';
 
 const tabs = [
     {
@@ -16,7 +15,7 @@ const tabs = [
     {
         display: <React.Fragment><i className="fal fa-envelope"/> Email</React.Fragment>,
         match: ['email', 'template'],
-        link: '/business/email'
+        link: '/business/email/templates'
     },
 ]
 
@@ -26,13 +25,13 @@ class Business extends Component {
         let page;
         switch(this.props.page){
             case 'email':
-                page = <Templates/>
+                page = <Templates {...this.props}/>
                 break;
             case 'template':
-                page = <Template/>
+                page = <Template {...this.props}/>
                 break;
             default:
-                page = <h1>Coming Soon</h1>
+                page = <Home user={this.props.user}/>
         }
 
         return (

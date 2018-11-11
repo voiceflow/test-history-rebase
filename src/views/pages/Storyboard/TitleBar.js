@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, DropdownMenu, DropdownItem, ButtonDropdown, DropdownToggle } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 
@@ -13,6 +13,7 @@ class TitleBar extends PureComponent {
             publish: false,
             diagrams: [],
             share: false,
+            platform: 'amazon'
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -50,9 +51,15 @@ class TitleBar extends PureComponent {
                     <div className="title-group">
                         <div>
                             <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
-                            <MUIButton variant="contained" className="white-btn publish-btn mr-2" onClick={this.props.publish}>Publish 
-                                <span className="button-circle"><i className="fab fa-amazon"/></span>
-                            </MUIButton>
+
+                            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                                <DropdownToggle>Publish</DropdownToggle>
+                                <DropdownMenu className="platform-dropdown">
+                                    <DropdownItem className="white-btn platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon fa-pull-right"/></span></DropdownItem>
+                                    <DropdownItem className="white-btn platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
+                                </DropdownMenu>
+                            </ButtonDropdown>
+
                             <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
                                 <i className="fas fa-share-square"/>
                             </MUIButton>

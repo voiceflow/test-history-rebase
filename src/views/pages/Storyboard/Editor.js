@@ -17,6 +17,8 @@ import Capture from './Editors/Capture';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
+import Module from './Editors/Module';
+import Mail from './Editors/Mail'
 
 class Editor extends Component {
     constructor(props) {
@@ -24,7 +26,8 @@ class Editor extends Component {
 
         this.state = {
             node: this.props.node,
-            voices: []
+            voices: [],
+            templates: []
         };
 
         this.BlockViewer = this.BlockViewer.bind(this);
@@ -47,6 +50,33 @@ class Editor extends Component {
         .catch(err => {
             console.error(err.response);
             window.alert('Couldn\'t Retrieve Voices');
+        })
+
+        axios.get('/email/templates')
+        .then(res => {
+            let templates = res.data.map(t => {
+                let variables = [];
+                if(t.variables){
+                    try{
+                        variables = JSON.parse(t.variables);
+                    }catch(err){
+                        console.error(err);
+                    }
+                }
+
+                return {
+                    title: t.title,
+                    sender: t.sender,
+                    template_id: t.template_id,
+                    variables: variables
+                }
+            })
+            this.setState({
+                templates: templates
+            })
+        })
+        .catch(err => {
+            window.alert('Couldn\'t Retrieve Templates');
         })
 
     }
@@ -132,6 +162,10 @@ class Editor extends Component {
                 />
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+            case 'module':
+                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+            case 'mail':
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} templates={this.state.templates}/>
             default:
               return null;
         }

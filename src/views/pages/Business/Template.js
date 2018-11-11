@@ -26,6 +26,7 @@ class Template extends Component {
             template_id: id,
             content: is_new ? 'Write/Paste Email HTML Content Here' : '',
             title: '',
+            subject: '',
             saved: !is_new,
             sender: 'mail@getvoiceflow.com',
             saving: false
@@ -63,6 +64,7 @@ class Template extends Component {
                 this.setState({
                     content: res.data.content,
                     title: res.data.title,
+                    subject: res.data.subject,
                     sender: res.data.sender,
                     loading: false
                 });
@@ -80,6 +82,9 @@ class Template extends Component {
                 });
             })
         }else{
+            this.setState({
+                title: 'New Template'
+            });
             if(this.iframe){
                 const iframe = this.iframe;
                 const doc = iframe.contentDocument;
@@ -90,6 +95,14 @@ class Template extends Component {
 
     save() {
         if(this.state.saved) return;
+        if(!this.state.title){
+            this.setState({
+                error: {
+                    message: 'Empty Template Title'
+                }
+            })
+            return
+        }
 
         this.setState({
             saving: true
@@ -97,6 +110,7 @@ class Template extends Component {
 
         let payload = {
             title: this.state.title,
+            subject: this.state.subject,
             sender: this.state.sender,
             content: this.state.content
         }
@@ -157,7 +171,7 @@ class Template extends Component {
                                 <small><i className="far fa-chevron-right"/></small>{' '} 
                                 <Link to="/business/email/templates">Templates</Link>{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '}
-                                <span className="text-secondary">{this.state.template_id}</span>
+                                <span className="text-secondary">{this.state.title}</span>
                             </div>
                         </span>
                         <div className="subheader-right">
@@ -180,12 +194,22 @@ class Template extends Component {
                 { this.state.loading ? 
                     <div className="super-center h-100 w-100">Loading...</div> :
                     <div className="content">
+                        <FormGroup className="mt-0">
+                            <label>Template Title (INTERNAL)</label>
+                            <Input 
+                                name="title"
+                                placeholder="Name of Template"
+                                value={this.state.title}
+                                onChange={this.onChange}
+                            />
+                        </FormGroup>
+                        <hr/>
                         <FormGroup>
                             <label>Subject</label>
                             <Input 
-                                name="title"
+                                name="subject"
                                 placeholder="Subject of Email"
-                                value={this.state.title}
+                                value={this.state.subject}
                                 onChange={this.onChange}
                             />
                         </FormGroup>

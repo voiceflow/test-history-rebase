@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
-import { Button, Input } from 'reactstrap';
+import { Button, Input, Alert } from 'reactstrap';
+
+const validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 class Mail extends Component {
     constructor(props) {
@@ -12,7 +17,8 @@ class Mail extends Component {
             if(find){
                 selected = {
                     label: find.title,
-                    value: find.template_id
+                    value: find.template_id,
+                    invalid: validateEmail(props.node.extras.to)
                 }
             }
         }
@@ -28,16 +34,26 @@ class Mail extends Component {
     }
 
     onChange(e){
-        this.setState({
-            [e.target.name]: e.target.value,
-            saved: false
-        });
+        let node = this.state.node;
+        node.extras[e.target.name] = e.target.value;
+
+        if(e.target.name === 'to' && !validateEmail(e.target.value)){
+            this.setState({
+                invalid: true,
+                node: node
+            });
+        }else{
+            this.setState({
+                invalid: false,
+                node: node
+            });
+        }
     }
 
     selectVariable(selected, index) {
         let node = this.state.node;
         if(!node.extras.mapping[index]) return;
-        node.extras.mapping[index].input = selected.value;
+        node.extras.mapping[index].val = selected.value;
 
         this.setState({
             node: node
@@ -55,8 +71,8 @@ class Mail extends Component {
         if(Array.isArray(find.variables) && find.variables.length !== 0){
             node.extras.mapping = find.variables.map(v => {
                 return {
-                    input: null,
-                    output: v
+                    val: null,
+                    key: v
                 }
             })
         }else{
@@ -69,12 +85,14 @@ class Mail extends Component {
         });
     }
 
+
+
     render() {
         if(this.props.templates.length === 0){
             return 'No Email Templates Exist. Add them in Business > Email'
         }
 
-        let user = this.state.node.extras.to === 'USER';
+        let user = this.state.node.extras.to === '_USER';
 
         return (
             <div>
@@ -92,17 +110,31 @@ class Mail extends Component {
                 <hr/>
                 <div className="label-btns">
                     <label>To</label>
-                    <Button outline={user} disabled={!user} color="primary">User Email</Button>
-                    <Button outline={!user} disabled={user} color="primary">Defined</Button>
+                    <Button outline={!user} disabled={user} color="primary" onClick={()=>{
+                        let node = this.state.node;
+                        if(node.extras.to === '_USER') return;
+                        node.extras.to = '_USER';
+                        this.setState({node: node});
+                    }}>User Email</Button>
+                    <Button outline={user} disabled={!user} color="primary" onClick={()=>{
+                        let node = this.state.node;
+                        if(node.extras.to !== '_USER') return;
+                        node.extras.to = '';
+                        this.setState({node: node});
+                    }}>Defined</Button>
                 </div>
                 {
-                    user ? 
-                    <Input 
-                        name='to' 
-                        value={this.state.node.extras.to} 
-                        onChange={this.onChange}
-                        placeholder="E-mail"
-                    /> :
+                    !user ? 
+                    <React.Fragment>
+                        <Input 
+                            name='to'
+                            type='email'
+                            value={this.state.node.extras.to} 
+                            onChange={this.onChange}
+                            placeholder="E-mail"
+                        />
+                        {this.state.invalid && <Alert color="danger" className="py-1 px-2 mt-1">Invalid Email</Alert>}
+                    </React.Fragment> :
                     <span className="text-muted font-italic">
                         This Message Will Only Be Sent If the User Consents to Sharing Their Email
                     </span>
@@ -119,14 +151,14 @@ class Mail extends Component {
                                         className="map-box"
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
-                                        value={v.input ? {label: '{' + v.input + '}', value: v.input} : null}
+                                        value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
                                         onChange={(select) => this.selectVariable(select, i)}
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                             return {label: '{' + variable + '}', value: variable }
                                         }) : null}
                                     />
                                     <i className="far fa-arrow-right"/>
-                                    <input readOnly className="map-box form-control" value={`{${v.output}}`}/>
+                                    <input readOnly className="map-box form-control" value={`{${v.key}}`}/>
                                 </div>
                             })}
                         </React.Fragment> : <i className="text-muted">No Variables Exist For This Email</i>

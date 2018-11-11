@@ -16,6 +16,9 @@ import Business from './views/pages/Business';
 import Account from './views/pages/Account';
 import NavBar from './views/components/NavBar';
 import Skill from './views/pages/Skill'
+import Marketplace from './views/pages/Marketplace/Marketplace';
+import ModulePage from './views/pages/Marketplace/ModulePage';
+import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -110,10 +113,13 @@ class App extends Component {
                 <PrivateRoute path="/storyboard/:skill_id/:diagram_id" name="Storyboard" component={StoryBoard}/>
                 <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard}/>
                 <PrivateRoute path="/business/email/template/:id" name="Business" component={Business} page='template'/>
-                <PrivateRoute path="/business/email" name="Business" component={Business} page='email'/>
+                <PrivateRoute path="/business/email/templates" name="Business" component={Business} page='email'/>
                 <PrivateRoute path="/business" name="Business" component={Business} page='default'/>
-                <PrivateRoute path="/publish/:id" name="Skill Dashboard" component={Skill}/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
+                <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={Skill}/>
+                <PrivateRoute path="/publish/market/:id" name="Skill Dashboard" component={PublishMarket}/>
+                <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
+                <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

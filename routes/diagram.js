@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
-const {docClient, pool, hashids, validateEmail, hashids} = require('./../services');
+const {docClient, pool, hashids, validateEmail} = require('./../services');
 const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {

@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
-const {docClient, pool, hashids, validateEmail} = require('./../services');
+const {docClient, pool, hashids, validateEmail, hashids} = require('./../services');
 const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
@@ -611,7 +611,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                 } else if (node.extras.type === 'mail') {
 
-                    if(node.extras.template_id && (node.extras.to === '_USER' || validateEmail(node.extras.to))){
+                    let id = hashids.decode(template_id)[0];
+                    if(id && (node.extras.to === '_USER' || validateEmail(node.extras.to))){
                         let mapping;
                         if(Array.isArray(node.extras.mapping)){
                             mapping = node.extras.mapping.filter(m => {
@@ -622,7 +623,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         }
 
                         story.lines[node.id] = {
-                            template_id: node.extras.template_id,
+                            template_id: id,
                             to: node.extras.to,
                             mapping: mapping,
                             success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],

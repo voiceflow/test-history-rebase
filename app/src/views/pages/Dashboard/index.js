@@ -35,7 +35,7 @@ class DashBoard extends Component {
 
     openSkill(skill, diagram){
         setTimeout(() => { 
-            this.props.history.push(`/storyboard/${skill}/${diagram}`);
+            this.props.history.push(`/canvas/${skill}/${diagram}`);
         }, 100);
     }
 
@@ -127,14 +127,14 @@ class DashBoard extends Component {
             //             <h1 className="display-5 text-mute">
             //                 <i className="far fa-frown"/> No Skills Found
             //             </h1>
-            //             <Link to="/storyboard/new">Create New Skill</Link>
+            //             <Link to="/canvas/new">Create New Skill</Link>
             //         </div>
             skills = <div className="super-center w-100 text-muted mt-5">
                 <div className="horizontal-center mt-5">
                     <div className="card">
                       <div className="card-body p-4">
                         <img src="/images/entertainment-icon.svg" alt="skill-icon" width="200"/><br/>
-                        <Link to="/storyboard/new" className="no-underline">
+                        <Link to="/canvas/new" className="no-underline">
                             <MUIButton varient="contained" className="purple-btn w-100">Create Skill</MUIButton>
                         </Link>
                       </div>
@@ -183,7 +183,7 @@ class DashBoard extends Component {
                             </div>
                         </span>
                         <div className="subheader-right">
-                            <Link to="/storyboard/new" className="no-underline">
+                            <Link to="/canvas/new" className="no-underline">
                                 <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</MUIButton>
                             </Link>
                         </div>

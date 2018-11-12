@@ -705,7 +705,7 @@ class Skill extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-3 publish-info">
-                                    <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on Storyflow.</p>
+                                    <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
                                 </div>
                                 <div className="col-9">
                                     <Input type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />

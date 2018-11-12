@@ -148,10 +148,6 @@ class Account extends Component {
                     <Label for="password">Password</Label>
                     <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
-                  <FormGroup>
-                    <Label for="code">Invite Code</Label>
-                    <Input type="text" name="r_code" onChange={this.handleChange} placeholder="XXXXXXXXX" required minLength="6"/>
-                  </FormGroup>
                   <Button block color="primary" type="submit">Create Account</Button>
                   <hr/>
                   <p>Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></p>
@@ -161,7 +157,11 @@ class Account extends Component {
         </div>
       </div>
     );
-    // <p>Doesn't have an Access Code? <a href="https://getstoryflow.com">Request access</a></p>
+    // <FormGroup>
+    // <Label for="code">Invite Code</Label>
+    // <Input type="text" name="r_code" onChange={this.handleChange} placeholder="XXXXXXXXX" required minLength="6"/>
+    // </FormGroup>
+    // <p>Doesn't have an Access Code? <a href="https://getvoiceflow.com">Request access</a></p>
   }
 }
 

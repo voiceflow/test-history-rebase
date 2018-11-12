@@ -2,7 +2,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 sgMail.setSubstitutionWrappers('-','-');
 
-const sendCodes = (email, name, codesArr, cb) => {
+const sendCodes = (email, name, cb) => {
     if (typeof name !== 'string') {
         name = null;
     }
@@ -23,12 +23,7 @@ const sendCodes = (email, name, codesArr, cb) => {
                         'email': email,
                         'name': name,
                     }
-                ],
-                "dynamic_template_data": {
-                    "CODE1": codesArr[0],
-                    "CODE2": codesArr[1],
-                    "CODE3": codesArr[2]
-                }
+                ]
             }
         ],
         'reply_to': {
@@ -36,6 +31,12 @@ const sendCodes = (email, name, codesArr, cb) => {
             'name': 'Braden from Storyflow'
         }
     };
+
+    // "dynamic_template_data": {
+    //     "CODE1": codesArr[0],
+    //     "CODE2": codesArr[1],
+    //     "CODE3": codesArr[2]
+    // }
 
     // request = {
     //     body: data,

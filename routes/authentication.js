@@ -189,8 +189,9 @@ const putUser = async (req, res) => {
 
     if (!name || !email || !password) {
         res.status(400).send("Form not filled");
- 	} else if(!(await Codes.checkCodes(code))) {
-        res.status(400).send("Invalid Access Code");
+ 	} 
+ 	// else if(!(await Codes.checkCodes(code))) {
+  	// res.status(400).send("Invalid Access Code");
  	} else {
         email = email.trim().toLowerCase();
         pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
@@ -220,14 +221,11 @@ const putUser = async (req, res) => {
 										
 									});
 									
-									let codesArr = await Codes.generateCodesArr(credentials.user);
-									
-									// Mail.sendCodes(email, name, codesArr, (err) => {
-									// 	console.log(err);
-									// });
+									// let codesArr = await Codes.generateCodesArr(credentials.user);
+									Mail.sendOnboarding(email, name, (err) => {
+										console.log(err);
+									});
 								});
-								
-								
 	                        }
                 		});
 	                }

@@ -49,25 +49,6 @@
   font-size: 2.5rem;
 }
 
-.rotate .front.sandbox {
-    background-color: #333;
-}
-.rotate .front.storyflow {
-    background-image: -webkit-linear-gradient(270deg, rgb(103, 17, 255), rgb(75, 83, 251));
-    background-image: linear-gradient(180deg, rgb(103, 17, 255), rgb(75, 83, 251));
-    background-position: 0px 0px, 50% 50%;
-    background-size: auto, cover;
-    background-repeat: repeat, no-repeat;
-}
-
-.rotate .front.kids {
-    background-image: -webkit-linear-gradient(270deg, rgba(103, 17, 255, .42), rgba(75, 83, 251, .74)), url("/images/kids.jpg");
-    background-image: linear-gradient(180deg, rgba(103, 17, 255, .42), rgba(75, 83, 251, .74)), url("/images/kids.jpg");
-    background-position: 0px 0px, 50% 50%;
-    background-size: auto, cover;
-    background-repeat: repeat, no-repeat;
-}
-
 .rotate.cols{
   display: -webkit-box;
   display: -ms-flexbox;

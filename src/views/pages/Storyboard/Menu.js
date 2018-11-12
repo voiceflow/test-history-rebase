@@ -63,12 +63,6 @@ class Menu extends PureComponent {
         this.props.build(this.updateTree);
     }
 
-    // <div 
-    //     onClick={active ? null : (()=>this.props.enterFlow(node.id))} 
-    //     className={'diagram-block' + (active ? ' active': '')}>
-    //     {node.name}
-    // </div>
-
     buildTree(node, depth=0){
 
         // Array.isArray(sub_diagrams) && sub_diagrams.length > 0

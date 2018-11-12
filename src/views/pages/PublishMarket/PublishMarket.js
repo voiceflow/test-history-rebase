@@ -211,8 +211,6 @@ class PublishMarket extends Component {
         this.setState({
             type: var_array
         }, this.handleUpdate);
-
-        console.log(this.state)
     }
 
     handleRemoveVar(i, type) {
@@ -225,15 +223,11 @@ class PublishMarket extends Component {
     }
 
     handleVarChange(val, i, type) {
-        console.log(val)
-        console.log(i)
-        console.log(type)
         let var_array = this.state[type];
         var_array[i] = val        
         this.setState({
             type: var_array
         }, this.handleUpdate);
-        console.log(this.state)
     }
 
 	render(){

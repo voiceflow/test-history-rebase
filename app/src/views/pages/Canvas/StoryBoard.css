@@ -485,7 +485,7 @@
     text-align: center;
     width: 40px;
     height: 40px;
-    background-color: #e2e9ec;
+/*    background-color: #e2e9ec;*/
     /*color: #2325E2;*/
     color: #fff;
     border-radius: 10px;
@@ -535,17 +535,17 @@
 .App .Menu #sidebar .MenuItem.audio:hover {
     background-color: #F4F6F7;
 } .MenuItem.audio>.MenuIcon {
-    background-color: #ff8b0d !important;
+    background-color: #ff7800 !important;
 }
 .App .Menu #sidebar .MenuItem.random:hover {
     background-color: #F4F6F7;
 } .MenuItem.random>.MenuIcon {
-    background-color: #FFD54F;
+    background-color: #27C5DA !important;
 }
 .App .Menu #sidebar .MenuItem.set:hover {
     background-color: #F4F6F7;
 } .MenuItem.set>.MenuIcon {
-    background-color: #9575CD;
+    background-color: #4955fa;
 }
 .App .Menu #sidebar .MenuItem.variable:hover {
     background-color: #F4F6F7;
@@ -555,12 +555,12 @@
 .App .Menu #sidebar .MenuItem.if:hover {
     background-color: #F4F6F7;
 } .MenuItem.if>.MenuIcon {
-    background-color: #80CBC4;
+    background-color: #ffbb00;
 }
 .App .Menu #sidebar .MenuItem.capture:hover {
     background-color: #F4F6F7;
 } .MenuItem.capture>.MenuIcon {
-    background-color: #FF8A65;
+    background-color: #b050d6;
 }
 .App .Menu #sidebar .MenuItem.command:hover {
     background-color: #F4F6F7;
@@ -570,7 +570,7 @@
 .App .Menu #sidebar .MenuItem.flow:hover {
     background-color: #F4F6F7;
 } .MenuItem.flow>.MenuIcon {
-    background-color: #BDBDBD;
+    background-color: #2b3950;
 }
 /*.App .Menu #sidebar .MenuItem:hover>.MenuIcon{
 }*/
@@ -828,7 +828,9 @@ label {
 }
 
 .srd-default-node.flow {
-    background-color: #DDD;
+    background-color: #fff;
+    border-top: 6px solid #2b3950;
+    border-color: #2b3950 !important;
 }
 
 .srd-default-node.choice, .srd-default-node.choicenew{
@@ -840,7 +842,9 @@ label {
     background-color: #BBB;
 }
 .srd-default-node.api{
-    background-color: #F48FB1;
+    background-color: #fff;
+    border-top: 6px solid #D73965;
+    border-color: #D73965 !important;
 }
 
 .srd-default-node.module{
@@ -854,11 +858,15 @@ label {
 }
 
 .srd-default-node.random {
-    background-color: #FFFDE7;
+    background-color: #fff;
+    border-top: 6px solid #5EC2D7;
+    border-color: #5EC2D7 !important;
 }
 
 .srd-default-node.capture {
-    background-color: #FFE0B2;
+    background-color: #fff;
+    border-top: 6px solid #A45ACF;
+    border-color: #A45ACF !important;
 }
 
 .srd-default-node.command {
@@ -868,7 +876,9 @@ label {
 }
 
 .srd-default-node.set, .srd-default-node.variable {
-    background-color: #F3E5F5;
+    background-color: #fff;
+    border-top: 6px solid #485CF1;
+    border-color: #485CF1 !important;
 }
 
 .srd-default-node.speak {
@@ -878,7 +888,9 @@ label {
 }
 
 .srd-default-node.if {
-    background-color: #B2DFDB;
+    background-color: #B2EBF2;
+    border-top: 6px solid #F6BC41;
+    border-color: #F6BC41 !important;
 }
 
 .srd-default-node.retry {
@@ -1104,7 +1116,7 @@ button.close{
     color: #2b3950;
 }
 .btn-outline-secondary{
-    border: #EBEEEF !important;
+    border:  1px solid #EBEEEF !important;
     color: #2b3950 !important;
     font-weight: 600 !important;
 }
@@ -1181,14 +1193,46 @@ button.close{
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
 }
-
+.brackets>.NaN{
+    color: #2b3950 !important;
+    background-color: #e3e9ec !important;
+}
+.brackets>.unknown{
+    color: #5397E9 !important;
+}
+.expression-block.and{
+    background-color: #F5F7F8 !important;
+    border: 1px solid #ced4da !important;
+}
+.expression-block.greater, .expression-block.equals, .expression-block.less{
+    background-color: #F5F7F8 !important;
+    border: 1px solid #ced4da !important;
+}
+.expression-block.or{
+    background-color: #F5F7F8 !important;
+    border: 1px solid #ced4da !important;
+}
+.expression-block.not{
+    background-color: #F5F7F8 !important;
+    border: 1px solid #ced4da !important;
+}
+.brackets>.variable{
+    background-color: #5BA5F8 !important;
+    color: #fff !important;
+}
 .choice-title {
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin-bottom: 5px;
 }
-
+.operator{
+    color: #2b3950;
+}
+.expression-block.divide, .expression-block.times{
+    background-color: #F5F7F8 !important;
+    border: 1px solid #ced4da !important;
+}
 .square-bubble {
     padding-top: 3px;
     height: 22px;
@@ -1227,7 +1271,11 @@ button.close{
     border: none;
     color: #95a6bd;
 }
-
+.expression-block.plus, .expression-block.minus{
+    background-color: #f4f7f8 !important;
+    border: 1px solid #ced4da !important;
+        
+}
 .choice-title input:focus{
     outline: none;
 }

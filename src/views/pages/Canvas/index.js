@@ -78,7 +78,6 @@ class Canvas extends Component {
         let diagram_name = '';
 
         let last_session = cookies.get('last_session', {path: '/'});
-        console.log(last_session);
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
@@ -241,6 +240,7 @@ class Canvas extends Component {
 
         $('#Editor').mousedown(this.onDiagramUnfocus);
 
+        // If in preview mode
         if(this.preview){
             $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 
                 '#editor-section', 
@@ -264,7 +264,7 @@ class Canvas extends Component {
             }.bind(this));
         }
 
-        this.loadUserModules();
+        // this.loadUserModules();
     }
 
     loadUserModules(){
@@ -840,30 +840,10 @@ class Canvas extends Component {
                 node.addOutPort(' ').setMaximumLinks(1);
 
                 let data = JSON.parse(event.dataTransfer.getData('data'));
-                data.input = JSON.parse(data.input);
-                data.output = JSON.parse(data.output);
-                let mapping = {
-                    output: [],
-                    input: []
-                };
-
-                for(var i=0;i < data.input.length; i++){
-                    let key = data.input[i];
-                    let obj = {};
-                    obj[data.input[i]] = '';
-                    mapping['input'].push(obj);
-                }
-
-                for(var j=0;j < data.output.length; j++){
-                    let key = data.output[j];
-                    let obj = {};
-                    obj[data.output[j]] = '';
-                    mapping['output'].push(obj);
-                }
-
                 node.extras = {
                     diagram_id: data.diagram_id,
-                    mapping: mapping,
+                    inputs: data.input,
+                    outputs: data.output,
                     version_id: data.version_id,
                     module_id: data.module_id,
                     module_icon: data.module_icon,

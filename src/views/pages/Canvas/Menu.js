@@ -28,18 +28,16 @@ const sections = [{
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
+        { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
    ]
 }];
-
-// { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
     {tab: "flows", icon: <i className="fas fa-clone"/>},
     {tab: "variables", icon: <i className="fas fa-code"/>},
+    {tab: "modules", icon: <i className="fas fa-layer-group"/>}
 ]
-
-// {tab: "modules", icon: <i className="fas fa-layer-group"/>}
 
 class Menu extends PureComponent {
     constructor(props) {
@@ -227,17 +225,17 @@ class Menu extends PureComponent {
                 </div>
             </React.Fragment>
         }else if(this.state.tab === 'modules'){
-            content = 
-            <div>
-            {this.props.user_modules.map((user_module, i) => {
-                return <ModuleItem module={user_module} key={i} />;
-            })}
-            </div>
+            if(this.props.user_module){
+                content = 
+                <div>
+                {this.props.user_modules.map((user_module, i) => {
+                    return <ModuleItem module={user_module} key={i} />;
+                })}
+                </div>
+            }else{
+                content = <div>No Modules, Visit Marketplace</div>
+            }
         }
-
-        //<a className="tool no-underline" href="/market" rel="noopener noreferrer">
-        //  <i className="fas fa-store-alt"/>
-        //</a>
 
         return (
             <div className="Menu">
@@ -255,6 +253,9 @@ class Menu extends PureComponent {
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
+                        <a className="tool no-underline" href="/market" rel="noopener noreferrer">
+                            <i className="fas fa-store-alt"/>
+                        </a>
                         <a className="tool no-underline" href="https://intercom.help/flowschool"
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>

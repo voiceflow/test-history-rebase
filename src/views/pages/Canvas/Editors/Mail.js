@@ -3,7 +3,7 @@ import Select from 'react-select'
 import { Button, Input, Alert } from 'reactstrap';
 
 const validateEmail = (email) => {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re = /^(([^<>()[]\\.,;:\s@"]+(\.[^<>()[]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
@@ -19,6 +19,18 @@ class Mail extends Component {
                     label: find.title,
                     value: find.template_id,
                     invalid: validateEmail(props.node.extras.to)
+                }
+
+                if(props.node.extras.to && props.node.extras.to.length !== 0){
+                    props.node.extras.mapping = find.variables.map(v => {
+                        let existing = props.node.extras.mapping.find(kv => kv.key === v);
+                        let val;
+                        if(existing) val = existing.val;
+                        return {
+                            key: v,
+                            val: val
+                        }
+                    });
                 }
             }
         }

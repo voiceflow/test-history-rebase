@@ -1,0 +1,119 @@
+.business.Window{
+	height: 100%;
+	display: flex;
+}
+/*.business.Window > .row {
+	height: 100%;
+}*/
+.business.Window  .business-page {
+	height: 100%;
+	overflow-x: scroll;
+	flex: 1;
+}
+.business.Window  .sidebar {
+	background-color: #fff;
+	width: 160px;
+	border-right: 1px solid #E2E9EC;
+}
+
+.business.Window  .sidebar>.title {
+	font-weight: lighter;
+	padding: 24px 20px 22px 20px;
+	font-size: 1.5rem;
+	border-bottom: 1px solid #E2E9EC;
+}
+
+.business.Window .business-page-inner {
+	width: 100%;
+	position: relative;
+	height: 100%;
+}
+
+.business.Window .business-page-inner>.subheader {
+	padding-left: 20px;
+	padding-right: 20px;
+	width: auto;
+	left: 160px;
+	right: 0px;
+}
+.business.Window .business-page-inner>.subheader>div{
+	flex: 1;
+	height: 41px;
+}
+
+.business.Window .business-page-inner>.content {
+	padding: 100px 20px 50px 20px;
+}
+
+.business.Window  .sidebar>.sidebar-option {
+	padding: 10px 20px;
+	display: block;
+	transition: background-color 0.1s linear;
+	text-decoration: none;
+	cursor: pointer;
+	color: #94A6BD;
+}
+
+.business.Window  .sidebar>.sidebar-option:hover {
+	background-color: #F5F9FA;
+}
+
+.business.Window  .sidebar>.sidebar-option.active {
+	cursor: default;
+	background-color: #94A6BD !important;
+	color: #fff !important;
+}
+
+.content .form-group>label{
+	margin-bottom: 2px;
+}
+
+.email_editor{
+	width: 100% !important;
+	height: 500px !important;
+}
+
+.template-card{
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.template-card-action{
+	flex: 1;
+}
+
+.template-card-action>div{
+	padding: 20px;
+}
+
+.template-card-delete{
+	display: flex;
+	cursor: pointer;
+	border-left: 1px solid #E2E9EC;
+	align-items: center;
+	padding: 10px 20px;
+}
+.template-card-delete:hover{
+	color:#fff;
+	background-color: #E53935;
+}
+
+.email_preview{
+	background-color: #fff;
+	height: 100%;
+	width: 100%;
+	/*border: 1px solid #E2E9EC;*/
+	border: none;
+}
+
+.empty-badge{
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 10px;
+	padding: 3px 5px;
+	background-color: #ffc107;
+	color: #fff;
+}

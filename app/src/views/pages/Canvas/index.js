@@ -39,7 +39,7 @@ const generateID = () => {
     });
 }
 
-class StoryBoard extends Component {
+class Canvas extends Component {
     constructor(props) {
         super(props);
 
@@ -50,7 +50,8 @@ class StoryBoard extends Component {
         this.setVariables = this.setVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
         this.createSkill = this.createSkill.bind(this);
-        this.publish = this.publish.bind(this);
+        this.publishAMZN = this.publishAMZN.bind(this);
+        this.publishMarket = this.publishMarket.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onTest = this.onTest.bind(this);
         this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
@@ -62,6 +63,7 @@ class StoryBoard extends Component {
         this.removeNode = this.removeNode.bind(this);
         this.zoom = this.zoom.bind(this);
         this.buildDiagrams = null;
+        this.loadUserModules = this.loadUserModules.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -76,6 +78,7 @@ class StoryBoard extends Component {
         let diagram_name = '';
 
         let last_session = cookies.get('last_session', {path: '/'});
+        console.log(last_session);
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
@@ -86,11 +89,11 @@ class StoryBoard extends Component {
                 skill_id = url.params.skill_id;
                 diagram_id = url.params.diagram_id;
             }else if(last_session){
-                this.props.history.push('/storyboard/' + last_session.skill_id + '/' + last_session.diagram_id);
+                this.props.history.push('/canvas/' + last_session.skill_id + '/' + last_session.diagram_id);
                 skill_id = last_session.skill_id;
                 diagram_id = last_session.diagram_id;
             }else{
-                this.props.history.push('/storyboard/new');
+                this.props.history.push('/canvas/new');
             }
         }
 
@@ -147,7 +150,8 @@ class StoryBoard extends Component {
             variables: variables,
             newSkill: newSkill,
             help: null,
-            helpOpen: false
+            helpOpen: false,
+            user_modules: null
         };
 
         if(!this.state.newSkill){
@@ -259,6 +263,25 @@ class StoryBoard extends Component {
                 }
             }.bind(this));
         }
+
+        this.loadUserModules();
+    }
+
+    loadUserModules(){
+        axios.get('/marketplace/user_module')
+        .then(res => {
+            this.setState({
+                user_modules: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                loading_modal: true,
+                error_modal: 'Error retrieving modules'
+            });
+        });
     }
 
     onDiagramUnfocus() {
@@ -611,7 +634,7 @@ class StoryBoard extends Component {
                         id: diagram_id,
                         name: 'ROOT'
                     });
-                    this.props.history.push(`/storyboard/${skill_id}/${diagram_id}`);
+                    this.props.history.push(`/canvas/${skill_id}/${diagram_id}`);
                 })
             });
         })
@@ -653,7 +676,7 @@ class StoryBoard extends Component {
                     name: 'New Flow',
                     id: id
                 });
-                this.props.history.push(`/storyboard/${skill_id}/${id}`);
+                this.props.history.push(`/canvas/${skill_id}/${id}`);
             })
             .catch(err => {
                 console.log(err.response);
@@ -666,16 +689,22 @@ class StoryBoard extends Component {
         });
     }
 
-    publish() {
+    publishAMZN() {
         this.onSave(diagram_id => {
-            this.props.history.push('/publish/' + this.state.skill.skill_id);
+            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id);
+        });
+    }
+
+    publishMarket() {
+        this.onSave(diagram_id => {
+            this.props.history.push('/publish/market/' + this.state.skill.skill_id);
         });
     }
 
     enterFlow(new_diagram_id) {
         if(new_diagram_id !== this.state.diagram_id){
             this.onSave(() => {
-                this.props.history.push(`/storyboard/${this.state.skill.skill_id}/${new_diagram_id}`);
+                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`);
             });
         }
     }
@@ -797,6 +826,49 @@ class StoryBoard extends Component {
                 node.extras = {
                     variable: null
                 };
+            } else if (type === 'mail') {
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+                node.addOutPort('fail').setMaximumLinks(1);
+                node.extras = {
+                    template_id: null,
+                    mapping: [],
+                    to: ''
+                };
+            } else if (type === 'module'){
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+
+                let data = JSON.parse(event.dataTransfer.getData('data'));
+                data.input = JSON.parse(data.input);
+                data.output = JSON.parse(data.output);
+                let mapping = {
+                    output: [],
+                    input: []
+                };
+
+                for(var i=0;i < data.input.length; i++){
+                    let key = data.input[i];
+                    let obj = {};
+                    obj[data.input[i]] = '';
+                    mapping['input'].push(obj);
+                }
+
+                for(var j=0;j < data.output.length; j++){
+                    let key = data.output[j];
+                    let obj = {};
+                    obj[data.output[j]] = '';
+                    mapping['output'].push(obj);
+                }
+
+                node.extras = {
+                    diagram_id: data.diagram_id,
+                    mapping: mapping,
+                    version_id: data.version_id,
+                    module_id: data.module_id,
+                    module_icon: data.module_icon,
+                    color: data.color
+                }
             }
             this.state.engine.stopMove();
             node.extras.type = type;
@@ -864,6 +936,7 @@ class StoryBoard extends Component {
                     variables={this.state.variables}
                     onVariable={this.setVariables}
                     build={fn => this.buildDiagrams = fn}
+                    user_modules={this.state.user_modules}
                 />
                 <TitleBar
                     lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
@@ -877,7 +950,8 @@ class StoryBoard extends Component {
                     last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
-                    publish={this.publish}
+                    publishAMZN={this.publishAMZN}
+                    publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
                 />
                 <div
@@ -915,4 +989,4 @@ class StoryBoard extends Component {
     }
 }
 
-export default StoryBoard;
+export default Canvas;

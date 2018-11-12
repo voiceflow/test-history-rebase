@@ -97,9 +97,29 @@
 }
 
 .TitleBar .publish-btn {
-    padding: 5px 7px 5px 20px !important;
+    padding: 5px 20px 5px 20px !important;
+    margin-right: 0px;
     border: none !important;
 }
+
+.TitleBar .platform-dropdown {
+    border: none;
+    padding: 5px 0px 5px 0px;
+    width: 150px !important;
+    box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
+}
+
+.TitleBar .platform-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 10px 20px;
+    border: none !important;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: #95a6bd !important;
+}
+
 .TitleBar .publish-btn .button-circle{
     background-color: #F5F9FA;
     border-radius: 5px;
@@ -497,6 +517,11 @@
 } .MenuItem.choice>.MenuIcon {
     background-color: #81C784;
 }
+.App .Menu #sidebar .MenuItem.mail:hover {
+    background-color: #EFEFEF;
+} .MenuItem.mail>.MenuIcon {
+    background-color: #333;
+}
 .App .Menu #sidebar .MenuItem.api:hover {
     background-color: #FCE4EC
 } .MenuItem.api>.MenuIcon {
@@ -640,7 +665,19 @@
     display: inline-block;
     font-weight: 400;
     color: #95a6bd;
+    vertical-align: middle;
     margin-bottom: 5px !important;
+}
+
+.label-btns{
+    margin-bottom: 5px;
+}
+.label-btns>button {
+    margin: 10px 0px 5px 5px;
+    padding: 0px 5px !important;
+}
+.label-btns>.btn{
+    border: none;
 }
 
 .App .Loader {
@@ -767,8 +804,17 @@ label {
     background-color: #E8F5E9;
 }
 
+.srd-default-node.mail{
+    /*border-color: #A5D6A7;*/
+    background-color: #BBB;
+}
+
 .srd-default-node.api{
     background-color: #F48FB1;
+}
+
+.srd-default-node.module{
+    background-color: #6CD132;
 }
 
 .srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline{
@@ -1352,6 +1398,7 @@ button.close{
         top: 47px !important;
     }
     .TitleBar{
+        height: 105px;
         display: block;
         padding-left: 290px;
     }

@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
-const {docClient, pool, hashids} = require('./../services');
+const {docClient, pool, hashids, validateEmail} = require('./../services');
 const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
@@ -266,7 +266,7 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set())) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, explicit_diagram_id=undefined) => new Promise((resolve) => {
 
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
@@ -310,6 +310,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 variables: data.Item.variables,
                 commands: []
             };
+
+            if(explicit_diagram_id){
+                story.id = explicit_diagram_id;
+            }
 
             // Iterate through every block in the diagram
             for (var i = 0; i < diagram.nodes.length; i++) {
@@ -605,6 +609,32 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                     };
 
+                } else if (node.extras.type === 'mail') {
+
+                    let id = hashids.decode(node.extras.template_id);
+                    if(id && id[0] && (node.extras.to === '_USER' || validateEmail(node.extras.to))){
+                        let mapping;
+                        if(Array.isArray(node.extras.mapping)){
+                            mapping = node.extras.mapping.filter(m => {
+                                return m.val && m.key
+                            });
+                        }else{
+                            mapping = [];
+                        }
+
+                        story.lines[node.id] = {
+                            template_id: id[0],
+                            to: node.extras.to,
+                            mapping: mapping,
+                            success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
+                            fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                        }
+                    }else{
+                        story.lines[node.id] = {
+                            nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                        }
+                    }
+
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -619,15 +649,21 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                 } 
             }
+            let render_type;
+            if(!type){
+                render_type = testing ? 'testing' : 'live';
+            }else{
+                render_type = type;
+            }
             let params = {
-                TableName: `com.getstoryflow.skills.${testing ? 'testing' : 'live'}`,
+                TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story
             };
             docClient.put(params, err => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(err.statusCode);
-                } else if(testing) {
+                } else if(testing || type === 'market') {
                     resolve(200);
                 } else {
                     // Add the story to SQL as well
@@ -727,5 +763,6 @@ module.exports = {
     deleteDiagram: deleteDiagram,
     setDiagram: setDiagram,
     publish: publish,
-    publishTest: publishTest
+    publishTest: publishTest,
+    renderDiagram: renderDiagram
 }

@@ -86,6 +86,11 @@ const uploadResize = (x, y) => {
 
 const s3Stream = require('s3-upload-stream')(s3);
 
+const validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 module.exports = {
     upload: upload,
     docClient: docClient,
@@ -95,6 +100,7 @@ module.exports = {
     config: config,
     s3: s3,
     uploadResize: uploadResize,
-    hashids: hashids
+    hashids: hashids,
+    validateEmail: validateEmail
 }
 

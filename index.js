@@ -22,6 +22,8 @@ const Review = require('./routes/review.js');
 const Authentication = require('./routes/authentication');
 const Code = require('./config/codes.js');
 const Decode = require('./routes/decode.js');
+const Marketplace = require('./routes/marketplace.js');
+const Email = require('./routes/email.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -103,6 +105,12 @@ app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 
+app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
+app.get('/email/template/:id', ensureLoggedIn(), Email.getTemplate);
+app.post('/email/template', ensureLoggedIn(), Email.setTemplate);
+app.patch('/email/template/:id', ensureLoggedIn(), Email.setTemplate);
+app.delete('/email/template/:id', ensureLoggedIn(), Email.deleteTemplate);
+
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
@@ -123,10 +131,10 @@ app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishT
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 
 // app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
-app.get('/analytics/:skill_id/totalUsers', ensureAdmin(), Analytics.getTotalUsers);
-app.get('/analytics/:skill_id/weekly', ensureAdmin(), Analytics.getWeeklyUsers);
-app.get('/analytics/:skill_id/monthly', ensureAdmin(), Analytics.getMonthlyUsers);
-app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
+// app.get('/analytics/:skill_id/totalUsers', ensureAdmin(), Analytics.getTotalUsers);
+// app.get('/analytics/:skill_id/weekly', ensureAdmin(), Analytics.getWeeklyUsers);
+// app.get('/analytics/:skill_id/monthly', ensureAdmin(), Analytics.getMonthlyUsers);
+// app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 // app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
 // app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStories);
 // app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);
@@ -136,6 +144,20 @@ app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
 // app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
 // app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
+
+app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules);
+app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules);
+app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules);
+app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule);
+app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus);
+app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule);
+app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification);
+app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification);
+app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification);
+app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCertification);
+app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess);
+app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess);
+app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 
@@ -153,6 +175,15 @@ app.post('/image/small_icon', uploadResize(108,108).single('image'), (req, res) 
     let filename = req.file.transforms[0].key;
     res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
 });
+app.post('/image/module_icon', uploadResize(40,40).single('image'), (req, res) => {
+    let filename = req.file.transforms[0].key;
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
+});
+app.post('/image/card_icon', uploadResize(108,108).single('image'), (req, res) => {
+    let filename = req.file.transforms[0].key;
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
+});
+
 app.post('/image', ensureLoggedIn(), upload.any(), (req, res) => {
     res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+req.files[0].key);
 });

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
+import ModuleItem from './ModuleItem';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
@@ -26,14 +27,16 @@ const sections = [{
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> }
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
+        { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
    ]
 }];
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
     {tab: "flows", icon: <i className="fas fa-clone"/>},
-    {tab: "variables", icon: <i className="fas fa-code"/>}
+    {tab: "variables", icon: <i className="fas fa-code"/>},
+    {tab: "modules", icon: <i className="fas fa-layer-group"/>}
 ]
 
 class Menu extends PureComponent {
@@ -59,12 +62,6 @@ class Menu extends PureComponent {
     componentDidMount() {
         this.props.build(this.updateTree);
     }
-
-    // <div 
-    //     onClick={active ? null : (()=>this.props.enterFlow(node.id))} 
-    //     className={'diagram-block' + (active ? ' active': '')}>
-    //     {node.name}
-    // </div>
 
     buildTree(node, depth=0){
 
@@ -227,6 +224,13 @@ class Menu extends PureComponent {
                     </div>
                 </div>
             </React.Fragment>
+        }else if(this.state.tab === 'modules'){
+            content = 
+            <div>
+            {this.props.user_modules.map((user_module, i) => {
+                return <ModuleItem module={user_module} key={i} />;
+            })}
+            </div>
         }
 
         return (
@@ -245,7 +249,10 @@ class Menu extends PureComponent {
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
-                        <a className="tool no-underline" href="https://intercom.help/flowschool" 
+                        <a className="tool no-underline" href="/market" rel="noopener noreferrer">
+                            <i className="fas fa-store-alt"/>
+                        </a>
+                        <a className="tool no-underline" href="https://intercom.help/flowschool"
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>
                         </a>

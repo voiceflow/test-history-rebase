@@ -611,8 +611,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                 } else if (node.extras.type === 'mail') {
 
-                    let id = hashids.decode(template_id)[0];
-                    if(id && (node.extras.to === '_USER' || validateEmail(node.extras.to))){
+                    let id = hashids.decode(node.extras.template_id);
+                    if(id && id[0] && (node.extras.to === '_USER' || validateEmail(node.extras.to))){
                         let mapping;
                         if(Array.isArray(node.extras.mapping)){
                             mapping = node.extras.mapping.filter(m => {
@@ -623,7 +623,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         }
 
                         story.lines[node.id] = {
-                            template_id: id,
+                            template_id: id[0],
                             to: node.extras.to,
                             mapping: mapping,
                             success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],

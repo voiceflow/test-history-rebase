@@ -189,8 +189,7 @@ const putUser = async (req, res) => {
 
     if (!name || !email || !password) {
         res.status(400).send("Form not filled");
- 	} 
- 	// else if(!(await Codes.checkCodes(code))) {
+ 	// } else if(!(await Codes.checkCodes(code))) {
   	// res.status(400).send("Invalid Access Code");
  	} else {
         email = email.trim().toLowerCase();

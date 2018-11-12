@@ -2,7 +2,7 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 sgMail.setSubstitutionWrappers('-','-');
 
-const sendCodes = (email, name, cb) => {
+exports.sendOnboarding = (email, name, cb) => {
     if (typeof name !== 'string') {
         name = null;
     }
@@ -60,6 +60,3 @@ const sendCodes = (email, name, cb) => {
     //         console.log(JSON.stringify(err.response.body));
     //     });
 };
-
-exports.sendCodes = sendCodes;
-

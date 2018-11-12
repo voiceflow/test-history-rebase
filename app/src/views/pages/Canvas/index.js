@@ -839,10 +839,30 @@ class Canvas extends Component {
                 node.addOutPort(' ').setMaximumLinks(1);
 
                 let data = JSON.parse(event.dataTransfer.getData('data'));
+                data.input = JSON.parse(data.input);
+                data.output = JSON.parse(data.output);
+                let mapping = {
+                    output: [],
+                    input: []
+                };
+
+                for(var i=0;i < data.input.length; i++){
+                    let key = data.input[i];
+                    let obj = {};
+                    obj[data.input[i]] = '';
+                    mapping['input'].push(obj);
+                }
+
+                for(var j=0;j < data.output.length; j++){
+                    let key = data.output[j];
+                    let obj = {};
+                    obj[data.output[j]] = '';
+                    mapping['output'].push(obj);
+                }
+
                 node.extras = {
                     diagram_id: data.diagram_id,
-                    inputs: data.input,
-                    outputs: data.output,
+                    mapping: mapping,
                     version_id: data.version_id,
                     module_id: data.module_id,
                     module_icon: data.module_icon,

@@ -134,7 +134,7 @@ class Account extends Component {
               <Form id="signup-form" onSubmit={this.signupSubmit}>
                 <div className="p-4 p-md-5">
                   <h2>Sign Up</h2>
-                  <p className="text-muted  mb-3">Create your Storyflow account and get building!</p>
+                  <p className="text-muted  mb-3">Create your VoiceFlow account and get building!</p>
                   {signup_error}
                   <FormGroup>
                     <Label for="name">Name</Label>

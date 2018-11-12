@@ -706,7 +706,7 @@ export default {
                "blocks":[  
                   {  
                      "key":"bl0vj",
-                     "text":"Welcome to Storyflow! Have you used Storyflow before?",
+                     "text":"Welcome to VoiceFlow! Have you used VoiceFlow before?",
                      "type":"unstyled",
                      "depth":0,
                      "inlineStyleRanges":[  
@@ -903,7 +903,7 @@ export default {
                "blocks":[  
                   {  
                      "key":"2m236",
-                     "text":"Sorry! I didn't understand what you said. Is this your first time using Storyflow? Yes, or no?",
+                     "text":"Sorry! I didn't understand what you said. Is this your first time using VoiceFlow? Yes, or no?",
                      "type":"unstyled",
                      "depth":0,
                      "inlineStyleRanges":[  
@@ -1025,7 +1025,7 @@ export default {
                "blocks":[  
                   {  
                      "key":"6gtop",
-                     "text":"Welcome to Storyflow! What is your name?",
+                     "text":"Welcome to VoiceFlow! What is your name?",
                      "type":"unstyled",
                      "depth":0,
                      "inlineStyleRanges":[  

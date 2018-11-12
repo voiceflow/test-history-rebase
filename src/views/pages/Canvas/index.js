@@ -853,7 +853,7 @@ class Canvas extends Component {
             this.state.engine.stopMove();
             node.extras.type = type;
             var points = engine.getRelativeMousePoint(event);
-            node.x = points.x-(node.name.length*4.5 + 30);
+            node.x = points.x-(node.name.length*4.5 + 40);
             node.y = points.y-30;
             node.setSelected();
             engine.getDiagramModel().clearSelection();
@@ -942,8 +942,8 @@ class Canvas extends Component {
                 >
                     <div id="widget-bar">
                         <ButtonGroup>
-                            <Button onClick={()=>this.zoom(1000)}><i className="far fa-plus"/></Button>
-                            <Button onClick={()=>this.zoom(-1000)}><i className="far fa-minus"/></Button>
+                            <Button onClick={()=>this.zoom(1000)} color="primary"><i className="far fa-plus"/></Button>
+                            <Button onClick={()=>this.zoom(-1000)} color="primary"><i className="far fa-minus"/></Button>
                         </ButtonGroup>
                     </div>
                     <SRD.DiagramWidget

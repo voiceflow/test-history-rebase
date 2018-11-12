@@ -85,7 +85,7 @@ class NavBar extends Component {
     return (
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
-            <NavbarBrand href="https://www.getstoryflow.com" target="_blank">
+            <NavbarBrand href="https://www.getvoiceflow.com" target="_blank">
               <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
                 height="25"
               />

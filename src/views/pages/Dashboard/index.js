@@ -149,7 +149,7 @@ class DashBoard extends Component {
                                 and how blocks work
                             </p>
                             <small>
-                                <a href="https://getstoryflow.com/storyschool" className="text-muted" target="_blank" rel="noopener noreferrer">
+                                <a href="https://getvoiceflow.com/storyschool" className="text-muted" target="_blank" rel="noopener noreferrer">
                                     <b>STORY SCHOOL</b>
                                     <i className="fal fa-long-arrow-right ml-1"/>
                                 </a>

@@ -43,7 +43,7 @@ class Module extends Component {
                                             className="map-box"
                                             classNamePrefix="variable-box"
                                             placeholder="Variable"
-                                            value={v[Object.keys(v)[0]] != ''
+                                            value={v[Object.keys(v)[0]] !== ''
                                                 ? {label: '{' + v[Object.keys(v)[0]] + '}', value: v[Object.keys(v)[0]]}
                                                 : null
                                             }

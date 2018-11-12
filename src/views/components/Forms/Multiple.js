@@ -65,7 +65,7 @@ class Multiple extends Component {
             )}
 
             { (this.props.max && this.props.list.length >= this.props.max) || this.props.isDisabled? null :
-                <Button block color='primary' className="dash-button" onClick={this.add}>{this.props.add}</Button>
+                <Button block outline color='primary' className="dash-button" onClick={this.add}>{this.props.add}</Button>
             }
         </div>;
 	}

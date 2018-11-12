@@ -78,6 +78,7 @@ class Canvas extends Component {
         let diagram_name = '';
 
         let last_session = cookies.get('last_session', {path: '/'});
+        console.log(last_session);
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;

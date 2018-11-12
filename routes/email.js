@@ -81,7 +81,7 @@ exports.setTemplate = (req, res) => {
 	}else{
 		pool.query(
 		'INSERT INTO email_templates (creator_id, title, content, sender, variables, subject) VALUES ($1, $2, $3, $4, $5, $6) RETURNING template_id',
-		[req.user.id, req.body.title, req.body.content, req.body.sender, variables, subject], (err, result) => {
+		[req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject], (err, result) => {
 			if(err){
 				res.sendStatus(500);
 				console.error(err)

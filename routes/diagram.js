@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
-const {docClient, pool, hashids} = require('./../services');
+const {docClient, pool, hashids, validateEmail} = require('./../services');
 const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
@@ -608,6 +608,32 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
                         fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                     };
+
+                } else if (node.extras.type === 'mail') {
+
+                    let id = hashids.decode(template_id)[0];
+                    if(id && (node.extras.to === '_USER' || validateEmail(node.extras.to))){
+                        let mapping;
+                        if(Array.isArray(node.extras.mapping)){
+                            mapping = node.extras.mapping.filter(m => {
+                                return m.val && m.key
+                            });
+                        }else{
+                            mapping = [];
+                        }
+
+                        story.lines[node.id] = {
+                            template_id: id,
+                            to: node.extras.to,
+                            mapping: mapping,
+                            success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
+                            fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                        }
+                    }else{
+                        story.lines[node.id] = {
+                            nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                        }
+                    }
 
                 } else {
                     let nextLink = null;

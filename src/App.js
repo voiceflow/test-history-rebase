@@ -10,7 +10,7 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 
 // Pages
-import StoryBoard from './views/pages/Storyboard';
+import Canvas from './views/pages/Canvas';
 import DashBoard from './views/pages/Dashboard';
 import Business from './views/pages/Business';
 import Account from './views/pages/Account';
@@ -108,10 +108,10 @@ class App extends Component {
               <Switch>
                 <PublicRoute exact path="/login" name="Login" component={Account} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Account} />
-                <PrivateRoute exact path="/storyboard/new" name="Storyboard" new component={StoryBoard}/>
-                <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Storyboard" preview component={StoryBoard}/>
-                <PrivateRoute path="/storyboard/:skill_id/:diagram_id" name="Storyboard" component={StoryBoard}/>
-                <PrivateRoute path="/storyboard" name="Storyboard" component={StoryBoard}/>
+                <PrivateRoute exact path="/canvas/new" name="Canvas" new component={Canvas}/>
+                <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Canvas" preview component={Canvas}/>
+                <PrivateRoute path="/canvas/:skill_id/:diagram_id" name="Canvas" component={Canvas}/>
+                <PrivateRoute path="/canvas" name="Canvas" component={Canvas}/>
                 <PrivateRoute path="/business/email/template/:id" name="Business" component={Business} page='template'/>
                 <PrivateRoute path="/business/email/templates" name="Business" component={Business} page='email'/>
                 <PrivateRoute path="/business" name="Business" component={Business} page='default'/>

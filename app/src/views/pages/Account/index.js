@@ -116,7 +116,7 @@ class Account extends Component {
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <div className="p-4 p-md-5">
-                  <h2>Login</h2>
+                  <h2><b>Welcome to Voiceflow</b></h2>
                   {login_error}
                   <FormGroup>
                     <Label for="email">Email</Label>

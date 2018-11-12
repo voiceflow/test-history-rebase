@@ -201,7 +201,7 @@ const manifest = (r, encoded_id) => {
              "apis": {
                  "custom": {
                      "endpoint": {
-                         "uri": `https://app.getstoryflow.com/state/skill/${encoded_id}`,
+                         "uri": `https://app.getvoiceflow.com/state/skill/${encoded_id}`,
                          "sslCertificateType": "Wildcard"
                      }
                  }
@@ -211,8 +211,8 @@ const manifest = (r, encoded_id) => {
                  "allowsPurchases": r.purchase,
                  "locales": {
                      "en-US": {
-                         "termsOfUseUrl": "https://getstoryflow.com",
-                         "privacyPolicyUrl": "https://getstoryflow.com"
+                         "termsOfUseUrl": "https://getvoiceflow.com",
+                         "privacyPolicyUrl": "https://getvoiceflow.com"
                      }
                  },
                  "isExportCompliant": r.export,

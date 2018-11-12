@@ -10,7 +10,14 @@ import {parse} from 'html-parse-stringify';
 import Switch from '@material-ui/core/Switch';
 // const _ = require('lodash');
 
-const local = false;
+var test_endpoint;
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    // dev code
+    test_endpoint = 'http://localhost:4000/state/test';
+} else {
+    // production code
+    test_endpoint = 'https://testing.getvoiceflow.com/state/test';
+}
 
 const default_state = () => {
   return {
@@ -187,9 +194,7 @@ class TestModal extends React.Component {
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
-    let url = local ? "http://localhost:4000/state/test" : "https://testing.getstoryflow.com/state/test"
-
-    axios.post(url, data)
+    axios.post(test_endpoint, data)
     .then(res => {
       res = res.data;
 

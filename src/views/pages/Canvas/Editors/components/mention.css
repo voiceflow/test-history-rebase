@@ -31,7 +31,7 @@
 */
 .mentionSuggestionsEntryFocused {
   padding: 7px 10px 0px 10px;
-  background-color: #4865e9;
+  background-color: #3D96F0;
   color: #fff;
 }
 
@@ -59,7 +59,8 @@
   max-width: 440px;
   border-radius: 2px;
   box-shadow: 0 0 0 1px hsla(0,0%,0%,0.1), 0 4px 11px hsla(0,0%,0%,0.1);
-  background-color: #373F53;
+  /*background-color: #373F53;*/
+  background-color: #fff;
   cursor: pointer;
   padding-top: 8px;
   padding-bottom: 8px;

@@ -30,7 +30,7 @@ function createLogin(data, cb) {
         	id: data.id,
             email: data.email,
             name: data.name,
-            admin: !!data.admin
+            admin: data.admin
       	}
 
         // cache the token

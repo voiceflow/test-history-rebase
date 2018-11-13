@@ -85,7 +85,7 @@ const ensureLoggedIn = () => {
 }
 const ensureAdmin = () => {
     return (req, res, next) => {
-        if(req.user && req.user.admin) next();
+        if(req.user && req.user.admin===10) next();
         else res.sendStatus(401);
     }
 }

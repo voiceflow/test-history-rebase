@@ -6,9 +6,9 @@ class Module extends Component {
     constructor(props) {
         super(props);
 
-        let node = this.props.node;
         this.state = {
-            node: node
+            node: props.node,
+            module: this.props.user_modules.find(m => m.module_id === props.node.extras.module_id)
         }
 
         this.selectVariable = this.selectVariable.bind(this);
@@ -29,8 +29,18 @@ class Module extends Component {
     }
 
     render() {
+        if(!this.state.module){
+            return 'Module Not Found (Not In Library)';
+        }
+
         return (
             <React.Fragment>
+                <Label>Module Description</Label>
+                {this.state.module.descr ? 
+                    <div className="module-desc">
+                        {this.state.module.descr}
+                    </div> : null
+                }
                 <Label>Input Mapping</Label>
                 <div>
                     {
@@ -58,31 +68,31 @@ class Module extends Component {
                     }
                 </div>
                 <hr/>
+                <Label>Output Mapping</Label>
                 <div>
-                    <Label>Output Mapping</Label>
-                    {
-                        this.state.node.extras.mapping.outputs.length > 0 ?
-                            <React.Fragment> 
-                                {this.state.node.extras.mapping.outputs.map((v, i) => {
-                                    return <div key={i} className="variable_map mb-2 reverse">
-                                        <Select
-                                            className="map-box"
-                                            classNamePrefix="variable-box"
-                                            placeholder="Variable"
-                                            value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
-                                            onChange={(select) => this.selectVariable(select, i, 'val')}
-                                            options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                                return {label: '{' + variable + '}', value: variable }
-                                            }) : null}
-                                        />
-                                        <i className="far fa-arrow-right"/>
-                                        <input readOnly className="map-box form-control" value={`{${v.key}}`}/>
-                                    </div>
-                                })}
-                            </React.Fragment> 
-                            : 
-                            <i className="text-muted">No output variables exist for this module</i>
-                    }
+                {
+                    this.state.node.extras.mapping.outputs.length > 0 ?
+                        <React.Fragment> 
+                            {this.state.node.extras.mapping.outputs.map((v, i) => {
+                                return <div key={i} className="variable_map mb-2 reverse">
+                                    <Select
+                                        className="map-box"
+                                        classNamePrefix="variable-box"
+                                        placeholder="Variable"
+                                        value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
+                                        onChange={(select) => this.selectVariable(select, i, 'val')}
+                                        options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
+                                            return {label: '{' + variable + '}', value: variable }
+                                        }) : null}
+                                    />
+                                    <i className="far fa-arrow-right"/>
+                                    <input readOnly className="map-box form-control" value={`{${v.key}}`}/>
+                                </div>
+                            })}
+                        </React.Fragment> 
+                        : 
+                        <i className="text-muted">No output variables exist for this module</i>
+                }
                 </div>
             </React.Fragment>
         );

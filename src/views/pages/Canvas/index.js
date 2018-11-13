@@ -987,6 +987,7 @@ class Canvas extends Component {
                     createDiagram={this.createDiagram}
                     enterFlow={this.enterFlow}
                     removeNode={this.removeNode}
+                    user_modules={this.state.user_modules}
                 />
             </div>
         );

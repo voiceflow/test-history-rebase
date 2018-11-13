@@ -9,7 +9,7 @@ window.user_detail = {
 	email: null,
 	name: null,
 	id: null,
-	admin: false
+	admin: 0
 }
 
 let appId = "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e";
@@ -67,7 +67,7 @@ const login = () => new Promise((resolve, reject) => {
 export default {
 	amazon_load: load,
 	amazon_login: login,
-	isAdmin: () => {
+	accountType: () => {
 		return user_detail.admin;
 	},
 	getUser: () => {
@@ -100,7 +100,7 @@ export default {
 				email: null,
 				name: null,
 				id: null,
-				admin: false
+				admin: 0
 			}
 	    	cookies.remove('auth', {path: '/'});
 	      	cb(err, null);
@@ -111,7 +111,7 @@ export default {
 			email: null,
 			name: null,
 			id: null,
-			admin: false
+			admin: 0
 		}
 		axios.delete('/session')
 		.then(response => {

@@ -32,10 +32,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 					<div className={this.bem("__name")}>
 						{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
 						{
-							this.props.node.extras.type === 'module'?
-							<span>
-		                        <img src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
-		                    </span>
+							this.props.node.extras.type === 'module'? <img className="no-select" src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
 							:
 							null
 						}

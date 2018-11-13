@@ -206,8 +206,8 @@ const giveCertification = (req, res) => {
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
-					let market_id = data.rows[0].version_id + '-' + hashids.encode(skill_id);
-					let status = await renderDiagram(req.user, data.rows[0].diagram_id, skill_id, undefined, undefined, 'market', market_id);
+					let version_id = data.rows[0].version_id;
+					let status = await renderDiagram(req.user, data.rows[0].diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
 					let input = data.rows[0].input;
 					let output = data.rows[0].output;
 					if(status === 200){
@@ -400,7 +400,7 @@ const getUserModules = (req, res) => {
 
 	pool.query(
 		`
-		 SELECT modules.module_id, modules.title, modules.module_icon, ultimate_versions.version_id, ultimate_versions.diagram_id, modules.color, modules.input, modules.output
+		 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, ultimate_versions.diagram_id, modules.color, modules.input, modules.output
 		 FROM 
 		 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
 		 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 

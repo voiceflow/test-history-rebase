@@ -266,7 +266,7 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, explicit_diagram_id=undefined) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}) => new Promise((resolve) => {
 
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
@@ -302,8 +302,14 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 links[diagram.links[i].id] = diagram.links[i].target;
             }
 
+            // If publishing to market, insert version before
+            let key = diagram_id
+            if(type === 'market'){
+                key = options.version + '_' + key;
+            }
+
             let story = {
-                id: diagram_id,
+                id: key,
                 skill_id: skill_id,
                 name: data.Item.title,
                 lines: {},
@@ -317,7 +323,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
             // Iterate through every block in the diagram
             for (var i = 0; i < diagram.nodes.length; i++) {
+                
                 let node = diagram.nodes[i];
+
                 if (node.extras.type === 'story') {
                     story.startId = node.id;
                     story.prompt = node.extras.prompt;
@@ -421,7 +429,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         let result;
                         try{
                             // console.log('going in', node.extras.diagram_id);
-                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set);
+                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options);
                         }catch(err){
                             resolve(500);
                             return;

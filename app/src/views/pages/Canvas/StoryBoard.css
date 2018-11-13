@@ -1349,6 +1349,9 @@ button.close{
     margin-right: 5px;
 /*    background-color: #3D96F0*/
 }
+/*.expression-block .dropdown {
+    max-height: 400px;
+}*/
 .set-block > .close {
     line-height: 18px;
 }

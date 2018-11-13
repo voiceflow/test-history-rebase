@@ -175,6 +175,8 @@ class Editor extends Component {
         switch(this.state.node.extras.type) {
             case 'story':
                 return (<div id="label">Start Block</div>)
+            case 'module':
+                return (<div id="label">{this.state.node.name}</div>)
             case 'flow':
                 return (<div id="label">
                     {this.state.node.extras.diagram_id ? 

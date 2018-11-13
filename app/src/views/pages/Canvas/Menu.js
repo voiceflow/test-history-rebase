@@ -225,7 +225,7 @@ class Menu extends PureComponent {
                 </div>
             </React.Fragment>
         }else if(this.state.tab === 'modules'){
-            if(this.props.user_module){
+            if(this.props.user_modules){
                 content = 
                 <div>
                 {this.props.user_modules.map((user_module, i) => {

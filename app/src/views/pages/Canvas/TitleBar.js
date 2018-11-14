@@ -53,8 +53,8 @@ class TitleBar extends PureComponent {
 
                             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block mr-2">
                                 <DropdownToggle className="anti-btn" tag="div">
-                                    <MUIButton variant="contained" className="white-btn share-btn">
-                                        Publish
+                                    <MUIButton variant="contained" className="white-btn publish-btn">
+                                        Publish <i className="fas fa-caret-down"/>
                                     </MUIButton>
                                 </DropdownToggle>
                                 <DropdownMenu className="platform-dropdown">

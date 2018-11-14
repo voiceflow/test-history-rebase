@@ -326,8 +326,6 @@ class Canvas extends Component {
                 });
             }
 
-            // model.deSerializeDiagram(JSON.parse(data), engine);
-
             var diagram = {
                 id: this.state.diagram_id,
                 title: this.state.diagram_name,

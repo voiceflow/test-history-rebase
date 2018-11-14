@@ -536,8 +536,10 @@ class Skill extends Component {
         }
 
         if(!this.state.loaded) return <div className="super-center h-100 w-100">
-                <h1><i className="fas fa-sync-alt fa-spin"/></h1>
-                Getting Skill Status
+                <div className='text-center'>
+                    <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                    Getting Skill Status
+                </div>
             </div>;
 
         return (

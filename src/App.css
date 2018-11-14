@@ -115,9 +115,9 @@ button:focus{
 .no-underline{
     text-decoration: none !important;
 }
-.form-control:disabled, .form-control[readonly]{
-    background-color: #FAFAFB !important;
-}
+/*.form-control:disabled, .form-control[readonly]{
+    background-color: #FAFAFB;
+}*/
 
 .no-padding-row{
     margin: 0px !important;

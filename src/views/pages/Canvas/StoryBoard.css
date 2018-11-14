@@ -131,7 +131,10 @@
     border: none !important;
     font-size: 0.875rem;
     cursor: pointer;
-    color: #95a6bd !important;
+    color: #95a6bd;
+}
+.TitleBar .platform-btn:active{
+    color: #fff;
 }
 
 .TitleBar .publish-btn .button-circle{
@@ -396,12 +399,12 @@
 
 .App .Menu #sidebar {
     position: fixed;
-    top: 0;
+    top: 59px;
     left: 40px;
     z-index: 5;
     width: 240px;
     height: 100%;
-    padding: 60px 20px 120px 20px;
+    padding: 1px 20px 120px 20px;
     overflow: scroll;
     /*opacity: 0.9;*/
     /*text-align: center;*/

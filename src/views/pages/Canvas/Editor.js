@@ -163,7 +163,7 @@ class Editor extends Component {
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
             case 'module':
-                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} user_modules={this.props.user_modules}/>
             case 'mail':
                 return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} templates={this.state.templates}/>
             default:
@@ -175,6 +175,8 @@ class Editor extends Component {
         switch(this.state.node.extras.type) {
             case 'story':
                 return (<div id="label">Start Block</div>)
+            case 'module':
+                return (<div id="label">{this.state.node.name}</div>)
             case 'flow':
                 return (<div id="label">
                     {this.state.node.extras.diagram_id ? 

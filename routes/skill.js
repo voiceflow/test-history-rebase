@@ -66,9 +66,90 @@ const getSkill = (req, res) => {
             res.sendStatus(500);
         }else if(data.rows.length === 0){
             res.sendStatus(404);
-        }else{
-            data.rows[0].skill_id = req.params.id;
+        }else if(req.query.simple){
             res.send(data.rows[0]);
+        }else{
+            // Sync up with AMAZON
+            let skill = data.rows[0];
+            let actual_id = skill.skill_id;
+            // Rehash the skill id
+            skill.skill_id = req.params.id;
+
+            // Check Current Amazon Status
+            if(skill.amzn_id){
+
+                AccessToken(req.user.id, async (token) => {
+                    if(token === null){
+                        throw('INVALID TOKEN');
+                    }
+
+                    try {
+
+                        // get the vendorID
+                        let vendor_response = await axios.request({
+                            url: 'https://api.amazonalexa.com/v1/vendors',
+                            method: 'get',
+                            headers: {
+                                authorization: token
+                            }
+                        });
+
+                        let vendors = vendor_response.data.vendors;
+                        let vendorId;
+                        if(Array.isArray(vendors) && vendors.length !== 0){
+                            vendorId = vendors[0].id;
+                            // literal storyflow id amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb
+                            let skill_status = await axios.request({
+                                url: `https://api.amazonalexa.com/v1/skills?vendorId=${vendorId}&skillId=amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb`,
+                                method: 'GET',
+                                headers: {
+                                    Authorization: token
+                                }
+                            });
+
+                            if(skill_status.data.skills){
+                                let still_review = false;
+                                let has_live = false;
+
+                                for(instance of skill_status.data.skills){
+                                    if(instance.publicationStatus === 'PUBLISHED'){
+                                        has_live = true;
+                                        skill.live = true;
+                                    }
+                                    if(instance.publicationStatus === 'CERTIFICATION'){
+                                        still_review = true;
+                                    }
+                                }
+
+                                let update_stage = null;
+                                if(!still_review && has_live && skill.state !== 0){
+                                    update_stage = 0;
+                                }else if(still_review && skill.state !== 11){
+                                    update_stage = 11;
+                                }else if(!still_review && skill.state !== 0){
+                                    update_stage = 0;
+                                }
+
+                                if(update_stage !== null){
+                                    skill.stage = update_stage;
+                                    pool.query('UPDATE skills SET stage=$1 WHERE skill_id=$2 AND creator_id=$3', [update_stage, actual_id, req.user.id]);
+                                }
+
+                                res.send(skill);
+
+                            }else{
+                                throw('NO SKILLS FOUND skill.js > 120');
+                            }
+                        }
+
+                    }catch(err){
+                        console.log(err);
+                        res.send(skill);
+                    }
+                });
+            }else{
+                res.send(skill);
+            }
         }
     });
 };

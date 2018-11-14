@@ -85,45 +85,46 @@ class Skill extends Component {
     }
 
     componentDidMount() {
-        if(this.state.skill_id){
-            axios.get('/skill/' + this.state.skill_id + '?verbose=1')
-            .then(res => {
-                if(res.data.category){
-                    for(let option of categories){
-                        if(option.value === res.data.category){
-                            res.data.category = option;
-                            break;
-                        }
-                    };
-                }
 
-                if(res.data.invocations && res.data.invocations.value){
-                    res.data.invocations = res.data.invocations.value;
-                }
-
-                if(!Array.isArray(res.data.invocations) || res.data.invocations.length === 0){
-                    res.data.invocations = ['']
-                }
-
-                if(res.data.stage === 0){
-                    AuthenticationService.AmazonAccessToken(token => {
-                        res.data.stage = token ? 2 : 0;
-                        this.setState({
-                            loaded: true, 
-                            ...res.data
-                        });
-                    })
-                }else{
-                    this.setState({
-                        loaded: true, 
-                        ...res.data
-                    });
-                }
-            })
-            .catch(err => {
-                console.log(err);
+        AuthenticationService.AmazonAccessToken(token => {
+            this.setState({
+                stage: token ? 2 : 0
             });
-        }
+        });
+
+        axios.get('/skill/' + this.state.skill_id + '?verbose=1')
+        .then(res => {
+            if(res.data.category){
+                for(let option of categories){
+                    if(option.value === res.data.category){
+                        res.data.category = option;
+                        break;
+                    }
+                };
+            }
+
+            if(res.data.invocations && res.data.invocations.value){
+                res.data.invocations = res.data.invocations.value;
+            }
+
+            if(!Array.isArray(res.data.invocations) || res.data.invocations.length === 0){
+                res.data.invocations = ['']
+            }
+
+            
+            if(res.data.review){
+                res.data.stage = 11;
+            }else{
+                delete res.data.stage;
+            }
+            this.setState({
+                loaded: true, 
+                ...res.data
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     onRadio(type, value) {

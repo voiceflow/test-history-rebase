@@ -190,15 +190,13 @@ const setDiagram = async (req, res) => {
     try{
         let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill]);
         if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id){
-            res.sendStatus(403);
-            return;
+            return res.sendStatus(403);
         }else{
             diagram.creator = req.user.id;
         }
     }catch(err){
         console.error(err);
-        res.sendStatus(500);
-        return;
+        return res.sendStatus(500);
     }
 
     if (diagram.title.trim() === "" || !diagram.title.trim()){

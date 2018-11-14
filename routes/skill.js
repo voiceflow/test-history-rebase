@@ -66,25 +66,22 @@ const getSkill = (req, res) => {
             res.sendStatus(500);
         }else if(data.rows.length === 0){
             res.sendStatus(404);
-        }else if(req.query.simple){
-            res.send(data.rows[0]);
         }else{
-            // Sync up with AMAZON
             let skill = data.rows[0];
-            let actual_id = skill.skill_id;
             // Rehash the skill id
             skill.skill_id = req.params.id;
 
-            // Check Current Amazon Status
-            if(skill.amzn_id){
-
+            if(req.query.simple || !skill.amzn_id){
+                res.send(skill);
+            }else{
+                // Sync up with AMAZON
+                // Check Current Amazon Status
                 AccessToken(req.user.id, async (token) => {
                     if(token === null){
                         throw('INVALID TOKEN');
                     }
 
                     try {
-
                         // get the vendorID
                         let vendor_response = await axios.request({
                             url: 'https://api.amazonalexa.com/v1/vendors',
@@ -100,7 +97,7 @@ const getSkill = (req, res) => {
                             vendorId = vendors[0].id;
                             // literal storyflow id amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb
                             let skill_status = await axios.request({
-                                url: `https://api.amazonalexa.com/v1/skills?vendorId=${vendorId}&skillId=amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb`,
+                                url: `https://api.amazonalexa.com/v1/skills?vendorId=${vendorId}&skillId=${skill.amzn_id}`,
                                 method: 'GET',
                                 headers: {
                                     Authorization: token
@@ -147,8 +144,6 @@ const getSkill = (req, res) => {
                         res.send(skill);
                     }
                 });
-            }else{
-                res.send(skill);
             }
         }
     });

@@ -315,10 +315,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 commands: []
             };
 
-            if(explicit_diagram_id){
-                story.id = explicit_diagram_id;
-            }
-
             // Iterate through every block in the diagram
             for (var i = 0; i < diagram.nodes.length; i++) {
                 

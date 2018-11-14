@@ -42,7 +42,7 @@ const getSkill = (req, res) => {
     if(req.query.simple){
         sql = `
             SELECT
-                name
+                name, amzn_id, review, live, diagram
             FROM
                 skills
             WHERE
@@ -72,6 +72,7 @@ const getSkill = (req, res) => {
             skill.skill_id = req.params.id;
 
             if(req.query.simple || !skill.amzn_id){
+                skill.amzn_id = !!skill.amzn_id;
                 res.send(skill);
             }else{
                 // Sync up with AMAZON
@@ -111,25 +112,24 @@ const getSkill = (req, res) => {
                                 for(instance of skill_status.data.skills){
                                     if(instance.publicationStatus === 'PUBLISHED'){
                                         has_live = true;
-                                        skill.live = true;
                                     }
                                     if(instance.publicationStatus === 'CERTIFICATION'){
                                         still_review = true;
                                     }
                                 }
 
-                                let update_stage = null;
-                                if(!still_review && has_live && skill.state !== 0){
-                                    update_stage = 0;
-                                }else if(still_review && skill.state !== 11){
-                                    update_stage = 11;
-                                }else if(!still_review && skill.state !== 0){
-                                    update_stage = 0;
+                                let update = false;
+                                if(skill.live !== has_live){
+                                    skill.live = has_live;
+                                    update = true;
+                                }
+                                if(skill.review !== still_review) {
+                                    skill.review = still_review;
+                                    update = true;
                                 }
 
-                                if(update_stage !== null){
-                                    skill.stage = update_stage;
-                                    pool.query('UPDATE skills SET stage=$1 WHERE skill_id=$2 AND creator_id=$3', [update_stage, actual_id, req.user.id]);
+                                if(update){
+                                    pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
                                 }
 
                                 res.send(skill);
@@ -520,9 +520,9 @@ const certifySkill = (req, res) => {
                             pool.query(`
                                 UPDATE skills 
                                 SET
-                                stage = $2
+                                review = TRUE
                                 WHERE amzn_id = $1`, 
-                                [req.params.amzn_id, 11], 
+                                [req.params.amzn_id], 
                                 (err) => {
                                     if(err){
                                         console.log(err);
@@ -577,7 +577,7 @@ const withdrawSkill = (req, res) => {
              pool.query(`
                 UPDATE skills 
                 SET
-                stage = $2
+                review=FALSE
                 WHERE amzn_id = $1`, 
                 [req.params.amzn_id, 0], 
                 (err) => {

@@ -621,7 +621,9 @@ class Canvas extends Component {
             this.setState({
                 skill: {
                     skill_id: skill_id,
-                    name: name
+                    name: name,
+                    review: false,
+                    live: false
                 },
                 newSkill: 0,
                 diagram_id: diagram_id

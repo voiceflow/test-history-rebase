@@ -28,23 +28,18 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 	render() {
 		return (
 			<div className={"srd-default-node " + this.props.node.extras.type}>
-				<div className={this.bem("__title")}>
+				<div className={this.bem("__title") + ' no-select'}>
 					<div className={this.bem("__name")}>
 						{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
-						{
-							this.props.node.extras.type === 'module'?
-							<span>
-		                        <img src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
-		                    </span>
-							:
-							null
-						}
 					</div>
 				</div>
 				<div className={this.bem("__ports")}>
 					<div className={this.bem("__in")}>
 						{_.map(this.props.node.getInPorts(), this.generatePort.bind(this))}
 					</div>
+					{
+						this.props.node.extras.type === 'module'? <img draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>:null
+					}
 					<div className={this.bem("__out")}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>

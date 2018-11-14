@@ -44,7 +44,6 @@ class TitleBar extends PureComponent {
 
     render() {
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
-        // <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
         return (
             <div className="TitleBar no-select">
                 {this.props.preview ? null : 
@@ -54,13 +53,13 @@ class TitleBar extends PureComponent {
 
                             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block mr-2">
                                 <DropdownToggle className="anti-btn" tag="div">
-                                    <MUIButton variant="contained" className="white-btn share-btn">
-                                        Publish
+                                    <MUIButton variant="contained" className="white-btn publish-btn">
+                                        Publish <i className="fas fa-caret-down"/>
                                     </MUIButton>
                                 </DropdownToggle>
                                 <DropdownMenu className="platform-dropdown">
                                     <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon fa-pull-right"/></span></DropdownItem>
-                                    
+                                    <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
 

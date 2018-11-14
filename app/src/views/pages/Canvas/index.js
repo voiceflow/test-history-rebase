@@ -249,6 +249,7 @@ class Canvas extends Component {
                 return false;
             });
         }else{
+            this.loadUserModules();
             $(document).keydown(function(event) {
                 // If Control or Command key is pressed and the S key is pressed
                 // run save function. 83 is the key code for S.
@@ -263,8 +264,6 @@ class Canvas extends Component {
                 }
             }.bind(this));
         }
-
-        // this.loadUserModules();
     }
 
     loadUserModules(){
@@ -518,7 +517,7 @@ class Canvas extends Component {
         this.setState({
             loading_modal: false
         });
-        this.props.history.push('/dashboard');
+        // this.props.history.push('/dashboard');
     }
 
     unsave(e) {
@@ -717,7 +716,7 @@ class Canvas extends Component {
             return;
         }
 
-        var node = type === 'api' ? new BlockNodeModel('API') : new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
+        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
 
         if(type){
             if (type === 'choice') {
@@ -803,6 +802,7 @@ class Canvas extends Component {
                     }]
                 };
             } else if (type === 'api') {
+                node.name = 'API';
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.addOutPort('fail').setMaximumLinks(1);
@@ -837,15 +837,39 @@ class Canvas extends Component {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
 
-                let data = JSON.parse(event.dataTransfer.getData('data'));
-                node.extras = {
-                    diagram_id: data.diagram_id,
-                    inputs: data.input,
-                    outputs: data.output,
-                    version_id: data.version_id,
-                    module_id: data.module_id,
-                    module_icon: data.module_icon,
-                    color: data.color
+                try{
+                    let data = JSON.parse(event.dataTransfer.getData('data'));
+                    let inputs = data.input ? JSON.parse(data.input) : [];
+                    let outputs = data.output ? JSON.parse(data.output) : [];
+
+                    node.name = data.title ? data.title : 'Module';
+
+                    node.extras = {
+                        diagram_id: data.diagram_id,
+                        mapping: {
+                            inputs: inputs.map(i => {
+                                return {
+                                    key: i,
+                                    val: ''
+                                }
+                            }),
+                            outputs: outputs.map(i=>{
+                                return {
+                                    key: i,
+                                    val: ''
+                                }
+                            })
+                        },
+                        version_id: data.version_id,
+                        module_id: data.module_id,
+                        module_icon: data.module_icon,
+                        color: data.color
+                    }
+                }catch(err){
+                    console.error(err);
+                    return this.setState({
+                        error_modal: 'Error - Module Broken'
+                    });
                 }
             }
             this.state.engine.stopMove();
@@ -961,6 +985,7 @@ class Canvas extends Component {
                     createDiagram={this.createDiagram}
                     enterFlow={this.enterFlow}
                     removeNode={this.removeNode}
+                    user_modules={this.state.user_modules}
                 />
             </div>
         );

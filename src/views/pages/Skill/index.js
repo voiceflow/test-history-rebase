@@ -84,15 +84,6 @@ class Skill extends Component {
         this.privacyTop = React.createRef();
     }
 
-    componentWillMount() {
-        // token ? 2 : 0
-        AuthenticationService.AmazonAccessToken(token => {
-            this.setState({
-                stage: token ? 2 : 0
-            });
-        })
-    }
-
     componentDidMount() {
         if(this.state.skill_id){
             axios.get('/skill/' + this.state.skill_id + '?verbose=1')
@@ -114,10 +105,20 @@ class Skill extends Component {
                     res.data.invocations = ['']
                 }
 
-                this.setState({
-                    loaded: true, 
-                    ...res.data
-                });
+                if(res.data.stage === 0){
+                    AuthenticationService.AmazonAccessToken(token => {
+                        res.data.stage = token ? 2 : 0;
+                        this.setState({
+                            loaded: true, 
+                            ...res.data
+                        });
+                    })
+                }else{
+                    this.setState({
+                        loaded: true, 
+                        ...res.data
+                    });
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -534,7 +535,10 @@ class Skill extends Component {
             </div>
         }
 
-        if(!this.state.loaded) return null;
+        if(!this.state.loaded) return <div className="super-center h-100 w-100">
+                <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                Getting Skill Status
+            </div>;
 
         return (
             <div className='Window skill'>
@@ -683,6 +687,13 @@ class Skill extends Component {
                 </span>
 
                 <div className='container mt-3'>
+                    {this.state.live ?
+                        <div className="alert alert-success mb-4" role="alert">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h5 className="mb-0">This skill currently has a live version in production</h5>
+                            </div>
+                        </div>
+                    : null }
                     {disabled_stages.has(this.state.stage)?
                         <div className="alert alert-success mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">

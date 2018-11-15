@@ -424,10 +424,10 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
     markdownString += (customStyleItems[type] || StyleItems[type]).close(block);
   }
 
-  if(periods){
-    let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
-    markdownString += period;
-  }
+  // if(periods){
+  //   let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
+  //   markdownString += period;
+  // }
 
   return markdownString;
 }
@@ -448,6 +448,10 @@ function draftToMarkdown(rawDraftObject, options, periods=false) {
   rawDraftObject.blocks.forEach(function (block, index) {
     markdownString += renderBlock(block, index, rawDraftObject, options, periods);
   });
+
+  if(periods){
+    markdownString = `<s>${markdownString}</s>`;
+  }
 
   orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.
   return markdownString;

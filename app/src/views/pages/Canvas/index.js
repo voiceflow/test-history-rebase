@@ -740,11 +740,8 @@ class Canvas extends Component {
                     audio: false,
                     lines: [
                         {
-                            textCollapse: false,
                             collapse: true,
-                            text: '',
                             audio: false,
-                            voice: false,
                             title: 'Line Audio'
                         }
                     ]
@@ -753,8 +750,8 @@ class Canvas extends Component {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.extras = {
-                    rawContent: null
-                };
+                    dialogs: []
+                }
             } else if (type === 'flow') {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);

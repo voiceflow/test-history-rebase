@@ -53,7 +53,7 @@ class Module extends Component {
                                             classNamePrefix="variable-box"
                                             placeholder="Variable"
                                             value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
-                                            onChange={(select) => this.selectVariable(select, i, 'val')}
+                                            onChange={(select) => this.selectVariable(select, i, 'inputs')}
                                             options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                                 return {label: '{' + variable + '}', value: variable }
                                             }) : null}
@@ -80,7 +80,7 @@ class Module extends Component {
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
                                         value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
-                                        onChange={(select) => this.selectVariable(select, i, 'val')}
+                                        onChange={(select) => this.selectVariable(select, i, 'outputs')}
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                             return {label: '{' + variable + '}', value: variable }
                                         }) : null}

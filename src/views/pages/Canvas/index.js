@@ -228,7 +228,7 @@ class Canvas extends Component {
         $('#diagram').click((e) => {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
-            // console.log(selected);
+
             if (selected.length === 1) {
                 engine.setSuperSelect(selected[0]);
                 this.setState({
@@ -289,13 +289,9 @@ class Canvas extends Component {
 
     repaint() {
         this.state.engine.repaintCanvas();
-        // console.log("repaint", this.state.engine.getSuperSelect().extras.type);
-        // this.setState({
-        //     engine: this.state.engine
-        // });
     }
 
-    onSave(cb) {
+    onSave(cb, is_new=false) {
         try {
             this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
@@ -334,7 +330,7 @@ class Canvas extends Component {
                 sub_diagrams: JSON.stringify(sub_diagrams)
             }
 
-            axios.post('/diagram', diagram)
+            axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
             .then(() => {
                 this.setState({
                     saving: false,
@@ -633,8 +629,11 @@ class Canvas extends Component {
                         id: diagram_id,
                         name: 'ROOT'
                     });
+                    if(this.buildDiagrams !== null){
+                        this.buildDiagrams();
+                    }
                     this.props.history.push(`/canvas/${skill_id}/${diagram_id}`);
-                })
+                }, true)
             });
         })
         .catch(err => {
@@ -669,7 +668,7 @@ class Canvas extends Component {
                 skill: skill_id
             }
 
-            axios.post('/diagram', diagram)
+            axios.post('/diagram?new=1', diagram)
             .then(() => {
                 this.state.diagrams.push({
                     name: 'New Flow',

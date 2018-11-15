@@ -214,7 +214,8 @@ const setDiagram = async (req, res) => {
         if (err) {
             console.log(err);
             res.sendStatus(err.statusCode);
-        } else {
+            // DEPRICATE TO NEW SOON
+        } else if(true || req.query.new) {
             try{
                 // check if diagram exists
                 let diagram_sql = await pool.query('SELECT name FROM diagrams WHERE id = $1 LIMIT 1', [diagram.id]);
@@ -223,10 +224,11 @@ const setDiagram = async (req, res) => {
                 if(diagram_sql.rows.length === 0){
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
                         [diagram.id, diagram.title, diagram.skill]);
-                // if the name changed, update it
-                }else if(diagram_sql.rows[0].name !== diagram.title || diagram_sql.rows[0].sub_diagrams !== diagram.sub_diagrams){
-                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
                 }
+                // if the name changed, update it
+                // else if(diagram_sql.rows[0].name !== diagram.title || diagram_sql.rows[0].sub_diagrams !== diagram.sub_diagrams){
+                //     await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
+                // }
                 res.sendStatus(200); 
                 
             }catch(e){
@@ -234,6 +236,8 @@ const setDiagram = async (req, res) => {
                 console.trace();
                 res.sendStatus(500);
             }
+        } else {
+            res.sendStatus(200);
         }
     });
 };

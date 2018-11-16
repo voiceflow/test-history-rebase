@@ -835,6 +835,14 @@ class Canvas extends Component {
                     mapping: [],
                     to: ''
                 };
+            } else if (type === 'permissions') {
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+                node.addOutPort('fail').setMaximumLinks(1);
+                node.addOutPort('declined').setMaximumLinks(1);
+                node.extras = {
+                    permissions: []
+                };
             } else if (type === 'module'){
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);

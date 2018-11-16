@@ -253,7 +253,7 @@
     box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
 */
     background-color: #ffffff !important;
-    border-radius: 10px !important;
+    border-radius: 30px !important;
     overflow: hidden;
 }
 .skill-card h5{
@@ -317,7 +317,8 @@
     transform: scale(1.05);
 }
 .skill-card .card-action:hover .card-image{
-    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.01);
+/*    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.01);*/
+    background-color: none !important;
 }
 .skill-card .play{
     position: absolute;
@@ -329,9 +330,14 @@
     font-size: 64px;
     align-items: center;
     justify-content: center;
+    background-color: none !important;
 }
 .skill-card .card-action:hover .play{
     display: flex;
+}
+.skill-card:hover{
+    border: 1px solid #43A3FF;
+    
 }
 
 .skill-card .no-overflow {

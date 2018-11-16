@@ -636,7 +636,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                         }
                     }
-
+                } else if (node.extras.type === 'permissions') {
+                    story.lines[node.id] = {
+                        permissions: node.extras.permissions,
+                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],
+                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]],
+                        declined_id: links[node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]]
+                    }
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {

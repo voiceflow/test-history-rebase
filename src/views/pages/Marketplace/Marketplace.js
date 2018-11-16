@@ -42,6 +42,7 @@ class Marketplace extends Component {
                 featured_modules: res.data,
                 loading:false
             });
+            console.log("FJDOSJFOJDOI", this.state.featured_modules)
         })
         .catch(error => {
             console.log(error);
@@ -61,7 +62,7 @@ class Marketplace extends Component {
 
                 <div className="marketplace-main">
                     <BannerCarousel
-                        modules={this.state.featured_modules}
+                        featured_modules={this.state.featured_modules}
                     />
                     <Masonry elementType='div' className="skills-container">
                         {this.state.modules.map((module, i) => 

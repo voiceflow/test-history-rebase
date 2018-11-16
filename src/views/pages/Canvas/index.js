@@ -6,6 +6,7 @@ import Editor from './Editor';
 import moment from 'moment';
 import axios from 'axios';
 // import Loader from './Loader';
+import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
@@ -32,7 +33,7 @@ const defaultVariables = ['sessions', 'user_id', 'timestamp'];
 const line_color = '#E3E9EE';
 
 const generateID = () => {
-    return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0;
         const v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);

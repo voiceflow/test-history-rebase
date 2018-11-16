@@ -23,7 +23,7 @@ class PublishMarket extends Component {
                 skill_id: this.props.computedMatch.params.id,
                 descr: '',
                 overview: '',
-                card_icon: '',
+                card_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
                 error: '',
                 in_review: false,
                 title: '',
@@ -341,19 +341,6 @@ class PublishMarket extends Component {
                     <hr className="mt-0"></hr>
                     <div className="row">
                         <div className="col-2">
-                            {this.state.card_icon?
-                                <i className="fal fa-check-circle text-success"></i>
-                                :
-                                <i className="fal fa-times-circle text-danger"></i>
-                            }
-                        </div>
-                        <div className="col-10">
-                            <p>Card Icon</p>
-                        </div>
-                    </div>
-                    <hr className="mt-0"></hr>
-                    <div className="row">
-                        <div className="col-2">
                             {this.state.type?
                                 <i className="fal fa-check-circle text-success"></i>
                                 :
@@ -493,7 +480,7 @@ class PublishMarket extends Component {
 
 					<div className="d-flex row">
                         <div className="col-3 publish-info">
-                            <p className="text-secondary mt-5"><b>Card icon</b> will be displayed for your module in our Marketplace.</p>
+                            <p className="text-secondary mt-5">Card icon will be displayed for your module in our Marketplace.</p>
                         </div>
                         <div className="col-9 d-flex">
                             <div>

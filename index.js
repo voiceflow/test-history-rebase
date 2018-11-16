@@ -152,7 +152,9 @@ app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule);
 app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus);
 app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule);
 app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification);
-app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification);
+//!!!! TODO: REMOVE DUE TO TESTING !!!!
+//app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification);
+app.put('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.giveCertification);
 app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification);
 app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCertification);
 app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess);

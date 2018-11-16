@@ -305,7 +305,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             // If publishing to market, insert version before
             let key = diagram_id
             if(type === 'market'){
-                key = options.version + '_' + key;
+                key = "$" + options.version + '_' + key;
             }
 
             let story = {
@@ -317,9 +317,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 commands: []
             };
 
-            if(explicit_diagram_id){
-                story.id = explicit_diagram_id;
-            }
+            // if(explicit_diagram_id){
+            //     story.id = explicit_diagram_id;
+            // }
 
             // Iterate through every block in the diagram
             for (var i = 0; i < diagram.nodes.length; i++) {
@@ -642,6 +642,24 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                         }
                     }
+
+                } else if (node.extras.type === 'module'){
+
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+                    
+                    story.lines[node.id] = {
+                        diagram_id: node.extras.diagram_id,
+                        variable_map: {
+                            inputs: node.extras.mapping.inputs.filter(input => (input.key && input.val)).map(input => [input.val, input.key]),
+                            outputs: node.extras.mapping.outputs.filter(output => (output.key && output.val)).map(output => [output.val, output.key]),
+                        },
+                        nextId: links[nextLink]
+                    };
 
                 } else {
                     let nextLink = null;

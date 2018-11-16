@@ -57,8 +57,8 @@ const requestCertification = (req, res) => {
 					}
 
 					pool.query(
-						`INSERT INTO versions (module_id, diagram_id, version_id) VALUES ($1, $2, $3)`, 
-						[module_id, diagram_id, version_id],
+						`INSERT INTO versions (module_id, diagram_id, version_id, input, output) VALUES ($1, $2, $3, $4, $5)`, 
+						[module_id, diagram_id, version_id, data.rows[0].input, data.rows[0].output],
 						(err, data) => {
 							if(err){
 								console.log(err);
@@ -199,7 +199,7 @@ const saveCertification = (req, res) => {
 const giveCertification = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT * FROM , modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		async (err, data) => {
 			if(err){
 				console.log(err);
@@ -208,12 +208,11 @@ const giveCertification = (req, res) => {
 				if(data.rows.length > 0){
 					let version_id = data.rows[0].version_id;
 					let status = await renderDiagram(req.user, data.rows[0].diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
-					let input = data.rows[0].input;
-					let output = data.rows[0].output;
+					let market_id = "$" + version_id + '_' + data.rows[0].diagram_id;
 					if(status === 200){
 						pool.query(
-							`UPDATE versions, modules SET diagram_id = $1, cert_approved = now(), input = $3, output = $4 WHERE versions.module_id = modules.module_id AND skill_id = $2 AND cert_approved IS NULL`,
-							[market_id, skill_id, input, output],
+							`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
+							[market_id, data.rows[0].module_id],
 							(err, data) => {
 								if(err){
 									console.log(err);

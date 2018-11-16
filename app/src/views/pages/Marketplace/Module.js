@@ -19,19 +19,23 @@ class Module extends Component{
 
 	render(){
 		return (
-			<div className="card-container">
+			<div className="card-container"
+				 onMouseEnter={() => {this.setState({hovered: true})}} 
+				 onMouseLeave={() => {this.setState({hovered: false})}}
+			>
 				<Card
 					style={{ backgroundColor: '#333', borderColor: '#333' }} 
 					onMouseEnter={() => {this.setState({hovered: true})}} 
 					onMouseLeave={() => {this.setState({hovered: false})}}
 					onClick={this.props.onClick}
 				>
-					<CardImg top src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
+					<CardImg top src={this.props.module.card_icon} alt="Card image cap" />
 
 					{this.state.hovered?
-						<CardImgOverlay>
+						<CardImgOverlay className="module-card">
 							<CardTitle>{this.props.module.title}</CardTitle>
 							<CardSubtitle>{this.props.module.creator_id}</CardSubtitle>
+							<hr/>
 							<CardText>{this.props.module.descr}</CardText>
 						</CardImgOverlay>
 						:

@@ -50,15 +50,19 @@ const requestCertification = (req, res) => {
 					res.sendStatus(500);
 				}else{
 					let version_id;
+					let input_array = "[]";
+					let output_array = "[]";
 					if(data.rows.length > 0){
 						version_id = data.rows[0].version_id + 1;
+						input_array = data.rows[0].input;
+						output_array = data.rows[0].output;
 					}else{
 						version_id = 1;
 					}
 
 					pool.query(
 						`INSERT INTO versions (module_id, diagram_id, version_id, input, output) VALUES ($1, $2, $3, $4, $5)`, 
-						[module_id, diagram_id, version_id, data.rows[0].input, data.rows[0].output],
+						[module_id, diagram_id, version_id, input_array, output_array],
 						(err, data) => {
 							if(err){
 								console.log(err);

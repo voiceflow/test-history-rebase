@@ -24,7 +24,6 @@ class PublishMarket extends Component {
                 descr: '',
                 overview: '',
                 card_icon: '',
-                type: 'Flow',
                 error: '',
                 in_review: false,
                 title: '',
@@ -32,7 +31,8 @@ class PublishMarket extends Component {
                 displayingConfirmWithdraw: false,
                 color: '',
                 input: [],
-                output: []
+                output: [],
+                show_incomp_alert: false
             }
         } else {
             this.props.history.push('/dashboard');
@@ -165,19 +165,28 @@ class PublishMarket extends Component {
 
     publish(){
     	this.save();
-    	axios.post('/marketplace/cert/' + this.state.skill_id)
-        .then(res => {
-            this.setState({
-                saved: true,
-                in_review: true
+        let s = this.state;
+        if (s.title && s.descr && s.card_icon && s.category && s.type && s.overview && s.module_icon){
+        	axios.post('/marketplace/cert/' + this.state.skill_id)
+            .then(res => {
+                this.setState({
+                    saved: true,
+                    in_review: true,
+                    show_incomp_alert: false
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: 'Publish Error, failed to publish',
+                    show_incomp_alert: false
+                });
             });
-        })
-        .catch(err => {
-            console.log(err);
+        } else {
             this.setState({
-                error: 'Publish Error, failed to publish'
-            });
-        });
+                show_incomp_alert: true
+            })
+        }
     }
 
     onWithdraw(){
@@ -384,6 +393,16 @@ class PublishMarket extends Component {
 		            	null
 		            }
 
+                    {this.state.show_incomp_alert?
+                        <div className="alert alert-danger mb-4" role="alert">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h5 className="mb-0">Missing essential information about your module.</h5>
+                            </div>
+                        </div>
+                        :
+                        null
+                    }
+
 					<FormGroup>
 						<div className="row">
                             <div className="col-3 publish-info"></div>
@@ -541,6 +560,7 @@ class PublishMarket extends Component {
                         </div>
                     </FormGroup>
 
+                    {/*
                     <FormGroup>
                         <div className="row">
                             <div className="col-3 publish-info"></div>
@@ -557,6 +577,7 @@ class PublishMarket extends Component {
                             </div>
                         </div>
                     </FormGroup>
+                    */}
 
                     <div className="row">
                         <div className="col-3 publish-info"></div>

@@ -13,10 +13,15 @@
     height: 100%;
     overflow: hidden;
 }
-.h2{
-    color: aqua !important;
+.login-logo{
+    margin-bottom: 30px;
+    width: 170px;
 }
-
+.login-btn{
+    padding: 15px !important;
+    font-size: 18px;
+    font-weight: 600;
+}
 #side-form{
     width: 100%;
     height: 100%;
@@ -56,7 +61,10 @@
     margin-bottom: 5px;
     margin-top: 0px;
 }
-
+label{
+    font-weight: 900;
+    color: #2b3950;
+}
 .form-group {
     margin-bottom: 1rem;
     margin-top: 0.5rem;

@@ -29,7 +29,8 @@ const sections = [{
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
-        // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
+        // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
+        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/> },
    ]
 }];
 

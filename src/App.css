@@ -197,6 +197,9 @@ input::placeholder, textarea::placeholder {
 .TitleBar .publish-btn:hover{
     color: #3d96f0 !important;
 }
+.flex-hard{
+    flex: 10;
+}
 
 /*.dash-button {
     border: 1px dashed #0095f7 !important;
@@ -460,6 +463,13 @@ input::placeholder, textarea::placeholder {
 #publish-status {
     top: 135px;
     width: 200px;
+}
+
+.select-box__menu {
+    z-index: 100 !important;
+}
+.select-box__control {
+    border: 1px solid #E2E9EC !important;
 }
 
 @media(max-width: 1550px){

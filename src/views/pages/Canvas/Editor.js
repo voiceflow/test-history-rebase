@@ -157,7 +157,8 @@ class Editor extends Component {
             case 'ending':
                 return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'speak':
-                if(this.state.node.extras.rawContent === undefined){
+                // DEPRECATE OLD SPEAK BLOCKS
+                if(this.state.node.extras.raw !== undefined){
                     return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
                 } else {
                     return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>

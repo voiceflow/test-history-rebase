@@ -449,9 +449,10 @@ function draftToMarkdown(rawDraftObject, options, periods=false) {
     markdownString += renderBlock(block, index, rawDraftObject, options, periods);
   });
 
-  if(periods){
-    markdownString = `<s>${markdownString}</s>`;
-  }
+  // if(periods){
+  //   let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
+  //   markdownString += period;
+  // }
 
   orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.
   return markdownString;

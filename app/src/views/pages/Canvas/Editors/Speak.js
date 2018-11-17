@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-
-import 'draft-js/dist/Draft.css'
-
 import VariableText from './components/VariableText';
 import randomstring from 'randomstring';
 import Select from 'react-select';
@@ -151,7 +148,7 @@ class Speak extends Component {
         // <label className="mb-0">Speech <br/><small className="text-muted">{'Use {variable} to add Variables'}</small></label>
         return (
             <div>
-                <small className="text-muted">{'Use {variable} to add Variables'}</small><hr className="mt-3 mb-1"/>
+                <div className="mb-2"><small className="text-muted">{''}</small></div>
                 {this.state.node.extras.dialogs.map((d, i) => {
                     return <div key={d.index} className="multiline mb-1">
                         <div className="multi-title-block mb-1">
@@ -173,7 +170,7 @@ class Speak extends Component {
                         <Collapse isOpen={d.open}>
                             <VariableText
                                 raw={d.rawContent}
-                                placeholder={`Tell ${d.voice} what to say`}
+                                placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}<br/>{'Use {variable} to add Variables'}</React.Fragment>}
                                 variables={this.props.variables}
                                 updateRaw={(raw) => {d.rawContent = raw; this.props.onUpdate()}}
                             />

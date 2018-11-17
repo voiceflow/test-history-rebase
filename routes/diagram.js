@@ -376,6 +376,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             return link ? link : null;
                         })
                     };
+                } else if (node.extras.type === 'stream') {
+                    let stop = links[node.ports.filter(a => a.label === 'stop')[0].links[0]];
+
+                    if(node.extras.player){
+                        story.lines[node.id] = {
+                            play: node.extras.audio,
+                            nextId: stop,
+                            NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
+                            PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
+                            SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            play: node.extras.audio,
+                            nextId: stop
+                        };
+                    }
                 } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
                     let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {

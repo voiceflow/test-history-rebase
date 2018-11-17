@@ -35,6 +35,12 @@ const interactionModel = (invocation) => {
 	                    ]
 	                },
 	                {
+	                    "name": "AMAZON.ResumeIntent",
+	                },
+	                {
+	                    "name": "AMAZON.PauseIntent",
+	                },
+	                {
 	                    "name": "StoryFlowIntent",
 	                    "slots": [
 	                        {
@@ -45,10 +51,6 @@ const interactionModel = (invocation) => {
 	                    "samples": [
 	                        "{content}"
 	                    ]
-	                },
-	                {
-	                    "name": "AMAZON.NavigateHomeIntent",
-	                    "samples": []
 	                }
 	            ],
 	            "types": [
@@ -203,7 +205,10 @@ const manifest = (r, encoded_id) => {
                      "endpoint": {
                          "uri": `https://app.getvoiceflow.com/state/skill/${encoded_id}`,
                          "sslCertificateType": "Wildcard"
-                     }
+                     },
+                     "interfaces": [{
+	                 	"type": "AUDIO_PLAYER"
+	                 }]
                  }
              },
              "manifestVersion": "1.0",

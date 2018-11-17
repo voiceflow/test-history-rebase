@@ -51,44 +51,6 @@ const convert = (key, env = 'production') => {
         .pipe(upload);
 };
 
-const updateTitles = (stories, env) => {
-    if(!Array.isArray(stories) || stories.length < 1) return;
-    let dir = path.join(__dirname, 'tmp', Date.now().toString());
-    fs.existsSync(dir) || fs.mkdirSync(dir);
-
-    let files = [];
-    let count = 0;
-    stories.forEach(story => {
-        if (!story.preview) {
-            count++;
-            if (count === stories.length) {
-                uploadConcatPreviews(dir, files, env);
-            }
-            return;
-        }
-        let key = path.basename(story.preview);
-        let file = fs.createWriteStream(path.join(dir, key));
-        files.push(path.join(dir, key));
-        let params = {
-            Bucket: 'com.getstoryflow.audio.production',
-            Key: key
-        };
-        s3.getObject(params, (err, data) => {
-            if (err) {
-                console.log(err);
-
-                return;
-            }
-            file.write(data.Body);
-            file.end();
-            count++;
-            if (count === stories.length) {
-                uploadConcatPreviews(dir, files, env);
-            }
-        });
-    });
-};
-
 const uploadConcatPreviews = (dir, files, env) => {
     let command = ffmpeg();
     for (let i = 0; i < files.length; i++) {
@@ -127,27 +89,21 @@ const uploadConcatPreviews = (dir, files, env) => {
     command.audioFrequency(16000);
 }
 
-const upload = (req, res) => {
+exports.upload = (req, res) => {
+    let filename = req.file.key;
+    convert(filename);
+    res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+filename);
+};
+
+exports.raw_upload = (req, res) => {
     if (req.files.length > 0) {
-        convert(req.files[0].key);
         res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+req.files[0].key);
     } else {
         res.sendStatus(400);
     }
 };
 
-const getVoices = (req, res) => {
-    polly.describeVoices((err, data) => {
-        if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
-        } else {
-            res.send(data.Voices);
-        }
-    });
-};
-
-const generate = (req, res) => {
+exports.generate = (req, res) => {
     if (req.body && req.body.text) {
         let text = '<speak>'+req.body.text+'</speak>';
         let voice = req.body.voice || 'Joey';
@@ -185,7 +141,7 @@ const generate = (req, res) => {
     }
 };
 
-const concat = (req, res) => {
+exports.concat = (req, res) => {
     if(!Array.isArray(req.body.lines)){
         res.sendStatus(400);
         return;
@@ -270,8 +226,15 @@ const uploadConcatLines = (dir, files, res) => {
     command.audioFrequency(16000);
 }
 
-exports.upload = upload;
-exports.updateTitles = updateTitles;
-exports.getVoices = getVoices;
-exports.generate = generate;
-exports.concat = concat;
+
+exports.getVoices = (req, res) => {
+    polly.describeVoices((err, data) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(err.statusCode);
+        } else {
+            res.send(data.Voices);
+        }
+    });
+};
+

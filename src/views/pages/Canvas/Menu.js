@@ -72,7 +72,7 @@ class Menu extends PureComponent {
         if(depth < 4) {
             return (<React.Fragment>
 
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow}/>
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree}/>
 
                 {(() => {
                     let sub_diagrams;
@@ -179,7 +179,7 @@ class Menu extends PureComponent {
                     let block = this.props.diagrams.find(d => d.id === diagram.id);
                     if (block) { 
                         unused.push(
-                            <FlowButton 
+                            <FlowButton
                                 key={block.id}
                                 flow={block} 
                                 active={this.props.current} 

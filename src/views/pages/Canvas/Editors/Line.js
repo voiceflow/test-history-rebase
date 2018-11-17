@@ -23,11 +23,8 @@ class Line extends Component {
         var node = this.state.node;
         if(node.extras.lines.length < 5 ){
             node.extras.lines.push({
-                textCollapse: false,
                 collapse: true,
-                text: '',
                 audio: false,
-                voice: false,
                 title: "Line Audio"
             });
             this.setState({

@@ -210,6 +210,8 @@ const setDiagram = async (req, res) => {
         Item: diagram
     };
 
+    const permissions_string = JSON.stringify(diagram.permissions)
+
     docClient.put(params, async(err) => {
         if (err) {
             console.log(err);
@@ -225,7 +227,7 @@ const setDiagram = async (req, res) => {
                         [diagram.id, diagram.title, diagram.skill]);
                 // if the name changed, update it
                 }else if(diagram_sql.rows[0].name !== diagram.title || diagram_sql.rows[0].sub_diagrams !== diagram.sub_diagrams){
-                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
+                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2, permissions = $3 WHERE id = $4', [diagram.title, diagram.sub_diagrams, permissions_string, diagram.id]);
                 }
                 res.sendStatus(200); 
                 

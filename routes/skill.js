@@ -308,6 +308,22 @@ const buildSkill = async (req,res) => {
     let id = hashids.decode(req.params.id)[0];
     let original_id = req.params.id;
 
+    // Get permissions
+    const permissions_arr = await getSkillPermissions(id);
+    let permissions = new Set();
+
+    permissions_arr.forEach(r => {
+        r.permissions.forEach((perm => {
+            if (perm !== 'payments:autopay_consent') {
+                // lmao amazon engineering
+                permissions.add(perm);
+            }
+        }))
+    })
+    
+    permissions = [...permissions];
+    permissions = permissions.map(perm => {return {name: perm}});
+
     AccessToken(req.user.id, token => {
         if(token === null){
             res.status(401).send({
@@ -325,6 +341,7 @@ const buildSkill = async (req,res) => {
                 let r = data.rows[0];
 
                 let amzn_id = r.amzn_id;
+                r.permissions = permissions;
                 let manifest = JSONs.manifest(r, original_id);
 
                 try{
@@ -596,6 +613,19 @@ const withdrawSkill = (req, res) => {
         });
     });
 }
+
+const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
+    let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
+    pool.query(sql, [skill_id], (err, data) => {
+        if(err){
+            console.error(err);
+            console.trace();
+            reject(new Error(err))
+        }else{
+            resolve(data.rows);
+        }
+    });
+})
 
 module.exports = {
     getDiagrams: getDiagrams,

@@ -39,8 +39,21 @@ class Permissions extends Component {
         var node = this.state.node;
 
         if(node.extras.permissions.length < this.state.permission_options.length){
+            let default_selected;
+
+            for (let i = 0; i < this.state.permission_options.length; i++) {
+                let permission = this.state.permission_options[i];
+                if (!(_.find(_.map(node.extras.permissions, 'selected'), { value: permission.value } ))) {
+                    default_selected = {
+                        label: permission.name,
+                        value: permission.value
+                    }
+                    break;
+                }      
+            }
+
             node.extras.permissions.push({
-                selected: { name: '', value: ''},
+                selected: default_selected,
                 map_to: ''
             });
 

@@ -6,6 +6,7 @@ import Editor from './Editor';
 import moment from 'moment';
 import axios from 'axios';
 // import Loader from './Loader';
+import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
@@ -32,7 +33,7 @@ const defaultVariables = ['sessions', 'user_id', 'timestamp'];
 const line_color = '#E3E9EE';
 
 const generateID = () => {
-    return "xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0;
         const v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
@@ -228,7 +229,7 @@ class Canvas extends Component {
         $('#diagram').click((e) => {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
-            // console.log(selected);
+
             if (selected.length === 1) {
                 engine.setSuperSelect(selected[0]);
                 this.setState({
@@ -289,13 +290,9 @@ class Canvas extends Component {
 
     repaint() {
         this.state.engine.repaintCanvas();
-        // console.log("repaint", this.state.engine.getSuperSelect().extras.type);
-        // this.setState({
-        //     engine: this.state.engine
-        // });
     }
 
-    onSave(cb) {
+    onSave(cb, is_new=false) {
         try {
             this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
@@ -325,8 +322,6 @@ class Canvas extends Component {
                 });
             }
 
-            // model.deSerializeDiagram(JSON.parse(data), engine);
-
             var diagram = {
                 id: this.state.diagram_id,
                 title: this.state.diagram_name,
@@ -336,7 +331,7 @@ class Canvas extends Component {
                 sub_diagrams: JSON.stringify(sub_diagrams)
             }
 
-            axios.post('/diagram', diagram)
+            axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
             .then(() => {
                 this.setState({
                     saving: false,
@@ -623,7 +618,9 @@ class Canvas extends Component {
             this.setState({
                 skill: {
                     skill_id: skill_id,
-                    name: name
+                    name: name,
+                    review: false,
+                    live: false
                 },
                 newSkill: 0,
                 diagram_id: diagram_id
@@ -633,8 +630,11 @@ class Canvas extends Component {
                         id: diagram_id,
                         name: 'ROOT'
                     });
+                    if(this.buildDiagrams !== null){
+                        this.buildDiagrams();
+                    }
                     this.props.history.push(`/canvas/${skill_id}/${diagram_id}`);
-                })
+                }, true)
             });
         })
         .catch(err => {
@@ -669,7 +669,7 @@ class Canvas extends Component {
                 skill: skill_id
             }
 
-            axios.post('/diagram', diagram)
+            axios.post('/diagram?new=1', diagram)
             .then(() => {
                 this.state.diagrams.push({
                     name: 'New Flow',
@@ -741,11 +741,8 @@ class Canvas extends Component {
                     audio: false,
                     lines: [
                         {
-                            textCollapse: false,
                             collapse: true,
-                            text: '',
                             audio: false,
-                            voice: false,
                             title: 'Line Audio'
                         }
                     ]
@@ -754,8 +751,8 @@ class Canvas extends Component {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
                 node.extras = {
-                    rawContent: null
-                };
+                    dialogs: []
+                }
             } else if (type === 'flow') {
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);

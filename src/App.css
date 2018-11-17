@@ -1,49 +1,7 @@
-/*GLOBAL CSS*/
-
-@font-face {
-    font-family: "Proxima Nova Bold";
-    src: url("/fonts/Proxima Nova Bold.eot");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Proxima Nova Bold It";
-    src: url("/fonts/Proxima Nova Bold It.eot");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Proxima Nova Light";
-    src: url("/fonts/Proxima Nova Light.eot");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Proxima Nova Light It";
-    src: url("/fonts/Proxima Nova Light It.eot");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Proxima Nova Reg";
-    src: url("/fonts/Proxima Nova Reg.eot");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Proxima Nova Reg It";
-    src: url("/fonts/Proxima Nova Reg It.eot");
-    font-weight: normal;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css?family=Lato');
 
 body {
-    font-family: 'Proxima Nova', sans-serif;
+    font-family: 'Lato', sans-serif;
     background: #F5F7F8 !important;
     color: #545D6D;
 }
@@ -125,7 +83,12 @@ button:focus{
 .no-padding-row>div{
     padding: 0 !important;
 }
-
+.btn:focus{
+    box-shadow: none !important;
+}
+.btn:active{
+    background-color: #EBEEEF !important;
+}
 .anti-btn {
     border: none !important;
     outline: none !important;

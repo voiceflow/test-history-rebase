@@ -24,7 +24,7 @@ class Module extends Component{
 				 onMouseLeave={() => {this.setState({hovered: false})}}
 			>
 				<Card
-					style={{ backgroundColor: '#333', borderColor: '#333' }} 
+					style={{ backgroundColor: '#fff', borderColor: '#fff' }} 
 					onMouseEnter={() => {this.setState({hovered: true})}} 
 					onMouseLeave={() => {this.setState({hovered: false})}}
 					onClick={this.props.onClick}

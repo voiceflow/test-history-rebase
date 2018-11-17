@@ -229,11 +229,6 @@ const setDiagram = async (req, res) => {
                 console.trace();
                 res.sendStatus(500);
             }
-        } else {
-            try{
-                await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
-            }
-            res.sendStatus(200);
         }
     });
 };

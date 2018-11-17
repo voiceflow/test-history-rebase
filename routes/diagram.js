@@ -210,6 +210,8 @@ const setDiagram = async (req, res) => {
         Item: diagram
     };
 
+    const permissions_string = JSON.stringify(diagram.permissions)
+
     docClient.put(params, async(err) => {
         if (err) {
             console.log(err);
@@ -221,7 +223,7 @@ const setDiagram = async (req, res) => {
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
                 }else{
                     // otherwise update
-                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
+                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2, permissions = $3 WHERE id = $4', [diagram.title, diagram.sub_diagrams, permissions_string, diagram.id]);
                 }
                 res.sendStatus(200);
             }catch(e){
@@ -680,7 +682,14 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                         }
                     }
-
+                } else if (node.extras.type === 'permissions') {
+                    story.lines[node.id] = {
+                        permissions: node.extras.permissions,
+                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],
+                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]],
+                        declined_id: links[node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]],
+                        nextId: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]]
+                    }
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {

@@ -224,7 +224,8 @@ const manifest = (r, encoded_id) => {
                  "isChildDirected": r.copa,
                  "usesPersonalInfo": r.personal,
                  "containsAds": r.ads
-             }
+			 },
+			 "permissions": r.permissions
          }
     }
 }

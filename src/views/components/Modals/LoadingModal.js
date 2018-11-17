@@ -37,7 +37,7 @@ class LoadingModal extends PureComponent {
               <div>
                 <h5>Loading...</h5>
                 <hr/>
-                <h1><i className="fas fa-sync-alt fa-spin"></i></h1>
+                <h1><i className="fas fa-sync-alt fa-spin"/></h1>
               </div> : null
             }
           </ModalBody>

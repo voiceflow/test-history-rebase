@@ -109,11 +109,14 @@
 }
 
 .TitleBar .publish-btn {
-    padding: 5px 20px 5px 20px !important;
-    margin-right: 0px;
     border: none !important;
-    box-shadow:  0 1px 2px 0 rgba(14,30,37,.12) !important;
-    color: #2b3950 !important;
+    min-width: 0 !important;
+    color: #3d96f0 !important;
+    padding: 10px 10px 10px 15px !important;
+    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; 
+}    
+.TitleBar .publish-btn i{
+    margin-left: 5px;
 }
 
 .TitleBar .platform-dropdown {
@@ -131,7 +134,10 @@
     border: none !important;
     font-size: 0.875rem;
     cursor: pointer;
-    color: #95a6bd !important;
+    color: #95a6bd;
+}
+.TitleBar .platform-btn:active{
+    color: #fff;
 }
 
 .TitleBar .publish-btn .button-circle{
@@ -415,12 +421,12 @@
 
 .App .Menu #sidebar {
     position: fixed;
-    top: 0;
+    top: 59px;
     left: 40px;
     z-index: 5;
     width: 200px;
     height: 100%;
-    padding: 60px 20px 120px 20px;
+    padding: 1px 20px 120px 20px;
     overflow: scroll;
     /*opacity: 0.9;*/
     /*text-align: center;*/
@@ -786,8 +792,13 @@
     color: #CCC;
 }
 
-.select-box{
+.select-box {
     flex: 1;
+}
+
+.speak-box {
+    flex: 1;
+    margin-left: 8px;
 }
 
 .select-box>div{
@@ -1312,6 +1323,9 @@ button.close{
 .multi-title-block{
     display: flex;
 }
+.multi-title-block>button.close {
+    margin-left: 10px
+}
 .multi-title-block>div>span{
     margin-right: 5px;
 }
@@ -1323,7 +1337,7 @@ button.close{
     cursor: pointer;
     padding: 10px 0;
     flex: 1;
-    margin-right: 15px;
+    margin-right: 5px;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1535,14 +1549,22 @@ button.close{
     padding-left: 5px;
 }
 
+.public-DraftEditorPlaceholder-root {
+    color: #bdc1c9;
+}
+
+
+.public-DraftEditorPlaceholder-hasFocus {
+    color: #E2E9EC;
+}
+
 .editor {
   box-sizing: border-box;
-  border: 1px solid #ddd;
+  border: 1px solid #E2E9EC;
   cursor: text;
   padding: 7px 8px;
   border-radius: 2px;
-  margin-bottom: 2em;
-  box-shadow: inset 0px 1px 8px -3px #ABABAB;
+  margin-bottom: 1rem;
   background: #fefefe;
 }
 
@@ -1561,11 +1583,7 @@ button.close{
     box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; 
     color: #3d96f0 !important;
 }
-.publish-btn:hover {
-    border: none !important;
-    min-width: 0 !important;
-    box-shadow:  0px 2px 7px rgba(14,30,37,.12) !important; 
-}       
+
 .share-btn:hover{
     border: none !important;
     padding: 10px 15px !important;

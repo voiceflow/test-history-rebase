@@ -219,7 +219,7 @@ const setDiagram = async (req, res) => {
                 if(req.query.new){
                     // If it is a new diagram insert (assume it has no blocks)
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
-                }else if(diagram_sql.rows[0].name !== diagram.title || diagram_sql.rows[0].sub_diagrams !== diagram.sub_diagrams){
+                }else{
                     // otherwise update
                     await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
                 }

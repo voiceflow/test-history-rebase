@@ -117,8 +117,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {this.props.padding ? (<div className="padding"></div>) : null}
-          { (window.user_detail && window.user_detail.admin && window.user_detail.admin > 0) ? 
-            <Intercom appID="vw911b0m" {...intercom_user}/> : null }
+          <Intercom appID="vw911b0m" {...intercom_user}/>
         </div>
     );
   }

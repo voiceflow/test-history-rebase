@@ -33,7 +33,7 @@ class NavBar extends Component {
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
-        {link: '/market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>}
+        {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
       ],
       user: AuthenticationService.getUser()
     };

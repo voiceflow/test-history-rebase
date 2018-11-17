@@ -19,6 +19,9 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     test_endpoint = 'https://app.getvoiceflow.com/state/test';
 }
 
+// winstonc
+test_endpoint = 'http://localhost:4000/state/test';
+
 const default_state = () => {
   return {
     diagrams: null,

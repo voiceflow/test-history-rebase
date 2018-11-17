@@ -218,19 +218,14 @@ const setDiagram = async (req, res) => {
             res.sendStatus(err.statusCode);
         } else {
             try{
-                // check if diagram exists
-                let diagram_sql = await pool.query('SELECT name FROM diagrams WHERE id = $1 LIMIT 1', [diagram.id]);
-
-                // if it doesn't insert row
-                if(diagram_sql.rows.length === 0){
-                    await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
-                        [diagram.id, diagram.title, diagram.skill]);
-                // if the name changed, update it
-                }else if(diagram_sql.rows[0].name !== diagram.title || diagram_sql.rows[0].sub_diagrams !== diagram.sub_diagrams){
+                if(req.query.new){
+                    // If it is a new diagram insert (assume it has no blocks)
+                    await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
+                }else{
+                    // otherwise update
                     await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2, permissions = $3 WHERE id = $4', [diagram.title, diagram.sub_diagrams, permissions_string, diagram.id]);
                 }
-                res.sendStatus(200); 
-                
+                res.sendStatus(200);
             }catch(e){
                 console.error(e);
                 console.trace();
@@ -507,35 +502,67 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     let markdownstring = '';
                     let nextLink = null;
                     
-                    let raw;
-                    if(node.extras.rawContent){
-                        raw = node.extras.rawContent;
-                    }else{
-                        raw = node.extras.raw;
-                    }
-
-                    if(raw){
-                        markdownstring = draftToMarkdown(raw, {
-                            entityItems: {
-                                VARIABLE: {
-                                    open: entity => {
-                                        return "' + v['"
+                    if(Array.isArray(node.extras.dialogs)){
+                        node.extras.dialogs.forEach(d => {
+                            temp = draftToMarkdown(d.rawContent, {
+                                entityItems: {
+                                    VARIABLE: {
+                                        open: entity => {
+                                            return "' + v['"
+                                        },
+                                        close: entity => {
+                                            return "'] + '"
+                                        }
                                     },
-                                    close: entity => {
-                                        return "'] + '"
-                                    }
-                                },
-                                '{mention': {
-                                    open: entity => {
-                                        return "' + v['"
-                                    },
-                                    close: entity => {
-                                        return "'] + '"
+                                    '{mention': {
+                                        open: entity => {
+                                            return "' + v['"
+                                        },
+                                        close: entity => {
+                                            return "'] + '"
+                                        }
                                     }
                                 }
+                            }, true);
+
+                            if(d.voice === 'Alexa'){
+                                markdownstring += temp;
+                            }else{
+                                markdownstring += `<voice name="${d.voice}">${temp}</voice>`
                             }
-                        }, true);
+                        });
                         markdownstring = "'" + markdownstring + "'";
+                    }else{
+                        // DEPRECATE OLD SPEAK 
+                        let raw;
+                        if(node.extras.rawContent){
+                            raw = node.extras.rawContent;
+                        }else{
+                            raw = node.extras.raw;
+                        }
+                        if(raw){
+                            markdownstring = draftToMarkdown(raw, {
+                                entityItems: {
+                                    VARIABLE: {
+                                        open: entity => {
+                                            return "' + v['"
+                                        },
+                                        close: entity => {
+                                            return "'] + '"
+                                        }
+                                    },
+                                    '{mention': {
+                                        open: entity => {
+                                            return "' + v['"
+                                        },
+                                        close: entity => {
+                                            return "'] + '"
+                                        }
+                                    }
+                                }
+                            }, true);
+                            markdownstring = "'" + markdownstring + "'";
+                        }
                     }
 
                     for (var j = 0; j < node.ports.length; j++) {

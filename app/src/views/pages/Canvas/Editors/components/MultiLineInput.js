@@ -87,29 +87,31 @@ class MultiLineInput extends Component {
     }
 
     onGenerate(text, voice) {
-        let line = this.state.line;
-        if(line.text && line.voice){
-            $.ajax({
-                url: '/generate',
-                type: 'POST',
-                data: {
-                    text: line.text,
-                    voice: line.voice
-                },
-                success: res => {
-                    line.audio = res;
-                    line.title = res.split('/').pop().split('-').pop();
-                    this.setState({
-                        line: line
-                    }, this.props.newAudio);
-                },
-                error: () => {window.alert('Error33');}
-            });
-        }
+        alert('Text to Speech is Deprecated - Please Use the Speak Block');
+        // let line = this.state.line;
+        // if(line.text && line.voice){
+        //     $.ajax({
+        //         url: '/generate',
+        //         type: 'POST',
+        //         data: {
+        //             text: line.text,
+        //             voice: line.voice
+        //         },
+        //         success: res => {
+        //             line.audio = res;
+        //             line.title = res.split('/').pop().split('-').pop();
+        //             this.setState({
+        //                 line: line
+        //             }, this.props.newAudio);
+        //         },
+        //         error: () => {window.alert('Error33');}
+        //     });
+        // }
     }
 
     render() {
         return (
+            // DEPRECATE TEXT TO VOICE SOON
             <div className="multiline">
                 <div className="multi-title-block" >
                     <div className="multi-title" onClick={()=>{this.toggleCollapse('collapse')}}>
@@ -147,35 +149,36 @@ class MultiLineInput extends Component {
                         </div>
                     </div>
                     </Dropzone>}
-                    <div className="text-to-voice">
-                        <div className="subtitle" onClick={() => this.toggleCollapse("textCollapse")}>Text to Speech {this.state.line.textCollapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}</div>
-                        <Collapse isOpen={this.state.line.textCollapse}>
-                            <div className="textarea-collapse">
-                                <Textarea
-                                    name="text"
-                                    value={this.state.line.text}
-                                    onChange={this.handleChange}
-                                    minRows={2}
-                                    placeholder="Enter text you want to convert here"
-                                />
-                                <div className="btn-group w-100">
-                                    <Select
-                                        classNamePrefix="select-box"
-                                        placeholder="Select Voice"
-                                        className="select-box"
-                                        value={this.state.line.voice ? {label: this.state.line.voice, value: this.state.line.voice} : null}
-                                        onChange={this.handleSelection}
-                                        options={Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
-                                            return {label: voice.Name, value: voice.Id, target: "voice"}
-                                        }) : null}
+                    {this.state.line.text && this.state.line.textCollapse !== undefined ?
+                        <div className="text-to-voice">
+                            <div className="subtitle" onClick={() => this.toggleCollapse("textCollapse")}>Text to Speech {this.state.line.textCollapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}</div>
+                            <Collapse isOpen={this.state.line.textCollapse}>
+                                <div className="textarea-collapse">
+                                    <Textarea
+                                        name="text"
+                                        value={this.state.line.text}
+                                        onChange={this.handleChange}
+                                        minRows={2}
+                                        placeholder="Enter text you want to convert here"
                                     />
-                                    <button className="btn btn-primary" onClick={() => this.onGenerate('text', 'voice')}>
-                                        Generate
-                                    </button>
+                                    <div className="btn-group w-100">
+                                        <Select
+                                            classNamePrefix="select-box"
+                                            placeholder="Select Voice"
+                                            className="select-box"
+                                            value={this.state.line.voice ? {label: this.state.line.voice, value: this.state.line.voice} : null}
+                                            onChange={this.handleSelection}
+                                            options={Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
+                                                return {label: voice.Name, value: voice.Id, target: "voice"}
+                                            }) : null}
+                                        />
+                                        <button className="btn btn-primary" onClick={() => this.onGenerate('text', 'voice')}>
+                                            Generate
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </Collapse>
-                    </div>
+                            </Collapse>
+                        </div> : null }
                     <div className="pt-3"></div>
                 </Collapse>
                 <hr/>

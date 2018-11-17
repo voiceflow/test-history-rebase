@@ -124,6 +124,18 @@ td {
 .message-container p>i{
     margin-right: 5px;
 }
+.tag-span {
+    color: #0095f7;
+    /*font-style: italic;*/
+    font-size: 14px;
+    text-decoration: underline;
+    /*font-weight: bold;*/
+}
+.tag-wrap {
+    background-color: rgba(0, 149, 247, 0.2);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
 
 .message-progress{
     z-index: 9;

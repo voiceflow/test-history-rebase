@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
-
+// DEPRECATE
 class IfBlock extends Component {
     constructor(props) {
         super(props);

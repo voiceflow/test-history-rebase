@@ -1,0 +1,73 @@
+import React, { Component } from 'react';
+import { Input, InputGroup } from 'reactstrap';
+import AudioDrop from './components/AudioDrop';
+
+const outputs = ['next', 'previous', 'shuffle'];
+
+class Stream extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            node: props.node
+        };
+
+        this.togglePlayer = this.togglePlayer.bind(this);
+    }
+
+    onUpdate(){
+        this.forceUpdate();
+        this.props.onUpdate();
+    }
+
+    togglePlayer(){
+        let node = this.state.node;
+        let ports = node.getPorts();
+
+        if(this.state.node.extras.player === true){
+            for (let name in ports) {
+                let port = node.getPort(name);
+                if(port.in) continue;
+
+                if (outputs.includes(port.label)) {
+                    node.removePort(port);
+                }
+            }
+        }else{
+            if(Object.keys(ports).length === 2){
+                outputs.forEach(out => {
+                    node.addOutPort(out).setMaximumLinks(1);
+                });
+            }
+        }
+
+        node.extras.player = !node.extras.player;
+
+        this.props.repaint();
+        this.onUpdate();
+    }
+
+    render() {
+        return (
+            <div>
+                <InputGroup className="my-3">
+                    <label className="input-group-text w-100 m-0 text-left">
+                        <Input addon type="checkbox" checked={!!this.state.node.extras.player} onChange={this.togglePlayer}/>
+                        <span className="ml-2">Audio Player Functions</span>
+                    </label>
+                </InputGroup>
+                <label>Stream File (AAC/MP4, MP3, HLS)</label>
+                <AudioDrop
+                    audio={this.state.node.extras.audio}
+                    update={(audio)=>{
+                        let node = this.state.node;
+                        node.extras.audio = audio;
+                        this.onUpdate();
+                    }}
+                />
+            </div>
+        );
+    }
+}
+
+export default Stream;

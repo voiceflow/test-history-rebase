@@ -8,17 +8,24 @@ class Image extends Component {
         super(props);
 
         this.onDropImage = this.onDropImage.bind(this);
+
+        this.state = {
+            loading: false
+        }
     }
 
     onDropImage(files) {
-        if (files.length > 0) {
+        if (files.length === 1) {
             let data = new FormData();
             data.append('image', files[0]);
+            this.setState({loading: true});
             axios.post('/image' + (this.props.path ? this.props.path : ''), data)
             .then(res => {
+                this.setState({loading: false});
             	this.props.update(res.data);
             })
             .catch(err => {
+                this.setState({loading: false});
             	console.error(err);
             	window.alert('Image Upload Error');
             });
@@ -26,15 +33,18 @@ class Image extends Component {
     }
 
 	render() {
-
-        return <div className={this.props.className + (this.props.isDisabled ? ' disabled-image' : '')}>
-        { this.props.image ? 
-            <div className="image-box">
-            	<div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
+        let render;
+        if(this.state.loading){
+            render = <div className="image-box super-center d-flex">
+                <h1 className="mb-0"><i className="fas fa-sync-alt fa-spin"/></h1>
+            </div>
+        }else if(this.props.image){
+            render = <div className="image-box">
+                <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
                 <button className="btn btn-danger" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
             </div>
-            :
-            <Dropzone
+        }else{
+            render = <Dropzone
                 className="dropzone"
                 activeClassName="active"
                 rejectClassName="reject"
@@ -54,7 +64,11 @@ class Image extends Component {
                         <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>
                     </div>
                 </div>
-            </Dropzone> }
+            </Dropzone>
+        }
+
+        return <div className={this.props.className + (this.props.isDisabled ? ' disabled-image' : '')}>
+            {render}
         </div>
 	}
 }

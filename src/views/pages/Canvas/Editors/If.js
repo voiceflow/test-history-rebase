@@ -22,9 +22,8 @@ class IfBlock extends Component {
     }
 
     onUpdate(){
-        this.setState({
-            node: this.state.node
-        }, this.props.onUpdate);
+        this.forceUpdate();
+        this.props.onUpdate();
     }
 
     handleAddBlock() {

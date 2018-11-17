@@ -1530,6 +1530,15 @@ button.close{
     padding-left: 5px;
 }
 
+.public-DraftEditorPlaceholder-root {
+    color: #bdc1c9;
+}
+
+
+.public-DraftEditorPlaceholder-hasFocus {
+    color: #E2E9EC;
+}
+
 .editor {
   box-sizing: border-box;
   border: 1px solid #E2E9EC;

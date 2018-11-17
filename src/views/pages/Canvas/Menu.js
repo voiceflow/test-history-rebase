@@ -16,8 +16,8 @@ const sections = [{
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/> },
         { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/> },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/> },
+        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
         { text: 'Command', type: 'command', icon: '⌘' }
     ]
 },{

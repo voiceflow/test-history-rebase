@@ -17,7 +17,7 @@ class BannerCarousel extends Component{
 
 	render(){
 		return (
-			<div className="row">
+			<div className="featured-row">
 				<div className="col-sm">
 					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex - 1, this.props.modules.length)})}}>
 						<i className="fas fa-angle-left"></i>

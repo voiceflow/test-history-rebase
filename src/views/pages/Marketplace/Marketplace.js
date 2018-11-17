@@ -53,9 +53,9 @@ class Marketplace extends Component {
             <div className="Window">
                 <div className="sidenav">
                     <ButtonGroup vertical>
-                        <Button>Real Shit?</Button>
-                        <Button>For Real</Button>
-                        <Button>Yayayayaya</Button>
+                        <Button className="nav-btn"> Templates</Button>
+                        <Button className="nav-btn">Flows</Button>
+                        <Button className="nav-btn">What is this?</Button>
                     </ButtonGroup>
                 </div>
 

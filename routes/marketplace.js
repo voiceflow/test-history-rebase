@@ -12,7 +12,7 @@ const hashIds = (rows) => {
 
 
 const getModules = (req, res) => {
-	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id LIMIT $1', 
+	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id INNER JOIN creators ON creators.creator_id = modules.creator_id LIMIT $1', 
         [module_limit], (err, data) => {
         if(err){
             res.sendStatus(500);
@@ -24,7 +24,7 @@ const getModules = (req, res) => {
 }
 
 const getFeaturedModules = (req, res) => {
-	pool.query('SELECT * FROM featured', 
+	pool.query('SELECT * FROM featured INNER JOIN modules ON featured.module_id = modules.module_id', 
         [], (err, data) => {
         if(err){
             res.sendStatus(500);

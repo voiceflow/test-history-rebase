@@ -47,7 +47,7 @@ class AudioDrop extends Component {
 
         if(this.state.loading){
             render = <div className="audio-box">
-                <h1 className="mb-0"><i className="fas fa-sync-alt fa-spin"/></h1>
+                <h1 className="mb-0"><span className="loader"/></h1>
             </div>
         } else if(this.props.audio){
             render = <div className="audio-box">

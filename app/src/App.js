@@ -96,8 +96,8 @@ class App extends Component {
       this.state.loading ? 
         <div className='super-center h-100 w-100'>
             <div className="text-center">
-                <h1><i className="fas fa-sync-alt fa-spin"/></h1>
-                <h5>Loading...</h5>
+                <h5 className="pb-3">Loading</h5>
+                <h1><span className="loader"/></h1>
             </div>
         </div> :
         <Router history={history}>

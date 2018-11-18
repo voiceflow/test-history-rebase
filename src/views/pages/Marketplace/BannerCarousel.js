@@ -1,67 +1,87 @@
 import React, { Component } from 'react';
 import { Button, Jumbotron, Container } from 'reactstrap';
 import './Marketplace.css';
-
-function mod(n, m) {
-	return ((n % m) + m) % m;
-}
+import axios from 'axios';
 
 class BannerCarousel extends Component{
 	constructor(props){
 		super(props);
-
-		this.state = {
-			mIndex: 0,
-			featured_modules: [
-				{ title: '',
-				  descr:''},
-				{ title: '',
-				  descr:''}
-			]
-		}
+		this.handleAddRemove = this.handleAddRemove.bind(this);
 	}
 
-	componentWillReceiveProps(next_props){
-		if(this.props !== next_props){
-			this.setState({
-				featured_modules: next_props.featured_modules
+	handleAddRemove(i) {
+		if(!this.props.ownership.has(this.props.featured_modules[i].module_id)){
+			axios.post(`/marketplace/user_module/${this.props.featured_modules[i].module_id}`)
+			.then(res => {
+				if(res.status === 200){
+					let ownership = this.props.ownership;
+					ownership.add(this.props.featured_modules[i].module_id);
+					this.props.onOwnershipChange(ownership);
+				}else{
+					//TODO: add error modal
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		} else {
+			axios.delete(`/marketplace/user_module/${this.props.featured_modules[i].module_id}`)
+			.then(res => {
+				if(res.status === 200){
+					let ownership = this.props.ownership;
+					ownership.delete(this.props.featured_modules[i].module_id);
+					this.props.onOwnershipChange(ownership);
+				}else{
+					//TODO: add error modal
+				}
+			})
+			.catch(error => {
+				console.log(error);
 			});
 		}
 	}
 
 	render(){
 		var currentModule1 = 
-			<div>
-				<img src={this.state.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
-				<h1>{this.state.featured_modules[0].title}</h1>
-				<p>{this.state.featured_modules[0].descr}</p>
+			<div className="container border rounded">
+				<div className="d-flex justify-content-between mt-3">
+					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
+					<Button className="" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
+				</div>
+				<div className="row ml-2">
+					<h1>{this.props.featured_modules[0].title}</h1>
+				</div>
+				<div className="row ml-2">
+					<p>{this.props.featured_modules[0].descr}</p>
+				</div>
 			</div>
 
 		var currentModule2 = 
-			<div>
-				<img src={this.state.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
-				<h1>{this.state.featured_modules[1].title}</h1>
-				<p>{this.state.featured_modules[1].descr}</p>
+			<div className="container border rounded">
+				<div className="d-flex justify-content-between mt-3">
+					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
+					<Button className="" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
+				</div>
+				<div className="row ml-2">
+					<h1>{this.props.featured_modules[1].title}</h1>
+				</div>
+				<div className="row ml-2">
+					<p>{this.props.featured_modules[1].descr}</p>
+				</div>
 			</div>
 
 		return (
 			<div className="container">
 				<div className="row">
-					<h1>Featured Flows</h1>
+					<h1 className="pl-3">Featured Flows</h1>
 				</div>
 				<div className="row">
-
-					<Jumbotron>
-						<Container>
-							{currentModule1}
-						</Container>
-					</Jumbotron>
-
-					<Jumbotron>
-						<Container>
-							{currentModule2}
-						</Container>
-					</Jumbotron>
+					<div className="col-md">
+						{currentModule1}
+					</div>
+					<div className="col-md">
+						{currentModule2}
+					</div>
 				</div>
 			</div>
 		)

@@ -5,7 +5,7 @@ td {
 .test-modal{
     padding-bottom: 0px;
     padding-top: 0px;
-    height: 508px;
+/*    height: 508px;*/
 }
 .test-modal>.row{
     height: 100%;
@@ -71,12 +71,22 @@ td {
 }
 .test-sidebar p.list-group-item {
     padding: 10px 5px;
+    color: #bbb;
+}
+.list-group-item{
+    
 }
 .test-sidebar h4{
     margin-bottom: 0;
+    color: #2b3950;
+}
+.modal-title{
+    color: #2b3950;
+    font-weight: 900;
 }
 .debug-switch {
     border-bottom: 1px solid #e9ecef;
+    color: #2b3950;
     /*margin-bottom: 10px;*/
 }
 

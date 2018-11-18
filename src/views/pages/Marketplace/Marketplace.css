@@ -18,6 +18,14 @@
 
 .marketplace-main {
 	margin-left: 160px;
+    padding-left: 40px;
+    padding-top: 20px;
+    padding-right: 40px;
+}
+
+.card-icon {
+    width: 60px;
+    height: 50px;
 }
 
 @media(max-width: 1200px){

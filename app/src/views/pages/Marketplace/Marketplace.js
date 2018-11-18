@@ -13,12 +13,22 @@ class Marketplace extends Component {
 
         this.state = {
             modules: [],
-            featured_modules: [],
+            featured_modules: [
+				{ title: '',
+				  descr:'',
+                  card_icon: '',
+                  module_id: ''},
+				{ title: '',
+				  descr:'',
+                  card_icon: '',
+                  module_id: ''}
+			],
             loading: false,
             user_modules: new Set()
         }
 
         this.onLoadModules = this.onLoadModules.bind(this);
+        this.handleOwnershipChange = this.handleOwnershipChange.bind(this);
     }
 
     componentDidMount() {
@@ -65,20 +75,27 @@ class Marketplace extends Component {
         });
     }
 
+    handleOwnershipChange(ownership){
+        this.setState({
+            user_modules: ownership
+        })
+    }
+
     render() {
         return (
             <div className="Window">
                 <div className="sidenav">
                     <ButtonGroup vertical>
-                        <Button>Real Shit?</Button>
-                        <Button>For Real</Button>
-                        <Button>Yayayayaya</Button>
+                        <Button>Flows</Button>
+                        <Button>Templates</Button>
                     </ButtonGroup>
                 </div>
 
                 <div className="marketplace-main">
                     <BannerCarousel
                         featured_modules={this.state.featured_modules}
+                        ownership={this.state.user_modules}
+                        onOwnershipChange={this.handleOwnershipChange}
                     />
                     <Masonry elementType='div' className="skills-container">
                         {this.state.modules.map((module, i) => 
@@ -86,7 +103,8 @@ class Marketplace extends Component {
                                 key={i}
                                 module={module}
                                 onClick={() => {this.props.history.push('/market/' + module.module_id)}}
-                                owned={this.state.user_modules.has(module.module_id)}
+                                ownership={this.state.user_modules}
+                                onOwnershipChange={this.handleOwnershipChange}
                             />
                         )}
                     </Masonry>

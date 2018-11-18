@@ -303,7 +303,8 @@ class Canvas extends Component {
 
             let sub_diagrams = [];
             let permissions = new Set();
-            for(let node of serialize.nodes){
+            
+            serialize.nodes.forEach(node => {
                 if(node.extras.type === 'flow' && node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id);
                 }
@@ -312,7 +313,8 @@ class Canvas extends Component {
                         permissions.add(permission.selected.value)
                     })
                 }
-            }
+            })
+
             permissions = [...permissions]
 
             for (var i = 0; i < this.state.diagrams.length; i++) {

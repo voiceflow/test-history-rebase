@@ -50,12 +50,6 @@ class Stream extends Component {
     render() {
         return (
             <div>
-                <InputGroup className="my-3">
-                    <label className="input-group-text w-100 m-0 text-left">
-                        <Input addon type="checkbox" checked={!!this.state.node.extras.player} onChange={this.togglePlayer}/>
-                        <span className="ml-2">Audio Player Functions</span>
-                    </label>
-                </InputGroup>
                 <label>Stream File (AAC/MP4, MP3, HLS)</label>
                 <AudioDrop
                     audio={this.state.node.extras.audio}
@@ -65,6 +59,16 @@ class Stream extends Component {
                         this.onUpdate();
                     }}
                 />
+                <InputGroup className="mb-1 mt-3">
+                    <label className="input-group-text w-100 m-0 text-left">
+                        <Input addon type="checkbox" checked={!!this.state.node.extras.player} onChange={this.togglePlayer}/>
+                        <span className="ml-2">Audio Player Functions</span>
+                    </label>
+                </InputGroup>
+                {this.state.node.extras.player ? 
+                    <span className="text-muted">
+                        Users will be able to say playlist commands such as 'Pause', 'Shuffle', 'Loop', 'Next' and 'Previous'
+                    </span> : null}
             </div>
         );
     }

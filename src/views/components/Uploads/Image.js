@@ -36,7 +36,7 @@ class Image extends Component {
         let render;
         if(this.state.loading){
             render = <div className="image-box super-center d-flex">
-                <h1 className="mb-0"><i className="fas fa-sync-alt fa-spin"/></h1>
+                <h1 className="mb-0"><span className="loader"/></h1>
             </div>
         }else if(this.props.image){
             render = <div className="image-box">

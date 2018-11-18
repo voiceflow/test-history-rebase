@@ -14,7 +14,8 @@ class Marketplace extends Component {
         this.state = {
             modules: [],
             featured_modules: [],
-            loading: false
+            loading: false,
+            user_modules: new Set()
         }
 
         this.onLoadModules = this.onLoadModules.bind(this);
@@ -40,9 +41,24 @@ class Marketplace extends Component {
         .then(res => {
             this.setState({
                 featured_modules: res.data,
-                loading:false
+                loading: false
             });
-            console.log("FJDOSJFOJDOI", this.state.featured_modules)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+        axios.get('/marketplace/user_module')
+        .then(res => {
+            let user_modules = [];
+            for(var i = 0;i < res.data.length;i++){
+                user_modules.push(res.data[i].module_id);
+            }
+            user_modules = new Set(user_modules);
+            this.setState({
+                user_modules: user_modules,
+                loading: false
+            });
         })
         .catch(error => {
             console.log(error);
@@ -70,6 +86,7 @@ class Marketplace extends Component {
                                 key={i}
                                 module={module}
                                 onClick={() => {this.props.history.push('/market/' + module.module_id)}}
+                                owned={this.state.user_modules.has(module.module_id)}
                             />
                         )}
                     </Masonry>

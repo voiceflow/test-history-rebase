@@ -12,7 +12,12 @@ class BannerCarousel extends Component{
 
 		this.state = {
 			mIndex: 0,
-			featured_modules: []
+			featured_modules: [
+				{ title: '',
+				  descr:''},
+				{ title: '',
+				  descr:''}
+			]
 		}
 	}
 
@@ -25,35 +30,38 @@ class BannerCarousel extends Component{
 	}
 
 	render(){
-		var JumbotronStyle = {};
-		if(this.state.featured_modules.length > 0){
-			JumbotronStyle = {
-				backgroundImage: 'url(' + this.state.featured_modules[this.state.mIndex].banner_img + ')',
-				backgroundSize: 'cover'
-			}
-		}
-		console.log(this.state)
+		var currentModule1 = 
+			<div>
+				<img src={this.state.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
+				<h1>{this.state.featured_modules[0].title}</h1>
+				<p>{this.state.featured_modules[0].descr}</p>
+			</div>
+
+		var currentModule2 = 
+			<div>
+				<img src={this.state.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
+				<h1>{this.state.featured_modules[1].title}</h1>
+				<p>{this.state.featured_modules[1].descr}</p>
+			</div>
 
 		return (
-			<div className="row">
-				<div className="col-sm">
-					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex - 1, this.state.featured_modules.length)})}}>
-						<i className="fas fa-angle-left"></i>
-					</Button>
+			<div className="container">
+				<div className="row">
+					<h1>Featured Flows</h1>
 				</div>
+				<div className="row">
 
-				<Jumbotron fluid style={JumbotronStyle}>
-					<Container fluid>
-						<h1 className="display-3">
-							fdus9ifjdosaj
-						</h1>
-					</Container>
-				</Jumbotron>
+					<Jumbotron>
+						<Container>
+							{currentModule1}
+						</Container>
+					</Jumbotron>
 
-				<div className="col-sm">
-					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex + 1, this.state.featured_modules.length)})}}>
-						<i className="fas fa-angle-right"></i>
-					</Button>
+					<Jumbotron>
+						<Container>
+							{currentModule2}
+						</Container>
+					</Jumbotron>
 				</div>
 			</div>
 		)

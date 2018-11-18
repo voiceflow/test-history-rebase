@@ -3,7 +3,7 @@
 body {
     font-family: 'Lato', sans-serif;
     background: #F5F7F8 !important;
-    color: #545D6D;
+    color: #2b3950;
 }
 
 button:focus{
@@ -11,8 +11,11 @@ button:focus{
 }
 .btn-primary{
     color: #fff !important;
-    background-color: #0095f7;
-    border-color: #0095f7;
+    background-color: #42A5FF;
+    border-color: #42A5FF;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+/*    border-left: 2px solid #fff;*/
+    border-radius: 5px;
 }
 .btn-outline-primary{
     color: #0095f7;
@@ -27,6 +30,15 @@ button:focus{
 .btn-primary:hover{
     background-color: #46A1F8;
     border-color: #46A1F8;
+    box-shadow: 0 3px 5px 0 rgba(14,30,37,.12);
+}
+.btn-danger{
+    background-color: #ff3562 !important;
+    border: 1px solid #ff3562 !important;
+}
+.alert-danger{
+    color: #ff3562 !important;
+    background-color: #ff7c8824 !important;
 }
 .text-dark {
     color: #545D6D !important;
@@ -35,6 +47,9 @@ button:focus{
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+.row{
+    color: #2b3950;
 }
 .no-select {
   -webkit-touch-callout: none; /* iOS Safari */
@@ -55,7 +70,7 @@ button:focus{
     color: #95a6bd;
 }
 .btn-default {
-    box-shadow: inset 0 0 0 1px rgba(144,164,174,.2);
+    border: 1px solid #E2E9EC;
     color: #2b3950;
     background-color: #fff !important;
     font-weight: 600;
@@ -63,9 +78,8 @@ button:focus{
 .btn-default:hover{
     background-color: #fff;
     color: #0095f7;
-    box-shadow: inset 0 0 0 1px rgba(144,164,174,.5);
+/*    box-shadow: inset 0 0 0 1px rgba(144,164,174,.5);*/
 }
-
 .normal-btn{
     text-transform: none !important;
     color: #94A6BD !important;
@@ -99,16 +113,16 @@ button:focus{
     padding: 10px 25px !important;
     height: 43px;
     font-weight: normal !important;
-    color: #95a6bd;
+    color: #2b3950 !important;
     border-radius: 3px;
-    box-shadow: 0 1px 2px 0 rgba(14,30,37,.12) !important;
+    box-shadow: 0 1px 2px rgba(36,35,40,.2), 0 10px 20px rgba(0,0,0,.03)!important;
     background-color: #ffffff !important;
     text-transform: none !important;
 /*    border: 1px solid #E2E9EC !important;*/
 }
 .white-btn:hover{
     background-color: #EEE;
-    box-shadow: 0px 2px 7px rgba(14,30,37,.12)!important;
+    box-shadow: 0 2px 4px rgba(36,35,40,.2), 0 10px 20px rgba(0,0,0,.03)!important;
 }
 .btn-secondary{
     color: #fff !important;
@@ -130,19 +144,31 @@ button:focus{
     padding: 10px 25px !important;
     color: #fff !important;
     font-weight: normal !important;
-    background-color: #0095f7 !important;
+    background-color: #42A5FF !important;
     text-transform: none !important;
     box-shadow:  inset 0 0 0 1px #008fed;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
+/*    border: 2px solid #fff !important;*/
 }
 .purple-btn:hover{
-    background-color: #46A1F8 !important;
+    background-color: #479bec !important;
 /*    box-shadow: 0 5px 10px 0 rgba(66, 83, 255, 0.23) !important;*/
 }
 .card {
-    border: 1px solid #E2E9EC;
+/*    border: 1px solid #fff;*/
     border-radius: 6px;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
+    border-radius: 30px;
+    border: none !important;
+    padding: 0px !important;
+    transition-duration: 172ms;
+    will-change: transform, box-shadow;
 }
-
+.card:hover{
+    box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.05) !important;
+    background-color: #fff !important;
+    
+}
 label {
     color: #666!imortant;
     /*margin: 0px !important;*/
@@ -317,8 +343,9 @@ input::placeholder, textarea::placeholder {
 
 .subheader-title b{
   font-size: 1.5rem;
-  font-weight: normal;
+  font-weight: 900;
   color: #545D6D;
+    
 }
 
 .subheader-title {

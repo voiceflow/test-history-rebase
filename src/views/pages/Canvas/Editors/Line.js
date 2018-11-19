@@ -105,7 +105,7 @@ class Line extends Component {
                     { this.state.node.extras.audio || this.state.loading ?
                         <div>{ this.state.loading ? 
                             <div className="combined-box">
-                                <h1><i className="fas fa-sync-alt fa-spin"></i></h1>
+                                <h1><span className="loader"/></h1>
                             </div> :
                             <div className="combined-box">
                                 <div><i className="fas fa-layer-group"></i> Combined Audio</div>

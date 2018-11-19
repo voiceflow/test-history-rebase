@@ -35,9 +35,8 @@ class LoadingModal extends PureComponent {
             }
             {!this.props.error && !this.props.success ? 
               <div>
-                <h5>Loading...</h5>
-                <hr/>
-                <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                <h5 className="pb-3">Loading...</h5>
+                <h1><span className="loader"/></h1>
               </div> : null
             }
           </ModalBody>

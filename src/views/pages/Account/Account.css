@@ -203,6 +203,7 @@
         overflow: visible;
     }
     #login-form, #signup-form {
+        margin-top: 20px;
         margin-bottom: 0 !important;
         height: 100%;
         justify-content: start;

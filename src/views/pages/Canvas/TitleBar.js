@@ -78,7 +78,7 @@ class TitleBar extends PureComponent {
             case 1:
                 return <div className="super-center mb-4">
                     <div className='text-center'>
-                        <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                        <h1><span className="loader"/></h1>
                         Rendering
                     </div>
                 </div>
@@ -126,7 +126,7 @@ class TitleBar extends PureComponent {
                 {this.props.preview ? null : 
                     <div className="title-group">
                         <div>
-                            <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
+                            <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save Draft"}</MUIButton>
 
                             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block mr-2">
                                 <DropdownToggle className="anti-btn" tag="div">

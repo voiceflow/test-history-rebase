@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
+import VariableInput from './VariableInput';
 
 class APIMapping extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class APIMapping extends Component {
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input placeholder="object path" onChange={e => this.props.onChange(e.target.value, i, 'path')} value={this.state.pairs[i]['path']}/>
+                                    <VariableInput className="form-control" placeholder="object path" updateRaw={e => this.props.onChange(e, i, 'path')} variables={this.props.variables} raw={choice.path}/>
                                     <Select
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"

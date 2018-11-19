@@ -593,13 +593,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     let formattedRawContent = '';
                     if (!_.isNil(node.extras.rawContent)) {
-                        formattedRawContent = convertToStringForSafeEval(node.extras.rawContent);
+                        formattedRawContent = draftToMarkdown(node.extras.rawContent);
                     }
 
                     if (!_.isNil(node.extras.params)) {
                         node.extras.params.forEach(param_map => {
-                            param_map.val = convertToStringForSafeEval(param_map.val);
-                            param_map.key = convertToStringForSafeEval(param_map.key);
+                            param_map.val = draftToMarkdown(param_map.val);
+                            param_map.key = draftToMarkdown(param_map.key);
                         });
                     }
 
@@ -608,8 +608,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         node.extras.headers.forEach(param_map => {
                             if(param_map.val && param_map.key){
                                 headers.push({
-                                    val: convertToStringForSafeEval(param_map.val),
-                                    key: convertToStringForSafeEval(param_map.key)
+                                    val: draftToMarkdown(param_map.val),
+                                    key: draftToMarkdown(param_map.key)
                                 })
                             }
                         });
@@ -617,14 +617,20 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     if (!_.isNil(node.extras.body)) {
                         node.extras.body.forEach(param_map => {
-                            param_map.val = convertToStringForSafeEval(param_map.val);
-                            param_map.key = convertToStringForSafeEval(param_map.key);
+                            param_map.val = draftToMarkdown(param_map.val);
+                            param_map.key = draftToMarkdown(param_map.key);
                         });
                     }
 
                     let formattedUrl = '';
                     if (!_.isNil(node.extras.url)) {
-                        formattedUrl = convertToStringForSafeEval(node.extras.url);
+                        formattedUrl = draftToMarkdown(node.extras.url);
+                    }
+
+                    if (!_.isNil(node.extras.mapping)) {
+                        node.extras.mapping.forEach(param_map => {
+                            param_map.path = draftToMarkdown(param_map.path);
+                        });
                     }
                     
                     story.lines[node.id] = {
@@ -768,30 +774,6 @@ const publishTest = async (req, res) => {
 
     res.sendStatus(status);
 };
-
-const convertToStringForSafeEval = function(s) {
-    let formattedStr = draftToMarkdown(s, {
-        entityItems: {
-            VARIABLE: {
-                open: entity => {
-                    return "' + v['"
-                },
-                close: entity => {
-                    return "'] + '"
-                }
-            },
-            '{mention': {
-                open: entity => {
-                    return "' + v['"
-                },
-                close: entity => {
-                    return "'] + '"
-                }
-            }
-        }
-    });
-    return "'" + formattedStr + "'";
-}
 
 module.exports = {
     updateName: updateName,

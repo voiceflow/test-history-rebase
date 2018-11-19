@@ -79,15 +79,17 @@
 .TitleBar .save-btn{
     padding: 0px 15px !important;
     border: none !important;
+    box-shadow: none !important;
 /*    width: 118px;*/
-    box-shadow:  0 1px 2px 0 rgba(14,30,37,.12) !important;
+/*    box-shadow:  0 1px 2px 0 rgba(14,30,37,.12) !important;*/
     /*color: #2b3950 !important;*/
-    color: #42A5FF !important;
+    color: #9196b6 !important;
+    border-radius: 10px 0px 0px 10px !important;
 }
 .TitleBar .save-btn:hover{
     padding: 5px 15px !important;
     border: none !important;
-    box-shadow:  0 2px 7px 0 rgba(14,30,37,.12) !important;
+/*    box-shadow:  0 2px 7px 0 rgba(14,30,37,.12) !important;*/
     color: #42A5FF !important;
 }
 .TitleBar .save-btn:focus{
@@ -122,16 +124,19 @@
 .TitleBar .publish-btn {
     border: none !important;
     min-width: 0 !important;
-    color: #42A5FF !important;
+    color: #9196b6 !important;
     padding: 10px 10px 10px 15px !important;
-    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; 
-/*    background-color: #42A5FF;*/
+    box-shadow:  none !important; 
+/*    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; */
+    background-color: transparent !important;
+    border-radius: 0px !important;
+/*    border: 1px solid #ddd !important;*/
 }    
 .TitleBar .publish-btn i{
     margin-left: 5px;
 }
 .TitleBar .publish-btn:hover{
-    box-shadow: 0 2px 7px 0 rgba(14,30,37,.12) !important
+/*    box-shadow: 0 2px 7px 0 rgba(14,30,37,.12) !important*/
 }
 .TitleBar .platform-dropdown {
     border: none;
@@ -172,23 +177,25 @@
     /*min-width: 68px !important;*/
     display: flex;
     text-align: center;
-    background-color: #42A5FF !important;
+    background-color: #fff !important;
 /*    border: 1px solid #fff !important;*/
-    color: #fff !important;
-    box-shadow: inset 0 0 0 1px #42A5FF;
+    color: #9196b6 !important;
+    box-shadow: 0px 1px 2px rgba(14,30,37,.12) !important;
+    border: 1.5px solid #fff !important;
     
 }
 .TitleBar .white-btn.play:hover{
     box-shadow: 0px 3px 7px rgba(14,30,37,.15) !important;
+    color: #42A5FF !important;
 }
 .TitleBar .white-btn.play span.button-circle{
     background-color: #ffffff30;
     border-radius: 20px;
-    width: 28px;
+    width: 23px;
     /*display: inline-block;*/
-    line-height: 22px;
+    line-height: 17px;
     font-size: 10px;
-    height: 28px;
+    height: 23px;
     padding: 3px 5px 5px 6px;
     margin-left: 8px;
     display: inline-block;
@@ -204,12 +211,19 @@
     left: 252px;
     top: 0px;
     margin-top: 10px;
+    background-color: #fff;
+    padding: 0px;
+    border-radius: 15px;
+    box-shadow: 0px 2px 8px rgba(14,30,37,.07) !important;
+    transition: all .1s ease-in-out;
 }
-
+.TitleBar .title-group:hover{
+    box-shadow: 0px 3px 10px rgba(14,30,37,.12) !important;
+}
 .last-save {
     font-size: .8rem;
     padding-left: 0px;
-    padding-top: 5px;
+/*    padding-top: 5px;*/
 }
 
 .TitleBar .status {
@@ -1193,14 +1207,15 @@ button.close{
 }
 
 .diagram-block .btn-secondary{
-    background-color: #EBEEEF !important;
-    border: #EBEEEF 1px solid !important;
-    color: #2b3950 !important
+    background-color: #f0f3f7 !important;
+    border: #f0f3f7 1px solid !important;
+    color: #2b3950 !important;
+    border-radius: 5px !important;
 }
 .diagram-block .btn-secondary:hover{
     /*border-color: #CAD2D7 !important;*/
-    background-color: #E1E1E1 !important;
-/*    border: #E1E1E1 1px solid !important;*/
+    background-color: #d1d8e2 !important;
+    border: #d1d8e2 1px solid !important;
     /*color: #3d96f0 !important;*/
 }
 .diagram-block input.form-control {
@@ -1218,7 +1233,9 @@ button.close{
 .btn-secondary.disabled, .btn-secondary:disabled {
     color: #fff !important;
     background-color: #42A5FF !important;
-    border: 1px solid #42A5FF !important;
+    border: 1px solid #fff !important;
+    border-radius: 5px !important;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
 }
 
 .diagram-block {
@@ -1238,13 +1255,20 @@ button.close{
     font-size: 12px !important;
 }
 .diagram-block .diagram-edit{
-    padding-left: 4px;
+    padding-left: 8px;
     padding-right: 3px;
     margin-left: 0px !important;
     font-size: 12px !important;
-    color: #999 !important;
+    color: #889296 !important;
+    background-color: transparent !important;
+    border: none !important;
+    
 }
-
+.diagram-block .diagram-edit:hover{
+    background-color: transparent !important;
+    color: #2b3950 !important;
+    border: none !important;
+}
 .choice-block {
     width: 100%;
     border-radius: 5px;
@@ -1615,16 +1639,19 @@ button.close{
     border: none !important;
     padding: 10px 15px !important;
     min-width: 0 !important;
-    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; 
-    color: #3d96f0 !important;
+    box-shadow: none !important;
+/*    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; */
+    color: #9196b6 !important;
+    border-radius: 0px 10px 10px 0px !important;
 }
 
 .share-btn:hover{
     border: none !important;
     padding: 10px 15px !important;
     min-width: 0 !important;
-    box-shadow:  0px 2px 7px rgba(14,30,37,.12) !important; 
+/*    box-shadow:  0px 2px 7px rgba(14,30,37,.12) !important; */
     color: #3d96f0 !important;
+    box-shadow: none !important;
 
 }
 #widget-bar{

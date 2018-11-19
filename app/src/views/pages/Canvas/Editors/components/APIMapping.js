@@ -1,28 +1,15 @@
 import React, { Component } from 'react';
-import { InputGroup, Input, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
 import VariableInput from './VariableInput';
 
 class APIMapping extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            pairs: this.props.pairs
-        };
-    }
-
-    componentWillReceiveProps(props) {
-        this.setState({
-            pairs: props.pairs
-        });
-    }
 
     render() {
         return (
             <React.Fragment>
                 <div>
-                    {Array.isArray(this.state.pairs) ? this.state.pairs.map((choice, i) => {
+                    {Array.isArray(this.props.pairs) ? this.props.pairs.map((choice, i) => {
                         return (
                             <div key={i} className="mb-2">
                                 <InputGroup>
@@ -36,7 +23,7 @@ class APIMapping extends Component {
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
                                         className="variable-box"
-                                        value={this.state.pairs[i]['var'] ? {value: this.state.pairs[i]['var'], label: this.state.pairs[i]['var']} : null}
+                                        value={this.props.pairs[i]['var'] ? {value: this.props.pairs[i]['var'], label: this.props.pairs[i]['var']} : null}
                                         onChange={e => this.props.onChange(e.value, i, 'var')} 
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                             return {label: variable, value: variable}

@@ -175,28 +175,28 @@ const interactionModel = (invocation) => {
 
 const manifest = (r, encoded_id) => {
     r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
-    r.keywords = r.keywords.split(",").map(item => item.trim());
+	r.keywords = r.keywords.split(",").map(item => item.trim());
+	
+	const locales = {}
+	r.locales.forEach(locale => {
+		locales[locale] = {
+			"summary": r.summary,
+			"examplePhrases": r.invocations,
+			"keywords": r.keywords,
+			"name": r.name,
+			"description": r.description,
+			"smallIconUri": r.small_icon,
+			"largeIconUri": r.large_icon
+		}
+	})
 
     return {
      	"manifest": {
              "publishingInformation": {
-                 "locales": {
-                     "en-US": {
-                         "summary": r.summary,
-                         "examplePhrases": r.invocations,
-                         "keywords": r.keywords,
-                         "name": r.name,
-                         "description": r.description,
-                         "smallIconUri": r.small_icon,
-                         "largeIconUri": r.large_icon
-                     }
-                 },
-                 "isAvailableWorldwide": false,
+                 "locales": locales,
+                 "isAvailableWorldwide": true,
                  "testingInstructions": r.instructions,
                  "category": r.category,
-                 "distributionCountries": [
-                     "US"
-                 ]
              },
              "apis": {
                  "custom": {

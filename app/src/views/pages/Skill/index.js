@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
 
-import { Button, Form, FormGroup, Label, Input, Modal, ModalBody, Alert } from 'reactstrap';
+import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import MUFormGroup from '@material-ui/core/FormGroup';
@@ -22,6 +21,7 @@ import {Link} from 'react-router-dom'
 import AuthenticationService from './../../../services/Authentication';
 
 import categories from './../../../services/Categories';
+const _ = require('lodash');
 
 const stage_title = {
     "-1": "Login Failed",
@@ -40,6 +40,21 @@ const stage_title = {
     "12": "Confirming Withdraw",
     "13": "Confirming Delete"
 }
+
+const LOCALE_MAP = [
+    { value: "de-DE", name: "German (DE)" },
+    { value: "en-AU", name: "English (AU)" },
+    { value: "en-CA", name: "English (CA)" },
+    { value: "en-GB", name: "English (UK)" },
+    { value: "en-IN", name: "English (IN)" },
+    { value: "en-US", name: "English (US)" },
+    { value: "es-ES", name: "Spanish (ES)" },
+    { value: "es-MX", name: "Spanish (MX)" },
+    { value: "fr-CA", name: "French (CA)" },
+    { value: "fr-FR", name: "French (FR)" },
+    { value: "it-IT", name: "Italian (IT)" },
+    { value: "ja-JP", name: "Japanese (JP)" }
+]
 
 const disabled_stages = new Set([11,12]);
 
@@ -80,6 +95,7 @@ class Skill extends Component {
         this.onDelete = this.onDelete.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
+        this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this);
 
         this.privacyTop = React.createRef();
     }
@@ -304,6 +320,7 @@ class Skill extends Component {
             small_icon: s.small_icon,
             large_icon: s.large_icon,
             category: category,
+            locales: JSON.stringify(s.locales),
             ...store
         })
         .then(res => {
@@ -388,6 +405,21 @@ class Skill extends Component {
                 stage: 0
             });
         }
+    }
+
+    onLocaleBtnClick(locale) {
+        let locales = this.state.locales;
+        if (locales.includes(locale)) {
+            if (locales.length > 1) {
+                _.remove(locales, (v) => { return v === locale})
+            }
+        } else {
+            locales.push(locale)
+        }
+        this.setState({
+            saved: false,
+            locales : locales
+        })
     }
 
     render() {
@@ -868,6 +900,30 @@ class Skill extends Component {
                                     />
                                 </div>
                             </div>
+                        </FormGroup>
+    
+                        <FormGroup className="mt-0">
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label><b>Locale </b><small>Select Your Skill's Locale(s)</small></Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="text-secondary">
+                                        <b>Locale</b> determines your skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
+                                    </p> 
+                                </div>
+                                <div className="col-9">
+                                <ButtonGroup className="locale-button-group">
+                                    {LOCALE_MAP.map((locale, i) => {
+                                        const active = this.state.locales.includes(locale.value) ? "active" : "";
+                                        return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>{locale.name}</Button>
+                                    })}
+                                </ButtonGroup>
+                                </div>
+                            </div> 
                         </FormGroup>
 
                         <hr/>

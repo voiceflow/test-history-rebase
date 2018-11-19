@@ -263,11 +263,12 @@ const patchSkill = (req, res) => {
             copa = $13, 
             ads = $14, 
             export = $15, 
-            instructions = $16
+            instructions = $16,
+            locales = $17
             WHERE skill_id = $1`, 
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
             {value: b.invocations}, b.small_icon, b.large_icon, b.category, 
-            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions], (err) => {
+            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -287,10 +288,11 @@ const patchSkill = (req, res) => {
             invocations = $7, 
             small_icon = $8, 
             large_icon = $9, 
-            category = $10
+            category = $10,
+            locales = $11
             WHERE skill_id = $1`, 
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
-            {value: b.invocations}, b.small_icon, b.large_icon, b.category], (err) => {
+            {value: b.invocations}, b.small_icon, b.large_icon, b.category, b.locales], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);

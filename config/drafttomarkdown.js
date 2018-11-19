@@ -217,7 +217,7 @@ function isEmptyBlock(block) {
  *
  * @return {String} markdown string
 **/
-function renderBlock(block, index, rawDraftObject, options, periods) {
+function renderBlock(block, index, rawDraftObject, options) {
   var openInlineStyles = [],
       markdownToAdd = [];
   var markdownString = '',
@@ -380,7 +380,7 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
         // Similar work has to be done for codeblocks.
       } else {
         // Escaping inline markdown characters
-        if (periods) {
+        if (options.alexa) {
           character = character.replace(/&/g, 'ampersand');
         }
         character = _escape(character);
@@ -424,11 +424,6 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
     markdownString += (customStyleItems[type] || StyleItems[type]).close(block);
   }
 
-  // if(periods){
-  //   let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
-  //   markdownString += period;
-  // }
-
   return markdownString;
 }
 
@@ -442,17 +437,14 @@ function renderBlock(block, index, rawDraftObject, options, periods) {
  *
  * @return {String} markdown string
 **/
-function draftToMarkdown(rawDraftObject, options, periods=false) {
+
+// TYLER - I JUST COPY AND PASTED THIS ENTIRE LIBRARY
+function draftToMarkdown(rawDraftObject, options) {
   options = options || {};
   var markdownString = '';
   rawDraftObject.blocks.forEach(function (block, index) {
-    markdownString += renderBlock(block, index, rawDraftObject, options, periods);
+    markdownString += renderBlock(block, index, rawDraftObject, options);
   });
-
-  // if(periods){
-  //   let period = markdownString.substr(-1).match(/^[.,:!?]$/) ? ' ' : '. '
-  //   markdownString += period;
-  // }
 
   orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.
   return markdownString;

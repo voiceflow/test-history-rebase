@@ -524,9 +524,14 @@
     background-color: #00daa5 !important;
 }
 .App .Menu #sidebar .MenuItem.mail:hover {
-    background-color: #EFEFEF;
+    background-color: #F4F6F7;
 } .MenuItem.mail>.MenuIcon {
     background-color: #333;
+}
+.App .Menu #sidebar .MenuItem.stream:hover {
+    background-color: #F4F6F7;
+} .MenuItem.stream>.MenuIcon {
+    background-color: #009688;
 }
 .App .Menu #sidebar .MenuItem.api:hover {
     background-color: #F4F6F7;
@@ -536,7 +541,7 @@
 .App .Menu #sidebar .MenuItem.permissions:hover {
     background-color: #F4F6F7;
 } .MenuItem.permissions>.MenuIcon {
-    background-color: #8B4513;
+    background-color: #88bbd8;
 }
 .App .Menu #sidebar .MenuItem.speak:hover {
     background-color: #F4F6F7;
@@ -854,9 +859,8 @@ label {
     border-top: 6px solid #62D6A8 !important;
     border-color: #62D6A8 !important;
 }
-.srd-default-node.mail{
-    /*border-color: #A5D6A7;*/
-    background-color: #BBB;
+.srd-default-node.stream{
+    background-color: #009688;
 }
 .srd-default-node.api{
     background-color: #fff;
@@ -866,7 +870,7 @@ label {
 
 .srd-default-node.permissions{
     background-color: #fff;
-    border-top: 6px solid #8B4513;
+    border-top: 6px solid #88bbd8;
     border-color: #8B4513 !important;
 }
 
@@ -878,6 +882,11 @@ label {
     background-color: #fff;
     border-top: 6px solid #F09038;
     border-color: #F09038 !important;
+}
+
+.srd-default-node.stream{
+    border-top: 6px solid;
+    border-color: #009688 !important;
 }
 
 .srd-default-node.random {

@@ -369,6 +369,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             return link ? link : null;
                         })
                     };
+                } else if (node.extras.type === 'stream') {
+                    let stop = links[node.ports.filter(a => a.label === 'stop')[0].links[0]];
+
+                    if(node.extras.player){
+                        story.lines[node.id] = {
+                            play: node.extras.audio,
+                            nextId: stop,
+                            NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
+                            PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
+                            SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            play: node.extras.audio,
+                            nextId: stop
+                        };
+                    }
                 } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
                     let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -504,26 +521,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     
                     if(Array.isArray(node.extras.dialogs)){
                         node.extras.dialogs.forEach(d => {
-                            temp = draftToMarkdown(d.rawContent, {
-                                entityItems: {
-                                    VARIABLE: {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    },
-                                    '{mention': {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    }
-                                }
-                            }, true);
+                            temp = draftToMarkdown(d.rawContent, {alexa: true});
 
                             if(d.voice === 'Alexa'){
                                 markdownstring += temp;
@@ -531,7 +529,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                 markdownstring += `<voice name="${d.voice}">${temp}</voice>`
                             }
                         });
-                        markdownstring = "'" + markdownstring + "'";
                     }else{
                         // DEPRECATE OLD SPEAK 
                         let raw;
@@ -541,27 +538,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             raw = node.extras.raw;
                         }
                         if(raw){
-                            markdownstring = draftToMarkdown(raw, {
-                                entityItems: {
-                                    VARIABLE: {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    },
-                                    '{mention': {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    }
-                                }
-                            }, true);
-                            markdownstring = "'" + markdownstring + "'";
+                            markdownstring = draftToMarkdown(raw, {alexa: true});
                         }
                     }
 

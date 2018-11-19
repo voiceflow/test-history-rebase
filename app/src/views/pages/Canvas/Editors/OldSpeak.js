@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+// DEPRECATE THIS
 import {
   Editor,
   EditorState,

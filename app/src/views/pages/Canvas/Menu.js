@@ -16,6 +16,7 @@ const sections = [{
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/> },
         { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/> },
+        // { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/> },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
         { text: 'Command', type: 'command', icon: '⌘' }
     ]
@@ -255,7 +256,7 @@ class Menu extends PureComponent {
                     <div className="spacer"/>
                     <div className="bottom-up">
                         
-                        <a className="tool no-underline" href="https://intercom.help/flowschool"
+                        <a className="tool no-underline" href="https://intercom.help/vfu"
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>
                         </a>

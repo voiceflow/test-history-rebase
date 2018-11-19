@@ -466,7 +466,7 @@ class Skill extends Component {
             this.state.stage === 7 
         ){
             content = <div>
-                    <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                    <h1><span className="loader"/></h1>
                     <p className="loading">{stage_title[this.state.stage]}</p>
             </div>
         }else if(this.state.stage === 2){
@@ -570,7 +570,7 @@ class Skill extends Component {
 
         if(!this.state.loaded) return <div className="super-center h-100 w-100">
                 <div className='text-center'>
-                    <h1><i className="fas fa-sync-alt fa-spin"/></h1>
+                    <h1><span className="loader"/></h1>
                     Getting Skill Status
                 </div>
             </div>;

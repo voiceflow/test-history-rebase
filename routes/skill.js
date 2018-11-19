@@ -79,7 +79,8 @@ const getSkill = (req, res) => {
                 // Check Current Amazon Status
                 AccessToken(req.user.id, async (token) => {
                     if(token === null){
-                        throw('INVALID TOKEN');
+                        // throw('INVALID TOKEN');
+                        return res.send(skill);
                     }
 
                     try {

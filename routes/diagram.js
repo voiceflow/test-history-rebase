@@ -606,7 +606,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     if (!_.isNil(node.extras.mapping)) {
                         node.extras.mapping.forEach(param_map => {
-                            param_map.path = draftToMarkdown(param_map.path);
+                            if(typeof param_map.path !== 'string'){
+                                param_map.path = draftToMarkdown(param_map.path);
+                            }
                         });
                     }
                     

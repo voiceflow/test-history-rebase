@@ -26,8 +26,8 @@ const _escape = function (word) {
     if (typeof(word) === "string") {
         // word = word.replace(/</g, '&lt;');
         // word = word.replace(/>/g, '&gt;');
-        word = word.replace(/"/g, '\\\"');
-        word = word.replace(/'/g, '\\\'');
+        word = word.replace(/"/g, '\"');
+        word = word.replace(/'/g, '\'');
         return word;
     }
     if (typeof(word) === "number") {

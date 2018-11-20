@@ -141,7 +141,7 @@
     width: 105% !important;
     margin-top: 50px;
 }
-.flow-btn{
+.active-btn{
     background-color: #fff;
     color: #fff !important;
     border-top: 2px solid #fff!important;
@@ -157,7 +157,7 @@
     text-align: left !important;
     padding-left: 30px !important;
 }
-.template-btn{
+.inactive-btn{
     background-color: #fff !important;
     color: #C2C6D5 !important;
     border-top: 2px solid #fff!important;

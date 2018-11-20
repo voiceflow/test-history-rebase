@@ -52,7 +52,6 @@ class TitleBar extends PureComponent {
         this.setState({
             updateModal: false
         });
->>>>>>> new-ui
     }
 
     handleChange(e) {

@@ -609,6 +609,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             if(typeof param_map.path !== 'string'){
                                 param_map.path = draftToMarkdown(param_map.path);
                             }
+                            param_map.path = param_map.path.trim();
                         });
                     }
                     

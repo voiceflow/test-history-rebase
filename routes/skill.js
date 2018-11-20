@@ -245,6 +245,10 @@ const patchSkill = (req, res) => {
     let id = hashids.decode(req.params.id)[0];
     let b = req.body;
 
+    if(!b.locales){
+        b.locales = '["en-US"]';
+    }
+
     if(req.query.publish){
         pool.query(`
             UPDATE skills 

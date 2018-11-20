@@ -557,7 +557,7 @@ class Skill extends Component {
                     You may test on the Alexa Simulator or Submit your Skill for review
                 </span>
                 <div className="my-3">
-                    <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/en_US/`} 
+                    <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/${this.state.locales[0].replace('-', '_')}/`} 
                     className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                         Test on Alexa Simulator
                     </a>

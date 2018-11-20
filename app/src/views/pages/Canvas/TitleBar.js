@@ -146,6 +146,7 @@ class TitleBar extends PureComponent {
                                     {   this.props.skill.amzn_id ?
                                         <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
                                     }
+                                    <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
 

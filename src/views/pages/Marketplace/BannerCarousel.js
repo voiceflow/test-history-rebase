@@ -1,41 +1,99 @@
 import React, { Component } from 'react';
 import { Button, Jumbotron, Container } from 'reactstrap';
 import './Marketplace.css';
-
-function mod(n, m) {
-	return ((n % m) + m) % m;
-}
+import axios from 'axios';
 
 class BannerCarousel extends Component{
 	constructor(props){
 		super(props);
+		this.handleAddRemove = this.handleAddRemove.bind(this);
+	}
 
-		this.state = {
-			mIndex: 0
+	handleAddRemove(i) {
+		if(!this.props.ownership.has(this.props.featured_modules[i].module_id)){
+			axios.post(`/marketplace/user_module/${this.props.featured_modules[i].module_id}`)
+			.then(res => {
+				if(res.status === 200){
+					let ownership = this.props.ownership;
+					ownership.add(this.props.featured_modules[i].module_id);
+					this.props.onOwnershipChange(ownership);
+				}else{
+					//TODO: add error modal
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		} else {
+			axios.delete(`/marketplace/user_module/${this.props.featured_modules[i].module_id}`)
+			.then(res => {
+				if(res.status === 200){
+					let ownership = this.props.ownership;
+					ownership.delete(this.props.featured_modules[i].module_id);
+					this.props.onOwnershipChange(ownership);
+				}else{
+					//TODO: add error modal
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
 		}
 	}
 
 	render(){
-		return (
-			<div className="featured-row">
-				<div className="col-sm">
-					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex - 1, this.props.modules.length)})}}>
-						<i className="fas fa-angle-left"></i>
-					</Button>
+		var currentModule1 = 
+			<div className="market-hero border rounded">
+				<div className="d-flex justify-content-between mt-3">
+					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
+                    {
+                        this.props.ownership.has(this.props.featured_modules[0].module_id)?
+                        <i className="checkbox-active fas fa-check"></i>
+                        :
+                        <i className="checkbox"></i>
+                    }
 				</div>
+				<div className="row ml-2">
+					<h1 className="featured-card-txt">{this.props.featured_modules[0].title}</h1>
+				</div>
+				<div className="row ml-2 justify-content-between">
+					<p>{this.props.featured_modules[0].descr}</p>
+                    <Button className="hero-btn" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
+				</div>
+			</div>
 
-				<Jumbotron fluid>
-					<Container fluid>
-						<h1 className="display-3">
-							{this.state.mIndex}
-						</h1>
-					</Container>
-				</Jumbotron>
+		var currentModule2 = 
+			<div className="market-hero border rounded">
+				<div className="d-flex justify-content-between mt-3">
+					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
+                    {
+                        this.props.ownership.has(this.props.featured_modules[1].module_id)?
+                        <i className="checkbox-active fas fa-check"></i>
+                        :
+                        <i className="checkbox"></i>
+                    }
+				</div>
+				<div className="row ml-2">
+					<h1 className="featured-card-txt">{this.props.featured_modules[1].title}</h1>
+				</div>
+				<div className="row ml-2 justify-content-between">
+					<p>{this.props.featured_modules[1].descr}</p>
+                    <Button className="hero-btn" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
+				</div>
+			</div>
 
-				<div className="col-sm">
-					<Button onClick={()=>{this.setState({mIndex: mod(this.state.mIndex + 1, this.props.modules.length)})}}>
-						<i className="fas fa-angle-right"></i>
-					</Button>
+		return (
+			<div className="hero-container">
+				<div className="row">
+					<h1 className="heavy">Featured Flows</h1>
+				</div>
+				<div className="row">
+					<div className="col-md">
+						{currentModule1}
+					</div>
+					<div className="col-md">
+						{currentModule2}
+					</div>
 				</div>
 			</div>
 		)

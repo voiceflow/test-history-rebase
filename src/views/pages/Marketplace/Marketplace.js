@@ -54,7 +54,6 @@ class Marketplace extends Component {
                 templates: templates,
                 loading: false
             });
-            console.log(this.state)
         })
         .catch( error => {
             console.log(error);

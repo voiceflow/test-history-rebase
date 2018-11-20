@@ -86,8 +86,8 @@ class Marketplace extends Component {
             <div className="Window">
                 <div className="sidenav">
                     <ButtonGroup vertical>
-                        <Button>Flows</Button>
-                        <Button>Templates</Button>
+                        <Button className="flow-btn">Flows</Button>
+                        <Button className="template-btn">Templates</Button>
                     </ButtonGroup>
                 </div>
 

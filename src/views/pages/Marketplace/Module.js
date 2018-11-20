@@ -56,23 +56,16 @@ class Module extends Component{
 		return (
 			<div className="card-container">
 				<Card 
+                    className="market-card"
 					onMouseEnter={() => {this.setState({hover:true})}}
 					onMouseLeave={() => {this.setState({hover:false})}}
 				>
 					<div className="d-flex justify-content-between">
 						{
 							this.props.ownership.has(this.props.module.module_id)?
-							<i className="far fa-check-circle mt-2 ml-2"></i>
+							<i className="checkbox-active fas fa-check"></i>
 							:
-							<i className="far fa-circle mt-2 ml-2"></i>
-						}
-
-						{
-							this.state.hover
-							?
-								<Button onClick={this.handleAddRemove} className="visible">{this.props.ownership.has(this.props.module.module_id)? "Remove" : "Add"}</Button>
-							:
-								<Button className="invisible">Hidden</Button>
+							<i className="checkbox"></i>
 						}
 					</div>
 					<CardBody className="text-center pb-0">
@@ -81,8 +74,15 @@ class Module extends Component{
 						<p>{this.props.module.descr}</p>
 						<hr className="mb-0"/>
 						<div className="d-flex justify-content-center">
-							<p><i className="fas fa-user-circle"></i> Created by <br/> <i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
+							<p><i className="creator-name fas fa-user-circle"></i> Created by <br/> <i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
 						</div>
+                        {
+							this.state.hover
+							?
+								<Button className="add-btn" onClick={this.handleAddRemove}>{this.props.ownership.has(this.props.module.module_id)? "Remove" : "Add"}</Button>
+							:
+								<Button className="nonhover-btn" onClick={this.handleAddRemove}>{this.props.ownership.has(this.props.module.module_id)? "Remove" : "Add"}</Button>
+						}
 					</CardBody>
 				</Card>
 			</div>

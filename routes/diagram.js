@@ -210,7 +210,7 @@ const setDiagram = async (req, res) => {
         Item: diagram
     };
 
-    const permissions_string = JSON.stringify(diagram.permissions)
+    const permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]';
 
     docClient.put(params, async(err) => {
         if (err) {

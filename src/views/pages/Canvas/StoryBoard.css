@@ -859,9 +859,6 @@ label {
     border-top: 6px solid #62D6A8 !important;
     border-color: #62D6A8 !important;
 }
-.srd-default-node.stream{
-    background-color: #009688;
-}
 .srd-default-node.api{
     background-color: #fff;
     border-top: 6px solid #D73965;
@@ -887,6 +884,7 @@ label {
 .srd-default-node.stream{
     border-top: 6px solid;
     border-color: #009688 !important;
+    min-width: 160px !important;
 }
 
 .srd-default-node.random {

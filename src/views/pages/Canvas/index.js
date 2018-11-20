@@ -844,7 +844,7 @@ class Canvas extends Component {
                 };
             } else if (type === 'stream') {
                 node.addInPort(' ');
-                node.addOutPort('stop').setMaximumLinks(1);
+                node.addOutPort('stop/pause').setMaximumLinks(1);
                 node.extras = {
                     audio: '',
                     player: false

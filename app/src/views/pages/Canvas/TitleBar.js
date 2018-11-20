@@ -123,12 +123,12 @@ class TitleBar extends PureComponent {
                         </ModalFooter> : null
                     }
                 </Modal>
-                {this.props.preview ? null : 
+                {this.props.preview ? null :
                     <div className="title-group">
-                        <div>
-                            <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save Draft"}</MUIButton>
+                        <div className="title-group-sub">
+                            <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <i className="fas fa-sync-alt fa-spin"/> : "Save"}</MUIButton>
 
-                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block mr-2">
+                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                                 <DropdownToggle className="anti-btn" tag="div">
                                     <MUIButton variant="contained" className="white-btn publish-btn">
                                         Publish <i className="fas fa-caret-down"/>

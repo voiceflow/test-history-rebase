@@ -211,8 +211,8 @@ class Canvas extends Component {
         });
     }
 
-    handleTemplateChoice(module_id){
-        this.toggleTemplateConfirm(module_id);
+    handleTemplateChoice(module){
+        this.toggleTemplateConfirm(module);
     }
 
     replaceWithTemplate(module_id){
@@ -235,15 +235,15 @@ class Canvas extends Component {
         })
     }
 
-    toggleTemplateConfirm(module_id){
+    toggleTemplateConfirm(module){
         if(!!this.state.template_confirm){
             this.setState({
                 template_confirm: null
             });
         } else {
             let confirm = {
-                text: "Replace current flow completely with this template?",
-                confirm: ()=> this.replaceWithTemplate(module_id)
+                text: `Replace current flow completely with ${module.title} template?`,
+                confirm: ()=> this.replaceWithTemplate(module.module_id)
             }
             this.setState({
                 template_confirm:confirm
@@ -996,6 +996,8 @@ class Canvas extends Component {
                     onVariable={this.setVariables}
                     build={fn => this.buildDiagrams = fn}
                     user_modules={this.state.user_modules}
+                    user_templates={this.state.user_templates}
+                    onTemplateChoice={this.handleTemplateChoice}
                 />
                 <TitleBar
                     lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
@@ -1012,8 +1014,6 @@ class Canvas extends Component {
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
-                    user_templates={this.state.user_templates}
-                    onTemplateChoice={this.handleTemplateChoice}
                 />
                 <div
                     id="diagram"

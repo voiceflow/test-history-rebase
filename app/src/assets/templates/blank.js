@@ -1,74 +1,10 @@
-export default {  
-   "offsetX":24.9484259398383,
-   "offsetY":240.33130096249465,
-   "zoom":63.5000000000001,
+export default {
+   "offsetX":400,
+   "offsetY":120,
+   "zoom":70,
    "gridSize":0,
-   "links":[  
-      {  
-         "id":"61e05b92-d2dc-474f-8755-8e4d799412a3",
-         "type":"default",
-         "selected":false,
-         "source":"540600c2-9675-469c-8e15-879b5b392ef8",
-         "sourcePort":"bc62ed8a-8d37-4455-a757-14d54ec67be4",
-         "target":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-         "targetPort":"4a23a702-9aea-4932-a485-4463e1d50a01",
-         "points":[  
-            {  
-               "id":"1aa91386-0031-4cba-934b-1f3a6e5a1e15",
-               "selected":false,
-               "x":294.0625086043698,
-               "y":517.000009797521
-            },
-            {  
-               "id":"e581ea3f-fb7c-4394-9d32-260dbdfc4c3e",
-               "selected":false,
-               "x":382.4062525858977,
-               "y":517.2343704055227
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"f4d5f5ef-c8fd-4247-a3c6-add1cb1bdc0c",
-         "type":"default",
-         "selected":false,
-         "source":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-         "sourcePort":"e7b10d14-b0a5-402f-a033-10ed4f351f97",
-         "target":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-         "targetPort":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
-         "points":[  
-            {  
-               "id":"b5dd0bd4-3954-43e6-b6b1-cbb5a159a4e6",
-               "selected":false,
-               "x":549.625015931205,
-               "y":517.2343704055227
-            },
-            {  
-               "id":"92be8a6f-2e8d-400c-81d9-fcefa6a93fde",
-               "selected":false,
-               "x":654.6875190712772,
-               "y":517.4687637226114
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
+   "links":[
+      {
          "id":"3d7561a5-0e54-404d-bd5a-b59c5de5241c",
          "type":"default",
          "selected":false,
@@ -76,528 +12,222 @@ export default {
          "sourcePort":"94b35d52-9ce3-4ee2-bf4a-dd3d16921e63",
          "target":"0c549b99-480c-4cf4-b069-d560902dada9",
          "targetPort":"41dc26e6-3e9e-4afc-8ff6-480ff57802ec",
-         "points":[  
-            {  
+         "points":[
+            {
                "id":"709c43ff-4804-48c5-8625-440a456b44ad",
                "selected":false,
-               "x":815.3437601744052,
-               "y":517.4687637226114
+               "x":500.51986036629904,
+               "y":532.5792089554687
             },
-            {  
+            {
                "id":"3c8b0c65-968f-40e4-a29b-83b367787e7a",
                "selected":false,
-               "x":910.484387006114,
-               "y":517.6406172654504
+               "x":585.6093668860831,
+               "y":534.0000170634466
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
          "color":"#E3E9EE",
          "curvyness":50
       },
-      {  
-         "id":"a5765172-9435-4d4a-873d-ce4dff700983",
+      {
+         "id":"a1223d86-6230-4307-8f09-fb6093f442c8",
          "type":"default",
          "selected":false,
-         "source":"0c549b99-480c-4cf4-b069-d560902dada9",
-         "sourcePort":"74d95694-6b76-4206-a1d1-733d3a0b13f3",
-         "target":"fe6072f6-0853-4af9-9d5b-cca45a1600ba",
-         "targetPort":"d1acd436-3a99-4f7d-963d-db5234bd2e63",
-         "points":[  
-            {  
-               "id":"d1679f21-3dd5-4c2a-b1fc-ffb787e84f6a",
+         "source":"540600c2-9675-469c-8e15-879b5b392ef8",
+         "sourcePort":"bc62ed8a-8d37-4455-a757-14d54ec67be4",
+         "target":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
+         "targetPort":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
+         "points":[
+            {
+               "id":"cf3ef8ac-c967-4481-ab4c-b2afd94c695a",
                "selected":false,
-               "x":1098.1094011364394,
-               "y":518.1406083685788
+               "x":239.31684175440336,
+               "y":532.672925834644
             },
-            {  
-               "id":"54bd47e6-a4b7-4045-b775-23d27d1728eb",
+            {
+               "id":"942d2799-83c4-4379-8f71-0d79e338ba61",
                "selected":false,
-               "x":1133.109521906525,
-               "y":517.1142612803297
-            },
-            {  
-               "id":"d3fd18c3-e9a2-456d-a28d-b6ee7f6c3121",
-               "selected":false,
-               "x":1208.0811235725607,
-               "y":396.7053252712425
-            },
-            {  
-               "id":"880bccb3-03ff-4c1e-baf2-4bbc640988a6",
-               "selected":false,
-               "x":1236.109366072298,
-               "y":394.7187563957761
+               "x":324.86371675440313,
+               "y":532.5792089554687
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
          "color":"#E3E9EE",
          "curvyness":50
       },
-      {  
-         "id":"773e1163-0f4f-41d8-9771-0b38a024a6d2",
-         "type":"default",
-         "selected":false,
-         "source":"fe6072f6-0853-4af9-9d5b-cca45a1600ba",
-         "sourcePort":"dfb382ff-2389-4e59-a467-a5c9e00e2a2c",
-         "target":"0c549b99-480c-4cf4-b069-d560902dada9",
-         "targetPort":"41dc26e6-3e9e-4afc-8ff6-480ff57802ec",
-         "points":[  
-            {  
-               "id":"259fb593-a967-47ba-8f2b-2b672e56ffd4",
-               "selected":false,
-               "x":1457.9531223524423,
-               "y":394.7187563957761
-            },
-            {  
-               "id":"7e54f561-6b31-4904-af17-c6b2bee92a72",
-               "selected":false,
-               "x":1529.5502640496525,
-               "y":394.43345855408984
-            },
-            {  
-               "id":"43647619-d644-43d5-b870-49d05e2aeac0",
-               "selected":false,
-               "x":1529.5502640496525,
-               "y":332.1552648344842
-            },
-            {  
-               "id":"0df1a827-0fc1-4e23-9076-1de2c8a5f010",
-               "selected":false,
-               "x":851.3980489796039,
-               "y":331.7817240134975
-            },
-            {  
-               "id":"a1de2448-6f2e-4b50-9692-eb1ff4a5c080",
-               "selected":false,
-               "x":857.0777157724854,
-               "y":490.987794033075
-            },
-            {  
-               "id":"8a460c74-2aaa-4134-b704-5ee4b9c7d5a5",
-               "selected":false,
-               "x":910.484387006114,
-               "y":517.6406172654504
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"09965f31-0a3a-4c16-b7a0-f4cca2b9d9ca",
+      {
+         "id":"06f312ac-e5e5-4e6f-8028-bf22f77e7377",
          "type":"default",
          "selected":false,
          "source":"0c549b99-480c-4cf4-b069-d560902dada9",
          "sourcePort":"4623f19f-c1a1-4498-81fc-d75efe5e71b4",
          "target":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
          "targetPort":"9cf84d4b-9910-4e12-81ca-9788a35f09a2",
-         "points":[  
-            {  
-               "id":"08ae9baf-4898-4107-a69d-b33f9f99dc27",
+         "points":[
+            {
+               "id":"fdaa1a10-c69a-4cef-b4f1-cef8754b194a",
                "selected":false,
-               "x":1098.1094011364394,
-               "y":540.1406094152695
+               "x":788.2344431643457,
+               "y":564.000032118367
             },
-            {  
-               "id":"55289014-fd80-47c0-b453-18b65524ea24",
-               "selected":false,
-               "x":1137.484356652081,
-               "y":539.2617672750799
-            },
-            {  
-               "id":"92f88b63-4a87-48aa-b3b2-8846ca82d123",
-               "selected":false,
-               "x":1212.511151936111,
-               "y":508.1792378002676
-            },
-            {  
-               "id":"4f8cec18-8c5a-4d0d-9721-3a1bd97ec06e",
-               "selected":false,
-               "x":1237.437485838844,
-               "y":506.8750100591937
+            {
+               "id":"d53ffa8c-2ed5-4af9-95b5-bc58525238e9",
+               "selected":true,
+               "x":967.5313181643454,
+               "y":518.531236953606
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
          "color":"#E3E9EE",
          "curvyness":50
       },
-      {  
-         "id":"e982bd45-19e5-41b3-8548-37200c3d6c1a",
+      {
+         "id":"446b84ff-50b7-4e25-8b7a-e2788b29ddf6",
          "type":"default",
          "selected":false,
          "source":"0c549b99-480c-4cf4-b069-d560902dada9",
          "sourcePort":"12620a60-5f37-4a11-922a-e7ab74c19974",
          "target":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
          "targetPort":"4f70400e-9677-4b57-a627-b35f3882d9f8",
-         "points":[  
-            {  
-               "id":"71e6b648-3ada-4b3b-8b38-5fc03ad0cfb4",
+         "points":[
+            {
+               "id":"8e8acfd7-55cb-44dc-a877-93289d3bfbb0",
                "selected":false,
-               "x":1098.1094011364394,
-               "y":562.1406104619601
+               "x":788.2344431643457,
+               "y":593.9999718986855
             },
-            {  
-               "id":"dd3cf09c-f72a-45a3-876a-075ecdb91b4f",
+            {
+               "id":"6118ab79-35dd-4a95-989a-cb7ee2b202a9",
                "selected":false,
-               "x":1137.4843566520808,
-               "y":562.8416172214892
-            },
-            {  
-               "id":"3dc061e3-6bce-4306-92be-9e2c7f5ba21c",
-               "selected":false,
-               "x":1210.3675292137102,
-               "y":600.3550148635043
-            },
-            {  
-               "id":"e2c4ddf6-60cf-483b-bcdf-180a60eabe03",
-               "selected":false,
-               "x":1238.5156427629129,
-               "y":601.1875082274846
+               "x":972.296953200959,
+               "y":627.6094041073828
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
          "color":"#E3E9EE",
          "curvyness":50
       },
-      {  
-         "id":"cd3bfb8c-34c2-4087-8d26-f07d5c5f7c06",
-         "type":"default",
-         "selected":false,
-         "source":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-         "sourcePort":"a026628f-dd76-49f2-97e3-1643e2e474a7",
-         "target":"6ef752c0-b5b7-4535-b94a-c2e21c884fff",
-         "targetPort":"f7ad2ff8-9a2a-4fbb-84bf-46b839bb064e",
-         "points":[  
-            {  
-               "id":"9a0658ee-9cce-48f5-a604-513da53c5702",
-               "selected":false,
-               "x":1357.8125172603222,
-               "y":506.87499579433955
-            },
-            {  
-               "id":"4ab02d2a-a9a4-4354-94b4-ad34a36dea55",
-               "selected":false,
-               "x":1388.5397176447098,
-               "y":508.64567440781576
-            },
-            {  
-               "id":"97539e2f-9aa1-4385-a4b4-7a66d5e35d32",
-               "selected":false,
-               "x":1434.447901277444,
-               "y":540.5818021523268
-            },
-            {  
-               "id":"f27920f2-0a97-4f60-a0b9-86a9dcc3fd7f",
-               "selected":false,
-               "x":1461.4062940621873,
-               "y":542.6718712816462
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"03e51e25-b363-48d1-b061-f2342a18392e",
-         "type":"default",
-         "selected":false,
-         "source":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-         "sourcePort":"b6a8d4b7-105b-42d0-bb9b-6d0371453ea3",
-         "target":"6ef752c0-b5b7-4535-b94a-c2e21c884fff",
-         "targetPort":"f7ad2ff8-9a2a-4fbb-84bf-46b839bb064e",
-         "points":[  
-            {  
-               "id":"8228dfe1-42fd-45e9-910e-197825afe773",
-               "selected":false,
-               "x":1353.2343932349354,
-               "y":601.1874999364459
-            },
-            {  
-               "id":"4d973eb7-ceb8-402f-9204-001f326e1f28",
-               "selected":false,
-               "x":1378.55967772455,
-               "y":599.4640376812688
-            },
-            {  
-               "id":"fb208d48-eda2-4deb-8c59-620c98c3e41c",
-               "selected":false,
-               "x":1435.4459052694601,
-               "y":543.5758141283746
-            },
-            {  
-               "id":"24a080db-db41-4372-9997-04cbad6d6673",
-               "selected":false,
-               "x":1461.4062940621873,
-               "y":542.6718712816462
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"f8ee7425-ee27-473a-be4c-4ddbb350cee6",
-         "type":"default",
-         "selected":false,
-         "source":"6ef752c0-b5b7-4535-b94a-c2e21c884fff",
-         "sourcePort":"35fe4be3-c9fe-4626-8c67-afeac7ffb17f",
-         "target":"229814e0-e1f2-499b-aceb-f05ba89f73fb",
-         "targetPort":"041bea80-b723-4782-b6a8-4ede4199b4a6",
-         "points":[  
-            {  
-               "id":"bd55a76b-6dfb-41df-ac5e-53ab461eedd1",
-               "selected":false,
-               "x":1659.781272620695,
-               "y":542.6718712816462
-            },
-            {  
-               "id":"7cbe30fd-0d8b-4bd3-bc85-708acec297f7",
-               "selected":false,
-               "x":1737.85936935691,
-               "y":541.6718876064185
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"ed43ff41-0764-48ad-845a-3ee26ee23f17",
-         "type":"default",
-         "selected":false,
-         "source":"229814e0-e1f2-499b-aceb-f05ba89f73fb",
-         "sourcePort":"24ff2309-0150-4cb1-b65b-8ad43844115e",
-         "target":"20dc6a6e-8580-40f1-8225-e54c73f7ed9e",
-         "targetPort":"dd7f28fd-a533-45d5-a383-82f57d07f35b",
-         "points":[  
-            {  
-               "id":"a32858bc-ca36-4f25-98e8-d4be502e0562",
-               "selected":false,
-               "x":1935.640589998926,
-               "y":541.6718709962263
-            },
-            {  
-               "id":"20e94adc-b248-46c3-a5b1-dce24f686be5",
-               "selected":false,
-               "x":2024.634093435189,
-               "y":540.2434774795079
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"cce32a2f-15cd-4789-9f0a-66d39c925d20",
-         "type":"default",
-         "selected":false,
-         "source":"bac8ee3a-70ab-4226-9f7f-8e075989f42b",
-         "sourcePort":"5cf831fb-4ebe-40d1-9de9-1f727ed719bd",
-         "target":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-         "targetPort":"4a23a702-9aea-4932-a485-4463e1d50a01",
-         "points":[  
-            {  
-               "id":"0019ad84-733e-4a84-ad39-e69ce8dd9719",
-               "selected":false,
-               "x":264.6863054706478,
-               "y":402.44247163307836
-            },
-            {  
-               "id":"87c86e0b-71db-4e9d-ada2-ba2a3be38b77",
-               "selected":false,
-               "x":291.24420657822213,
-               "y":402.1394783597372
-            },
-            {  
-               "id":"b034aaf6-b945-4844-9551-493930a16563",
-               "selected":false,
-               "x":335.35015762287287,
-               "y":506.9627988474459
-            },
-            {  
-               "id":"f405e300-22a7-44d0-bc75-c3b4eff86c94",
-               "selected":true,
-               "x":382.40623220701315,
-               "y":517.2343577080038
-            }
-         ],
-         "extras":{  
-
-         },
-         "labels":[  
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {  
-         "id":"7a6ce347-ad07-41a9-ad52-e673a2876c4b",
+      {
+         "id":"a89551e3-94bd-48fd-bdae-62dd449efa38",
          "type":"default",
          "selected":false,
          "source":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
          "sourcePort":"4a5323f2-eceb-4afd-91b1-7c11712ee3af",
-         "target":"30be6573-93dc-40e8-afd0-7ffbef7ed5d2",
-         "targetPort":"cff86cd9-b509-4a26-b305-68637e39e076",
-         "points":[  
-            {  
-               "id":"c668409a-407b-4318-bfec-8b22bec5bb00",
+         "target":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
+         "targetPort":"06609fa4-937b-42b8-82c6-3f82f439c728",
+         "points":[
+            {
+               "id":"bd5d439e-76c0-45fc-9a69-a4440006d944",
                "selected":false,
-               "x":261.281220212658,
-               "y":203.06248995450918
+               "x":4.973080714128858,
+               "y":300.36044992251703
             },
-            {  
-               "id":"779b339b-1b6f-4e57-87f2-b87cffc9fc81",
+            {
+               "id":"047f28bc-01f8-4c50-9983-8ea5ddeaa51b",
                "selected":false,
-               "x":372.51562406398074,
-               "y":202.32812791934415
+               "x":106.87930963724018,
+               "y":300.3760694023796
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
          "color":"#E3E9EE",
          "curvyness":50
       },
-      {  
-         "id":"97af4bc6-ba1e-4393-a9ca-968a16ed7917",
+      {
+         "id":"cbb1e734-8303-4d92-b13a-44537aa78a42",
          "type":"default",
          "selected":false,
          "source":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
          "sourcePort":"bd48e384-c089-43bc-b483-a194cd100aec",
-         "target":"4399c464-75cc-47f9-b0cb-c88ee1e8ef97",
-         "targetPort":"25d52cf6-3818-49b2-8653-8c4dc4e24b13",
-         "points":[  
-            {  
-               "id":"37d3b604-1afd-4285-ac87-2030278ed753",
+         "target":"f645b922-a930-4c86-af0a-a2482296a065",
+         "targetPort":"9baaeae1-0800-4750-beb4-8bc5e66cefd9",
+         "points":[
+            {
+               "id":"396be488-e330-4624-84b9-b4d50222910e",
                "selected":false,
-               "x":258.75000212174086,
-               "y":303.49999338466114
+               "x":6.67616857865866,
+               "y":413.0167199957439
             },
-            {  
-               "id":"72d9335f-462f-455a-8512-d8a3c5b83661",
-               "selected":true,
-               "x":373.6249905587256,
-               "y":300.4531205801704
+            {
+               "id":"273a4ed6-1a13-44fd-880c-93f8afa9c7ab",
+               "selected":false,
+               "x":106.87930963724018,
+               "y":412.2198254243475
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
          "color":"#E3E9EE",
          "curvyness":50
       },
-      {  
-         "id":"27c8eb16-ced9-4bec-8738-d90321e72fc9",
+      {
+         "id":"1db6afd5-f67f-492c-930e-e0b62ed71b38",
          "type":"default",
          "selected":false,
-         "source":"4399c464-75cc-47f9-b0cb-c88ee1e8ef97",
-         "sourcePort":"a46ff233-e104-43a0-8ca0-c9ee14c53438",
-         "target":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-         "targetPort":"4a23a702-9aea-4932-a485-4463e1d50a01",
-         "points":[  
-            {  
-               "id":"5866c3f3-59f2-4566-a927-6dbcc759c7df",
+         "source":"f645b922-a930-4c86-af0a-a2482296a065",
+         "sourcePort":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
+         "target":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
+         "targetPort":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
+         "points":[
+            {
+               "id":"d8764dec-a22f-4638-afdc-45ad0a714541",
                "selected":false,
-               "x":500.8124807013075,
-               "y":300.4531262340238
+               "x":207.25430261161048,
+               "y":412.2198254243475
             },
-            {  
-               "id":"25b2285c-e8a1-4d98-8320-f6e2880076a2",
+            {
+               "id":"b03afc3f-1dff-46c6-807e-5f1700080bb1",
                "selected":false,
-               "x":541.1485512857861,
-               "y":300.6499444068439
+               "x":245.43643396355512,
+               "y":412.8509790904374
             },
-            {  
-               "id":"660389e3-0331-4b43-8a6c-ac8e920883bd",
+            {
+               "id":"103f96cb-b212-4255-9141-3ece89c2b010",
                "selected":false,
-               "x":536.5214718542558,
-               "y":420.9540096266301
-            },
-            {  
-               "id":"3f241904-667c-4810-bdce-61650e94f1c9",
-               "selected":false,
-               "x":342.8451470773473,
-               "y":423.59805501607593
-            },
-            {  
-               "id":"f16c8767-d56c-4961-8dfd-f2f61d386719",
-               "selected":false,
-               "x":346.15020381415457,
-               "y":490.3602010995837
-            },
-            {  
-               "id":"836587ed-6627-49bf-aaef-55108286113f",
-               "selected":true,
-               "x":382.4062410296098,
-               "y":517.2343877457773
+               "x":324.86371675440313,
+               "y":532.5792089554687
             }
          ],
-         "extras":{  
+         "extras":{
 
          },
-         "labels":[  
+         "labels":[
 
          ],
          "width":3,
@@ -605,14 +235,14 @@ export default {
          "curvyness":50
       }
    ],
-   "nodes":[  
-      {  
+   "nodes":[
+      {
          "id":"540600c2-9675-469c-8e15-879b5b392ef8",
          "type":"default",
          "selected":false,
-         "x":163.69392812887236,
-         "y":467,
-         "extras":{  
+         "x":94.45476162464448,
+         "y":474.175772570672,
+         "extras":{
             "audio":"",
             "audioText":"",
             "audioVoice":"",
@@ -625,15 +255,15 @@ export default {
             "type":"story",
             "promptTextCollapse":true
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"bc62ed8a-8d37-4455-a757-14d54ec67be4",
                "type":"default",
                "selected":false,
                "name":"ada4c7d0-bc0e-40f6-a5b3-c8871f71bbb0",
                "parentNode":"540600c2-9675-469c-8e15-879b5b392ef8",
-               "links":[  
-                  "61e05b92-d2dc-474f-8755-8e4d799412a3"
+               "links":[
+                  "a1223d86-6230-4307-8f09-fb6093f442c8"
                ],
                "maximumLinks":1,
                "in":false,
@@ -643,109 +273,58 @@ export default {
          "name":"Start Block",
          "color":"#FBE9E7"
       },
-      {  
-         "id":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-         "type":"default",
-         "selected":false,
-         "x":371.41140024783147,
-         "y":469.23915737298637,
-         "extras":{  
-            "audio":false,
-            "lines":[  
-               {  
-                  "textCollapse":false,
-                  "collapse":true,
-                  "text":"",
-                  "audio":false,
-                  "voice":false,
-                  "title":"Line Audio"
-               }
-            ],
-            "type":"audio"
-         },
-         "ports":[  
-            {  
-               "id":"4a23a702-9aea-4932-a485-4463e1d50a01",
-               "type":"default",
-               "selected":false,
-               "name":"b6a69255-6fbc-4793-860a-2141f01f9ebd",
-               "parentNode":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-               "links":[  
-                  "61e05b92-d2dc-474f-8755-8e4d799412a3",
-                  "cce32a2f-15cd-4789-9f0a-66d39c925d20",
-                  "27c8eb16-ced9-4bec-8738-d90321e72fc9"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {  
-               "id":"e7b10d14-b0a5-402f-a033-10ed4f351f97",
-               "type":"default",
-               "selected":false,
-               "name":"31127884-2adb-4fb4-9ca6-8a4972c9904a",
-               "parentNode":"22550a44-c735-4519-a9c4-b84e8ea614ba",
-               "links":[  
-                  "f4d5f5ef-c8fd-4247-a3c6-add1cb1bdc0c"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Audio: Bell Sound",
-         "color":"rgb(0,192,255)"
-      },
-      {  
+      {
          "id":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
          "type":"default",
          "selected":false,
-         "x":643.6914185748649,
-         "y":469.47831474597274,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
+         "x":312.37881108349717,
+         "y":474.0941090614715,
+         "extras":{
+            "raw":{
+               "blocks":[
+                  {
                      "key":"bl0vj",
-                     "text":"Welcome to VoiceFlow! Have you used VoiceFlow before?",
+                     "text":"Welcome to Storyflow! Are you ready to start building?",
                      "type":"unstyled",
                      "depth":0,
-                     "inlineStyleRanges":[  
+                     "inlineStyleRanges":[
 
                      ],
-                     "entityRanges":[  
+                     "entityRanges":[
 
                      ],
-                     "data":{  
+                     "data":{
 
                      }
                   }
                ],
-               "entityMap":{  
+               "entityMap":{
 
                }
             },
             "type":"speak"
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
                "type":"default",
                "selected":false,
                "name":"4ef1d7e0-2cd9-467a-bdcd-75014e97449a",
                "parentNode":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-               "links":[  
-                  "f4d5f5ef-c8fd-4247-a3c6-add1cb1bdc0c"
+               "links":[
+                  "a1223d86-6230-4307-8f09-fb6093f442c8",
+                  "1db6afd5-f67f-492c-930e-e0b62ed71b38"
                ],
                "in":true,
                "label":" "
             },
-            {  
+            {
                "id":"94b35d52-9ce3-4ee2-bf4a-dd3d16921e63",
                "type":"default",
                "selected":false,
                "name":"3927a200-6960-44cc-90f8-c72619091986",
                "parentNode":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-               "links":[  
+               "links":[
                   "3d7561a5-0e54-404d-bd5a-b59c5de5241c"
                ],
                "maximumLinks":1,
@@ -756,25 +335,25 @@ export default {
          "name":"Speak: Welcome",
          "color":"rgb(0,192,255)"
       },
-      {  
+      {
          "id":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
          "type":"default",
          "selected":false,
-         "x":92.13871370991473,
-         "y":255.51217358362862,
-         "extras":{  
+         "x":-176.4554881073055,
+         "y":354.5202154791307,
+         "extras":{
             "commands":"Help",
             "type":"command"
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"bd48e384-c089-43bc-b483-a194cd100aec",
                "type":"default",
                "selected":false,
                "name":"b3aa190c-37c5-41a1-93e2-11a8cfac778f",
                "parentNode":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-               "links":[  
-                  "97af4bc6-ba1e-4393-a9ca-968a16ed7917"
+               "links":[
+                  "cbb1e734-8303-4d92-b13a-44537aa78a42"
                ],
                "maximumLinks":1,
                "in":false,
@@ -784,25 +363,25 @@ export default {
          "name":"Command: Help",
          "color":"rgb(0,192,255)"
       },
-      {  
+      {
          "id":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
          "type":"default",
          "selected":false,
-         "x":94.66388310520786,
-         "y":155.07336562883157,
-         "extras":{  
+         "x":-178.15779048091522,
+         "y":241.86176074040654,
+         "extras":{
             "commands":"Stop",
             "type":"command"
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"4a5323f2-eceb-4afd-91b1-7c11712ee3af",
                "type":"default",
                "selected":false,
                "name":"fa162a04-3ed0-448f-a93a-7971293c7d8b",
                "parentNode":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-               "links":[  
-                  "7a6ce347-ad07-41a9-ad52-e673a2876c4b"
+               "links":[
+                  "a89551e3-94bd-48fd-bdae-62dd449efa38"
                ],
                "maximumLinks":1,
                "in":false,
@@ -812,77 +391,76 @@ export default {
          "name":"Command: Stop",
          "color":"rgb(0,192,255)"
       },
-      {  
+      {
          "id":"0c549b99-480c-4cf4-b069-d560902dada9",
          "type":"default",
          "selected":false,
-         "x":899.4993125555835,
-         "y":469.65337451230977,
-         "extras":{  
+         "x":573.1199013643186,
+         "y":475.5024679028342,
+         "extras":{
             "audio":"",
             "audioText":"",
             "audioVoice":"",
             "prompt":"",
             "promptText":"",
             "promptVoice":"",
-            "choices":[  
+            "choices":[
                "New Choice",
                "New Choice"
             ],
-            "inputs":[  
+            "inputs":[
                "yes",
                "no"
             ],
             "type":"choice"
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"41dc26e6-3e9e-4afc-8ff6-480ff57802ec",
                "type":"default",
                "selected":false,
                "name":"d7e89514-2819-42a2-8fb5-0ccc615089fc",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
-               "links":[  
-                  "3d7561a5-0e54-404d-bd5a-b59c5de5241c",
-                  "773e1163-0f4f-41d8-9771-0b38a024a6d2"
+               "links":[
+                  "3d7561a5-0e54-404d-bd5a-b59c5de5241c"
                ],
                "in":true,
                "label":" "
             },
-            {  
+            {
                "id":"74d95694-6b76-4206-a1d1-733d3a0b13f3",
                "type":"default",
                "selected":false,
                "name":"bfc225e2-ab51-41b1-9f5c-a4cd1c1f51d1",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
-               "links":[  
-                  "a5765172-9435-4d4a-873d-ce4dff700983"
+               "links":[
+
                ],
                "maximumLinks":1,
                "in":false,
                "label":"else"
             },
-            {  
+            {
                "id":"4623f19f-c1a1-4498-81fc-d75efe5e71b4",
                "type":"default",
                "selected":false,
                "name":"502c3841-dde2-4b84-b44d-e5e4fa1608ee",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
-               "links":[  
-                  "09965f31-0a3a-4c16-b7a0-f4cca2b9d9ca"
+               "links":[
+                  "06f312ac-e5e5-4e6f-8028-bf22f77e7377"
                ],
                "maximumLinks":1,
                "in":false,
                "label":1
             },
-            {  
+            {
                "id":"12620a60-5f37-4a11-922a-e7ab74c19974",
                "type":"default",
                "selected":false,
                "name":"483431d6-92e3-4f4d-a9f5-883e3e27870f",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
-               "links":[  
-                  "e982bd45-19e5-41b3-8548-37200c3d6c1a"
+               "links":[
+                  "446b84ff-50b7-4e25-8b7a-e2788b29ddf6"
                ],
                "maximumLinks":1,
                "in":false,
@@ -892,119 +470,58 @@ export default {
          "name":"Choice: Ask the user",
          "color":"rgb(0,192,255)"
       },
-      {  
-         "id":"fe6072f6-0853-4af9-9d5b-cca45a1600ba",
-         "type":"default",
-         "selected":false,
-         "x":1225.1201239512052,
-         "y":346.72425749388543,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
-                     "key":"2m236",
-                     "text":"Sorry! I didn't understand what you said. Is this your first time using VoiceFlow? Yes, or no?",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[  
-
-                     ],
-                     "entityRanges":[  
-
-                     ],
-                     "data":{  
-
-                     }
-                  }
-               ],
-               "entityMap":{  
-
-               }
-            },
-            "type":"speak"
-         },
-         "ports":[  
-            {  
-               "id":"d1acd436-3a99-4f7d-963d-db5234bd2e63",
-               "type":"default",
-               "selected":false,
-               "name":"018da843-6c47-440a-b097-83dcfe18088f",
-               "parentNode":"fe6072f6-0853-4af9-9d5b-cca45a1600ba",
-               "links":[  
-                  "a5765172-9435-4d4a-873d-ce4dff700983"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {  
-               "id":"dfb382ff-2389-4e59-a467-a5c9e00e2a2c",
-               "type":"default",
-               "selected":false,
-               "name":"b4bce9d0-5b0e-4d6c-9454-a2131d9fa621",
-               "parentNode":"fe6072f6-0853-4af9-9d5b-cca45a1600ba",
-               "links":[  
-                  "773e1163-0f4f-41d8-9771-0b38a024a6d2"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: Didn't Understand",
-         "color":"rgb(0,192,255)"
-      },
-      {  
+      {
          "id":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
          "type":"default",
          "selected":false,
-         "x":1226.4446996317165,
-         "y":458.87591518504786,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
+         "x":955.0467663113816,
+         "y":460.04573386315275,
+         "extras":{
+            "raw":{
+               "blocks":[
+                  {
                      "key":"56nca",
-                     "text":"That's great! Welcome back. What is your name again?",
+                     "text":"You said yes. Let's do it!",
                      "type":"unstyled",
                      "depth":0,
-                     "inlineStyleRanges":[  
+                     "inlineStyleRanges":[
 
                      ],
-                     "entityRanges":[  
+                     "entityRanges":[
 
                      ],
-                     "data":{  
+                     "data":{
 
                      }
                   }
                ],
-               "entityMap":{  
+               "entityMap":{
 
                }
             },
             "type":"speak"
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"9cf84d4b-9910-4e12-81ca-9788a35f09a2",
                "type":"default",
                "selected":false,
                "name":"b0b48ae9-d2b5-4b25-ad0a-140cfe29b6b2",
                "parentNode":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-               "links":[  
-                  "09965f31-0a3a-4c16-b7a0-f4cca2b9d9ca"
+               "links":[
+                  "06f312ac-e5e5-4e6f-8028-bf22f77e7377"
                ],
                "in":true,
                "label":" "
             },
-            {  
+            {
                "id":"a026628f-dd76-49f2-97e3-1643e2e474a7",
                "type":"default",
                "selected":false,
                "name":"cc8093ed-3edb-46b6-954b-e0d8a883adf6",
                "parentNode":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-               "links":[  
-                  "cd3bfb8c-34c2-4087-8d26-f07d5c5f7c06"
+               "links":[
+
                ],
                "maximumLinks":1,
                "in":false,
@@ -1014,58 +531,58 @@ export default {
          "name":"Speak: Yes",
          "color":"rgb(0,192,255)"
       },
-      {  
+      {
          "id":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
          "type":"default",
          "selected":false,
-         "x":1227.516510992917,
-         "y":553.1953149706854,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
+         "x":959.8055911916315,
+         "y":569.1131877249886,
+         "extras":{
+            "raw":{
+               "blocks":[
+                  {
                      "key":"6gtop",
-                     "text":"Welcome to VoiceFlow! What is your name?",
+                     "text":"You said no. Oh no!",
                      "type":"unstyled",
                      "depth":0,
-                     "inlineStyleRanges":[  
+                     "inlineStyleRanges":[
 
                      ],
-                     "entityRanges":[  
+                     "entityRanges":[
 
                      ],
-                     "data":{  
+                     "data":{
 
                      }
                   }
                ],
-               "entityMap":{  
+               "entityMap":{
 
                }
             },
             "type":"speak"
          },
-         "ports":[  
-            {  
+         "ports":[
+            {
                "id":"4f70400e-9677-4b57-a627-b35f3882d9f8",
                "type":"default",
                "selected":false,
                "name":"e863c630-f5c2-4132-904b-cd5dfd6e6263",
                "parentNode":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-               "links":[  
-                  "e982bd45-19e5-41b3-8548-37200c3d6c1a"
+               "links":[
+                  "446b84ff-50b7-4e25-8b7a-e2788b29ddf6"
                ],
                "in":true,
                "label":" "
             },
-            {  
+            {
                "id":"b6a8d4b7-105b-42d0-bb9b-6d0371453ea3",
                "type":"default",
                "selected":false,
                "name":"7454a6a0-0088-45d7-9353-73fada435639",
                "parentNode":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-               "links":[  
-                  "03e51e25-b363-48d1-b061-f2342a18392e"
+               "links":[
+
                ],
                "maximumLinks":1,
                "in":false,
@@ -1075,272 +592,57 @@ export default {
          "name":"Speak: No",
          "color":"rgb(0,192,255)"
       },
-      {  
-         "id":"6ef752c0-b5b7-4535-b94a-c2e21c884fff",
+      {
+         "id":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
          "type":"default",
          "selected":false,
-         "x":1450.4159651496998,
-         "y":494.67361851959214,
-         "extras":{  
-            "variable":"user_name",
-            "expression":{  
-               "type":"value",
-               "value":"0",
-               "depth":0
-            },
-            "type":"variable"
-         },
-         "ports":[  
-            {  
-               "id":"f7ad2ff8-9a2a-4fbb-84bf-46b839bb064e",
-               "type":"default",
-               "selected":false,
-               "name":"9b2c7b60-de31-4483-942e-2c3c1490b19a",
-               "parentNode":"6ef752c0-b5b7-4535-b94a-c2e21c884fff",
-               "links":[  
-                  "cd3bfb8c-34c2-4087-8d26-f07d5c5f7c06",
-                  "03e51e25-b363-48d1-b061-f2342a18392e"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {  
-               "id":"35fe4be3-c9fe-4626-8c67-afeac7ffb17f",
-               "type":"default",
-               "selected":false,
-               "name":"66fa3844-8585-4650-8413-94a9fcfc757f",
-               "parentNode":"6ef752c0-b5b7-4535-b94a-c2e21c884fff",
-               "links":[  
-                  "f8ee7425-ee27-473a-be4c-4ddbb350cee6"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Variable: User's Name",
-         "color":"rgb(0,192,255)"
-      },
-      {  
-         "id":"229814e0-e1f2-499b-aceb-f05ba89f73fb",
-         "type":"default",
-         "selected":false,
-         "x":1726.8630709381225,
-         "y":493.6756145275762,
-         "extras":{  
-            "variable":"user_name",
-            "type":"capture"
-         },
-         "ports":[  
-            {  
-               "id":"041bea80-b723-4782-b6a8-4ede4199b4a6",
-               "type":"default",
-               "selected":false,
-               "name":"a1572978-7ad9-4993-8e37-0426a0094e7b",
-               "parentNode":"229814e0-e1f2-499b-aceb-f05ba89f73fb",
-               "links":[  
-                  "f8ee7425-ee27-473a-be4c-4ddbb350cee6"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {  
-               "id":"24ff2309-0150-4cb1-b65b-8ad43844115e",
-               "type":"default",
-               "selected":false,
-               "name":"14e31167-c88a-4da4-8c26-aded31cd3377",
-               "parentNode":"229814e0-e1f2-499b-aceb-f05ba89f73fb",
-               "links":[  
-                  "ed43ff41-0764-48ad-845a-3ee26ee23f17"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Capture: User's Name",
-         "color":"rgb(0,192,255)"
-      },
-      {  
-         "id":"20dc6a6e-8580-40f1-8225-e54c73f7ed9e",
-         "type":"default",
-         "selected":false,
-         "x":2013.6376247014705,
-         "y":492.2489983117521,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
-                     "key":"5rt8f",
-                     "text":"Hello user_name ! Those are the basics. Be sure to TEST out this Alexa skill by hitting 'test' above. If you would like to learn more advance block types like Random, and IF blocks, be sure to look at the videos on Story School.",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[  
-
-                     ],
-                     "entityRanges":[  
-                        {  
-                           "offset":6,
-                           "length":9,
-                           "key":0
-                        }
-                     ],
-                     "data":{  
-
-                     }
-                  },
-                  {  
-                     "key":"9uocf",
-                     "text":"",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[  
-
-                     ],
-                     "entityRanges":[  
-
-                     ],
-                     "data":{  
-
-                     }
-                  },
-                  {  
-                     "key":"187ka",
-                     "text":"This block isn't connected to anything.... so the session will end!",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[  
-
-                     ],
-                     "entityRanges":[  
-
-                     ],
-                     "data":{  
-
-                     }
-                  }
-               ],
-               "entityMap":{  
-                  "0":{  
-                     "type":"VARIABLE",
-                     "mutability":"IMMUTABLE",
-                     "data":{  
-
-                     }
-                  }
-               }
-            },
-            "type":"speak"
-         },
-         "ports":[  
-            {  
-               "id":"dd7f28fd-a533-45d5-a383-82f57d07f35b",
-               "type":"default",
-               "selected":false,
-               "name":"60200df6-6d00-4b69-ad75-2ea83b59400b",
-               "parentNode":"20dc6a6e-8580-40f1-8225-e54c73f7ed9e",
-               "links":[  
-                  "ed43ff41-0764-48ad-845a-3ee26ee23f17"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {  
-               "id":"a0d25428-0f4f-47e2-aa96-c84917055b00",
-               "type":"default",
-               "selected":false,
-               "name":"076fcc40-9a41-4628-9823-bd560bd4ea86",
-               "parentNode":"20dc6a6e-8580-40f1-8225-e54c73f7ed9e",
-               "links":[  
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: Welcome User Name",
-         "color":"rgb(0,192,255)"
-      },
-      {  
-         "id":"bac8ee3a-70ab-4226-9f7f-8e075989f42b",
-         "type":"default",
-         "selected":false,
-         "x":89.1944261975486,
-         "y":354.45071031957826,
-         "extras":{  
-            "commands":"Reset",
-            "type":"command"
-         },
-         "ports":[  
-            {  
-               "id":"5cf831fb-4ebe-40d1-9de9-1f727ed719bd",
-               "type":"default",
-               "selected":false,
-               "name":"8fedb600-c2b8-4c96-937c-8a90ed4c3fcf",
-               "parentNode":"bac8ee3a-70ab-4226-9f7f-8e075989f42b",
-               "links":[  
-                  "cce32a2f-15cd-4789-9f0a-66d39c925d20"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Command: Reset",
-         "color":"rgb(0,192,255)"
-      },
-      {  
-         "id":"30be6573-93dc-40e8-afd0-7ffbef7ed5d2",
-         "type":"default",
-         "selected":false,
-         "x":361.5223910584564,
-         "y":154.33594539603183,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
-                     "key":"95j97",
+         "x":94.39274464316692,
+         "y":241.88010530402994,
+         "extras":{
+            "rawContent":{
+               "blocks":[
+                  {
+                     "key":"3bc7t",
                      "text":"When a block is not connected to anything, like this one, it will end the session!",
                      "type":"unstyled",
                      "depth":0,
-                     "inlineStyleRanges":[  
+                     "inlineStyleRanges":[
 
                      ],
-                     "entityRanges":[  
+                     "entityRanges":[
 
                      ],
-                     "data":{  
+                     "data":{
 
                      }
                   }
                ],
-               "entityMap":{  
+               "entityMap":{
 
                }
             },
             "type":"speak"
          },
-         "ports":[  
-            {  
-               "id":"cff86cd9-b509-4a26-b305-68637e39e076",
+         "ports":[
+            {
+               "id":"06609fa4-937b-42b8-82c6-3f82f439c728",
                "type":"default",
                "selected":false,
-               "name":"a5ac617b-9711-43e9-92bb-d4f42256599e",
-               "parentNode":"30be6573-93dc-40e8-afd0-7ffbef7ed5d2",
-               "links":[  
-                  "7a6ce347-ad07-41a9-ad52-e673a2876c4b"
+               "name":"94479727-255a-4e58-a6bb-5222cb37b815",
+               "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
+               "links":[
+                  "a89551e3-94bd-48fd-bdae-62dd449efa38"
                ],
                "in":true,
                "label":" "
             },
-            {  
-               "id":"6c694a35-be92-4e04-9f35-88198b124e57",
+            {
+               "id":"bfef74af-c70e-4af5-a163-6ec20c92ddf0",
                "type":"default",
                "selected":false,
-               "name":"6b9fab54-7c2b-4c19-9b77-69d7aa80c62c",
-               "parentNode":"30be6573-93dc-40e8-afd0-7ffbef7ed5d2",
-               "links":[  
+               "name":"30be1c99-e38f-4770-ad6b-9a12d4dea046",
+               "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
+               "links":[
 
                ],
                "maximumLinks":1,
@@ -1348,68 +650,68 @@ export default {
                "label":" "
             }
          ],
-         "name":"Speak: End Session",
+         "name":"Speak",
          "color":"rgb(0,192,255)"
       },
-      {  
-         "id":"4399c464-75cc-47f9-b0cb-c88ee1e8ef97",
+      {
+         "id":"f645b922-a930-4c86-af0a-a2482296a065",
          "type":"default",
          "selected":false,
-         "x":362.6353661842827,
-         "y":252.46161185171366,
-         "extras":{  
-            "raw":{  
-               "blocks":[  
-                  {  
-                     "key":"e6l60",
+         "x":94.3927446431669,
+         "y":353.72476549820453,
+         "extras":{
+            "rawContent":{
+               "blocks":[
+                  {
+                     "key":"13khb",
                      "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen!",
                      "type":"unstyled",
                      "depth":0,
-                     "inlineStyleRanges":[  
+                     "inlineStyleRanges":[
 
                      ],
-                     "entityRanges":[  
+                     "entityRanges":[
 
                      ],
-                     "data":{  
+                     "data":{
 
                      }
                   }
                ],
-               "entityMap":{  
+               "entityMap":{
 
                }
             },
             "type":"speak"
          },
-         "ports":[  
-            {  
-               "id":"25d52cf6-3818-49b2-8653-8c4dc4e24b13",
+         "ports":[
+            {
+               "id":"9baaeae1-0800-4750-beb4-8bc5e66cefd9",
                "type":"default",
                "selected":false,
-               "name":"54cef667-829e-4316-9c34-292cd8411a94",
-               "parentNode":"4399c464-75cc-47f9-b0cb-c88ee1e8ef97",
-               "links":[  
-                  "97af4bc6-ba1e-4393-a9ca-968a16ed7917"
+               "name":"469a3cb9-d731-461b-beef-9b98c78691d9",
+               "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
+               "links":[
+                  "cbb1e734-8303-4d92-b13a-44537aa78a42"
                ],
                "in":true,
                "label":" "
             },
-            {  
-               "id":"a46ff233-e104-43a0-8ca0-c9ee14c53438",
+            {
+               "id":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
                "type":"default",
                "selected":false,
-               "name":"075710dc-b0ec-4488-95c9-9f64f0fab6e1",
-               "parentNode":"4399c464-75cc-47f9-b0cb-c88ee1e8ef97",
-               "links":[  
-                  "27c8eb16-ced9-4bec-8738-d90321e72fc9"
+               "name":"ff0e9910-7609-4430-a011-d1a911406543",
+               "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
+               "links":[
+                  "1db6afd5-f67f-492c-930e-e0b62ed71b38"
                ],
                "maximumLinks":1,
                "in":false,
                "label":" "
             }
          ],
-         "name":"Speak: Help",
+         "name":"Speak",
          "color":"rgb(0,192,255)"
       }
    ]

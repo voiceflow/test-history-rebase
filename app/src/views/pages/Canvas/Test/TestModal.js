@@ -19,6 +19,8 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     test_endpoint = 'https://app.getvoiceflow.com/state/test';
 }
 
+const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
+
 const default_state = () => {
   return {
     diagrams: null,
@@ -26,6 +28,34 @@ const default_state = () => {
     line: null,
     testing: true
   }
+}
+
+const recurse = (tag, index=0) => {
+    if(tag.type === 'text'){
+      return tag.content;
+    }else{
+      if(!valid_tags.has(tag.name)){ return null }
+
+      if(tag.children && tag.children.length > 0){
+        let return_string = [];
+        tag.children.forEach((t, i) => {
+          return_string.push(recurse(t, i));
+        });
+
+        if(tag.name === 's'){
+          return return_string;
+        }else if(tag.name === 'voice'){
+          return <React.Fragment key={index}><span className="text-muted">{tag.attrs.name}:</span>
+            <br/> 
+            {return_string}
+          </React.Fragment>
+        }else{
+          return <span key={index} className="tag-wrap"><span className="tag-span">{tag.name}</span> {return_string}</span>
+        }  
+      }else{
+        return <span key={index} className="tag-wrap tag-span">({tag.name})</span>
+      }
+    }
 }
 
 class TestModal extends React.Component {
@@ -59,6 +89,7 @@ class TestModal extends React.Component {
     this.startline = this.startline.bind(this);
     this.handleRestart = this.handleRestart.bind(this);
     this.getVariables = this.getVariables.bind(this);
+    this.parseBlock = this.parseBlock.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -152,22 +183,26 @@ class TestModal extends React.Component {
         }
       }
       audio.play();
-    }else if(b.type==='text' && b.content){
-      // TEXT TYPE
-      let inputs = this.state.inputs;
-      inputs.push({
-        text: b.content,
-        time: moment().format('h:mm:ss A')
-      });
-      this.setState({inputs: inputs}, () => {
-        this.recursivePlay(index + 1, urls, ended);
-      });
     }else if(b.type==='tag' && b.name === 'debug'){
       this.addDebugBlock(b);
       this.recursivePlay(index + 1, urls, ended);
     }else{
+      this.parseBlock(b);
       this.recursivePlay(index + 1, urls, ended);
     }
+  }
+
+  parseBlock(block) {
+      // TEXT TYPE
+      let text = recurse(block);
+      if(text){
+        let inputs = this.state.inputs;
+        inputs.push({
+          text: text,
+          time: moment().format('h:mm:ss A')
+        });
+        this.forceUpdate();
+      }
   }
 
   addDebugBlock(block) {
@@ -411,10 +446,10 @@ class TestModal extends React.Component {
                       </Form>
                     </React.Fragment> :
                     <div className="p-3">
-                      <h6><b>Start Project from the very Beginning</b></h6>
+                      <h6><b>Start Project from the beginning</b></h6>
                       <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
                       <hr/>
-                      <h6><b>Start From a Specific Point in the Project</b></h6>
+                      <h6><b>Start from a specific point in the project</b></h6>
                       <Select
                         classNamePrefix="select-box"
                         className="text-left mb-2" 
@@ -458,7 +493,7 @@ class TestModal extends React.Component {
           }
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="danger" onClick={this.props.toggle}>Exit</Button>
+          <Button color="primary" onClick={this.props.toggle}>Close</Button>
         </ModalFooter>
       </Modal>
     );

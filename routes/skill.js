@@ -42,7 +42,7 @@ const getSkill = (req, res) => {
     if(req.query.simple){
         sql = `
             SELECT
-                name
+                name, amzn_id, review, live, diagram
             FROM
                 skills
             WHERE
@@ -67,8 +67,84 @@ const getSkill = (req, res) => {
         }else if(data.rows.length === 0){
             res.sendStatus(404);
         }else{
-            data.rows[0].skill_id = req.params.id;
-            res.send(data.rows[0]);
+            let skill = data.rows[0];
+            // Rehash the skill id
+            skill.skill_id = req.params.id;
+
+            if(req.query.simple || !skill.amzn_id){
+                skill.amzn_id = !!skill.amzn_id;
+                res.send(skill);
+            }else{
+                // Sync up with AMAZON
+                // Check Current Amazon Status
+                AccessToken(req.user.id, async (token) => {
+                    if(token === null){
+                        throw('INVALID TOKEN');
+                    }
+
+                    try {
+                        // get the vendorID
+                        let vendor_response = await axios.request({
+                            url: 'https://api.amazonalexa.com/v1/vendors',
+                            method: 'get',
+                            headers: {
+                                authorization: token
+                            }
+                        });
+
+                        let vendors = vendor_response.data.vendors;
+                        let vendorId;
+                        if(Array.isArray(vendors) && vendors.length !== 0){
+                            vendorId = vendors[0].id;
+                            // literal storyflow id amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb
+                            let skill_status = await axios.request({
+                                url: `https://api.amazonalexa.com/v1/skills?vendorId=${vendorId}&skillId=${skill.amzn_id}`,
+                                method: 'GET',
+                                headers: {
+                                    Authorization: token
+                                }
+                            });
+
+                            if(skill_status.data.skills){
+                                let still_review = false;
+                                let has_live = false;
+
+                                for(instance of skill_status.data.skills){
+                                    if(instance.publicationStatus === 'PUBLISHED'){
+                                        has_live = true;
+                                    }
+                                    if(instance.publicationStatus === 'CERTIFICATION'){
+                                        still_review = true;
+                                    }
+                                }
+
+                                let update = false;
+                                if(skill.live !== has_live){
+                                    skill.live = has_live;
+                                    update = true;
+                                }
+                                if(skill.review !== still_review) {
+                                    skill.review = still_review;
+                                    update = true;
+                                }
+
+                                if(update){
+                                    pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
+                                }
+
+                                res.send(skill);
+
+                            }else{
+                                throw('NO SKILLS FOUND skill.js > 120');
+                            }
+                        }
+
+                    }catch(err){
+                        console.log(err);
+                        res.send(skill);
+                    }
+                });
+            }
         }
     });
 };
@@ -444,9 +520,9 @@ const certifySkill = (req, res) => {
                             pool.query(`
                                 UPDATE skills 
                                 SET
-                                stage = $2
+                                review = TRUE
                                 WHERE amzn_id = $1`, 
-                                [req.params.amzn_id, 11], 
+                                [req.params.amzn_id], 
                                 (err) => {
                                     if(err){
                                         console.log(err);
@@ -501,7 +577,7 @@ const withdrawSkill = (req, res) => {
              pool.query(`
                 UPDATE skills 
                 SET
-                stage = $2
+                review=FALSE
                 WHERE amzn_id = $1`, 
                 [req.params.amzn_id, 0], 
                 (err) => {

@@ -33,7 +33,7 @@ class NavBar extends Component {
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
-        {link: '/market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>}
+        {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
       ],
       user: AuthenticationService.getUser()
     };
@@ -117,8 +117,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {this.props.padding ? (<div className="padding"></div>) : null}
-          { (window.user_detail && window.user_detail.admin && window.user_detail.admin > 0) ? 
-            <Intercom appID="vw911b0m" {...intercom_user}/> : null }
+          <Intercom appID="vw911b0m" {...intercom_user}/>
         </div>
     );
   }

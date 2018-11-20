@@ -46,7 +46,12 @@
   padding-top: 80px;
   padding-bottom: 6rem;
 }
-
+.text-success{
+    color: #62D6A8 !important;
+}
+.text-danger{
+    color: #ff3562 !important;
+}
 .Window.skill input::placeholder, textarea::placeholder{
   color: #CCC !important;
 }

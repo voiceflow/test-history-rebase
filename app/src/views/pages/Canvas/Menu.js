@@ -28,7 +28,7 @@ const sections = [{
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
-        { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
+        // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
    ]
 }];
 
@@ -36,7 +36,7 @@ const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
     {tab: "flows", icon: <i className="fas fa-clone"/>},
     {tab: "variables", icon: <i className="fas fa-code"/>},
-    {tab: "modules", icon: <i className="fas fa-layer-group"/>}
+     {tab: "modules", icon: <i className="fas fa-layer-group"/>}
 ]
 
 class Menu extends PureComponent {
@@ -71,7 +71,7 @@ class Menu extends PureComponent {
         if(depth < 4) {
             return (<React.Fragment>
 
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow}/>
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree}/>
 
                 {(() => {
                     let sub_diagrams;
@@ -178,7 +178,7 @@ class Menu extends PureComponent {
                     let block = this.props.diagrams.find(d => d.id === diagram.id);
                     if (block) { 
                         unused.push(
-                            <FlowButton 
+                            <FlowButton
                                 key={block.id}
                                 flow={block} 
                                 active={this.props.current} 
@@ -253,9 +253,7 @@ class Menu extends PureComponent {
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
-                        <a className="tool no-underline" href="/market" rel="noopener noreferrer">
-                            <i className="fas fa-store-alt"/>
-                        </a>
+                        
                         <a className="tool no-underline" href="https://intercom.help/flowschool"
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>
@@ -282,6 +280,9 @@ class Menu extends PureComponent {
                 </div>
             </div>
         );
+        // <a className="tool no-underline" href="/market" rel="noopener noreferrer">
+            // <i className="fas fa-store-alt"/>
+        // </a>
     }
 }
 

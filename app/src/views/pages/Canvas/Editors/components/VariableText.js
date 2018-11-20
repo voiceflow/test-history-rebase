@@ -84,7 +84,7 @@ class VariableText extends Component {
                     plugins={plugins}
                     editorState={this.state.editorState}
                     onChange={this.onChange}
-                    placeholder='Tell Alexa what to say'
+                    placeholder={this.props.placeholder ? this.props.placeholder : 'Enter Text Here'}
                     // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions

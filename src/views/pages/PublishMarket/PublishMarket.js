@@ -32,7 +32,8 @@ class PublishMarket extends Component {
                 color: '',
                 input: [],
                 output: [],
-                show_incomp_alert: false
+                show_incomp_alert: false,
+                variables: []
             }
         } else {
             this.props.history.push('/dashboard');
@@ -225,29 +226,24 @@ class PublishMarket extends Component {
     }
 
     handleAddVar(type){
-        let var_array = this.state[type];
-        var_array.push('')
-
-        this.setState({
-            type: var_array
-        }, this.handleUpdate);
+        let curr_state = this.state;
+        curr_state[type].push('');
+        curr_state.saved = false;
+        this.setState(curr_state);
     }
 
     handleRemoveVar(i, type) {
-        let var_array = this.state[type];
-        var_array.splice(i, 1);
-
-        this.setState({
-            type: var_array
-        }, this.handleUpdate);
+        let curr_state = this.state;
+        curr_state[type].splice(i, 1);
+        curr_state.saved = false;
+        this.setState(curr_state);
     }
 
     handleVarChange(val, i, type) {
-        let var_array = this.state[type];
-        var_array[i] = val        
-        this.setState({
-            type: var_array
-        }, this.handleUpdate);
+        let curr_state = this.state;
+        curr_state[type][i] = val;
+        curr_state.saved = false;
+        this.setState(curr_state);
     }
 
 	render(){

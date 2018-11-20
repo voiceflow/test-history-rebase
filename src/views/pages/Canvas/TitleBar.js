@@ -9,6 +9,7 @@ class TitleBar extends PureComponent {
 
         this.state = {
             dropdownOpen: false,
+            templateDropdownOpen: false,
             projects: false,
             publish: false,
             diagrams: [],
@@ -16,10 +17,10 @@ class TitleBar extends PureComponent {
             platform: 'amazon'
         }
 
-        this.handleChange = this.handleChange.bind(this);
-
         this.toggle = this.toggle.bind(this);
         this.toggleShare = this.toggleShare.bind(this);
+        this.toggleTemplate = this.toggleTemplate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(e) {
@@ -33,6 +34,12 @@ class TitleBar extends PureComponent {
     toggle() {
         this.setState({
           dropdownOpen: !this.state.dropdownOpen
+        });
+    }
+
+    toggleTemplate() {
+        this.setState({
+          templateDropdownOpen: !this.state.templateDropdownOpen
         });
     }
 
@@ -60,6 +67,22 @@ class TitleBar extends PureComponent {
                                 <DropdownMenu className="platform-dropdown">
                                     <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon fa-pull-right"/></span></DropdownItem>
                                     <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+
+                            <Dropdown isOpen={this.state.templateDropdownOpen} toggle={this.toggleTemplate} className="d-inline-block mr-2">
+                                <DropdownToggle className="anti-btn" tag="div">
+                                    <MUIButton variant="contained" className="white-btn share-btn">
+                                        Templates
+                                    </MUIButton>
+                                </DropdownToggle>
+                                <DropdownMenu className="platform-dropdown">
+                                    {this.props.user_templates.map((module, i) => 
+                                        <DropdownItem key={i} className="platform-btn" onClick={() => {this.props.onTemplateChoice(module.module_id)}}>
+                                            {module.title}
+                                            <span className="button-circle" ></span>
+                                        </DropdownItem>
+                                    )}
                                 </DropdownMenu>
                             </Dropdown>
 

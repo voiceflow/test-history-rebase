@@ -10,6 +10,7 @@ import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import LoadingModal from './../../components/Modals/LoadingModal';
+import ConfirmModal from './../../components/Modals/ConfirmModal';
 import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
@@ -64,6 +65,9 @@ class Canvas extends Component {
         this.zoom = this.zoom.bind(this);
         this.buildDiagrams = null;
         this.loadUserModules = this.loadUserModules.bind(this);
+        this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
+        this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
+        this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -150,7 +154,8 @@ class Canvas extends Component {
             newSkill: newSkill,
             help: null,
             helpOpen: false,
-            user_modules: null
+            user_modules: null,
+            user_templates: []
         };
 
         if(!this.state.newSkill){
@@ -203,6 +208,46 @@ class Canvas extends Component {
         this.setState({
             engine: engine
         });
+    }
+
+    handleTemplateChoice(module_id){
+        this.toggleTemplateConfirm(module_id);
+    }
+
+    replaceWithTemplate(module_id){
+        this.setState({
+            template_confirm: null
+        })
+
+        axios.get(`/marketplace/template/${module_id}/`, {
+            diagram_id: this.state.diagram_id
+        })
+        .then(res => {
+            this.loadDiagram(res.data);
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                error_modal: 'Error retrieving template'
+            });
+        })
+    }
+
+    toggleTemplateConfirm(module_id){
+        if(!!this.state.template_confirm){
+            this.setState({
+                template_confirm: null
+            });
+        } else {
+            let confirm = {
+                text: "Replace current flow completely with this template?",
+                confirm: ()=> this.replaceWithTemplate(module_id)
+            }
+            this.setState({
+                template_confirm:confirm
+            });
+        }
     }
 
     removeNode(){
@@ -269,8 +314,19 @@ class Canvas extends Component {
     loadUserModules(){
         axios.get('/marketplace/user_module')
         .then(res => {
+            let user_modules = [];
+            let user_templates = [];
+            for(var i=0; i<res.data.length;i++){
+                if(res.data[i].type === 'FLOW'){
+                    user_modules.push(res.data[i]);
+                } else {
+                    user_templates.push(res.data[i]);
+                }
+            }
+
             this.setState({
-                user_modules: res.data
+                user_modules: user_modules,
+                user_templates: user_templates
             })
         })
         .catch(err => {
@@ -924,6 +980,8 @@ class Canvas extends Component {
                     }
                 />
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
+                {!!this.state.template_confirm && <ConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
+
                 {this.state.testing_modal ? 
                     <TestModal 
                         open={this.state.testing_modal} 
@@ -957,6 +1015,8 @@ class Canvas extends Component {
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
+                    user_templates={this.state.user_templates}
+                    onTemplateChoice={this.handleTemplateChoice}
                 />
                 <div
                     id="diagram"

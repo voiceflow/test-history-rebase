@@ -370,7 +370,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         })
                     };
                 } else if (node.extras.type === 'stream') {
-                    let stop = links[node.ports.filter(a => a.label === 'stop')[0].links[0]];
+                    let stop = links[node.ports.filter(a => a.label === 'stop/pause')[0].links[0]];
 
                     if(node.extras.player){
                         story.lines[node.id] = {
@@ -378,7 +378,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: stop,
                             NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
                             PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
-                            SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
+                            // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
                         };
                     }else{
                         story.lines[node.id] = {

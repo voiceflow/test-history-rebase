@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Jumbotron, Container } from 'reactstrap';
+import { Button} from 'reactstrap';
 import './Marketplace.css';
 import axios from 'axios';
 
@@ -45,7 +45,7 @@ class BannerCarousel extends Component{
 		var currentModule1 = 
 			<div className="container border rounded">
 				<div className="d-flex justify-content-between mt-3">
-					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
+					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1" alt="Card icon"/>
 					<Button className="" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
 				</div>
 				<div className="row ml-2">
@@ -59,7 +59,7 @@ class BannerCarousel extends Component{
 		var currentModule2 = 
 			<div className="container border rounded">
 				<div className="d-flex justify-content-between mt-3">
-					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
+					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1" alt="Card icon"/>
 					<Button className="" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
 				</div>
 				<div className="row ml-2">

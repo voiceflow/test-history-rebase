@@ -566,49 +566,55 @@ class PublishMarket extends Component {
                     </FormGroup>
                     */}
 
-                    <div className="row">
-                        <div className="col-3 publish-info"></div>
-                        <div className="col-9">
-                            <Label>Input Variables</Label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-3 publish-info">
-                            <p className="mb-0 text-secondary"><b>Input variables</b> are the variables that will be available for input mapping when users use your module.</p>
-                        </div>
-                        <div className="col-9">
-                            <VariableMap
-                                pairs={this.state.input}
-                                onAdd={(e, type) => this.handleAddVar('input')}
-                                onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
-                                onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
-                                type='input'
-                                variables={this.state.variables}
-                            />
-                        </div>
-                    </div>
+                    {this.state.type && this.state.type.value === 'FLOW'?
+                        <React.Fragment>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label>Input Variables</Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="mb-0 text-secondary"><b>Input variables</b> are the variables that will be available for input mapping when users use your module.</p>
+                                </div>
+                                <div className="col-9">
+                                    <VariableMap
+                                        pairs={this.state.input}
+                                        onAdd={(e, type) => this.handleAddVar('input')}
+                                        onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
+                                        onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
+                                        type='input'
+                                        variables={this.state.variables}
+                                    />
+                                </div>
+                            </div>
 
-                    <div className="row">
-                        <div className="col-3 publish-info"></div>
-                        <div className="col-9">
-                            <Label>Output Variables</Label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-3 publish-info">
-                            <p className="mb-0 text-secondary"><b>Output variables</b> are the variables that will be available for output mapping when users use your module.</p>
-                        </div>
-                        <div className="col-9">
-                            <VariableMap
-                                pairs={this.state.output}
-                                onAdd={(e, type) => this.handleAddVar('output')}
-                                onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
-                                onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
-                                type='output'
-                                variables={this.state.variables}
-                            />
-                        </div>
-                    </div>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label>Output Variables</Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="mb-0 text-secondary"><b>Output variables</b> are the variables that will be available for output mapping when users use your module.</p>
+                                </div>
+                                <div className="col-9">
+                                    <VariableMap
+                                        pairs={this.state.output}
+                                        onAdd={(e, type) => this.handleAddVar('output')}
+                                        onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
+                                        onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
+                                        type='output'
+                                        variables={this.state.variables}
+                                    />
+                                </div>
+                            </div>
+                        </React.Fragment>
+                        :
+                        null
+                    }
                     
                     <div>
                         <MUIButton variant="contained" className="white-btn mr-3" onClick={this.testApprove}>TEST</MUIButton>

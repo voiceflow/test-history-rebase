@@ -160,6 +160,7 @@ app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCerti
 app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess);
 app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess);
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess);
+app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

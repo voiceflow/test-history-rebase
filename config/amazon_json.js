@@ -179,16 +179,25 @@ const manifest = (r, encoded_id) => {
     r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
 	r.keywords = r.keywords.split(",").map(item => item.trim());
 	
+	const localeObj = {
+		"summary": r.summary,
+		"examplePhrases": r.invocations,
+		"keywords": r.keywords,
+		"name": r.name,
+		"description": r.description,
+		"smallIconUri": r.small_icon,
+		"largeIconUri": r.large_icon
+	};
 	const locales = {}
 	r.locales.forEach(locale => {
-		locales[locale] = {
-			"summary": r.summary,
-			"examplePhrases": r.invocations,
-			"keywords": r.keywords,
-			"name": r.name,
-			"description": r.description,
-			"smallIconUri": r.small_icon,
-			"largeIconUri": r.large_icon
+		locales[locale] = localeObj;
+	})
+
+	const privacyLocales = {}
+	r.locales.forEach(locale => {
+		privacyLocales[locale] = {
+			"termsOfUseUrl": "https://getvoiceflow.com",
+			"privacyPolicyUrl": "https://getvoiceflow.com"
 		}
 	})
 
@@ -214,12 +223,7 @@ const manifest = (r, encoded_id) => {
              "manifestVersion": "1.0",
              "privacyAndCompliance": {
                  "allowsPurchases": r.purchase,
-                 "locales": {
-                     "en-US": {
-                         "termsOfUseUrl": "https://getvoiceflow.com",
-                         "privacyPolicyUrl": "https://getvoiceflow.com"
-                     }
-                 },
+                 "locales": privacyLocales,
                  "isExportCompliant": r.export,
                  "isChildDirected": r.copa,
                  "usesPersonalInfo": r.personal,

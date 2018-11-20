@@ -432,16 +432,21 @@ const buildSkill = async (req,res) => {
                             return;
                         }else{
                             setTimeout(()=> {
-
-                                axios.request({
-                                    url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
-                                    method: 'PUT',
-                                    headers: {
-                                        Authorization: token
-                                    },
-                                    data: model
+                                
+                                const interactionModels = []
+                                r.locales.forEach(locale => {
+                                    interactionModels.push(axios.request({
+                                        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
+                                        method: 'PUT',
+                                        headers: {
+                                            Authorization: token
+                                        },
+                                        data: model
+                                    }))
                                 })
-                                .then(response => {
+
+                                Promise.all(interactionModels)
+                                .then(() => {
                                     // Check whether building before certifying
                                     const getSkillStatus = (depth) => {
                                         setTimeout(() => {

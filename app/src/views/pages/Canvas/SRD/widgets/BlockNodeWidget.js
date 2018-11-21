@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";
 import { DiagramEngine, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
+import Textarea from 'react-textarea-autosize';
 
 export interface BlockNodeProps extends BaseWidgetProps {
 	node: BlockNodeModel;
@@ -31,7 +32,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 				<div className={this.bem("__title") + ' no-select'}>
 					<div className={this.bem("__name")}>
             {this.props.node.extras.type === 'comment' ?
-              <textarea value={this.props.node.name} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} /> :
+              <Textarea autofocus value={this.props.node.name} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} /> :
 						  this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)
             }
 					</div>

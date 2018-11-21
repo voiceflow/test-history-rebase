@@ -11,7 +11,7 @@ class Stream extends Component {
         this.state = {
             node: props.node
         };
-        this.state.node.extras.audio = "https://s3.amazonaws.com/com.getstoryflow.audio.production/1542483841536-all-star---smash-mouth-lyrics.mp3";
+        // this.state.node.extras.audio = "https://s3.amazonaws.com/com.getstoryflow.audio.production/1542483841536-all-star---smash-mouth-lyrics.mp3";
 
         this.togglePlayer = this.togglePlayer.bind(this);
         this.toggleLoop = this.toggleLoop.bind(this);

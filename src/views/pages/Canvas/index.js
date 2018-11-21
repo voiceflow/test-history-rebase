@@ -358,11 +358,20 @@ class Canvas extends Component {
             var data = JSON.stringify(serialize);
 
             let sub_diagrams = [];
-            for(let node of serialize.nodes){
+            let permissions = new Set();
+            
+            serialize.nodes.forEach(node => {
                 if(node.extras.type === 'flow' && node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id);
                 }
-            }
+                if (node.extras.type === 'permissions') {
+                    node.extras.permissions.forEach(permission => {
+                        permissions.add(permission.selected.value)
+                    })
+                }
+            })
+
+            permissions = [...permissions]
 
             for (var i = 0; i < this.state.diagrams.length; i++) {
                 let diagrams = this.state.diagrams;
@@ -384,7 +393,8 @@ class Canvas extends Component {
                 variables: this.state.variables,
                 data: data,
                 skill: this.state.skill.skill_id,
-                sub_diagrams: JSON.stringify(sub_diagrams)
+                sub_diagrams: JSON.stringify(sub_diagrams),
+                permissions: permissions
             }
 
             axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
@@ -888,6 +898,21 @@ class Canvas extends Component {
                     mapping: [],
                     to: ''
                 };
+            } else if (type === 'stream') {
+                node.addInPort(' ');
+                node.addOutPort('stop/pause').setMaximumLinks(1);
+                node.extras = {
+                    audio: '',
+                    player: false
+                }
+            } else if (type === 'permissions') {
+                node.addInPort(' ');
+                node.addOutPort(' ').setMaximumLinks(1);
+                node.addOutPort('fail').setMaximumLinks(1);
+                node.addOutPort('declined').setMaximumLinks(1);
+                node.extras = {
+                    permissions: []
+                };
             } else if (type === 'module'){
                 node.addInPort(' ');
                 node.addOutPort(' ').setMaximumLinks(1);
@@ -1052,3 +1077,4 @@ class Canvas extends Component {
 }
 
 export default Canvas;
+

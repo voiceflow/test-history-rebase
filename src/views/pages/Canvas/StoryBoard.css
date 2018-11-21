@@ -606,14 +606,24 @@
     background-color: #00daa5 !important;
 }
 .App .Menu #sidebar .MenuItem.mail:hover {
-    background-color: #EFEFEF;
+    background-color: #F4F6F7;
 } .MenuItem.mail>.MenuIcon {
     background-color: #ffc2a4;
+}
+.App .Menu #sidebar .MenuItem.stream:hover {
+    background-color: #F4F6F7;
+} .MenuItem.stream>.MenuIcon {
+    background-color: #009688;
 }
 .App .Menu #sidebar .MenuItem.api:hover {
     background-color: #F4F6F7;
 } .MenuItem.api>.MenuIcon {
     background-color: #E91E63;
+}
+.App .Menu #sidebar .MenuItem.permissions:hover {
+    background-color: #F4F6F7;
+} .MenuItem.permissions>.MenuIcon {
+    background-color: #88bbd8;
 }
 .App .Menu #sidebar .MenuItem.speak:hover {
     background-color: #F4F6F7;
@@ -945,6 +955,12 @@ label {
     border-color: #D73965 !important;
 }
 
+.srd-default-node.permissions{
+    background-color: #fff;
+    border-top: 6px solid #88bbd8;
+    border-color: #8B4513 !important;
+}
+
 .srd-default-node.module{
     background-color: #6CD132;
 }
@@ -953,6 +969,12 @@ label {
     background-color: #fff;
     border-top: 6px solid #ff8d48;
     border-color: #ff8d48 !important;
+}
+
+.srd-default-node.stream{
+    border-top: 6px solid;
+    border-color: #009688 !important;
+    min-width: 160px !important;
 }
 
 .srd-default-node.random {
@@ -1142,6 +1164,12 @@ button.close{
 }
 
 .block.capture {
+    border: 1px solid #e3e9ec;
+    background-color: #e3e9ec;
+    color: #2b3950;
+}
+
+.block.permissions {
     border: 1px solid #e3e9ec;
     background-color: #e3e9ec;
     color: #2b3950;

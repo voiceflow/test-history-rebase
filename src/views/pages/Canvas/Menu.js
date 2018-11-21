@@ -19,7 +19,8 @@ const sections = [{
         { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/> },
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/> },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
-        { text: 'Command', type: 'command', icon: '⌘' }
+        { text: 'Command', type: 'command', icon: '⌘' },
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/> }
     ]
 },{
     title: 'Advanced',

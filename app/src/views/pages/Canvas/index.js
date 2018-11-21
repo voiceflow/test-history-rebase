@@ -113,7 +113,7 @@ class Canvas extends Component {
 
             let nodes = model.getNodes();
             for (let key in nodes) {
-                if (nodes[key].extras.type === 'story') {
+                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
                     nodes[key].clearListeners();
                     nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
@@ -275,12 +275,21 @@ class Canvas extends Component {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
 
-            if (selected.length === 1) {
+            if (selected.length === 1 && selected[0].extras.type !== 'comment') {
                 engine.setSuperSelect(selected[0]);
                 this.setState({
                     engine: engine,
                     open: true
                 });
+            } else if (selected.length === 0) {
+                let model = engine.getDiagramModel();
+                let nodes = model.getNodes();
+                for (let key in nodes) {
+                    if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
+                        model.removeNode(nodes[key].getID());
+                        this.forceUpdate();
+                    }
+                }
             }
         });
 
@@ -472,7 +481,7 @@ class Canvas extends Component {
             model.addListener({ linksUpdated: this.unsave });
             var nodes = model.getNodes();
             for (let key in nodes) {
-                if (nodes[key].extras.type === 'story') {
+                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
                     nodes[key].clearListeners();
                     nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
@@ -832,6 +841,10 @@ class Canvas extends Component {
                 node.extras = {
                     commands: ''
                 };
+            } else if (type === 'comment') {
+                node.name = 'New Comment';
+                node.clearListeners();
+                node.addListener({ entityRemoved: e => e.stopPropagation() });
             } else if (type === 'ending') {
                 node.addInPort(' ');
                 node.extras = {
@@ -963,7 +976,7 @@ class Canvas extends Component {
             engine.setSuperSelect(node);
             this.setState({
                 engine: engine,
-                open: true
+                open: type !== 'comment'
             });
         }
     }

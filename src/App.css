@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
+/*@import url('https://fonts.googleapis.com/css?family=Lato');*/
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body {
-    font-family: 'Lato', sans-serif;
+    /*font-family: 'Lato', sans-serif;*/
+    font-family: 'Roboto', sans-serif;
     background: #F5F7F8 !important;
     color: #2b3950;
 }
@@ -71,7 +73,7 @@ button:focus{
 }
 .btn-default {
     border: 1px solid #E2E9EC;
-    color: #2b3950;
+    color: #9196b6;
     background-color: #fff !important;
     font-weight: 600;
 }
@@ -182,7 +184,7 @@ input, textarea, .text-to-voice, .choice-block, .solid-border{
     background-color: #FFF;
     color: #545D6D;
     border: 1px solid #E2E9EC;
-    border-radius: 3px;
+    border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
 input::placeholder, textarea::placeholder {

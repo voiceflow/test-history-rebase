@@ -1002,6 +1002,7 @@ label {
     transform: translateY(0px) !important;
     border-radius: 0 !important;
 }
+
 .srd-default-node.comment:hover {
     transform: scale(1) !important;
     transform: translateY(0px) !important;
@@ -1017,10 +1018,12 @@ label {
     font-size: 15px;
     line-height: 20px;
     resize: none;
+    cursor: pointer !important;
 }
 .srd-default-node.comment textarea:active, .srd-default-node.comment textarea:focus{
     border: 1px dashed #C2C6D5 !important;
     outline: none !important;
+    cursor: text !important;
 }
 
 .srd-default-node__title {

@@ -29,7 +29,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 	render() {
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={"srd-default-node " + this.props.node.extras.type}>
-              	<Textarea autoFocus value={this.props.node.name} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
+              	<Textarea value={this.props.node.name} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
 			</div>
 		}
 

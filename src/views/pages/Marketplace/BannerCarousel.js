@@ -45,7 +45,6 @@ class BannerCarousel extends Component{
 		var currentModule1 = 
 			<div className="market-hero border rounded">
 				<div className="d-flex justify-content-between mt-3">
-					<Button className="" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
 					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
                     {
                         this.props.ownership.has(this.props.featured_modules[0].module_id)?
@@ -66,7 +65,6 @@ class BannerCarousel extends Component{
 		var currentModule2 = 
 			<div className="market-hero border rounded">
 				<div className="d-flex justify-content-between mt-3">
-					<Button className="" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
 					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
                     {
                         this.props.ownership.has(this.props.featured_modules[1].module_id)?

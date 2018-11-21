@@ -1,137 +1,9 @@
 export default {
    "offsetX":400,
-   "offsetY":120,
+   "offsetY":100,
    "zoom":70,
    "gridSize":0,
    "links":[
-      {
-         "id":"3d7561a5-0e54-404d-bd5a-b59c5de5241c",
-         "type":"default",
-         "selected":false,
-         "source":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-         "sourcePort":"94b35d52-9ce3-4ee2-bf4a-dd3d16921e63",
-         "target":"0c549b99-480c-4cf4-b069-d560902dada9",
-         "targetPort":"41dc26e6-3e9e-4afc-8ff6-480ff57802ec",
-         "points":[
-            {
-               "id":"709c43ff-4804-48c5-8625-440a456b44ad",
-               "selected":false,
-               "x":500.51986036629904,
-               "y":532.5792089554687
-            },
-            {
-               "id":"3c8b0c65-968f-40e4-a29b-83b367787e7a",
-               "selected":false,
-               "x":585.6093668860831,
-               "y":534.0000170634466
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {
-         "id":"a1223d86-6230-4307-8f09-fb6093f442c8",
-         "type":"default",
-         "selected":false,
-         "source":"540600c2-9675-469c-8e15-879b5b392ef8",
-         "sourcePort":"bc62ed8a-8d37-4455-a757-14d54ec67be4",
-         "target":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-         "targetPort":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
-         "points":[
-            {
-               "id":"cf3ef8ac-c967-4481-ab4c-b2afd94c695a",
-               "selected":false,
-               "x":239.31684175440336,
-               "y":532.672925834644
-            },
-            {
-               "id":"942d2799-83c4-4379-8f71-0d79e338ba61",
-               "selected":false,
-               "x":324.86371675440313,
-               "y":532.5792089554687
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {
-         "id":"06f312ac-e5e5-4e6f-8028-bf22f77e7377",
-         "type":"default",
-         "selected":false,
-         "source":"0c549b99-480c-4cf4-b069-d560902dada9",
-         "sourcePort":"4623f19f-c1a1-4498-81fc-d75efe5e71b4",
-         "target":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-         "targetPort":"9cf84d4b-9910-4e12-81ca-9788a35f09a2",
-         "points":[
-            {
-               "id":"fdaa1a10-c69a-4cef-b4f1-cef8754b194a",
-               "selected":false,
-               "x":788.2344431643457,
-               "y":564.000032118367
-            },
-            {
-               "id":"d53ffa8c-2ed5-4af9-95b5-bc58525238e9",
-               "selected":true,
-               "x":967.5313181643454,
-               "y":518.531236953606
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
-      {
-         "id":"446b84ff-50b7-4e25-8b7a-e2788b29ddf6",
-         "type":"default",
-         "selected":false,
-         "source":"0c549b99-480c-4cf4-b069-d560902dada9",
-         "sourcePort":"12620a60-5f37-4a11-922a-e7ab74c19974",
-         "target":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-         "targetPort":"4f70400e-9677-4b57-a627-b35f3882d9f8",
-         "points":[
-            {
-               "id":"8e8acfd7-55cb-44dc-a877-93289d3bfbb0",
-               "selected":false,
-               "x":788.2344431643457,
-               "y":593.9999718986855
-            },
-            {
-               "id":"6118ab79-35dd-4a95-989a-cb7ee2b202a9",
-               "selected":false,
-               "x":972.296953200959,
-               "y":627.6094041073828
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":3,
-         "color":"#E3E9EE",
-         "curvyness":50
-      },
       {
          "id":"a89551e3-94bd-48fd-bdae-62dd449efa38",
          "type":"default",
@@ -144,14 +16,14 @@ export default {
             {
                "id":"bd5d439e-76c0-45fc-9a69-a4440006d944",
                "selected":false,
-               "x":4.973080714128858,
-               "y":300.36044992251703
+               "x":4.9687412806919635,
+               "y":300.359366280692
             },
             {
                "id":"047f28bc-01f8-4c50-9983-8ea5ddeaa51b",
                "selected":false,
-               "x":106.87930963724018,
-               "y":300.3760694023796
+               "x":104.36375980396132,
+               "y":300.3750174386161
             }
          ],
          "extras":{
@@ -176,14 +48,14 @@ export default {
             {
                "id":"396be488-e330-4624-84b9-b4d50222910e",
                "selected":false,
-               "x":6.67616857865866,
-               "y":413.0167199957439
+               "x":6.671883719308036,
+               "y":413.015616280692
             },
             {
                "id":"273a4ed6-1a13-44fd-880c-93f8afa9c7ab",
                "selected":false,
-               "x":106.87930963724018,
-               "y":412.2198254243475
+               "x":106.89060756138393,
+               "y":412.2187587193081
             }
          ],
          "extras":{
@@ -197,31 +69,25 @@ export default {
          "curvyness":50
       },
       {
-         "id":"1db6afd5-f67f-492c-930e-e0b62ed71b38",
+         "id":"19fc13c0-5dd6-4c87-b153-a9eeeee7e2be",
          "type":"default",
          "selected":false,
-         "source":"f645b922-a930-4c86-af0a-a2482296a065",
-         "sourcePort":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
-         "target":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-         "targetPort":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
+         "source":"540600c2-9675-469c-8e15-879b5b392ef8",
+         "sourcePort":"bc62ed8a-8d37-4455-a757-14d54ec67be4",
+         "target":"82faa43a-678c-49b7-8c64-c4772080a013",
+         "targetPort":"7545e1f2-794f-45e6-b327-32d9d244f27a",
          "points":[
             {
-               "id":"d8764dec-a22f-4638-afdc-45ad0a714541",
+               "id":"a1759b59-7a90-4066-869a-9b2181dfaf70",
                "selected":false,
-               "x":207.25430261161048,
-               "y":412.2198254243475
+               "x":-30.422109674055037,
+               "y":534.8920537267901
             },
             {
-               "id":"b03afc3f-1dff-46c6-807e-5f1700080bb1",
+               "id":"8595e814-ab28-494e-905a-66e86dddf12b",
                "selected":false,
-               "x":245.43643396355512,
-               "y":412.8509790904374
-            },
-            {
-               "id":"103f96cb-b212-4255-9141-3ece89c2b010",
-               "selected":false,
-               "x":324.86371675440313,
-               "y":532.5792089554687
+               "x":352.67436912716454,
+               "y":534.4949807944647
             }
          ],
          "extras":{
@@ -231,7 +97,191 @@ export default {
 
          ],
          "width":3,
-         "color":"#E3E9EE",
+         "color":"#555D6D",
+         "curvyness":50
+      },
+      {
+         "id":"3b6de23d-9f3b-47ad-b5a1-9606cee869f9",
+         "type":"default",
+         "selected":false,
+         "source":"f645b922-a930-4c86-af0a-a2482296a065",
+         "sourcePort":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
+         "target":"82faa43a-678c-49b7-8c64-c4772080a013",
+         "targetPort":"7545e1f2-794f-45e6-b327-32d9d244f27a",
+         "points":[
+            {
+               "id":"24b82113-4958-4cb9-9406-d3c060df455e",
+               "selected":false,
+               "x":207.26565241986106,
+               "y":412.2187337142645
+            },
+            {
+               "id":"9d3ff830-d324-4dd6-9234-96f81a0e865e",
+               "selected":false,
+               "x":275.92578993692103,
+               "y":412.8528886241811
+            },
+            {
+               "id":"4b7683af-ee27-4737-a6e4-add51fd4affb",
+               "selected":false,
+               "x":323.69182336424757,
+               "y":533.1625967837999
+            },
+            {
+               "id":"21a50a2d-27d0-4655-9d8f-f2d05092307b",
+               "selected":false,
+               "x":352.67436912716454,
+               "y":534.4949807944647
+            }
+         ],
+         "extras":{
+
+         },
+         "labels":[
+
+         ],
+         "width":3,
+         "color":"#555D6D",
+         "curvyness":50
+      },
+      {
+         "id":"ee3869d0-4ced-433a-993b-28fe636907ab",
+         "type":"default",
+         "selected":false,
+         "source":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
+         "sourcePort":"bfef74af-c70e-4af5-a163-6ec20c92ddf0",
+         "target":"82faa43a-678c-49b7-8c64-c4772080a013",
+         "targetPort":"7545e1f2-794f-45e6-b327-32d9d244f27a",
+         "points":[
+            {
+               "id":"3d7b81af-2ba8-49d4-8e58-6d646f5cf109",
+               "selected":false,
+               "x":204.73880466243844,
+               "y":300.3749906938654
+            },
+            {
+               "id":"c71078c3-436e-4fe8-bfa9-bad14640a6fb",
+               "selected":false,
+               "x":280.9092357382016,
+               "y":300.1989723299636
+            },
+            {
+               "id":"7dfab0a0-f2f2-493f-8ecb-24cd1a0329fc",
+               "selected":false,
+               "x":323.6918233642476,
+               "y":534.353782013103
+            },
+            {
+               "id":"f7c72bc0-6847-40d0-ad34-b0d3cf022c8a",
+               "selected":false,
+               "x":352.67436912716454,
+               "y":534.4949807944647
+            }
+         ],
+         "extras":{
+
+         },
+         "labels":[
+
+         ],
+         "width":3,
+         "color":"#555D6D",
+         "curvyness":50
+      },
+      {
+         "id":"e2a98934-9f86-42f0-a950-3ca2ed1e5383",
+         "type":"default",
+         "selected":false,
+         "source":"82faa43a-678c-49b7-8c64-c4772080a013",
+         "sourcePort":"df338044-8603-46d7-b85b-2f35041ef055",
+         "target":"0c549b99-480c-4cf4-b069-d560902dada9",
+         "targetPort":"41dc26e6-3e9e-4afc-8ff6-480ff57802ec",
+         "points":[
+            {
+               "id":"33bc062c-ed6d-4ae7-ad0d-d0f4830ff6c2",
+               "selected":false,
+               "x":457.4375250933274,
+               "y":534.2500040714339
+            },
+            {
+               "id":"b955af9f-aece-4090-a1b1-756f7bfdc385",
+               "selected":true,
+               "x":577.642539238652,
+               "y":532.145036398619
+            }
+         ],
+         "extras":{
+
+         },
+         "labels":[
+
+         ],
+         "width":3,
+         "color":"#555D6D",
+         "curvyness":50
+      },
+      {
+         "id":"0b5aa4ca-de2f-4f5b-b22f-2bb7570ada37",
+         "type":"default",
+         "selected":false,
+         "source":"0c549b99-480c-4cf4-b069-d560902dada9",
+         "sourcePort":"12620a60-5f37-4a11-922a-e7ab74c19974",
+         "target":"9a7053f6-f65a-4927-9d29-17170621b608",
+         "targetPort":"4a70d81f-06e2-483d-969b-5f68d7d97bfe",
+         "points":[
+            {
+               "id":"af4c3daf-04d9-4c0e-bbdc-cc6462894dfa",
+               "selected":false,
+               "x":788.2344035831279,
+               "y":593.9999685917958
+            },
+            {
+               "id":"afd2ef9e-d8f7-4a8f-97eb-3950a78b7f68",
+               "selected":true,
+               "x":1003.3183681825918,
+               "y":646.4793700444833
+            }
+         ],
+         "extras":{
+
+         },
+         "labels":[
+
+         ],
+         "width":3,
+         "color":"#555D6D",
+         "curvyness":50
+      },
+      {
+         "id":"a042e5eb-b9c3-40d6-aa79-e171c5f239ce",
+         "type":"default",
+         "selected":false,
+         "source":"0c549b99-480c-4cf4-b069-d560902dada9",
+         "sourcePort":"4623f19f-c1a1-4498-81fc-d75efe5e71b4",
+         "target":"ed84cb56-6042-4a02-8eae-bc0e59d165c9",
+         "targetPort":"236c513c-98a2-4bf1-8cd2-1db06a9d5e1f",
+         "points":[
+            {
+               "id":"e366f1cc-73f2-48b6-b9d9-d1b14583272a",
+               "selected":false,
+               "x":788.2344035831279,
+               "y":564.0000078520511
+            },
+            {
+               "id":"5d725ac4-eae8-45e7-91f8-8ccf1002e22c",
+               "selected":false,
+               "x":995.930315165543,
+               "y":520.2094825440181
+            }
+         ],
+         "extras":{
+
+         },
+         "labels":[
+
+         ],
+         "width":3,
+         "color":"#555D6D",
          "curvyness":50
       }
    ],
@@ -240,8 +290,8 @@ export default {
          "id":"540600c2-9675-469c-8e15-879b5b392ef8",
          "type":"default",
          "selected":false,
-         "x":94.45476162464448,
-         "y":474.175772570672,
+         "x":-175.2954696427007,
+         "y":476.3959390831605,
          "extras":{
             "audio":"",
             "audioText":"",
@@ -263,7 +313,7 @@ export default {
                "name":"ada4c7d0-bc0e-40f6-a5b3-c8871f71bbb0",
                "parentNode":"540600c2-9675-469c-8e15-879b5b392ef8",
                "links":[
-                  "a1223d86-6230-4307-8f09-fb6093f442c8"
+                  "19fc13c0-5dd6-4c87-b153-a9eeeee7e2be"
                ],
                "maximumLinks":1,
                "in":false,
@@ -272,68 +322,6 @@ export default {
          ],
          "name":"Start Block",
          "color":"#FBE9E7"
-      },
-      {
-         "id":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-         "type":"default",
-         "selected":false,
-         "x":312.37881108349717,
-         "y":474.0941090614715,
-         "extras":{
-            "raw":{
-               "blocks":[
-                  {
-                     "key":"bl0vj",
-                     "text":"Welcome to Storyflow! Are you ready to start building?",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[
-
-                     ],
-                     "entityRanges":[
-
-                     ],
-                     "data":{
-
-                     }
-                  }
-               ],
-               "entityMap":{
-
-               }
-            },
-            "type":"speak"
-         },
-         "ports":[
-            {
-               "id":"289a4353-db1e-45bb-944c-9c0bc30cef3c",
-               "type":"default",
-               "selected":false,
-               "name":"4ef1d7e0-2cd9-467a-bdcd-75014e97449a",
-               "parentNode":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-               "links":[
-                  "a1223d86-6230-4307-8f09-fb6093f442c8",
-                  "1db6afd5-f67f-492c-930e-e0b62ed71b38"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"94b35d52-9ce3-4ee2-bf4a-dd3d16921e63",
-               "type":"default",
-               "selected":false,
-               "name":"3927a200-6960-44cc-90f8-c72619091986",
-               "parentNode":"8c3a5fc5-ab08-4d51-a21e-e04b65f78661",
-               "links":[
-                  "3d7561a5-0e54-404d-bd5a-b59c5de5241c"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: Welcome",
-         "color":"rgb(0,192,255)"
       },
       {
          "id":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
@@ -422,7 +410,7 @@ export default {
                "name":"d7e89514-2819-42a2-8fb5-0ccc615089fc",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
                "links":[
-                  "3d7561a5-0e54-404d-bd5a-b59c5de5241c"
+                  "e2a98934-9f86-42f0-a950-3ca2ed1e5383"
                ],
                "in":true,
                "label":" "
@@ -447,7 +435,7 @@ export default {
                "name":"502c3841-dde2-4b84-b44d-e5e4fa1608ee",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
                "links":[
-                  "06f312ac-e5e5-4e6f-8028-bf22f77e7377"
+                  "a042e5eb-b9c3-40d6-aa79-e171c5f239ce"
                ],
                "maximumLinks":1,
                "in":false,
@@ -460,7 +448,7 @@ export default {
                "name":"483431d6-92e3-4f4d-a9f5-883e3e27870f",
                "parentNode":"0c549b99-480c-4cf4-b069-d560902dada9",
                "links":[
-                  "446b84ff-50b7-4e25-8b7a-e2788b29ddf6"
+                  "0b5aa4ca-de2f-4f5b-b22f-2bb7570ada37"
                ],
                "maximumLinks":1,
                "in":false,
@@ -471,157 +459,42 @@ export default {
          "color":"rgb(0,192,255)"
       },
       {
-         "id":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-         "type":"default",
-         "selected":false,
-         "x":955.0467663113816,
-         "y":460.04573386315275,
-         "extras":{
-            "raw":{
-               "blocks":[
-                  {
-                     "key":"56nca",
-                     "text":"You said yes. Let's do it!",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[
-
-                     ],
-                     "entityRanges":[
-
-                     ],
-                     "data":{
-
-                     }
-                  }
-               ],
-               "entityMap":{
-
-               }
-            },
-            "type":"speak"
-         },
-         "ports":[
-            {
-               "id":"9cf84d4b-9910-4e12-81ca-9788a35f09a2",
-               "type":"default",
-               "selected":false,
-               "name":"b0b48ae9-d2b5-4b25-ad0a-140cfe29b6b2",
-               "parentNode":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-               "links":[
-                  "06f312ac-e5e5-4e6f-8028-bf22f77e7377"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"a026628f-dd76-49f2-97e3-1643e2e474a7",
-               "type":"default",
-               "selected":false,
-               "name":"cc8093ed-3edb-46b6-954b-e0d8a883adf6",
-               "parentNode":"4e756e95-d1d8-4229-a6cb-b1c47b71785b",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: Yes",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-         "type":"default",
-         "selected":false,
-         "x":959.8055911916315,
-         "y":569.1131877249886,
-         "extras":{
-            "raw":{
-               "blocks":[
-                  {
-                     "key":"6gtop",
-                     "text":"You said no. Oh no!",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[
-
-                     ],
-                     "entityRanges":[
-
-                     ],
-                     "data":{
-
-                     }
-                  }
-               ],
-               "entityMap":{
-
-               }
-            },
-            "type":"speak"
-         },
-         "ports":[
-            {
-               "id":"4f70400e-9677-4b57-a627-b35f3882d9f8",
-               "type":"default",
-               "selected":false,
-               "name":"e863c630-f5c2-4132-904b-cd5dfd6e6263",
-               "parentNode":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-               "links":[
-                  "446b84ff-50b7-4e25-8b7a-e2788b29ddf6"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"b6a8d4b7-105b-42d0-bb9b-6d0371453ea3",
-               "type":"default",
-               "selected":false,
-               "name":"7454a6a0-0088-45d7-9353-73fada435639",
-               "parentNode":"6bbc2fcc-3844-43b3-9419-5b44fa1d4305",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: No",
-         "color":"rgb(0,192,255)"
-      },
-      {
          "id":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
          "type":"default",
          "selected":false,
-         "x":94.39274464316692,
+         "x":91.8658968857443,
          "y":241.88010530402994,
          "extras":{
-            "rawContent":{
-               "blocks":[
-                  {
-                     "key":"3bc7t",
-                     "text":"When a block is not connected to anything, like this one, it will end the session!",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[
+            "type":"speak",
+            "dialogs":[
+               {
+                  "index":"fLCPd",
+                  "voice":"Alexa",
+                  "rawContent":{
+                     "blocks":[
+                        {
+                           "key":"3bc7t",
+                           "text":"When a block is not connected to anything, like this one, it will end the session!",
+                           "type":"unstyled",
+                           "depth":0,
+                           "inlineStyleRanges":[
 
-                     ],
-                     "entityRanges":[
+                           ],
+                           "entityRanges":[
 
+                           ],
+                           "data":{
+
+                           }
+                        }
                      ],
-                     "data":{
+                     "entityMap":{
 
                      }
-                  }
-               ],
-               "entityMap":{
-
+                  },
+                  "open":true
                }
-            },
-            "type":"speak"
+            ]
          },
          "ports":[
             {
@@ -643,14 +516,14 @@ export default {
                "name":"30be1c99-e38f-4770-ad6b-9a12d4dea046",
                "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
                "links":[
-
+                  "ee3869d0-4ced-433a-993b-28fe636907ab"
                ],
                "maximumLinks":1,
                "in":false,
                "label":" "
             }
          ],
-         "name":"Speak",
+         "name":"Speak: stop",
          "color":"rgb(0,192,255)"
       },
       {
@@ -660,29 +533,36 @@ export default {
          "x":94.3927446431669,
          "y":353.72476549820453,
          "extras":{
-            "rawContent":{
-               "blocks":[
-                  {
-                     "key":"13khb",
-                     "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen!",
-                     "type":"unstyled",
-                     "depth":0,
-                     "inlineStyleRanges":[
+            "type":"speak",
+            "dialogs":[
+               {
+                  "index":"05MFG",
+                  "voice":"Alexa",
+                  "rawContent":{
+                     "blocks":[
+                        {
+                           "key":"13khb",
+                           "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen!",
+                           "type":"unstyled",
+                           "depth":0,
+                           "inlineStyleRanges":[
 
-                     ],
-                     "entityRanges":[
+                           ],
+                           "entityRanges":[
 
+                           ],
+                           "data":{
+
+                           }
+                        }
                      ],
-                     "data":{
+                     "entityMap":{
 
                      }
-                  }
-               ],
-               "entityMap":{
-
+                  },
+                  "open":true
                }
-            },
-            "type":"speak"
+            ]
          },
          "ports":[
             {
@@ -704,14 +584,220 @@ export default {
                "name":"ff0e9910-7609-4430-a011-d1a911406543",
                "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
                "links":[
-                  "1db6afd5-f67f-492c-930e-e0b62ed71b38"
+                  "3b6de23d-9f3b-47ad-b5a1-9606cee869f9"
                ],
                "maximumLinks":1,
                "in":false,
                "label":" "
             }
          ],
-         "name":"Speak",
+         "name":"Speak: help",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"82faa43a-678c-49b7-8c64-c4772080a013",
+         "type":"default",
+         "selected":false,
+         "x":344.57478941546856,
+         "y":475.76533650982736,
+         "extras":{
+            "dialogs":[
+               {
+                  "index":"NSlax",
+                  "voice":"Alexa",
+                  "rawContent":{
+                     "blocks":[
+                        {
+                           "key":"hscv",
+                           "text":"Welcome to Storyflow! Are you ready to start building?",
+                           "type":"unstyled",
+                           "depth":0,
+                           "inlineStyleRanges":[
+
+                           ],
+                           "entityRanges":[
+
+                           ],
+                           "data":{
+
+                           }
+                        }
+                     ],
+                     "entityMap":{
+
+                     }
+                  },
+                  "open":true
+               }
+            ],
+            "type":"speak"
+         },
+         "ports":[
+            {
+               "id":"7545e1f2-794f-45e6-b327-32d9d244f27a",
+               "type":"default",
+               "selected":false,
+               "name":"bd3317da-1ec5-402c-8725-f553743d64e7",
+               "parentNode":"82faa43a-678c-49b7-8c64-c4772080a013",
+               "links":[
+                  "19fc13c0-5dd6-4c87-b153-a9eeeee7e2be",
+                  "3b6de23d-9f3b-47ad-b5a1-9606cee869f9",
+                  "ee3869d0-4ced-433a-993b-28fe636907ab"
+               ],
+               "in":true,
+               "label":" "
+            },
+            {
+               "id":"df338044-8603-46d7-b85b-2f35041ef055",
+               "type":"default",
+               "selected":false,
+               "name":"1785bd92-c42a-41d9-9d72-082c72d8707f",
+               "parentNode":"82faa43a-678c-49b7-8c64-c4772080a013",
+               "links":[
+                  "e2a98934-9f86-42f0-a950-3ca2ed1e5383"
+               ],
+               "maximumLinks":1,
+               "in":false,
+               "label":" "
+            }
+         ],
+         "name":"Speak: ask",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"ed84cb56-6042-4a02-8eae-bc0e59d165c9",
+         "type":"default",
+         "selected":false,
+         "x":989.0059984684762,
+         "y":461.4711137581894,
+         "extras":{
+            "dialogs":[
+               {
+                  "index":"9WGH3",
+                  "voice":"Alexa",
+                  "rawContent":{
+                     "blocks":[
+                        {
+                           "key":"7e8ah",
+                           "text":"You said yes. Let's do it!",
+                           "type":"unstyled",
+                           "depth":0,
+                           "inlineStyleRanges":[
+
+                           ],
+                           "entityRanges":[
+
+                           ],
+                           "data":{
+
+                           }
+                        }
+                     ],
+                     "entityMap":{
+
+                     }
+                  },
+                  "open":true
+               }
+            ],
+            "type":"speak"
+         },
+         "ports":[
+            {
+               "id":"236c513c-98a2-4bf1-8cd2-1db06a9d5e1f",
+               "type":"default",
+               "selected":false,
+               "name":"3e287024-05d5-437f-871d-516f306e27ac",
+               "parentNode":"ed84cb56-6042-4a02-8eae-bc0e59d165c9",
+               "links":[
+                  "a042e5eb-b9c3-40d6-aa79-e171c5f239ce"
+               ],
+               "in":true,
+               "label":" "
+            },
+            {
+               "id":"92664357-67b6-4a93-823a-4d62834a7354",
+               "type":"default",
+               "selected":false,
+               "name":"ed5b9c21-3848-4f40-9c95-969dd62a2a47",
+               "parentNode":"ed84cb56-6042-4a02-8eae-bc0e59d165c9",
+               "links":[
+
+               ],
+               "maximumLinks":1,
+               "in":false,
+               "label":" "
+            }
+         ],
+         "name":"Speak: yes",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"9a7053f6-f65a-4927-9d29-17170621b608",
+         "type":"default",
+         "selected":false,
+         "x":996.1531098442952,
+         "y":587.736748064324,
+         "extras":{
+            "dialogs":[
+               {
+                  "index":"3uyUq",
+                  "voice":"Alexa",
+                  "rawContent":{
+                     "blocks":[
+                        {
+                           "key":"ur9o",
+                           "text":"You said no. Oh no!",
+                           "type":"unstyled",
+                           "depth":0,
+                           "inlineStyleRanges":[
+
+                           ],
+                           "entityRanges":[
+
+                           ],
+                           "data":{
+
+                           }
+                        }
+                     ],
+                     "entityMap":{
+
+                     }
+                  },
+                  "open":true
+               }
+            ],
+            "type":"speak"
+         },
+         "ports":[
+            {
+               "id":"4a70d81f-06e2-483d-969b-5f68d7d97bfe",
+               "type":"default",
+               "selected":false,
+               "name":"eb6f30c6-b9ec-40b1-afe6-74e0c59c960a",
+               "parentNode":"9a7053f6-f65a-4927-9d29-17170621b608",
+               "links":[
+                  "0b5aa4ca-de2f-4f5b-b22f-2bb7570ada37"
+               ],
+               "in":true,
+               "label":" "
+            },
+            {
+               "id":"bff26ad7-a349-4352-bc2a-e7511e8885a1",
+               "type":"default",
+               "selected":false,
+               "name":"d3213c24-95c2-4056-adc9-0f5911837406",
+               "parentNode":"9a7053f6-f65a-4927-9d29-17170621b608",
+               "links":[
+
+               ],
+               "maximumLinks":1,
+               "in":false,
+               "label":" "
+            }
+         ],
+         "name":"Speak: no",
          "color":"rgb(0,192,255)"
       }
    ]

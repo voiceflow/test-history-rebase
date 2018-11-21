@@ -182,7 +182,7 @@ class Template extends Component {
                             </MUIButton>
                             <MUIButton varient="contained" className="white-btn" onClick={this.save} style={{width: 100}}>
                                 {this.state.saving ? 
-                                    <i className="fas fa-sync-alt fa-spin"></i> : 
+                                    <span className="loader"/> : 
                                     <React.Fragment>
                                         Save{this.state.saved ? '' : '*'}
                                     </React.Fragment>

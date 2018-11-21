@@ -75,9 +75,12 @@ class TestModal extends React.Component {
       story_state: default_state(),
       ended: false,
       last_diagram: "",
-      debug: false
+      debug: false,
+      audioplayer: false,
     }
 
+    this.pause = false;
+    this.next = false;
     this.updateState = this.updateState.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputSubmit = this.inputSubmit.bind(this);
@@ -138,12 +141,20 @@ class TestModal extends React.Component {
 
   // Super Janky recusive function to play audio
   recursivePlay(index, urls, ended){
+    // End of Audio
     if(index >= urls.length ) {
-      this.setState({
-        audio: null
-      });
+      if(!this.pause){
+        this.setState({
+          audio: null
+        });
+      }
       if(ended){
         this.handleEnd();
+      }else{
+        if(this.state.story_state.play){
+          this.next = true;
+          this.updateState();
+        }
       }
       return;
     };
@@ -229,11 +240,27 @@ class TestModal extends React.Component {
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
+    if(this.next){
+      if(this.state.story_state.play.loop){
+        this.removeAudio();
+        this.next = false;
+        return this.recursivePlay(0, [{
+          name: 'audio',
+          type: 'tag',
+          attrs: {
+            src: this.state.story_state.play.url
+          }
+        }], false);
+      }else{
+        data.play.action = 'NEXT';
+      }
+    }
+
     axios.post(test_endpoint, data)
-    .then(res => {
+    .then(async res => {
       res = res.data;
 
-      if(res.line && !res.ending) {
+      if(res.line) {
         this.setState({
           story_state: res
         });
@@ -247,12 +274,38 @@ class TestModal extends React.Component {
             last_diagram: current_diagram
           })
         }
-        // console.log(res.output);
+
+        this.pause = false;
+        if(res.play){
+          if(res.play.action === 'END'){
+            let story_state = this.state.story_state;
+            delete story_state.play;
+            this.setState({story_state: story_state, audioplayer: false});
+          }else{
+            this.setState({audioplayer: true});
+            if(res.play.action === 'START'){
+              if(this.next){
+                res.output = '<audio src="'+res.play.url+'" />';
+              }else{
+                res.output += '<audio src="'+res.play.url+'" />';
+              }
+            }else if(res.play.action === 'PAUSE'){
+              this.pause = true;
+              if(this.state.audio) this.state.audio.pause();
+            }else if(res.play.action === 'RESUME'){
+              if(this.state.audio) this.state.audio.play();
+              return;
+            }
+          }
+        }else{
+          this.setState({audioplayer: false});
+        }
+
         let dom = parse('<speak>' + res.output + '</speak>');
 
         if(dom && dom.length > 0 && dom[0].type === 'tag' && 
           dom[0].name === 'speak' && dom[0].children){
-          this.removeAudio();
+          if(!this.pause) this.removeAudio();
           this.recursivePlay(0, dom[0].children, res.ending);
         }else{
           this.handleEnd();
@@ -275,11 +328,13 @@ class TestModal extends React.Component {
       }else if(res.ending){
         this.handleEnd();
       }
+      this.next = false;
     })
     .catch(err => {
       this.setState({
         error: err
       });
+      this.next = false;
     });
   }
 
@@ -288,7 +343,7 @@ class TestModal extends React.Component {
   }
 
   inputSubmit(e){
-    e.preventDefault();
+    if(e) e.preventDefault();
 
     if(this.state.input === 'SKIP LINE'){
       if(this.state.audio !== null){
@@ -438,12 +493,28 @@ class TestModal extends React.Component {
                           })}
                         </div>
                       </div>
-                      <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
-                        <InputGroup>
-                          <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
-                          <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
-                        </InputGroup>
-                      </Form>
+                      {this.state.ended ? 
+                        null :
+                        <React.Fragment>
+                          {this.state.audioplayer ?
+                            <div className="audioplayer-options">
+                              {this.pause ?
+                                <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.ResumeIntent'}, this.inputSubmit)}>Resume</Button> :
+                                <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.PauseIntent'}, this.inputSubmit)}>Stop/Pause</Button>
+                              }
+                              <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
+                              <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
+                            </div> 
+                            :
+                            <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
+                              <InputGroup>
+                                <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                                <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
+                              </InputGroup>
+                            </Form>
+                          }
+                        </React.Fragment>
+                      }
                     </React.Fragment> :
                     <div className="p-3">
                       <h6><b>Start Project from the very Beginning</b></h6>

@@ -374,14 +374,17 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     if(node.extras.player){
                         story.lines[node.id] = {
+                            loop: node.extras.loop,
                             play: node.extras.audio,
                             nextId: stop,
+                            PAUSE_ID: node.id,
                             NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
                             PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
                             // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
                         };
                     }else{
                         story.lines[node.id] = {
+                            loop: node.extras.loop,
                             play: node.extras.audio,
                             nextId: stop
                         };
@@ -679,6 +682,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             }else{
                 render_type = type;
             }
+
             let params = {
                 TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story

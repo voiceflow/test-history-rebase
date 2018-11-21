@@ -226,16 +226,18 @@ input::placeholder, textarea::placeholder {
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-    border: 1px dashed #E2E9EC;
+    border: 1px dashed #c6d4d8;
     border-radius: 5px;
     background-color: #FFF;
 }
-
+.dropzone:hover{
+    border: 1px dashed #42A5FF;
+}
 .prompt {
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    color: #D1D8E2;
+    color: #95A6BD;
     font-size: 0.8rem;
 }
 

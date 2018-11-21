@@ -116,7 +116,7 @@ class Account extends Component {
         <div className={"login-card " + (this.state.login ? null : "open-register")}>
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
-                <img className="login-logo" src="https://uploads-ssl.webflow.com/5bddf05642686caf6d17eb58/5beda85296e84e8705c35d63_wordmark.svg"/>
+                <img className="login-logo" src="/logo.svg" alt="logo"/>
                 <div className="p-4 p-md-5">
                   {login_error}
                   <FormGroup>
@@ -129,11 +129,11 @@ class Account extends Component {
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Sign In</Button>
                   <hr/>
-                  <p>'Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></p>
+                  <p>Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></p>
                 </div>
               </Form>
               <Form id="signup-form" onSubmit={this.signupSubmit}>
-                  <img className="login-logo" src="https://uploads-ssl.webflow.com/5bddf05642686caf6d17eb58/5beda85296e84e8705c35d63_wordmark.svg"/>
+                  <img className="login-logo" src="/logo.svg" alt="logo"/>
                 <div className="p-4 p-md-5">
                   {signup_error}
                   <FormGroup>

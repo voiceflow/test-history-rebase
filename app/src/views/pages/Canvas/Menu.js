@@ -17,6 +17,7 @@ const sections = [{
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/> },
         { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/> },
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/> },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
         { text: 'Command', type: 'command', icon: '⌘' }
     ]
@@ -29,7 +30,8 @@ const sections = [{
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
-        // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> }
+        // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
+        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/> },
    ]
 }];
 
@@ -267,7 +269,7 @@ class Menu extends PureComponent {
                     <div className="spacer"/>
                     <div className="bottom-up">
                         
-                        <a className="tool no-underline" href="https://intercom.help/flowschool"
+                        <a className="tool no-underline" href="https://intercom.help/vfu"
                         target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-graduation-cap"/>
                         </a>

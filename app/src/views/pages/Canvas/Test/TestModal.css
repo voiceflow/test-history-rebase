@@ -147,6 +147,16 @@ td {
     border-radius: 4px;
 }
 
+.audioplayer-options {
+    padding: 0 10px;
+    display: flex;
+}
+
+.audioplayer-options>button{
+    flex: 1;
+    margin: 0 5px;
+}
+
 .message-progress{
     z-index: 9;
     position: absolute;

@@ -210,6 +210,8 @@ const setDiagram = async (req, res) => {
         Item: diagram
     };
 
+    const permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]';
+
     docClient.put(params, async(err) => {
         if (err) {
             console.log(err);
@@ -221,7 +223,7 @@ const setDiagram = async (req, res) => {
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
                 }else{
                     // otherwise update
-                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2 WHERE id = $3', [diagram.title, diagram.sub_diagrams, diagram.id]);
+                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2, permissions = $3 WHERE id = $4', [diagram.title, diagram.sub_diagrams, permissions_string, diagram.id]);
                 }
                 res.sendStatus(200);
             }catch(e){
@@ -367,6 +369,26 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             return link ? link : null;
                         })
                     };
+                } else if (node.extras.type === 'stream') {
+                    let stop = links[node.ports.filter(a => a.label === 'stop/pause')[0].links[0]];
+
+                    if(node.extras.player){
+                        story.lines[node.id] = {
+                            loop: node.extras.loop,
+                            play: node.extras.audio,
+                            nextId: stop,
+                            PAUSE_ID: node.id,
+                            NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
+                            PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
+                            // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
+                        };
+                    }else{
+                        story.lines[node.id] = {
+                            loop: node.extras.loop,
+                            play: node.extras.audio,
+                            nextId: stop
+                        };
+                    }
                 } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
                     let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -502,26 +524,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     
                     if(Array.isArray(node.extras.dialogs)){
                         node.extras.dialogs.forEach(d => {
-                            temp = draftToMarkdown(d.rawContent, {
-                                entityItems: {
-                                    VARIABLE: {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    },
-                                    '{mention': {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    }
-                                }
-                            }, true);
+                            temp = draftToMarkdown(d.rawContent, {alexa: true});
 
                             if(d.voice === 'Alexa'){
                                 markdownstring += temp;
@@ -529,7 +532,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                 markdownstring += `<voice name="${d.voice}">${temp}</voice>`
                             }
                         });
-                        markdownstring = "'" + markdownstring + "'";
                     }else{
                         // DEPRECATE OLD SPEAK 
                         let raw;
@@ -539,27 +541,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             raw = node.extras.raw;
                         }
                         if(raw){
-                            markdownstring = draftToMarkdown(raw, {
-                                entityItems: {
-                                    VARIABLE: {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    },
-                                    '{mention': {
-                                        open: entity => {
-                                            return "' + v['"
-                                        },
-                                        close: entity => {
-                                            return "'] + '"
-                                        }
-                                    }
-                                }
-                            }, true);
-                            markdownstring = "'" + markdownstring + "'";
+                            markdownstring = draftToMarkdown(raw, {alexa: true});
                         }
                     }
 
@@ -591,13 +573,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     let formattedRawContent = '';
                     if (!_.isNil(node.extras.rawContent)) {
-                        formattedRawContent = convertToStringForSafeEval(node.extras.rawContent);
+                        formattedRawContent = draftToMarkdown(node.extras.rawContent);
                     }
 
                     if (!_.isNil(node.extras.params)) {
                         node.extras.params.forEach(param_map => {
-                            param_map.val = convertToStringForSafeEval(param_map.val);
-                            param_map.key = convertToStringForSafeEval(param_map.key);
+                            param_map.val = draftToMarkdown(param_map.val);
+                            param_map.key = draftToMarkdown(param_map.key);
                         });
                     }
 
@@ -606,8 +588,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         node.extras.headers.forEach(param_map => {
                             if(param_map.val && param_map.key){
                                 headers.push({
-                                    val: convertToStringForSafeEval(param_map.val),
-                                    key: convertToStringForSafeEval(param_map.key)
+                                    val: draftToMarkdown(param_map.val),
+                                    key: draftToMarkdown(param_map.key)
                                 })
                             }
                         });
@@ -615,14 +597,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     if (!_.isNil(node.extras.body)) {
                         node.extras.body.forEach(param_map => {
-                            param_map.val = convertToStringForSafeEval(param_map.val);
-                            param_map.key = convertToStringForSafeEval(param_map.key);
+                            param_map.val = draftToMarkdown(param_map.val);
+                            param_map.key = draftToMarkdown(param_map.key);
                         });
                     }
 
                     let formattedUrl = '';
                     if (!_.isNil(node.extras.url)) {
-                        formattedUrl = convertToStringForSafeEval(node.extras.url);
+                        formattedUrl = draftToMarkdown(node.extras.url);
+                    }
+
+                    if (!_.isNil(node.extras.mapping)) {
+                        node.extras.mapping.forEach(param_map => {
+                            if(typeof param_map.path !== 'string'){
+                                param_map.path = draftToMarkdown(param_map.path);
+                            }
+                            param_map.path = param_map.path.trim();
+                        });
                     }
                     
                     story.lines[node.id] = {
@@ -663,7 +654,17 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
                         }
                     }
+                } else if (node.extras.type === 'permissions') {
 
+                    const permissions = node.extras.permissions ? node.extras.permissions : [];
+                    
+                    story.lines[node.id] = {
+                        permissions: permissions,
+                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],
+                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]],
+                        declined_id: links[node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]],
+                        nextId: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]]
+                    }
                 } else if (node.extras.type === 'module'){
 
                     let nextLink = null;
@@ -681,7 +682,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         },
                         nextId: links[nextLink]
                     };
-
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -702,6 +702,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             }else{
                 render_type = type;
             }
+
             let params = {
                 TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story
@@ -777,30 +778,6 @@ const publishTest = async (req, res) => {
 
     res.sendStatus(status);
 };
-
-const convertToStringForSafeEval = function(s) {
-    let formattedStr = draftToMarkdown(s, {
-        entityItems: {
-            VARIABLE: {
-                open: entity => {
-                    return "' + v['"
-                },
-                close: entity => {
-                    return "'] + '"
-                }
-            },
-            '{mention': {
-                open: entity => {
-                    return "' + v['"
-                },
-                close: entity => {
-                    return "'] + '"
-                }
-            }
-        }
-    });
-    return "'" + formattedStr + "'";
-}
 
 module.exports = {
     updateName: updateName,

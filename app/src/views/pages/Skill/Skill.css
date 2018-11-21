@@ -117,3 +117,17 @@
 .stage_modal .modal-info>.MUIform>.btn{
   margin-top: 10px !important;
 }
+
+.locale-button {
+  margin: 5px 5px 5px 0px !important;
+  width: 130px;
+  border-radius: 3px 3px 3px 3px !important;
+}
+
+.locale-button.active {
+  background-color: aquamarine;
+}
+
+.locale-button-group {
+  flex-wrap: wrap;
+}

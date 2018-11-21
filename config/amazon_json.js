@@ -35,6 +35,12 @@ const interactionModel = (invocation) => {
 	                    ]
 	                },
 	                {
+	                    "name": "AMAZON.ResumeIntent",
+	                },
+	                {
+	                    "name": "AMAZON.PauseIntent",
+	                },
+	                {
 	                    "name": "StoryFlowIntent",
 	                    "slots": [
 	                        {
@@ -45,10 +51,6 @@ const interactionModel = (invocation) => {
 	                    "samples": [
 	                        "{content}"
 	                    ]
-	                },
-	                {
-	                    "name": "AMAZON.NavigateHomeIntent",
-	                    "samples": []
 	                }
 	            ],
 	            "types": [
@@ -175,51 +177,59 @@ const interactionModel = (invocation) => {
 
 const manifest = (r, encoded_id) => {
     r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
-    r.keywords = r.keywords.split(",").map(item => item.trim());
+	r.keywords = r.keywords.split(",").map(item => item.trim());
+	
+	const localeObj = {
+		"summary": r.summary,
+		"examplePhrases": r.invocations,
+		"keywords": r.keywords,
+		"name": r.name,
+		"description": r.description,
+		"smallIconUri": r.small_icon,
+		"largeIconUri": r.large_icon
+	};
+	const locales = {}
+	r.locales.forEach(locale => {
+		locales[locale] = localeObj;
+	})
+
+	const privacyLocales = {}
+	r.locales.forEach(locale => {
+		privacyLocales[locale] = {
+			"termsOfUseUrl": "https://getvoiceflow.com",
+			"privacyPolicyUrl": "https://getvoiceflow.com"
+		}
+	})
 
     return {
      	"manifest": {
              "publishingInformation": {
-                 "locales": {
-                     "en-US": {
-                         "summary": r.summary,
-                         "examplePhrases": r.invocations,
-                         "keywords": r.keywords,
-                         "name": r.name,
-                         "description": r.description,
-                         "smallIconUri": r.small_icon,
-                         "largeIconUri": r.large_icon
-                     }
-                 },
-                 "isAvailableWorldwide": false,
+                 "locales": locales,
+                 "isAvailableWorldwide": true,
                  "testingInstructions": r.instructions,
                  "category": r.category,
-                 "distributionCountries": [
-                     "US"
-                 ]
              },
              "apis": {
                  "custom": {
                      "endpoint": {
                          "uri": `https://app.getvoiceflow.com/state/skill/${encoded_id}`,
                          "sslCertificateType": "Wildcard"
-                     }
+                     },
+                     "interfaces": [{
+	                 	"type": "AUDIO_PLAYER"
+	                 }]
                  }
              },
              "manifestVersion": "1.0",
              "privacyAndCompliance": {
                  "allowsPurchases": r.purchase,
-                 "locales": {
-                     "en-US": {
-                         "termsOfUseUrl": "https://getvoiceflow.com",
-                         "privacyPolicyUrl": "https://getvoiceflow.com"
-                     }
-                 },
+                 "locales": privacyLocales,
                  "isExportCompliant": r.export,
                  "isChildDirected": r.copa,
                  "usesPersonalInfo": r.personal,
                  "containsAds": r.ads
-             }
+			 },
+			 "permissions": r.permissions
          }
     }
 }

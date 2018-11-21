@@ -168,7 +168,11 @@ app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 
 app.get('/voices', ensureLoggedIn(), Audio.getVoices);
 app.post('/generate', ensureLoggedIn(), Audio.generate);
-app.post('/audio', ensureLoggedIn(), upload.any(), Audio.upload);
+app.post('/audio', ensureLoggedIn(), upload.single('audio'), Audio.upload);
+
+app.post('/raw_audio', ensureLoggedIn(), upload.single('audio'), (req, res) => {
+    res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.file.key}`);
+});
 
 app.post('/image/large_icon', uploadResize(512,512).single('image'), (req, res) => {
     let filename = req.file.transforms[0].key;

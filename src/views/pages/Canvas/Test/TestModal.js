@@ -517,10 +517,10 @@ class TestModal extends React.Component {
                       }
                     </React.Fragment> :
                     <div className="p-3">
-                      <h6><b>Start Project from the very Beginning</b></h6>
+                      <h6><b>Start Project from the beginning</b></h6>
                       <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
                       <hr/>
-                      <h6><b>Start From a Specific Point in the Project</b></h6>
+                      <h6><b>Start from a specific point in the project</b></h6>
                       <Select
                         classNamePrefix="select-box"
                         className="text-left mb-2" 
@@ -564,7 +564,7 @@ class TestModal extends React.Component {
           }
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="danger" onClick={this.props.toggle}>Exit</Button>
+          <Button color="primary" onClick={this.props.toggle}>Close</Button>
         </ModalFooter>
       </Modal>
     );

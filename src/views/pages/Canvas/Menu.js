@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
+import TemplateItem from './TemplateItem';
 import ModuleItem from './ModuleItem';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import isVarName from 'is-var-name';
@@ -36,9 +37,10 @@ const sections = [{
 
 const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
-    {tab: "flows", icon: <i className="fas fa-clone"/>},
+    {tab: "project", icon: <i className="fas fa-folder"/>},
     {tab: "variables", icon: <i className="fas fa-code"/>},
-    // {tab: "modules", icon: <i className="fas fa-layer-group"/>}
+    {tab: "modules", icon: <i className="fas fa-layer-group"/>},
+    {tab: "templates", icon: <i className="fas fa-th-large"/>}
 ]
 
 class Menu extends PureComponent {
@@ -166,7 +168,7 @@ class Menu extends PureComponent {
                     })}
                 </div>
             })
-        }else if(this.state.tab === 'flows'){
+        }else if(this.state.tab === 'project'){
             // content = this.props.diagrams.map((diagram, i) => 
             //     <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
             //         {diagram.name}
@@ -235,7 +237,18 @@ class Menu extends PureComponent {
                 })}
                 </div>
             }else{
-                content = <div>No Modules, Visit Marketplace</div>
+                content = <div>No flows, visit Marketplace</div>
+            }
+        }else if(this.state.tab === 'templates'){
+            if(this.props.user_templates){
+                content = 
+                <div>
+                {this.props.user_templates.map((user_template, i) => {
+                    return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
+                })}
+                </div>
+            }else{
+                content = <div>No templates, visit Marketplace</div>
             }
         }
 

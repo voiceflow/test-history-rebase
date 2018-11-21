@@ -111,30 +111,30 @@ class Account extends Component {
       signup_error = (<Alert color="danger"> {this.state.signup_error} </Alert>);
     }
     return (
+                      
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
         <div className={"login-card " + (this.state.login ? null : "open-register")}>
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
+                <img className="login-logo" src="https://uploads-ssl.webflow.com/5bddf05642686caf6d17eb58/5beda85296e84e8705c35d63_wordmark.svg"/>
                 <div className="p-4 p-md-5">
-                  <h2><b>Welcome to Voiceflow</b></h2>
                   {login_error}
                   <FormGroup>
                     <Label for="email">Email</Label>
-                    <Input type="email" name="email" onChange={this.handleChange} placeholder="example@example.com" required minLength="6"/>
+                    <Input type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6"/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
                     <Input type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
-                  <Button block color="primary" type="submit">Submit</Button>
+                  <Button block className="login-btn" type="submit">Sign In</Button>
                   <hr/>
-                  <p>Don't have an account? <a href="/signup" onClick={this.openRegister}>Register</a></p>
+                  <p>'Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></p>
                 </div>
               </Form>
               <Form id="signup-form" onSubmit={this.signupSubmit}>
+                  <img className="login-logo" src="https://uploads-ssl.webflow.com/5bddf05642686caf6d17eb58/5beda85296e84e8705c35d63_wordmark.svg"/>
                 <div className="p-4 p-md-5">
-                  <h2>Sign Up</h2>
-                  <p className="text-muted  mb-3">Create your VoiceFlow account and get building!</p>
                   {signup_error}
                   <FormGroup>
                     <Label for="name">Name</Label>
@@ -142,13 +142,13 @@ class Account extends Component {
                   </FormGroup>
                   <FormGroup>
                     <Label for="email">Email</Label>
-                    <Input type="email" name="r_email" onChange={this.handleChange} placeholder="example@example.com" required minLength="6"/>
+                    <Input type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6"/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
                     <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
-                  <Button block color="primary" type="submit">Create Account</Button>
+                  <Button block className="login-btn" type="submit">Create Account</Button>
                   <hr/>
                   <p>Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></p>
                 </div>

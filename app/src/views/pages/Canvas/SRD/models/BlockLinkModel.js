@@ -9,7 +9,7 @@ export class BlockLinkModel extends LinkModel<DefaultLinkModelListener> {
 	constructor(type: string = "default") {
 		super(type);
 		this.color = "#555D6D";
-		this.width = 3;
+		this.width = 1;
 		this.curvyness = 50;
 	}
 

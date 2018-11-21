@@ -791,7 +791,29 @@
     -ms-user-select: none;
     user-select: none;
 }
-
+.srd-default-node.comment textarea{
+    background-color: transparent;
+    box-shadow: none !important;
+    padding-top: 5px !important;
+    padding-left: 10px !important;
+    padding-bottom: 10px !important;
+    border: 1px solid transparent !important;
+    border-radius: 5px;
+/*
+    min-width: 0px !important;
+    min-height: 0px !important;  
+*/
+}
+.srd-default-node.comment textarea:active, .srd-default-node.comment textarea:focus{
+    border: 1px dashed #C2C6D5 !important;
+    outline: none !important;
+/*    background-color: #fff !important;*/
+/*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.08) !important;*/
+    padding-top: 5px !important;
+    padding-left: 10px !important;
+    padding-bottom: 10px !important;
+    
+}
 .controls hr {
     margin-bottom: px;
     border-top: 1px solid #E2E9EC;
@@ -836,7 +858,10 @@
 .textarea-collapse {
     margin-bottom: 5px;
 }
-
+.input .textarea .text-to-voice .choice-block .solid-border{
+/*    background-color: #FFF !important;*/
+    color: aqua !important;
+}
 #Editor textarea, textarea.blank {
     width: 100%;
     border-radius: 5px;
@@ -999,7 +1024,6 @@ label {
 }
 
 .srd-default-node.comment textarea {
-  background: none;
   resize: none;
 }
 

@@ -105,21 +105,25 @@ class DiagramBlock extends Component {
             <div>
                 {!this.state.node.extras.diagram_id ? 
                     <React.Fragment>
+                        {this.props.diagrams && this.props.diagrams.length > 0 ? 
+                            <React.Fragment>
+                                <label>Select Existing Flow</label>
+                                <Select
+                                    classNamePrefix="select-box"
+                                    onChange={(selected) => {
+                                        let node = this.state.node;
+                                        node.extras.diagram_id = selected.value;
+                                        this.props.enterFlow(selected.value);
+                                    }}
+                                    options={options}
+                                />
+                                <hr className="mb-1"/>
+                                </React.Fragment>
+                        : null}
+                        <label>Create a New Flow</label>
                         <Button block onClick={() => this.props.createDiagram(this.state.node)}>
                             Create New Flow <i className="fas fa-sign-in"/>
                         </Button>
-                        {this.props.diagrams && this.props.diagrams.length > 0 ? 
-                            <Select
-                                classNamePrefix="select-box"
-                                className='mt-2'
-                                onChange={(selected) => {
-                                    let node = this.state.node;
-                                    node.extras.diagram_id = selected.value;
-                                    this.props.enterFlow(selected.value);
-                                }}
-                                options={options}
-                            />
-                        : null}
                     </React.Fragment>
                     : 
                     <React.Fragment>

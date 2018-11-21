@@ -590,6 +590,11 @@
 }
 /*.App .Menu #sidebar .MenuItem:hover>.MenuIcon{
 }*/
+.App .Menu #sidebar .MenuItem.comment:hover {
+    background-color: #F4F6F7;
+} .MenuItem.comment>.MenuIcon {
+    background-color: #88bbd8;
+}
 
 .App #diagram {
     width: 100%;
@@ -903,6 +908,29 @@ label {
     background-color: #fff;
     border-top: 6px solid #EC5594;
     border-color: #EC5594 !important;
+}
+
+.srd-default-node.comment {
+    background: none !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+    padding-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+.srd-default-node.comment textarea {
+  background: none;
+  resize: none;
+}
+
+.srd-default-node__title {
+    padding: 0 !important;
+}
+
+.srd-default-node.comment .srd-default-node__name {
+    padding: 10px;
 }
 
 .srd-default-node.set, .srd-default-node.variable {

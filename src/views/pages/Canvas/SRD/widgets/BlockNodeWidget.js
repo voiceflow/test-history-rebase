@@ -30,7 +30,10 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 			<div className={"srd-default-node " + this.props.node.extras.type}>
 				<div className={this.bem("__title") + ' no-select'}>
 					<div className={this.bem("__name")}>
-						{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
+            {this.props.node.extras.type === 'comment' ?
+              <textarea value={this.props.node.name} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} /> :
+						  this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)
+            }
 					</div>
 				</div>
 				<div className={this.bem("__ports")}>

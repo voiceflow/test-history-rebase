@@ -39,8 +39,8 @@ const tabs = [
     {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
     {tab: "project", icon: <i className="fas fa-folder"/>},
     {tab: "variables", icon: <i className="fas fa-code"/>},
-    {tab: "modules", icon: <i className="fas fa-layer-group"/>},
-    {tab: "templates", icon: <i className="fas fa-th-large"/>}
+    // {tab: "modules", icon: <i className="fas fa-layer-group"/>},
+    // {tab: "templates", icon: <i className="fas fa-th-large"/>}
 ]
 
 class Menu extends PureComponent {

@@ -45,7 +45,7 @@ class BannerCarousel extends Component{
 		var currentModule1 = 
 			<div className="market-hero border rounded">
 				<div className="d-flex justify-content-between mt-3">
-					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
+					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1" alt="current"/>
                     {
                         this.props.ownership.has(this.props.featured_modules[0].module_id)?
                         <i className="checkbox-active fas fa-check"></i>
@@ -65,7 +65,7 @@ class BannerCarousel extends Component{
 		var currentModule2 = 
 			<div className="market-hero border rounded">
 				<div className="d-flex justify-content-between mt-3">
-					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
+					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1" alt="card icon"/>
                     {
                         this.props.ownership.has(this.props.featured_modules[1].module_id)?
                         <i className="checkbox-active fas fa-check"></i>

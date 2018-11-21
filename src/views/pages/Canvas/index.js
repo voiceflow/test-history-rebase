@@ -30,7 +30,8 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 
 const cookies = new Cookies();
 const defaultVariables = ['sessions', 'user_id', 'timestamp'];
-const line_color = '#E3E9EE';
+const line_color = '#D1D8E2';
+const line_width = 2.5;
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -118,6 +119,7 @@ class Canvas extends Component {
             var links = model.getLinks();
             for (let key in links) {
                 links[key].setColor(line_color);
+                links[key].setWidth(line_width);
             }
 
             variables.push('user_name');
@@ -424,6 +426,7 @@ class Canvas extends Component {
             var links = model.getLinks();
             for (let key in links) {
                 links[key].setColor(line_color);
+                links[key].setWidth(line_width);
             }
             
             engine.stopMove();

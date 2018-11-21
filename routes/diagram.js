@@ -199,10 +199,6 @@ const setDiagram = async (req, res) => {
         return res.sendStatus(500);
     }
 
-    if (diagram.title.trim() === "" || !diagram.title.trim()){
-        diagram.title = "New Flow";
-    }
-
     diagram.last_save = Date.now();
 
     let params = {
@@ -219,11 +215,14 @@ const setDiagram = async (req, res) => {
         } else {
             try{
                 if(req.query.new){
+                    if (diagram.title !== "ROOT" ){
+                        diagram.title = "New Flow";
+                    }
                     // If it is a new diagram insert (assume it has no blocks)
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
                 }else{
                     // otherwise update
-                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2, permissions = $3 WHERE id = $4', [diagram.title, diagram.sub_diagrams, permissions_string, diagram.id]);
+                    await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2 WHERE id = $3', [diagram.sub_diagrams, permissions_string, diagram.id]);
                 }
                 res.sendStatus(200);
             }catch(e){

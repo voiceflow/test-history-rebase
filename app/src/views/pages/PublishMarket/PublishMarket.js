@@ -23,8 +23,7 @@ class PublishMarket extends Component {
                 skill_id: this.props.computedMatch.params.id,
                 descr: '',
                 overview: '',
-                card_icon: '',
-                type: 'Flow',
+                card_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
                 error: '',
                 in_review: false,
                 title: '',
@@ -32,7 +31,9 @@ class PublishMarket extends Component {
                 displayingConfirmWithdraw: false,
                 color: '',
                 input: [],
-                output: []
+                output: [],
+                show_incomp_alert: false,
+                variables: []
             }
         } else {
             this.props.history.push('/dashboard');
@@ -50,7 +51,18 @@ class PublishMarket extends Component {
         this.handleRemoveVar = this.handleRemoveVar.bind(this);
         this.handleVarChange = this.handleVarChange.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.testApprove = this.testApprove.bind(this);
 	}
+
+    testApprove(){
+        axios.put(`/marketplace/cert/${this.state.skill_id}`)
+        .then(res => {
+            console.log("I think it worked")
+        }) 
+        .catch(res => {
+            console.log("DAFUQ")
+        });
+    }
 
 	handleTypeSelection(value) {
 		this.setState({
@@ -154,19 +166,28 @@ class PublishMarket extends Component {
 
     publish(){
     	this.save();
-    	axios.post('/marketplace/cert/' + this.state.skill_id)
-        .then(res => {
-            this.setState({
-                saved: true,
-                in_review: true
+        let s = this.state;
+        if (s.title && s.descr && s.card_icon && s.category && s.type && s.overview && s.module_icon){
+        	axios.post('/marketplace/cert/' + this.state.skill_id)
+            .then(res => {
+                this.setState({
+                    saved: true,
+                    in_review: true,
+                    show_incomp_alert: false
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: 'Publish Error, failed to publish',
+                    show_incomp_alert: false
+                });
             });
-        })
-        .catch(err => {
-            console.log(err);
+        } else {
             this.setState({
-                error: 'Publish Error, failed to publish'
-            });
-        });
+                show_incomp_alert: true
+            })
+        }
     }
 
     onWithdraw(){
@@ -205,29 +226,24 @@ class PublishMarket extends Component {
     }
 
     handleAddVar(type){
-        let var_array = this.state[type];
-        var_array.push('')
-
-        this.setState({
-            type: var_array
-        }, this.handleUpdate);
+        let curr_state = this.state;
+        curr_state[type].push('');
+        curr_state.saved = false;
+        this.setState(curr_state);
     }
 
     handleRemoveVar(i, type) {
-        let var_array = this.state[type];
-        var_array.splice(i, 1);
-
-        this.setState({
-            type: var_array
-        }, this.handleUpdate);
+        let curr_state = this.state;
+        curr_state[type].splice(i, 1);
+        curr_state.saved = false;
+        this.setState(curr_state);
     }
 
     handleVarChange(val, i, type) {
-        let var_array = this.state[type];
-        var_array[i] = val        
-        this.setState({
-            type: var_array
-        }, this.handleUpdate);
+        let curr_state = this.state;
+        curr_state[type][i] = val;
+        curr_state.saved = false;
+        this.setState(curr_state);
     }
 
 	render(){
@@ -321,19 +337,6 @@ class PublishMarket extends Component {
                     <hr className="mt-0"></hr>
                     <div className="row">
                         <div className="col-2">
-                            {this.state.card_icon?
-                                <i className="fal fa-check-circle text-success"></i>
-                                :
-                                <i className="fal fa-times-circle text-danger"></i>
-                            }
-                        </div>
-                        <div className="col-10">
-                            <p>Card Icon</p>
-                        </div>
-                    </div>
-                    <hr className="mt-0"></hr>
-                    <div className="row">
-                        <div className="col-2">
                             {this.state.type?
                                 <i className="fal fa-check-circle text-success"></i>
                                 :
@@ -372,6 +375,16 @@ class PublishMarket extends Component {
 		            	:
 		            	null
 		            }
+
+                    {this.state.show_incomp_alert?
+                        <div className="alert alert-danger mb-4" role="alert">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h5 className="mb-0">Missing essential information about your module.</h5>
+                            </div>
+                        </div>
+                        :
+                        null
+                    }
 
 					<FormGroup>
 						<div className="row">
@@ -463,7 +476,7 @@ class PublishMarket extends Component {
 
 					<div className="d-flex row">
                         <div className="col-3 publish-info">
-                            <p className="text-secondary mt-5"><b>Card icon</b> will be displayed for your module in our Marketplace.</p>
+                            <p className="text-secondary mt-5">Card icon will be displayed for your module in our Marketplace.</p>
                         </div>
                         <div className="col-9 d-flex">
                             <div>
@@ -530,6 +543,7 @@ class PublishMarket extends Component {
                         </div>
                     </FormGroup>
 
+                    {/*
                     <FormGroup>
                         <div className="row">
                             <div className="col-3 publish-info"></div>
@@ -546,51 +560,61 @@ class PublishMarket extends Component {
                             </div>
                         </div>
                     </FormGroup>
+                    */}
 
-                    <div className="row">
-                        <div className="col-3 publish-info"></div>
-                        <div className="col-9">
-                            <Label>Input Variables</Label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-3 publish-info">
-                            <p className="mb-0 text-secondary"><b>Input variables</b> are the variables that will be available for input mapping when users use your module.</p>
-                        </div>
-                        <div className="col-9">
-                            <VariableMap
-                                pairs={this.state.input}
-                                onAdd={(e, type) => this.handleAddVar('input')}
-                                onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
-                                onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
-                                type='input'
-                                variables={this.state.variables}
-                            />
-                        </div>
-                    </div>
+                    {this.state.type && this.state.type.value === 'FLOW'?
+                        <React.Fragment>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label>Input Variables</Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="mb-0 text-secondary"><b>Input variables</b> are the variables that will be available for input mapping when users use your module.</p>
+                                </div>
+                                <div className="col-9">
+                                    <VariableMap
+                                        pairs={this.state.input}
+                                        onAdd={(e, type) => this.handleAddVar('input')}
+                                        onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
+                                        onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
+                                        type='input'
+                                        variables={this.state.variables}
+                                    />
+                                </div>
+                            </div>
 
-                    <div className="row">
-                        <div className="col-3 publish-info"></div>
-                        <div className="col-9">
-                            <Label>Output Variables</Label>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-3 publish-info">
-                            <p className="mb-0 text-secondary"><b>Output variables</b> are the variables that will be available for output mapping when users use your module.</p>
-                        </div>
-                        <div className="col-9">
-                            <VariableMap
-                                pairs={this.state.output}
-                                onAdd={(e, type) => this.handleAddVar('output')}
-                                onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
-                                onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
-                                type='output'
-                                variables={this.state.variables}
-                            />
-                        </div>
-                    </div>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label>Output Variables</Label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="mb-0 text-secondary"><b>Output variables</b> are the variables that will be available for output mapping when users use your module.</p>
+                                </div>
+                                <div className="col-9">
+                                    <VariableMap
+                                        pairs={this.state.output}
+                                        onAdd={(e, type) => this.handleAddVar('output')}
+                                        onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
+                                        onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
+                                        type='output'
+                                        variables={this.state.variables}
+                                    />
+                                </div>
+                            </div>
+                        </React.Fragment>
+                        :
+                        null
+                    }
                     
+                    <div>
+                        <MUIButton variant="contained" className="white-btn mr-3" onClick={this.testApprove}>TEST</MUIButton>
+                    </div>
 				</div>
 			</div>
 		);

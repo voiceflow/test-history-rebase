@@ -18,11 +18,14 @@
 
 .business.Window  .sidebar>.title {
 	font-weight: lighter;
-	padding: 24px 20px 22px 20px;
+	padding: 24px 20px 40px 20px;
 	font-size: 1.5rem;
-	border-bottom: 1px solid #E2E9EC;
+/*	border-bottom: 1px solid #E2E9EC;*/
 }
-
+.fal{
+    font-weight: 900;
+    margin-right: 5px;
+}
 .business.Window .business-page-inner {
 	width: 100%;
 	position: relative;
@@ -38,9 +41,8 @@
 }
 .business.Window .business-page-inner>.subheader>div{
 	flex: 1;
-	height: 41px;
+	height: 41px;    
 }
-
 .business.Window .business-page-inner>.content {
 	padding: 100px 20px 50px 20px;
 }
@@ -51,7 +53,8 @@
 	transition: background-color 0.1s linear;
 	text-decoration: none;
 	cursor: pointer;
-	color: #94A6BD;
+	color: #C2C6D5;
+
 }
 
 .business.Window  .sidebar>.sidebar-option:hover {
@@ -60,8 +63,19 @@
 
 .business.Window  .sidebar>.sidebar-option.active {
 	cursor: default;
-	background-color: #94A6BD !important;
+	background-color: #42A5FF !important;
 	color: #fff !important;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    border-right: 2px solid #fff;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+    width: 105%;
+    z-index: 10;
+/*
+transform: scale(1.03);
+    transition: all .9s ease-in-out;
+*/
 }
 
 .content .form-group>label{
@@ -83,10 +97,11 @@
 
 .template-card-action{
 	flex: 1;
-}
 
+}
 .template-card-action>div{
-	padding: 20px;
+	padding: 70px;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
 }
 
 .template-card-delete{
@@ -98,7 +113,7 @@
 }
 .template-card-delete:hover{
 	color:#fff;
-	background-color: #E53935;
+	background-color: #2b3950;
 }
 
 .email_preview{

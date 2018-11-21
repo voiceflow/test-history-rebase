@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 
-class ModuleItem extends Component {
+class TemplateItem extends Component {
     render() {
         return (
             <div
                 className='MenuItem'
-                draggable={true}
-                onDragStart={event => {
-                    event.dataTransfer.setData('node', 'module');
-                    event.dataTransfer.setData('data', JSON.stringify(this.props.module));
-                }}
+                onClick={() => {this.props.onTemplateChoice(this.props.module)}}
             >
                 <div className="MenuIcon">
                     <img className="MenuIcon" src={this.props.module.module_icon} alt={this.props.module.title}/>
@@ -20,4 +16,4 @@ class ModuleItem extends Component {
     }
 }
 
-export default ModuleItem;
+export default TemplateItem;

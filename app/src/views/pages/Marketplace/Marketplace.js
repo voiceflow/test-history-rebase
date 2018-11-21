@@ -13,11 +13,22 @@ class Marketplace extends Component {
 
         this.state = {
             modules: [],
-            featured_modules: [],
-            loading: false
+            featured_modules: [
+				{ title: '',
+				  descr:'',
+                  card_icon: '',
+                  module_id: ''},
+				{ title: '',
+				  descr:'',
+                  card_icon: '',
+                  module_id: ''}
+			],
+            loading: false,
+            user_modules: new Set()
         }
 
         this.onLoadModules = this.onLoadModules.bind(this);
+        this.handleOwnershipChange = this.handleOwnershipChange.bind(this);
     }
 
     componentDidMount() {
@@ -40,7 +51,23 @@ class Marketplace extends Component {
         .then(res => {
             this.setState({
                 featured_modules: res.data,
-                loading:false
+                loading: false
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+        axios.get('/marketplace/user_module')
+        .then(res => {
+            let user_modules = [];
+            for(var i = 0;i < res.data.length;i++){
+                user_modules.push(res.data[i].module_id);
+            }
+            user_modules = new Set(user_modules);
+            this.setState({
+                user_modules: user_modules,
+                loading: false
             });
         })
         .catch(error => {
@@ -48,20 +75,27 @@ class Marketplace extends Component {
         });
     }
 
+    handleOwnershipChange(ownership){
+        this.setState({
+            user_modules: ownership
+        })
+    }
+
     render() {
         return (
             <div className="Window">
                 <div className="sidenav">
                     <ButtonGroup vertical>
-                        <Button>Real Shit?</Button>
-                        <Button>For Real</Button>
-                        <Button>Yayayayaya</Button>
+                        <Button className="flow-btn">Flows</Button>
+                        <Button className="template-btn">Templates</Button>
                     </ButtonGroup>
                 </div>
 
                 <div className="marketplace-main">
                     <BannerCarousel
-                        modules={this.state.featured_modules}
+                        featured_modules={this.state.featured_modules}
+                        ownership={this.state.user_modules}
+                        onOwnershipChange={this.handleOwnershipChange}
                     />
                     <Masonry elementType='div' className="skills-container">
                         {this.state.modules.map((module, i) => 
@@ -69,6 +103,8 @@ class Marketplace extends Component {
                                 key={i}
                                 module={module}
                                 onClick={() => {this.props.history.push('/market/' + module.module_id)}}
+                                ownership={this.state.user_modules}
+                                onOwnershipChange={this.handleOwnershipChange}
                             />
                         )}
                     </Masonry>

@@ -300,7 +300,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             // If publishing to market, insert version before
             let key = diagram_id
             if(type === 'market'){
-                key = options.version + '_' + key;
+                key = "$" + options.version + '_' + key;
             }
 
             let story = {
@@ -657,7 +657,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 } else if (node.extras.type === 'permissions') {
 
                     const permissions = node.extras.permissions ? node.extras.permissions : [];
-
+                    
                     story.lines[node.id] = {
                         permissions: permissions,
                         success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],
@@ -665,6 +665,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         declined_id: links[node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]],
                         nextId: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]]
                     }
+                } else if (node.extras.type === 'module'){
+
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+                    
+                    story.lines[node.id] = {
+                        diagram_id: node.extras.diagram_id,
+                        variable_map: {
+                            inputs: node.extras.mapping.inputs.filter(input => (input.key && input.val)).map(input => [input.val, input.key]),
+                            outputs: node.extras.mapping.outputs.filter(output => (output.key && output.val)).map(output => [output.val, output.key]),
+                        },
+                        nextId: links[nextLink]
+                    };
                 } else {
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {

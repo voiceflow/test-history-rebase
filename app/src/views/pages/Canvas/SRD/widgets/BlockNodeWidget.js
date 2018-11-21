@@ -38,7 +38,12 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 						{_.map(this.props.node.getInPorts(), this.generatePort.bind(this))}
 					</div>
 					{
-						this.props.node.extras.type === 'module'? <img draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>:null
+						this.props.node.extras.type === 'module'? 
+							<React.Fragment>
+								<img className="rounded" draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
+								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
+							</React.Fragment>
+							:null
 					}
 					<div className={this.bem("__out")}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}

@@ -12,7 +12,7 @@ const hashIds = (rows) => {
 
 
 const getModules = (req, res) => {
-	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id LIMIT $1', 
+	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id INNER JOIN creators ON creators.creator_id = modules.creator_id LIMIT $1', 
         [module_limit], (err, data) => {
         if(err){
             res.sendStatus(500);
@@ -24,7 +24,7 @@ const getModules = (req, res) => {
 }
 
 const getFeaturedModules = (req, res) => {
-	pool.query('SELECT * FROM featured', 
+	pool.query('SELECT * FROM featured INNER JOIN modules ON featured.module_id = modules.module_id', 
         [], (err, data) => {
         if(err){
             res.sendStatus(500);
@@ -50,15 +50,19 @@ const requestCertification = (req, res) => {
 					res.sendStatus(500);
 				}else{
 					let version_id;
+					let input_array = "[]";
+					let output_array = "[]";
 					if(data.rows.length > 0){
 						version_id = data.rows[0].version_id + 1;
+						input_array = data.rows[0].input;
+						output_array = data.rows[0].output;
 					}else{
 						version_id = 1;
 					}
 
 					pool.query(
-						`INSERT INTO versions (module_id, diagram_id, version_id) VALUES ($1, $2, $3)`, 
-						[module_id, diagram_id, version_id],
+						`INSERT INTO versions (module_id, diagram_id, version_id, input, output) VALUES ($1, $2, $3, $4, $5)`, 
+						[module_id, diagram_id, version_id, input_array, output_array],
 						(err, data) => {
 							if(err){
 								console.log(err);
@@ -199,7 +203,22 @@ const saveCertification = (req, res) => {
 const giveCertification = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT * FROM , modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	const updateVersionTable = (market_id, module_id) => {
+		pool.query(
+			`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
+			[market_id, module_id],
+			(err, data) => {
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					res.sendStatus(200);
+				}
+			}
+		)	
+	}
+
+	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		async (err, data) => {
 			if(err){
 				console.log(err);
@@ -207,25 +226,48 @@ const giveCertification = (req, res) => {
 			}else{
 				if(data.rows.length > 0){
 					let version_id = data.rows[0].version_id;
-					let status = await renderDiagram(req.user, data.rows[0].diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
-					let input = data.rows[0].input;
-					let output = data.rows[0].output;
-					if(status === 200){
-						pool.query(
-							`UPDATE versions, modules SET diagram_id = $1, cert_approved = now(), input = $3, output = $4 WHERE versions.module_id = modules.module_id AND skill_id = $2 AND cert_approved IS NULL`,
-							[market_id, skill_id, input, output],
-							(err, data) => {
-								if(err){
-									console.log(err);
-									res.sendStatus(500);
-								}else{
-									res.sendStatus(200);
-								}
-							}
-						)	
-					}else{
-						res.sendStatus(500);
+					let diagram_id = data.rows[0].diagram_id;
+					let module_id = data.rows[0].module_id;
+					let market_id = "$" + version_id + '_' + diagram_id;
+
+					if(data.rows[0].type === 'FLOW') {
+						let status = await renderDiagram(req.user, diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
+						if(status === 200){
+							updateVersionTable(market_id, module_id);
+						}else{
+							res.sendStatus(500);
+						}
+					} else {
+						// Copy current diagram's data to new entry on market
+						let params = {
+					        TableName: 'com.getstoryflow.diagrams.production',
+					        Key: {'id': diagram_id}
+						};
+					    docClient.get(params, (err, data) => {
+					        if (err) {
+					            console.log(err);
+					            res.sendStatus(err.statusCode);
+					        } else if (data.Item) {
+								data.Item.id = market_id;
+								let params = {
+									TableName: 'com.getstoryflow.skills.market',
+									Item: data.Item
+								};
+								docClient.put(params, (err, data) => {
+									if(err){
+										console.log(err);
+										res.sendStatus(500);
+									} else {
+										updateVersionTable(market_id, module_id);
+									}
+								});
+					        } else {
+					            res.sendStatus(404);
+					        }
+					    });
+						
 					}
+					
 				}else{
 					res.sendStatus(400);				
 				}
@@ -400,7 +442,8 @@ const getUserModules = (req, res) => {
 
 	pool.query(
 		`
-		 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, ultimate_versions.diagram_id, modules.color, modules.input, modules.output
+		 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
+		 		ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type
 		 FROM 
 		 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
 		 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
@@ -423,6 +466,44 @@ const getUserModules = (req, res) => {
 	);
 }
 
+const retrieveTemplate = (req, res) => {
+	let module_id = hashids.decode(req.params.module_id)[0];
+
+	pool.query(
+		`
+		SELECT * FROM versions WHERE module_id = $1 AND cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = $1)
+		`,
+		[module_id],
+		(err, data) => {
+			if(err){
+				console.log(err);
+				res.sendStatus(500);
+			} else {
+				if(data.rows.length > 0){
+					let template_diagram_id = data.rows[0].diagram_id;
+					let params = {
+						TableName: 'com.getstoryflow.skills.market',
+						Key: {'id': template_diagram_id}
+					};
+					docClient.get(params, (err, data) => {
+						if (err) {
+							console.log(err);
+							res.sendStatus(err.statusCode);
+						} else if (data.Item) {
+							res.send(data.Item);
+						} else {
+							res.sendStatus(404);
+						}
+					});
+
+				} else {
+					res.sendStatus(404);
+				}
+			}
+		}
+	);
+}
+
 module.exports = {
 	getModules: getModules,
 	getModule: getModule,
@@ -436,5 +517,6 @@ module.exports = {
 	removeAccess: removeAccess,
 	giveCertification: giveCertification,
 	getCertModule: getCertModule,
-	getUserModules: getUserModules
+	getUserModules: getUserModules,
+	retrieveTemplate: retrieveTemplate
 }

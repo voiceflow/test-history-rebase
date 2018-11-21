@@ -19,10 +19,9 @@ class TitleBar extends PureComponent {
             stage: 0
         }
 
-        this.handleChange = this.handleChange.bind(this);
-
         this.toggle = this.toggle.bind(this);
         this.toggleShare = this.toggleShare.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.toggleUpdate = this.toggleUpdate.bind(this);
         this.updateAlexa = this.updateAlexa.bind(this);
         this.openUpdate = this.openUpdate.bind(this);
@@ -123,12 +122,11 @@ class TitleBar extends PureComponent {
                         </ModalFooter> : null
                     }
                 </Modal>
-                {this.props.preview ? null : 
+                {this.props.preview ? null :
                     <div className="title-group">
-                        <div>
-                            <MUIButton variant="contained" className="white-btn save-btn mr-2" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save Draft"}</MUIButton>
-
-                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block mr-2">
+                        <div className="title-group-sub">
+                            <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save"}</MUIButton>
+                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                                 <DropdownToggle className="anti-btn" tag="div">
                                     <MUIButton variant="contained" className="white-btn publish-btn">
                                         Publish <i className="fas fa-caret-down"/>
@@ -139,6 +137,7 @@ class TitleBar extends PureComponent {
                                     {   this.props.skill.amzn_id ?
                                         <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
                                     }
+                                    <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
 

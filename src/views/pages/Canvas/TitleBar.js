@@ -108,6 +108,8 @@ class TitleBar extends PureComponent {
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
         return (
+            // Marketplace
+            // <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
             <div className="TitleBar no-select">
                 <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={()=>this.setState({stage: 0})}>
                     <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
@@ -137,7 +139,6 @@ class TitleBar extends PureComponent {
                                     {   this.props.skill.amzn_id ?
                                         <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
                                     }
-                                    <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
 

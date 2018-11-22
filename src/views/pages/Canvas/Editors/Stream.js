@@ -67,6 +67,7 @@ class Stream extends Component {
                         node.extras.audio = audio;
                         this.onUpdate();
                     }}
+                    stream
                 />
                 <InputGroup className="mt-3">
                     <label className="input-group-text w-100 m-0 text-left">

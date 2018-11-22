@@ -795,29 +795,6 @@
     -ms-user-select: none;
     user-select: none;
 }
-.srd-default-node.comment textarea{
-    background-color: transparent;
-    box-shadow: none !important;
-    padding-top: 5px !important;
-    padding-left: 10px !important;
-    padding-bottom: 10px !important;
-    border: 1px solid transparent !important;
-    border-radius: 5px;
-/*
-    min-width: 0px !important;
-    min-height: 0px !important;  
-*/
-}
-.srd-default-node.comment textarea:active, .srd-default-node.comment textarea:focus{
-    border: 1px dashed #C2C6D5 !important;
-    outline: none !important;
-/*    background-color: #fff !important;*/
-/*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.08) !important;*/
-    padding-top: 5px !important;
-    padding-left: 10px !important;
-    padding-bottom: 10px !important;
-    
-}
 .controls hr {
     margin-bottom: px;
     border-top: 1px solid #E2E9EC;
@@ -1025,10 +1002,32 @@ label {
     padding: 0 !important;
     padding-bottom: 0 !important;
     box-shadow: none !important;
+    transform: scale(1) !important;
+    transform: translateY(0px) !important;
+    border-radius: 0 !important;
 }
 
-.srd-default-node.comment textarea {
-  resize: none;
+.srd-default-node.comment:hover {
+    transform: scale(1) !important;
+    transform: translateY(0px) !important;
+}
+
+.srd-default-node.comment textarea{
+    background-color: transparent;
+    box-shadow: none !important;
+    padding: 6px 8px !important;
+    border: 1px solid transparent !important;
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 20px;
+    resize: none;
+    cursor: pointer !important;
+}
+.srd-default-node.comment textarea:active, .srd-default-node.comment textarea:focus{
+    border: 1px dashed #C2C6D5 !important;
+    outline: none !important;
+    cursor: text !important;
 }
 
 .srd-default-node__title {

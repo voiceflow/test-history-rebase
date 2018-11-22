@@ -31,6 +31,7 @@ class FlowButton extends Component {
             .then(() => {
                 if(this.props.updateTree){
                     this.props.updateTree();
+                    this.props.onFlowRenamed(this.props.flow.id);
                 }
             })
             .catch(err => {

@@ -111,6 +111,12 @@ class TitleBar extends PureComponent {
             // Marketplace
             // <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
             <div className="TitleBar no-select">
+                <div className="project">
+                    <MUIButton variant="extendedFab" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><i className="fas fa-play"/></span></MUIButton>
+                    <div className="skill-name">
+                        {this.props.skill.name}
+                    </div>
+                </div>
                 <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={()=>this.setState({stage: 0})}>
                     <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
                     <ModalBody className="render_body">
@@ -127,21 +133,6 @@ class TitleBar extends PureComponent {
                 {this.props.preview ? null :
                     <div className="title-group">
                         <div className="title-group-sub">
-                            <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save"}</MUIButton>
-                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-                                <DropdownToggle className="anti-btn" tag="div">
-                                    <MUIButton variant="contained" className="white-btn publish-btn">
-                                        Publish <i className="fas fa-caret-down"/>
-                                    </MUIButton>
-                                </DropdownToggle>
-                                <DropdownMenu className="platform-dropdown">
-                                    <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
-                                    {   this.props.skill.amzn_id ?
-                                        <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
-                                    }
-                                </DropdownMenu>
-                            </Dropdown>
-
                             <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
                                 <i className="fas fa-share-square"/>
                             </MUIButton>
@@ -163,16 +154,25 @@ class TitleBar extends PureComponent {
                                     </InputGroup>
                                 </PopoverBody>
                             </Popover>
+                            <MUIButton variant="contained" className="white-btn update-btn">Update Alexa</MUIButton>
+                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
+                                <DropdownToggle className="anti-btn" tag="div">
+                                    <MUIButton variant="contained" className="white-btn publish-btn">
+                                        Publish <i className="fas fa-caret-down"/>
+                                    </MUIButton>
+                                </DropdownToggle>
+                                <DropdownMenu className="platform-dropdown">
+                                    <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
+                                    {   this.props.skill.amzn_id ?
+                                        <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
+                                    }
+                                </DropdownMenu>
+                            </Dropdown>
+                            <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save"}</MUIButton>
                         </div>
                         <div className="last-save text-muted">{this.props.lastSave}</div>
                     </div>
                 }
-                <div className="project">
-                    <div className="skill-name">
-                        {this.props.skill.name}
-                    </div>
-                    <MUIButton variant="extendedFab" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><i className="fas fa-play"/></span></MUIButton>
-                </div>
             </div>
         );
     }

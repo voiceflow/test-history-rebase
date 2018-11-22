@@ -14,23 +14,16 @@
 .TitleBar{
     top: 58px;
     width: 100%;
-    padding: 5px 0 0px 0;
+    padding: 5px 415px 0px 250px;
     position: absolute;
     z-index: 3;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     /*background: rgb(246,249,250);*/
     background: linear-gradient(180deg, #f6f9fa, rgba(246,249,250,0.98));
     -webkit-box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
     -moz-box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
     box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
-}
-.anti-btn{
-    border-right: 1px solid #8ea2b526 !important;
-    border-left: none !important;
-}
-.anti-btn:active{
-    border-radius: 0px 0px 0px 0px !important;
 }
 
 .TitleBar-shadow{
@@ -84,15 +77,28 @@
     transition: background-color .4s ease;
 }
 
-.TitleBar .save-btn{
+.TitleBar .title-group .white-btn {
     padding: 0px 20px 2px 20px !important;
     border: none !important;
     box-shadow: none !important;
     color: #9196b6 !important;
-    width: 74px;
-    border-right: 1px solid #8ea2b526 !important;
+    font-size: 15px;
+    background-color: #fff !important;
     margin-right: 0px !important;
-    border-radius: 5px 0 0 5px !important;
+    border-right: 1px solid #8ea2b526 !important;
+}
+
+.TitleBar .title-group .white-btn:hover{
+    color: #3d96f0 !important;
+}
+
+.TitleBar .save-btn {
+    min-width: 74px;
+    border-radius: 0px 5px 5px 0px !important;
+}
+.TitleBar .update-btn{
+    border-right: 1px solid #8ea2b526 !important;
+    border-radius: 0 !important;
     font-size: 15px;
 }
 .TitleBar .save-btn:hover{
@@ -103,7 +109,7 @@
 /*    width: 100px;*/
 }
 .TitleBar .skill-name {
-    padding: 7px 20px 7px 10px;
+    padding: 7px 10px 7px 15px;
     font-size: 24px;
     font-weight: 1000;
     color: #42A5FF !important;
@@ -125,18 +131,10 @@
     
 }
 .TitleBar .publish-btn {
-    border: none !important;
-/*    min-width: 0 !important;*/
-    color: #9196b6 !important;
     padding: 0px 17px 1px 20px !important;
-    box-shadow:  none !important; 
+    border-radius: 0px !important; 
     background-color: transparent !important;
-    border-radius: 0px !important;
-/*    border-right: 1px solid #8ea2b526 !important;*/
-    margin-right: 0px !important;
-    font-size: 15px !important;
-
-}    
+}
 .TitleBar .publish-btn i{
     margin-left: 5px;
 }
@@ -191,6 +189,16 @@
     font-size: 20px !important;
     border-radius: 5px !important;
     transition: all .25s ease-in-out;
+}
+.TitleBar .share-btn {
+    border: none !important;
+    padding: 15px 15px !important;
+    min-width: 0 !important;
+    box-shadow: none !important;
+/*    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; */
+    color: #9196b6 !important;
+    border-radius: 5px 0px 0px 5px !important;
+    padding: 0px 20px 0px 20px !important;
     
 }
 .TitleBar .white-btn.play:hover{
@@ -199,7 +207,7 @@
     transform: translateY(-2px) !important;
 }
 .TitleBar .white-btn.play span.button-circle{
-    background-color: #ffffff30;
+    background-color: #E2E9EC;
     border-radius: 20px;
     width: 23px;
     /*display: inline-block;*/
@@ -217,17 +225,16 @@
 }
 
 .TitleBar .title-group {
-    position: absolute;
-    left: 252px;
-    top: 0px;
+    /*position: absolute;*/
+/*    left: 252px;
+    top: 0px;*/
     margin-top: 10px;
 }
 .TitleBar .title-group-sub {
-    background-color: #fff;
     padding: 0px;
     border-radius: 5px;
+    display: inline-block;
     box-shadow: 0px 1px 5px rgba(14,30,37,.12) !important;
-    transition: all .25s ease-in-out;
 }
 /*.TitleBar .title-group-sub:hover{
     box-shadow: 0px 3px 10px rgba(14,30,37,.10) !important;
@@ -235,11 +242,13 @@
 }*/
 .last-save {
     font-size: .8rem;
-    padding-left: 0px;
+    text-align: right;
     padding-top: 5px;
-    padding-left: 4px;
+    padding-right: 4px;
 }
-
+.TitleBar .project {
+    height: 55px;
+}
 .TitleBar .status {
     width: 400px;
     line-height: 49px;
@@ -1725,24 +1734,6 @@ button.close{
 .dropdown-item{
     color: #2B3950 !important;
 }
-.share-btn {
-    border: none !important;
-    padding: 15px 15px !important;
-    min-width: 0 !important;
-    box-shadow: none !important;
-/*    box-shadow:  0px 1px 2px rgba(14,30,37,.12) !important; */
-    color: #9196b6 !important;
-    border-radius: 0px 5px 5px 0px !important;
-    padding: 0px 20px 0px 20px !important;
-    
-}
-
-.share-btn:hover{
-/*    box-shadow:  0px 2px 7px rgba(14,30,37,.12) !important; */
-    color: #3d96f0 !important;
-    box-shadow: none !important;
-
-}
 #widget-bar{
     position: absolute;
     bottom: 10px;
@@ -1750,13 +1741,18 @@ button.close{
     z-index: 5;
 }
 
-@media(max-width: 1400px){
+@media(max-width: 1500px){
     .TitleBar .title-group{
-        top: 47px !important;
+        margin-top: 0px;
+    }
+    .TitleBar .last-save{
+        text-align: left;
+        padding-left: 4px;
     }
     .TitleBar{
         height: 105px;
         display: block;
         padding-left: 250px;
+        padding-right: 0px;
     }
 }

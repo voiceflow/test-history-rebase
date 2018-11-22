@@ -20,10 +20,10 @@
     display: flex;
     justify-content: center;
     /*background: rgb(246,249,250);*/
-    background: linear-gradient(180deg, #f6f9fa, rgba(246,249,250,0.98));
-    -webkit-box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
-    -moz-box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
-    box-shadow: 0px 15px 56px 16px rgba(246,249,250,1);
+    background: linear-gradient(180deg, #f5f6fa, rgba(245,246,250,0.98));
+    -webkit-box-shadow: 0px 15px 56px 16px rgba(245,246,250,1);
+    -moz-box-shadow: 0px 15px 56px 16px rgba(245,246,250,1);
+    box-shadow: 0px 15px 56px 16px rgba(245,246,250,1);
 }
 .anti-btn{
     border-right: 1px solid #8ea2b526 !important;
@@ -92,8 +92,8 @@
     width: 74px;
     border-right: 1px solid #8ea2b526 !important;
     margin-right: 0px !important;
-    border-radius: 5px 0 0 5px !important;
-    font-size: 15px;
+    border-radius: 4px 0 0 4px !important;
+    font-size: 14px;
 }
 .TitleBar .save-btn:hover{
     color: #42A5FF !important;
@@ -134,7 +134,7 @@
     border-radius: 0px !important;
 /*    border-right: 1px solid #8ea2b526 !important;*/
     margin-right: 0px !important;
-    font-size: 15px !important;
+    font-size: 14px !important;
 
 }    
 .TitleBar .publish-btn i{
@@ -301,7 +301,7 @@
 
 .App .Menu #sidebar .block-title {
     margin-top: 0px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: lighter;
     display: flex;
     justify-content: space-between;
@@ -322,9 +322,9 @@
 .App .Menu .block-title h5{
     font-weight: normal;
     color: #2b3950;
-    font-size: 23px;
-    text-transform: capitalize;
-    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase !important;
+    font-weight: 900;
 /*    transition: color 0.3s ease;*/
 }
 
@@ -347,13 +347,18 @@
     height: 100%;
     flex-direction: column;
     background-color: #fff;
+/*
+    padding-left: 5px;
+    padding-right: 5px;
+*/
+    border-right: 1px solid #E2E9EC !important;
     /*border-right: 1px solid #EEE;*/
 }
 
 .toolbar>div{
     display: flex;
     flex-direction: column;
-/*    margin-top: 15px;*/
+/*    margin-top: 10px;*/
 }
 .normal-btn{
     background-color: transparent!important;
@@ -383,31 +388,35 @@
 .toolbar .tool, .toolbar .spacer{
     /*box-shadow: 0 0 0 1px rgba(144,164,174,.2);*/
     /*box-shadow: 0 4px 8px 0 rgba(118, 186, 255, 0.17);*/
-    border-right: 1px solid #E2E9EC;
+/*    border-right: 1px solid #E2E9EC;*/
     background-color: #fff;
-    width: 41px;
+/*    width: 45px;*/
 }
 
 .toolbar .tool.active{
     /*background-color: #EEE;*/
     box-shadow: none;
+/*
     border-right: 2px solid #fff !important;
     border-top:  2px solid #fff !important;
     border-bottom: 2px solid #fff !important;
-    color: #fff !important;
-    background-color: #42A5FF !important;
+*/
+    color: #2b3950 !important;
+    background-color: #F0F0F0 !important;
     cursor: default;
-    border-radius: 0px 10px 10px 0px;
-    width: 115%;
-    padding-right: 2px;
-    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+/*    border-radius: 0px;*/
+    padding: 10 !important;
+/*    width: 115%;*/
+/*    padding-right: 2px;*/
+/*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
     z-index: 3;
 /*    margin-top: 15px;*/
 }
 
 .toolbar .tool:hover{
-    background-color: #F4F6F7;
+/*    background-color: #F4F6F7;*/
     color: #98A6BB;
+/*    border-radius: 5px;*/
 }
 
 .top-down>.tool{
@@ -467,7 +476,7 @@
     z-index: 5;
     width: 200px;
     height: 100%;
-    padding: 1px 20px 120px 20px;
+    padding: 0px 15px 120px 15px;
     overflow: scroll;
     /*opacity: 0.9;*/
     /*text-align: center;*/
@@ -476,7 +485,7 @@
     /*justify-content: center;*/
     /*box-shadow: 0 0 0 1px rgba(144,164,174,.2);*/
     border-right: 1px solid #E2E9EC;
-    background-color: #fff;
+    background-color: #FAFAFA !important;
     -webkit-transform: translateX(-240px);
     -moz-transform: translateX(-240px);
     -ms-transform: translateX(-240px);
@@ -529,17 +538,19 @@
 .App .Menu #sidebar .MenuItem {
     cursor: pointer;
     overflow: hidden;
-    border-radius: 10px;
-    height: 45px;
-    line-height: 45px;
-    margin: 10px 0px;
+    border-radius: 4px;
+    height: 40px;
+    line-height: 35px;
+    margin: 7px 0px;
+    padding: 4px;
     /*transition: background-color .3s cubic-bezier(0.9, 0.2, 0.2, 1);*/
     backface-visibility: hidden;
     color: #2b3950;
     /*width: 100%;*/
     background-color: #fff;
     transition: all .1s ease-in-out;
-/*    box-shadow: 0px 1px 5px rgba(17,49,96,.12);*/
+    box-shadow: 0 2px 4px rgba(0,0,0,.08);
+    font-size: 14px;
     /*border: 1px solid #EEE;*/
     
 }
@@ -549,9 +560,9 @@
     
     transform: translateY(-2px);
     box-shadow: 0px 3px 7px rgba(17,49,96,.12);
-    border-radius: 10px;
-    background-color: #42a5ff !important;
-    color: #fff;
+/*    border-radius: 10px;*/
+    background-color: #fff !important;
+    color: #2b3950;
 
 }
 
@@ -560,12 +571,13 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 45px;
-    height: 45px;
+    width: 33px;
+    height: 33px;
 /*    background-color: #e2e9ec;*/
     /*color: #2325E2;*/
     color: #fff;
-    margin-right: 10px;
+    margin-right: 12px;
+    border-radius: 4px;
     /*border-radius: 10px 0px 0px 10px !important;*/
 }
 .App .Menu #sidebar .MenuItem .MenuIcon:hover{
@@ -619,8 +631,8 @@
 .App .Menu #sidebar .MenuItem.speak:hover {
     background-color: #F4F6F7;
 } .MenuItem.speak>.MenuIcon {
-    background-color: none !important;
-    color: #2b3950 !important;
+    background-color: #42A5FF !important;
+    color: #fff !important;
 }
 .App .Menu #sidebar .MenuItem.audio:hover {
     background-color: #F4F6F7;
@@ -682,7 +694,7 @@
 .App .srd-diagram {
     width: 100%;
     height: 100%;
-    background-color: #f5f7f8;
+    background-color: #F5F6FA;
 /*    background-image: url('/images/dot.svg');
     background-repeat: repeat;*/
 }
@@ -884,7 +896,7 @@ label {
     background-color: #fff !important;
     min-width: 120px !important;
     min-height: 80px !important;
-    border-radius: 14px !important;
+    border-radius: 10px !important;
     box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
     border: 0px solid;
     border-top: 6px solid #E2E9EC;
@@ -904,7 +916,7 @@ label {
     background-color: #fff!important;
 /*    min-width: 180px;
     min-height: 100px;*/
-    border-radius: 15px !important;
+    border-radius: 10px !important;
     box-shadow: 0px 10px 30px 0 rgba(36,36,36,.05);
     border: 0px solid;
     /*border-color: #c5c6c9 #bfc0c4 #b0b1b5 !important;*/

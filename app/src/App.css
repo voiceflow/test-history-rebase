@@ -102,9 +102,6 @@ button:focus{
 .btn:focus{
     box-shadow: none !important;
 }
-.btn:active{
-    background-color: #EBEEEF !important;
-}
 .anti-btn {
     border: none !important;
     outline: none !important;

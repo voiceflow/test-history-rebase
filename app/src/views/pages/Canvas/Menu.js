@@ -76,7 +76,7 @@ class Menu extends PureComponent {
         if(depth < 4) {
             return (<React.Fragment>
 
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree}/>
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed} />
 
                 {(() => {
                     let sub_diagrams;

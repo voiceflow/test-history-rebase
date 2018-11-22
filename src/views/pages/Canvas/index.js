@@ -77,7 +77,7 @@ class Canvas extends Component {
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
         engine.registerNodeFactory(new BlockNodeFactory());
-        engine.registerLinkFactory(new BlockLinkFactory(line_color));
+        engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width));
         engine.registerPortFactory(new BlockPortFactory());
         
         let open, diagram_id, skill_id;

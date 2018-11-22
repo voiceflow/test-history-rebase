@@ -64,7 +64,7 @@ class AudioDrop extends Component {
                 rejectClassName="reject"
                 multiple={false}
                 disableClick={false}
-                accept="audio/*"
+                accept={(this.props.stream ? ".m3u,.m3u8," : "") + "audio/*"}
                 onDrop={(accepted, rejected) => this.onDrop(accepted)}
             >
                 <div>

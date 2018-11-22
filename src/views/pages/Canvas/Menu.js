@@ -20,7 +20,7 @@ const sections = [{
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/> },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
         { text: 'Command', type: 'command', icon: '⌘' },
-        // { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/> }
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/> }
     ]
 },{
     title: 'Advanced',
@@ -76,7 +76,7 @@ class Menu extends PureComponent {
         if(depth < 4) {
             return (<React.Fragment>
 
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree}/>
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed} />
 
                 {(() => {
                     let sub_diagrams;

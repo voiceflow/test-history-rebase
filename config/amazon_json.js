@@ -177,17 +177,29 @@ const interactionModel = (invocation) => {
 
 const manifest = (r, encoded_id) => {
     r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
-	r.keywords = r.keywords.split(",").map(item => item.trim());
+	r.keywords = r.keywords.split(",").map(item => item.trim()).filter(word => !!word);
 	
 	const localeObj = {
 		"summary": r.summary,
 		"examplePhrases": r.invocations,
-		"keywords": r.keywords,
 		"name": r.name,
 		"description": r.description,
+		"keywords": r.keywords,
 		"smallIconUri": r.small_icon,
 		"largeIconUri": r.large_icon
 	};
+	// optional fields
+	// if(r.keywords.length !== 0){
+	// 	localeObj.keywords = r.keywords;
+	// }
+	// if(r.small_icon){
+	// 	localeObj.smallIconUri = r.small_icon;
+	// }
+	// if(r.large_icon){
+	// 	localeObj.largeIconUri = r.large_icon;
+	// }
+
+
 	const locales = {}
 	r.locales.forEach(locale => {
 		locales[locale] = localeObj;
@@ -201,13 +213,12 @@ const manifest = (r, encoded_id) => {
 		}
 	})
 
-    return {
+    let ret = {
      	"manifest": {
              "publishingInformation": {
                  "locales": locales,
                  "isAvailableWorldwide": true,
-                 "testingInstructions": r.instructions,
-                 "category": r.category,
+                 "testingInstructions": r.instructions
              },
              "apis": {
                  "custom": {
@@ -228,10 +239,17 @@ const manifest = (r, encoded_id) => {
                  "isChildDirected": r.copa,
                  "usesPersonalInfo": r.personal,
                  "containsAds": r.ads
-			 },
-			 "permissions": r.permissions
+			 }
          }
     }
+    if(r.category){
+    	ret.manifest.publishingInformation.category = r.category;
+    }
+    if(Array.isArray(r.permissions) && r.permissions.length !== 0){
+    	ret.manifest.permissions = r.permissions;
+    }
+
+    return ret;
 }
 
 

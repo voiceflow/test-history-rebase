@@ -157,6 +157,8 @@ button:focus{
     box-shadow:  inset 0 0 0 10px #ddd;
     box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;
     transition: all 0.2s ease !important;
+    border-radius: 5px;
+    cursor: pointer;
 /*    border: 2px solid #fff !important;*/
 }
 .purple-btn:hover{
@@ -183,16 +185,6 @@ button:focus{
 label {
     color: #666!imortant;
     /*margin: 0px !important;*/
-}
-.btn-info{
-    border: 1px solid none;
-    color: #fff !important;
-    font-weight: normal !important;
-    background: linear-gradient(#2295FA, #1B86F9)!important;
-    text-transform: none !important;
-    box-shadow:  inset 0 0 0 10px #ddd;
-    box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;
-    transition: all 0.2s ease !important;
 }
 .input-select>div{
     font-weight: lighter !important; 

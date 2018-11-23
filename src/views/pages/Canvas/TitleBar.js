@@ -47,6 +47,7 @@ class TitleBar extends PureComponent {
             amzn_error: false,
             stage: this.token ? 0 : 5
         });
+        // 
     }
 
     openUpdate() {
@@ -63,11 +64,6 @@ class TitleBar extends PureComponent {
         axios.get('/session/vendor')
         .then(() => {
             this.setState({stage: 0});
-            // if(this.props.skill.amzn_id){
-            //     this.setState({stage: 0});
-            // }else{
-            //     this.updateAlexa();
-            // }
         })
         .catch(err => {
             console.error(err);
@@ -177,22 +173,24 @@ class TitleBar extends PureComponent {
                     Rendering Error  
                 </Alert>
             case 5:
-                return <React.Fragment>
+                return <div className="flex-fill">
                     {this.state.amzn_error && <Alert color="danger">Login With Amazon Failed - Try Again</Alert>}
-                    <p>Login with Amazon to test your skill on your own Alexa device, or in your Alexa developer console</p>
-                    <AmazonLogin
-                        updateLogin={(stage) => {
-                            if(stage === 2){
-                                this.token = true;
-                                this.checkVendor();
-                            }else if(1){
-                                this.setState({stage: 8});
-                            }else{
-                                this.setState({stage: 0, amzn_error: true});
-                            }
-                        }}
-                    />
-                </React.Fragment>
+                    Login with Amazon to test your skill on your own Alexa device, or in your Alexa developer console
+                    <div className="text-center mt-5">
+                        <AmazonLogin
+                            updateLogin={(stage) => {
+                                if(stage === 2){
+                                    this.token = true;
+                                    this.checkVendor();
+                                }else if(1){
+                                    this.setState({stage: 8});
+                                }else{
+                                    this.setState({stage: 0, amzn_error: true});
+                                }
+                            }}
+                        />
+                    </div>
+                </div>
             case 6:
                  return <React.Fragment>
                     Your Amazon Account needs to set up developer settings to Upload Skills

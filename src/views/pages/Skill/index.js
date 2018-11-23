@@ -768,7 +768,7 @@ class Skill extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-3 publish-info">
-                                    <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to interact with your Skill. For example, "Alexa open <i>Duck Tales</i>".</p>
+                                    <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
                                 </div>
                                 <div className="col-9"> 
                                     <Input type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />

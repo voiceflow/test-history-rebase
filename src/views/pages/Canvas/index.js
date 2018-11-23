@@ -709,7 +709,9 @@ class Canvas extends Component {
                     skill_id: skill_id,
                     name: name,
                     review: false,
-                    live: false
+                    live: false,
+                    diagram: diagram_id,
+                    locales: ["en-US"]
                 },
                 newSkill: 0,
                 diagram_id: diagram_id
@@ -1057,6 +1059,7 @@ class Canvas extends Component {
                     preview={this.preview}
                     title={this.state.diagram_name}
                     skill={this.state.skill}
+                    updateSkill={(skill) => {this.setState({skill: skill})}}
                     onSave={this.onSave}
                     onTest={this.onTest}
                     saving={this.state.saving}

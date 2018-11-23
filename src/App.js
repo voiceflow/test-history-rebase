@@ -46,7 +46,7 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
-ReactGA.initialize('UA-124745244-1');
+ReactGA.initialize('UA-124745244-3');
 const history = createBrowserHistory();
 history.listen((location, action) => {
   ReactGA.set({ page: location.pathname })

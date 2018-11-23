@@ -38,6 +38,10 @@ class NavBar extends Component {
       ],
       user: AuthenticationService.getUser()
     };
+
+    if(this.state.user.admin === 10){
+      this.state.tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>});
+    }
   }
 
   componentDidMount() {

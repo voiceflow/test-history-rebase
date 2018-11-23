@@ -1079,8 +1079,8 @@ class Canvas extends Component {
                 >
                     <div id="widget-bar">
                         <ButtonGroup>
-                            <Button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></Button>
-                            <Button onClick={()=>this.zoom(-1000)} className="white-circ"><i className="far fa-minus"/></Button>
+                            <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
+                            <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
                         </ButtonGroup>
                     </div>
                     <SRD.DiagramWidget

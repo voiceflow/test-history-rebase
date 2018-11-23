@@ -7,6 +7,10 @@ import {
   Nav,
   NavItem,
   NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 
@@ -28,6 +32,7 @@ class NavBar extends Component {
     this.logout = this.logout.bind(this);
 
     this.state = {
+      accountOpen: false,
       isOpen: false,
       tabs: [
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
@@ -113,12 +118,20 @@ class NavBar extends Component {
                 })}
               </Nav>
               <Nav className="ml-auto" navbar>
-                <NavItem>
-                  <NavLink>{this.state.user.email}</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={this.logout}>Logout</NavLink>
-                </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    Account
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem header>
+                      {this.state.user.email}
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.logout}>
+                      Logout
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </Nav>
             </Collapse>
           </Navbar>

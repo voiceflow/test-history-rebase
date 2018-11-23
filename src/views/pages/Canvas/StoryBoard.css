@@ -105,37 +105,6 @@
     transition: background-color .4s ease;
 }
 
-.TitleBar .title-group .white-btn {
-/*    padding: 0px 20px 0px 20px !important;*/
-    border: none !important;
-    box-shadow: none !important;
-    color: #8da2b5 !important;
-    font-size: 15px;
-    background-color: #fff !important;
-    margin-right: 0px !important;
-    font-size: 14px;
-    border-right: 1px solid #8ea2b526 !important;
-}
-
-.TitleBar .title-group .white-btn:hover{
-    color: #3d96f0 !important;
-}
-
-.TitleBar .save-btn {
-    min-width: 74px;
-    border-radius: 0px 5px 5px 0px !important;
-}
-.TitleBar .update-btn{
-    border-right: 1px solid #8ea2b526 !important;
-    border-radius: 0 !important;
-}
-.TitleBar .save-btn:hover{
-    color: #42A5FF !important;
-}
-.TitleBar .save-btn:focus{
-    padding: 0px 25px 2px 25px !important;
-/*    width: 100px;*/
-}
 .TitleBar .skill-name {
     padding: 1px 12px 7px 10px;
     font-size: 24px;
@@ -273,17 +242,49 @@
     font-size: 0.875rem !important;
 }
 
-.TitleBar .title-group {
-    /*position: absolute;*/
-/*    left: 252px;
-    top: 0px;*/
-    margin-top: 4px;
-}
-.TitleBar .title-group-sub {
+.title-group .title-group-sub {
     padding: 0px;
     border-radius: 4px;
     display: inline-block;
     box-shadow: 0 2px 4px rgba(0,0,0,.08) !important;
+}
+
+.title-group {
+    position: fixed;
+    right: 100px;
+    z-index: 1040;
+}
+
+.title-group .white-btn {
+/*    padding: 0px 20px 0px 20px !important;*/
+    border: none !important;
+    box-shadow: none !important;
+    color: #8da2b5 !important;
+    font-size: 15px;
+    background-color: #fff !important;
+    margin-right: 0px !important;
+    font-size: 14px;
+    border-right: 1px solid #8ea2b526 !important;
+}
+
+.title-group .white-btn:hover{
+    color: #3d96f0 !important;
+}
+
+.title-group .save-btn {
+    min-width: 74px;
+    border-radius: 0px 5px 5px 0px !important;
+}
+.title-group .update-btn{
+    border-right: 1px solid #8ea2b526 !important;
+    border-radius: 0 !important;
+}
+.title-group .save-btn:hover{
+    color: #42A5FF !important;
+}
+.title-group .save-btn:focus{
+    padding: 0px 25px 2px 25px !important;
+/*    width: 100px;*/
 }
 /*.TitleBar .title-group-sub:hover{
     box-shadow: 0px 3px 10px rgba(14,30,37,.10) !important;

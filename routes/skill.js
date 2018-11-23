@@ -42,7 +42,7 @@ const getSkill = (req, res) => {
     if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram
+                name, amzn_id, review, live, diagram, locales
             FROM
                 skills
             WHERE
@@ -184,9 +184,6 @@ const deleteSkill = (req, res) => {
         if(results.rows[0].amzn_id){
             AccessToken(req.user.id, token => {
                 if(token === null){
-                    res.status(401).send({
-                        message: "Invalid Amazon Login Token"
-                    });
                     return;
                 }
     
@@ -224,8 +221,17 @@ const setSkill = (req, res) => {
     }
 
     let name = req.body.name;
+    let value = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
+    let sum = `This is a new summary for the skill ${name}`;
+    let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
 
-    pool.query('INSERT INTO skills (name, diagram, creator_id) VALUES ($1, $2, $3) RETURNING skill_id ', [name, req.body.diagram, req.user.id], (err, data) => {
+    pool.query(`
+            INSERT INTO skills (
+                name, diagram, creator_id, summary, description, invocations, inv_name
+            ) VALUES (
+                $1, $2, $3, $4, $5, $6, $7
+            ) RETURNING skill_id`, 
+            [name, req.body.diagram, req.user.id, sum, desc, value, name], (err, data) => {
         if(err){
             console.error(err); 
             res.sendStatus(500); 

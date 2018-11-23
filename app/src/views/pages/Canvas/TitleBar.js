@@ -2,7 +2,10 @@ import React, { PureComponent } from 'react';
 import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, DropdownMenu, DropdownItem, Dropdown, DropdownToggle, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
+import AmazonLogin from './../../components/Forms/AmazonLogin';
 import axios from 'axios';
+
+import AuthenticationService from './../../../services/Authentication';
 
 class TitleBar extends PureComponent {
     constructor(props) {
@@ -16,7 +19,9 @@ class TitleBar extends PureComponent {
             share: false,
             platform: 'amazon',
             updateModal: false,
-            stage: 0
+            stage: 0,
+            amzn_error: false,
+            upload_error: 'No Error',
         }
 
         this.toggle = this.toggle.bind(this);
@@ -25,6 +30,23 @@ class TitleBar extends PureComponent {
         this.toggleUpdate = this.toggleUpdate.bind(this);
         this.updateAlexa = this.updateAlexa.bind(this);
         this.openUpdate = this.openUpdate.bind(this);
+        this.checkVendor = this.checkVendor.bind(this);
+        this.reset = this.reset.bind(this);
+        this.token = null;
+    }
+
+    componentDidMount() {
+        AuthenticationService.AmazonAccessToken(token => {
+            this.token = token;
+            this.reset();
+        });
+    }
+
+    reset() {
+        this.setState({
+            amzn_error: false,
+            stage: this.token ? 0 : 5
+        });
     }
 
     openUpdate() {
@@ -35,11 +57,60 @@ class TitleBar extends PureComponent {
         });
     }
 
+    checkVendor(){
+        this.setState({stage: 7});
+
+        axios.get('/session/vendor')
+        .then(() => {
+            this.setState({stage: 0});
+            // if(this.props.skill.amzn_id){
+            //     this.setState({stage: 0});
+            // }else{
+            //     this.updateAlexa();
+            // }
+        })
+        .catch(err => {
+            console.error(err);
+            this.setState({stage: 6});
+        });
+    }
+
     updateAlexa() {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(res => {
-            this.setState({stage: 2});
+            if(this.props.skill.amzn_id){
+                this.setState({stage: 2});
+            }else{
+                this.setState({stage: 11}, () => {
+                    axios.post(`/skill/${this.props.skill.skill_id}/publish`)
+                    .then(res => {
+                        let skill = this.props.skill;
+                        skill.amzn_id = res.data;
+                        this.props.updateSkill(skill);
+                        this.setState({
+                            stage: 2
+                        });
+                    })
+                    .catch(err => {
+                        if(err.status === 403 || err.response.status === 403){
+                            // No Vendor ID/Amazon Developer Account
+                            this.setState({
+                                stage: 6
+                            });
+                        }else{
+                            console.dir(err);
+                            this.setState({
+                                upload_error: ((
+                                    err.response && 
+                                    err.response.data && 
+                                    err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
+                                stage: 9
+                            });
+                        }
+                    })
+                });
+            }
         })
         .catch(err => {
             this.setState({stage: 4});
@@ -73,22 +144,99 @@ class TitleBar extends PureComponent {
     }
 
     render_body() {
+        // I had to get this out really fast the states are all REALLY fucking wack
+        if(!this.props.skill.locales){
+            return null;
+        }
+
         switch(this.state.stage){
             case 1:
                 return <div className="super-center mb-4">
                     <div className='text-center'>
                         <h1><span className="loader"/></h1>
-                        Rendering
+                        <p className="loading">Rendering</p>
                     </div>
                 </div>
             case 2:
-                return <Alert color='success'>
-                    Your skill has been updated
-                </Alert>
+                return <React.Fragment>
+                    <img src="/images/preview.svg" alt="Success" height="160"/>
+                    <br/>
+                    You Skill Has been updated on Alexa!
+                    <span className="text-muted text-center">
+                        You may test on the Alexa Simulator or an Alexa Device on the same Amazon account
+                    </span>
+                    <div className="my-3">
+                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`} 
+                        className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                            Test on Alexa Simulator
+                        </a>
+                    </div>
+                </React.Fragment>
             case 4:
                 return <Alert color="danger">
                     Rendering Error  
                 </Alert>
+            case 5:
+                return <React.Fragment>
+                    {this.state.amzn_error && <Alert color="danger">Login With Amazon Failed - Try Again</Alert>}
+                    <p>Login with Amazon to test your skill on your own Alexa device, or in your Alexa developer console</p>
+                    <AmazonLogin
+                        updateLogin={(stage) => {
+                            if(stage === 2){
+                                this.token = true;
+                                this.checkVendor();
+                            }else if(1){
+                                this.setState({stage: 8});
+                            }else{
+                                this.setState({stage: 0, amzn_error: true});
+                            }
+                        }}
+                    />
+                </React.Fragment>
+            case 6:
+                 return <React.Fragment>
+                    Your Amazon Account needs to set up developer settings to Upload Skills
+                    <span className="text-muted text-center font-italic">
+                        Press "Create your Amazon Developer account"<br/> 
+                        and sign up with the same email as your Amazon Account.
+                    </span>
+                    <div className="my-3">
+                        <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank"  rel="noopener noreferrer">
+                            Developer Sign Up
+                        </a>
+                        <Button color="info" onClick={this.checkVendor}>
+                            <i className="fas fa-sync-alt"/> Check Again
+                        </Button>
+                    </div>
+                </React.Fragment>
+            case 7:
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Checking Vendor</p>
+                    </div>
+                </div>
+            case 8: 
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Verifying Login</p>
+                    </div>
+                </div>
+            case 9:
+                return <div className="w-100">
+                    Error Uploading to Alexa
+                    <Alert color="danger" className="mt-1">
+                        {this.state.upload_error}
+                    </Alert>
+                </div>
+            case 11: 
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Uploading to Alexa</p>
+                    </div>
+                </div>
             default:
                 return <div>
                     Updating to Alexa will allow you to test on your Alexa device if it is linked to the same Amazon account
@@ -98,6 +246,11 @@ class TitleBar extends PureComponent {
                     <div>
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
                         {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
+                    </div>
+                    <hr/>
+                    <div className="text-center">
+                        <Button color="info" onClick={this.updateAlexa}>Update <i className="far fa-cloud-upload"/></Button>{' '}
+                        <Button color="primary" onClick={this.toggleUpdate}>Cancel</Button>
                     </div>
                 </div>
         }
@@ -117,18 +270,13 @@ class TitleBar extends PureComponent {
                         {this.props.skill.name}
                     </div>
                 </div>
-                <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={()=>this.setState({stage: 0})}>
+                <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
                     <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
-                    <ModalBody className="render_body">
-                        {this.render_body()}
+                    <ModalBody className="modal-info">
+                        <div>
+                            {this.render_body()}
+                        </div>
                     </ModalBody>
-                    {   
-                        this.state.stage === 0 ?
-                        <ModalFooter>
-                            <Button color="info" onClick={this.updateAlexa}>Update <i className="far fa-cloud-upload"/></Button>{' '}
-                            <Button color="primary" onClick={this.toggleUpdate}>Cancel</Button>
-                        </ModalFooter> : null
-                    }
                 </Modal>
                 {this.props.preview ? null :
                     <div className="title-group">
@@ -154,7 +302,7 @@ class TitleBar extends PureComponent {
                                     </InputGroup>
                                 </PopoverBody>
                             </Popover>
-                            <MUIButton variant="contained" className="white-btn update-btn">Update Alexa</MUIButton>
+                            <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}>Update Alexa</MUIButton>
                             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                                 <DropdownToggle className="anti-btn" tag="div">
                                     <MUIButton variant="contained" className="white-btn publish-btn">
@@ -163,9 +311,6 @@ class TitleBar extends PureComponent {
                                 </DropdownToggle>
                                 <DropdownMenu className="platform-dropdown">
                                     <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
-                                    {   this.props.skill.amzn_id ?
-                                        <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
-                                    }
                                 </DropdownMenu>
                             </Dropdown>
                             <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save"}</MUIButton>
@@ -177,5 +322,9 @@ class TitleBar extends PureComponent {
         );
     }
 }
+
+// {   this.props.skill.amzn_id ?
+//     <DropdownItem className="platform-btn" onClick={this.openUpdate}>Update Alexa<span className="button-circle"><i className="far fa-cloud-upload"/></span></DropdownItem> : null
+// }
 
 export default TitleBar;

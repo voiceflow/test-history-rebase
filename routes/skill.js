@@ -106,7 +106,17 @@ const getSkill = (req, res) => {
                                 }
                             });
 
-                            if(skill_status.data.skills){
+                            if(Array.isArray(skill_status.data.skills)){
+                                if(skill_status.data.skills.length === 0){
+                                    // If 0 reset
+                                    skill.review = false;
+                                    skill.live = false;
+                                    skill.amzn_id = null;
+                                    res.send(skill);
+                                    pool.query('UPDATE skills SET review=FALSE, live=FALSE, amzn_id=NULL WHERE skill_id = $1', [id]);
+                                    return;
+                                }
+
                                 let still_review = false;
                                 let has_live = false;
 

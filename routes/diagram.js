@@ -751,16 +751,24 @@ const addStory = (story, cb) => {
     });
 }
 
-const publish = async (req, res) => {
+const publish = (req, res) => {
     if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
         res.sendStatus(401);
         return;
     }
 
     let skill_id = hashids.decode(req.params.skill_id)[0];
-    let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
 
-    res.sendStatus(status);
+    pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
+        if(err || result.rows.length === 0){
+            return res.sendStatus(500);
+        }else if(result.rows[0].creator_id !== req.user.id){
+            return res.sendStatus(401);
+        }
+
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
+        res.sendStatus(status);
+    })
 };
 
 const publishTest = async (req, res) => {

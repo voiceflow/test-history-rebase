@@ -10,6 +10,7 @@ import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
+import ActionGroup from './ActionGroup';
 import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import HelpModal from './HelpModal';
@@ -1055,22 +1056,24 @@ class Canvas extends Component {
                     onFlowRenamed={this.onFlowRenamed}
                 />
                 <TitleBar
+                    onTest={this.onTest}
+                    skill={this.state.skill}
                     lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
+                />
+                { !this.state.preview && <ActionGroup
+                    skill={this.state.skill}
                     preview={this.preview}
                     title={this.state.diagram_name}
-                    skill={this.state.skill}
                     updateSkill={(skill) => {this.setState({skill: skill})}}
                     onSave={this.onSave}
-                    onTest={this.onTest}
                     saving={this.state.saving}
                     saved={this.state.saved}
-                    last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
-                />
+                /> }
                 <div
                     id="diagram"
                     className={this.preview ? " no-padding" : ""}

@@ -231,6 +231,15 @@
      border-left: 1px solid #E2E9EC;
 
 }
+.back-btn{
+    background: transparent !important;
+    border: 1px solid none;
+    color: #42A5FF !important;
+    font-weight: normal !important;
+    text-transform: none !important;
+    transition: all 0.2s ease !important;
+    font-size: 14px;
+}
 .title-group {
     position: fixed;
     right: 60px;
@@ -240,7 +249,12 @@
     align-items: center;
 /*    height: 200px;*/
 }
-
+.modal-img{
+    width: 70%;
+}
+.modal-txt{
+    color: #8da2b5;
+}
 .title-group .white-btn {
 /*    padding: 0px 20px 0px 20px !important;*/
     border: none !important;
@@ -615,7 +629,10 @@
     
 
 }
-
+.hey{
+    background-color: transparent !important;
+    color: aqua !important;
+}
 .App .Menu #sidebar .MenuItem .menu-tip {
     padding: 0px 8px 0px 8px !important;
     color: #fff;
@@ -623,14 +640,21 @@
     border-radius: 100%;
     font-weight: bold;
 }
-
 .App .Menu #sidebar .MenuItem:hover .menu-tip {
     color: #CCC;
 }
 .App .Menu #sidebar .MenuItem:hover .menu-tip:hover {
     color: #8da2b5;
 }
-
+.btn-info{
+    background-color: transparent!important;
+    border: none !important;
+    font-size: 17px !important;
+    color: #42A5FF !important;
+}
+.btn-info:hover{
+    background-color: #EDF3FE !important;
+}
 .App .Menu #sidebar .MenuItem .MenuText{
     flex: 1;
     display: inline-flex;

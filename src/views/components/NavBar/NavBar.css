@@ -14,7 +14,6 @@
 	background-color: #fff;
     border-bottom: 1px solid #E2E9EC;
 	min-height: 59px;
-/*    box-shadow: inset 0 0 10px #000000;*/
 }
 
 /*#navbar.storyboard {
@@ -48,6 +47,16 @@
 	cursor: pointer;
 }
 
+.dot {
+	background-color: #C9E5FC;
+	border: 1px solid #42A5FF;
+	padding: 0.15em;
+	margin-right: 5px;
+	display: inline-block;
+	border-radius: 100%;
+	margin-bottom: 1px;
+}
+
 #navbar .account-dropdown .account i {
 	color: #8da2b5;
 	transition: all 0.2s ease !important;
@@ -65,17 +74,28 @@
 	color: #42A5FF !important;
 }*/
 
-.dropdown-menu {
-	border-color: #E2E9EC !important;
+.dropdown-menu, .popover {
+	border: none !important;
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+}
+.popover .arrow:before {
+	border-bottom-color: #E2E9EC;
+}
+.popover .popover-header:before{
+	border-color: #fff !important;
 }
 
 #navbar .account-dropdown .dropdown-menu{
 	margin-top: 8px;
 	right: -8px;
 }
-
-#navbar .account-dropdown .dropdown-menu .arrow {
-	position: absolute;
+#navbar .account-dropdown .dropdown-menu.arrow:before{
+	left: auto !important;
+	right: 10px !important;
+}
+#navbar .account-dropdown .dropdown-menu.arrow:after{
+	left: auto !important;
+	right: 11px !important;
 }
 
 .dropdown-menu.arrow:after, .dropdown-menu.arrow:before {
@@ -84,12 +104,26 @@
 	content: " ";
 	height: 0;
 	width: 0;
+	left: 50%;
 	position: absolute;
 	pointer-events: none;
 }
 
 .platform-dropdown{
-	right: -50px;
+	margin-top: 4px;
+	left: -43px !important;
+}
+.platform-dropdown .platform-btn.dropdown-header{
+	cursor: pointer !important;
+}
+.platform-dropdown .platform-btn{
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	padding: .25rem 1rem;
+}
+.platform-dropdown .platform-btn i {
+	color: #8da2b5;
 }
 
 .dropdown-menu.arrow:after {
@@ -97,14 +131,12 @@
 	border-bottom-color: #fff;
 	border-width: 7px;
 	margin-left: -7px;
-	right: 12px;
 }
 .dropdown-menu.arrow:before {
-	right: 10px;
 	border-color: transparent;
 	border-bottom-color: #E2E9EC;
-	border-width: 9px;
-	margin-left: -9px;
+	border-width: 8px;
+	margin-left: -8px;
 }
 
 @media(min-width: 845px){

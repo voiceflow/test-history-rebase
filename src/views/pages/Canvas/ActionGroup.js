@@ -270,6 +270,7 @@ class ActionGroup extends PureComponent {
                         </div>
                     </ModalBody>
                 </Modal>
+                <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
                     <Tooltip 
                         title="Share"
@@ -307,7 +308,7 @@ class ActionGroup extends PureComponent {
                                 position="bottom"
                                 distance={16}
                             >
-                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-cloud-upload-alt"/></MUIButton>
+                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-rocket"/></MUIButton>
                             </Tooltip>
                         </DropdownToggle>
                         <DropdownMenu className="platform-dropdown arrow">
@@ -319,7 +320,15 @@ class ActionGroup extends PureComponent {
                         title="Save"
                         position="bottom"
                     >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : <i className="fas fa-save"/>}</MUIButton>
+                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
+                            {this.props.saving ? 
+                                <span className="loader"/> : 
+                                <React.Fragment>
+                                    {!this.props.saved && <span className="unsaved"/>}
+                                    <i className="fas fa-save"/>
+                                </React.Fragment>
+                            }
+                        </MUIButton>
                     </Tooltip>
                 </div>
                 <Tooltip 

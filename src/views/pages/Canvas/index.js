@@ -69,6 +69,7 @@ class Canvas extends Component {
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
+        this.createWithTemplate = this.createWithTemplate.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -249,6 +250,23 @@ class Canvas extends Component {
                 template_confirm:confirm
             });
         }
+    }
+
+    createWithTemplate(module){
+        axios.get(`/marketplace/template/${module.module_id}/`, {
+            diagram_id: this.state.diagram_id
+        })
+        .then(res => {
+            this.loadDiagram(res.data);
+            this.createSkill(module.title + " Copy")
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                error_modal: 'Error retrieving template'
+            });
+        })
     }
 
     removeNode(){
@@ -969,6 +987,9 @@ class Canvas extends Component {
                         onClose={this.state.newSkill === false ? 
                             () => this.props.history.push('/dashboard') : 
                             () => this.setState({newSkill: null})}
+                        user_templates={this.state.user_templates}
+                        onTemplateChoice={this.createWithTemplate}
+                        history={this.props.history}
                     /> : null
                 }
                 <Prompt

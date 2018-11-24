@@ -521,6 +521,19 @@ input::placeholder, textarea::placeholder {
     line-height: 1;
 }
 
+.tippy-tooltip {
+    /*background-color: #42A5FF !important;*/
+    font-size: 13px;
+}
+
+.tippy-tooltip [x-circle]{
+    background-color: #42A5FF !important;
+}
+
+.tippy-tooltip-content {
+
+}
+
 @-webkit-keyframes spin {
   to {
     -webkit-transform: rotate(360deg);

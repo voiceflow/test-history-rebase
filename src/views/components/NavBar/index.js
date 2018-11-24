@@ -124,7 +124,7 @@ class NavBar extends Component {
                   <DropdownToggle className="account" nav tag="div">
                     <i className="fas fa-user-circle"/>
                   </DropdownToggle>
-                  <DropdownMenu right className="no-select">
+                  <DropdownMenu right className="arrow no-select">
                     <DropdownItem header>
                       {this.state.user.email}
                     </DropdownItem>

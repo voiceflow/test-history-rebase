@@ -254,6 +254,15 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    // <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
+    //     <DropdownToggle className="anti-btn" tag="div">
+            
+    //     </DropdownToggle>
+    //     <DropdownMenu className="platform-dropdown">
+    //         <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
+    //     </DropdownMenu>
+    // </Dropdown>
+
     render() {
 
         // <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
@@ -293,19 +302,12 @@ class ActionGroup extends PureComponent {
                     </Popover>
                     <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cog"/></MUIButton>
 <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cloud-upload-alt"/></MUIButton>
-                    <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : ""}<i className="fas fa-save"/></MUIButton>
+                    <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : <i className="fas fa-save"/>}</MUIButton>
 
                 </div>
-                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-                    <DropdownToggle className="anti-btn" tag="div">
-                        <MUIButton variant="contained" className="publish-btn">
-                            Publish <span className="launch"/>
-                        </MUIButton>
-                    </DropdownToggle>
-                    <DropdownMenu className="platform-dropdown">
-                        <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                <MUIButton variant="contained" className="publish-btn" onClick={this.props.publishAMZN}>
+                    Publish <span className="launch"/>
+                </MUIButton>
             </div>
         );
     }

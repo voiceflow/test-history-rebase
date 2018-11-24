@@ -159,13 +159,20 @@ button:focus{
     transition: all 0.2s ease !important;
     border-radius: 5px;
     cursor: pointer;
+    border: none !important;
+    font-size: 16px !important;
 /*    border: 2px solid #fff !important;*/
 }
 .purple-btn:hover{
     box-shadow: 0 5px 21px 0 rgba(74,144,226,.35) !important;
     transform: translateY(-1px) scale(1.03);
+    border: none !important;
 /*    transform: scale(1.03);*/
 /*    box-shadow: 0 5px 10px 0 rgba(66, 83, 255, 0.23) !important;*/
+}
+.purple-btn:active{
+    background: linear-gradient(#2295FA, #1B86F9);
+    border: none !important;
 }
 .publish-btn{
     padding: 10px 45px 10px 20px !important;
@@ -178,7 +185,8 @@ button:focus{
     transition: all 0.2s ease !important;
     border-radius: 50px !important;
     cursor: pointer;
-    font-weight: 900 !important;
+    font-weight: 400 !important;
+    width: 170px !important;
 /*    font-size: 15px !important;*/
 }
 .publish-btn .launch{
@@ -195,6 +203,12 @@ button:focus{
 .publish-btn:hover{
     box-shadow: 0 5px 21px 0 rgba(74,144,226,.35) !important;
     transform: translateY(-1px) scale(1.03);
+}
+.account-dropdown .account{
+   color: #8DA2B5 !important;
+}
+.account-dropdown .account:hover{
+    color: #42A5FF !important;
 }
 .card {
 /*    border: 1px solid #fff;*/
@@ -421,6 +435,8 @@ input::placeholder, textarea::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #8da2b5 !important;
+    font-size: 14px !important;
 }
 
 .padding {

@@ -4,7 +4,8 @@ import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
 
-// Import Bootstrap CSS
+// Import Dependent CSS
+import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
 import './App.css';

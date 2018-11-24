@@ -66,11 +66,13 @@ class NavBar extends Component {
     });
   }
 
-  logout() {
+  logout(e) {
+    e.preventDefault();
     AuthenticationService.logout(() => {
       console.log("logout");
       this.props.history.push('/login');
     });
+    return false;
   }
 
   preventDefault(e){
@@ -118,16 +120,16 @@ class NavBar extends Component {
                 })}
               </Nav>
               <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                    Account
+                <UncontrolledDropdown nav inNavbar className="account-dropdown">
+                  <DropdownToggle className="account" nav tag="div">
+                    <i className="fas fa-user-circle"/>
                   </DropdownToggle>
-                  <DropdownMenu right>
+                  <DropdownMenu right className="no-select">
                     <DropdownItem header>
                       {this.state.user.email}
                     </DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem onClick={this.logout}>
+                    <DropdownItem onClick={this.logout} tag="a" href="#">
                       Logout
                     </DropdownItem>
                   </DropdownMenu>

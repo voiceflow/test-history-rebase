@@ -278,9 +278,6 @@ class Menu extends PureComponent {
                         target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-facebook-f"/>
                         </a>
-                        <div className="tool" onClick={this.props.helpModal}>
-                            <i className="fas fa-question-circle"/>
-                        </div>
                     </div>
                 </div>
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>

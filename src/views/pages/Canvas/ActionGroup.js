@@ -238,18 +238,16 @@ class ActionGroup extends PureComponent {
                 </div>
             default:
                 return <div>
-                    Updating to Alexa will allow you to test on your Alexa device if it is linked to the same Amazon account
-                    <br/><br/> 
-                    This will not publish your skill to the Alexa store, but will update your skill's flow across Alexa platforms
+                    <img className="modal-img mb-3 ml-5" src={"/upload.svg"}/>
+                    <div className="modal-txt text-center"> Updating to Alexa will allow you to test on your Alexa device without publishing to the Amazon Skill store.</div>
                     {(this.props.skill.live || this.props.skill.review) && <hr/>}
                     <div>
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
                         {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
                     </div>
-                    <hr/>
+                
                     <div className="text-center">
-                        <Button color="info" onClick={this.updateAlexa}>Update <i className="far fa-cloud-upload"/></Button>{' '}
-                        <Button color="primary" onClick={this.toggleUpdate}>Cancel</Button>
+                        <Button color="primary mb-3 mt-3" onClick={this.updateAlexa}>Confirm Upload</Button>{' '}
                     </div>
                 </div>
         }

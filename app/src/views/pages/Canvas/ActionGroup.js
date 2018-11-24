@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
@@ -255,15 +255,6 @@ class ActionGroup extends PureComponent {
         }
     }
 
-    // <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-    //     <DropdownToggle className="anti-btn" tag="div">
-            
-    //     </DropdownToggle>
-    //     <DropdownMenu className="platform-dropdown">
-    //         <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
-    //     </DropdownMenu>
-    // </Dropdown>
-
     render() {
 
         // <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
@@ -281,9 +272,9 @@ class ActionGroup extends PureComponent {
                 </Modal>
                 <div className="title-group-sub">
                     <Tooltip 
-                        html={<div style={{ width: 180 }}>Share a preview of your diagram with others</div>} 
+                        title="Share"
                         position="bottom"
-                        distance={18}
+                        distance={16}
                     >
                         <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
                             <i className="fas fa-share"/>
@@ -308,24 +299,38 @@ class ActionGroup extends PureComponent {
                         </PopoverBody>
                     </Popover>
                     {/*<MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cog"/></MUIButton>*/}
-                    <Tooltip 
-                        html={<div style={{ width: 180 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>} 
-                        position="bottom"
-                        distance={18}
-                    >
-                        <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cloud-upload-alt"/></MUIButton>
-                    </Tooltip>
+                    
+                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
+                        <DropdownToggle className="anti-btn" tag="div">
+                            <Tooltip 
+                                title="Publish"
+                                position="bottom"
+                                distance={16}
+                            >
+                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-cloud-upload-alt"/></MUIButton>
+                            </Tooltip>
+                        </DropdownToggle>
+                        <DropdownMenu className="platform-dropdown arrow">
+                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                     <Tooltip
-                        distance={18}
-                        title='Save your project'
+                        distance={16}
+                        title="Save"
                         position="bottom"
                     >
                         <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : <i className="fas fa-save"/>}</MUIButton>
                     </Tooltip>
                 </div>
-                <MUIButton variant="contained" className="publish-btn" onClick={this.props.publishAMZN}>
-                    Publish <span className="launch"/>
-                </MUIButton>
+                <Tooltip 
+                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>} 
+                    position="bottom"
+                    distance={16}
+                >
+                    <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                        Upload to Alexa <span className="launch"/>
+                    </MUIButton>
+                </Tooltip>
             </div>
         );
     }

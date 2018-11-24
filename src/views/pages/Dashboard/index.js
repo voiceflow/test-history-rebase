@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
 import MUIButton from '@material-ui/core/Button';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 // import { InputGroup, Input, Button } from 'reactstrap';
 // import CardMedia from '@material-ui/core/CardMedia';
 
@@ -117,9 +116,8 @@ class DashBoard extends Component {
         if(this.state.skills === null){
             skills = <div className="super-center w-100 text-muted mt-5">
                         <div className="text-center">
-                            <CircularProgress color="secondary" size={50} />
-                            <br/><br/>
-                            Loading Skills
+                            <h5 className="pb-3">Loading Skills</h5>
+                            <h1><span className="loader"/></h1>
                         </div>
                      </div>
         }else if(this.state.skills.length === 0){

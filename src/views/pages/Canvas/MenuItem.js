@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Tooltip} from 'react-tippy';
 
 class MenuItem extends Component {
     render() {
@@ -13,9 +14,18 @@ class MenuItem extends Component {
                 <div className="MenuIcon">
                     {this.props.item.icon}
                 </div>
-                {this.props.item.text}
+                <div className="MenuText">
+                    <span>{this.props.item.text}</span>
+                    <Tooltip 
+                        html={<div style={{ width: 190 }}>{this.props.item.tip}</div>} 
+                        className="menu-tip"
+                        position="bottom"
+                    >
+                        ?
+                    </Tooltip>
+                </div>
             </div>
-        );
+    );
     }
 }
 

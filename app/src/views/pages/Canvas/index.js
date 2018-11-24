@@ -894,6 +894,16 @@ class Canvas extends Component {
                     choices: [],
                     inputs: []
                 };
+            } else if (type === 'interaction') {
+                node.addInPort(' ');
+                node.addOutPort('else').setMaximumLinks(1);
+                node.extras = {
+                    choices: [],
+                    inputs: [],
+                    inputs_open: [],
+                    slots_open: [],
+                    slots: []
+                };
             } else if (type === 'audio') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)

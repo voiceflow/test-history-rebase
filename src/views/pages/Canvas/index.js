@@ -10,6 +10,7 @@ import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
+import ActionGroup from './ActionGroup';
 import LoadingModal from './../../components/Modals/LoadingModal';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import HelpModal from './HelpModal';
@@ -18,7 +19,7 @@ import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
-import { Button, ButtonGroup } from 'reactstrap';
+import { ButtonGroup } from 'reactstrap';
 
 import Cookies from 'universal-cookie';
 
@@ -31,7 +32,8 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 
 const cookies = new Cookies();
 const defaultVariables = ['sessions', 'user_id', 'timestamp'];
-const line_color = '#E3E9EE';
+const line_color = '#D1D8E2';
+const line_width = 2.5;
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -70,6 +72,7 @@ class Canvas extends Component {
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
         this.createWithTemplate = this.createWithTemplate.bind(this);
+        this.onFlowRenamed = this.onFlowRenamed.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -77,7 +80,7 @@ class Canvas extends Component {
         var engine = new SRD.DiagramEngine();
         engine.registerLabelFactory(new SRD.DefaultLabelFactory());
         engine.registerNodeFactory(new BlockNodeFactory());
-        engine.registerLinkFactory(new BlockLinkFactory(line_color));
+        engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width));
         engine.registerPortFactory(new BlockPortFactory());
         
         let open, diagram_id, skill_id;
@@ -114,7 +117,7 @@ class Canvas extends Component {
 
             let nodes = model.getNodes();
             for (let key in nodes) {
-                if (nodes[key].extras.type === 'story') {
+                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
                     nodes[key].clearListeners();
                     nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
@@ -123,6 +126,7 @@ class Canvas extends Component {
             var links = model.getLinks();
             for (let key in links) {
                 links[key].setColor(line_color);
+                links[key].setWidth(line_width);
             }
 
             variables.push('user_name');
@@ -293,12 +297,21 @@ class Canvas extends Component {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
 
-            if (selected.length === 1) {
+            if (selected.length === 1 && selected[0].extras.type !== 'comment') {
                 engine.setSuperSelect(selected[0]);
                 this.setState({
                     engine: engine,
                     open: true
                 });
+            } else if (selected.length === 0) {
+                let model = engine.getDiagramModel();
+                let nodes = model.getNodes();
+                for (let key in nodes) {
+                    if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
+                        model.removeNode(nodes[key].getID());
+                        this.forceUpdate();
+                    }
+                }
             }
         });
 
@@ -490,7 +503,7 @@ class Canvas extends Component {
             model.addListener({ linksUpdated: this.unsave });
             var nodes = model.getNodes();
             for (let key in nodes) {
-                if (nodes[key].extras.type === 'story') {
+                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
                     nodes[key].clearListeners();
                     nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
                 }
@@ -498,6 +511,7 @@ class Canvas extends Component {
             var links = model.getLinks();
             for (let key in links) {
                 links[key].setColor(line_color);
+                links[key].setWidth(line_width);
             }
             
             engine.stopMove();
@@ -599,6 +613,16 @@ class Canvas extends Component {
             loading_modal: false
         });
         // this.props.history.push('/dashboard');
+    }
+
+    onFlowRenamed(id) {
+        let nodes = this.state.engine.getDiagramModel().getNodes();
+        for (let key in nodes) {
+            if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
+                nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
+                this.repaint();
+            }
+        }
     }
 
     unsave(e) {
@@ -704,7 +728,9 @@ class Canvas extends Component {
                     skill_id: skill_id,
                     name: name,
                     review: false,
-                    live: false
+                    live: false,
+                    diagram: diagram_id,
+                    locales: ["en-US"]
                 },
                 newSkill: 0,
                 diagram_id: diagram_id
@@ -850,6 +876,10 @@ class Canvas extends Component {
                 node.extras = {
                     commands: ''
                 };
+            } else if (type === 'comment') {
+                node.name = 'New Comment';
+                node.clearListeners();
+                node.addListener({ entityRemoved: e => e.stopPropagation() });
             } else if (type === 'ending') {
                 node.addInPort(' ');
                 node.extras = {
@@ -918,7 +948,7 @@ class Canvas extends Component {
                 };
             } else if (type === 'stream') {
                 node.addInPort(' ');
-                node.addOutPort('stop').setMaximumLinks(1);
+                node.addOutPort('stop/pause').setMaximumLinks(1);
                 node.extras = {
                     audio: '',
                     player: false
@@ -981,7 +1011,7 @@ class Canvas extends Component {
             engine.setSuperSelect(node);
             this.setState({
                 engine: engine,
-                open: true
+                open: type !== 'comment'
             });
         }
     }
@@ -1044,23 +1074,27 @@ class Canvas extends Component {
                     user_modules={this.state.user_modules}
                     user_templates={this.state.user_templates}
                     onTemplateChoice={this.handleTemplateChoice}
+                    onFlowRenamed={this.onFlowRenamed}
                 />
                 <TitleBar
+                    onTest={this.onTest}
+                    skill={this.state.skill}
                     lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
+                />
+                { !this.state.preview && <ActionGroup
+                    skill={this.state.skill}
                     preview={this.preview}
                     title={this.state.diagram_name}
-                    skill={this.state.skill}
+                    updateSkill={(skill) => {this.setState({skill: skill})}}
                     onSave={this.onSave}
-                    onTest={this.onTest}
                     saving={this.state.saving}
                     saved={this.state.saved}
-                    last_save={this.state.last_save}
                     admin={this.state.admin}
                     onLoadLines={this.loadLines}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
-                />
+                /> }
                 <div
                     id="diagram"
                     className={this.preview ? " no-padding" : ""}
@@ -1069,8 +1103,8 @@ class Canvas extends Component {
                 >
                     <div id="widget-bar">
                         <ButtonGroup>
-                            <Button onClick={()=>this.zoom(1000)} color="primary"><i className="far fa-plus"/></Button>
-                            <Button onClick={()=>this.zoom(-1000)} color="primary"><i className="far fa-minus"/></Button>
+                            <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
+                            <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
                         </ButtonGroup>
                     </div>
                     <SRD.DiagramWidget

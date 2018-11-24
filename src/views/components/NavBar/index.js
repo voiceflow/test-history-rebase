@@ -7,6 +7,10 @@ import {
   Nav,
   NavItem,
   NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 
@@ -28,6 +32,7 @@ class NavBar extends Component {
     this.logout = this.logout.bind(this);
 
     this.state = {
+      accountOpen: false,
       isOpen: false,
       tabs: [
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
@@ -36,7 +41,7 @@ class NavBar extends Component {
         {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
         {link: 'https://intercom.help/vfu', 'text': <React.Fragment>Learn</React.Fragment>},
         // {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
-        // {link: '/market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>}
+        // {link: '/market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>
       ],
       user: AuthenticationService.getUser()
     };
@@ -63,11 +68,13 @@ class NavBar extends Component {
     });
   }
 
-  logout() {
+  logout(e) {
+    e.preventDefault();
     AuthenticationService.logout(() => {
       console.log("logout");
       this.props.history.push('/login');
     });
+    return false;
   }
 
   preventDefault(e){
@@ -115,12 +122,20 @@ class NavBar extends Component {
                 })}
               </Nav>
               <Nav className="ml-auto" navbar>
-                <NavItem>
-                  <NavLink>{this.state.user.email}</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={this.logout}>Logout</NavLink>
-                </NavItem>
+                <UncontrolledDropdown nav inNavbar className="account-dropdown">
+                  <DropdownToggle className="account" nav tag="div">
+                    <i className="fas fa-user-circle"/>
+                  </DropdownToggle>
+                  <DropdownMenu right className="no-select">
+                    <DropdownItem header>
+                      {this.state.user.email}
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.logout} tag="a" href="#">
+                      Logout
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </Nav>
             </Collapse>
           </Navbar>

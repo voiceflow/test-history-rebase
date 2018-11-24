@@ -5,6 +5,7 @@ import APIMapping from './components/APIMapping.js';
 import VariableText from './components/VariableText';
 import VariableInput from './components/VariableInput';
 import randomstring from 'randomstring';
+import { ContentState, convertToRaw } from 'draft-js';
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -12,15 +13,29 @@ class API extends Component {
     constructor(props) {
         super(props);
 
+        let node = props.node;
+        
+        if(node.extras.mapping){
+            node.extras.mapping = node.extras.mapping.map((choice) => {
+                if(typeof choice.path === 'string'){
+                    return {
+                        path: convertToRaw(ContentState.createFromText(choice.path)),
+                        var: choice.var
+                    }
+                }else{
+                    return choice;
+                }
+            })
+        }
+
         // state.variables is for variables of the diagram linked
         // props.variables is for variables of the current diagram
         this.state = {
-            node: this.props.node,
+            node: node,
             variables: this.props.variables,
             dropdownOpen: false,
             type: 'headers',
-            popoverOpen: false,
-            mapping: []
+            popoverOpen: false
         };
 
         this.toggle = this.toggle.bind(this);

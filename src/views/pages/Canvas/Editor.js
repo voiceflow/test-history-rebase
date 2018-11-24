@@ -18,7 +18,9 @@ import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
 import Module from './Editors/Module';
-import Mail from './Editors/Mail'
+import Mail from './Editors/Mail';
+import Stream from './Editors/Stream';
+import Permissions from './Editors/Permissions';
 
 class Editor extends Component {
     constructor(props) {
@@ -27,7 +29,8 @@ class Editor extends Component {
         this.state = {
             node: this.props.node,
             voices: [],
-            templates: []
+            templates: [],
+            permission_options: []
         };
 
         this.BlockViewer = this.BlockViewer.bind(this);
@@ -79,6 +82,18 @@ class Editor extends Component {
             window.alert('Couldn\'t Retrieve Templates');
         })
 
+        // Hard-code for now, but eventually should retrieve from
+        // AMZN website if possible
+
+        this.setState({
+            permission_options: [
+                { name: 'User Email', value: 'alexa::profile:email:read' },
+                { name: 'User Name', value: 'alexa::profile:name:read' },
+                { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
+                // { name: 'Amazon Pay', value: 'payments:autopay_consent' }
+                // Removed for now, amazon pay permissions broken
+            ]
+        })
     }
 
     componentWillReceiveProps(props) {
@@ -167,6 +182,10 @@ class Editor extends Component {
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} user_modules={this.props.user_modules}/>
             case 'mail':
                 return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} templates={this.state.templates}/>
+            case 'stream':
+                return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+            case 'permissions':
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} permission_options={this.state.permission_options}/>
             default:
               return null;
         }

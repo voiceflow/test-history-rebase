@@ -280,7 +280,7 @@ class ActionGroup extends PureComponent {
                 </Modal>
                 <div className="title-group-sub">
                     <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
-                        <i className="fas fa-share-alt"/>
+                        <i className="fas fa-share"/>
                     </MUIButton>
                     <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
                         <PopoverHeader>Share Link</PopoverHeader>

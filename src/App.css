@@ -178,6 +178,7 @@ button:focus{
     transition: all 0.2s ease !important;
     border-radius: 50px !important;
     cursor: pointer;
+    font-weight: 900 !important;
 /*    font-size: 15px !important;*/
 }
 .publish-btn .launch{

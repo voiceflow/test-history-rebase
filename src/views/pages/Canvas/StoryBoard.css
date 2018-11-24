@@ -36,6 +36,7 @@
     border: none !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     cursor: pointer !important;
+    transition: all .25s ease-in-out;
 }
 .white-circ-right{
     background-color: #fff !important;
@@ -47,12 +48,17 @@
     border: none !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     cursor: pointer !important;
+    transition: all .25s ease-in-out;
 }
 .white-circ-right:hover{
     color: #42A5FF !important;
+    background-color: #EDF3FE !important;
+    border: 1px solid #42A5FF !important;
 }
 .white-circ:hover{
-    color: #42A5FF !important;
+     color: #42A5FF !important;
+    background-color: #EDF3FE !important;
+    border: 1px solid #42A5FF !important;
 }
 .TitleBar-shadow{
     width: 100%;
@@ -219,10 +225,12 @@
 .TitleBar .white-btn.play:hover{
     box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;
     color: #42A5FF !important;
+    background-color: #edf3fe !important;
     transform: translateY(-1px) !important;
+    border: 1px solid #42A5FF !important;
 }
 .TitleBar .white-btn.play span.button-circle{
-    background-color: #fff;
+/*    background-color: #fff;*/
     border-radius: 20px;
     width: 25px;
     height: 25px;

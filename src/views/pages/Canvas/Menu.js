@@ -16,12 +16,22 @@ const defaultVariables = {
 const sections = [{
     title: 'Basic',
     items: [
+<<<<<<< HEAD
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to talk to the user' },
         { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Add sound effects & audio clips under 240 seconds' },
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user'  },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
         { text: 'Command', type: 'command', icon: '⌘', tip: 'Add shortcuts for your users to navigate your skill quickly'},
         { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
+=======
+        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Speak blocks let you control what Alexa says to the user' },
+        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Audio blocks let you add sound effects & audio clips under 240 seconds' },
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream blocks let you stream long audio files & URLs for the user'  },
+        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Choice blocks listen for the user to make a choice from a list of options you set'  },
+        { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-project-diagram"/>, tip: 'Interaction blocks select choices and capture slot values from user input' },
+        { text: 'Command', type: 'command', icon: '⌘', tip: 'Command blocks add shortcuts for your users to navigate your skill quickly'},
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Comment blocks can be used to add notes to your skills'  }
+>>>>>>> ineractions
     ]
 },{
     title: 'Advanced',

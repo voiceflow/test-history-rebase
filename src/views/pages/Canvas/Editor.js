@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
+import Interaction from './Editors/Interaction';
 import Ending from './Editors/Ending';
 import Retry from './Editors/Retry';
 import Listen from './Editors/Listen';
@@ -137,6 +138,8 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
+            case 'interaction':
+                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'line':
             case 'audio': 
             case 'multiline':

@@ -42,47 +42,54 @@ class BannerCarousel extends Component{
 	}
 
 	render(){
-		var currentModule1 = 
-			<div className="market-hero border rounded">
-				<div className="d-flex justify-content-between mt-3">
-					<Button className="" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
-					<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
-                    {
-                        this.props.ownership.has(this.props.featured_modules[0].module_id)?
-                        <i className="checkbox-active fas fa-check"></i>
-                        :
-                        <i className="checkbox"></i>
-                    }
+		var currentModule1;
+		var currentModule2;
+		if(this.props.featured_modules >= 2){
+			currentModule1 = 
+				<div className="market-hero border rounded">
+					<div className="d-flex justify-content-between mt-3">
+						<Button className="" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
+						<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1"/>
+	                    {
+	                        this.props.ownership.has(this.props.featured_modules[0].module_id)?
+	                        <i className="checkbox-active fas fa-check"></i>
+	                        :
+	                        <i className="checkbox"></i>
+	                    }
+					</div>
+					<div className="row ml-2">
+						<h1 className="featured-card-txt">{this.props.featured_modules[0].title}</h1>
+					</div>
+					<div className="row ml-2 justify-content-between">
+						<p>{this.props.featured_modules[0].descr}</p>
+	                    <Button className="hero-btn" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
+					</div>
 				</div>
-				<div className="row ml-2">
-					<h1 className="featured-card-txt">{this.props.featured_modules[0].title}</h1>
-				</div>
-				<div className="row ml-2 justify-content-between">
-					<p>{this.props.featured_modules[0].descr}</p>
-                    <Button className="hero-btn" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
-				</div>
-			</div>
 
-		var currentModule2 = 
-			<div className="market-hero border rounded">
-				<div className="d-flex justify-content-between mt-3">
-					<Button className="" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
-					<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
-                    {
-                        this.props.ownership.has(this.props.featured_modules[1].module_id)?
-                        <i className="checkbox-active fas fa-check"></i>
-                        :
-                        <i className="checkbox"></i>
-                    }
+			currentModule2 = 
+				<div className="market-hero border rounded">
+					<div className="d-flex justify-content-between mt-3">
+						<Button className="" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
+						<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1"/>
+	                    {
+	                        this.props.ownership.has(this.props.featured_modules[1].module_id)?
+	                        <i className="checkbox-active fas fa-check"></i>
+	                        :
+	                        <i className="checkbox"></i>
+	                    }
+					</div>
+					<div className="row ml-2">
+						<h1 className="featured-card-txt">{this.props.featured_modules[1].title}</h1>
+					</div>
+					<div className="row ml-2 justify-content-between">
+						<p>{this.props.featured_modules[1].descr}</p>
+	                    <Button className="hero-btn" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
+					</div>
 				</div>
-				<div className="row ml-2">
-					<h1 className="featured-card-txt">{this.props.featured_modules[1].title}</h1>
-				</div>
-				<div className="row ml-2 justify-content-between">
-					<p>{this.props.featured_modules[1].descr}</p>
-                    <Button className="hero-btn" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
-				</div>
-			</div>
+		} else {
+			currentModule1 = null;
+			currentModule2 = null;
+		}
 
 		return (
 			<div className="hero-container">

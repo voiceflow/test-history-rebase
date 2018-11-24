@@ -267,7 +267,7 @@ class PublishMarket extends Component {
                         	:
 	                        <div className="subheader-right">
 	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/></MUIButton>
+	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Submit to Marketplace <i className="fas fa-store-alt ml-2"/></MUIButton>
 	                        </div>
                     	}
                     </div>
@@ -366,9 +366,9 @@ class PublishMarket extends Component {
 					{this.state.in_review?
 		                <div className="alert alert-success mb-4" role="alert">
 		                    <div className="d-flex justify-content-between align-items-center">
-		                        <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
+		                        <h5 className="mb-0">This skill is currently being reviewed for the Marketplace.</h5>
 		                        <div>
-		                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
+		                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
 		                        </div>
 		                    </div>
 		                </div>

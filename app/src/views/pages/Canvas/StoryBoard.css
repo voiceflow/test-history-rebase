@@ -525,6 +525,7 @@
     width: 10%;
 }
 */
+
 .App .Menu #sidebar .MenuItem {
     cursor: pointer;
     overflow: hidden;
@@ -550,7 +551,6 @@
 /*    box-shadow: 0 1px 5px 0 rgba(36,35,40,.2), 0 2px 3px 0 rgba(36,35,40,.01);*/
     box-shadow: 0 1px 6px 0 rgba(14,30,37,.12);
     background-color: #fff !important;
-
 }
 
 .App .Menu #sidebar .MenuItem .MenuIcon {
@@ -1685,4 +1685,43 @@ button.close{
         display: block;
         padding-left: 290px;
     }
+}
+
+.SkillModal-Templates .TemplateItem {
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 5px;
+    height: 45px;
+    line-height: 45px;
+    margin: 10px 0px;
+    transition: background-color .3s cubic-bezier(0.9, 0.2, 0.2, 1);
+    backface-visibility: hidden;
+    color: #9196b6;
+    width: 90%;
+    background-color: #fff;
+    transition: all .1s ease-in-out;
+}
+
+.SkillModal-Templates .TemplateItem:hover {
+/*    transform: translateZ(3);*/
+    transform: scale(1.05);
+    
+/*    transform: translateY(-2px);*/
+    border-radius: 10px;
+/*    box-shadow: 0 1px 5px 0 rgba(36,35,40,.2), 0 2px 3px 0 rgba(36,35,40,.01);*/
+    box-shadow: 0 1px 6px 0 rgba(14,30,37,.12);
+    background-color: #fff !important;
+}
+
+.SkillModal-Templates .TemplateItem .TemplateIcon {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 45px;
+    height: 45px;
+/*    background-color: #e2e9ec;*/
+    /*color: #2325E2;*/
+    color: #fff;
+    border-radius: 10px;
 }

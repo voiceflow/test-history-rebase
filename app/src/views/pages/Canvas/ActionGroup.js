@@ -271,7 +271,7 @@ class ActionGroup extends PureComponent {
                 </Modal>
                 <div className="title-group-sub">
                     <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
-                        <i className="fas fa-share-square"/>
+                        <i className="fas fa-share-alt"/>
                     </MUIButton>
                     <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
                         <PopoverHeader>Share Link</PopoverHeader>
@@ -291,13 +291,15 @@ class ActionGroup extends PureComponent {
                             </InputGroup>
                         </PopoverBody>
                     </Popover>
-                    <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}>Update Alexa</MUIButton>
-                    <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : "Save"}</MUIButton>
+                    <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cog"/></MUIButton>
+<MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cloud-upload-alt"/></MUIButton>
+                    <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : ""}<i className="fas fa-save"/></MUIButton>
+
                 </div>
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                     <DropdownToggle className="anti-btn" tag="div">
-                        <MUIButton variant="contained" className="white-btn publish-btn">
-                            Publish <i className="fas fa-caret-down"/>
+                        <MUIButton variant="contained" className="publish-btn">
+                            Publish <span className="launch"/>
                         </MUIButton>
                     </DropdownToggle>
                     <DropdownMenu className="platform-dropdown">

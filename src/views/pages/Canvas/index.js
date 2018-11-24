@@ -19,7 +19,7 @@ import TestModal from './Test/TestModal';
 import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
-import { Button, ButtonGroup } from 'reactstrap';
+import { ButtonGroup } from 'reactstrap';
 
 import Cookies from 'universal-cookie';
 

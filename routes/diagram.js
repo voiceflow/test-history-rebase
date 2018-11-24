@@ -179,17 +179,13 @@ const updateName = async (req, res) => {
 }
 
 const setDiagram = async (req, res) => {
-    if (!req.body) {
-        res.sendStatus(400);
-        return;
-    }
-
     let diagram = req.body;
     diagram.skill = hashids.decode(diagram.skill)[0];
 
     try{
         let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill]);
-        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id){
+
+        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10){
             return res.sendStatus(403);
         }else{
             diagram.creator = req.user.id;
@@ -197,10 +193,6 @@ const setDiagram = async (req, res) => {
     }catch(err){
         console.error(err);
         return res.sendStatus(500);
-    }
-
-    if (diagram.title.trim() === "" || !diagram.title.trim()){
-        diagram.title = "New Flow";
     }
 
     diagram.last_save = Date.now();
@@ -219,11 +211,14 @@ const setDiagram = async (req, res) => {
         } else {
             try{
                 if(req.query.new){
+                    if (diagram.title !== "ROOT" ){
+                        diagram.title = "New Flow";
+                    }
                     // If it is a new diagram insert (assume it has no blocks)
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
                 }else{
                     // otherwise update
-                    await pool.query('UPDATE diagrams SET name = $1, sub_diagrams = $2, permissions = $3 WHERE id = $4', [diagram.title, diagram.sub_diagrams, permissions_string, diagram.id]);
+                    await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2 WHERE id = $3', [diagram.sub_diagrams, permissions_string, diagram.id]);
                 }
                 res.sendStatus(200);
             }catch(e){
@@ -370,18 +365,21 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         })
                     };
                 } else if (node.extras.type === 'stream') {
-                    let stop = links[node.ports.filter(a => a.label === 'stop')[0].links[0]];
+                    let stop = links[node.ports.filter(a => a.label === 'stop/pause')[0].links[0]];
 
                     if(node.extras.player){
                         story.lines[node.id] = {
+                            loop: node.extras.loop,
                             play: node.extras.audio,
                             nextId: stop,
+                            PAUSE_ID: node.id,
                             NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
                             PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
-                            SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
+                            // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
                         };
                     }else{
                         story.lines[node.id] = {
+                            loop: node.extras.loop,
                             play: node.extras.audio,
                             nextId: stop
                         };
@@ -654,7 +652,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 } else if (node.extras.type === 'permissions') {
 
                     const permissions = node.extras.permissions ? node.extras.permissions : [];
-
                     story.lines[node.id] = {
                         permissions: permissions,
                         success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],
@@ -699,6 +696,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             }else{
                 render_type = type;
             }
+
             let params = {
                 TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story
@@ -752,16 +750,24 @@ const addStory = (story, cb) => {
     });
 }
 
-const publish = async (req, res) => {
+const publish = (req, res) => {
     if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
         res.sendStatus(401);
         return;
     }
 
     let skill_id = hashids.decode(req.params.skill_id)[0];
-    let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
 
-    res.sendStatus(status);
+    pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
+        if(err || result.rows.length === 0){
+            return res.sendStatus(500);
+        }else if(result.rows[0].creator_id !== req.user.id){
+            return res.sendStatus(401);
+        }
+
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
+        res.sendStatus(status);
+    })
 };
 
 const publishTest = async (req, res) => {

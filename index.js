@@ -104,6 +104,7 @@ app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
+app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
 app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
 app.get('/email/template/:id', ensureLoggedIn(), Email.getTemplate);

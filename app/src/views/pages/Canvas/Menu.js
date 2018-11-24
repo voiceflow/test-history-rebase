@@ -5,6 +5,7 @@ import ModuleItem from './ModuleItem';
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
+import {Tooltip} from 'react-tippy';
 
 const defaultVariables = {
     'sessions': 'The Number of times a particular user has opened the app',
@@ -15,35 +16,38 @@ const defaultVariables = {
 const sections = [{
     title: 'Basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/> },
-        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/> },
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/> },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/> },
-        { text: 'Command', type: 'command', icon: '⌘' },
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/> }
+        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Speak blocks let you control what Alexa says to the user' },
+        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Audio blocks let you add sound effects & audio clips under 240 seconds' },
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream blocks let you stream long audio files & URLs for the user'  },
+        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Choice blocks listen for the user to make a choice from a list of options you set'  },
+        { text: 'Command', type: 'command', icon: '⌘', tip: 'Command blocks add shortcuts for your users to navigate your skill quickly'},
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Comment blocks can be used to add notes to your skills'  }
     ]
 },{
     title: 'Advanced',
     items: [
-        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>},
-        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/> },
-        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>},
-        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/> },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/> },
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/> },
+        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Random blocks choose randomly from a set number of paths.' },
+        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set blocks set the value of a variable, or many variables at once.'  },
+        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'IF blocks let you set conditions that activate paths only when true.' },
+        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture blocks listen for the user to set the value of a single variable.'  },
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Flow blocks allow you to organize your project into manageable sections.'},
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'API blocks let you use external APIs and store responses in variables.'  },
         // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
-        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/> },
+        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Permissions block asks users for access to their Amazon info for you to use.'  },
    ]
 }];
 
-const tabs = [
-    {tab: "blocks", icon: <i className="fas fa-plus-square"/>},
-    {tab: "project", icon: <i className="fas fa-folder"/>},
-    {tab: "variables", icon: <i className="fas fa-code"/>},
-    // {tab: "modules", icon: <i className="fas fa-layer-group"/>},
-    // {tab: "templates", icon: <i className="fas fa-th-large"/>}
-]
-
+const tabs = {
+    top: [
+        {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'The blocks menu holds all of your available blocks'},
+        {tab: "project", icon: <i className="fas fa-folder"/>, tip: 'The flows menu lets you navigate amongst your project’s flows'},
+        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'The variables menu lets you create & manage your variables'},
+    ],
+    bottom: [
+        {link: "https://intercom.help/vfu", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
+        {link: "https://www.facebook.com/groups/199476704186240/", icon: <i className="fab fa-facebook-f"/>, tip: 'Join the Voiceflow Community for help & updates'}
+    ]
+}
 class Menu extends PureComponent {
     constructor(props) {
         super(props);
@@ -165,7 +169,7 @@ class Menu extends PureComponent {
                 return <div key={i} className="section no-select">
                     <span className="section-title">{section.title}</span>
                     {section.items.map((item, i) => {
-                        return <MenuItem item={item} key={i} />;
+                        return <MenuItem item={item} key={i} data-tip={item.tip}/>
                     })}
                 </div>
             })
@@ -257,27 +261,28 @@ class Menu extends PureComponent {
             <div className="Menu">
                 <div className='toolbar'>
                     <div className="top-down">
-                        {tabs.map((tab, i) => {
+                        {tabs.top.map((tab, i) => {
                             return (
-                                <div key={i} 
-                                    className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
-                                    onClick={() => this.openTab(tab.tab)}>
-                                    {tab.icon}
-                                </div>
+                                <Tooltip key={i} html={<div style={{width: 180}}>{tab.tip}</div>} position='right' disabled={false && tab.tab === this.state.tab && this.state.open}>
+                                    <div className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
+                                        onClick={() => this.openTab(tab.tab)}>
+                                        {tab.icon}
+                                    </div>
+                                </Tooltip>
                             )
                         })}
                     </div>
                     <div className="spacer"/>
                     <div className="bottom-up">
-                        
-                        <a className="tool no-underline" href="https://intercom.help/vfu"
-                        target="_blank" rel="noopener noreferrer">
-                            <i className="fas fa-graduation-cap"/>
-                        </a>
-                        <a className="tool no-underline" href="https://www.facebook.com/groups/199476704186240/" 
-                        target="_blank" rel="noopener noreferrer">
-                            <i className="fab fa-facebook-f"/>
-                        </a>
+                        {tabs.bottom.map((tab, i) => {
+                            return (
+                                <Tooltip key={i} title={tab.tip} position='right'>
+                                    <a className="tool no-underline" href={tab.link} target="_blank" rel="noopener noreferrer">
+                                        {tab.icon}
+                                    </a>
+                                </Tooltip>
+                            )
+                        })}
                     </div>
                 </div>
                 <div id="sidebar" className={this.state.open ? 'open' : ''}>

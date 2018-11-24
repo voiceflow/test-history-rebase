@@ -12,12 +12,12 @@
 }
 
 .TitleBar{
-    top:62px;
+    top:60px;
     width: 100%;
     padding-left: 40%;
     position: absolute;
     z-index: 3;
-    height: 71px;
+    /*height: 71px;*/
     display: flex;
     justify-content: space-between;
     /*background: rgb(246,249,250);*/
@@ -138,23 +138,6 @@
     border: 5px solid #42A5FF !important;
     box-shadow: none !important;
 }
-.TitleBar .publish-btn {
-    padding: 0px 17px 1px 20px !important;
-    border-radius: 0px !important; 
-    background-color: transparent !important;
-    border-radius: 0px !important;
-/*    border-right: 1px solid #8ea2b526 !important;*/
-    margin-right: 0px !important;
-    font-size: 14px !important;
-
-}    
-.TitleBar .publish-btn i{
-    margin-left: 5px;
-}
-.TitleBar .publish-btn:hover{
-/*    box-shadow: 0 2px 7px 0 rgba(14,30,37,.12) !important*/
-/*    border-right: 1px solid #8ea2b526 !important;*/
-}
 .TitleBar .platform-dropdown {
     border: none;
     padding: 5px 0px 5px 0px;
@@ -174,16 +157,6 @@
 }
 .TitleBar .platform-btn:active{
     color: #fff;
-}
-
-.TitleBar .publish-btn .button-circle{
-    background-color: #F5F9FA;
-    border-radius: 5px;
-    width: 26px;
-    line-height: 25px;
-    font-size: 16px;
-    height: 26px;
-    margin-left: 10px;
 }
 
 .TitleBar .white-btn.play{
@@ -257,7 +230,7 @@
 }
 .title-group {
     position: fixed;
-    right: 150px;
+    right: 60px;
     top: 0px;
     z-index: 1040;
 /*    height: 200px;*/
@@ -608,13 +581,32 @@
     color: #2b3950;
     /*width: 100%;*/
     background-color: #fff;
+    display: flex;
     transition: all .1s ease-in-out;
 /*    box-shadow: 0 2px 3px rgba(0,0,0,.08);*/
     font-size: 15px;
-/*    border: 1px solid #eaeff4;*/
-    
-    /*border: 1px solid #EEE;*/
-    
+}
+
+.App .Menu #sidebar .MenuItem .menu-tip {
+    padding: 0 5px 0 8px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 100%;
+    font-weight: bold;
+}
+
+.App .Menu #sidebar .MenuItem:hover .menu-tip {
+    color: #CCC;
+}
+.App .Menu #sidebar .MenuItem:hover .menu-tip:hover {
+    color: #8da2b5;
+}
+
+.App .Menu #sidebar .MenuItem .MenuText{
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .App .Menu #sidebar .MenuItem:hover {
@@ -1837,15 +1829,12 @@ button.close{
 }
 
 @media(max-width: 1300px){
-    .TitleBar .title-group{
-        margin-top: 0px;
-    }
     .TitleBar .last-save{
         text-align: left;
         padding-left: 4px;
     }
     .TitleBar{
-        height: 105px;
+        /*height: 105px;*/
         display: block;
         padding-left: 250px;
         padding-right: 0px;

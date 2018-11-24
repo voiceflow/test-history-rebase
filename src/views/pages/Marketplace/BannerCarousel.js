@@ -94,7 +94,7 @@ class BannerCarousel extends Component{
 		return (
 			<div className="hero-container">
 				<div className="row">
-					<h1 className="heavy">Featured Flows</h1>
+					<h1 className="heavy">Featured Modules</h1>
 				</div>
 				<div className="row">
 					<div className="col-md">

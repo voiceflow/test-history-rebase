@@ -54,6 +54,7 @@ class Marketplace extends Component {
                 templates: templates,
                 loading: false
             });
+            console.log(this.state)
         })
         .catch( error => {
             console.log(error);
@@ -136,7 +137,7 @@ class Marketplace extends Component {
                     :
                     <React.Fragment>
                         <Masonry elementType='div' className="skills-container">
-                            {this.state.modules.map((module, i) => 
+                            {this.state.templates.map((module, i) => 
                                 <Module
                                     key={i}
                                     module={module}

@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";
 import { DiagramEngine, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
+import Textarea from 'react-textarea-autosize';
 
 export interface BlockNodeProps extends BaseWidgetProps {
 	node: BlockNodeModel;
@@ -26,11 +27,17 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 	// {this.props.node.extras && this.props.node.extras.reads ? <div className="block-reads">{this.props.node.extras.reads}</div> : null}
 	
 	render() {
+		if(this.props.node.extras.type === 'comment'){
+			return <div className={"srd-default-node " + this.props.node.extras.type}>
+              	<Textarea value={this.props.node.name} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
+			</div>
+		}
+
 		return (
 			<div className={"srd-default-node " + this.props.node.extras.type}>
 				<div className={this.bem("__title") + ' no-select'}>
 					<div className={this.bem("__name")}>
-						{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
+            			{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
 					</div>
 				</div>
 				<div className={this.bem("__ports")}>

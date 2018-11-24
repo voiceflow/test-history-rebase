@@ -4,7 +4,8 @@ import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
 
-// Import Bootstrap CSS
+// Import Dependent CSS
+import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
 import './App.css';
@@ -46,7 +47,7 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
-ReactGA.initialize('UA-124745244-1');
+ReactGA.initialize('UA-124745244-3');
 const history = createBrowserHistory();
 history.listen((location, action) => {
   ReactGA.set({ page: location.pathname })

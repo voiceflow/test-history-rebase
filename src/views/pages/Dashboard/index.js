@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
-import MUIButton from '@material-ui/core/Button';
+// import MUIButton from '@material-ui/core/Button';
 
 // import { InputGroup, Input, Button } from 'reactstrap';
 // import CardMedia from '@material-ui/core/CardMedia';
@@ -129,26 +129,15 @@ class DashBoard extends Component {
             //         </div>
             skills = <div className="super-center w-100 text-muted mt-5">
                 <div className="horizontal-center mt-5">
-                    <div className="card">
+                    <div className="">
                       <div className="card-body p-4">
-                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="200"/><br/>
-                        <Link to="/canvas/new" className="no-underline">
-                            <MUIButton varient="contained" className="purple-btn w-100">Create Skill</MUIButton>
+                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" className="mb-5"/><br/>
+                        <Link to="/canvas/new" className="no-underline super-center">
+                            <button varient="contained" className="purple-btn w-75">Create Skill</button>
                         </Link>
-                      </div>
-                    </div>
-                    <span className="mx-5">OR</span>
-                    <div className="d-flex">
-                        <img src="/images/clipboard-icon.svg" alt="list" height="90"/><br/>
-                        <div className="ml-3">
-                            <h5 className="text-dark">Getting Started</h5>
-                            <p className="mb-1">
-                                Learn about the tool<br/>
-                                and how blocks work
-                            </p>
                             <small>
-                                <a href="https://getvoiceflow.com/storyschool" className="text-muted" target="_blank" rel="noopener noreferrer">
-                                    <b>STORY SCHOOL</b>
+                                <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">
+                                    <b>Voiceflow University</b>
                                     <i className="fal fa-long-arrow-right ml-1"/>
                                 </a>
                             </small>
@@ -182,7 +171,7 @@ class DashBoard extends Component {
                         </span>
                         <div className="subheader-right">
                             <Link to="/canvas/new" className="no-underline">
-                                <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</MUIButton>
+                                <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
                             </Link>
                         </div>
                     </div>

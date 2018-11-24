@@ -79,7 +79,8 @@ const getSkill = (req, res) => {
                 // Check Current Amazon Status
                 AccessToken(req.user.id, async (token) => {
                     if(token === null){
-                        throw('INVALID TOKEN');
+                        // throw('INVALID TOKEN');
+                        return res.send(skill);
                     }
 
                     try {
@@ -244,6 +245,10 @@ const patchSkill = (req, res) => {
     let id = hashids.decode(req.params.id)[0];
     let b = req.body;
 
+    if(!b.locales){
+        b.locales = '["en-US"]';
+    }
+
     if(req.query.publish){
         pool.query(`
             UPDATE skills 
@@ -262,11 +267,12 @@ const patchSkill = (req, res) => {
             copa = $13, 
             ads = $14, 
             export = $15, 
-            instructions = $16
+            instructions = $16,
+            locales = $17
             WHERE skill_id = $1`, 
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
             {value: b.invocations}, b.small_icon, b.large_icon, b.category, 
-            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions], (err) => {
+            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -286,10 +292,11 @@ const patchSkill = (req, res) => {
             invocations = $7, 
             small_icon = $8, 
             large_icon = $9, 
-            category = $10
+            category = $10,
+            locales = $11
             WHERE skill_id = $1`, 
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
-            {value: b.invocations}, b.small_icon, b.large_icon, b.category], (err) => {
+            {value: b.invocations}, b.small_icon, b.large_icon, b.category, b.locales], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -308,6 +315,22 @@ const buildSkill = async (req,res) => {
     let id = hashids.decode(req.params.id)[0];
     let original_id = req.params.id;
 
+    // Get permissions
+    const permissions_arr = await getSkillPermissions(id);
+    let permissions = new Set();
+
+    permissions_arr.forEach(r => {
+        r.permissions.forEach((perm => {
+            if (perm !== 'payments:autopay_consent') {
+                // lmao amazon engineering
+                permissions.add(perm);
+            }
+        }))
+    })
+    
+    permissions = [...permissions];
+    permissions = permissions.map(perm => {return {name: perm}});
+
     AccessToken(req.user.id, token => {
         if(token === null){
             res.status(401).send({
@@ -325,6 +348,7 @@ const buildSkill = async (req,res) => {
                 let r = data.rows[0];
 
                 let amzn_id = r.amzn_id;
+                r.permissions = permissions;
                 let manifest = JSONs.manifest(r, original_id);
 
                 try{
@@ -408,16 +432,21 @@ const buildSkill = async (req,res) => {
                             return;
                         }else{
                             setTimeout(()=> {
-
-                                axios.request({
-                                    url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/en-US`,
-                                    method: 'PUT',
-                                    headers: {
-                                        Authorization: token
-                                    },
-                                    data: model
+                                
+                                const interactionModels = []
+                                r.locales.forEach(locale => {
+                                    interactionModels.push(axios.request({
+                                        url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
+                                        method: 'PUT',
+                                        headers: {
+                                            Authorization: token
+                                        },
+                                        data: model
+                                    }))
                                 })
-                                .then(response => {
+
+                                Promise.all(interactionModels)
+                                .then(() => {
                                     // Check whether building before certifying
                                     const getSkillStatus = (depth) => {
                                         setTimeout(() => {
@@ -596,6 +625,19 @@ const withdrawSkill = (req, res) => {
         });
     });
 }
+
+const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
+    let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
+    pool.query(sql, [skill_id], (err, data) => {
+        if(err){
+            console.error(err);
+            console.trace();
+            reject(new Error(err))
+        }else{
+            resolve(data.rows);
+        }
+    });
+})
 
 module.exports = {
     getDiagrams: getDiagrams,

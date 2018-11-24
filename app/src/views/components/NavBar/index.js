@@ -34,6 +34,9 @@ class NavBar extends Component {
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
         {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
+        {link: 'https://intercom.help/vfu', 'text': <React.Fragment>Learn</React.Fragment>},
+        // {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
+        // {link: '/market', text: <span>Marketplace <i className="fas fa-store-alt"></i></span>}
       ],
       user: AuthenticationService.getUser()
     };
@@ -98,10 +101,15 @@ class NavBar extends Component {
                         <NavItem key={i}>
                           <NavLink active>{tab.text}</NavLink>
                         </NavItem>)
-                    }else{
+                    }else if(tab.link.startsWith('/')){
                       return (
                         <NavItem key={i}>
                           <Link to={tab.link} className="nav-link">{tab.text}</Link>
+                        </NavItem>)
+                    }else{
+                      return (
+                        <NavItem key={i}>
+                          <a href={tab.link} className="nav-link" target='_blank' rel="noopener noreferrer">{tab.text}</a>
                         </NavItem>)
                     }
                 })}

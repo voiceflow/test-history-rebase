@@ -489,7 +489,7 @@ class TestModal extends React.Component {
                   }
                 </div>
               </div>
-            </React.Fragment> : <div className="p-5"><h1><i className="fas fa-sync-alt fa-spin"></i></h1></div>
+            </React.Fragment> : <div className="p-5"><h1><span className="loader"/></h1></div>
           }
         </ModalBody>
         <ModalFooter className="justify-content-center">

@@ -46,11 +46,14 @@
 	border: none !important;
 	cursor: pointer;
 }
-
+.navbar-brand{
+    font-size: 0rem !important;
+/*    width: 100px;*/
+}
 .dot {
 	background-color: #C9E5FC;
 	border: 1px solid #42A5FF;
-	padding: 0.15em;
+	padding: 3px;
 	margin-right: 5px;
 	display: inline-block;
 	border-radius: 100%;
@@ -143,8 +146,8 @@
 	#navbar .nav-link {
 		padding-top: 14px;
 		padding-bottom: 17px;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 27px;
+        padding-right: 27px;
 	}
 
 	#navbar .nav-link {

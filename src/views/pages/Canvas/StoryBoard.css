@@ -260,10 +260,9 @@
     border: none !important;
     box-shadow: none !important;
     color: #8DA2B5 !important;
-    font-size: 20px;
+    font-size: 20px !important;
     background-color: transparent!important;
     margin-right: 0px !important;
-    font-size: 20px;
     border-right: none !important;
 /*    margin-right: 7px !important;*/
     height: 59px;
@@ -273,6 +272,7 @@
     display: inline-flex !important;
     justify-content: center;
     align-items: center;
+    
 }
 
 .title-group .white-btn:hover{

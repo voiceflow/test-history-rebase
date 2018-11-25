@@ -14,12 +14,11 @@
 .TitleBar{
     top:60px;
     width: 100%;
-    padding-left: 40%;
     position: absolute;
     z-index: 3;
     /*height: 71px;*/
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     /*background: rgb(246,249,250);*/
     background: linear-gradient(180deg, #F5F7FA, rgba(245,246,250,0.98));
     -webkit-box-shadow: 0px 15px 56px 16px rgba(245,246,250,1);
@@ -36,6 +35,7 @@
     border: none !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     cursor: pointer !important;
+    transition: all .25s ease-in-out;
 }
 .white-circ-right{
     background-color: #fff !important;
@@ -47,12 +47,17 @@
     border: none !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     cursor: pointer !important;
+    transition: all .25s ease-in-out;
 }
 .white-circ-right:hover{
     color: #42A5FF !important;
+    background-color: #EDF3FE !important;
+    border: 1px solid #42A5FF !important;
 }
 .white-circ:hover{
-    color: #42A5FF !important;
+     color: #42A5FF !important;
+    background-color: #EDF3FE !important;
+    border: 1px solid #42A5FF !important;
 }
 .TitleBar-shadow{
     width: 100%;
@@ -192,24 +197,27 @@
 .TitleBar .white-btn.play:hover{
     box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;
     color: #42A5FF !important;
+    /*background-color: #edf3fe !important;*/
     transform: translateY(-1px) !important;
+    /*border: 1px solid #42A5FF !important;*/
 }
 .TitleBar .white-btn.play span.button-circle{
-    background-color: #fff;
+/*    background-color: #fff;*/
     border-radius: 20px;
     width: 25px;
     height: 25px;
     /*display: inline-block;*/
-    line-height: 17px;
+    line-height: 15px;
     font-size: 10px;
-    padding: 5px 5px 8px 8px;
-    margin-left: 5px;
+    padding: 5px 6px 8px 7px;
+    margin-left: 10px;
     display: inline-block;
     margin-top: -1px;
-    border: none !important;
+    background-color: #edf3fe;
+    transition: border-color .25s ease-in-out;
 }
-.TitleBar .white-btn.play span.button-circle:hover{
-  background-color: #edf3fe;
+.TitleBar .white-btn.play:hover span.button-circle{
+    /*border-color: #42A5FF;*/
 }
 .TitleBar .white-btn.play span.words{
     display: inline-block;
@@ -217,25 +225,36 @@
 }
 
 .title-group .title-group-sub {
-/*
-    padding-left: 15px;
-    padding-right: 15px;
-*/
-/*    border-radius: px;*/
     display: inline-block;
     margin-right: 30px;
     border-right: 1px solid #E2E9EC;
      border-left: 1px solid #E2E9EC;
 
 }
+.back-btn{
+    background: transparent !important;
+    border: 1px solid none;
+    color: #42A5FF !important;
+    font-weight: normal !important;
+    text-transform: none !important;
+    transition: all 0.2s ease !important;
+    font-size: 14px;
+}
 .title-group {
     position: fixed;
     right: 60px;
     top: 0px;
     z-index: 1040;
+    display: flex;
+    align-items: center;
 /*    height: 200px;*/
 }
-
+.modal-img{
+    width: 70%;
+}
+.modal-txt{
+    color: #8da2b5;
+}
 .title-group .white-btn {
 /*    padding: 0px 20px 0px 20px !important;*/
     border: none !important;
@@ -250,23 +269,41 @@
     height: 59px;
     width: 75px !important;
     border-radius: 0 !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
 }
 
 .title-group .white-btn:hover{
-    color: #3d96f0 !important;
-}
-.title-group .save-btn:hover{
     color: #42A5FF !important;
 }
+
+.title-group .save-btn .unsaved {
+    display: block;
+    background-color: #42A5FF;
+    height: 14px;
+    width: 14px;
+    border-radius: 100%;
+    position: absolute;
+    border: 3px #fff solid;
+    top: 13px;
+    left: 21px;
+    animation: fadeIn 1s infinite alternate;
+}
+
+@keyframes fadeIn { 
+  from { background-color: #EDF3FE; } 
+}
+
 /*.TitleBar .title-group-sub:hover{
     box-shadow: 0px 3px 10px rgba(14,30,37,.10) !important;
     transform: translateY(-1px);
 }*/
 .last-save {
-    font-size: .8rem;
-    text-align: right;
-    padding-top: 5px;
-    padding-right: 4px;
+    color: #93CBFF;
+    margin-right: 25px;
+    font-size: 14px;
 }
 .TitleBar .project {
     height: 55px;
@@ -585,28 +622,45 @@
     transition: all .1s ease-in-out;
 /*    box-shadow: 0 2px 3px rgba(0,0,0,.08);*/
     font-size: 15px;
-}
+    color: #8DA2B5 !important;
+/*    border: 1px solid #eaeff4;*/
+    
+    /*border: 1px solid #EEE;*/
+    
 
+}
+.hey{
+    background-color: transparent !important;
+    color: aqua !important;
+}
 .App .Menu #sidebar .MenuItem .menu-tip {
-    padding: 0 5px 0 8px;
+    padding: 0px 8px 0px 8px !important;
     color: #fff;
-    font-size: 18px;
+    font-size: 14px;
     border-radius: 100%;
     font-weight: bold;
 }
-
 .App .Menu #sidebar .MenuItem:hover .menu-tip {
     color: #CCC;
 }
 .App .Menu #sidebar .MenuItem:hover .menu-tip:hover {
     color: #8da2b5;
 }
-
+.btn-info{
+    background-color: transparent!important;
+    border: none !important;
+    font-size: 17px !important;
+    color: #42A5FF !important;
+}
+.btn-info:hover{
+    background-color: #EDF3FE !important;
+}
 .App .Menu #sidebar .MenuItem .MenuText{
     flex: 1;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+
 }
 
 .App .Menu #sidebar .MenuItem:hover {
@@ -617,7 +671,7 @@
 /*    border: 1px solid #fff;*/
 /*    border-radius: 10px;*/
     background-color: #fff !important;
-    color: #2b3950;
+    color: #2b3950 !important;
 
 }
 .App .Menu #sidebar .MenuItem:active{
@@ -814,8 +868,6 @@
     user-select: none;
     overflow: scroll;
     border-left: 1px solid #E2E9EC;
-/*    box-shadow: 0 4px 8px 0 rgba(118, 186, 255, 0.17);*/
-    border-right: 1px solid #AAA;
     -webkit-transform: translateX(400px);
     -moz-transform: translateX(400px);
     -ms-transform: translateX(400px);
@@ -1828,10 +1880,9 @@ button.close{
     z-index: 5;
 }
 
-@media(max-width: 1300px){
-    .TitleBar .last-save{
-        text-align: left;
-        padding-left: 4px;
+@media(max-width: 1250px){
+    .title-group .last-save {
+        display: none;
     }
     .TitleBar{
         /*height: 105px;*/

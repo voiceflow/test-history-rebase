@@ -16,35 +16,35 @@ const defaultVariables = {
 const sections = [{
     title: 'Basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Speak blocks let you control what Alexa says to the user' },
-        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Audio blocks let you add sound effects & audio clips under 240 seconds' },
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream blocks let you stream long audio files & URLs for the user'  },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Choice blocks listen for the user to make a choice from a list of options you set'  },
-        { text: 'Command', type: 'command', icon: '⌘', tip: 'Command blocks add shortcuts for your users to navigate your skill quickly'},
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Comment blocks can be used to add notes to your skills'  }
+        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to talk to the user' },
+        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Add sound effects & audio clips under 240 seconds' },
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user'  },
+        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
+        { text: 'Command', type: 'command', icon: '⌘', tip: 'Add shortcuts for your users to navigate your skill quickly'},
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
     ]
 },{
     title: 'Advanced',
     items: [
-        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Random blocks choose randomly from a set number of paths.' },
-        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set blocks set the value of a variable, or many variables at once.'  },
-        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'IF blocks let you set conditions that activate paths only when true.' },
-        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture blocks listen for the user to set the value of a single variable.'  },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Flow blocks allow you to organize your project into manageable sections.'},
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'API blocks let you use external APIs and store responses in variables.'  },
+        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
+        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once'  },
+        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
+        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable'  },
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
         // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
-        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Permissions block asks users for access to their Amazon info for you to use.'  },
+        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
    ]
 }];
 
 const tabs = {
     top: [
-        {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'The blocks menu holds all of your available blocks'},
-        {tab: "project", icon: <i className="fas fa-folder"/>, tip: 'The flows menu lets you navigate amongst your project’s flows'},
-        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'The variables menu lets you create & manage your variables'},
+        {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'Blocks'},
+        {tab: "project", icon: <i className="fas fa-folder"/>, tip: 'Project'},
+        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'},
     ],
     bottom: [
-        {link: "https://intercom.help/vfu", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
+        {link: "https://university.getvoiceflow.com/", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
         {link: "https://www.facebook.com/groups/199476704186240/", icon: <i className="fab fa-facebook-f"/>, tip: 'Join the Voiceflow Community for help & updates'}
     ]
 }
@@ -263,7 +263,7 @@ class Menu extends PureComponent {
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {
                             return (
-                                <Tooltip key={i} html={<div style={{width: 180}}>{tab.tip}</div>} position='right' disabled={false && tab.tab === this.state.tab && this.state.open}>
+                                <Tooltip key={i} title={tab.tip} position='right' disabled={true && tab.tab === this.state.tab && this.state.open}>
                                     <div className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
                                         onClick={() => this.openTab(tab.tab)}>
                                         {tab.icon}

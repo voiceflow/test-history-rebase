@@ -1058,9 +1058,9 @@ class Canvas extends Component {
                 <TitleBar
                     onTest={this.onTest}
                     skill={this.state.skill}
-                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
                 />
                 { !this.state.preview && <ActionGroup
+                    lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
                     skill={this.state.skill}
                     preview={this.preview}
                     title={this.state.diagram_name}

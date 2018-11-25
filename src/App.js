@@ -85,6 +85,8 @@ class App extends Component {
     }
 
     history.listen((location, action) => {
+      window.analytics.page();
+      console.log(location);
       this.setState({
         session: AuthenticationService.isAuth()
       });

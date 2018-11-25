@@ -156,11 +156,11 @@ class ActionGroup extends PureComponent {
                 </div>
             case 2:
                 return <React.Fragment>
-                    <img src="/images/preview.svg" alt="Success" height="160"/>
+                    <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
                     <br/>
-                    You Skill Has been updated on Alexa!
-                    <span className="text-muted text-center">
-                        You may test on the Alexa Simulator or an Alexa Device on the same Amazon account
+                    <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                    <span className="modal-txt text-center">
+                        You may test on the Alexa simulator or live on your personal Alexa device.
                     </span>
                     <div className="my-3">
                         <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`} 
@@ -238,16 +238,16 @@ class ActionGroup extends PureComponent {
                 </div>
             default:
                 return <div>
-                    <img className="modal-img mb-3 ml-5" src={"/upload.svg"}/>
-                    <div className="modal-txt text-center"> Updating to Alexa will allow you to test on your Alexa device without publishing to the Amazon Skill store.</div>
+                    <img className="modal-img mb-3 ml-5" src="/upload.svg" alt="Upload"/>
+                    <div className="modal-txt text-center"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                     {(this.props.skill.live || this.props.skill.review) && <hr/>}
                     <div>
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
                         {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
                     </div>
                 
-                    <div className="text-center">
-                        <Button color="primary mb-3 mt-3" onClick={this.updateAlexa}>Confirm Upload</Button>{' '}
+                    <div className="super-center mb-3 mt-3">
+                        <Button color="primary" onClick={this.updateAlexa}>Confirm Upload</Button>
                     </div>
                 </div>
         }
@@ -259,15 +259,17 @@ class ActionGroup extends PureComponent {
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
         return (
-            <div className="title-group">
-                <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
-                    <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
-                    <ModalBody className="modal-info">
-                        <div>
-                            {this.render_body()}
-                        </div>
-                    </ModalBody>
-                </Modal>
+            <React.Fragment>
+            <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
+                <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
+                <ModalBody className="modal-info">
+                    <div>
+                        {this.render_body()}
+                    </div>
+                </ModalBody>
+            </Modal>
+            <div className="title-group no-select">
+                
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
                     <Tooltip 
@@ -310,7 +312,10 @@ class ActionGroup extends PureComponent {
                             </Tooltip>
                         </DropdownToggle>
                         <DropdownMenu className="platform-dropdown arrow">
-                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
+                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
+                            <DropdownItem divider/>
+                            <DropdownItem className="platform-btn text-muted pb-0" header><small>coming soon</small></DropdownItem>
+                            <DropdownItem className="platform-btn text-muted" disabled><span>Google</span><span className="button-circle"><i className="fab fa-google"/></span></DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Tooltip
@@ -339,6 +344,7 @@ class ActionGroup extends PureComponent {
                     </MUIButton>
                 </Tooltip>
             </div>
+            </React.Fragment>
         );
     }
 }

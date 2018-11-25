@@ -1853,11 +1853,6 @@ button.close{
   background: #fefefe;
     color: #2B3950;
 }
-.btn-outline-danger{
-    border: 1px solid #E85857 !important;
-    background-color: #FAC8C7 !important;
-    color: #E85857 !important;
-}
 .editor :global(.public-DraftEditor-content) {
   min-height: 88px;
 
@@ -1870,9 +1865,9 @@ button.close{
     color: #2B3950 !important;
     border: 1px solid #E2E9EC !important;
 }
-.dropdown-item{
+/*.dropdown-item{
     color: #2B3950 !important;
-}
+}*/
 #widget-bar{
     position: absolute;
     bottom: 13px;

@@ -254,6 +254,9 @@
 }
 .modal-txt{
     color: #8da2b5;
+    padding-left: 30px;
+    padding-right: 30px;
+    
 }
 .title-group .white-btn {
 /*    padding: 0px 20px 0px 20px !important;*/
@@ -274,7 +277,11 @@
     align-items: center;
     
 }
-
+.modal-bg-txt{
+    color: #2b3950;
+    font-size: 24px;
+    font-weight: 900;
+}
 .title-group .white-btn:hover{
     color: #42A5FF !important;
 }
@@ -302,7 +309,7 @@
 }*/
 .last-save {
     color: #93CBFF;
-    margin-right: 15px;
+    margin-right: 25px;
     font-size: 14px;
 }
 .TitleBar .project {
@@ -1853,11 +1860,6 @@ button.close{
   background: #fefefe;
     color: #2B3950;
 }
-.btn-outline-danger{
-    border: 1px solid #E85857 !important;
-    background-color: #FAC8C7 !important;
-    color: #E85857 !important;
-}
 .editor :global(.public-DraftEditor-content) {
   min-height: 88px;
 
@@ -1870,9 +1872,9 @@ button.close{
     color: #2B3950 !important;
     border: 1px solid #E2E9EC !important;
 }
-.dropdown-item{
+/*.dropdown-item{
     color: #2B3950 !important;
-}
+}*/
 #widget-bar{
     position: absolute;
     bottom: 13px;

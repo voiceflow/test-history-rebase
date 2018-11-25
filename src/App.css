@@ -13,18 +13,18 @@ button:focus{
 }
 .btn-primary{
     border: 1px solid #2295FA !important;
+    /*border: none;*/
     color: #fff !important;
     font-weight: normal !important;
     background: linear-gradient(#2295FA, #1B86F9);
     text-transform: none !important;
-    box-shadow:  inset 10px 10px 10px 10px #2b3950;
     box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;
-    transition: background 0.5s ease !important;
+    transition: all 0.3s ease !important;
+    display: inline-block;
 }
 .btn-primary:hover{
-    box-shadow: 0 2px 20px 0 rgba(74,144,226,.35) !important;
+    box-shadow: 0 2px 20px 0 rgba(74,144,226,.4) !important;
     background: linear-gradient(#1B86F9, #1B86F9);
-    transition: all 0.5s ease !important;
 /*    transform: translateY(-1px) scale(1.02);*/
 }
 .btn-outline-primary{
@@ -37,14 +37,14 @@ button:focus{
     background-color: #0095f7;
     color: #FFF;
 }
-.btn-primary:hover{
-    background-color: #46A1F8;
-    border-color: #46A1F8;
-    box-shadow: 0 3px 5px 0 rgba(14,30,37,.12);
-}
 .btn-danger{
-    background-color: #ff3562 !important;
-    border: 1px solid #ff3562 !important;
+    background-color: #ff3562;
+    border: 1px solid #ff3562;
+}
+.btn-outline-danger{
+    border: 1px solid #E85857;
+    /*background-color: #FAC8C7;*/
+    color: #E85857;
 }
 .alert-danger{
     color: #ff3562 !important;
@@ -547,6 +547,10 @@ input::placeholder, textarea::placeholder {
 .tippy-tooltip {
     /*background-color: #42A5FF !important;*/
     font-size: 13px;
+    background-color: #42A5FF !important;
+}
+.tippy-tooltip .arrow-regular{
+    border-bottom-color: #42A5FF !important;
 }
 
 .tippy-tooltip [x-circle]{

@@ -24,6 +24,7 @@ const Code = require('./config/codes.js');
 const Decode = require('./routes/decode.js');
 const Marketplace = require('./routes/marketplace.js');
 const Email = require('./routes/email.js');
+const Onboard = require('./routes/onboard.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -162,6 +163,9 @@ app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.gi
 app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess);
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess);
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate);
+
+app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
+app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

@@ -39,7 +39,7 @@ class NavBar extends Component {
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         // {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
         // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
-        {link: 'https://intercom.help/vfu', 'text': <React.Fragment>Learn</React.Fragment>}
+        {link: 'https://university.getvoiceflow.com/', 'text': <React.Fragment>Learn</React.Fragment>}
       ],
       user: AuthenticationService.getUser()
     };
@@ -124,7 +124,7 @@ class NavBar extends Component {
                   <DropdownToggle className="account" nav tag="div">
                     <i className="fas fa-user-circle"/>
                   </DropdownToggle>
-                  <DropdownMenu right className="no-select">
+                  <DropdownMenu right className="arrow no-select">
                     <DropdownItem header>
                       {this.state.user.email}
                     </DropdownItem>

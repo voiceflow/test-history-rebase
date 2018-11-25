@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
 import TemplateItem from './TemplateItem';
 import ModuleItem from './ModuleItem';
-import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
+import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 import {Tooltip} from 'react-tippy';
@@ -56,7 +56,8 @@ class Menu extends PureComponent {
             open: true,
             tab: 'blocks',
             new_var: '',
-            tree: null
+            tree: null,
+            block_tab_state: 'blocks'
         }
 
         this.openTab = this.openTab.bind(this);
@@ -165,14 +166,28 @@ class Menu extends PureComponent {
 
         let content;
         if(this.state.tab === 'blocks'){
-            content = sections.map((section, i) => {
-                return <div key={i} className="section no-select">
-                    <span className="section-title">{section.title}</span>
-                    {section.items.map((item, i) => {
-                        return <MenuItem item={item} key={i} data-tip={item.tip}/>
+            if(this.state.block_tab_state === 'blocks'){
+                content =
+                    sections.map((section, i) => {
+                    return <div key={i} className="section no-select">
+                        <span className="section-title">{section.title}</span>
+                        {section.items.map((item, i) => {
+                            return <MenuItem item={item} key={i} data-tip={item.tip}/>
+                        })}
+                    </div>
+                })
+            } else {
+                if(this.props.user_modules.length > 0){
+                    content = 
+                    <div>
+                    {this.props.user_modules.map((user_module, i) => {
+                        return <ModuleItem module={user_module} key={i} />;
                     })}
-                </div>
-            })
+                    </div>
+                }else{
+                    content = <div className="mt-2">You have no flows 😭 visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                }
+            }
         }else if(this.state.tab === 'project'){
             // content = this.props.diagrams.map((diagram, i) => 
             //     <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
@@ -206,7 +221,18 @@ class Menu extends PureComponent {
                     {unused.map((diagram, i) => {
                         return diagram;
                     })}
+                    <hr className='mb-2 mt-4'/>                
                 </React.Fragment>}
+                <label>Templates</label>
+                {this.props.user_templates.length > 0?
+                    <div>
+                    {this.props.user_templates.map((user_template, i) => {
+                        return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
+                    })}
+                    </div>
+                    :
+                    <div>You have no templates 😭 visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                }
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
             content = <React.Fragment>
@@ -233,18 +259,7 @@ class Menu extends PureComponent {
                     </div>
                 </div>
             </React.Fragment>
-        }else if(this.state.tab === 'modules'){
-            if(this.props.user_modules){
-                content = 
-                <div>
-                {this.props.user_modules.map((user_module, i) => {
-                    return <ModuleItem module={user_module} key={i} />;
-                })}
-                </div>
-            }else{
-                content = <div>No flows, visit Marketplace</div>
-            }
-        }else if(this.state.tab === 'templates'){
+        } else if(this.state.tab === 'templates'){
             if(this.props.user_templates){
                 content = 
                 <div>
@@ -255,6 +270,17 @@ class Menu extends PureComponent {
             }else{
                 content = <div>No templates, visit Marketplace</div>
             }
+        }
+
+        let block_module_group;
+        if(this.state.tab === 'blocks'){
+            block_module_group = 
+                <ButtonGroup>
+                    <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
+                    <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Modules</Button>
+                </ButtonGroup>
+        } else {
+            block_module_group = null;
         }
 
         return (
@@ -293,6 +319,7 @@ class Menu extends PureComponent {
                         </div>
                     </div>
                     <div className="sidebar-content">
+                        {block_module_group}
                         {content}
                     </div>
                 </div>

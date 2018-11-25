@@ -174,10 +174,10 @@ class ActionGroup extends PureComponent {
                     Rendering Error  
                 </Alert>
             case 5:
-                return <div className="flex-fill">
+                return <div className="modal-txt flex-fill text-center mt-3">
                     {this.state.amzn_error && <Alert color="danger">Login With Amazon Failed - Try Again</Alert>}
                     Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
-                    <div className="text-center mt-5">
+                    <div className="text-center mt-4">
                         <AmazonLogin
                             updateLogin={(stage) => {
                                 if(stage === 2){
@@ -238,8 +238,9 @@ class ActionGroup extends PureComponent {
                 </div>
             default:
                 return <div>
-                    <img className="modal-img mb-3 ml-5" src="/upload.svg" alt="Upload"/>
-                    <div className="modal-txt text-center"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
+                    <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
+                    <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                    <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console.</div>
                     {(this.props.skill.live || this.props.skill.review) && <hr/>}
                     <div>
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}

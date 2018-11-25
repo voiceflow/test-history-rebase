@@ -5,8 +5,16 @@ import ClipBoard from './../../components/ClipBoard';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
 import axios from 'axios';
 import {Tooltip} from 'react-tippy';
+import amplitude from "amplitude-js";
+import {
+  AmplitudeProvider,
+  Amplitude,
+  LogOnMount
+} from "@amplitude/react-amplitude";
 
 import AuthenticationService from './../../../services/Authentication';
+
+const AMPLITUDE_KEY = "6163dc6eb0a83de128a69a5f4ad8e836";
 
 class ActionGroup extends PureComponent {
     constructor(props) {
@@ -270,6 +278,19 @@ class ActionGroup extends PureComponent {
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
         return (
+
+        <AmplitudeProvider
+            amplitudeInstance={amplitude.getInstance()}
+            apiKey={AMPLITUDE_KEY}
+            >
+            <Amplitude
+                eventProperties={{
+                scope: ["Action Groups"],
+                "Action Groups": "True",
+                "user": window.user_detail
+                }}
+            >
+
             <div className="title-group">
                 <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
                     <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
@@ -323,10 +344,17 @@ class ActionGroup extends PureComponent {
                         <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : <i className="fas fa-save"/>}</MUIButton>
                     </Tooltip>
                 </div>
+                
                 <MUIButton variant="contained" className="publish-btn" onClick={this.props.publishAMZN}>
+                <LogOnMount eventType="Publish button Clicked" />
                     Publish <span className="launch"/>
                 </MUIButton>
+                >
+                
             </div>
+            </Amplitude>
+            </AmplitudeProvider>
+           
         );
     }
 }

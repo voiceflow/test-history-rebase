@@ -3,6 +3,12 @@ import React, { Component } from 'react';
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
+import amplitude from "amplitude-js";
+import {
+  AmplitudeProvider,
+  Amplitude,
+  LogOnMount
+} from "@amplitude/react-amplitude";
 // import MUIButton from '@material-ui/core/Button';
 
 // import { InputGroup, Input, Button } from 'reactstrap';
@@ -17,11 +23,13 @@ import axios from 'axios';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import SkillCard from './Skill/SkillCard';
 
+
+const AMPLITUDE_KEY = "6163dc6eb0a83de128a69a5f4ad8e836";
 class DashBoard extends Component {
     constructor(props) {
-        super(props);
+        super(props); 
 
-        this.state = {
+        this.state = { 
             confirm: false,
             loading: false,
             skills: null,
@@ -40,6 +48,10 @@ class DashBoard extends Component {
 
     componentDidMount() {
         this.onLoadSkills();
+    }
+
+    componentDidUpdate() {
+        window.analytics.identify('userID','username');
     }
 
     toggleDropDown() {
@@ -157,22 +169,37 @@ class DashBoard extends Component {
         }
 
         return (
+        <AmplitudeProvider
+            amplitudeInstance={amplitude.getInstance()}
+            apiKey={AMPLITUDE_KEY}
+        >
+        <Amplitude
+          eventProperties={{
+            scope: ["Dashboard"],
+            "Dashboard": "True",
+            "user": window.user_detail
+          }}
+        >
+          <LogOnMount eventType="Entered Dashboard" />
             <div className='Window'>
                 <div className="subheader">
                     <div className="container space-between">
                         <span className="subheader-title">
                             <b>Dashboard</b>
                             <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '} 
+                                <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '} 
                                 <span className="text-secondary">Skills</span>
                             </div>
                         </span>
                         <div className="subheader-right">
+                        <Amplitude>
                             <Link to="/canvas/new" className="no-underline">
                                 <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
+                                <LogOnMount eventType = "New Project Button Clicked"/>
                             </Link>
+                        </Amplitude>
                         </div>
                     </div>
                 </div>
@@ -181,6 +208,8 @@ class DashBoard extends Component {
                     {skills}
                 </div>
             </div>
+           </Amplitude>
+          </AmplitudeProvider>
         );
     }
 }

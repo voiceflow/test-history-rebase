@@ -7,11 +7,19 @@ import Image from './../../components/Uploads/Image';
 import Select from 'react-select';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import VariableMap from './VariableMap';
+import amplitude from "amplitude-js";
+import {
+  AmplitudeProvider,
+  Amplitude,
+  LogOnMount
+} from "@amplitude/react-amplitude";
 
 import axios from 'axios';
 import '../Skill/Skill.css';
 import categories from './../../../services/Categories';
 import types from './../../../services/Types';
+
+const AMPLITUDE_KEY = "6163dc6eb0a83de128a69a5f4ad8e836";
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -248,6 +256,18 @@ class PublishMarket extends Component {
 
 	render(){
 		return(
+        <AmplitudeProvider
+            amplitudeInstance={amplitude.getInstance()}
+            apiKey={AMPLITUDE_KEY}
+            >
+            <Amplitude
+                eventProperties={{
+                scope: ["Publishing Page"],
+                "PublishPage": "True",
+                "user": window.user_detail
+            }}
+            >
+
 			<div className="Window skill">
 				<div className="subheader">
                     <div className="container space-between">
@@ -266,8 +286,12 @@ class PublishMarket extends Component {
                         	null
                         	:
 	                        <div className="subheader-right">
+                            <Amplitude>
 	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/></MUIButton>
+	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/>
+                                <LogOnMount eventType="Publish Skill Pressed" />
+                                </MUIButton>
+                            </Amplitude>
 	                        </div>
                     	}
                     </div>
@@ -617,6 +641,9 @@ class PublishMarket extends Component {
                     </div>
 				</div>
 			</div>
+
+            </Amplitude>
+            </AmplitudeProvider>
 		);
 	}
 }

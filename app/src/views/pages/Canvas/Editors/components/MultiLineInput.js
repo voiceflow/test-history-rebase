@@ -142,7 +142,7 @@ class MultiLineInput extends Component {
                         <div className="prompt">
                             <b>Drag and Drop Files here</b><br/>
                             <small>OR</small><br/>
-                            <i className="fas fa-plus-circle"></i> Add Files
+                            <button className="outline-btn mt-1">Add files</button>
                         </div>
                         <div className="rejected-file text-danger">
                             <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>

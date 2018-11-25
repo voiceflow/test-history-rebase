@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
@@ -238,31 +238,20 @@ class ActionGroup extends PureComponent {
                 </div>
             default:
                 return <div>
-                    Updating to Alexa will allow you to test on your Alexa device if it is linked to the same Amazon account
-                    <br/><br/> 
-                    This will not publish your skill to the Alexa store, but will update your skill's flow across Alexa platforms
+                    <img className="modal-img mb-3 ml-5" src="/upload.svg" alt="Upload"/>
+                    <div className="modal-txt text-center"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                     {(this.props.skill.live || this.props.skill.review) && <hr/>}
                     <div>
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
                         {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
                     </div>
-                    <hr/>
-                    <div className="text-center">
-                        <Button color="info" onClick={this.updateAlexa}>Update <i className="far fa-cloud-upload"/></Button>{' '}
-                        <Button color="primary" onClick={this.toggleUpdate}>Cancel</Button>
+                
+                    <div className="super-center mb-3 mt-3">
+                        <Button color="primary" onClick={this.updateAlexa}>Confirm Upload</Button>
                     </div>
                 </div>
         }
     }
-
-    // <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-    //     <DropdownToggle className="anti-btn" tag="div">
-            
-    //     </DropdownToggle>
-    //     <DropdownMenu className="platform-dropdown">
-    //         <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon mr-1"/></span></DropdownItem>
-    //     </DropdownMenu>
-    // </Dropdown>
 
     render() {
 
@@ -270,20 +259,23 @@ class ActionGroup extends PureComponent {
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
         return (
-            <div className="title-group">
-                <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
-                    <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
-                    <ModalBody className="modal-info">
-                        <div>
-                            {this.render_body()}
-                        </div>
-                    </ModalBody>
-                </Modal>
+            <React.Fragment>
+            <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
+                <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
+                <ModalBody className="modal-info">
+                    <div>
+                        {this.render_body()}
+                    </div>
+                </ModalBody>
+            </Modal>
+            <div className="title-group no-select">
+                
+                <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
                     <Tooltip 
-                        html={<div style={{ width: 180 }}>Share a preview of your diagram with others</div>} 
+                        title="Share"
                         position="bottom"
-                        distance={18}
+                        distance={16}
                     >
                         <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
                             <i className="fas fa-share"/>
@@ -308,25 +300,51 @@ class ActionGroup extends PureComponent {
                         </PopoverBody>
                     </Popover>
                     {/*<MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cog"/></MUIButton>*/}
-                    <Tooltip 
-                        html={<div style={{ width: 180 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>} 
-                        position="bottom"
-                        distance={18}
-                    >
-                        <MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cloud-upload-alt"/></MUIButton>
-                    </Tooltip>
+                    
+                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
+                        <DropdownToggle className="anti-btn" tag="div">
+                            <Tooltip 
+                                title="Publish"
+                                position="bottom"
+                                distance={16}
+                            >
+                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-rocket"/></MUIButton>
+                            </Tooltip>
+                        </DropdownToggle>
+                        <DropdownMenu className="platform-dropdown arrow">
+                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
+                            <DropdownItem divider/>
+                            <DropdownItem className="platform-btn text-muted pb-0" header><small>coming soon</small></DropdownItem>
+                            <DropdownItem className="platform-btn text-muted" disabled><span>Google</span><span className="button-circle"><i className="fab fa-google"/></span></DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                     <Tooltip
-                        distance={18}
-                        title='Save your project'
+                        distance={16}
+                        title="Save"
                         position="bottom"
                     >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>{this.props.saving ? <span className="loader"/> : <i className="fas fa-save"/>}</MUIButton>
+                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
+                            {this.props.saving ? 
+                                <span className="loader"/> : 
+                                <React.Fragment>
+                                    {!this.props.saved && <span className="unsaved"/>}
+                                    <i className="fas fa-save"/>
+                                </React.Fragment>
+                            }
+                        </MUIButton>
                     </Tooltip>
                 </div>
-                <MUIButton variant="contained" className="publish-btn" onClick={this.props.publishAMZN}>
-                    Publish <span className="launch"/>
-                </MUIButton>
+                <Tooltip 
+                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>} 
+                    position="bottom"
+                    distance={16}
+                >
+                    <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                        Upload to Alexa <span className="launch"/>
+                    </MUIButton>
+                </Tooltip>
             </div>
+            </React.Fragment>
         );
     }
 }

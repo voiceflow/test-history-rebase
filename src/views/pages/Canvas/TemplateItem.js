@@ -4,8 +4,8 @@ class TemplateItem extends Component {
     render() {
         // TODO: add hover popover for full template name
         var title = this.props.module.title;
-        if(title.length > 11){
-            title = title.substring(0, 8);
+        if(title.length > 15){
+            title = title.substring(0, 15);
             title += "..."
         }
         return (

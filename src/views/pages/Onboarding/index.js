@@ -109,12 +109,12 @@ class Onboarding extends Component{
 				<img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
 					height="25" className="mb-3 mt-3"
 				/>
-		      	<h1 className="text-center mb-3">Hi, {this.props.user.name} 😊</h1>
-		      	<p className="text-center mb-3">Help us tailor your experience. What do you plan on using Voiceflow for?</p>
+		      	<p className="modal-bg-txt text-center mb-2">Hi, {this.props.user.name} 😊</p>
+		      	<p className="modal-txt text-center mb-4">Help us tailor your experience. What do you plan on using Voiceflow for?</p>
 		      	<div className="row justify-content-center">
-		      		<Button className="mr-3" onClick={() => {this.setState({usage_type: "WORK"})}}>Work</Button> 
-		      		<Button className="mr-3" onClick={this.submitOnboardingSurvey}>Personal</Button> 
-		      		<Button onClick={() => {this.setState({usage_type: "EDUCATION"})}}>Education</Button> 
+		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "WORK"})}}>Work</button> 
+		      		<button className="btn-info mr-3" onClick={this.submitOnboardingSurvey}>Personal</button> 
+		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "EDUCATION"})}}>Education</button> 
 		      	</div>
 			</React.Fragment>
 		} else if(this.state.usage_type === "WORK"){
@@ -123,7 +123,7 @@ class Onboarding extends Component{
 				<img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
 					height="25" className="mb-3 mt-3"
 				/>
-				<p className="text-center mb-3">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
+				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
 				{this.state.failed?
 		    		<div className="alert alert-primary" role="alert">
 					  	Missing required fields!
@@ -149,7 +149,7 @@ class Onboarding extends Component{
                     options={industries}
                     placeholder="Industry"
                 />
-				<Button onClick={this.submitOnboardingSurvey}>Get Started</Button>
+				<button className="purple-btn mt-3" onClick={this.submitOnboardingSurvey}>Get Started</button>
 			</React.Fragment>
 		} else if(this.state.usage_type === "EDUCATION"){
 			content =
@@ -157,7 +157,7 @@ class Onboarding extends Component{
 				<img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
 					height="25" className="mb-3 mt-3"
 				/>
-				<p className="text-center mb-3">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
+				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
 				{this.state.failed?
 		    		<div className="alert alert-primary" role="alert">
 					  	Missing required fields!
@@ -167,7 +167,7 @@ class Onboarding extends Component{
 		    	}
 				<Input className="mb-2" type="text" name="org" placeholder="Organization Name" value={this.state.org} onChange={this.handleChange}/>
 				<Input className="mb-2" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
-				<Button onClick={this.submitOnboardingSurvey}>Get Started</Button>
+				<button className="purple-btn mt-3" onClick={this.submitOnboardingSurvey}>Get Started</button>
 			</React.Fragment>
 		}
 

@@ -115,7 +115,19 @@ button:focus{
     outline: none !important;
     padding: 0 !important;
 }
-
+.outline-btn{
+    padding: 10px 25px !important;
+    height: 43px;
+    font-weight: normal !important;
+    color: #fff !important;
+    border: none !important;
+/*    box-shadow: none !important;*/
+    background-color: #42A5FF !important;
+    text-transform: none !important;
+    font-size: 15px !important;
+    border-radius: 30px;
+    cursor: pointer;
+}
 .white-btn{
     padding: 10px 25px !important;
     height: 43px;
@@ -267,15 +279,19 @@ input::placeholder, textarea::placeholder {
 }*/
 
 .input-group-text, .input-ground-prepend{
-    border-color: #E2E9EC;
+    color: #42A5FF !important;
+    border-color: #b8daff;
+    background-color: #cce5ff70;
 }
-
+.checkbox{
+    background-color: aqua !important;
+}
 .dropzone, .audio-box, .image-box, .combined-box {
     width: 100%;
     overflow: visible;
     min-height: 40px;
     transition: all .2s ease-in-out;
-    height: 112px;
+    height: 170px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -285,12 +301,15 @@ input::placeholder, textarea::placeholder {
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-    border: 1px dashed #c6d4d8;
+    border: 2px dashed #c6d4d8;
     border-radius: 5px;
     background-color: #FFF;
+    cursor: pointer;
+    background-color: #F5F7FA;
 }
 .dropzone:hover{
-    border: 1px dashed #42A5FF;
+    border: 2px dashed #42A5FF;
+    background-color: #EDF3FE;
 }
 .prompt {
     padding: 20px;

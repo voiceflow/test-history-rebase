@@ -12,18 +12,20 @@ button:focus{
     outline: none;
 }
 .btn-primary{
-    border: 1px solid none;
+    border: 1px solid #2295FA !important;
+    /*border: none;*/
     color: #fff !important;
     font-weight: normal !important;
     background: linear-gradient(#2295FA, #1B86F9);
     text-transform: none !important;
-    box-shadow:  inset 0 0 0 10px #ddd;
     box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.3s ease !important;
+    display: inline-block;
 }
 .btn-primary:hover{
-    box-shadow: 0 5px 30px 0 rgba(74,144,226,.35) !important;
-    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 2px 20px 0 rgba(74,144,226,.4) !important;
+    background: linear-gradient(#1B86F9, #1B86F9);
+/*    transform: translateY(-1px) scale(1.02);*/
 }
 .btn-outline-primary{
     color: #0095f7;
@@ -35,14 +37,14 @@ button:focus{
     background-color: #0095f7;
     color: #FFF;
 }
-.btn-primary:hover{
-    background-color: #46A1F8;
-    border-color: #46A1F8;
-    box-shadow: 0 3px 5px 0 rgba(14,30,37,.12);
-}
 .btn-danger{
-    background-color: #ff3562 !important;
-    border: 1px solid #ff3562 !important;
+    background-color: #ff3562;
+    border: 1px solid #ff3562;
+}
+.btn-outline-danger{
+    border: 1px solid #E85857;
+    /*background-color: #FAC8C7;*/
+    color: #E85857;
 }
 .alert-danger{
     color: #ff3562 !important;
@@ -118,18 +120,20 @@ button:focus{
     padding: 10px 25px !important;
     height: 43px;
     font-weight: normal !important;
-    color: #8da2b5 !important;
+    color: #42A5FF !important;
     border-radius: 3px;
     box-shadow: none !important;
     background-color: #ffffff !important;
     text-transform: none !important;
-    border: 1px solid #94a6bd6e !important;
+    font-size: 16px !important;
+/*    border: 1px solid #94a6bd6e !important;*/
 /*    border: 1px solid #E2E9EC !important;*/
 }
 .white-btn:hover{
-    border: 1px solid #94a6bd6e !important;
+    border: 1px solid none !important;
     background-color: #fff;
     color: #42A5FF !important;
+    background-color: aliceblue !important;
 /*    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;*/
 }
 .btn-secondary{
@@ -159,13 +163,20 @@ button:focus{
     transition: all 0.2s ease !important;
     border-radius: 5px;
     cursor: pointer;
+    border: none !important;
+    font-size: 16px !important;
 /*    border: 2px solid #fff !important;*/
 }
 .purple-btn:hover{
-    box-shadow: 0 5px 21px 0 rgba(74,144,226,.35) !important;
+    box-shadow: 0 3px 15px 0 rgba(74,144,226,.35) !important;
     transform: translateY(-1px) scale(1.03);
+    border: none !important;
 /*    transform: scale(1.03);*/
 /*    box-shadow: 0 5px 10px 0 rgba(66, 83, 255, 0.23) !important;*/
+}
+.purple-btn:active{
+    background: linear-gradient(#2295FA, #1B86F9);
+    border: none !important;
 }
 .publish-btn{
     padding: 10px 45px 10px 20px !important;
@@ -178,6 +189,8 @@ button:focus{
     transition: all 0.2s ease !important;
     border-radius: 50px !important;
     cursor: pointer;
+    font-weight: 400 !important;
+    width: 170px !important;
 /*    font-size: 15px !important;*/
 }
 .publish-btn .launch{
@@ -194,6 +207,12 @@ button:focus{
 .publish-btn:hover{
     box-shadow: 0 5px 21px 0 rgba(74,144,226,.35) !important;
     transform: translateY(-1px) scale(1.03);
+}
+.account-dropdown .account{
+   color: #8DA2B5 !important;
+}
+.account-dropdown .account:hover{
+    color: #42A5FF !important;
 }
 .card {
 /*    border: 1px solid #fff;*/
@@ -420,6 +439,8 @@ input::placeholder, textarea::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: #8da2b5 !important;
+    font-size: 14px !important;
 }
 
 .padding {
@@ -436,6 +457,8 @@ input::placeholder, textarea::placeholder {
     /*overflow: hidden;*/
     padding-top: .5rem;
     border: none;
+    box-shadow: 0px 4px 80px rgba(17, 49, 96, 0.13);
+    border-radius: 10px;
 }
 /*.modal-footer{
     background-color: #F3F3F3;
@@ -481,8 +504,8 @@ input::placeholder, textarea::placeholder {
     width: 100%;
 }
 
-.modal {
-  overflow-y:auto;
+.modal-backdrop{
+    background-color: #00315E !important;
 }
 /*.modal-content:before {
     content: '';
@@ -519,6 +542,23 @@ input::placeholder, textarea::placeholder {
     width: 1em;
     height: 1em;
     line-height: 1;
+}
+
+.tippy-tooltip {
+    /*background-color: #42A5FF !important;*/
+    font-size: 13px;
+    background-color: #42A5FF !important;
+}
+.tippy-tooltip .arrow-regular{
+    border-bottom-color: #42A5FF !important;
+}
+
+.tippy-tooltip [x-circle]{
+    background-color: #42A5FF !important;
+}
+
+.tippy-tooltip-content {
+
 }
 
 @-webkit-keyframes spin {

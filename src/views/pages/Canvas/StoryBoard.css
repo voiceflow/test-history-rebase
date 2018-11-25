@@ -692,6 +692,12 @@
     border-radius: 4px;
     /*border-radius: 10px 0px 0px 10px !important;*/
 }
+
+.ModuleIcon {
+    width: 37px;
+    height: 37px;
+}
+
 .helpMenu.MenuItem {
     display: flex;
     padding: 5px;

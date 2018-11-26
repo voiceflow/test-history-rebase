@@ -113,8 +113,8 @@
 	margin-top: 4px;
 	left: -43px !important;
 }
-.platform-dropdown .platform-btn.dropdown-header{
-	cursor: pointer !important;
+.platform-dropdown{
+	cursor: pointer;
 }
 .platform-dropdown .platform-btn{
 	cursor: pointer;
@@ -137,6 +137,9 @@
 	border-bottom-color: #E2E9EC;
 	border-width: 8px;
 	margin-left: -8px;
+}
+.dropdown-header ,.dropdown-item.disabled, .dropdown-item:disabled {
+	cursor: default !important;
 }
 
 @media(min-width: 845px){

@@ -556,7 +556,7 @@ class Canvas extends Component {
     }
 
     onLoadSkill(skill_id){
-        axios.get('/skill/'+skill_id+'?simple=1')
+        axios.get(`/skill/${skill_id}?${this.state.preview ? 'preview=1' : 'simple=1'}`)
         .then(res => {
             this.setState({
                 skill: res.data
@@ -711,6 +711,7 @@ class Canvas extends Component {
                     name: name,
                     review: false,
                     live: false,
+                    restart: true,
                     diagram: diagram_id,
                     locales: ["en-US"]
                 },

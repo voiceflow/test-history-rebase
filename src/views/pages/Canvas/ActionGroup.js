@@ -49,6 +49,8 @@ class ActionGroup extends PureComponent {
             this.token = token;
             this.reset();
         });
+
+        window.analytics.page();
     }
 
     reset() {

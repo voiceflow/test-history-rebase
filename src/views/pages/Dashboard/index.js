@@ -40,6 +40,8 @@ class DashBoard extends Component {
         this.openSkill = this.openSkill.bind(this);
     }
 
+
+
     openSkill(skill, diagram){
         setTimeout(() => { 
             this.props.history.push(`/canvas/${skill}/${diagram}`);
@@ -47,6 +49,7 @@ class DashBoard extends Component {
     }
 
     componentDidMount() {
+        window.analytics.page();
         this.onLoadSkills();
     }
 
@@ -72,6 +75,10 @@ class DashBoard extends Component {
             this.setState({
                 skills: res.data,
                 loading: false
+            });
+            window.analytics.track('skills loaded', {
+                "example entity": "yo",
+                "example position": "bar"
             });
         })
         .catch( error => {
@@ -196,7 +203,7 @@ class DashBoard extends Component {
                         <div className="subheader-right">
                         <Amplitude>
                             <Link to="/canvas/new" className="no-underline">
-                                <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
+                                <button varient="contained" className="purple-btn" onClick={() => {window.analytics.track('New Project Button clicked', {"user": window.user_detail})}}><i className="far fa-plus mr-2"/> New Project</button>
                                 <LogOnMount eventType = "New Project Button Clicked"/>
                             </Link>
                         </Amplitude>

@@ -12,7 +12,7 @@ import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import ActionGroup from './ActionGroup';
 import LoadingModal from './../../components/Modals/LoadingModal';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
+import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal';
 import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
@@ -71,6 +71,8 @@ class Canvas extends Component {
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
+        this.createWithTemplate = this.createWithTemplate.bind(this);
+        this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this);
         this.onFlowRenamed = this.onFlowRenamed.bind(this);
 
         // preview mode
@@ -239,6 +241,49 @@ class Canvas extends Component {
         })
     }
 
+    createFlowFromTemplate(module_id){
+        if(this.preview) return;
+
+        var engine = this.state.engine;
+        var type = 'flow';
+
+        axios.get(`/marketplace/template/${module_id}/`, {
+            diagram_id: this.state.diagram_id
+        })
+        .then(res => {
+            var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
+            node.addInPort(' ');
+            node.addOutPort(' ').setMaximumLinks(1);
+            node.extras = {
+                diagram_id: null,
+                inputs: [],
+                outputs: []
+            };
+
+            engine.stopMove();
+            node.extras.type = type;
+            node.x = 100;
+            node.y = 100;
+            node.setSelected();
+            engine.getDiagramModel().clearSelection();
+            engine.getDiagramModel().addNode(node);
+            engine.setSuperSelect(node);
+            this.setState({
+                engine: engine,
+                open: type !== 'comment',
+                template_confirm: null
+            });
+            this.createDiagram(node, JSON.parse(res.data.data))
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                error_modal: 'Error retrieving template'
+            });
+        })
+    }
+
     toggleTemplateConfirm(module){
         if(!!this.state.template_confirm){
             this.setState({
@@ -246,13 +291,31 @@ class Canvas extends Component {
             });
         } else {
             let confirm = {
-                text: `Replace current flow completely with ${module.title} template?`,
-                confirm: ()=> this.replaceWithTemplate(module.module_id)
+                text: `Replace current flow or create new subflow with ${module.title} template?`,
+                replaceWithTemplate: ()=> this.replaceWithTemplate(module.module_id),
+                createFlow: () => this.createFlowFromTemplate(module.module_id)
             }
             this.setState({
                 template_confirm:confirm
             });
         }
+    }
+
+    createWithTemplate(module){
+        axios.get(`/marketplace/template/${module.module_id}/`, {
+            diagram_id: this.state.diagram_id
+        })
+        .then(res => {
+            this.loadDiagram(res.data);
+            this.createSkill(module.title + " Copy")
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                error_modal: 'Error retrieving template'
+            });
+        })
     }
 
     removeNode(){
@@ -736,23 +799,26 @@ class Canvas extends Component {
     }
 
     // Create a new diagram from the flow block
-    createDiagram(node){
+    createDiagram(node, template=null){
         this.setState({
             loading_modal: true
-        });
+        })
 
-        let id = generateID();
-
-        node.extras.diagram_id = id;
+        let id = generateID()
+        node.extras.diagram_id = id
 
         // save the current diagram
         this.onSave(() => {
-
             // Generate a new diagram, save it, and go to it
-            let template = new_template;
-            template.id = id;
-            let skill_id = this.state.skill.skill_id;
-            let data = JSON.stringify(template);
+            let curr_template;
+            if(!template){
+                curr_template = new_template
+            } else {
+                curr_template = template
+            }
+            curr_template.id = id
+            let skill_id = this.state.skill.skill_id
+            let data = JSON.stringify(curr_template)
 
             var diagram = {
                 id: id,
@@ -767,24 +833,24 @@ class Canvas extends Component {
                 this.state.diagrams.push({
                     name: 'New Flow',
                     id: id
-                });
-                this.props.history.push(`/canvas/${skill_id}/${id}`);
+                })
+                this.props.history.push(`/canvas/${skill_id}/${id}`)
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.response)
                 this.setState({
                     saving: false,
                     loading_modal: true,
                     error_modal: 'Unable to create new Flow'
-                });
-            });
-        });
+                })
+            })
+        })
     }
 
     publishAMZN() {
         this.onSave(diagram_id => {
-            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id);
-        });
+            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id)
+        })
     }
 
     publishMarket() {
@@ -1025,6 +1091,9 @@ class Canvas extends Component {
                         onClose={this.state.newSkill === false ? 
                             () => this.props.history.push('/dashboard') : 
                             () => this.setState({newSkill: null})}
+                        user_templates={this.state.user_templates}
+                        onTemplateChoice={this.createWithTemplate}
+                        history={this.props.history}
                     /> : null
                 }
                 <Prompt
@@ -1033,7 +1102,7 @@ class Canvas extends Component {
                     }
                 />
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
-                {!!this.state.template_confirm && <ConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
+                {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
 
                 {this.state.testing_modal ? 
                     <TestModal 
@@ -1055,6 +1124,7 @@ class Canvas extends Component {
                     user_templates={this.state.user_templates}
                     onTemplateChoice={this.handleTemplateChoice}
                     onFlowRenamed={this.onFlowRenamed}
+                    history={this.props.history}
                 />
                 <TitleBar
                     onTest={this.onTest}

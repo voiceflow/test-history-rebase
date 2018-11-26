@@ -230,6 +230,7 @@ class PublishMarket extends Component {
     }
 
     componentDidMount() {
+        window.analytics.page();
         this.onLoad();
     }
 

@@ -101,7 +101,8 @@ class Skill extends Component {
     }
 
     componentDidMount() {
-
+        window.analytics.page();
+        
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
                 stage: token ? 2 : 0

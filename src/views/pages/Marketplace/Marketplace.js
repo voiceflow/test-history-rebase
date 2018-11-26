@@ -13,18 +13,20 @@ class Marketplace extends Component {
 
         this.state = {
             modules: [],
+            templates: [],
             featured_modules: [
 				{ title: '',
 				  descr:'',
-                  card_icon: '',
+                  module_icon: '',
                   module_id: ''},
 				{ title: '',
 				  descr:'',
-                  card_icon: '',
+                  module_icon: '',
                   module_id: ''}
 			],
             loading: false,
-            user_modules: new Set()
+            user_modules: new Set(),
+            curr_state: "FLOW"
         }
 
         this.onLoadModules = this.onLoadModules.bind(this);
@@ -38,8 +40,18 @@ class Marketplace extends Component {
     onLoadModules() {
         axios.get('/marketplace')
         .then(res => {
+            let modules = [];
+            let templates = [];
+            for(var i =0;i < res.data.length; i++){
+                if(res.data[i].type==="FLOW"){
+                    modules.push(res.data[i]);
+                } else {
+                    templates.push(res.data[i]);
+                }
+            }
             this.setState({
-                modules: res.data,
+                modules: modules,
+                templates: templates,
                 loading: false
             });
         })
@@ -86,28 +98,56 @@ class Marketplace extends Component {
             <div className="Window">
                 <div className="sidenav">
                     <ButtonGroup vertical>
-                        <Button className="flow-btn">Flows</Button>
-                        <Button className="template-btn">Templates</Button>
+                        {this.state.curr_state === 'FLOW'?
+                        <React.Fragment>
+                            <Button className="active-btn" onClick={() => {this.setState({curr_state: "FLOW"})}}>Flows</Button>
+                            <Button className="inactive-btn" onClick={() => {this.setState({curr_state: "TEMPLATE"})}}>Templates</Button>
+                        </React.Fragment>
+                        :
+                        <React.Fragment>
+                            <Button className="inactive-btn" onClick={() => {this.setState({curr_state: "FLOW"})}}>Flows</Button>
+                            <Button className="active-btn" onClick={() => {this.setState({curr_state: "TEMPLATE"})}}>Templates</Button>
+                        </React.Fragment>
+                        }
                     </ButtonGroup>
                 </div>
 
                 <div className="marketplace-main">
-                    <BannerCarousel
-                        featured_modules={this.state.featured_modules}
-                        ownership={this.state.user_modules}
-                        onOwnershipChange={this.handleOwnershipChange}
-                    />
-                    <Masonry elementType='div' className="skills-container">
-                        {this.state.modules.map((module, i) => 
-                            <Module
-                                key={i}
-                                module={module}
-                                onClick={() => {this.props.history.push('/market/' + module.module_id)}}
-                                ownership={this.state.user_modules}
-                                onOwnershipChange={this.handleOwnershipChange}
-                            />
-                        )}
-                    </Masonry>
+                    {this.state.curr_state === "FLOW"
+                    ?
+                    <React.Fragment>
+                        <BannerCarousel
+                            featured_modules={this.state.featured_modules}
+                            ownership={this.state.user_modules}
+                            onOwnershipChange={this.handleOwnershipChange}
+                        />
+                        <Masonry elementType='div' className="skills-container">
+                            {this.state.modules.map((module, i) => 
+                                <Module
+                                    key={i}
+                                    module={module}
+                                    onClick={() => {this.props.history.push('/market/' + module.module_id)}}
+                                    ownership={this.state.user_modules}
+                                    onOwnershipChange={this.handleOwnershipChange}
+                                />
+                            )}
+                        </Masonry>
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <Masonry elementType='div' className="skills-container">
+                            {this.state.templates.map((module, i) => 
+                                <Module
+                                    key={i}
+                                    module={module}
+                                    onClick={() => {this.props.history.push('/market/' + module.module_id)}}
+                                    ownership={this.state.user_modules}
+                                    onOwnershipChange={this.handleOwnershipChange}
+                                />
+                            )}
+                        </Masonry>
+                    </React.Fragment>
+                    }
                 </div>
             </div>
         );

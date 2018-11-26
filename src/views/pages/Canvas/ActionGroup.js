@@ -325,7 +325,6 @@ class ActionGroup extends PureComponent {
 
     render() {
 
-        // <DropdownItem className="platform-btn" onClick={this.props.publishMarket}>Marketplace<span className="button-circle"><i className="fas fa-store-alt fa-pull-right"/></span></DropdownItem>
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
         return (
@@ -422,6 +421,7 @@ class ActionGroup extends PureComponent {
                         </DropdownToggle>
                         <DropdownMenu className="platform-dropdown arrow">
                             <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
+                            <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>
                             <DropdownItem divider/>
                             <DropdownItem className="platform-btn text-muted pb-0" header><small>coming soon</small></DropdownItem>
                             <DropdownItem className="platform-btn text-muted" disabled><span>Google</span><span className="button-circle"><i className="fab fa-google"/></span></DropdownItem>

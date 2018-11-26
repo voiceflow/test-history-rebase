@@ -23,11 +23,10 @@ class PublishMarket extends Component {
                 skill_id: this.props.computedMatch.params.id,
                 descr: '',
                 overview: '',
-                card_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
                 error: '',
                 in_review: false,
                 title: '',
-                module_icon: '',
+                module_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
                 displayingConfirmWithdraw: false,
                 color: '',
                 input: [],
@@ -51,18 +50,18 @@ class PublishMarket extends Component {
         this.handleRemoveVar = this.handleRemoveVar.bind(this);
         this.handleVarChange = this.handleVarChange.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
-        this.testApprove = this.testApprove.bind(this);
+        //this.testApprove = this.testApprove.bind(this);
 	}
 
-    testApprove(){
-        axios.put(`/marketplace/cert/${this.state.skill_id}`)
-        .then(res => {
-            console.log("I think it worked")
-        }) 
-        .catch(res => {
-            console.log("DAFUQ")
-        });
-    }
+    // testApprove(){
+    //     axios.put(`/marketplace/cert/${this.state.skill_id}`)
+    //     .then(res => {
+    //         console.log("I think it worked")
+    //     }) 
+    //     .catch(res => {
+    //         console.log("DAFUQ")
+    //     });
+    // }
 
 	handleTypeSelection(value) {
 		this.setState({
@@ -141,7 +140,6 @@ class PublishMarket extends Component {
         axios.patch('/marketplace/cert/' + this.state.skill_id, {
             title: s.title,
             descr: s.descr,
-            card_icon: s.card_icon,
             creator_id: this.props.user.id,
             category: category,
             type: type,
@@ -167,7 +165,7 @@ class PublishMarket extends Component {
     publish(){
     	this.save();
         let s = this.state;
-        if (s.title && s.descr && s.card_icon && s.category && s.type && s.overview && s.module_icon){
+        if (s.title && s.descr && s.category && s.type && s.overview && s.module_icon){
         	axios.post('/marketplace/cert/' + this.state.skill_id)
             .then(res => {
                 this.setState({
@@ -267,7 +265,7 @@ class PublishMarket extends Component {
                         	:
 	                        <div className="subheader-right">
 	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/></MUIButton>
+	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Submit to Marketplace <i className="fas fa-store-alt ml-2"/></MUIButton>
 	                        </div>
                     	}
                     </div>
@@ -292,7 +290,7 @@ class PublishMarket extends Component {
                             }
                         </div>
                         <div className="col-10">
-                            <p>Module Title</p>
+                            <p>Title</p>
                         </div>
                     </div>
                     <hr className="mt-0"></hr>
@@ -331,7 +329,7 @@ class PublishMarket extends Component {
                             }
                         </div>
                         <div className="col-10">
-                            <p>Module Icon</p>
+                            <p>Icon</p>
                         </div>
                     </div>
                     <hr className="mt-0"></hr>
@@ -366,9 +364,9 @@ class PublishMarket extends Component {
 					{this.state.in_review?
 		                <div className="alert alert-success mb-4" role="alert">
 		                    <div className="d-flex justify-content-between align-items-center">
-		                        <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
+		                        <h5 className="mb-0">This skill is currently being reviewed for the Marketplace.</h5>
 		                        <div>
-		                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
+		                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
 		                        </div>
 		                    </div>
 		                </div>
@@ -390,12 +388,12 @@ class PublishMarket extends Component {
 						<div className="row">
                             <div className="col-3 publish-info"></div>
                             <div className="col-9">
-                                <Label><b>Module Title </b>*</Label>
+                                <Label><b>Title </b>*</Label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-3 publish-info">
-                                <p className="mb-0 text-secondary"><b>Module Title</b> is what we display for your skill on the Marketplace.</p>
+                                <p className="mb-0 text-secondary"><b>Title</b> is what we display for your skill on the Marketplace.</p>
                             </div>
                             <div className="col-9">
                                 <Input type="text" name="title" placeholder="Storyflow - Interactive Story Adventures" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange}/>
@@ -413,7 +411,7 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    <b>Description</b> is a summary of your module that shows on your module's card on the Marketplace. 
+                                    <b>Description</b> is a summary of your {this.state.type === 'FLOW'? "module": "template"} that shows on your {this.state.type === 'FLOW'? "module": "template"}'s card on the Marketplace. 
                                 </p>
                             </div>
                             <div className="col-9">
@@ -440,7 +438,7 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    <b>Overview</b> is a detailed description of your module. Feel free to put as much information in this section! 
+                                    <b>Overview</b> is a detailed description of your {this.state.type === 'FLOW'? "module": "template"}. Feel free to put as much information in this section! 
                                 </p>
                             </div>
                             <div className="col-9">
@@ -459,34 +457,17 @@ class PublishMarket extends Component {
 
                     <div className="d-flex row">
                         <div className="col-3 publish-info">
-                            <p className="text-secondary mt-5"><b>Module icon</b> will be displayed for your module in the Voiceflow editor.</p>
+                            <p className="text-secondary mt-5"><b>Icon</b> will be displayed for your {this.state.type === 'FLOW'? "module": "template"} in the Voiceflow editor.</p>
                         </div>
                         <div className="col-9 d-flex">
                             <div>
-                                <label className="mt-0"><b>Module icon</b> *</label>
+                                <label className="mt-0"><b>Icon</b> *</label>
                                 <Image 
                                     className='icon-image small-icon'
                                     path='/module_icon'
                                     isDisabled={this.state.in_review}
                                     image={this.state.module_icon} 
                                     update={(url) => this.setState({module_icon: url})}/>
-                            </div>
-                        </div>
-                    </div>
-
-					<div className="d-flex row">
-                        <div className="col-3 publish-info">
-                            <p className="text-secondary mt-5">Card icon will be displayed for your module in our Marketplace.</p>
-                        </div>
-                        <div className="col-9 d-flex">
-                            <div>
-                                <label className="mt-0"><b>Card icon</b> *</label>
-                                <Image 
-                                    className='icon-image small-icon'
-                                    path='/card_icon'
-                                    isDisabled={this.state.in_review}
-                                    image={this.state.card_icon} 
-                                    update={(url) => this.setState({card_icon: url})}/>
                             </div>
                         </div>
                     </div>
@@ -501,7 +482,7 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    Modules can be one of two <b>types</b>, either a Flow or a Template. If another creator users your Flow, they won't be able to dive into your flow diagram, whereas with a template they can.
+                                    Your skill can be one of two <b>types</b>, either a Module or a Template. If another creator users your Module, they won't be able to dive into your flow diagram, whereas with a template they can.
                                 </p>
                             </div>
                             <div className="col-9">
@@ -527,7 +508,7 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    <b>Category</b> helps users find your module more easily so choose the category that best applies to your module.
+                                    <b>Category</b> helps users find your {this.state.type === 'FLOW'? "module": "template"} more easily so choose the category that best applies to your module.
                                 </p>
                             </div>
                             <div className="col-9">
@@ -612,9 +593,7 @@ class PublishMarket extends Component {
                         null
                     }
                     
-                    <div>
-                        <MUIButton variant="contained" className="white-btn mr-3" onClick={this.testApprove}>TEST</MUIButton>
-                    </div>
+                    
 				</div>
 			</div>
 		);

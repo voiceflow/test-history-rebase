@@ -36,19 +36,25 @@ class SkillModal extends React.Component {
     super(props);
     this.state = {
       name: '',
-      template: 'blank'
+      template: 'blank',
+      curr_state: 'name'
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.changeTemplate = template => {this.setState({
       template: template
     })}
+    this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
+  }
+
+  handleTemplateChoice(user_template){
+    this.props.onTemplateChoice(user_template);
   }
 
 // <div className="hr-label">Templates</div>
@@ -62,6 +68,23 @@ class SkillModal extends React.Component {
 //   </CardActionArea>
 // </Card>
   render() {
+    var content;
+    if(this.props.user_templates.length > 0){
+      content = 
+      <div className="SkillModal-Templates p-2">
+      {this.props.user_templates.map((user_template, i) => {
+        return (
+          <div className="TemplateItem" key={i} onClick={() => {this.handleTemplateChoice(user_template)}}>
+            <img src={user_template.module_icon} className="TemplateIcon mr-2" alt="Template Icon"/>
+            {user_template.title}
+          </div>
+        )
+      })}
+      </div>
+    }else{
+      content = <div><p>You have no templates <span role="img" aria-label="Crying Emoji">😭</span>, visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</p></div>
+    }
+
     return (
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} centered onClosed={this.props.onClose}>
           <div className="modal-header justify-content-center">
@@ -69,24 +92,48 @@ class SkillModal extends React.Component {
             <button type="button" className="close close-absolute" onClick={this.props.toggle}>×</button>
           </div>
           <ModalBody className="p-4">
-            <Input
-              type="text" 
-              name="name"
-              value={this.state.name}
-              onChange={this.handleChange}
-              placeholder="Skill Name" 
-              bsSize="lg"
-              ref={c => (this._input = c)}
-            />
-          <div className="text-center my-3">
-            <Button 
-              className="create-skill" 
-              color="primary" block 
-              size="lg" 
-              onClick={() => this.props.createSkill(this.state.name)}>
-              <i className="fas fa-plus mr-2"/> Create Skill
-            </Button>
-          </div>
+            {this.state.curr_state === 'name'?
+              <React.Fragment>
+                <Input
+                  type="text" 
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                  placeholder="Skill Name" 
+                  bsSize="lg"
+                  ref={c => (this._input = c)}
+                />
+                <div className="text-center my-3">
+                  <Button 
+                    className="create-skill" 
+                    color="primary" block 
+                    size="lg" 
+                    onClick={() => this.props.createSkill(this.state.name)}>
+                    <i className="fas fa-plus mr-2"/> Create Skill
+                  </Button>
+                  <Button 
+                    className="create-skill" 
+                    color="primary" block 
+                    size="lg" 
+                    onClick={() => {this.setState({curr_state: 'template'})}}>
+                    <i className="fas fa-th-large"/> Start with Template
+                  </Button>
+                </div>
+              </React.Fragment>
+              :
+              <React.Fragment>
+                {content}
+                <div className="text-center my-3">
+                  <Button 
+                    className="create-skill" 
+                    color="primary" block 
+                    size="lg" 
+                    onClick={() => {this.setState({curr_state: 'name'})}}>
+                    Back
+                  </Button>
+                </div>
+              </React.Fragment>
+            }
           </ModalBody>
         </Modal>
     );

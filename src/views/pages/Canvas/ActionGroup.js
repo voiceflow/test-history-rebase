@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormGroup, Label } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
 import axios from 'axios';
 import {Tooltip} from 'react-tippy';
+import Switch from '@material-ui/core/Switch';
 
 import AuthenticationService from './../../../services/Authentication';
 
@@ -20,20 +21,38 @@ class ActionGroup extends PureComponent {
             share: false,
             platform: 'amazon',
             updateModal: false,
+            settingsModal: false,
             stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
+            skill: null
         }
 
         this.toggle = this.toggle.bind(this);
         this.toggleShare = this.toggleShare.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.toggleUpdate = this.toggleUpdate.bind(this);
+        this.toggleSettings = this.toggleSettings.bind(this);
         this.updateAlexa = this.updateAlexa.bind(this);
         this.openUpdate = this.openUpdate.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
+        this.updateSkill = this.updateSkill.bind(this);
+        this.toggleRestart = this.toggleRestart.bind(this);
+        this.saveSettings = this.saveSettings.bind(this);
         this.reset = this.reset.bind(this);
         this.token = null;
+    }
+
+    componentWillReceiveProps(props){
+        // create a local copy of skill settings
+        if(!this.state.skill && props.skill.name !== '...'){
+            this.setState({
+                skill: {
+                    name: props.skill.name,
+                    restart: props.skill.restart
+                }
+            });
+        }
     }
 
     componentDidMount() {
@@ -49,6 +68,16 @@ class ActionGroup extends PureComponent {
             stage: this.token ? 0 : 5
         });
         // 
+    }
+
+    updateSkill(e) {
+        let skill = this.state.skill;
+        skill[e.target.name] = e.target.value;
+
+        this.setState({
+            skill: skill
+        });
+        this.forceUpdate();
     }
 
     openUpdate() {
@@ -114,9 +143,24 @@ class ActionGroup extends PureComponent {
         })
     }
 
+    toggleRestart() {
+        let skill = this.state.skill;
+        skill.restart = !skill.restart;
+        this.setState({
+            skill: skill
+        });
+        this.forceUpdate();
+    }
+
     toggleUpdate() {
         this.setState({
             updateModal: false
+        });
+    }
+
+    toggleSettings() {
+        this.setState({
+            settingsModal: !this.state.settingsModal
         });
     }
 
@@ -138,6 +182,32 @@ class ActionGroup extends PureComponent {
         this.setState({
             share: !this.state.share
         });
+    }
+
+    saveSettings() {
+        let different = false
+        for (var key in this.state.skill) {  
+            if(this.state.skill[key] !== this.props.skill[key]) different = true;
+        }
+        if(!different) return this.setState({settingsModal: false});
+
+        axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, {
+            name: this.state.skill.name,
+            restart: this.state.skill.restart
+        })
+        .then(() => {
+            let skill = this.props.skill;
+            skill.name = this.state.skill.name;
+            skill.restart = this.state.skill.restart;
+            this.props.updateSkill(skill);
+            this.setState({
+                settingsModal: false
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            alert('Save Error');
+        })
     }
 
     render_body() {
@@ -268,8 +338,40 @@ class ActionGroup extends PureComponent {
                     </div>
                 </ModalBody>
             </Modal>
+            <Modal isOpen={this.state.settingsModal} toggle={this.toggleSettings}>
+                <ModalHeader toggle={this.toggleSettings}>
+                    Project Settings
+                </ModalHeader>
+                {   
+                    !!this.state.skill &&
+                    <ModalBody>
+                        <FormGroup>
+                            <Label>Project Name</Label>
+                            <Input name="name" value={this.state.skill.name} onChange={this.updateSkill}/>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Restart Every Session</Label>
+                            <div>
+                                <Switch
+                                    checked={this.state.skill.restart}
+                                    onChange={this.toggleRestart}
+                                    color="primary"
+                                />
+                                <b>{this.state.skill.restart ? 'on': 'off'}</b>
+                                <div className="text-muted">{
+                                    this.state.skill.restart ? 
+                                    'The project will start from the beginning every time the user starts a session' : 
+                                    'The project will resume from the last block the user was on before quitting'
+                                }</div>
+                            </div>
+                        </FormGroup>
+                        <div className="super-center">
+                            <Button color="primary" onClick={this.saveSettings}>Save Settings</Button>
+                        </div>
+                    </ModalBody>
+                }
+            </Modal>
             <div className="title-group no-select">
-                
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
                     <Tooltip 
@@ -299,8 +401,15 @@ class ActionGroup extends PureComponent {
                             </InputGroup>
                         </PopoverBody>
                     </Popover>
-                    {/*<MUIButton variant="contained" className="white-btn update-btn" onClick={this.openUpdate}><i className="fas fa-cog"/></MUIButton>*/}
-                    
+                    <Tooltip
+                        distance={16}
+                        title="Settings"
+                        position="bottom"
+                    >
+                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.toggleSettings}>
+                            <i className="fas fa-cog"/>
+                        </MUIButton>
+                    </Tooltip>
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                         <DropdownToggle className="anti-btn" tag="div">
                             <Tooltip 

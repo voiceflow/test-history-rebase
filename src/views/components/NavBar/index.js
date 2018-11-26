@@ -37,9 +37,8 @@ class NavBar extends Component {
       tabs: [
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
-        // {link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
+        //{link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
         // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
-        {link: 'https://university.getvoiceflow.com/', 'text': <React.Fragment>Learn</React.Fragment>}
       ],
       user: AuthenticationService.getUser()
     };

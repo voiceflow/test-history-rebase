@@ -49,7 +49,7 @@ class BannerCarousel extends Component{
 				<div className="market-hero border rounded">
 					<div className="d-flex justify-content-between mt-3">
 						<Button className="" onClick={() => {this.handleAddRemove(0)}}>{this.props.ownership.has(this.props.featured_modules[0].module_id)? "Remove" : "Add"}</Button>
-						<img src={this.props.featured_modules[0].card_icon} className="card-icon border rounded mb-1" alt="Featured card icon 1"/>
+						<img src={this.props.featured_modules[0].module_icon} className="card-icon border rounded mb-1" alt="Featured card icon 1"/>
 	                    {
 	                        this.props.ownership.has(this.props.featured_modules[0].module_id)?
 	                        <i className="checkbox-active fas fa-check"></i>
@@ -70,7 +70,7 @@ class BannerCarousel extends Component{
 				<div className="market-hero border rounded">
 					<div className="d-flex justify-content-between mt-3">
 						<Button className="" onClick={() => {this.handleAddRemove(1)}}>{this.props.ownership.has(this.props.featured_modules[1].module_id)? "Remove" : "Add"}</Button>
-						<img src={this.props.featured_modules[1].card_icon} className="card-icon border rounded mb-1" alt="Featured card icon 2"/>
+						<img src={this.props.featured_modules[1].module_icon} className="card-icon border rounded mb-1" alt="Featured card icon 2"/>
 	                    {
 	                        this.props.ownership.has(this.props.featured_modules[1].module_id)?
 	                        <i className="checkbox-active fas fa-check"></i>

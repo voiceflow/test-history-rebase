@@ -652,7 +652,6 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 } else if (node.extras.type === 'permissions') {
 
                     const permissions = node.extras.permissions ? node.extras.permissions : [];
-                    
                     story.lines[node.id] = {
                         permissions: permissions,
                         success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],

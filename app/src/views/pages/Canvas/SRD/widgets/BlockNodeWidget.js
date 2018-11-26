@@ -47,7 +47,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 					{
 						this.props.node.extras.type === 'module'? 
 							<React.Fragment>
-								<img className="rounded" draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
+								<img className="rounded ModuleIcon" draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
 								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
 							</React.Fragment>
 							:null

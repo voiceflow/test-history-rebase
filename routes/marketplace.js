@@ -149,8 +149,8 @@ const saveCertification = (req, res) => {
 
 	const createNewModule = (skill_id) => {
 		pool.query(
-			`INSERT INTO modules (title, descr, card_icon, creator_id, skill_id, category, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
-			[req.body.title, req.body.descr, req.body.card_icon, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output],
+			`INSERT INTO modules (title, descr, creator_id, skill_id, category, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, 
+			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -164,8 +164,8 @@ const saveCertification = (req, res) => {
 
 	const updateModule = (skill_id, module_id) => {
 		pool.query(
-			`UPDATE modules SET title = $1, descr = $2, card_icon = $3, category = $4, type = $5, overview = $6, module_icon = $7, color = $8, input = $9, output = $10 WHERE module_id = $11`, 
-			[req.body.title, req.body.descr, req.body.card_icon, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id],
+			`UPDATE modules SET title = $1, descr = $2, category = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
+			[req.body.title, req.body.descr, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -370,7 +370,7 @@ const giveAccess = (req, res) => {
 const getModule = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0];
 
-	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
+	pool.query(`SELECT title, descr, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
@@ -422,7 +422,7 @@ const getCertModule = (req, res) => {
 		);
 	}
 
-	pool.query(`SELECT title, descr, card_icon, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
+	pool.query(`SELECT title, descr, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);

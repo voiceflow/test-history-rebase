@@ -39,15 +39,26 @@ const getSkill = (req, res) => {
     let id = hashids.decode(req.params.id)[0];
     let sql;
     let params;
-    if(req.query.simple){
+    if(req.query.preview){
+        // expose as little information as possible if previewing
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales
+                name
             FROM
                 skills
             WHERE
                 skill_id = $1 LIMIT 1`;
         params = [id];
+    }else if(req.query.simple){
+        sql = `
+            SELECT
+                name, amzn_id, review, live, diagram, locales, restart
+            FROM
+                skills
+            WHERE
+                skill_id = $1 AND
+                creator_id = $2 LIMIT 1`;
+        params = [id, req.user.id];
     }else{
         sql = `
             SELECT
@@ -71,12 +82,12 @@ const getSkill = (req, res) => {
             // Rehash the skill id
             skill.skill_id = req.params.id;
 
-            if(req.query.simple || !skill.amzn_id){
-                skill.amzn_id = !!skill.amzn_id;
+            if(req.query.preview || !skill.amzn_id){
                 res.send(skill);
             }else{
                 // Sync up with AMAZON
                 // Check Current Amazon Status
+                console.log('fuck')
                 AccessToken(req.user.id, async (token) => {
                     if(token === null){
                         // throw('INVALID TOKEN');
@@ -257,10 +268,21 @@ const patchSkill = (req, res) => {
         return;
     }
 
-   
     let id = hashids.decode(req.params.id)[0];
-    let b = req.body;
 
+    // only need to update the name/restart
+    if(req.query.settings){
+        pool.query(`UPDATE skills SET name = $1, restart = $2 WHERE skill_id = $3`, [req.body.name, req.body.restart, id], (err) => {
+            if(err){
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+            }
+        });
+        return;
+    }
+
+    let b = req.body;
     if(!b.locales){
         b.locales = '["en-US"]';
     }

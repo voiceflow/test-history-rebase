@@ -6,6 +6,7 @@ body {
     font-family: 'Roboto', sans-serif;
     background: #fafafa !important;
     color: #2b3950;
+    width: 100%;
 }
 
 button:focus{
@@ -506,6 +507,10 @@ input::placeholder, textarea::placeholder {
 
 .modal-backdrop{
     background-color: #00315E !important;
+}
+body.modal-open {
+    overflow: hidden !important;
+    position: fixed !important;
 }
 /*.modal-content:before {
     content: '';

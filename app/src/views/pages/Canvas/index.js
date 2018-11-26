@@ -12,7 +12,6 @@ import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import ActionGroup from './ActionGroup';
 import LoadingModal from './../../components/Modals/LoadingModal';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal';
 import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';

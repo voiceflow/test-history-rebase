@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, ModalBody, Button, Input } from 'reactstrap';
-import TemplateItem from '../../Canvas/TemplateItem';
 
 // import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
@@ -76,14 +75,14 @@ class SkillModal extends React.Component {
       {this.props.user_templates.map((user_template, i) => {
         return (
           <div className="TemplateItem" key={i} onClick={() => {this.handleTemplateChoice(user_template)}}>
-            <img src={user_template.module_icon} className="TemplateIcon"/>
+            <img src={user_template.module_icon} className="TemplateIcon mr-2" alt="Template Icon"/>
             {user_template.title}
           </div>
         )
       })}
       </div>
     }else{
-      content = <div><p>You have no templates 😭, visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</p></div>
+      content = <div><p>You have no templates <span role="img" aria-label="Crying Emoji">😭</span>, visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</p></div>
     }
 
     return (

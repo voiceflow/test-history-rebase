@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
 import TemplateItem from './TemplateItem';
 import ModuleItem from './ModuleItem';
-import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
+import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup, Collapse } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 import {Tooltip} from 'react-tippy';
@@ -52,12 +52,24 @@ class Menu extends PureComponent {
     constructor(props) {
         super(props);
 
+        // Store state of basic + advanced tabs
+        let show = localStorage.getItem('show')
+        if(!show){
+            show = {
+                Basic: true,
+                Advanced: false
+            }
+        } else {
+            show = JSON.parse(show)
+        }
+
         this.state = {
             open: true,
             tab: 'blocks',
             new_var: '',
             tree: null,
-            block_tab_state: 'blocks'
+            block_tab_state: 'blocks',
+            show: show
         }
 
         this.openTab = this.openTab.bind(this);
@@ -66,6 +78,7 @@ class Menu extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
         this.buildTree = this.buildTree.bind(this);
         this.updateTree = this.updateTree.bind(this);
+        this.toggleBlockSection = this.toggleBlockSection.bind(this);
         this.visited = new Set();
     }
 
@@ -111,6 +124,14 @@ class Menu extends PureComponent {
         } else {
             return <div className='diagram-block'>...</div>;
         }
+    }
+
+    toggleBlockSection(section_title){
+        let s = this.state
+        s.show[section_title] = !s.show[section_title]
+        localStorage.setItem('show', JSON.stringify(s.show))
+        this.setState(s)
+        this.forceUpdate()
     }
 
     updateTree() {
@@ -169,12 +190,22 @@ class Menu extends PureComponent {
             if(this.state.block_tab_state === 'blocks'){
                 content =
                     sections.map((section, i) => {
-                    return <div key={i} className="section no-select">
-                        <span className="section-title">{section.title}</span>
-                        {section.items.map((item, i) => {
-                            return <MenuItem item={item} key={i} data-tip={item.tip}/>
-                        })}
-                    </div>
+                        return <div key={i} className="section no-select">
+                            <span 
+                                className="section-title" 
+                                onClick={() => {this.toggleBlockSection(section.title)}}>
+                                    {this.state.show[section.title]? 
+                                        <i className="fas fa-caret-down"></i>: 
+                                        <i className="fas fa-caret-right"></i>
+                                    }
+                                    {" "}{section.title}
+                            </span>
+                            <Collapse isOpen={this.state.show[section.title]}>
+                                {section.items.map((item, i) => {
+                                    return <MenuItem item={item} key={i} data-tip={item.tip}/>
+                                })}
+                            </Collapse>
+                        </div>
                 })
             } else {
                 if(this.props.user_modules.length > 0){
@@ -259,18 +290,7 @@ class Menu extends PureComponent {
                     </div>
                 </div>
             </React.Fragment>
-        } else if(this.state.tab === 'templates'){
-            if(this.props.user_templates){
-                content = 
-                <div>
-                {this.props.user_templates.map((user_template, i) => {
-                    return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
-                })}
-                </div>
-            }else{
-                content = <div>No templates, visit Marketplace</div>
-            }
-        }
+        } 
 
         let block_module_group;
         if(this.state.tab === 'blocks'){

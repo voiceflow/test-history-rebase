@@ -17,11 +17,11 @@ class Marketplace extends Component {
             featured_modules: [
 				{ title: '',
 				  descr:'',
-                  card_icon: '',
+                  module_icon: '',
                   module_id: ''},
 				{ title: '',
 				  descr:'',
-                  card_icon: '',
+                  module_icon: '',
                   module_id: ''}
 			],
             loading: false,

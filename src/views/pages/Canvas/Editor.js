@@ -38,11 +38,14 @@ class Editor extends Component {
     }
 
     componentDidMount() {
+        window.analytics.page();
         // $('*').keypress(function(e) {
         //     if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
         //         e.preventDefault();
         //     }
         // });
+
+        window.analytics.page();
 
         axios.get('/voices')
         .then(res => {

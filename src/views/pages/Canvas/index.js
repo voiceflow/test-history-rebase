@@ -274,7 +274,7 @@ class Canvas extends Component {
     }
 
     componentDidMount() {
-
+        window.analytics.page();
         $('#diagram').click((e) => {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");

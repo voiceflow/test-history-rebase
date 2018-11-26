@@ -216,7 +216,7 @@ class Menu extends PureComponent {
                     })}
                     </div>
                 }else{
-                    content = <div className="mt-2">You have no flows 😭 visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                    content = <div className="mt-2">You have no flows <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
                 }
             }
         }else if(this.state.tab === 'project'){
@@ -262,7 +262,7 @@ class Menu extends PureComponent {
                     })}
                     </div>
                     :
-                    <div>You have no templates 😭 visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                    <div>You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
                 }
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){

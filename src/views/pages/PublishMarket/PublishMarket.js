@@ -50,18 +50,18 @@ class PublishMarket extends Component {
         this.handleRemoveVar = this.handleRemoveVar.bind(this);
         this.handleVarChange = this.handleVarChange.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
-        this.testApprove = this.testApprove.bind(this);
+        //this.testApprove = this.testApprove.bind(this);
 	}
 
-    testApprove(){
-        axios.put(`/marketplace/cert/${this.state.skill_id}`)
-        .then(res => {
-            console.log("I think it worked")
-        }) 
-        .catch(res => {
-            console.log("DAFUQ")
-        });
-    }
+    // testApprove(){
+    //     axios.put(`/marketplace/cert/${this.state.skill_id}`)
+    //     .then(res => {
+    //         console.log("I think it worked")
+    //     }) 
+    //     .catch(res => {
+    //         console.log("DAFUQ")
+    //     });
+    // }
 
 	handleTypeSelection(value) {
 		this.setState({
@@ -593,9 +593,7 @@ class PublishMarket extends Component {
                         null
                     }
                     
-                    <div>
-                        <MUIButton variant="contained" className="white-btn mr-3" onClick={this.testApprove}>TEST</MUIButton>
-                    </div>
+                    
 				</div>
 			</div>
 		);

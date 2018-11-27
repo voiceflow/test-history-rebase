@@ -400,13 +400,13 @@
 
 .App .Menu #sidebar .block-title {
     margin-top: 0px;
-    margin-bottom: 10px;
+/*    margin-bottom: 10px;*/
     font-weight: lighter;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    border-bottom: 1px solid #f3f3f3;
+/*    border-bottom: 1px solid #f3f3f3;*/
     color: #545D6D;
 }
 
@@ -575,7 +575,7 @@
     top: 59px;
     left: 40px;
     z-index: 5;
-    width: 200px;
+    width: 230px;
     height: 100%;
     padding: 0px 15px 120px 15px;
     overflow: scroll;
@@ -670,6 +670,40 @@
     /*border: 1px solid #EEE;*/
     
 
+}
+.image-editor{
+    width: 75%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.toggle-group .btn.btn-secondary{
+    background-color: #cce5ff70 !important;
+    height: 33px;
+    line-height: 20px;
+    border: 1px solid #b8daff !important;
+    color: #42A5FF !important;
+    width: 100px;
+}
+.toggle-group .btn.btn-outline-secondary{
+    height: 33px;
+    font-weight: lighter !important;
+    color: #8da2b5 !important;
+    line-height: 20px;
+    width: 100px;
+}
+.toggle-group .btn.btn-outline-secondary:hover{
+    height: 33px;
+    font-weight: lighter !important;
+    color: #2b3950 !important;
+    line-height: 20px;
+}
+.toggle-group .btn.btn-outline-secondary:active{
+    background-color: #f9f9f9;
+    height: 33px;
+    font-weight: lighter !important;
+    color: #2b3950 !important;
+    line-height: 20px;
 }
 .hey{
     background-color: transparent !important;
@@ -1544,18 +1578,18 @@ button.close{
 }*/
 .btn-secondary.disabled:hover {
     /*color: #fff !important;*/
-    border-color: #369af5 !important;
-    background-color: #369af5 !important;
+    border-color: #369af5;
+    background-color: #369af5;
 }
 .btn-secondary.disabled, .btn-secondary{
-    color: #fff !important;
-    background-color: #42A5FF !important;
+    color: #fff;
+    background-color: #42A5FF;
 }
 .btn-secondary.disabled, .btn-secondary:disabled {
-    color: #fff !important;
-    background-color: #42A5FF !important;
-    border-color: #42A5FF !important;
-    opacity: 1 !important;
+    color: #fff;
+    background-color: #42A5FF;
+    border-color: #42A5FF;
+    opacity: 1;
 /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
 }
 
@@ -1949,7 +1983,7 @@ button.close{
 #widget-bar{
     position: absolute;
     bottom: 13px;
-    left: 255px;
+    left: 283px;
     z-index: 5;
 }
 
@@ -1960,7 +1994,7 @@ button.close{
     .TitleBar{
         /*height: 105px;*/
         display: block;
-        padding-left: 250px;
+        padding-left: 275px;
         padding-right: 0px;
     }
 }

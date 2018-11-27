@@ -1,57 +1,64 @@
 import { PortModel, DiagramEngine, LinkModel } from 'storm-react-diagrams'
 import { BlockLinkModel } from './BlockLinkModel'
 
-import * as _ from "lodash";
+import * as _ from "lodash"
 
 export class BlockPortModel extends PortModel {
-	in: boolean;
-	label: string;
-	links: { [id: string]: BlockLinkModel };
+	in: boolean
+	label: string
+	links: { [id: string]: BlockLinkModel }
 
 	constructor(isInput: boolean, name: string, label: string = null, id?: string) {
-		super(name, "default", id);
-		this.in = isInput;
-		this.label = label || name;
+		super(name, "default", id)
+		this.in = isInput
+		this.label = label || name
 	}
 
 	deSerialize(object, engine: DiagramEngine) {
-		super.deSerialize(object, engine);
-		this.in = object.in;
-		this.label = object.label;
+		super.deSerialize(object, engine)
+		this.in = object.in
+		this.label = object.label
 	}
 
 	serialize() {
 		return _.merge(super.serialize(), {
 			in: this.in,
 			label: this.label
-		});
+		})
 	}
 
 	setLabel(label) {
-		this.label = label;
+		this.label = label
 	}
 
 	link(port: PortModel): LinkModel {
-		let link = this.createLinkModel();
-		link.setSourcePort(this);
-		link.setTargetPort(port);
-		return link;
+		let link = this.createLinkModel()
+		link.setSourcePort(this)
+		link.setTargetPort(port)
+		return link
 	}
 
 	canLinkToPort(port: PortModel): boolean {
 		if (port instanceof BlockPortModel) {
-			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks));
+			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks))
 		}
-		return true;
+		return false
 	}
 
 	removeLink(link: LinkModel) {
-		delete this.links[link.getID()];
+		delete this.links[link.getID()]
 	}
 
 	createLinkModel(): LinkModel {
-		let link = super.createLinkModel();
+		let link;
+		let numberOfLinks = _.size(this.links)
 
-		return link || new BlockLinkModel();
+		if (this.maximumLinks === 1 && numberOfLinks >= 1) {
+			_.values(this.links).forEach(link => link.remove())
+		}
+
+		if(!link) link = new BlockLinkModel()
+
+		return link
 	}
 }

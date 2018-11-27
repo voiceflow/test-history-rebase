@@ -134,9 +134,10 @@
     color: #2b3950 !important;
     border-radius: 5px !important;
     border: 1px solid #d4d9e6 !important;
+    cursor: pointer !important;
 }
 .select-box__indicator-separator{
-    background-color: #d4d9e6 !important;
+    background-color: #fff !important;
     
 }
 .select-box__control:focus{
@@ -1427,7 +1428,7 @@ button.close{
 }
 
 .block.story {
-    border: 1px solid #e3e9ec;
+    border: 1px solid #2b395050;
     background-color: #e3e9ec;
     color: #2b3950;
 }
@@ -1781,6 +1782,7 @@ button.close{
     box-shadow: none !important;
     border: none !important;
     border-radius: 5px !important;
+    cursor: pointer !important;
 }
 .variable-box__menu {
     z-index: 1500;

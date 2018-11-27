@@ -111,7 +111,6 @@ class SkillModal extends React.Component {
                     onClick={() => this.props.createSkill(this.state.name)}>
                     <i className="fas fa-plus mr-2"/> Create Skill
                   </Button>
-                  {/*
                   <Button 
                     className="create-skill" 
                     color="primary" block 
@@ -119,7 +118,6 @@ class SkillModal extends React.Component {
                     onClick={() => {this.setState({curr_state: 'template'})}}>
                     <i className="fas fa-th-large"/> Start with Template
                   </Button>
-                  */}
                 </div>
               </React.Fragment>
               :

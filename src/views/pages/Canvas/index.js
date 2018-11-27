@@ -559,7 +559,6 @@ class Canvas extends Component {
                 links[key].setColor(line_color);
                 links[key].setWidth(line_width);
             }
-            var ports = model.getLinks();
             
             engine.stopMove();
             engine.setDiagramModel(model);

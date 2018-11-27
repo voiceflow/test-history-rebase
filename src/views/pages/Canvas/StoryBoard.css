@@ -582,6 +582,12 @@
     color: #95a6bd;
 }
 
+.App .Menu #sidebar .section-title>i{
+    width: 10px;
+    text-align: left;
+    display: inline-block;
+}
+
 .section-title:hover{
     cursor: pointer;
 }

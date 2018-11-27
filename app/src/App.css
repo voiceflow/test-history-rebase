@@ -71,6 +71,11 @@ button:focus{
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.alert-success{
+    background-color: #42A5FF20;
+    color: #42A5FF;
+    border: 1px solid #42A5FF40;
+}
 .between {
     display: flex;
     justify-content: space-between;

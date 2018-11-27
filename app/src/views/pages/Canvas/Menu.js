@@ -215,8 +215,8 @@ class Menu extends PureComponent {
                         return <ModuleItem module={user_module} key={i} />;
                     })}
                     </div>
-                }else{
-                    content = <div className="mt-2">You have no flows <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                }else{ 
+                    content = <div className="mt-2 text-center"><img className="image-editor mt-4 mb-3" src={"/empty.png"}/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
                 }
             }
         }else if(this.state.tab === 'project'){
@@ -295,9 +295,9 @@ class Menu extends PureComponent {
         let block_module_group;
         if(this.state.tab === 'blocks'){
             block_module_group = 
-                <ButtonGroup>
+                <ButtonGroup className="toggle-group mb-2">
                     <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
-                    <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Modules</Button>
+                    <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Flows</Button>
                 </ButtonGroup>
         } else {
             block_module_group = null;

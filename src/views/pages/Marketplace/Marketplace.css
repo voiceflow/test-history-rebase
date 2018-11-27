@@ -142,19 +142,15 @@
     background-color: aqua !important;
 }
 .btn-group-vertical{
-    width: 105% !important;
+    width: 100% !important;
     margin-top: 50px;
 }
 .active-btn{
-    background-color: #fff;
-    color: #fff !important;
-    border-top: 2px solid #fff!important;
-    border-right: 2px solid #fff!important;
-    border-bottom: 2px solid #fff!important;
-    border-radius: 0px 10px 10px 0px !important;
-    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
-    width: 105%;
+    background-color: #42A5FF20 !important;
+    color: #42A5FF !important;
+    border-radius: 0px;
     z-index: 10;
+    border: none !important;
     margin-bottom: 10px;
     padding: 8px !important;
     font-size: 18px !important;
@@ -164,18 +160,19 @@
 .inactive-btn{
     background-color: #fff !important;
     color: #C2C6D5 !important;
-    border-top: 2px solid #fff!important;
-    border-right: 2px solid #fff!important;
-    border-bottom: 2px solid #fff!important;
-    border-radius: 0px 10px 10px 0px !important;
+    border-top: 1px solid #fff!important;
+    border-right: 1px solid #fff!important;
+    border-bottom: 1px solid #fff!important;
+/*    border-radius: 0px 10px 10px 0px !important;*/
 /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;*/
-    width: 90% !important;
+    width: 100% !important;
     text-align: left !important;
     z-index: 10;
     margin-bottom: 10px;
     padding: 8px !important;
     font-size: 18px !important;
     padding-left: 30px !important;
+    border-left: none !important;
 }
 .creator-name{
     color: #95A6BD !important;

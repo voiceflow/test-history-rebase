@@ -107,6 +107,7 @@ class Canvas extends Component {
         }
 
         if(!this.preview && (!diagram_id || !skill_id)){
+            // DEFAULT TEMPLATE FOR CREATING A SKILL
             newSkill = true;
             open = true;
 
@@ -252,8 +253,8 @@ class Canvas extends Component {
         })
         .then(res => {
             var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
-            node.addInPort(' ');
-            node.addOutPort(' ').setMaximumLinks(1);
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
                 diagram_id: null,
                 inputs: [],
@@ -558,6 +559,7 @@ class Canvas extends Component {
                 links[key].setColor(line_color);
                 links[key].setWidth(line_width);
             }
+            var ports = model.getLinks();
             
             engine.stopMove();
             engine.setDiagramModel(model);
@@ -881,8 +883,8 @@ class Canvas extends Component {
 
         if(type){
             if (type === 'choice') {
-                node.addInPort(' ');
-                node.addOutPort('else').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort('else').setMaximumLinks(1)
                 node.extras = {
                     audio: '',
                     audioText: '',
@@ -894,8 +896,8 @@ class Canvas extends Component {
                     inputs: []
                 };
             } else if (type === 'audio') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     audio: false,
                     lines: [
@@ -907,21 +909,21 @@ class Canvas extends Component {
                     ]
                 };
             } else if (type === 'speak') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     dialogs: []
                 }
             } else if (type === 'flow') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     diagram_id: null,
                     inputs: [],
                     outputs: []
                 };
             } else if (type === 'command') {
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     commands: ''
                 };
@@ -930,32 +932,32 @@ class Canvas extends Component {
                 node.clearListeners();
                 node.addListener({ entityRemoved: e => e.stopPropagation() });
             } else if (type === 'ending') {
-                node.addInPort(' ');
+                node.addInPort(' ')
                 node.extras = {
                     audio: '',
                     audioText: '',
                     audioVoice: ''
                 };
             } else if (type === 'random') {
-                node.addInPort(' ');
-                node.addOutPort(1).setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(1).setMaximumLinks(1)
                 node.extras = {
                     paths: 1
                 };
             } else if (type === 'variable') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {};
             } else if (type === 'set') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     sets: []
                 };
             } else if (type === 'if') {
-                node.addInPort(' ');
-                node.addOutPort('else').setMaximumLinks(1);
-                node.addOutPort('1').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort('else').setMaximumLinks(1)
+                node.addOutPort('1').setMaximumLinks(1)
                 node.extras = {
                     expressions: [{
                         type: 'value',
@@ -965,9 +967,9 @@ class Canvas extends Component {
                 };
             } else if (type === 'api') {
                 node.name = 'API';
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
-                node.addOutPort('fail').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
                 node.extras = {
                     url: '',
                     method: 'GET',
@@ -981,38 +983,38 @@ class Canvas extends Component {
                     failure_id: ''
                 };
             } else if (type === 'capture') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     variable: null
                 };
             } else if (type === 'mail') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
-                node.addOutPort('fail').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
                 node.extras = {
                     template_id: null,
                     mapping: [],
                     to: ''
                 };
             } else if (type === 'stream') {
-                node.addInPort(' ');
-                node.addOutPort('stop/pause').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort('stop/pause').setMaximumLinks(1)
                 node.extras = {
                     audio: '',
                     player: false
                 }
             } else if (type === 'permissions') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
-                node.addOutPort('fail').setMaximumLinks(1);
-                node.addOutPort('declined').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.addOutPort('declined').setMaximumLinks(1)
                 node.extras = {
                     permissions: []
                 };
             } else if (type === 'module'){
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
 
                 try{
                     let data = JSON.parse(event.dataTransfer.getData('data'));

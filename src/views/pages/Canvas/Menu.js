@@ -198,7 +198,7 @@ class Menu extends PureComponent {
                                         <i className="fas fa-caret-down"></i>: 
                                         <i className="fas fa-caret-right"></i>
                                     }
-                                    {" "}{section.title}
+                                    {section.title}
                             </span>
                             <Collapse isOpen={this.state.show[section.title]}>
                                 {section.items.map((item, i) => {
@@ -225,17 +225,6 @@ class Menu extends PureComponent {
             //         {diagram.name}
             //     </div>
             // );
-
-            //<label>Templates</label>
-            // {this.props.user_templates.length > 0?
-            //     <div>
-            //     {this.props.user_templates.map((user_template, i) => {
-            //         return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
-            //     })}
-            //     </div>
-            //     :
-            //     <div>You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
-            // }
 
             let unused = [];
 
@@ -265,6 +254,16 @@ class Menu extends PureComponent {
                     })}
                     <hr className='mb-2 mt-4'/>                
                 </React.Fragment>}
+                <label>Templates</label>
+                {this.props.user_templates.length > 0?
+                    <div>
+                    {this.props.user_templates.map((user_template, i) => {
+                        return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
+                    })}
+                    </div>
+                    :
+                    <div>You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                }
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
             content = <React.Fragment>
@@ -294,15 +293,15 @@ class Menu extends PureComponent {
         } 
 
         let block_module_group;
-        // if(this.state.tab === 'blocks'){
-        //     block_module_group = 
-        //         <ButtonGroup>
-        //             <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
-        //             <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Modules</Button>
-        //         </ButtonGroup>
-        // } else {
-        //     block_module_group = null;
-        // }
+        if(this.state.tab === 'blocks'){
+            block_module_group = 
+                <ButtonGroup>
+                    <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
+                    <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Modules</Button>
+                </ButtonGroup>
+        } else {
+            block_module_group = null;
+        }
 
         return (
             <div className="Menu">

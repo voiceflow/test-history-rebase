@@ -94,11 +94,11 @@
 }
 #navbar .account-dropdown .dropdown-menu.arrow:before{
 	left: auto !important;
-	right: 10px !important;
+	right: 12px !important;
 }
 #navbar .account-dropdown .dropdown-menu.arrow:after{
 	left: auto !important;
-	right: 11px !important;
+	right: 13px !important;
 }
 
 .dropdown-menu.arrow:after, .dropdown-menu.arrow:before {

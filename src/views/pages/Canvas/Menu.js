@@ -198,7 +198,7 @@ class Menu extends PureComponent {
                                         <i className="fas fa-caret-down"></i>: 
                                         <i className="fas fa-caret-right"></i>
                                     }
-                                    {" "}{section.title}
+                                    {section.title}
                             </span>
                             <Collapse isOpen={this.state.show[section.title]}>
                                 {section.items.map((item, i) => {

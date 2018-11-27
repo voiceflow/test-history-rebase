@@ -5,7 +5,7 @@ const JSONs = require('./../config/amazon_json');
 
 const locales = ["en-CA", "en-AU", "en-GB", "en-US", "en-IN"];
 
-const getSkills = (req, res) => {
+exports.getSkills = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
         return;
@@ -30,7 +30,7 @@ const getSkills = (req, res) => {
     });
 };
 
-const getSkill = (req, res) => {
+exports.getSkill = (req, res) => {
     if (!req.params.id) {
         res.sendStatus(401);
         return;
@@ -87,7 +87,6 @@ const getSkill = (req, res) => {
             }else{
                 // Sync up with AMAZON
                 // Check Current Amazon Status
-                console.log('fuck')
                 AccessToken(req.user.id, async (token) => {
                     if(token === null){
                         // throw('INVALID TOKEN');
@@ -171,7 +170,7 @@ const getSkill = (req, res) => {
     });
 };
 
-const getDiagrams = (req, res) => {
+exports.getDiagrams = (req, res) => {
     if (!req.params.id) {
         res.sendStatus(401);
         return;
@@ -193,7 +192,7 @@ const getDiagrams = (req, res) => {
     });
 }
 
-const deleteSkill = (req, res) => {
+exports.deleteSkill = (req, res) => {
     if (!req.user || !req.params.id) {
         res.sendStatus(401);
         return;
@@ -235,7 +234,7 @@ const deleteSkill = (req, res) => {
     });
 };
 
-const setSkill = (req, res) => {
+exports.setSkill = (req, res) => {
     if (!req.user || !req.body.name || !req.body.diagram) {
         res.sendStatus(401);
         return;
@@ -262,7 +261,7 @@ const setSkill = (req, res) => {
     });
 };
 
-const patchSkill = (req, res) => {
+exports.patchSkill = (req, res) => {
     if (!req.user || !req.params.id || !req.body) {
         res.sendStatus(401);
         return;
@@ -345,29 +344,42 @@ const patchSkill = (req, res) => {
     }
 }
 
-const buildSkill = async (req,res) => {
+// Helper Function
+const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
+    let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
+    pool.query(sql, [skill_id], (err, data) => {
+        if(err){
+            console.error(err);
+            console.trace();
+            reject(new Error(err))
+        }else{
+            resolve(data.rows);
+        }
+    });
+})
+
+exports.buildSkill = async (req,res) => {
     if (!req.params.id) {
-        res.sendStatus(401);
+        res.sendStatus(401)
     }
 
     let id = hashids.decode(req.params.id)[0];
-    let original_id = req.params.id;
+    let original_id = req.params.id
 
     // Get permissions
-    const permissions_arr = await getSkillPermissions(id);
-    let permissions = new Set();
+    const permissions_arr = await getSkillPermissions(id)
+    let permissions = new Set()
 
     permissions_arr.forEach(r => {
         r.permissions.forEach((perm => {
             if (perm !== 'payments:autopay_consent') {
                 // lmao amazon engineering
-                permissions.add(perm);
+                permissions.add(perm)
             }
         }))
     })
     
-    permissions = [...permissions];
-    permissions = permissions.map(perm => {return {name: perm}});
+    permissions = Array.from(permissions).map(perm => {return {name: perm}})
 
     AccessToken(req.user.id, token => {
         if(token === null){
@@ -379,15 +391,15 @@ const buildSkill = async (req,res) => {
     
         pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
             if(err){
-                console.error(err); 
-                res.sendStatus(500); 
+                console.error(err) 
+                res.sendStatus(500)
             } else { 
                 
-                let r = data.rows[0];
+                let r = data.rows[0]
 
-                let amzn_id = r.amzn_id;
-                r.permissions = permissions;
-                let manifest = JSONs.manifest(r, original_id);
+                let amzn_id = r.amzn_id
+                r.permissions = permissions
+                let manifest = JSONs.manifest(r, original_id)
 
                 try{
                     if(amzn_id){
@@ -550,7 +562,7 @@ const buildSkill = async (req,res) => {
     });    
 }
 
-const certifySkill = (req, res) => {
+exports.certifySkill = (req, res) => {
     if (!req.params.amzn_id) {
         res.sendStatus(401);
     }
@@ -616,7 +628,7 @@ const certifySkill = (req, res) => {
     });
 }
 
-const withdrawSkill = (req, res) => {
+exports.withdrawSkill = (req, res) => {
     if (!req.params.amzn_id) {
         res.sendStatus(401);
     }
@@ -662,29 +674,4 @@ const withdrawSkill = (req, res) => {
             res.status(500).send(err.response.data);
         });
     });
-}
-
-const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
-    let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
-    pool.query(sql, [skill_id], (err, data) => {
-        if(err){
-            console.error(err);
-            console.trace();
-            reject(new Error(err))
-        }else{
-            resolve(data.rows);
-        }
-    });
-})
-
-module.exports = {
-    getDiagrams: getDiagrams,
-    patchSkill: patchSkill,
-    getSkills: getSkills,
-    getSkill: getSkill,
-    deleteSkill: deleteSkill,
-    setSkill: setSkill,
-    buildSkill: buildSkill,
-    certifySkill: certifySkill,
-    withdrawSkill: withdrawSkill
 }

@@ -67,6 +67,7 @@ class Menu extends PureComponent {
             open: true,
             tab: 'blocks',
             new_var: '',
+            new_global: '',
             tree: null,
             block_tab_state: 'blocks',
             show: show
@@ -74,7 +75,9 @@ class Menu extends PureComponent {
 
         this.openTab = this.openTab.bind(this);
         this.addVariable = this.addVariable.bind(this);
+        this.addGlobalVariable = this.addGlobalVariable.bind(this);
         this.deleteVariable = this.deleteVariable.bind(this);
+        this.deleteGlobalVariable = this.deleteGlobalVariable.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.buildTree = this.buildTree.bind(this);
         this.updateTree = this.updateTree.bind(this);
@@ -164,7 +167,7 @@ class Menu extends PureComponent {
         if(e) e.preventDefault();
         let variables = this.props.variables;
         let new_var = this.state.new_var;
-        if(isVarName(new_var) && !variables.includes(new_var)){
+        if(isVarName(new_var) && !variables.includes(new_var) && !this.props.global_variables.includes(new_var)){
             variables.push(new_var);
             this.props.onVariable(variables);
             this.setState({
@@ -176,11 +179,34 @@ class Menu extends PureComponent {
         return false
     }
 
+    addGlobalVariable (e){
+        if(e) e.preventDefault();
+        let variables = this.props.global_variables;
+        let new_var = this.state.new_global;
+        if(isVarName(new_var) && !variables.includes(new_var) && !this.props.variables.includes(new_var)){
+            variables.push(new_var);
+            this.props.onGlobalVariable(variables);
+            this.setState({
+                new_global: ""
+            })
+        }else{
+            alert('Invalid Variable: Variables can\'t have the same name and must start with a character and can not contain spaces or special characters');
+        }
+        return false
+    }
+
     deleteVariable(variable){
-        let variables = this.props.variables;
-        let index = variables.indexOf(variable);
-        if (index !== -1) variables.splice(index, 1);
-        this.props.onVariable(variables);
+        let variables = this.props.variables
+        let index = variables.indexOf(variable)
+        if (index !== -1) variables.splice(index, 1)
+        this.props.onVariable(variables)
+    }
+
+    deleteGlobalVariable(variable){
+        let variables = this.props.global_variables
+        let index = variables.indexOf(variable)
+        if (index !== -1) variables.splice(index, 1)
+        this.props.onGlobalVariable(variables)
     }
 
     render() {
@@ -268,6 +294,31 @@ class Menu extends PureComponent {
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
             content = <React.Fragment>
+            <form onSubmit={this.addGlobalVariable}>
+                    <FormGroup className="mb-0">
+                        <Label>Add New Global Variable</Label>
+                        <InputGroup>
+                            <Input name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16"/>
+                            <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                        </InputGroup>
+                    </FormGroup>
+                </form>
+                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                <div>
+                    <Label>Global Variables</Label>
+                    <div className="variables">
+                        {this.props.global_variables.map((variable, i) => {
+                            if(variable in defaultVariables){
+                                return <Tooltip key={variable} position="bottom" title={defaultVariables[variable]}>
+                                    <div className="variable_tag global default">{'{' + variable + '}'}</div>
+                                </Tooltip>
+                            }else{
+                                return <div key={variable} className="variable_tag global">{'{' + variable + '}'} <span onClick={() => this.deleteGlobalVariable(variable)}><i className="fas fa-times"></i></span></div>
+                            }
+                        })}
+                    </div>
+                </div>
+                <hr/>
                 <form onSubmit={this.addVariable}>
                     <FormGroup className="mb-0">
                         <Label>Add New Variable</Label>
@@ -282,11 +333,9 @@ class Menu extends PureComponent {
                     <Label>Variables</Label>
                     <div className="variables">
                         {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
-                            if(defaultVariables[variable]){
-                                return <div key={variable} className="variable_tag default">{'{' + variable + '}'}</div>
-                            }else{
-                                return <div key={variable} className="variable_tag">{'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
-                            }
+                            return <div key={variable} className="variable_tag">
+                                {'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span>
+                            </div>
                         }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
                     </div>
                 </div>

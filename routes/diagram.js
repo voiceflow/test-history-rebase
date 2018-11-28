@@ -196,13 +196,28 @@ const setDiagram = async (req, res) => {
     }
 
     diagram.last_save = Date.now();
-
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
-        Item: diagram
+        Item: {
+            id: diagram.id,
+            variables: diagram.variables,
+            data: diagram.data,
+            skill: diagram.skill
+        }
     };
 
-    const permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]';
+    let permissions_string, global_string
+    // Make sure that the JSON validly parses
+    try {
+        permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]'
+    } catch(err) {
+        permissions_string = '[]'
+    }
+    try {
+        global_string = diagram.global ? JSON.stringify(diagram.global) : '[]'
+    } catch(err) {
+        global_string = '[]'
+    }
 
     docClient.put(params, async(err) => {
         if (err) {
@@ -219,6 +234,7 @@ const setDiagram = async (req, res) => {
                 }else{
                     // otherwise update
                     await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2 WHERE id = $3', [diagram.sub_diagrams, permissions_string, diagram.id]);
+                    await pool.query('UPDATE skills SET global=$1 WHERE skill_id=$2', [global_string, diagram.skill]);
                 }
                 res.sendStatus(200);
             }catch(e){

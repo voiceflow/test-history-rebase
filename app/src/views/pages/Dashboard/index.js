@@ -176,18 +176,6 @@ class DashBoard extends Component {
         }
 
         return (
-        <AmplitudeProvider
-            amplitudeInstance={amplitude.getInstance()}
-            apiKey={AMPLITUDE_KEY}
-        >
-        <Amplitude
-          eventProperties={{
-            scope: ["Dashboard"],
-            "Dashboard": "True",
-            "user": window.user_detail
-          }}
-        >
-          <LogOnMount eventType="Entered Dashboard" />
             <div className='Window'>
                 <div className="subheader">
                     <div className="container space-between">
@@ -201,12 +189,9 @@ class DashBoard extends Component {
                             </div>
                         </span>
                         <div className="subheader-right">
-                        <Amplitude>
                             <Link to="/canvas/new" className="no-underline">
                                 <button varient="contained" className="purple-btn" onClick={() => {window.analytics.track('New Project Button clicked', {"user": window.user_detail})}}><i className="far fa-plus mr-2"/> New Project</button>
-                                <LogOnMount eventType = "New Project Button Clicked"/>
                             </Link>
-                        </Amplitude>
                         </div>
                     </div>
                 </div>
@@ -215,8 +200,6 @@ class DashBoard extends Component {
                     {skills}
                 </div>
             </div>
-           </Amplitude>
-          </AmplitudeProvider>
         );
     }
 }

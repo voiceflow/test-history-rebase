@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import AuthenticationService from './../../../services/Authentication';
 import './Account.css';
+import axios from 'axios';
 
 class Account extends Component {
 
@@ -72,7 +73,7 @@ class Account extends Component {
           this.setState({signup_error: false});
         }.bind(this), 5000)})
       }else{
-        this.props.history.push('/');
+        this.props.history.push('/onboarding');
       }
     });
     return false;
@@ -95,7 +96,17 @@ class Account extends Component {
           this.setState({login_error: false});
         }.bind(this), 5000)})
       }else{
-        this.props.history.push('/');
+        axios.get('/onboard')
+        .then(res => {
+          if(res.data){
+            this.props.history.push('/');
+          } else {
+            this.props.history.push('/onboarding');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
       }
     });
     return false;

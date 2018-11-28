@@ -102,7 +102,7 @@ class Skill extends Component {
 
     componentDidMount() {
         window.analytics.page();
-        
+
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
                 stage: token ? 2 : 0
@@ -180,6 +180,9 @@ class Skill extends Component {
     }
 
     onDelete(){
+        window.analytics.track('Deleted Skill', {
+            "userId": window.user_detail
+        });
         axios.delete(`/skill/${this.state.skill_id}`)
         .then(() => {
             this.props.history.push('/dashboard');
@@ -193,6 +196,9 @@ class Skill extends Component {
     }
 
     onCertify(){
+        window.analytics.track('Published to Amazon for Review', {
+            "userId": window.user_detail
+        })
         this.setState({
             stage: 7
         });
@@ -213,6 +219,9 @@ class Skill extends Component {
     }
 
     onPublish(){
+        window.analytics.track('Submit to Alexa Pressed', {
+            "userId": window.user_detail
+        });
         this.save(true, ()=>{
 
             let s = this.state;

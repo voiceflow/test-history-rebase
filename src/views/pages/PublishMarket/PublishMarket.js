@@ -142,6 +142,9 @@ class PublishMarket extends Component {
     }
 
     save(){
+        window.analytics.track('Save Draft Button clicked', {
+            userId: window.user_detail
+        })
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null);
         const type = (s.type && s.type.value ? s.type.value : null);
@@ -173,7 +176,10 @@ class PublishMarket extends Component {
     }
 
     publish(){
-    	this.save();
+        this.save();
+        window.analytics.track('Review Screen Publish Button Pressed', {
+            "userId": window.user_detail
+        });
         let s = this.state;
         if (s.title && s.descr && s.card_icon && s.category && s.type && s.overview && s.module_icon){
         	axios.post('/marketplace/cert/' + this.state.skill_id)
@@ -257,18 +263,6 @@ class PublishMarket extends Component {
 
 	render(){
 		return(
-        <AmplitudeProvider
-            amplitudeInstance={amplitude.getInstance()}
-            apiKey={AMPLITUDE_KEY}
-            >
-            <Amplitude
-                eventProperties={{
-                scope: ["Publishing Page"],
-                "PublishPage": "True",
-                "user": window.user_detail
-            }}
-            >
-
 			<div className="Window skill">
 				<div className="subheader">
                     <div className="container space-between">
@@ -287,12 +281,11 @@ class PublishMarket extends Component {
                         	null
                         	:
 	                        <div className="subheader-right">
-                            <Amplitude>
+
 	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/>
-                                <LogOnMount eventType="Publish Skill Pressed" />
+	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}> { () => window.analytics.track('Publish Skill Button Pressed', {"user": window.user_detail})}>Publish Skill <i className="fas fa-store-alt ml-2"/>
                                 </MUIButton>
-                            </Amplitude>
+
 	                        </div>
                     	}
                     </div>
@@ -642,9 +635,6 @@ class PublishMarket extends Component {
                     </div>
 				</div>
 			</div>
-
-            </Amplitude>
-            </AmplitudeProvider>
 		);
 	}
 }

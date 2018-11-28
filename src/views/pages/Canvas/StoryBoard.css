@@ -150,7 +150,30 @@
     width: 150px !important;
     box-shadow: 0 2px 4px 0 rgba(118, 186, 255, 0.17) !important;
 }
-
+.platform-btn.dropdown-item{
+    background-color: #fff;
+    margin-bottom: 7px;
+    padding-bottom: 10px !important;
+    padding-top: 10px !important;
+    background-color: #fff !important;
+/*    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);*/
+    border-radius: 5px;
+    border: 1px solid #eaeff4;
+    transition: all 0.25s;
+    color: #8da2b5;
+    font-weight: 400;
+}
+.platform-btn.dropdown-item:hover{
+    background-color: #fff;
+    margin-bottom: 7px !important;
+    padding-bottom: 10px !important;
+    padding-bottom: 10px !important;
+    background-color: #fff !important;
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+    border-radius: 5px;
+    border: 1px solid #fff;
+    color: #2b3950;
+}
 .TitleBar .platform-btn {
     display: flex;
     justify-content: space-between;
@@ -161,10 +184,52 @@
     cursor: pointer;
     color: #95a6bd;
 }
+.platform-dropdown.arrow.dropdown-menu.show{
+    background-color: #fff !important;
+    width: 200px;
+    padding-left: 15px;
+    padding-right: 15px;
+    transform: translate3d(-19px, 63px, 0px) !important;
+}
 .TitleBar .platform-btn:active{
     color: #fff;
 }
-
+.coming-soon-btn{
+    height: 40px;
+    background-color: #42A5FF20 !important;
+    min-width: 120px;
+    padding-top: 15px;
+    padding-left: 16px;
+    border: 1px solid #42A5FF40;
+    color: #42A5FF;
+    border-radius: 5px;
+}
+.small-caps{
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 0.5px;
+    color: #42A5FF;
+}
+.small-caps-muted{
+    font-size: 10px;
+    text-transform: uppercase;
+/*    position: absolute;*/
+    font-weight: 400;
+    color: #8da2b5;
+}
+.small-caps-blue{
+    font-size: 10px;
+    text-transform: uppercase;
+/*    position: absolute;*/
+    font-weight: 900;
+    color: #42A5FF;
+}
+.inside{
+    position: absolute;
+    margin-left: 17px;
+    margin-top: 5px;
+}
 .TitleBar .white-btn.play{
     padding: 0px 5px 0px 18px !important;
     /*width: 68px !important;*/

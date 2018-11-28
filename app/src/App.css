@@ -19,7 +19,7 @@ button:focus{
     font-weight: normal !important;
     background: linear-gradient(#2295FA, #1B86F9);
     text-transform: none !important;
-    box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;
+/*    box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;*/
     transition: all 0.3s ease !important;
     display: inline-block;
 }
@@ -70,6 +70,11 @@ button:focus{
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+.alert-success{
+    background-color: #42A5FF20;
+    color: #42A5FF;
+    border: 1px solid #42A5FF40;
 }
 .between {
     display: flex;
@@ -129,6 +134,9 @@ button:focus{
     border-radius: 30px;
     cursor: pointer;
 }
+.outline-btn:active{
+    background-color: #42A5FF !important;
+}
 .white-btn{
     padding: 10px 25px !important;
     height: 43px;
@@ -143,8 +151,7 @@ button:focus{
 /*    border: 1px solid #E2E9EC !important;*/
 }
 .white-btn:hover{
-    border: 1px solid none !important;
-    background-color: #fff;
+    border: 1px solid #b8daff !important;
     color: #42A5FF !important;
     background-color: aliceblue !important;
 /*    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;*/

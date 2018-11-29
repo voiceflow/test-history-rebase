@@ -367,6 +367,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 } else if (node.extras.type === 'interaction') {
                     story.lines[node.id] = {
                         choices: node.extras.choices,
+                        choices_open: node.extras.choices_open,
                         mapping: node.extras.mapping,
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes

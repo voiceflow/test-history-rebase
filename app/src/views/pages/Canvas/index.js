@@ -925,6 +925,7 @@ class Canvas extends Component {
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
                     choices: [],
+                    choices_open: [],
                     mapping: []
                 };
             } else if (type === 'audio') {

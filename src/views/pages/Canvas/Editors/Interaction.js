@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs'
+import { Button, ButtonGroup } from 'reactstrap';
+import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 
 class Interaction extends Component {
     constructor(props) {
@@ -11,7 +13,8 @@ class Interaction extends Component {
             slots: this.props.slots,
             intents_open: this.props.intents_open,
             slots_open: this.props.slots_open,
-            node: this.props.node
+            node: this.props.node,
+            tab: 'choices',
         };
         
         this.handleIntentsChange = this.handleIntentsChange.bind(this);
@@ -21,6 +24,10 @@ class Interaction extends Component {
         this.handleSlotsChange = this.handleSlotsChange.bind(this);
         this.handleAddSlot = this.handleAddSlot.bind(this);
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
+
+        this.handleChoicesChange = this.handleChoicesChange.bind(this)
+        this.handleAddChoice = this.handleAddChoice.bind(this)
+        this.handleRemoveChoice = this.handleRemoveChoice.bind(this)
     }
 
     _findFirstEmptyIndex(array) {
@@ -112,33 +119,113 @@ class Interaction extends Component {
         e.preventDefault();
     }
 
+    handleChoicesChange(choices, choices_open) {  
+        this.setState({
+            choices: choices,
+            choices_open: choices_open
+        });
+    }
+
+    handleAddChoice(e) {
+        const node = this.state.node;
+        const choices = node.extras.choices;
+        const choices_open = node.extras.choices_open;
+
+        let num = 1
+        while(choices.map(e => {return e.name}).includes(`New Choice ${num}`)) {
+            num += 1;
+        }
+
+        const firstEmpty = this._findFirstEmptyIndex(choices.map(o => o.key))
+
+        choices.push({name: `New Choice ${num}`, intent: null, mapping: [], key: firstEmpty})
+        choices_open.push(true);
+
+        this.setState({
+            choices: choices,
+            choices_open: choices_open,
+        });
+        e.preventDefault();
+    }
+
+    handleRemoveChoice(e, i) {
+        const node = this.state.node;
+        const choices = node.extras.choices;
+        const choices_open = node.extras.choices_open;
+
+        choices.splice(i, 1);
+        choices_open.splice(i, 1);
+        this.setState({
+            node: node,
+        });
+        e.preventDefault();
+    }
+
     render() {
+
+        const renderChoices = () => {
+            return (
+                <div>
+                    <label>
+                        Choices
+                    </label>
+                    <ChoiceDropdownInputs
+                        choices={this.state.node.extras.choices}
+                        open = {this.state.node.extras.choices_open}
+                        onAdd={this.handleAddChoice}
+                        onRemove={this.handleRemoveChoice}
+                        onChange={this.handleChoicesChange}
+                        intents={this.state.intents}
+                    />
+                </div>
+            )
+        }
+
+        const renderIntents = () => {
+            return (
+                <div>
+                    <label>
+                        Intents
+                    </label>
+                    <IntentInputs
+                        intents={this.state.intents}
+                        open = {this.state.intents_open}
+                        onAdd={this.handleAddIntent}
+                        onRemove={this.handleRemoveIntent}
+                        onChange={this.handleIntentsChange}
+                        slots = {this.state.slots}
+                    />
+                </div>
+            )
+        }
+
+        const renderSlots = () => {
+            return (
+                <div>
+                    <label>
+                        Slots
+                    </label>
+                    <SlotInputs
+                        slots = {this.state.slots}
+                        open = {this.state.slots_open}
+                        onAdd={this.handleAddSlot}
+                        onRemove={this.handleRemoveSlot}
+                        onChange={this.handleSlotsChange}
+                    />
+                </div>
+            )
+        }
+
         return (
             <div>
-                <label>
-                    Choices
-                </label>
-                <label>
-                    Intents
-                </label>
-                <IntentInputs
-                    intents={this.state.intents}
-                    open = {this.state.intents_open}
-                    onAdd={this.handleAddIntent}
-                    onRemove={this.handleRemoveIntent}
-                    onChange={this.handleIntentsChange}
-                    slots = {this.state.slots}
-                />
-                <label>
-                    Slots
-                </label>
-                <SlotInputs
-                    slots = {this.state.slots}
-                    open = {this.state.slots_open}
-                    onAdd={this.handleAddSlot}
-                    onRemove={this.handleRemoveSlot}
-                    onChange={this.handleSlotsChange}
-                />
+                <ButtonGroup className="toggle-group mb-2">
+                    <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
+                    <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>
+                    <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'})}} disabled={this.state.tab === 'slots'}> Slots </Button>
+                </ButtonGroup>
+                {this.state.tab === 'choices' && renderChoices()}
+                {this.state.tab === 'intents' && renderIntents()}
+                {this.state.tab === 'slots' && renderSlots()}
             </div>
         );
     }

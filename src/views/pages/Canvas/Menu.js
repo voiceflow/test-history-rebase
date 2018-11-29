@@ -6,6 +6,7 @@ import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGro
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 import {Tooltip} from 'react-tippy';
+import cloneDeep from 'lodash/cloneDeep'
 
 const defaultVariables = {
     'sessions': 'The Number of times a particular user has opened the app',
@@ -84,15 +85,16 @@ class Menu extends PureComponent {
         this.updateTree = this.updateTree.bind(this);
         this.toggleBlockSection = this.toggleBlockSection.bind(this);
         this.visited = new Set();
-        this.sections = sections;
-
-        if(window.user_detail.admin === 10){
-            sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> })
-        }
+        this.sections = [];
     }
 
     componentDidMount() {
         this.props.build(this.updateTree);
+        this.sections = cloneDeep(sections);
+
+        if(window.user_detail.admin === 10){
+            this.sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
+        }
     }
 
     buildTree(node, depth=0){

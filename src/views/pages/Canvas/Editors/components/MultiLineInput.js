@@ -139,7 +139,7 @@ class MultiLineInput extends Component {
                         onDrop={(accepted, rejected) => this.onDrop(accepted)}
                     >
                     <div>
-                        <div className="prompt">
+                        <div className="prompt" className="text-muted text-center">
                             <b>Drag and Drop Files here</b><br/>
                             <small>OR</small><br/>
                             <button className="outline-btn mt-1">Add files</button>

@@ -4,6 +4,8 @@ import { Collapse } from 'reactstrap'
 
 import { MentionsInput, Mention } from 'react-mentions'
 
+const _ = require('lodash')
+
 class IntentInputs extends Component {
     constructor(props) {
         super(props);
@@ -100,10 +102,32 @@ class IntentInputs extends Component {
         this.props.onRemove(e, i)
     }
 
+    _getUtterancesWithSlotNames(utterances, slots) {
+
+        const re = /(\{\{\[.+]\.(\d+)\}\})/g;
+        let m;
+
+        const new_utterances = utterances.map( input => {
+            let new_input = input
+            do {
+                m = re.exec(new_input)
+                if (m) {
+                    const replace = m[1]
+                    const key = m[2]
+                    const slot_name = _.find(slots, { key: +key }).name
+                    new_input = new_input.replace(replace, `[${slot_name}]`)
+                }
+            } while (m);
+            return new_input
+        })
+        return new_utterances
+    }
+
     render() {
 
         const renderUtterances = (utterances, intent_i) => {
             if (Array.isArray(utterances)) {
+                utterances = this._getUtterancesWithSlotNames(utterances, this.props.slots)
                 return utterances.map( (u, i) => {
                     return <div className="interaction-utterance" key={i}><div>{u}</div><a><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-backspace trash-icon"></i></a></div>
                 });
@@ -131,8 +155,9 @@ class IntentInputs extends Component {
                             </a>
                             <Collapse isOpen={this.state.open[i]}>
                             {renderUtterances(intent.inputs, i)}
-                            {console.log(this.props.slots.map((slot, i) => {return {display: slot.name, id: i }}))}
                             <MentionsInput className="input-area" 
+                                markup='{{[__display__].__id__}}'
+                                displayTransform={(id, display) => { return '[' + display + ']'}}
                                 value={this.state.textEntries[i]}
                                 onChange={(e) => {this.onTextChange(e.target.value, i)}}
                                 onKeyPress={(e) => {this.handleKeyPress(e, i)}}
@@ -140,7 +165,7 @@ class IntentInputs extends Component {
                                 allowSpaceInQuery={true}>
                                 <Mention
                                     trigger="["
-                                    data={this.props.slots.map((slot, i) => {return {display: slot.name, id: i.toString()}})}
+                                    data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
                                  />
                             </MentionsInput>
                             </Collapse>

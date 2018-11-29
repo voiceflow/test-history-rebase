@@ -38,7 +38,7 @@ class NavBar extends Component {
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         //{link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
-        // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
+        {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
       ],
       user: AuthenticationService.getUser()
     };
@@ -92,8 +92,8 @@ class NavBar extends Component {
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <NavbarBrand href="https://www.getvoiceflow.com" target="_blank">
-              <img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
-                height="25"
+              <img className='voiceflow-logo' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
+                height="33"
               />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />

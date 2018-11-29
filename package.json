@@ -41,6 +41,7 @@
     "react-table": "^6.8.6",
     "react-textarea-autosize": "^7.0.4",
     "react-tippy": "^1.2.3",
+    "react-youtube": "^7.8.0",
     "reactstrap": "^6.5.0",
     "storm-react-diagrams": "github:DecathectZero/react-diagrams",
     "universal-cookie": "^3.0.4"

@@ -23,6 +23,13 @@ class Interaction extends Component {
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
     }
 
+    _findFirstEmptyIndex(array) {
+        for (let i = 0; i < array.length; i++) {
+            if (!array.includes(i)) return i
+        }
+        return array.length
+    }
+
     handleIntentsChange(intents, intents_open) {  
         this.setState({
             intents: intents,
@@ -30,7 +37,7 @@ class Interaction extends Component {
         }, () => {this.props.onIntent(intents, intents_open)});
     }
 
-    handleSlotsChange(slots, slots_open) {     
+    handleSlotsChange(slots, slots_open) {
         this.setState({
             slots: slots,
             slots_open: slots_open
@@ -47,7 +54,9 @@ class Interaction extends Component {
             num += 1;
         }
 
-        intents.push( {name: `New Intent ${num}`, inputs: []});
+        const firstEmpty = this._findFirstEmptyIndex(intents.map(o => o.key))
+
+        intents.push({name: `New Intent ${num}`, inputs: [], key: firstEmpty});
         intents_open.push(true);
 
         this.setState({
@@ -66,7 +75,9 @@ class Interaction extends Component {
             num += 1;
         }
 
-        slots.push({name: `New Slot ${num}`, inputs: [], type: ''})
+        const firstEmpty = this._findFirstEmptyIndex(slots.map(o => o.key))
+
+        slots.push({name: `New Slot ${num}`, inputs: [], type: '', key: firstEmpty})
         slots_open.push(true);
 
         this.setState({

@@ -216,7 +216,7 @@ class Menu extends PureComponent {
                     })}
                     </div>
                 }else{ 
-                    content = <div className="mt-2 text-center"><img className="image-editor mt-4 mb-3" src={"/empty.png"}/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
+                    content = <div className="mt-2 text-center text"><img className="image-editor mt-4 mb-3" src={"/empty.png"}/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
                 }
             }
         }else if(this.state.tab === 'project'){

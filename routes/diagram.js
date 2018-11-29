@@ -202,7 +202,8 @@ const setDiagram = async (req, res) => {
             id: diagram.id,
             variables: diagram.variables,
             data: diagram.data,
-            skill: diagram.skill
+            skill: diagram.skill,
+            creator: diagram.creator
         }
     };
 
@@ -293,8 +294,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
             // Add to set of rendered diagrams to prevent looping
-            rendered_set.add(diagram_id);
-
+            rendered_set.add(diagram_id)
             if (data.Item.creator !== user.id && !user.admin) {
                 resolve(403);
                 return;

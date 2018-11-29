@@ -84,7 +84,7 @@ class Module extends Component{
 						<p>{this.props.module.descr}</p>
 						<hr className="mb-0"/>
 						<div className="d-flex justify-content-center">
-							<p><i className="creator-name fas fa-user-circle"></i> Created by <br/> <i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
+							<p><i className="creator-name fas fa-user-circle mt-3"></i> Created by <br/> <i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
 						</div>
                         {
 							this.state.hover

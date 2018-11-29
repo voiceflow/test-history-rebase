@@ -35,99 +35,6 @@ const getFeaturedModules = (req, res) => {
     });
 }
 
-const requestCertification = (req, res) => {
-	// PRepAre 2 acQUIre cANcEr ;)
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
-
-	const createNewVersion = (skill_id, diagram_id, module_id) => {
-		// Retrieve most recent version
-		pool.query(
-			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
-			[skill_id],
-			(err, data) => {
-				if(err){
-					console.log(err);
-					res.sendStatus(500);
-				}else{
-					let version_id;
-					let input_array = "[]";
-					let output_array = "[]";
-					if(data.rows.length > 0){
-						version_id = data.rows[0].version_id + 1;
-						input_array = data.rows[0].input;
-						output_array = data.rows[0].output;
-					}else{
-						version_id = 1;
-					}
-
-					pool.query(
-						`INSERT INTO versions (module_id, diagram_id, version_id, input, output) VALUES ($1, $2, $3, $4, $5)`, 
-						[module_id, diagram_id, version_id, input_array, output_array],
-						(err, data) => {
-							if(err){
-								console.log(err);
-								res.sendStatus(500);
-							}else{
-								res.sendStatus(200);
-							}
-						}
-					);
-				}
-			}
-		);	
-	}
-
-	const getModule = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
-			(err, data) => {
-				if(err){
-					console.log(err);
-					res.sendStatus(500);
-				}else{
-					if(data.rows.length > 0){
-						createNewVersion(skill_id, diagram_id, data.rows[0].module_id);
-					}
-				}
-			}
-		);
-	}
-
-	const checkVersions = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
-			(err, data) => {
-				if(err){
-					console.log(err);
-					res.sendStatus(500);
-				}else{
-					if(data.rows.length > 0){
-						// Already in publishing process, return 
-						res.status(400).send({
-	                        message: "Flow is in the certification process"
-	                    });
-					}else{
-						getModule(skill_id, diagram_id);					
-					}
-				}
-			}
-		);	
-	};
-
-	const retrieveDiagrams = (skill_id) => {
-		pool.query(`SELECT diagram FROM skills WHERE skill_id = $1`, [skill_id],
-			(err, data) => {
-				if(err){
-					console.log(err);
-					res.sendStatus(500);
-				}else{
-					checkVersions(skill_id, data.rows[0].diagram);
-				}
-			}
-		);
-	}
-
-	retrieveDiagrams(decoded_skill_id);
-}
-
 const cancelCertification = (req, res) => {
 	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
 	pool.query(
@@ -274,6 +181,103 @@ const giveCertification = (req, res) => {
 			}
 		}
 	);	
+}
+
+const requestCertification = (req, res) => {
+	// PRepAre 2 acQUIre cANcEr ;)
+	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
+
+	const createNewVersion = (skill_id, diagram_id, module_id) => {
+		// Retrieve most recent version
+		pool.query(
+			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
+			[skill_id],
+			(err, data) => {
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					let version_id;
+					let input_array = "[]";
+					let output_array = "[]";
+					if(data.rows.length > 0){
+						version_id = data.rows[0].version_id + 1;
+						input_array = data.rows[0].input;
+						output_array = data.rows[0].output;
+					}else{
+						version_id = 1;
+					}
+
+					pool.query(
+						`INSERT INTO versions (module_id, diagram_id, version_id, input, output) VALUES ($1, $2, $3, $4, $5)`, 
+						[module_id, diagram_id, version_id, input_array, output_array],
+						(err, data) => {
+							if(err){
+								console.log(err);
+								res.sendStatus(500);
+							}else{
+								if(req.user.admin === 10) {
+									giveCertification(req, res);
+								} else {
+									res.sendStatus(200);
+								}
+							}
+						}
+					);
+				}
+			}
+		);	
+	}
+
+	const getModule = (skill_id, diagram_id) => {
+		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
+			(err, data) => {
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					if(data.rows.length > 0){
+						createNewVersion(skill_id, diagram_id, data.rows[0].module_id);
+					}
+				}
+			}
+		);
+	}
+
+	const checkVersions = (skill_id, diagram_id) => {
+		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+			(err, data) => {
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					if(data.rows.length > 0){
+						// Already in publishing process, return 
+						res.status(400).send({
+	                        message: "Flow is in the certification process"
+	                    });
+					}else{
+						getModule(skill_id, diagram_id);					
+					}
+				}
+			}
+		);	
+	};
+
+	const retrieveDiagrams = (skill_id) => {
+		pool.query(`SELECT diagram FROM skills WHERE skill_id = $1`, [skill_id],
+			(err, data) => {
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
+				}else{
+					checkVersions(skill_id, data.rows[0].diagram);
+				}
+			}
+		);
+	}
+
+	retrieveDiagrams(decoded_skill_id);
 }
 
 const certStatus = (req, res) => {

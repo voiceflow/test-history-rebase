@@ -68,10 +68,10 @@ class AudioDrop extends Component {
                 onDrop={(accepted, rejected) => this.onDrop(accepted)}
             >
                 <div>
-                    <div className="prompt">
-                        <b>Drag and Drop Files here</b><br/>
+                    <div className="prompt text-center mb-2">
+                        <b>Drag and Drop files here</b><br/>
                         <small>OR</small><br/>
-                        <i className="fas fa-plus-circle"></i> Add Files
+                        <button className="outline-btn mt-1">Add files</button>
                     </div>
                     <div className="rejected-file text-danger">
                         <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>

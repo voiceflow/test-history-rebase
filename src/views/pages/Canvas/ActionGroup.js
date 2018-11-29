@@ -226,11 +226,11 @@ class ActionGroup extends PureComponent {
                 </div>
             case 2:
                 return <React.Fragment>
-                    <img src="/images/preview.svg" alt="Success" height="160"/>
+                    <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
                     <br/>
-                    You Skill Has been updated on Alexa!
-                    <span className="text-muted text-center">
-                        You may test on the Alexa Simulator or an Alexa Device on the same Amazon account
+                    <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                    <span className="modal-txt text-center">
+                        You may test on the Alexa simulator or live on your personal Alexa device.
                     </span>
                     <div className="my-3">
                         <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`} 
@@ -244,10 +244,10 @@ class ActionGroup extends PureComponent {
                     Rendering Error  
                 </Alert>
             case 5:
-                return <div className="flex-fill">
+                return <div className="modal-txt flex-fill text-center mt-3">
                     {this.state.amzn_error && <Alert color="danger">Login With Amazon Failed - Try Again</Alert>}
                     Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
-                    <div className="text-center mt-5">
+                    <div className="text-center mt-4">
                         <AmazonLogin
                             updateLogin={(stage) => {
                                 if(stage === 2){
@@ -308,8 +308,9 @@ class ActionGroup extends PureComponent {
                 </div>
             default:
                 return <div>
-                    <img className="modal-img mb-3 ml-5" src="/upload.svg" alt="Upload"/>
-                    <div className="modal-txt text-center"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
+                    <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
+                    <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                    <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console.</div>
                     {(this.props.skill.live || this.props.skill.review) && <hr/>}
                     <div>
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
@@ -419,12 +420,10 @@ class ActionGroup extends PureComponent {
                             <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-rocket"/></MUIButton>
                             </Tooltip>
                         </DropdownToggle>
-                        <DropdownMenu className="platform-dropdown arrow">
+                        <DropdownMenu className="platform-dropdown arrow"><p className="small-caps text-center mt-2 mb-2">Publish to</p>
                             <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
-                            {/*<DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>*/}
-                            <DropdownItem divider/>
-                            <DropdownItem className="platform-btn text-muted pb-0" header><small>coming soon</small></DropdownItem>
-                            <DropdownItem className="platform-btn text-muted" disabled><span>Google</span><span className="button-circle"><i className="fab fa-google"/></span></DropdownItem>
+                                <p className="small-caps-muted text-center mt-1 mb-1">or</p>
+                                <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <Tooltip

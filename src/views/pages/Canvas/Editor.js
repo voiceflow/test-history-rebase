@@ -139,7 +139,7 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'interaction':
-                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}/>
             case 'line':
             case 'audio': 
             case 'multiline':
@@ -217,7 +217,8 @@ class Editor extends Component {
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
-                />);
+                    onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
+                    />);
         }
     }
 

@@ -31,6 +31,7 @@
     "react-ga": "^2.5.3",
     "react-intercom": "^1.0.14",
     "react-masonry-component": "^6.2.1",
+    "react-mentions": "^2.4.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.0.5",
     "react-scrollspy": "^3.3.5",

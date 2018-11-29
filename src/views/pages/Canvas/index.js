@@ -28,6 +28,8 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 
+const _ = require('lodash')
+
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
 const cookies = new Cookies();
@@ -52,6 +54,8 @@ class Canvas extends Component {
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
+        this.setIntents = this.setIntents.bind(this);
+        this.setSlots = this.setSlots.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
         this.createSkill = this.createSkill.bind(this);
         this.publishAMZN = this.publishAMZN.bind(this);
@@ -68,7 +72,7 @@ class Canvas extends Component {
         this.zoom = this.zoom.bind(this);
         this.buildDiagrams = null;
         this.loadUserModules = this.loadUserModules.bind(this);
-        this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
+        this.handleTemplateIntent = this.handleTemplateIntent.bind(this);
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
         this.createWithTemplate = this.createWithTemplate.bind(this);
@@ -163,7 +167,11 @@ class Canvas extends Component {
             help: null,
             helpOpen: false,
             user_modules: null,
-            user_templates: []
+            user_templates: [],
+            intents: [],
+            intents_open: [],
+            slots: [],
+            slots_open: []
         };
 
         if(!this.state.newSkill){
@@ -218,7 +226,7 @@ class Canvas extends Component {
         });
     }
 
-    handleTemplateChoice(module){
+    handleTemplateIntent(module){
         this.toggleTemplateConfirm(module);
     }
 
@@ -471,7 +479,8 @@ class Canvas extends Component {
                 data: data,
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
-                permissions: permissions
+                permissions: permissions,
+
             }
 
             axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
@@ -693,6 +702,23 @@ class Canvas extends Component {
         });
     }
 
+    setSlots(slots, slots_open) {
+        this.setState({
+            slots: slots,
+            slots_open: slots_open ? slots_open : this.state.slots_open,
+            saved: false
+        });
+    }
+
+    setIntents(intents, intents_open) {
+        console.log("SETINTENTS", intents, intents_open)
+        this.setState({
+            intents: intents ? intents : this.state.intents,
+            intents_open: intents_open ? intents_open : this.state.intents_open,
+            saved: false
+        });
+    }
+
     toggleTestModal() {
         this.setState({
             testing_info: false,
@@ -899,10 +925,7 @@ class Canvas extends Component {
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
                     choices: [],
-                    inputs: [],
-                    inputs_open: [],
-                    slots_open: [],
-                    slots: []
+                    mapping: []
                 };
             } else if (type === 'audio') {
                 node.addInPort(' ')
@@ -1133,7 +1156,7 @@ class Canvas extends Component {
                     build={fn => this.buildDiagrams = fn}
                     user_modules={this.state.user_modules}
                     user_templates={this.state.user_templates}
-                    onTemplateChoice={this.handleTemplateChoice}
+                    onTemplateIntent={this.handleTemplateIntent}
                     onFlowRenamed={this.onFlowRenamed}
                     history={this.props.history}
                 />
@@ -1186,6 +1209,12 @@ class Canvas extends Component {
                     enterFlow={this.enterFlow}
                     removeNode={this.removeNode}
                     user_modules={this.state.user_modules}
+                    intents={this.state.intents}
+                    intents_open={this.state.intents_open}
+                    onIntent={this.setIntents}
+                    slots={this.state.slots}
+                    slots_open={this.state.slots_open}
+                    onSlot={this.setSlots}
                 />
             </div>
         );

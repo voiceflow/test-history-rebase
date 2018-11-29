@@ -16,14 +16,6 @@ const defaultVariables = {
 const sections = [{
     title: 'Basic',
     items: [
-<<<<<<< HEAD
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to talk to the user' },
-        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Add sound effects & audio clips under 240 seconds' },
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user'  },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
-        { text: 'Command', type: 'command', icon: '⌘', tip: 'Add shortcuts for your users to navigate your skill quickly'},
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
-=======
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Speak blocks let you control what Alexa says to the user' },
         { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Audio blocks let you add sound effects & audio clips under 240 seconds' },
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream blocks let you stream long audio files & URLs for the user'  },
@@ -31,7 +23,6 @@ const sections = [{
         { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-project-diagram"/>, tip: 'Interaction blocks select choices and capture slot values from user input' },
         { text: 'Command', type: 'command', icon: '⌘', tip: 'Command blocks add shortcuts for your users to navigate your skill quickly'},
         { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Comment blocks can be used to add notes to your skills'  }
->>>>>>> ineractions
     ]
 },{
     title: 'Advanced',
@@ -314,6 +305,29 @@ class Menu extends PureComponent {
         //     block_module_group = null;
         // }
 
+        if(this.state.tab === 'modules'){
+            if(this.props.user_modules){
+                content = 
+                <div>
+                {this.props.user_modules.map((user_module, i) => {
+                    return <ModuleItem module={user_module} key={i} />;
+                })}
+                </div>
+            }else{
+                content = <div>No flows, visit Marketplace</div>
+            }
+        } else if(this.state.tab === 'templates'){
+            if(this.props.user_templates){
+                content = 
+                <div>
+                {this.props.user_templates.map((user_template, i) => {
+                    return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
+                })}
+                </div>
+            }else{
+                content = <div>No templates, visit Marketplace</div>
+            }
+        }
         return (
             <div className="Menu">
                 <div className='toolbar'>

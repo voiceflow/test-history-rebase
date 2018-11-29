@@ -244,7 +244,7 @@ class Menu extends PureComponent {
                     })}
                     </div>
                 }else{ 
-                    block_content = <div className="mt-2 text-center text-muted"><img className="image-editor mt-4 mb-3" src={"/empty.png"}/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
+                    block_content = <div className="mt-2 text-center text-muted"><img className="image-editor mt-4 mb-3" src="/empty.png" alt="empty"/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
                 }
             }
             content = <React.Fragment>
@@ -304,6 +304,7 @@ class Menu extends PureComponent {
             let variable_tab;
             if(this.state.variable_tab_state === 'global'){
                 variable_tab = <React.Fragment>
+                    {/*<span className="text-muted">Global variables can be accessed anywhere in the project</span>*/}
                     <form onSubmit={this.addGlobalVariable}>
                         <FormGroup className="mb-0">
                             <Label>Add New Global Variable</Label>
@@ -331,9 +332,10 @@ class Menu extends PureComponent {
                 </React.Fragment>
             }else if(this.state.variable_tab_state === 'local'){
                 variable_tab = <React.Fragment>
+                    {/*<span className="text-muted">Local Variables are accessed only by the current flow</span>*/}
                     <form onSubmit={this.addVariable}>
                         <FormGroup className="mb-0">
-                            <Label>Add New Variable</Label>
+                            <Label>Add New Local Variable</Label>
                             <InputGroup>
                                 <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
                                 <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
@@ -342,7 +344,7 @@ class Menu extends PureComponent {
                     </form>
                     <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
                     <div>
-                        <Label>Variables</Label>
+                        <Label>Local Variables</Label>
                         <div className="variables">
                             {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
                                 return <div key={variable} className="variable_tag">

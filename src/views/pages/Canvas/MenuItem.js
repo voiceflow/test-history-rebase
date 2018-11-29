@@ -17,7 +17,8 @@ class MenuItem extends Component {
                 <div className="MenuText">
                     <span>{this.props.item.text}</span>
                     <Tooltip 
-                        html={<div style={{ width: 165 }}>{this.props.item.tip}</div>} 
+                        html={<div style={{ maxWidth: 165 }}>{this.props.item.tip}</div>}
+                        offset={-85} 
                         className="menu-tip"
                         position="bottom"
                     >

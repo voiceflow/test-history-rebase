@@ -84,6 +84,11 @@ class Menu extends PureComponent {
         this.updateTree = this.updateTree.bind(this);
         this.toggleBlockSection = this.toggleBlockSection.bind(this);
         this.visited = new Set();
+        this.sections = sections;
+
+        if(window.user_detail.admin === 10){
+            sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> })
+        }
     }
 
     componentDidMount() {
@@ -217,7 +222,7 @@ class Menu extends PureComponent {
             let block_content;
             if(this.state.block_tab_state === 'blocks'){
                 block_content =
-                    sections.map((section, i) => {
+                    this.sections.map((section, i) => {
                         return <div key={i} className="section no-select">
                             <span 
                                 className="section-title" 
@@ -248,10 +253,10 @@ class Menu extends PureComponent {
                 }
             }
             content = <React.Fragment>
-                <ButtonGroup className="toggle-group mb-2">
+                {/*<ButtonGroup className="toggle-group mb-2">
                     <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
                     <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Flows</Button>
-                </ButtonGroup>
+                </ButtonGroup>*/}
                 {block_content}
             </React.Fragment>
         }else if(this.state.tab === 'project'){
@@ -289,7 +294,7 @@ class Menu extends PureComponent {
                     })}
                     <hr className='mb-2 mt-4'/>                
                 </React.Fragment>}
-                <label>Templates</label>
+                {/*<label>Templates</label>
                 {this.props.user_templates.length > 0?
                     <div>
                     {this.props.user_templates.map((user_template, i) => {
@@ -298,7 +303,7 @@ class Menu extends PureComponent {
                     </div>
                     :
                     <div className="text-muted">You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
-                }
+                }*/}
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
             let variable_tab;

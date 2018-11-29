@@ -555,11 +555,11 @@
     /*box-shadow: 0 0 0 1px rgba(144,164,174,.2);*/
     border-right: 1px solid #E2E9EC;
     background-color: #fff !important;
-    -webkit-transform: translateX(-240px);
-    -moz-transform: translateX(-240px);
-    -ms-transform: translateX(-240px);
-    -o-transform: translateX(-240px);
-    transform: translateX(-240px);
+    -webkit-transform: translateX(-340px);
+    -moz-transform: translateX(-340px);
+    -ms-transform: translateX(-340px);
+    -o-transform: translateX(-340px);
+    transform: translateX(-340px);
     -webkit-transition: -webkit-transform .3s;
     -moz-transition: -moz-transform .3s;
     transition: transform .3s;
@@ -1646,7 +1646,6 @@ button.close{
     /*padding: 5px 10px 0px 10px;*/
     padding-top: 2px;
     height: 22px;
-    width: 35px;
     padding-left: 7px;
     padding-right: 7px;
     text-align: center;
@@ -1668,20 +1667,13 @@ button.close{
     border: none;
     color: #95a6bd;
 }
-.interaction-title input{
-    flex: 1;
-    border: none;
-    color: #95a6bd;
-}
+
 .expression-block.plus, .expression-block.minus{
     background-color: #f4f7f8 !important;
     border: 1px solid #ced4da !important;
         
 }
 .choice-title input:focus{
-    outline: none;
-}
-.interaction-title input:focus{
     outline: none;
 }
 

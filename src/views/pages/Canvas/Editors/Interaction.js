@@ -1,100 +1,103 @@
 import React, { Component } from 'react';
-import InteractionInputs from './components/InteractionInputs';
-import SlotMappings from './components/SlotMappings'
+import IntentInputs from './components/IntentInputs';
+import SlotInputs from './components/SlotInputs'
 
 class Interaction extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            node: this.props.node,
-            voices: Array.isArray(this.props.voices) ? this.props.voices : []
+            intents: this.props.intents,
+            slots: this.props.slots,
+            intents_open: this.props.intents_open,
+            slots_open: this.props.slots_open,
+            node: this.props.node
         };
         
-        this.handleInputsChange = this.handleInputsChange.bind(this);
-        this.handleAddChoice = this.handleAddChoice.bind(this);
-        this.handleRemoveChoice = this.handleRemoveChoice.bind(this);
+        this.handleIntentsChange = this.handleIntentsChange.bind(this);
+        this.handleAddIntent = this.handleAddIntent.bind(this);
+        this.handleRemoveIntent = this.handleRemoveIntent.bind(this);
 
         this.handleSlotsChange = this.handleSlotsChange.bind(this);
         this.handleAddSlot = this.handleAddSlot.bind(this);
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
     }
 
-    handleInputsChange(new_inputs, i) {
-        var node = this.state.node;
-
-        node.extras.inputs[i] = new_inputs;        
+    handleIntentsChange(intents, intents_open) {  
         this.setState({
-            node: node
-        }, this.props.onUpdate);
+            intents: intents,
+            intents_open: intents_open
+        }, () => {this.props.onIntent(intents, intents_open)});
     }
 
-    handleSlotsChange(new_slot, i) {
-        var node = this.state.node;
-
-        node.extras.slots[i] = new_slot;        
+    handleSlotsChange(slots, slots_open) {     
         this.setState({
-            node: node
-        }, this.props.onUpdate);
+            slots: slots,
+            slots_open: slots_open
+        },  () => {this.props.onSlot(slots, slots_open)});
     }
 
-    handleAddChoice(e) {
-        // console.log(this.state.node.extras.choices);
-        var node = this.state.node;
-        node.extras.choices.push('New Choice');
-        node.extras.inputs.push('');
-        node.extras.inputs_open.push(true);
-        let test = node.addOutPort(node.extras.choices.length);
-        test.setMaximumLinks(1);
+    handleAddIntent(e) {
+        // console.log(this.state.intents);
+        const intents = this.state.intents;
+        const intents_open = this.state.intents_open;
+
+        let num = 1
+        while(intents.map(e => {return e.name}).includes(`New Intent ${num}`)) {
+            num += 1;
+        }
+
+        intents.push( {name: `New Intent ${num}`, inputs: []});
+        intents_open.push(true);
 
         this.setState({
-            node: node
-        }, this.props.onUpdate);
-        this.props.repaint();
+            intents: intents,
+            intents_open: intents_open,
+        }, () => {this.props.onIntent(intents, intents_open)});
         e.preventDefault();
     }
 
     handleAddSlot(e) {
-        var node = this.state.node;
-        node.extras.slots.push({ name : 'New Slot', inputs: [], type: ''});
-        node.extras.slots_open.push(true);
+        const slots = this.state.slots;
+        const slots_open = this.state.slots_open;
 
-        this.setState({
-            node: node
-        }, this.props.onUpdate);
-        this.props.repaint();
-        e.preventDefault();
-    }
-
-    handleRemoveChoice(e, i) {
-        var node = this.state.node;
-        for (var name in node.getPorts()) {
-            var port = node.getPort(name);
-
-            if (port.label === node.extras.choices.length) {
-                node.removePort(port);
-                break;
-            }
+        let num = 1
+        while(slots.map(e => {return e.name}).includes(`New Slot ${num}`)) {
+            num += 1;
         }
-        node.extras.choices.splice(i, 1);
-        node.extras.inputs.splice(i, 1);
-        node.extras.inputs_open.splice(i, 1);
+
+        slots.push({name: `New Slot ${num}`, inputs: [], type: ''})
+        slots_open.push(true);
+
         this.setState({
-            node: node
-        }, this.props.onUpdate);
-        this.props.repaint();
+            slots: slots,
+            slots_open: slots_open,
+        }, () => {this.props.onSlot(slots, slots_open)});
         e.preventDefault();
     }
 
+    handleRemoveIntent(e, i) {
+        const intents = this.state.intents;
+        const intents_open = this.state.intents_open;
+        intents.splice(i, 1);
+        intents_open.splice(i, 1);
+        this.setState({
+            intents: intents,
+            intents_open: intents_open,
+         }, () => {this.props.onIntent(intents, intents_open)});
+        e.preventDefault();
+    }
 
     handleRemoveSlot(e, i) {
-        var node = this.state.node;
-        node.extras.slots.splice(i, 1);
-        node.extras.slots_open.splice(i, 1);
+        const slots = this.state.slots;
+        const slots_open = this.state.slots_open;
+
+        slots.splice(i, 1);
+        slots_open.splice(i, 1);
         this.setState({
-            node: node
-        }, this.props.onUpdate);
-        this.props.repaint();
+            slots: slots,
+            slots_open: slots_open,
+        }, () => {this.props.onSlot(slots, slots_open)});
         e.preventDefault();
     }
 
@@ -104,20 +107,23 @@ class Interaction extends Component {
                 <label>
                     Choices
                 </label>
-                <InteractionInputs
-                    choices={this.state.node.extras.choices}
-                    inputs={this.state.node.extras.inputs}
-                    open = {this.state.node.extras.inputs_open}
-                    onAdd={this.handleAddChoice}
-                    onRemove={this.handleRemoveChoice}
-                    onChange={this.handleInputsChange}
+                <label>
+                    Intents
+                </label>
+                <IntentInputs
+                    intents={this.state.intents}
+                    open = {this.state.intents_open}
+                    onAdd={this.handleAddIntent}
+                    onRemove={this.handleRemoveIntent}
+                    onChange={this.handleIntentsChange}
+                    slots = {this.state.slots}
                 />
                 <label>
                     Slots
                 </label>
-                <SlotMappings
-                    slots = {this.state.node.extras.slots}
-                    open = {this.state.node.extras.slots_open}
+                <SlotInputs
+                    slots = {this.state.slots}
+                    open = {this.state.slots_open}
                     onAdd={this.handleAddSlot}
                     onRemove={this.handleRemoveSlot}
                     onChange={this.handleSlotsChange}

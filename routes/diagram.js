@@ -366,12 +366,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     };
                 } else if (node.extras.type === 'interaction') {
                     story.lines[node.id] = {
-                        prompt: true,
                         choices: node.extras.choices,
-                        inputs: node.extras.inputs,
-                        inputs_open: node.extras.inputs_open,
-                        slots_open: node.extras.slots_open,
-                        slots: node.extras.slots,
+                        mapping: node.extras.mapping,
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {

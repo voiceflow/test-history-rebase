@@ -157,9 +157,17 @@ button:focus{
 /*    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;*/
 }
 .btn-secondary{
-    color: #fff !important;
-    background-color: #3d96f0 !important;
-    border: 1px solid #3d96f0 !important;
+    color: #fff;
+    background-color: #42A5FF;
+    border: 1px solid #42A5FF;
+}
+.btn-secondary:hover{
+    background-color: #0086ff;
+    border: 1px solid #0086ff;
+}
+.btn-secondary:active{
+    background-color: #0074de !important;
+    border: 1px solid #0074de !important;
 }
 .form-control{
     color: #2b3950 !important;

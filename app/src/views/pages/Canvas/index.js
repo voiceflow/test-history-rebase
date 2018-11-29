@@ -1137,6 +1137,7 @@ class Canvas extends Component {
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} 
                         diagrams={this.state.diagrams}
+                        globals={this.state.global_variables}
                     /> 
                 : null}
                 <Menu 

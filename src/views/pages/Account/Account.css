@@ -34,7 +34,7 @@
     overflow: hidden;
 }
 
-#login-form, #signup-form{
+#login-form, #signup-form, #reset-form{
     height: 100%;
     background-color: #f5f7f8;
     display: flex;
@@ -54,12 +54,16 @@
     align-items: center;
     /*text-align: center;*/
 }
-#login-form > div, #signup-form > div{
-    max-width: 600px;
+#login-form > div, #signup-form > div, #reset-form > div{
+    max-width: 440px;
     background-color: #fff;
-    min-width: 440px;
+    width: 440px;
     border-radius: 6px;
     box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+}
+
+#reset-form .reset-div{
+    min-height: 140px;
 }
 
 .form-group > label {

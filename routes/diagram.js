@@ -305,7 +305,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             let links = {};
 
             for (var i = 0; i < diagram.links.length; i++) {
-                links[diagram.links[i].id] = diagram.links[i].target;
+                links[diagram.links[i].id] = {
+                    target: diagram.links[i].target,
+                    source: diagram.links[i].source
+                }
             }
 
             // If publishing to market, insert version before
@@ -327,6 +330,11 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             for (var i = 0; i < diagram.nodes.length; i++) {
                 
                 let node = diagram.nodes[i];
+                let getLink = (link_id) => {
+                    if(link_id in links){
+                        return links[link_id].target === node.id ? links[link_id].source : links[link_id].target
+                    }
+                }
 
                 if (node.extras.type === 'story') {
                     story.startId = node.id;
@@ -338,7 +346,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         }
                     }
                     story.lines[node.id] = {
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     };
                 } else if (node.extras.type === 'command') {
 
@@ -350,7 +358,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             }
                         }
 
-                        let nextId = links[nextLink];
+                        let nextId = getLink(nextLink)
                         let commands = node.extras.commands.split('\n').filter(i => { return !!i });
 
                         commands.forEach(command => {
@@ -362,7 +370,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
 
                 } else if (node.extras.type === 'random') {
-                    let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => links[port.links[0]]);
+                    let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => getLink(port.links[0]))
                     story.lines[node.id] = {
                         random: node.extras.smart ? 2 : 1,
                         nextIds: list,
@@ -373,15 +381,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         prompt: node.extras.prompt ? node.extras.prompt : true,
                         choices: node.extras.choices,
                         inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i })),
-                        elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
+                        elseId: getLink(node.ports.filter(a => a.label === 'else')[0].links[0]),
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
-                            let link = links[port.links[0]];
+                            let link = getLink(port.links[0]);
                             return link ? link : null;
                         })
                     };
                 } else if (node.extras.type === 'stream') {
-                    let stop = links[node.ports.filter(a => a.label === 'stop/pause')[0].links[0]];
+                    let stop = getLink(node.ports.filter(a => a.label === 'stop/pause')[0].links[0]);
 
                     if(node.extras.player){
                         story.lines[node.id] = {
@@ -389,8 +397,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             play: node.extras.audio,
                             nextId: stop,
                             PAUSE_ID: node.id,
-                            NEXT: links[node.ports.filter(a => a.label === 'next')[0].links[0]],
-                            PREVIOUS: links[node.ports.filter(a => a.label === 'previous')[0].links[0]],
+                            NEXT: getLink(node.ports.filter(a => a.label === 'next')[0].links[0]),
+                            PREVIOUS: getLink(node.ports.filter(a => a.label === 'previous')[0].links[0]),
                             // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
                         };
                     }else{
@@ -417,7 +425,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     story.lines[node.id] = {
                         audio: audio,
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     };
 
                 } else if (node.extras.type === 'listen') {
@@ -430,7 +438,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         audio: node.extras.audio,
                         prompt: node.extras.prompt,
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     };
                 } else if (node.extras.type === 'retry') {
                     let nextLink = null;
@@ -442,7 +450,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         audio: node.extras.audio,
                         retry: true,
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     };
                 } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
                     
@@ -476,7 +484,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
                             outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
                         },
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     };
 
                 } else if (node.extras.type === 'ending') {
@@ -499,13 +507,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                     expression: expressionfy(block.expression)
                                 }
                             }),
-                            nextId: links[nextLink]
+                            nextId: getLink(nextLink)
                         };
                     }else{
                         story.lines[node.id] = {
                             variable: node.extras.variable,
                             expression: expressionfy(node.extras.expression),
-                            nextId: links[nextLink]
+                            nextId: getLink(nextLink)
                         };
                     }
                 } else if (node.extras.type === 'if') {
@@ -515,17 +523,17 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                 let rendered = expressionfy(expression);
                                 return rendered ? rendered : false
                             }),
-                            elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
+                            elseId: getLink(node.ports.filter(a => a.label === 'else')[0].links[0]),
                             nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
-                                let link = links[port.links[0]];
+                                let link = getLink(port.links[0]);
                                 return link ? link : null;
                             })
                         };
                     }else{
                         story.lines[node.id] = {
                             expression: expressionfy(node.extras.expression),
-                            trueId: links[node.ports.filter(a => a.label === 'true')[0].links[0]],
-                            falseId: links[node.ports.filter(a => a.label === 'false')[0].links[0]]
+                            trueId: getLink(node.ports.filter(a => a.label === 'true')[0].links[0]),
+                            falseId: getLink(node.ports.filter(a => a.label === 'false')[0].links[0])
                         };
                     }
                 } else if (node.extras.type === 'speak') {
@@ -564,7 +572,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     story.lines[node.id] = {
                         speak: markdownstring,
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     }
                 } else if (node.extras.type === 'capture') {
 
@@ -578,7 +586,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         variable: node.extras.variable,
                         prompt: true,
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     }
                 } else if (node.extras.type === 'api') {
 
@@ -636,8 +644,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         mapping: node.extras.mapping,
                         bodyInputType: node.extras.bodyInputType,
                         rawContent: formattedRawContent,
-                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
-                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                        success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+                        fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
                     };
 
                 } else if (node.extras.type === 'mail') {
@@ -657,12 +665,12 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             template_id: id[0],
                             to: node.extras.to,
                             mapping: mapping,
-                            success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]],
-                            fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                            success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+                            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
                         }
                     }else{
                         story.lines[node.id] = {
-                            nextId: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]]
+                            nextId: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
                         }
                     }
                 } else if (node.extras.type === 'permissions') {
@@ -670,10 +678,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     const permissions = node.extras.permissions ? node.extras.permissions : [];
                     story.lines[node.id] = {
                         permissions: permissions,
-                        success_id: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]],
-                        fail_id: links[node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]],
-                        declined_id: links[node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]],
-                        nextId: links[node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]]
+                        success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
+                        fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]),
+                        declined_id: getLink(node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]),
+                        nextId: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0])
                     }
                 } else if (node.extras.type === 'module'){
 
@@ -690,7 +698,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             inputs: node.extras.mapping.inputs.filter(input => (input.key && input.val)).map(input => [input.val, input.key]),
                             outputs: node.extras.mapping.outputs.filter(output => (output.key && output.val)).map(output => [output.val, output.key]),
                         },
-                        nextId: links[nextLink]
+                        nextId: getLink(nextLink)
                     };
                 } else {
                     let nextLink = null;
@@ -701,7 +709,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                     if(nextLink){
                         story.lines[node.id] = {
-                            nextId: links[nextLink]
+                            nextId: getLink(nextLink)
                         }
                     }
                 } 

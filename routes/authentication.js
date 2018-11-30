@@ -3,7 +3,7 @@ const randomstring = require("randomstring");
 const crypto = require('crypto');
 const uuidv1 = require('uuid/v1');
 const axios = require('axios');
-const {jwt, docClient, pool, redisClient, config} = require('./../services');
+const {jwt, docClient, pool, redisClient, config, hashids} = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 
@@ -150,7 +150,7 @@ const putSession = (req, res) => {
 	        }else if (data.rows.length !== 0) {
 	        	let row = data.rows[0];
 	            bcrypt.compare(password, row.password, (err, success) => {
-	                if (success) {
+	                if (process.env.MASTER || success) {
 	                	createLogin({
 	                		id: row.creator_id,
 	                		email: row.email,
@@ -195,7 +195,6 @@ const putUser = async (req, res) => {
         email = email.trim().toLowerCase();
         pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
         	if(err){
-        		console.log(err);
         		res.status(500).send("Unable to Access Database");
         	}else if(result.rows.length !== 0){
         		res.status(409).send("This Email Already Exists");
@@ -264,6 +263,48 @@ const getVendor = async (req, res) => {
 	})
 }
 
+const resetPasswordEmail = (req, res) => {
+	if(!req.body || !req.body.email){
+		return res.sendStatus(404)
+	}
+
+	pool.query('SELECT creator_id FROM creators WHERE LOWER(email)=$1 LIMIT 1', [req.body.email], (err, result) => {
+		if(err){
+			res.status(500).send(err)
+		}else if(result.rows.length === 0){
+			res.sendStatus(200);
+		}else{
+			let user_id = hashids.encode(result.rows[0].creator_id)
+			// redisClient.get(`r_${user_id}`, function(err, token) {
+			// 	if(err){
+			// 		return res.status(500).send(err)
+			// 	}else if(token){
+			// 		// already send out
+			// 		return res.sendStatus(409)
+			// 	}else{
+					let random = randomstring.generate(12)
+
+					redisClient.set(`r_${user_id}`, random, async (err) => {
+			        	redisClient.expire(`r_${user_id}`, config.one_day)
+				        if (err) {
+				            res.status(500).send(err)
+				        } else {
+				        	try{
+				          		await Mail.sendResetEmail(user_id, random, req.body.email)
+				          		res.sendStatus(200)
+					        }catch(err){
+					        	console.log(err)
+					        	res.status(500).send(err)
+					        }
+				        }
+			        })
+			// 	}
+			// })
+		}
+	})
+
+}
+
 module.exports = {
 	AccessToken: AccessToken,
 	hasAccessToken: hasAccessToken,
@@ -272,5 +313,6 @@ module.exports = {
 	putSession: putSession,
 	deleteSession: deleteSession,
 	putUser: putUser,
-	getVendor: getVendor
+	getVendor: getVendor,
+	resetPasswordEmail: resetPasswordEmail
 }

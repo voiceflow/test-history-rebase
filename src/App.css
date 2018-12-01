@@ -12,11 +12,17 @@ body {
 button:focus{
     outline: none;
 }
+audio {
+    width: 275px;
+}
+.pt-45{
+    padding-top: 2.5rem !important;
+}
 .btn-primary{
     border: 1px solid #2295FA !important;
     /*border: none;*/
-    color: #fff !important;
-    font-weight: normal !important;
+    color: #fff;
+    font-weight: normal;
     background: linear-gradient(#2295FA, #1B86F9);
     text-transform: none !important;
 /*    box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;*/
@@ -89,12 +95,21 @@ button:focus{
     border: 1px solid #d4d9e6;
     color: #8da2b5 !important;
     background-color: #fff !important;
-    font-weight: 600;
 }
 .btn-default:hover{
     background-color: #fff;
     color: #0095f7 !important;
 /*    box-shadow: inset 0 0 0 1px rgba(144,164,174,.5);*/
+}
+.btn-default.exit{
+    margin-right: 4px;
+}
+.btn-default.exit i{
+    transition: all 0.2s ease !important;
+    margin-right: 4px;
+}
+.btn-default.exit:hover i{
+    transform: translateX(-2px)
 }
 .normal-btn{
     text-transform: none !important;
@@ -273,8 +288,9 @@ input, textarea, .text-to-voice, .choice-block, .solid-border{
     border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
-input::placeholder, textarea::placeholder {
+input::placeholder, textarea::placeholder, input.form-control::placeholder, textarea.form-control::placeholder {
     font-weight: lighter !important;
+    color: #d4d9e6;
 }
 .TitleBar .publish-btn:hover{
     color: #3d96f0 !important;
@@ -307,13 +323,13 @@ input::placeholder, textarea::placeholder {
     width: 100%;
     overflow: visible;
     min-height: 40px;
-    transition: all .2s ease-in-out;
+    transition: transform .2s, background-color .2s, color .2s, border .2s;
     height: 170px;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
     align-items: center;
     flex-direction: column;
-    padding: 0px 10px;
+    padding: 25px 20px 0px 20px;
     position: relative;
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
@@ -324,25 +340,37 @@ input::placeholder, textarea::placeholder {
     cursor: pointer;
     background-color: #F5F7FA;
 }
-.dropzone:hover{
+.dropzone.enter-url, .audio-box, .image-box {
+    cursor: default;
+    border-style: solid !important;
+    transform: scale(1) !important;
+    opacity: 1 !important;
+}
+.dropzone.enter-url button{
+    padding: 5px 10.5px !important;
+    margin-top: 10px;
+}
+.dropzone:hover, .dropzone.active{
     border: 2px dashed #42A5FF;
     background-color: #EDF3FE;
 }
+.dropzone.active{
+    transform: scale(1.01);
+    opacity: 0.8;
+}
 .prompt {
-    padding: 20px;
     text-align: center;
     cursor: pointer;
     color: #95A6BD;
-    font-size: 0.8rem;
 }
 
 .pointer {
     cursor: pointer;
 }
 
-.prompt b {
-    font-size: 1rem;
+.prompt b, .prompt-text {
     color: #95A6BD;
+    font-size: 1rem;
     font-weight: normal;
 }
 
@@ -368,19 +396,14 @@ input::placeholder, textarea::placeholder {
 
 .audio-box>button, .image-box>button{
     position: absolute;
-    top: -1px;
-    right: -1px;
+    top: -2px;
+    right: -2px;
     border-radius: 0;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .audio-box>div, .combined-box>div{
     margin-bottom: 10px;
-}
-
-.dropzone.active, .dropzone:hover {
-    transform: scale(1.01);
-    opacity: 0.8;
 }
 
 .dropzone.active {
@@ -408,6 +431,16 @@ input::placeholder, textarea::placeholder {
     margin: 0 5px;
     line-height: 30px;
     white-space: nowrap;
+}
+
+.upload-btn i{
+    display: block;
+    margin: 2px 0;
+}
+.upload-btn{
+    font-size: 14px;
+    flex: 1;
+    margin: 2px;
 }
 
 .input-group {

@@ -28,4 +28,16 @@ describe('App', () => {
       expect(app.exists('#signup-form .alert-danger')).toBe(true);
     }, 500);
   });
+  it('onboards on first login', () => {
+    const app = mount(<App />);
+    app.find('#login-form input[name="email"]')
+      .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
+    app.find('#login-form input[name="password"]')
+      .simulate('change', {target: {value:'password'}});
+    app.find('#login-form button[type="submit"]')
+      .simulate('click');
+    setTimeout(() => {
+      expect(app.exists('.onboarding-survey')).toBe(true);
+    }, 500);
+  });
 });

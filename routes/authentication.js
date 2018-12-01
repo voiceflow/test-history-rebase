@@ -268,41 +268,96 @@ const resetPasswordEmail = (req, res) => {
 		return res.sendStatus(404)
 	}
 
-	pool.query('SELECT creator_id FROM creators WHERE LOWER(email)=$1 LIMIT 1', [req.body.email], (err, result) => {
+	pool.query('SELECT creator_id, name FROM creators WHERE LOWER(email)=$1 LIMIT 1', [req.body.email], (err, result) => {
 		if(err){
 			res.status(500).send(err)
 		}else if(result.rows.length === 0){
-			res.sendStatus(200);
+			res.sendStatus(200)
 		}else{
 			let user_id = hashids.encode(result.rows[0].creator_id)
-			// redisClient.get(`r_${user_id}`, function(err, token) {
-			// 	if(err){
-			// 		return res.status(500).send(err)
-			// 	}else if(token){
-			// 		// already send out
-			// 		return res.sendStatus(409)
-			// 	}else{
-					let random = randomstring.generate(12)
+			let name = result.rows[0].name
+			redisClient.get(`r_${user_id}`, function(err, token) {
+				let random
+				if(err){
+					return res.status(500).send(err)
+				}else if(token){
+					let last_num = (token.substr(-1)*1)
+					if(last_num > 3){
+						// too many requests
+						return res.sendStatus(409)
+					}else{
+						// incremement the token by 1
+						random = token.slice(0, -1) + (last_num + 1).toString()
+					}
+				}else{
+					// generate a random string
+					random = randomstring.generate(12) + '1'
+				}
 
-					redisClient.set(`r_${user_id}`, random, async (err) => {
-			        	redisClient.expire(`r_${user_id}`, config.one_day)
-				        if (err) {
-				            res.status(500).send(err)
-				        } else {
-				        	try{
-				          		await Mail.sendResetEmail(user_id, random, req.body.email)
-				          		res.sendStatus(200)
-					        }catch(err){
-					        	console.log(err)
-					        	res.status(500).send(err)
-					        }
+				redisClient.set(`r_${user_id}`, random, async (err) => {
+		        	redisClient.expire(`r_${user_id}`, config.one_day)
+			        if (err) {
+			            res.status(500).send(err)
+			        } else {
+			        	try{
+			          		await Mail.sendResetEmail(name, user_id, random, req.body.email)
+			          		res.sendStatus(200)
+				        }catch(err){
+				        	console.log(err)
+				        	res.status(500).send(err)
 				        }
-			        })
-			// 	}
-			// })
+			        }
+		        })
+			})
 		}
 	})
+}
 
+const reset = (req, res, reset=false) => {
+	if(req.params.token.length < 21){
+		return res.sendStatus(400)
+	}
+
+	let token = req.params.token.substring(0, 12)
+	let user_id = req.params.token.substring(13)
+	let decode_id = hashids.decode(user_id)
+	if(!decode_id){
+		return res.sendStatus(400)
+	}else{
+		decode_id = decode_id[0]
+	}
+
+	redisClient.get(`r_${user_id}`, function(err, res_token) {
+		if(err){
+			return res.status(500).send(err)
+		}else if(!res_token || res_token.substring(0,12) !== token){
+			return res.sendStatus(404)
+		}else{
+			if(reset === true){
+				if(!req.body.password) return res.sendStatus(400)
+				// actually reset the password
+				bcrypt.hash(req.body.password, 10, (err, hash) => {
+	                if (err) {
+	                    console.error(err)
+	                    res.status(500).send('Password Error')
+	                } else {
+	                	pool.query('UPDATE creators SET password = $1 WHERE creator_id = $2', [hash, decode_id], (err) => {
+	                		if(err){
+	                			console.error(err)
+								res.status(500).send(err)
+							}else{
+								redisClient.del(`r_${user_id}`);
+								res.sendStatus(200)
+							}
+	                	})
+	                }
+	            })
+			}else{
+				// just checking that the token is valid
+				res.sendStatus(200)
+			}
+		}
+	})
 }
 
 module.exports = {
@@ -314,5 +369,7 @@ module.exports = {
 	deleteSession: deleteSession,
 	putUser: putUser,
 	getVendor: getVendor,
-	resetPasswordEmail: resetPasswordEmail
+	resetPasswordEmail: resetPasswordEmail,
+	checkReset: (req, res) => reset(req, res),
+	resetPassword: (req, res) => reset(req, res, true)
 }

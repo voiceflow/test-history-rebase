@@ -38,13 +38,13 @@ exports.sendOnboarding = (email, name, cb) => {
     }
 };
 
-exports.sendResetEmail = async (user_id, random, email) => {
+exports.sendResetEmail = async (name, user_id, random, email) => {
     if (typeof name !== 'string') {
         name = null
     }
 
     let data = {
-        'template_id': 'd-b441b871a9584356b79536653f62d6e0',
+        'template_id': 'd-cf3cc12b32b64519a7c2a55568957c3b',
         'from': {
             'email': 'reset@getvoiceflow.com',
             'name': 'VoiceFlow Team'
@@ -57,7 +57,8 @@ exports.sendResetEmail = async (user_id, random, email) => {
                     }
                 ],
                 "dynamic_template_data":{
-                    link: `${user_id}${random}`
+                    link: `${random}${user_id}`,
+                    name: name
                 }
             }
         ]

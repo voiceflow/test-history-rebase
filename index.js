@@ -105,6 +105,9 @@ app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);
 app.post('/user/reset', Authentication.resetPasswordEmail);
+app.get('/user/reset/:token', Authentication.checkReset);
+app.post('/user/reset/:token', Authentication.resetPassword);
+app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Button, FormGroup, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 
@@ -75,6 +75,8 @@ class Reset extends Component {
             If an Account is associated with the Email, a reset link has been sent
           </Alert>
         </div>
+      default:
+        return null
     }
   }
 

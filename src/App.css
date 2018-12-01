@@ -170,12 +170,13 @@ button:focus{
     border: 1px solid #0074de !important;
 }
 .form-control{
-    color: #2b3950 !important;
+    border: 1px solid #E2E9EC;
+    color: #2b3950;
     font-weight: 400;
 }
 .form-control:focus{
-    border: 1px solid #42A5FF !important;
-    box-shadow: none !important;
+    border: 1px solid #42A5FF;
+    box-shadow: none;
 }
 .popover-header{
     background-color: #fff !important;

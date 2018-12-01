@@ -16,6 +16,7 @@ import DashBoard from './views/pages/Dashboard';
 import Business from './views/pages/Business';
 import Account from './views/pages/Account';
 import Reset from './views/pages/Account/reset';
+import ResetPassword from './views/pages/Account/resetPassword';
 import NavBar from './views/components/NavBar';
 import Skill from './views/pages/Skill';
 import Marketplace from './views/pages/Marketplace/Marketplace';
@@ -108,6 +109,7 @@ class App extends Component {
                   return <NavBar {...props}/>
             }} /> : null }
               <Switch>
+                <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" component={Account} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Account} />

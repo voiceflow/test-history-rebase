@@ -38,7 +38,7 @@ class Reset extends Component {
     .catch(err => {
       if(err.response && err.response.status === 409){
         this.setState({
-          error: 'A Password Reset Email has already been sent to this user - Please Check your spam folders or wait 24 hours before the next attempt',
+          error: 'Too many password reset attempts - Wait 24 hours before the next attempt',
           stage: 0
         })
       }else{

@@ -140,7 +140,7 @@ class Account extends Component {
                     <Input type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Sign In</Button>
-                  {/*<div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>*/}
+                  <div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>
                   <hr/>
                   <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></div>
                 </div>

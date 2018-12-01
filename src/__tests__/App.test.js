@@ -1,10 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mount, shallow, render } from 'enzyme';
+import { pool } from '../../../services';
 import App from '../App';
 
 jest.mock('react-ga');
 
+afterAll(() => {
+  pool.query('DELETE FROM creators WHERE email = "tests@getvoiceflow.com" LIMIT 1',
+    (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+});
 
 describe('App', () => {
   it('renders without crashing', () => {
@@ -13,6 +22,20 @@ describe('App', () => {
   it('redirects to login if unauthenticated', () => {
     const app = mount(<App />);
     expect(app.exists('#signup-form')).toBe(true);
+  });
+  it('creates accounts on signup', () => {
+    const app = mount(<App />);
+    app.find('#signup-form input[name="r_name"]')
+      .simulate('change', {target: {value:'Voiceflow Tester'}});
+    app.find('#signup-form input[name="r_email"]')
+      .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
+    app.find('#signup-form input[name="r_password"]')
+      .simulate('change', {target: {value:'password'}});
+    app.find('#signup-form button[type="submit"]')
+      .simulate('click');
+    setTimeout(() => {
+      expect(app.exists('.onboarding-survey')).toBe(true);
+    }, 500);
   });
   it('disallows duplicate accounts', () => {
     const app = mount(<App />);

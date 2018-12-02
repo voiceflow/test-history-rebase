@@ -37,6 +37,20 @@ audio {
     background: linear-gradient(#1B86F9, #1B86F9);
 /*    transform: translateY(-1px) scale(1.02);*/
 }
+.btn-primary-small{
+    border: 1px solid #2295FA !important;
+    color: #fff;
+    font-weight: normal;
+    background: linear-gradient(#2295FA, #1B86F9);
+    text-transform: none !important;
+    transition: all 0.3s ease !important;
+    display: inline-block;
+    transition: all 0.25s;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 .btn-outline-primary{
     color: #0095f7;
     border: 1px solid #0095f7;
@@ -192,7 +206,7 @@ audio {
 }
 .btn-secondary:hover{
     background-color: #0086ff;
-/*    border: 1px solid #0086ff;*/
+    border: 1px solid #0086ff !important;
 }
 .btn-secondary:active{
     background-color: #0074de !important;
@@ -341,31 +355,25 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     overflow: visible;
     min-height: 40px;
     transition: transform .2s, background-color .2s, color .2s, border .2s;
-    height: 170px;
+    height: 200px;
     display: flex;
     /*justify-content: center;*/
     align-items: center;
     flex-direction: column;
-    padding: 25px 20px 0px 20px;
+    padding-top: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
     position: relative;
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-/*    border: 1px dashed #c6d4d8;*/
+    border: 1px dashed #8da2b5;
     border-radius: 5px;
-    background-color: #FFF;
+    background-color: #8da2b510 !important;
     cursor: pointer;
     background-color: #fff;
-    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
     transition: all 0.2s ease !important;
 }
-<<<<<<< HEAD
-.dropzone:hover{
-/*    border: 1px dashed #42A5FF;*/
-    background-color: #fff;
-    box-shadow:  0 0 1px 1px rgba(17,49,96,.06), 0 6px 10px 0 rgba(17,49,96,.06) !important;
-    transform: scale(1.02);
-=======
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;
     border-style: solid !important;
@@ -377,9 +385,9 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     margin-top: 10px;
 }
 .dropzone:hover, .dropzone.active{
-    border: 2px dashed #42A5FF;
-    background-color: #EDF3FE;
->>>>>>> origin/master
+    border: 1px dashed #42A5FF;
+    background-color: #EDF3FE !important;
+/*    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;*/
 }
 .dropzone.active{
     transform: scale(1.01);
@@ -389,10 +397,6 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     text-align: center;
     cursor: pointer;
     color: #95A6BD;
-<<<<<<< HEAD
-/*    font-size: 0.8rem;*/
-=======
->>>>>>> origin/master
 }
 
 .pointer {
@@ -436,14 +440,6 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
 .audio-box>div, .combined-box>div{
     margin-bottom: 10px;
 }
-
-<<<<<<< HEAD
-.dropzone.active, .dropzone:hover {
-    opacity: 1;
-}
-
-=======
->>>>>>> origin/master
 .dropzone.active {
     border-color: #28a745!important;
 }
@@ -546,10 +542,6 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     display: flex;
     justify-content: center;
     align-items: center;
-<<<<<<< HEAD
-    font-size: 14px !important;
-=======
->>>>>>> origin/master
 }
 
 .padding {

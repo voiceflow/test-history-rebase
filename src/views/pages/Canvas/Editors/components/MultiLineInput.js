@@ -69,37 +69,6 @@ class MultiLineInput extends Component {
                     <button className="close" onClick={() => {this.props.onRemove(this.state.index)}}>&times;</button>
                 </div>
                 <Collapse isOpen={this.state.line.collapse}>
-<<<<<<< HEAD
-                    {this.state.line.audio ? 
-                    <div className="audio-box">
-                        <button className="btn btn-danger" onClick={() => this.onClear()}>&times;</button>
-                        <div>{this.state.line.title}</div>
-                        <audio key={this.state.line.audio.split('/').pop()} controls>
-                            <source src={this.state.line.audio} type="audio/mpeg" />
-                        </audio>
-                    </div>
-                    :
-                    <Dropzone
-                        className="dropzone"
-                        activeClassName="active"
-                        rejectClassName="reject"
-                        multiple={false}
-                        disableClick={false}
-                        accept="audio/*"
-                        onDrop={(accepted, rejected) => this.onDrop(accepted)}
-                    >
-                    <div>
-                        <div className="prompt" className="text-muted text-center">
-                            <b>Drag and Drop Files here</b><br/>
-                            <small>OR</small><br/>
-                            <button className="outline-btn mt-1">Add files</button>
-                        </div>
-                        <div className="rejected-file text-danger">
-                            <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>
-                        </div>
-                    </div>
-                    </Dropzone>}
-=======
                     <AudioDrop
                         audio={this.state.line.audio}
                         update={(audio)=>{
@@ -108,7 +77,6 @@ class MultiLineInput extends Component {
                             this.setState({line: line}, this.props.newAudio)
                         }}
                     />
->>>>>>> origin/master
                     {this.state.line.text && this.state.line.textCollapse !== undefined ?
                         <div className="text-to-voice">
                             <div className="subtitle" onClick={() => this.toggleCollapse("textCollapse")}>Text to Speech {this.state.line.textCollapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}</div>

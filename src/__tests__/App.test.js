@@ -15,7 +15,7 @@ afterAll(() => {
   });
 });
 
-describe('App', () => {
+describe('Onboarding', () => {
   it('renders without crashing', () => {
     mount(<App />);
   });

@@ -144,9 +144,11 @@ class Editor extends Component {
             case 'audio': 
             case 'multiline':
                 // DEPRECATE OLD LINE BLOCKS
-                let node = this.state.node
-                node.extras.type = 'combine'
-                this.setState({node: node})
+                if(this.state.node.extras.type !== 'combine'){
+                    let node = this.state.node
+                    node.extras.type = 'combine'
+                    this.setState({node: node})
+                }
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
                 return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>

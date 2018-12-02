@@ -1613,17 +1613,17 @@ button.close{
      z-index: unset !important;
 }
 .btn-outline-add{
-    border:  1px solid #d4d9e6 !important;
+    border:  1px solid #E2E9EC !important;
     color: #8da2b5 !important;
     font-weight: 600 !important;
     border-radius: 5px;
-    padding: 15px;
+    padding: 13px;
     font-size: 16px !important;
-    background-color: #F6F8F9;
+/*    background-color: #F6F8F9;*/
 }
 .btn-outline-add:hover{
     color: #42A5FF !important;
-    background-color: #f3f4f5;
+    background-color: #F6F8F9;
 }
 .btn-outline-add:active{
     background-color: #eeeff1 !important;

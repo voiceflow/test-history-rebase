@@ -21,6 +21,8 @@ import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
+import {Tooltip} from 'react-tippy';
+import {Button} from 'reactstrap';
 
 class Editor extends Component {
     constructor(props) {
@@ -234,9 +236,22 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
-                                    <div className="delete-block" onClick={this.props.removeNode}>
-                                        <i className="fas fa-trash"/>
-                                    </div>
+                                    <Tooltip
+                                        position="bottom"
+                                        interactive={true}
+                                        offset={-30}
+                                        arrow
+                                        hideOnClick={false}
+                                        html={<React.Fragment>
+                                            Delete Block
+                                            <br/>
+                                            <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
+                                        </React.Fragment>}
+                                    >
+                                        <div className="delete-block">
+                                            <i className="fas fa-trash"/>
+                                        </div>
+                                    </Tooltip>
                                 </div>
                             </div>
                         </div>

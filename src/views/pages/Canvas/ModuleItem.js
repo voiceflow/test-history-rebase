@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 
 class ModuleItem extends Component {
     render() {
+        // TODO: add popover for full module name
+        var title = this.props.module.title;
+        if(title.length > 15){
+            title = title.substring(0, 15);
+            title += "..."
+        }
         return (
             <div
                 className='MenuItem'
@@ -14,7 +20,7 @@ class ModuleItem extends Component {
                 <div className="MenuIcon">
                     <img className="MenuIcon" src={this.props.module.module_icon} alt={this.props.module.title}/>
                 </div>
-                {this.props.module.title}
+                {title}
             </div>
         );
     }

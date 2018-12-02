@@ -24,7 +24,7 @@ class DiagramVariables extends Component {
                                 className="map-box"
                                 value={argument.arg2 ? {label: '{' + argument.arg2 + '}', variable: argument.arg2} : null}
                                 onChange={(selected)=>this.props.handleSelection(i, 'arg2', selected.value)}
-                                placeholder="Flow Variable"
+                                placeholder={this.props.placeholder_2 ? this.props.placeholder_2 : "Flow Variable"}
                                 options={Array.isArray(this.props.arg2_options) ? this.props.arg2_options.map(variable => {
                                     return {label: '{' + variable + '}', value: variable}
                                 }) : null}

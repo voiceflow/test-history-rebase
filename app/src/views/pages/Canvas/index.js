@@ -711,7 +711,6 @@ class Canvas extends Component {
     }
 
     setIntents(intents, intents_open) {
-        console.log("SETINTENTS", intents, intents_open)
         this.setState({
             intents: intents ? intents : this.state.intents,
             intents_open: intents_open ? intents_open : this.state.intents_open,
@@ -926,7 +925,7 @@ class Canvas extends Component {
                 node.extras = {
                     choices: [],
                     choices_open: [],
-                    mapping: []
+                    mappings: []
                 };
             } else if (type === 'audio') {
                 node.addInPort(' ')

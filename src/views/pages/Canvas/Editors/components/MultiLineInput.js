@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
-import Dropzone from 'react-dropzone';
 import Textarea from 'react-textarea-autosize';
 import Select from 'react-select';
+import AudioDrop from './AudioDrop';
 import { Collapse } from 'reactstrap';
 
 class MultiLineInput extends Component {
@@ -55,58 +54,8 @@ class MultiLineInput extends Component {
         }, this.props.onUpdate);
     }
 
-    onDrop(files) {
-        if (files.length > 0) {
-            let line = this.state.line;
-            let data = new FormData();
-            data.append('audio', files[0]);
-            $.ajax({
-                url: '/audio',
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false,
-                success: res => {
-                    line.audio = res;
-                    line.title = res.split('/').pop().split('-').pop();
-                    this.setState({
-                        line: line
-                    }, this.props.newAudio);
-                },
-                error: () => {window.alert('Error22');}
-            });
-        }
-    }
-
-    onClear(name) {
-        let line = this.state.line;
-        line.audio = false;
-        this.setState({
-            line: line
-        }, this.props.onUpdate);
-    }
-
     onGenerate(text, voice) {
         alert('Text to Speech is Deprecated - Please Use the Speak Block');
-        // let line = this.state.line;
-        // if(line.text && line.voice){
-        //     $.ajax({
-        //         url: '/generate',
-        //         type: 'POST',
-        //         data: {
-        //             text: line.text,
-        //             voice: line.voice
-        //         },
-        //         success: res => {
-        //             line.audio = res;
-        //             line.title = res.split('/').pop().split('-').pop();
-        //             this.setState({
-        //                 line: line
-        //             }, this.props.newAudio);
-        //         },
-        //         error: () => {window.alert('Error33');}
-        //     });
-        // }
     }
 
     render() {
@@ -120,6 +69,7 @@ class MultiLineInput extends Component {
                     <button className="close" onClick={() => {this.props.onRemove(this.state.index)}}>&times;</button>
                 </div>
                 <Collapse isOpen={this.state.line.collapse}>
+<<<<<<< HEAD
                     {this.state.line.audio ? 
                     <div className="audio-box">
                         <button className="btn btn-danger" onClick={() => this.onClear()}>&times;</button>
@@ -149,6 +99,16 @@ class MultiLineInput extends Component {
                         </div>
                     </div>
                     </Dropzone>}
+=======
+                    <AudioDrop
+                        audio={this.state.line.audio}
+                        update={(audio)=>{
+                            let line = this.state.line
+                            line.audio = audio
+                            this.setState({line: line}, this.props.newAudio)
+                        }}
+                    />
+>>>>>>> origin/master
                     {this.state.line.text && this.state.line.textCollapse !== undefined ?
                         <div className="text-to-voice">
                             <div className="subtitle" onClick={() => this.toggleCollapse("textCollapse")}>Text to Speech {this.state.line.textCollapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}</div>

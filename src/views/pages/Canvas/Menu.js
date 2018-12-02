@@ -6,6 +6,7 @@ import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGro
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 import {Tooltip} from 'react-tippy';
+import cloneDeep from 'lodash/cloneDeep'
 
 const defaultVariables = {
     'sessions': 'The Number of times a particular user has opened the app',
@@ -16,9 +17,7 @@ const defaultVariables = {
 const sections = [{
     title: 'Basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to talk to the user' },
-        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Add sound effects & audio clips under 240 seconds' },
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user'  },
+        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
         { text: 'Command', type: 'command', icon: '⌘', tip: 'Add shortcuts for your users to navigate your skill quickly'},
         { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
@@ -26,6 +25,7 @@ const sections = [{
 },{
     title: 'Advanced',
     items: [
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user' },
         { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
         { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once'  },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
@@ -35,6 +35,11 @@ const sections = [{
         // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
         { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
    ]
+},{
+    title: 'Functional',
+    items: [
+        { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
+    ]
 }];
 
 const tabs = {
@@ -57,7 +62,8 @@ class Menu extends PureComponent {
         if(!show){
             show = {
                 Basic: true,
-                Advanced: false
+                Advanced: false,
+                Functional: false
             }
         } else {
             show = JSON.parse(show)
@@ -84,15 +90,16 @@ class Menu extends PureComponent {
         this.updateTree = this.updateTree.bind(this);
         this.toggleBlockSection = this.toggleBlockSection.bind(this);
         this.visited = new Set();
-        this.sections = sections;
-
-        if(window.user_detail.admin === 10){
-            sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> })
-        }
+        this.sections = [];
     }
 
     componentDidMount() {
         this.props.build(this.updateTree);
+        this.sections = cloneDeep(sections);
+
+        if(window.user_detail.admin === 10){
+            this.sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
+        }
     }
 
     buildTree(node, depth=0){

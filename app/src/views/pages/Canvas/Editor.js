@@ -33,7 +33,8 @@ class Editor extends Component {
             node: this.props.node,
             voices: [],
             templates: [],
-            permission_options: []
+            permission_options: [],
+            slot_types: []
         };
 
         this.BlockViewer = this.BlockViewer.bind(this);
@@ -95,6 +96,10 @@ class Editor extends Component {
                 { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
                 // { name: 'Amazon Pay', value: 'payments:autopay_consent' }
                 // Removed for now, amazon pay permissions broken
+            ],
+            slot_types: [
+                { name: "Custom", id: 0},
+                { name: "Date Type", id: 1}
             ]
         })
     }
@@ -139,7 +144,7 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'interaction':
-                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables}/>
+                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables} slot_types={this.state.slot_types}/>
             case 'line':
             case 'audio': 
             case 'multiline':

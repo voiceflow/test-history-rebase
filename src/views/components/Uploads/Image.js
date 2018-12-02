@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
-import {Input, Button} from 'reactstrap'
+import {Input} from 'reactstrap'
 
 class Image extends Component {
 
@@ -57,17 +57,17 @@ class Image extends Component {
                 <button className="btn btn-danger" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
             </div>
         }else if(this.state.url_open){
-            render = <div className="dropzone enter-url pt-45">
+            render = <div className="dropzone enter-url">
                 <div className="text-center w-100">
                     <p className="prompt-text">Enter Image URL</p>
                     <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
-                    <Button onClick={()=>this.setState({url_open: false})} color="default" className="exit"><i className="far fa-chevron-left"/>Back</Button>
-                    <Button onClick={()=>this.props.update(this.state.url)}>Confirm</Button>
+                    <button onClick={()=>this.setState({url_open: false})} className="upload-btn btn btn-default exit"><i className="far fa-chevron-left"/>Back</button>
+                    <button onClick={()=>this.props.update(this.state.url)} className="upload-btn btn btn-primary-small">Confirm</button>
                 </div>
             </div>
         }else{
             render = <Dropzone
-                className="dropzone pt-45"
+                className="dropzone"
                 activeClassName="active"
                 rejectClassName="reject"
                 multiple={false}
@@ -76,20 +76,19 @@ class Image extends Component {
                 onDrop={(accepted, rejected) => this.onDropImage(accepted)}
             >
                 <div className="w-100">
-                    <div className="prompt text-center mb-2">
+                    <div className="prompt text-center">
                         <b>Drag-n-Drop Image</b><br/>
                         <small>OR</small><br/>
                         <div className="space-between">
-                            <button className="upload-btn btn btn-primary">
-                                <i className="fas fa-file-upload"/>
+                            <button className="upload-btn btn btn-primary-small">
                                 Add File
                             </button>
-                            <button className="upload-btn btn btn-primary" onClick={(e)=>{
+                            {/*<button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()
                                 this.setState({url_open: true})
                                 return false
-                            }}><i className="fas fa-link"/> URL</button>
+                            }}>URL</button>*/}
                         </div>
                     </div>
                     <div className="rejected-file text-danger">

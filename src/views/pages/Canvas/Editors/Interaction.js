@@ -257,6 +257,7 @@ class Interaction extends Component {
                         onAdd={this.handleAddSlot}
                         onRemove={this.handleRemoveSlot}
                         onChange={this.handleSlotsChange}
+                        slot_types = {this.props.slot_types}
                     />
                 </div>
             )

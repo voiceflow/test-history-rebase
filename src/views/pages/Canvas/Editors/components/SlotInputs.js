@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import './SlotInputs.css'
 import { Collapse } from 'reactstrap';
+import Select from 'react-select'
 
 class SlotInputs extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class SlotInputs extends Component {
         this.onDeleteExample = this.onDeleteExample.bind(this);
         this.onNameSave = this.onNameSave.bind(this)
         this.onNameChange = this.onNameChange.bind(this)
+        this.updateSlotType = this.updateSlotType.bind(this)
     }
 
     toggleCollapse(i){
@@ -87,6 +89,14 @@ class SlotInputs extends Component {
         this.props.onChange(this.state.slots, this.state.open)
     }
 
+    updateSlotType(target, i) {
+      const slots = this.state.slots;
+      slots[i].type = target;
+      this.setState({
+        slots: slots
+      }, () => {this.props.onChange(slots, this.state.open)})
+    }
+
     render() {
 
         const renderUtterances = (utterances, slot_i) => {
@@ -127,6 +137,18 @@ class SlotInputs extends Component {
                                     onChange={(e) => {this.onTextChange(e.target.value, i)}}
                                     placeholder="What would a user say to select this slot? (Press Enter after typing out each example)" 
                                 />
+                                <div className="super-center flex-hard choice-select">
+                                <div>Slot Type</div>
+                                  <Select
+                                      placeholder="Select Slot Type"
+                                      className="input-select"
+                                      value={slot.type}
+                                      onChange={(e) => this.updateSlotType(e, i)}
+                                      options={this.props.slot_types.map(type => {
+                                          return {label: type.name, value: type.name}
+                                      })}
+                                  />
+                                </div>
                             </Collapse>
                         </div> )
                 }) : null}

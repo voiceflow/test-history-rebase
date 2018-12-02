@@ -56,15 +56,14 @@ export class BlockLinkModel extends LinkModel<DefaultLinkModelListener> {
 	}
 
 	setSourcePort(port: PortModel) {
-		if (port !== null) {
-			port.addLink(this);
-		}
-
 		if (this.sourcePort !== null) {
 			if(this.sourcePort.id === port.id){
 				return;
 			}
 			this.sourcePort.removeLink(this);
+		}
+		if (port !== null) {
+			port.addLink(this);
 		}
 		this.sourcePort = port;
 		this.iterateListeners((listener: LinkModelListener, event) => {
@@ -75,11 +74,11 @@ export class BlockLinkModel extends LinkModel<DefaultLinkModelListener> {
 	}
 
 	setTargetPort(port: PortModel) {
-		if (port !== null) {
-			port.addLink(this);
-		}
 		if (this.targetPort !== null) {
 			this.targetPort.removeLink(this);
+		}
+		if (port !== null) {
+			port.addLink(this);
 		}
 		this.targetPort = port;
 		this.iterateListeners((listener: LinkModelListener, event) => {

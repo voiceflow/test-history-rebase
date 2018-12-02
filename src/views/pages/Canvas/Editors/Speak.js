@@ -179,7 +179,7 @@ class Speak extends Component {
                     </div>
                 })}
                 { this.state.node.extras.dialogs.length < 20 ?
-                    <button className="btn btn-default btn-block mt-3" onClick={this.handleAddBlock}>
+                    <button className="btn btn-outline-add btn-block mt-3" onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add Speech
                     </button> : null
                 }

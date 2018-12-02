@@ -133,11 +133,11 @@ class DashBoard extends Component {
                       <div className="card-body p-4">
                         <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" className="mb-5"/><br/>
                         <Link to="/canvas/new" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn w-75">Create Skill</button>
+                            <button varient="contained" className="purple-btn">Create Skill</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">
-                                    <b>Voiceflow University</b>
+                                    <b>Learn more</b>
                                     <i className="fal fa-long-arrow-right ml-1"/>
                                 </a>
                             </small>

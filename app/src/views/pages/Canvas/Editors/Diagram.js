@@ -121,7 +121,7 @@ class DiagramBlock extends Component {
                                 </React.Fragment>
                         : null}
                         <label>Create a New Flow</label>
-                        <Button block onClick={() => this.props.createDiagram(this.state.node)}>
+                        <Button className="btn-primary w-100" onClick={() => this.props.createDiagram(this.state.node)}>
                             Create New Flow <i className="fas fa-sign-in"/>
                         </Button>
                     </React.Fragment>

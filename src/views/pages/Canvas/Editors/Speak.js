@@ -209,10 +209,10 @@ class Speak extends Component {
                 })}
                 { this.state.node.extras.dialogs.length < 20 ?
                     <React.Fragment>
-                        <button className="btn btn-default btn-block mt-3" onClick={() => this.handleAddBlock(false)}>
+                        <button className="btn btn-outline-add btn-block mt-3" onClick={() => this.handleAddBlock(false)}>
                             <i className="far fa-plus"></i> Add Speech
                         </button>
-                        <button className="btn btn-default btn-block mt-2" onClick={() => this.handleAddBlock(true)}>
+                        <button className="btn btn-outline-add btn-block mt-2" onClick={() => this.handleAddBlock(true)}>
                             <i className="far fa-plus"></i> Add Audio
                         </button>
                     </React.Fragment>

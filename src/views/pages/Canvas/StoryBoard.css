@@ -1053,9 +1053,8 @@
     color: #8da2b5;
     vertical-align: middle;
     margin-bottom: 5px !important;
-/*    background-color: #42A5FF !important;*/
+/*    background-color: #42A5FF !important;*/    
 }
-
 .label-btns{
     margin-bottom: 5px;
 }
@@ -1448,6 +1447,7 @@ button.close{
     color: #2b3950;
     width: 100%;
     transition: border-color .4s ease;
+    border-radius: 0px !important;
 }
 
 #label::placeholder {
@@ -2051,14 +2051,16 @@ button.close{
     color: #E2E9EC;
 }
 .editor {
+  margin-top: 10px;    
   box-sizing: border-box;
-  border: 1px solid #d4d9e6;
+/*  border: 1px solid #d4d9e6;*/
   cursor: text;
-  padding: 7px 8px;
+  padding: 10px 12px;
   border-radius: 5px;
   margin-bottom: 1rem;
   background: #fefefe;
   color: #2B3950;
+  box-shadow:  0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
 }
 .editor :global(.public-DraftEditor-content) {
   min-height: 88px;

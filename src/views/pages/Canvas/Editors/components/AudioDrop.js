@@ -89,20 +89,19 @@ class AudioDrop extends Component {
                 onDrop={(accepted, rejected) => this.onDrop(accepted)}
             >
                 <div>
-                    <div className="text-muted text-center mb-2">
+                    <div className="text-muted text-center mb-3">
                         <b>Drag and Drop files here</b><br/>
                         <small>OR</small><br/>
                         <div className="space-between">
-                            <button className="upload-btn btn btn-primary">
-                                <i className="fas fa-file-upload"/>
+                            <button className="upload-btn btn btn-primary-small">
                                 Add File
                             </button>
-                            <button className="upload-btn btn btn-primary" onClick={(e)=>{
+                            <button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()
                                 this.setState({url_open: true})
                                 return false
-                            }}><i className="fas fa-link"/> URL</button>
+                            }}>URL</button>
                         </div>
                     </div>
                     <div className="rejected-file text-danger">

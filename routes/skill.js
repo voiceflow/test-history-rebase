@@ -523,6 +523,7 @@ exports.buildSkill = async (req,res) => {
                                     getSkillStatus(0);
                                 })
                                 .catch(err => {
+                                    console.log(err.response)
                                     if(err.response){
                                         if(err.response.status === 404){
                                             iterate(depth + 1);
@@ -536,7 +537,7 @@ exports.buildSkill = async (req,res) => {
                                     }
                                 });
                                 
-                            }, 3000);
+                            }, 10000);
                         }
                     }
 

@@ -155,6 +155,7 @@ const giveCertification = (req, res) => {
 						if(status === 200){
 							updateVersionTable(market_id, module_id);
 						}else{
+							console.log("Failed to render diagram")
 							res.sendStatus(500);
 						}
 					} else {

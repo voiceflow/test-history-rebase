@@ -12,6 +12,7 @@ class SlotMappings extends Component {
         this.state = {
             slots: _.cloneDeep(this.props.slots)
         }
+
     }
 
     static getDerivedStateFromProps(props, current_state) {
@@ -19,12 +20,19 @@ class SlotMappings extends Component {
           let new_slot_options = new Set()
           props.slot_options.forEach( slot_option_list => {
             slot_option_list.forEach(o => {
-                const slot = _.find(props.slots, { key: o })
-                if (slot) {
+                if (typeof o === "string") {
                     new_slot_options.add({
-                        label: '[' + slot.name + ']',
+                        label: '[' + o + ']',
                         value: o
                     })
+                } else {
+                    const slot = _.find(props.slots, { key: o })
+                    if (slot) {
+                        new_slot_options.add({
+                            label: '[' + slot.name + ']',
+                            value: o
+                        })
+                    }
                 }
             })
           })

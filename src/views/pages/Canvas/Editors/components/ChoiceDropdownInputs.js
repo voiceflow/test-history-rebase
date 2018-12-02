@@ -21,7 +21,7 @@ class ChoiceDropdownInputs extends Component {
     static getDerivedStateFromProps(props, current_state) {
         if (current_state.intents !== props.intents) {
           const new_choices = props.choices.map(choice_obj => {
-            if (!choice_obj.intent) {
+            if (!choice_obj.intent || choice_obj.intent.built_in) {
               return choice_obj
             }
             const key = choice_obj.intent ? choice_obj.intent.value : null
@@ -136,8 +136,8 @@ class ChoiceDropdownInputs extends Component {
                                     className="input-select"
                                     value={choice.intent}
                                     onChange={(e) => this.updateChoice(e, i)}
-                                    options={this.props.intents.map(intent => {
-                                        return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs}
+                                    options={this.props.intents.concat(this.props.built_ins).map(intent => {
+                                        return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
                                     })}
                                 />
                               </div>

@@ -3,6 +3,7 @@ import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap';
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
+import ErrorModal from '../../../components/Modals/ErrorModal';
 
 class Interaction extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class Interaction extends Component {
             slots_open: this.props.slots_open,
             node: this.props.node,
             tab: 'choices',
+            error: null
         };
         
         this.handleIntentsChange = this.handleIntentsChange.bind(this);
@@ -70,7 +72,6 @@ class Interaction extends Component {
             intents: intents,
             intents_open: intents_open,
         }, () => {this.props.onIntent(intents, intents_open)});
-        e.preventDefault();
     }
 
     handleAddSlot(e) {
@@ -91,32 +92,57 @@ class Interaction extends Component {
             slots: slots,
             slots_open: slots_open,
         }, () => {this.props.onSlot(slots, slots_open)});
-        e.preventDefault();
     }
 
     handleRemoveIntent(e, i) {
         const intents = this.state.intents;
         const intents_open = this.state.intents_open;
-        intents.splice(i, 1);
-        intents_open.splice(i, 1);
-        this.setState({
-            intents: intents,
-            intents_open: intents_open,
-         }, () => {this.props.onIntent(intents, intents_open)});
-        e.preventDefault();
+        const used_intents = new Set();
+
+        this.state.node.extras.choices.forEach(choice => {
+            if (choice.intent) {
+                used_intents.add(choice.intent.value)
+            }
+        })
+
+        if (used_intents.has(intents[i].key)) {
+            const error = 'Cannot remove intent as it is currently being used in a choice!'
+            this.setState({
+                error: error
+            })
+        } else {
+            intents.splice(i, 1);
+            intents_open.splice(i, 1);
+            this.setState({
+                intents: intents,
+                intents_open: intents_open,
+             }, () => {this.props.onIntent(intents, intents_open)});
+        }
     }
 
     handleRemoveSlot(e, i) {
         const slots = this.state.slots;
         const slots_open = this.state.slots_open;
+        const used_slots = new Set();
+        
+        this.state.intents.forEach(intent => {
+            const utterances = intent.inputs
+            utterances.forEach( u => u.slots.forEach(s => used_slots.add(s)))
+        })
 
-        slots.splice(i, 1);
-        slots_open.splice(i, 1);
-        this.setState({
-            slots: slots,
-            slots_open: slots_open,
-        }, () => {this.props.onSlot(slots, slots_open)});
-        e.preventDefault();
+        if (used_slots.has(slots[i].key)) {
+            const error = 'Cannot remove slot as it is currently being used in an intent!'
+            this.setState({
+                error: error
+            })
+        } else {
+            slots.splice(i, 1);
+            slots_open.splice(i, 1);
+            this.setState({
+                slots: slots,
+                slots_open: slots_open,
+            }, () => {this.props.onSlot(slots, slots_open)});
+        }
     }
 
     handleChoicesChange(choices, choices_open) {  
@@ -138,14 +164,16 @@ class Interaction extends Component {
 
         const firstEmpty = this._findFirstEmptyIndex(choices.map(o => o.key))
 
-        choices.push({name: `New Choice ${num}`, intent: null, mapping: [], key: firstEmpty})
+        choices.push({name: `New Choice ${num}`, intent: null, mappings: [], key: firstEmpty})
         choices_open.push(true);
 
+        let test = node.addOutPort(node.extras.choices.length);
+        test.setMaximumLinks(1);
+
         this.setState({
-            choices: choices,
-            choices_open: choices_open,
+            node: node
         });
-        e.preventDefault();
+        this.props.repaint()
     }
 
     handleRemoveChoice(e, i) {
@@ -153,12 +181,22 @@ class Interaction extends Component {
         const choices = node.extras.choices;
         const choices_open = node.extras.choices_open;
 
+        for (var name in node.getPorts()) {
+            var port = node.getPort(name);
+
+            if (port.label === node.extras.choices.length) {
+                node.removePort(port);
+                break;
+            }
+        }
+
         choices.splice(i, 1);
         choices_open.splice(i, 1);
+
         this.setState({
             node: node,
         });
-        e.preventDefault();
+        this.props.repaint()
     }
 
     render() {
@@ -176,6 +214,8 @@ class Interaction extends Component {
                         onRemove={this.handleRemoveChoice}
                         onChange={this.handleChoicesChange}
                         intents={this.state.intents}
+                        variables={this.props.variables}
+                        slots = {this.state.slots}
                     />
                 </div>
             )
@@ -218,6 +258,7 @@ class Interaction extends Component {
 
         return (
             <div>
+                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>  
                 <ButtonGroup className="toggle-group mb-2">
                     <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
                     <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>

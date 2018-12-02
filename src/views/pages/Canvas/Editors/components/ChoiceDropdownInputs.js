@@ -16,6 +16,8 @@ class ChoiceDropdownInputs extends Component {
             intents: _.cloneDeep(this.props.intents),
             mappings: this.props.mappings
         };
+
+        this.onNameSave = this.onNameSave.bind(this)
     }
 
     static getDerivedStateFromProps(props, current_state) {
@@ -59,7 +61,7 @@ class ChoiceDropdownInputs extends Component {
         choices[i].name = e.target.value
         this.setState({
             choices: choices
-        }, () => {this.props.onChange(choices, this.state.open)})
+        })
     }
 
     getSelectValue(i) {
@@ -68,9 +70,20 @@ class ChoiceDropdownInputs extends Component {
         return { label: intent.name, value: intent.key }
     }
 
+    onNameSave(e) {
+        e.preventDefault()
+        this.props.onChange(this.state.choices, this.state.open)
+    }
+
     updateChoice(target, i) {
         const choices = this.state.choices;
         choices[i].intent = target;
+        choices[i].mappings = choices[i].mappings.map(m => {
+            return {
+                variable: m.variable,
+                slot: null
+            }
+        })
         this.setState({
             choices: choices
         }, () => {this.props.onChange(choices, this.state.open)})
@@ -121,6 +134,7 @@ class ChoiceDropdownInputs extends Component {
                                     <input placeholder="Enter choice Name" 
                                         type="text"
                                         value={choice.name}
+                                        onBlur={(e) => {this.onNameSave(e)}}
                                         onChange={(e) => {this.onNameChange(e, i)}}
                                         onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
                                         className="interaction-name-input"

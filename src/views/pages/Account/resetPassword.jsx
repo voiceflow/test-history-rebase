@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Button, FormGroup, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
 import axios from 'axios';
 
@@ -112,6 +112,8 @@ class ResetPassword extends Component {
         return <div>
           <Alert color="danger" className="text-center">{this.state.error}</Alert>
         </div>
+      default:
+        return null
     }
   }
 

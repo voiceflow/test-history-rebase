@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
+import {Input, Button} from 'reactstrap'
 
 class Image extends Component {
 
@@ -10,8 +11,18 @@ class Image extends Component {
         this.onDropImage = this.onDropImage.bind(this);
 
         this.state = {
-            loading: false
+            loading: false,
+            url_open: false,
+            url: ''
         }
+        
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
     onDropImage(files) {
@@ -36,16 +47,27 @@ class Image extends Component {
         let render;
         if(this.state.loading){
             render = <div className="image-box super-center d-flex">
-                <h1 className="mb-0"><span className="loader"/></h1>
+                <div className="h-100 super-center">
+                    <h1 className="mb-0"><span className="loader"/></h1>
+                </div>
             </div>
         }else if(this.props.image){
             render = <div className="image-box">
                 <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
                 <button className="btn btn-danger" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
             </div>
+        }else if(this.state.url_open){
+            render = <div className="dropzone enter-url pt-45">
+                <div className="text-center w-100">
+                    <p className="prompt-text">Enter Image URL</p>
+                    <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
+                    <Button onClick={()=>this.setState({url_open: false})} color="default" className="exit"><i className="far fa-chevron-left"/>Back</Button>
+                    <Button onClick={()=>this.props.update(this.state.url)}>Confirm</Button>
+                </div>
+            </div>
         }else{
             render = <Dropzone
-                className="dropzone"
+                className="dropzone pt-45"
                 activeClassName="active"
                 rejectClassName="reject"
                 multiple={false}
@@ -53,12 +75,22 @@ class Image extends Component {
                 accept="image/jpeg, image/png"
                 onDrop={(accepted, rejected) => this.onDropImage(accepted)}
             >
-                <div>
-                    <div className="prompt">
-                        <img src="/images/img.png" alt="media"/><br/>
+                <div className="w-100">
+                    <div className="prompt text-center mb-2">
                         <b>Drag-n-Drop Image</b><br/>
                         <small>OR</small><br/>
-                        Click to add
+                        <div className="space-between">
+                            <button className="upload-btn btn btn-primary">
+                                <i className="fas fa-file-upload"/>
+                                Add File
+                            </button>
+                            <button className="upload-btn btn btn-primary" onClick={(e)=>{
+                                e.preventDefault()
+                                e.stopPropagation()
+                                this.setState({url_open: true})
+                                return false
+                            }}><i className="fas fa-link"/> URL</button>
+                        </div>
                     </div>
                     <div className="rejected-file text-danger">
                         <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>

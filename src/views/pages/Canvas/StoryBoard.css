@@ -1768,6 +1768,7 @@ button.close{
 }
 .multi-title-block{
     display: flex;
+    font-size: 14px;
 }
 .multi-title-block>button.close {
     margin-left: 10px
@@ -2007,9 +2008,6 @@ button.close{
 
 .public-DraftEditorPlaceholder-hasFocus {
     color: #E2E9EC;
-}
-.super-center{
-    color: #2B3950 !important;
 }
 .editor {
   box-sizing: border-box;

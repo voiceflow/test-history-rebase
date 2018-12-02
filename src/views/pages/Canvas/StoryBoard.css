@@ -1783,7 +1783,6 @@ button.close{
     font-weight: bold;
     cursor: pointer;
     padding: 10px 0;
-    flex: 1;
     margin-right: 5px;
 /*    white-space: nowrap; 
     overflow: hidden;

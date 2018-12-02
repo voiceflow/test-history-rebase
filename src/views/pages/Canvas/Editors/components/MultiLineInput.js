@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
-import Dropzone from 'react-dropzone';
 import Textarea from 'react-textarea-autosize';
 import Select from 'react-select';
 import AudioDrop from './AudioDrop';

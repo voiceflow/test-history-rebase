@@ -136,7 +136,6 @@ class PublishMarket extends Component {
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null);
         const type = (s.type && s.type.value ? s.type.value : null);
-
         axios.patch('/marketplace/cert/' + this.state.skill_id, {
             title: s.title,
             descr: s.descr,
@@ -147,7 +146,7 @@ class PublishMarket extends Component {
             module_icon: s.module_icon,
             color: s.color,
             input: JSON.stringify(s.input),
-            output: JSON.stringify(s.output)
+            output: JSON.stringify(s.output),
         })
         .then(res => {
             this.setState({

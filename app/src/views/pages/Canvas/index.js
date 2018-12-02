@@ -937,7 +937,7 @@ class Canvas extends Component {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    dialogs: []
+                    randomize: false
                 }
             } else if (type === 'flow') {
                 node.addInPort(' ')

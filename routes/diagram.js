@@ -539,19 +539,28 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                 } else if (node.extras.type === 'speak') {
 
-                    let markdownstring = '';
-                    let nextLink = null;
+                    let markdownstring = ''
+                    let random_speak = []
+                    let nextLink = null
+
+                    const add = (line) => {
+                        if(node.extras.randomize){
+                            random_speak.push(line)
+                        }else{
+                            markdownstring += line
+                        }
+                    }
                     
                     if(Array.isArray(node.extras.dialogs)){
                         node.extras.dialogs.forEach(d => {
                             if(d.audio && validUrl.isUri(d.audio)){
-                                markdownstring += `<audio src="${d.audio}"/>`
+                                add(`<audio src="${d.audio}"/>`)
                             }else if(d.rawContent){
                                 temp = draftToMarkdown(d.rawContent, {alexa: true});
                                 if(d.voice === 'Alexa' || !d.voice){
-                                    markdownstring += temp;
+                                    add(temp)
                                 }else{
-                                    markdownstring += `<voice name="${d.voice}">${temp}</voice>`
+                                    add(`<voice name="${d.voice}">${temp}</voice>`)
                                 }
                             }
                         });
@@ -575,9 +584,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
 
                     story.lines[node.id] = {
-                        speak: markdownstring,
                         nextId: getLink(nextLink)
                     }
+
+                    if(node.extras.randomize && random_speak.length !== 0){
+                        story.lines[node.id].random_speak = random_speak
+                    }else if(markdownstring){
+                        story.lines[node.id].speak = markdownstring
+                    }
+
                 } else if (node.extras.type === 'capture') {
 
                     let nextLink = null;

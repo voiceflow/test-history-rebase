@@ -434,6 +434,8 @@ class Canvas extends Component {
     }
 
     onSave(cb, is_new=false) {
+
+        console.log("SAVE", this.state.intents, this.state.slots)
         try {
             this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
@@ -924,8 +926,7 @@ class Canvas extends Component {
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
                     choices: [],
-                    choices_open: [],
-                    mappings: []
+                    choices_open: []
                 };
             } else if (type === 'audio') {
                 node.addInPort(' ')

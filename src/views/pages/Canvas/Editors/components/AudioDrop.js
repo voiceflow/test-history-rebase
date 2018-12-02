@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
-import $ from 'jquery';
-import Dropzone from 'react-dropzone';
+import React, {Component} from 'react'
+import $ from 'jquery'
+import Dropzone from 'react-dropzone'
+import {Input, Button} from 'reactstrap'
 
 class AudioDrop extends Component {
 
@@ -8,31 +9,40 @@ class AudioDrop extends Component {
         super(props);
 
         this.state = {
-            loading: false
+            loading: false,
+            url_open: false,
+            url: ''
         }
 
-        this.onDrop = this.onDrop.bind(this);
-        this.onClear = this.onClear.bind(this);
+        this.onDrop = this.onDrop.bind(this)
+        this.onClear = this.onClear.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
     onDrop(files) {
-        this.setState({loading: true});
+        this.setState({loading: true})
         if (files.length > 0) {
-            let data = new FormData();
-            data.append('audio', files[0]);
+            let data = new FormData()
+            data.append('audio', files[0])
             $.ajax({
-                url: '/raw_audio',
+                url: this.props.stream ? '/raw_audio' : '/audio',
                 type: 'POST',
                 data: data,
                 processData: false,
                 contentType: false,
                 success: res => {
-                    this.setState({loading: false});
-                    this.props.update(res);
+                    this.setState({loading: false})
+                    this.props.update(res)
                 },
                 error: () => {
-                    this.setState({loading: false});
-                    window.alert('Error22');
+                    this.setState({loading: false})
+                    window.alert('Error22')
                 }
             });
         }
@@ -47,7 +57,9 @@ class AudioDrop extends Component {
 
         if(this.state.loading){
             render = <div className="audio-box">
-                <h1 className="mb-0"><span className="loader"/></h1>
+                <div className="h-100 super-center">
+                    <h1 className="mb-0"><span className="loader"/></h1>
+                </div>
             </div>
         } else if(this.props.audio){
             render = <div className="audio-box">
@@ -56,6 +68,15 @@ class AudioDrop extends Component {
                 <audio key={this.props.audio.split('/').pop()} controls>
                     <source src={this.props.audio} type="audio/mpeg" />
                 </audio>
+            </div>
+        }else if(this.state.url_open){
+            render = <div className="dropzone enter-url">
+                <div className="text-center w-100">
+                    <p className="prompt-text">Enter Audio URL</p>
+                    <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
+                    <Button onClick={()=>this.setState({url_open: false})} color="default" className="exit"><i className="far fa-chevron-left"/>Back</Button>
+                    <Button onClick={()=>this.props.update(this.state.url)}>Confirm</Button>
+                </div>
             </div>
         }else{
             render = <Dropzone
@@ -71,7 +92,18 @@ class AudioDrop extends Component {
                     <div className="text-muted text-center mb-2">
                         <b>Drag and Drop files here</b><br/>
                         <small>OR</small><br/>
-                        <button className="outline-btn mt-1">Add files</button>
+                        <div className="space-between">
+                            <button className="upload-btn btn btn-primary">
+                                <i className="fas fa-file-upload"/>
+                                Add File
+                            </button>
+                            <button className="upload-btn btn btn-primary" onClick={(e)=>{
+                                e.preventDefault()
+                                e.stopPropagation()
+                                this.setState({url_open: true})
+                                return false
+                            }}><i className="fas fa-link"/> URL</button>
+                        </div>
                     </div>
                     <div className="rejected-file text-danger">
                         <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>

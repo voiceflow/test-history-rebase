@@ -3,6 +3,7 @@ import VariableText from './components/VariableText';
 import randomstring from 'randomstring';
 import Select from 'react-select';
 import {Collapse} from 'reactstrap';
+import AudioDrop from './components/AudioDrop'
 
 const voices = [
     {
@@ -99,7 +100,7 @@ class Speak extends Component {
                 open: true
             }];
             delete props.node.extras.rawContent;
-        }else if(!Array.isArray(props.node.extras.dialogs) || props.node.extras.dialogs.length === 0){
+        }else if(!Array.isArray(props.node.extras.dialogs)){
             props.node.extras.dialogs = [{
                 index: randomstring.generate(5),
                 voice: 'Alexa',
@@ -121,27 +122,31 @@ class Speak extends Component {
         this.props.onUpdate();
     }
 
-    handleAddBlock() {
+    handleAddBlock(audio=false) {
         var node = this.state.node;
-
         if(node.extras.dialogs.length < 20){
-            node.extras.dialogs.push({
-                index: randomstring.generate(5),
-                voice: 'Alexa',
-                rawContent: '',
-                open: true
-            });
-            this.onUpdate();
+            if(audio){
+                node.extras.dialogs.push({
+                    index: randomstring.generate(5),
+                    audio: '',
+                    open: true
+                })
+            }else{
+                node.extras.dialogs.push({
+                    index: randomstring.generate(5),
+                    voice: 'Alexa',
+                    rawContent: '',
+                    open: true
+                })
+            }
+            this.onUpdate()
         }
     }
 
     handleRemoveBlock(i) {
         let node = this.state.node;
-
-        if(node.extras.dialogs.length > 1){
-            node.extras.dialogs.splice(i, 1);
-            this.onUpdate();
-        }
+        node.extras.dialogs.splice(i, 1)
+        this.onUpdate()
     }
 
     render() {
@@ -150,38 +155,68 @@ class Speak extends Component {
             <div>
                 <div className="mb-2"><small className="text-muted">{''}</small></div>
                 {this.state.node.extras.dialogs.map((d, i) => {
-                    return <div key={d.index} className="multiline mb-1">
-                        <div className="multi-title-block mb-1">
-                            <div className="multi-title">
-                                <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>{d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {i + 1}</span>
+                    if(d.audio !== undefined){
+                        return <div key={d.index} className="multiline mb-1">
+                            <div className="multi-title-block">
+                                <div className="multi-title" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
+                                    <span className="text-muted">{d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {i + 1}</span>
+                                    <b>{d.audio ? d.audio.split('/').pop() : 'Audio'}</b>
+                                </div>
+                                <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>
                             </div>
-                            <div className="super-center flex-hard">
-                                <b>Speak As</b>
-                                <Select
-                                    className="speak-box"
-                                    classNamePrefix="select-box"
-                                    value={{label: d.voice, value: d.voice}}
-                                    onChange={(selected) => {d.voice = selected.value; this.onUpdate()}}
-                                    options={voices}
-                                />
-                            </div>
-                            {(this.state.node.extras.dialogs.length > 1) && <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>}
+                            <Collapse isOpen={d.open} className="speak-audio">
+                                <div className="mb-3">
+                                    <AudioDrop
+                                        audio={d.audio}
+                                        update={(audio)=>{
+                                            d.audio = audio
+                                            this.onUpdate()
+                                        }}
+                                    />
+                                </div>
+                            </Collapse>
+                            <hr/>
                         </div>
-                        <Collapse isOpen={d.open}>
-                            <VariableText
-                                raw={d.rawContent}
-                                placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}<br/>{'Use {variable} to add Variables'}</React.Fragment>}
-                                variables={this.props.variables}
-                                updateRaw={(raw) => {d.rawContent = raw; this.props.onUpdate()}}
-                            />
-                        </Collapse>
-                        <hr/>
-                    </div>
+                    }else{
+                        return <div key={d.index} className="multiline mb-1">
+                            <div className="multi-title-block mb-1">
+                                <div className="multi-title">
+                                    <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>{d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {i + 1}</span>
+                                </div>
+                                <div className="super-center flex-hard">
+                                    <b>Speak As</b>
+                                    <Select
+                                        className="speak-box"
+                                        classNamePrefix="select-box"
+                                        value={{label: d.voice, value: d.voice}}
+                                        onChange={(selected) => {d.voice = selected.value; this.onUpdate()}}
+                                        options={voices}
+                                    />
+                                </div>
+                                <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>
+                            </div>
+                            <Collapse isOpen={d.open}>
+                                <VariableText
+                                    raw={d.rawContent}
+                                    placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}<br/>{'Use {variable} to add Variables'}</React.Fragment>}
+                                    variables={this.props.variables}
+                                    updateRaw={(raw) => {d.rawContent = raw; this.props.onUpdate()}}
+                                />
+                            </Collapse>
+                            <hr/>
+                        </div>
+                    }
                 })}
                 { this.state.node.extras.dialogs.length < 20 ?
-                    <button className="btn btn-outline-add btn-block mt-3" onClick={this.handleAddBlock}>
-                        <i className="far fa-plus"></i> Add Speech
-                    </button> : null
+                    <React.Fragment>
+                        <button className="btn btn-default btn-block mt-3" onClick={() => this.handleAddBlock(false)}>
+                            <i className="far fa-plus"></i> Add Speech
+                        </button>
+                        <button className="btn btn-default btn-block mt-2" onClick={() => this.handleAddBlock(true)}>
+                            <i className="far fa-plus"></i> Add Audio
+                        </button>
+                    </React.Fragment>
+                    : null
                 }
             </div>
         );

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import MenuItem from './MenuItem';
 import TemplateItem from './TemplateItem';
 import ModuleItem from './ModuleItem';
-import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label } from 'reactstrap';
+import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup, Collapse } from 'reactstrap';
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 import {Tooltip} from 'react-tippy';
@@ -16,35 +16,35 @@ const defaultVariables = {
 const sections = [{
     title: 'Basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Speak blocks let you control what Alexa says to the user' },
-        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Audio blocks let you add sound effects & audio clips under 240 seconds' },
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream blocks let you stream long audio files & URLs for the user'  },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Choice blocks listen for the user to make a choice from a list of options you set'  },
-        { text: 'Command', type: 'command', icon: '⌘', tip: 'Command blocks add shortcuts for your users to navigate your skill quickly'},
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Comment blocks can be used to add notes to your skills'  }
+        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to talk to the user' },
+        { text: 'Audio', type: 'audio', icon: <i className="fas fa-volume-up"/>, tip: 'Add sound effects & audio clips under 240 seconds' },
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user'  },
+        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
+        { text: 'Command', type: 'command', icon: '⌘', tip: 'Add shortcuts for your users to navigate your skill quickly'},
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
     ]
 },{
     title: 'Advanced',
     items: [
-        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Random blocks choose randomly from a set number of paths.' },
-        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set blocks set the value of a variable, or many variables at once.'  },
-        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'IF blocks let you set conditions that activate paths only when true.' },
-        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture blocks listen for the user to set the value of a single variable.'  },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Flow blocks allow you to organize your project into manageable sections.'},
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'API blocks let you use external APIs and store responses in variables.'  },
+        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
+        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once'  },
+        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
+        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable'  },
+        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
         // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
-        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Permissions block asks users for access to their Amazon info for you to use.'  },
+        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
    ]
 }];
 
 const tabs = {
     top: [
-        {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'The blocks menu holds all of your available blocks'},
-        {tab: "project", icon: <i className="fas fa-folder"/>, tip: 'The flows menu lets you navigate amongst your project’s flows'},
-        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'The variables menu lets you create & manage your variables'},
+        {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'Blocks'},
+        {tab: "project", icon: <i className="fas fa-folder"/>, tip: 'Project'},
+        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'}
     ],
     bottom: [
-        {link: "https://intercom.help/vfu", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
+        {link: "https://university.getvoiceflow.com/", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
         {link: "https://www.facebook.com/groups/199476704186240/", icon: <i className="fab fa-facebook-f"/>, tip: 'Join the Voiceflow Community for help & updates'}
     ]
 }
@@ -52,11 +52,24 @@ class Menu extends PureComponent {
     constructor(props) {
         super(props);
 
+        // Store state of basic + advanced tabs
+        let show = localStorage.getItem('show')
+        if(!show){
+            show = {
+                Basic: true,
+                Advanced: false
+            }
+        } else {
+            show = JSON.parse(show)
+        }
+
         this.state = {
             open: true,
             tab: 'blocks',
             new_var: '',
-            tree: null
+            tree: null,
+            block_tab_state: 'blocks',
+            show: show
         }
 
         this.openTab = this.openTab.bind(this);
@@ -65,6 +78,7 @@ class Menu extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
         this.buildTree = this.buildTree.bind(this);
         this.updateTree = this.updateTree.bind(this);
+        this.toggleBlockSection = this.toggleBlockSection.bind(this);
         this.visited = new Set();
     }
 
@@ -110,6 +124,14 @@ class Menu extends PureComponent {
         } else {
             return <div className='diagram-block'>...</div>;
         }
+    }
+
+    toggleBlockSection(section_title){
+        let s = this.state
+        s.show[section_title] = !s.show[section_title]
+        localStorage.setItem('show', JSON.stringify(s.show))
+        this.setState(s)
+        this.forceUpdate()
     }
 
     updateTree() {
@@ -165,20 +187,55 @@ class Menu extends PureComponent {
 
         let content;
         if(this.state.tab === 'blocks'){
-            content = sections.map((section, i) => {
-                return <div key={i} className="section no-select">
-                    <span className="section-title">{section.title}</span>
-                    {section.items.map((item, i) => {
-                        return <MenuItem item={item} key={i} data-tip={item.tip}/>
+            if(this.state.block_tab_state === 'blocks'){
+                content =
+                    sections.map((section, i) => {
+                        return <div key={i} className="section no-select">
+                            <span 
+                                className="section-title" 
+                                onClick={() => {this.toggleBlockSection(section.title)}}>
+                                    {this.state.show[section.title]? 
+                                        <i className="fas fa-caret-down"></i>: 
+                                        <i className="fas fa-caret-right"></i>
+                                    }
+                                    {section.title}
+                            </span>
+                            <Collapse isOpen={this.state.show[section.title]}>
+                                {section.items.map((item, i) => {
+                                    return <MenuItem item={item} key={i} data-tip={item.tip}/>
+                                })}
+                            </Collapse>
+                        </div>
+                })
+            } else {
+                if(this.props.user_modules.length > 0){
+                    content = 
+                    <div>
+                    {this.props.user_modules.map((user_module, i) => {
+                        return <ModuleItem module={user_module} key={i} />;
                     })}
-                </div>
-            })
+                    </div>
+                }else{
+                    content = <div className="mt-2">You have no flows <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                }
+            }
         }else if(this.state.tab === 'project'){
             // content = this.props.diagrams.map((diagram, i) => 
             //     <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
             //         {diagram.name}
             //     </div>
             // );
+
+            //<label>Templates</label>
+            // {this.props.user_templates.length > 0?
+            //     <div>
+            //     {this.props.user_templates.map((user_template, i) => {
+            //         return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
+            //     })}
+            //     </div>
+            //     :
+            //     <div>You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+            // }
 
             let unused = [];
 
@@ -206,6 +263,7 @@ class Menu extends PureComponent {
                     {unused.map((diagram, i) => {
                         return diagram;
                     })}
+                    <hr className='mb-2 mt-4'/>                
                 </React.Fragment>}
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
@@ -233,29 +291,18 @@ class Menu extends PureComponent {
                     </div>
                 </div>
             </React.Fragment>
-        }else if(this.state.tab === 'modules'){
-            if(this.props.user_modules){
-                content = 
-                <div>
-                {this.props.user_modules.map((user_module, i) => {
-                    return <ModuleItem module={user_module} key={i} />;
-                })}
-                </div>
-            }else{
-                content = <div>No flows, visit Marketplace</div>
-            }
-        }else if(this.state.tab === 'templates'){
-            if(this.props.user_templates){
-                content = 
-                <div>
-                {this.props.user_templates.map((user_template, i) => {
-                    return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
-                })}
-                </div>
-            }else{
-                content = <div>No templates, visit Marketplace</div>
-            }
-        }
+        } 
+
+        let block_module_group;
+        // if(this.state.tab === 'blocks'){
+        //     block_module_group = 
+        //         <ButtonGroup>
+        //             <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
+        //             <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Modules</Button>
+        //         </ButtonGroup>
+        // } else {
+        //     block_module_group = null;
+        // }
 
         return (
             <div className="Menu">
@@ -263,7 +310,7 @@ class Menu extends PureComponent {
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {
                             return (
-                                <Tooltip key={i} html={<div style={{width: 180}}>{tab.tip}</div>} position='right' disabled={false && tab.tab === this.state.tab && this.state.open}>
+                                <Tooltip key={i} title={tab.tip} position='right' disabled={true && tab.tab === this.state.tab && this.state.open}>
                                     <div className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
                                         onClick={() => this.openTab(tab.tab)}>
                                         {tab.icon}
@@ -293,6 +340,7 @@ class Menu extends PureComponent {
                         </div>
                     </div>
                     <div className="sidebar-content">
+                        {block_module_group}
                         {content}
                     </div>
                 </div>

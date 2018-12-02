@@ -12,7 +12,7 @@ import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import ActionGroup from './ActionGroup';
 import LoadingModal from './../../components/Modals/LoadingModal';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
+import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal';
 import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
 import TestModal from './Test/TestModal';
@@ -71,6 +71,8 @@ class Canvas extends Component {
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
+        this.createWithTemplate = this.createWithTemplate.bind(this);
+        this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this);
         this.onFlowRenamed = this.onFlowRenamed.bind(this);
 
         // preview mode
@@ -105,6 +107,7 @@ class Canvas extends Component {
         }
 
         if(!this.preview && (!diagram_id || !skill_id)){
+            // DEFAULT TEMPLATE FOR CREATING A SKILL
             newSkill = true;
             open = true;
 
@@ -239,6 +242,49 @@ class Canvas extends Component {
         })
     }
 
+    createFlowFromTemplate(module_id){
+        if(this.preview) return;
+
+        var engine = this.state.engine;
+        var type = 'flow';
+
+        axios.get(`/marketplace/template/${module_id}/`, {
+            diagram_id: this.state.diagram_id
+        })
+        .then(res => {
+            var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                diagram_id: null,
+                inputs: [],
+                outputs: []
+            };
+
+            engine.stopMove();
+            node.extras.type = type;
+            node.x = 100;
+            node.y = 100;
+            node.setSelected();
+            engine.getDiagramModel().clearSelection();
+            engine.getDiagramModel().addNode(node);
+            engine.setSuperSelect(node);
+            this.setState({
+                engine: engine,
+                open: type !== 'comment',
+                template_confirm: null
+            });
+            this.createDiagram(node, JSON.parse(res.data.data))
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                error_modal: 'Error retrieving template'
+            });
+        })
+    }
+
     toggleTemplateConfirm(module){
         if(!!this.state.template_confirm){
             this.setState({
@@ -246,13 +292,31 @@ class Canvas extends Component {
             });
         } else {
             let confirm = {
-                text: `Replace current flow completely with ${module.title} template?`,
-                confirm: ()=> this.replaceWithTemplate(module.module_id)
+                text: `Replace current flow or create new subflow with ${module.title} template?`,
+                replaceWithTemplate: ()=> this.replaceWithTemplate(module.module_id),
+                createFlow: () => this.createFlowFromTemplate(module.module_id)
             }
             this.setState({
                 template_confirm:confirm
             });
         }
+    }
+
+    createWithTemplate(module){
+        axios.get(`/marketplace/template/${module.module_id}/`, {
+            diagram_id: this.state.diagram_id
+        })
+        .then(res => {
+            this.loadDiagram(res.data);
+            this.createSkill(module.title + " Copy")
+        })
+        .catch(err => {
+            console.log(err.response);
+            this.setState({
+                saving: false,
+                error_modal: 'Error retrieving template'
+            });
+        })
     }
 
     removeNode(){
@@ -556,7 +620,7 @@ class Canvas extends Component {
     }
 
     onLoadSkill(skill_id){
-        axios.get('/skill/'+skill_id+'?simple=1')
+        axios.get(`/skill/${skill_id}?${this.preview ? 'preview=1' : 'simple=1'}`)
         .then(res => {
             this.setState({
                 skill: res.data
@@ -711,6 +775,7 @@ class Canvas extends Component {
                     name: name,
                     review: false,
                     live: false,
+                    restart: true,
                     diagram: diagram_id,
                     locales: ["en-US"]
                 },
@@ -735,23 +800,26 @@ class Canvas extends Component {
     }
 
     // Create a new diagram from the flow block
-    createDiagram(node){
+    createDiagram(node, template=null){
         this.setState({
             loading_modal: true
-        });
+        })
 
-        let id = generateID();
-
-        node.extras.diagram_id = id;
+        let id = generateID()
+        node.extras.diagram_id = id
 
         // save the current diagram
         this.onSave(() => {
-
             // Generate a new diagram, save it, and go to it
-            let template = new_template;
-            template.id = id;
-            let skill_id = this.state.skill.skill_id;
-            let data = JSON.stringify(template);
+            let curr_template;
+            if(!template){
+                curr_template = new_template
+            } else {
+                curr_template = template
+            }
+            curr_template.id = id
+            let skill_id = this.state.skill.skill_id
+            let data = JSON.stringify(curr_template)
 
             var diagram = {
                 id: id,
@@ -766,24 +834,24 @@ class Canvas extends Component {
                 this.state.diagrams.push({
                     name: 'New Flow',
                     id: id
-                });
-                this.props.history.push(`/canvas/${skill_id}/${id}`);
+                })
+                this.props.history.push(`/canvas/${skill_id}/${id}`)
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err.response)
                 this.setState({
                     saving: false,
                     loading_modal: true,
                     error_modal: 'Unable to create new Flow'
-                });
-            });
-        });
+                })
+            })
+        })
     }
 
     publishAMZN() {
         this.onSave(diagram_id => {
-            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id);
-        });
+            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id)
+        })
     }
 
     publishMarket() {
@@ -814,8 +882,8 @@ class Canvas extends Component {
 
         if(type){
             if (type === 'choice') {
-                node.addInPort(' ');
-                node.addOutPort('else').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort('else').setMaximumLinks(1)
                 node.extras = {
                     audio: '',
                     audioText: '',
@@ -827,8 +895,8 @@ class Canvas extends Component {
                     inputs: []
                 };
             } else if (type === 'audio') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     audio: false,
                     lines: [
@@ -840,21 +908,21 @@ class Canvas extends Component {
                     ]
                 };
             } else if (type === 'speak') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     dialogs: []
                 }
             } else if (type === 'flow') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     diagram_id: null,
                     inputs: [],
                     outputs: []
                 };
             } else if (type === 'command') {
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     commands: ''
                 };
@@ -863,32 +931,32 @@ class Canvas extends Component {
                 node.clearListeners();
                 node.addListener({ entityRemoved: e => e.stopPropagation() });
             } else if (type === 'ending') {
-                node.addInPort(' ');
+                node.addInPort(' ')
                 node.extras = {
                     audio: '',
                     audioText: '',
                     audioVoice: ''
                 };
             } else if (type === 'random') {
-                node.addInPort(' ');
-                node.addOutPort(1).setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(1).setMaximumLinks(1)
                 node.extras = {
                     paths: 1
                 };
             } else if (type === 'variable') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {};
             } else if (type === 'set') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     sets: []
                 };
             } else if (type === 'if') {
-                node.addInPort(' ');
-                node.addOutPort('else').setMaximumLinks(1);
-                node.addOutPort('1').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort('else').setMaximumLinks(1)
+                node.addOutPort('1').setMaximumLinks(1)
                 node.extras = {
                     expressions: [{
                         type: 'value',
@@ -898,9 +966,9 @@ class Canvas extends Component {
                 };
             } else if (type === 'api') {
                 node.name = 'API';
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
-                node.addOutPort('fail').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
                 node.extras = {
                     url: '',
                     method: 'GET',
@@ -914,38 +982,38 @@ class Canvas extends Component {
                     failure_id: ''
                 };
             } else if (type === 'capture') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     variable: null
                 };
             } else if (type === 'mail') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
-                node.addOutPort('fail').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
                 node.extras = {
                     template_id: null,
                     mapping: [],
                     to: ''
                 };
             } else if (type === 'stream') {
-                node.addInPort(' ');
-                node.addOutPort('stop/pause').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort('stop/pause').setMaximumLinks(1)
                 node.extras = {
                     audio: '',
                     player: false
                 }
             } else if (type === 'permissions') {
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
-                node.addOutPort('fail').setMaximumLinks(1);
-                node.addOutPort('declined').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.addOutPort('declined').setMaximumLinks(1)
                 node.extras = {
                     permissions: []
                 };
             } else if (type === 'module'){
-                node.addInPort(' ');
-                node.addOutPort(' ').setMaximumLinks(1);
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
 
                 try{
                     let data = JSON.parse(event.dataTransfer.getData('data'));
@@ -1024,6 +1092,9 @@ class Canvas extends Component {
                         onClose={this.state.newSkill === false ? 
                             () => this.props.history.push('/dashboard') : 
                             () => this.setState({newSkill: null})}
+                        user_templates={this.state.user_templates}
+                        onTemplateChoice={this.createWithTemplate}
+                        history={this.props.history}
                     /> : null
                 }
                 <Prompt
@@ -1032,7 +1103,7 @@ class Canvas extends Component {
                     }
                 />
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
-                {!!this.state.template_confirm && <ConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
+                {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
 
                 {this.state.testing_modal ? 
                     <TestModal 
@@ -1054,13 +1125,14 @@ class Canvas extends Component {
                     user_templates={this.state.user_templates}
                     onTemplateChoice={this.handleTemplateChoice}
                     onFlowRenamed={this.onFlowRenamed}
+                    history={this.props.history}
                 />
                 <TitleBar
                     onTest={this.onTest}
                     skill={this.state.skill}
-                    lastSave={(this.state.saved ? "" : "*") + (this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "- last save -")}
                 />
                 { !this.state.preview && <ActionGroup
+                    lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
                     skill={this.state.skill}
                     preview={this.preview}
                     title={this.state.diagram_name}

@@ -25,6 +25,8 @@ import Permissions from './Editors/Permissions';
 import {Tooltip} from 'react-tippy';
 import {Button} from 'reactstrap';
 
+import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
+
 class Editor extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +36,8 @@ class Editor extends Component {
             voices: [],
             templates: [],
             permission_options: [],
-            slot_types: []
+            slot_types: SLOT_TYPES,
+            built_ins: BUILT_IN_INTENTS
         };
 
         this.BlockViewer = this.BlockViewer.bind(this);
@@ -96,10 +99,6 @@ class Editor extends Component {
                 { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
                 // { name: 'Amazon Pay', value: 'payments:autopay_consent' }
                 // Removed for now, amazon pay permissions broken
-            ],
-            slot_types: [
-                { name: "Custom", id: 0},
-                { name: "Date Type", id: 1}
             ]
         })
     }
@@ -144,7 +143,7 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'interaction':
-                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables} slot_types={this.state.slot_types}/>
+                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
             case 'line':
             case 'audio': 
             case 'multiline':

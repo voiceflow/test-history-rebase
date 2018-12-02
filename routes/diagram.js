@@ -2,6 +2,7 @@ const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
 const {docClient, pool, hashids, validateEmail} = require('./../services');
+const validUrl = require('valid-url');
 const _ = require('lodash');
 
 const expressionfy = (expression, depth=0) => {
@@ -408,7 +409,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: stop
                         };
                     }
-                } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
+                } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio' || node.extras.type === 'combine') {
                     let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
@@ -417,9 +418,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
 
                     let audio;
-                    if(node.extras.audio){
+                    if(node.extras.audio && validUrl.isUri(node.extras.audio)){
                         audio = node.extras.audio;
-                    }else if(node.extras.lines[0].audio){
+                    }else if(node.extras.lines[0].audio && validUrl.isUri(node.extras.lines[0].audio)){
                         audio = node.extras.lines[0].audio;
                     }
 
@@ -543,12 +544,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     
                     if(Array.isArray(node.extras.dialogs)){
                         node.extras.dialogs.forEach(d => {
-                            temp = draftToMarkdown(d.rawContent, {alexa: true});
-
-                            if(d.voice === 'Alexa'){
-                                markdownstring += temp;
-                            }else{
-                                markdownstring += `<voice name="${d.voice}">${temp}</voice>`
+                            if(d.audio && validUrl.isUri(d.audio)){
+                                markdownstring += `<audio src="${d.audio}"/>`
+                            }else if(d.rawContent){
+                                temp = draftToMarkdown(d.rawContent, {alexa: true});
+                                if(d.voice === 'Alexa' || !d.voice){
+                                    markdownstring += temp;
+                                }else{
+                                    markdownstring += `<voice name="${d.voice}">${temp}</voice>`
+                                }
                             }
                         });
                     }else{

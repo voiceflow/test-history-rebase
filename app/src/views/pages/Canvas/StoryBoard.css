@@ -910,9 +910,9 @@
     background-color: #EDF3FE !important;
     color: #42A5FF !important;
 }
-.App .Menu #sidebar .MenuItem.audio:hover {
+.App .Menu #sidebar .MenuItem.audio:hover, .App .Menu #sidebar .MenuItem.combine:hover {
     background-color: #ff8b35;
-} .MenuItem.audio>.MenuIcon {
+} .MenuItem.audio>.MenuIcon, .MenuItem.combine>.MenuIcon  {
     background-color: #ff8b3520 !important;
     color: #ff8b35 !important;
 }
@@ -1265,7 +1265,7 @@ label {
     background-color: #6CD132;
 }
 
-.srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline{
+.srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline, .srd-default-node.combine{
     background-color: #fff;
     border-top: 6px solid #ff8d48;
     border-color: #ff8d48 !important;
@@ -1768,6 +1768,7 @@ button.close{
 }
 .multi-title-block{
     display: flex;
+    font-size: 14px;
 }
 .multi-title-block>button.close {
     margin-left: 10px
@@ -2007,9 +2008,6 @@ button.close{
 
 .public-DraftEditorPlaceholder-hasFocus {
     color: #E2E9EC;
-}
-.super-center{
-    color: #2B3950 !important;
 }
 .editor {
   box-sizing: border-box;

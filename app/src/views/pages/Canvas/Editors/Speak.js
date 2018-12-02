@@ -100,7 +100,7 @@ class Speak extends Component {
                 open: true
             }];
             delete props.node.extras.rawContent;
-        }else if(!Array.isArray(props.node.extras.dialogs) || props.node.extras.dialogs.length === 0){
+        }else if(!Array.isArray(props.node.extras.dialogs)){
             props.node.extras.dialogs = [{
                 index: randomstring.generate(5),
                 voice: 'Alexa',

@@ -15,9 +15,6 @@ button:focus{
 audio {
     width: 275px;
 }
-.pt-45{
-    padding-top: 2.5rem !important;
-}
 .btn-primary{
     border: 1px solid #2295FA !important;
     color: #fff;
@@ -188,14 +185,14 @@ audio {
     font-weight: normal !important;
     color: #8DA2B5 !important;
     border-radius: 5px;
-    box-shadow: none !important;
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
     background-color: #ffffff !important;
     text-transform: none !important;
     font-size: 16px !important;
 }
 .white-btn:hover{
 /*    border: 1px solid #b8daff !important;*/
-    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
+    /*box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;*/
     color: #42A5FF !important;
 /*    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;*/
 }
@@ -341,11 +338,10 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
 }*/
 
 .input-group-text, .input-ground-prepend{
-    color: #8da2b5 !important;
-    border-color: #fff;
-    background-color: #F6F8F9;
-    border-radius: 5px;
-/*    cursor: pointer;*/
+    color: #42a5ff!important;
+    border-color: #b8daff;
+    background-color: #EBF4FE;
+    cursor: pointer;
 }
 .checkbox{
     background-color: aqua !important;
@@ -357,10 +353,9 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     transition: transform .2s, background-color .2s, color .2s, border .2s;
     height: 200px;
     display: flex;
-    /*justify-content: center;*/
+    justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: 50px;
     padding-left: 20px;
     padding-right: 20px;
     position: relative;
@@ -382,7 +377,7 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
 }
 .dropzone.enter-url button{
     padding: 5px 10.5px !important;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 .dropzone:hover, .dropzone.active{
     border: 1px dashed #42A5FF;
@@ -467,10 +462,10 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     white-space: nowrap;
 }
 
-.upload-btn i{
+/*.upload-btn i{
     display: block;
     margin: 2px 0;
-}
+}*/
 .upload-btn{
     font-size: 14px;
     flex: 1;
@@ -664,6 +659,31 @@ body.modal-open {
 
 .tippy-tooltip-content {
 
+}
+
+.btn-grey{
+    color: #90A2B3;
+    background-color: #F5F7FA;
+}
+.btn-grey:hover{
+    color: #42a5ff;
+    border-color: #b8daff;
+    background-color: #eef5fd;
+}
+.btn-grey:active{
+    color: #42a5ff;
+    border-color: #b8daff;
+    background-color: #d9ebff;
+}
+.btn-vertical{
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+}
+.btn-vertical i{
+    display: block;
+    font-size: 24px;
+    padding: 10px 0;
 }
 
 @-webkit-keyframes spin {

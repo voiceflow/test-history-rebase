@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import $ from 'jquery'
 import Dropzone from 'react-dropzone'
-import {Input, Button} from 'reactstrap'
+import {Input} from 'reactstrap'
 
 class AudioDrop extends Component {
 
@@ -72,10 +72,10 @@ class AudioDrop extends Component {
         }else if(this.state.url_open){
             render = <div className="dropzone enter-url">
                 <div className="text-center w-100">
-                    <p className="prompt-text">Enter Audio URL</p>
+                    <b className="text-muted">Enter Audio URL</b>
                     <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
-                    <Button onClick={()=>this.setState({url_open: false})} color="default" className="exit"><i className="far fa-chevron-left"/>Back</Button>
-                    <Button onClick={()=>this.props.update(this.state.url)}>Confirm</Button>
+                    <button onClick={()=>this.setState({url_open: false})} className="upload-btn btn btn-default exit"><i className="far fa-chevron-left"/>Back</button>
+                    <button onClick={()=>this.props.update(this.state.url)} className="upload-btn btn btn-primary-small">Confirm</button>
                 </div>
             </div>
         }else{
@@ -89,7 +89,7 @@ class AudioDrop extends Component {
                 onDrop={(accepted, rejected) => this.onDrop(accepted)}
             >
                 <div>
-                    <div className="text-muted text-center mb-3">
+                    <div className="text-muted text-center">
                         <b>Drag and Drop files here</b><br/>
                         <small>OR</small><br/>
                         <div className="space-between">

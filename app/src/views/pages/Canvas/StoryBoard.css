@@ -2050,21 +2050,17 @@ button.close{
     color: #E2E9EC;
 }
 .editor {
-  margin-top: 10px;    
-  box-sizing: border-box;
-/*  border: 1px solid #d4d9e6;*/
-  cursor: text;
-  padding: 10px 12px;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  background: #fefefe;
-  color: #2B3950;
-  box-shadow:  0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+    box-sizing: border-box;
+    border: 1px solid #d4d9e6;
+    cursor: text;
+    padding: 7px 8px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    background: #fefefe;
+    color: #2B3950;
 }
 .editor :global(.public-DraftEditor-content) {
   min-height: 88px;
-
-    
 }
 .input-group .variable-box__control {
     border-radius: 0 !important;

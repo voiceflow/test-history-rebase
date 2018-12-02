@@ -26,7 +26,7 @@ class IntentInputs extends Component {
     }
 
     _getSlotKeys(input) {
-      const re = /\{\{\[.+]\.(\d+)\}\}/g;
+      const re = /\{\{\[[^\}\{\[\]]+]\.(\d+)\}\}/g;
       let m;
       const slot_keys = new Set()
 
@@ -133,7 +133,7 @@ class IntentInputs extends Component {
 
     _getUtterancesWithSlotNames(utterances, slots) {
 
-        const re = /(\{\{\[.+]\.(\d+)\}\})/g;
+        const re = /(\{\{\[[^\}\{\[\]]+]\.(\d+)\}\})/g;
         let m;
 
         const utterance_text = utterances.map(e => e.text)
@@ -141,7 +141,7 @@ class IntentInputs extends Component {
         const new_utterances = utterance_text.map( input => {
             let new_input = input
             do {
-                m = re.exec(new_input)
+                m = re.exec(input)
                 if (m) {
                     const replace = m[1]
                     const key = m[2]

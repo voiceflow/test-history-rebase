@@ -98,15 +98,17 @@ class Interaction extends Component {
         const intents = this.state.intents;
         const intents_open = this.state.intents_open;
         const used_intents = new Set();
+        const choice_names = {}
 
         this.state.node.extras.choices.forEach(choice => {
             if (choice.intent) {
                 used_intents.add(choice.intent.value)
+                choice_names[choice.intent.value] = choice.name
             }
         })
 
         if (used_intents.has(intents[i].key)) {
-            const error = 'Cannot remove intent as it is currently being used in a choice!'
+            const error = `Cannot remove intent as it is currently being used in a choice (${choice_names[intents[i].key]})!`
             this.setState({
                 error: error
             })
@@ -124,14 +126,18 @@ class Interaction extends Component {
         const slots = this.state.slots;
         const slots_open = this.state.slots_open;
         const used_slots = new Set();
-        
+        const slot_names = {}
+
         this.state.intents.forEach(intent => {
             const utterances = intent.inputs
-            utterances.forEach( u => u.slots.forEach(s => used_slots.add(s)))
+            utterances.forEach( u => u.slots.forEach(s => {
+                used_slots.add(s)
+                slot_names[s] = intent.name
+            }))
         })
 
         if (used_slots.has(slots[i].key)) {
-            const error = 'Cannot remove slot as it is currently being used in an intent!'
+            const error = `Cannot remove slot as it is currently being used in an intent (${slot_names[slots[i].key]})!`
             this.setState({
                 error: error
             })

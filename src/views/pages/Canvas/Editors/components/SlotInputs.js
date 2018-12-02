@@ -9,13 +9,15 @@ class SlotInputs extends Component {
 
         this.state = {
             slots: this.props.slots,
-            textEntries: {},
+            text_entries: [],
             open: this.props.open
         };
         this.toggleCollapse = this.toggleCollapse.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.onDeleteExample = this.onDeleteExample.bind(this);
+        this.onNameSave = this.onNameSave.bind(this)
+        this.onNameChange = this.onNameChange.bind(this)
     }
 
     toggleCollapse(i){
@@ -39,27 +41,27 @@ class SlotInputs extends Component {
             e.preventDefault();
             const slots = this.state.slots;
             const slot = slots[i];
-            const textEntries = this.state.textEntries;
+            const text_entries = this.state.text_entries;
             const newValue = e.target.value;
             if (!Array.isArray(slot.inputs)) {
                 slot.inputs = [];
             }
             if (newValue) {
                 slot.inputs.push(newValue);
-                textEntries[i] = '';
+                text_entries[i] = '';
             }
             this.setState({
                 slots: slots,
-                textEntries: textEntries
+                text_entries: text_entries
             }, () => {this.props.onChange(slots, this.state.open)})
         }
     }
 
     onTextChange(value, i) {
-        const textEntries = this.state.textEntries;
-        textEntries[i] = value;
+        const text_entries = this.state.text_entries;
+        text_entries[i] = value;
         this.setState({
-            textEntries: textEntries
+            text_entries: text_entries
         })
     }
 
@@ -77,7 +79,12 @@ class SlotInputs extends Component {
         slots[i].name = e.target.value
         this.setState({
             slots: slots
-        }, () => {this.props.onChange(slots, this.state.open)})
+        })
+    }
+
+    onNameSave(e) {
+        e.preventDefault()
+        this.props.onChange(this.state.slots, this.state.open)
     }
 
     render() {
@@ -103,6 +110,7 @@ class SlotInputs extends Component {
                                         type="text"
                                         value={slot.name}
                                         onChange={(e) => {this.onNameChange(e, i)}}
+                                        onBlur={(e) => {this.onNameSave(e)}}
                                         onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
                                         className="interaction-name-input"
                                     />                                    
@@ -114,7 +122,7 @@ class SlotInputs extends Component {
                                 <Textarea 
                                     className="input-area"
                                     name="inputs" 
-                                    value={this.state.textEntries[i]} 
+                                    value={this.state.text_entries[i]} 
                                     onKeyPress={ (target) => {this.handleKeyPress(target, i)}}
                                     onChange={(e) => {this.onTextChange(e.target.value, i)}}
                                     placeholder="What would a user say to select this slot? (Press Enter after typing out each example)" 

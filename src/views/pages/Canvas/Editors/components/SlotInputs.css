@@ -1,2 +1,5 @@
-@import './IntentInputs.css'
+@import './IntentInputs.css';
 
+.map-box {
+    font-size: 12px;
+}

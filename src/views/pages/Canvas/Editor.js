@@ -139,7 +139,7 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'interaction':
-                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}/>
+                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables}/>
             case 'line':
             case 'audio': 
             case 'multiline':

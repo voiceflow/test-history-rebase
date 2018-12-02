@@ -205,11 +205,21 @@ const manifest = (r, encoded_id) => {
 		locales[locale] = localeObj;
 	})
 
+	// TODO: in the future we need a different one for each 
 	const privacyLocales = {}
+	let privacy_policy = "https://getvoiceflow.com";
+	let terms_of_use = "https://getvoiceflow.com";
+	if(!r.privacy_policy){
+		privacy_policy = r.privacy_policy
+	}
+	if(!r.termsOfUseUrl){
+		terms_of_use = r.terms_and_cond
+	}
+
 	r.locales.forEach(locale => {
 		privacyLocales[locale] = {
-			"termsOfUseUrl": "https://getvoiceflow.com",
-			"privacyPolicyUrl": "https://getvoiceflow.com"
+			"termsOfUseUrl": privacy_policy,
+			"privacyPolicyUrl": terms_of_use
 		}
 	})
 

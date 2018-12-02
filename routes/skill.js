@@ -282,6 +282,7 @@ exports.patchSkill = (req, res) => {
     }
 
     let b = req.body;
+
     if(!b.locales){
         b.locales = '["en-US"]';
     }
@@ -305,11 +306,14 @@ exports.patchSkill = (req, res) => {
             ads = $14, 
             export = $15, 
             instructions = $16,
-            locales = $17
+            locales = $17,
+            privacy_policy = $18,
+            terms_and_cond = $19
             WHERE skill_id = $1`, 
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
             {value: b.invocations}, b.small_icon, b.large_icon, b.category, 
-            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales], (err) => {
+            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales,
+            b.privacy_policy, b.terms_and_cond], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -330,10 +334,13 @@ exports.patchSkill = (req, res) => {
             small_icon = $8, 
             large_icon = $9, 
             category = $10,
-            locales = $11
+            locales = $11,
+            privacy_policy = $12,
+            terms_and_cond = $13
             WHERE skill_id = $1`, 
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
-            {value: b.invocations}, b.small_icon, b.large_icon, b.category, b.locales], (err) => {
+            {value: b.invocations}, b.small_icon, b.large_icon, b.category, b.locales,
+            b.privacy_policy, b.terms_and_cond], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -400,7 +407,7 @@ exports.buildSkill = async (req,res) => {
                 let amzn_id = r.amzn_id
                 r.permissions = permissions
                 let manifest = JSONs.manifest(r, original_id)
-
+                
                 try{
                     if(amzn_id){
                         try{

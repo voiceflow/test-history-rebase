@@ -5,9 +5,6 @@ exports.sendOnboarding = (email, name, cb) => {
     if (typeof name !== 'string') {
         name = null;
     }
-    // console.log(codesArr[0]);
-    // console.log(codesArr[1]);
-    // console.log(codesArr[2]);
 
     let data = {
         'template_id': 'd-9ba04cdf70894f489147057e71d2c5c9',

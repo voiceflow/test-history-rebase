@@ -20,19 +20,36 @@ audio {
 }
 .btn-primary{
     border: 1px solid #2295FA !important;
-    /*border: none;*/
     color: #fff;
     font-weight: normal;
     background: linear-gradient(#2295FA, #1B86F9);
     text-transform: none !important;
-/*    box-shadow: 0 2px 5px 0 rgba(74,144,226,.3) !important;*/
     transition: all 0.3s ease !important;
     display: inline-block;
+    transition: all 0.25s;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .btn-primary:hover{
-    box-shadow: 0 2px 20px 0 rgba(74,144,226,.4) !important;
+/*    box-shadow: 0 2px 10px 0 rgba(74,144,226,.4) !important;*/
     background: linear-gradient(#1B86F9, #1B86F9);
 /*    transform: translateY(-1px) scale(1.02);*/
+}
+.btn-primary-small{
+    border: 1px solid #2295FA !important;
+    color: #fff;
+    font-weight: normal;
+    background: linear-gradient(#2295FA, #1B86F9);
+    text-transform: none !important;
+    transition: all 0.3s ease !important;
+    display: inline-block;
+    transition: all 0.25s;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .btn-outline-primary{
     color: #0095f7;
@@ -49,9 +66,19 @@ audio {
     border: 1px solid #ff3562;
 }
 .btn-outline-danger{
-    border: 1px solid #E85857;
-    /*background-color: #FAC8C7;*/
-    color: #E85857;
+    border: 1px solid #ffb9b9;
+    background-color: #ffeae9;
+    color: #ff7170;
+}
+.btn-outline-danger:hover{
+    background-color: #ffe2e0;
+    color: #ff7170;
+    border: 1px solid #ffb9b9;   
+}
+.btn-outline-danger:active{
+    background-color: #ffd4d2 !important;
+    color: #ff7170 !important;
+    border: 1px solid #ffb9b9 !important; 
 }
 .alert-danger{
     color: #ff3562 !important;
@@ -137,17 +164,20 @@ audio {
     padding: 0 !important;
 }
 .outline-btn{
-    padding: 10px 25px !important;
-    height: 43px;
     font-weight: normal !important;
     color: #fff !important;
-    border: none !important;
+    border: 1px solid #fff !important;
 /*    box-shadow: none !important;*/
-    background-color: #42A5FF !important;
+/*    background-color: #42A5FF !important;*/
     text-transform: none !important;
-    font-size: 15px !important;
-    border-radius: 30px;
+    font-size: 16px !important;
+    border-radius: 5px !important;
     cursor: pointer;
+    background: linear-gradient(#2295FA, #1B86F9) !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
 .outline-btn:active{
     background-color: #42A5FF !important;
@@ -156,19 +186,17 @@ audio {
     padding: 10px 25px !important;
     height: 43px;
     font-weight: normal !important;
-    color: #42A5FF !important;
-    border-radius: 3px;
+    color: #8DA2B5 !important;
+    border-radius: 5px;
     box-shadow: none !important;
     background-color: #ffffff !important;
     text-transform: none !important;
     font-size: 16px !important;
-/*    border: 1px solid #94a6bd6e !important;*/
-/*    border: 1px solid #E2E9EC !important;*/
 }
 .white-btn:hover{
-    border: 1px solid #b8daff !important;
+/*    border: 1px solid #b8daff !important;*/
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
     color: #42A5FF !important;
-    background-color: aliceblue !important;
 /*    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;*/
 }
 .btn-secondary{
@@ -178,7 +206,7 @@ audio {
 }
 .btn-secondary:hover{
     background-color: #0086ff;
-    border: 1px solid #0086ff;
+    border: 1px solid #0086ff !important;
 }
 .btn-secondary:active{
     background-color: #0074de !important;
@@ -212,9 +240,10 @@ audio {
 /*    border: 2px solid #fff !important;*/
 }
 .purple-btn:hover{
-    box-shadow: 0 3px 15px 0 rgba(74,144,226,.35) !important;
+    box-shadow: 0 3px 10px 0 rgba(74,144,226,.35) !important;
     transform: translateY(-1px) scale(1.03);
     border: none !important;
+    background: linear-gradient(#1B86F9, #1B86F9);
 /*    transform: scale(1.03);*/
 /*    box-shadow: 0 5px 10px 0 rgba(66, 83, 255, 0.23) !important;*/
 }
@@ -312,9 +341,11 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
 }*/
 
 .input-group-text, .input-ground-prepend{
-    color: #42A5FF !important;
-    border-color: #b8daff;
-    background-color: #cce5ff70;
+    color: #8da2b5 !important;
+    border-color: #fff;
+    background-color: #F6F8F9;
+    border-radius: 5px;
+/*    cursor: pointer;*/
 }
 .checkbox{
     background-color: aqua !important;
@@ -324,21 +355,24 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     overflow: visible;
     min-height: 40px;
     transition: transform .2s, background-color .2s, color .2s, border .2s;
-    height: 170px;
+    height: 200px;
     display: flex;
     /*justify-content: center;*/
     align-items: center;
     flex-direction: column;
-    padding: 25px 20px 0px 20px;
+    padding-top: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
     position: relative;
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
-    border: 2px dashed #c6d4d8;
+    border: 1px dashed #8da2b5;
     border-radius: 5px;
-    background-color: #FFF;
+    background-color: #8da2b510 !important;
     cursor: pointer;
-    background-color: #F5F7FA;
+    background-color: #fff;
+    transition: all 0.2s ease !important;
 }
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;
@@ -351,8 +385,9 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
     margin-top: 10px;
 }
 .dropzone:hover, .dropzone.active{
-    border: 2px dashed #42A5FF;
-    background-color: #EDF3FE;
+    border: 1px dashed #42A5FF;
+    background-color: #EDF3FE !important;
+/*    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;*/
 }
 .dropzone.active{
     transform: scale(1.01);
@@ -405,7 +440,6 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, text
 .audio-box>div, .combined-box>div{
     margin-bottom: 10px;
 }
-
 .dropzone.active {
     border-color: #28a745!important;
 }

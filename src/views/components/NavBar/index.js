@@ -38,19 +38,20 @@ class NavBar extends Component {
         {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
         {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
         //{link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
-        {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
+        // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
       ],
       user: AuthenticationService.getUser()
     };
   }
 
   componentDidMount() {
-    // if(this.state.user.admin){
-    //   let tabs = this.state.tabs;
-    //   tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
-    //   tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
-    //   this.setState({tabs: tabs});
-    // }
+    if(this.state.user.admin === 10){
+      let tabs = this.state.tabs;
+      tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>});
+      // tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
+      // tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
+      this.setState({tabs: tabs});
+    }
   }
 
   handleChange = event => {

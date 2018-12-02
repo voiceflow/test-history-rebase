@@ -67,19 +67,28 @@ class Menu extends PureComponent {
             open: true,
             tab: 'blocks',
             new_var: '',
+            new_global: '',
             tree: null,
             block_tab_state: 'blocks',
+            variable_tab_state: 'global',
             show: show
         }
 
         this.openTab = this.openTab.bind(this);
         this.addVariable = this.addVariable.bind(this);
+        this.addGlobalVariable = this.addGlobalVariable.bind(this);
         this.deleteVariable = this.deleteVariable.bind(this);
+        this.deleteGlobalVariable = this.deleteGlobalVariable.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.buildTree = this.buildTree.bind(this);
         this.updateTree = this.updateTree.bind(this);
         this.toggleBlockSection = this.toggleBlockSection.bind(this);
         this.visited = new Set();
+        this.sections = sections;
+
+        if(window.user_detail.admin === 10){
+            sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> })
+        }
     }
 
     componentDidMount() {
@@ -164,7 +173,7 @@ class Menu extends PureComponent {
         if(e) e.preventDefault();
         let variables = this.props.variables;
         let new_var = this.state.new_var;
-        if(isVarName(new_var) && !variables.includes(new_var)){
+        if(isVarName(new_var) && !variables.includes(new_var) && !this.props.global_variables.includes(new_var)){
             variables.push(new_var);
             this.props.onVariable(variables);
             this.setState({
@@ -176,20 +185,44 @@ class Menu extends PureComponent {
         return false
     }
 
+    addGlobalVariable (e){
+        if(e) e.preventDefault();
+        let variables = this.props.global_variables;
+        let new_var = this.state.new_global;
+        if(isVarName(new_var) && !variables.includes(new_var) && !this.props.variables.includes(new_var)){
+            variables.push(new_var);
+            this.props.onGlobalVariable(variables);
+            this.setState({
+                new_global: ""
+            })
+        }else{
+            alert('Invalid Variable: Variables can\'t have the same name and must start with a character and can not contain spaces or special characters');
+        }
+        return false
+    }
+
     deleteVariable(variable){
-        let variables = this.props.variables;
-        let index = variables.indexOf(variable);
-        if (index !== -1) variables.splice(index, 1);
-        this.props.onVariable(variables);
+        let variables = this.props.variables
+        let index = variables.indexOf(variable)
+        if (index !== -1) variables.splice(index, 1)
+        this.props.onVariable(variables)
+    }
+
+    deleteGlobalVariable(variable){
+        let variables = this.props.global_variables
+        let index = variables.indexOf(variable)
+        if (index !== -1) variables.splice(index, 1)
+        this.props.onGlobalVariable(variables)
     }
 
     render() {
 
         let content;
         if(this.state.tab === 'blocks'){
+            let block_content;
             if(this.state.block_tab_state === 'blocks'){
-                content =
-                    sections.map((section, i) => {
+                block_content =
+                    this.sections.map((section, i) => {
                         return <div key={i} className="section no-select">
                             <span 
                                 className="section-title" 
@@ -209,16 +242,23 @@ class Menu extends PureComponent {
                 })
             } else {
                 if(this.props.user_modules.length > 0){
-                    content = 
+                    block_content = 
                     <div>
                     {this.props.user_modules.map((user_module, i) => {
                         return <ModuleItem module={user_module} key={i} />;
                     })}
                     </div>
                 }else{ 
-                    content = <div className="mt-2 text-center text"><img className="image-editor mt-4 mb-3" src={"/empty.png"}/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
+                    block_content = <div className="mt-2 text-center text-muted"><img className="image-editor mt-4 mb-3" src="/empty.png" alt="empty"/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
                 }
             }
+            content = <React.Fragment>
+                {/*<ButtonGroup className="toggle-group mb-2">
+                    <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
+                    <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Flows</Button>
+                </ButtonGroup>*/}
+                {block_content}
+            </React.Fragment>
         }else if(this.state.tab === 'project'){
             // content = this.props.diagrams.map((diagram, i) => 
             //     <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
@@ -254,7 +294,7 @@ class Menu extends PureComponent {
                     })}
                     <hr className='mb-2 mt-4'/>                
                 </React.Fragment>}
-                <label>Templates</label>
+                {/*<label>Templates</label>
                 {this.props.user_templates.length > 0?
                     <div>
                     {this.props.user_templates.map((user_template, i) => {
@@ -262,46 +302,81 @@ class Menu extends PureComponent {
                     })}
                     </div>
                     :
-                    <div>You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
-                }
+                    <div className="text-muted">You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+                }*/}
             </React.Fragment>;
         }else if(this.state.tab === 'variables'){
-            content = <React.Fragment>
-                <form onSubmit={this.addVariable}>
-                    <FormGroup className="mb-0">
-                        <Label>Add New Variable</Label>
-                        <InputGroup>
-                            <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
-                            <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
-                        </InputGroup>
-                    </FormGroup>
-                </form>
-                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
-                <div>
-                    <Label>Variables</Label>
-                    <div className="variables">
-                        {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
-                            if(defaultVariables[variable]){
-                                return <div key={variable} className="variable_tag default">{'{' + variable + '}'}</div>
-                            }else{
-                                return <div key={variable} className="variable_tag">{'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span></div>
-                            }
-                        }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
+            let variable_tab;
+            if(this.state.variable_tab_state === 'global'){
+                variable_tab = <React.Fragment>
+                    {/*<span className="text-muted">Global variables can be accessed anywhere in the project</span>*/}
+                    <form onSubmit={this.addGlobalVariable}>
+                        <FormGroup className="mb-0">
+                            <Label>Add New Global Variable</Label>
+                            <InputGroup>
+                                <Input name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16"/>
+                                <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                            </InputGroup>
+                        </FormGroup>
+                    </form>
+                    <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                    <div>
+                        <Label>Global Variables</Label>
+                        <div className="variables">
+                            {this.props.global_variables.map((variable, i) => {
+                                if(variable in defaultVariables){
+                                    return <Tooltip key={variable} position="bottom" html={<div style={{ width: 165 }}>{defaultVariables[variable]}</div>}>
+                                        <div className="variable_tag global default">{'{' + variable + '}'}</div>
+                                    </Tooltip>
+                                }else{
+                                    return <div key={variable} className="variable_tag global">{'{' + variable + '}'} <span onClick={() => this.deleteGlobalVariable(variable)}><i className="fas fa-times"></i></span></div>
+                                }
+                            })}
+                        </div>
                     </div>
-                </div>
+                </React.Fragment>
+            }else if(this.state.variable_tab_state === 'local'){
+                variable_tab = <React.Fragment>
+                    {/*<span className="text-muted">Local Variables are accessed only by the current flow</span>*/}
+                    <form onSubmit={this.addVariable}>
+                        <FormGroup className="mb-0">
+                            <Label>Add New Local Variable</Label>
+                            <InputGroup>
+                                <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
+                                <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                            </InputGroup>
+                        </FormGroup>
+                    </form>
+                    <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                    <div>
+                        <Label>Local Variables</Label>
+                        <div className="variables">
+                            {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
+                                return <div key={variable} className="variable_tag">
+                                    {'{' + variable + '}'} <span onClick={() => this.deleteVariable(variable)}><i className="fas fa-times"></i></span>
+                                </div>
+                            }.bind(this)) : <span className="text-muted">No Existing Variables</span>}
+                        </div>
+                    </div>
+                </React.Fragment>
+            }
+
+            content = <React.Fragment>
+                <ButtonGroup className="toggle-group mb-2">
+                    <Button outline={this.state.variable_tab_state !== 'global'} 
+                        onClick={() => {this.setState({variable_tab_state: 'global'})}} 
+                        disabled={this.state.variable_tab_state === 'global'}> 
+                        Global
+                    </Button>
+                    <Button outline={this.state.variable_tab_state !== 'local'} 
+                        onClick={() => {this.setState({variable_tab_state: 'local'})}} 
+                        disabled={this.state.variable_tab_state === 'local'}> 
+                        Local
+                    </Button>
+                </ButtonGroup>
+                {variable_tab}
             </React.Fragment>
         } 
-
-        let block_module_group;
-        if(this.state.tab === 'blocks'){
-            block_module_group = 
-                <ButtonGroup className="toggle-group mb-2">
-                    <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
-                    <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Flows</Button>
-                </ButtonGroup>
-        } else {
-            block_module_group = null;
-        }
 
         return (
             <div className="Menu">
@@ -339,7 +414,6 @@ class Menu extends PureComponent {
                         </div>
                     </div>
                     <div className="sidebar-content">
-                        {block_module_group}
                         {content}
                     </div>
                 </div>

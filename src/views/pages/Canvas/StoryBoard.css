@@ -1619,22 +1619,34 @@ button.close{
     border-radius: 5px;
     padding: 15px;
     font-size: 16px !important;
+    background-color: #F6F8F9;
 }
 .btn-outline-add:hover{
     color: #42A5FF !important;
+    background-color: #f3f4f5;
 }
 .btn-outline-add:active{
-    background-color: #fafafa !important;
+    background-color: #eeeff1 !important;
 }
 .diagram-block .btn-secondary{
-    background-color: #f0f3f7 !important;
-    border: #f0f3f7 1px solid !important;
+    background-color: #f0f3f7;
+    border: #f0f3f7 1px solid;
     color: #2b3950 !important;
 }
 .diagram-block .btn-secondary:hover{
-    background-color: #d1d8e2 !important;
+    background-color: #E2E9EC !important;
+    border: #E2E9EC 1px solid;
+}
+.diagram-block .btn-secondary:active{
+    background-color: #E2E9EC !important;
     border: #d1d8e2 1px solid !important;
-    /*color: #3d96f0 !important;*/
+}
+.diagram-block .btn-secondary.disabled {
+    color: #fff !important;
+    background-color: #42A5FF !important;
+    border-color: #42A5FF !important;
+    opacity: 1;
+/*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
 }
 .diagram-block input.form-control {
     margin-right: 1px;
@@ -1655,6 +1667,7 @@ button.close{
     color: #2b3950 !important;
     border: none !important;
 }*/
+
 .btn-secondary.disabled:hover {
     /*color: #fff !important;*/
     border-color: #369af5;
@@ -1754,7 +1767,7 @@ button.close{
     text-align: center;
     line-height: 18px;
     border-radius: 100px;
-    background-color: #F1F3F9;
+    background-color: #EDF3FE;
     color: #94A6BD;
     font-size: 14px;
     font-weight: bold;
@@ -1765,14 +1778,15 @@ button.close{
     padding-top: 2px;
     height: 20px;
     width: 20px;
-    padding-left: 7px;
+    padding-left: 6px;
     padding-right: 7px;
     text-align: center;
-    line-height: 18px;
+    line-height: 16px;
     border-radius: 5px;
     overflow: hidden;
-    background-color: rgb(218, 225, 233);
-    color: #fff;
+    background-color: #edf5ff;
+    color: #42A5FF;
+    border: 1px solid #42A5FF50;
     /*font-weight: bold;*/
     font-size: 12px;
     margin-right: 5px;
@@ -1863,7 +1877,7 @@ button.close{
 .variable-group>.variable-box {
     max-width: 180px;
     margin-right: 5px;
-/*    background-color: #3D96F0*/
+    color: #2b3950;
 }
 /*.expression-block .dropdown {
     max-height: 400px;
@@ -1871,10 +1885,12 @@ button.close{
 .set-block > .close {
     line-height: 18px;
 }
-
+.variable-box__input{
+    color: #fff !important;
+}
 .variable-group>span{
     font-weight: bold;
-    margin-right: 5px;
+    margin-right: 7px;
     margin-left: 2px;
 }
 
@@ -1958,11 +1974,11 @@ button.close{
     padding: 3px 7px;
 }
 
-.new_var {
+/*.new_var {
     background-color: #6A1B9A;
     color: #E1BEE7;
     border-color: #6A1B9A
-}
+}*/
 
 .down-arrow {
     color: #E3E9EC;

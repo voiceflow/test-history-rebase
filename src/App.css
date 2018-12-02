@@ -46,9 +46,19 @@ button:focus{
     border: 1px solid #ff3562;
 }
 .btn-outline-danger{
-    border: 1px solid #E85857;
-    /*background-color: #FAC8C7;*/
-    color: #E85857;
+    border: 1px solid #ffb9b9;
+    background-color: #ffeae9;
+    color: #ff7170;
+}
+.btn-outline-danger:hover{
+    background-color: #ffe2e0;
+    color: #ff7170;
+    border: 1px solid #ffb9b9;   
+}
+.btn-outline-danger:active{
+    background-color: #ffd4d2 !important;
+    color: #ff7170 !important;
+    border: 1px solid #ffb9b9 !important; 
 }
 .alert-danger{
     color: #ff3562 !important;
@@ -127,7 +137,7 @@ button:focus{
 .outline-btn{
     font-weight: normal !important;
     color: #fff !important;
-    border: none !important;
+    border: 1px solid #fff !important;
 /*    box-shadow: none !important;*/
 /*    background-color: #42A5FF !important;*/
     text-transform: none !important;
@@ -161,9 +171,17 @@ button:focus{
 /*    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;*/
 }
 .btn-secondary{
-    color: #fff !important;
-    background-color: #3d96f0 !important;
-    border: 1px solid #3d96f0 !important;
+    color: #fff;
+    background-color: #42A5FF;
+    border: 1px solid #42A5FF;
+}
+.btn-secondary:hover{
+    background-color: #0086ff;
+/*    border: 1px solid #0086ff;*/
+}
+.btn-secondary:active{
+    background-color: #0074de !important;
+    border: 1px solid #0074de !important;
 }
 .form-control{
     color: #2b3950 !important;
@@ -294,7 +312,8 @@ input::placeholder, textarea::placeholder {
 .input-group-text, .input-ground-prepend{
     color: #8da2b5 !important;
     border-color: #fff;
-    background-color: rgb(244, 247, 250);
+    background-color: #F6F8F9;
+    border-radius: 5px;
 /*    cursor: pointer;*/
 }
 .checkbox{

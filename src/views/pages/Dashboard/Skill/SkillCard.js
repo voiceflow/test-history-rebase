@@ -11,7 +11,11 @@ class SkillCard extends React.Component {
 
   render() {
     let image = this.props.skill.image;
-// style={{backgroundImage: `linear-gradient(${Math.floor(Math.random() * 360)}deg , rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}), rgb(${Math.floor(Math.random() * 255)},${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}))`}}
+    let name = this.props.skill.name.match(/\b(\w)/g)
+    if(name) { name = name.join('') }
+    else { name = this.props.skill.name }
+    name = name.substring(0,3) 
+
     return (
       <div className="skill-card-container">
         <Card className='skill-card'>
@@ -19,7 +23,7 @@ class SkillCard extends React.Component {
             { image ?
               <div style={{backgroundImage: `url(${image})`}} className='card-image'/> :
               <div className='no-image card-image' >
-                <h1>{ this.props.skill.name.match(/\b(\w)/g).join('') }</h1>
+                <h1>{ name }</h1>
               </div>
             }
             <CardContent>

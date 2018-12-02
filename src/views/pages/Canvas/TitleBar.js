@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import MUIButton from '@material-ui/core/Button';
 
-class TitleBar extends PureComponent {
+class TitleBar extends Component {
     render() {
         return (
             <div className="TitleBar no-select">

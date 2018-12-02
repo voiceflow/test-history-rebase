@@ -31,7 +31,7 @@ class AudioDrop extends Component {
             let data = new FormData()
             data.append('audio', files[0])
             $.ajax({
-                url: '/raw_audio',
+                url: this.props.stream ? '/raw_audio' : '/audio',
                 type: 'POST',
                 data: data,
                 processData: false,

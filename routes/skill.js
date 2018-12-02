@@ -52,7 +52,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart
+                name, amzn_id, review, live, diagram, locales, restart, global
             FROM
                 skills
             WHERE

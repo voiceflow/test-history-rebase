@@ -21,14 +21,14 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 
 const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
 
-const default_state = () => {
-  return {
-    diagrams: null,
-    input: "",
-    line: null,
-    testing: true
-  }
-}
+// const default_state = () => {
+//   return {
+//     diagrams: null,
+//     input: "",
+//     line: null,
+//     testing: true
+//   }
+// }
 
 const recurse = (tag, index=0) => {
     if(tag.type === 'text'){
@@ -72,15 +72,15 @@ class TestModal extends React.Component {
       data: null,
       selected_line: null,
       nodes: [],
-      story_state: default_state(),
       ended: false,
       last_diagram: "",
       debug: false,
       audioplayer: false,
     }
 
-    this.pause = false;
-    this.next = false;
+    this.story_state = null
+    this.pause = false
+    this.next = false
     this.updateState = this.updateState.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputSubmit = this.inputSubmit.bind(this);
@@ -101,6 +101,28 @@ class TestModal extends React.Component {
           nodes: nextProps.testing_info.nodes
       });
     }
+  }
+
+  initializeStory() {
+    this.story_state = {
+      diagrams: null,
+      input: "",
+      line: null,
+      testing: true,
+      skill_id: 'TEST_SKILL',
+      globals: {'TEST_SKILL': {}}
+    };
+
+    // Inject New Globals in if updated
+    if(Array.isArray(this.props.globals)){
+        this.props.globals.forEach(variable => {
+            this.story_state.globals['TEST_SKILL'][variable] = 0
+        })
+    }
+
+    // stick in global variables
+    this.story_state.globals['TEST_SKILL'].sessions = 1
+    this.story_state.globals['TEST_SKILL'].user_id = 'TEST_USER'
   }
 
   removeAudio(){
@@ -134,9 +156,10 @@ class TestModal extends React.Component {
     this.setState({
       started: false,
       inputs: [],
-      ended: false,
-      story_state: default_state()
+      ended: false
     })
+
+    this.story_state = null;
   }
 
   // Super Janky recusive function to play audio
@@ -151,7 +174,7 @@ class TestModal extends React.Component {
       if(ended){
         this.handleEnd();
       }else{
-        if(this.state.story_state.play){
+        if(this.story_state.play){
           this.next = true;
           this.updateState();
         }
@@ -231,24 +254,24 @@ class TestModal extends React.Component {
   }
 
   updateState(start=false){
-    let data = this.state.story_state;
+    let data = this.story_state;
 
     if(start){
       data.testing = {
-        line: this.state.story_state.line ? this.state.story_state.line : "START",
+        line: this.story_state.line ? this.story_state.line : "START",
       };
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
     if(this.next){
-      if(this.state.story_state.play.loop){
+      if(this.story_state.play.loop){
         this.removeAudio();
         this.next = false;
         return this.recursivePlay(0, [{
           name: 'audio',
           type: 'tag',
           attrs: {
-            src: this.state.story_state.play.url
+            src: this.story_state.play.url
           }
         }], false);
       }else{
@@ -261,9 +284,7 @@ class TestModal extends React.Component {
       res = res.data;
 
       if(res.line) {
-        this.setState({
-          story_state: res
-        });
+        this.story_state = res
       }
       if(res.output && res.output.length > 0){
         // TYLER'S SUPER JANKY AUDIO THING
@@ -278,9 +299,8 @@ class TestModal extends React.Component {
         this.pause = false;
         if(res.play){
           if(res.play.action === 'END'){
-            let story_state = this.state.story_state;
-            delete story_state.play;
-            this.setState({story_state: story_state, audioplayer: false});
+            delete this.story_state.play;
+            this.setState({audioplayer: false});
           }else{
             this.setState({audioplayer: true});
             if(res.play.action === 'START'){
@@ -353,8 +373,7 @@ class TestModal extends React.Component {
         input: ""
       });
     }else{
-      let story_state = this.state.story_state;
-      story_state.input = this.state.input;
+      this.story_state.input = this.state.input;
       let inputs = this.state.inputs;
 
       inputs.push({
@@ -364,8 +383,7 @@ class TestModal extends React.Component {
 
       this.setState({
         input: "", 
-        inputs: inputs,
-        story_state: story_state
+        inputs: inputs
       }, this.updateState);
     }
 
@@ -387,11 +405,10 @@ class TestModal extends React.Component {
 
   startline(){
     if(!this.state.selected_line) return;
-    let story_state = this.state.story_state;
-    story_state.line = this.state.selected_line.value
+    this.initializeStory();
+    this.story_state.line = this.state.selected_line.value
     this.setState({
-      started: true,
-      story_state: story_state
+      started: true
     }, () => {this.updateState(true)});
   }
 
@@ -399,11 +416,12 @@ class TestModal extends React.Component {
     this.setState({
       started: true
     });
+    this.initializeStory();
     this.updateState(true);
   }
 
   getVariables(){
-    let state = this.state.story_state;
+    let state = this.story_state;
     let diagram_id = this.state.last_diagram;
     if(state){
       if(!state.diagram_states || !state.diagram_states[diagram_id]){

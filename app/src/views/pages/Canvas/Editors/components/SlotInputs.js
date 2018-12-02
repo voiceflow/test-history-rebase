@@ -145,7 +145,7 @@ class SlotInputs extends Component {
                                       value={slot.type}
                                       onChange={(e) => this.updateSlotType(e, i)}
                                       options={this.props.slot_types.map(type => {
-                                          return {label: type.name, value: type.name}
+                                          return {label: type, value: type}
                                       })}
                                   />
                                 </div>

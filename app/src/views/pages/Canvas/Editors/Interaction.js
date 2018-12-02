@@ -8,6 +8,18 @@ import ErrorModal from '../../../components/Modals/ErrorModal';
 class Interaction extends Component {
     constructor(props) {
         super(props);
+        
+        const formatted_built_ins = this.props.built_ins.map( intent => {
+            return {
+                built_in: true,
+                name: intent.name,
+                key: intent.name,
+                inputs: [{
+                    text: '',
+                    slots: intent.slots
+                }]
+            }
+        })
 
         this.state = {
             intents: this.props.intents,
@@ -16,7 +28,8 @@ class Interaction extends Component {
             slots_open: this.props.slots_open,
             node: this.props.node,
             tab: 'choices',
-            error: null
+            error: null,
+            built_ins: formatted_built_ins
         };
         
         this.handleIntentsChange = this.handleIntentsChange.bind(this);
@@ -151,10 +164,13 @@ class Interaction extends Component {
         }
     }
 
-    handleChoicesChange(choices, choices_open) {  
+    handleChoicesChange(choices, choices_open) {
+        const node = this.state.node
+        node.extras.choices = choices
+        node.extras.choices_open = choices_open
+
         this.setState({
-            choices: choices,
-            choices_open: choices_open
+            node: node
         });
     }
 
@@ -222,6 +238,7 @@ class Interaction extends Component {
                         intents={this.state.intents}
                         variables={this.props.variables}
                         slots = {this.state.slots}
+                        built_ins={this.state.built_ins}
                     />
                 </div>
             )

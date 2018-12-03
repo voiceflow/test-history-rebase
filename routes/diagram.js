@@ -455,7 +455,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     };
                 } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
-                    let subflow_diagram_id
+                    let subflow_diagram_id = node.extras.diagram_id
                     // Check if this diagram has been rendered already, rerender if this is a module
                     if(!rendered_set.has(node.extras.diagram_id) || type === 'market'){
                         let result;

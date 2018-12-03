@@ -388,7 +388,7 @@ const giveAccess = (req, res) => {
 const getModule = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0];
 
-	pool.query(`SELECT title, descr, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
+	pool.query(`SELECT * FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);

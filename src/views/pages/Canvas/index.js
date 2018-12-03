@@ -920,7 +920,7 @@ class Canvas extends Component {
                     choices: [],
                     inputs: []
                 };
-            } else if (type === 'audio') {
+            } else if (type === 'combine') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {

@@ -32,13 +32,12 @@ function createLogin(data, cb) {
             name: data.name,
             admin: data.admin
       	}
-
         // cache the token
         const token = jwt.sign(user, secret);
         redisClient.set([userHash, secret], function (err, response) {
         	redisClient.expire(userHash, config.expire_time);
-	        if (err) {
-	            cb(null);
+	        if (err) { 
+	            cb(null); 
 	        } else {
 	          	cb({
 	          		token: token,
@@ -47,7 +46,7 @@ function createLogin(data, cb) {
 	          	});
 	        }
         });
-  	});
+	  });
 }
 
 // Gets the Amazon Login Access Token for Skill publishing
@@ -160,8 +159,8 @@ const putSession = (req, res) => {
 	                		res.status(200).send({
                         		token: credentials.userHash + credentials.token,
                         		user: credentials.user
-                        	});
-	                	});
+							});
+						});
 	                } else {
 	                    res.status(400).send("Username or Password Incorrect");
 	                }
@@ -216,7 +215,6 @@ const putUser = async (req, res) => {
 										user: credentials.user
 										
 									});
-									
 									Mail.sendOnboarding(email, name, (err) => {
 										console.log(err);
 									});

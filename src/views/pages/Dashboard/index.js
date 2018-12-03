@@ -3,25 +3,16 @@ import React, { Component } from 'react';
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
-// import MUIButton from '@material-ui/core/Button';
-
-// import { InputGroup, Input, Button } from 'reactstrap';
-// import CardMedia from '@material-ui/core/CardMedia';
-
-// import EnvironmentModal from './EnvironmentModal'
-
 import './DashBoard.css';
-
 import axios from 'axios';
-
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import SkillCard from './Skill/SkillCard';
 
 class DashBoard extends Component {
     constructor(props) {
-        super(props);
+        super(props); 
 
-        this.state = {
+        this.state = { 
             confirm: false,
             loading: false,
             skills: null,
@@ -32,6 +23,8 @@ class DashBoard extends Component {
         this.openSkill = this.openSkill.bind(this);
     }
 
+
+
     openSkill(skill, diagram){
         setTimeout(() => { 
             this.props.history.push(`/canvas/${skill}/${diagram}`);
@@ -39,7 +32,12 @@ class DashBoard extends Component {
     }
 
     componentDidMount() {
+        window.analytics.page();
         this.onLoadSkills();
+    }
+
+    componentDidUpdate() {
+        window.analytics.identify('userID','username');
     }
 
     toggleDropDown() {
@@ -60,6 +58,9 @@ class DashBoard extends Component {
             this.setState({
                 skills: res.data,
                 loading: false
+            });
+            window.analytics.track('skills loaded', {
+                "userId": window.user_detail
             });
         })
         .catch( error => {
@@ -133,11 +134,11 @@ class DashBoard extends Component {
                       <div className="card-body p-4">
                         <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" className="mb-5"/><br/>
                         <Link to="/canvas/new" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn">Create Skill</button>
+                            <button varient="contained" className="purple-btn w-75">Create Skill</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">
-                                    <b>Learn more</b>
+                                    <b>Voiceflow University</b>
                                     <i className="fal fa-long-arrow-right ml-1"/>
                                 </a>
                             </small>
@@ -163,7 +164,7 @@ class DashBoard extends Component {
                         <span className="subheader-title">
                             <b>Dashboard</b>
                             <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '} 
+                                <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '} 
                                 <span className="text-secondary">Skills</span>
@@ -171,7 +172,7 @@ class DashBoard extends Component {
                         </span>
                         <div className="subheader-right">
                             <Link to="/canvas/new" className="no-underline">
-                                <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
+                                <button varient="contained" className="purple-btn" onClick={() => {window.analytics.track('New Project Button clicked', {"user": window.user_detail})}}><i className="far fa-plus mr-2"/> New Project</button>
                             </Link>
                         </div>
                     </div>

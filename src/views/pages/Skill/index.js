@@ -583,7 +583,7 @@ class Skill extends Component {
                     className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                         Test on Alexa Simulator
                     </a>
-                    <Button color="info" onClick={this.onCertify}>
+                    <Button color="clear" onClick={this.onCertify}>
                         Submit for Review
                     </Button>
                 </div>

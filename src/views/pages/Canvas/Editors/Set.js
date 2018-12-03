@@ -93,7 +93,7 @@ class SetBlock extends Component {
 	                )
             	})}
                 { this.state.node.extras.sets.length < 20 ?
-                    <button className="btn btn-outline-add btn-block" onClick={this.handleAddBlock}>
+                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add Variable Set
                     </button> : null
                 }

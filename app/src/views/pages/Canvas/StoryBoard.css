@@ -1612,22 +1612,6 @@ button.close{
 .btn-group-vertical>.btn:hover, .btn-group>.btn:hover {
      z-index: unset !important;
 }
-.btn-outline-add{
-    border:  1px solid #E2E9EC !important;
-    color: #8da2b5 !important;
-    font-weight: 600 !important;
-    border-radius: 5px;
-    padding: 13px;
-    font-size: 16px !important;
-/*    background-color: #F6F8F9;*/
-}
-.btn-outline-add:hover{
-    color: #42A5FF !important;
-    background-color: #F6F8F9;
-}
-.btn-outline-add:active{
-    background-color: #eeeff1 !important;
-}
 .diagram-block .btn-secondary{
     background-color: #f0f3f7;
     border: #f0f3f7 1px solid;

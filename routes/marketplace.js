@@ -54,10 +54,10 @@ const cancelCertification = (req, res) => {
 const saveCertification = (req, res) => {
 	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
 
-	const createNewModule = (skill_id) => {
+	const createNewModule = (skill_id, global) => {
 		pool.query(
-			`INSERT INTO modules (title, descr, creator_id, skill_id, category, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, 
-			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output],
+			`INSERT INTO modules (title, descr, creator_id, skill_id, category, type, overview, module_icon, color, input, output, global) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
+			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -69,10 +69,10 @@ const saveCertification = (req, res) => {
 		);
 	}
 
-	const updateModule = (skill_id, module_id) => {
+	const updateModule = (module_id, global) => {
 		pool.query(
-			`UPDATE modules SET title = $1, descr = $2, category = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
-			[req.body.title, req.body.descr, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id],
+			`UPDATE modules SET title = $1, descr = $2, category = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9, global = $10 WHERE module_id = $11`, 
+			[req.body.title, req.body.descr, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -84,7 +84,7 @@ const saveCertification = (req, res) => {
 		);
 	}
 
-	const getOrCreateModule = (skill_id) => {
+	const getOrCreateModule = (skill_id, global) => {
 		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
 			(err, data) => {
 				if(err){
@@ -93,16 +93,29 @@ const saveCertification = (req, res) => {
 				}else{
 					if(data.rows.length > 0){
 						// There's a module for this skill
-						updateModule(skill_id, data.rows[0].module_id);
+						updateModule(data.rows[0].module_id, global);
 					}else{
-						createNewModule(skill_id);
+						createNewModule(skill_id, global);
 					}
 				}
 			}
 		);
 	}
 
-	getOrCreateModule(decoded_skill_id);
+	pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [decoded_skill_id],
+	 	(err, data) => {
+			if(err){
+				console.log(err)
+				res.sendStatus(500)
+			}else{
+				if(data.rows.length > 0){
+					getOrCreateModule(decoded_skill_id, JSON.stringify(data.rows[0].global));
+				}else{
+					res.sendStatus(404)
+				}
+			}
+		}
+	)
 }
 
 
@@ -142,6 +155,7 @@ const giveCertification = (req, res) => {
 						if(status === 200){
 							updateVersionTable(market_id, module_id);
 						}else{
+							console.log("Failed to render diagram")
 							res.sendStatus(500);
 						}
 					} else {
@@ -185,48 +199,48 @@ const giveCertification = (req, res) => {
 
 const requestCertification = (req, res) => {
 	// PRepAre 2 acQUIre cANcEr ;)
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
+	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
 
-	const createNewVersion = (skill_id, diagram_id, module_id) => {
+	const createNewVersion = (skill_id, diagram_id, module_id, global) => {
 		// Retrieve most recent version
 		pool.query(
 			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
 			[skill_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
-					res.sendStatus(500);
+					console.log(err)
+					res.sendStatus(500)
 				}else{
-					let version_id;
-					let input_array = "[]";
-					let output_array = "[]";
+					let version_id
+					let input_array = "[]"
+					let output_array = "[]"
 					if(data.rows.length > 0){
-						version_id = data.rows[0].version_id + 1;
-						input_array = data.rows[0].input;
-						output_array = data.rows[0].output;
+						version_id = data.rows[0].version_id + 1
+						input_array = data.rows[0].input
+						output_array = data.rows[0].output
 					}else{
-						version_id = 1;
+						version_id = 1
 					}
 
 					pool.query(
-						`INSERT INTO versions (module_id, diagram_id, version_id, input, output) VALUES ($1, $2, $3, $4, $5)`, 
-						[module_id, diagram_id, version_id, input_array, output_array],
+						`INSERT INTO versions (module_id, diagram_id, version_id, input, output, global) VALUES ($1, $2, $3, $4, $5, $6)`, 
+						[module_id, diagram_id, version_id, input_array, output_array, global],
 						(err, data) => {
 							if(err){
-								console.log(err);
-								res.sendStatus(500);
+								console.log(err)
+								res.sendStatus(500)
 							}else{
 								if(req.user.admin === 10) {
-									giveCertification(req, res);
+									giveCertification(req, res)
 								} else {
-									res.sendStatus(200);
+									res.sendStatus(200)
 								}
 							}
 						}
-					);
+					)
 				}
 			}
-		);	
+		)
 	}
 
 	const getModule = (skill_id, diagram_id) => {
@@ -237,7 +251,7 @@ const requestCertification = (req, res) => {
 					res.sendStatus(500);
 				}else{
 					if(data.rows.length > 0){
-						createNewVersion(skill_id, diagram_id, data.rows[0].module_id);
+						createNewVersion(skill_id, diagram_id, data.rows[0].module_id, JSON.stringify(data.rows[0].global));
 					}
 				}
 			}
@@ -374,7 +388,7 @@ const giveAccess = (req, res) => {
 const getModule = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0];
 
-	pool.query(`SELECT title, descr, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
+	pool.query(`SELECT * FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);

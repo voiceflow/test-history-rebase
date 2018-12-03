@@ -110,19 +110,19 @@ class TestModal extends React.Component {
       line: null,
       testing: true,
       skill_id: 'TEST_SKILL',
-      globals: {'TEST_SKILL': {}}
+      globals: [{}]
     };
 
     // Inject New Globals in if updated
     if(Array.isArray(this.props.globals)){
         this.props.globals.forEach(variable => {
-            this.story_state.globals['TEST_SKILL'][variable] = 0
+            this.story_state.globals[0][variable] = 0
         })
     }
 
     // stick in global variables
-    this.story_state.globals['TEST_SKILL'].sessions = 1
-    this.story_state.globals['TEST_SKILL'].user_id = 'TEST_USER'
+    this.story_state.globals[0].sessions = 1
+    this.story_state.globals[0].user_id = 'TEST_USER'
   }
 
   removeAudio(){

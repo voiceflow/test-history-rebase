@@ -275,7 +275,6 @@ const deleteDiagram = (req, res) => {
 }
 
 const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}) => new Promise((resolve) => {
-
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': diagram_id}
@@ -312,10 +311,12 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 }
             }
 
-            // If publishing to market, insert version before
+            // If publishing to market, insert version before. If subflow, don't prepend $ so story.js doesn't confuse itself for global scope
             let key = diagram_id
-            if(type === 'market'){
+            if(type === 'market' && !options.is_module_subflow){
                 key = "$" + options.version + '_' + key;
+            } else if(options.is_module_subflow){
+                key = options.version + '_' + key;
             }
 
             let story = {
@@ -454,14 +455,22 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     };
                 } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
-                    
-                    // Check if this diagram has been rendered already
-                    if(!rendered_set.has(node.extras.diagram_id)){
+                    let subflow_diagram_id = node.extras.diagram_id
+                    // Check if this diagram has been rendered already, rerender if this is a module
+                    if(!rendered_set.has(node.extras.diagram_id) || type === 'market'){
                         let result;
                         try{
                             // console.log('going in', node.extras.diagram_id);
-                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options);
+                            let new_options = options
+                            // Reset diagram id for sub flows in modules
+                            if(type === 'market'){
+                                subflow_diagram_id = options.version + '_' + node.extras.diagram_id
+                                new_options = JSON.parse(JSON.stringify(options))
+                                new_options['is_module_subflow'] = true
+                            }
+                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, new_options)
                         }catch(err){
+                            console.log(err)
                             resolve(500);
                             return;
                         }
@@ -480,7 +489,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
 
                     story.lines[node.id] = {
-                        diagram_id: node.extras.diagram_id,
+                        diagram_id: subflow_diagram_id,
                         variable_map: {
                             inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
                             outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),

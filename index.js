@@ -24,6 +24,7 @@ const Code = require('./config/codes.js');
 const Decode = require('./routes/decode.js');
 const Marketplace = require('./routes/marketplace.js');
 const Email = require('./routes/email.js');
+const Onboard = require('./routes/onboard.js');
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -103,6 +104,10 @@ app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
 app.put('/user', Authentication.putUser);
+app.post('/user/reset', Authentication.resetPasswordEmail);
+app.get('/user/reset/:token', Authentication.checkReset);
+app.post('/user/reset/:token', Authentication.resetPassword);
+app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
@@ -162,6 +167,9 @@ app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.gi
 app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess);
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess);
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate);
+
+app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
+app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

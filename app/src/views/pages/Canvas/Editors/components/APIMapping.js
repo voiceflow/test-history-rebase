@@ -11,7 +11,7 @@ class APIMapping extends Component {
                 <div>
                     {Array.isArray(this.props.pairs) ? this.props.pairs.map((choice, i) => {
                         return (
-                            <div key={i} className="mb-2">
+                            <div key={choice.index} className="mb-2">
                                 <InputGroup>
                                     <InputGroupAddon addonType="prepend">
                                         <InputGroupText>

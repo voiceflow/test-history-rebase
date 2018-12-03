@@ -127,7 +127,7 @@ class Line extends Component {
                         newAudio={this.handleNewAudio}
                     />
                 })}
-                <div className="mt-3"><button className="btn btn-outline-secondary btn-block" onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div>
+                <div className="mt-3"><button className="btn btn-outline-add btn-block" onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div>
             </div>
         );
     }

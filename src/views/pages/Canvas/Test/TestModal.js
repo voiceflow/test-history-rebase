@@ -151,7 +151,7 @@ class TestModal extends React.Component {
     })
   }
 
- handleRestart(){
+  handleRestart(){
     // keep the story id the same though
     this.setState({
       started: false,
@@ -465,7 +465,7 @@ class TestModal extends React.Component {
           { this.props.testing_info !== false ? 
             <React.Fragment>
               <div className="row">
-                <div className="col-sm-8 p-0">
+                <div className="col-sm-8 p-0 test-main">
                   { this.state.started ? 
                     <React.Fragment>
                       <div className="chatbox px-3">
@@ -512,7 +512,7 @@ class TestModal extends React.Component {
                         </div>
                       </div>
                       {this.state.ended ? 
-                        null :
+                        <Alert onClick={this.handleRestart} color="warning" className="m-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> :
                         <React.Fragment>
                           {this.state.audioplayer ?
                             <div className="audioplayer-options">
@@ -550,7 +550,6 @@ class TestModal extends React.Component {
                   }
                 </div>
                 <div className="col-sm-4 text-left test-sidebar">
-                  { this.state.ended ? <Alert onClick={this.handleRestart} color="warning" className="mb-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> : null }
                   <h4>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</h4>
                   <div className="debug-switch">
                       Debug Mode <i className="fas fa-bug"></i>

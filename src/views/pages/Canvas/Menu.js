@@ -104,13 +104,12 @@ class Menu extends PureComponent {
 
     buildTree(node, depth=0){
 
-        // Array.isArray(sub_diagrams) && sub_diagrams.length > 0
         this.visited.add(node.id);
 
         if(depth < 4) {
             return (<React.Fragment>
 
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed} />
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} />
 
                 {(() => {
                     let sub_diagrams;

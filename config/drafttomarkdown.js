@@ -26,8 +26,7 @@ const _escape = function (word) {
     if (typeof(word) === "string") {
         // word = word.replace(/</g, '&lt;');
         // word = word.replace(/>/g, '&gt;');
-        word = word.replace(/"/g, '\"');
-        word = word.replace(/'/g, '\'');
+        word = word.replace(/"/g, '\"').replace(/'/g, '\'').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/&/g, 'ampersand')
         return word;
     }
     if (typeof(word) === "number") {
@@ -381,9 +380,8 @@ function renderBlock(block, index, rawDraftObject, options) {
       } else {
         // Escaping inline markdown characters
         if (options.alexa) {
-          character = character.replace(/&/g, 'ampersand');
+          character = _escape(character);
         }
-        character = _escape(character);
 
         // Special escape logic for blockquotes and heading characters
         // if (characterIndex === 0 && character === '#' && block.text[1] && block.text[1] === ' ') {

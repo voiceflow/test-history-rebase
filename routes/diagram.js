@@ -410,7 +410,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: stop
                         };
                     }
-                } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio') {
+                } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio' || node.extras.type === 'combine') {
                     let nextLink;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {

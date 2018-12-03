@@ -230,11 +230,7 @@ const requestCertification = (req, res) => {
 								console.log(err)
 								res.sendStatus(500)
 							}else{
-								if(req.user.admin === 10) {
-									giveCertification(req, res)
-								} else {
-									res.sendStatus(200)
-								}
+								res.sendStatus(200)
 							}
 						}
 					)
@@ -485,7 +481,7 @@ const getUserModules = (req, res) => {
 }
 
 const retrieveTemplate = (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0];
+	let module_id = hashids.decode(req.params.module_id)[0]
 
 	pool.query(
 		`
@@ -494,32 +490,50 @@ const retrieveTemplate = (req, res) => {
 		[module_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
-				res.sendStatus(500);
+				console.log(err)
+				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
 						TableName: 'com.getstoryflow.skills.market',
 						Key: {'id': template_diagram_id}
-					};
+					}
 					docClient.get(params, (err, data) => {
 						if (err) {
-							console.log(err);
-							res.sendStatus(err.statusCode);
+							console.log(err)
+							res.sendStatus(err.statusCode)
 						} else if (data.Item) {
-							res.send(data.Item);
+							res.send(data.Item)
 						} else {
-							res.sendStatus(404);
+							res.sendStatus(404)
 						}
-					});
+					})
 
 				} else {
-					res.sendStatus(404);
+					res.sendStatus(404)
 				}
 			}
 		}
-	);
+	)
+}
+
+const getPendingModules = (req, res) => {
+	pool.query(
+		`
+		SELECT * FROM versions JOIN modules ON versions.module_id = modules.module_id WHERE cert_approved IS NULL
+		`,
+		[],
+		(err, data) => {
+			if(err){
+				console.log(err)
+				res.sendStatus(500)
+			} else {
+				hashIds(data.rows)
+				res.send(data.rows)
+			}
+		}
+	)
 }
 
 module.exports = {
@@ -536,5 +550,6 @@ module.exports = {
 	giveCertification: giveCertification,
 	getCertModule: getCertModule,
 	getUserModules: getUserModules,
-	retrieveTemplate: retrieveTemplate
+	retrieveTemplate: retrieveTemplate,
+	getPendingModules: getPendingModules
 }

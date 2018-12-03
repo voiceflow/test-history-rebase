@@ -23,6 +23,7 @@ import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
+import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -126,6 +127,7 @@ class App extends Component {
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
+                <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

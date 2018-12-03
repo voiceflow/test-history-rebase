@@ -129,6 +129,8 @@ class Editor extends Component {
     }
 
     BlockViewer() {
+        let variables = this.props.global_variables.concat(this.props.variables);
+
         switch(this.state.node.extras.type) {
             case 'story':
                 return <Story/>;
@@ -140,19 +142,27 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
+            case 'combine':
             case 'line':
             case 'audio': 
             case 'multiline':
+                // DEPRECATE OLD LINE BLOCKS
+                if(this.state.node.extras.type !== 'combine'){
+                    let node = this.state.node
+                    node.extras.type = 'combine'
+                    this.setState({node: node})
+                }
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
-                return <SetBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'variable':
-                return <Variable node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                return <Variable node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'if':
+                // DEPRECATE OLD IF BLOCK
                 if(this.state.node.extras.expressions){
-                    return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <IfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }else{
-                    return <OldIfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }
             case 'listen':
                 return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
@@ -165,12 +175,12 @@ class Editor extends Component {
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
-                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 } else {
-                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 }
             case 'capture':
-                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'command':
                 return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'flow':
@@ -182,17 +192,17 @@ class Editor extends Component {
                     enterFlow={this.props.enterFlow}
                 />
             case 'api':
-                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'module':
-                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} user_modules={this.props.user_modules}/>
+                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} templates={this.state.templates}/>
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.state.templates}/>
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} permission_options={this.state.permission_options}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
             default:
-              return null;
+              return null
         }
     }
 
@@ -202,15 +212,6 @@ class Editor extends Component {
                 return (<div id="label">Start Block</div>)
             case 'module':
                 return (<div id="label">{this.state.node.name}</div>)
-            case 'flow':
-                return (<div id="label">
-                    {this.state.node.extras.diagram_id ? 
-                    (()=>{ 
-                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
-                        return (block ? block.name : 'New Flow') 
-                    })() : 
-                    "Add Flow"}
-                </div>);
             default:
               return (<input id="label" placeholder="Block Label" 
                     type="text"

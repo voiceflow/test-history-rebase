@@ -15,11 +15,14 @@ import Canvas from './views/pages/Canvas';
 import DashBoard from './views/pages/Dashboard';
 import Business from './views/pages/Business';
 import Account from './views/pages/Account';
+import Reset from './views/pages/Account/reset';
+import ResetPassword from './views/pages/Account/resetPassword';
 import NavBar from './views/components/NavBar';
-import Skill from './views/pages/Skill'
+import Skill from './views/pages/Skill';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
+import Onboarding from './views/pages/Onboarding';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -79,9 +82,9 @@ class App extends Component {
             }
         });
     }else{
-        if(history.location.pathname !== '/login'){
-          history.push('/signup');
-        }
+        // if(history.location.pathname !== '/login'){
+        //   history.push('/signup');
+        // }
     }
 
     history.listen((location, action) => {
@@ -93,7 +96,6 @@ class App extends Component {
   }
 
   render() {
-    // console.log(history.location.pathname);
     return (
       this.state.loading ? 
         <div className='super-center h-100 w-100'>
@@ -104,10 +106,12 @@ class App extends Component {
         </div> :
         <Router history={history}>
           <div id="body">
-            { this.state.session ? <Route render={(props) => {
+            { this.state.session  && history.location.pathname !== '/onboarding' ? <Route render={(props) => {
                   return <NavBar {...props}/>
             }} /> : null }
               <Switch>
+                <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
+                <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" component={Account} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Account} />
                 <PrivateRoute exact path="/canvas/new" name="Canvas" new component={Canvas}/>
@@ -122,6 +126,7 @@ class App extends Component {
                 <PrivateRoute path="/publish/market/:id" name="Skill Dashboard" component={PublishMarket}/>
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
+                <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

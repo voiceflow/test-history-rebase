@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import AuthenticationService from './../../../services/Authentication';
 import './Account.css';
+import {Link} from 'react-router-dom'
+import axios from 'axios';
 
 class Account extends Component {
 
@@ -9,7 +11,7 @@ class Account extends Component {
     super(props);
 
     this.state = {
-      login: (this.props.location.pathname === '/login'),
+      login: (this.props.location.pathname.startsWith('/login')),
       email: "",
       password: "",
       r_name: "",
@@ -72,7 +74,7 @@ class Account extends Component {
           this.setState({signup_error: false});
         }.bind(this), 5000)})
       }else{
-        this.props.history.push('/');
+        this.props.history.push('/onboarding');
       }
     });
     return false;
@@ -95,7 +97,17 @@ class Account extends Component {
           this.setState({login_error: false});
         }.bind(this), 5000)})
       }else{
-        this.props.history.push('/');
+        axios.get('/onboard')
+        .then(res => {
+          if(res.data){
+            this.props.history.push('/');
+          } else {
+            this.props.history.push('/onboarding');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
       }
     });
     return false;
@@ -128,8 +140,9 @@ class Account extends Component {
                     <Input type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Sign In</Button>
+                  <div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>
                   <hr/>
-                  <p>Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></p>
+                  <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></div>
                 </div>
               </Form>
               <Form id="signup-form" onSubmit={this.signupSubmit}>
@@ -150,7 +163,7 @@ class Account extends Component {
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Create Account</Button>
                   <hr/>
-                  <p>Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></p>
+                  <div className="text-center">Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></div>
                 </div>
               </Form>
             </div>

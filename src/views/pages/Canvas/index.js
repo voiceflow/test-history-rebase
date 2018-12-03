@@ -52,6 +52,7 @@ class Canvas extends Component {
         this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
+        this.setGlobalVariables = this.setGlobalVariables.bind(this);
         this.toggleTestModal = this.toggleTestModal.bind(this);
         this.createSkill = this.createSkill.bind(this);
         this.publishAMZN = this.publishAMZN.bind(this);
@@ -73,7 +74,7 @@ class Canvas extends Component {
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
         this.createWithTemplate = this.createWithTemplate.bind(this);
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this);
-        this.onFlowRenamed = this.onFlowRenamed.bind(this);
+        // this.onFlowRenamed = this.onFlowRenamed.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -91,7 +92,7 @@ class Canvas extends Component {
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
-        let variables = defaultVariables.slice(0);
+        let global_variables = defaultVariables.slice(0);
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
@@ -131,8 +132,6 @@ class Canvas extends Component {
                 links[key].setWidth(line_width);
             }
 
-            variables.push('user_name');
-
             engine.setDiagramModel(model);
 
             model.addListener({nodesUpdated: this.unsave});
@@ -158,7 +157,8 @@ class Canvas extends Component {
             last_save: false,
             testing_modal: false,
             testing_info: false,
-            variables: variables,
+            variables: [],
+            global_variables: global_variables,
             newSkill: newSkill,
             help: null,
             helpOpen: false,
@@ -471,7 +471,8 @@ class Canvas extends Component {
                 data: data,
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
-                permissions: permissions
+                permissions: permissions,
+                global: this.state.global_variables
             }
 
             axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
@@ -534,39 +535,40 @@ class Canvas extends Component {
     }
 
     loadDiagram(diagram) {
-        var engine = this.state.engine;
-        var model = new SRD.DiagramModel();
+        var engine = this.state.engine
+        var model = new SRD.DiagramModel()
 
-        let diagram_json = false;
+        let diagram_json = false
         try {
-            diagram_json = JSON.parse(diagram.data);
+            diagram_json = JSON.parse(diagram.data)
         } catch (e) {
-            console.log(e);
+            console.log(e)
         }
         if (diagram_json) {
-            model.deSerializeDiagram(diagram_json, engine);
-            model.addListener({ nodesUpdated: this.unsave });
-            model.addListener({ linksUpdated: this.unsave });
+            model.deSerializeDiagram(diagram_json, engine)
+            model.addListener({ nodesUpdated: this.unsave })
+            model.addListener({ linksUpdated: this.unsave })
             var nodes = model.getNodes();
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
                     nodes[key].clearListeners();
-                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
                 }
             }
-            var links = model.getLinks();
+            var links = model.getLinks()
             for (let key in links) {
-                links[key].setColor(line_color);
-                links[key].setWidth(line_width);
+                links[key].setColor(line_color)
+                links[key].setWidth(line_width)
             }
             
-            engine.stopMove();
-            engine.setDiagramModel(model);
+            engine.stopMove()
+            engine.setDiagramModel(model)
 
-            let variables = defaultVariables.slice(0);
+            // make sure variables are unique and don't overlap with global variables
+            let variables = []
             if (Array.isArray(diagram.variables)) {
                 diagram.variables.forEach(v => {
-                    if(!variables.includes(v)){
+                    if(!variables.includes(v) && !this.state.global_variables.includes(v)){
                         variables.push(v);
                     }
                 });
@@ -581,9 +583,9 @@ class Canvas extends Component {
                 variables: variables
             });
 
-            this.setState({ saved: true });
+            this.setState({ saved: true })
         } else {
-            this.setState({ error_modal: 'Could Not Open Project - Corrupted File' });
+            this.setState({ error_modal: 'Could Not Open Project - Corrupted File' })
         }
     }
 
@@ -609,12 +611,12 @@ class Canvas extends Component {
                         }
                     })
                 }, () => {
-                    this.onLoadId(this.state.diagram_id);
+                    this.onLoadId(this.state.diagram_id)
                 });
             })
             .catch(err => {
                 console.error(err.response);
-                this.setState({ error_modal: 'Could Not Retrieve Project Diagrams' });
+                this.setState({ error_modal: 'Could Not Retrieve Project Diagrams' })
             });
         }
     }
@@ -622,13 +624,30 @@ class Canvas extends Component {
     onLoadSkill(skill_id){
         axios.get(`/skill/${skill_id}?${this.preview ? 'preview=1' : 'simple=1'}`)
         .then(res => {
+
+            // prevent redundant saving of global variables in the skill object 
+            let skill = res.data
+            let res_globals = skill.global
+            delete skill.global
+            
+            // make sure that there are no duplicate variables and that the defaults are included
+            let global_variables = defaultVariables.slice(0);
+            if (Array.isArray(res_globals)) {
+                res_globals.forEach(v => {
+                    if(!global_variables.includes(v)){
+                        global_variables.push(v);
+                    }
+                });
+            }
+
             this.setState({
-                skill: res.data
-            }, this.onLoadDiagrams);
+                skill: skill,
+                global_variables: global_variables
+            }, this.onLoadDiagrams)
         })
         .catch(err => {
             console.error(err.response);
-            this.setState({ error_modal: 'Could Not Retrieve Project' });
+            this.setState({ error_modal: 'Could Not Retrieve Project' })
         })
     }
 
@@ -643,14 +662,14 @@ class Canvas extends Component {
                     cookies.set('last_session', {
                         skill_id: this.state.skill.skill_id,
                         diagram_id: diagram_id
-                    }, {path: '/'});
+                    }, {path: '/'})
                 }
 
                 if(this.buildDiagrams !== null){
-                    this.buildDiagrams();
+                    this.buildDiagrams()
                 }
             },
-            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
+            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' })}
         });
     }
 
@@ -661,15 +680,15 @@ class Canvas extends Component {
         // this.props.history.push('/dashboard');
     }
 
-    onFlowRenamed(id) {
-        let nodes = this.state.engine.getDiagramModel().getNodes();
-        for (let key in nodes) {
-            if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
-                nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
-                this.repaint();
-            }
-        }
-    }
+    // onFlowRenamed(id) {
+    //     let nodes = this.state.engine.getDiagramModel().getNodes();
+    //     for (let key in nodes) {
+    //         if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
+    //             nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
+    //             this.repaint();
+    //         }
+    //     }
+    // }
 
     unsave(e) {
         if(e && e.node && !e.isCreated){
@@ -689,6 +708,13 @@ class Canvas extends Component {
     setVariables(variables) {
         this.setState({
             variables: variables,
+            saved: false
+        });
+    }
+
+    setGlobalVariables(variables) {
+        this.setState({
+            global_variables: variables,
             saved: false
         });
     }
@@ -894,7 +920,7 @@ class Canvas extends Component {
                     choices: [],
                     inputs: []
                 };
-            } else if (type === 'audio') {
+            } else if (type === 'combine') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
@@ -911,7 +937,7 @@ class Canvas extends Component {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    dialogs: []
+                    randomize: false
                 }
             } else if (type === 'flow') {
                 node.addInPort(' ')
@@ -1111,6 +1137,7 @@ class Canvas extends Component {
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} 
                         diagrams={this.state.diagrams}
+                        globals={this.state.global_variables}
                     /> 
                 : null}
                 <Menu 
@@ -1119,6 +1146,8 @@ class Canvas extends Component {
                     current={this.state.diagram_id}
                     enterFlow={this.enterFlow}
                     variables={this.state.variables}
+                    global_variables={this.state.global_variables}
+                    onGlobalVariable={this.setGlobalVariables}
                     onVariable={this.setVariables}
                     build={fn => this.buildDiagrams = fn}
                     user_modules={this.state.user_modules}
@@ -1170,6 +1199,7 @@ class Canvas extends Component {
                     close={e => this.setState({ open: false })}
                     repaint={this.repaint}
                     variables={this.state.variables}
+                    global_variables={this.state.global_variables}
                     setHelp={(help) => this.setState({help: help, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}

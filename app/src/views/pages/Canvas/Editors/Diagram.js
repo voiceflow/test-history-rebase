@@ -101,10 +101,10 @@ class DiagramBlock extends Component {
             });
         }
 
-        let block
-        if(this.state.node.extras.diagram_id){
-            block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
-        }
+        // let block
+        // if(this.state.node.extras.diagram_id){
+        //     block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
+        // }
 
         return (
             <div>
@@ -132,9 +132,6 @@ class DiagramBlock extends Component {
                     </React.Fragment>
                     : 
                     <React.Fragment>
-                        <div className="text-center">
-                            <h4><i className="fal fa-sign-in"/> {block ? block.name : 'New Flow'}</h4>
-                        </div>
                         <Button block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
                         <label>Input Variables</label>
                         <DiagramVariables

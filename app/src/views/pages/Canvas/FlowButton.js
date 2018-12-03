@@ -32,6 +32,7 @@ class FlowButton extends Component {
                 if(this.props.updateTree){
                     this.props.updateTree()
                 }
+                this.props.onFlowRenamed(this.props.flow.id)
             })
             .catch(err => {
                 alert('Error - Name not Updated');

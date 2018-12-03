@@ -36,7 +36,7 @@ class ChoiceInputs extends Component {
                             />
                         </div> )
                 }) : null}
-                <div><button className="btn btn-outline-add btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div><button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }

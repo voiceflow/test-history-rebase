@@ -100,38 +100,29 @@ class ModulePage extends Component{
     }
 
 	render(){
+		console.log(this.state.module)
+		let creation_date = ''
+		if(this.state.module.created){
+			creation_date = this.state.module.created.substring(0, this.state.module.created.indexOf("T"))
+		}
 		return(
-			<div className="Window">
-				<div className="container">
-					<div className="col-md">
-						<div className="mt-5 row justify-content-center align-middle">
+			<div className="container h-100 d-flex justify-content-center">
+			    <div className="my-auto border rounded p-4 text-center module-page-card">
+					<img src={this.state.module.module_icon} className="card-icon"></img>
+			    	<h1>
+						{this.state.module.title}
+					</h1>
+					<p>{this.state.module.name} on {creation_date}</p>
+					<br/>
+					<p>{this.state.module.overview}</p>
 
-							<div className="col-lg">
-								<h1>{this.state.module.title}</h1>
-								<p>
-									Created by: {this.state.module.name}
-									<br/>
-									{this.state.module.type} | {this.state.module.category}
-								</p>
-							</div>
-
-							<div className="float-right">
-								{
-									this.state.has_access?
-										<MUIButton variant="contained" className="purple-btn" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus"></i></MUIButton>
-										:
-	                            		<MUIButton variant="contained" className="purple-btn" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus"></i></MUIButton>
-								}
-		                    </div>
-						</div>
-
-						<hr/>
-						<div className="row justify-content-center">
-							<p>{this.state.module.overview}</p>
-							<h1>!!TODO: UI!!</h1>
-						</div>
-					</div>
-				</div>
+					{
+                    	this.state.has_access?
+                    	<MUIButton variant="contained" className="purple-btn" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus"></i></MUIButton>
+                        :
+                        <MUIButton variant="contained" className="purple-btn" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus"></i></MUIButton>
+                    }
+			    </div>
 			</div>
 		);
 	}

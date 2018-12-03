@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import VariableText from './components/VariableText';
 import randomstring from 'randomstring';
 import Select from 'react-select';
-import {Collapse} from 'reactstrap';
+import {Collapse, Input, InputGroup} from 'reactstrap';
 import AudioDrop from './components/AudioDrop'
 
 const voices = [
@@ -150,16 +150,20 @@ class Speak extends Component {
     }
 
     render() {
-        // <label className="mb-0">Speech <br/><small className="text-muted">{'Use {variable} to add Variables'}</small></label>
+        let properties = this.state.node.extras
         return (
             <div>
-                <div className="mb-2"><small className="text-muted">{''}</small></div>
-                {this.state.node.extras.dialogs.map((d, i) => {
+                {properties.dialogs.map((d, i) => {
                     if(d.audio !== undefined){
-                        return <div key={d.index} className="multiline mb-1">
+                        return <div key={d.index} className="multiline mb-3">
                             <div className="multi-title-block">
                                 <div className="multi-title" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
-                                    <span className="text-muted">{d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {i + 1}</span>
+                                    <span className="text-muted">
+                                        {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
+                                        {properties.randomize ? <i className="far fa-random"/> : (i + 1)}
+                                    </span>
+                                </div>
+                                <div className="d-flex align-items-center flex-hard">
                                     <b>{d.audio ? d.audio.split('/').pop() : 'Audio'}</b>
                                 </div>
                                 <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>
@@ -178,10 +182,13 @@ class Speak extends Component {
                             <hr/>
                         </div>
                     }else{
-                        return <div key={d.index} className="multiline mb-1">
-                            <div className="multi-title-block mb-1">
+                        return <div key={d.index} className="multiline mb-3">
+                            <div className="multi-title-block mb-2">
                                 <div className="multi-title">
-                                    <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>{d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {i + 1}</span>
+                                    <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
+                                        {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
+                                        {properties.randomize ? <i className="far fa-random"/> : (i + 1)}
+                                    </span>
                                 </div>
                                 <div className="super-center flex-hard">
                                     <b>Speak As</b>
@@ -207,14 +214,24 @@ class Speak extends Component {
                         </div>
                     }
                 })}
-                { this.state.node.extras.dialogs.length < 20 ?
+                { properties.dialogs.length < 20 ?
                     <React.Fragment>
-                        <button className="btn btn-outline-add btn-block mt-3" onClick={() => this.handleAddBlock(false)}>
-                            <i className="far fa-plus"></i> Add Speech
-                        </button>
-                        <button className="btn btn-outline-add btn-block mt-2" onClick={() => this.handleAddBlock(true)}>
-                            <i className="far fa-plus"></i> Add Audio
-                        </button>
+                        <div className="d-flex my-3">
+                            <button className="btn btn-grey btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
+                                <i className="fas fa-comment-alt"/>
+                                Add Speech
+                            </button>
+                            <button className="btn btn-grey btn-vertical" onClick={() => this.handleAddBlock(true)}>
+                                <i className="fas fa-volume-up"/> 
+                                Add Audio
+                            </button>
+                        </div>
+                        <InputGroup className="my-2">
+                            <label className="input-group-text w-100 m-0 text-left">
+                                <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
+                                <span className="ml-2">Output Random Entry</span>
+                            </label>
+                        </InputGroup>
                     </React.Fragment>
                     : null
                 }

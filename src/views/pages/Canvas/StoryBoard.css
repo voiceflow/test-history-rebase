@@ -110,7 +110,7 @@
     padding: 1px 12px 7px 10px;
     font-size: 24px;
     font-weight: 1000;
-    max-width: 250px;
+    max-width: 360px;
     color: #42A5FF !important;
     display: inline-block;
     white-space: nowrap; 
@@ -165,7 +165,8 @@
     padding-bottom: 10px !important;
     padding-bottom: 10px !important;
     background-color: #fff !important;
-    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+    transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
     border-radius: 5px;
     border: 1px solid #fff;
     color: #2b3950;
@@ -241,7 +242,7 @@
 /*    border: 1.5px solid #fff !important;*/
     font-size: 20px !important;
     border-radius: 25px !important;
-    transition: all .25s ease-in-out;
+    transition: all .20s ease;
     line-height: 30px;
     margin-top: -8px;
 }
@@ -257,10 +258,10 @@
     
 }
 .TitleBar .white-btn.play:hover{
-    box-shadow: 0px 3px 7px rgba(14,30,37,.10) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.06) !important;
     color: #42A5FF !important;
     /*background-color: #edf3fe !important;*/
-    transform: translateY(-1px) !important;
     /*border: 1px solid #42A5FF !important;*/
 }
 .TitleBar .white-btn.play span.button-circle{
@@ -818,9 +819,8 @@
 
 .App .Menu #sidebar .MenuItem:hover {
     /*transform: scale(1.03);*/
-    
-    transform: translateY(-2px);
-    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+    transform: translateY(-1px);
+  box-shadow: 0 2px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 /*    border: 1px solid #fff;*/
 /*    border-radius: 10px;*/
     background-color: #fff !important;
@@ -1440,8 +1440,8 @@ button.close{
     /*margin-left: 10px;*/
     flex-grow: 1;
     background-color: transparent;
-    border-bottom: 1px solid #EEE;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #f4f6f7 !important;
+    margin-bottom: 30px;
     font-size: 20px;
     /*line-height: 24px;*/
     color: #2b3950;
@@ -1713,7 +1713,7 @@ button.close{
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
 }
 .choice-block:focus-within{
-    border: 1px solid #42A5FF !important;
+    border: 1px solid #42A5FF80 !important;
 }
 .brackets>.NaN{
     color: #2b3950 !important;
@@ -1822,8 +1822,8 @@ button.close{
     font-weight: bold;
     cursor: pointer;
     padding: 10px 0;
-    flex: 1;
     margin-right: 5px;
+    min-width: 25px;
 /*    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;*/
@@ -2051,21 +2051,24 @@ button.close{
     color: #E2E9EC;
 }
 .editor {
-  margin-top: 10px;    
-  box-sizing: border-box;
-/*  border: 1px solid #d4d9e6;*/
-  cursor: text;
-  padding: 10px 12px;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  background: #fefefe;
-  color: #2B3950;
-  box-shadow:  0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+    box-sizing: border-box;
+/*    border: 1px solid #d4d9e6;*/
+    cursor: text;
+    padding: 7px 8px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    background: #fefefe;
+    color: #2B3950;
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
+    border: 1px solid #fff;
+   transition: all 0.2s ease !important;
 }
 .editor :global(.public-DraftEditor-content) {
   min-height: 88px;
-
-    
+}
+.editor:focus-within{
+    border: 1px solid #42A5FF80 !important;
+    box-shadow: 0 4px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
 }
 .input-group .variable-box__control {
     border-radius: 0 !important;

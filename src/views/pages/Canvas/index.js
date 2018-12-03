@@ -338,7 +338,7 @@ class Canvas extends Component {
     }
 
     componentDidMount() {
-
+        window.analytics.page();
         $('#diagram').click((e) => {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
@@ -545,6 +545,15 @@ class Canvas extends Component {
             console.log(e)
         }
         if (diagram_json) {
+            // DEPRECATE CONVERT DIAGRAM BLOCK NAMES
+            diagram_json.nodes.forEach(node => {
+                if (node.extras && node.extras.type === 'flow' && node.extras.diagram_id) {
+                    let find = this.state.diagrams.find(x => x.id === node.extras.diagram_id)
+                    if(find){
+                        node.name = find.name;
+                    }
+                }
+            })
             model.deSerializeDiagram(diagram_json, engine)
             model.addListener({ nodesUpdated: this.unsave })
             model.addListener({ linksUpdated: this.unsave })
@@ -685,9 +694,9 @@ class Canvas extends Component {
         for (let key in nodes) {
             if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
                 nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
-                this.repaint();
             }
         }
+        this.repaint()
     }
 
     unsave(e) {
@@ -937,7 +946,7 @@ class Canvas extends Component {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    dialogs: []
+                    randomize: false
                 }
             } else if (type === 'flow') {
                 node.addInPort(' ')

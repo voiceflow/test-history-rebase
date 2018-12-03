@@ -19,7 +19,10 @@ exports.sendOnboarding = (email, name, cb) => {
                         'email': email,
                         'name': name,
                     }
-                ]
+                ],
+                "dynamic_template_data": {
+                    name: name
+                }
             }
         ],
         'reply_to': {

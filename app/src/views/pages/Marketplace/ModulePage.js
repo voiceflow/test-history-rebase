@@ -108,19 +108,19 @@ class ModulePage extends Component{
 		return(
 			<div className="container h-100 d-flex justify-content-center">
 			    <div className="my-auto border rounded p-4 text-center module-page-card">
-					<img src={this.state.module.module_icon} className="card-icon"></img>
-			    	<h1>
+					<img src={this.state.module.module_icon} className="card-icon-2"></img>
+			    	<h1 className="big-blue mt-3">
 						{this.state.module.title}
 					</h1>
-					<p>{this.state.module.name} on {creation_date}</p>
+					<p className="sub-head mt-1">{this.state.module.name} on {creation_date}</p>
 					<br/>
-					<p>{this.state.module.overview}</p>
+					<p className="description mb-5">{this.state.module.overview}</p>
 
 					{
                     	this.state.has_access?
-                    	<MUIButton variant="contained" className="purple-btn" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus"></i></MUIButton>
+                    	<MUIButton variant="contained" className="purple-btn mb-3" onClick={this.handleRemoveFromLib}>Remove from Library <i className="fas fa-layer-minus ml-2"></i></MUIButton>
                         :
-                        <MUIButton variant="contained" className="purple-btn" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus"></i></MUIButton>
+                        <MUIButton variant="contained" className="purple-btn" onClick={this.handleAddtoLib}>Add to Library <i className="fas fa-layer-plus ml-2"></i></MUIButton>
                     }
 			    </div>
 			</div>

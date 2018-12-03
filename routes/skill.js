@@ -516,35 +516,34 @@ exports.buildSkill = async (req,res) => {
                                             })
                                             .then(response => {
                                                 if(response.hasOwnProperty('violations')){
-                                                    getSkillStatus(depth + 1);
+                                                    getSkillStatus(depth + 1)
                                                 }else{
-                                                    res.send(amzn_id);
+                                                    res.send(amzn_id)
                                                 }
                                             })
                                             .catch(err => {
-                                                console.log(err.response.status);
-                                                res.status(500).send(err.response.data);
+                                                console.log(err.response.status)
+                                                res.status(500).send(err.response.data)
                                             });
-                                        }, 10000);
+                                        }, 10000)
                                     }
-                                    getSkillStatus(0);
+                                    getSkillStatus(0)
                                 })
                                 .catch(err => {
                                     console.log(err.response)
                                     if(err.response){
                                         if(err.response.status === 404){
-                                            iterate(depth + 1);
+                                            iterate(depth + 1)
                                         }else{
-                                            console.error(err.response.data);
-                                            res.status(500).send(err.response.data);
+                                            console.error(err.response.data)
+                                            res.status(500).send(err.response.data)
                                         }
                                     }else{
-                                        console.log(err);
-                                        res.sendStatus(500);
+                                        console.log(err)
+                                        res.sendStatus(500)
                                     }
-                                });
-                                
-                            }, 10000);
+                                })
+                            }, 5000)
                         }
                     }
 

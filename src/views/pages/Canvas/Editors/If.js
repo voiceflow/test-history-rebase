@@ -106,7 +106,7 @@ class IfBlock extends Component {
                 })}
 
                 { this.state.node.extras.expressions.length < 5 ?
-                    <button className="btn btn-outline-add btn-block" onClick={this.handleAddBlock}>
+                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add If Statement
                     </button> : null
                 }

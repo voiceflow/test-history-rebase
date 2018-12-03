@@ -7,19 +7,11 @@ import Image from './../../components/Uploads/Image';
 import Select from 'react-select';
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import VariableMap from './VariableMap';
-import amplitude from "amplitude-js";
-import {
-  AmplitudeProvider,
-  Amplitude,
-  LogOnMount
-} from "@amplitude/react-amplitude";
 
 import axios from 'axios';
 import '../Skill/Skill.css';
 import categories from './../../../services/Categories';
 import types from './../../../services/Types';
-
-const AMPLITUDE_KEY = "6163dc6eb0a83de128a69a5f4ad8e836";
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -175,9 +167,6 @@ class PublishMarket extends Component {
 
     publish(){
         this.save();
-        window.analytics.track('Review Screen Publish Button Pressed', {
-            "userId": window.user_detail
-        });
         let s = this.state;
         if (s.title && s.descr && s.category && s.type && s.overview && s.module_icon){
         	axios.post('/marketplace/cert/' + this.state.skill_id)

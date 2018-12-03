@@ -3,28 +3,11 @@ import React, { Component } from 'react';
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
-import amplitude from "amplitude-js";
-import {
-  AmplitudeProvider,
-  Amplitude,
-  LogOnMount
-} from "@amplitude/react-amplitude";
-// import MUIButton from '@material-ui/core/Button';
-
-// import { InputGroup, Input, Button } from 'reactstrap';
-// import CardMedia from '@material-ui/core/CardMedia';
-
-// import EnvironmentModal from './EnvironmentModal'
-
 import './DashBoard.css';
-
 import axios from 'axios';
-
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import SkillCard from './Skill/SkillCard';
 
-
-const AMPLITUDE_KEY = "6163dc6eb0a83de128a69a5f4ad8e836";
 class DashBoard extends Component {
     constructor(props) {
         super(props); 
@@ -77,8 +60,7 @@ class DashBoard extends Component {
                 loading: false
             });
             window.analytics.track('skills loaded', {
-                "example entity": "yo",
-                "example position": "bar"
+                "userId": window.user_detail
             });
         })
         .catch( error => {

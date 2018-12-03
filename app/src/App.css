@@ -30,6 +30,24 @@ audio {
     background: linear-gradient(#1B86F9, #1B86F9);
 /*    transform: translateY(-1px) scale(1.02);*/
 }
+.btn-clear{
+    border: 1px solid #E2E9EC;
+    color: #8da2b5;
+    border-radius: 5px;
+}
+.btn-lg{
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 13px;
+    font-size: 16px;
+}
+.btn-clear:hover{
+    color: #42A5FF;
+    background-color: #F6F8F9;
+}
+.btn-clear:active{
+    background-color: #eeeff1;
+}
 .btn-primary-small{
     border: 1px solid #2295FA !important;
     color: #fff;
@@ -307,14 +325,14 @@ label {
 }
 input, textarea, .text-to-voice, .choice-block, .solid-border{
     background-color: #FFF;
-    color: #8da2b5;
+    color: #2b3950;
     border: 1px solid #E2E9EC;
     border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
 input::placeholder, textarea::placeholder, input.form-control::placeholder, textarea.form-control::placeholder {
     font-weight: lighter !important;
-    color: #d4d9e6;
+    color: #8da2b5;
 }
 .TitleBar .publish-btn:hover{
     color: #3d96f0 !important;

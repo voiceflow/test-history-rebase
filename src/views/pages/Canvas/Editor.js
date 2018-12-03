@@ -209,6 +209,18 @@ class Editor extends Component {
                 return (<div id="label">Start Block</div>)
             case 'module':
                 return (<div id="label">{this.state.node.name}</div>)
+            case 'flow':
+                if(this.state.node.extras.diagram_id){
+                    let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
+                    if(block && block.name !== this.state.node.name){
+                        let node = this.state.node
+                        node.name = block.name
+                    }
+                    return <div id="label">
+                        {block ? block.name : 'New Flow'}
+                    </div>
+                }
+                return <div id="label">Add Flow</div>
             default:
               return (<input id="label" placeholder="Block Label" 
                     type="text"

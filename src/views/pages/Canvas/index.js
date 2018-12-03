@@ -74,7 +74,7 @@ class Canvas extends Component {
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
         this.createWithTemplate = this.createWithTemplate.bind(this);
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this);
-        // this.onFlowRenamed = this.onFlowRenamed.bind(this);
+        this.onFlowRenamed = this.onFlowRenamed.bind(this);
 
         // preview mode
         this.preview = !!this.props.preview;
@@ -545,6 +545,15 @@ class Canvas extends Component {
             console.log(e)
         }
         if (diagram_json) {
+            // DEPRECATE CONVERT DIAGRAM BLOCK NAMES
+            diagram_json.nodes.forEach(node => {
+                if (node.extras && node.extras.type === 'flow' && node.extras.diagram_id) {
+                    let find = this.state.diagrams.find(x => x.id === node.extras.diagram_id)
+                    if(find){
+                        node.name = find.name;
+                    }
+                }
+            })
             model.deSerializeDiagram(diagram_json, engine)
             model.addListener({ nodesUpdated: this.unsave })
             model.addListener({ linksUpdated: this.unsave })
@@ -680,15 +689,15 @@ class Canvas extends Component {
         // this.props.history.push('/dashboard');
     }
 
-    // onFlowRenamed(id) {
-    //     let nodes = this.state.engine.getDiagramModel().getNodes();
-    //     for (let key in nodes) {
-    //         if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
-    //             nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
-    //             this.repaint();
-    //         }
-    //     }
-    // }
+    onFlowRenamed(id) {
+        let nodes = this.state.engine.getDiagramModel().getNodes();
+        for (let key in nodes) {
+            if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
+                nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
+            }
+        }
+        this.repaint()
+    }
 
     unsave(e) {
         if(e && e.node && !e.isCreated){

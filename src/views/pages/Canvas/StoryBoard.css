@@ -1823,6 +1823,7 @@ button.close{
     cursor: pointer;
     padding: 10px 0;
     margin-right: 5px;
+    min-width: 25px;
 /*    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;*/

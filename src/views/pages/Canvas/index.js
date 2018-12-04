@@ -361,8 +361,7 @@ class Canvas extends Component {
             }
         });
 
-        $('#Editor').mousedown(this.onDiagramUnfocus);
-
+        $('#Editor, #sidebar').mousedown(this.onDiagramUnfocus);
         // If in preview mode
         if(this.preview){
             $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 

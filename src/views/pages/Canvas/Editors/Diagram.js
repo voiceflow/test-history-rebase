@@ -101,6 +101,11 @@ class DiagramBlock extends Component {
             });
         }
 
+        // let block
+        // if(this.state.node.extras.diagram_id){
+        //     block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
+        // }
+
         return (
             <div>
                 {!this.state.node.extras.diagram_id ? 
@@ -121,14 +126,13 @@ class DiagramBlock extends Component {
                                 </React.Fragment>
                         : null}
                         <label>Create a New Flow</label>
-                        <Button block onClick={() => this.props.createDiagram(this.state.node)}>
+                        <Button className="btn-primary w-100" onClick={() => this.props.createDiagram(this.state.node)}>
                             Create New Flow <i className="fas fa-sign-in"/>
                         </Button>
                     </React.Fragment>
                     : 
                     <React.Fragment>
-                        <Button block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow <i className="fas fa-sign-in"/></Button>
-                        <hr/>
+                        <Button block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
                         <label>Input Variables</label>
                         <DiagramVariables
                             arg1_options={this.props.variables}
@@ -138,7 +142,7 @@ class DiagramBlock extends Component {
                             onRemove={(i) => this.handleRemoveMap('inputs', i)}
                             handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
                         /> 
-                        <hr/>
+                        <hr className="mb-1"/>
                         <label>Output Variables</label>
                         <DiagramVariables
                             reverse

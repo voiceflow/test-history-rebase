@@ -104,37 +104,34 @@ class Menu extends PureComponent {
 
     buildTree(node, depth=0){
 
-        // Array.isArray(sub_diagrams) && sub_diagrams.length > 0
         this.visited.add(node.id);
 
         if(depth < 4) {
+            let tree
+            let sub_diagrams
+            if(node.sub_diagrams){
+                sub_diagrams = node.sub_diagrams;
+            }
+
+            if(Array.isArray(sub_diagrams) && sub_diagrams.length !== 0){
+                
+                tree = sub_diagrams.map((diagram_id, i) => {
+                    let block = this.props.diagrams.find(d => d.id === diagram_id);
+
+                    if(block){
+                        return <div className="sub-diagram" key={i}>
+                            <div className="sub-column">
+                                {this.buildTree(block, depth+1)}
+                            </div>
+                        </div>;
+                    }
+                    return null
+                })
+            }
+
             return (<React.Fragment>
-
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed} />
-
-                {(() => {
-                    let sub_diagrams;
-                    if(node.sub_diagrams){
-                        sub_diagrams = node.sub_diagrams;
-                    }
-
-                    if(Array.isArray(sub_diagrams) && sub_diagrams.length !== 0){
-                        
-                        return sub_diagrams.map((diagram_id, i) => {
-                            let block = this.props.diagrams.find(d => d.id === diagram_id);
-
-                            if(block){
-                                return <div className="sub-diagram" key={i}>
-                                    <div className="sub-column">
-                                        {this.buildTree(block, depth+1)}
-                                    </div>
-                                </div>;
-                            }else{
-                                return null;
-                            }
-                        })
-                    }
-                })()}
+                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed}/>
+                {tree}
             </React.Fragment>)
 
         } else {

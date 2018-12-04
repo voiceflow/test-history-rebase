@@ -92,8 +92,8 @@ class NavBar extends Component {
     return (
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
-            <NavbarBrand href="https://www.getvoiceflow.com" target="_blank">
-              <img className='voiceflow-logo' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
+            <NavbarBrand href="https://www.getvoiceflow.com" target="_blank" className="mx-2">
+              <img className='voiceflow-logo' src={process.env.PUBLIC_URL+'/wordmark.png'} alt='logo' 
                 height="33"
               />
             </NavbarBrand>
@@ -129,6 +129,9 @@ class NavBar extends Component {
                       {this.state.user.email}
                     </DropdownItem>
                     <DropdownItem divider />
+                    <Link className="dropdown-item" to="/account">
+                      Settings
+                    </Link>
                     <DropdownItem onClick={this.logout} tag="a" href="#">
                       Logout
                     </DropdownItem>

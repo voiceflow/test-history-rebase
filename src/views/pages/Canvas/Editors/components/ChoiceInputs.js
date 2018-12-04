@@ -23,7 +23,7 @@ class ChoiceInputs extends Component {
             <div className="w-100">
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
                     return (
-                        <div key={i} className="choice-block">
+                        <div key={i} className="choice-block mb-4">
                             <div className="choice-title">
                                 <span>{i+1}</span>
                                 <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
@@ -32,11 +32,11 @@ class ChoiceInputs extends Component {
                                 name="inputs" 
                                 value={this.state.inputs[i]} 
                                 onChange={e => this.props.onChange(e, i)}
-                                placeholder="Enter user reply" 
+                                placeholder="Enter user reply (new line for synonyms)" 
                             />
                         </div> )
                 }) : null}
-                <div><button className="btn btn-default btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div><button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }

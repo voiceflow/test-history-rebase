@@ -7,7 +7,7 @@ import App from '../App';
 jest.mock('react-ga');
 
 afterAll(() => {
-  pool.query('DELETE FROM creators WHERE email = "tests@getvoiceflow.com" LIMIT 1',
+  pool.query('DELETE FROM creators WHERE email = \'tests@getvoiceflow.com\' LIMIT 1',
     (err, result) => {
     if (err) {
       console.log(err);

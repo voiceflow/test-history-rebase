@@ -27,6 +27,7 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
+import { rejects } from 'assert';
 
 const _ = require('lodash')
 
@@ -151,7 +152,11 @@ class Canvas extends Component {
             diagram_name: diagram_name,
             skill: {
                 skill_id: skill_id,
-                name: '...'
+                name: '...',
+                intents: [],
+                intents_open: [],
+                slots: [],
+                slots_open: []
             },
             diagrams: [],
             diagram_id: diagram_id,
@@ -167,11 +172,7 @@ class Canvas extends Component {
             help: null,
             helpOpen: false,
             user_modules: null,
-            user_templates: [],
-            intents: [],
-            intents_open: [],
-            slots: [],
-            slots_open: []
+            user_templates: []
         };
 
         if(!this.state.newSkill){
@@ -435,7 +436,6 @@ class Canvas extends Component {
 
     onSave(cb, is_new=false) {
 
-        console.log("SAVE", this.state.intents, this.state.slots)
         try {
             this.setState({ saving: 'Saving...' });
             var engine = this.state.engine;
@@ -485,24 +485,49 @@ class Canvas extends Component {
 
             }
 
-            axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
-            .then(() => {
+            const s = this.state.skill;
+            const save_skill_intents = new Promise((resolve, reject) => {
+                axios.patch('/skill/' + s.skill_id + '?intents=true', {
+                    intents: JSON.stringify(s.intents),
+                    intents_open: JSON.stringify(s.intents_open),
+                    slots: JSON.stringify(s.slots),
+                    slots_open: JSON.stringify(s.slots_open)
+                })
+                .then(res => {
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            })
+
+            const save_diagram = new Promise ((resolve, reject) => {
+                axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
+                .then(() => {
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            })
+
+            Promise.all([save_skill_intents, save_diagram]).then(res => {
                 this.setState({
                     saving: false,
                     saved: true,
                     last_save: Date.now()
                 });
                 if(typeof cb === "function") cb(this.state.diagram_id);
-            })
-            .catch(err => {
-                console.log(err.response);
+            }, rej_err => {
+                console.log(rej_err);
                 this.setState({
                     saving: false,
                     loading_modal: true,
-                    error_modal: 'Error Saving to Cloud (Check Logs)'
+                    error: 'Error Saving to Cloud (Check Logs)'
                 });
                 if(typeof cb === "function") cb(null);
-            });
+            })
+
         } catch (e) {
             console.log(e);
             this.setState({
@@ -705,17 +730,21 @@ class Canvas extends Component {
     }
 
     setSlots(slots, slots_open) {
+        const skill = this.state.skill
+        skill.slots = slots
+        skill.slots_open = slots_open ? slots_open : skill.slots_open
         this.setState({
-            slots: slots,
-            slots_open: slots_open ? slots_open : this.state.slots_open,
+            skill: skill,
             saved: false
         });
     }
 
     setIntents(intents, intents_open) {
+        const skill = this.state.skill
+        skill.intents = intents
+        skill.intents_open = intents_open ? intents_open : skill.intents_open
         this.setState({
-            intents: intents ? intents : this.state.intents,
-            intents_open: intents_open ? intents_open : this.state.intents_open,
+            skill: skill,
             saved: false
         });
     }
@@ -804,7 +833,11 @@ class Canvas extends Component {
                     live: false,
                     restart: true,
                     diagram: diagram_id,
-                    locales: ["en-US"]
+                    locales: ["en-US"],
+                    intents: [],
+                    intents_open: [],
+                    slots: [],
+                    slots_open: []
                 },
                 newSkill: 0,
                 diagram_id: diagram_id
@@ -1210,11 +1243,11 @@ class Canvas extends Component {
                     enterFlow={this.enterFlow}
                     removeNode={this.removeNode}
                     user_modules={this.state.user_modules}
-                    intents={this.state.intents}
-                    intents_open={this.state.intents_open}
+                    intents={this.state.skill.intents}
+                    intents_open={this.state.skill.intents_open}
                     onIntent={this.setIntents}
-                    slots={this.state.slots}
-                    slots_open={this.state.slots_open}
+                    slots={this.state.skill.slots}
+                    slots_open={this.state.skill.slots_open}
                     onSlot={this.setSlots}
                 />
             </div>

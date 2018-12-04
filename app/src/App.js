@@ -11,12 +11,13 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 
 // Pages
+import Account from './views/pages/Account';
 import Canvas from './views/pages/Canvas';
 import DashBoard from './views/pages/Dashboard';
 import Business from './views/pages/Business';
-import Account from './views/pages/Account';
-import Reset from './views/pages/Account/reset';
-import ResetPassword from './views/pages/Account/resetPassword';
+import Register from './views/pages/Register';
+import Reset from './views/pages/Register/reset';
+import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
 import Skill from './views/pages/Skill';
 import Marketplace from './views/pages/Marketplace/Marketplace';
@@ -89,6 +90,7 @@ class App extends Component {
     }
 
     history.listen((location, action) => {
+      console.log(location);
       this.setState({
         session: AuthenticationService.isAuth()
       });
@@ -112,8 +114,8 @@ class App extends Component {
               <Switch>
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
-                <PublicRoute exact path="/login" name="Login" component={Account} />
-                <PublicRoute exact path="/signup" name="SignUp" component={Account} />
+                <PublicRoute exact path="/login" name="Login" component={Register} />
+                <PublicRoute exact path="/signup" name="SignUp" component={Register} />
                 <PrivateRoute exact path="/canvas/new" name="Canvas" new component={Canvas}/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Canvas" preview component={Canvas}/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" name="Canvas" component={Canvas}/>
@@ -128,6 +130,7 @@ class App extends Component {
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
+                <PrivateRoute path="/account" name="Account" component={Account} />
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

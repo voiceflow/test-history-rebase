@@ -119,7 +119,7 @@ class Permissions extends Component {
                     )
                 })}
                 { this.state.node.extras.permissions.length < this.state.permission_options.length ?
-                    <button className="btn btn-default btn-block" onClick={this.handleAddBlock}>
+                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add Permission Request
                     </button> : null
                 }

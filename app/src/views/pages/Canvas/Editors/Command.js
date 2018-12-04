@@ -23,7 +23,6 @@ class Command extends Component {
     render() {
         return (
             <div>
-                <label>Commands</label>
                 <Textarea
                     value={this.state.node.extras.commands}
                     onChange={this.handleChange}

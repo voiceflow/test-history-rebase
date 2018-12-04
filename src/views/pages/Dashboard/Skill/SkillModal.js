@@ -88,7 +88,7 @@ class SkillModal extends React.Component {
     return (
         <Modal isOpen={this.props.modal} toggle={this.props.toggle} centered onClosed={this.props.onClose}>
           <div className="modal-header justify-content-center">
-            <h1 className="display-5">Create New Skill</h1>
+            <h1 className="modal-bg-txt">Create New Skill</h1>
             <button type="button" className="close close-absolute" onClick={this.props.toggle}>×</button>
           </div>
           <ModalBody className="p-4">

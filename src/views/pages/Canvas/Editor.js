@@ -40,11 +40,14 @@ class Editor extends Component {
     }
 
     componentDidMount() {
+        window.analytics.page();
         // $('*').keypress(function(e) {
         //     if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
         //         e.preventDefault();
         //     }
         // });
+
+        window.analytics.page();
 
         axios.get('/voices')
         .then(res => {
@@ -210,14 +213,17 @@ class Editor extends Component {
             case 'module':
                 return (<div id="label">{this.state.node.name}</div>)
             case 'flow':
-                return (<div id="label">
-                    {this.state.node.extras.diagram_id ? 
-                    (()=>{ 
-                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
-                        return (block ? block.name : 'New Flow') 
-                    })() : 
-                    "Add Flow"}
-                </div>);
+                if(this.state.node.extras.diagram_id){
+                    let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
+                    if(block && block.name !== this.state.node.name){
+                        let node = this.state.node
+                        node.name = block.name
+                    }
+                    return <div id="label">
+                        {block ? block.name : 'New Flow'}
+                    </div>
+                }
+                return <div id="label">Add Flow</div>
             default:
               return (<input id="label" placeholder="Block Label" 
                     type="text"

@@ -215,9 +215,9 @@ const putUser = async (req, res) => {
 										user: credentials.user
 										
 									});
-									Mail.sendOnboarding(email, name, (err) => {
-										console.log(err);
-									});
+									//Mail.sendOnboarding(email, name, (err) => {
+									//	console.log(err);
+									//});
 								});
 	                        }
                 		});

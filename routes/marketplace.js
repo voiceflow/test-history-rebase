@@ -56,8 +56,8 @@ const saveCertification = (req, res) => {
 
 	const createNewModule = (skill_id, global) => {
 		pool.query(
-			`INSERT INTO modules (title, descr, creator_id, skill_id, category, type, overview, module_icon, color, input, output, global) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
-			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global],
+			`INSERT INTO modules (title, descr, creator_id, skill_id, tags, type, overview, module_icon, color, input, output, global) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
+			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -71,8 +71,8 @@ const saveCertification = (req, res) => {
 
 	const updateModule = (module_id, global) => {
 		pool.query(
-			`UPDATE modules SET title = $1, descr = $2, category = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9, global = $10 WHERE module_id = $11`, 
-			[req.body.title, req.body.descr, req.body.category, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global, module_id],
+			`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9, global = $10 WHERE module_id = $11`, 
+			[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -230,11 +230,7 @@ const requestCertification = (req, res) => {
 								console.log(err)
 								res.sendStatus(500)
 							}else{
-								if(req.user.admin === 10) {
-									giveCertification(req, res)
-								} else {
-									res.sendStatus(200)
-								}
+								res.sendStatus(200)
 							}
 						}
 					)
@@ -440,7 +436,7 @@ const getCertModule = (req, res) => {
 		);
 	}
 
-	pool.query(`SELECT title, descr, name, email, category, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
+	pool.query(`SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
@@ -485,7 +481,7 @@ const getUserModules = (req, res) => {
 }
 
 const retrieveTemplate = (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0];
+	let module_id = hashids.decode(req.params.module_id)[0]
 
 	pool.query(
 		`
@@ -494,32 +490,50 @@ const retrieveTemplate = (req, res) => {
 		[module_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
-				res.sendStatus(500);
+				console.log(err)
+				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
 						TableName: 'com.getstoryflow.skills.market',
 						Key: {'id': template_diagram_id}
-					};
+					}
 					docClient.get(params, (err, data) => {
 						if (err) {
-							console.log(err);
-							res.sendStatus(err.statusCode);
+							console.log(err)
+							res.sendStatus(err.statusCode)
 						} else if (data.Item) {
-							res.send(data.Item);
+							res.send(data.Item)
 						} else {
-							res.sendStatus(404);
+							res.sendStatus(404)
 						}
-					});
+					})
 
 				} else {
-					res.sendStatus(404);
+					res.sendStatus(404)
 				}
 			}
 		}
-	);
+	)
+}
+
+const getPendingModules = (req, res) => {
+	pool.query(
+		`
+		SELECT * FROM versions JOIN modules ON versions.module_id = modules.module_id WHERE cert_approved IS NULL
+		`,
+		[],
+		(err, data) => {
+			if(err){
+				console.log(err)
+				res.sendStatus(500)
+			} else {
+				hashIds(data.rows)
+				res.send(data.rows)
+			}
+		}
+	)
 }
 
 module.exports = {
@@ -536,5 +550,6 @@ module.exports = {
 	giveCertification: giveCertification,
 	getCertModule: getCertModule,
 	getUserModules: getUserModules,
-	retrieveTemplate: retrieveTemplate
+	retrieveTemplate: retrieveTemplate,
+	getPendingModules: getPendingModules
 }

@@ -1,0 +1,7 @@
+.publish-tag {
+    background-color: red;
+}
+
+.publish-tag :hover{
+    cursor: pointer;
+}

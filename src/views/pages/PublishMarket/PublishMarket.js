@@ -280,9 +280,6 @@ class PublishMarket extends Component {
 	                        <div className="subheader-right">
 
 	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/>
-                                </MUIButton>
-
 	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Submit to Marketplace <i className="fas fa-store-alt ml-2"/></MUIButton>
 	                        </div>
                     	}

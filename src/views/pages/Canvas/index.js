@@ -1183,6 +1183,7 @@ class Canvas extends Component {
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
                     diagram_id={this.state.diagram_id}
+                    history={this.props.history}
                 /> }
                 <div
                     id="diagram"

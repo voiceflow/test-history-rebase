@@ -12,31 +12,33 @@ import SetBlock from './Editors/Set';
 import IfBlock from './Editors/If';
 import OldIfBlock from './Editors/OldIf';
 import Speak from './Editors/Speak';
-import OldSpeak from './Editors/OldSpeak';
-import Capture from './Editors/Capture';
-import Command from './Editors/Command';
-import Diagram from './Editors/Diagram';
-import API from './Editors/API';
-import Module from './Editors/Module';
-import Mail from './Editors/Mail';
-import Stream from './Editors/Stream';
-import Permissions from './Editors/Permissions';
-import {Tooltip} from 'react-tippy';
-import {Button} from 'reactstrap';
+import OldSpeak from './Editors/OldSpeak'
+import Capture from './Editors/Capture'
+import Command from './Editors/Command'
+import Diagram from './Editors/Diagram'
+import API from './Editors/API'
+import Module from './Editors/Module'
+import Mail from './Editors/Mail'
+import Stream from './Editors/Stream'
+import Permissions from './Editors/Permissions'
+import {Tooltip} from 'react-tippy'
+import {Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 class Editor extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             node: this.props.node,
             voices: [],
             templates: [],
-            permission_options: []
-        };
+            permission_options: [],
+            dropdownOpen: false
+        }
 
-        this.BlockViewer = this.BlockViewer.bind(this);
-        this.renderTitle = this.renderTitle.bind(this);
+        this.BlockViewer = this.BlockViewer.bind(this)
+        this.renderTitle = this.renderTitle.bind(this)
+        this.copyFlow = this.copyFlow.bind(this)
     }
 
     componentDidMount() {
@@ -234,6 +236,21 @@ class Editor extends Component {
         }
     }
 
+    copyFlow(){
+        if(this.state.node.extras.diagram_id){
+            console.log("Copy this flow")
+            console.log(this.state.node)
+            axios.get(`/diagram/copy/${this.state.node.extras.diagram_id}`)
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+                window.alert('Error copying flow')
+            })
+        }
+    }
+
     render() {
 
         const type = this.state.node ? this.state.node.extras.type : null;
@@ -249,6 +266,7 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
+                                    
                                     <Tooltip
                                         position="bottom"
                                         interactive={true}
@@ -265,6 +283,23 @@ class Editor extends Component {
                                             <i className="fas fa-trash"/>
                                         </div>
                                     </Tooltip>
+                                    
+                                    <ButtonDropdown className="ml-1" isOpen={this.state.dropdownOpen} toggle={() => {this.setState(prevState => ({dropdownOpen: !prevState.dropdownOpen}))}}>
+                                        <DropdownToggle caret>
+                                            <i className="fas fa-cog"/>
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            {this.state.node.extras.type === 'flow'?
+                                                <React.Fragment>
+                                                    <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>
+                                                    <DropdownItem divider />
+                                                </React.Fragment>
+                                                :
+                                                null
+                                            }
+                                            <DropdownItem onClick={this.props.removeNode}>Delete Block</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
                                 </div>
                             </div>
                         </div>

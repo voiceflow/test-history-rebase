@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React from 'react';
-import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import React from 'react'
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 
 class ConfirmModal extends React.Component {
 
@@ -12,12 +12,12 @@ class ConfirmModal extends React.Component {
           {this.props.confirm.text}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="primary" onClick={this.props.confirm.confirm}>Confirm</Button>{' '}
-          <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+          <Button className="btn-primary" onClick={this.props.confirm.confirm}>Confirm</Button>{' '}
+          <Button className="white-btn" onClick={this.props.toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     );
   }
 }
 
-export default ConfirmModal;
+export default ConfirmModal

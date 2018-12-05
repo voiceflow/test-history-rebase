@@ -5,6 +5,14 @@ const {docClient, pool, hashids, validateEmail} = require('./../services');
 const validUrl = require('valid-url');
 const _ = require('lodash');
 
+const generateID = () => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0
+        const v = c === "x" ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+    })
+}
+
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
         // return a blank
@@ -272,6 +280,90 @@ const deleteDiagram = (req, res) => {
             });
         }
     }); 
+}
+
+const copyDiagram = (req, res) => {
+    let old_diagram_id = req.params.diagram_id;
+    let params = {
+        TableName: 'com.getstoryflow.diagrams.production',
+        Key: {'id': old_diagram_id}
+    };
+
+    // In case the insert row fails, delete on Dynamo
+    const cleanUpDynamo = (new_diagram_id) => {
+        let params = {
+            TableName: 'com.getstoryflow.diagrams.production',
+            Key: {'id': new_diagram_id}
+        };
+        docClient.delete(params, err => {
+            if (err) {
+                console.log(err);
+                res.sendStatus(err.statusCode);
+            } else {
+                res.sendStatus(200);
+            }
+        });
+    }
+
+    const insertDiagramRow = (new_diagram_id, old_diagram_id) => {
+        pool.query(
+            `INSERT INTO diagrams (id, name, created, modified, skill_id, sub_diagrams, permissions, used_intents) 
+            (SELECT $1, name, NOW(), NOW(), skill_id, sub_diagrams, permissions, used_intents FROM diagrams WHERE id = $2)`,
+            [new_diagram_id, old_diagram_id],
+            (err, data) => {
+                if(err) {
+                    console.log(err)
+                    cleanUpDynamo(new_diagram_id)
+                    res.sendStatus(500)
+                } else {
+                    res.send(new_diagram_id)
+                }
+            }    
+        )
+    }
+
+    // TODO: subflows
+    const purgeSubflows = (diagram) => {
+        for (var i = 0; i < diagram.nodes.length; i++) {
+            let node = diagram.nodes[i];
+            if(node.extras.type === 'flow' && node.extras.diagram_id){
+                node.extras.diagram_id = null
+                node.name = node.name + " Copy"
+            }
+        }
+    }
+
+    // Copy on Dynamo
+    docClient.get(params, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(err.statusCode);
+        } else if (data.Item) {
+            let purged_diagram = purgeSubflows(JSON.parse(data.Item.data))
+            let new_diagram_id = generateID()
+            let params = {
+                TableName: 'com.getstoryflow.diagrams.production',
+                Item: {
+                    id: new_diagram_id,
+                    variables: data.variables,
+                    data: JSON.stringify(purged_diagram),
+                    skill: data.skill,
+                    creator: data.creator
+                }
+            };
+
+            docClient.put(params, async(err) => {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(err.statusCode);
+                } else {
+                    insertDiagramRow(new_diagram_id, old_diagram_id)
+                }
+            });
+        } else {
+            res.sendStatus(404);
+        }
+    });
 }
 
 const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}) => new Promise((resolve) => {
@@ -833,5 +925,6 @@ module.exports = {
     setDiagram: setDiagram,
     publish: publish,
     publishTest: publishTest,
-    renderDiagram: renderDiagram
+    renderDiagram: renderDiagram,
+    copyDiagram: copyDiagram
 }

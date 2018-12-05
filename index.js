@@ -135,6 +135,7 @@ app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);
 app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
+app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
 // app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
 // app.get('/analytics/:skill_id/totalUsers', ensureAdmin(), Analytics.getTotalUsers);

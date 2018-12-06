@@ -209,10 +209,10 @@ const manifest = (r, encoded_id) => {
 	const privacyLocales = {}
 	let privacy_policy = "https://getvoiceflow.com";
 	let terms_of_use = "https://getvoiceflow.com";
-	if(!r.privacy_policy){
+	if(r.privacy_policy){
 		privacy_policy = r.privacy_policy
 	}
-	if(!r.terms_and_cond){
+	if(r.terms_and_cond){
 		terms_of_use = r.terms_and_cond
 	}
 

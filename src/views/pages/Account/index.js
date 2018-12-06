@@ -5,9 +5,9 @@ import CheckoutForm from './CheckoutForm'
 import './Account.css'
 
 const STATUS = {
-  0: {name: "Community (Free)"},
-  1: {name: "Basic", price: 29.99},
-  10: {name: "Admin"}
+  0: {name: "Community (Free)", price: "0"},
+  1: {name: "Basic", price: "29"},
+  10: {name: "Admin", price: "100000000"}
 }
 
 const options = [
@@ -15,9 +15,9 @@ const options = [
     plan: 1,
     name: "Basic",
     features: [
-      "In Skill Purchases",
-      "VoiceFlow Emails",
-      "Basic analytics",
+      "In Skill Purchases (Coming Soon)",
+      "Voiceflow Emails",
+      "Basic analytics (Coming Soon)",
       "Priority Intercom support",
       "50,000 utterances/mo"
     ]
@@ -74,7 +74,7 @@ class Account extends Component {
                       </span>
                   </div>
               </div>
-              <Modal isOpen={this.state.upgrade_modal} toggle={this.toggle} size="lg">
+              <Modal isOpen={this.state.upgrade_modal} toggle={this.toggle} size="xl">
                 <ModalHeader toggle={this.toggle}>Upgrade Account</ModalHeader>
                 <ModalBody>
                   <Row className="py-md-4">
@@ -95,9 +95,9 @@ class Account extends Component {
                       {this.renderDescription()}
                     </Col>
                     <Col sm="5" className="border-left">
-                      <span className="text-muted">Payment</span>
+                      <div className="text-muted">Payment</div>
                       <Elements>
-                        <CheckoutForm user={this.props.user} plan={STATUS[this.state.selected_plan]}/>
+                        <CheckoutForm user={this.props.user} plan={STATUS[this.state.selected_plan]} selected={this.state.selected_plan}/>
                       </Elements>
                     </Col>
                   </Row>

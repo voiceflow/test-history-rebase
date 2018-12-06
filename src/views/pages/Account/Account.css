@@ -3,6 +3,16 @@
     font-size: 50px;
     font-weight: 700;
 }
+.price {
+    margin-bottom: 0;
+    color: #b0b3d3;
+    font-size: 23px;
+    font-weight: 400;
+}
+
+.billing-info input, .billing-info select {
+  margin-top: 10px;
+}
 
 .feature-item {
 	margin-top: 10px;
@@ -33,6 +43,10 @@
 .StripeElement.IdealBankElement,
 .StripeElement.PaymentRequestButton {
   padding: 0;
+}
+
+.payment-form {
+  height: 480px;
 }
 
 .payment-form label {

@@ -80,9 +80,9 @@ class Image extends Component {
                         <b>Drag-n-Drop Image</b><br/>
                         <small>OR</small><br/>
                         <div className="space-between">
-                            <button className="upload-btn btn btn-primary-small">
+                            <div className="upload-btn btn btn-primary-small">
                                 Add File
-                            </button>
+                            </div>
                             {/*<button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()

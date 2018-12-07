@@ -133,11 +133,11 @@ class Account extends Component {
                   {login_error}
                   <FormGroup>
                     <Label for="email">Email</Label>
-                    <Input type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6"/>
+                    <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6"/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
-                    <Input type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
+                    <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Sign In</Button>
                   <div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>
@@ -151,15 +151,15 @@ class Account extends Component {
                   {signup_error}
                   <FormGroup>
                     <Label for="name">Name</Label>
-                    <Input type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3"/>
+                    <Input className="form-bg" type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3"/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="email">Email</Label>
-                    <Input type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6"/>
+                    <Input className="form-bg" type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6"/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
-                    <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
+                    <Input className="form-bg" type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Create Account</Button>
                   <hr/>

@@ -143,10 +143,6 @@
 .nav-btn{
     background-color: aqua !important;
 }
-.btn-group-vertical{
-/*    width: 100% !important;*/
-    margin-top: 30px;
-}
 .explain-btn{
     background-color: #eef4f6;
     border: none;
@@ -160,8 +156,8 @@
 }
 .active-btn{
     width: 138px;
-    background-color: #fff !important;
-    color: #42A5FF !important;
+    background-color: #42A5FF !important;
+    color: #fff !important;
     border-radius: 5px;
     z-index: 10;
     border: none; 
@@ -173,7 +169,7 @@
     margin-left: 10px;
 /*    margin-right: 15px;*/
     margin-bottom: 10px;
-    box-shadow: 0 3px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+/*    box-shadow: 0 3px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
 }
 .inactive-btn{
     width: 138px;

@@ -97,7 +97,7 @@ class Marketplace extends Component {
         return (
             <div className="Window">
                 <div className="sidenav">
-                    <ButtonGroup vertical>
+                    <ButtonGroup vertical className="mt-4">
                         {this.state.curr_state === 'FLOW'?
                         <React.Fragment>
                             <button className="active-btn" onClick={() => {this.setState({curr_state: "FLOW"})}}>Flows</button>

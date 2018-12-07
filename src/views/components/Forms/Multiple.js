@@ -48,7 +48,7 @@ class Multiple extends Component {
                             <InputGroupAddon addonType="prepend">{this.props.prepend}</InputGroupAddon> :
                             null
                         }
-                        <Input 
+                        <Input className="form-control-border right outline"
                             name={i} 
                             value={this.props.list[i]} 
                             disabled={this.props.isDisabled}
@@ -57,7 +57,7 @@ class Multiple extends Component {
                         />
                         { this.props.list.length > 1 ?
                             <InputGroupAddon addonType="append">
-                                <Button onClick={()=>this.delete(i)}>×</Button>
+                                <button className="btn-float ml-2" onClick={()=>this.delete(i)}>×</button>
                             </InputGroupAddon> : null
                         }
                   </InputGroup>

@@ -1,7 +1,8 @@
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import Cookies from 'universal-cookie'
+import axios from 'axios'
 
-const cookies = new Cookies();
+const cookies = new Cookies()
+cookies.remove('last_session')
 
 declare var user_detail;
 

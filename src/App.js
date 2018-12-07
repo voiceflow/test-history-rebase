@@ -107,11 +107,11 @@ class App extends Component {
 
   componentDidMount() {
     if (window.Stripe) {
-      this.setState({stripe: window.Stripe('pk_test_G3o7CC0pvrW2cIbIU1bLkMSR')});
+      this.setState({stripe: window.Stripe(STRIPE_KEY)});
     } else {
       document.querySelector('#stripe-js').addEventListener('load', () => {
         // Create Stripe instance once Stripe.js loads
-        this.setState({stripe: window.Stripe('pk_test_G3o7CC0pvrW2cIbIU1bLkMSR')});
+        this.setState({stripe: window.Stripe(STRIPE_KEY)});
       });
     }
   }

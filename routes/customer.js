@@ -7,11 +7,14 @@ if(process.env.PROD){
 	endpointSecret = 'whsec_pTuHAy6RQ4diYQzs6GVyZo4orFzxVE0z'
 	SECRET_KEY = 'sk_live_miu69x3c44doaSO26hVsBJrX'
 }else{
-	endpointSecret = 'whsec_1NmXHw7SU5xke899IKE9xgEzsBQfRpO9'
+	if(process.env.STAGING){
+		endpointSecret = 'whsec_wu3v6L6NrB7A8SLMNSTbmCDeMhtnsCYP'
+	}else{
+		endpointSecret = 'whsec_1NmXHw7SU5xke899IKE9xgEzsBQfRpO9'
+	}
 	SECRET_KEY = 'sk_test_pDf3vhMzNkojtn4dqBs9zVsW'
 }
 const stripe = require('stripe')(SECRET_KEY)
-
 
 const PLANS = [
 	{id: 0, name: 'COMMUNITY'},

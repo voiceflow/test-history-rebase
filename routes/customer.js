@@ -100,7 +100,7 @@ exports.webhook = async (req, res) => {
 				let name = req.body.data.object.lines.data[0].plan.id
 				let plan = PLANS.find(p => p.name === name)
 
-				if(planan){
+				if(plan){
 					await pool.query('UPDATE creators SET expiry=$1, admin=$2 WHERE stripe_id = $3', [expiry, plan.id, req.body.data.object.customer])
 				}else{
 					await pool.query('UPDATE creators SET expiry=$1 WHERE stripe_id = $2', [expiry, req.body.data.object.customer])

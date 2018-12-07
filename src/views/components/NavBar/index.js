@@ -85,7 +85,8 @@ class NavBar extends Component {
     let intercom_user = this.state.user ? {
       user_id: this.state.user.id,
       name: this.state.user.name,
-      email: this.state.user.email
+      email: this.state.user.email,
+      plan: this.state.user.admin
     } : null;
     let page_name = '/' + getPage(this.props.location.pathname);
 

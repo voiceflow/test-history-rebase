@@ -4,16 +4,19 @@ import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 class ConfirmModal extends React.Component {
-
+  // TODO this class is pure cancer
   render() {
+    if(!this.props.confirm){
+      return null
+    }
     return (
-      <Modal isOpen={!!this.props.confirm} toggle={this.props.toggle} centered size="sm">
+      <Modal isOpen={!!this.props.confirm} toggle={this.props.toggle} centered size="sm" fade={false}>
         <ModalBody className="text-center">
           {this.props.confirm.text}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="primary" onClick={this.props.confirm.confirm}>Confirm</Button>{' '}
-          <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+          <Button color="clear" onClick={this.props.toggle}>Cancel</Button>
+          <Button color={this.props.warning ? "warning" : "primary"} onClick={this.props.confirm.confirm}>Confirm</Button>{' '}
         </ModalFooter>
       </Modal>
     );

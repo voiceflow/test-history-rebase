@@ -614,7 +614,7 @@ class Skill extends Component {
                             null:
                             <div className="subheader-right">
                                 <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-                                <MUIButton variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></MUIButton>
+                                <button variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></button>
                             </div>
                         }
                     </div>
@@ -776,7 +776,7 @@ class Skill extends Component {
                                     <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -793,7 +793,7 @@ class Skill extends Component {
                                     <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
                                 </div>
                                 <div className="col-9"> 
-                                    <Input type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -838,7 +838,7 @@ class Skill extends Component {
                                     </p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -963,7 +963,7 @@ class Skill extends Component {
                                     </p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -983,7 +983,7 @@ class Skill extends Component {
                                     </p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -1004,7 +1004,7 @@ class Skill extends Component {
                                     </p> 
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
                                 </div>
                             </div> 
                         </FormGroup>

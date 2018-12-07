@@ -349,7 +349,7 @@ class ActionGroup extends PureComponent {
                     <ModalBody>
                         <FormGroup>
                             <Label>Project Name</Label>
-                            <Input name="name" value={this.state.skill.name} onChange={this.updateSkill}/>
+                            <Input className="form-bg" name="name" value={this.state.skill.name} onChange={this.updateSkill}/>
                         </FormGroup>
                         <FormGroup>
                             <Label>Restart Every Session</Label>
@@ -368,7 +368,7 @@ class ActionGroup extends PureComponent {
                             </div>
                         </FormGroup>
                         <div className="super-center">
-                            <Button color="primary" onClick={this.saveSettings}>Save Settings</Button>
+                            <Button color="primary mb-2" onClick={this.saveSettings}>Save Settings</Button>
                         </div>
                     </ModalBody>
                 }

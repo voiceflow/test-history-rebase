@@ -26,9 +26,6 @@
 .success-text {
   padding-top: 100px;
 }
-.text-secondary{
-    color: #2b3950 !important;
-}
 .banner {
     flex-direction: row;
     justify-content: center;

@@ -15,6 +15,30 @@ button:focus{
 audio {
     width: 275px;
 }
+@media (min-width: 576px){
+    .modal-xl {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px){
+    .modal-xl {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px){
+    .modal-xl {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px){
+    .modal-xl {
+        max-width: 1140px;
+    }
+}
+.small {
+    font-size: 80%;
+}
+
 .btn-primary{
     border: 1px solid #2295FA !important;
     color: #fff;
@@ -24,6 +48,25 @@ audio {
     transition: all 0.3s ease !important;
     display: inline-block;
     transition: all 0.25s;
+}
+.btn-warning{
+   font-weight: normal;
+   color: #fff !important;
+   border-radius: 5px;
+   box-shadow: 0 1px 8px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.05);
+   background-color: #ff3562;
+   border-color: #ff3562;
+   text-transform: none;
+   font-size: 16px;
+}
+.btn-warning:hover{
+    background-color: #fb0038;
+    border-color: #fb0038;
+   box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
+.btn-warning:active{
+    background-color: #d80030 !important;
+    border-color: #d80030 !important;
 }
 .btn-primary:hover{
 /*    box-shadow: 0 2px 10px 0 rgba(74,144,226,.4) !important;*/
@@ -142,11 +185,11 @@ audio {
 .btn-default.exit{
     margin-right: 4px;
 }
-.btn-default.exit i{
+.btn.exit i{
     transition: all 0.2s ease !important;
     margin-right: 4px;
 }
-.btn-default.exit:hover i{
+.btn.exit:hover i{
     transform: translateX(-2px)
 }
 .normal-btn{
@@ -328,7 +371,7 @@ input, textarea, .text-to-voice, .choice-block, .solid-border{
     border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
-input::placeholder, textarea::placeholder, input.form-control::placeholder, textarea.form-control::placeholder {
+input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder {
     font-weight: lighter !important;
     color: #8da2b5;
 }

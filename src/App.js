@@ -89,7 +89,6 @@ class App extends Component {
     }
 
     history.listen((location, action) => {
-      console.log(location);
       this.setState({
         session: AuthenticationService.isAuth()
       });

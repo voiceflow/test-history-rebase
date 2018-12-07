@@ -552,7 +552,7 @@ class TestModal extends React.Component {
                 <div className="col-sm-4 text-left test-sidebar">
                   <h4>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</h4>
                   <div className="debug-switch">
-                      Debug Mode <i className="fas fa-bug"></i>
+                      Debug Mode
                       <Switch
                         checked={this.state.debug}
                         onChange={() => this.setState({debug: !this.state.debug})}
@@ -581,7 +581,7 @@ class TestModal extends React.Component {
           }
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="primary" onClick={this.props.toggle}>Close</Button>
+          <button className="btn-clear" onClick={this.props.toggle}>Close</button>
         </ModalFooter>
       </Modal>
     );

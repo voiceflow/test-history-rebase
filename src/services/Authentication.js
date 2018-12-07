@@ -125,7 +125,7 @@ export default {
 			if(cb){
 				cb();
 			}
-		});
+		})
 	},
 	signup: (user, cb) => {
 	    axios.put('/user', user)

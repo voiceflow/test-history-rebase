@@ -171,7 +171,7 @@ class Account extends Component {
                     <h4 className="mb-0 text-muted">{STATUS[this.props.user.admin].name}</h4>
                     <div className="super-center">
                       {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
-                      <Button onClick={this.toggle}>Upgrade</Button>
+                      {this.props.user.admin < 1 && <Button onClick={this.toggle}>Upgrade</Button>}
                     </div>
                   </div>
                 </div>

@@ -26,6 +26,14 @@ import ModulePage from './views/pages/Marketplace/ModulePage';
 import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 
+// SECRET
+var STRIPE_KEY
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
+}else{
+  STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
+}
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (

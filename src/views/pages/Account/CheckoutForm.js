@@ -314,21 +314,18 @@ class CheckoutForm extends React.Component {
             // Depending on the Charge status, show your customer the relevant message.
             var temp_source = result.source
             if (temp_source.status === 'chargeable') {
-              that.setState({stage: 4})
-              // Make a request to your server to charge the Source.
-              // axios.post('/customer')
+              setTimeout(()=>that.setState({stage: 4}), 5000)
             } else if (temp_source.status === 'pending' && pollCount < MAX_POLL_COUNT) {
               // Try again in a second, if the Source is still `pending`:
               pollCount += 1;
               setTimeout(pollForSourceStatus, POLL_INTERVAL);
             } else {
               that.setState({
-                error: 'Payment is deferred and your account will be updated when charge comes through'
+                error: 'Payment is deferred - You will receieve an email and will be updated when the charge comes through'
               })
             }
           });
         }
-
         pollForSourceStatus()
       })
       .catch(err => {
@@ -374,6 +371,10 @@ class CheckoutForm extends React.Component {
         case 3:
           status = 'Verifying Payment'
           break
+        case 4:
+          // TODO ACTUALLY UPDATE THE ACCOUNT WTF STRIPE
+          status = 'Updating Account'
+          break
         default:
           return null
       }
@@ -391,7 +392,11 @@ class CheckoutForm extends React.Component {
     // success
     if(this.state.stage === 4){
       return <div className="payment-form">
-        <Alert>WE DID IT REDDIT</Alert>
+        <Alert color="success">
+          Your Account has been Successfully Updated <br/>
+          <b>Please log out of your account and sign in again</b>
+        </Alert>
+        <Button onClick={this.props.logout}>Logout</Button>
       </div>
     }
     return (

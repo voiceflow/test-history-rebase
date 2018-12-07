@@ -31,8 +31,7 @@ var STRIPE_KEY
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
 }else{
-  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
-  // STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
+  STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => (

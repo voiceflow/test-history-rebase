@@ -98,7 +98,7 @@ class Menu extends PureComponent {
         this.sections = cloneDeep(sections);
 
         // mail block
-        if(window.user_detail.admin > 1){
+        if(window.user_detail.admin > 0){
             this.sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
         }
     }

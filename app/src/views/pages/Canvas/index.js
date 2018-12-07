@@ -21,8 +21,6 @@ import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
 import { ButtonGroup } from 'reactstrap';
 
-import Cookies from 'universal-cookie';
-
 import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
@@ -30,7 +28,6 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
-const cookies = new Cookies();
 const defaultVariables = ['sessions', 'user_id', 'timestamp'];
 const line_color = '#D1D8E2';
 const line_width = 2.5;
@@ -87,7 +84,7 @@ class Canvas extends Component {
         let open, diagram_id, skill_id;
         let diagram_name = '';
 
-        let last_session = cookies.get('last_session', {path: '/'});
+        let last_session = localStorage.getItem('flow')
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
@@ -98,9 +95,12 @@ class Canvas extends Component {
                 skill_id = url.params.skill_id;
                 diagram_id = url.params.diagram_id;
             }else if(last_session){
-                this.props.history.push('/canvas/' + last_session.skill_id + '/' + last_session.diagram_id);
-                skill_id = last_session.skill_id;
-                diagram_id = last_session.diagram_id;
+                let parts = last_session.split('/')
+                if(parts.length === 2){
+                    this.props.history.push('/canvas/' + last_session)
+                    skill_id = parts[0]
+                    diagram_id = parts[1]
+                }
             }else{
                 this.props.history.push('/canvas/new');
             }
@@ -666,7 +666,7 @@ class Canvas extends Component {
                 this.loadDiagram(diagram_id, diagram);
 
                 if(!this.preview){
-                    // TODO: SAVE LAST VIEWED DIAGRAM (used to use cookies)
+                    localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
                 }
 
                 if(this.buildDiagrams !== null){
@@ -786,7 +786,7 @@ class Canvas extends Component {
         })
         .then(res => {
             let skill_id = res.data.id
-            // TODO: Save last viewed diagram (used to use cookies)
+            localStorage.setItem('flow', `${skill_id}/${diagram_id}`)
             this.diagram_id = diagram_id
 
             this.setState({

@@ -45,7 +45,7 @@ class NavBar extends Component {
   }
 
   componentDidMount() {
-    if(this.state.user.admin === 10){
+    if(this.state.user.admin > 1){
       let tabs = this.state.tabs;
       tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>});
       // tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});

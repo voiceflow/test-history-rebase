@@ -396,7 +396,7 @@ class CheckoutForm extends React.Component {
           Your Account has been Successfully Updated <br/>
           <b>Please log out of your account and sign in again</b>
         </Alert>
-        <Button onClick={this.props.logout}>Logout</Button>
+        <Button onClick={this.props.logout} block>Logout</Button>
       </div>
     }
     return (

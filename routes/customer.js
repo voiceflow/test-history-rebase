@@ -45,16 +45,16 @@ exports.create = async (req, res) => {
 		if(plan && req.user.admin < req.body.plan){
 			// check if he is on an existing plan
 			if(subscription_id){
-				await stripe.customers.updateSubscription({
-					customer_id,
+				await stripe.subscription.update(
 					subscription_id,
-					{plan: plan.stripe}
-				})
+					items: [{plan: plan.stripe}]
+				)
 			}else{
-				await stripe.subscriptions.create({
+				let subscription = await stripe.subscriptions.create({
 				  customer: customer_id,
 				  items: [{plan: plan.stripe}]
 				})
+				await pool.query('UPDATE creators SET subscription = $1 WHERE creator_id = $2', [subscription.id, req.user.id])
 			}
 			
 			res.send(customer_id)

@@ -11,7 +11,7 @@ import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import ActionGroup from './ActionGroup';
-import LoadingModal from './../../components/Modals/LoadingModal';
+import WarningModal from './../../components/Modals/WarningModal';
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal';
 import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
@@ -49,7 +49,6 @@ class Canvas extends Component {
 
         this.loadLines = this.loadLines.bind(this);
         this.repaint = this.repaint.bind(this);
-        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
         this.loadDiagram = this.loadDiagram.bind(this);
         this.setVariables = this.setVariables.bind(this);
         this.setGlobalVariables = this.setGlobalVariables.bind(this);
@@ -140,6 +139,8 @@ class Canvas extends Component {
             diagram_name = 'ROOT'
         }
 
+        this.diagram_id = diagram_id;
+
         this.state = {
             engine: engine,
             open: open,
@@ -149,9 +150,8 @@ class Canvas extends Component {
                 name: '...'
             },
             diagrams: [],
-            diagram_id: diagram_id,
-            loading_modal: !newSkill,
-            error_modal: false,
+            loading_diagram: !newSkill,
+            error: null,
             saving: false,
             saved: true,
             last_save: false,
@@ -167,8 +167,20 @@ class Canvas extends Component {
         };
 
         if(!this.state.newSkill){
-            this.onLoadSkill(this.state.skill.skill_id);
-            // this.onLoadId('6cd76bb5-6d47-454f-b393-fb6bcb6505fe');
+            this.onLoadSkill(this.state.skill.skill_id)
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        let url = nextProps.computedMatch;
+        if (url && url.params.diagram_id && url.params.diagram_id !== this.diagram_id) {
+            let diagram_id = url.params.diagram_id;
+            if(this.buildDiagrams !== null){
+                this.buildDiagrams(diagram_id)
+            }
+            this.setState({
+                loading_diagram: true
+            }, () => this.onLoadId(diagram_id))
         }
     }
 
@@ -228,16 +240,16 @@ class Canvas extends Component {
         })
 
         axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.state.diagram_id
+            diagram_id: this.diagram_id
         })
         .then(res => {
-            this.loadDiagram(res.data);
+            this.loadDiagram(this.diagram_id, res.data);
         })
         .catch(err => {
             console.log(err.response);
             this.setState({
                 saving: false,
-                error_modal: 'Error retrieving template'
+                error: 'Error retrieving template'
             });
         })
     }
@@ -249,7 +261,7 @@ class Canvas extends Component {
         var type = 'flow';
 
         axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.state.diagram_id
+            diagram_id: this.diagram_id
         })
         .then(res => {
             var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
@@ -280,7 +292,7 @@ class Canvas extends Component {
             console.log(err.response);
             this.setState({
                 saving: false,
-                error_modal: 'Error retrieving template'
+                error: 'Error retrieving template'
             });
         })
     }
@@ -304,17 +316,17 @@ class Canvas extends Component {
 
     createWithTemplate(module){
         axios.get(`/marketplace/template/${module.module_id}/`, {
-            diagram_id: this.state.diagram_id
+            diagram_id: this.diagram_id
         })
         .then(res => {
-            this.loadDiagram(res.data);
+            this.loadDiagram(this.diagram_id, res.data);
             this.createSkill(module.title + " Copy")
         })
         .catch(err => {
             console.log(err.response);
             this.setState({
                 saving: false,
-                error_modal: 'Error retrieving template'
+                error: 'Error retrieving template'
             });
         })
     }
@@ -327,18 +339,7 @@ class Canvas extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        let url = nextProps.computedMatch;
-        if (url && url.params.diagram_id && url.params.diagram_id !== this.state.diagram_id) {
-            let diagram_id = url.params.diagram_id;
-            this.setState({
-                diagram_id: diagram_id
-            }, () => this.onLoadId(diagram_id))
-        }
-    }
-
     componentDidMount() {
-        window.analytics.page();
         $('#diagram').click((e) => {
             let engine = this.state.engine;
             let selected = engine.getDiagramModel().getSelectedItems("node");
@@ -362,6 +363,7 @@ class Canvas extends Component {
         });
 
         $('#Editor, #sidebar').mousedown(this.onDiagramUnfocus);
+
         // If in preview mode
         if(this.preview){
             $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 
@@ -410,8 +412,7 @@ class Canvas extends Component {
             console.log(err.response);
             this.setState({
                 saving: false,
-                loading_modal: true,
-                error_modal: 'Error retrieving modules'
+                error: 'Error retrieving modules'
             });
         });
     }
@@ -426,11 +427,11 @@ class Canvas extends Component {
 
     onSave(cb, is_new=false) {
         try {
-            this.setState({ saving: 'Saving...' });
+            this.setState({ saving: true });
             var engine = this.state.engine;
             var model = engine.getDiagramModel();
             let serialize = model.serializeDiagram();
-            serialize.id = this.state.diagram_id;
+            serialize.id = this.diagram_id;
             var data = JSON.stringify(serialize);
 
             let sub_diagrams = [];
@@ -451,20 +452,20 @@ class Canvas extends Component {
 
             for (var i = 0; i < this.state.diagrams.length; i++) {
                 let diagrams = this.state.diagrams;
-                if(diagrams[i].id === this.state.diagram_id){
+                if(diagrams[i].id === this.diagram_id){
                     diagrams[i].sub_diagrams = sub_diagrams;
                 }
                 this.setState({
                     diagrams: diagrams
                 }, () => {
                     if(this.buildDiagrams !== null){
-                        this.buildDiagrams();
+                        this.buildDiagrams(this.diagram_id);
                     }
                 });
             }
 
             var diagram = {
-                id: this.state.diagram_id,
+                id: this.diagram_id,
                 title: this.state.diagram_name,
                 variables: this.state.variables,
                 data: data,
@@ -481,22 +482,20 @@ class Canvas extends Component {
                     saved: true,
                     last_save: Date.now()
                 });
-                if(typeof cb === "function") cb(this.state.diagram_id);
+                if(typeof cb === "function") cb(this.diagram_id);
             })
             .catch(err => {
                 console.log(err.response);
                 this.setState({
                     saving: false,
-                    loading_modal: true,
-                    error_modal: 'Error Saving to Cloud (Check Logs)'
+                    error: 'Error Saving to Cloud (Check Logs)'
                 });
                 if(typeof cb === "function") cb(null);
             });
         } catch (e) {
             console.log(e);
             this.setState({
-                loading_modal: true,
-                error_modal: 'Error Saving - Project Structure (Check Logs)'
+                error: 'Error Saving - Project Structure (Check Logs)'
             });
             if(typeof cb === "function") cb(null);
         }
@@ -526,14 +525,13 @@ class Canvas extends Component {
             error: (e) => {
                 console.log(e);
                 this.setState({
-                    loading_modal: true,
-                    error_modal: "Unable to load Line data"
+                    error: "Unable to load Line data"
                 });
             }
         });
     }
 
-    loadDiagram(diagram) {
+    loadDiagram(diagram_id, diagram) {
         var engine = this.state.engine
         var model = new SRD.DiagramModel()
 
@@ -582,24 +580,25 @@ class Canvas extends Component {
                 });
             }
 
+            this.diagram_id = diagram_id
             this.setState({
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
                 last_save: diagram.last_save,
-                loading_modal: false,
+                loading_diagram: false,
                 variables: variables
             });
 
             this.setState({ saved: true })
         } else {
-            this.setState({ error_modal: 'Could Not Open Project - Corrupted File' })
+            this.setState({ error: 'Could Not Open Project - Corrupted File' })
         }
     }
 
     onLoadDiagrams(){
         if(this.preview){
-            this.onLoadId(this.state.diagram_id);
+            this.onLoadId(this.diagram_id);
         }else{
             axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
             .then(res => {
@@ -619,12 +618,12 @@ class Canvas extends Component {
                         }
                     })
                 }, () => {
-                    this.onLoadId(this.state.diagram_id)
+                    this.onLoadId(this.diagram_id)
                 });
             })
             .catch(err => {
                 console.error(err.response);
-                this.setState({ error_modal: 'Could Not Retrieve Project Diagrams' })
+                this.setState({ error: 'Could Not Retrieve Project Diagrams' })
             });
         }
     }
@@ -655,7 +654,7 @@ class Canvas extends Component {
         })
         .catch(err => {
             console.error(err.response);
-            this.setState({ error_modal: 'Could Not Retrieve Project' })
+            this.setState({ error: 'Could Not Retrieve Project' })
         })
     }
 
@@ -664,28 +663,18 @@ class Canvas extends Component {
             url: '/diagram/'+ diagram_id,
             type: 'GET',
             success: diagram => {
-                this.loadDiagram(diagram);
+                this.loadDiagram(diagram_id, diagram);
 
                 if(!this.preview){
-                    cookies.set('last_session', {
-                        skill_id: this.state.skill.skill_id,
-                        diagram_id: diagram_id
-                    }, {path: '/'})
+                    // TODO: SAVE LAST VIEWED DIAGRAM (used to use cookies)
                 }
 
                 if(this.buildDiagrams !== null){
-                    this.buildDiagrams()
+                    this.buildDiagrams(diagram_id)
                 }
             },
-            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' })}
+            error: () => {this.setState({ error: 'Could Not Retrieve Project' })}
         });
-    }
-
-    dismissLoadingModal() {
-        this.setState({
-            loading_modal: false
-        });
-        // this.props.history.push('/dashboard');
     }
 
     onFlowRenamed(id) {
@@ -751,7 +740,7 @@ class Canvas extends Component {
         });
         this.setState({
             testing_info: {
-                id: this.state.diagram_id,
+                id: this.diagram_id,
                 nodes: nodes
             }
         });
@@ -775,8 +764,7 @@ class Canvas extends Component {
                     .catch(err => {
                         console.log(err.response);
                         this.setState({
-                            error_modal: "Could Not Render Your Project",
-                            loading_modal: true,
+                            error: "Could Not Render Your Project",
                             testing_modal: false
                         });
                     });
@@ -797,11 +785,9 @@ class Canvas extends Component {
           diagram: diagram_id
         })
         .then(res => {
-            let skill_id = res.data.id;
-            cookies.set('last_session', {
-                skill_id: skill_id,
-                diagram_id: diagram_id
-            }, {path: '/'});
+            let skill_id = res.data.id
+            // TODO: Save last viewed diagram (used to use cookies)
+            this.diagram_id = diagram_id
 
             this.setState({
                 skill: {
@@ -813,8 +799,7 @@ class Canvas extends Component {
                     diagram: diagram_id,
                     locales: ["en-US"]
                 },
-                newSkill: 0,
-                diagram_id: diagram_id
+                newSkill: 0
             }, () => {
                 this.onSave(() => {
                     this.state.diagrams.push({
@@ -822,21 +807,21 @@ class Canvas extends Component {
                         name: 'ROOT'
                     });
                     if(this.buildDiagrams !== null){
-                        this.buildDiagrams();
+                        this.buildDiagrams(diagram_id);
                     }
                     this.props.history.push(`/canvas/${skill_id}/${diagram_id}`);
                 }, true)
             });
         })
         .catch(err => {
-            this.setState({ error_modal: 'Could Not Create Project - Error' });
+            this.setState({ error: 'Could Not Create Project - Error' });
         });
     }
 
     // Create a new diagram from the flow block
     createDiagram(node, template=null){
         this.setState({
-            loading_modal: true
+            loading_diagram: true
         })
 
         let id = generateID()
@@ -875,8 +860,7 @@ class Canvas extends Component {
                 console.log(err.response)
                 this.setState({
                     saving: false,
-                    loading_modal: true,
-                    error_modal: 'Unable to create new Flow'
+                    error: 'Unable to create new Flow'
                 })
             })
         })
@@ -895,7 +879,8 @@ class Canvas extends Component {
     }
 
     enterFlow(new_diagram_id) {
-        if(new_diagram_id !== this.state.diagram_id){
+        if(new_diagram_id !== this.diagram_id){
+            this.setState({loading_diagram: true})
             this.onSave(() => {
                 this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`);
             });
@@ -1080,7 +1065,7 @@ class Canvas extends Component {
                 }catch(err){
                     console.error(err);
                     return this.setState({
-                        error_modal: 'Error - Module Broken'
+                        error: 'Error - Module Broken'
                     });
                 }
             }
@@ -1101,17 +1086,9 @@ class Canvas extends Component {
     }
 
     render() {
-        // if(this.state.loading_modal) {
-        //     return <div className='super-center h-100 w-100'>
-        //         <div className="text-center">
-        //             <h1><img className="fa-spin" src='/sync.svg' height='42' width='42' alt='loading'/></h1>
-        //             <h5>Loading...</h5>
-        //         </div>
-        //     </div>
-        // }
-
         return (
             <div className='App' >
+                <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <HelpModal
                     open={this.state.helpOpen}
                     help={this.state.help}
@@ -1136,7 +1113,6 @@ class Canvas extends Component {
                     message={location => 'Are you sure you want to leave without saving?'
                     }
                 />
-                <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
 
                 {this.state.testing_modal ? 
@@ -1151,7 +1127,7 @@ class Canvas extends Component {
                 <Menu 
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
-                    current={this.state.diagram_id}
+                    current={this.diagram_id}
                     enterFlow={this.enterFlow}
                     variables={this.state.variables}
                     global_variables={this.state.global_variables}
@@ -1163,6 +1139,8 @@ class Canvas extends Component {
                     onTemplateChoice={this.handleTemplateChoice}
                     onFlowRenamed={this.onFlowRenamed}
                     history={this.props.history}
+                    loading_diagram={this.state.loading_diagram}
+                    saving={this.state.saving}
                 />
                 <TitleBar
                     onTest={this.onTest}
@@ -1181,8 +1159,14 @@ class Canvas extends Component {
                     onLoadLines={this.loadLines}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
-                    diagram_id={this.state.diagram_id}
+                    diagram_id={this.diagram_id}
                 /> }
+                {this.state.loading_diagram && <div id="loading-diagram">
+                    <div className="text-center">
+                        <h5 className="text-muted mb-2">Loading Flow</h5>
+                        <span className="loader"/>
+                    </div>
+                </div>}
                 <div
                     id="diagram"
                     className={this.preview ? " no-padding" : ""}

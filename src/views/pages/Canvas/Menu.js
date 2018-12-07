@@ -102,7 +102,7 @@ class Menu extends PureComponent {
         }
     }
 
-    buildTree(node, depth=0){
+    buildTree(node, current_id, depth=0){
 
         this.visited.add(node.id);
 
@@ -121,7 +121,7 @@ class Menu extends PureComponent {
                     if(block){
                         return <div className="sub-diagram" key={i}>
                             <div className="sub-column">
-                                {this.buildTree(block, depth+1)}
+                                {this.buildTree(block, current_id, depth+1)}
                             </div>
                         </div>;
                     }
@@ -130,7 +130,7 @@ class Menu extends PureComponent {
             }
 
             return (<React.Fragment>
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed}/>
+                <FlowButton flow={node} active={current_id} enterFlow={this.props.enterFlow} onFlowRenamed={this.props.onFlowRenamed}/>
                 {tree}
             </React.Fragment>)
 
@@ -147,13 +147,13 @@ class Menu extends PureComponent {
         this.forceUpdate()
     }
 
-    updateTree() {
+    updateTree(current_id) {
         for(let diagram of this.props.diagrams){
             if(diagram.name === 'ROOT'){
-                this.visited = new Set();
+                this.visited = new Set()
                 this.setState({
-                    tree: this.buildTree(diagram)
-                });
+                    tree: this.buildTree(diagram, current_id)
+                })
             }
         }
     }
@@ -410,16 +410,21 @@ class Menu extends PureComponent {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={this.state.open ? 'open' : ''}>
-                    <div>
-                        <div className='block-title no-select' onClick={() => this.setState({open: false})}>
-                            <h5 className="mb-0">{this.state.tab}</h5>
-                            <div className="close pr-1 pl-3 py-3">×</div>
-                        </div>
-                    </div>
-                    <div className="sidebar-content">
-                        {content}
-                    </div>
+                <div id="sidebar" className={(this.state.open ? 'open' : '')}>
+                    {this.props.loading_diagram ? 
+                        null :
+                        <React.Fragment>
+                            <div>
+                                <div className='block-title no-select' onClick={() => this.setState({open: false})}>
+                                    <h5 className="mb-0">{this.state.tab}</h5>
+                                    <div className="close pr-1 pl-3 py-3">×</div>
+                                </div>
+                            </div>
+                            <div className="sidebar-content">
+                                {content}
+                            </div>
+                        </React.Fragment>
+                    }
                 </div>
             </div>
         );

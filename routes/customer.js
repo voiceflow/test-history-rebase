@@ -1,13 +1,22 @@
 const {docClient, pool} = require('./../services')
-// SECRET
-const stripe = require('stripe')('sk_test_pDf3vhMzNkojtn4dqBs9zVsW')
-// SECRET
-const endpointSecret = 'whsec_1NmXHw7SU5xke899IKE9xgEzsBQfRpO9'
 
-const PLANS = {
-	0: {name: 'COMMUNITY'},
-	1: {name: 'BASIC'}
+// SECRET TODO:
+var endpointSecret
+var SECRET_KEY
+if(process.env.PROD){
+	endpointSecret = 'whsec_pTuHAy6RQ4diYQzs6GVyZo4orFzxVE0z'
+	SECRET_KEY = 'sk_live_miu69x3c44doaSO26hVsBJrX'
+}else{
+	endpointSecret = 'whsec_1NmXHw7SU5xke899IKE9xgEzsBQfRpO9'
+	SECRET_KEY = 'sk_test_pDf3vhMzNkojtn4dqBs9zVsW'
 }
+const stripe = require('stripe')(SECRET_KEY)
+
+
+const PLANS = [
+	{id: 0, name: 'COMMUNITY'},
+	{id: 1, name: 'BASIC'}
+]
 
 exports.create = async (req, res) => {
 	if(!(req.body.source && req.body.source.id && req.body.plan)){
@@ -39,18 +48,18 @@ exports.create = async (req, res) => {
 			customer_id = customer.id
 		}
 		// Add the customer to the subscription
-		let plan = req.body.plan
-		if(plan in PLANS && req.user.admin < req.body.plan && req.user.admin !== req.body.plan){
+		let plan = PLANS.find(p => p.id === req.body.plan)
+		if(plan && req.user.admin < req.body.plan && req.user.admin !== req.body.plan){
 			// check if he is on an existing plan
 			if(subscription_id){
 				await stripe.subscriptions.update(
 					subscription_id,
-					{items: [{plan: plan}]}
+					{items: [{plan: plan.name}]}
 				)
 			}else{
 				let subscription = await stripe.subscriptions.create({
 				  customer: customer_id,
-				  items: [{plan: plan}]
+				  items: [{plan: plan.name}]
 				})
 				await pool.query('UPDATE creators SET subscription = $1 WHERE creator_id = $2', [subscription.id, req.user.id])
 			}
@@ -80,19 +89,19 @@ exports.webhook = async (req, res) => {
 			if(req.body.type === 'invoice.payment_failed'){
 				// payment failed, reset
 				// TODO send customer a email
-				await pool.query('UPDATE creators SET admin=0, expiry=NULL WHERE stripe_id = $1', [req.body.data.object.customer])
+				await stripe.subscriptions.del(req.body.data.object.lines.data[0].subscription)
+				await pool.query('UPDATE creators SET admin=0, expiry=NULL, subscription=NULL WHERE stripe_id = $1', [req.body.data.object.customer])
 			}else if(req.body.type === 'invoice.payment_succeeded'){
 				// payment succeeded, extend current period by a month
 				// and add one extra day of padding
 				let expiry = req.body.data.object.period_end + 24*3600
 
 				// get the plan type from the invoice
-				console.log(req.body.data.object.lines.data)
-				let plan = req.body.data.object.lines.data[0].plan.id
-				console.log('new plan', plan)
+				let name = req.body.data.object.lines.data[0].plan.id
+				let plan = PLANS.find(p => p.name === name)
 
-				if(plan && plan in PLANS){
-					await pool.query('UPDATE creators SET expiry=$1, admin=$2 WHERE stripe_id = $3', [expiry, plan, req.body.data.object.customer])
+				if(planan){
+					await pool.query('UPDATE creators SET expiry=$1, admin=$2 WHERE stripe_id = $3', [expiry, plan.id, req.body.data.object.customer])
 				}else{
 					await pool.query('UPDATE creators SET expiry=$1 WHERE stripe_id = $2', [expiry, req.body.data.object.customer])
 				}

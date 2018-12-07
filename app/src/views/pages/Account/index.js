@@ -47,6 +47,7 @@ class Account extends Component {
     this.toggle = this.toggle.bind(this)
     this.renderDescription = this.renderDescription.bind(this)
     this.resetAmazon = this.resetAmazon.bind(this)
+    this.logout = this.logout.bind(this)
   }
 
   resetAmazon() {
@@ -112,6 +113,14 @@ class Account extends Component {
     }
   }
 
+  logout(e) {
+    e.preventDefault();
+    AuthenticationService.logout(() => {
+      this.props.history.push('/login');
+    });
+    return false;
+  }
+
   render() {
     return <div className='Window'>
               <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})} warning/>
@@ -149,7 +158,7 @@ class Account extends Component {
                     <Col sm="5" className="border-left">
                       <div className="text-muted">Payment</div>
                       <Elements>
-                        <CheckoutForm user={this.props.user} plan={STATUS[this.state.selected_plan]} selected={this.state.selected_plan}/>
+                        <CheckoutForm user={this.props.user} plan={STATUS[this.state.selected_plan]} selected={this.state.selected_plan} logout={this.logout}/>
                       </Elements>
                     </Col>
                   </Row>
@@ -161,7 +170,7 @@ class Account extends Component {
                   <div className="p-4 space-between">
                     <h4 className="mb-0 text-muted">{STATUS[this.props.user.admin].name}</h4>
                     <div className="super-center">
-                      {this.props.user.admin === 0 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
+                      {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
                       <Button onClick={this.toggle}>Upgrade</Button>
                     </div>
                   </div>

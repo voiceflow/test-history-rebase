@@ -8,9 +8,10 @@
     "build": "cd app && npm run build",
     "start": "PROD=1 node index.js",
     "server": "SECURE=1 MASTER=1 node index.js",
+    "unsecure": "node index.js",
     "client": "cd app && npm run start",
     "redis": "redis-server",
-    "update": "cd app && npm install",
+    "update": "npm install && cd app && npm install",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "repository": {
@@ -49,6 +50,7 @@
     "s3-upload-stream": "^1.0.7",
     "sendgrid": "^5.2.3",
     "sharp": "^0.21.0",
+    "stripe": "^6.17.0",
     "uuid": "^3.3.2",
     "valid-url": "^1.0.9"
   },

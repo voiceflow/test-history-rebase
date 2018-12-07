@@ -39,7 +39,6 @@ class API extends Component {
         // props.variables is for variables of the current diagram
         this.state = {
             node: node,
-            variables: this.props.variables,
             dropdownOpen: false,
             type: 'headers',
             popoverOpen: false
@@ -257,7 +256,7 @@ class API extends Component {
                     onAdd={() => this.handleAddPairMapping()}
                     onRemove={(e, i) => this.handleRemovePairMapping(i)}
                     onChange={this.handleKVMappingChange}
-                    variables={this.state.variables}
+                    variables={this.props.variables}
                 />
 
             </React.Fragment>

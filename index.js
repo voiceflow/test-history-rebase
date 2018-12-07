@@ -14,6 +14,7 @@ const {upload, uploadResize, redisClient, jwt, config} = require('./services');
 
 // IMPORT ROUTES
 const Diagram = require('./routes/diagram.js');
+const Customer = require('./routes/customer.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
@@ -29,21 +30,38 @@ const Onboard = require('./routes/onboard.js');
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
 
-app.use(cors());
+app.use(cors())
 
-app.use(helmet());
+app.use(helmet())
+
+const rawBodyPaths = ['/customer/webhook']
+const getRawBody = () => {
+    return (req, res, next) => {
+        if(rawBodyPaths.includes(req.path)){
+            return bodyParser.json({
+                verify: function (req, res, buf, encoding) {
+                    req.rawBody = buf;
+                }
+            })(req, res, next)
+        }else{
+            return next()
+        }
+    };
+};
+
+app.use(getRawBody())
 
 app.use(bodyParser.json({
     limit: '50mb'
-}));
+}))
 app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
-}));
+}))
 
-app.use(cookieParser());
+app.use(cookieParser())
 
-app.use(express.static(path.join(__dirname, 'app', 'build')));
+app.use(express.static(path.join(__dirname, 'app', 'build')))
 
 // Middleware for Authentication
 app.use((req, res, next) => {
@@ -99,6 +117,7 @@ const ensureLoggedOut = () => {
 
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
+app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
@@ -110,6 +129,8 @@ app.post('/user/reset/:token', Authentication.resetPassword);
 app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
+
+app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
 
 app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
 app.get('/email/template/:id', ensureLoggedIn(), Email.getTemplate);
@@ -126,6 +147,10 @@ app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
+
+// STRIPE PAYMENT ENDPOINTS
+app.post('/customer/subscription', ensureLoggedIn(), Customer.create);
+app.post('/customer/webhook', Customer.webhook);
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);

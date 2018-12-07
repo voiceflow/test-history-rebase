@@ -32,7 +32,7 @@ const pool = new pg.Pool({
 });
 
 // Create a Redis Client for sessions
-const redisClient = process.env.PROD ? redis.createClient({
+const redisClient = (process.env.PROD || process.env.STAGING ) ? redis.createClient({
     host: config.redisClusterHost,
     port: config.redisClusterPort
 }) : redis.createClient();

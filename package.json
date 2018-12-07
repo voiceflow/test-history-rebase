@@ -9,6 +9,7 @@
     "start": "PROD=1 node index.js",
     "server": "SECURE=1 MASTER=1 node index.js",
     "unsecure": "node index.js",
+    "staging": "STAGING=1 node index.js",
     "client": "cd app && npm run start",
     "redis": "redis-server",
     "update": "npm install && cd app && npm install",

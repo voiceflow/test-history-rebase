@@ -30,21 +30,38 @@ const Onboard = require('./routes/onboard.js');
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
 
-app.use(cors());
+app.use(cors())
 
-app.use(helmet());
+app.use(helmet())
+
+const rawBodyPaths = ['/customer/webhook']
+const getRawBody = () => {
+    return (req, res, next) => {
+        if(rawBodyPaths.includes(req.path)){
+            return bodyParser.json({
+                verify: function (req, res, buf, encoding) {
+                    req.rawBody = buf;
+                }
+            })(req, res, next)
+        }else{
+            return next()
+        }
+    };
+};
+
+app.use(getRawBody())
 
 app.use(bodyParser.json({
     limit: '50mb'
-}));
+}))
 app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
-}));
+}))
 
-app.use(cookieParser());
+app.use(cookieParser())
 
-app.use(express.static(path.join(__dirname, 'app', 'build')));
+app.use(express.static(path.join(__dirname, 'app', 'build')))
 
 // Middleware for Authentication
 app.use((req, res, next) => {

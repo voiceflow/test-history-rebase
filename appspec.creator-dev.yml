@@ -8,7 +8,7 @@ hooks:
     - location: scripts/before_install.sh
       runas: root
   ApplicationStart:
-    - location: scripts/start_service.sh
+    - location: scripts/start_service_dev.sh/
       runas: root
   AfterInstall:
     - location: scripts/after_install.sh

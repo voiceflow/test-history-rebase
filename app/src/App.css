@@ -426,6 +426,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     background-color: #fff;
     transition: all 0.2s ease !important;
 }
+.dropzone .drop-child{
+    text-align: center;
+    color: #8da2b5 !important;
+}
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;
     border-style: solid !important;
@@ -498,14 +502,14 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 
 .dropzone.reject {
     border-color: #dc3545!important;
-    background-color: #FBE9E7;
+    background-color: #FBE9E7 !important;
 }
 
 .dropzone .rejected-file {
     display: none;
 }
 
-.dropzone.reject .prompt{
+.dropzone.reject .drop-child{
     display: none;
 }
 
@@ -741,6 +745,11 @@ body.modal-open {
     display: block;
     font-size: 24px;
     padding: 10px 0;
+}
+
+.seperated-links a {
+    display: inline-block;
+    margin: 0 10px;
 }
 
 @-webkit-keyframes spin {

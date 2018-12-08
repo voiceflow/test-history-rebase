@@ -1163,6 +1163,23 @@ class Canvas extends Component {
                         <span className="loader"/>
                     </div>
                 </div>}
+                <Editor
+                    onClick={this.onDiagramUnfocus}
+                    open={this.state.open}
+                    node={this.state.engine.getSuperSelect()}
+                    onUpdate={this.unsave}
+                    close={e => this.setState({ open: false })}
+                    repaint={this.repaint}
+                    variables={this.state.variables}
+                    global_variables={this.state.global_variables}
+                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
+                    diagrams={this.state.diagrams}
+                    createDiagram={this.createDiagram}
+                    enterFlow={this.enterFlow}
+                    removeNode={this.removeNode}
+                    user_modules={this.state.user_modules}
+                    copyNode={this.copyNode}
+                />
                 <div
                     id="diagram"
                     className={this.preview ? " no-padding" : ""}
@@ -1181,23 +1198,6 @@ class Canvas extends Component {
                         allowLooseLinks={false}
                     />
                 </div>
-                <Editor
-                    onClick={this.onDiagramUnfocus}
-                    open={this.state.open}
-                    node={this.state.engine.getSuperSelect()}
-                    onUpdate={this.unsave}
-                    close={e => this.setState({ open: false })}
-                    repaint={this.repaint}
-                    variables={this.state.variables}
-                    global_variables={this.state.global_variables}
-                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
-                    diagrams={this.state.diagrams}
-                    createDiagram={this.createDiagram}
-                    enterFlow={this.enterFlow}
-                    removeNode={this.removeNode}
-                    user_modules={this.state.user_modules}
-                    copyNode={this.copyNode}
-                />
             </div>
         );
     }

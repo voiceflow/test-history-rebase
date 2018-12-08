@@ -3,6 +3,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
+import {StripeProvider} from 'react-stripe-elements'
 
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
@@ -24,6 +25,14 @@ import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
+
+// SECRET
+var STRIPE_KEY
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
+}else{
+  STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
+}
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
@@ -65,7 +74,8 @@ class App extends Component {
 
     this.state = {
       loading: AuthenticationService.isAuth(),
-      session: false
+      session: false,
+      stripe: null
     }
 
     if(AuthenticationService.isAuth()){
@@ -89,16 +99,27 @@ class App extends Component {
     }
 
     history.listen((location, action) => {
-      console.log(location);
       this.setState({
         session: AuthenticationService.isAuth()
       });
     });
   }
 
+  componentDidMount() {
+    if (window.Stripe) {
+      this.setState({stripe: window.Stripe(STRIPE_KEY)});
+    } else {
+      document.querySelector('#stripe-js').addEventListener('load', () => {
+        // Create Stripe instance once Stripe.js loads
+        this.setState({stripe: window.Stripe(STRIPE_KEY)});
+      });
+    }
+  }
+
   render() {
     return (
-      this.state.loading ? 
+    <StripeProvider stripe={this.state.stripe}>
+    {this.state.loading ? 
         <div className='super-center h-100 w-100'>
             <div className="text-center">
                 <h5 className="pb-3">Loading</h5>
@@ -139,7 +160,8 @@ class App extends Component {
               </Switch>
           </div>
         </Router>
-    );
+    }
+    </StripeProvider>);
   }
 }
 

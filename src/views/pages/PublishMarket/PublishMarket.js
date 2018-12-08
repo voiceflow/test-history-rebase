@@ -133,9 +133,6 @@ class PublishMarket extends Component {
     }
 
     save(){
-        window.analytics.track('Save Draft Button clicked', {
-            userId: window.user_detail
-        })
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null);
         const type = (s.type && s.type.value ? s.type.value : null);
@@ -223,7 +220,6 @@ class PublishMarket extends Component {
     }
 
     componentDidMount() {
-        window.analytics.page();
         this.onLoad();
     }
 

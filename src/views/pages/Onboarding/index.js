@@ -113,7 +113,7 @@ class Onboarding extends Component{
 		      	<p className="modal-txt text-center mb-4">Help us tailor your experience. What do you plan on using Voiceflow for?</p>
 		      	<div className="row justify-content-center">
 		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "WORK"})}}>Work</button> 
-		      		<button className="btn-info mr-3" onClick={this.submitOnboardingSurvey}>Personal</button> 
+		      		<button className="btn-info mr-3" onClick={() => this.props.history.push('/')}>Personal</button> 
 		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "EDUCATION"})}}>Education</button> 
 		      	</div>
 			</React.Fragment>

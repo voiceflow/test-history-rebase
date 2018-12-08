@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
-import Ending from './Editors/Ending';
-import Retry from './Editors/Retry';
-import Listen from './Editors/Listen';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
 import Variable from './Editors/Variable';
@@ -165,14 +162,8 @@ class Editor extends Component {
                 }else{
                     return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }
-            case 'listen':
-                return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':
-                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} />
-            case 'retry':
-                return <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
-            case 'ending':
-                return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
@@ -251,7 +242,7 @@ class Editor extends Component {
         //     </React.Fragment>}
         // >
         return (
-            <div id="Editor" className={(this.props.open && type ? 'open':'')}>
+            <div id="Editor" className={(this.props.open && type ? 'open':'')} onClick={this.props.onClick}>
                 {type ?
                     <form onSubmit={(e) => e.preventDefault()} className="controls" key={this.state.node.id}>
                         <div className="top">

@@ -10,6 +10,7 @@ const sharp = require('sharp');
 const Hashids = require('hashids');
 
 const hashids = new Hashids(config.id_hash, 10);
+const MB = 1024*1024
 
 AWS.config.loadFromPath('./aws-config.json');
 
@@ -32,7 +33,7 @@ const pool = new pg.Pool({
 });
 
 // Create a Redis Client for sessions
-const redisClient = process.env.PROD ? redis.createClient({
+const redisClient = (process.env.PROD || process.env.STAGING ) ? redis.createClient({
     host: config.redisClusterHost,
     port: config.redisClusterPort
 }) : redis.createClient();
@@ -40,6 +41,10 @@ const redisClient = process.env.PROD ? redis.createClient({
 const s3 = new AWS.S3();
 
 const upload = multer({
+    limits: {
+        files: 1,
+        filesize: 10*MB
+    },
     storage: multerS3({
         s3: s3,
         bucket: 'com.getstoryflow.audio.production',
@@ -54,6 +59,10 @@ const upload = multer({
 
 const uploadResize = (x, y) => {
     return multer({
+        limits: {
+            files: 1,
+            filesize: 5*MB
+        },
         storage: multerS3Transform({
             s3: s3,
             bucket: 'com.getstoryflow.api.images',

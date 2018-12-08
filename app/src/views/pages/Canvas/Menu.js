@@ -6,7 +6,7 @@ import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGro
 import isVarName from 'is-var-name';
 import FlowButton from './FlowButton';
 import {Tooltip} from 'react-tippy';
-import cloneDeep from 'lodash/cloneDeep'
+import cloneDeep from 'lodash/cloneDeep';
 
 const defaultVariables = {
     'sessions': 'The Number of times a particular user has opened the app',
@@ -31,8 +31,7 @@ const sections = [{
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable'  },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
-        // { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
         { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
    ]
 },{
@@ -77,6 +76,7 @@ class Menu extends PureComponent {
             tree: null,
             block_tab_state: 'blocks',
             variable_tab_state: 'global',
+            flow_tab_state: 'structure',
             show: show
         }
 
@@ -97,12 +97,13 @@ class Menu extends PureComponent {
         this.props.build(this.updateTree);
         this.sections = cloneDeep(sections);
 
-        if(window.user_detail.admin === 10){
+        // mail block
+        if(window.user_detail.admin > 0){
             this.sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
         }
     }
 
-    buildTree(node, depth=0){
+    buildTree(node, current_id, depth=0){
 
         this.visited.add(node.id);
 
@@ -121,7 +122,7 @@ class Menu extends PureComponent {
                     if(block){
                         return <div className="sub-diagram" key={i}>
                             <div className="sub-column">
-                                {this.buildTree(block, depth+1)}
+                                {this.buildTree(block, current_id, depth+1)}
                             </div>
                         </div>;
                     }
@@ -130,7 +131,7 @@ class Menu extends PureComponent {
             }
 
             return (<React.Fragment>
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed}/>
+                <FlowButton flow={node} active={current_id} enterFlow={this.props.enterFlow} onFlowRenamed={this.props.onFlowRenamed}/>
                 {tree}
             </React.Fragment>)
 
@@ -147,13 +148,13 @@ class Menu extends PureComponent {
         this.forceUpdate()
     }
 
-    updateTree() {
+    updateTree(current_id) {
         for(let diagram of this.props.diagrams){
             if(diagram.name === 'ROOT'){
-                this.visited = new Set();
+                this.visited = new Set()
                 this.setState({
-                    tree: this.buildTree(diagram)
-                });
+                    tree: this.buildTree(diagram, current_id)
+                })
             }
         }
     }
@@ -220,7 +221,7 @@ class Menu extends PureComponent {
     }
 
     render() {
-
+        // TODO this file is cancer going to divide up into different files soon
         let content;
         if(this.state.tab === 'blocks'){
             let block_content;
@@ -264,51 +265,68 @@ class Menu extends PureComponent {
                 {block_content}
             </React.Fragment>
         }else if(this.state.tab === 'project'){
-            // content = this.props.diagrams.map((diagram, i) => 
-            //     <div className="diagram-block" key={i} onClick={()=>this.props.enterFlow(diagram.id)}>
-            //         {diagram.name}
-            //     </div>
-            // );
-
-            let unused = [];
-
-            for(let diagram of this.props.diagrams){
-                if(!this.visited.has(diagram.id)){
-                    let block = this.props.diagrams.find(d => d.id === diagram.id);
-                    if (block) { 
+            let flow_tab
+            if(this.state.flow_tab_state === 'structure'){
+                let unused = [];
+                for(let diagram of this.props.diagrams){
+                    if(!this.visited.has(diagram.id)){
                         unused.push(
                             <FlowButton
-                                key={block.id}
-                                flow={block} 
+                                key={diagram.id}
+                                flow={diagram} 
                                 active={this.props.current} 
                                 enterFlow={this.props.enterFlow}
-                            />);
+                            />
+                        )
                     }
                 }
+                flow_tab = <React.Fragment>
+                    <label>Project Flows</label>
+                    {this.state.tree}
+                    {unused.length === 0 ? null : <React.Fragment>
+                        <hr className='mb-2 mt-4'/>
+                        <label>Other Flows</label>
+                        {unused.map((diagram, i) => {
+                            return diagram;
+                        })}
+                        <hr className='mb-2 mt-4'/>                
+                    </React.Fragment>}
+                </React.Fragment>
+            }else if(this.state.flow_tab_state === 'flows'){
+                flow_tab = this.props.diagrams.map(diagram => <FlowButton
+                    key={diagram.id}
+                    flow={diagram} 
+                    active={this.props.current} 
+                    enterFlow={this.props.enterFlow}
+                />)
             }
 
             content = <React.Fragment>
-                <label>Project Flows</label>
-                {this.state.tree}
-                {unused.length === 0 ? null : <React.Fragment>
-                    <hr className='mb-2 mt-4'/>
-                    <label>Other Flows</label>
-                    {unused.map((diagram, i) => {
-                        return diagram;
-                    })}
-                    <hr className='mb-2 mt-4'/>                
-                </React.Fragment>}
-                {/*<label>Templates</label>
-                {this.props.user_templates.length > 0?
-                    <div>
-                    {this.props.user_templates.map((user_template, i) => {
-                        return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
-                    })}
-                    </div>
-                    :
-                    <div className="text-muted">You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
-                }*/}
-            </React.Fragment>;
+                <ButtonGroup className="toggle-group mb-2">
+                    <Button outline={this.state.flow_tab_state !== 'structure'} 
+                        onClick={() => {this.setState({flow_tab_state: 'structure'})}} 
+                        disabled={this.state.flow_tab_state === 'structure'}> 
+                        Structure
+                    </Button>
+                    <Button outline={this.state.flow_tab_state !== 'flows'} 
+                        onClick={() => {this.setState({flow_tab_state: 'flows'})}} 
+                        disabled={this.state.flow_tab_state === 'flows'}> 
+                        Flows
+                    </Button>
+                </ButtonGroup>
+                {flow_tab}
+            </React.Fragment>
+
+            {/*<label>Templates</label>
+            {this.props.user_templates.length > 0?
+                <div>
+                {this.props.user_templates.map((user_template, i) => {
+                    return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
+                })}
+                </div>
+                :
+                <div className="text-muted">You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
+            }*/}
         }else if(this.state.tab === 'variables'){
             let variable_tab;
             if(this.state.variable_tab_state === 'global'){
@@ -380,10 +398,10 @@ class Menu extends PureComponent {
                 </ButtonGroup>
                 {variable_tab}
             </React.Fragment>
-        } 
+        }
 
         return (
-            <div className="Menu">
+            <div className="Menu" onClick={this.props.onClick}>
                 <div className='toolbar'>
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {
@@ -410,16 +428,21 @@ class Menu extends PureComponent {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={this.state.open ? 'open' : ''}>
-                    <div>
-                        <div className='block-title no-select' onClick={() => this.setState({open: false})}>
-                            <h5 className="mb-0">{this.state.tab}</h5>
-                            <div className="close pr-1 pl-3 py-3">×</div>
-                        </div>
-                    </div>
-                    <div className="sidebar-content">
-                        {content}
-                    </div>
+                <div id="sidebar" className={(this.state.open ? 'open' : '')}>
+                    {this.props.loading_diagram ? 
+                        null :
+                        <React.Fragment>
+                            <div>
+                                <div className='block-title no-select' onClick={() => this.setState({open: false})}>
+                                    <h5 className="mb-0">{this.state.tab}</h5>
+                                    <div className="close pr-1 pl-3 py-3">×</div>
+                                </div>
+                            </div>
+                            <div className="sidebar-content">
+                                {content}
+                            </div>
+                        </React.Fragment>
+                    }
                 </div>
             </div>
         );

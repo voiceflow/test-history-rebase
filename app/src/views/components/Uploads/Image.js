@@ -3,6 +3,8 @@ import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import {Input} from 'reactstrap'
 
+const MAX_SIZE = 5*1024*1024
+
 class Image extends Component {
 
  	constructor(props) {
@@ -11,6 +13,7 @@ class Image extends Component {
         this.onDropImage = this.onDropImage.bind(this);
 
         this.state = {
+            error: null,
             loading: false,
             url_open: false,
             url: ''
@@ -25,7 +28,7 @@ class Image extends Component {
         });
     }
 
-    onDropImage(files) {
+    onDropImage(files, rejected) {
         if (files.length === 1) {
             let data = new FormData();
             data.append('image', files[0]);
@@ -40,15 +43,30 @@ class Image extends Component {
             	console.error(err);
             	window.alert('Image Upload Error');
             });
+        }else if(Array.isArray(rejected) && rejected.length === 1 && rejected[0].size > MAX_SIZE){
+            this.setState({
+                error: <div>
+                    <b>File is too large<br/>(5MB max)</b>
+                </div>
+            })
         }
     }
 
 	render() {
-        let render;
+        let render
         if(this.state.loading){
             render = <div className="image-box super-center d-flex">
                 <div className="h-100 super-center">
                     <h1 className="mb-0"><span className="loader"/></h1>
+                </div>
+            </div>
+        }else if(!!this.state.error){
+            render = <div className="dropzone reject enter-url">
+                <div className="text-center text-danger">
+                    {this.state.error}
+                    <button onClick={()=>this.setState({error: false})} className="upload-btn btn btn-primary-small exit">
+                        <i className="far fa-chevron-left"/>Back
+                    </button>
                 </div>
             </div>
         }else if(this.props.image){
@@ -72,17 +90,18 @@ class Image extends Component {
                 rejectClassName="reject"
                 multiple={false}
                 disableClick={false}
+                maxSize={MAX_SIZE}
                 accept="image/jpeg, image/png"
-                onDrop={(accepted, rejected) => this.onDropImage(accepted)}
+                onDrop={this.onDropImage}
             >
                 <div className="w-100">
-                    <div className="prompt text-center">
+                    <div className="drop-child">
                         <b>Drag-n-Drop Image</b><br/>
                         <small>OR</small><br/>
                         <div className="space-between">
-                            <button className="upload-btn btn btn-primary-small">
+                            <div className="upload-btn btn btn-primary-small">
                                 Add File
-                            </button>
+                            </div>
                             {/*<button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()

@@ -133,6 +133,15 @@ const getAmazonCode = (req, res) => {
     }
 };
 
+const deleteAmazon = (req, res) => {
+	redisClient.del(`t_${req.user.id}`, (err) => {
+		if(err){
+			return res.sendStatus(500)
+		}
+		res.sendStatus(200)
+	})
+}
+
 const getSession = (req, res) => {
     req.user ? res.send(req.user) : res.sendStatus(403);
 };
@@ -209,15 +218,20 @@ const putUser = async (req, res) => {
 	                        } else {
 								
 	                        	// console.log(insert_result);
-						    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, async (credentials) => {
+						    	createLogin({
+						    		id: insert_result.rows[0].creator_id, 
+						    		email: email, 
+						    		name: name, 
+						    		admin: false 
+						    	}, async (credentials) => {
 	                            	res.status(200).send({
 	                            		token: credentials.userHash + credentials.token,
 										user: credentials.user
 										
 									});
-									Mail.sendOnboarding(email, name, (err) => {
-										console.log(err);
-									});
+									//Mail.sendOnboarding(email, name, (err) => {
+									//	console.log(err);
+									//});
 								});
 	                        }
                 		});
@@ -364,6 +378,7 @@ module.exports = {
 	deleteSession: deleteSession,
 	putUser: putUser,
 	getVendor: getVendor,
+	deleteAmazon: deleteAmazon,
 	resetPasswordEmail: resetPasswordEmail,
 	checkReset: (req, res) => reset(req, res),
 	resetPassword: (req, res) => reset(req, res, true)

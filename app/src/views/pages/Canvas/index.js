@@ -394,14 +394,6 @@ class Canvas extends Component {
         }
     }
 
-    nullify(e){
-        console.log('pls')
-        e.stopPropagation()
-        e.nativeEvent.stopImmediatePropagation()
-        e.preventDefault()
-        return false
-    }
-
     componentDidMount() {
         // If not preview mode
         if(!this.preview){
@@ -1190,7 +1182,7 @@ class Canvas extends Component {
                     />
                 </div>
                 <Editor
-                    onClick={this.preview ? this.nullify : this.onDiagramUnfocus}
+                    onClick={this.onDiagramUnfocus}
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}

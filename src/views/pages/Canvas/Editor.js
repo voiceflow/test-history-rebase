@@ -21,9 +21,7 @@ import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
-import {Tooltip} from 'react-tippy';
 import {
-    Button,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -267,9 +265,15 @@ class Editor extends Component {
                                         <DropdownToggle className="delete-block" nav tag="div">
                                             <i className="fas fa-cog"/>
                                         </DropdownToggle>
-                                        <DropdownMenu right className="arrow arrow-right no-select">
-                                            <DropdownItem onClick={this.props.removeNode}>
-                                                Delete
+                                        <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-3px', marginTop: '5px'}}>
+                                            <DropdownItem header>
+                                                Block Options
+                                            </DropdownItem>
+                                            <DropdownItem onClick={this.props.copyNode} className="pointer">
+                                                <i className="fas fa-copy text-muted"/> Copy
+                                            </DropdownItem>
+                                            <DropdownItem onClick={this.props.removeNode} className="pointer">
+                                                <i className="fas fa-file-times text-muted"/> Delete
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </UncontrolledDropdown>

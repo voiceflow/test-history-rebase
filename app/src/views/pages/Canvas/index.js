@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
@@ -45,7 +44,6 @@ class Canvas extends Component {
     constructor(props) {
         super(props);
 
-        this.loadLines = this.loadLines.bind(this)
         this.repaint = this.repaint.bind(this)
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
@@ -72,6 +70,8 @@ class Canvas extends Component {
         this.createWithTemplate = this.createWithTemplate.bind(this)
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
+        this.clickDiagram = this.clickDiagram.bind(this)
+        this.hotKeys=this.hotKeys.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -141,7 +141,7 @@ class Canvas extends Component {
             diagram_name = 'ROOT'
         }
 
-        this.diagram_id = diagram_id;
+        this.diagram_id = diagram_id
 
         this.state = {
             engine: engine,
@@ -166,7 +166,7 @@ class Canvas extends Component {
             helpOpen: false,
             user_modules: null,
             user_templates: []
-        };
+        }
 
         if(!this.state.newSkill){
             this.onLoadSkill(this.state.skill.skill_id)
@@ -372,54 +372,50 @@ class Canvas extends Component {
         
     }
 
-    componentDidMount() {
-        $('#diagram').click((e) => {
-            let engine = this.state.engine
-            let selected = engine.getDiagramModel().getSelectedItems("node")
+    clickDiagram(e){
+        let engine = this.state.engine
+        let selected = engine.getDiagramModel().getSelectedItems("node")
 
-            if (selected.length === 1 && selected[0].extras.type !== 'comment') {
-                engine.setSuperSelect(selected[0])
-                this.setState({
-                    engine: engine,
-                    open: true
-                })
-            } else if (selected.length === 0) {
-                let model = engine.getDiagramModel()
-                let nodes = model.getNodes()
-                for (let key in nodes) {
-                    if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
-                        model.removeNode(nodes[key].getID())
-                        this.forceUpdate()
-                    }
+        if (selected.length === 1 && selected[0].extras.type !== 'comment') {
+            engine.setSuperSelect(selected[0])
+            this.setState({
+                engine: engine,
+                open: true
+            })
+        } else if (selected.length === 0) {
+            let model = engine.getDiagramModel()
+            let nodes = model.getNodes()
+            for (let key in nodes) {
+                if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
+                    model.removeNode(nodes[key].getID())
+                    this.forceUpdate()
                 }
             }
-        })
+        }
+    }
 
-        $('#Editor, #sidebar').mousedown(this.onDiagramUnfocus)
+    componentDidMount() {
+        // If not preview mode
+        if(!this.preview){
+            this.loadUserModules()
+            document.addEventListener('keydown', this.hotKeys);
+        }
+    }
 
-        // If in preview mode
-        if(this.preview){
-            $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 
-                '#editor-section', 
-                function(e){
-                e.preventDefault()
-                return false;
-            });
-        }else{
-            this.loadUserModules();
-            $(document).keydown(function(event) {
-                // If Control or Command key is pressed and the S key is pressed
-                // run save function. 83 is the key code for S.
-                if ((event.ctrlKey || event.metaKey) && event.which === 83) {
-                    event.preventDefault();
-                    // Save Function
-                    if (!this.state.saved) {
-                        this.onSave();
-                    }
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.hotKeys);
+    }
 
-                    return false;
-                }
-            }.bind(this));
+    hotKeys(event){
+        // CTRL/CMD + S to save
+        if ((event.ctrlKey || event.metaKey) && event.which === 83) {
+            event.preventDefault();
+            // Save Function
+            if (!this.state.saved) {
+                this.onSave();
+            }
+
+            return false;
         }
     }
 
@@ -532,36 +528,6 @@ class Canvas extends Component {
             });
             if(typeof cb === "function") cb(null);
         }
-    }
-
-    loadLines() {
-        let engine = this.state.engine;
-        let model = engine.getDiagramModel();
-        let id = model.getID();
-        $.ajax({
-            url: '/analytics/story/' + id + '/lines',
-            type: 'GET',
-            success: (data) => {
-                var nodes = model.getNodes();
-                for (let key in nodes) {
-                    if(data[key]){
-                        nodes[key].extras.reads = data[key];
-                    }else{ 
-                        nodes[key].extras.reads = 0;
-                    }
-                }
-                engine.setDiagramModel(model);
-                this.setState({
-                    engine: engine
-                });
-            },
-            error: (e) => {
-                console.log(e);
-                this.setState({
-                    error: "Unable to load Line data"
-                });
-            }
-        });
     }
 
     loadDiagram(diagram_id, diagram) {
@@ -692,22 +658,19 @@ class Canvas extends Component {
     }
 
     onLoadId(diagram_id) {
-        $.ajax({
-            url: '/diagram/'+ diagram_id,
-            type: 'GET',
-            success: diagram => {
-                this.loadDiagram(diagram_id, diagram);
-
-                if(!this.preview){
-                    localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
-                }
-
-                if(this.buildDiagrams !== null){
-                    this.buildDiagrams(diagram_id)
-                }
-            },
-            error: () => {this.setState({ error: 'Could Not Retrieve Project' })}
-        });
+        axios.get('/diagram/'+ diagram_id)
+        .then(res => {
+            this.loadDiagram(diagram_id, res.data)
+            if(!this.preview){
+                localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
+            }
+            if(this.buildDiagrams !== null){
+                this.buildDiagrams(diagram_id)
+            }
+        })
+        .catch(err => {
+            this.setState({ error: 'Could Not Retrieve Project' })
+        })
     }
 
     onFlowRenamed(id) {
@@ -1120,7 +1083,7 @@ class Canvas extends Component {
 
     render() {
         return (
-            <div className='App' >
+            <div className='App'>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <HelpModal
                     open={this.state.helpOpen}
@@ -1158,6 +1121,7 @@ class Canvas extends Component {
                     /> 
                 : null}
                 <Menu 
+                    onClick={this.onDiagramUnfocus}
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     current={this.diagram_id}
@@ -1189,7 +1153,6 @@ class Canvas extends Component {
                     saving={this.state.saving}
                     saved={this.state.saved}
                     admin={this.state.admin}
-                    onLoadLines={this.loadLines}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
                     diagram_id={this.diagram_id}
@@ -1205,6 +1168,7 @@ class Canvas extends Component {
                     className={this.preview ? " no-padding" : ""}
                     onDrop={this.onDrop}
                     onDragOver={e => e.preventDefault()}
+                    onClick={this.clickDiagram}
                 >
                     <div id="widget-bar">
                         <ButtonGroup>
@@ -1218,6 +1182,7 @@ class Canvas extends Component {
                     />
                 </div>
                 <Editor
+                    onClick={this.onDiagramUnfocus}
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}

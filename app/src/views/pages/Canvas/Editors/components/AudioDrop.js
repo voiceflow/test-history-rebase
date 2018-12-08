@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import $ from 'jquery'
 import Dropzone from 'react-dropzone'
 import {Input} from 'reactstrap'
+import axios from 'axios'
 
 class AudioDrop extends Component {
 
@@ -22,7 +22,7 @@ class AudioDrop extends Component {
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value
-        });
+        })
     }
 
     onDrop(files) {
@@ -30,21 +30,15 @@ class AudioDrop extends Component {
         if (files.length > 0) {
             let data = new FormData()
             data.append('audio', files[0])
-            $.ajax({
-                url: this.props.stream ? '/raw_audio' : '/audio',
-                type: 'POST',
-                data: data,
-                processData: false,
-                contentType: false,
-                success: res => {
-                    this.setState({loading: false})
-                    this.props.update(res)
-                },
-                error: () => {
-                    this.setState({loading: false})
-                    window.alert('Error22')
-                }
-            });
+            axios.post(this.props.stream ? '/raw_audio' : '/audio', data)
+            .then(res => {
+                this.setState({loading: false})
+                this.props.update(res.data)
+            })
+            .catch(err => {
+                this.setState({loading: false})
+                window.alert('Error22')
+            })
         }
     }
 

@@ -384,7 +384,7 @@ class Menu extends PureComponent {
         } 
 
         return (
-            <div className="Menu">
+            <div className="Menu" onClick={this.props.onClick}>
                 <div className='toolbar'>
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {

@@ -45,7 +45,7 @@ class NavBar extends Component {
   }
 
   componentDidMount() {
-    if(this.state.user.admin === 10){
+    if(this.state.user.admin > 0){
       let tabs = this.state.tabs;
       tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>});
       // tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
@@ -85,7 +85,8 @@ class NavBar extends Component {
     let intercom_user = this.state.user ? {
       user_id: this.state.user.id,
       name: this.state.user.name,
-      email: this.state.user.email
+      email: this.state.user.email,
+      plan: this.state.user.admin
     } : null;
     let page_name = '/' + getPage(this.props.location.pathname);
 
@@ -124,7 +125,7 @@ class NavBar extends Component {
                   <DropdownToggle className="account" nav tag="div">
                     <i className="fas fa-user-circle"/>
                   </DropdownToggle>
-                  <DropdownMenu right className="arrow no-select">
+                  <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>
                       {this.state.user.email}
                     </DropdownItem>

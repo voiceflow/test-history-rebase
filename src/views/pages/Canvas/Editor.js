@@ -22,7 +22,13 @@ import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import {Tooltip} from 'react-tippy';
-import {Button} from 'reactstrap';
+import {
+    Button,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from 'reactstrap';
 
 class Editor extends Component {
     constructor(props) {
@@ -234,7 +240,18 @@ class Editor extends Component {
     render() {
 
         const type = this.state.node ? this.state.node.extras.type : null;
-
+        // <Tooltip
+        //     position="bottom"
+        //     interactive={true}
+        //     offset={-30}
+        //     arrow
+        //     hideOnClick={false}
+        //     html={<React.Fragment>
+        //         Delete Block
+        //         <br/>
+        //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
+        //     </React.Fragment>}
+        // >
         return (
             <div id="Editor" className={(this.props.open && type ? 'open':'')}>
                 {type ?
@@ -246,22 +263,16 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
-                                    <Tooltip
-                                        position="bottom"
-                                        interactive={true}
-                                        offset={-30}
-                                        arrow
-                                        hideOnClick={false}
-                                        html={<React.Fragment>
-                                            Delete Block
-                                            <br/>
-                                            <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
-                                        </React.Fragment>}
-                                    >
-                                        <div className="delete-block">
-                                            <i className="fas fa-trash"/>
-                                        </div>
-                                    </Tooltip>
+                                    <UncontrolledDropdown nav inNavbar className="account-dropdown">
+                                        <DropdownToggle className="delete-block" nav tag="div">
+                                            <i className="fas fa-cog"/>
+                                        </DropdownToggle>
+                                        <DropdownMenu right className="arrow arrow-right no-select">
+                                            <DropdownItem onClick={this.props.removeNode}>
+                                                Delete
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
                                 </div>
                             </div>
                         </div>

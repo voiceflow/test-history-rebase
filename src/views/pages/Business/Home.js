@@ -25,7 +25,7 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className="super-center w-100 h-100">
-                    <img src="/business.svg" height={400}/>
+                    <img src="/business.svg" height={400} alt="placeholder"/>
                 </div>
             </div>
         )

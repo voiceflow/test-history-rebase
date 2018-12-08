@@ -3,6 +3,8 @@ import Dropzone from 'react-dropzone'
 import {Input} from 'reactstrap'
 import axios from 'axios'
 
+const MAX_SIZE = 10*1024*1024
+
 class AudioDrop extends Component {
 
 	constructor(props) {
@@ -10,6 +12,7 @@ class AudioDrop extends Component {
 
         this.state = {
             loading: false,
+            error: null,
             url_open: false,
             url: ''
         }
@@ -25,19 +28,35 @@ class AudioDrop extends Component {
         })
     }
 
-    onDrop(files) {
-        this.setState({loading: true})
-        if (files.length > 0) {
-            let data = new FormData()
-            data.append('audio', files[0])
-            axios.post(this.props.stream ? '/raw_audio' : '/audio', data)
-            .then(res => {
-                this.setState({loading: false})
-                this.props.update(res.data)
-            })
-            .catch(err => {
-                this.setState({loading: false})
-                window.alert('Error22')
+    onDrop(files, rejected) {
+        if(files.length === 1){
+            this.setState({loading: true})
+            if (files.length > 0) {
+                let data = new FormData()
+                data.append('audio', files[0])
+                axios.post(this.props.stream ? '/raw_audio' : '/audio', data)
+                .then(res => {
+                    this.setState({loading: false})
+                    this.props.update(res.data)
+                })
+                .catch(err => {
+                    this.setState({loading: false})
+                    window.alert('Error22')
+                })
+            }
+        }else if(Array.isArray(rejected) && rejected.length === 1 && rejected[0].size > MAX_SIZE){
+            this.setState({
+                error: <div>
+                    <b>File is too large (10MB max)</b>
+                    <br/>
+                    consider hosting on
+                    <div className="seperated-links my-2">
+                        <a href="https://www.google.com/drive/" target='_blank' rel="noopener noreferrer"><i className="fab fa-google"/> Drive</a>| 
+                        <a href="https://www.digitalocean.com/products/spaces/" target='_blank' rel="noopener noreferrer"><i className="fab fa-digital-ocean"/> Spaces</a>|
+                        <a href="https://aws.amazon.com/s3/" target='_blank' rel="noopener noreferrer"><i className="fab fa-aws"/> S3</a>|
+                        <a href="https://www.dropbox.com" target='_blank' rel="noopener noreferrer"><i className="fab fa-dropbox"/> Dropbox</a>
+                    </div>
+                </div>
             })
         }
     }
@@ -47,16 +66,23 @@ class AudioDrop extends Component {
     }
 
 	render() {
-        let render;
-
         if(this.state.loading){
-            render = <div className="audio-box">
+            return <div className="audio-box">
                 <div className="h-100 super-center">
                     <h1 className="mb-0"><span className="loader"/></h1>
                 </div>
             </div>
+        } else if(!!this.state.error){
+            return <div className="dropzone reject enter-url">
+                <div className="text-center text-danger">
+                    {this.state.error}
+                    <button onClick={()=>this.setState({error: false})} className="upload-btn btn btn-primary-small exit">
+                        <i className="far fa-chevron-left"/>Back
+                    </button>
+                </div>
+            </div>
         } else if(this.props.audio){
-            render = <div className="audio-box">
+            return <div className="audio-box">
                 <button className="btn btn-danger" onClick={this.onClear}>&times;</button>
                 <div>{this.props.audio.split('/').pop().split('-').pop()}</div>
                 <audio key={this.props.audio.split('/').pop()} controls>
@@ -64,7 +90,7 @@ class AudioDrop extends Component {
                 </audio>
             </div>
         }else if(this.state.url_open){
-            render = <div className="dropzone enter-url">
+            return <div className="dropzone enter-url">
                 <div className="text-center w-100">
                     <b className="text-muted">Enter Audio URL</b>
                     <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
@@ -73,17 +99,18 @@ class AudioDrop extends Component {
                 </div>
             </div>
         }else{
-            render = <Dropzone
+            return <Dropzone
                 className="dropzone"
                 activeClassName="active"
                 rejectClassName="reject"
                 multiple={false}
                 disableClick={false}
+                maxSize={MAX_SIZE}
                 accept={(this.props.stream ? ".m3u,.m3u8," : "") + "audio/*"}
-                onDrop={(accepted, rejected) => this.onDrop(accepted)}
+                onDrop={this.onDrop}
             >
                 <div>
-                    <div className="text-muted text-center">
+                    <div className="drop-child">
                         <b>Drag and Drop files here</b><br/>
                         <small>OR</small><br/>
                         <div className="space-between">
@@ -104,8 +131,6 @@ class AudioDrop extends Component {
                 </div>
             </Dropzone>
         }
-
-        return render;
 	}
 }
 

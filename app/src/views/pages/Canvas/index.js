@@ -20,6 +20,7 @@ import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
 import { ButtonGroup } from 'reactstrap';
+import cloneDeep from 'lodash/cloneDeep'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
@@ -44,34 +45,35 @@ class Canvas extends Component {
     constructor(props) {
         super(props);
 
-        this.loadLines = this.loadLines.bind(this);
-        this.repaint = this.repaint.bind(this);
-        this.loadDiagram = this.loadDiagram.bind(this);
-        this.setVariables = this.setVariables.bind(this);
-        this.setGlobalVariables = this.setGlobalVariables.bind(this);
-        this.toggleTestModal = this.toggleTestModal.bind(this);
-        this.createSkill = this.createSkill.bind(this);
-        this.publishAMZN = this.publishAMZN.bind(this);
-        this.publishMarket = this.publishMarket.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.onTest = this.onTest.bind(this);
-        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
-        this.unsave = this.unsave.bind(this);
-        this.onDrop = this.onDrop.bind(this);
-        this.runTest = this.runTest.bind(this);
-        this.createDiagram = this.createDiagram.bind(this);
-        this.enterFlow = this.enterFlow.bind(this);
-        this.removeNode = this.removeNode.bind(this);
-        this.zoom = this.zoom.bind(this);
-        this.buildDiagrams = null;
-        this.loadUserModules = this.loadUserModules.bind(this);
-        this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
-        this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
-        this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
-        this.createWithTemplate = this.createWithTemplate.bind(this);
-        this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this);
-        this.onFlowRenamed = this.onFlowRenamed.bind(this);
-
+        this.loadLines = this.loadLines.bind(this)
+        this.repaint = this.repaint.bind(this)
+        this.loadDiagram = this.loadDiagram.bind(this)
+        this.setVariables = this.setVariables.bind(this)
+        this.setGlobalVariables = this.setGlobalVariables.bind(this)
+        this.toggleTestModal = this.toggleTestModal.bind(this)
+        this.createSkill = this.createSkill.bind(this)
+        this.publishAMZN = this.publishAMZN.bind(this)
+        this.publishMarket = this.publishMarket.bind(this)
+        this.onSave = this.onSave.bind(this)
+        this.onTest = this.onTest.bind(this)
+        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this)
+        this.unsave = this.unsave.bind(this)
+        this.onDrop = this.onDrop.bind(this)
+        this.runTest = this.runTest.bind(this)
+        this.createDiagram = this.createDiagram.bind(this)
+        this.enterFlow = this.enterFlow.bind(this)
+        this.removeNode = this.removeNode.bind(this)
+        this.copyNode = this.copyNode.bind(this)
+        this.zoom = this.zoom.bind(this)
+        this.loadUserModules = this.loadUserModules.bind(this)
+        this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
+        this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
+        this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
+        this.createWithTemplate = this.createWithTemplate.bind(this)
+        this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
+        this.onFlowRenamed = this.onFlowRenamed.bind(this)
+        // build diagram tree function from child
+        this.buildDiagrams = null
         // preview mode
         this.preview = !!this.props.preview;
 
@@ -332,44 +334,75 @@ class Canvas extends Component {
     }
 
     removeNode(){
-        let selected = this.state.engine.getSuperSelect();
-        this.state.engine.stopMove();
+        let selected = this.state.engine.getSuperSelect()
+        this.state.engine.stopMove()
         if(selected){
-            selected.remove();
+            selected.remove()
         }
+    }
+
+    // copy individual node
+    copyNode() {
+        let selected = this.state.engine.getSuperSelect()
+        let engine = this.state.engine
+        engine.stopMove()
+
+        var node = new BlockNodeModel(selected.name + ' copy')
+        node.extras = cloneDeep(selected.extras)
+
+        let ports = selected.getPorts()
+
+        for (var name in ports) {
+            let port = ports[name]
+            port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+        }
+
+        node.x = selected.x + 30
+        node.y = selected.y + 30
+
+        engine.getDiagramModel().clearSelection();
+
+        node.setSelected()
+        engine.setSuperSelect(node)
+        engine.getDiagramModel().addNode(node)
+
+        this.setState({
+            engine: engine
+        })
+        
     }
 
     componentDidMount() {
         $('#diagram').click((e) => {
-            let engine = this.state.engine;
-            let selected = engine.getDiagramModel().getSelectedItems("node");
+            let engine = this.state.engine
+            let selected = engine.getDiagramModel().getSelectedItems("node")
 
             if (selected.length === 1 && selected[0].extras.type !== 'comment') {
-                engine.setSuperSelect(selected[0]);
+                engine.setSuperSelect(selected[0])
                 this.setState({
                     engine: engine,
                     open: true
-                });
+                })
             } else if (selected.length === 0) {
-                let model = engine.getDiagramModel();
-                let nodes = model.getNodes();
+                let model = engine.getDiagramModel()
+                let nodes = model.getNodes()
                 for (let key in nodes) {
                     if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
-                        model.removeNode(nodes[key].getID());
-                        this.forceUpdate();
+                        model.removeNode(nodes[key].getID())
+                        this.forceUpdate()
                     }
                 }
             }
-        });
+        })
 
-        $('#Editor, #sidebar').mousedown(this.onDiagramUnfocus);
+        $('#Editor, #sidebar').mousedown(this.onDiagramUnfocus)
 
         // If in preview mode
         if(this.preview){
             $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 
                 '#editor-section', 
                 function(e){
-                e.preventDefault();
+                e.preventDefault()
                 return false;
             });
         }else{
@@ -644,7 +677,7 @@ class Canvas extends Component {
                     if(!global_variables.includes(v)){
                         global_variables.push(v);
                     }
-                });
+                })
             }
 
             this.setState({
@@ -897,7 +930,7 @@ class Canvas extends Component {
             return;
         }
 
-        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
+        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
 
         if(type){
             if (type === 'choice') {
@@ -1069,7 +1102,7 @@ class Canvas extends Component {
                     });
                 }
             }
-            this.state.engine.stopMove();
+            engine.stopMove();
             node.extras.type = type;
             var points = engine.getRelativeMousePoint(event);
             node.x = points.x-(node.name.length*4.5 + 40);
@@ -1198,6 +1231,7 @@ class Canvas extends Component {
                     enterFlow={this.enterFlow}
                     removeNode={this.removeNode}
                     user_modules={this.state.user_modules}
+                    copyNode={this.copyNode}
                 />
             </div>
         );

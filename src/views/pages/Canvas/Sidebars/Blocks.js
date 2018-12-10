@@ -7,29 +7,29 @@ import cloneDeep from 'lodash/cloneDeep';
 const SECTIONS = [{
     title: 'Basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
+        { text: 'Speak', type: 'speak', icon: <i class="fas fa-comment"></i>, tip: 'Tell Alexa to play sounds or talk to the user' },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
-        { text: 'Command', type: 'command', icon: '⌘', tip: 'Add shortcuts for your users to navigate your skill quickly'},
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
+        { text: 'Command', type: 'command', icon: <i class="fas fa-exclamation"></i>, tip: 'Add shortcuts for your users to navigate your skill quickly'},
+        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
     ]
 },{
     title: 'Advanced',
     items: [
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-music"/>, tip: 'Stream long audio files & URLs for the user' },
-        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
+        { text: 'Stream', type: 'stream', icon: <i class="fas fa-play"></i>, tip: 'Stream long audio files & URLs for the user' },
         { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once'  },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable'  },
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
-        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
    ]
 },{
     title: 'Functional',
     items: [
+        { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'},
     ]
-}];
+}]
 
 const TABS = ['blocks', 'modules']
 
@@ -75,7 +75,12 @@ class Blocks extends PureComponent {
 
         // premium blocks
         if(window.user_detail.admin > 0){
-            sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
+            sections.push({
+                title: 'Business',
+                items: [
+                    { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' },        
+                ]
+            })
         }
         
         this.setState({

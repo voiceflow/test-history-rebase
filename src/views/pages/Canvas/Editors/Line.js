@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import MultiLineInput from './components/MultiLineInput';
-import $ from 'jquery';
-import { Collapse } from 'reactstrap';
+import React, { Component } from 'react'
+import MultiLineInput from './components/MultiLineInput'
+import axios from 'axios'
+import { Collapse } from 'reactstrap'
 
 class Line extends Component {
     constructor(props) {
@@ -70,32 +70,25 @@ class Line extends Component {
 
         this.setState({loading: true});
 
-
-        $.ajax({
-            url: '/concat',
-            type: 'POST',
-            data: {
-                lines: lines
-            },
-            success: res => {
-                let node = this.state.node;
-                if(this.state.node.extras.lines.length > 1){
-                    node.extras.audio = res;
-                    this.setState({
-                        node: node,
-                        loading: false
-                    });
-                }else{
-                    this.setState({
-                        loading: false
-                    });
-                }
-            },
-            error: () => {
-                this.setState({loading: false});
-                window.alert('Concat Error');
+        axios.post('/concat', {lines: lines})
+        .then(res => {
+            let node = this.state.node;
+            if(this.state.node.extras.lines.length > 1){
+                node.extras.audio = res.data
+                this.setState({
+                    node: node,
+                    loading: false
+                })
+            }else{
+                this.setState({
+                    loading: false
+                })
             }
-        });
+        })
+        .catch(err => {
+            this.setState({loading: false});
+            window.alert('Concat Error');
+        })
     }
 
     render() {

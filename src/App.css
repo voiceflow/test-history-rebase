@@ -8,6 +8,9 @@ body {
     color: #2b3950;
     width: 100%;
 }
+.modal {
+    overflow: scroll !important;
+}
 button:focus{
     outline: none;
 }
@@ -17,6 +20,30 @@ button:focus{
 audio {
     width: 275px;
 }
+@media (min-width: 576px){
+    .modal-xl {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px){
+    .modal-xl {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px){
+    .modal-xl {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px){
+    .modal-xl {
+        max-width: 1140px;
+    }
+}
+.small {
+    font-size: 80%;
+}
+
 .btn-primary{
     border: 1px solid #2295FA !important;
     color: #fff;
@@ -212,11 +239,11 @@ audio {
 .btn-default.exit{
     margin-right: 4px;
 }
-.btn-default.exit i{
+.btn.exit i{
     transition: all 0.2s ease !important;
     margin-right: 4px;
 }
-.btn-default.exit:hover i{
+.btn.exit:hover i{
     transform: translateX(-2px)
 }
 .normal-btn{
@@ -471,8 +498,9 @@ input, .text-to-voice, .solid-border{
     border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
-input::placeholder, textarea::placeholder, input.form-control::placeholder, input.form-bg::placeholder, textarea.form-control::placeholder,{
-    color: #8da2b5 !important;
+input::placeholder, textarea::placeholder, input.form-control::placeholder, input.form-bg::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder {
+    font-weight: lighter !important;
+    color: #8da2b5;
 }
 .TitleBar .publish-btn:hover{
     color: #3d96f0 !important;
@@ -528,6 +556,10 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, inpu
     cursor: pointer;
     background-color: #fff;
     transition: all 0.2s ease !important;
+}
+.dropzone .drop-child{
+    text-align: center;
+    color: #8da2b5 !important;
 }
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;
@@ -608,14 +640,14 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, inpu
 
 .dropzone.reject {
     border-color: #dc3545!important;
-    background-color: #FBE9E7;
+    background-color: #FBE9E7 !important;
 }
 
 .dropzone .rejected-file {
     display: none;
 }
 
-.dropzone.reject .prompt{
+.dropzone.reject .drop-child{
     display: none;
 }
 
@@ -853,6 +885,11 @@ body.modal-open {
     padding: 10px 0;
 }
 
+.seperated-links a {
+    display: inline-block;
+    margin: 0 10px;
+}
+
 @-webkit-keyframes spin {
   to {
     -webkit-transform: rotate(360deg);
@@ -867,6 +904,10 @@ body.modal-open {
   }
 }
 
+.append {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 @media(max-width: 1550px){
     #publish-status {

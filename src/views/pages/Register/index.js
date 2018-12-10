@@ -1,28 +1,29 @@
-import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import AuthenticationService from './../../../services/Authentication';
-import './Account.css';
+import React, { Component } from 'react'
+import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
+import AuthenticationService from './../../../services/Authentication'
+import './Account.css'
 import {Link} from 'react-router-dom'
-import axios from 'axios';
+import queryString from 'query-string'
+// import axios from 'axios'
 
 class Account extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
+
+    let query = queryString.parse(this.props.location.search)
 
     this.state = {
-      login: (this.props.location.pathname.startsWith('/login')),
       email: "",
       password: "",
       r_name: "",
-      r_email: "",
+      r_email: query.email ? query.email : "",
       r_password: "",
-      r_code: "",
       login_error: null,
       signup_error: null,
       login_timeout: null,
       signup_timeout: null
-    };
+    }
 
     this.openLogin = this.openLogin.bind(this);
     this.openRegister = this.openRegister.bind(this);
@@ -68,13 +69,13 @@ class Account extends Component {
           signup_error: error.response.data
         });
         if(this.state.signup_timeout){
-          clearTimeout(this.state.signup_timeout);
+          clearTimeout(this.state.signup_timeout)
         }
         this.setState({signup_timeout: setTimeout(function() {
-          this.setState({signup_error: false});
+          this.setState({signup_error: false})
         }.bind(this), 5000)})
       }else{
-        this.props.history.push('/onboarding');
+        this.props.history.push('/onboarding')
       }
     });
     return false;
@@ -97,17 +98,18 @@ class Account extends Component {
           this.setState({login_error: false});
         }.bind(this), 5000)})
       }else{
-        axios.get('/onboard')
-        .then(res => {
-          if(res.data){
-            this.props.history.push('/');
-          } else {
-            this.props.history.push('/onboarding');
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        this.props.history.push('/')
+        // axios.get('/onboard')
+        // .then(res => {
+        //   if(res.data){
+        //     this.props.history.push('/');
+        //   } else {
+        //     this.props.history.push('/onboarding');
+        //   }
+        // })
+        // .catch(err => {
+        //   console.log(err);
+        // });
       }
     });
     return false;
@@ -123,9 +125,8 @@ class Account extends Component {
       signup_error = (<Alert color="danger"> {this.state.signup_error} </Alert>);
     }
     return (
-                      
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div className={"login-card " + (this.state.login ? null : "open-register")}>
+        <div className={"login-card " + (this.props.login ? null : "open-register")}>
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <img className="login-logo" src="/logo.svg" alt="logo"/>
@@ -133,11 +134,11 @@ class Account extends Component {
                   {login_error}
                   <FormGroup>
                     <Label for="email">Email</Label>
-                    <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6"/>
+                    <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6" value={this.state.email}/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
-                    <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
+                    <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Sign In</Button>
                   <div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>
@@ -151,15 +152,15 @@ class Account extends Component {
                   {signup_error}
                   <FormGroup>
                     <Label for="name">Name</Label>
-                    <Input className="form-bg" type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3"/>
+                    <Input className="form-bg" type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3" value={this.state.r_name}/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="email">Email</Label>
-                    <Input className="form-bg" type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6"/>
+                    <Input className="form-bg" type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6" value={this.state.r_email}/>
                   </FormGroup>
                   <FormGroup>
                     <Label for="password">Password</Label>
-                    <Input className="form-bg" type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
+                    <Input className="form-bg" type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.r_password}/>
                   </FormGroup>
                   <Button block className="login-btn" type="submit">Create Account</Button>
                   <hr/>

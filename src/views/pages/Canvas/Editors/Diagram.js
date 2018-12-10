@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button} from 'reactstrap';
+import {Button, Alert} from 'reactstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import DiagramVariables from './components/DiagramVariables';
@@ -13,7 +13,8 @@ class DiagramBlock extends Component {
         // props.variables is for variables of the current diagram
         this.state = {
             node: this.props.node,
-            variables: []
+            variables: [],
+            broken: false
         };
 
         this.onUpdate = this.onUpdate.bind(this);
@@ -23,7 +24,7 @@ class DiagramBlock extends Component {
     }
 
     componentWillMount() {
-        this.getDiagramVariables();
+        this.getDiagramVariables()
     }
 
     getDiagramVariables(){
@@ -42,6 +43,9 @@ class DiagramBlock extends Component {
                 })
                 .catch(err => {
                     console.error(err);
+                    this.setState({
+                        broken: true
+                    })
                 });
             }
         }
@@ -105,6 +109,13 @@ class DiagramBlock extends Component {
         // if(this.state.node.extras.diagram_id){
         //     block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
         // }
+        if(this.state.broken){
+            return <Alert color="danger" className="text-center">
+                <i className="fas fa-exclamation-triangle fa-2x mb-2"/><br/>
+                Unable to Retrieve Flow - This Flow may be broken or deleted<br/><br/>
+                If deleted, delete this block
+            </Alert>
+        }
 
         return (
             <div>

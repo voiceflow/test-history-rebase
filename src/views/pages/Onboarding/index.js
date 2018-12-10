@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Input } from 'reactstrap';
+import React, { Component } from 'react'
+import { Input } from 'reactstrap'
 import "./onboarding.css"
-import axios from 'axios';
-import company_sizes from './../../../services/CompanySize';
-import industries from './../../../services/Industries';
-import Select from 'react-select';
+import axios from 'axios'
+import company_sizes from './../../../services/CompanySize'
+import industries from './../../../services/Industries'
+import Select from 'react-select'
 
 class Onboarding extends Component{
 	constructor(props){
@@ -27,15 +27,15 @@ class Onboarding extends Component{
 	}
 
 	componentDidMount(){
-		axios.get('/onboard')
-		.then(res => {
-			if(res.data){
-				this.props.history.push('/');
-			}
-		})
-		.catch(err => {
-			console.log(err);
-		});
+		// axios.get('/onboard')
+		// .then(res => {
+		// 	if(res.data){
+		// 		this.props.history.push('/');
+		// 	}
+		// })
+		// .catch(err => {
+		// 	console.log(err);
+		// });
 	}
 
 	handleChange(event){
@@ -113,7 +113,7 @@ class Onboarding extends Component{
 		      	<p className="modal-txt text-center mb-4">Help us tailor your experience. What do you plan on using Voiceflow for?</p>
 		      	<div className="row justify-content-center">
 		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "WORK"})}}>Work</button> 
-		      		<button className="btn-info mr-3" onClick={this.submitOnboardingSurvey}>Personal</button> 
+		      		<button className="btn-info mr-3" onClick={() => this.props.history.push('/')}>Personal</button> 
 		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "EDUCATION"})}}>Education</button> 
 		      	</div>
 			</React.Fragment>

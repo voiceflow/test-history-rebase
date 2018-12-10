@@ -751,6 +751,7 @@
     border: 1px solid #b8daff !important;
     color: #42A5FF !important;
     width: 100px;
+    text-transform: capitalize;
 }
 .toggle-group .btn.btn-outline-secondary{
     height: 30px;
@@ -758,6 +759,7 @@
     color: #8da2b5 !important;
     line-height: 15px;
     width: 100px;
+    text-transform: capitalize;
 }
 .toggle-group .btn.btn-outline-secondary:hover{
     height: 30px;

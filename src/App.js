@@ -3,6 +3,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
+import {StripeProvider} from 'react-stripe-elements'
 
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
@@ -26,6 +27,14 @@ import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
+// SECRET
+var STRIPE_KEY
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
+}else{
+  STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
+}
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (
@@ -47,7 +56,7 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
         state: { from: props.location }
       }}/>
     ) : (
-      <Component {...props} name={Name} />
+      <Component {...props} {...rest} name={Name} />
     )
   )}/>
 )
@@ -66,7 +75,8 @@ class App extends Component {
 
     this.state = {
       loading: AuthenticationService.isAuth(),
-      session: false
+      session: false,
+      stripe: null
     }
 
     if(AuthenticationService.isAuth()){
@@ -96,24 +106,38 @@ class App extends Component {
     });
   }
 
+  componentDidMount() {
+    if (window.Stripe) {
+      this.setState({stripe: window.Stripe(STRIPE_KEY)});
+    } else {
+      document.querySelector('#stripe-js').addEventListener('load', () => {
+        // Create Stripe instance once Stripe.js loads
+        this.setState({stripe: window.Stripe(STRIPE_KEY)});
+      });
+    }
+  }
+
   render() {
+    if(this.state.loading){
+      return <div className='super-center h-100 w-100'>
+          <div className="text-center">
+              <h5 className="pb-3">Loading</h5>
+              <h1><span className="loader"/></h1>
+          </div>
+      </div>
+    }
+
     return (
-      this.state.loading ? 
-        <div className='super-center h-100 w-100'>
-            <div className="text-center">
-                <h5 className="pb-3">Loading</h5>
-                <h1><span className="loader"/></h1>
-            </div>
-        </div> :
+      <StripeProvider stripe={this.state.stripe}>
         <Router history={history}>
           <div id="body">
-            { this.state.session  && history.location.pathname !== '/onboarding' ? <Route render={(props) => {
+            { (this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
                   return <NavBar {...props}/>
-            }} /> : null }
+            }} /> }
               <Switch>
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
-                <PublicRoute exact path="/login" name="Login" component={Register} />
+                <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
                 <PrivateRoute exact path="/canvas/new" name="Canvas" new component={Canvas}/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Canvas" preview component={Canvas}/>
@@ -140,6 +164,7 @@ class App extends Component {
               </Switch>
           </div>
         </Router>
+      </StripeProvider>
     );
   }
 }

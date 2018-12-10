@@ -29,9 +29,6 @@ class FlowButton extends Component {
 
             axios.post(`/diagram/${this.props.flow.id}/name`, {name: this.state.name})
             .then(() => {
-                if(this.props.updateTree){
-                    this.props.updateTree()
-                }
                 this.props.onFlowRenamed(this.props.flow.id)
             })
             .catch(err => {

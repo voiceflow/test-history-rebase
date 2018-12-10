@@ -32,12 +32,7 @@ class DashBoard extends Component {
     }
 
     componentDidMount() {
-        window.analytics.page();
         this.onLoadSkills();
-    }
-
-    componentDidUpdate() {
-        window.analytics.identify('userID','username');
     }
 
     toggleDropDown() {
@@ -58,9 +53,6 @@ class DashBoard extends Component {
             this.setState({
                 skills: res.data,
                 loading: false
-            });
-            window.analytics.track('skills loaded', {
-                "userId": window.user_detail
             });
         })
         .catch( error => {
@@ -172,7 +164,7 @@ class DashBoard extends Component {
                         </span>
                         <div className="subheader-right">
                             <Link to="/canvas/new" className="no-underline">
-                                <button varient="contained" className="purple-btn" onClick={() => {window.analytics.track('New Project Button clicked', {"user": window.user_detail})}}><i className="far fa-plus mr-2"/> New Project</button>
+                                <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
                             </Link>
                         </div>
                     </div>

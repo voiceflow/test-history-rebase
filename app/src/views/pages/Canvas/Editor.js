@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
-import Ending from './Editors/Ending';
-import Retry from './Editors/Retry';
-import Listen from './Editors/Listen';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
 import Variable from './Editors/Variable';
@@ -21,31 +18,31 @@ import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
-import {Tooltip} from 'react-tippy';
-import {Button} from 'reactstrap';
+import {
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from 'reactstrap';
 
 class Editor extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             node: this.props.node,
             voices: [],
             templates: [],
-            permission_options: []
-        };
+            permission_options: [],
+            dropdownOpen: false
+        }
 
-        this.BlockViewer = this.BlockViewer.bind(this);
-        this.renderTitle = this.renderTitle.bind(this);
+        this.BlockViewer = this.BlockViewer.bind(this)
+        this.renderTitle = this.renderTitle.bind(this)
+        // this.copyFlow = this.copyFlow.bind(this)
     }
 
     componentDidMount() {
-        // $('*').keypress(function(e) {
-        //     if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
-        //         e.preventDefault();
-        //     }
-        // });
-
         axios.get('/voices')
         .then(res => {
             this.setState({
@@ -161,14 +158,8 @@ class Editor extends Component {
                 }else{
                     return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }
-            case 'listen':
-                return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':
-                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} />
-            case 'retry':
-                return <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
-            case 'ending':
-                return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
@@ -231,12 +222,38 @@ class Editor extends Component {
         }
     }
 
+    // copyFlow(){
+    //     if(this.state.node.extras.diagram_id){
+    //         console.log("Copy this flow")
+    //         console.log(this.state.node)
+    //         axios.get(`/diagram/copy/${this.state.node.extras.diagram_id}`)
+    //         .then(res => {
+    //             console.log(res.data)
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //             window.alert('Error copying flow')
+    //         })
+    //     }
+    // }
+
     render() {
 
         const type = this.state.node ? this.state.node.extras.type : null;
-
+        // <Tooltip
+        //     position="bottom"
+        //     interactive={true}
+        //     offset={-30}
+        //     arrow
+        //     hideOnClick={false}
+        //     html={<React.Fragment>
+        //         Delete Block
+        //         <br/>
+        //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
+        //     </React.Fragment>}
+        // >
         return (
-            <div id="Editor" className={(this.props.open && type ? 'open':'')}>
+            <div id="Editor" className={(this.props.open && type ? 'open':'')} onClick={this.props.onClick}>
                 {type ?
                     <form onSubmit={(e) => e.preventDefault()} className="controls" key={this.state.node.id}>
                         <div className="top">
@@ -246,22 +263,25 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
-                                    <Tooltip
-                                        position="bottom"
-                                        interactive={true}
-                                        offset={-30}
-                                        arrow
-                                        hideOnClick={false}
-                                        html={<React.Fragment>
-                                            Delete Block
-                                            <br/>
-                                            <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
-                                        </React.Fragment>}
-                                    >
-                                        <div className="delete-block">
-                                            <i className="fas fa-trash"/>
-                                        </div>
-                                    </Tooltip>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle className="delete-block" nav tag="div">
+                                            <i className="fas fa-cog"/>
+                                        </DropdownToggle>
+                                        <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-3px', marginTop: '5px'}}>
+                                            <DropdownItem header>
+                                                Block Options
+                                            </DropdownItem>
+                                            {/*this.state.node.extras.type === 'flow' && 
+                                                <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
+                                            }
+                                            <DropdownItem onClick={this.props.copyNode} className="pointer">
+                                                <i className="fas fa-copy text-muted"/> Copy
+                                            </DropdownItem>
+                                            <DropdownItem onClick={this.props.removeNode} className="pointer">
+                                                <i className="fas fa-file-times text-muted"/> Delete
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
                                 </div>
                             </div>
                         </div>

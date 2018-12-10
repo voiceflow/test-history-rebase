@@ -206,22 +206,22 @@ const manifest = (r, encoded_id) => {
 	})
 
 	// TODO: in the future we need a different one for each 
-	const privacyLocales = {}
-	let privacy_policy = "https://getvoiceflow.com";
-	let terms_of_use = "https://getvoiceflow.com";
-	if(r.privacy_policy){
-		privacy_policy = r.privacy_policy
-	}
-	if(r.terms_and_cond){
-		terms_of_use = r.terms_and_cond
-	}
+	
+	var privacyLocales = null
 
-	r.locales.forEach(locale => {
-		privacyLocales[locale] = {
-			"termsOfUseUrl": terms_of_use,
-			"privacyPolicyUrl": privacy_policy
-		}
-	})
+	if(r.privacy_policy || r.terms_and_cond){
+		privacyLocales = {}
+
+		r.locales.forEach(locale => {
+			privacyLocales[locale] = {}
+			if(r.terms_and_cond){
+				privacyLocales[locale].termsOfUseUrl = r.terms_and_cond
+			}
+			if(r.privacy_policy){
+				privacyLocales[locale].privacyPolicyUrl = r.privacy_policy
+			}
+		})
+	}
 
     let ret = {
      	"manifest": {
@@ -244,7 +244,6 @@ const manifest = (r, encoded_id) => {
              "manifestVersion": "1.0",
              "privacyAndCompliance": {
                  "allowsPurchases": r.purchase,
-                 "locales": privacyLocales,
                  "isExportCompliant": r.export,
                  "isChildDirected": r.copa,
                  "usesPersonalInfo": r.personal,
@@ -253,7 +252,10 @@ const manifest = (r, encoded_id) => {
          }
     }
     if(r.category){
-    	ret.manifest.publishingInformation.category = r.category;
+    	ret.manifest.publishingInformation.category = r.category
+    }
+    if(privacyLocales){
+    	ret.manifest.privacyAndCompliance.locales = privacyLocales
     }
     if(Array.isArray(r.permissions) && r.permissions.length !== 0){
     	ret.manifest.permissions = r.permissions;

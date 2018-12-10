@@ -8,9 +8,11 @@
     "build": "cd app && npm run build",
     "start": "PROD=1 node index.js",
     "server": "SECURE=1 MASTER=1 node index.js",
+    "unsecure": "node index.js",
+    "staging": "STAGING=1 node index.js",
     "client": "cd app && npm run start",
     "redis": "redis-server",
-    "update": "cd app && npm install",
+    "update": "npm install && cd app && npm install",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "repository": {
@@ -36,6 +38,7 @@
     "hashids": "^1.2.2",
     "helmet": "^3.14.0",
     "history": "^4.7.2",
+    "intercom-client": "^2.10.4",
     "is-var-name": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
     "multer": "^1.4.1",
@@ -49,6 +52,7 @@
     "s3-upload-stream": "^1.0.7",
     "sendgrid": "^5.2.3",
     "sharp": "^0.21.0",
+    "stripe": "^6.17.0",
     "uuid": "^3.3.2",
     "valid-url": "^1.0.9"
   },

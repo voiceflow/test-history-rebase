@@ -24,6 +24,7 @@ td {
     max-width: 100%;
     position: relative;
     overflow: hidden;
+    word-break: break-word;
 }
 .self-message {
     background-color: #ddf2ff;

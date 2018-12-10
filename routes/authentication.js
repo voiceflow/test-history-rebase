@@ -218,7 +218,12 @@ const putUser = async (req, res) => {
 	                        } else {
 								
 	                        	// console.log(insert_result);
-						    	createLogin({id: insert_result.rows[0].creator_id, email: email, name: name, admin: false }, async (credentials) => {
+						    	createLogin({
+						    		id: insert_result.rows[0].creator_id, 
+						    		email: email, 
+						    		name: name, 
+						    		admin: false 
+						    	}, async (credentials) => {
 	                            	res.status(200).send({
 	                            		token: credentials.userHash + credentials.token,
 										user: credentials.user

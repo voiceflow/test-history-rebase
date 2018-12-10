@@ -5,6 +5,14 @@ const {docClient, pool, hashids, validateEmail} = require('./../services');
 const validUrl = require('valid-url');
 const _ = require('lodash');
 
+const generateID = () => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0
+        const v = c === "x" ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+    })
+}
+
 const expressionfy = (expression, depth=0) => {
     if(depth > 8){
         // return a blank
@@ -12,11 +20,11 @@ const expressionfy = (expression, depth=0) => {
     }else if(expression.type == 'value'){
         let value = expression.value.toString();
         if(!expression.value){
-            return 0;
+            return 0
         }else if(isNaN(value)){
             return "'" + value.replace(/'/g, '\"') + "'";
         }else{
-            return (value * 1);
+            return (value * 1)
         }
     }else if(expression.type == 'variable'){
         if(isVarName(expression.value)){
@@ -146,22 +154,22 @@ const getDiagram = (req, res) => {
     };
     docClient.get(params, (err, data) => {
         if (err) {
-            console.log(err);
+            console.log(err)
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
-            let diagram = data.Item;
+            let diagram = data.Item
 
             if (diagram.preview === false) {
-                res.sendStatus(403);
+                res.sendStatus(403)
                 return;
             }
 
-            res.send(data.Item);
+            res.send(data.Item)
         } else {
-            res.sendStatus(404);
+            res.sendStatus(404)
         }
-    });
-};
+    })
+}
 
 const updateName = async (req, res) => {
     if(!req.body || !req.body.name){
@@ -228,7 +236,7 @@ const setDiagram = async (req, res) => {
         } else {
             try{
                 if(req.query.new){
-                    if (diagram.title !== "ROOT" ){
+                    if (!diagram.title){
                         diagram.title = "New Flow";
                     }
                     // If it is a new diagram insert (assume it has no blocks)
@@ -245,33 +253,131 @@ const setDiagram = async (req, res) => {
                 res.sendStatus(500);
             }
         }
-    });
+    })
 };
 
 const deleteDiagram = (req, res) => {
+
+    pool.query(`
+            DELETE FROM diagrams d USING skills s
+            WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
+        `, 
+        [req.params.id, req.user.id], (err, response) => {
+            if(err){
+                console.log(err)
+                return res.sendStatus(500)
+            }
+            if(response.rowCount !== 0){
+                let params = {
+                    TableName: 'com.getstoryflow.diagrams.production',
+                    Key: {'id': req.params.id}
+                }
+
+                docClient.delete(params, err => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(err.statusCode);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                })
+            }
+        }
+    )
+}
+
+const copyDiagram = (req, res) => {
+    let old_diagram_id = req.params.diagram_id
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
-        Key: {'id': req.params.id}
+        Key: {'id': old_diagram_id}
     };
+
+    // In case the insert row fails, delete on Dynamo
+    const cleanUpDynamo = (new_diagram_id) => {
+        let params = {
+            TableName: 'com.getstoryflow.diagrams.production',
+            Key: {'id': new_diagram_id}
+        };
+        docClient.delete(params, err => {
+            if (err) {
+                console.log(err)
+                res.sendStatus(err.statusCode)
+            } else {
+                res.sendStatus(200)
+            }
+        });
+    }
+
+    const insertDiagramRow = (new_diagram_id, old_diagram_id, diagram_name) => {
+        pool.query(
+            `INSERT INTO diagrams (id, name, skill_id, permissions, used_intents) 
+            (SELECT $1, $2, skill_id, permissions, used_intents FROM diagrams WHERE id = $3)`,
+            [new_diagram_id, diagram_name, old_diagram_id],
+            (err, data) => {
+                if(err) {
+                    console.log(err)
+                    cleanUpDynamo(new_diagram_id)
+                    res.sendStatus(500)
+                } else {
+                    res.send(new_diagram_id)
+                }
+            }    
+        )
+    }
+
+    // TODO: There might be no need to modify the flow blocks, i dunno
+    const purgeSubflows = (diagram) => {
+        // for (var i = 0; i < diagram.nodes.length; i++) {
+        //     if(diagram.nodes[i].extras.type === 'flow' && diagram.nodes[i].extras.diagram_id){
+        //         diagram.nodes[i].name = 'Flow'
+        //         diagram.nodes[i].extras = {
+        //             type: 'flow',
+        //             diagram_id: null,
+        //             inputs: [],
+        //             outputs: []
+        //         }
+        //     }
+        // }
+        return diagram
+    }
+
+    // Copy on Dynamo
     docClient.get(params, (err, data) => {
         if (err) {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
-            if (data.Item.creator !== req.user.id && !req.user.admin) {
-                res.sendStatus(403);
-                return;
+            let purged_diagram = purgeSubflows(JSON.parse(data.Item.data))
+            let new_diagram_id = generateID()
+            let diagram_name = 'Diagram Copy'
+            if(req.query && req.query.name && req.query.name.length < 80){
+                diagram_name = req.query.name
             }
-            docClient.delete(params, err => {
+            
+            let params = {
+                TableName: 'com.getstoryflow.diagrams.production',
+                Item: {
+                    id: new_diagram_id,
+                    variables: data.variables,
+                    data: JSON.stringify(purged_diagram),
+                    skill: data.skill,
+                    creator: data.creator
+                }
+            };
+
+            docClient.put(params, async(err) => {
                 if (err) {
-                    console.log(err);
-                    res.sendStatus(err.statusCode);
+                    console.log(err)
+                    res.sendStatus(err.statusCode)
                 } else {
-                    res.sendStatus(200);
+                    insertDiagramRow(new_diagram_id, old_diagram_id, diagram_name)
                 }
             });
+        } else {
+            res.sendStatus(404)
         }
-    }); 
+    });
 }
 
 const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}) => new Promise((resolve) => {
@@ -281,16 +387,16 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
     };
 
     if(depth > 10){
-        resolve(413);
-        return;
+        resolve(413)
+        return
     }
 
     let testing = (skill_id==="TEST");
 
     docClient.get(params, async (err, data) => {
         if (err) {
-            console.error(err);
-            resolve(500);
+            console.error(err)
+            resolve(500)
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
             // Add to set of rendered diagrams to prevent looping
@@ -455,10 +561,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     };
                 } else if (node.extras.type === 'flow' && node.extras.diagram_id) {
+
                     let subflow_diagram_id = node.extras.diagram_id
+                    
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    story.lines[node.id] = {
+                        nextId: getLink(nextLink)
+                    }
+
                     // Check if this diagram has been rendered already, rerender if this is a module
                     if(!rendered_set.has(node.extras.diagram_id) || type === 'market'){
-                        let result;
+                        let result = 500
                         try{
                             // console.log('going in', node.extras.diagram_id);
                             let new_options = options
@@ -470,21 +589,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             }
                             result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, new_options)
                         }catch(err){
-                            console.log(err)
-                            resolve(500);
-                            return;
+                            return resolve(500)
                         }
 
-                        if(result !== 200){
-                            resolve(result);
-                            return;
-                        }
-                    }
-
-                    let nextLink = null;
-                    for (var j = 0; j < node.ports.length; j++) {
-                        if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                        if(result < 300){
+                            story.lines[node.id].diagram_id = node.extras.diagram_id,
+                            story.lines[node.id].variable_map = {
+                                inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
+                                outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
+                            }
                         }
                     }
 
@@ -495,8 +608,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
                         },
                         nextId: getLink(nextLink)
-                    };
-
+                    }
                 } else if (node.extras.type === 'ending') {
                     story.lines[node.id] = {
                         audio: node.extras.audio
@@ -657,9 +769,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     if (!_.isNil(node.extras.mapping)) {
                         node.extras.mapping.forEach(param_map => {
                             if(typeof param_map.path !== 'string'){
-                                param_map.path = draftToMarkdown(param_map.path);
+                                param_map.path = draftToMarkdown(param_map.path)
                             }
-                            param_map.path = param_map.path.trim();
+                            param_map.path = param_map.path.trim()
                         });
                     }
                     
@@ -729,10 +841,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     };
                 } else {
-                    let nextLink = null;
+                    let nextLink = null
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                            [nextLink] = node.ports[j].links
                         }
                     }
                     if(nextLink){
@@ -742,41 +854,41 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                 } 
             }
-            let render_type;
+            let render_type
             if(!type){
-                render_type = testing ? 'testing' : 'live';
+                render_type = testing ? 'testing' : 'live'
             }else{
-                render_type = type;
+                render_type = type
             }
 
             let params = {
                 TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story
-            };
+            }
             docClient.put(params, err => {
                 if (err) {
-                    console.log(err);
-                    res.sendStatus(err.statusCode);
+                    console.log(err)
+                    res.sendStatus(err.statusCode)
                 } else if(testing || type === 'market') {
-                    resolve(200);
+                    resolve(200)
                 } else {
                     // Add the story to SQL as well
                     addStory(story, (err) => {
                         if(err){
-                            console.error(err);
+                            console.error(err)
                             resolve(500)
-                            return;
+                            return
                         }else{
-                            resolve(200);
+                            resolve(200)
                         }
                     })
                 }
             });
         } else {
-            resolve(404);
+            resolve(404)
         }
-    });
-});
+    })
+})
 
 const addStory = (story, cb) => {
     pool.query('SELECT 1 FROM diagrams WHERE id = $1 LIMIT 1', [story.id], (err,res) => {
@@ -784,54 +896,53 @@ const addStory = (story, cb) => {
             pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
                 [story.id, story.name, story.skill_id], (err,res) => {
                 if(err) {
-                    cb(err);
+                    cb(err)
                 }else{
-                    cb(false);
+                    cb(false)
                 }
             })
         }else{
             pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', 
                 [story.name, story.skill_id], (err,res) => {
                 if(err) {
-                    cb(err);
+                    cb(err)
                 }else{
-                    cb(false);
+                    cb(false)
                 }
             })
         }
-    });
+    })
 }
 
 const publish = (req, res) => {
     if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
-        res.sendStatus(401);
-        return;
+        return res.sendStatus(401)
     }
 
-    let skill_id = hashids.decode(req.params.skill_id)[0];
+    let skill_id = hashids.decode(req.params.skill_id)[0]
 
     pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
         if(err || result.rows.length === 0){
-            return res.sendStatus(500);
+            return res.sendStatus(500)
         }else if(result.rows[0].creator_id !== req.user.id){
-            return res.sendStatus(401);
+            return res.sendStatus(401)
         }
 
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
-        res.sendStatus(status);
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id)
+        res.sendStatus(status)
     })
-};
+}
 
 const publishTest = async (req, res) => {
     if (!req.user || !req.params.diagram_id) {
-        res.sendStatus(401);
+        res.sendStatus(401)
         return;
     }
 
-    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST');
+    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST')
 
-    res.sendStatus(status);
-};
+    res.sendStatus(status)
+}
 
 module.exports = {
     updateName: updateName,
@@ -842,5 +953,6 @@ module.exports = {
     setDiagram: setDiagram,
     publish: publish,
     publishTest: publishTest,
-    renderDiagram: renderDiagram
+    renderDiagram: renderDiagram,
+    copyDiagram: copyDiagram
 }

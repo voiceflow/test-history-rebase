@@ -8,7 +8,9 @@ body {
     color: #2b3950;
     width: 100%;
 }
-
+.modal {
+    overflow: scroll !important;
+}
 button:focus{
     outline: none;
 }

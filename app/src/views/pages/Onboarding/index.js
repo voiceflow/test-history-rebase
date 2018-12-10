@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Input } from 'reactstrap';
+import React, { Component } from 'react'
+import { Input } from 'reactstrap'
 import "./onboarding.css"
-import axios from 'axios';
-import company_sizes from './../../../services/CompanySize';
-import industries from './../../../services/Industries';
-import Select from 'react-select';
+import axios from 'axios'
+import company_sizes from './../../../services/CompanySize'
+import industries from './../../../services/Industries'
+import Select from 'react-select'
 
 class Onboarding extends Component{
 	constructor(props){
@@ -27,15 +27,15 @@ class Onboarding extends Component{
 	}
 
 	componentDidMount(){
-		axios.get('/onboard')
-		.then(res => {
-			if(res.data){
-				this.props.history.push('/');
-			}
-		})
-		.catch(err => {
-			console.log(err);
-		});
+		// axios.get('/onboard')
+		// .then(res => {
+		// 	if(res.data){
+		// 		this.props.history.push('/');
+		// 	}
+		// })
+		// .catch(err => {
+		// 	console.log(err);
+		// });
 	}
 
 	handleChange(event){

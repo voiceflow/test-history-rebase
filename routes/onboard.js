@@ -1,4 +1,4 @@
-const { pool } = require('./../services');
+const { pool, intercom } = require('./../services');
 
 const checkIfOnboarded = (req, res) => {
 	pool.query("SELECT * FROM user_info WHERE creator_id = $1", [req.user.id],
@@ -23,10 +23,21 @@ const submitOnboardSurvey = (req, res) => {
 		[req.user.id, req.body.usage_type, req.body.company_name, req.body.role, req.body.company_size, req.body.industry, req.body.org],
 		(err, data) => {
 			if(err){
-				console.log(err);
-				res.sendStatus(500);
+				console.log(err)
+				res.sendStatus(500)
 			} else {
-				res.sendStatus(200);
+				res.sendStatus(200)
+				intercom.users.create({
+					user_id: req.user.id,
+					custom_attributes: {
+						usage: req.body.usage_type,
+						company: req.body.company_name,
+						role: req.body.role,
+						company_size: req.body.company_size,
+						industry: req.body.industry,
+						organization: req.body.org
+					}
+				})
 			}
 		}
 	);

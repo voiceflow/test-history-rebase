@@ -8,6 +8,7 @@ const pg = require('pg');
 const config = require('./config/config');
 const sharp = require('sharp');
 const Hashids = require('hashids');
+const Intercom = require('intercom-client');
 
 const hashids = new Hashids(config.id_hash, 10);
 const MB = 1024*1024
@@ -100,7 +101,11 @@ const validateEmail = (email) => {
     return re.test(String(email).toLowerCase());
 }
 
+// SECRET
+const intercom_client = new Intercom.Client({ token: 'dG9rOmQxNjZhZTViXzdiNmFfNDkzOV9hYjg3XzRlMTQxOWU1NDc3OToxOjA=' })
+
 module.exports = {
+    intercom: intercom_client,
     upload: upload,
     docClient: docClient,
     pool: pool,

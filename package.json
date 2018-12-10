@@ -38,6 +38,7 @@
     "hashids": "^1.2.2",
     "helmet": "^3.14.0",
     "history": "^4.7.2",
+    "intercom-client": "^2.10.4",
     "is-var-name": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
     "multer": "^1.4.1",

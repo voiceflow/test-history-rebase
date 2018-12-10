@@ -55,7 +55,7 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
         state: { from: props.location }
       }}/>
     ) : (
-      <Component {...props} name={Name} />
+      <Component {...props} {...rest} name={Name} />
     )
   )}/>
 )
@@ -117,24 +117,26 @@ class App extends Component {
   }
 
   render() {
+    if(this.state.loading){
+      return <div className='super-center h-100 w-100'>
+          <div className="text-center">
+              <h5 className="pb-3">Loading</h5>
+              <h1><span className="loader"/></h1>
+          </div>
+      </div>
+    }
+
     return (
-    <StripeProvider stripe={this.state.stripe}>
-    {this.state.loading ? 
-        <div className='super-center h-100 w-100'>
-            <div className="text-center">
-                <h5 className="pb-3">Loading</h5>
-                <h1><span className="loader"/></h1>
-            </div>
-        </div> :
+      <StripeProvider stripe={this.state.stripe}>
         <Router history={history}>
           <div id="body">
-            { this.state.session  && history.location.pathname !== '/onboarding' ? <Route render={(props) => {
+            { (this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
                   return <NavBar {...props}/>
-            }} /> : null }
+            }} /> }
               <Switch>
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
-                <PublicRoute exact path="/login" name="Login" component={Register} />
+                <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
                 <PrivateRoute exact path="/canvas/new" name="Canvas" new component={Canvas}/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Canvas" preview component={Canvas}/>
@@ -160,8 +162,8 @@ class App extends Component {
               </Switch>
           </div>
         </Router>
-    }
-    </StripeProvider>);
+      </StripeProvider>
+    );
   }
 }
 

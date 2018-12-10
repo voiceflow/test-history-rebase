@@ -213,12 +213,12 @@ const manifest = (r, encoded_id) => {
 		privacyLocales = {}
 
 		r.locales.forEach(locale => {
-			privacy_policy[locale] = {}
+			privacyLocales[locale] = {}
 			if(r.terms_and_cond){
-				privacy_policy[locale].termsOfUseUrl = r.terms_and_cond
+				privacyLocales[locale].termsOfUseUrl = r.terms_and_cond
 			}
 			if(r.privacy_policy){
-				privacy_policy[locale].privacyPolicyUrl = r.privacy_policy
+				privacyLocales[locale].privacyPolicyUrl = r.privacy_policy
 			}
 		})
 	}

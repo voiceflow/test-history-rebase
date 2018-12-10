@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
 
+const BLOCK_LIMIT = 20
+
 class IfBlock extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +31,7 @@ class IfBlock extends Component {
     handleAddBlock() {
         var node = this.state.node;
 
-        if(node.extras.expressions.length < 20){
+        if(node.extras.expressions.length < BLOCK_LIMIT){
             node.extras.expressions.push({
                 type: 'value',
                 value: '',
@@ -99,13 +101,13 @@ class IfBlock extends Component {
                             <div className="variable-group">
                                 <div className="square-bubble mr-1">{i + 1}</div><span>If </span>
                             </div>
-                            { show ? <Expressionfy expression={expression} />:null}
+                            { show ? <Expressionfy expression={expression}/> : null}
                             <Expression expression={expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
                         </div>
                     )
                 })}
 
-                { this.state.node.extras.expressions.length < 5 ?
+                { this.state.node.extras.expressions.length < BLOCK_LIMIT ?
                     <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add If Statement
                     </button> : null

@@ -108,6 +108,7 @@ export default {
 	    });
 	},
 	logout: (cb) => {
+		localStorage.clear()
 		window.user_detail = {
 			email: null,
 			name: null,

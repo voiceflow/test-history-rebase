@@ -766,6 +766,10 @@ body.modal-open {
   }
 }
 
+.append {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 @media(max-width: 1550px){
     #publish-status {

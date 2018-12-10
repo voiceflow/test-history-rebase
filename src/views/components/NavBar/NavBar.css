@@ -92,11 +92,11 @@
 	margin-top: 8px;
 	right: -8px;
 }
-.account-dropdown .dropdown-menu.arrow.arrow-right:before{
+.dropdown-menu.arrow.arrow-right:before{
 	left: auto !important;
 	right: 12px !important;
 }
-.account-dropdown .dropdown-menu.arrow.arrow-right:after{
+.dropdown-menu.arrow.arrow-right:after{
 	left: auto !important;
 	right: 13px !important;
 }

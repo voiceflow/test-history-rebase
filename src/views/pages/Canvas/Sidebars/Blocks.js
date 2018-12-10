@@ -1,14 +1,10 @@
 import React, { PureComponent } from 'react';
-import MenuItem from './MenuItem';
-import TemplateItem from './TemplateItem';
-import ModuleItem from './ModuleItem';
-import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup, Collapse } from 'reactstrap';
-import isVarName from 'is-var-name';
-import FlowButton from './FlowButton';
-import {Tooltip} from 'react-tippy';
+import MenuItem from './components/MenuItem';
+import ModuleItem from './components/ModuleItem';
+import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 
-const sections = [{
+const SECTIONS = [{
     title: 'Basic',
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-megaphone"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
@@ -35,6 +31,8 @@ const sections = [{
     ]
 }];
 
+const TABS = ['blocks', 'modules']
+
 class Blocks extends PureComponent {
     constructor(props) {
         super(props);
@@ -51,32 +49,38 @@ class Blocks extends PureComponent {
             show = JSON.parse(show)
         }
 
+        let tab = localStorage.getItem('block_tab')
+        if(!tab) tab = 'blocks'
+
         this.state = {
-            open: true,
-            new_var: '',
-            new_global: '',
-            tree: null,
-            tab: 'blocks',
-            show: show
+            tab: tab,
+            show: show,
+            sections: []
         }
 
-        this.openTab = this.openTab.bind(this);d
-        this.handleChange = this.handleChange.bind(this);
-        this.buildTree = this.buildTree.bind(this);
-        this.updateTree = this.updateTree.bind(this);
-        this.toggleBlockSection = this.toggleBlockSection.bind(this);
-        this.visited = new Set();
-        this.sections = [];
+        this.toggleBlockSection = this.toggleBlockSection.bind(this)
+        this.switchTab = this.switchTab.bind(this)
+    }
+
+    switchTab(tab){
+        if(tab !== this.state.tab){
+            this.setState({
+                tab: tab
+            }, ()=>localStorage.setItem('block_tab', tab))
+        }
     }
 
     componentDidMount() {
-        this.props.build(this.updateTree);
-        this.sections = cloneDeep(sections);
+        let sections = cloneDeep(SECTIONS);
 
         // premium blocks
         if(window.user_detail.admin > 0){
-            this.sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
+            sections[1].items.push({ text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' })
         }
+        
+        this.setState({
+            sections: sections
+        })
     }
 
     toggleBlockSection(section_title){
@@ -90,9 +94,9 @@ class Blocks extends PureComponent {
     render() {
         let block_content;
 
-        if(this.state.block_tab_state === 'blocks'){
+        if(this.state.tab === 'blocks'){
             block_content =
-                this.sections.map((section, i) => {
+                this.state.sections.map((section, i) => {
                     return <div key={i} className="section no-select">
                         <span 
                             className="section-title" 
@@ -125,12 +129,19 @@ class Blocks extends PureComponent {
 
         return <React.Fragment>
             {/*<ButtonGroup className="toggle-group mb-2">
-                <Button outline={this.state.block_tab_state !== 'blocks'} onClick={() => {this.setState({block_tab_state: 'blocks'})}} disabled={this.state.block_tab_state === 'blocks'}> Blocks </Button>
-                <Button outline={this.state.block_tab_state !== 'modules'} onClick={() => {this.setState({block_tab_state: 'modules'})}} disabled={this.state.block_tab_state === 'modules'}>Flows</Button>
+                {TABS.map(tab => {
+                    return <Button
+                        key={tab}
+                        onClick={() => this.switchTab(tab)} 
+                        outline={this.state.tab !== tab}
+                        disabled={this.state.tab === tab}> 
+                        {tab}
+                    </Button>
+                })}
             </ButtonGroup>*/}
             {block_content}
         </React.Fragment>
     }
 }
 
-export default Menu;
+export default Blocks;

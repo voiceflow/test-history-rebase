@@ -801,7 +801,7 @@ class Canvas extends Component {
                     this.state.diagrams.push({
                         id: diagram_id,
                         name: 'ROOT'
-                    });
+                    })
                     if(this.buildDiagrams !== null){
                         this.buildDiagrams(diagram_id);
                     }
@@ -836,9 +836,19 @@ class Canvas extends Component {
             let skill_id = this.state.skill.skill_id
             let data = JSON.stringify(curr_template)
 
+            // No Duplicate Flow Names
+            let new_flow_name = 'New Flow'
+            let index = 1
+            const exists = (name) => this.state.diagrams.find(d => d.name === name)
+            
+            while(exists(new_flow_name)){
+                new_flow_name = `New Flow ${index}`
+                index++
+            }
+
             var diagram = {
                 id: id,
-                title: 'New Flow',
+                title: new_flow_name,
                 variables: defaultVariables.slice(0),
                 data: data,
                 skill: skill_id
@@ -847,7 +857,7 @@ class Canvas extends Component {
             axios.post('/diagram?new=1', diagram)
             .then(() => {
                 this.state.diagrams.push({
-                    name: 'New Flow',
+                    name: new_flow_name,
                     id: id
                 })
                 this.props.history.push(`/canvas/${skill_id}/${id}`)
@@ -874,12 +884,16 @@ class Canvas extends Component {
         });
     }
 
-    enterFlow(new_diagram_id) {
+    enterFlow(new_diagram_id, save=true) {
         if(new_diagram_id !== this.diagram_id){
             this.setState({loading_diagram: true})
-            this.onSave(() => {
-                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`);
-            });
+            if(save){
+                this.onSave(() => {
+                    this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
+                });
+            }else{
+                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
+            }
         }
     }
 
@@ -1137,7 +1151,9 @@ class Canvas extends Component {
                     onFlowRenamed={this.onFlowRenamed}
                     history={this.props.history}
                     loading_diagram={this.state.loading_diagram}
+                    changeLoading={(state) => this.setState({loading_diagram: state})}
                     saving={this.state.saving}
+                    onSave={this.onSave}
                 />
                 <TitleBar
                     onTest={this.onTest}

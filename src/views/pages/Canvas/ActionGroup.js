@@ -430,29 +430,6 @@ class ActionGroup extends PureComponent {
                 {   
                     !!this.state.skill &&
                     <ModalBody>
-                        <FormGroup>
-                            <Label>Project Name</Label>
-                            <Input className="form-bg" name="name" value={this.state.skill.name} onChange={this.updateSkill}/>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label>Restart Every Session</Label>
-                            <div>
-                                <Switch
-                                    checked={this.state.skill.restart}
-                                    onChange={this.toggleRestart}
-                                    color="primary"
-                                />
-                                <b>{this.state.skill.restart ? 'on': 'off'}</b>
-                                <div className="text-muted">{
-                                    this.state.skill.restart ? 
-                                    'The project will start from the beginning every time the user starts a session' : 
-                                    'The project will resume from the last block the user was on before quitting'
-                                }</div>
-                            </div>
-                        </FormGroup>
-                        <div className="super-center">
-                            <Button color="primary mb-2" onClick={this.saveSettings}>Save Settings</Button>
-                        </div>
                         <ButtonGroup className="toggle-group mb-2">
                             <Button outline={this.state.settings_tab_state !== 'basic'} onClick={() => {this.setState({settings_tab_state: 'basic'})}} disabled={this.state.block_tab_state === 'basic'}> Basic </Button>
                             <Button outline={this.state.settings_tab_state !== 'advanced'} onClick={() => {this.setState({settings_tab_state: 'advanced'})}} disabled={this.state.block_tab_state === 'advanced'}>Advanced</Button>
@@ -512,9 +489,8 @@ class ActionGroup extends PureComponent {
                         </DropdownToggle>
                         <DropdownMenu className="platform-dropdown arrow"><p className="small-caps text-center mt-2 mb-2">Publish to</p>
                             <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
-                                <p className="small-caps-muted text-center mt-1 mb-1">or</p>
-                                <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>
-                                
+                            {/*<p className="small-caps-muted text-center mt-1 mb-1">or</p>
+                            <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>*/}
                         </DropdownMenu>
                     </Dropdown>
                     <Tooltip

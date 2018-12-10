@@ -124,7 +124,7 @@ class Menu extends PureComponent {
                 text: <Alert color="danger" className="mb-0">
                   <i className="fas fa-exclamation-triangle fa-2x"/><br/>
                   Deleting this flow permanently deletes everything inside and can not be recovered
-                  <br/>
+                  <br/><br/>
                   Are you sure?
                 </Alert>,
                 confirm: () => {

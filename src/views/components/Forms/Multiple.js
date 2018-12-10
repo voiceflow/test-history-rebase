@@ -45,10 +45,10 @@ class Multiple extends Component {
                     <span className="px-2 font-weight-bold">{i + 1}.</span>
                     <InputGroup>
                         {this.props.prepend ? 
-                            <InputGroupAddon addonType="prepend">{this.props.prepend}</InputGroupAddon> :
+                            <InputGroupAddon className="input-prepend" addonType="prepend">{this.props.prepend}</InputGroupAddon> :
                             null
                         }
-                        <Input className="form-control-border right outline"
+                        <Input className="form-control form-bg right outline"
                             name={i} 
                             value={this.props.list[i]} 
                             disabled={this.props.isDisabled}

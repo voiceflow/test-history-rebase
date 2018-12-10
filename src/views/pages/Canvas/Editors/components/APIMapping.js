@@ -29,15 +29,11 @@ class APIMapping extends Component {
                                             return {label: variable, value: variable}
                                         }) : null}
                                     />
-                                    <InputGroupAddon addonType="append">
-                                        <InputGroupText>
-                                            <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
-                                        </InputGroupText>
-                                    </InputGroupAddon>
+                                            <button className="btn-float" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
+                    <button className="btn btn-clear btn-block" onClick={this.props.onAdd}>
                         <i className="far fa-plus"></i> Add Mapping
                     </button>
                 </div>

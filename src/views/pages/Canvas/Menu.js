@@ -20,16 +20,15 @@ const sections = [{
         { text: 'Speak', type: 'speak', icon: <i class="fas fa-comment"></i>, tip: 'Tell Alexa to play sounds or talk to the user' },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
         { text: 'Command', type: 'command', icon: <i class="fas fa-exclamation"></i>, tip: 'Add shortcuts for your users to navigate your skill quickly'},
+         { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
         { text: 'Stream', type: 'stream', icon: <i class="fas fa-play"></i>, tip: 'Stream long audio files & URLs for the user' },
     ]
 },{
     title: 'Advanced',
     items: [
         { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once'  },
-        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
         { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
         { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable'  },
-         { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
    ]
@@ -38,8 +37,12 @@ const sections = [{
     items: [
         { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'}
-        
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'},
+    ]
+},{
+    title: 'Business',
+    items: [
+        { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/> },        
     ]
 }];
 
@@ -103,7 +106,7 @@ class Menu extends PureComponent {
         }
     }
 
-    buildTree(node, depth=0){
+    buildTree(node, current_id, depth=0){
 
         this.visited.add(node.id);
 
@@ -122,7 +125,7 @@ class Menu extends PureComponent {
                     if(block){
                         return <div className="sub-diagram" key={i}>
                             <div className="sub-column">
-                                {this.buildTree(block, depth+1)}
+                                {this.buildTree(block, current_id, depth+1)}
                             </div>
                         </div>;
                     }
@@ -131,7 +134,7 @@ class Menu extends PureComponent {
             }
 
             return (<React.Fragment>
-                <FlowButton flow={node} active={this.props.current} enterFlow={this.props.enterFlow} updateTree={this.updateTree} onFlowRenamed={this.props.onFlowRenamed}/>
+                <FlowButton flow={node} active={current_id} enterFlow={this.props.enterFlow} onFlowRenamed={this.props.onFlowRenamed}/>
                 {tree}
             </React.Fragment>)
 
@@ -148,13 +151,13 @@ class Menu extends PureComponent {
         this.forceUpdate()
     }
 
-    updateTree() {
+    updateTree(current_id) {
         for(let diagram of this.props.diagrams){
             if(diagram.name === 'ROOT'){
-                this.visited = new Set();
+                this.visited = new Set()
                 this.setState({
-                    tree: this.buildTree(diagram)
-                });
+                    tree: this.buildTree(diagram, current_id)
+                })
             }
         }
     }
@@ -411,16 +414,21 @@ class Menu extends PureComponent {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={this.state.open ? 'open' : ''}>
-                    <div>
-                        <div className='block-title no-select' onClick={() => this.setState({open: false})}>
-                            <h5 className="mb-0">{this.state.tab}</h5>
-                            <div className="close pr-1 pl-3 py-3">×</div>
-                        </div>
-                    </div>
-                    <div className="sidebar-content">
-                        {content}
-                    </div>
+                <div id="sidebar" className={(this.state.open ? 'open' : '')}>
+                    {this.props.loading_diagram ? 
+                        null :
+                        <React.Fragment>
+                            <div>
+                                <div className='block-title no-select' onClick={() => this.setState({open: false})}>
+                                    <h5 className="mb-0">{this.state.tab}</h5>
+                                    <div className="close pr-1 pl-3 py-3">×</div>
+                                </div>
+                            </div>
+                            <div className="sidebar-content">
+                                {content}
+                            </div>
+                        </React.Fragment>
+                    }
                 </div>
             </div>
         );

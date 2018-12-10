@@ -38,8 +38,7 @@ const stage_title = {
     "9": "Privacy & Compliance Ext.",
     "10": "Submitted for Review",
     "11": "Awaiting Review",
-    "12": "Confirming Withdraw",
-    "13": "Confirming Delete"
+    "12": "Confirming Withdraw"
 }
 
 const LOCALE_MAP = [
@@ -76,7 +75,6 @@ class Skill extends Component {
                 amzn_id: null,
                 stage_error: null,
                 displayingConfirmWithdraw: false,
-                displayingConfirmDelete: false
             }
         } else {
             this.props.history.push('/dashboard');
@@ -87,13 +85,11 @@ class Skill extends Component {
         this.toggle = this.toggle.bind(this);
         this.togglePublish = this.togglePublish.bind(this);
         this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this);
-        this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
         this.closePublish = this.closePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
         this.onWithdraw = this.onWithdraw.bind(this);
-        this.onDelete = this.onDelete.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
         this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this);
@@ -393,23 +389,6 @@ class Skill extends Component {
         }
     }
 
-    toggleConfirmDelete() {
-        if(!this.state.displayingConfirmDelete){
-            this.setState({
-                displayingConfirmDelete: {
-                    text: "Are you sure you want to delete this Skill? This action cannot be undone and will delete all resources this Skill currently depends on.",
-                    confirm: this.onDelete
-                },
-                stage: 13
-            });
-        }else{
-            this.setState({
-                displayingConfirmDelete: false,
-                stage: 0
-            });
-        }
-    }
-
     closePublish() {
         if(this.state.stage === 1){
             this.setState({
@@ -628,10 +607,6 @@ class Skill extends Component {
                 <ConfirmModal 
                     confirm = {this.state.displayingConfirmWithdraw}
                     toggle = {this.toggleConfirmWithdraw}
-                />
-                <ConfirmModal
-                    confirm = {this.state.displayingConfirmDelete}
-                    toggle = {this.toggleConfirmDelete}
                 />
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
@@ -999,16 +974,6 @@ class Skill extends Component {
                         </FormGroup>
 
                       </Form>
-                    {!disabled_stages.has(this.state.stage)?
-                        <React.Fragment>
-                            <hr/>
-                            <Alert color="danger between">
-                                <span>Delete This Skill (This action can not be undone)</span>
-                                <Button color="danger" onClick={this.toggleConfirmDelete}>Delete Skill</Button>
-                            </Alert>
-                        </React.Fragment>
-                        :null
-                    }
                 </div>
             </div>
         );

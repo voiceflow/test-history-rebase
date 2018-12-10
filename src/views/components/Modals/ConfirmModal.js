@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React from 'react';
-import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import React from 'react'
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 
 class ConfirmModal extends React.Component {
   // TODO this class is pure cancer
@@ -23,4 +23,4 @@ class ConfirmModal extends React.Component {
   }
 }
 
-export default ConfirmModal;
+export default ConfirmModal

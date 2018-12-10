@@ -263,7 +263,7 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
-                                    <UncontrolledDropdown nav inNavbar className="account-dropdown">
+                                    <UncontrolledDropdown nav inNavbar>
                                         <DropdownToggle className="delete-block" nav tag="div">
                                             <i className="fas fa-cog"/>
                                         </DropdownToggle>

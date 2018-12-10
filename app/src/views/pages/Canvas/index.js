@@ -174,6 +174,7 @@ class Canvas extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+        // LOADING IN A NEW DIAGRAM
         let url = nextProps.computedMatch;
         if (url && url.params.diagram_id && url.params.diagram_id !== this.diagram_id) {
             let diagram_id = url.params.diagram_id;
@@ -181,7 +182,8 @@ class Canvas extends Component {
                 this.buildDiagrams(diagram_id)
             }
             this.setState({
-                loading_diagram: true
+                loading_diagram: true,
+                open: false
             }, () => this.onLoadId(diagram_id))
         }
     }
@@ -273,7 +275,7 @@ class Canvas extends Component {
                 diagram_id: null,
                 inputs: [],
                 outputs: []
-            };
+            }
 
             engine.stopMove();
             node.extras.type = type;
@@ -281,8 +283,8 @@ class Canvas extends Component {
             node.y = 100;
             node.setSelected();
             engine.getDiagramModel().clearSelection();
-            engine.getDiagramModel().addNode(node);
-            engine.setSuperSelect(node);
+            engine.getDiagramModel().addNode(node)
+            engine.setSuperSelect(node)
             this.setState({
                 engine: engine,
                 open: type !== 'comment',
@@ -550,6 +552,7 @@ class Canvas extends Component {
                     }
                 }
             })
+            engine.setSuperSelect(null)
             model.deSerializeDiagram(diagram_json, engine)
             model.addListener({ nodesUpdated: this.unsave })
             model.addListener({ linksUpdated: this.unsave })
@@ -922,7 +925,7 @@ class Canvas extends Component {
                     promptVoice: '',
                     choices: [],
                     inputs: []
-                };
+                }
             } else if (type === 'combine') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -935,7 +938,7 @@ class Canvas extends Component {
                             title: 'Line Audio'
                         }
                     ]
-                };
+                }
             } else if (type === 'speak') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -949,7 +952,7 @@ class Canvas extends Component {
                     diagram_id: null,
                     inputs: [],
                     outputs: []
-                };
+                }
             } else if (type === 'command') {
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {

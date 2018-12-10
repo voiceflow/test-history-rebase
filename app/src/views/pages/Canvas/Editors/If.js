@@ -29,7 +29,7 @@ class IfBlock extends Component {
     handleAddBlock() {
         var node = this.state.node;
 
-        if(node.extras.expressions.length < 5){
+        if(node.extras.expressions.length < 20){
             node.extras.expressions.push({
                 type: 'value',
                 value: '',

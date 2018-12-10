@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormGroup, Label } from 'reactstrap';
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, 
+         ModalHeader, ModalBody, Button, ButtonGroup, Dropdown, DropdownToggle, DropdownMenu, 
+         DropdownItem, FormGroup, Label } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
 import AmazonLogin from './../../components/Forms/AmazonLogin';
 import axios from 'axios';
 import {Tooltip} from 'react-tippy';
 import Switch from '@material-ui/core/Switch';
+import ConfirmModal from './../../components/Modals/ConfirmModal'
 
 import AuthenticationService from './../../../services/Authentication';
 
@@ -25,7 +28,9 @@ class ActionGroup extends PureComponent {
             stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
-            skill: null
+            skill: null,
+            settings_tab_state: 'basic',
+            displayingConfirmDelete: false
         }
 
         this.toggle = this.toggle.bind(this);
@@ -41,6 +46,8 @@ class ActionGroup extends PureComponent {
         this.saveSettings = this.saveSettings.bind(this);
         this.reset = this.reset.bind(this);
         this.token = null;
+        this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this)
+        this.onDelete = this.onDelete.bind(this)
     }
 
     componentWillReceiveProps(props){
@@ -170,6 +177,37 @@ class ActionGroup extends PureComponent {
         let value = e.target.value;
         
         node.extras[name] = value;
+    }
+
+    toggleConfirmDelete() {
+        if(!this.state.displayingConfirmDelete){
+            this.setState({
+                displayingConfirmDelete: {
+                    text: "Are you sure you want to delete this Skill? This action cannot be undone and will delete all resources this Skill currently depends on.",
+                    confirm: this.onDelete
+                },
+                stage: 13
+            });
+        }else{
+            this.setState({
+                displayingConfirmDelete: false,
+                stage: 0
+            });
+        }
+    }
+
+    onDelete(){
+        window.analytics.track('Deleted Skill', {
+            "userId": window.user_detail
+        });
+        axios.delete(`/skill/${this.props.skill.skill_id}`)
+        .then(() => {
+            this.props.history.push('/dashboard');
+        })
+        .catch(err => {
+            console.log(err)
+            alert('Error deleting Skill');
+        });
     }
 
     toggle() {
@@ -328,8 +366,55 @@ class ActionGroup extends PureComponent {
 
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
+        let settings_modal_content;
+        if(this.state.skill){
+            if(this.state.settings_tab_state === 'basic'){
+                settings_modal_content = 
+                <React.Fragment>
+                    <FormGroup>
+                        <Label>Project Name</Label>
+                        <Input name="name" value={this.state.skill.name} onChange={this.updateSkill}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Restart Every Session</Label>
+                        <div>
+                            <Switch
+                                checked={this.state.skill.restart}
+                                onChange={this.toggleRestart}
+                                color="primary"
+                            />
+                            <b>{this.state.skill.restart ? 'on': 'off'}</b>
+                            <div className="text-muted">{
+                                this.state.skill.restart ? 
+                                'The project will start from the beginning every time the user starts a session' : 
+                                'The project will resume from the last block the user was on before quitting'
+                            }</div>
+                        </div>
+                    </FormGroup>
+                    <div className="super-center">
+                        <Button color="primary" onClick={this.saveSettings}>Save Settings</Button>
+                    </div>
+                </React.Fragment>
+            } else{
+                settings_modal_content = 
+                <React.Fragment>
+                    <FormGroup>
+                        <Label>Delete Project</Label>
+                        <Alert color="danger between">
+                            <span>WARNING: This action can not be undone</span>
+                            <Button color="danger" onClick={this.toggleConfirmDelete}>Delete Skill</Button>
+                        </Alert>
+                    </FormGroup>
+                </React.Fragment>
+            }
+        }
+
         return (
             <React.Fragment>
+            <ConfirmModal
+                confirm = {this.state.displayingConfirmDelete}
+                toggle = {this.toggleConfirmDelete}
+            />
             <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
                 <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
                 <ModalBody className="modal-info">
@@ -368,6 +453,11 @@ class ActionGroup extends PureComponent {
                         <div className="super-center">
                             <Button color="primary mb-2" onClick={this.saveSettings}>Save Settings</Button>
                         </div>
+                        <ButtonGroup className="toggle-group mb-2">
+                            <Button outline={this.state.settings_tab_state !== 'basic'} onClick={() => {this.setState({settings_tab_state: 'basic'})}} disabled={this.state.block_tab_state === 'basic'}> Basic </Button>
+                            <Button outline={this.state.settings_tab_state !== 'advanced'} onClick={() => {this.setState({settings_tab_state: 'advanced'})}} disabled={this.state.block_tab_state === 'advanced'}>Advanced</Button>
+                        </ButtonGroup>
+                        {settings_modal_content}
                     </ModalBody>
                 }
             </Modal>

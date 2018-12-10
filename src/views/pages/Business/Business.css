@@ -124,6 +124,12 @@ transform: scale(1.03);
 	border: none;
 }
 
+/*.business-image{
+	height: 100%;
+	width: 100%;
+	background-image: url('/business.svg')
+}*/
+
 .empty-badge{
 	border-radius: 5px;
 	font-weight: bold;

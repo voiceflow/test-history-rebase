@@ -18,6 +18,19 @@ import './NavBar.css';
 import AuthenticationService from './../../../services/Authentication';
 import Intercom from 'react-intercom';
 
+const NUM_TO_PLAN = (plan) => {
+  switch(plan){
+    case 0:
+      return 'COMMUNITY'
+    case 1:
+      return 'BASIC'
+    case 10:
+      return 'ADMIN'
+    default:
+      return 'UNKNOWN'
+  }
+}
+
 const getPage = (path) => {
   let base = path.split('/');
   return base[1].toLowerCase();
@@ -30,27 +43,36 @@ class NavBar extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.logout = this.logout.bind(this);
+    this.intercom_user = {}
+
+    let tabs = [
+      {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
+      {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
+      // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
+    ]
+
+    let user = window.user_detail
+
+    if(user.id !== null){
+      if(user.admin > 0){
+        tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
+        // tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
+        // tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
+      }
+      this.intercom_user = {
+        user_id: user.id,
+        name: user.name,
+        email: user.email,
+        plan: NUM_TO_PLAN(user.admin)
+      }
+    }else{
+      this.intercom_user = {}
+    }
 
     this.state = {
       accountOpen: false,
       isOpen: false,
-      tabs: [
-        {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
-        {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
-        //{link: '/business', 'text': <React.Fragment>Business</React.Fragment>},
-        {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
-      ],
-      user: AuthenticationService.getUser()
-    };
-  }
-
-  componentDidMount() {
-    if(this.state.user.admin === 10){
-      let tabs = this.state.tabs;
-      tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>});
-      // tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
-      // tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
-      this.setState({tabs: tabs});
+      tabs: tabs
     }
   }
 
@@ -82,11 +104,6 @@ class NavBar extends Component {
 
   render() {
 
-    let intercom_user = this.state.user ? {
-      user_id: this.state.user.id,
-      name: this.state.user.name,
-      email: this.state.user.email
-    } : null;
     let page_name = '/' + getPage(this.props.location.pathname);
 
     return (
@@ -124,9 +141,9 @@ class NavBar extends Component {
                   <DropdownToggle className="account" nav tag="div">
                     <i className="fas fa-user-circle"/>
                   </DropdownToggle>
-                  <DropdownMenu right className="arrow no-select">
+                  <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>
-                      {this.state.user.email}
+                      {window.user_detail.email}
                     </DropdownItem>
                     <DropdownItem divider />
                     <Link className="dropdown-item" to="/account">
@@ -140,8 +157,8 @@ class NavBar extends Component {
               </Nav>
             </Collapse>
           </Navbar>
-          {this.props.padding ? (<div className="padding"></div>) : null}
-          <Intercom appID="vw911b0m" {...intercom_user}/>
+          {!!this.props.padding && <div className="padding"></div>}
+          <Intercom appID="vw911b0m" {...this.intercom_user}/>
         </div>
     );
   }

@@ -1,0 +1,54 @@
+.text-pricing {
+    color: #42a5ff;
+    font-size: 50px;
+    font-weight: 700;
+}
+.price {
+    margin-bottom: 0;
+    color: #b0b3d3;
+    font-size: 23px;
+    font-weight: 400;
+}
+
+.billing-info input, .billing-info select {
+  margin-top: 10px;
+}
+
+.feature-item {
+	margin-top: 10px;
+}
+.feature-item i {
+	color: #79ECB1;
+	margin-right: 10px;
+}
+
+.StripeElement {
+  display: block;
+  max-width: 500px;
+  padding: 10px 14px;
+  font-size: 1em;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border: 0;
+  outline: 0;
+  border-radius: 4px;
+  background: white;
+}
+
+.StripeElement--focus {
+  box-shadow: rgba(50, 50, 93, 0.109804) 0px 4px 6px, rgba(0, 0, 0, 0.0784314) 0px 1px 3px;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+}
+
+.StripeElement.IdealBankElement,
+.StripeElement.PaymentRequestButton {
+  padding: 0;
+}
+
+.payment-form {
+  height: 480px;
+}
+
+.payment-form label {
+    margin-bottom: 5px;
+}

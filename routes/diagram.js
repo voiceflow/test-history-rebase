@@ -326,19 +326,19 @@ const copyDiagram = (req, res) => {
         )
     }
 
-    // TODO: subflows
+    // TODO: There might be no need to modify the flow blocks, i dunno
     const purgeSubflows = (diagram) => {
-        for (var i = 0; i < diagram.nodes.length; i++) {
-            if(diagram.nodes[i].extras.type === 'flow' && diagram.nodes[i].extras.diagram_id){
-                diagram.nodes[i].name = 'Flow'
-                diagram.nodes[i].extras = {
-                    type: 'flow',
-                    diagram_id: null,
-                    inputs: [],
-                    outputs: []
-                }
-            }
-        }
+        // for (var i = 0; i < diagram.nodes.length; i++) {
+        //     if(diagram.nodes[i].extras.type === 'flow' && diagram.nodes[i].extras.diagram_id){
+        //         diagram.nodes[i].name = 'Flow'
+        //         diagram.nodes[i].extras = {
+        //             type: 'flow',
+        //             diagram_id: null,
+        //             inputs: [],
+        //             outputs: []
+        //         }
+        //     }
+        // }
         return diagram
     }
 

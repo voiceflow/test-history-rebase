@@ -20,11 +20,11 @@ const expressionfy = (expression, depth=0) => {
     }else if(expression.type == 'value'){
         let value = expression.value.toString();
         if(!expression.value){
-            return 0;
+            return 0
         }else if(isNaN(value)){
             return "'" + value.replace(/'/g, '\"') + "'";
         }else{
-            return (value * 1);
+            return (value * 1)
         }
     }else if(expression.type == 'variable'){
         if(isVarName(expression.value)){
@@ -154,22 +154,22 @@ const getDiagram = (req, res) => {
     };
     docClient.get(params, (err, data) => {
         if (err) {
-            console.log(err);
+            console.log(err)
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
-            let diagram = data.Item;
+            let diagram = data.Item
 
             if (diagram.preview === false) {
-                res.sendStatus(403);
+                res.sendStatus(403)
                 return;
             }
 
-            res.send(data.Item);
+            res.send(data.Item)
         } else {
-            res.sendStatus(404);
+            res.sendStatus(404)
         }
-    });
-};
+    })
+}
 
 const updateName = async (req, res) => {
     if(!req.body || !req.body.name){
@@ -236,7 +236,7 @@ const setDiagram = async (req, res) => {
         } else {
             try{
                 if(req.query.new){
-                    if (diagram.title !== "ROOT" ){
+                    if (!diagram.title){
                         diagram.title = "New Flow";
                     }
                     // If it is a new diagram insert (assume it has no blocks)
@@ -253,37 +253,41 @@ const setDiagram = async (req, res) => {
                 res.sendStatus(500);
             }
         }
-    });
+    })
 };
 
 const deleteDiagram = (req, res) => {
-    let params = {
-        TableName: 'com.getstoryflow.diagrams.production',
-        Key: {'id': req.params.id}
-    };
-    docClient.get(params, (err, data) => {
-        if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
-        } else if (data.Item) {
-            if (data.Item.creator !== req.user.id && !req.user.admin) {
-                res.sendStatus(403);
-                return;
+
+    pool.query(`
+            DELETE FROM diagrams d USING skills s
+            WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
+        `, 
+        [req.params.id, req.user.id], (err, response) => {
+            if(err){
+                console.log(err)
+                return res.sendStatus(500)
             }
-            docClient.delete(params, err => {
-                if (err) {
-                    console.log(err);
-                    res.sendStatus(err.statusCode);
-                } else {
-                    res.sendStatus(200);
+            if(response.rowCount !== 0){
+                let params = {
+                    TableName: 'com.getstoryflow.diagrams.production',
+                    Key: {'id': req.params.id}
                 }
-            });
+
+                docClient.delete(params, err => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(err.statusCode);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                })
+            }
         }
-    }); 
+    )
 }
 
 const copyDiagram = (req, res) => {
-    let old_diagram_id = req.params.diagram_id;
+    let old_diagram_id = req.params.diagram_id
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': old_diagram_id}
@@ -305,11 +309,11 @@ const copyDiagram = (req, res) => {
         });
     }
 
-    const insertDiagramRow = (new_diagram_id, old_diagram_id) => {
+    const insertDiagramRow = (new_diagram_id, old_diagram_id, diagram_name) => {
         pool.query(
-            `INSERT INTO diagrams (id, name, created, modified, skill_id, sub_diagrams, permissions, used_intents) 
-            (SELECT $1, name, NOW(), NOW(), skill_id, sub_diagrams, permissions, used_intents FROM diagrams WHERE id = $2)`,
-            [new_diagram_id, old_diagram_id],
+            `INSERT INTO diagrams (id, name, skill_id, permissions, used_intents) 
+            (SELECT $1, $2, skill_id, permissions, used_intents FROM diagrams WHERE id = $3)`,
+            [new_diagram_id, diagram_name, old_diagram_id],
             (err, data) => {
                 if(err) {
                     console.log(err)
@@ -325,12 +329,17 @@ const copyDiagram = (req, res) => {
     // TODO: subflows
     const purgeSubflows = (diagram) => {
         for (var i = 0; i < diagram.nodes.length; i++) {
-            let node = diagram.nodes[i];
+            let node = diagram.nodes[i]
             if(node.extras.type === 'flow' && node.extras.diagram_id){
-                node.extras.diagram_id = null
-                node.name = node.name + " Copy"
+                diagram.nodes[i].extras = {
+                    type: 'flow',
+                    diagram_id: null,
+                    inputs: [],
+                    outputs: []
+                }
             }
         }
+        return diagram
     }
 
     // Copy on Dynamo
@@ -341,6 +350,11 @@ const copyDiagram = (req, res) => {
         } else if (data.Item) {
             let purged_diagram = purgeSubflows(JSON.parse(data.Item.data))
             let new_diagram_id = generateID()
+            let diagram_name = 'Diagram Copy'
+            if(req.query && req.query.name && req.query.name.length < 80){
+                diagram_name = req.query.name
+            }
+            
             let params = {
                 TableName: 'com.getstoryflow.diagrams.production',
                 Item: {
@@ -357,7 +371,7 @@ const copyDiagram = (req, res) => {
                     console.log(err);
                     res.sendStatus(err.statusCode);
                 } else {
-                    insertDiagramRow(new_diagram_id, old_diagram_id)
+                    insertDiagramRow(new_diagram_id, old_diagram_id, diagram_name)
                 }
             });
         } else {

@@ -69,12 +69,12 @@ class Module extends Component{
 						}
 					</div>
 					<CardBody className="text-center pb-0">
-						<img src={this.props.module.module_icon} className="card-icon border rounded mb-1 card-link" alt="Card icon" onClick={this.props.onClick}/>
+						<img src={this.props.module.module_icon} className="card-icon border rounded mb-3 card-link" alt="Card icon" onClick={this.props.onClick}/>
 						<h5 onClick={this.props.onClick} className="card-link">{this.props.module.title}</h5>
-						<p>{this.props.module.descr}</p>
-						<hr className="mb-0"/>
-						<div className="d-flex justify-content-center">
-							<p><i className="creator-name fas fa-user-circle mt-3"></i> Created by <br/> <i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
+						<p className="text-secondary">{this.props.module.descr}</p>
+						<hr className="mb-2"/>
+						<div className="d-flex creator-class">
+							<p className="text-secondary"><small className="small-blue">CREATED BY</small><br/><i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
 						</div>
                         {
 							this.state.hover

@@ -18,7 +18,7 @@
 }
 .login-logo{
     margin-bottom: 30px;
-    width: 170px;
+    width: 150px !important;
 }
 .login-btn{
     padding: 15px !important;

@@ -6,9 +6,19 @@
 .templates {
     font-size: 1rem;
     color: #CCC;
-    /*font-weight: normal;*/
     margin-top: 1.5rem;
-    /*margin-bottom: -10px;*/
+}
+
+#loading-diagram {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #fff;
+    font-size: 4rem;
+    height: 100%;
+    width: 100%;
+    z-index: 4
 }
 
 .TitleBar{
@@ -1625,16 +1635,16 @@ button.close{
 }
 .diagram-block .btn-secondary{
     background-color: #f0f3f7;
-    border: #f0f3f7 1px solid;
+    border: #f0f3f7 1px solid !important;
     color: #2b3950 !important;
 }
 .diagram-block .btn-secondary:hover{
     background-color: #E2E9EC !important;
-    border: #E2E9EC 1px solid;
+    border: #E2E9EC 1px solid !important;
 }
 .diagram-block .btn-secondary:active{
     background-color: #E2E9EC !important;
-    border: #d1d8e2 1px solid !important;
+/*    border: #d1d8e2 1px solid !important;*/
 }
 .diagram-block .btn-secondary.disabled {
     color: #fff !important;
@@ -1796,7 +1806,6 @@ button.close{
     /*padding: 5px 10px 0px 10px;*/
     padding-top: 2px;
     height: 20px;
-    width: 20px;
     padding-left: 6px;
     padding-right: 7px;
     text-align: center;

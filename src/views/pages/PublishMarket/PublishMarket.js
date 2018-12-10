@@ -145,9 +145,6 @@ class PublishMarket extends Component {
     }
 
     save(){
-        window.analytics.track('Save Draft Button clicked', {
-            userId: window.user_detail
-        })
         const s = this.state;
         const type = (s.type && s.type.value ? s.type.value : null);
         axios.patch('/marketplace/cert/' + this.state.skill_id, {
@@ -233,7 +230,6 @@ class PublishMarket extends Component {
     }
 
     componentDidMount() {
-        window.analytics.page();
         this.onLoad();
     }
 

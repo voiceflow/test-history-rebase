@@ -216,7 +216,7 @@ class API extends Component {
                         </DropdownMenu>
                     </InputGroupButtonDropdown>
                     <VariableInput
-                        className='form-control'
+                        className='form-control-border top-left w-100'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
                         updateRaw={(raw) => {

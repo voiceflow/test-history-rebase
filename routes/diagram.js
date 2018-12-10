@@ -301,10 +301,10 @@ const copyDiagram = (req, res) => {
         };
         docClient.delete(params, err => {
             if (err) {
-                console.log(err);
-                res.sendStatus(err.statusCode);
+                console.log(err)
+                res.sendStatus(err.statusCode)
             } else {
-                res.sendStatus(200);
+                res.sendStatus(200)
             }
         });
     }
@@ -329,8 +329,8 @@ const copyDiagram = (req, res) => {
     // TODO: subflows
     const purgeSubflows = (diagram) => {
         for (var i = 0; i < diagram.nodes.length; i++) {
-            let node = diagram.nodes[i]
-            if(node.extras.type === 'flow' && node.extras.diagram_id){
+            if(diagram.nodes[i].extras.type === 'flow' && diagram.nodes[i].extras.diagram_id){
+                diagram.nodes[i].name = 'Flow'
                 diagram.nodes[i].extras = {
                     type: 'flow',
                     diagram_id: null,
@@ -368,14 +368,14 @@ const copyDiagram = (req, res) => {
 
             docClient.put(params, async(err) => {
                 if (err) {
-                    console.log(err);
-                    res.sendStatus(err.statusCode);
+                    console.log(err)
+                    res.sendStatus(err.statusCode)
                 } else {
                     insertDiagramRow(new_diagram_id, old_diagram_id, diagram_name)
                 }
             });
         } else {
-            res.sendStatus(404);
+            res.sendStatus(404)
         }
     });
 }
@@ -388,16 +388,16 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
     };
 
     if(depth > 10){
-        resolve(413);
-        return;
+        resolve(413)
+        return
     }
 
     let testing = (skill_id==="TEST");
 
     docClient.get(params, async (err, data) => {
         if (err) {
-            console.error(err);
-            resolve(500);
+            console.error(err)
+            resolve(500)
         } else if (data.Item && (data.Item.skill === skill_id || testing)) {
 
             // Add to set of rendered diagrams to prevent looping
@@ -823,10 +823,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     };
                 } else {
-                    let nextLink = null;
+                    let nextLink = null
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                            [nextLink] = node.ports[j].links
                         }
                     }
                     if(nextLink){
@@ -836,41 +836,41 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                 } 
             }
-            let render_type;
+            let render_type
             if(!type){
-                render_type = testing ? 'testing' : 'live';
+                render_type = testing ? 'testing' : 'live'
             }else{
-                render_type = type;
+                render_type = type
             }
 
             let params = {
                 TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story
-            };
+            }
             docClient.put(params, err => {
                 if (err) {
-                    console.log(err);
-                    res.sendStatus(err.statusCode);
+                    console.log(err)
+                    res.sendStatus(err.statusCode)
                 } else if(testing || type === 'market') {
-                    resolve(200);
+                    resolve(200)
                 } else {
                     // Add the story to SQL as well
                     addStory(story, (err) => {
                         if(err){
-                            console.error(err);
+                            console.error(err)
                             resolve(500)
-                            return;
+                            return
                         }else{
-                            resolve(200);
+                            resolve(200)
                         }
                     })
                 }
             });
         } else {
-            resolve(404);
+            resolve(404)
         }
-    });
-});
+    })
+})
 
 const addStory = (story, cb) => {
     pool.query('SELECT 1 FROM diagrams WHERE id = $1 LIMIT 1', [story.id], (err,res) => {
@@ -878,54 +878,53 @@ const addStory = (story, cb) => {
             pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', 
                 [story.id, story.name, story.skill_id], (err,res) => {
                 if(err) {
-                    cb(err);
+                    cb(err)
                 }else{
-                    cb(false);
+                    cb(false)
                 }
             })
         }else{
             pool.query('UPDATE diagrams SET name = $1 WHERE id = $2', 
                 [story.name, story.skill_id], (err,res) => {
                 if(err) {
-                    cb(err);
+                    cb(err)
                 }else{
-                    cb(false);
+                    cb(false)
                 }
             })
         }
-    });
+    })
 }
 
 const publish = (req, res) => {
     if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
-        res.sendStatus(401);
-        return;
+        return res.sendStatus(401)
     }
 
-    let skill_id = hashids.decode(req.params.skill_id)[0];
+    let skill_id = hashids.decode(req.params.skill_id)[0]
 
     pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
         if(err || result.rows.length === 0){
-            return res.sendStatus(500);
+            return res.sendStatus(500)
         }else if(result.rows[0].creator_id !== req.user.id){
-            return res.sendStatus(401);
+            return res.sendStatus(401)
         }
 
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
-        res.sendStatus(status);
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id)
+        res.sendStatus(status)
     })
-};
+}
 
 const publishTest = async (req, res) => {
     if (!req.user || !req.params.diagram_id) {
-        res.sendStatus(401);
+        res.sendStatus(401)
         return;
     }
 
-    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST');
+    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST')
 
-    res.sendStatus(status);
-};
+    res.sendStatus(status)
+}
 
 module.exports = {
     updateName: updateName,

@@ -51,15 +51,14 @@ class Menu extends PureComponent {
             let flow = this.props.diagrams[index]
             if(flow.name !== name){
                 // Make sure that names are unique
-                for(let diagram of this.props.diagrams){
-                    if(diagram.name === name){
-                        return this.setState({
-                            confirm: {
-                                text: 'Flow names must be unique',
-                                confirm: () => this.setState({confirm: null})
-                            }
-                        })
-                    }
+                let find = this.props.diagrams.find(d => d.name === name)
+                if(find){
+                    return this.setState({
+                        confirm: {
+                            text: 'Flow names must be unique',
+                            confirm: () => this.setState({confirm: null})
+                        }
+                    })
                 }
 
                 let old_name = flow.name
@@ -88,12 +87,20 @@ class Menu extends PureComponent {
 
         this.props.changeLoading(true)
         const copy = (save=true) => {
-            let new_name = flow.name + ' (copy)'
-            axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(new_name)}`)
+
+            let new_flow_name = flow.name + ' (COPY)'
+            let index = 1
+            const exists = (name) => this.props.diagrams.find(d => d.name === name)
+            while(exists(new_flow_name)){
+                new_flow_name = `${flow.name} (COPY ${index})`
+                index++
+            }
+
+            axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(new_flow_name)}`)
             .then((res) => {
                 this.props.diagrams.push({
                     id: res.data,
-                    name: new_name
+                    name: new_flow_name
                 })
                 this.props.enterFlow(res.data, save)
             })

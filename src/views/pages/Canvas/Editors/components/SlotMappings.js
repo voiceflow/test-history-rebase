@@ -17,22 +17,28 @@ class SlotMappings extends Component {
 
     static getDerivedStateFromProps(props, current_state) {
         if (current_state.slots !== props.slots) {
-          let new_slot_options = new Set()
+          let already_added = new Set()
+          let new_slot_options = []
           props.slot_options.forEach( slot_option_list => {
             slot_option_list.forEach(o => {
-                if (typeof o === "string") {
-                    new_slot_options.add({
-                        label: '[' + o + ']',
-                        value: o
-                    })
-                } else {
-                    const slot = _.find(props.slots, { key: o })
-                    if (slot) {
-                        new_slot_options.add({
-                            label: '[' + slot.name + ']',
-                            value: o
+                if (!already_added.has(o)) {
+                    if (typeof o === "string") {
+                        new_slot_options.push({
+                            label: '[' + o + ']',
+                            value: o,
+                            key: o
                         })
+                    } else {
+                        const slot = _.find(props.slots, { key: o })
+                        if (slot) {
+                            new_slot_options.push({
+                                label: '[' + slot.name + ']',
+                                value: o,
+                                key: o
+                            })
+                        }
                     }
+                    already_added.add(o)
                 }
             })
           })

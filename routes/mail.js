@@ -1,20 +1,16 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
-sgMail.setSubstitutionWrappers('-','-');
 
 exports.sendOnboarding = (email, name, cb) => {
     if (typeof name !== 'string') {
         name = null;
     }
-    // console.log(codesArr[0]);
-    // console.log(codesArr[1]);
-    // console.log(codesArr[2]);
 
     let data = {
         'template_id': 'd-9ba04cdf70894f489147057e71d2c5c9',
         'from': {
-            'email': 'braden@getstoryflow.com',
-            'name': 'Braden from Storyflow'
+            'email': 'braden@getvoiceflow.com',
+            'name': 'Braden from VoiceFlow'
         },
         'personalizations': [
             {
@@ -23,40 +19,50 @@ exports.sendOnboarding = (email, name, cb) => {
                         'email': email,
                         'name': name,
                     }
-                ]
+                ],
+                "dynamic_template_data": {
+                    name: name
+                }
             }
         ],
         'reply_to': {
-            'email': 'braden@getstoryflow.com',
-            'name': 'Braden from Storyflow'
+            'email': 'braden@getvoiceflow.com',
+            'name': 'Braden from VoiceFlow'
         }
     };
-
-    // "dynamic_template_data": {
-    //     "CODE1": codesArr[0],
-    //     "CODE2": codesArr[1],
-    //     "CODE3": codesArr[2]
-    // }
-
-    // request = {
-    //     body: data,
-    //     method: 'POST',
-    //     url: '/v3/mail/send'
-    // };
 
     try{
         sgMail.send(data);
     }catch(err){
         console.log(JSON.stringify(err.response.body));
     }
-    // client.request(request)
-    //     .then(([
-    //         response,
-    //         body
-    //     ]) => {
-    //         cb(response);
-    //     })
-    //     .catch(err => {
-    //         console.log(JSON.stringify(err.response.body));
-    //     });
+};
+
+exports.sendResetEmail = async (name, user_id, random, email) => {
+    if (typeof name !== 'string') {
+        name = null
+    }
+
+    let data = {
+        'template_id': 'd-cf3cc12b32b64519a7c2a55568957c3b',
+        'from': {
+            'email': 'reset@getvoiceflow.com',
+            'name': 'VoiceFlow Team'
+        },
+        'personalizations': [
+            {
+                'to': [
+                    {
+                        'email': email
+                    }
+                ],
+                "dynamic_template_data":{
+                    link: `${random}${user_id}`,
+                    name: name
+                }
+            }
+        ]
+    }
+    
+    await sgMail.send(data)
 };

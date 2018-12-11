@@ -22,14 +22,18 @@ import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
-import {Tooltip} from 'react-tippy';
-import {Button} from 'reactstrap';
+import {
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
+} from 'reactstrap';
 
 import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
 
 class Editor extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             node: this.props.node,
@@ -37,20 +41,16 @@ class Editor extends Component {
             templates: [],
             permission_options: [],
             slot_types: SLOT_TYPES,
-            built_ins: BUILT_IN_INTENTS
-        };
+            built_ins: BUILT_IN_INTENTS,
+            dropdownOpen: false
+        }
 
-        this.BlockViewer = this.BlockViewer.bind(this);
-        this.renderTitle = this.renderTitle.bind(this);
+        this.BlockViewer = this.BlockViewer.bind(this)
+        this.renderTitle = this.renderTitle.bind(this)
+        // this.copyFlow = this.copyFlow.bind(this)
     }
 
     componentDidMount() {
-        // $('*').keypress(function(e) {
-        //     if ((e.keyCode === 13 || e.which === 13) && e.target.name !== 'inputs' && !e.target.name.endsWith('Text')) {
-        //         e.preventDefault();
-        //     }
-        // });
-
         axios.get('/voices')
         .then(res => {
             this.setState({
@@ -131,6 +131,8 @@ class Editor extends Component {
     }
 
     BlockViewer() {
+        let variables = this.props.global_variables.concat(this.props.variables);
+
         switch(this.state.node.extras.type) {
             case 'story':
                 return <Story/>;
@@ -144,37 +146,39 @@ class Editor extends Component {
                     />
             case 'interaction':
                 return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
+            case 'combine':
             case 'line':
             case 'audio': 
             case 'multiline':
+                // DEPRECATE OLD LINE BLOCKS
+                if(this.state.node.extras.type !== 'combine'){
+                    let node = this.state.node
+                    node.extras.type = 'combine'
+                    this.setState({node: node})
+                }
                 return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
-                return <SetBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'variable':
-                return <Variable node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                return <Variable node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'if':
+                // DEPRECATE OLD IF BLOCK
                 if(this.state.node.extras.expressions){
-                    return <IfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <IfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }else{
-                    return <OldIfBlock node={this.state.node} variables={this.props.variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }
-            case 'listen':
-                return <Listen node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'random':
-                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} />
-            case 'retry':
-                return <Retry node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
-            case 'ending':
-                return <Ending node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
-                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 } else {
-                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 }
             case 'capture':
-                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'command':
                 return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'flow':
@@ -186,17 +190,17 @@ class Editor extends Component {
                     enterFlow={this.props.enterFlow}
                 />
             case 'api':
-                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables}/>
+                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'module':
-                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} user_modules={this.props.user_modules}/>
+                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} templates={this.state.templates}/>
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.state.templates}/>
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={this.props.variables} permission_options={this.state.permission_options}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
             default:
-              return null;
+              return null
         }
     }
 
@@ -207,14 +211,17 @@ class Editor extends Component {
             case 'module':
                 return (<div id="label">{this.state.node.name}</div>)
             case 'flow':
-                return (<div id="label">
-                    {this.state.node.extras.diagram_id ? 
-                    (()=>{ 
-                        let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id); 
-                        return (block ? block.name : 'New Flow') 
-                    })() : 
-                    "Add Flow"}
-                </div>);
+                if(this.state.node.extras.diagram_id){
+                    let block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
+                    if(block && block.name !== this.state.node.name){
+                        let node = this.state.node
+                        node.name = block.name
+                    }
+                    return <div id="label">
+                        {block ? block.name : 'New Flow'}
+                    </div>
+                }
+                return <div id="label">Add Flow</div>
             default:
               return (<input id="label" placeholder="Block Label" 
                     type="text"
@@ -226,12 +233,38 @@ class Editor extends Component {
         }
     }
 
+    // copyFlow(){
+    //     if(this.state.node.extras.diagram_id){
+    //         console.log("Copy this flow")
+    //         console.log(this.state.node)
+    //         axios.get(`/diagram/copy/${this.state.node.extras.diagram_id}`)
+    //         .then(res => {
+    //             console.log(res.data)
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+    //             window.alert('Error copying flow')
+    //         })
+    //     }
+    // }
+
     render() {
 
         const type = this.state.node ? this.state.node.extras.type : null;
-
+        // <Tooltip
+        //     position="bottom"
+        //     interactive={true}
+        //     offset={-30}
+        //     arrow
+        //     hideOnClick={false}
+        //     html={<React.Fragment>
+        //         Delete Block
+        //         <br/>
+        //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
+        //     </React.Fragment>}
+        // >
         return (
-            <div id="Editor" className={(this.props.open && type ? 'open':'')}>
+            <div id="Editor" className={(this.props.open && type ? 'open':'')} onClick={this.props.onClick}>
                 {type ?
                     <form onSubmit={(e) => e.preventDefault()} className="controls" key={this.state.node.id}>
                         <div className="top">
@@ -241,22 +274,25 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
-                                    <Tooltip
-                                        position="bottom"
-                                        interactive={true}
-                                        offset={-30}
-                                        arrow
-                                        hideOnClick={false}
-                                        html={<React.Fragment>
-                                            Delete Block
-                                            <br/>
-                                            <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
-                                        </React.Fragment>}
-                                    >
-                                        <div className="delete-block">
-                                            <i className="fas fa-trash"/>
-                                        </div>
-                                    </Tooltip>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle className="delete-block" nav tag="div">
+                                            <i className="fas fa-cog"/>
+                                        </DropdownToggle>
+                                        <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-3px', marginTop: '5px'}}>
+                                            <DropdownItem header>
+                                                Block Options
+                                            </DropdownItem>
+                                            {/*this.state.node.extras.type === 'flow' && 
+                                                <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
+                                            }
+                                            <DropdownItem onClick={this.props.copyNode} className="pointer">
+                                                <i className="fas fa-copy text-muted"/> Copy
+                                            </DropdownItem>
+                                            <DropdownItem onClick={this.props.removeNode} className="pointer">
+                                                <i className="fas fa-file-times text-muted"/> Delete
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
                                 </div>
                             </div>
                         </div>

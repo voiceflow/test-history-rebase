@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Button, Input } from 'reactstrap';
+import React, { Component } from 'react'
+import { Input } from 'reactstrap'
 import "./onboarding.css"
-import axios from 'axios';
-import company_sizes from './../../../services/CompanySize';
-import industries from './../../../services/Industries';
-import Select from 'react-select';
+import axios from 'axios'
+import company_sizes from './../../../services/CompanySize'
+import industries from './../../../services/Industries'
+import Select from 'react-select'
 
 class Onboarding extends Component{
 	constructor(props){
@@ -27,15 +27,15 @@ class Onboarding extends Component{
 	}
 
 	componentDidMount(){
-		axios.get('/onboard')
-		.then(res => {
-			if(res.data){
-				this.props.history.push('/');
-			}
-		})
-		.catch(err => {
-			console.log(err);
-		});
+		// axios.get('/onboard')
+		// .then(res => {
+		// 	if(res.data){
+		// 		this.props.history.push('/');
+		// 	}
+		// })
+		// .catch(err => {
+		// 	console.log(err);
+		// });
 	}
 
 	handleChange(event){
@@ -106,22 +106,22 @@ class Onboarding extends Component{
 		if(this.state.usage_type === ""){
 			content = 
 			<React.Fragment>
-				<img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
-					height="25" className="mb-3 mt-3"
+				<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
+					height="25"
 				/>
 		      	<p className="modal-bg-txt text-center mb-2">Hi, {this.props.user.name} 😊</p>
 		      	<p className="modal-txt text-center mb-4">Help us tailor your experience. What do you plan on using Voiceflow for?</p>
 		      	<div className="row justify-content-center">
 		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "WORK"})}}>Work</button> 
-		      		<button className="btn-info mr-3" onClick={this.submitOnboardingSurvey}>Personal</button> 
+		      		<button className="btn-info mr-3" onClick={() => this.props.history.push('/')}>Personal</button> 
 		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "EDUCATION"})}}>Education</button> 
 		      	</div>
 			</React.Fragment>
 		} else if(this.state.usage_type === "WORK"){
 			content =
 			<React.Fragment>
-				<img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
-					height="25" className="mb-3 mt-3"
+				<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
+					height="25"
 				/>
 				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
 				{this.state.failed?
@@ -154,8 +154,8 @@ class Onboarding extends Component{
 		} else if(this.state.usage_type === "EDUCATION"){
 			content =
 			<React.Fragment>
-				<img className='logo' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
-					height="25" className="mb-3 mt-3"
+				<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
+					height="25"
 				/>
 				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
 				{this.state.failed?

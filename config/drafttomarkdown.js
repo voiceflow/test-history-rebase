@@ -26,8 +26,7 @@ const _escape = function (word) {
     if (typeof(word) === "string") {
         // word = word.replace(/</g, '&lt;');
         // word = word.replace(/>/g, '&gt;');
-        word = word.replace(/"/g, '\"');
-        word = word.replace(/'/g, '\'');
+        word = word.replace(/"/g, '\"').replace(/'/g, '\'').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/&/g, 'ampersand')
         return word;
     }
     if (typeof(word) === "number") {
@@ -42,149 +41,7 @@ const _escape = function (word) {
 // A map of draftjs block types -> markdown open and close characters
 // Both the open and close methods must exist, even if they simply return an empty string.
 // They should always return a string.
-const StyleItems = {
-  // BLOCK LEVEL
-  'unordered-list-item': {
-    open: function () {
-      return '- ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'ordered-list-item': {
-    open: function (block, number = 1) {
-      return `${number}. `;
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'blockquote': {
-    open: function () {
-      return '> ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'header-one': {
-    open: function () {
-      return '# ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'header-two': {
-    open: function () {
-      return '## ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'header-three': {
-    open: function () {
-      return '### ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'header-four': {
-    open: function () {
-      return '#### ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'header-five': {
-    open: function () {
-      return '##### ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'header-six': {
-    open: function () {
-      return '###### ';
-    },
-
-    close: function () {
-      return '';
-    }
-  },
-
-  'code-block': {
-    open: function (block) {
-      return '```' + (block.data.language || '') + '\n';
-    },
-
-    close: function () {
-      return '\n```';
-    }
-  },
-
-  // INLINE LEVEL
-  'BOLD': {
-    open: function () {
-      return '**';
-    },
-
-    close: function () {
-      return '**';
-    }
-  },
-
-  'ITALIC': {
-    open: function () {
-      return '_';
-    },
-
-    close: function () {
-      return '_';
-    }
-  },
-
-  'STRIKETHROUGH': {
-    open: function () {
-      return '~~';
-    },
-
-    close: function () {
-      return '~~';
-    }
-  },
-
-  'CODE': {
-    open: function () {
-      return '`';
-    },
-
-    close: function () {
-      return '`';
-    }
-  }
-};
+const StyleItems = {}
 
 // A map of draftjs entity types -> markdown open and close characters
 // entities are different from block types because they have additional data attached to them.
@@ -381,9 +238,8 @@ function renderBlock(block, index, rawDraftObject, options) {
       } else {
         // Escaping inline markdown characters
         if (options.alexa) {
-          character = character.replace(/&/g, 'ampersand');
+          character = _escape(character);
         }
-        character = _escape(character);
 
         // Special escape logic for blockquotes and heading characters
         // if (characterIndex === 0 && character === '#' && block.text[1] && block.text[1] === ' ') {

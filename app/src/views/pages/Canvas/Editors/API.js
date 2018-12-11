@@ -15,13 +15,20 @@ class API extends Component {
 
         let node = props.node;
         
+        // DEPRECATE turning from string to draftjs for SUPER old api blocks
         if(node.extras.mapping){
             node.extras.mapping = node.extras.mapping.map((choice) => {
                 if(typeof choice.path === 'string'){
                     return {
                         path: convertToRaw(ContentState.createFromText(choice.path)),
-                        var: choice.var
+                        var: choice.var,
+                        index: randomstring.generate(10)
                     }
+                }else if(!choice.index){
+                    return {
+                        index: randomstring.generate(10),
+                        ...choice
+                    };
                 }else{
                     return choice;
                 }
@@ -32,7 +39,6 @@ class API extends Component {
         // props.variables is for variables of the current diagram
         this.state = {
             node: node,
-            variables: this.props.variables,
             dropdownOpen: false,
             type: 'headers',
             popoverOpen: false
@@ -116,6 +122,7 @@ class API extends Component {
     handleAddPairMapping(){
         var node = this.state.node;
         node.extras.mapping.push({
+            index: randomstring.generate(10),
             path: '',
             var: ''
         });
@@ -249,7 +256,7 @@ class API extends Component {
                     onAdd={() => this.handleAddPairMapping()}
                     onRemove={(e, i) => this.handleRemovePairMapping(i)}
                     onChange={this.handleKVMappingChange}
-                    variables={this.state.variables}
+                    variables={this.props.variables}
                 />
 
             </React.Fragment>

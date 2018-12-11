@@ -3,7 +3,7 @@ import Module from './Module';
 import BannerCarousel from './BannerCarousel';
 import Masonry from 'react-masonry-component';
 import './Marketplace.css';
-import { ButtonGroup, Button } from 'reactstrap';
+import { ButtonGroup } from 'reactstrap';
 
 import axios from 'axios';
 

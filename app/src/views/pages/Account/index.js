@@ -1,33 +1,83 @@
-import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import AuthenticationService from './../../../services/Authentication';
-import './Account.css';
-import axios from 'axios';
+import React, { Component } from 'react'
+import AuthenticationService from './../../../services/Authentication'
+import ConfirmModal from './../../components/Modals/ConfirmModal'
+import {Button, Modal, ModalHeader, ModalBody, Row, Col, Alert} from 'reactstrap'
+import {Elements} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm'
+import axios from 'axios'
+import './Account.css'
+
+const UNLINKED = 0
+const LOADING = 1
+const LINKED = 2
+
+const STATUS = {
+  0: {name: "Community (Free)", price: "0"},
+  1: {name: "Basic", price: "29"},
+  10: {name: "Admin", price: "100000000"}
+}
+
+const options = [
+  {
+    plan: 1,
+    name: "Basic",
+    features: [
+      "In Skill Purchases (Coming Soon)",
+      "Voiceflow Emails",
+      "Basic analytics (Coming Soon)",
+      "Priority Intercom support",
+      "50,000 utterances/mo"
+    ]
+  }
+]
 
 class Account extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      login: (this.props.location.pathname === '/login'),
-      email: "",
-      password: "",
-      r_name: "",
-      r_email: "",
-      r_password: "",
-      r_code: "",
-      login_error: null,
-      signup_error: null,
-      login_timeout: null,
-      signup_timeout: null
+      upgrade_modal: false,
+      selected_plan: 1,
+      amzn: LOADING,
+      confirm: null
     };
 
-    this.openLogin = this.openLogin.bind(this);
-    this.openRegister = this.openRegister.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.signupSubmit = this.signupSubmit.bind(this);
-    this.loginSubmit = this.loginSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.toggle = this.toggle.bind(this)
+    this.renderDescription = this.renderDescription.bind(this)
+    this.resetAmazon = this.resetAmazon.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+
+  resetAmazon() {
+    this.setState({
+      confirm: {
+        text: <Alert color="danger" className="mb-0">
+          <i className="fas fa-exclamation-triangle fa-2x"/><br/>
+          Resetting your Amazon Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
+        </Alert>,
+        confirm: () => {
+          this.setState({confirm: null, amzn: LOADING}, () => {
+            axios.delete('/session/amazon').then(()=>{
+              this.setState({amzn: UNLINKED})
+            })
+            .catch(err => {
+              this.setState({amzn: LINKED})
+              alert('Failed to Delete Amazon Account Association =')
+            })
+          })
+        }
+      }
+    })
+  }
+
+  componentDidMount() {
+      AuthenticationService.AmazonAccessToken(token => {
+          this.setState({
+              amzn: !!token ? LINKED : UNLINKED
+          });
+      });
   }
 
   handleChange = event => {
@@ -36,143 +86,106 @@ class Account extends Component {
     });
   }
 
-  openLogin(e) {
-    e.preventDefault();
+  toggle() {
     this.setState({
-      login: true
+      upgrade_modal: !this.state.upgrade_modal
     });
-    this.props.history.push('/login' + this.props.location.search);
-    return false;
   }
 
-  openRegister(e) {
-    e.preventDefault();
-    this.setState({
-      login: false
-    });
-    this.props.history.push('/signup' + this.props.location.search);
-    return false;
+  renderDescription(){
+    let option = options.find(o => o.plan === this.state.selected_plan)
+    if(option){
+      return <div>
+        {option.features.map((feature, i) => <div className="feature-item" key={i}><i className="fas fa-check-circle"/>{feature}</div>)}
+      </div>
+    }
+    return null
   }
 
-  signupSubmit(e) {
-    e.preventDefault();
-    AuthenticationService.signup({
-      name: this.state.r_name,
-      email: this.state.r_email,
-      password: this.state.r_password,
-      code: this.state.r_code,
-    }, (error) => {
-      if(error){
-        this.setState({
-          signup_error: error.response.data
-        });
-        if(this.state.signup_timeout){
-          clearTimeout(this.state.signup_timeout);
-        }
-        this.setState({signup_timeout: setTimeout(function() {
-          this.setState({signup_error: false});
-        }.bind(this), 5000)})
-      }else{
-        this.props.history.push('/onboarding');
-      }
-    });
-    return false;
+  renderButton(stage, action){
+    switch(stage){
+      case LOADING:
+        return <Button color="clear"><span className="loader"/></Button>
+      case UNLINKED:
+        return <Button color="clear" disabled>Unlinked</Button>
+      default:
+        return <Button onClick={action}>Reset</Button>
+    }
   }
 
-  loginSubmit(e) {
+  logout(e) {
     e.preventDefault();
-    AuthenticationService.login({
-      email: this.state.email,
-      password: this.state.password,
-    }, (error) => {
-      if(error){
-        this.setState({
-          login_error: error.response.data
-        });
-        if(this.state.login_timeout){
-          clearTimeout(this.state.login_timeout);
-        }
-        this.setState({login_timeout: setTimeout(function() {
-          this.setState({login_error: false});
-        }.bind(this), 5000)})
-      }else{
-        axios.get('/onboard')
-        .then(res => {
-          if(res.data){
-            this.props.history.push('/');
-          } else {
-            this.props.history.push('/onboarding');
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      }
+    AuthenticationService.logout(() => {
+      this.props.history.push('/login');
     });
     return false;
   }
 
   render() {
-    let login_error;
-    if(this.state.login_error){
-      login_error = (<Alert color="danger"> {this.state.login_error} </Alert>);
-    }
-    let signup_error;
-    if(this.state.signup_error){
-      signup_error = (<Alert color="danger"> {this.state.signup_error} </Alert>);
-    }
-    return (
-                      
-      <div className="d-flex flex-row align-items-center justify-content-center" id="main">
-        <div className={"login-card " + (this.state.login ? null : "open-register")}>
-            <div id="side-form">
-              <Form id="login-form" onSubmit={this.loginSubmit}>
-                <img className="login-logo" src="/logo.svg" alt="logo"/>
-                <div className="p-4 p-md-5">
-                  {login_error}
-                  <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6"/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
-                  </FormGroup>
-                  <Button block className="login-btn" type="submit">Sign In</Button>
-                  <hr/>
-                  <p>Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></p>
+    return <div className='Window'>
+              <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})} warning/>
+              <div className="subheader">
+                  <div className="container space-between">
+                      <span className="subheader-title">
+                          <b>Account</b>
+                          <div className="hr-label">
+                              <small><i className="far fa-user mr-1"></i></small>{' '}
+                              {this.props.user.name}{' '}
+                          </div>
+                      </span>
+                  </div>
+              </div>
+              <Modal isOpen={this.state.upgrade_modal} toggle={this.toggle} size="xl">
+                <ModalHeader toggle={this.toggle}>Upgrade Account</ModalHeader>
+                <ModalBody>
+                  <Row className="py-md-4">
+                    <Col sm="3">
+                      <span className="text-muted">Plan</span>
+                      {options.map((option, i) => {
+                        return <Button key={i}
+                            disabled={this.state.selected_plan === option.plan} 
+                            color={this.state.selected_plan === option.plan ? undefined : "clear"} 
+                            block 
+                            className="mt-2">
+                          {option.name}
+                          </Button>
+                      })}
+                    </Col>
+                    <Col sm="4" className="border-left">
+                      <span className="text-muted">Description</span>
+                      {this.renderDescription()}
+                    </Col>
+                    <Col sm="5" className="border-left">
+                      <div className="text-muted">Payment</div>
+                      <Elements>
+                        <CheckoutForm user={this.props.user} plan={STATUS[this.state.selected_plan]} selected={this.state.selected_plan} logout={this.logout}/>
+                      </Elements>
+                    </Col>
+                  </Row>
+                </ModalBody>
+              </Modal>
+              <div className="container my-5 pt-5">
+                <h5 className="ml-3">Status</h5>
+                <div className="card mb-5">
+                  <div className="p-4 space-between">
+                    <h4 className="mb-0 text-muted">{STATUS[this.props.user.admin].name}</h4>
+                    <div className="super-center">
+                      {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
+                      {this.props.user.admin < 1 && <Button onClick={this.toggle}>Upgrade</Button>}
+                    </div>
+                  </div>
                 </div>
-              </Form>
-              <Form id="signup-form" onSubmit={this.signupSubmit}>
-                  <img className="login-logo" src="/logo.svg" alt="logo"/>
-                <div className="p-4 p-md-5">
-                  {signup_error}
-                  <FormGroup>
-                    <Label for="name">Name</Label>
-                    <Input type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3"/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6"/>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8"/>
-                  </FormGroup>
-                  <Button block className="login-btn" type="submit">Create Account</Button>
-                  <hr/>
-                  <p>Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></p>
+                <h5 className="ml-3">Developer Integration</h5>
+                <div className="card mb-5">
+                  <div className="p-4 space-between">
+                    <h4 className="mb-0 text-muted">Amazon</h4>
+                    <div className="super-center">
+                      {this.renderButton(this.state.amzn, this.resetAmazon)}
+                    </div>
+                  </div>
                 </div>
-              </Form>
-            </div>
-        </div>
-      </div>
-    );
-    // <FormGroup>
-    // <Label for="code">Invite Code</Label>
-    // <Input type="text" name="r_code" onChange={this.handleChange} placeholder="XXXXXXXXX" required minLength="6"/>
-    // </FormGroup>
-    // <p>Doesn't have an Access Code? <a href="https://getvoiceflow.com">Request access</a></p>
+              </div>
+          </div>
   }
 }
 

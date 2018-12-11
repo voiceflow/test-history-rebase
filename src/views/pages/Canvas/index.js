@@ -295,10 +295,10 @@ class Canvas extends Component {
 
         this.setState({
             engine: engine
-        });
+        });    
     }
 
-    handleTemplateIntent(module){
+    handleTemplateChoice(module){
         this.toggleTemplateConfirm(module);
     }
 
@@ -760,6 +760,8 @@ class Canvas extends Component {
                 })
             }
 
+            console.log(global_variables, "GLOBAL VARIABLES")
+
             this.setState({
                 skill: skill,
                 global_variables: global_variables
@@ -840,6 +842,7 @@ class Canvas extends Component {
     }
 
     setGlobalVariables(variables) {
+        console.log("SET GLOBALS", variables)
         this.setState({
             global_variables: variables,
             saved: false

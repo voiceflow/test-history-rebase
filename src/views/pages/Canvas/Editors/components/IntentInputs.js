@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './IntentInputs.css'
 import { Collapse } from 'reactstrap'
-
 import { MentionsInput, Mention } from 'react-mentions'
+import { Input } from 'reactstrap';
 
 const _ = require('lodash')
 
@@ -14,6 +14,9 @@ class IntentInputs extends Component {
             intents: this.props.intents,
             text_entries: this.props.intents ? Array(this.props.intents.length).fill('') : [],
             open: this.props.open,
+            input_error: this.props.intents ? Array(this.props.intents.length).fill('') : [],
+            name_inputs: this.props.intents.map(intent => intent.name),
+            search_value: ""
         };
         this.toggleCollapse = this.toggleCollapse.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -23,6 +26,7 @@ class IntentInputs extends Component {
         this.onAddIntent = this.onAddIntent.bind(this);
         this.onRemoveIntent = this.onRemoveIntent.bind(this)
         this.onNameSave = this.onNameSave.bind(this)
+        this.onSearchChange = this.onSearchChange.bind(this)
     }
 
     _getSlotKeys(input) {
@@ -52,36 +56,55 @@ class IntentInputs extends Component {
     componentWillReceiveProps(props) {
         this.setState({
             intents: props.intents,
-            open: props.open
+            open: props.open,
+            name_inputs: this.props.intents.map(intent => intent.name)
         });
     }
 
     handleKeyPress(e, i) {
         // Enter key pressed
+        // Add utterance
         if(e.charCode==13){
             e.preventDefault();
+
+            const all_utterances = []
             const intents = this.state.intents
+
+            intents.forEach(intent => {
+                intent.inputs.forEach(input => {
+                    all_utterances.push(input.text.toLowerCase())
+                })
+            })
+
             const intent = intents[i];
             const text_entries = this.state.text_entries;
-            const newValue = text_entries[i]
+            const newValue = text_entries[i].trim()
             const slot_keys= this._getSlotKeys(newValue)
 
-            const utterance = {
-              slots: Array.from(slot_keys),
-              text: newValue
-            }
-
-            if (!Array.isArray(intent.inputs)) {
-                intent.inputs = [];
-            }
-            if (newValue) {
-                intent.inputs.push(utterance);
+            if (all_utterances.includes(newValue.toLowerCase())) {
+                this.props.onError('Duplicate utterances are not allowed!')
                 text_entries[i] = '';
+                this.setState({
+                    text_entries: text_entries
+                })
+            } else {
+                const utterance = {
+                    slots: Array.from(slot_keys),
+                    text: newValue
+                  }
+      
+                  if (!Array.isArray(intent.inputs)) {
+                      intent.inputs = [];
+                  }
+                  if (newValue) {
+                      intent.inputs.push(utterance);
+                      text_entries[i] = '';
+                  }
+                  this.setState({
+                      intents: intents,
+                      text_entries: text_entries
+                  }, () => {this.props.onChange(intents, this.state.open)})
             }
-            this.setState({
-                intents: intents,
-                text_entries: text_entries
-            }, () => {this.props.onChange(intents, this.state.open)})
         }
     }
 
@@ -104,16 +127,46 @@ class IntentInputs extends Component {
 
     onNameChange(e, i) {
         e.preventDefault()
-        const intents = this.state.intents;
-        intents[i].name = e.target.value
+        const input = e.target.value.toLowerCase()
+        const re = /^[_a-z]+$/g
+        const input_error = this.state.input_error
+        if (!re.test(input) && input.length > 0) {
+            input_error[i] = 'Intent names can only contain lowercase letters and underscores!'
+        } else {
+            input_error[i] = ''
+        }
+        const name_inputs = this.state.name_inputs;
+        name_inputs[i] = input
         this.setState({
-            intents: intents
+            name_inputs: name_inputs,
+            input_error: input_error
         })
     }
 
-    onNameSave(e) {
+    onNameSave(e, i) {
         e.preventDefault()
-        this.props.onChange(this.state.intents, this.state.open)
+        const intents = this.state.intents
+        if (intents.map(i => i.name).filter((v, ind) => ind !== i).includes(e.target.value)) {
+            this.props.onError('An intent already exists with this name!')
+            this.setState({
+                name_inputs: this.props.intents.map(intent => intent.name)
+            })
+        } else if (this.state.input_error[i] !== ''){
+            const input_error = this.state.input_error
+            input_error[i] = ''
+            this.props.onError('Intent names can only contain lowercase letters and underscores!')
+            this.setState({
+                name_inputs: this.props.intents.map(intent => intent.name),
+                input_error: input_error
+            })
+        } else {
+            const intents = this.state.intents
+            intents[i].name = e.target.value
+            this.setState({
+                intents: intents
+            })
+            this.props.onChange(this.state.intents, this.state.open)
+        }
     }
 
     onAddIntent(e) {
@@ -129,6 +182,12 @@ class IntentInputs extends Component {
         const text_entries = this.state.text_entries
         text_entries.splice(i, 1)
         this.props.onRemove(e, i)
+    }
+
+    onSearchChange(e) {
+        this.setState({
+            search_value: e.target.value.toLowerCase()
+        })
     }
 
     _getUtterancesWithSlotNames(utterances, slots) {
@@ -173,40 +232,48 @@ class IntentInputs extends Component {
 
         return (
             <div className="w-100">
+            <div>
+                <Input type="search" onChange={this.onSearchChange} id="searchIntents" placeholder="Search Intents" className="mb-3"></Input>
+            </div>
                 {Array.isArray(this.state.intents) ? this.state.intents.map((intent, i) => {
-                    return (
-                        <div className="interaction-block" key={i}>
-                            <a>
-                                <div className="interaction-title">
-                                    <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
-                                    <input placeholder="Enter Intent Name" 
-                                        type="text"
-                                        value={intent.name}
-                                        onChange={(e) => {this.onNameChange(e, i)}}
-                                        onBlur={(e) => {this.onNameSave(e)}}
-                                        onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
-                                        className="interaction-name-input"
+                    if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
+                        return (
+                            <div className="interaction-block" key={i}>
+                                <a>
+                                    <div className="interaction-title">
+                                        <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                        <input placeholder="Enter Intent Name" 
+                                            type="text"
+                                            value={this.state.name_inputs[i]}
+                                            onChange={(e) => {this.onNameChange(e, i)}}
+                                            onBlur={(e) => {this.onNameSave(e, i)}}
+                                            onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
+                                            className="interaction-name-input"
+                                        />
+                                        <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                                    </div>
+                                </a>
+                                <div className="input-error">{this.state.input_error[i]}</div>
+                                <Collapse isOpen={this.state.open[i]}>
+                                {renderUtterances(intent.inputs, i)}
+                                <MentionsInput className="input-area" 
+                                    markup='{{[__display__].__id__}}'
+                                    displayTransform={(id, display) => { return '[' + display + ']'}}
+                                    value={this.state.text_entries[i]}
+                                    onChange={(e) => {this.onTextChange(e.target.value, i)}}
+                                    onKeyPress={(e) => {this.handleKeyPress(e, i)}}
+                                    placeholder="What would a user say to select this intent? (Press Enter after typing out each example, press '[' to insert slots)" 
+                                    allowSpaceInQuery={true}>
+                                    <Mention
+                                        trigger="["
+                                        data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
                                     />
-                                    <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
-                                </div>
-                            </a>
-                            <Collapse isOpen={this.state.open[i]}>
-                            {renderUtterances(intent.inputs, i)}
-                            <MentionsInput className="input-area" 
-                                markup='{{[__display__].__id__}}'
-                                displayTransform={(id, display) => { return '[' + display + ']'}}
-                                value={this.state.text_entries[i]}
-                                onChange={(e) => {this.onTextChange(e.target.value, i)}}
-                                onKeyPress={(e) => {this.handleKeyPress(e, i)}}
-                                placeholder="What would a user say to select this intent? (Press Enter after typing out each example)" 
-                                allowSpaceInQuery={true}>
-                                <Mention
-                                    trigger="["
-                                    data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
-                                 />
-                            </MentionsInput>
-                            </Collapse>
-                        </div> )
+                                </MentionsInput>
+                                </Collapse>
+                            </div> )
+                    } else {
+                        return null
+                    }
                 }) : null}
                 <div><button className="btn btn-default btn-block" onClick={this.onAddIntent}><i className="far fa-plus"></i> Add Intent</button></div>
             </div>

@@ -230,8 +230,43 @@ class TestModal extends React.Component {
       this.setState({inputs: inputs});
   }
 
-  updateState(start=false){
+  async updateState(start=false){
     let data = this.state.story_state;
+    if (!data.amzn_id) {
+      data.amzn_id = this.props.amzn_id
+    }
+
+    if (!data.user_id) {
+      data.user_id = window.user_detail.id
+    }
+
+    if (!data.inv_name) {
+      data.inv_name = this.props.inv_name
+    }
+    
+    if (!data.intents) {
+      data.intents = this.props.intents
+    }
+
+    if (!data.slots) {
+      data.slots = this.props.slots
+    }
+
+    const nlc = this.props.testing_info.nlc
+
+    if (nlc) {
+      try {
+        await nlc.handleCommand(data.input)
+        const nlc_results = await this.props.testing_info.nlc_promise
+
+        data.detected_intent = {
+          intent: nlc_results.intent,
+          slots: nlc_results.slots
+        }
+      } catch (err) {
+        console.error("NLC NO MATCH")
+      }
+    }
 
     if(start){
       data.testing = {

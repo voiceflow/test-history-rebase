@@ -29,6 +29,7 @@ import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
 import { rejects } from 'assert';
 
+var NLC = require("natural-language-commander");
 const _ = require('lodash')
 
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
@@ -44,6 +45,60 @@ const generateID = () => {
         const v = c === "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
+}
+
+const _getUtterancesWithSlotNames = (utterances, slots) => {
+
+	const re = /(\{\{\[[^\}\{\[\]]+]\.(\d+)\}\})/g;
+	let m;
+
+	const utterance_text = utterances.map(e => e.text)
+
+	const new_utterances = utterance_text.map( input => {
+		let new_input = input
+		do {
+			m = re.exec(input)
+			if (m) {
+				const replace = m[1]
+				const key = m[2]
+				const slot =_.find(slots, { key: +key })
+				if (slot) {
+					let slot_name = _.find(slots, { key: +key }).name
+					slot_name = slot_name
+					new_input = new_input.replace(replace, `{${slot_name}}`)
+				} else {
+					return new_input
+				}
+			}
+		} while (m);
+		return new_input
+	})
+	return new_utterances
+}
+
+const _getSlotsForKeys = (keys, slots) => {
+	let key_set = new Set()
+
+	keys.forEach(key_arr => {
+		key_arr.forEach(key => {
+			key_set.add(key)
+		})
+	})
+
+	key_set = [...key_set]
+
+	return key_set.map(key => {
+        const slot = _.find(slots, {key: key})
+        let type = slot.type.value !== 'CUSTOM' ? slot.type.value : slot.name
+        if (type.indexOf('AMAZON.') !== -1) {
+            type = 'STRING'
+        }
+
+		return {
+			name: slot.name,
+			type: type
+		}
+	})
 }
 
 class Canvas extends Component {
@@ -446,14 +501,34 @@ class Canvas extends Component {
 
             let sub_diagrams = [];
             let permissions = new Set();
+            let used_intent_names = new Set();
+            let used_intents = [];
             
             serialize.nodes.forEach(node => {
                 if(node.extras.type === 'flow' && node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id);
                 }
-                if (node.extras.type === 'permissions') {
+                else if (node.extras.type === 'permissions') {
                     node.extras.permissions.forEach(permission => {
                         permissions.add(permission.selected.value)
+                    })
+                }
+                else if (node.extras.type === 'interaction') {
+                    node.extras.choices.forEach(choice => {
+                        if (choice.intent && !used_intent_names.has(choice.intent.value)) {
+                            if (choice.intent.built_in) {
+                                used_intents.push({
+                                    intent: choice.intent.value,
+                                    built_in: true
+                                })
+                            } else {
+                                used_intents.push({
+                                    intent: choice.intent.value,
+                                    built_in: false
+                                })
+                            }
+                            used_intent_names.add(choice.intent.value)
+                        }
                     })
                 }
             })
@@ -482,7 +557,7 @@ class Canvas extends Component {
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
-
+                used_intents: used_intents
             }
 
             const s = this.state.skill;
@@ -761,6 +836,11 @@ class Canvas extends Component {
         let model = engine.getDiagramModel();
         let data = model.serializeDiagram();
         // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+        let nlc = this.state.testing_info ? this.state.testing_info.nlc : null
+        let nlc_resolve;
+        let nlc_promise = new Promise(resolve => {
+            nlc_resolve = resolve
+        })
         
         let nodes = [];
         data.nodes.forEach((node) => {
@@ -771,10 +851,56 @@ class Canvas extends Component {
                 });               
             }
         });
+        if (!nlc) {
+            nlc = new NLC()
+            this.state.skill.slots.forEach(slot => {
+                nlc.addSlotType({
+                    type: slot.name,
+                    matcher: slot.inputs
+                });
+            })
+
+            this.state.skill.intents.forEach(intent => {
+                let samples
+                if (!intent.built_in) {
+                    samples = _getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
+                }
+                const _slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
+        
+                console.log("REGISTER INTENT", nlc, {
+                    intent: intent.name,
+                    slots: _slots,
+                    utterances: samples
+                })
+
+                nlc.registerIntent({
+                    intent: intent.name,
+                    slots: _slots,
+                    utterances: samples,
+                    callback: (...args) => {
+
+                        const formatted_slots = {}
+                        _slots.forEach((slot, i) => {
+                            if (args[i]) {
+                                formatted_slots[slot.name] = {
+                                    value: args[i]
+                                }
+                            }
+                        })
+
+                        nlc_resolve({ intent: intent.name, slots: formatted_slots})
+                    }
+                })
+            })
+
+        }
+
         this.setState({
             testing_info: {
                 id: this.state.diagram_id,
-                nodes: nodes
+                nodes: nodes,
+                nlc: nlc,
+                nlc_promise: nlc_promise
             }
         });
     }
@@ -785,7 +911,13 @@ class Canvas extends Component {
 
         if(this.preview){
             this.runTest();
-        }else{
+        } else if ((!this.state.skill.intents || (this.state.skill.intents && this.state.skill.intents.length > 0)) && !this.state.skill.amzn_id) {
+            this.setState({
+                error_modal: "Since your skill contains intents, you must first publish your skill before testing with the built-in testing modal",
+                testing_modal: false,
+                loading_modal: true
+            })
+        } else {
             this.onSave(diagram_id => {
                 if(diagram_id === null){
                     this.setState({
@@ -795,7 +927,7 @@ class Canvas extends Component {
                     axios.post(`/diagram/${diagram_id}/test/publish`)
                     .then(this.runTest)
                     .catch(err => {
-                        console.log(err.response);
+                        console.log(err);
                         this.setState({
                             error_modal: "Could Not Render Your Project",
                             loading_modal: true,
@@ -1171,13 +1303,16 @@ class Canvas extends Component {
                 />
                 <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
-
                 {this.state.testing_modal ? 
                     <TestModal 
                         open={this.state.testing_modal} 
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} 
                         diagrams={this.state.diagrams}
+                        amzn_id={this.state.skill.amzn_id}
+                        inv_name={this.state.skill.inv_name}
+                        intents={this.state.skill.used_intents}
+                        slots={this.state.skill.slots}
                     /> 
                 : null}
                 <Menu 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup } from 'reactstrap';
+import { Button, ButtonGroup, InputGroup, Input } from 'reactstrap';
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import ErrorModal from '../../../components/Modals/ErrorModal';
+const uniqueNamesGenerator = require('unique-names-generator')
 
 class Interaction extends Component {
     constructor(props) {
@@ -43,6 +44,14 @@ class Interaction extends Component {
         this.handleChoicesChange = this.handleChoicesChange.bind(this)
         this.handleAddChoice = this.handleAddChoice.bind(this)
         this.handleRemoveChoice = this.handleRemoveChoice.bind(this)
+
+        this.showErrorPopup = this.showErrorPopup.bind(this)
+    }
+
+    _getUniqueName() {
+        let uniqueName = uniqueNamesGenerator.generate()
+        uniqueName = uniqueName.substring(uniqueName.indexOf('_')+1, uniqueName.length)
+        return uniqueName
     }
 
     _findFirstEmptyIndex(array) {
@@ -71,14 +80,15 @@ class Interaction extends Component {
         const intents = this.state.intents;
         const intents_open = this.state.intents_open;
 
-        let num = 1
-        while(intents.map(e => {return e.name}).includes(`New Intent ${num}`)) {
-            num += 1;
+
+        let name = `${this._getUniqueName()}_intent`
+        while(intents.map(e => {return e.name}).includes(name)) {
+            name = `${this._getUniqueName()}_intent`
         }
 
         const firstEmpty = this._findFirstEmptyIndex(intents.map(o => o.key))
 
-        intents.push({name: `New Intent ${num}`, inputs: [], key: firstEmpty});
+        intents.push({name: name, inputs: [], key: firstEmpty, built_in: false});
         intents_open.push(true);
 
         this.setState({
@@ -91,14 +101,14 @@ class Interaction extends Component {
         const slots = this.state.slots;
         const slots_open = this.state.slots_open;
 
-        let num = 1
-        while(slots.map(e => {return e.name}).includes(`New Slot ${num}`)) {
-            num += 1;
+        let name = `${this._getUniqueName()}_slot`
+        while(slots.map(e => {return e.name}).includes(name)) {
+            name = `${this._getUniqueName()}_slot`
         }
 
         const firstEmpty = this._findFirstEmptyIndex(slots.map(o => o.key))
 
-        slots.push({name: `New Slot ${num}`, inputs: [], type: '', key: firstEmpty})
+        slots.push({name: name, inputs: [], type: '', key: firstEmpty})
         slots_open.push(true);
 
         this.setState({
@@ -171,7 +181,8 @@ class Interaction extends Component {
 
         this.setState({
             node: node
-        });
+        })
+        this.props.onUpdate()
     }
 
     handleAddChoice(e) {
@@ -189,12 +200,15 @@ class Interaction extends Component {
         choices.push({name: `New Choice ${num}`, intent: null, mappings: [], key: firstEmpty})
         choices_open.push(true);
 
+        console.log("OPUSHED CHOICE", num)
+
         let test = node.addOutPort(node.extras.choices.length);
         test.setMaximumLinks(1);
 
         this.setState({
             node: node
         });
+        this.props.onUpdate()
         this.props.repaint()
     }
 
@@ -218,11 +232,17 @@ class Interaction extends Component {
         this.setState({
             node: node,
         });
+        this.props.onUpdate()
         this.props.repaint()
     }
 
-    render() {
+    showErrorPopup(message) {
+        this.setState({
+            error: message
+        })
+    }
 
+    render() {
         const renderChoices = () => {
             return (
                 <div>
@@ -239,6 +259,7 @@ class Interaction extends Component {
                         variables={this.props.variables}
                         slots = {this.state.slots}
                         built_ins={this.state.built_ins}
+                        onError={this.showErrorPopup}
                     />
                 </div>
             )
@@ -257,6 +278,7 @@ class Interaction extends Component {
                         onRemove={this.handleRemoveIntent}
                         onChange={this.handleIntentsChange}
                         slots = {this.state.slots}
+                        onError={this.showErrorPopup}
                     />
                 </div>
             )
@@ -275,6 +297,7 @@ class Interaction extends Component {
                         onRemove={this.handleRemoveSlot}
                         onChange={this.handleSlotsChange}
                         slot_types = {this.props.slot_types}
+                        onError={this.showErrorPopup}
                     />
                 </div>
             )

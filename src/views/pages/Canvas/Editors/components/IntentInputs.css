@@ -73,3 +73,23 @@
     color: #8da2b5 !important;
     font-weight: 100 !important;
 }
+
+.input-error {
+    color: red;
+    font-size: 12px;
+}
+
+.input-area__suggestions__list {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 10pt;
+}
+
+.input-area__suggestions__item {
+  padding: 5px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.input-area__suggestions__item--focused {
+  background-color: #62D6A8;
+}

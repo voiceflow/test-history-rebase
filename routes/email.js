@@ -25,9 +25,9 @@ exports.getTemplate = (req, res) => {
 exports.getTemplates = (req, res) => {
 	pool.query('SELECT * FROM email_templates WHERE creator_id = $1', [req.user.id], (err, result)=>{
 		if(err){
-			res.sendStatus(500);
+			res.sendStatus(500)
 			console.error(err)
-			console.trace();
+			console.trace()
 		}else{
 			res.send(result.rows.map(row => {
 				row.template_id = hashids.encode(row.template_id);

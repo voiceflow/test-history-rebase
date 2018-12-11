@@ -202,7 +202,7 @@ app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 
 app.get('/voices', ensureLoggedIn(), Audio.getVoices);
-app.post('/generate', ensureLoggedIn(), Audio.generate);
+// app.post('/generate', ensureLoggedIn(), Audio.generate);
 app.post('/audio', ensureLoggedIn(), upload.single('audio'), Audio.upload);
 
 app.post('/raw_audio', ensureLoggedIn(), upload.single('audio'), (req, res) => {

@@ -103,14 +103,14 @@ const getDiagrams = (req, res) => {
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
-    };
-
-    if(!req.user.admin){
-        params.FilterExpression = 'creator = :creator';
-        params.ExpressionAttributeValues = {':creator': req.user.id};
     }
 
-    let items = [];
+    if(!req.user.admin){
+        params.FilterExpression = 'creator = :creator'
+        params.ExpressionAttributeValues = {':creator': req.user.id}
+    }
+
+    let items = []
 
     docClient.scan(params, onScan);
 

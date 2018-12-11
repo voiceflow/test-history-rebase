@@ -17,10 +17,25 @@ const checkIfOnboarded = (req, res) => {
 	);
 }
 
+const PROG_XP = (xp) => {
+	switch(xp){
+		case 1:
+			return 'OKAY'
+		case 2:
+			return 'GOD'
+		default:
+			return 'NOOB'
+	}
+}
+
 const submitOnboardSurvey = (req, res) => {
+	if(!req.body.usage_type){
+		req.body.usage_type = 'PERSONAL'
+	}
+
 	pool.query(
-		"INSERT INTO user_info (creator_id, usage_type, company_name, role, company_size, industry, org) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-		[req.user.id, req.body.usage_type, req.body.company_name, req.body.role, req.body.company_size, req.body.industry, req.body.org],
+		"INSERT INTO user_info (creator_id, usage_type, company_name, role, company_size, industry, xp) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+		[req.user.id, req.body.usage_type, req.body.company_name, req.body.role, req.body.company_size, req.body.industry, req.body.programming],
 		(err, data) => {
 			if(err){
 				console.log(err)
@@ -35,7 +50,8 @@ const submitOnboardSurvey = (req, res) => {
 						role: req.body.role,
 						company_size: req.body.company_size,
 						industry: req.body.industry,
-						organization: req.body.org
+						organization: req.body.org,
+						programming_experience: PROG_XP(req.body.programming)
 					}
 				})
 			}

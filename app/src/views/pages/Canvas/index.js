@@ -25,6 +25,7 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
+import Joyride from 'react-joyride';
 
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
@@ -104,9 +105,13 @@ class Canvas extends Component {
                     diagram_id = parts[1]
                 }
             }else{
-                this.props.history.push('/canvas/new');
+                this.props.history.push('/canvas/new')
             }
         }
+
+        // ONBOARDING
+        // this.onboarding = localStorage.getItem('onboarding')
+        this.onboarding = true
 
         if(!this.preview && (!diagram_id || !skill_id)){
             // DEFAULT TEMPLATE FOR CREATING A SKILL
@@ -114,7 +119,7 @@ class Canvas extends Component {
             open = true;
 
             let model = new SRD.DiagramModel();
-            let blank = blank_template;
+            let blank = this.onboarding ? new_template : blank_template;
             blank.id = generateID();
 
             model.deSerializeDiagram(blank, engine);
@@ -144,6 +149,8 @@ class Canvas extends Component {
         this.diagram_id = diagram_id
 
         this.state = {
+            onboarding_step: 0,
+            onboarding_run: false,
             engine: engine,
             open: open,
             diagram_name: diagram_name,
@@ -394,6 +401,23 @@ class Canvas extends Component {
                 }
             }
         }
+
+        // ONBOARDING
+        if(this.onboarding && this.state.onboarding_step < 2){
+            this.setState({onboarding_step: 2, onboarding_run: true})
+            let model = engine.getDiagramModel()
+            model.addListener({ linksUpdated: (event) => {
+                try{
+                    console.log(event.link)
+                    if((event.link.sourcePort.parent.extras.type === 'story' && event.link.targetPort)
+                    || (event.link.targetPort.parent.extras.type === 'story' && event.link.sourcePort)){
+                        this.setState({onboarding_step: 3, onboarding_run: true})
+                    }
+                }catch(e){
+                    console.log('noob')
+                }
+            }})
+        }
     }
 
     componentDidMount() {
@@ -524,10 +548,10 @@ class Canvas extends Component {
                 if(typeof cb === "function") cb(null);
             });
         } catch (e) {
-            console.log(e);
+            console.log(e)
             this.setState({
                 error: 'Error Saving - Project Structure (Check Logs)'
-            });
+            })
             if(typeof cb === "function") cb(null);
         }
     }
@@ -584,6 +608,8 @@ class Canvas extends Component {
 
             this.diagram_id = diagram_id
             this.setState({
+                // TODO PLEASE REMOVE !IMPORTANT!
+                onboarding_run: true,
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
@@ -773,6 +799,7 @@ class Canvas extends Component {
     }
 
     createSkill(name){
+        // CREATE NEW PROJECT
         if(!name){
             name = 'New Skill';
         }
@@ -796,7 +823,8 @@ class Canvas extends Component {
                     live: false,
                     restart: true,
                     diagram: diagram_id,
-                    locales: ["en-US"]
+                    locales: ["en-US"],
+                    onboarding_run: true
                 },
                 newSkill: 0
             }, () => {
@@ -945,6 +973,10 @@ class Canvas extends Component {
                 node.extras = {
                     randomize: false
                 }
+                // ONBOARDING
+                if(this.onboarding && this.state.onboarding_step < 1){
+                    setTimeout(()=>this.setState({onboarding_step: 1, onboarding_run: true}), 400)
+                }
             } else if (type === 'flow') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1076,31 +1108,70 @@ class Canvas extends Component {
                         color: data.color
                     }
                 }catch(err){
-                    console.error(err);
+                    console.error(err)
                     return this.setState({
                         error: 'Error - Module Broken'
-                    });
+                    })
                 }
             }
-            engine.stopMove();
-            node.extras.type = type;
-            var points = engine.getRelativeMousePoint(event);
-            node.x = points.x-(node.name.length*4.5 + 40);
-            node.y = points.y-30;
-            node.setSelected();
-            engine.getDiagramModel().clearSelection();
-            engine.getDiagramModel().addNode(node);
-            engine.setSuperSelect(node);
+            engine.stopMove()
+            node.extras.type = type
+            var points = engine.getRelativeMousePoint(event)
+            node.x = points.x-(node.name.length*4.5 + 40)
+            node.y = points.y-30
+            node.setSelected()
+            engine.getDiagramModel().clearSelection()
+            engine.getDiagramModel().addNode(node)
+            engine.setSuperSelect(node)
             this.setState({
                 engine: engine,
                 open: type !== 'comment'
-            });
+            })
         }
     }
 
     render() {
         return (
             <div className='App'>
+                    {this.state.onboarding_run && <Joyride
+                        hideBackButton={true}
+                        // disableOverlayClose={true}
+                        stepIndex={this.state.onboarding_step}
+                        showProgress={true}
+                        showSkipButton={true}
+                        steps={[
+                            {
+                                target: '#sidebar .MenuItem.speak',
+                                content: 'DRAG IN THE BLOCK FUCKER',
+                                placement: 'right',
+                                disableBeacon: true
+                            },
+                            {
+                                target:'#Editor .editor',
+                                content: 'type in some shit here',
+                                placement: 'left',
+                                disableBeacon: true
+                            },
+                            {
+                                target: '.srd-default-node.story',
+                                content: 'THIS IS THE STORY BLOCK YEET',
+                                placement: 'bottom',
+                                disableBeacon: true
+                            },
+                            {
+                                target: '#test',
+                                content: 'TEST HERE',
+                                placement: 'bottom',
+                                disableBeacon: true
+                            },
+                        ]}
+                        callback={(data)=>{
+                            if(data.action === 'close'){
+                                this.setState({onboarding_run: false})
+                            }
+                        }}
+                        run={true}
+                    />}
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <HelpModal
                     open={this.state.helpOpen}

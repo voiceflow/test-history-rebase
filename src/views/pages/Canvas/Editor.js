@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
+import Interaction from './Editors/Interaction';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
 import Variable from './Editors/Variable';
@@ -25,6 +26,8 @@ import {
     DropdownItem
 } from 'reactstrap';
 
+import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
+
 class Editor extends Component {
     constructor(props) {
         super(props)
@@ -34,6 +37,8 @@ class Editor extends Component {
             voices: [],
             templates: [],
             permission_options: [],
+            slot_types: SLOT_TYPES,
+            built_ins: BUILT_IN_INTENTS,
             dropdownOpen: false
         }
 
@@ -123,7 +128,7 @@ class Editor extends Component {
     }
 
     BlockViewer() {
-        let variables = this.props.global_variables.concat(this.props.variables);
+        let variables = this.props.global_variables.concat(this.props.variables)
 
         switch(this.state.node.extras.type) {
             case 'story':
@@ -136,6 +141,11 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
+            case 'interaction':
+                return <Interaction 
+                    node={this.state.node} 
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
             case 'combine':
             case 'line':
             case 'audio': 
@@ -218,7 +228,8 @@ class Editor extends Component {
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
-                />);
+                    onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                    />);
         }
     }
 
@@ -238,7 +249,6 @@ class Editor extends Component {
     // }
 
     render() {
-
         const type = this.state.node ? this.state.node.extras.type : null;
         // <Tooltip
         //     position="bottom"

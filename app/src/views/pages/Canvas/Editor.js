@@ -128,7 +128,7 @@ class Editor extends Component {
     }
 
     BlockViewer() {
-        let variables = this.props.global_variables.concat(this.props.variables);
+        let variables = this.props.global_variables.concat(this.props.variables)
 
         switch(this.state.node.extras.type) {
             case 'story':
@@ -142,7 +142,10 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'interaction':
-                return <Interaction node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}  variables={this.props.variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
+                return <Interaction 
+                    node={this.state.node} 
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
             case 'combine':
             case 'line':
             case 'audio': 
@@ -246,7 +249,6 @@ class Editor extends Component {
     // }
 
     render() {
-
         const type = this.state.node ? this.state.node.extras.type : null;
         // <Tooltip
         //     position="bottom"

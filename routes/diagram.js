@@ -203,6 +203,7 @@ const setDiagram = async (req, res) => {
     };
 
     const permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]';
+    const used_intents_string = diagram.used_intents ? JSON.stringify(diagram.used_intents) : '[]';
 
     docClient.put(params, async(err) => {
         if (err) {
@@ -218,7 +219,7 @@ const setDiagram = async (req, res) => {
                     await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
                 }else{
                     // otherwise update
-                    await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2 WHERE id = $3', [diagram.sub_diagrams, permissions_string, diagram.id]);
+                    await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2, used_intents = $3 WHERE id = $4', [diagram.sub_diagrams, permissions_string, used_intents_string, diagram.id]);
                 }
                 res.sendStatus(200);
             }catch(e){
@@ -256,7 +257,7 @@ const deleteDiagram = (req, res) => {
     }); 
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices) => new Promise((resolve) => {
 
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
@@ -353,10 +354,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         id: node.id
                     };
                 } else if (node.extras.type === 'choicenew' || node.extras.type === 'choice') {
+
+                    const inputs = node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i }))
+
                     story.lines[node.id] = {
                         prompt: node.extras.prompt ? node.extras.prompt : true,
                         choices: node.extras.choices,
-                        inputs: node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i })),
+                        inputs: inputs,
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
@@ -364,18 +368,32 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             return link ? link : null;
                         })
                     };
+
+                    if (inputs && used_choices) {
+                        node.extras.inputs.forEach(input => {
+                            used_choices.add(input)
+                        })
+                    }
+
                 } else if (node.extras.type === 'interaction') {
                     story.lines[node.id] = {
                         choices: node.extras.choices,
                         choices_open: node.extras.choices_open,
-                        mapping: node.extras.mapping,
                         elseId: links[node.ports.filter(a => a.label === 'else')[0].links[0]],
+                        prompt: true,
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
                         nextIds: node.ports.filter(a => !a.in && a.label !== 'else').sort((a, b) => a.label - b.label).map(port => {
                             let link = links[port.links[0]];
                             return link ? link : null;
                         })
                     };
+                    node.extras.choices.forEach(choice => {
+                        if (choice.intent) {
+                            if (used_intents) {
+                                used_intents.add(choice.intent.value) // Key for Intent
+                            }
+                        }
+                    })
                 } else if (node.extras.type === 'stream') {
                     let stop = links[node.ports.filter(a => a.label === 'stop/pause')[0].links[0]];
 
@@ -447,7 +465,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         let result;
                         try{
                             // console.log('going in', node.extras.diagram_id);
-                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options);
+                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options, used_intents, used_choices);
                         }catch(err){
                             resolve(500);
                             return;
@@ -777,8 +795,19 @@ const publish = (req, res) => {
             return res.sendStatus(401);
         }
 
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id);
-        res.sendStatus(status);
+        used_intents = new Set()
+        used_choices = new Set()
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices);
+
+        used_intents = [...used_intents]
+        used_choices = [...used_choices]
+
+        pool.query('UPDATE skills set used_intents = $2, used_choices = $3 WHERE skill_id = $1', [skill_id, JSON.stringify(used_intents), JSON.stringify(used_choices)], async (err) => {
+            if(err){
+                return res.sendStatus(500)
+            }
+            res.sendStatus(status);
+        })
     })
 };
 

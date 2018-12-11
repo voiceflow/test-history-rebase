@@ -52,7 +52,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, intents, intents_open, slots, slots_open
+                name, amzn_id, review, live, diagram, locales, restart, intents, intents_open, slots, slots_open, inv_name
             FROM
                 skills
             WHERE
@@ -489,7 +489,7 @@ exports.buildSkill = async (req,res) => {
                         });
                     }
 
-                    let model = JSONs.interactionModel(r.inv_name);
+                    let model = JSONs.interactionModel(r);
 
                     const iterate = (depth) => {
                         if(depth === 3){

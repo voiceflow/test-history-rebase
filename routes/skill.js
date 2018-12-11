@@ -52,7 +52,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, intents_open, slots, slots_open, inv_name
             FROM
                 skills
             WHERE
@@ -287,7 +287,24 @@ exports.patchSkill = (req, res) => {
         b.locales = '["en-US"]';
     }
 
-    if(req.query.publish){
+    if (req.query.intents) {
+        pool.query(`
+            UPDATE skills 
+            SET
+            intents = $2,
+            intents_open = $3,
+            slots = $4,
+            slots_open = $5
+            WHERE skill_id = $1`, 
+            [id, b.intents, b.intents_open, b.slots, b.slots_open], (err) => {
+            if(err){
+                console.log(err);
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+            }
+        })
+    } else if(req.query.publish){
         pool.query(`
             UPDATE skills 
             SET
@@ -479,7 +496,7 @@ exports.buildSkill = async (req,res) => {
                         });
                     }
 
-                    let model = JSONs.interactionModel(r.inv_name);
+                    let model = JSONs.interactionModel(r);
 
                     const iterate = (depth) => {
                         if(depth === 3){

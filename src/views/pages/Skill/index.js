@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from 'react'
+import axios from 'axios'
+import validUrl from 'valid-url'
 
-import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert } from 'reactstrap';
-import MUIButton from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import MUFormGroup from '@material-ui/core/FormGroup';
-import Paper from '@material-ui/core/Paper';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Textarea from 'react-textarea-autosize';
-import moment from 'moment';
-import Image from './../../components/Uploads/Image';
-import Multiple from './../../components/Forms/Multiple';
-import ErrorModal from './../../components/Modals/ErrorModal';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
-import AmazonLogin from './../../components/Forms/AmazonLogin';
-import Select from 'react-select';
-import './Skill.css';
+import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert } from 'reactstrap'
+import MUIButton from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import MUFormGroup from '@material-ui/core/FormGroup'
+import Paper from '@material-ui/core/Paper'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Textarea from 'react-textarea-autosize'
+import moment from 'moment'
+import Image from './../../components/Uploads/Image'
+import Multiple from './../../components/Forms/Multiple'
+import ErrorModal from './../../components/Modals/ErrorModal'
+import ConfirmModal from './../../components/Modals/ConfirmModal'
+import AmazonLogin from './../../components/Forms/AmazonLogin'
+import Select from 'react-select'
+import './Skill.css'
 import {Link} from 'react-router-dom'
 
 import AuthenticationService from './../../../services/Authentication';
@@ -101,7 +102,6 @@ class Skill extends Component {
     }
 
     componentDidMount() {
-
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
                 stage: token ? 2 : 0
@@ -295,46 +295,57 @@ class Skill extends Component {
     save(publish=false, cb){
 
         const s = this.state;
-        const category = (s.category && s.category.value ? s.category.value : null);
+        const category = (s.category && s.category.value ? s.category.value : null)
 
-        let store;
+        if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
+            this.setState({
+                error: 'Privacy policy must be a url'
+            })
+        } else if(s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)){
+            this.setState({
+                error: 'Terms and conditions must be a url'
+            })
+        } else {
+            let store;
 
-        if(publish === true){
-            store = {
-                purchase: s.purchase,
-                personal: s.personal,
-                copa: s.copa,
-                ads: s.ads,
-                export: s.export,
-                instructions: s.instructions
+            if(publish === true){
+                store = {
+                    purchase: s.purchase,
+                    personal: s.personal,
+                    copa: s.copa,
+                    ads: s.ads,
+                    export: s.export,
+                    instructions: s.instructions
+                }
             }
+            axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
+                name: s.name,
+                inv_name: s.inv_name,
+                summary: s.summary,
+                description: s.description,
+                keywords: s.keywords,
+                invocations: s.invocations,
+                small_icon: s.small_icon,
+                large_icon: s.large_icon,
+                category: category,
+                locales: JSON.stringify(s.locales),
+                privacy_policy: s.privacy_policy,
+                terms_and_cond: s.terms_and_cond,
+                ...store
+            })
+            .then(res => {
+                this.setState({
+                    saved: true
+                });
+                if(typeof(cb) === 'function') cb();
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    error: 'Save Error, updates not saved'
+                });
+            });
         }
-
-        axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
-            name: s.name,
-            inv_name: s.inv_name,
-            summary: s.summary,
-            description: s.description,
-            keywords: s.keywords,
-            invocations: s.invocations,
-            small_icon: s.small_icon,
-            large_icon: s.large_icon,
-            category: category,
-            locales: JSON.stringify(s.locales),
-            ...store
-        })
-        .then(res => {
-            this.setState({
-                saved: true
-            });
-            if(typeof(cb) === 'function') cb();
-        })
-        .catch(err => {
-            console.log(err);
-            this.setState({
-                error: 'Save Error, updates not saved'
-            });
-        });
     }
 
     handleChange(event){
@@ -561,7 +572,7 @@ class Skill extends Component {
                     className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                         Test on Alexa Simulator
                     </a>
-                    <Button color="info" onClick={this.onCertify}>
+                    <Button color="clear" onClick={this.onCertify}>
                         Submit for Review
                     </Button>
                 </div>
@@ -924,6 +935,46 @@ class Skill extends Component {
                                 </ButtonGroup>
                                 </div>
                             </div> 
+                        </FormGroup>
+
+                        <FormGroup>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label><b>Privacy Policy URL</b></Label> 
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="text-secondary">
+                                        The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill. 
+                                    </p>
+                                </div>
+                                <div className="col-9">
+                                    <Input type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
+                                </div>
+                            </div>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <div className="row">
+                                <div className="col-3 publish-info"></div>
+                                <div className="col-9">
+                                    <Label><b>Terms and Conditions URL</b></Label> 
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-3 publish-info">
+                                    <p className="text-secondary">
+                                        The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill. 
+                                    </p>
+                                </div>
+                                <div className="col-9">
+                                    <Input type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
+                                </div>
+                            </div>
                         </FormGroup>
 
                         <hr/>

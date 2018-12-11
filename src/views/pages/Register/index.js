@@ -1,0 +1,182 @@
+import React, { Component } from 'react'
+import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
+import AuthenticationService from './../../../services/Authentication'
+import './Account.css'
+import {Link} from 'react-router-dom'
+import queryString from 'query-string'
+// import axios from 'axios'
+
+class Account extends Component {
+
+  constructor(props) {
+    super(props)
+
+    let query = queryString.parse(this.props.location.search)
+
+    this.state = {
+      email: "",
+      password: "",
+      r_name: "",
+      r_email: query.email ? query.email : "",
+      r_password: "",
+      login_error: null,
+      signup_error: null,
+      login_timeout: null,
+      signup_timeout: null
+    }
+
+    this.openLogin = this.openLogin.bind(this);
+    this.openRegister = this.openRegister.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.signupSubmit = this.signupSubmit.bind(this);
+    this.loginSubmit = this.loginSubmit.bind(this);
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  openLogin(e) {
+    e.preventDefault();
+    this.setState({
+      login: true
+    });
+    this.props.history.push('/login' + this.props.location.search);
+    return false;
+  }
+
+  openRegister(e) {
+    e.preventDefault();
+    this.setState({
+      login: false
+    });
+    this.props.history.push('/signup' + this.props.location.search);
+    return false;
+  }
+
+  signupSubmit(e) {
+    e.preventDefault();
+    AuthenticationService.signup({
+      name: this.state.r_name,
+      email: this.state.r_email,
+      password: this.state.r_password,
+      code: this.state.r_code,
+    }, (error) => {
+      if(error){
+        this.setState({
+          signup_error: error.response.data
+        });
+        if(this.state.signup_timeout){
+          clearTimeout(this.state.signup_timeout)
+        }
+        this.setState({signup_timeout: setTimeout(function() {
+          this.setState({signup_error: false})
+        }.bind(this), 5000)})
+      }else{
+        this.props.history.push('/onboarding')
+      }
+    });
+    return false;
+  }
+
+  loginSubmit(e) {
+    e.preventDefault();
+    AuthenticationService.login({
+      email: this.state.email,
+      password: this.state.password,
+    }, (error) => {
+      if(error){
+        this.setState({
+          login_error: error.response.data
+        });
+        if(this.state.login_timeout){
+          clearTimeout(this.state.login_timeout);
+        }
+        this.setState({login_timeout: setTimeout(function() {
+          this.setState({login_error: false});
+        }.bind(this), 5000)})
+      }else{
+        this.props.history.push('/')
+        // axios.get('/onboard')
+        // .then(res => {
+        //   if(res.data){
+        //     this.props.history.push('/');
+        //   } else {
+        //     this.props.history.push('/onboarding');
+        //   }
+        // })
+        // .catch(err => {
+        //   console.log(err);
+        // });
+      }
+    });
+    return false;
+  }
+
+  render() {
+    let login_error;
+    if(this.state.login_error){
+      login_error = (<Alert color="danger"> {this.state.login_error} </Alert>);
+    }
+    let signup_error;
+    if(this.state.signup_error){
+      signup_error = (<Alert color="danger"> {this.state.signup_error} </Alert>);
+    }
+    return (
+      <div className="d-flex flex-row align-items-center justify-content-center" id="main">
+        <div className={"login-card " + (this.props.login ? null : "open-register")}>
+            <div id="side-form">
+              <Form id="login-form" onSubmit={this.loginSubmit}>
+                <img className="login-logo" src="/logo.svg" alt="logo"/>
+                <div className="p-4 p-md-5">
+                  {login_error}
+                  <FormGroup>
+                    <Label for="email">Email</Label>
+                    <Input type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6" value={this.state.email}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password">Password</Label>
+                    <Input type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
+                  </FormGroup>
+                  <Button block className="login-btn" type="submit">Sign In</Button>
+                  <div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>
+                  <hr/>
+                  <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></div>
+                </div>
+              </Form>
+              <Form id="signup-form" onSubmit={this.signupSubmit}>
+                  <img className="login-logo" src="/logo.svg" alt="logo"/>
+                <div className="p-4 p-md-5">
+                  {signup_error}
+                  <FormGroup>
+                    <Label for="name">Name</Label>
+                    <Input type="text" name="r_name" onChange={this.handleChange} placeholder="Full Name" required minLength="3" value={this.state.r_name}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="email">Email</Label>
+                    <Input type="email" name="r_email" onChange={this.handleChange} placeholder="bezos@amazon.com" required minLength="6" value={this.state.r_email}/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password">Password</Label>
+                    <Input type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.r_password}/>
+                  </FormGroup>
+                  <Button block className="login-btn" type="submit">Create Account</Button>
+                  <hr/>
+                  <div className="text-center">Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></div>
+                </div>
+              </Form>
+            </div>
+        </div>
+      </div>
+    );
+    // <FormGroup>
+    // <Label for="code">Invite Code</Label>
+    // <Input type="text" name="r_code" onChange={this.handleChange} placeholder="XXXXXXXXX" required minLength="6"/>
+    // </FormGroup>
+    // <p>Doesn't have an Access Code? <a href="https://getvoiceflow.com">Request access</a></p>
+  }
+}
+
+export default Account;

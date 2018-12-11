@@ -26,21 +26,23 @@ class ChoiceDropdownInputs extends Component {
 
     static getDerivedStateFromProps(props, current_state) {
         const new_choices = props.choices.map(choice_obj => {
-        if (!choice_obj.intent || choice_obj.intent.built_in) {
-            return choice_obj
-        }
-        const key = choice_obj.intent ? choice_obj.intent.value : null
-        const intent = _.find(props.intents, { key: key })
-        if (intent) {
-            choice_obj.intent = {
-            label: intent.name,
-            value: key,
-            key: key,
-            inputs: intent.inputs
+            if (!choice_obj.intent || choice_obj.intent.built_in) {
+                return choice_obj
             }
-            return choice_obj
-        } 
+            const key = choice_obj.intent ? choice_obj.intent.value : null
+            const intent = _.find(props.intents, { key: key })
+            if (intent) {
+                choice_obj.intent = {
+                label: intent.name,
+                value: key,
+                key: key,
+                inputs: intent.inputs
+                }
+                return choice_obj
+            }
+            return null
         })
+
         return {
             choices: new_choices,
             open: props.open,
@@ -154,20 +156,18 @@ class ChoiceDropdownInputs extends Component {
                     if (this.state.name_inputs_lower[i].indexOf(this.state.search_value) >= 0) {
                         return (
                             <div className="interaction-block" key={i}>
-                                <a>
-                                    <div className="interaction-title">
-                                        <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
-                                        <input placeholder="Enter choice Name" 
-                                            type="text"
-                                            value={this.state.name_inputs[i]}
-                                            onBlur={(e) => {this.onNameSave(e, i)}}
-                                            onChange={(e) => {this.onNameChange(e, i)}}
-                                            onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
-                                            className="interaction-name-input"
-                                        />
-                                        <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
-                                    </div>
-                                </a>
+                                <div className="interaction-title">
+                                    <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                    <input placeholder="Enter choice Name" 
+                                        type="text"
+                                        value={this.state.name_inputs[i]}
+                                        onBlur={(e) => {this.onNameSave(e, i)}}
+                                        onChange={(e) => {this.onNameChange(e, i)}}
+                                        onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                                        className="interaction-name-input"
+                                    />
+                                    <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                                </div>
                                 <Collapse isOpen={this.state.open[i]}>
                                 <div className="super-center flex-hard choice-select">
                                     <div>Intent</div>

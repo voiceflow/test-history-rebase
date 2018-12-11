@@ -25,7 +25,7 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory';
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory';
-import { rejects } from 'assert';
+// import { rejects } from 'assert';
 
 var NLC = require("natural-language-commander");
 const _ = require('lodash')
@@ -46,7 +46,7 @@ const generateID = () => {
 
 const _getUtterancesWithSlotNames = (utterances, slots) => {
 
-	const re = /(\{\{\[[^\}\{\[\]]+]\.(\d+)\}\})/g;
+	const re = /(\{\{\[[^}{[\]]+]\.(\d+)\}\})/g;
 	let m;
 
 	const utterance_text = utterances.map(e => e.text)
@@ -61,7 +61,6 @@ const _getUtterancesWithSlotNames = (utterances, slots) => {
 				const slot =_.find(slots, { key: +key })
 				if (slot) {
 					let slot_name = _.find(slots, { key: +key }).name
-					slot_name = slot_name
 					new_input = new_input.replace(replace, `{${slot_name}}`)
 				} else {
 					return new_input

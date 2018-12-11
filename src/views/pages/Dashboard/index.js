@@ -10,20 +10,19 @@ import SkillCard from './Skill/SkillCard';
 
 class DashBoard extends Component {
     constructor(props) {
-        super(props); 
+        super(props)
 
         this.state = { 
             confirm: false,
             loading: false,
             skills: null,
-            modal: false
+            modal: false,
+            onboarding: false
         }
 
         this.onLoadSkills = this.onLoadSkills.bind(this);
         this.openSkill = this.openSkill.bind(this);
     }
-
-
 
     openSkill(skill, diagram){
         setTimeout(() => { 
@@ -32,7 +31,7 @@ class DashBoard extends Component {
     }
 
     componentDidMount() {
-        this.onLoadSkills();
+        this.onLoadSkills()
     }
 
     toggleDropDown() {
@@ -53,7 +52,13 @@ class DashBoard extends Component {
             this.setState({
                 skills: res.data,
                 loading: false
-            });
+            }, ()=>{
+                if(!res.data.length){
+                    this.setState({
+                        onboarding: !!localStorage.getItem("onboarding")
+                    })
+                }
+            })
         })
         .catch( error => {
             console.log(error);
@@ -95,14 +100,6 @@ class DashBoard extends Component {
         });
     }
 
-                            //     <InputGroup className="mr-2">
-                            //     <Input placeholder="Search for Skills"/>
-                            // </InputGroup>
-
-                    //     <div className="banner mb-3">
-                    //     <h1 className="display-4">Welcome {this.props.user.name}</h1>
-                    // </div>
-
     render() {
         let skills;
 
@@ -114,19 +111,13 @@ class DashBoard extends Component {
                         </div>
                      </div>
         }else if(this.state.skills.length === 0){
-            // skills = <div className="text-center mt-5">
-            //             <h1 className="display-5 text-mute">
-            //                 <i className="far fa-frown"/> No Skills Found
-            //             </h1>
-            //             <Link to="/canvas/new">Create New Skill</Link>
-            //         </div>
             skills = <div className="super-center w-100 text-muted mt-5">
                 <div className="horizontal-center mt-5">
                     <div className="">
                       <div className="card-body p-4">
-                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" className="mb-5"/><br/>
+                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" style={{height: 259}} className="mb-5"/><br/>
                         <Link to="/canvas/new" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn w-75">Create Skill</button>
+                            <button varient="contained" className="purple-btn w-75" id="createskill">Create Skill</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">

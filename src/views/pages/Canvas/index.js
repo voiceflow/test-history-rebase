@@ -760,8 +760,6 @@ class Canvas extends Component {
                 })
             }
 
-            console.log(global_variables, "GLOBAL VARIABLES")
-
             this.setState({
                 skill: skill,
                 global_variables: global_variables
@@ -842,7 +840,6 @@ class Canvas extends Component {
     }
 
     setGlobalVariables(variables) {
-        console.log("SET GLOBALS", variables)
         this.setState({
             global_variables: variables,
             saved: false
@@ -1403,6 +1400,12 @@ class Canvas extends Component {
                     removeNode={this.removeNode}
                     user_modules={this.state.user_modules}
                     copyNode={this.copyNode}
+                    intents={this.state.skill.intents}
+                    intents_open={this.state.skill.intents_open}
+                    onIntent={this.setIntents}
+                    slots={this.state.skill.slots}
+                    slots_open={this.state.skill.slots_open}
+                    onSlot={this.setSlots}
                 />
                 <div
                     id="diagram"
@@ -1422,26 +1425,6 @@ class Canvas extends Component {
                         allowLooseLinks={false}
                     />
                 </div>
-                <Editor
-                    open={this.state.open}
-                    node={this.state.engine.getSuperSelect()}
-                    onUpdate={this.unsave}
-                    close={e => this.setState({ open: false })}
-                    repaint={this.repaint}
-                    variables={this.state.variables}
-                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
-                    diagrams={this.state.diagrams}
-                    createDiagram={this.createDiagram}
-                    enterFlow={this.enterFlow}
-                    removeNode={this.removeNode}
-                    user_modules={this.state.user_modules}
-                    intents={this.state.skill.intents}
-                    intents_open={this.state.skill.intents_open}
-                    onIntent={this.setIntents}
-                    slots={this.state.skill.slots}
-                    slots_open={this.state.skill.slots_open}
-                    onSlot={this.setSlots}
-                />
             </div>
         );
     }

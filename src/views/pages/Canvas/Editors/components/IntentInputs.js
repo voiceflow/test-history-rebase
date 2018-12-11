@@ -30,7 +30,7 @@ class IntentInputs extends Component {
     }
 
     _getSlotKeys(input) {
-      const re = /\{\{\[[^\}\{\[\]]+]\.(\d+)\}\}/g;
+      const re = /\{\{\[[^}{[\]]+]\.(\d+)\}\}/g;
       let m;
       const slot_keys = new Set()
 
@@ -64,7 +64,7 @@ class IntentInputs extends Component {
     handleKeyPress(e, i) {
         // Enter key pressed
         // Add utterance
-        if(e.charCode==13){
+        if(e.charCode===13){
             e.preventDefault();
 
             const all_utterances = []
@@ -192,7 +192,7 @@ class IntentInputs extends Component {
 
     _getUtterancesWithSlotNames(utterances, slots) {
 
-        const re = /(\{\{\[[^\}\{\[\]]+]\.(\d+)\}\})/g;
+        const re = /(\{\{\[[^}{[\]]+]\.(\d+)\}\})/g;
         let m;
 
         const utterance_text = utterances.map(e => e.text)
@@ -224,7 +224,7 @@ class IntentInputs extends Component {
             if (Array.isArray(utterances)) {
                 utterances = this._getUtterancesWithSlotNames(utterances, this.props.slots)
                 return utterances.map( (u, i) => {
-                    return <div className="interaction-utterance" key={i}><div>{u}</div><a><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-backspace trash-icon"></i></a></div>
+                    return <div className="interaction-utterance" key={i}><div>{u}</div><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-backspace trash-icon"></i></div>
                 });
             }
             return null
@@ -239,20 +239,18 @@ class IntentInputs extends Component {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
                         return (
                             <div className="interaction-block" key={i}>
-                                <a>
-                                    <div className="interaction-title">
-                                        <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
-                                        <input placeholder="Enter Intent Name" 
-                                            type="text"
-                                            value={this.state.name_inputs[i]}
-                                            onChange={(e) => {this.onNameChange(e, i)}}
-                                            onBlur={(e) => {this.onNameSave(e, i)}}
-                                            onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
-                                            className="interaction-name-input"
-                                        />
-                                        <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
-                                    </div>
-                                </a>
+                                <div className="interaction-title">
+                                    <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                    <input placeholder="Enter Intent Name" 
+                                        type="text"
+                                        value={this.state.name_inputs[i]}
+                                        onChange={(e) => {this.onNameChange(e, i)}}
+                                        onBlur={(e) => {this.onNameSave(e, i)}}
+                                        onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                                        className="interaction-name-input"
+                                    />
+                                    <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                                </div>
                                 <div className="input-error">{this.state.input_error[i]}</div>
                                 <Collapse isOpen={this.state.open[i]}>
                                 {renderUtterances(intent.inputs, i)}

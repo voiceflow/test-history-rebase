@@ -144,7 +144,7 @@ class Editor extends Component {
             case 'interaction':
                 return <Interaction 
                     node={this.state.node} 
-                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} onUpdate={this.props.onUpdate} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
                     variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
             case 'combine':
             case 'line':
@@ -228,7 +228,7 @@ class Editor extends Component {
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
-                    onKeyPress={ (e) => {if(e.charCode==13){e.preventDefault()}}}
+                    onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
                     />);
         }
     }

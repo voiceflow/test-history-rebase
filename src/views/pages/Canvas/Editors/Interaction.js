@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IntentInputs from './components/IntentInputs';
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup, InputGroup, Input } from 'reactstrap';
+import { Button, ButtonGroup } from 'reactstrap';
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import ErrorModal from '../../../components/Modals/ErrorModal';
 const uniqueNamesGenerator = require('unique-names-generator')

@@ -24,6 +24,7 @@ td {
     max-width: 100%;
     position: relative;
     overflow: hidden;
+    word-break: break-word;
 }
 .self-message {
     background-color: #ddf2ff;
@@ -64,9 +65,10 @@ td {
     padding: 4px;
 }
 
+.test-main {
+    border-right: 1px solid #e9ecef;
+}
 .test-sidebar {
-    /*background-color: #CCC;*/
-    border-left: 1px solid #e9ecef;
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;

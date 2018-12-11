@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import $ from 'jquery';
 import * as SRD from 'storm-react-diagrams';
 import Menu from './Menu';
 import Editor from './Editor';
@@ -11,7 +10,7 @@ import 'storm-react-diagrams/dist/style.min.css';
 import './StoryBoard.css';
 import TitleBar from './TitleBar';
 import ActionGroup from './ActionGroup';
-import LoadingModal from './../../components/Modals/LoadingModal';
+import WarningModal from './../../components/Modals/WarningModal';
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal';
 import HelpModal from './HelpModal';
 import SkillModal from './../Dashboard/Skill/SkillModal';
@@ -20,8 +19,7 @@ import { Prompt } from 'react-router';
 import blank_template from './../../../assets/templates/blank';
 import new_template from './../../../assets/templates/new';
 import { ButtonGroup } from 'reactstrap';
-
-import Cookies from 'universal-cookie';
+import cloneDeep from 'lodash/cloneDeep'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel';
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory';
@@ -34,7 +32,6 @@ const _ = require('lodash')
 
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget';
 
-const cookies = new Cookies();
 const defaultVariables = ['sessions', 'user_id', 'timestamp'];
 const line_color = '#D1D8E2';
 const line_width = 2.5;
@@ -105,36 +102,38 @@ class Canvas extends Component {
     constructor(props) {
         super(props);
 
-        this.loadLines = this.loadLines.bind(this);
-        this.repaint = this.repaint.bind(this);
-        this.dismissLoadingModal = this.dismissLoadingModal.bind(this);
-        this.loadDiagram = this.loadDiagram.bind(this);
-        this.setVariables = this.setVariables.bind(this);
+        this.repaint = this.repaint.bind(this)
+        this.loadDiagram = this.loadDiagram.bind(this)
+        this.setVariables = this.setVariables.bind(this)
+        this.setGlobalVariables = this.setGlobalVariables.bind(this)
+        this.toggleTestModal = this.toggleTestModal.bind(this)
+        this.createSkill = this.createSkill.bind(this)
+        this.publishAMZN = this.publishAMZN.bind(this)
+        this.publishMarket = this.publishMarket.bind(this)
+        this.onSave = this.onSave.bind(this)
+        this.onTest = this.onTest.bind(this)
+        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this)
+        this.unsave = this.unsave.bind(this)
+        this.onDrop = this.onDrop.bind(this)
+        this.runTest = this.runTest.bind(this)
+        this.createDiagram = this.createDiagram.bind(this)
+        this.enterFlow = this.enterFlow.bind(this)
+        this.removeNode = this.removeNode.bind(this)
+        this.copyNode = this.copyNode.bind(this)
+        this.zoom = this.zoom.bind(this)
+        this.loadUserModules = this.loadUserModules.bind(this)
+        this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
+        this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
+        this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
+        this.createWithTemplate = this.createWithTemplate.bind(this)
+        this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
+        this.onFlowRenamed = this.onFlowRenamed.bind(this)
+        this.clickDiagram = this.clickDiagram.bind(this)
+        this.hotKeys=this.hotKeys.bind(this)
+        // build diagram tree function from child
+        this.buildDiagrams = null
         this.setIntents = this.setIntents.bind(this);
         this.setSlots = this.setSlots.bind(this);
-        this.toggleTestModal = this.toggleTestModal.bind(this);
-        this.createSkill = this.createSkill.bind(this);
-        this.publishAMZN = this.publishAMZN.bind(this);
-        this.publishMarket = this.publishMarket.bind(this);
-        this.onSave = this.onSave.bind(this);
-        this.onTest = this.onTest.bind(this);
-        this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this);
-        this.unsave = this.unsave.bind(this);
-        this.onDrop = this.onDrop.bind(this);
-        this.runTest = this.runTest.bind(this);
-        this.createDiagram = this.createDiagram.bind(this);
-        this.enterFlow = this.enterFlow.bind(this);
-        this.removeNode = this.removeNode.bind(this);
-        this.zoom = this.zoom.bind(this);
-        this.buildDiagrams = null;
-        this.loadUserModules = this.loadUserModules.bind(this);
-        this.handleTemplateIntent = this.handleTemplateIntent.bind(this);
-        this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this);
-        this.replaceWithTemplate = this.replaceWithTemplate.bind(this);
-        this.createWithTemplate = this.createWithTemplate.bind(this);
-        this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this);
-        this.onFlowRenamed = this.onFlowRenamed.bind(this);
-
         // preview mode
         this.preview = !!this.props.preview;
 
@@ -147,20 +146,23 @@ class Canvas extends Component {
         let open, diagram_id, skill_id;
         let diagram_name = '';
 
-        let last_session = cookies.get('last_session', {path: '/'});
+        let last_session = localStorage.getItem('flow')
         let url = this.props.computedMatch;
 
         let newSkill = !!this.props.new;
-        let variables = defaultVariables.slice(0);
+        let global_variables = defaultVariables.slice(0);
 
         if(!newSkill){
             if (url && url.params.skill_id && url.params.diagram_id) {
                 skill_id = url.params.skill_id;
                 diagram_id = url.params.diagram_id;
             }else if(last_session){
-                this.props.history.push('/canvas/' + last_session.skill_id + '/' + last_session.diagram_id);
-                skill_id = last_session.skill_id;
-                diagram_id = last_session.diagram_id;
+                let parts = last_session.split('/')
+                if(parts.length === 2){
+                    this.props.history.push('/canvas/' + last_session)
+                    skill_id = parts[0]
+                    diagram_id = parts[1]
+                }
             }else{
                 this.props.history.push('/canvas/new');
             }
@@ -191,8 +193,6 @@ class Canvas extends Component {
                 links[key].setWidth(line_width);
             }
 
-            variables.push('user_name');
-
             engine.setDiagramModel(model);
 
             model.addListener({nodesUpdated: this.unsave});
@@ -200,6 +200,8 @@ class Canvas extends Component {
 
             diagram_name = 'ROOT'
         }
+
+        this.diagram_id = diagram_id
 
         this.state = {
             engine: engine,
@@ -214,25 +216,39 @@ class Canvas extends Component {
                 slots_open: []
             },
             diagrams: [],
-            diagram_id: diagram_id,
-            loading_modal: !newSkill,
-            error_modal: false,
+            loading_diagram: !newSkill,
+            error: null,
             saving: false,
             saved: true,
             last_save: false,
             testing_modal: false,
             testing_info: false,
-            variables: variables,
+            variables: [],
+            global_variables: global_variables,
             newSkill: newSkill,
             help: null,
             helpOpen: false,
             user_modules: null,
             user_templates: []
-        };
+        }
 
         if(!this.state.newSkill){
-            this.onLoadSkill(this.state.skill.skill_id);
-            // this.onLoadId('6cd76bb5-6d47-454f-b393-fb6bcb6505fe');
+            this.onLoadSkill(this.state.skill.skill_id)
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        // LOADING IN A NEW DIAGRAM
+        let url = nextProps.computedMatch;
+        if (url && url.params.diagram_id && url.params.diagram_id !== this.diagram_id) {
+            let diagram_id = url.params.diagram_id;
+            if(this.buildDiagrams !== null){
+                this.buildDiagrams(diagram_id)
+            }
+            this.setState({
+                loading_diagram: true,
+                open: false
+            }, () => this.onLoadId(diagram_id))
         }
     }
 
@@ -292,16 +308,16 @@ class Canvas extends Component {
         })
 
         axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.state.diagram_id
+            diagram_id: this.diagram_id
         })
         .then(res => {
-            this.loadDiagram(res.data);
+            this.loadDiagram(this.diagram_id, res.data);
         })
         .catch(err => {
             console.log(err.response);
             this.setState({
                 saving: false,
-                error_modal: 'Error retrieving template'
+                error: 'Error retrieving template'
             });
         })
     }
@@ -313,7 +329,7 @@ class Canvas extends Component {
         var type = 'flow';
 
         axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.state.diagram_id
+            diagram_id: this.diagram_id
         })
         .then(res => {
             var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
@@ -323,7 +339,7 @@ class Canvas extends Component {
                 diagram_id: null,
                 inputs: [],
                 outputs: []
-            };
+            }
 
             engine.stopMove();
             node.extras.type = type;
@@ -331,8 +347,8 @@ class Canvas extends Component {
             node.y = 100;
             node.setSelected();
             engine.getDiagramModel().clearSelection();
-            engine.getDiagramModel().addNode(node);
-            engine.setSuperSelect(node);
+            engine.getDiagramModel().addNode(node)
+            engine.setSuperSelect(node)
             this.setState({
                 engine: engine,
                 open: type !== 'comment',
@@ -344,7 +360,7 @@ class Canvas extends Component {
             console.log(err.response);
             this.setState({
                 saving: false,
-                error_modal: 'Error retrieving template'
+                error: 'Error retrieving template'
             });
         })
     }
@@ -368,88 +384,104 @@ class Canvas extends Component {
 
     createWithTemplate(module){
         axios.get(`/marketplace/template/${module.module_id}/`, {
-            diagram_id: this.state.diagram_id
+            diagram_id: this.diagram_id
         })
         .then(res => {
-            this.loadDiagram(res.data);
+            this.loadDiagram(this.diagram_id, res.data);
             this.createSkill(module.title + " Copy")
         })
         .catch(err => {
             console.log(err.response);
             this.setState({
                 saving: false,
-                error_modal: 'Error retrieving template'
+                error: 'Error retrieving template'
             });
         })
     }
 
     removeNode(){
-        let selected = this.state.engine.getSuperSelect();
-        this.state.engine.stopMove();
+        let selected = this.state.engine.getSuperSelect()
+        this.state.engine.stopMove()
         if(selected){
-            selected.remove();
+            selected.remove()
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        let url = nextProps.computedMatch;
-        if (url && url.params.diagram_id && url.params.diagram_id !== this.state.diagram_id) {
-            let diagram_id = url.params.diagram_id;
+    // copy individual node
+    copyNode() {
+        let selected = this.state.engine.getSuperSelect()
+        let engine = this.state.engine
+        engine.stopMove()
+
+        var node = new BlockNodeModel(selected.name + ' copy')
+        node.extras = cloneDeep(selected.extras)
+
+        let ports = selected.getPorts()
+
+        for (var name in ports) {
+            let port = ports[name]
+            port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+        }
+
+        node.x = selected.x + 30
+        node.y = selected.y + 30
+
+        engine.getDiagramModel().clearSelection();
+
+        node.setSelected()
+        engine.setSuperSelect(node)
+        engine.getDiagramModel().addNode(node)
+
+        this.setState({
+            engine: engine
+        })
+        
+    }
+
+    clickDiagram(e){
+        let engine = this.state.engine
+        let selected = engine.getDiagramModel().getSelectedItems("node")
+
+        if (selected.length === 1 && selected[0].extras.type !== 'comment') {
+            engine.setSuperSelect(selected[0])
             this.setState({
-                diagram_id: diagram_id
-            }, () => this.onLoadId(diagram_id))
+                engine: engine,
+                open: true
+            })
+        } else if (selected.length === 0) {
+            let model = engine.getDiagramModel()
+            let nodes = model.getNodes()
+            for (let key in nodes) {
+                if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
+                    model.removeNode(nodes[key].getID())
+                    this.forceUpdate()
+                }
+            }
         }
     }
 
     componentDidMount() {
+        // If not preview mode
+        if(!this.preview){
+            this.loadUserModules()
+            document.addEventListener('keydown', this.hotKeys);
+        }
+    }
 
-        $('#diagram').click((e) => {
-            let engine = this.state.engine;
-            let selected = engine.getDiagramModel().getSelectedItems("node");
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.hotKeys);
+    }
 
-            if (selected.length === 1 && selected[0].extras.type !== 'comment') {
-                engine.setSuperSelect(selected[0]);
-                this.setState({
-                    engine: engine,
-                    open: true
-                });
-            } else if (selected.length === 0) {
-                let model = engine.getDiagramModel();
-                let nodes = model.getNodes();
-                for (let key in nodes) {
-                    if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
-                        model.removeNode(nodes[key].getID());
-                        this.forceUpdate();
-                    }
-                }
+    hotKeys(event){
+        // CTRL/CMD + S to save
+        if ((event.ctrlKey || event.metaKey) && event.which === 83) {
+            event.preventDefault();
+            // Save Function
+            if (!this.state.saved) {
+                this.onSave();
             }
-        });
 
-        $('#Editor').mousedown(this.onDiagramUnfocus);
-
-        // If in preview mode
-        if(this.preview){
-            $('#Editor').on('click dblclick focus focusin focusout keydown keypress keyup load mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup select submit', 
-                '#editor-section', 
-                function(e){
-                e.preventDefault();
-                return false;
-            });
-        }else{
-            this.loadUserModules();
-            $(document).keydown(function(event) {
-                // If Control or Command key is pressed and the S key is pressed
-                // run save function. 83 is the key code for S.
-                if ((event.ctrlKey || event.metaKey) && event.which === 83) {
-                    event.preventDefault();
-                    // Save Function
-                    if (!this.state.saved) {
-                        this.onSave();
-                    }
-
-                    return false;
-                }
-            }.bind(this));
+            return false;
         }
     }
 
@@ -475,8 +507,7 @@ class Canvas extends Component {
             console.log(err.response);
             this.setState({
                 saving: false,
-                loading_modal: true,
-                error_modal: 'Error retrieving modules'
+                error: 'Error retrieving modules'
             });
         });
     }
@@ -492,11 +523,11 @@ class Canvas extends Component {
     onSave(cb, is_new=false) {
 
         try {
-            this.setState({ saving: 'Saving...' });
+            this.setState({ saving: true });
             var engine = this.state.engine;
             var model = engine.getDiagramModel();
             let serialize = model.serializeDiagram();
-            serialize.id = this.state.diagram_id;
+            serialize.id = this.diagram_id;
             var data = JSON.stringify(serialize);
 
             let sub_diagrams = [];
@@ -537,27 +568,28 @@ class Canvas extends Component {
 
             for (var i = 0; i < this.state.diagrams.length; i++) {
                 let diagrams = this.state.diagrams;
-                if(diagrams[i].id === this.state.diagram_id){
+                if(diagrams[i].id === this.diagram_id){
                     diagrams[i].sub_diagrams = sub_diagrams;
                 }
                 this.setState({
                     diagrams: diagrams
                 }, () => {
                     if(this.buildDiagrams !== null){
-                        this.buildDiagrams();
+                        this.buildDiagrams(this.diagram_id);
                     }
                 });
             }
 
             var diagram = {
-                id: this.state.diagram_id,
+                id: this.diagram_id,
                 title: this.state.diagram_name,
                 variables: this.state.variables,
                 data: data,
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
-                used_intents: used_intents
+                used_intents: used_intents,
+                global: this.state.global_variables
             }
 
             const s = this.state.skill;
@@ -592,12 +624,11 @@ class Canvas extends Component {
                     saved: true,
                     last_save: Date.now()
                 });
-                if(typeof cb === "function") cb(this.state.diagram_id);
+                if(typeof cb === "function") cb(this.diagram_id);
             }, rej_err => {
                 console.log(rej_err);
                 this.setState({
                     saving: false,
-                    loading_modal: true,
                     error: 'Error Saving to Cloud (Check Logs)'
                 });
                 if(typeof cb === "function") cb(null);
@@ -606,101 +637,81 @@ class Canvas extends Component {
         } catch (e) {
             console.log(e);
             this.setState({
-                loading_modal: true,
-                error_modal: 'Error Saving - Project Structure (Check Logs)'
+                error: 'Error Saving - Project Structure (Check Logs)'
             });
             if(typeof cb === "function") cb(null);
         }
     }
 
-    loadLines() {
-        let engine = this.state.engine;
-        let model = engine.getDiagramModel();
-        let id = model.getID();
-        $.ajax({
-            url: '/analytics/story/' + id + '/lines',
-            type: 'GET',
-            success: (data) => {
-                var nodes = model.getNodes();
-                for (let key in nodes) {
-                    if(data[key]){
-                        nodes[key].extras.reads = data[key];
-                    }else{ 
-                        nodes[key].extras.reads = 0;
-                    }
-                }
-                engine.setDiagramModel(model);
-                this.setState({
-                    engine: engine
-                });
-            },
-            error: (e) => {
-                console.log(e);
-                this.setState({
-                    loading_modal: true,
-                    error_modal: "Unable to load Line data"
-                });
-            }
-        });
-    }
+    loadDiagram(diagram_id, diagram) {
+        var engine = this.state.engine
+        var model = new SRD.DiagramModel()
 
-    loadDiagram(diagram) {
-        var engine = this.state.engine;
-        var model = new SRD.DiagramModel();
-
-        let diagram_json = false;
+        let diagram_json = false
         try {
-            diagram_json = JSON.parse(diagram.data);
+            diagram_json = JSON.parse(diagram.data)
         } catch (e) {
-            console.log(e);
+            console.log(e)
         }
         if (diagram_json) {
-            model.deSerializeDiagram(diagram_json, engine);
-            model.addListener({ nodesUpdated: this.unsave });
-            model.addListener({ linksUpdated: this.unsave });
+            // DEPRECATE CONVERT DIAGRAM BLOCK NAMES
+            diagram_json.nodes.forEach(node => {
+                if (node.extras && node.extras.type === 'flow' && node.extras.diagram_id) {
+                    let find = this.state.diagrams.find(x => x.id === node.extras.diagram_id)
+                    if(find){
+                        node.name = find.name;
+                    }
+                }
+            })
+            engine.setSuperSelect(null)
+            model.deSerializeDiagram(diagram_json, engine)
+            model.addListener({ nodesUpdated: this.unsave })
+            model.addListener({ linksUpdated: this.unsave })
             var nodes = model.getNodes();
             for (let key in nodes) {
                 if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
                     nodes[key].clearListeners();
-                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() });
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
                 }
             }
-            var links = model.getLinks();
+            var links = model.getLinks()
             for (let key in links) {
-                links[key].setColor(line_color);
-                links[key].setWidth(line_width);
+                links[key].setColor(line_color)
+                links[key].setWidth(line_width)
             }
             
-            engine.stopMove();
-            engine.setDiagramModel(model);
+            engine.stopMove()
+            engine.setDiagramModel(model)
 
-            let variables = defaultVariables.slice(0);
+            // make sure variables are unique and don't overlap with global variables
+            let variables = []
             if (Array.isArray(diagram.variables)) {
                 diagram.variables.forEach(v => {
-                    if(!variables.includes(v)){
+                    if(!variables.includes(v) && !this.state.global_variables.includes(v)){
                         variables.push(v);
                     }
                 });
             }
 
+            this.diagram_id = diagram_id
             this.setState({
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
                 last_save: diagram.last_save,
-                loading_modal: false,
+                loading_diagram: false,
                 variables: variables
             });
 
-            this.setState({ saved: true });
+            this.setState({ saved: true })
         } else {
-            this.setState({ error_modal: 'Could Not Open Project - Corrupted File' });
+            this.setState({ error: 'Could Not Open Project - Corrupted File' })
         }
     }
 
     onLoadDiagrams(){
         if(this.preview){
-            this.onLoadId(this.state.diagram_id);
+            this.onLoadId(this.diagram_id);
         }else{
             axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
             .then(res => {
@@ -720,12 +731,12 @@ class Canvas extends Component {
                         }
                     })
                 }, () => {
-                    this.onLoadId(this.state.diagram_id);
+                    this.onLoadId(this.diagram_id)
                 });
             })
             .catch(err => {
                 console.error(err.response);
-                this.setState({ error_modal: 'Could Not Retrieve Project Diagrams' });
+                this.setState({ error: 'Could Not Retrieve Project Diagrams' })
             });
         }
     }
@@ -733,43 +744,47 @@ class Canvas extends Component {
     onLoadSkill(skill_id){
         axios.get(`/skill/${skill_id}?${this.preview ? 'preview=1' : 'simple=1'}`)
         .then(res => {
+
+            // prevent redundant saving of global variables in the skill object 
+            let skill = res.data
+            let res_globals = skill.global
+            delete skill.global
+            
+            // make sure that there are no duplicate variables and that the defaults are included
+            let global_variables = defaultVariables.slice(0);
+            if (Array.isArray(res_globals)) {
+                res_globals.forEach(v => {
+                    if(!global_variables.includes(v)){
+                        global_variables.push(v);
+                    }
+                })
+            }
+
             this.setState({
-                skill: res.data
-            }, this.onLoadDiagrams);
+                skill: skill,
+                global_variables: global_variables
+            }, this.onLoadDiagrams)
         })
         .catch(err => {
             console.error(err.response);
-            this.setState({ error_modal: 'Could Not Retrieve Project' });
+            this.setState({ error: 'Could Not Retrieve Project' })
         })
     }
 
     onLoadId(diagram_id) {
-        $.ajax({
-            url: '/diagram/'+ diagram_id,
-            type: 'GET',
-            success: diagram => {
-                this.loadDiagram(diagram);
-
-                if(!this.preview){
-                    cookies.set('last_session', {
-                        skill_id: this.state.skill.skill_id,
-                        diagram_id: diagram_id
-                    }, {path: '/'});
-                }
-
-                if(this.buildDiagrams !== null){
-                    this.buildDiagrams();
-                }
-            },
-            error: () => {this.setState({ error_modal: 'Could Not Retrieve Project' });}
-        });
-    }
-
-    dismissLoadingModal() {
-        this.setState({
-            loading_modal: false
-        });
-        // this.props.history.push('/dashboard');
+        axios.get('/diagram/'+ diagram_id)
+        .then(res => {
+            this.loadDiagram(diagram_id, res.data)
+            if(!this.preview){
+                localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
+            }
+            if(this.buildDiagrams !== null){
+                this.buildDiagrams(diagram_id)
+            }
+        })
+        .catch(err => {
+            this.setState({ error: 'Could Not Retrieve Project' })
+        })
     }
 
     onFlowRenamed(id) {
@@ -777,9 +792,9 @@ class Canvas extends Component {
         for (let key in nodes) {
             if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
                 nodes[key].name = this.state.diagrams.find(x => x.id === id).name;
-                this.repaint();
             }
         }
+        this.repaint()
     }
 
     unsave(e) {
@@ -820,6 +835,13 @@ class Canvas extends Component {
         skill.intents_open = intents_open ? intents_open : skill.intents_open
         this.setState({
             skill: skill,
+            saved: false
+        })
+    }
+
+    setGlobalVariables(variables) {
+        this.setState({
+            global_variables: variables,
             saved: false
         });
     }
@@ -897,7 +919,7 @@ class Canvas extends Component {
 
         this.setState({
             testing_info: {
-                id: this.state.diagram_id,
+                id: this.diagram_id,
                 nodes: nodes,
                 nlc: nlc,
                 nlc_promise: nlc_promise
@@ -929,8 +951,7 @@ class Canvas extends Component {
                     .catch(err => {
                         console.log(err);
                         this.setState({
-                            error_modal: "Could Not Render Your Project",
-                            loading_modal: true,
+                            error: "Could Not Render Your Project",
                             testing_modal: false
                         });
                     });
@@ -951,11 +972,9 @@ class Canvas extends Component {
           diagram: diagram_id
         })
         .then(res => {
-            let skill_id = res.data.id;
-            cookies.set('last_session', {
-                skill_id: skill_id,
-                diagram_id: diagram_id
-            }, {path: '/'});
+            let skill_id = res.data.id
+            localStorage.setItem('flow', `${skill_id}/${diagram_id}`)
+            this.diagram_id = diagram_id
 
             this.setState({
                 skill: {
@@ -971,30 +990,29 @@ class Canvas extends Component {
                     slots: [],
                     slots_open: []
                 },
-                newSkill: 0,
-                diagram_id: diagram_id
+                newSkill: 0
             }, () => {
                 this.onSave(() => {
                     this.state.diagrams.push({
                         id: diagram_id,
                         name: 'ROOT'
-                    });
+                    })
                     if(this.buildDiagrams !== null){
-                        this.buildDiagrams();
+                        this.buildDiagrams(diagram_id);
                     }
                     this.props.history.push(`/canvas/${skill_id}/${diagram_id}`);
                 }, true)
             });
         })
         .catch(err => {
-            this.setState({ error_modal: 'Could Not Create Project - Error' });
+            this.setState({ error: 'Could Not Create Project - Error' });
         });
     }
 
     // Create a new diagram from the flow block
     createDiagram(node, template=null){
         this.setState({
-            loading_modal: true
+            loading_diagram: true
         })
 
         let id = generateID()
@@ -1013,9 +1031,19 @@ class Canvas extends Component {
             let skill_id = this.state.skill.skill_id
             let data = JSON.stringify(curr_template)
 
+            // No Duplicate Flow Names
+            let new_flow_name = 'New Flow'
+            let index = 1
+            const exists = (name) => this.state.diagrams.find(d => d.name === name)
+            
+            while(exists(new_flow_name)){
+                new_flow_name = `New Flow ${index}`
+                index++
+            }
+
             var diagram = {
                 id: id,
-                title: 'New Flow',
+                title: new_flow_name,
                 variables: defaultVariables.slice(0),
                 data: data,
                 skill: skill_id
@@ -1024,7 +1052,7 @@ class Canvas extends Component {
             axios.post('/diagram?new=1', diagram)
             .then(() => {
                 this.state.diagrams.push({
-                    name: 'New Flow',
+                    name: new_flow_name,
                     id: id
                 })
                 this.props.history.push(`/canvas/${skill_id}/${id}`)
@@ -1033,8 +1061,7 @@ class Canvas extends Component {
                 console.log(err.response)
                 this.setState({
                     saving: false,
-                    loading_modal: true,
-                    error_modal: 'Unable to create new Flow'
+                    error: 'Unable to create new Flow'
                 })
             })
         })
@@ -1052,11 +1079,16 @@ class Canvas extends Component {
         });
     }
 
-    enterFlow(new_diagram_id) {
-        if(new_diagram_id !== this.state.diagram_id){
-            this.onSave(() => {
-                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`);
-            });
+    enterFlow(new_diagram_id, save=true) {
+        if(new_diagram_id !== this.diagram_id){
+            this.setState({loading_diagram: true})
+            if(save){
+                this.onSave(() => {
+                    this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
+                });
+            }else{
+                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
+            }
         }
     }
 
@@ -1070,7 +1102,7 @@ class Canvas extends Component {
             return;
         }
 
-        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1));
+        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
 
         if(type){
             if (type === 'choice') {
@@ -1093,7 +1125,7 @@ class Canvas extends Component {
                     choices: [],
                     choices_open: []
                 };
-            } else if (type === 'audio') {
+            } else if (type === 'combine') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
@@ -1105,12 +1137,12 @@ class Canvas extends Component {
                             title: 'Line Audio'
                         }
                     ]
-                };
+                }
             } else if (type === 'speak') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    dialogs: []
+                    randomize: false
                 }
             } else if (type === 'flow') {
                 node.addInPort(' ')
@@ -1119,7 +1151,7 @@ class Canvas extends Component {
                     diagram_id: null,
                     inputs: [],
                     outputs: []
-                };
+                }
             } else if (type === 'command') {
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
@@ -1245,11 +1277,11 @@ class Canvas extends Component {
                 }catch(err){
                     console.error(err);
                     return this.setState({
-                        error_modal: 'Error - Module Broken'
+                        error: 'Error - Module Broken'
                     });
                 }
             }
-            this.state.engine.stopMove();
+            engine.stopMove();
             node.extras.type = type;
             var points = engine.getRelativeMousePoint(event);
             node.x = points.x-(node.name.length*4.5 + 40);
@@ -1266,17 +1298,9 @@ class Canvas extends Component {
     }
 
     render() {
-        // if(this.state.loading_modal) {
-        //     return <div className='super-center h-100 w-100'>
-        //         <div className="text-center">
-        //             <h1><img className="fa-spin" src='/sync.svg' height='42' width='42' alt='loading'/></h1>
-        //             <h5>Loading...</h5>
-        //         </div>
-        //     </div>
-        // }
-
         return (
-            <div className='App' >
+            <div className='App'>
+                <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <HelpModal
                     open={this.state.helpOpen}
                     help={this.state.help}
@@ -1301,7 +1325,6 @@ class Canvas extends Component {
                     message={location => 'Are you sure you want to leave without saving?'
                     }
                 />
-                <LoadingModal open={this.state.loading_modal} error={this.state.error_modal} dismiss={this.dismissLoadingModal}/>
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
                 {this.state.testing_modal ? 
                     <TestModal 
@@ -1313,14 +1336,18 @@ class Canvas extends Component {
                         inv_name={this.state.skill.inv_name}
                         intents={this.state.skill.used_intents}
                         slots={this.state.skill.slots}
+                        globals={this.state.global_variables}
                     /> 
                 : null}
                 <Menu 
+                    onClick={this.onDiagramUnfocus}
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
-                    current={this.state.diagram_id}
+                    current={this.diagram_id}
                     enterFlow={this.enterFlow}
                     variables={this.state.variables}
+                    global_variables={this.state.global_variables}
+                    onGlobalVariable={this.setGlobalVariables}
                     onVariable={this.setVariables}
                     build={fn => this.buildDiagrams = fn}
                     user_modules={this.state.user_modules}
@@ -1328,6 +1355,10 @@ class Canvas extends Component {
                     onTemplateIntent={this.handleTemplateIntent}
                     onFlowRenamed={this.onFlowRenamed}
                     history={this.props.history}
+                    loading_diagram={this.state.loading_diagram}
+                    changeLoading={(state) => this.setState({loading_diagram: state})}
+                    saving={this.state.saving}
+                    onSave={this.onSave}
                 />
                 <TitleBar
                     onTest={this.onTest}
@@ -1343,16 +1374,39 @@ class Canvas extends Component {
                     saving={this.state.saving}
                     saved={this.state.saved}
                     admin={this.state.admin}
-                    onLoadLines={this.loadLines}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
-                    diagram_id={this.state.diagram_id}
+                    diagram_id={this.diagram_id}
                 /> }
+                {this.state.loading_diagram && <div id="loading-diagram">
+                    <div className="text-center">
+                        <h5 className="text-muted mb-2">Loading Flow</h5>
+                        <span className="loader"/>
+                    </div>
+                </div>}
+                <Editor
+                    onClick={this.onDiagramUnfocus}
+                    open={this.state.open}
+                    node={this.state.engine.getSuperSelect()}
+                    onUpdate={this.unsave}
+                    close={e => this.setState({ open: false })}
+                    repaint={this.repaint}
+                    variables={this.state.variables}
+                    global_variables={this.state.global_variables}
+                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
+                    diagrams={this.state.diagrams}
+                    createDiagram={this.createDiagram}
+                    enterFlow={this.enterFlow}
+                    removeNode={this.removeNode}
+                    user_modules={this.state.user_modules}
+                    copyNode={this.copyNode}
+                />
                 <div
                     id="diagram"
                     className={this.preview ? " no-padding" : ""}
                     onDrop={this.onDrop}
                     onDragOver={e => e.preventDefault()}
+                    onClick={this.clickDiagram}
                 >
                     <div id="widget-bar">
                         <ButtonGroup>

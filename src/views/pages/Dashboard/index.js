@@ -3,25 +3,16 @@ import React, { Component } from 'react';
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
-// import MUIButton from '@material-ui/core/Button';
-
-// import { InputGroup, Input, Button } from 'reactstrap';
-// import CardMedia from '@material-ui/core/CardMedia';
-
-// import EnvironmentModal from './EnvironmentModal'
-
 import './DashBoard.css';
-
 import axios from 'axios';
-
 import ConfirmModal from './../../components/Modals/ConfirmModal';
 import SkillCard from './Skill/SkillCard';
 
 class DashBoard extends Component {
     constructor(props) {
-        super(props);
+        super(props); 
 
-        this.state = {
+        this.state = { 
             confirm: false,
             loading: false,
             skills: null,
@@ -31,6 +22,8 @@ class DashBoard extends Component {
         this.onLoadSkills = this.onLoadSkills.bind(this);
         this.openSkill = this.openSkill.bind(this);
     }
+
+
 
     openSkill(skill, diagram){
         setTimeout(() => { 
@@ -163,7 +156,7 @@ class DashBoard extends Component {
                         <span className="subheader-title">
                             <b>Dashboard</b>
                             <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '} 
+                                <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '} 
                                 <span className="text-secondary">Skills</span>

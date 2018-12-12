@@ -11,6 +11,12 @@ body {
 .modal {
     overflow: scroll !important;
 }
+.joyride-overlay{
+    z-index: 1060!important
+}
+.__floater.__floater__open{
+    z-index: 1061!important
+}
 button:focus{
     outline: none;
 }
@@ -485,22 +491,26 @@ label {
     color: #666!imortant;
     /*margin: 0px !important;*/
 }
+
 .input-select>div{
     font-weight: lighter !important; 
     border: none !important;
     box-shadow: 0 2px 5px 0 #e6ebf1 !important;
 /*    min-height: 45px;*/
 }
-input, .text-to-voice, .solid-border{
-    background-color: #f2f7f8;
+
+input, textarea, .text-to-voice, .choice-block, .solid-border{
+    background-color: #FFF;
     color: #2b3950;
     border: 1px solid #c5d3e0;
     border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
-input::placeholder, textarea::placeholder, input.form-control::placeholder, input.form-bg::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder {
+
+input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
+.select-box__placeholder {
     font-weight: lighter !important;
-    color: #8da2b5;
+    color: #8da2b5 !important;
 }
 .TitleBar .publish-btn:hover{
     color: #3d96f0 !important;
@@ -830,8 +840,28 @@ body.modal-open {
 .select-box__menu {
     z-index: 100 !important;
 }
-.select-box__control {
-    border: 1px solid #E2E9EC !important;
+.select-box__dropdown-indicator{
+    color: #c5d3e0 !important;
+}
+.select-box__control{
+    background-color: #fff !important;
+    color: #2b3950 !important;
+    border-radius: 5px !important;
+    border: 1px solid !important;
+    border-color: #E2E9EC !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+}
+.select-box__control--is-focused{
+    border-color: #42A5FF !important;
+}
+.select-box__indicator-separator{
+    background-color: #fff !important;
+    
+}
+.select-box__control:focus{
+    border: 5px solid #42A5FF !important;
+    box-shadow: none !important;
 }
 
 .loader {

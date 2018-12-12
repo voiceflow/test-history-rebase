@@ -102,16 +102,10 @@ class Editor extends Component {
     }
 
     handleChange(e, key = undefined) {
-        var node = this.state.node;
-        var name = e.target.getAttribute('name');
-        var value = e.target.value;
-        if (name === 'name') {
-            node[name] = value;
-        } else if (key !== undefined && typeof key === 'string') {
-            node.extras[name][key] = value;
-        } else {
-            node.extras[name] = value;
-        }
+        var node = this.state.node
+        var name = e.target.getAttribute('name')
+        var value = e.target.value
+        node[name] = value
         this.setState({
             node: node
         }, () => {
@@ -255,7 +249,7 @@ class Editor extends Component {
         return (
             <div id="Editor" className={(this.props.open && type ? 'open':'')} onClick={this.props.onClick}>
                 {type ?
-                    <form onSubmit={(e) => e.preventDefault()} className="controls" key={this.state.node.id}>
+                    <div className="controls" key={this.state.node.id}>
                         <div className="top">
                             <div className="property">
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
@@ -289,7 +283,7 @@ class Editor extends Component {
                             {this.renderTitle()}
                             {this.BlockViewer()}
                         </div>
-                    </form> 
+                    </div> 
                 : null}
             </div>
         );

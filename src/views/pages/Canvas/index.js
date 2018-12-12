@@ -26,6 +26,10 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 // import Joyride from 'react-joyride'
+// import { rejects } from 'assert'
+
+var NLC = require("natural-language-commander")
+const _ = require('lodash')
 
 // import { DiagramWidget } from './SRD/base/widgets/DiagramWidget'
 
@@ -39,6 +43,59 @@ const generateID = () => {
         const v = c === "x" ? r : (r & 0x3) | 0x8
         return v.toString(16)
     })
+}
+
+const _getUtterancesWithSlotNames = (utterances, slots) => {
+
+	const re = /(\{\{\[[^}{[\]]+]\.(\d+)\}\})/g;
+	let m;
+
+	const utterance_text = utterances.map(e => e.text)
+
+	const new_utterances = utterance_text.map( input => {
+		let new_input = input
+		do {
+			m = re.exec(input)
+			if (m) {
+				const replace = m[1]
+				const key = m[2]
+				const slot =_.find(slots, { key: +key })
+				if (slot) {
+					let slot_name = _.find(slots, { key: +key }).name
+					new_input = new_input.replace(replace, `{${slot_name}}`)
+				} else {
+					return new_input
+				}
+			}
+		} while (m);
+		return new_input
+	})
+	return new_utterances
+}
+
+const _getSlotsForKeys = (keys, slots) => {
+	let key_set = new Set()
+
+	keys.forEach(key_arr => {
+		key_arr.forEach(key => {
+			key_set.add(key)
+		})
+	})
+
+	key_set = [...key_set]
+
+	return key_set.map(key => {
+        const slot = _.find(slots, {key: key})
+        let type = slot.type.value !== 'CUSTOM' ? slot.type.value : slot.name
+        if (type.indexOf('AMAZON.') !== -1) {
+            type = 'STRING'
+        }
+
+		return {
+			name: slot.name,
+			type: type
+		}
+	})
 }
 
 class Canvas extends Component {
@@ -75,6 +132,8 @@ class Canvas extends Component {
         this.hotKeys=this.hotKeys.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
+        this.setIntents = this.setIntents.bind(this);
+        this.setSlots = this.setSlots.bind(this);
         // preview mode
         this.preview = !!this.props.preview
 
@@ -153,7 +212,11 @@ class Canvas extends Component {
             diagram_name: diagram_name,
             skill: {
                 skill_id: skill_id,
-                name: '...'
+                name: '...',
+                intents: [],
+                intents_open: [],
+                slots: [],
+                slots_open: []
             },
             diagrams: [],
             loading_diagram: !newSkill,
@@ -461,6 +524,7 @@ class Canvas extends Component {
     }
 
     onSave(cb, is_new=false) {
+
         try {
             this.setState({ saving: true })
             var engine = this.state.engine
@@ -471,14 +535,34 @@ class Canvas extends Component {
 
             let sub_diagrams = []
             let permissions = new Set()
+            let used_intent_names = new Set()
+            let used_intents = []
             
             serialize.nodes.forEach(node => {
                 if(node.extras.type === 'flow' && node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id)
                 }
-                if (node.extras.type === 'permissions') {
+                else if (node.extras.type === 'permissions') {
                     node.extras.permissions.forEach(permission => {
                         permissions.add(permission.selected.value)
+                    })
+                }
+                else if (node.extras.type === 'interaction') {
+                    node.extras.choices.forEach(choice => {
+                        if (choice.intent && !used_intent_names.has(choice.intent.value)) {
+                            if (choice.intent.built_in) {
+                                used_intents.push({
+                                    intent: choice.intent.value,
+                                    built_in: true
+                                })
+                            } else {
+                                used_intents.push({
+                                    intent: choice.intent.value,
+                                    built_in: false
+                                })
+                            }
+                            used_intent_names.add(choice.intent.value)
+                        }
                     })
                 }
             })
@@ -507,24 +591,49 @@ class Canvas extends Component {
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
+                used_intents: used_intents,
                 global: this.state.global_variables
             }
 
-            axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
-            .then(() => {
+            const s = this.state.skill;
+            const save_skill_intents = new Promise((resolve, reject) => {
+                axios.patch('/skill/' + s.skill_id + '?intents=true', {
+                    intents: JSON.stringify(s.intents),
+                    intents_open: JSON.stringify(s.intents_open),
+                    slots: JSON.stringify(s.slots),
+                    slots_open: JSON.stringify(s.slots_open)
+                })
+                .then(res => {
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            })
+
+            const save_diagram = new Promise ((resolve, reject) => {
+                axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
+                .then(() => {
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            })
+
+            Promise.all([save_skill_intents, save_diagram]).then(res => {
                 this.setState({
                     saving: false,
                     saved: true,
                     last_save: Date.now()
-                })
+                });
                 if(typeof cb === "function") cb(this.diagram_id)
-            })
-            .catch(err => {
-                console.log(err.response)
+            }, rej_err => {
+                console.log(rej_err)
                 this.setState({
                     saving: false,
                     error: 'Error Saving to Cloud (Check Logs)'
-                })
+                });
                 if(typeof cb === "function") cb(null)
             })
         } catch (e) {
@@ -712,6 +821,26 @@ class Canvas extends Component {
         })
     }
 
+    setSlots(slots, slots_open) {
+        const skill = this.state.skill
+        skill.slots = slots
+        skill.slots_open = slots_open ? slots_open : skill.slots_open
+        this.setState({
+            skill: skill,
+            saved: false
+        });
+    }
+
+    setIntents(intents, intents_open) {
+        const skill = this.state.skill
+        skill.intents = intents
+        skill.intents_open = intents_open ? intents_open : skill.intents_open
+        this.setState({
+            skill: skill,
+            saved: false
+        })
+    }
+
     setGlobalVariables(variables) {
         this.setState({
             global_variables: variables,
@@ -730,7 +859,12 @@ class Canvas extends Component {
         let engine = this.state.engine
         let model = engine.getDiagramModel()
         let data = model.serializeDiagram()
-        // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine)
+        // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+        let nlc = this.state.testing_info ? this.state.testing_info.nlc : null
+        let nlc_resolve;
+        let nlc_promise = new Promise(resolve => {
+            nlc_resolve = resolve
+        })
         
         let nodes = []
         data.nodes.forEach((node) => {
@@ -741,10 +875,56 @@ class Canvas extends Component {
                 })               
             }
         })
+        if (!nlc) {
+            nlc = new NLC()
+            this.state.skill.slots.forEach(slot => {
+                nlc.addSlotType({
+                    type: slot.name,
+                    matcher: slot.inputs
+                });
+            })
+
+            this.state.skill.intents.forEach(intent => {
+                let samples
+                if (!intent.built_in) {
+                    samples = _getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
+                }
+                const _slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
+        
+                console.log("REGISTER INTENT", nlc, {
+                    intent: intent.name,
+                    slots: _slots,
+                    utterances: samples
+                })
+
+                nlc.registerIntent({
+                    intent: intent.name,
+                    slots: _slots,
+                    utterances: samples,
+                    callback: (...args) => {
+
+                        const formatted_slots = {}
+                        _slots.forEach((slot, i) => {
+                            if (args[i]) {
+                                formatted_slots[slot.name] = {
+                                    value: args[i]
+                                }
+                            }
+                        })
+
+                        nlc_resolve({ intent: intent.name, slots: formatted_slots})
+                    }
+                })
+            })
+
+        }
+
         this.setState({
             testing_info: {
                 id: this.diagram_id,
-                nodes: nodes
+                nodes: nodes,
+                nlc: nlc,
+                nlc_promise: nlc_promise
             }
         })
     }
@@ -755,7 +935,13 @@ class Canvas extends Component {
 
         if(this.preview){
             this.runTest()
-        }else{
+        } else if ((!this.state.skill.intents || (this.state.skill.intents && this.state.skill.intents.length > 0)) && !this.state.skill.amzn_id) {
+            this.setState({
+                error_modal: "Since your skill contains intents, you must first publish your skill before testing with the built-in testing modal",
+                testing_modal: false,
+                loading_modal: true
+            })
+        } else {
             this.onSave(diagram_id => {
                 if(diagram_id === null){
                     this.setState({
@@ -801,7 +987,11 @@ class Canvas extends Component {
                     live: false,
                     restart: true,
                     diagram: diagram_id,
-                    locales: ["en-US"]
+                    locales: ["en-US"],
+                    intents: [],
+                    intents_open: [],
+                    slots: [],
+                    slots_open: []
                 },
                 newSkill: 0
             }, () => {
@@ -930,7 +1120,14 @@ class Canvas extends Component {
                     promptVoice: '',
                     choices: [],
                     inputs: []
-                }
+                };
+            } else if (type === 'interaction') {
+                node.addInPort(' ');
+                node.addOutPort('else').setMaximumLinks(1);
+                node.extras = {
+                    choices: [],
+                    choices_open: []
+                };
             } else if (type === 'combine') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1136,13 +1333,16 @@ class Canvas extends Component {
                     }
                 />
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
-
                 {this.state.testing_modal ? 
                     <TestModal 
                         open={this.state.testing_modal} 
                         toggle={this.toggleTestModal} 
                         testing_info={this.state.testing_info} 
                         diagrams={this.state.diagrams}
+                        amzn_id={this.state.skill.amzn_id}
+                        inv_name={this.state.skill.inv_name}
+                        intents={this.state.skill.used_intents}
+                        slots={this.state.skill.slots}
                         globals={this.state.global_variables}
                     /> 
                 : null}
@@ -1159,7 +1359,7 @@ class Canvas extends Component {
                     build={fn => this.buildDiagrams = fn}
                     user_modules={this.state.user_modules}
                     user_templates={this.state.user_templates}
-                    onTemplateChoice={this.handleTemplateChoice}
+                    onTemplateIntent={this.handleTemplateIntent}
                     onFlowRenamed={this.onFlowRenamed}
                     history={this.props.history}
                     loading_diagram={this.state.loading_diagram}
@@ -1208,6 +1408,12 @@ class Canvas extends Component {
                     removeNode={this.removeNode}
                     user_modules={this.state.user_modules}
                     copyNode={this.copyNode}
+                    intents={this.state.skill.intents}
+                    intents_open={this.state.skill.intents_open}
+                    onIntent={this.setIntents}
+                    slots={this.state.skill.slots}
+                    slots_open={this.state.skill.slots_open}
+                    onSlot={this.setSlots}
                 />
                 <div
                     id="diagram"

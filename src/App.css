@@ -521,6 +521,9 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, inpu
     font-weight: 600 !important 
 }*/
 
+.container-grid {
+  display: grid | inline-grid;
+}
 .input-ground-prepend{
     color: #42a5ff!important;
     border-color: #b8daff;
@@ -534,8 +537,8 @@ input::placeholder, textarea::placeholder, input.form-control::placeholder, inpu
     background-color: #EBF4FE;
     cursor: pointer;
 }
-.checkbox{
-    background-color: aqua !important;
+.box-shadow{
+  box-shadow: 0 2px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);  
 }
 .dropzone, .audio-box, .image-box, .combined-box {
     width: 100%;

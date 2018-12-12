@@ -22,6 +22,7 @@ const SECTIONS = [{
 },{
     title: 'Advanced',
     items: [
+        { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-project-diagram"/>, tip: 'Interaction blocks select choices and capture slot values from user input' },
         { text: 'Stream', type: 'stream', icon: <i class="fas fa-play"></i>, tip: 'Stream long audio files & URLs for the user' },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},

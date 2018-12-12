@@ -1,0 +1,17 @@
+@import './IntentInputs.css';
+
+.choice-select {
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.input-select {
+    flex: 1 1;
+    margin-left: 5px;
+}
+
+.diagram-title {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

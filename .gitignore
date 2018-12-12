@@ -10,3 +10,6 @@ node_modules
 dump.rdb
 routes/tmp/*
 !routes/tmp/.gitkeep
+*package-lock.json
+*yarn.lock
+

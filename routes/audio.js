@@ -101,45 +101,7 @@ exports.raw_upload = (req, res) => {
     } else {
         res.sendStatus(400);
     }
-};
-
-exports.generate = (req, res) => {
-    if (req.body && req.body.text) {
-        let text = '<speak>'+req.body.text+'</speak>';
-        let voice = req.body.voice || 'Joey';
-        let key = Date.now().toString()+'-'+text.substring(0, 13).toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-.]+/g, '')+'-'+voice+'.mp3';
-        let params = {
-            Text: text,
-            TextType: 'ssml',
-            OutputFormat: 'mp3',
-            VoiceId: voice
-        };
-        polly.synthesizeSpeech(params, (err, data) => {
-            if (err) {
-                console.log(err);
-                res.sendStatus(err.statusCode);
-            } else if (data) {
-                if (data.AudioStream instanceof Buffer) {
-                    let uploadParams = {
-                        Bucket: 'com.getstoryflow.audio.production',
-                        Key: key,
-                        Body: data.AudioStream
-                    };
-                    s3.upload(uploadParams, (err, data) => {
-                        if (err) {
-                            console.log(err);
-                            res.sendStatus(err.statusCode);
-                        } else {
-                            res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+key);
-                        }
-                    });
-                }
-            }
-        });
-    } else {
-        res.sendStatus(400);
-    }
-};
+}
 
 exports.concat = (req, res) => {
     if(!Array.isArray(req.body.lines)){

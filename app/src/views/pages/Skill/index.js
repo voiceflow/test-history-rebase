@@ -18,10 +18,9 @@ import AmazonLogin from './../../components/Forms/AmazonLogin'
 import Select from 'react-select'
 import './Skill.css'
 import {Link} from 'react-router-dom'
+import AuthenticationService from './../../../services/Authentication'
 
-import AuthenticationService from './../../../services/Authentication';
-
-import categories from './../../../services/Categories';
+import categories from './../../../services/Categories'
 const _ = require('lodash');
 
 const stage_title = {

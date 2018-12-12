@@ -127,29 +127,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.select-box__dropdown-indicator{
-    color: #c5d3e0 !important;
-}
+
 .TitleBar .project {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
-.select-box__control{
-    background-color: #fff !important;
-    color: #8da2b5 !important;
-    border-radius: 5px !important;
-    border: 1px solid #c5d3e0 !important;
-    cursor: pointer !important;
-}
-.select-box__indicator-separator{
-    background-color: #fff !important;
-    
-}
-.select-box__control:focus{
-/*    border: 5px solid #42A5FF !important;*/
-    box-shadow: none !important;
-}
+
 .TitleBar .platform-dropdown {
     border: none;
     padding: 5px 0px 5px 0px;
@@ -326,8 +310,8 @@
 }
 .modal-txt{
     color: #8da2b5;
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
     
 }
 .modal-txt-no-pad{

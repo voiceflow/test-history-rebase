@@ -103,14 +103,14 @@ const getDiagrams = (req, res) => {
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
-    };
-
-    if(!req.user.admin){
-        params.FilterExpression = 'creator = :creator';
-        params.ExpressionAttributeValues = {':creator': req.user.id};
     }
 
-    let items = [];
+    if(!req.user.admin){
+        params.FilterExpression = 'creator = :creator'
+        params.ExpressionAttributeValues = {':creator': req.user.id}
+    }
+
+    let items = []
 
     docClient.scan(params, onScan);
 
@@ -575,39 +575,36 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     }
 
-                    // Check if this diagram has been rendered already, rerender if this is a module
-                    if(!rendered_set.has(node.extras.diagram_id) || type === 'market'){
-                        let result = 500
+                    const linkDiagram = () => {
+                        story.lines[node.id].diagram_id = node.extras.diagram_id,
+                        story.lines[node.id].variable_map = {
+                            inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
+                            outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
+                        }
+                    }
+
+                    // Check if this diagram has been rendered already
+                    if(!rendered_set.has(node.extras.diagram_id)){
+                        let result
                         try{
                             // console.log('going in', node.extras.diagram_id);
                             let new_options = options
                             // Reset diagram id for sub flows in modules
-                            if(type === 'market'){
-                                subflow_diagram_id = options.version + '_' + node.extras.diagram_id
-                                new_options = JSON.parse(JSON.stringify(options))
-                                new_options['is_module_subflow'] = true
-                            }
+                            // if(type === 'market'){
+                            //     subflow_diagram_id = options.version + '_' + node.extras.diagram_id
+                            //     new_options = JSON.parse(JSON.stringify(options))
+                            //     new_options['is_module_subflow'] = true
+                            // }
                             result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, new_options)
                         }catch(err){
                             return resolve(500)
                         }
 
                         if(result < 300){
-                            story.lines[node.id].diagram_id = node.extras.diagram_id,
-                            story.lines[node.id].variable_map = {
-                                inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
-                                outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
-                            }
+                            linkDiagram()
                         }
-                    }
-
-                    story.lines[node.id] = {
-                        diagram_id: subflow_diagram_id,
-                        variable_map: {
-                            inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
-                            outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
-                        },
-                        nextId: getLink(nextLink)
+                    }else{
+                        linkDiagram()
                     }
                 } else if (node.extras.type === 'ending') {
                     story.lines[node.id] = {

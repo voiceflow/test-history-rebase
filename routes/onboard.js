@@ -44,6 +44,8 @@ const submitOnboardSurvey = (req, res) => {
 				res.sendStatus(200)
 				intercom.users.create({
 					user_id: req.user.id,
+					email: req.user.email,
+					name: req.user.name,
 					custom_attributes: {
 						usage: req.body.usage_type,
 						company: req.body.company_name,

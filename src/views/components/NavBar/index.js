@@ -36,6 +36,8 @@ const getPage = (path) => {
   return base[1].toLowerCase();
 }
 
+const dev = process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+
 class NavBar extends Component {
 
   constructor(props) {
@@ -158,7 +160,7 @@ class NavBar extends Component {
             </Collapse>
           </Navbar>
           {!!this.props.padding && <div className="padding"></div>}
-          <Intercom appID="vw911b0m" {...this.intercom_user}/>
+          {!dev && <Intercom appID="vw911b0m" {...this.intercom_user}/>}
         </div>
     );
   }

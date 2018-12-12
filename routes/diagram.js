@@ -572,6 +572,14 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         nextId: getLink(nextLink)
                     }
 
+                    const linkDiagram = () => {
+                        story.lines[node.id].diagram_id = node.extras.diagram_id,
+                        story.lines[node.id].variable_map = {
+                            inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
+                            outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
+                        }
+                    }
+
                     // Check if this diagram has been rendered already
                     if(!rendered_set.has(node.extras.diagram_id)){
                         let result;
@@ -583,12 +591,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         }
 
                         if(result < 300){
-                            story.lines[node.id].diagram_id = node.extras.diagram_id,
-                            story.lines[node.id].variable_map = {
-                                inputs: node.extras.inputs.filter(input => (input.arg1 && input.arg2)).map(input => [input.arg1, input.arg2]),
-                                outputs: node.extras.outputs.filter(output => (output.arg1 && output.arg2)).map(output => [output.arg1, output.arg2]),
-                            }
+                            linkDiagram()
                         }
+                    }else{
+                        linkDiagram()
                     }
 
                 } else if (node.extras.type === 'ending') {

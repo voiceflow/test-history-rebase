@@ -148,12 +148,19 @@ class ChoiceDropdownInputs extends Component {
     render() {
         return (
             <div className="w-100">
-            <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchChoice" placeholder="Search Choices" className="mb-3"></Input>
-            </div>
+                <div>
+                    <Input type="search" onChange={this.onSearchChange} id="searchChoice" placeholder="Search Choices" className="mb-3"></Input>
+                </div>
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
-                    console.log(this.state.name_inputs_lower, this.state.search_value)
+                    // console.log(this.state.name_inputs_lower, this.state.search_value)
                     if (this.state.name_inputs_lower[i].indexOf(this.state.search_value) >= 0) {
+
+                        let slots
+                        if(choice.intent && choice.intent.inputs){
+                            slots = choice.intent.inputs.map(e => e.slots)
+                            if(slots.length === 0) slots = null
+                        }
+
                         return (
                             <div className="interaction-block" key={i}>
                                 <div className="interaction-title">
@@ -181,17 +188,20 @@ class ChoiceDropdownInputs extends Component {
                                         })}
                                     />
                                 </div>
-                                <div className="diagram-title">Output Variables</div>
-                                <SlotMappings
-                                    reverse
-                                    variables={this.props.variables}
-                                    slot_options={choice.intent ? choice.intent.inputs.map(e => e.slots) : []}
-                                    slots={this.props.slots}
-                                    arguments={choice.mappings}
-                                    onAdd={() => this.handleAddMap(i)}
-                                    onRemove={(index) => this.handleRemoveMap(i, index)}
-                                    handleSelection={(index, arg, value) => this.handleSelection(i, index, arg, value)}
-                                />
+                                {!!slots && 
+                                    <React.Fragment>
+                                        <div className="diagram-title">Slot Mapping</div>
+                                        <SlotMappings
+                                            variables={this.props.variables}
+                                            slot_options={slots}
+                                            slots={this.props.slots}
+                                            arguments={choice.mappings}
+                                            onAdd={() => this.handleAddMap(i)}
+                                            onRemove={(index) => this.handleRemoveMap(i, index)}
+                                            handleSelection={(index, arg, value) => this.handleSelection(i, index, arg, value)}
+                                        />
+                                    </React.Fragment>
+                                }
                                 </Collapse>
                             </div> )
                     } else {

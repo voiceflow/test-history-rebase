@@ -55,7 +55,16 @@ class SlotMappings extends Component {
             <React.Fragment>
                 {this.props.arguments.map((argument, i) => {
                     return (<div key={i} className="super-center mb-2">
-                        <div className={'variable_map'  +  (this.props.reverse ? ' reverse' : '')}>
+                        <div className='variable_map'>
+                            <Select
+                                classNamePrefix="select-box"
+                                className="map-box"
+                                value={argument.slot}
+                                onChange={(selected)=>this.props.handleSelection(i, 'slot', selected)}
+                                placeholder="Slot"
+                                options={this.state.slot_options}
+                            />
+                            <i className="far fa-arrow-right"/>
                             <Select
                                 classNamePrefix="variable-box"
                                 className="map-box"
@@ -65,15 +74,6 @@ class SlotMappings extends Component {
                                 options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                     return {label: '{' + variable + '}', value: variable}
                                 }) : []}
-                            />
-                            <i className="far fa-arrow-right"/>
-                            <Select
-                                classNamePrefix="select-box"
-                                className="map-box"
-                                value={argument.slot}
-                                onChange={(selected)=>this.props.handleSelection(i, 'slot', selected)}
-                                placeholder="Slot"
-                                options={this.state.slot_options}
                             />
                         </div>
                         <div className="close pl-2" onClick={() => this.props.onRemove(i)}>×</div>

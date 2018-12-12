@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import IntentInputs from './components/IntentInputs';
+import React, { Component } from 'react'
+import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup } from 'reactstrap';
+import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
-import ErrorModal from '../../../components/Modals/ErrorModal';
+import ErrorModal from '../../../components/Modals/ErrorModal'
+import converter from 'number-to-words'
 const uniqueNamesGenerator = require('unique-names-generator')
 
 class Interaction extends Component {
@@ -48,10 +49,8 @@ class Interaction extends Component {
         this.showErrorPopup = this.showErrorPopup.bind(this)
     }
 
-    _getUniqueName() {
-        let uniqueName = uniqueNamesGenerator.generate()
-        uniqueName = uniqueName.substring(uniqueName.indexOf('_')+1, uniqueName.length)
-        return uniqueName
+    _getIndex(index) {
+        return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')
     }
 
     _findFirstEmptyIndex(array) {
@@ -76,14 +75,12 @@ class Interaction extends Component {
     }
 
     handleAddIntent(e) {
-        // console.log(this.state.intents);
         const intents = this.state.intents;
         const intents_open = this.state.intents_open;
 
-
-        let name = `${this._getUniqueName()}_intent`
-        while(intents.map(e => {return e.name}).includes(name)) {
-            name = `${this._getUniqueName()}_intent`
+        let name = 'intent_' + this._getIndex(intents.length+1)
+        while(intents.find(e => e.name === name)) {
+            name = 'new_' + name
         }
 
         const firstEmpty = this._findFirstEmptyIndex(intents.map(o => o.key))
@@ -101,9 +98,9 @@ class Interaction extends Component {
         const slots = this.state.slots;
         const slots_open = this.state.slots_open;
 
-        let name = `${this._getUniqueName()}_slot`
-        while(slots.map(e => {return e.name}).includes(name)) {
-            name = `${this._getUniqueName()}_slot`
+        let name = 'slot_' + this._getIndex(slots.length+1)
+        while(slots.find(e => e.name === name)) {
+            name = 'new_' + name
         }
 
         const firstEmpty = this._findFirstEmptyIndex(slots.map(o => o.key))

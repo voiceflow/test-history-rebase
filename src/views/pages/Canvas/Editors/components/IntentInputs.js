@@ -8,7 +8,7 @@ const _ = require('lodash')
 
 class IntentInputs extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             intents: this.props.intents,
@@ -17,16 +17,17 @@ class IntentInputs extends Component {
             input_error: this.props.intents ? Array(this.props.intents.length).fill('') : [],
             name_inputs: this.props.intents.map(intent => intent.name),
             search_value: ""
-        };
-        this.toggleCollapse = this.toggleCollapse.bind(this);
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.onTextChange = this.onTextChange.bind(this);
-        this.onDeleteUtterance = this.onDeleteUtterance.bind(this);
-        this.onNameChange = this.onNameChange.bind(this);
-        this.onAddIntent = this.onAddIntent.bind(this);
+        }
+        this.toggleCollapse = this.toggleCollapse.bind(this)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
+        this.onTextChange = this.onTextChange.bind(this)
+        this.onDeleteUtterance = this.onDeleteUtterance.bind(this)
+        this.onNameChange = this.onNameChange.bind(this)
+        this.onAddIntent = this.onAddIntent.bind(this)
         this.onRemoveIntent = this.onRemoveIntent.bind(this)
         this.onNameSave = this.onNameSave.bind(this)
         this.onSearchChange = this.onSearchChange.bind(this)
+        this.submitEntry = this.submitEntry.bind(this)
     }
 
     _getSlotKeys(input) {
@@ -65,46 +66,49 @@ class IntentInputs extends Component {
         // Enter key pressed
         // Add utterance
         if(e.charCode===13){
-            e.preventDefault();
+            e.preventDefault()
+            this.submitEntry(i)
+        }
+    }
 
-            const all_utterances = []
-            const intents = this.state.intents
+    submitEntry(i){
+        const all_utterances = []
+        const intents = this.state.intents
 
-            intents.forEach(intent => {
-                intent.inputs.forEach(input => {
-                    all_utterances.push(input.text.toLowerCase())
-                })
+        intents.forEach(intent => {
+            intent.inputs.forEach(input => {
+                all_utterances.push(input.text.toLowerCase())
             })
+        })
 
-            const intent = intents[i];
-            const text_entries = this.state.text_entries;
-            const newValue = text_entries[i].trim()
-            const slot_keys= this._getSlotKeys(newValue)
+        const intent = intents[i]
+        const text_entries = this.state.text_entries
+        const newValue = text_entries[i].trim()
+        const slot_keys= this._getSlotKeys(newValue)
 
-            if (all_utterances.includes(newValue.toLowerCase())) {
-                this.props.onError('Duplicate utterances are not allowed!')
-                text_entries[i] = '';
-                this.setState({
-                    text_entries: text_entries
-                })
-            } else {
-                const utterance = {
-                    slots: Array.from(slot_keys),
-                    text: newValue
-                  }
-      
-                  if (!Array.isArray(intent.inputs)) {
-                      intent.inputs = [];
-                  }
-                  if (newValue) {
-                      intent.inputs.push(utterance);
-                      text_entries[i] = '';
-                  }
-                  this.setState({
-                      intents: intents,
-                      text_entries: text_entries
-                  }, () => {this.props.onChange(intents, this.state.open)})
-            }
+        if (all_utterances.includes(newValue.toLowerCase())) {
+            this.props.onError('Duplicate utterances are not allowed!')
+            text_entries[i] = '';
+            this.setState({
+                text_entries: text_entries
+            })
+        } else {
+            const utterance = {
+                slots: Array.from(slot_keys),
+                text: newValue
+              }
+  
+              if (!Array.isArray(intent.inputs)) {
+                  intent.inputs = [];
+              }
+              if (newValue) {
+                  intent.inputs.push(utterance);
+                  text_entries[i] = '';
+              }
+              this.setState({
+                  intents: intents,
+                  text_entries: text_entries
+              }, () => {this.props.onChange(intents, this.state.open)})
         }
     }
 
@@ -224,7 +228,7 @@ class IntentInputs extends Component {
             if (Array.isArray(utterances)) {
                 utterances = this._getUtterancesWithSlotNames(utterances, this.props.slots)
                 return utterances.map( (u, i) => {
-                    return <div className="interaction-utterance" key={i}><div>{u}</div><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-minus trash-icon"></i></div>
+                    return <div className="interaction-utterance" key={i}><div>{u}</div><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-backspace trash-icon"></i></div>
                 });
             }
             return null
@@ -239,8 +243,8 @@ class IntentInputs extends Component {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
                         return (
                             <div className="interaction-block" key={i}>
-                                <div className="interaction-title mt-1 ml-1">
-                                    <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                <div className="intent-title">
+                                    <span onClick={() => {this.toggleCollapse(i)}}><i className={"fas fa-caret-right rotate" + (this.state.open[i] ? " fa-rotate-90" : "")}></i></span>
                                     <input placeholder="Enter Intent Name" 
                                         type="text"
                                         value={this.state.name_inputs[i]}
@@ -252,21 +256,28 @@ class IntentInputs extends Component {
                                     <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </div>
                                 <div className="input-error">{this.state.input_error[i]}</div>
-                                <Collapse isOpen={this.state.open[i]}>
-                                {renderUtterances(intent.inputs, i)}
-                                <MentionsInput className="input-area" 
-                                    markup='{{[__display__].__id__}}'
-                                    displayTransform={(id, display) => { return '[' + display + ']'}}
-                                    value={this.state.text_entries[i]}
-                                    onChange={(e) => {this.onTextChange(e.target.value, i)}}
-                                    onKeyPress={(e) => {this.handleKeyPress(e, i)}}
-                                    placeholder="Enter user reply" 
-                                    allowSpaceInQuery={true}>
-                                    <Mention
-                                        trigger="["
-                                        data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
-                                    />
-                                </MentionsInput>
+                                    <Collapse isOpen={this.state.open[i]}>
+                                    <div>
+                                        {renderUtterances(intent.inputs, i)}
+                                    </div>
+                                    <MentionsInput 
+                                        className="mentions-input" 
+                                        markup='{{[__display__].__id__}}'
+                                        displayTransform={(id, display) => { return '[' + display + ']'}}
+                                        value={this.state.text_entries[i]}
+                                        onChange={(e) => {this.onTextChange(e.target.value, i)}}
+                                        onKeyPress={(e) => {this.handleKeyPress(e, i)}}
+                                        placeholder="Enter user reply" 
+                                        allowSpaceInQuery={true}>
+                                        <Mention
+                                            trigger="["
+                                            data={this.props.slots.map((slot) => {return {display: slot.name, id: slot.key.toString()}})}
+                                            style={{backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF'}}
+                                        />
+                                    </MentionsInput>
+                                    <div className="text-center mt-2">
+                                        <span className="key-bubble forward pointer" onClick={() => this.submitEntry(i)}><i className="far fa-long-arrow-right"/></span>
+                                    </div>
                                 </Collapse>
                             </div> )
                     } else {

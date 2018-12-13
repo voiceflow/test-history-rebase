@@ -19,7 +19,7 @@ import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import {
-    Modal, Button, ModalBody, ModalHeader,
+    Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -310,7 +310,7 @@ class Editor extends Component {
                                         size="lg"
                                     >
                                         <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
-                                        <ModalBody className="pb-5">
+                                        <ModalBody className="pb-4 px-4">
                                             {Editor}
                                         </ModalBody>
                                     </Modal>

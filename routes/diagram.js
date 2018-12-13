@@ -719,10 +719,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 } else if (node.extras.type === 'api') {
 
                     let formattedRawContent = '';
-                    if (!_.isNil(node.extras.rawContent)) {
-                        formattedRawContent = draftToMarkdown(node.extras.rawContent);
-                    }else if (!_.isNil(node.extras.content)){
+                    if (node.extras.content){
                         formattedRawContent = node.extras.content
+                    }else if(!_.isNil(node.extras.rawContent)){
+                        formattedRawContent = draftToMarkdown(node.extras.rawContent);
                     }
 
                     if (!_.isNil(node.extras.params)) {

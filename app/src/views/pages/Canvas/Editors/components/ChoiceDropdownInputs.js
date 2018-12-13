@@ -114,7 +114,6 @@ class ChoiceDropdownInputs extends Component {
     }
 
     render() {
-        console.log(this.state.choices)
         return (
             <div className="w-100">
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {

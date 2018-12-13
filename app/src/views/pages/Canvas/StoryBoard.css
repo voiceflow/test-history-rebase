@@ -1172,7 +1172,6 @@
     box-sizing: border-box;
     resize: none;
     border: none;
-    padding: 2px 0;
 }
 
 #Editor textarea:focus, textarea.blank:focus {
@@ -1517,12 +1516,12 @@ button.close:hover{
 }
 
 .block {
-    padding: 1px 3px 1px 8px;
-    border-radius: 5px;
+    padding: 1px 3px 1px 10px;
     border: 1px solid #fff;
     cursor: pointer;
     background-color: #D1D8DE;
     color: #2b3950;
+    border-radius: 20px;
 }
 
 .block>i{
@@ -1534,61 +1533,52 @@ button.close:hover{
 /*    border: 1px solid #D7396540;*/
     background-color: #4A86E730;
     color: #4A86E7;
-    border-radius: 20px;
 }
 .block.stream {
 /*    border: 1px solid #15389840;*/
     background-color: #7895F840;
     color: #7895F8;
-    border-radius: 20px;
 }
 .block.flow {
 /*    border: 1px solid #2b395050;*/
     background-color: #8DA2B530;
     color: #8DA2B5;
-    border-radius: 20px;
 }
 
 .block.if {
 /*    border: 1px solid #ffd15850;*/
     background-color: #F5BE5830;
     color: #F5BE58;
-    border-radius: 20px;
 }
 
 .block.capture {
 /*    border: 1px solid #a458f550;*/
     background-color: #a458f530;
     color: #a458f5;
-    border-radius: 20px;
 }
 
 .block.permissions {
 /*    border: 1px solid #88bbd850;*/
     background-color: #88bbd830;
     color: #88bbd8;
-    border-radius: 20px;
 }
 
 .block.command {
 /*    border: 1px solid #EC559450;*/
     background-color: #EC559420;
     color: #EC5594;
-    border-radius: 20px;
 }
 
 .block.story {
 /*    border: 1px solid #2b395050;*/
     background-color: #e3e9ec;
     color: #2b3950;
-    border-radius: 20px;
 }
 
 .block.speak {
 /*    border: 1px solid #3d96f050;*/
     background-color: #EDF3FE !important;
     color: #42A5FF !important;
-    border-radius: 20px;
 }
 
 .block.listen {
@@ -1601,7 +1591,6 @@ button.close:hover{
 /*    border: 1px solid #62D6A865;*/
     background-color: #62D6A830;
     color: #62D6A8;
-    border-radius: 20px;
 }
 
 .block.interaction {
@@ -1637,14 +1626,12 @@ button.close:hover{
 .block.set {
     background-color: #69D4F830;
     color: #69D4F8;
-    border-radius: 20px;
 }
 
 .block.random {
 /*    border: 1px solid #5EC2D760;*/
     background-color: #FA755A30;
     color: #FA755A;
-    border-radius: 20px;
 }
 
 .block.variable {
@@ -1828,11 +1815,7 @@ button.close:hover{
     width: 100%;
     margin-bottom: 5px;
 }
-.interaction-title {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
+
 .operator{
     color: #8da2b5;
 }
@@ -1878,27 +1861,6 @@ button.close:hover{
     margin-left: -5px;
 /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
     font-weight: 600;
-}
-.interaction-title span {
-    /*padding: 5px 10px 0px 10px;*/
-    padding-top: 2px;
-    height: 20px;
-    padding-left: 6px;
-    padding-right: 6px;
-    text-align: center;
-    line-height: 16px;
-    border-radius: 5px;
-    overflow: hidden;
-    background-color: #edf5ff;
-    color: #42A5FF;
-    border: 1px solid #42A5FF50;
-    /* font-weight: bold; */
-    font-size: 12px;
-    margin-right: 8px;
-    margin-left: -3px;
-    /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
-    font-weight: 600;
-    margin-top: 3px;
 }
 
 .choice-title input{

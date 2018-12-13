@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { Nav, NavItem, NavLink, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
-import VariableText from './components/VariableText';
 import VariableInput from './components/VariableInput';
 import randomstring from 'randomstring';
 import { ContentState, convertToRaw } from 'draft-js';
+import AceEditor from 'react-ace'
+import draftToMarkdown from './../../../../services/draftConvert'
+
+import 'brace/mode/javascript'
+import 'brace/theme/chrome'
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
 
@@ -35,25 +39,45 @@ class API extends Component {
             })
         }
 
+        // DEPRECATE OLD API BLOCK
+        if(node.extras.rawContent){
+            node.extras.content = draftToMarkdown(node.extras.rawContent, {newline: true})
+            node.extras.rawContent = null
+            delete node.extras.rawContent
+        }else if(!node.extras.content){
+            node.extras.content = ""
+        }
+
         // state.variables is for variables of the diagram linked
         // props.variables is for variables of the current diagram
         this.state = {
             node: node,
+            modal: false,
+            body_state: true,
             dropdownOpen: false,
             type: 'headers',
             popoverOpen: false
         };
 
+        this.onChangeAce = this.onChangeAce.bind(this)
         this.toggle = this.toggle.bind(this);
-        this.togglePopover = this.togglePopover.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleSelection = this.handleSelection.bind(this);
-        this.handleAddPair = this.handleAddPair.bind(this);
-        this.handleRemovePair = this.handleRemovePair.bind(this);
-        this.handleKVChange = this.handleKVChange.bind(this);
-        this.handleAddPairMapping = this.handleAddPairMapping.bind(this);
-        this.handleRemovePairMapping = this.handleRemovePairMapping.bind(this);
-        this.handleKVMappingChange = this.handleKVMappingChange.bind(this);
+        this.togglePopover = this.togglePopover.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
+        this.handleSelection = this.handleSelection.bind(this)
+        this.handleAddPair = this.handleAddPair.bind(this)
+        this.handleRemovePair = this.handleRemovePair.bind(this)
+        this.handleKVChange = this.handleKVChange.bind(this)
+        this.handleAddPairMapping = this.handleAddPairMapping.bind(this)
+        this.handleRemovePairMapping = this.handleRemovePairMapping.bind(this)
+        this.handleKVMappingChange = this.handleKVMappingChange.bind(this)
+    }
+
+    onChangeAce(content){
+        let node = this.state.node
+        node.extras.content = content
+        this.setState({
+            node: node
+        }, this.props.onUpdate)
     }
 
     handleUpdate(name, value) {
@@ -62,7 +86,7 @@ class API extends Component {
 
         this.setState({
             node: node
-        });
+        }, this.props.onUpdate);
     }
 
     toggle() {
@@ -150,49 +174,16 @@ class API extends Component {
     }
 
     render() {
-        let pairContent = 
-            <APIInputs
-                key={this.state.type}
-                type={this.state.type}
-                pairs={this.state.node.extras[this.state.type]}
-                variables={this.props.variables}
-                onAdd={() => this.handleAddPair(this.state.type)}
-                onRemove={(e, i) => this.handleRemovePair(this.state.type, i)}
-                onChange={this.handleKVChange}
-            />
-        let rawBodyInput = 
-            <VariableText
-                raw={this.state.node.extras.rawContent}
-                variables={this.props.variables}
-                updateRaw={(raw) => {
-                    let node = this.state.node; 
-                    node.extras.rawContent = raw;
-                    this.setState({
-                        node: node
-                    })
-                }}
-            />
-        let bodyInputNavTabs = 
-            <Nav tabs className="mb-3">
-                <NavItem onClick={() => {
-                        const node = this.state.node;
-                        node.extras.bodyInputType = 'keyValue';
-                        this.setState({ node: node })
-                        }}>
-                    <NavLink href="#" active={this.state.node.extras.bodyInputType === 'keyValue'}>
-                        Key Value Input
-                    </NavLink>
-                </NavItem>
-                <NavItem onClick={() => {
-                        const node = this.state.node;
-                        node.extras.bodyInputType = 'rawInput';
-                        this.setState({ node: node })
-                        }}> 
-                    <NavLink href="#" active={this.state.node.extras.bodyInputType === 'rawInput'}>
-                        Raw Input
-                    </NavLink>
-                </NavItem>
-            </Nav>
+
+        let pairContent = <APIInputs
+            key={this.state.type}
+            type={this.state.type}
+            pairs={this.state.node.extras[this.state.type]}
+            variables={this.props.variables}
+            onAdd={() => this.handleAddPair(this.state.type)}
+            onRemove={(e, i) => this.handleRemovePair(this.state.type, i)}
+            onChange={this.handleKVChange}
+        />
 
         return (
             <React.Fragment>
@@ -220,7 +211,7 @@ class API extends Component {
                         variables={this.props.variables}
                         updateRaw={(raw) => {
                             let node = this.state.node; 
-                            node.extras.url = raw;
+                            node.extras.url = raw
                             this.setState({
                                 node: node
                             })
@@ -229,8 +220,6 @@ class API extends Component {
                     />
                 </InputGroup>
                 <hr/>
-
-                
                 <Nav tabs className="mb-3">
                     <NavItem onClick={() => this.setState({type: 'headers'})}>
                         <NavLink href="#" active={this.state.type === 'headers'}>
@@ -245,9 +234,50 @@ class API extends Component {
                     </NavItem>
                 </Nav>
 
-                {this.state.type === 'body' ? bodyInputNavTabs : null}
+                {this.state.type === 'body' ? <React.Fragment>
+                    <Nav tabs className="mb-3">
+                        <NavItem onClick={() => {
+                                const node = this.state.node;
+                                node.extras.bodyInputType = 'keyValue';
+                                this.setState({ node: node })
+                                }}>
+                            <NavLink href="#" active={this.state.node.extras.bodyInputType === 'keyValue'}>
+                                Key Value Input
+                            </NavLink>
+                        </NavItem>
+                        <NavItem onClick={() => {
+                                const node = this.state.node;
+                                node.extras.bodyInputType = 'rawInput';
+                                this.setState({ node: node })
+                                }}> 
+                            <NavLink href="#" active={this.state.node.extras.bodyInputType === 'rawInput'}>
+                                Raw Input
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                    { (this.state.node.extras.bodyInputType === 'rawInput') ? 
+                    <AceEditor
+                        height='300px'
+                        width='100%'
+                        className="editor"
+                        mode="javascript"
+                        theme="chrome"
+                        onChange={this.onChangeAce}
+                        fontSize={14}
+                        showPrintMargin={true}
+                        showGutter={false}
+                        highlightActiveLine={true}
+                        value={this.state.node.extras.content}
+                        editorProps={{$blockScrolling: true}}
+                        setOptions={{
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: false,
+                            enableSnippets: false,
+                            showLineNumbers: true,
+                            tabSize: 2
+                    }}/> : pairContent}
+                </React.Fragment> : pairContent}
 
-                { (this.state.type === 'body' && this.state.node.extras.bodyInputType === 'rawInput') ? rawBodyInput : pairContent}
                 <hr/>
 
                 <label>Result Variable Mapping</label>
@@ -260,7 +290,42 @@ class API extends Component {
                 />
 
             </React.Fragment>
-        );
+        )
+
+        // return <React.Fragment>
+        //     {this.state.body_state ? 
+        //         <React.Fragment>
+        //             <Button color='clear' block onClick={
+        //                 ()=>this.setState({
+        //                     body_state: false,
+        //                     modal: true
+        //                 })
+        //             }><i className="far fa-expand-arrows-alt"/> Expand</Button>
+        //             {content}
+        //         </React.Fragment>
+        //         : 
+        //         <React.Fragment>
+        //             <Button color='clear' block disabled>{ this.state.modal ?
+        //                 <React.Fragment>
+        //                     <i className="far fa-expand-arrows-alt"/> Expanded
+        //                 </React.Fragment> :
+        //                 <span className="loader"/>
+        //             }</Button>
+
+        //             <Modal 
+        //                 isOpen={this.state.modal} 
+        //                 toggle={()=>this.setState({modal: false})}
+        //                 onClosed={()=>this.setState({body_state: true})}
+        //                 size="lg"
+        //             >
+        //                 <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
+        //                 <ModalBody className="pb-5">
+        //                     {content}
+        //                 </ModalBody>
+        //             </Modal>
+        //         </React.Fragment>
+        //     }
+        // </React.Fragment>
     }
 }
 

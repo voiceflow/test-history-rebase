@@ -43,12 +43,20 @@ class ChoiceDropdownInputs extends Component {
             return null
         })
 
+        if (props.choices.length !== current_state.choices.length) {
+            return {
+                choices: new_choices,
+                open: props.open,
+                intents: _.cloneDeep(props.intents),
+                name_inputs: props.choices.map(choice => choice.name),
+                name_inputs_lower: props.choices.map(choice => choice.name.toLowerCase())
+            }
+        }
+
         return {
             choices: new_choices,
             open: props.open,
-            intents: _.cloneDeep(props.intents),
-            name_inputs: props.choices.map(choice => choice.name),
-            name_inputs_lower: props.choices.map(choice => choice.name.toLowerCase()),
+            intents: _.cloneDeep(props.intents)
         }
     }
 

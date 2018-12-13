@@ -249,10 +249,6 @@ class Editor extends Component {
         //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
         //     </React.Fragment>}
         // >
-        let Editor 
-        if(type){
-            Editor = this.BlockViewer()
-        }
 
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} onClick={this.props.onClick}>
@@ -300,7 +296,7 @@ class Editor extends Component {
                         </div>
                         <div id="editor-section">
                             {this.renderTitle()}
-                            {Editor}
+                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center"><h1 className="loader"></h1></div>}
                             {this.state.expanded &&
                                 <React.Fragment>
                                     <Modal 
@@ -311,7 +307,7 @@ class Editor extends Component {
                                     >
                                         <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
                                         <ModalBody className="pb-4 px-4">
-                                            {Editor}
+                                            {this.BlockViewer()}
                                         </ModalBody>
                                     </Modal>
                                 </React.Fragment>

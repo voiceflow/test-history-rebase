@@ -8,6 +8,9 @@ body {
     color: #2b3950;
     width: 100%;
 }
+.rotate{
+    transition: transform .15s ease-in-out;
+}
 .modal {
     overflow: scroll !important;
 }
@@ -226,9 +229,6 @@ audio {
     color: #95a6bd;
     transition: all ease 0.25s;
 }
-.close:hover{
-    
-}
 .btn-default {
     color: #8da2b5 !important;
     background-color: #fff !important;
@@ -245,11 +245,13 @@ audio {
 .btn-default.exit{
     margin-right: 4px;
 }
-.btn.exit i{
+.exit i, .forward i{
     transition: all 0.2s ease !important;
-    margin-right: 4px;
 }
-.btn.exit:hover i{
+.forward:hover i{
+    transform: translateX(2px)
+}
+.exit:hover i{
     transform: translateX(-2px)
 }
 .normal-btn{
@@ -495,6 +497,12 @@ audio {
 /*    box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.05) !important;*/
     background-color: #fff !important;
     
+}
+.key-bubble{
+    background-color: #E6ECF0;
+    border-radius: 20px;
+    padding: 1px 15px;
+    color: #8DA2B5;
 }
 label {
     color: #8da2b5 !important;

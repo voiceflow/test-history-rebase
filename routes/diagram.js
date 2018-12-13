@@ -765,6 +765,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     let formattedRawContent = '';
                     if (!_.isNil(node.extras.rawContent)) {
                         formattedRawContent = draftToMarkdown(node.extras.rawContent);
+                    }else if (!_.isNil(node.extras.content)){
+                        formattedRawContent = node.extras.content
                     }
 
                     if (!_.isNil(node.extras.params)) {

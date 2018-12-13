@@ -20,7 +20,7 @@ import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import {
-    Modal, Button, ModalBody, ModalHeader,
+    Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,

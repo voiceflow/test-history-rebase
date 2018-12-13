@@ -5,7 +5,6 @@ import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import ErrorModal from '../../../components/Modals/ErrorModal'
 import converter from 'number-to-words'
-const uniqueNamesGenerator = require('unique-names-generator')
 
 class Interaction extends Component {
     constructor(props) {
@@ -79,7 +78,9 @@ class Interaction extends Component {
         const intents_open = this.state.intents_open;
 
         let name = 'intent_' + this._getIndex(intents.length+1)
-        while(intents.find(e => e.name === name)) {
+
+        const find = (name) => intents.find(e => e.name === name)
+        while(find(name)) {
             name = 'new_' + name
         }
 
@@ -99,7 +100,9 @@ class Interaction extends Component {
         const slots_open = this.state.slots_open;
 
         let name = 'slot_' + this._getIndex(slots.length+1)
-        while(slots.find(e => e.name === name)) {
+
+        const find = (name) => slots.find(e => e.name === name)
+        while(find(name)) {
             name = 'new_' + name
         }
 
@@ -185,16 +188,11 @@ class Interaction extends Component {
     handleAddChoice(e) {
         const node = this.state.node;
         const choices = node.extras.choices;
-        const choices_open = node.extras.choices_open;
-
-        let num = 1
-        while(choices.map(e => {return e.name}).includes(`New Choice ${num}`)) {
-            num += 1;
-        }
+        const choices_open = node.extras.choices_open
 
         const firstEmpty = this._findFirstEmptyIndex(choices.map(o => o.key))
 
-        choices.push({name: `New Choice ${num}`, intent: null, mappings: [], key: firstEmpty})
+        choices.push({intent: null, mappings: [], key: firstEmpty})
         choices_open.push(true);
 
         let test = node.addOutPort(node.extras.choices.length);
@@ -213,11 +211,11 @@ class Interaction extends Component {
         const choices_open = node.extras.choices_open;
 
         for (var name in node.getPorts()) {
-            var port = node.getPort(name);
+            var port = node.getPort(name)
 
             if (port.label === node.extras.choices.length) {
-                node.removePort(port);
-                break;
+                node.removePort(port)
+                break
             }
         }
 

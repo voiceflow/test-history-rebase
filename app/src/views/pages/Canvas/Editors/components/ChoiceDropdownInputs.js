@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import './ChoiceDropdownInputs.css'
 import { Collapse } from 'reactstrap'
 import Select from 'react-select'
-import SlotMappings from '../../Editors/components/SlotMappings'
-import { Input } from 'reactstrap';
+import SlotMappings from '../../Editors/components/SlotMappings' 
 
 const _ = require('lodash')
 
@@ -14,14 +13,8 @@ class ChoiceDropdownInputs extends Component {
         this.state = {
             choices: this.props.choices,
             open: this.props.open,
-            intents: _.cloneDeep(this.props.intents),
-            name_inputs: this.props.choices.map(choice => choice.name),
-            name_inputs_lower: this.props.choices.map(choice => choice.name.toLowerCase()),
-            search_value: ""
-        };
-
-        this.onNameSave = this.onNameSave.bind(this)
-        this.onSearchChange = this.onSearchChange.bind(this)
+            intents: _.cloneDeep(this.props.intents)
+        }
     }
 
     static getDerivedStateFromProps(props, current_state) {
@@ -50,9 +43,7 @@ class ChoiceDropdownInputs extends Component {
             return {
                 choices: new_choices,
                 open: props.open,
-                intents: _.cloneDeep(props.intents),
-                name_inputs: props.choices.map(choice => choice.name),
-                name_inputs_lower: props.choices.map(choice => choice.name.toLowerCase())
+                intents: _.cloneDeep(props.intents)
             }
         }
 
@@ -70,38 +61,6 @@ class ChoiceDropdownInputs extends Component {
             open: open
         }, () => {this.props.onChange(this.state.choices, open)});
     }
-
-    onNameChange(e, i) {
-        e.preventDefault()
-        const name_inputs = this.state.name_inputs;
-        const name_inputs_lower = this.state.name_inputs_lower;
-        name_inputs[i] = e.target.value
-        name_inputs_lower[i] = e.target.value.toLowerCase()
-        this.setState({
-            name_inputs: name_inputs,
-            name_inputs_lower: name_inputs_lower
-        })
-    }
-
-    onNameSave(e, i) {
-        e.preventDefault()
-        const choices = this.state.choices
-        if (choices.map(i => i.name).filter((v, ind) => ind !== i).includes(e.target.value)) {
-            this.props.onError('A choice already exists with this name!')
-            this.setState({
-                name_inputs: this.props.choices.map(choice => choice.name),
-                name_inputs_lower: this.props.choices.map(choice => choice.name.toLowerCase()),
-            })
-        } else {
-            const choices = this.state.choices
-            choices[i].name = e.target.value
-            this.setState({
-                choices: choices
-            })
-            this.props.onChange(this.state.choices, this.state.open)
-        }
-    }
-
 
     updateChoice(target, i) {
         if(Array.isArray(target)) {
@@ -154,75 +113,53 @@ class ChoiceDropdownInputs extends Component {
         }
     }
 
-    onSearchChange(e) {
-        this.setState({
-            search_value: e.target.value.toLowerCase()
-        })
-    }
-
     render() {
         console.log(this.state.choices)
         return (
             <div className="w-100">
-                <div>
-                    <Input type="search" onChange={this.onSearchChange} id="searchChoice" placeholder="Search Choices" className="mb-3 form-control-border"></Input>
-                </div>
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
                     // console.log(this.state.name_inputs_lower, this.state.search_value)
-                    if (this.state.name_inputs_lower[i].indexOf(this.state.search_value) >= 0) {
-
-                        let slots
-                        if(choice.intent && choice.intent.inputs){
-                            slots = choice.intent.inputs.map(e => e.slots)
-                            if(slots.length === 0) slots = null
-                        }
-
-                        return (
-                            <div className="interaction-block mb-3" key={i}>
-                                <div className="interaction-title ml-1 mt-1">
-                                    <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
-                                    <input placeholder="Enter choice Name" 
-                                        type="text"
-                                        value={this.state.name_inputs[i]}
-                                        onBlur={(e) => {this.onNameSave(e, i)}}
-                                        onChange={(e) => {this.onNameChange(e, i)}}
-                                        onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                                        className="interaction-name-input"
-                                    />
-                                    <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
-                                </div>
-                                <Collapse isOpen={this.state.open[i]}>
-                                <div className="super-center flex-hard choice-select">
-                                    <Select
-                                        placeholder="Select Intent"
-                                        className="select-box mb-1"
-                                        classNamePrefix="select-box"
-                                        value={choice.intent}
-                                        onChange={(e) => this.updateChoice(e, i)}
-                                        options={this.props.intents.concat(this.props.built_ins).map(intent => {
-                                            return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
-                                        })}
-                                    />
-                                </div>
-                                {!!slots && 
-                                    <React.Fragment>
-                                        <div className="diagram-title">Slot Mapping</div>
-                                        <SlotMappings
-                                            variables={this.props.variables}
-                                            slot_options={slots}
-                                            slots={this.props.slots}
-                                            arguments={choice.mappings}
-                                            onAdd={() => this.handleAddMap(i)}
-                                            onRemove={(index) => this.handleRemoveMap(i, index)}
-                                            handleSelection={(index, arg, value) => this.handleSelection(i, index, arg, value)}
-                                        />
-                                    </React.Fragment>
-                                }
-                                </Collapse>
-                            </div> )
-                    } else {
-                        return null
+                    let slots
+                    if(choice.intent && choice.intent.inputs){
+                        slots = choice.intent.inputs.map(e => e.slots)
+                        if(slots.length === 0) slots = null
                     }
+
+                    return (
+                        <div className="interaction-block mb-3" key={i}>
+                            <div className="interaction-title ml-1 mt-1">
+                                <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                            </div>
+                            <Collapse isOpen={this.state.open[i]}>
+                            <div className="super-center flex-hard choice-select">
+                                <Select
+                                    placeholder="Select Intent"
+                                    className="select-box mb-1"
+                                    classNamePrefix="select-box"
+                                    value={choice.intent}
+                                    onChange={(e) => this.updateChoice(e, i)}
+                                    options={this.props.intents.concat(this.props.built_ins).map(intent => {
+                                        return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
+                                    })}
+                                />
+                            </div>
+                            {!!slots && 
+                                <React.Fragment>
+                                    <div className="diagram-title">Slot Mapping</div>
+                                    <SlotMappings
+                                        variables={this.props.variables}
+                                        slot_options={slots}
+                                        slots={this.props.slots}
+                                        arguments={choice.mappings}
+                                        onAdd={() => this.handleAddMap(i)}
+                                        onRemove={(index) => this.handleRemoveMap(i, index)}
+                                        handleSelection={(index, arg, value) => this.handleSelection(i, index, arg, value)}
+                                    />
+                                </React.Fragment>
+                            }
+                            </Collapse>
+                        </div> )
                 }) : null}
                 <div><button className="btn btn-clear btn-shadow btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>

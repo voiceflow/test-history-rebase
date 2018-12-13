@@ -197,14 +197,12 @@ class Interaction extends Component {
         choices.push({name: `New Choice ${num}`, intent: null, mappings: [], key: firstEmpty})
         choices_open.push(true);
 
-        console.log("OPUSHED CHOICE", num)
-
         let test = node.addOutPort(node.extras.choices.length);
         test.setMaximumLinks(1);
 
         this.setState({
             node: node
-        });
+        })
         this.props.onUpdate()
         this.props.repaint()
     }
@@ -228,7 +226,7 @@ class Interaction extends Component {
 
         this.setState({
             node: node,
-        });
+        })
         this.props.onUpdate()
         this.props.repaint()
     }

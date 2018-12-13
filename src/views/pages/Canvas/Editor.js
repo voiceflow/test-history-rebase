@@ -305,7 +305,7 @@ class Editor extends Component {
                         </div>
                         <div id="editor-section">
                             {this.renderTitle()}
-                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><h1 className="loader"></h1></div>}
+                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
                             {this.state.expanded &&
                                 <React.Fragment>
                                     <Modal 

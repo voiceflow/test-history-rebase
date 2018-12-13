@@ -1212,7 +1212,7 @@ class Canvas extends Component {
                     method: 'GET',
                     headers: [],
                     body: [],
-                    rawContent: null,
+                    content: '',
                     bodyInputType: 'keyValue',
                     params: [],
                     mapping: [],

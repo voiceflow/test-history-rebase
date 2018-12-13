@@ -610,17 +610,6 @@
     width: 100%;
 }
 
-/*.diagram-block:hover{
-    background-color: #95A6BD;
-    color: #fff;
-}*/
-
-/*.diagram-block.active{
-    background-color: #95A6BD;
-    color: #fff;
-    cursor: default;
-}*/
-
 .App .Menu #sidebar {
     position: fixed;
     top: 59px;

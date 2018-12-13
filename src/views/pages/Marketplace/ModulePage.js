@@ -108,7 +108,7 @@ class ModulePage extends Component{
 		return(
 			<div className="container h-100 d-flex justify-content-center">
 			    <div className="my-auto border rounded p-4 text-center module-page-card">
-					<img src={this.state.module.module_icon} className="card-icon-2"></img>
+					<img src={this.state.module.module_icon} className="card-icon-2" alt="card icon"></img>
 			    	<h1 className="big-blue mt-3">
 						{this.state.module.title}
 					</h1>

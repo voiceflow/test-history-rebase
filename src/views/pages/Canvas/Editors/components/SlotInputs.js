@@ -153,12 +153,12 @@ class SlotInputs extends Component {
         return (
             <div className="w-100">
             <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3"></Input>
+                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border"></Input>
             </div>
                 {Array.isArray(this.state.slots) ? this.state.slots.map((slot, i) => {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
                         return (
-                            <div className="interaction-block" key={i}>
+                            <div className="interaction-block mb-2" key={i}>
                                 <div className="interaction-title">
                                     <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
                                     <input placeholder="Enter Slot Name" 
@@ -183,10 +183,10 @@ class SlotInputs extends Component {
                                         placeholder="What would a user say to select this slot? (Press Enter after typing out each example)" 
                                     />
                                     <div className="super-center flex-hard choice-select">
-                                    <div>Slot Type</div>
                                     <Select
                                         placeholder="Select Slot Type"
-                                        className="input-select"
+                                        classNamePrefix="select-box"
+                                        className='select-box mb-2'
                                         value={slot.type}
                                         onChange={(e) => this.updateSlotType(e, i)}
                                         options={this.props.slot_types.map(type => {
@@ -200,7 +200,7 @@ class SlotInputs extends Component {
                         return null
                     }
                 }) : null }
-                <div><button className="btn btn-default btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Slot</button></div>
+                <div><button className="btn btn-lg btn-clear btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Slot</button></div>
             </div>
         );
     }

@@ -206,7 +206,7 @@ class API extends Component {
                         </DropdownMenu>
                     </InputGroupButtonDropdown>
                     <VariableInput
-                        className='form-control-border top-left w-100'
+                        className='form-control-border top-left form-control right'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
                         updateRaw={(raw) => {
@@ -221,15 +221,15 @@ class API extends Component {
                 </InputGroup>
                 <hr/>
                 <Nav tabs className="mb-3">
-                    <NavItem onClick={() => this.setState({type: 'headers'})}>
+                    <NavItem className="mr-2" onClick={() => this.setState({type: 'headers'})}>
                         <NavLink href="#" active={this.state.type === 'headers'}>
                             Headers
                         </NavLink>
                     </NavItem>
-                    <NavItem onClick={() => {if (this.state.node.extras.method !== 'GET') this.setState({type: 'body'})}}> 
+                    <NavItem className="mr-2" onClick={() => {if (this.state.node.extras.method !== 'GET') this.setState({type: 'body'})}}> 
                         <NavLink href="#" active={this.state.type === 'body'} disabled={this.state.node.extras.method === 'GET'}>Body</NavLink>
                     </NavItem>
-                    <NavItem onClick={() => this.setState({type: 'params'})}> 
+                    <NavItem className="mr-2" onClick={() => this.setState({type: 'params'})}> 
                         <NavLink href="#" active={this.state.type === 'params'}>Params</NavLink>
                     </NavItem>
                 </Nav>

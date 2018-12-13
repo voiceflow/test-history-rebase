@@ -159,8 +159,8 @@ class SlotInputs extends Component {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
                         return (
                             <div className="interaction-block mb-2" key={i}>
-                                <div className="interaction-title">
-                                    <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                <div className="intent-title">
+                                    <span onClick={() => {this.toggleCollapse(i)}}><i className={"fas fa-caret-right rotate" + (this.state.open[i] ? " fa-rotate-90" : "")}></i></span>
                                     <input placeholder="Enter Slot Name" 
                                         type="text"
                                         value={this.state.name_inputs[i]}

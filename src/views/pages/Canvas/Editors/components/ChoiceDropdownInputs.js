@@ -30,6 +30,9 @@ class ChoiceDropdownInputs extends Component {
                 return choice_obj
             }
             const key = choice_obj.intent ? choice_obj.intent.value : null
+
+            if(!key) return null
+
             const intent = _.find(props.intents, { key: key })
             if (intent) {
                 choice_obj.intent = {
@@ -93,6 +96,10 @@ class ChoiceDropdownInputs extends Component {
 
 
     updateChoice(target, i) {
+        if(Array.isArray(target)) {
+            return
+        }
+
         const choices = this.state.choices;
         choices[i].intent = target;
         choices[i].mappings = choices[i].mappings.map(m => {
@@ -146,6 +153,7 @@ class ChoiceDropdownInputs extends Component {
     }
 
     render() {
+        console.log(this.state.choices)
         return (
             <div className="w-100">
                 <div>

@@ -1,8 +1,8 @@
 .interaction-utterance {
-    border-bottom: 1px solid gray;
-    opacity: 0.6;
-    padding: 5px 5px 3px 0px;
+    border-bottom: 1px solid #e9eef3 !important;
+    padding: 13px 13px 10px 0px;
     display: flex;
+    color: #8DA2B5 !important;
 }
 .interaction-utterance>div{
     flex: 1;
@@ -11,11 +11,14 @@
 }
 
 .trash-icon:hover {
-    color: red;
+    color: #8DA2B5;
 }
 
 .trash-icon {
     cursor: pointer;
+    color: #ccd5dc;
+    margin-top: 5px;
+    margin-left: 8px;
 }
 
 .input-area {
@@ -26,9 +29,9 @@
 .interaction-block {
     width: 100%;
     border-radius: 5px;
-    padding: 8px 15px;
+    padding: 5px 15px;
     margin-bottom: 10px;
-    box-shadow:0 2px 6px 0 rgba(14,30,37,.12);
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
     border: 1px solid #fff !important;
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
@@ -55,14 +58,14 @@
 }
 
 .interaction-name-input {
-    font-size: 14px;
+/*    font-size: 14px;*/
     color: #282828;
-    font-weight: 1000;
 }
 
 .interaction-title input{
     flex: 1;
     border: none;
+    
 }
 
 .interaction-title input:focus{

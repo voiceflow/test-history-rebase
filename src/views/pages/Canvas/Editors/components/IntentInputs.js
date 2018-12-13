@@ -224,7 +224,7 @@ class IntentInputs extends Component {
             if (Array.isArray(utterances)) {
                 utterances = this._getUtterancesWithSlotNames(utterances, this.props.slots)
                 return utterances.map( (u, i) => {
-                    return <div className="interaction-utterance" key={i}><div>{u}</div><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-backspace trash-icon"></i></div>
+                    return <div className="interaction-utterance" key={i}><div>{u}</div><i onClick={(e) => {this.onDeleteUtterance(e, i, intent_i)}} className="fas fa-minus trash-icon"></i></div>
                 });
             }
             return null
@@ -233,13 +233,13 @@ class IntentInputs extends Component {
         return (
             <div className="w-100">
             <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchIntents" placeholder="Search Intents" className="mb-3"></Input>
+                <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3" placeholder="Search Intents"></Input>
             </div>
                 {Array.isArray(this.state.intents) ? this.state.intents.map((intent, i) => {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
                         return (
                             <div className="interaction-block" key={i}>
-                                <div className="interaction-title">
+                                <div className="interaction-title mt-1 ml-1">
                                     <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
                                     <input placeholder="Enter Intent Name" 
                                         type="text"
@@ -260,7 +260,7 @@ class IntentInputs extends Component {
                                     value={this.state.text_entries[i]}
                                     onChange={(e) => {this.onTextChange(e.target.value, i)}}
                                     onKeyPress={(e) => {this.handleKeyPress(e, i)}}
-                                    placeholder="What would a user say to select this intent? (Press Enter after typing out each example, press '[' to insert slots)" 
+                                    placeholder="Enter user reply" 
                                     allowSpaceInQuery={true}>
                                     <Mention
                                         trigger="["
@@ -273,7 +273,7 @@ class IntentInputs extends Component {
                         return null
                     }
                 }) : null}
-                <div><button className="btn btn-default btn-block" onClick={this.onAddIntent}><i className="far fa-plus"></i> Add Intent</button></div>
+                <div><button className="btn btn-clear btn-lg btn-block mt-3" onClick={this.onAddIntent}><i className="far fa-plus"></i> Add Intent</button></div>
             </div>
         );
     }

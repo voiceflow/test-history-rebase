@@ -871,7 +871,8 @@
 .App .Menu #sidebar .MenuItem.interaction:hover {
     background-color: #F4F6F7;
 } .MenuItem.interaction>.MenuIcon {
-    background-color: #00daa5 !important;
+    background-color: #7895F850 !important;
+    color: #7895F8 !important;
 }
 .App .Menu #sidebar .MenuItem.mail:hover {
     background-color: #F4F6F7;
@@ -882,8 +883,8 @@
 .App .Menu #sidebar .MenuItem.stream:hover {
     background-color: #163898;
 } .MenuItem.stream>.MenuIcon {
-    background-color: #7895F850 ;
-    color: #7895F8 !important;
+    background-color: #4A86E750 ;
+    color: #4A86E7 !important;
 }
 .App .Menu #sidebar .MenuItem.api:hover {
     background-color: #F4F6F7;
@@ -1017,7 +1018,7 @@
     z-index: 6;
     width: 350px;
     height: 100%;
-    padding: 72px 25px 65px 25px;
+    padding: 72px 20px 65px 20px;
     background-color: #fff;
     /*opacity: 0.9;*/
     -webkit-touch-callout: none;
@@ -1051,9 +1052,9 @@
 .App #Editor label {
     display: inline-block;
     font-weight: 400;
-    color: #8da2b5;
+    color: #8da2b5 !important;
     vertical-align: middle;
-    margin-bottom: 5px !important;
+    margin-bottom: 3px !important;
 /*    background-color: #42A5FF !important;*/    
 }
 .label-btns{
@@ -1239,8 +1240,8 @@ label {
 }
 
 .srd-default-node.interaction {
-    border-top: 6px solid #62D6A8 !important;
-    border-color: #62D6A8 !important;
+    border-top: 6px solid #7895F8 !important;
+    border-color: #7895F8 !important;
 }
 
 .srd-default-node.choice, .srd-default-node.choicenew:hover{
@@ -1428,8 +1429,16 @@ label {
 button.close{
     float: none;
     display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    transition: all ease 0.25s;
 }
-
+button.close:hover{
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow:  0 0 0 1px rgba(17,49,96,.04), 0 2px 6px 0 rgba(17,49,96,.24);
+}
 .top {
     margin: 10px 0 10px 0;
 }
@@ -1832,7 +1841,7 @@ button.close{
     padding-top: 2px;
     height: 20px;
     padding-left: 6px;
-    padding-right: 7px;
+    padding-right: 6px;
     text-align: center;
     line-height: 16px;
     border-radius: 5px;
@@ -1841,7 +1850,7 @@ button.close{
     color: #42A5FF;
     border: 1px solid #42A5FF50;
     /*font-weight: bold;*/
-    font-size: 12px;
+    font-size: 11px;
     margin-right: 5px;
     margin-left: -5px;
 /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
@@ -1850,21 +1859,23 @@ button.close{
 .interaction-title span {
     /*padding: 5px 10px 0px 10px;*/
     padding-top: 2px;
-    height: 22px;
-    padding-left: 7px;
-    padding-right: 7px;
+    height: 20px;
+    padding-left: 6px;
+    padding-right: 6px;
     text-align: center;
-    line-height: 18px;
-    border-radius: 100px;
+    line-height: 16px;
+    border-radius: 5px;
     overflow: hidden;
-    background-color: #42A5FF;
-    color: #fff;
-    /*font-weight: bold;*/
-    font-size: 14px;
-    margin-right: 5px;
-    margin-left: -7px;
-    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+    background-color: #edf5ff;
+    color: #42A5FF;
+    border: 1px solid #42A5FF50;
+    /* font-weight: bold; */
+    font-size: 12px;
+    margin-right: 8px;
+    margin-left: -3px;
+    /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
     font-weight: 600;
+    margin-top: 3px;
 }
 
 .choice-title input{

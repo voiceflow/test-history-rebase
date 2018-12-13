@@ -106,7 +106,7 @@ audio {
 }
 .btn-clear:hover{
     color: #42A5FF;
-    background-color: #f1f7f8;
+    background-color: #F3F7F8;
 }
 .btn-clear:active{
     background-color: #e5edef;
@@ -329,7 +329,10 @@ audio {
 }
 .btn-secondary:active{
     background-color: #0074de !important;
-    border: 1px solid transparent !important;
+/*    border: 1px solid transparent !important;*/
+}
+.box-shadow:{
+    box-shadow: 0 2px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08) !important;
 }
 .form-bg{
     min-height: 45px;
@@ -499,14 +502,19 @@ label {
 /*    min-height: 45px;*/
 }
 
-input, textarea, .text-to-voice, .choice-block, .solid-border{
+input, textarea, .text-to-voice, .choice-block,{
     background-color: #FFF;
     color: #2b3950;
     border: 1px solid #c5d3e0;
     border-radius: 5px;
 /*    box-shadow: 0 1px 3px 0 rgba(50,50,93,.15), 0 4px 6px 0 rgba(112,157,199,.15);*/
 }
-
+.solid-border{
+    background-color: #f4f7f8 !important;
+    border: 1px solid #d6e2ec !important;
+    padding: 15px !important;
+    border-radius: 5px;
+}
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
     font-weight: lighter !important;

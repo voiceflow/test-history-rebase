@@ -149,7 +149,7 @@ class ChoiceDropdownInputs extends Component {
         return (
             <div className="w-100">
                 <div>
-                    <Input type="search" onChange={this.onSearchChange} id="searchChoice" placeholder="Search Choices" className="mb-3"></Input>
+                    <Input type="search" onChange={this.onSearchChange} id="searchChoice" placeholder="Search Choices" className="mb-3 form-control-border"></Input>
                 </div>
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
                     // console.log(this.state.name_inputs_lower, this.state.search_value)
@@ -162,8 +162,8 @@ class ChoiceDropdownInputs extends Component {
                         }
 
                         return (
-                            <div className="interaction-block" key={i}>
-                                <div className="interaction-title">
+                            <div className="interaction-block mb-3" key={i}>
+                                <div className="interaction-title ml-1 mt-1">
                                     <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
                                     <input placeholder="Enter choice Name" 
                                         type="text"
@@ -177,10 +177,10 @@ class ChoiceDropdownInputs extends Component {
                                 </div>
                                 <Collapse isOpen={this.state.open[i]}>
                                 <div className="super-center flex-hard choice-select">
-                                    <div>Intent</div>
                                     <Select
                                         placeholder="Select Intent"
-                                        className="input-select"
+                                        className="select-box mb-1"
+                                        classNamePrefix="select-box"
                                         value={choice.intent}
                                         onChange={(e) => this.updateChoice(e, i)}
                                         options={this.props.intents.concat(this.props.built_ins).map(intent => {
@@ -208,7 +208,7 @@ class ChoiceDropdownInputs extends Component {
                         return null
                     }
                 }) : null}
-                <div><button className="btn btn-default btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }

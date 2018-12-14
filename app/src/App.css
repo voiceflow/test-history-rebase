@@ -879,6 +879,8 @@ body.modal-open {
 
 .select-box__menu {
     z-index: 100 !important;
+    box-shadow: 0 0 0 1px rgba(17,49,96,.06), 0 8px 16px 0 rgba(17,49,96,.16) !important;
+    border-radius: 5px !important;
 }
 .select-box__dropdown-indicator{
     color: #c5d3e0 !important;

@@ -31,15 +31,15 @@ class Interaction extends Component {
             tab: 'choices',
             error: null,
             built_ins: formatted_built_ins
-        };
+        }
         
-        this.handleIntentsChange = this.handleIntentsChange.bind(this);
-        this.handleAddIntent = this.handleAddIntent.bind(this);
-        this.handleRemoveIntent = this.handleRemoveIntent.bind(this);
+        this.handleIntentsChange = this.handleIntentsChange.bind(this)
+        this.handleAddIntent = this.handleAddIntent.bind(this)
+        this.handleRemoveIntent = this.handleRemoveIntent.bind(this)
 
-        this.handleSlotsChange = this.handleSlotsChange.bind(this);
-        this.handleAddSlot = this.handleAddSlot.bind(this);
-        this.handleRemoveSlot = this.handleRemoveSlot.bind(this);
+        this.handleSlotsChange = this.handleSlotsChange.bind(this)
+        this.handleAddSlot = this.handleAddSlot.bind(this)
+        this.handleRemoveSlot = this.handleRemoveSlot.bind(this)
 
         this.handleChoicesChange = this.handleChoicesChange.bind(this)
         this.handleAddChoice = this.handleAddChoice.bind(this)

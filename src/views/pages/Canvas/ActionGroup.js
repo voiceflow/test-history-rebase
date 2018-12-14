@@ -112,7 +112,7 @@ class ActionGroup extends PureComponent {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(res => {
-            if(this.props.skill.amzn_id){
+            if(this.props.skill.amzn_id && (!this.props.skill.intents || this.props.skill.intents.length === 0 )){
                 this.setState({stage: 2});
             }else{
                 this.setState({stage: 11}, () => {
@@ -139,7 +139,7 @@ class ActionGroup extends PureComponent {
                                     err.response.data && 
                                     err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
                                 stage: 9
-                            });
+                            })
                         }
                     })
                 });

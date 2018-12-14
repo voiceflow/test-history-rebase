@@ -4,6 +4,7 @@ import './SlotInputs.css'
 import { Collapse } from 'reactstrap';
 import Select from 'react-select'
 import { Input } from 'reactstrap';
+import {Tooltip} from 'react-tippy'
 
 class SlotInputs extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class SlotInputs extends Component {
         this.onNameChange = this.onNameChange.bind(this)
         this.updateSlotType = this.updateSlotType.bind(this)
         this.onSearchChange = this.onSearchChange.bind(this)
+        this.submitEntry = this.submitEntry.bind(this)
     }
 
     toggleCollapse(i){
@@ -47,22 +49,26 @@ class SlotInputs extends Component {
         // Enter key pressed
         if(e.charCode===13){
             e.preventDefault();
-            const slots = this.state.slots;
-            const slot = slots[i];
-            const text_entries = this.state.text_entries;
-            const newValue = e.target.value;
-            if (!Array.isArray(slot.inputs)) {
-                slot.inputs = [];
-            }
-            if (newValue) {
-                slot.inputs.push(newValue);
-                text_entries[i] = '';
-            }
-            this.setState({
-                slots: slots,
-                text_entries: text_entries
-            }, () => {this.props.onChange(slots, this.state.open)})
+            this.submitEntry(i)
         }
+    }
+
+    submitEntry(i){
+        const slots = this.state.slots;
+        const slot = slots[i];
+        const text_entries = this.state.text_entries;
+        const newValue = text_entries[i];
+        if (!Array.isArray(slot.inputs)) {
+            slot.inputs = [];
+        }
+        if (newValue) {
+            slot.inputs.push(newValue);
+            text_entries[i] = '';
+        }
+        this.setState({
+            slots: slots,
+            text_entries: text_entries
+        }, () => {this.props.onChange(slots, this.state.open)})
     }
 
     onTextChange(value, i) {
@@ -83,12 +89,14 @@ class SlotInputs extends Component {
 
     onNameChange(e, i) {
         e.preventDefault()
-        const input = e.target.value.toLowerCase()
-        const re = /^[_a-z]+$/g
+        const input = e.target.value.toLowerCase().replace(/\s/g, '_')
         const input_error = this.state.input_error
+        const re = /^[_a-z]+$/g
         if (!re.test(input) && input.length > 0) {
+            console.log("DSDSD")
             input_error[i] = 'Slot names can only contain lowercase letters and underscores!'
         } else {
+            console.log("WTF")
             input_error[i] = ''
         }
         const name_inputs = this.state.name_inputs;
@@ -114,6 +122,10 @@ class SlotInputs extends Component {
             this.setState({
                 name_inputs: this.props.slots.map(slot => slot.name),
                 input_error: input_error
+            })
+        } else if(!e.target.value.trim()) {
+            this.setState({
+                name_inputs: this.props.slots.map(slot => slot.name)
             })
         } else {
             const slots = this.state.slots
@@ -149,11 +161,11 @@ class SlotInputs extends Component {
             }
             return null
         }
-
+        
         return (
             <div className="w-100">
             <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border"></Input>
+                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input"></Input>
             </div>
                 {Array.isArray(this.state.slots) ? this.state.slots.map((slot, i) => {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
@@ -161,38 +173,53 @@ class SlotInputs extends Component {
                             <div className="interaction-block mb-2" key={i}>
                                 <div className="intent-title">
                                     <span onClick={() => {this.toggleCollapse(i)}}><i className={"fas fa-caret-right rotate" + (this.state.open[i] ? " fa-rotate-90" : "")}></i></span>
-                                    <input placeholder="Enter Slot Name" 
-                                        type="text"
-                                        value={this.state.name_inputs[i]}
-                                        onChange={(e) => {this.onNameChange(e, i)}}
-                                        onBlur={(e) => {this.onNameSave(e, i)}}
-                                        onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                                        className="interaction-name-input"
-                                    />                                    
+                                    <Tooltip
+                                        className="flex-hard"
+                                        theme="warning"
+                                        arrow={true}
+                                        position="bottom-start"
+                                        open={!!(this.state.input_error[i])}
+                                        distance={5}
+                                        html={this.state.input_error[i]}
+                                    >
+                                        <input placeholder="Enter Slot Name" 
+                                            type="text"
+                                            value={this.state.name_inputs[i]}
+                                            onChange={(e) => {this.onNameChange(e, i)}}
+                                            onBlur={(e) => {this.onNameSave(e, i)}}
+                                            onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                                            className="interaction-name-input"
+                                        />
+                                    </Tooltip>                                
                                     <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </div>
-                                <div className="input-error">{this.state.input_error[i]}</div>
                                 <Collapse isOpen={this.state.open[i]}>
-                                {renderUtterances(this.state.slots[i].inputs, i)}
+                                    <div className="super-center flex-hard choice-select">
+                                        <Select
+                                            placeholder="Select Slot Type"
+                                            classNamePrefix="select-box"
+                                            className='select-box mb-2'
+                                            value={slot.type}
+                                            onChange={(e) => this.updateSlotType(e, i)}
+                                            options={this.props.slot_types.map(type => {
+                                                return {label: type, value: type}
+                                            })}
+                                        />
+                                    </div>
+                                    <hr className="mt-1 mb-2"/>
+                                    <div>
+                                        {renderUtterances(this.state.slots[i].inputs, i)}
+                                    </div>
                                     <Textarea 
-                                        className="input-area"
-                                        name="inputs" 
+                                        className="slot-input"
+                                        name="inputs"
                                         value={this.state.text_entries[i]} 
                                         onKeyPress={ (target) => {this.handleKeyPress(target, i)}}
                                         onChange={(e) => {this.onTextChange(e.target.value, i)}}
-                                        placeholder="What would a user say to select this slot? (Press Enter after typing out each example)" 
+                                        placeholder="Enter Slot Content Example" 
                                     />
-                                    <div className="super-center flex-hard choice-select">
-                                    <Select
-                                        placeholder="Select Slot Type"
-                                        classNamePrefix="select-box"
-                                        className='select-box mb-2'
-                                        value={slot.type}
-                                        onChange={(e) => this.updateSlotType(e, i)}
-                                        options={this.props.slot_types.map(type => {
-                                            return {label: type, value: type}
-                                        })}
-                                    />
+                                    <div className="text-center mt-2">
+                                        <span className="key-bubble forward pointer" onClick={() => this.submitEntry(i)}><i className="far fa-long-arrow-right"/></span>
                                     </div>
                                 </Collapse>
                             </div> )
@@ -200,7 +227,7 @@ class SlotInputs extends Component {
                         return null
                     }
                 }) : null }
-                <div><button className="btn btn-lg btn-clear btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Slot</button></div>
+                <div><button className="btn btn-lg btn-clear btn-block mt-3" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Slot</button></div>
             </div>
         );
     }

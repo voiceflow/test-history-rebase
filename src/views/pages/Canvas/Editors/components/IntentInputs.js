@@ -3,6 +3,7 @@ import './IntentInputs.css'
 import { Collapse } from 'reactstrap'
 import { MentionsInput, Mention } from 'react-mentions'
 import { Input } from 'reactstrap';
+import {Tooltip} from 'react-tippy'
 
 const _ = require('lodash')
 
@@ -131,7 +132,7 @@ class IntentInputs extends Component {
 
     onNameChange(e, i) {
         e.preventDefault()
-        const input = e.target.value.toLowerCase()
+        const input = e.target.value.toLowerCase().replace(/\s/g, '_')
         const re = /^[_a-z]+$/g
         const input_error = this.state.input_error
         if (!re.test(input) && input.length > 0) {
@@ -162,6 +163,10 @@ class IntentInputs extends Component {
             this.setState({
                 name_inputs: this.props.intents.map(intent => intent.name),
                 input_error: input_error
+            })
+        } else if(!e.target.value.trim()) {
+            this.setState({
+                name_inputs: this.props.intents.map(intent => intent.name)
             })
         } else {
             const intents = this.state.intents
@@ -237,7 +242,7 @@ class IntentInputs extends Component {
         return (
             <div className="w-100">
             <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3" placeholder="Search Intents"></Input>
+                <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents"></Input>
             </div>
                 {Array.isArray(this.state.intents) ? this.state.intents.map((intent, i) => {
                     if (this.state.name_inputs[i].indexOf(this.state.search_value) >= 0) {
@@ -245,18 +250,27 @@ class IntentInputs extends Component {
                             <div className="interaction-block" key={i}>
                                 <div className="intent-title">
                                     <span onClick={() => {this.toggleCollapse(i)}}><i className={"fas fa-caret-right rotate" + (this.state.open[i] ? " fa-rotate-90" : "")}></i></span>
-                                    <input placeholder="Enter Intent Name" 
-                                        type="text"
-                                        value={this.state.name_inputs[i]}
-                                        onChange={(e) => {this.onNameChange(e, i)}}
-                                        onBlur={(e) => {this.onNameSave(e, i)}}
-                                        onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                                        className="interaction-name-input"
-                                    />
+                                    <Tooltip
+                                        className="flex-hard"
+                                        theme="warning"
+                                        arrow={true}
+                                        position="bottom-start"
+                                        open={!!(this.state.input_error[i])}
+                                        distance={5}
+                                        html={this.state.input_error[i]}
+                                    >
+                                        <input placeholder="Enter Intent Name" 
+                                            type="text"
+                                            value={this.state.name_inputs[i]}
+                                            onChange={(e) => {this.onNameChange(e, i)}}
+                                            onBlur={(e) => {this.onNameSave(e, i)}}
+                                            onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                                            className="interaction-name-input"
+                                        />
+                                    </Tooltip>
                                     <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </div>
-                                <div className="input-error">{this.state.input_error[i]}</div>
-                                    <Collapse isOpen={this.state.open[i]}>
+                                <Collapse isOpen={this.state.open[i]}>
                                     <div>
                                         {renderUtterances(intent.inputs, i)}
                                     </div>

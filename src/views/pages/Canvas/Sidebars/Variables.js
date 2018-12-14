@@ -106,7 +106,7 @@ class Variables extends PureComponent {
                         </InputGroup>
                     </FormGroup>
                 </form>
-                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                <h1 className="down-arrow"><i class="far fa-long-arrow-alt-down"></i></h1>
                 <div>
                     <Label>Global Variables</Label>
                     <div className="variables">
@@ -134,7 +134,7 @@ class Variables extends PureComponent {
                         </InputGroup>
                     </FormGroup>
                 </form>
-                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                <h1 className="down-arrow"><i class="far fa-long-arrow-alt-down"></i></h1>
                 <div>
                     <Label>Local Variables</Label>
                     <div className="variables">

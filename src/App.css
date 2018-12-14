@@ -255,6 +255,9 @@ audio {
 .btn-default.exit{
     margin-right: 4px;
 }
+.btn-default.exit i {
+    margin-right: 4px;
+}
 .exit i, .forward i{
     transition: all 0.2s ease !important;
 }
@@ -801,6 +804,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     padding-top: 58px;
 }
 
+.modal-header {
+    align-items: center;
+}
 .modal-content{
     /*overflow: hidden;*/
     padding-top: .5rem;

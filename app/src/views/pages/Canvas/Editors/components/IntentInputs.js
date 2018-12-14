@@ -267,7 +267,7 @@ class IntentInputs extends Component {
                                         value={this.state.text_entries[i]}
                                         onChange={(e) => {this.onTextChange(e.target.value, i)}}
                                         onKeyPress={(e) => {this.handleKeyPress(e, i)}}
-                                        placeholder="Enter user reply" 
+                                        placeholder={intent.inputs.length ? "Enter Synonyms" : "Enter user reply"}
                                         allowSpaceInQuery={true}>
                                         <Mention
                                             trigger="["

@@ -24,7 +24,7 @@ class ChoiceDropdownInputs extends Component {
             }
             const key = choice_obj.intent ? choice_obj.intent.value : null
 
-            if(!key) return null
+            if(!key && key!==0) return null
 
             const intent = _.find(props.intents, { key: key })
             if (intent) {
@@ -67,8 +67,8 @@ class ChoiceDropdownInputs extends Component {
             return
         }
 
-        const choices = this.state.choices;
-        choices[i].intent = target;
+        const choices = this.state.choices
+        choices[i].intent = target
         choices[i].mappings = choices[i].mappings.map(m => {
             return {
                 variable: m.variable,
@@ -105,11 +105,10 @@ class ChoiceDropdownInputs extends Component {
     handleSelection(choice_i, i, arg, value) {
         let choices = this.state.choices;
         if(choices[choice_i].mappings[i][arg] !== value){
-            choices[choice_i].mappings[i][arg] = value;
-
+            choices[choice_i].mappings[i][arg] = value
             this.setState({
                 choices: choices
-            },  () => {this.props.onChange(choices, this.state.open)});
+            },  () => {this.props.onChange(choices, this.state.open)})
         }
     }
 

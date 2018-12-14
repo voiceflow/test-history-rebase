@@ -26,6 +26,9 @@ button:focus{
 .text-secondary{
     color: #8da2b5 !important;
 }
+.text-lg{
+    font-size: 3rem;
+}
 audio {
     width: 275px;
 }

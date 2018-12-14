@@ -120,9 +120,11 @@ class Blocks extends PureComponent {
                                 {section.title}
                         </span>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            {section.items.map((item, i) => {
-                                return <MenuItem item={item} key={i} data-tip={item.tip}/>
-                            })}
+                            <div className="mb-2 section-blocks">
+                                {section.items.map((item, i) => {
+                                    return <MenuItem item={item} key={i} data-tip={item.tip}/>
+                                })}
+                            </div>
                         </Collapse>
                     </div>
             })

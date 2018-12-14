@@ -652,12 +652,14 @@
     font-size: 0.75rem;
     /*font-weight: bold;*/
     color: #95a6bd;
+    margin-right: 
 }
 
 .App .Menu #sidebar .section-title>i{
     width: 10px;
     text-align: left;
     display: inline-block;
+
 }
 
 .section-title:hover{
@@ -691,24 +693,22 @@
     cursor: pointer;
     overflow: hidden;
     border-radius: 6px;
-    height: 44px;
-    line-height: 38px;
-    margin: 5px 0px;
     padding: 4px;
+    padding-top: 10px;
     /*transition: background-color .3s cubic-bezier(0.9, 0.2, 0.2, 1);*/
     backface-visibility: hidden;
     color: #2b3950;
-    /*width: 100%;*/
+    width: 46%;
     background-color: #fff;
-    display: flex;
     transition: all .1s ease-in-out;
 /*    box-shadow: 0 2px 3px rgba(0,0,0,.08);*/
-    font-size: 15px;
+    font-size: 13px;
     color: #8DA2B5 !important; 
-/*    border: 1px solid #eaeff4;*/
-    
-    /*border: 1px solid #EEE;*/
-    
+    text-align: center;
+   border: 1px solid #eaeff4;
+   margin-bottom: 8PX;
+   transition: all 0.25s ease;
+   margin: 4px 4px;
 }
 .nav-tabs .nav-link{
     color: #8da2b5;
@@ -782,6 +782,9 @@
     font-size: 14px;
     border-radius: 100%;
     font-weight: bold;
+    position: absolute;
+    top: 2px;
+    right: 0px;
 }
 .App .Menu #sidebar .MenuItem:hover .menu-tip {
     color: #CCC;
@@ -814,9 +817,15 @@
     background-color: #b8daff !important;
     color: #42A5FF !important;
 }
+.App .Menu #sidebar .section-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -2px;
+}
+
 .App .Menu #sidebar .MenuItem .MenuText{
     flex: 1;
-    display: inline-flex;
+    display: block;
     align-items: center;
     justify-content: space-between;
 
@@ -825,8 +834,8 @@
 .App .Menu #sidebar .MenuItem:hover {
     /*transform: scale(1.03);*/
     transform: translateY(-1px);
-  box-shadow: 0 2px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
-/*    border: 1px solid #fff;*/
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 2px 6px rgba(0,0,0,.18);
+   border: 1px solid transparent !important;
 /*    border-radius: 10px;*/
     background-color: #fff !important;
     color: #2b3950 !important;
@@ -840,14 +849,11 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 37px;
-    height: 37px;
 /*    background-color: #e2e9ec;*/
     /*color: #2325E2;*/
     color: #fff;
-    margin-right: 12px;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 17px;
     /*border-radius: 10px 0px 0px 10px !important;*/
 }
 
@@ -879,64 +885,54 @@
 .App .Menu #sidebar .MenuItem.choice:hover {
     background-color: #F4F6F7;
 } .MenuItem.choice>.MenuIcon {
-    background-color: #3FCF8E30 !important;
-    color: #3FCF8E !important;
+    color: #62D6A8 !important;
 }
 .App .Menu #sidebar .MenuItem.interaction:hover {
     background-color: #F4F6F7;
 } .MenuItem.interaction>.MenuIcon {
-    background-color: #7895F850 !important;
     color: #7895F8 !important;
 }
 .App .Menu #sidebar .MenuItem.mail:hover {
     background-color: #F4F6F7;
 } .MenuItem.mail>.MenuIcon {
-    background-color: #ffa47750 !important;
     color: #ffa477 !important;
 }
 .App .Menu #sidebar .MenuItem.stream:hover {
     background-color: #163898;
 } .MenuItem.stream>.MenuIcon {
-    background-color: #4A86E750 ;
     color: #4A86E7 !important;
 }
 .App .Menu #sidebar .MenuItem.api:hover {
     background-color: #F4F6F7;
 } .MenuItem.api>.MenuIcon {
-    background-color: #4A86E750;
     color: #4A86E7 !important;
 }
 .App .Menu #sidebar .MenuItem.permissions:hover {
     background-color: #F4F6F7;
 } .MenuItem.permissions>.MenuIcon {
-    background-color: #88bbd850;
     color: #88bbd8 !important;
     
 }
 .App .Menu #sidebar .MenuItem.speak:hover {
     background-color: #F4F6F7;
 } .MenuItem.speak>.MenuIcon {
-    background-color: #42A5FF50 !important;
     color: #42A5FF !important;
     font-size: 18px;
 }
 .App .Menu #sidebar .MenuItem.audio:hover, .App .Menu #sidebar .MenuItem.combine:hover {
     background-color: #ff8b35;
 } .MenuItem.audio>.MenuIcon, .MenuItem.combine>.MenuIcon  {
-    background-color: #ff8b3550 !important;
     color: #ff8b35 !important;
 }
 .App .Menu #sidebar .MenuItem.random:hover {
     background-color: #F4F6F7;
 } .MenuItem.random>.MenuIcon {
-    background-color: #FA755A50 !important;
     color: #FA755A !important;
     font-size: 18px;
 }
 .App .Menu #sidebar .MenuItem.set:hover {
     background-color: #F4F6F7;
 } .MenuItem.set>.MenuIcon {
-    background-color: #69D4F850;
     color: #69D4F8 !important;
 }
 .App .Menu #sidebar .MenuItem.variable:hover {
@@ -947,33 +943,26 @@
 .App .Menu #sidebar .MenuItem.if:hover {
     background-color: #F4F6F7;
 } .MenuItem.if>.MenuIcon {
-    background-color: #F5BE5850;
     color: #F5BE58 !important;
 }
 .App .Menu #sidebar .MenuItem.capture:hover {
     background-color: #F4F6F7;
 } .MenuItem.capture>.MenuIcon {
-    background-color: #a458f550;
     color: #c48cff !important;
 }
 .App .Menu #sidebar .MenuItem.command:hover {
     background-color: #F4F6F7;
 } .MenuItem.command>.MenuIcon {
-    background-color: #EC559450 !important;
     color: #EC5594 !important;
 }
 .App .Menu #sidebar .MenuItem.flow:hover {
     background-color: #F4F6F7;
 } .MenuItem.flow>.MenuIcon {
-    background-color: #8DA2B550;
     color: #8DA2B5!important;
 }
-/*.App .Menu #sidebar .MenuItem:hover>.MenuIcon{
-}*/
 .App .Menu #sidebar .MenuItem.comment:hover {
     background-color: #F4F6F7;
 } .MenuItem.comment>.MenuIcon {
-    background-color: #88bbd850;
     color: #88bbd8 !important;
     font-size: 18px;
 }

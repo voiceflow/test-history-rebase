@@ -1339,7 +1339,6 @@ class Canvas extends Component {
                         toggle={this.toggleTestModal}
                         testing_info={this.state.testing_info}
                         diagrams={this.state.diagrams}
-                        intents={this.state.skill.used_intents}
                         slots={this.state.skill.slots}
                         globals={this.state.global_variables}
                     />

@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const {BUILT_IN_INTENTS} = require('./Constants')
 
 const _formatName = (name) => {
 	let formatted_name = name.replace(' ', '_')
@@ -63,9 +64,6 @@ const interactionModel = (req) => {
 	const intents = req.intents
 	const slots = req.slots
 	const used_choices = req.used_choices
-
-	console.log("USED CHOICES", used_choices)
-
 	const used_intents = req.used_intents
 	
 	const intents_for_amazon = [
@@ -120,7 +118,12 @@ const interactionModel = (req) => {
 	]
 
 	used_intents.forEach(intent_key => {
-		const intent = _.find(intents, { key: intent_key })
+		let intent
+		if(typeof intent_key === 'string'){
+			intent = _.find(BUILT_IN_INTENTS, {name: intent_key})
+		}else{
+			intent = _.find(intents, { key: intent_key })
+		}
 		if (!intent) {
 			throw(`Intent Key ${intent_key} not found!`)
 		}

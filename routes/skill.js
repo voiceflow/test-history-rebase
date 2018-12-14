@@ -1,7 +1,7 @@
-const axios = require('axios');
-const {docClient, pool, config, hashids} = require('./../services');
-const {AccessToken} = require('./authentication');
-const JSONs = require('./../config/amazon_json');
+const axios = require('axios')
+const {docClient, pool, config, hashids} = require('./../services')
+const {AccessToken} = require('./authentication')
+const JSONs = require('./../config/amazon_json')
 
 const locales = ["en-CA", "en-AU", "en-GB", "en-US", "en-IN"];
 
@@ -27,8 +27,8 @@ exports.getSkills = (req, res) => {
                 return skill;
             }));
         }
-    });
-};
+    })
+}
 
 exports.getSkill = (req, res) => {
     if (!req.params.id) {
@@ -496,7 +496,7 @@ exports.buildSkill = async (req,res) => {
                         });
                     }
 
-                    let model = JSONs.interactionModel(r);
+                    let model = JSONs.interactionModel(r)
 
                     const iterate = (depth) => {
                         if(depth === 3){

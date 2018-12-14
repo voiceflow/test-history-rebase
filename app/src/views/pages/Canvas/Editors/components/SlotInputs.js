@@ -93,10 +93,8 @@ class SlotInputs extends Component {
         const input_error = this.state.input_error
         const re = /^[_a-z]+$/g
         if (!re.test(input) && input.length > 0) {
-            console.log("DSDSD")
             input_error[i] = 'Slot names can only contain lowercase letters and underscores!'
         } else {
-            console.log("WTF")
             input_error[i] = ''
         }
         const name_inputs = this.state.name_inputs;

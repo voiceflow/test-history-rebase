@@ -66,6 +66,13 @@ class ChoiceDropdownInputs extends Component {
         if(Array.isArray(target)) {
             return
         }
+        // check if this choice is already used
+        for(var choice of this.state.choices ){
+            if(choice.intent && choice.intent.label === target.label){
+                this.props.onError('This intent has already been used in this interaction block')
+                return
+            }
+        }
 
         const choices = this.state.choices
         choices[i].intent = target
@@ -120,7 +127,18 @@ class ChoiceDropdownInputs extends Component {
                     let slots
                     if(choice.intent && choice.intent.inputs){
                         slots = choice.intent.inputs.map(e => e.slots)
-                        if(slots.length === 0) slots = null
+
+                        // TODO: PLEASE MAKE THIS MORE EFFICIENT - CHECK IF THIS INTENT HAS NO SLOTS
+                        let has_slots = false
+                        for(var slot of slots){
+                            if(slot.length !== 0){
+                                has_slots = true
+                                break 
+                            }
+                        }
+                        if(!has_slots){
+                            slots = null
+                        }
                     }
 
                     return (

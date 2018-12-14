@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button, ButtonGroup, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Button, ButtonGroup, Input } from 'reactstrap';
 import FlowButton from './components/FlowButton'
 
 const TABS = ['structure', 'flows']
@@ -68,14 +68,7 @@ class Project extends PureComponent {
         }else if(this.state.tab === 'flows'){
             flow_tab = <React.Fragment>
                 <label>All Flows</label>
-                <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText className="form-control">
-                            <i className="far fa-search"/>
-                        </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Search Flows" name="filter" value={this.state.filter} onChange={this.handleChange}/>
-                </InputGroup>
+                <Input placeholder="Search Flows" name="filter" value={this.state.filter} onChange={this.handleChange} className="form-control-border mb-3 search-input"/>
                 {this.props.diagrams.map(diagram => {
                     if(this.state.filter && !diagram.name.toLowerCase().includes(this.state.filter.toLowerCase())) return null
                     return <FlowButton

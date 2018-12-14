@@ -254,18 +254,7 @@ class TestModal extends React.Component {
   }
 
   async updateState(start=false){
-    let data = this.state.story_state;
-    if (!data.amzn_id) {
-      data.amzn_id = this.props.amzn_id
-    }
-
-    if (!data.user_id) {
-      data.user_id = window.user_detail.id
-    }
-
-    if (!data.inv_name) {
-      data.inv_name = this.props.inv_name
-    }
+    let data = this.story_state
     
     if (!data.intents) {
       data.intents = this.props.intents
@@ -313,11 +302,11 @@ class TestModal extends React.Component {
         data.play.action = 'NEXT';
       }
     }
-
+    console.log(data)
     axios.post(test_endpoint, data)
     .then(async res => {
       res = res.data;
-
+      console.log(res.data)
       if(res.line) {
         this.story_state = res
       }

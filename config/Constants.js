@@ -1,4 +1,55 @@
-const BUILT_IN_INTENTS = [
+exports.DEFAULT_INTENTS = [
+  {
+    "name": "AMAZON.CancelIntent",
+    "samples": [
+      "cancel"
+    ]
+  },
+  {
+    "name": "AMAZON.HelpIntent",
+    "samples": [
+      "help"
+    ]
+  },
+  {
+    "name": "AMAZON.StopIntent",
+    "samples": [
+      "stop"
+    ]
+  },
+  {
+    "name": "AMAZON.YesIntent",
+    "samples": [
+      "yes"
+    ]
+  },
+  {
+    "name": "AMAZON.NoIntent",
+    "samples": [
+      "no"
+    ]
+  },
+  {
+    "name": "AMAZON.ResumeIntent",
+  },
+  {
+    "name": "AMAZON.PauseIntent",
+  },
+  {
+    "name": "StoryFlowIntent",
+    "slots": [
+      {
+        "name": "content",
+        "type": "Content"
+      }
+    ],
+    "samples": [
+      "{content}"
+    ]
+  }
+]
+
+exports.BUILT_IN_INTENTS = [
     { name: "AMAZON.AddAction<object@Book,targetCollection@ReadingList>",
       slots: [
         "targetCollection.owner.name",
@@ -1133,5 +1184,3 @@ const BUILT_IN_INTENTS = [
       ]
     } 
 ]
-
-exports.BUILT_IN_INTENTS = BUILT_IN_INTENTS;

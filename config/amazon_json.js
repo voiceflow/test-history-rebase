@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS} = require('./Constants')
+const {BUILT_IN_INTENTS, DEFAULT_INTENTS} = require('./Constants')
 
 const _formatName = (name) => {
 	let formatted_name = name.replace(' ', '_')
@@ -66,79 +66,49 @@ const interactionModel = (req) => {
 	const used_choices = req.used_choices
 	const used_intents = req.used_intents
 	
-	const intents_for_amazon = [
-		{
-			"name": "AMAZON.CancelIntent",
-			"samples": [
-				"cancel"
-			]
-		},
-		{
-			"name": "AMAZON.HelpIntent",
-			"samples": [
-				"help"
-			]
-		},
-		{
-			"name": "AMAZON.StopIntent",
-			"samples": [
-				"stop"
-			]
-		},
-		{
-			"name": "AMAZON.YesIntent",
-			"samples": [
-				"yes"
-			]
-		},
-		{
-			"name": "AMAZON.NoIntent",
-			"samples": [
-				"no"
-			]
-		},
-		{
-			"name": "AMAZON.ResumeIntent",
-		},
-		{
-			"name": "AMAZON.PauseIntent",
-		},
-		{
-			"name": "StoryFlowIntent",
-			"slots": [
-				{
-					"name": "content",
-					"type": "Content"
-				}
-			],
-			"samples": [
-				"{content}"
-			]
-		}
-	]
+	const intents_for_amazon = []
+	const entered_intents = new Set()
 
 	used_intents.forEach(intent_key => {
 		let intent
 		if(typeof intent_key === 'string'){
 			intent = _.find(BUILT_IN_INTENTS, {name: intent_key})
+			intent.built_in = true
 		}else{
 			intent = _.find(intents, { key: intent_key })
 		}
+
 		if (!intent) {
 			throw(`Intent Key ${intent_key} not found!`)
 		}
-		const name = _formatName(intent.name)
-		let samples
-		if (!intent.built_in) {
-			samples = _getUtterancesWithSlotNames(intent.inputs, slots)
-		}
-		const _slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
 
-		intents_for_amazon.push({
-			name: name,
-			slots: _slots,
-			samples: samples
-		})
+		const name = _formatName(intent.name)
+
+		if(!entered_intents.has(name)){
+
+			entered_intents.add(name)
+
+			let formatted_intent = {
+				name: name
+			}
+	
+			let samples
+			if (!intent.built_in) {
+				samples = _getUtterancesWithSlotNames(intent.inputs, slots)
+				formatted_intent.samples = samples
+				formatted_intent.slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
+			}
+	
+			intents_for_amazon.push(formatted_intent)
+		}
+	})
+
+	// Write in default intents if they haven't been declared already
+	DEFAULT_INTENTS.forEach(intent => {
+		if(!entered_intents.has(intent.name)){
+			entered_intents.add(intent.name)
+			intents_for_amazon.push(intent)
+		}
 	})
 
 	const content_slot_values = [

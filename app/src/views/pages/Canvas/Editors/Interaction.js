@@ -297,7 +297,7 @@ class Interaction extends Component {
         }
 
         return (
-            <div>
+            <React.Fragment>
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>  
                 <ButtonGroup className="toggle-group mb-2">
                     <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
@@ -307,7 +307,7 @@ class Interaction extends Component {
                 {this.state.tab === 'choices' && renderChoices()}
                 {this.state.tab === 'intents' && renderIntents()}
                 {this.state.tab === 'slots' && renderSlots()}
-            </div>
+            </React.Fragment>
         );
     }
 }

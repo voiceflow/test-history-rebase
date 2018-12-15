@@ -497,6 +497,7 @@ exports.buildSkill = async (req,res) => {
                     }
 
                     let model = JSONs.interactionModel(r)
+                    // console.log(JSON.stringify(model))
 
                     const iterate = (depth) => {
                         if(depth === 3){

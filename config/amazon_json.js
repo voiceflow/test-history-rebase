@@ -92,11 +92,11 @@ const interactionModel = (req) => {
 				name: name
 			}
 	
-			let samples
 			if (!intent.built_in) {
-				samples = _getUtterancesWithSlotNames(intent.inputs, slots)
-				formatted_intent.samples = samples
+				formatted_intent.samples = _getUtterancesWithSlotNames(intent.inputs, slots)
 				formatted_intent.slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
+			}else {
+				formatted_intent.samples = []
 			}
 	
 			intents_for_amazon.push(formatted_intent)
@@ -255,6 +255,20 @@ const interactionModel = (req) => {
 				values: values
 			})
 		}
+		// else{
+		// 	const slot_name = slot.type.value
+		// 	const values = slot.inputs.map(input => {
+		// 		return {
+		// 			name: {
+		// 			  value: input
+		// 			}
+		// 		}
+		// 	})
+		// 	slot_types.push({
+		// 		name: slot_name,
+		// 		values: values
+		// 	})
+		// }
 	})
 
 	return {

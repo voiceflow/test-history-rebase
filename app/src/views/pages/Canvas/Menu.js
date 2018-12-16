@@ -7,7 +7,6 @@ import Project from './Sidebars/Project'
 import Confirm from './../../components/Modals/ConfirmModal'
 import {Alert} from 'reactstrap'
 import axios from 'axios'
-
 const tabs = {
     top: [
         {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'Blocks'},
@@ -255,7 +254,11 @@ class Menu extends PureComponent {
 
     render() {
         return (
-            <div className="Menu" onClick={this.props.onClick}>
+            <div className="Menu"
+                onFocus={this.props.unfocus}
+                onMouseDown={this.props.unfocus}
+                onKeyDown={this.props.unfocus}
+            >
                 <Confirm confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <div className='toolbar'>
                     <div className="top-down">
@@ -301,6 +304,9 @@ class Menu extends PureComponent {
                 </div>
             </div>
         );
+        // <a className="tool no-underline" href="/market" rel="noopener noreferrer">
+        //     <i className="fas fa-store-alt"/>
+        // </a>
     }
 }
 

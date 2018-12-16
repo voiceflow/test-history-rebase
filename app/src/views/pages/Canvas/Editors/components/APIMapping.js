@@ -18,26 +18,22 @@ class APIMapping extends Component {
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <VariableInput className="form-control" placeholder="object path" updateRaw={e => this.props.onChange(e, i, 'path')} variables={this.props.variables} raw={choice.path}/>
+                                    <VariableInput className="form-control no-radius form-control-border" placeholder="object path" updateRaw={e => this.props.onChange(e, i, 'path')} variables={this.props.variables} raw={choice.path}/>
                                     <Select
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
-                                        className="variable-box"
+                                        className="variable-box right"
                                         value={this.props.pairs[i]['var'] ? {value: this.props.pairs[i]['var'], label: this.props.pairs[i]['var']} : null}
                                         onChange={e => this.props.onChange(e.value, i, 'var')} 
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                             return {label: variable, value: variable}
                                         }) : null}
                                     />
-                                    <InputGroupAddon addonType="append">
-                                        <InputGroupText>
-                                            <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
-                                        </InputGroupText>
-                                    </InputGroupAddon>
+                                            <button className="btn-float" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
+                    <button className="btn btn-clear btn-block" onClick={this.props.onAdd}>
                         <i className="far fa-plus"></i> Add Mapping
                     </button>
                 </div>

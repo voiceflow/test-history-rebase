@@ -177,22 +177,21 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 // app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
 // app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 
-app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules);
-app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules);
-app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules);
-app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule);
-app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus);
-app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule);
-app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification);
-//!!!! TODO: REMOVE DUE TO TESTING !!!!
-//app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification);
-app.put('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.giveCertification);
-app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification);
-app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCertification);
-app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess);
-app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess);
-app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess);
-app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate);
+app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
+app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
+app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)
+app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
+app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
+app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus)
+app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule)
+app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification)
+app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification)
+app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification)
+app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCertification)
+app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
+app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess)
+app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
+app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

@@ -139,6 +139,7 @@ class Mail extends Component {
                     !user ? 
                     <React.Fragment>
                         <Input 
+                            className="form-bg"
                             name='to'
                             type='email'
                             value={this.state.node.extras.to} 

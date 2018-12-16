@@ -1,25 +1,25 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
-import React from 'react';
-import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap';
-import axios from 'axios';
-import moment from 'moment';
-import Select from 'react-select';
+import React from 'react'
+import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
+import axios from 'axios'
+import moment from 'moment'
+import Select from 'react-select'
 import './TestModal.css'
-import {parse} from 'html-parse-stringify';
-import Switch from '@material-ui/core/Switch';
+import {parse} from 'html-parse-stringify'
+import Switch from '@material-ui/core/Switch'
 // const _ = require('lodash');
 
 var test_endpoint;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     // dev code
-    test_endpoint = 'http://localhost:4000/state/test';
+    test_endpoint = 'http://localhost:4000/state/test'
 } else {
     // production code
-    test_endpoint = 'https://app.getvoiceflow.com/state/test';
+    test_endpoint = 'https://app.getvoiceflow.com/state/test'
 }
 
-const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text']);
+const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text'])
 
 // const default_state = () => {
 //   return {
@@ -253,8 +253,28 @@ class TestModal extends React.Component {
       this.setState({inputs: inputs});
   }
 
-  updateState(start=false){
-    let data = this.story_state;
+  async updateState(start=false){
+    let data = this.story_state
+    
+    if (!data.slots) {
+      data.slots = this.props.slots
+    }
+
+    const nlc = this.props.testing_info.nlc
+
+    if (nlc) {
+      try {
+        await nlc.handleCommand(data.input)
+        const nlc_results = await this.props.testing_info.nlc_promise
+
+        data.detected_intent = {
+          intent: nlc_results.intent,
+          slots: nlc_results.slots
+        }
+      } catch (err) {
+        console.error("NLC NO MATCH")
+      }
+    }
 
     if(start){
       data.testing = {
@@ -281,8 +301,7 @@ class TestModal extends React.Component {
 
     axios.post(test_endpoint, data)
     .then(async res => {
-      res = res.data;
-
+      res = res.data
       if(res.line) {
         this.story_state = res
       }
@@ -552,7 +571,7 @@ class TestModal extends React.Component {
                 <div className="col-sm-4 text-left test-sidebar">
                   <h4>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</h4>
                   <div className="debug-switch">
-                      Debug Mode <i className="fas fa-bug"></i>
+                      Debug Mode
                       <Switch
                         checked={this.state.debug}
                         onChange={() => this.setState({debug: !this.state.debug})}
@@ -581,7 +600,7 @@ class TestModal extends React.Component {
           }
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color="primary" onClick={this.props.toggle}>Close</Button>
+          <button className="btn-clear" onClick={this.props.toggle}>Close</button>
         </ModalFooter>
       </Modal>
     );

@@ -37,8 +37,7 @@ const stage_title = {
     "9": "Privacy & Compliance Ext.",
     "10": "Submitted for Review",
     "11": "Awaiting Review",
-    "12": "Confirming Withdraw",
-    "13": "Confirming Delete"
+    "12": "Confirming Withdraw"
 }
 
 const LOCALE_MAP = [
@@ -75,7 +74,6 @@ class Skill extends Component {
                 amzn_id: null,
                 stage_error: null,
                 displayingConfirmWithdraw: false,
-                displayingConfirmDelete: false
             }
         } else {
             this.props.history.push('/dashboard');
@@ -86,13 +84,11 @@ class Skill extends Component {
         this.toggle = this.toggle.bind(this);
         this.togglePublish = this.togglePublish.bind(this);
         this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this);
-        this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this);
         this.closePublish = this.closePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
         this.onPublish = this.onPublish.bind(this);
         this.onWithdraw = this.onWithdraw.bind(this);
-        this.onDelete = this.onDelete.bind(this);
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
         this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this);
@@ -392,23 +388,6 @@ class Skill extends Component {
         }
     }
 
-    toggleConfirmDelete() {
-        if(!this.state.displayingConfirmDelete){
-            this.setState({
-                displayingConfirmDelete: {
-                    text: "Are you sure you want to delete this Skill? This action cannot be undone and will delete all resources this Skill currently depends on.",
-                    confirm: this.onDelete
-                },
-                stage: 13
-            });
-        }else{
-            this.setState({
-                displayingConfirmDelete: false,
-                stage: 0
-            });
-        }
-    }
-
     closePublish() {
         if(this.state.stage === 1){
             this.setState({
@@ -602,7 +581,7 @@ class Skill extends Component {
                             null:
                             <div className="subheader-right">
                                 <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-                                <MUIButton variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></MUIButton>
+                                <button variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></button>
                             </div>
                         }
                     </div>
@@ -627,10 +606,6 @@ class Skill extends Component {
                 <ConfirmModal 
                     confirm = {this.state.displayingConfirmWithdraw}
                     toggle = {this.toggleConfirmWithdraw}
-                />
-                <ConfirmModal
-                    confirm = {this.state.displayingConfirmDelete}
-                    toggle = {this.toggleConfirmDelete}
                 />
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
@@ -764,7 +739,7 @@ class Skill extends Component {
                                     <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -781,7 +756,7 @@ class Skill extends Component {
                                     <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
                                 </div>
                                 <div className="col-9"> 
-                                    <Input type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -826,7 +801,7 @@ class Skill extends Component {
                                     </p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -951,7 +926,7 @@ class Skill extends Component {
                                     </p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -971,7 +946,7 @@ class Skill extends Component {
                                     </p>
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
                                 </div>
                             </div>
                         </FormGroup>
@@ -992,22 +967,12 @@ class Skill extends Component {
                                     </p> 
                                 </div>
                                 <div className="col-9">
-                                    <Input type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
                                 </div>
                             </div> 
                         </FormGroup>
 
                       </Form>
-                    {!disabled_stages.has(this.state.stage)?
-                        <React.Fragment>
-                            <hr/>
-                            <Alert color="danger between">
-                                <span>Delete This Skill (This action can not be undone)</span>
-                                <Button color="danger" onClick={this.toggleConfirmDelete}>Delete Skill</Button>
-                            </Alert>
-                        </React.Fragment>
-                        :null
-                    }
                 </div>
             </div>
         );

@@ -23,7 +23,7 @@ class ChoiceInputs extends Component {
             <div className="w-100">
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
                     return (
-                        <div key={i} className="choice-block mb-4">
+                        <div key={i} className="choice-block mb-3">
                             <div className="choice-title">
                                 <span>{i+1}</span>
                                 <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>

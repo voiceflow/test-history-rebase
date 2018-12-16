@@ -6,6 +6,8 @@ import Template from './Template';
 import Templates from './Templates';
 import Home from './Home';
 
+import {ButtonGroup} from 'reactstrap'
+
 const tabs = [
     {
         display: <React.Fragment><i className="fal fa-home"/> Home</React.Fragment>,
@@ -40,17 +42,19 @@ class Business extends Component {
                     <div className="title">
                         Tools
                     </div>
-                    {tabs.map((tab, i) => {
-                        if(tab.match.includes(this.props.page)){
-                            return <div key={i} className="sidebar-option active">
-                                {tab.display}
-                            </div>
-                        }else{
-                            return <Link key={i} to={tab.link} className="sidebar-option">
-                                {tab.display}
-                            </Link>
-                        }
-                    })}
+                    <ButtonGroup vertical>
+                        {tabs.map((tab, i) => {
+                            if(tab.match.includes(this.props.page)){
+                                return <div key={i} className="active-btn">
+                                    {tab.display}
+                                </div>
+                            }else{
+                                return <Link key={i} to={tab.link} className="inactive-btn">
+                                    {tab.display}
+                                </Link>
+                            }
+                        })}
+                    </ButtonGroup>
                 </div>
                 <div md="9" className="business-page">
                     {page}

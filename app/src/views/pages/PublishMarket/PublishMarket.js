@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { FormGroup, Label, Input } from 'reactstrap';
-import MUIButton from '@material-ui/core/Button';
-import moment from 'moment';
-import Textarea from 'react-textarea-autosize';
-import Image from './../../components/Uploads/Image';
-import Select from 'react-select';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
-import VariableMap from './VariableMap';
+import React, { Component } from 'react'
+import { FormGroup, Label, Input } from 'reactstrap'
+import MUIButton from '@material-ui/core/Button'
+import moment from 'moment'
+import Textarea from 'react-textarea-autosize'
+import Image from './../../components/Uploads/Image'
+import Select from 'react-select'
+import ConfirmModal from './../../components/Modals/ConfirmModal'
+import VariableMap from './VariableMap'
 
-import axios from 'axios';
-import '../Skill/Skill.css';
-import categories from './../../../services/Categories';
-import types from './../../../services/Types';
+import axios from 'axios'
+import '../Skill/Skill.css'
+import './PublishMarket.css'
+import types from './../../../services/Types'
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -32,36 +32,29 @@ class PublishMarket extends Component {
                 input: [],
                 output: [],
                 show_incomp_alert: false,
-                variables: []
+                variables: [],
+                tags: [],
+                tags_input: ''
             }
         } else {
-            this.props.history.push('/dashboard');
+            this.props.history.push('/dashboard')
         }
 
-        this.handleTypeSelection = this.handleTypeSelection.bind(this);
-        this.handleCategorySelection = this.handleCategorySelection.bind(this);
-        this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this);
-        this.onWithdraw = this.onWithdraw.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.save = this.save.bind(this);
-        this.publish = this.publish.bind(this);
-        this.onLoad = this.onLoad.bind(this);
-        this.handleAddVar = this.handleAddVar.bind(this);
-        this.handleRemoveVar = this.handleRemoveVar.bind(this);
-        this.handleVarChange = this.handleVarChange.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        //this.testApprove = this.testApprove.bind(this);
-	}
-
-    // testApprove(){
-    //     axios.put(`/marketplace/cert/${this.state.skill_id}`)
-    //     .then(res => {
-    //         console.log("I think it worked")
-    //     }) 
-    //     .catch(res => {
-    //         console.log("DAFUQ")
-    //     });
-    // }
+        this.handleTypeSelection = this.handleTypeSelection.bind(this)
+        this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this)
+        this.onWithdraw = this.onWithdraw.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.save = this.save.bind(this)
+        this.publish = this.publish.bind(this)
+        this.onLoad = this.onLoad.bind(this)
+        this.handleAddVar = this.handleAddVar.bind(this)
+        this.handleRemoveVar = this.handleRemoveVar.bind(this)
+        this.handleVarChange = this.handleVarChange.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
+        this.handleAddTag = this.handleAddTag.bind(this)
+        this.handleDeleteTag = this.handleDeleteTag.bind(this)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
+    }
 
 	handleTypeSelection(value) {
 		this.setState({
@@ -70,18 +63,43 @@ class PublishMarket extends Component {
         });
 	}
 
-	handleCategorySelection(value) {
-		this.setState({
+    handleAddTag(){
+        if(this.state.tags.length < 3){
+            let curr_tags = this.state.tags
+            curr_tags.push(this.state.tags_input)
+            this.setState({
+                saved: false,
+                tags: curr_tags,
+                tags_input: ''
+            })
+        } else {
+            this.setState({
+                failed_tag_add: true
+            })
+        }
+    }
+
+    handleDeleteTag(i){
+        let curr_tags = this.state.tags
+        curr_tags.splice(i, 1)
+        this.setState({
             saved: false,
-            category: value
-        });
-	}
+            tags: curr_tags,
+            failed_tag_add: false
+        })
+    }
 
 	handleChange(event){
         this.setState({
             saved: false,
             [event.target.name]: event.target.value
-        });
+        })
+    }
+
+    handleKeyPress = (event) => {
+        if(event.target.name === 'tags_input' && event.key === 'Enter'){
+            this.handleAddTag()
+        }
     }
 
     handleUpdate(){
@@ -93,28 +111,22 @@ class PublishMarket extends Component {
     onLoad(){
     	axios.get('/marketplace/cert/' + this.state.skill_id)
     	.then(res => {
-    		if(res.data.category){
-    			for(var i=0;i<categories.length;i++){
-    				if(categories[i].value === res.data.category){
-    					res.data.category = {label: categories[i].label, value:res.data.category};
-    				}
-    			}
-    		}
-
     		if(res.data.type){
     			for(var j=0;j<types.length;j++){
     				if(types[j].value === res.data.type){
-    					res.data.type = {label: types[j].label, value:res.data.type};
+    					res.data.type = {label: types[j].label, value:res.data.type}
     				}
     			}
     		}
 
-            res.data.input = JSON.parse(res.data.input);
-            res.data.output = JSON.parse(res.data.output);
+            // Parse some JSUN
+            res.data.input = JSON.parse(res.data.input)
+            res.data.output = JSON.parse(res.data.output)
+            res.data.tags = JSON.parse(res.data.tags)
 
     		this.setState({
     			...res.data
-    		});
+            });
     	})
     	.catch(res => {
     		// Non-existant
@@ -134,20 +146,18 @@ class PublishMarket extends Component {
 
     save(){
         const s = this.state;
-        const category = (s.category && s.category.value ? s.category.value : null);
         const type = (s.type && s.type.value ? s.type.value : null);
-
         axios.patch('/marketplace/cert/' + this.state.skill_id, {
             title: s.title,
             descr: s.descr,
             creator_id: this.props.user.id,
-            category: category,
+            tags: JSON.stringify(s.tags),
             type: type,
             overview: s.overview,
             module_icon: s.module_icon,
             color: s.color,
             input: JSON.stringify(s.input),
-            output: JSON.stringify(s.output)
+            output: JSON.stringify(s.output),
         })
         .then(res => {
             this.setState({
@@ -165,7 +175,7 @@ class PublishMarket extends Component {
     publish(){
         this.save();
         let s = this.state;
-        if (s.title && s.descr && s.category && s.type && s.overview && s.module_icon){
+        if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
         	axios.post('/marketplace/cert/' + this.state.skill_id)
             .then(res => {
                 this.setState({
@@ -266,9 +276,6 @@ class PublishMarket extends Component {
 	                        <div className="subheader-right">
 
 	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Publish Skill <i className="fas fa-store-alt ml-2"/>
-                                </MUIButton>
-
 	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Submit to Marketplace <i className="fas fa-store-alt ml-2"/></MUIButton>
 	                        </div>
                     	}
@@ -352,14 +359,14 @@ class PublishMarket extends Component {
                     <hr className="mt-0"></hr>
                     <div className="row">
                         <div className="col-2">
-                            {this.state.category?
+                            {this.state.tags?
                                 <i className="fal fa-check-circle text-success"></i>
                                 :
                                 <i className="fal fa-times-circle text-danger"></i>
                             }
                         </div>
                         <div className="col-10">
-                            <p>Category</p>
+                            <p>Tags</p>
                         </div>
                     </div>
                 </span>
@@ -381,7 +388,7 @@ class PublishMarket extends Component {
                     {this.state.show_incomp_alert?
                         <div className="alert alert-danger mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">
-                                <h5 className="mb-0">Missing essential information about your module.</h5>
+                                <h5 className="mb-0">Missing essential information about your {this.state.type === 'FLOW'? "flow": "template"}.</h5>
                             </div>
                         </div>
                         :
@@ -415,7 +422,7 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    <b>Description</b> is a summary of your {this.state.type === 'FLOW'? "module": "template"} that shows on your {this.state.type === 'FLOW'? "module": "template"}'s card on the Marketplace. 
+                                    <b>Description</b> is a summary of your {this.state.type === 'FLOW'? "flow": "template"} that shows on your {this.state.type === 'FLOW'? "flow": "template"}'s card on the Marketplace. 
                                 </p>
                             </div>
                             <div className="col-9">
@@ -442,7 +449,8 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    <b>Overview</b> is a detailed description of your {this.state.type === 'FLOW'? "module": "template"}. Feel free to put as much information in this section! 
+                                    <b>Overview</b> is a detailed description of your {this.state.type === 'FLOW'? "flow": "template"}. Feel free to put as much information in this section! If you're using variables, writing
+                                    detailed descriptions is essential for your user's understanding. 
                                 </p>
                             </div>
                             <div className="col-9">
@@ -461,7 +469,7 @@ class PublishMarket extends Component {
 
                     <div className="d-flex row">
                         <div className="col-3 publish-info">
-                            <p className="text-secondary mt-5"><b>Icon</b> will be displayed for your {this.state.type === 'FLOW'? "module": "template"} in the Voiceflow editor.</p>
+                            <p className="text-secondary mt-5"><b>Icon</b> will be displayed for your {this.state.type === 'FLOW'? "flow": "template"} in the Voiceflow editor.</p>
                         </div>
                         <div className="col-9 d-flex">
                             <div>
@@ -486,7 +494,7 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    Your skill can be one of two <b>types</b>, either a Module or a Template. If another creator users your Module, they won't be able to dive into your flow diagram, whereas with a template they can.
+                                    Your skill can be one of two <b>types</b>, either a flow or a template. If another creator users your flow, they won't be able to look into your flow diagram, whereas with a template they can.
                                 </p>
                             </div>
                             <div className="col-9">
@@ -506,24 +514,36 @@ class PublishMarket extends Component {
                         <div className="row">
                             <div className="col-3 publish-info"></div>
                             <div className="col-9">
-                                <Label><b>Category *</b></Label>
+                                <Label><b>Tags *</b></Label>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-3 publish-info">
                                 <p className="text-secondary">
-                                    <b>Category</b> helps users find your {this.state.type === 'FLOW'? "module": "template"} more easily so choose the category that best applies to your module.
+                                    <b>Tags</b> is a comma-separated list of tags that helps users find your {this.state.type === 'FLOW'? "flow": "template"} more easily.
                                 </p>
                             </div>
                             <div className="col-9">
-                                <Select
-                                    className="input-select"
-                                    name="category"
-                                    isDisabled={this.state.in_review}
-                                    value={this.state.category}
-                                    onChange={this.handleCategorySelection}
-                                    options={categories}
-                                />
+                                {this.state.tags.map((tag, i) => 
+                                    <span key={i} className="publish-tag">
+                                        {tag} <i className="fal fa-times ml-1" onClick={() => {this.handleDeleteTag(i)}}></i>
+                                    </span>
+                                )}
+                                {
+                                    this.state.failed_tag_add?
+                                    <div className="alert alert-danger pt-1 pb-1 mt-2" role="alert">
+                                        3 tag maximum
+                                    </div>
+                                    :
+                                    null
+                                }
+                                <Input type="text" 
+                                    name="tags_input" 
+                                    placeholder="Add tags" 
+                                    value={this.state.tags_input} 
+                                    disabled={this.state.in_review} 
+                                    onChange={this.handleChange}
+                                    onKeyPress={this.handleKeyPress}/>
                             </div>
                         </div>
                     </FormGroup>

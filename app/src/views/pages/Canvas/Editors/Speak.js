@@ -155,7 +155,7 @@ class Speak extends Component {
             <div>
                 {properties.dialogs.map((d, i) => {
                     if(d.audio !== undefined){
-                        return <div key={d.index} className="multiline mb-1">
+                        return <div key={d.index} className="multiline mb-3">
                             <div className="multi-title-block">
                                 <div className="multi-title" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                     <span className="text-muted">
@@ -182,8 +182,8 @@ class Speak extends Component {
                             <hr/>
                         </div>
                     }else{
-                        return <div key={d.index} className="multiline mb-1">
-                            <div className="multi-title-block mb-1">
+                        return <div key={d.index} className="multiline mb-3">
+                            <div className="multi-title-block mb-2">
                                 <div className="multi-title">
                                     <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                         {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
@@ -217,11 +217,11 @@ class Speak extends Component {
                 { properties.dialogs.length < 20 ?
                     <React.Fragment>
                         <div className="d-flex my-3">
-                            <button className="btn btn-grey btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
+                            <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
                                 <i className="fas fa-comment-alt"/>
                                 Add Speech
                             </button>
-                            <button className="btn btn-grey btn-vertical" onClick={() => this.handleAddBlock(true)}>
+                            <button className="btn btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
                                 <i className="fas fa-volume-up"/> 
                                 Add Audio
                             </button>
@@ -229,7 +229,7 @@ class Speak extends Component {
                         <InputGroup className="my-2">
                             <label className="input-group-text w-100 m-0 text-left">
                                 <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
-                                <span className="ml-2">Output Random Entry</span>
+                                <span className="ml-2 span-small">Output Random Entry</span>
                             </label>
                         </InputGroup>
                     </React.Fragment>

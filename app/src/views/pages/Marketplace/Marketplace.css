@@ -52,8 +52,8 @@
     transition: all .3s ease-in-out !important;
 }
 .card-icon {
-    width: 60px;
-    height: 60px;
+    width: 75px;
+    height: 75px;
     border-radius: 100px !important;
     border: 2px solid #fff !important;
     box-shadow: 0px 1px 4px rgba(14,30,37,.12) !important;
@@ -73,6 +73,11 @@
     color: #fff;
     height: 300px;
 }
+.creator-class{
+    justify-content: center;
+    background-color: #fff;
+    height: 60px;
+}
 .card{
     padding: 60px; 
     box-shadow: 0 1px 2px rgba(36,35,40,.1), 0 10px 20px rgba(36,35,40,.1);
@@ -80,31 +85,35 @@
     margin-right: 20px !important;*/
 
 }
+.small-blue{
+    font-size: 12px;
+    font-weight: 900 !important;
+    color: #2b3950;
+}
 .market-card{
     border-radius: 10px;
     box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
     padding-bottom: 0px !important;
 }
 .market-card:hover{
-    box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 10px 20px rgba(0,0,0,.05) !important;
-    transform: scale(1.02);
+    transform: translateY(-1px);
+  box-shadow: 0 7px 20px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.12) !important;
+/*    transform: scale(1.02);*/
 /*    border: 1px solid #42A5FF !important;*/
 }
 .add-btn{
     background-color: #42A5FF !important;
     border: 1px solid #42A5FF !important;
     color: #fff !important;
-/*    margin-bottom: 0px;*/
     width: 100%;
     border-radius: 0px 0px 10px 10px !important;
-    padding: 8px;
-    font-size: 18px !important;
+    padding: 15px;
     font-weight: 800;
     transition: all 0.2s ease;
+    height: 55px;
 }
 .add-btn:hover{
     background-color: #3d96f0 !important;
-    font-size: 18px !important;
 }
 .market-hero{
     background-color: #fff;
@@ -134,6 +143,7 @@
     margin-left: 0px !important;
     font-weight: 900 !important;
     color: #42A5FF !important;
+    margin-bottom: 5px !important;
     
 }
 .card-body{
@@ -141,10 +151,6 @@
 }
 .nav-btn{
     background-color: aqua !important;
-}
-.btn-group-vertical{
-/*    width: 100% !important;*/
-    margin-top: 30px;
 }
 .explain-btn{
     background-color: #eef4f6;
@@ -158,34 +164,35 @@
     color: #8da2b5;
 }
 .active-btn{
-    width: 135px;
-    background-color: #42A5FF20 !important;
-    color: #42A5FF !important;
+    width: 138px;
+    background-color: #42A5FF !important;
+    color: #fff !important;
     border-radius: 5px;
     z-index: 10;
     border: none; 
     padding: 10px; 
-    font-size: 18px; 
+    font-size: 15px; 
     text-align: left;
     padding-left: 13px;
     cursor: pointer;
     margin-left: 10px;
 /*    margin-right: 15px;*/
     margin-bottom: 10px;
+/*    box-shadow: 0 3px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);*/
 }
 .inactive-btn{
-    width: 135px;
+    width: 138px;
     background-color: #fff !important;
     color: #8da2b5 !important;
-    border-top: 1px solid #fff!important;
-    border-right: 1px solid #fff!important;
-    border-bottom: 1px solid #fff!important;
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
 /*    border-radius: 0px 10px 10px 0px !important;*/
 /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;*/
     text-align: left !important;
     z-index: 10;
     padding: 10px;
-    font-size: 18px;
+    font-size: 15px;
     padding-left: 13px;
     border-left: none;
     cursor: pointer;
@@ -202,20 +209,23 @@
 .inactive-btn:active{
     border: none !important;
 }
+.active-btn:active{
+    border: none !important;
+}
 .creator-name{
     color: #95A6BD !important;
 }
 .nonhover-btn{
     width: 100%;
     border-radius: 0px 0px 10px 10px;
-    background-color: #F5F5F5 !important;
+    background-color: #F5F5F580 !important;
     border-bottom: #F5F5F5 !important;
     border-left: #F5F5F5 !important;
     border-right: #F5F5F5 !important;
     border-top: 1px solid #E3E3E3 !important;
     color: #bbb !important;
-    font-weight: 900;
-    padding: 10px;
+/*    font-weight: 900;*/
+    padding: 15px;
 }
 .heavy{
     font-weight: 800;
@@ -225,6 +235,21 @@
 }
 .creator-txt{
     color: aquamarine !important;
+}
+.big-blue{
+    font-size: 40px;
+    color: #42A5FF;
+    font-weight: 600;
+}
+.description{
+    text-align: left;
+    color: #2b3950;
+    line-height: 30px;
+    font-size: 14px;
+}
+.sub-head{
+    font-size: 18px;
+    color: #8da2b5;
 }
 .hero-btn{
     width: 100px;
@@ -296,4 +321,21 @@
         width: calc(100%/2);
     }
 }
-
+.card-icon-2{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0px 1px 4px rgba(14,30,37,.12) !important;
+    margin-top: -90px;
+}
+.module-page-card {
+    height: auto;
+/*    overflow: auto;*/
+    white-space: pre-line;
+    width: 700px;
+    background-color: #fff;
+    border-radius: 8px !important;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+}

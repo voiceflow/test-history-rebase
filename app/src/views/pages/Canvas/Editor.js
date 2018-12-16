@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
+import Interaction from './Editors/Interaction';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
 import Variable from './Editors/Variable';
@@ -26,6 +27,8 @@ import {
     DropdownItem
 } from 'reactstrap';
 
+import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
+
 class Editor extends Component {
     constructor(props) {
         super(props)
@@ -35,7 +38,8 @@ class Editor extends Component {
             voices: [],
             templates: [],
             permission_options: [],
-            dropdownOpen: false,
+            slot_types: SLOT_TYPES,
+            built_ins: BUILT_IN_INTENTS,
             modal: false,
             expanded: false
         }
@@ -120,7 +124,7 @@ class Editor extends Component {
     }
 
     BlockViewer() {
-        let variables = this.props.global_variables.concat(this.props.variables);
+        let variables = this.props.global_variables.concat(this.props.variables)
 
         switch(this.state.node.extras.type) {
             case 'story':
@@ -132,6 +136,13 @@ class Editor extends Component {
                         voices={this.state.voices} 
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
+                    />
+            case 'interaction':
+                return <Interaction 
+                    node={this.state.node} 
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
+                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
                     />
             case 'combine':
             case 'line':
@@ -215,7 +226,8 @@ class Editor extends Component {
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
-                />);
+                    onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
+                    />);
         }
     }
 
@@ -235,7 +247,6 @@ class Editor extends Component {
     // }
 
     render() {
-
         const type = this.state.node ? this.state.node.extras.type : null;
         // <Tooltip
         //     position="bottom"
@@ -251,7 +262,11 @@ class Editor extends Component {
         // >
 
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} onClick={this.props.onClick}>
+            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} 
+                onFocus={this.props.unfocus}
+                onMouseDown={this.props.unfocus}
+                onKeyDown={this.props.unfocus}
+            >
                 {type ?
                     <div className="controls" key={this.state.node.id}>
                         <div className="top">
@@ -296,7 +311,7 @@ class Editor extends Component {
                         </div>
                         <div id="editor-section">
                             {this.renderTitle()}
-                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><h1 className="loader"></h1></div>}
+                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
                             {this.state.expanded &&
                                 <React.Fragment>
                                     <Modal 

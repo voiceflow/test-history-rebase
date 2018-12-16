@@ -101,12 +101,12 @@ class Variables extends PureComponent {
                     <FormGroup className="mb-0">
                         <Label>Add New Global Variable</Label>
                         <InputGroup>
-                            <Input name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16"/>
+                            <Input className="form-control-border left" name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
                             <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                 </form>
-                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                <h1 className="down-arrow"><i className="far fa-long-arrow-alt-down"></i></h1>
                 <div>
                     <Label>Global Variables</Label>
                     <div className="variables">
@@ -129,12 +129,12 @@ class Variables extends PureComponent {
                     <FormGroup className="mb-0">
                         <Label>Add New Local Variable</Label>
                         <InputGroup>
-                            <Input name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16"/>
+                            <Input className="form-control-border left"  name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
                             <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                 </form>
-                <h1 className="down-arrow"><i className="fas fa-arrow-down"></i></h1>
+                <h1 className="down-arrow"><i class="far fa-long-arrow-alt-down"></i></h1>
                 <div>
                     <Label>Local Variables</Label>
                     <div className="variables">

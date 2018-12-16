@@ -386,7 +386,7 @@ const copyDiagram = (req, res) => {
     });
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents=(new Set()), used_choices=(new Set()), intents, slots) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices, intents, slots) => new Promise((resolve) => {
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': diagram_id}
@@ -650,7 +650,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         let result
                         try{
                             // console.log('going in', node.extras.diagram_id);
-                            let new_options = options
+                            // let new_options = options
                             // Reset diagram id for sub flows in modules
                             // if(type === 'market'){
                             //     subflow_diagram_id = options.version + '_' + node.extras.diagram_id
@@ -1005,7 +1005,9 @@ const publish = (req, res) => {
             })
         }
 
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, undefined, undefined, intents, slots);
+        let used_intents = new Set()
+        let used_choices = new Set()
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots);
 
         used_intents = [...used_intents]
         used_choices = [...used_choices]
@@ -1042,7 +1044,9 @@ const publishTest = async (req, res) => {
         })
     }
 
-    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', undefined, undefined, undefined, undefined, undefined, undefined, intents, slots)
+    let used_intents = new Set()
+    let used_choices = new Set()
+    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots)
 
     res.sendStatus(status)
 }

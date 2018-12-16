@@ -147,10 +147,9 @@ class Interaction extends Component {
         }
     }
 
-    handleChoicesChange(choices, choices_open) {
+    handleChoicesChange(choices) {
         const node = this.state.node
         node.extras.choices = choices
-        node.extras.choices_open = choices_open
 
         this.setState({
             node: node
@@ -159,14 +158,10 @@ class Interaction extends Component {
     }
 
     handleAddChoice() {
-        const node = this.state.node;
-        const choices = node.extras.choices;
-        const choices_open = node.extras.choices_open
+        const node = this.state.node
+        const choices = node.extras.choices
 
-        const firstEmpty = this._findFirstEmptyIndex(choices.map(o => o.key))
-
-        choices.push({intent: null, mappings: [], key: firstEmpty})
-        choices_open.push(true);
+        choices.push({intent: null, mappings: [], key: randomstring.generate(12), open: true})
 
         let test = node.addOutPort(node.extras.choices.length);
         test.setMaximumLinks(1);
@@ -180,8 +175,7 @@ class Interaction extends Component {
 
     handleRemoveChoice(e, i) {
         const node = this.state.node;
-        const choices = node.extras.choices;
-        const choices_open = node.extras.choices_open;
+        const choices = node.extras.choices
 
         for (var name in node.getPorts()) {
             var port = node.getPort(name)
@@ -192,8 +186,7 @@ class Interaction extends Component {
             }
         }
 
-        choices.splice(i, 1);
-        choices_open.splice(i, 1);
+        choices.splice(i, 1)
 
         this.setState({
             node: node,
@@ -217,7 +210,6 @@ class Interaction extends Component {
                     </label>
                     <ChoiceDropdownInputs
                         choices={this.state.node.extras.choices}
-                        open = {this.state.node.extras.choices_open}
                         onAdd={this.handleAddChoice}
                         onRemove={this.handleRemoveChoice}
                         onChange={this.handleChoicesChange}

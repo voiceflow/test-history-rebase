@@ -386,7 +386,7 @@ const copyDiagram = (req, res) => {
     });
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices, intents, slots) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents=(new Set()), used_choices=(new Set()), intents, slots) => new Promise((resolve) => {
     let params = {
         TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': diagram_id}
@@ -1004,9 +1004,8 @@ const publish = (req, res) => {
                 }
             })
         }
-        let used_intents = new Set()
-        let used_choices = new Set()
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots);
+
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, undefined, undefined, intents, slots);
 
         used_intents = [...used_intents]
         used_choices = [...used_choices]
@@ -1026,7 +1025,24 @@ const publishTest = async (req, res) => {
         return;
     }
 
-    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST')
+    let intents = {}
+    let slots = {}
+    if(Array.isArray(req.body.intents)){
+        req.body.intents.forEach(intent => {
+            if(intent.key){
+                intents[intent.key] = intent.name
+            }
+        })
+    }
+    if(Array.isArray(req.body.slots)){
+        req.body.slots.forEach(slot => {
+            if(slot.key){
+                slots[slot.key] = slot.name
+            }
+        })
+    }
+
+    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', undefined, undefined, undefined, undefined, undefined, undefined, intents, slots)
 
     res.sendStatus(status)
 }

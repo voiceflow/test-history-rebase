@@ -887,9 +887,9 @@
 } .MenuItem.choice>.MenuIcon {
     color: #62D6A8 !important;
 }
-.App .Menu #sidebar .MenuItem.interaction:hover {
+.App .Menu #sidebar .MenuItem.intent:hover {
     background-color: #F4F6F7;
-} .MenuItem.interaction>.MenuIcon {
+} .MenuItem.intent>.MenuIcon {
     color: #8699ff !important;
 }
 .App .Menu #sidebar .MenuItem.mail:hover {
@@ -1148,7 +1148,7 @@
     color: #2b3950 !important;
 }
 
-.input .textarea .text-to-voice .interaction-block .solid-border{
+.input .textarea .text-to-voice .intent-block .solid-border{
 /*    background-color: #FFF !important;*/
     color: aqua !important;
 }
@@ -1251,7 +1251,7 @@ label {
     border-color: #62D6A8 !important;
 }
 
-.srd-default-node.interaction {
+.srd-default-node.intent {
     border-top: 6px solid #8699ff !important;
     border-color: #8699ff !important;
 }
@@ -1585,7 +1585,7 @@ button.close:hover{
     color: #62D6A8;
 }
 
-.block.interaction {
+.block.intent {
     background-color: #8699ff50;
     color: #8699ff;
 }
@@ -1752,7 +1752,7 @@ button.close:hover{
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
 }
 
-.interaction-block {
+.intent-block {
     width: 100%;
     border-radius: 5px;
     padding: 8px 15px;

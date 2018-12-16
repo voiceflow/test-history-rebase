@@ -119,7 +119,7 @@ const getDiagrams = (req, res) => {
             console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             data.Items.forEach(function(item) {
-               items.push(item);
+               items.push(item)
             });
 
             // continue scanning if we have more items
@@ -514,7 +514,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         })
                     }
 
-                } else if (node.extras.type === 'interaction') {
+                } else if (node.extras.type === 'intent') {
                     
                     let interactions = []
                     node.extras.choices.forEach(choice => {

@@ -137,7 +137,7 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
-            case 'interaction':
+            case 'intent':
                 return <Interaction 
                     node={this.state.node} 
                     onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 

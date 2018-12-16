@@ -37,7 +37,7 @@ class SlotInputs extends Component {
         return (
             <div className="w-100">
             <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input"></Input>
+                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>
             </div>
                 {Array.isArray(this.props.slots) ? this.props.slots.map((slot, i) => {
                     if (slot.name.indexOf(this.state.search_value) !== -1) {

@@ -66,7 +66,7 @@ class IntentInputs extends Component {
         return (
             <div className="w-100">
             <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents"></Input>
+                <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>
             </div>
                 {Array.isArray(this.props.intents) ? this.props.intents.map((intent, i) => {
                     if (intent.name.indexOf(this.state.search_value) !== -1) {

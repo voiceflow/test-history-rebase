@@ -10,7 +10,6 @@ class ChoiceDropdownInputs extends Component {
         super(props)
         this.state = {
             choices: this.props.choices,
-            open: this.props.open,
             intents: _.cloneDeep(this.props.intents)
         }
     }
@@ -51,17 +50,14 @@ class ChoiceDropdownInputs extends Component {
 
         return {
             choices: new_choices,
-            open: props.open,
             intents: _.cloneDeep(props.intents)
         }
     }
 
     toggleCollapse(i){
-        const open = this.state.open;
-        open[i] = !open[i]
-        this.setState({
-            open: open
-        }, () => {this.props.onChange(this.state.choices, open)});
+        let choices = this.state.choices
+        choices[i].open = !choices[i].open
+        this.props.onChange(this.state.choices)
     }
 
     updateChoice(target, i) {
@@ -87,7 +83,7 @@ class ChoiceDropdownInputs extends Component {
         })
         this.setState({
             choices: choices
-        }, () => {this.props.onChange(choices, this.state.open)})
+        }, () => {this.props.onChange(choices)})
     }
 
     handleAddMap(choice_i) {
@@ -99,7 +95,7 @@ class ChoiceDropdownInputs extends Component {
 
         this.setState({
             choices: choices
-        }, () => {this.props.onChange(choices, this.state.open)});
+        }, () => {this.props.onChange(choices)});
     }
 
     handleRemoveMap(choice_i, i) {
@@ -109,7 +105,7 @@ class ChoiceDropdownInputs extends Component {
 
         this.setState({
             choices: choices
-        }, () => {this.props.onChange(choices, this.state.open)});
+        }, () => {this.props.onChange(choices)});
     }
 
     handleSelection(choice_i, i, arg, value) {
@@ -118,7 +114,7 @@ class ChoiceDropdownInputs extends Component {
             choices[choice_i].mappings[i][arg] = value
             this.setState({
                 choices: choices
-            },  () => {this.props.onChange(choices, this.state.open)})
+            },  () => {this.props.onChange(choices)})
         }
     }
 
@@ -145,13 +141,13 @@ class ChoiceDropdownInputs extends Component {
                     }
 
                     return (
-                        <div className="interaction-block mb-3" key={i}>
+                        <div className="interaction-block mb-3" key={choice.key}>
                             <div className="interaction-title ml-1 mt-1">
-                                <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
+                                <span onClick={() => {this.toggleCollapse(i)}}>{choice.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
                                 <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                             </div>
                             {!!choice.invalid && <Alert color="danger" className="mt-2 mb-1 py-1 text-center"><i className="fas fa-exclamation-square"/> This intent doesn't exist</Alert>}
-                            <Collapse isOpen={this.state.open[i]}>
+                            <Collapse isOpen={choice.open}>
                             <div className="super-center flex-hard choice-select">
                                 <Select
                                     placeholder="Select Intent"

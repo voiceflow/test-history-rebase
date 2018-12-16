@@ -43,7 +43,7 @@ class SlotInputs extends Component {
                     if (slot.name.indexOf(this.state.search_value) !== -1) {
                         return (
                             <SlotInput
-                                key={slot.name}
+                                key={slot.key}
                                 slot={slot}
                                 slot_types={this.props.slot_types}
                                 nameExists={this.checkNames}

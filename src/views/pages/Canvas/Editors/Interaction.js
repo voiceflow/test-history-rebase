@@ -98,30 +98,33 @@ class Interaction extends Component {
             name = 'new_' + name
         }
 
-        slots.push({name: name, inputs: [], type: '', key: randomstring.generate(12)})
+        slots.push({name: name, inputs: [], type: '', key: randomstring.generate(12), open: true})
 
         this.setState({
             slots: slots,
         }, () => {this.props.onSlot(slots)});
     }
 
-    handleRemoveIntent(e, i) {
+    handleRemoveIntent(key) {
         this.setState({
             confirm: {
                 text: <Alert color="warning" className="mb-0">Make sure this Intent isn't used in any interaction or command blocks<br/>-<br/>Deleting may cause unexpected behavior</Alert>,
                 confirm: () => {
                     const intents = this.state.intents
-                    intents.splice(i, 1)
-                    this.setState({
-                        confirm: null,
-                        intents: intents,
-                     }, () => {this.props.onIntent(intents)})
+                    let i = intents.findIndex(i => i.key === key)
+                    if(i !== -1){
+                        intents.splice(i, 1)
+                        this.setState({
+                            confirm: null,
+                            intents: intents,
+                         }, () => {this.props.onIntent(intents)})
+                    }
                 }
             }
         })
     }
 
-    handleRemoveSlot(e, i) {
+    handleRemoveSlot(key) {
         const slots = this.state.slots
         const used_slots = new Set();
         const slot_names = {}
@@ -134,16 +137,19 @@ class Interaction extends Component {
             }))
         })
 
-        if (used_slots.has(slots[i].key)) {
-            const error = `Cannot remove slot as it is currently being used in an intent (${slot_names[slots[i].key]})!`
+        if (used_slots.has(key)) {
+            const error = `Cannot remove slot as it is currently being used in an intent (${slot_names[key]})!`
             this.setState({
                 error: error
             })
         } else {
-            slots.splice(i, 1);
-            this.setState({
-                slots: slots
-            }, () => {this.props.onSlot(slots)});
+            let i = slots.findIndex(i => i.key === key)
+            if(i !== -1){
+                slots.splice(i, 1);
+                this.setState({
+                    slots: slots
+                }, () => {this.props.onSlot(slots)});
+            }
         }
     }
 
@@ -173,7 +179,7 @@ class Interaction extends Component {
         this.props.repaint()
     }
 
-    handleRemoveChoice(e, i) {
+    handleRemoveChoice(i) {
         const node = this.state.node;
         const choices = node.extras.choices
 

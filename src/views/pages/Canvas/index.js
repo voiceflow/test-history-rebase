@@ -47,7 +47,7 @@ const generateID = () => {
 
 const _getUtterancesWithSlotNames = (utterances, slots) => {
 
-	const re = /(\{\{\[[^}{[\]]+]\.(\d+)\}\})/g;
+	const re = /(\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
 	let m;
 
 	const utterance_text = utterances.map(e => e.text)
@@ -945,7 +945,10 @@ class Canvas extends Component {
                         testing_modal: false
                     })
                 }else{
-                    axios.post(`/diagram/${diagram_id}/test/publish`)
+                    axios.post(`/diagram/${diagram_id}/test/publish`,{
+                        intents: this.state.skill.intents,
+                        slots: this.state.skill.slots
+                    })
                     .then(this.runTest)
                     .catch(err => {
                         console.log(err.response)

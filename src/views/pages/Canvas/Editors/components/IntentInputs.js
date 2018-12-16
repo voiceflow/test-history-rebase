@@ -63,12 +63,13 @@ class IntentInputs extends Component {
     }
 
     render() {
-
+        let length = 0
         let reverse
         if(Array.isArray(this.props.intents)){
+            length = this.props.intents.length
             reverse = []
             var i
-            for(i=this.props.intents.length-1; i >= 0 ; i--){
+            for(i=length-1; i >= 0 ; i--){
                 let intent = this.props.intents[i]
 
                 if (intent.name.indexOf(this.state.search_value) !== -1) {
@@ -88,12 +89,8 @@ class IntentInputs extends Component {
 
         return (
             <div className="w-100">
-            <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>
-            </div>
-                <div>
-                    <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>
-                </div>
+                {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>}
+                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>}
                 {reverse}
             </div>
         );

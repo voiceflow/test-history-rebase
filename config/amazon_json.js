@@ -68,10 +68,10 @@ const interactionModel = (req) => {
 	
 	const intents_for_amazon = []
 	const entered_intents = new Set()
-
+	console.log(used_intents)
 	used_intents.forEach(intent_key => {
-		if(!intent_key) return
-		
+		if(typeof intent_key !== 'string') return
+
 		let intent
 		if(intent_key.startsWith('AMAZON.')){
 			intent = _.find(BUILT_IN_INTENTS, {name: intent_key})

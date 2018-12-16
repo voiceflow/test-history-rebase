@@ -197,9 +197,6 @@ class ActionGroup extends PureComponent {
     }
 
     onDelete(){
-        window.analytics.track('Deleted Skill', {
-            "userId": window.user_detail
-        });
         axios.delete(`/skill/${this.props.skill.skill_id}`)
         .then(() => {
             this.props.history.push('/dashboard');

@@ -16,6 +16,7 @@ class ChoiceDropdownInputs extends Component {
 
     static getDerivedStateFromProps(props, current_state) {
         const new_choices = props.choices.map(choice_obj => {
+            delete choice_obj.invalid
             if (!choice_obj.intent || choice_obj.intent.built_in) {
                 return choice_obj
             }
@@ -25,7 +26,6 @@ class ChoiceDropdownInputs extends Component {
 
             const intent = _.find(props.intents, { key: key })
             if (intent) {
-                delete choice_obj.invalid
                 choice_obj.intent = {
                     label: intent.name,
                     value: key,

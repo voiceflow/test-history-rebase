@@ -254,7 +254,11 @@ class Menu extends PureComponent {
 
     render() {
         return (
-            <div className="Menu" onClick={this.props.onClick}>
+            <div className="Menu"
+                onFocus={this.props.unfocus}
+                onMouseDown={this.props.unfocus}
+                onKeyDown={this.props.unfocus}
+            >
                 <Confirm confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <div className='toolbar'>
                     <div className="top-down">

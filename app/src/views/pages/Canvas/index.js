@@ -661,6 +661,9 @@ class Canvas extends Component {
                     }
                 }
             })
+            if(diagram_json.nodes.length === 0){
+                diagram_json = new_template
+            }
             engine.setSuperSelect(null)
             model.deSerializeDiagram(diagram_json, engine)
             model.addListener({ nodesUpdated: this.unsave })

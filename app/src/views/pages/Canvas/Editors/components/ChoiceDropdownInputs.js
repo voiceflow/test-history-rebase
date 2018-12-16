@@ -25,12 +25,24 @@ class ChoiceDropdownInputs extends Component {
             if(!key && key!==0) return null
 
             const intent = _.find(props.intents, { key: key })
+            
             if (intent) {
                 choice_obj.intent = {
                     label: intent.name,
                     value: key,
                     key: key,
                     inputs: intent.inputs
+                }
+                if(Array.isArray(choice_obj.mappings)){
+                    // update labels TODO make this whole thing more efficient
+                    choice_obj.mappings.forEach(mapping => {
+                        if(mapping.slot && mapping.slot.key){
+                            let slot = _.find(props.slots, {key: mapping.slot.key})
+                            if(slot){
+                                mapping.slot.label = '['+slot.name+']'
+                            }
+                        }
+                    })
                 }
                 return choice_obj
             }else{

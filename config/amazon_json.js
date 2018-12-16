@@ -71,7 +71,7 @@ const interactionModel = (req) => {
 
 	used_intents.forEach(intent_key => {
 		let intent
-		if(typeof intent_key === 'string'){
+		if(intent_key.startsWith('AMAZON.')){
 			intent = _.find(BUILT_IN_INTENTS, {name: intent_key})
 			intent.built_in = true
 		}else{

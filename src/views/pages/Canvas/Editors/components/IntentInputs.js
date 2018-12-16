@@ -63,30 +63,38 @@ class IntentInputs extends Component {
     }
 
     render() {
+
+        let reverse
+        if(Array.isArray(this.props.intents)){
+            reverse = []
+            var i
+            for(i=this.props.intents.length-1; i >= 0 ; i--){
+                let intent = this.props.intents[i]
+
+                if (intent.name.indexOf(this.state.search_value) !== -1) {
+                    reverse.push(<IntentInput 
+                        key={intent.key}
+                        slots={this.props.slots}
+                        intent={intent}
+                        onError={this.props.onError}
+                        utteranceExists={this.checkUtterances}
+                        nameExists={this.checkName}
+                        removeIntent={this.props.onRemove}
+                        update={this.props.update}
+                    />)
+                }
+            }
+        }
+
         return (
             <div className="w-100">
             <div>
                 <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>
             </div>
-                {Array.isArray(this.props.intents) ? this.props.intents.map((intent, i) => {
-                    if (intent.name.indexOf(this.state.search_value) !== -1) {
-                        return <IntentInput 
-                            key={intent.key}
-                            slots={this.props.slots}
-                            intent={intent}
-                            onError={this.props.onError}
-                            utteranceExists={this.checkUtterances}
-                            nameExists={this.checkName}
-                            removeIntent={(e) => this.props.onRemove(e, i)}
-                            update={this.props.update}
-                        />
-                    }else{
-                        return null
-                    }
-                }) : null}
                 <div>
-                    <button className="btn btn-clear btn-lg btn-block mt-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>
+                    <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>
                 </div>
+                {reverse}
             </div>
         );
     }

@@ -151,7 +151,7 @@ class SlotInput extends Component {
                             className="interaction-name-input"
                         />
                     </Tooltip>                                
-                    <button className="close" onClick={this.props.removeSlot}>&times;</button>
+                    <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
                     <div className="super-center flex-hard choice-select">

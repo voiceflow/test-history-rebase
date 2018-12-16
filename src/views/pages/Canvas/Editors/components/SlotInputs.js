@@ -34,31 +34,37 @@ class SlotInputs extends Component {
     }
 
     render() {
+
+        let reverse
+        if(Array.isArray(this.props.slots)){
+            reverse = []
+            let i
+            for(i=this.props.slots.length-1; i >= 0 ; i--){
+                let slot = this.props.slots[i]
+
+                if (slot.name.indexOf(this.state.search_value) !== -1) {
+                    reverse.push(<SlotInput
+                        key={slot.key}
+                        slot={slot}
+                        slot_types={this.props.slot_types}
+                        nameExists={this.checkNames}
+                        update={this.props.update}
+                        onError={this.props.onError}
+                        removeSlot={this.props.onRemove}
+                    />)
+                }
+            }
+        }
+
         return (
             <div className="w-100">
             <div>
                 <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>
             </div>
-                {Array.isArray(this.props.slots) ? this.props.slots.map((slot, i) => {
-                    if (slot.name.indexOf(this.state.search_value) !== -1) {
-                        return (
-                            <SlotInput
-                                key={slot.key}
-                                slot={slot}
-                                slot_types={this.props.slot_types}
-                                nameExists={this.checkNames}
-                                update={this.props.update}
-                                onError={this.props.onError}
-                                removeSlot={(e) => this.props.onRemove(e, i)}
-                            />
-                        )
-                    } else {
-                        return null
-                    }
-                }) : null }
                 <div>
-                    <button className="btn btn-lg btn-clear btn-block mt-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Slot</button>
+                    <button className="btn btn-lg btn-clear btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Slot</button>
                 </div>
+                {reverse}
             </div>
         );
     }

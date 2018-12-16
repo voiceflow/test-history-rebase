@@ -209,7 +209,7 @@ class IntentInput extends Component {
                             className="interaction-name-input"
                         />
                     </Tooltip>
-                    <button className="close" onClick={this.props.removeIntent}>&times;</button>
+                    <button className="close" onClick={()=>this.props.removeIntent(this.props.intent.key)}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.intent.open}>
                     <div>

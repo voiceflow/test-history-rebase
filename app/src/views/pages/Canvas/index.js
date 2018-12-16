@@ -214,9 +214,7 @@ class Canvas extends Component {
                 skill_id: skill_id,
                 name: '...',
                 intents: [],
-                intents_open: [],
-                slots: [],
-                slots_open: []
+                slots: []
             },
             diagrams: [],
             loading_diagram: !newSkill,
@@ -599,9 +597,7 @@ class Canvas extends Component {
             const save_skill_intents = new Promise((resolve, reject) => {
                 axios.patch('/skill/' + s.skill_id + '?intents=true', {
                     intents: JSON.stringify(s.intents),
-                    intents_open: JSON.stringify(s.intents_open),
-                    slots: JSON.stringify(s.slots),
-                    slots_open: JSON.stringify(s.slots_open)
+                    slots: JSON.stringify(s.slots)
                 })
                 .then(res => {
                     resolve()
@@ -821,20 +817,18 @@ class Canvas extends Component {
         })
     }
 
-    setSlots(slots, slots_open) {
+    setSlots(slots) {
         const skill = this.state.skill
         skill.slots = slots
-        skill.slots_open = slots_open ? slots_open : skill.slots_open
         this.setState({
             skill: skill,
             saved: false
         });
     }
 
-    setIntents(intents, intents_open) {
+    setIntents(intents) {
         const skill = this.state.skill
         skill.intents = intents
-        skill.intents_open = intents_open ? intents_open : skill.intents_open
         this.setState({
             skill: skill,
             saved: false
@@ -989,9 +983,7 @@ class Canvas extends Component {
                     diagram: diagram_id,
                     locales: ["en-US"],
                     intents: [],
-                    intents_open: [],
-                    slots: [],
-                    slots_open: []
+                    slots: []
                 },
                 newSkill: 0
             }, () => {
@@ -1344,7 +1336,7 @@ class Canvas extends Component {
                     />
                 : null}
                 <Menu 
-                    onClick={this.onDiagramUnfocus}
+                    unfocus={this.onDiagramUnfocus}
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     current={this.diagram_id}
@@ -1390,7 +1382,7 @@ class Canvas extends Component {
                     </div>
                 </div>}
                 <Editor
-                    onClick={this.onDiagramUnfocus}
+                    unfocus={this.onDiagramUnfocus}
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}
@@ -1406,10 +1398,8 @@ class Canvas extends Component {
                     user_modules={this.state.user_modules}
                     copyNode={this.copyNode}
                     intents={this.state.skill.intents}
-                    intents_open={this.state.skill.intents_open}
                     onIntent={this.setIntents}
                     slots={this.state.skill.slots}
-                    slots_open={this.state.skill.slots_open}
                     onSlot={this.setSlots}
                 />
                 <div

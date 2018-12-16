@@ -508,7 +508,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     if (inputs && used_choices) {
                         node.extras.inputs.forEach(input => {
-                            used_choices.add(input)
+                            if(input.trim() !== ''){
+                                used_choices.add(input)
+                            }
                         })
                     }
 

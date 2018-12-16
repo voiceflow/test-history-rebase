@@ -79,7 +79,8 @@ const interactionModel = (req) => {
 		}
 
 		if (!intent) {
-			throw(`Intent Key ${intent_key} not found!`)
+			return
+			// throw(`Intent Key ${intent_key} not found!`)
 		}
 
 		const name = _formatName(intent.name)

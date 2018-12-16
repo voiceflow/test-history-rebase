@@ -14,7 +14,7 @@ class Interaction extends Component {
         
         const formatted_built_ins = this.props.built_ins.map( intent => {
             return {
-                // built_in: true,
+                built_in: true,
                 name: intent.name,
                 key: intent.name,
                 inputs: [{

@@ -298,7 +298,7 @@ class TestModal extends React.Component {
         data.play.action = 'NEXT';
       }
     }
-    console.log(data)
+
     axios.post(test_endpoint, data)
     .then(async res => {
       res = res.data

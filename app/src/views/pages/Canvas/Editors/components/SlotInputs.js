@@ -34,9 +34,10 @@ class SlotInputs extends Component {
     }
 
     render() {
-
+        let length = 0
         let reverse
         if(Array.isArray(this.props.slots)){
+            length = this.props.slots.length
             reverse = []
             let i
             for(i=this.props.slots.length-1; i >= 0 ; i--){
@@ -58,12 +59,8 @@ class SlotInputs extends Component {
 
         return (
             <div className="w-100">
-            <div>
-                <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>
-            </div>
-                <div>
-                    <button className="btn btn-lg btn-clear btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Slot</button>
-                </div>
+                {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>}
+                {length < 251 && <button className="btn btn-lg btn-clear btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Slot</button>}
                 {reverse}
             </div>
         );

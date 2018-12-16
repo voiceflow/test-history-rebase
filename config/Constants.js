@@ -1,3 +1,5 @@
+exports.VALID_UTTERANCES = 'a-zA-Z\xC0-\xFF\u0100-\u017F\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFF9F\u4E00-\u9FAF\u3400-\u4DBF._\'\\- \\[\\]'
+
 exports.DEFAULT_INTENTS = [
   {
     "name": "AMAZON.CancelIntent",
@@ -1183,4 +1185,117 @@ exports.BUILT_IN_INTENTS = [
 
       ]
     } 
+]
+
+exports.CATCHALL_SLOT_VALUES = [
+  {
+    "name": {
+      "value": "one"
+    }
+  },
+  {
+    "name": {
+      "value": "two"
+    }
+  },
+  {
+    "name": {
+      "value": "three"
+    }
+  },
+  {
+    "name": {
+      "value": "1"
+    }
+  },
+  {
+    "name": {
+      "value": "2"
+    }
+  },
+  {
+    "name": {
+      "value": "3"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "hey hey hey hey hey hey hey hey hey hey hey hey hey"
+    }
+  },
+  {
+    "name": {
+      "value": "Quick brown fox jumps over the lazy dog"
+    }
+  },
+  {
+    "name": {
+      "value": "Nymphs blitz quick vex dwarf jog"
+    }
+  },
+  {
+    "name": {
+      "value": "Cwm fjord veg balks nth pyx quiz"
+    }
+  },
+  {
+    "name": {
+      "value": "supercalifragilisticexpialidocious"
+    }
+  }
 ]

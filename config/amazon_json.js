@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS, DEFAULT_INTENTS} = require('./Constants')
+const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
 
 const _formatName = (name) => {
 	let formatted_name = name.replace(' ', '_')
@@ -70,6 +70,8 @@ const interactionModel = (req) => {
 	const entered_intents = new Set()
 
 	used_intents.forEach(intent_key => {
+		if(!intent_key) return
+		
 		let intent
 		if(intent_key.startsWith('AMAZON.')){
 			intent = _.find(BUILT_IN_INTENTS, {name: intent_key})
@@ -112,125 +114,22 @@ const interactionModel = (req) => {
 		}
 	})
 
-	const content_slot_values = [
-		{
-			"name": {
-				"value": "one"
-			}
-		},
-		{
-			"name": {
-				"value": "two"
-			}
-		},
-		{
-			"name": {
-				"value": "three"
-			}
-		},
-		{
-			"name": {
-				"value": "1"
-			}
-		},
-		{
-			"name": {
-				"value": "2"
-			}
-		},
-		{
-			"name": {
-				"value": "3"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "hey hey hey hey hey hey hey hey hey hey hey hey hey"
-			}
-		},
-		{
-			"name": {
-				"value": "Quick brown fox jumps over the lazy dog"
-			}
-		},
-		{
-			"name": {
-				"value": "Nymphs blitz quick vex dwarf jog"
-			}
-		},
-		{
-			"name": {
-				"value": "Cwm fjord veg balks nth pyx quiz"
-			}
-		},
-		{
-			"name": {
-				"value": "supercalifragilisticexpialidocious"
-			}
-		}
-	]
+	const content_slot_values = []
 
+	
 	used_choices.forEach(choice => {
+		let reg = new RegExp('[^' + VALID_UTTERANCES + '|]')
+		let safe_choice = choice.replace(reg, ' ')
 		content_slot_values.push({
 			name: {
-				value: choice
+				value: safe_choice
 			}
 		})
+	})
+
+	// Add random catchall values
+	CATCHALL_SLOT_VALUES.forEach(val => {
+		content_slot_values.push(val)
 	})
 
 	const slot_types = [

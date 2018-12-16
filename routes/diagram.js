@@ -1031,7 +1031,7 @@ const publishTest = async (req, res) => {
     let slots = {}
     if(Array.isArray(req.body.intents)){
         req.body.intents.forEach(intent => {
-            if(intent.key){
+            if(intent.key && intent.inputs && intent.inputs.length !== 0){
                 intents[intent.key] = intent.name
             }
         })

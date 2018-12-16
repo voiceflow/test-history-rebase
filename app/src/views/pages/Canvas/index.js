@@ -59,9 +59,9 @@ const _getUtterancesWithSlotNames = (utterances, slots) => {
 			if (m) {
 				const replace = m[1]
 				const key = m[2]
-				const slot =_.find(slots, { key: +key })
+				const slot =_.find(slots, { key: key })
 				if (slot) {
-					let slot_name = _.find(slots, { key: +key }).name
+					let slot_name = _.find(slots, { key: key }).name
 					new_input = new_input.replace(replace, `{${slot_name}}`)
 				} else {
 					return new_input

@@ -32,7 +32,7 @@ class IntentInput extends Component {
     }
 
     _getSlotKeys(input) {
-      const re = /\{\{\[[^}{[\]]+]\.(\d+)\}\}/g;
+      const re = /\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\}/g;
       let m;
       const slot_keys = new Set()
 
@@ -40,7 +40,7 @@ class IntentInput extends Component {
           m = re.exec(input)
           if (m) {
             const key = m[1]
-            slot_keys.add(+key)
+            slot_keys.add(key)
           }
       } while (m);
       

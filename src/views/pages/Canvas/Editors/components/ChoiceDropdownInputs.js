@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import './ChoiceDropdownInputs.css'
-import { Collapse } from 'reactstrap'
+import { Collapse, Alert } from 'reactstrap'
 import Select from 'react-select'
 import SlotMappings from '../../Editors/components/SlotMappings' 
 
@@ -8,8 +7,7 @@ const _ = require('lodash')
 
 class ChoiceDropdownInputs extends Component {
     constructor(props) {
-        super(props);
-
+        super(props)
         this.state = {
             choices: this.props.choices,
             open: this.props.open,
@@ -28,24 +26,28 @@ class ChoiceDropdownInputs extends Component {
 
             const intent = _.find(props.intents, { key: key })
             if (intent) {
+                delete choice_obj.invalid
                 choice_obj.intent = {
-                label: intent.name,
-                value: key,
-                key: key,
-                inputs: intent.inputs
+                    label: intent.name,
+                    value: key,
+                    key: key,
+                    inputs: intent.inputs
                 }
                 return choice_obj
+            }else{
+                choice_obj.invalid = true
+                choice_obj.intent.inputs = null
+                return choice_obj
             }
-            return null
         })
 
-        if (props.choices.length !== current_state.choices.length) {
-            return {
-                choices: new_choices,
-                open: props.open,
-                intents: _.cloneDeep(props.intents)
-            }
-        }
+        // if (props.choices.length !== current_state.choices.length) {
+        //     return {
+        //         choices: new_choices,
+        //         open: props.open,
+        //         intents: _.cloneDeep(props.intents)
+        //     }
+        // }
 
         return {
             choices: new_choices,
@@ -74,7 +76,8 @@ class ChoiceDropdownInputs extends Component {
             }
         }
 
-        const choices = this.state.choices
+        const choices = this.state.choices        
+        delete choices[i].invalid
         choices[i].intent = target
         choices[i].mappings = choices[i].mappings.map(m => {
             return {
@@ -147,6 +150,7 @@ class ChoiceDropdownInputs extends Component {
                                 <span onClick={() => {this.toggleCollapse(i)}}>{this.state.open[i] ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
                                 <button className="close" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                             </div>
+                            {!!choice.invalid && <Alert color="danger" className="mt-2 mb-1 py-1 text-center"><i className="fas fa-exclamation-square"/> This intent doesn't exist</Alert>}
                             <Collapse isOpen={this.state.open[i]}>
                             <div className="super-center flex-hard choice-select">
                                 <Select

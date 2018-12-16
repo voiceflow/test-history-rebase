@@ -11,7 +11,7 @@ const _formatName = (name) => {
 
 const _getUtterancesWithSlotNames = (utterances, slots) => {
 
-	const re = /(\{\{\[[^\}\{\[\]]+]\.(\d+)\}\})/g;
+	const re = /(\{\{\[[^\}\{\[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
 	let m;
 
 	const utterance_text = utterances.map(e => e.text)
@@ -79,7 +79,8 @@ const interactionModel = (req) => {
 		}
 
 		if (!intent) {
-			throw(`Intent Key ${intent_key} not found!`)
+			return
+			// throw(`Intent Key ${intent_key} not found!`)
 		}
 
 		const name = _formatName(intent.name)

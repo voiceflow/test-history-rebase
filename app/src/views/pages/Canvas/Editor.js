@@ -140,8 +140,10 @@ class Editor extends Component {
             case 'interaction':
                 return <Interaction 
                     node={this.state.node} 
-                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
-                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
+                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
+                    />
             case 'combine':
             case 'line':
             case 'audio': 
@@ -260,7 +262,11 @@ class Editor extends Component {
         // >
 
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} onClick={this.props.onClick}>
+            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} 
+                onFocus={this.props.unfocus}
+                onMouseDown={this.props.unfocus}
+                onKeyDown={this.props.unfocus}
+            >
                 {type ?
                     <div className="controls" key={this.state.node.id}>
                         <div className="top">

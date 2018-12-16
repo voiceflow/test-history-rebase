@@ -1,3 +1,22 @@
+.choice-select {
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.input-select {
+    flex: 1 1;
+    margin-left: 5px;
+}
+
+.map-box {
+    font-size: 12px;
+}
+
+.diagram-title {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .interaction-utterance {
     border-bottom: 1px solid #e9eef3 !important;
     padding: 8px 0px 7px 9px;

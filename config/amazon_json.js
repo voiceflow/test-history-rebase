@@ -11,7 +11,7 @@ const _formatName = (name) => {
 
 const _getUtterancesWithSlotNames = (utterances, slots) => {
 
-	const re = /(\{\{\[[^\}\{\[\]]+]\.(\d+)\}\})/g;
+	const re = /(\{\{\[[^\}\{\[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
 	let m;
 
 	const utterance_text = utterances.map(e => e.text)

@@ -545,7 +545,7 @@ class Canvas extends Component {
                         permissions.add(permission.selected.value)
                     })
                 }
-                else if (node.extras.type === 'interaction') {
+                else if (node.extras.type === 'intent') {
                     node.extras.choices.forEach(choice => {
                         if (choice.intent && !used_intent_names.has(choice.intent.value)) {
                             if (choice.intent.built_in) {
@@ -1119,7 +1119,7 @@ class Canvas extends Component {
                     choices: [],
                     inputs: []
                 };
-            } else if (type === 'interaction') {
+            } else if (type === 'intent') {
                 node.addInPort(' ');
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {

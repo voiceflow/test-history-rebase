@@ -79,7 +79,7 @@ class ChoiceDropdownInputs extends Component {
         // check if this choice is already used
         for(var choice of this.state.choices ){
             if(choice.intent && choice.intent.label === target.label){
-                this.props.onError('This intent has already been used in this interaction block')
+                this.props.onError('This intent has already been used in this intent block')
                 return
             }
         }

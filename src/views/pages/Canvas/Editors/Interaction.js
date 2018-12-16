@@ -108,7 +108,7 @@ class Interaction extends Component {
     handleRemoveIntent(key) {
         this.setState({
             confirm: {
-                text: <Alert color="warning" className="mb-0">Make sure this Intent isn't used in any interaction or command blocks<br/>-<br/>Deleting may cause unexpected behavior</Alert>,
+                text: <Alert color="warning" className="mb-0">Make sure this Intent isn't used in any Command or Intent blocks<br/>-<br/>Deleting may cause unexpected behavior</Alert>,
                 confirm: () => {
                     const intents = this.state.intents
                     let i = intents.findIndex(i => i.key === key)

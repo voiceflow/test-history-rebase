@@ -71,7 +71,7 @@ class IntentInputs extends Component {
                 {Array.isArray(this.props.intents) ? this.props.intents.map((intent, i) => {
                     if (intent.name.indexOf(this.state.search_value) !== -1) {
                         return <IntentInput 
-                            key={intent.name}
+                            key={intent.key}
                             slots={this.props.slots}
                             intent={intent}
                             onError={this.props.onError}

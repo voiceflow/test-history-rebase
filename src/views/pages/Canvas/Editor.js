@@ -19,6 +19,7 @@ import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
+import Onboarding from './Onboarding'
 import {
     Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
@@ -267,6 +268,7 @@ class Editor extends Component {
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
+                {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
                     <div className="controls" key={this.state.node.id}>
                         <div className="top">

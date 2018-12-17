@@ -31,8 +31,6 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 var NLC = require("natural-language-commander")
 const _ = require('lodash')
 
-// import { DiagramWidget } from './SRD/base/widgets/DiagramWidget'
-
 const defaultVariables = ['sessions', 'user_id', 'timestamp']
 const line_color = '#D1D8E2'
 const line_width = 2.5
@@ -169,7 +167,7 @@ class Canvas extends Component {
         }
 
         // ONBOARDING
-        // this.onboarding = localStorage.getItem('onboarding')
+        this.onboarding = localStorage.getItem('onboarding')
 
         if(!this.preview && (!diagram_id || !skill_id)){
             // DEFAULT TEMPLATE FOR CREATING A SKILL
@@ -177,7 +175,7 @@ class Canvas extends Component {
             open = true
 
             let model = new SRD.DiagramModel()
-            let blank = blank_template //this.onboarding ? new_template : blank_template
+            let blank = this.onboarding ? new_template : blank_template
             blank.id = generateID()
 
             model.deSerializeDiagram(blank, engine)
@@ -1407,6 +1405,8 @@ class Canvas extends Component {
                     onIntent={this.setIntents}
                     slots={this.state.skill.slots}
                     onSlot={this.setSlots}
+                    onboarding={this.onboarding}
+                    finished={()=>{this.onboarding = false}}
                 />
                 <div
                     id="diagram"

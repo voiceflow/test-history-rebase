@@ -193,14 +193,14 @@ const setDiagram = async (req, res) => {
 
     // TODO: find underlying issue
     // check to make sure not to to overwrite projects with empty
-    try{
-        data = JSON.stringify(diagram.data)
-    }catch(err){
-        return res.status(500).send('Invalid Project Format')
-    }
-    if(!data.nodes || data.nodes.length === 0){
-        return res.status(500).send('Empty Project')
-    }
+    // try{
+    //     data = JSON.parse(diagram.data)
+    // }catch(err){
+    //     return res.status(500).send('Invalid Project Format')
+    // }
+    // if(!data.nodes || data.nodes.length === 0){
+    //     return res.status(500).send('Empty Project')
+    // }
 
     try{
         let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])

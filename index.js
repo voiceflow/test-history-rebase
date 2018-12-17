@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+require('dotenv').config()
+// eslint-disable-next-line no-console
+console.log(`Running in ${process.env.ENV} environment`)
+
 const npmPackage = require('./package.json');
-  
 const express = require('express');
 const app = express();
 const path = require('path');

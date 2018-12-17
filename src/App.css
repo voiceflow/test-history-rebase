@@ -8,6 +8,36 @@ body {
     color: #2b3950;
     width: 100%;
 }
+.white-pill {
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 2px 15px 2px 14px;
+    color: #42A5FF;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    transition: transform 0.3s ease !important;
+}
+.white-pill:hover{
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+    -webkit-transform: translateY(-1px);
+    transform: translateY(-1px);
+}
+.rounded-iframe {
+    border-radius: 5px;
+    overflow: hidden;
+}
+.clickable {
+    cursor: pointer;
+}
+.clickable:hover {
+    text-decoration: underline;
+}
+.top-right{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
 .search-input {
     background-image: url('/search.svg') !important;
     background-size: auto 40% !important;

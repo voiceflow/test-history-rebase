@@ -7,9 +7,9 @@ import cloneDeep from 'lodash/cloneDeep';
 const SECTIONS = [{
     title: 'Basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i class="fas fa-comment"></i>, tip: 'Tell Alexa to play sounds or talk to the user' },
+        { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
-        { text: 'Command', type: 'command', icon: <i class="fas fa-exclamation"></i>, tip: 'Add shortcuts for your users to navigate your skill quickly'},
+        { text: 'Command', type: 'command', icon: <i className="fas fa-exclamation"/>, tip: 'Add shortcuts for your users to navigate your skill quickly'},
     ]
 },{
     title: 'Logic',
@@ -22,8 +22,8 @@ const SECTIONS = [{
 },{
     title: 'Advanced',
     items: [
-        { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-project-diagram"/>, tip: 'Interaction blocks select choices and capture slot values from user input' },
-        { text: 'Stream', type: 'stream', icon: <i class="fas fa-play"></i>, tip: 'Stream long audio files & URLs for the user' },
+        { text: 'Intent', type: 'intent', icon: <i className="fas fa-user-alt"/>, tip: 'Intent blocks select choices and capture slot values from user input' },
+        { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
    ]
@@ -120,9 +120,11 @@ class Blocks extends PureComponent {
                                 {section.title}
                         </span>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            {section.items.map((item, i) => {
-                                return <MenuItem item={item} key={i} data-tip={item.tip}/>
-                            })}
+                            <div className="mb-2 section-blocks">
+                                {section.items.map((item, i) => {
+                                    return <MenuItem item={item} key={i} data-tip={item.tip}/>
+                                })}
+                            </div>
                         </Collapse>
                     </div>
             })

@@ -31,8 +31,6 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 var NLC = require("natural-language-commander")
 const _ = require('lodash')
 
-// import { DiagramWidget } from './SRD/base/widgets/DiagramWidget'
-
 const defaultVariables = ['sessions', 'user_id', 'timestamp']
 const line_color = '#D1D8E2'
 const line_width = 2.5
@@ -47,7 +45,7 @@ const generateID = () => {
 
 const _getUtterancesWithSlotNames = (utterances, slots) => {
 
-	const re = /(\{\{\[[^}{[\]]+]\.(\d+)\}\})/g;
+	const re = /(\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
 	let m;
 
 	const utterance_text = utterances.map(e => e.text)
@@ -59,9 +57,9 @@ const _getUtterancesWithSlotNames = (utterances, slots) => {
 			if (m) {
 				const replace = m[1]
 				const key = m[2]
-				const slot =_.find(slots, { key: +key })
+				const slot =_.find(slots, { key: key })
 				if (slot) {
-					let slot_name = _.find(slots, { key: +key }).name
+					let slot_name = _.find(slots, { key: key }).name
 					new_input = new_input.replace(replace, `{${slot_name}}`)
 				} else {
 					return new_input
@@ -169,7 +167,7 @@ class Canvas extends Component {
         }
 
         // ONBOARDING
-        // this.onboarding = localStorage.getItem('onboarding')
+        this.onboarding = localStorage.getItem('onboarding')
 
         if(!this.preview && (!diagram_id || !skill_id)){
             // DEFAULT TEMPLATE FOR CREATING A SKILL
@@ -177,7 +175,7 @@ class Canvas extends Component {
             open = true
 
             let model = new SRD.DiagramModel()
-            let blank = blank_template //this.onboarding ? new_template : blank_template
+            let blank = this.onboarding ? new_template : blank_template
             blank.id = generateID()
 
             model.deSerializeDiagram(blank, engine)
@@ -214,9 +212,7 @@ class Canvas extends Component {
                 skill_id: skill_id,
                 name: '...',
                 intents: [],
-                intents_open: [],
-                slots: [],
-                slots_open: []
+                slots: []
             },
             diagrams: [],
             loading_diagram: !newSkill,
@@ -547,7 +543,7 @@ class Canvas extends Component {
                         permissions.add(permission.selected.value)
                     })
                 }
-                else if (node.extras.type === 'interaction') {
+                else if (node.extras.type === 'intent') {
                     node.extras.choices.forEach(choice => {
                         if (choice.intent && !used_intent_names.has(choice.intent.value)) {
                             if (choice.intent.built_in) {
@@ -599,9 +595,7 @@ class Canvas extends Component {
             const save_skill_intents = new Promise((resolve, reject) => {
                 axios.patch('/skill/' + s.skill_id + '?intents=true', {
                     intents: JSON.stringify(s.intents),
-                    intents_open: JSON.stringify(s.intents_open),
-                    slots: JSON.stringify(s.slots),
-                    slots_open: JSON.stringify(s.slots_open)
+                    slots: JSON.stringify(s.slots)
                 })
                 .then(res => {
                     resolve()
@@ -665,6 +659,9 @@ class Canvas extends Component {
                     }
                 }
             })
+            if(diagram_json.nodes.length === 0){
+                diagram_json = new_template
+            }
             engine.setSuperSelect(null)
             model.deSerializeDiagram(diagram_json, engine)
             model.addListener({ nodesUpdated: this.unsave })
@@ -821,20 +818,18 @@ class Canvas extends Component {
         })
     }
 
-    setSlots(slots, slots_open) {
+    setSlots(slots) {
         const skill = this.state.skill
         skill.slots = slots
-        skill.slots_open = slots_open ? slots_open : skill.slots_open
         this.setState({
             skill: skill,
             saved: false
         });
     }
 
-    setIntents(intents, intents_open) {
+    setIntents(intents) {
         const skill = this.state.skill
         skill.intents = intents
-        skill.intents_open = intents_open ? intents_open : skill.intents_open
         this.setState({
             skill: skill,
             saved: false
@@ -881,7 +876,7 @@ class Canvas extends Component {
                 nlc.addSlotType({
                     type: slot.name,
                     matcher: slot.inputs
-                });
+                })
             })
 
             this.state.skill.intents.forEach(intent => {
@@ -948,7 +943,10 @@ class Canvas extends Component {
                         testing_modal: false
                     })
                 }else{
-                    axios.post(`/diagram/${diagram_id}/test/publish`)
+                    axios.post(`/diagram/${diagram_id}/test/publish`,{
+                        intents: this.state.skill.intents,
+                        slots: this.state.skill.slots
+                    })
                     .then(this.runTest)
                     .catch(err => {
                         console.log(err.response)
@@ -989,9 +987,7 @@ class Canvas extends Component {
                     diagram: diagram_id,
                     locales: ["en-US"],
                     intents: [],
-                    intents_open: [],
-                    slots: [],
-                    slots_open: []
+                    slots: []
                 },
                 newSkill: 0
             }, () => {
@@ -1121,7 +1117,7 @@ class Canvas extends Component {
                     choices: [],
                     inputs: []
                 };
-            } else if (type === 'interaction') {
+            } else if (type === 'intent') {
                 node.addInPort(' ');
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
@@ -1212,7 +1208,7 @@ class Canvas extends Component {
                     method: 'GET',
                     headers: [],
                     body: [],
-                    rawContent: null,
+                    content: '',
                     bodyInputType: 'keyValue',
                     params: [],
                     mapping: [],
@@ -1335,19 +1331,16 @@ class Canvas extends Component {
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
                 {this.state.testing_modal ? 
                     <TestModal 
-                        open={this.state.testing_modal} 
-                        toggle={this.toggleTestModal} 
-                        testing_info={this.state.testing_info} 
+                        open={this.state.testing_modal}
+                        toggle={this.toggleTestModal}
+                        testing_info={this.state.testing_info}
                         diagrams={this.state.diagrams}
-                        amzn_id={this.state.skill.amzn_id}
-                        inv_name={this.state.skill.inv_name}
-                        intents={this.state.skill.used_intents}
                         slots={this.state.skill.slots}
                         globals={this.state.global_variables}
-                    /> 
+                    />
                 : null}
                 <Menu 
-                    onClick={this.onDiagramUnfocus}
+                    unfocus={this.onDiagramUnfocus}
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
                     current={this.diagram_id}
@@ -1393,7 +1386,7 @@ class Canvas extends Component {
                     </div>
                 </div>}
                 <Editor
-                    onClick={this.onDiagramUnfocus}
+                    unfocus={this.onDiagramUnfocus}
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
                     onUpdate={this.unsave}
@@ -1409,11 +1402,11 @@ class Canvas extends Component {
                     user_modules={this.state.user_modules}
                     copyNode={this.copyNode}
                     intents={this.state.skill.intents}
-                    intents_open={this.state.skill.intents_open}
                     onIntent={this.setIntents}
                     slots={this.state.skill.slots}
-                    slots_open={this.state.skill.slots_open}
                     onSlot={this.setSlots}
+                    onboarding={this.onboarding}
+                    finished={()=>{this.onboarding = false}}
                 />
                 <div
                     id="diagram"

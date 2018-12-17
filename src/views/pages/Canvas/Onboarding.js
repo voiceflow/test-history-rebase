@@ -54,6 +54,7 @@ class Onboarding extends Component {
 
     componentWillUpdate(props, state){
         if(state.stage >= STAGE.length){
+            localStorage.removeItem('onboarding')
             this.props.finished()
         }
     }

@@ -1,9 +1,7 @@
-const axios = require('axios');
-const {docClient, pool, config, hashids} = require('./../services');
-const {AccessToken} = require('./authentication');
-const JSONs = require('./../config/amazon_json');
-
-const locales = ["en-CA", "en-AU", "en-GB", "en-US", "en-IN"];
+const axios = require('axios')
+const {docClient, pool, config, hashids} = require('./../services')
+const {AccessToken} = require('./authentication')
+const JSONs = require('./../config/amazon_json')
 
 exports.getSkills = (req, res) => {
     if (!req.user) {
@@ -27,8 +25,8 @@ exports.getSkills = (req, res) => {
                 return skill;
             }));
         }
-    });
-};
+    })
+}
 
 exports.getSkill = (req, res) => {
     if (!req.params.id) {
@@ -52,7 +50,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, intents_open, slots, slots_open, inv_name
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name
             FROM
                 skills
             WHERE
@@ -292,11 +290,9 @@ exports.patchSkill = (req, res) => {
             UPDATE skills 
             SET
             intents = $2,
-            intents_open = $3,
-            slots = $4,
-            slots_open = $5
+            slots = $3
             WHERE skill_id = $1`, 
-            [id, b.intents, b.intents_open, b.slots, b.slots_open], (err) => {
+            [id, b.intents, b.slots], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -496,7 +492,8 @@ exports.buildSkill = async (req,res) => {
                         });
                     }
 
-                    let model = JSONs.interactionModel(r);
+                    let model = JSONs.interactionModel(r)
+                    // console.log(JSON.stringify(model))
 
                     const iterate = (depth) => {
                         if(depth === 3){

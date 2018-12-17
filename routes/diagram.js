@@ -119,7 +119,7 @@ const getDiagrams = (req, res) => {
             console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             data.Items.forEach(function(item) {
-               items.push(item);
+               items.push(item)
             });
 
             // continue scanning if we have more items
@@ -386,7 +386,7 @@ const copyDiagram = (req, res) => {
     });
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices, intents, slots) => new Promise((resolve) => {
     let params = {
         TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Key: {'id': diagram_id}
@@ -508,14 +508,48 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                     if (inputs && used_choices) {
                         node.extras.inputs.forEach(input => {
-                            used_choices.add(input)
+                            if(input.trim() !== ''){
+                                used_choices.add(input)
+                            }
                         })
                     }
 
-                } else if (node.extras.type === 'interaction') {
+                } else if (node.extras.type === 'intent') {
+                    
+                    let interactions = []
+                    node.extras.choices.forEach(choice => {
+                        let new_choice = {mappings: []}
+                        if(choice.intent){
+
+                            // Log that this intent has been used
+                            if (used_intents) {
+                                used_intents.add(choice.intent.key)
+                            }
+
+                            if(choice.intent.built_in){
+                                new_choice.intent = choice.intent.label
+                            }else if(choice.intent.key in intents){
+                                new_choice.intent = intents[choice.intent.key]
+                            }
+                            choice.mappings.forEach(mapping => {
+                                if(choice.intent.built_in){
+                                    new_choice.mappings.push({
+                                        variable: mapping.variable,
+                                        slot: mapping.slot.label
+                                    })
+                                }else if(mapping.slot.key in slots){
+                                    new_choice.mappings.push({
+                                        variable: mapping.variable,
+                                        slot: slots[mapping.slot.key]
+                                    })
+                                }
+                            })
+                        }
+                        interactions.push(new_choice)
+                    })
+
                     story.lines[node.id] = {
-                        choices: node.extras.choices,
-                        choices_open: node.extras.choices_open,
+                        interactions: interactions,
                         elseId: getLink(node.ports.filter(a => a.label === 'else')[0].links[0]),
                         prompt: true,
                         // Get all output ports, then assign labels to outputs, then lastly returns the next IDs. Returns a list of linked nodes
@@ -523,14 +557,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             let link = getLink(port.links[0]);
                             return link ? link : null;
                         })
-                    };
-                    node.extras.choices.forEach(choice => {
-                        if (choice.intent) {
-                            if (used_intents) {
-                                used_intents.add(choice.intent.value) // Key for Intent
-                            }
-                        }
-                    })
+                    }
                 } else if (node.extras.type === 'stream') {
                     let stop = getLink(node.ports.filter(a => a.label === 'stop/pause')[0].links[0]);
 
@@ -575,7 +602,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                            [nextLink] = node.ports[j].links
                         }
                     }
                     story.lines[node.id] = {
@@ -587,7 +614,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                            [nextLink] = node.ports[j].links
                         }
                     }
                     story.lines[node.id] = {
@@ -602,7 +629,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
                         if (!node.ports[j].in) {
-                            [nextLink] = node.ports[j].links;
+                            [nextLink] = node.ports[j].links
                         }
                     }
 
@@ -623,14 +650,14 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         let result
                         try{
                             // console.log('going in', node.extras.diagram_id);
-                            let new_options = options
+                            // let new_options = options
                             // Reset diagram id for sub flows in modules
                             // if(type === 'market'){
                             //     subflow_diagram_id = options.version + '_' + node.extras.diagram_id
                             //     new_options = JSON.parse(JSON.stringify(options))
                             //     new_options['is_module_subflow'] = true
                             // }
-                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options, used_intents, used_choices);
+                            result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options, used_intents, used_choices, intents, slots);
                         }catch(err){
                             return resolve(500)
                         }
@@ -763,7 +790,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 } else if (node.extras.type === 'api') {
 
                     let formattedRawContent = '';
-                    if (!_.isNil(node.extras.rawContent)) {
+                    if (node.extras.content){
+                        formattedRawContent = node.extras.content
+                    }else if(!_.isNil(node.extras.rawContent)){
                         formattedRawContent = draftToMarkdown(node.extras.rawContent);
                     }
 
@@ -953,16 +982,32 @@ const publish = (req, res) => {
 
     let skill_id = hashids.decode(req.params.skill_id)[0]
 
-    pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
+    pool.query('SELECT creator_id, slots, intents FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
         if(err || result.rows.length === 0){
             return res.sendStatus(500)
         }else if(result.rows[0].creator_id !== req.user.id){
             return res.sendStatus(401)
         }
+        let intents = {}
+        let slots = {}
+        if(Array.isArray(result.rows[0].intents)){
+            result.rows[0].intents.forEach(intent => {
+                if(intent.key){
+                    intents[intent.key] = intent.name
+                }
+            })
+        }
+        if(Array.isArray(result.rows[0].slots)){
+            result.rows[0].slots.forEach(slot => {
+                if(slot.key){
+                    slots[slot.key] = slot.name
+                }
+            })
+        }
 
-        used_intents = new Set()
-        used_choices = new Set()
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices);
+        let used_intents = new Set()
+        let used_choices = new Set()
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots);
 
         used_intents = [...used_intents]
         used_choices = [...used_choices]
@@ -982,7 +1027,26 @@ const publishTest = async (req, res) => {
         return;
     }
 
-    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST')
+    let intents = {}
+    let slots = {}
+    if(Array.isArray(req.body.intents)){
+        req.body.intents.forEach(intent => {
+            if(intent.key && intent.inputs && intent.inputs.length !== 0){
+                intents[intent.key] = intent.name
+            }
+        })
+    }
+    if(Array.isArray(req.body.slots)){
+        req.body.slots.forEach(slot => {
+            if(slot.key){
+                slots[slot.key] = slot.name
+            }
+        })
+    }
+
+    let used_intents = new Set()
+    let used_choices = new Set()
+    let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots)
 
     res.sendStatus(status)
 }

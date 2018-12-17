@@ -1,4 +1,5 @@
 const redis = require('redis');
+const AWS = require('aws-sdk');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -12,12 +13,7 @@ const Intercom = require('intercom-client');
 const hashids = new Hashids(config.id_hash, 10);
 const MB = 1024*1024
 
-const AWS = require('aws-sdk'); 
-AWS.config = new AWS.Config({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
-});
+AWS.config.loadFromPath('./aws-config.json');
 
 const docClient = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
@@ -30,10 +26,10 @@ types.setTypeParser(1114, function(stringValue) {
 
 
 const pool = new pg.Pool({
-    user: process.env.PSQL_USER,
-    host: process.env.PSQL_HOST,
-    database: process.env.PSQL_DB,
-    password: process.env.PSQL_PW,
+    user: 'StoryflowUser',
+    host: 'storyflow-db.cmzdhv5svqny.us-east-1.rds.amazonaws.com',
+    database: 'skill_analytics',
+    password: '2p20RuU1D',
     port: 5432
 });
 
@@ -106,7 +102,7 @@ const validateEmail = (email) => {
 }
 
 // SECRET
-const intercom_client = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
+const intercom_client = new Intercom.Client({ token: 'dG9rOmQxNjZhZTViXzdiNmFfNDkzOV9hYjg3XzRlMTQxOWU1NDc3OToxOjA=' })
 
 module.exports = {
     intercom: intercom_client,

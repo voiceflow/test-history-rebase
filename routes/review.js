@@ -65,7 +65,7 @@ const setReview = (req, res) => {
         return;
     }
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': req.params.id }
     };
 

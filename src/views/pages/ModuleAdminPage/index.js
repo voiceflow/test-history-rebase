@@ -84,7 +84,7 @@ class ModuleAdminPage extends Component {
                 <Masonry elementType='div'>
                     {this.state.modules.map((module, i) => 
                         <Card key={i}>
-                            <img src={module.module_icon} style={styles}></img>
+                            <img src={module.module_icon} style={styles} alt="module icon"></img>
                             <a href={"https://creator.getvoiceflow.com/preview/" + module.skill_id + "/" + module.diagram_id}>{module.title}</a>
                             <Button onClick={() => {this.approveModule(module.skill_id, module.title, i)}}>Approve</Button>
                         </Card>

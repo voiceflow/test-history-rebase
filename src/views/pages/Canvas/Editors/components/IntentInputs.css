@@ -1,8 +1,30 @@
+.choice-select {
+    margin-top: 10px;
+    font-size: 1rem;
+}
+
+.input-select {
+    flex: 1 1;
+    margin-left: 5px;
+}
+
+.map-box {
+    font-size: 12px;
+}
+
+.diagram-title {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .interaction-utterance {
     border-bottom: 1px solid #e9eef3 !important;
-    padding: 13px 13px 10px 0px;
+    padding: 8px 0px 7px 9px;
     display: flex;
     color: #8DA2B5 !important;
+}
+.interaction-utterance:last-child {
+    border: none !important;
 }
 .interaction-utterance>div{
     flex: 1;
@@ -15,15 +37,9 @@
 }
 
 .trash-icon {
+    padding: 5px 4px 0 5px;
     cursor: pointer;
     color: #ccd5dc;
-    margin-top: 5px;
-    margin-left: 8px;
-}
-
-.input-area {
-    margin-top: 5px;
-    height: 76px;
 }
 
 .interaction-block {
@@ -38,31 +54,20 @@
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
 }
 
-.input-area, .input-area.blank {
-    width: 100%;
-    border-radius: 5px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    resize: none;
-    border: none;
-    padding: 2px 0;
-}
-
-.input-area:focus, .input-area.blank:focus {
-    outline: none;
-}
-
-.input-area::placeholder, .input-area.blank::placeholder{
-    color: #8da2b5 !important;
-}
-
 .interaction-name-input {
 /*    font-size: 14px;*/
+    outline: none;
+    width: 100%;
     color: #282828;
 }
 
-.interaction-title input{
+.interaction-title, .intent-title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.interaction-title input, .intent-title input{
     flex: 1;
     border: none;
     
@@ -70,6 +75,37 @@
 
 .interaction-title input:focus{
     outline: none;
+}
+
+.interaction-title span {
+    /*padding: 5px 10px 0px 10px;*/
+    padding-top: 2px;
+    height: 20px;
+    padding-left: 6px;
+    padding-right: 6px;
+    text-align: center;
+    line-height: 16px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #edf5ff;
+    color: #42A5FF;
+    border: 1px solid #42A5FF50;
+    /* font-weight: bold; */
+    font-size: 12px;
+    margin-right: 8px;
+    margin-left: -3px;
+    /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.intent-title span {
+    width: 30px;
+    padding-top: 5px;
+    text-align: center;
+    color: #8da2b5;
+    line-height: 16px;
+    margin-left: -10px;
 }
 
 .interaction-name-input::placeholder {
@@ -82,17 +118,58 @@
     font-size: 12px;
 }
 
-.input-area__suggestions__list {
+/* .mentions-input {
+    margin-top: 5px;
+    height: 76px;
+} */
+
+.mentions-input, .mentions-input.blank, .slot-input {
+    flex: 1;
+    width: 100%;
+    border-radius: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none;
+    margin-top: 2px;
+    display: block;
+}
+
+.mentions-input__highlighter, .mentions-input__input, .slot-input {
+    overflow: visible !important;
+    padding: 6px 8px !important;
+    border: 1px solid !important;
+}
+
+.mentions-input__input, .slot-input {
+    border-color: #E2E9EC !important;
+}
+.mentions-input__input:focus, .slot-input:focus{
+    border-color: #42A5FF !important;
+}
+
+.mentions-input:focus, .mentions-input.blank:focus {
+    outline: none;
+}
+
+.mentions-input::placeholder, .mentions-input.blank::placeholder{
+    color: #8da2b5 !important;
+}
+
+.mentions-input__suggestions__list {
   background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  font-size: 10pt;
+  border: none;
+  font-size: 12pt;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px rgba(17,49,96,.06), 0 8px 16px 0 rgba(17,49,96,.16);
+  padding-bottom: 8px !important;
+  padding-top: 8px !important;
 }
 
-.input-area__suggestions__item {
-  padding: 5px 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+.mentions-input__suggestions__item {
+  padding: 10px 25px;
 }
-
-.input-area__suggestions__item--focused {
-  background-color: #62D6A8;
+.mentions-input__suggestions__item--focused {
+  background-color: #F3F7F8;
+  color: #2b3950;
 }

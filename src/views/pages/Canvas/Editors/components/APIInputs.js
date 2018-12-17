@@ -30,8 +30,8 @@ class APIInputs extends Component {
                                             {i+1}
                                         </InputGroupText>
                                     </InputGroupAddon>
-                                    <VariableInput className="form-control" placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={pair.key}/>
-                                    <VariableInput className="form-control" placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={pair.val}/>
+                                    <VariableInput className="form-control form-control-border no-radius" placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={pair.key}/>
+                                    <VariableInput className="form-control form-control-border right" placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={pair.val}/>
                                             <button className="btn-float" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </InputGroup>
                             </div> )

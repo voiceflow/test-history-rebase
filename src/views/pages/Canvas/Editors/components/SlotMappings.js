@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import './SlotInputs.css'
 
 const _ = require('lodash')
 
@@ -22,22 +21,22 @@ class SlotMappings extends Component {
           props.slot_options.forEach( slot_option_list => {
             slot_option_list.forEach(o => {
                 if (!already_added.has(o)) {
-                    if (typeof o === "string") {
+                    // if (typeof o === "string") {
+                    //     new_slot_options.push({
+                    //         label: '[' + o + ']',
+                    //         value: o,
+                    //         key: o
+                    //     })
+                    // } else {
+                    const slot = _.find(props.slots, { key: o })
+                    if (slot) {
                         new_slot_options.push({
-                            label: '[' + o + ']',
+                            label: '[' + slot.name + ']',
                             value: o,
                             key: o
                         })
-                    } else {
-                        const slot = _.find(props.slots, { key: o })
-                        if (slot) {
-                            new_slot_options.push({
-                                label: '[' + slot.name + ']',
-                                value: o,
-                                key: o
-                            })
-                        }
                     }
+                    // }
                     already_added.add(o)
                 }
             })
@@ -79,7 +78,7 @@ class SlotMappings extends Component {
                         <div className="close pl-2" onClick={() => this.props.onRemove(i)}>×</div>
                     </div>)
                 })}
-                <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
+                <button className="btn btn-clear btn-block mb-2" onClick={this.props.onAdd}>
                     <i className="far fa-plus"></i> Add Variable Map
                 </button>
             </React.Fragment>

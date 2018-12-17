@@ -19,7 +19,9 @@ import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
+import Onboarding from './Onboarding'
 import {
+    Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -39,7 +41,8 @@ class Editor extends Component {
             permission_options: [],
             slot_types: SLOT_TYPES,
             built_ins: BUILT_IN_INTENTS,
-            dropdownOpen: false
+            modal: false,
+            expanded: false
         }
 
         this.BlockViewer = this.BlockViewer.bind(this)
@@ -135,11 +138,13 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
-            case 'interaction':
+            case 'intent':
                 return <Interaction 
                     node={this.state.node} 
-                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} intents_open={this.props.intents_open} slots={this.props.slots} slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
-                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}/>
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
+                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
+                    />
             case 'combine':
             case 'line':
             case 'audio': 
@@ -256,8 +261,14 @@ class Editor extends Component {
         //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
         //     </React.Fragment>}
         // >
+
         return (
-            <div id="Editor" className={(this.props.open && type ? 'open':'')} onClick={this.props.onClick}>
+            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} 
+                onFocus={this.props.unfocus}
+                onMouseDown={this.props.unfocus}
+                onKeyDown={this.props.unfocus}
+            >
+                {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
                     <div className="controls" key={this.state.node.id}>
                         <div className="top">
@@ -267,31 +278,57 @@ class Editor extends Component {
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
-                                    <UncontrolledDropdown nav inNavbar>
-                                        <DropdownToggle className="delete-block" nav tag="div">
-                                            <i className="fas fa-cog"/>
-                                        </DropdownToggle>
-                                        <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-3px', marginTop: '5px'}}>
-                                            <DropdownItem header>
-                                                Block Options
-                                            </DropdownItem>
-                                            {/*this.state.node.extras.type === 'flow' && 
-                                                <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
-                                            }
-                                            <DropdownItem onClick={this.props.copyNode} className="pointer">
-                                                <i className="fas fa-copy text-muted"/> Copy
-                                            </DropdownItem>
-                                            <DropdownItem onClick={this.props.removeNode} className="pointer">
-                                                <i className="fas fa-file-times text-muted"/> Delete
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </UncontrolledDropdown>
+                                    <div className="d-flex pl-2">
+                                        <div 
+                                            className="delete-block"
+                                            onClick={()=>this.setState({
+                                                expanded: true,
+                                                modal: true
+                                            })}
+                                        >
+                                            <i className="far fa-expand-arrows-alt"/>
+                                        </div>
+                                        <UncontrolledDropdown nav inNavbar>
+                                            <DropdownToggle className="delete-block" nav tag="div">
+                                                <i className="fas fa-cog"/>
+                                            </DropdownToggle>
+                                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-3px', marginTop: '5px'}}>
+                                                <DropdownItem header>
+                                                    Block Options
+                                                </DropdownItem>
+                                                {/*this.state.node.extras.type === 'flow' && 
+                                                    <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
+                                                }
+                                                <DropdownItem onClick={this.props.copyNode} className="pointer">
+                                                    <i className="fas fa-copy text-muted"/> Copy
+                                                </DropdownItem>
+                                                <DropdownItem onClick={this.props.removeNode} className="pointer">
+                                                    <i className="fas fa-file-times text-muted"/> Delete
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div id="editor-section">
                             {this.renderTitle()}
-                            {this.BlockViewer()}
+                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
+                            {this.state.expanded &&
+                                <React.Fragment>
+                                    <Modal 
+                                        isOpen={this.state.modal} 
+                                        toggle={()=>this.setState({modal: false})}
+                                        onClosed={()=>this.setState({expanded: false})}
+                                        size="lg"
+                                    >
+                                        <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
+                                        <ModalBody className="pb-4 px-4">
+                                            {this.BlockViewer()}
+                                        </ModalBody>
+                                    </Modal>
+                                </React.Fragment>
+                            }
                         </div>
                     </div> 
                 : null}

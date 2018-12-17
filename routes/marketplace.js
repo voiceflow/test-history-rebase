@@ -161,7 +161,7 @@ const giveCertification = (req, res) => {
 					} else {
 						// Copy current diagram's data to new entry on market
 						let params = {
-					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+					        TableName: 'com.getstoryflow.diagrams.production',
 					        Key: {'id': diagram_id}
 						};
 					    docClient.get(params, (err, data) => {
@@ -171,7 +171,7 @@ const giveCertification = (req, res) => {
 					        } else if (data.Item) {
 								data.Item.id = market_id;
 								let params = {
-									TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
+									TableName: 'com.getstoryflow.skills.market',
 									Item: data.Item
 								};
 								docClient.put(params, (err, data) => {
@@ -412,7 +412,7 @@ const getCertModule = (req, res) => {
 				}else{
 					if(data.rows.length > 0){
 						let params = {
-					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+					        TableName: 'com.getstoryflow.diagrams.production',
 					        Key: {'id': data.rows[0].diagram}
 					    };
 					    docClient.get(params, (err, data) => {
@@ -496,7 +496,7 @@ const retrieveTemplate = (req, res) => {
 				if(data.rows.length > 0){
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
-						TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
+						TableName: 'com.getstoryflow.skills.market',
 						Key: {'id': template_diagram_id}
 					}
 					docClient.get(params, (err, data) => {

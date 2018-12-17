@@ -78,7 +78,7 @@ const expressionfy = (expression, depth=0) => {
 
 const getVariables = (req, res) => {
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': req.params.id},
         ProjectionExpression: 'variables'
     }
@@ -101,7 +101,7 @@ const getDiagrams = (req, res) => {
         return;
     }
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
     }
 
@@ -149,7 +149,7 @@ const getDiagram = (req, res) => {
     }
 
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': req.params.id}
     };
     docClient.get(params, (err, data) => {
@@ -217,7 +217,7 @@ const setDiagram = async (req, res) => {
 
     diagram.last_save = Date.now();
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         Item: {
             id: diagram.id,
             variables: diagram.variables,
@@ -286,7 +286,7 @@ const deleteDiagram = (req, res) => {
             }
             if(response.rowCount !== 0){
                 let params = {
-                    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                    TableName: 'com.getstoryflow.diagrams.production',
                     Key: {'id': req.params.id}
                 }
 
@@ -306,14 +306,14 @@ const deleteDiagram = (req, res) => {
 const copyDiagram = (req, res) => {
     let old_diagram_id = req.params.diagram_id
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': old_diagram_id}
     };
 
     // In case the insert row fails, delete on Dynamo
     const cleanUpDynamo = (new_diagram_id) => {
         let params = {
-            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            TableName: 'com.getstoryflow.diagrams.production',
             Key: {'id': new_diagram_id}
         };
         docClient.delete(params, err => {
@@ -373,7 +373,7 @@ const copyDiagram = (req, res) => {
             }
             
             let params = {
-                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                TableName: 'com.getstoryflow.diagrams.production',
                 Item: {
                     id: new_diagram_id,
                     variables: data.variables,
@@ -399,7 +399,7 @@ const copyDiagram = (req, res) => {
 
 const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices, intents, slots) => new Promise((resolve) => {
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: 'com.getstoryflow.diagrams.production',
         Key: {'id': diagram_id}
     };
 
@@ -934,7 +934,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             }
 
             let params = {
-                TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.${render_type}`,
+                TableName: `com.getstoryflow.skills.${render_type}`,
                 Item: story
             }
             docClient.put(params, err => {

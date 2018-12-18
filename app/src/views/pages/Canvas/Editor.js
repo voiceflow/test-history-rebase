@@ -133,21 +133,21 @@ class Editor extends Component {
             case 'choice':
             case 'choicenew':
                 return <Choice
-                        node={this.state.node} 
-                        voices={this.state.voices} 
+                        node={this.state.node}
+                        voices={this.state.voices}
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
             case 'intent':
-                return <Interaction 
-                    node={this.state.node} 
-                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
-                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                return <Interaction
+                    node={this.state.node}
+                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots}
+                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}
                     variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
                     />
             case 'combine':
             case 'line':
-            case 'audio': 
+            case 'audio':
             case 'multiline':
                 // DEPRECATE OLD LINE BLOCKS
                 if(this.state.node.extras.type !== 'combine'){
@@ -181,9 +181,9 @@ class Editor extends Component {
             case 'command':
                 return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'flow':
-                return <Diagram node={this.state.node} 
-                    onUpdate={this.props.onUpdate} 
-                    variables={this.props.variables} 
+                return <Diagram node={this.state.node}
+                    onUpdate={this.props.onUpdate}
+                    variables={this.props.variables}
                     createDiagram={this.props.createDiagram}
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
@@ -222,7 +222,7 @@ class Editor extends Component {
                 }
                 return <div id="label">Add Flow</div>
             default:
-              return (<input id="label" placeholder="Block Label" 
+              return (<input id="label" placeholder="Block Label"
                     type="text"
                     name="name"
                     value={this.state.node.name}
@@ -263,7 +263,7 @@ class Editor extends Component {
         // >
 
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} 
+            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
                 onFocus={this.props.unfocus}
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
@@ -279,7 +279,7 @@ class Editor extends Component {
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
                                     <div className="d-flex pl-2">
-                                        <div 
+                                        <div
                                             className="delete-block"
                                             onClick={()=>this.setState({
                                                 expanded: true,
@@ -296,7 +296,7 @@ class Editor extends Component {
                                                 <DropdownItem header>
                                                     Block Options
                                                 </DropdownItem>
-                                                {/*this.state.node.extras.type === 'flow' && 
+                                                {/*this.state.node.extras.type === 'flow' &&
                                                     <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
                                                 }
                                                 <DropdownItem onClick={this.props.copyNode} className="pointer">
@@ -316,8 +316,8 @@ class Editor extends Component {
                             {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
                             {this.state.expanded &&
                                 <React.Fragment>
-                                    <Modal 
-                                        isOpen={this.state.modal} 
+                                    <Modal
+                                        isOpen={this.state.modal}
                                         toggle={()=>this.setState({modal: false})}
                                         onClosed={()=>this.setState({expanded: false})}
                                         size="lg"
@@ -330,7 +330,7 @@ class Editor extends Component {
                                 </React.Fragment>
                             }
                         </div>
-                    </div> 
+                    </div>
                 : null}
             </div>
         );

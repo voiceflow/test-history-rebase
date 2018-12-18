@@ -20,6 +20,7 @@
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "html-parse-stringify": "^1.0.3",
+    "immutability-helper": "^2.9.0",
     "is-var-name": "^2.0.0",
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
@@ -53,6 +54,7 @@
     "react-tippy": "^1.2.3",
     "reactstrap": "^6.5.0",
     "storm-react-diagrams": "github:DecathectZero/react-diagrams",
+    "stringify-object": "^3.3.0",
     "universal-cookie": "^3.0.4"
   },
   "scripts": {

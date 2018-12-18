@@ -697,17 +697,19 @@
     /*transition: background-color .3s cubic-bezier(0.9, 0.2, 0.2, 1);*/
     backface-visibility: hidden;
     color: #2b3950;
-    width: 46%;
     background-color: #fff;
     transition: all .1s ease-in-out;
 /*    box-shadow: 0 2px 3px rgba(0,0,0,.08);*/
     font-size: 13px;
     color: #8DA2B5 !important; 
     text-align: center;
-   border: 1px solid #eaeff4;
-   margin-bottom: 8PX;
-   transition: all 0.25s ease;
-   margin: 4px 4px;
+    border: 1px solid #eaeff4;
+    transition: all 0.25s ease;
+    margin: 0 4px;
+}
+#sidebar .wrap{
+    width: 50%;
+    margin-bottom: 8px;
 }
 .nav-tabs .nav-link{
     color: #8da2b5;
@@ -819,7 +821,7 @@
 .App .Menu #sidebar .section-blocks {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -2px;
+    margin: 0 -4px;
 }
 
 .App .Menu #sidebar .MenuItem .MenuText{

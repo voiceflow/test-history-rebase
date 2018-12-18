@@ -28,7 +28,7 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
 
-const NLC = require('natural-language-commander')
+var NLC = require("natural-language-commander")
 const _ = require('lodash')
 
 const defaultVariables = ['sessions', 'user_id', 'timestamp']
@@ -856,7 +856,10 @@ class Canvas extends Component {
         let data = model.serializeDiagram()
         // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
         let nlc = this.state.testing_info ? this.state.testing_info.nlc : null
-        let slot_mappings = this.state.testing_info ? this.state.testing_info.slot_mappings : {}
+        let nlc_resolve;
+        let nlc_promise = new Promise(resolve => {
+            nlc_resolve = resolve
+        })
         
         let nodes = []
         data.nodes.forEach((node) => {
@@ -869,19 +872,10 @@ class Canvas extends Component {
         })
         if (!nlc) {
             nlc = new NLC()
-            slot_mappings = {}
             this.state.skill.slots.forEach(slot => {
-
-                let matcher
-                if (slot.type.value && slot.type.value !== 'CUSTOM') {
-                    matcher = /[\s\S]*/
-                } else {
-                    matcher = slot.inputs
-                }
-
                 nlc.addSlotType({
                     type: slot.name,
-                    matcher: matcher
+                    matcher: slot.inputs
                 })
             })
 
@@ -891,15 +885,31 @@ class Canvas extends Component {
                     samples = _getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
                 }
                 const _slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
+        
+                console.log("REGISTER INTENT", nlc, {
+                    intent: intent.name,
+                    slots: _slots,
+                    utterances: samples
+                })
 
                 nlc.registerIntent({
                     intent: intent.name,
                     slots: _slots,
                     utterances: samples,
-                    callback: () => {}
-                })
+                    callback: (...args) => {
 
-                slot_mappings[intent.name] = _slots
+                        const formatted_slots = {}
+                        _slots.forEach((slot, i) => {
+                            if (args[i]) {
+                                formatted_slots[slot.name] = {
+                                    value: args[i]
+                                }
+                            }
+                        })
+
+                        nlc_resolve({ intent: intent.name, slots: formatted_slots})
+                    }
+                })
             })
 
         }
@@ -909,7 +919,7 @@ class Canvas extends Component {
                 id: this.diagram_id,
                 nodes: nodes,
                 nlc: nlc,
-                slot_mappings: slot_mappings
+                nlc_promise: nlc_promise
             }
         })
     }

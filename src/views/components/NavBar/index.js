@@ -48,7 +48,7 @@ class NavBar extends Component {
     let tabs = [
       {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
       {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
-      // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
+      {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
     ]
 
     let user = window.user_detail

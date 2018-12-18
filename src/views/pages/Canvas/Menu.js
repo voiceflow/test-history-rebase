@@ -230,7 +230,7 @@ class Menu extends PureComponent {
     renderSideBar(){
         switch(this.state.tab){
             case 'blocks':
-                return <Blocks user_modules={this.props.user_modules}/>
+                return <Blocks user_modules={this.props.user_modules} history={this.props.history}/>
             case 'variables':
                 return <Variables 
                     variables={this.props.variables} 
@@ -248,6 +248,7 @@ class Menu extends PureComponent {
                     enterFlow={this.props.enterFlow}
                     copyFlow={this.copyFlow}
                     deleteFlow={this.deleteFlow}
+                    history={this.props.history}
                 />
         }
     }

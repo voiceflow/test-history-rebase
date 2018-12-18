@@ -12,6 +12,7 @@ import OldIfBlock from './Editors/OldIf';
 import Speak from './Editors/Speak';
 import OldSpeak from './Editors/OldSpeak';
 import Capture from './Editors/Capture';
+import OldCommand from './Editors/OldCommand';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
@@ -138,11 +139,24 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
+            case 'command':
+                // DEPRECATE OLD COMMAND BLOCKS
+                if(typeof this.state.node.commands === 'string'){
+                    return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
+                }else{
+                    return <Command node={this.state.node} 
+                        onUpdate={this.props.onUpdate}
+                        intents={this.props.intents} 
+                        slots={this.props.slots} 
+                        onSlot={this.props.onSlot} onIntent={this.props.onIntent}
+                        variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
+                    />
+                }
             case 'intent':
                 return <Interaction 
                     node={this.state.node} 
                     onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
-                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
+                    onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
                     variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
                     />
             case 'combine':
@@ -178,8 +192,6 @@ class Editor extends Component {
                 }
             case 'capture':
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
-            case 'command':
-                return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'flow':
                 return <Diagram node={this.state.node} 
                     onUpdate={this.props.onUpdate} 

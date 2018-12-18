@@ -64,6 +64,7 @@ class API extends Component {
             innerVariables: {},
             dropdownOpen: false,
             type: 'headers',
+            testHeader: {'status': null, 'time': null, 'size': null},
             popoverOpen: false
         };
 
@@ -125,15 +126,25 @@ class API extends Component {
         if (!_.isEmpty(variables))  {
           this.setState({variables: variables})
         } else {
+          let time = Date.now();
           axios({ method: method, url: url })
           .then(res => {
-            console.log(JSON.stringify(res, null, 4))
             this.setState({
+              testHeader: update(this.state.testHeader, {
+                'status': {$set: res.status},
+                'time': {$set: Date.now()-time},
+                'size': {$set: JSON.stringify(res).length},
+              }),
               modalContent: JSON.stringify(res, null, 4)
             })
           })
           .catch(err => {
             this.setState({
+              testHeader: update(this.state.testHeader, {
+                'status': {$set: err.status},
+                'time': {$set: Date.now()-time},
+                'size': {$set: JSON.stringify(err).length},
+              }),
               modalContent: JSON.stringify(err, null, 4)
             })
           })
@@ -166,6 +177,11 @@ class API extends Component {
             </React.Fragment>
           ))}
         <div>
+          <div className="test-header">
+            <div>Status: {this.state.testHeader.status ? this.state.testHeader.status : '-'}</div>
+            <div>Time: {this.state.testHeader.time ? this.state.testHeader.time : '-'}</div>
+            <div>Size: {this.state.testHeader.size ? this.state.testHeader.size : '-'}</div>
+          </div>
           <pre>{this.state.modalContent}</pre>
         </div>
       </div>);

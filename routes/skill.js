@@ -196,9 +196,45 @@ exports.deleteSkill = (req, res) => {
         return;
     }
 
+    const deleteDiagrams = (diagram_id) => {
+        pool.query('SELECT * FROM diagrams WHERE id = $1', [diagram_id], (err, results) => {
+            let sub_diagrams;
+            try {
+                sub_diagrams = JSON.parse(results.rows[0].sub_diagrams)
+            } catch (err) {
+                sub_diagrams = []
+            }
+
+            if (sub_diagrams.length > 0) {
+                for (let i = 0; i < sub_diagrams.length; i++){
+                    deleteDiagrams(sub_diagrams[i])
+                }
+            }
+
+            // Delete diagram from dynamo
+            let params = {
+                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                Key: {'id': diagram_id}
+            }
+
+            docClient.delete(params, async(err) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    // Delete diagram from our tables
+                    pool.query('DELETE FROM diagrams WHERE id = $1', [diagram_id], (err) => {
+                        if(err){
+                            console.log(err)
+                        }
+                    })
+                }
+            })
+        })
+    }
+
     let id = hashids.decode(req.params.id)[0];
-    pool.query('SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err, results) => {
-        // Delete off Amazon
+    pool.query("SELECT * FROM skills INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id WHERE creator_id = $1 AND skills.skill_id = $2 AND diagrams.name = 'ROOT'", [req.user.id, id], (err, results) => {    
+        // Delete skill off Amazon
         if(results.rows[0].amzn_id){
             AccessToken(req.user.id, token => {
                 if(token === null){
@@ -216,19 +252,22 @@ exports.deleteSkill = (req, res) => {
                     // Successfully deleted
                 })
                 .catch(err => {
-                    console.log(err);
-                });
-            });
+                    console.log(err)
+                })
+            })
         }
         
-        // Delete off our servers
+        // Delete skill off our servers
         pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
             if(err){
-                res.sendStatus(500);
+                res.sendStatus(500)
             }else{
-                res.sendStatus(200);
+                res.sendStatus(200)
             }
-        });
+        })
+
+        // Delete diagrams recursively
+        deleteDiagrams(results.rows[0].id)
     });
 };
 

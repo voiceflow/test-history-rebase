@@ -279,7 +279,7 @@ const deleteDiagram = (req, res) => {
     pool.query(`
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
-        `, 
+        `,
         [req.params.id, req.user.id], (err, response) => {
             if(err){
                 console.log(err)

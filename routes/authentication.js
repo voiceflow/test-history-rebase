@@ -222,7 +222,7 @@ const putUser = async (req, res) => {
 						    		id: insert_result.rows[0].creator_id, 
 						    		email: email, 
 						    		name: name, 
-						    		admin: false 
+						    		admin: 0
 						    	}, async (credentials) => {
 	                            	res.status(200).send({
 	                            		token: credentials.userHash + credentials.token,

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp ~/.story/env.prod /srv/storyflow-creator
+cp ~/.story/.env /srv/storyflow-creator
 
 cd /srv/storyflow-creator
 

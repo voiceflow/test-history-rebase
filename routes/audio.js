@@ -2,12 +2,16 @@ const path = require('path');
 const fs = require('fs');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
-const AWS = require('aws-sdk');
 const randomstring = require("randomstring");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-AWS.config.loadFromPath('./aws-config.json');
+const AWS = require('aws-sdk'); 
+AWS.config = new AWS.Config({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+});
 
 const s3 = new AWS.S3();
 const polly = new AWS.Polly();

@@ -13,3 +13,6 @@ routes/tmp/*
 *package-lock.json
 *yarn.lock
 
+# dotenv environment variables files
+.env*
+!.env.example

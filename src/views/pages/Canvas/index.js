@@ -1152,7 +1152,7 @@ class Canvas extends Component {
             } else if (type === 'command') {
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    commands: ''
+                    command: null
                 }
             } else if (type === 'comment') {
                 node.name = 'New Comment'

@@ -219,7 +219,7 @@ class API extends Component {
               try {
                 varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
               } catch(error) {
-                varMap[map.var] = null;
+                varMap[map.var] = 'undefined';
               }
             })
             this.setState({
@@ -238,7 +238,7 @@ class API extends Component {
               try {
                 varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), err), null, 4)
               } catch(error) {
-                varMap[map.var] = null;
+                varMap[map.var] = 'undefined';
               }
             })
             this.setState({
@@ -256,6 +256,7 @@ class API extends Component {
       this.setState({ modal: true });
     }
 
+    // Render entire modal
     renderAPITest() {
       if (_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) {
         return null;

@@ -108,7 +108,7 @@ class API extends Component {
       let userParam = {};
       let url = draftToMarkdown(this.state.node.extras.url);
       let method = this.state.node.extras.method;
-      const { body, headers, params } = this.props.node.extras;
+      const { body, headers, params, bodyInputType, content } = this.props.node.extras;
       const replacer = (match, inner, variables_map) => {
         if(inner in variables_map){
           return variables_map[inner];
@@ -131,7 +131,16 @@ class API extends Component {
       new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
       if(!_.isNull(url)){
     		finder(url);
-        _.forEach(_.concat(body, headers, params), nodeValue => {
+        if (bodyInputType == 'rawInput') {
+          finder(content);
+        } else {
+          _.forEach(_.concat(body), nodeValue => {
+            _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
+              finder(draftToMarkdown(value));
+            })
+          })
+        }
+        _.forEach(_.concat(headers, params), nodeValue => {
           _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
             finder(draftToMarkdown(value));
           })
@@ -153,9 +162,14 @@ class API extends Component {
             return object;
           }
           userHeader = markdownToObject(headers);
-          userBody = markdownToObject(body);
+          if (bodyInputType === 'rawInput') {
+            userBody = content.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables));
+          } else {
+            userBody = markdownToObject(body);
+          }
           userParam = markdownToObject(params);
-          axios({ method: method, url: url, headers: userHeader, body: userBody, params: userParam })
+
+          axios({ method: method, url: new_url, headers: userHeader, body: userBody, params: userParam })
           .then(res => {
             this.setState({
               testHeader: update(this.state.testHeader, {

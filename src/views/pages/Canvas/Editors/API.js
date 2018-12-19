@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
+import pretty from 'prettysize';
 import * as _ from 'lodash';
 import axios from 'axios';
 import stringifyObject from 'stringify-object';
@@ -99,11 +100,15 @@ class API extends Component {
         }, this.props.onUpdate)
     }
 
-    getEndpoint(){
+    getEndpoint(firstClick=true){
       let regex = /\{([^{}]*)\}/g;
       let variables = [];
+      let userHeader = {};
+      let userBody = {};
+      let userParam = {};
       let url = draftToMarkdown(this.state.node.extras.url);
       let method = this.state.node.extras.method;
+      const { body, headers, params } = this.props.node.extras;
       const replacer = (match, inner, variables_map) => {
         if(inner in variables_map){
           return variables_map[inner];
@@ -112,28 +117,51 @@ class API extends Component {
         }
       }
 
-      if (!_.isEmpty(this.state.variables)){
-        url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
-      }
-      if(!_.isNull(url)){
-    		let match = regex.exec(url);
+      const finder = url => {
+        let match = regex.exec(url);
     		while (match != null) {
-    			if(isVarName(match[1])){
+    			if(isVarName(match[1]) && !_.includes(variables, match[1])){
     		    	variables.push(match[1]);
     		    }
     		    match = regex.exec(url);
     		}
-        if (!_.isEmpty(variables))  {
+      }
+
+      let new_url
+      new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+      if(!_.isNull(url)){
+    		finder(url);
+        _.forEach(_.concat(body, headers, params), nodeValue => {
+          _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
+            finder(draftToMarkdown(value));
+          })
+        });
+
+        if ( !_.isEmpty(variables) && firstClick)  {
           this.setState({variables: variables})
         } else {
           let time = Date.now();
-          axios({ method: method, url: url })
+          const markdownToObject = nodes => {
+            let object = {};
+            _.forEach(nodes, node => {
+              object[draftToMarkdown(
+                node.key
+              ).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))]=draftToMarkdown(
+                node.val
+              ).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+            })
+            return object;
+          }
+          userHeader = markdownToObject(headers);
+          userBody = markdownToObject(body);
+          userParam = markdownToObject(params);
+          axios({ method: method, url: url, headers: userHeader, body: userBody, params: userParam })
           .then(res => {
             this.setState({
               testHeader: update(this.state.testHeader, {
                 'status': {$set: res.status},
                 'time': {$set: Date.now()-time},
-                'size': {$set: JSON.stringify(res).length},
+                'size': {$set: pretty(JSON.stringify(res).length * 7)},
               }),
               modalContent: JSON.stringify(res, null, 4)
             })
@@ -143,7 +171,7 @@ class API extends Component {
               testHeader: update(this.state.testHeader, {
                 'status': {$set: err.status},
                 'time': {$set: Date.now()-time},
-                'size': {$set: JSON.stringify(err).length},
+                'size': {$set: pretty(JSON.stringify(err).length * 7)},
               }),
               modalContent: JSON.stringify(err, null, 4)
             })
@@ -154,7 +182,7 @@ class API extends Component {
     }
 
     renderAPITest() {
-      if (!this.state.modalContent && _.isEmpty(this.state.variables)) {
+      if (_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) {
         return null;
       }
       return (
@@ -163,7 +191,7 @@ class API extends Component {
             !_.isEmpty(this.state.variables) ?
               <React.Fragment>
                 <label>We've detected you are using variables, please set variables and run again</label>
-                <Button color="primary" onClick={this.getEndpoint} size="sm" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Run</Button>
+                <Button color="primary" onClick={()=>this.getEndpoint(false)} size="sm" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Run</Button>
                 <br />
               </React.Fragment> :
               null
@@ -177,10 +205,12 @@ class API extends Component {
             </React.Fragment>
           ))}
         <div>
-          <div className="test-header">
-            <div>Status: {this.state.testHeader.status ? this.state.testHeader.status : '-'}</div>
-            <div>Time: {this.state.testHeader.time ? this.state.testHeader.time : '-'}</div>
-            <div>Size: {this.state.testHeader.size ? this.state.testHeader.size : '-'}</div>
+          <div className="property">
+            <div>
+              <div className="last-save">{this.state.testHeader.status ? 'Status: ' + this.state.testHeader.status : null}</div>
+              <div className="last-save">{this.state.testHeader.time ? 'Time: ' + this.state.testHeader.time + 'ms': null}</div>
+              <div className="last-save">{this.state.testHeader.size ? 'Size: ' + this.state.testHeader.size : null}</div>
+            </div>
           </div>
           <pre>{this.state.modalContent}</pre>
         </div>
@@ -302,9 +332,18 @@ class API extends Component {
             <React.Fragment>
               <Modal
                 isOpen={this.state.modal}
-                toggle={()=>this.setState({modalContent: null, modal: false, variables: []})}
+                toggle={()=>this.setState({
+                  modalContent: null, modal: false,
+                  variables: [],
+                  testHeader: {'status': null, 'time': null, 'size': null}
+                })}
               >
-                <ModalHeader toggle={()=>this.setState({modalContent:null, modal: false, variables: []})}>API Test</ModalHeader>
+                <ModalHeader toggle={()=>this.setState({
+                  modalContent: null,
+                  modal: false,
+                  variables: [],
+                  testHeader: {'status': null, 'time': null, 'size': null}
+                })}>API Test</ModalHeader>
                 <ModalBody>
                   {this.renderAPITest()}
                 </ModalBody>

@@ -3,6 +3,14 @@ const {docClient, pool, config, hashids} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 
+const generateID = () => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0
+        const v = c === "x" ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+    })
+}
+
 exports.getSkills = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
@@ -233,7 +241,7 @@ exports.deleteSkill = (req, res) => {
     }
 
     let id = hashids.decode(req.params.id)[0];
-    pool.query("SELECT * FROM skills INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id WHERE creator_id = $1 AND skills.skill_id = $2 AND diagrams.name = 'ROOT'", [req.user.id, id], (err, results) => {    
+    pool.query("SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2", [req.user.id, id], (err, results) => {    
         // Delete skill off Amazon
         if(results.rows[0].amzn_id){
             AccessToken(req.user.id, token => {
@@ -267,7 +275,7 @@ exports.deleteSkill = (req, res) => {
         })
 
         // Delete diagrams recursively
-        deleteDiagrams(results.rows[0].id)
+        deleteDiagrams(results.rows[0].diagram)
     });
 };
 
@@ -734,4 +742,143 @@ exports.withdrawSkill = (req, res) => {
             res.status(500).send(err.response.data);
         });
     });
+}
+
+exports.copySkill = (req, res) => {
+    let id = hashids.decode(req.params.id)[0]
+    let diagram_mapping = {}
+    let diagram_names = {}
+    let sub_diagrams = {}
+
+    const remapDiagramIds = (diagram, new_skill_id) => {
+        diagram.id = diagram_mapping[diagram.id]
+        diagram.skill = new_skill_id
+        sub_diagrams[diagram.id] = []
+
+        let JSON_diagram_data = JSON.parse(diagram.data)
+        let nodes = JSON_diagram_data.nodes
+        if(!!nodes) {
+            for (let i = 0; i < nodes.length; i++){
+                let node = nodes[i]
+                if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+                    // If this diagram id hasn't been seen yet, create a new mapping for it and recursively call remapping
+                    if (!diagram_mapping[node.extras.diagram_id]) {
+                        diagram_mapping[node.extras.diagram_id] = generateID()
+                        retrieveDiagram(node.extras.diagram_id, new_skill_id)
+                    }
+                    node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
+                    sub_diagrams[diagram.id].push(node.extras.diagram_id)
+                }
+            }
+        }
+        diagram.data = JSON.stringify(JSON_diagram_data)
+        return diagram
+    }
+
+    const uploadNewDiagram = (remapped_diagram, old_diagram_id, new_skill_id) => {
+        let params = {
+            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            Item: {
+                id: remapped_diagram.id,
+                variables: remapped_diagram.variables,
+                data: remapped_diagram.data,
+                skill: remapped_diagram.skill,
+                creator: remapped_diagram.creator
+            }
+        }
+
+        // Called if SQL insert fails
+        const cleanUpDynamo = (new_diagram_id) => {
+            let clean_up_params = {
+                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                Key: {'id': new_diagram_id}
+            };
+            docClient.delete(clean_up_params, err => {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(err.statusCode)
+                }
+            });
+        }
+
+        const insertDiagramRow = (new_diagram_id, old_diagram_id) => {
+            let diagram_name = diagram_names[old_diagram_id]
+
+            pool.query(
+                `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents) 
+                (SELECT $1, $2, $3, $4, permissions, used_intents FROM diagrams WHERE id = $5)`,
+                [new_diagram_id, diagram_name, new_skill_id, JSON.stringify(sub_diagrams[new_diagram_id]), old_diagram_id],
+                (err) => {
+                    if(err) {
+                        console.log(err)
+                        cleanUpDynamo(new_diagram_id)
+                        res.sendStatus(500)
+                    }
+                }    
+            )
+        }
+
+        docClient.put(params, async(err) => {
+            if (err) {
+                console.log(err)
+                res.sendStatus(err.statusCode)
+            } else {
+                insertDiagramRow(remapped_diagram.id, old_diagram_id)
+            }
+        });
+    }
+
+    const retrieveDiagram = (diagram_id, new_skill_id) => {
+        let get_params = {
+            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            Key: {'id': diagram_id}
+        }
+
+        docClient.get(get_params, (err, data) => {
+            if(err) {
+                console.log(err)
+                res.sendStatus(err.statusCode)
+            } else if (data.Item) {
+                let remapped_diagram = remapDiagramIds(data.Item, new_skill_id)
+                uploadNewDiagram(remapped_diagram, diagram_id, new_skill_id)
+            }
+        })
+    }
+
+    // Starts here 
+    pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [id], (err, data) => {
+        let root_diagram_id
+        for (let i = 0; i < data.rows.length; i++){
+            diagram_names[data.rows[i].id] = data.rows[i].name
+
+            if (data.rows[i].name === 'ROOT') {
+                root_diagram_id = data.rows[i].id
+                diagram_mapping[root_diagram_id] = generateID()
+            }
+        }
+
+        // Create copy of the skill
+        let copy_query = 
+            `
+            BEGIN;
+            CREATE TEMP TABLE temp_tab ON COMMIT DROP AS SELECT * FROM skills WHERE skill_id = ${id};
+            UPDATE temp_tab SET skill_id = ( select MAX(skill_id) + 1 FROM skills ), diagram = '${diagram_mapping[root_diagram_id]}', name = (SELECT name FROM temp_tab) || ' copy';
+            INSERT INTO skills select * FROM temp_tab RETURNING *;
+            COMMIT;
+            `
+        pool.query(
+            copy_query, 
+            (err, data) => {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    let new_skill_id = data[3].rows[0].skill_id
+                    retrieveDiagram(root_diagram_id, new_skill_id)
+                    data[3].rows[0].skill_id = hashids.encode(data[3].rows[0].skill_id)
+                    res.send(data[3].rows[0])
+                }
+            }
+        )
+    })
 }

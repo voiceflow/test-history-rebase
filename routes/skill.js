@@ -746,6 +746,7 @@ exports.withdrawSkill = (req, res) => {
 
 exports.copySkill = (req, res) => {
     let id = hashids.decode(req.params.id)[0]
+    let new_creator_id = req.params.target_creator
     let diagram_mapping = {}
     let diagram_names = {}
     let sub_diagrams = {}
@@ -783,7 +784,7 @@ exports.copySkill = (req, res) => {
                 variables: remapped_diagram.variables,
                 data: remapped_diagram.data,
                 skill: remapped_diagram.skill,
-                creator: remapped_diagram.creator
+                creator: new_creator_id
             }
         }
 
@@ -862,7 +863,7 @@ exports.copySkill = (req, res) => {
             `
             BEGIN;
             CREATE TEMP TABLE temp_tab ON COMMIT DROP AS SELECT * FROM skills WHERE skill_id = ${id};
-            UPDATE temp_tab SET skill_id = ( select MAX(skill_id) + 1 FROM skills ), diagram = '${diagram_mapping[root_diagram_id]}', name = (SELECT name FROM temp_tab) || ' copy';
+            UPDATE temp_tab SET skill_id = ( select MAX(skill_id) + 1 FROM skills ), diagram = '${diagram_mapping[root_diagram_id]}', name = (SELECT name FROM temp_tab) || ' copy', creator_id = ${new_creator_id};
             INSERT INTO skills select * FROM temp_tab RETURNING *;
             COMMIT;
             `

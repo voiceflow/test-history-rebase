@@ -29,8 +29,7 @@ class SkillCard extends React.Component {
   }
 
   copySkill() {
-    console.log("Copying", this.props.skill.skill_id)
-    axios.post(`/skill/${this.props.skill.skill_id}/copy`)
+    axios.post(`/skill/${this.props.skill.skill_id}/${window.user_detail.id}/copy`)
     .then(res => {
       this.props.handleCopySkill(res.data)
     })  

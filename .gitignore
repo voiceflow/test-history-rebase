@@ -11,5 +11,9 @@ dump.rdb
 routes/tmp/*
 !routes/tmp/.gitkeep
 *package-lock.json
+package-lock.json
 *yarn.lock
 
+# dotenv environment variables files
+.env*
+!.env.example

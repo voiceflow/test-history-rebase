@@ -310,7 +310,7 @@ class API extends Component {
               </div> :
               _.map(this.state.testVariablesMapping, (val, key) => {
                 let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
-                return <pre key={key}>{draftToMarkdown(path) + ' = ' + key + ' => ' + val}</pre>
+                return <pre key={key}>{draftToMarkdown(path) + ': ' + key + ' => ' + val}</pre>
               })
             }
           </div> : null

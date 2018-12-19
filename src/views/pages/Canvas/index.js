@@ -930,12 +930,6 @@ class Canvas extends Component {
 
         if(this.preview){
             this.runTest()
-        } else if ((!this.state.skill.intents || (this.state.skill.intents && this.state.skill.intents.length > 0)) && !this.state.skill.amzn_id) {
-            this.setState({
-                error_modal: "Since your skill contains intents, you must first publish your skill before testing with the built-in testing modal",
-                testing_modal: false,
-                loading_modal: true
-            })
         } else {
             this.onSave(diagram_id => {
                 if(diagram_id === null){
@@ -1376,7 +1370,7 @@ class Canvas extends Component {
                     admin={this.state.admin}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
-                    diagram_id={this.state.diagram_id}
+                    diagram_id={this.diagram_id}
                     history={this.props.history}
                 /> }
                 {this.state.loading_diagram && <div id="loading-diagram">

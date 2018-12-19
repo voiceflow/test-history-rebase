@@ -2,7 +2,6 @@
 
 const SLOT_TYPES = [
     "CUSTOM",
-    "AMAZON.LITERAL",
     "AMAZON.DATE",
     "AMAZON.DURATION",
     "AMAZON.FOUR_DIGIT_NUMBER",

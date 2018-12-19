@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import axios from 'axios';
 import stringifyObject from 'stringify-object';
 import isVarName from 'is-var-name';
-import { Button, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
+import { Button, ButtonGroup, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
 import VariableInput from './components/VariableInput';
@@ -18,12 +18,15 @@ import 'brace/mode/javascript'
 import 'brace/theme/chrome'
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+const TABS = ['raw', 'results'];
 
 class API extends Component {
     constructor(props) {
         super(props);
 
         let node = props.node;
+        let tab = localStorage.getItem('api_test_tab')
+        if(!tab) tab = TABS[0]
 
         // DEPRECATE turning from string to draftjs for SUPER old api blocks
         if(node.extras.mapping){
@@ -59,10 +62,12 @@ class API extends Component {
         this.state = {
             node: node,
             modal: false,
+            activeTab: tab,
             body_state: true,
             modalContent: null,
             variables: [],
             innerVariables: {},
+            testVariablesMapping: {},
             dropdownOpen: false,
             type: 'headers',
             testHeader: {'status': null, 'time': null, 'size': null},
@@ -72,6 +77,8 @@ class API extends Component {
         this.onChangeAce = this.onChangeAce.bind(this)
         this.getEndpoint = this.getEndpoint.bind(this);
         this.renderAPITest = this.renderAPITest.bind(this);
+        this.findPath = this.findPath.bind(this);
+        this.switchTab = this.switchTab.bind(this);
         this.toggle = this.toggle.bind(this);
         this.togglePopover = this.togglePopover.bind(this)
         this.handleVariableChange = this.handleVariableChange.bind(this);
@@ -92,12 +99,37 @@ class API extends Component {
       );
       this.setState({innerVariables: variable_map});
     }
+
     onChangeAce(content){
         let node = this.state.node
         node.extras.content = content
         this.setState({
             node: node
         }, this.props.onUpdate)
+    }
+
+    findPath(path, data){
+      const props = path.split('.')
+      let cur_data = { response: data }
+      props.forEach( prop => {
+          const props_and_inds = prop.split('[');
+          props_and_inds.forEach( prop_or_ind => {
+              if (prop_or_ind.indexOf(']') >= 0) {
+                  const index_str = prop_or_ind.slice(0, -1);
+                  let index;
+                  if (index_str.toLowerCase() === '{random}') {
+                      index = Math.floor(Math.random() * cur_data.length)
+                  } else {
+                      index = parseInt(index_str)
+                  }
+                  cur_data = cur_data[index]
+              } else {
+                  cur_data = cur_data[prop_or_ind]
+              }
+          })
+      })
+
+      return cur_data
     }
 
     getEndpoint(firstClick=true){
@@ -108,7 +140,7 @@ class API extends Component {
       let userParam = {};
       let url = draftToMarkdown(this.state.node.extras.url);
       let method = this.state.node.extras.method;
-      const { body, headers, params, bodyInputType, content } = this.props.node.extras;
+      const { body, headers, params, bodyInputType, content, mapping } = this.props.node.extras;
       const replacer = (match, inner, variables_map) => {
         if(inner in variables_map){
           return variables_map[inner];
@@ -117,6 +149,7 @@ class API extends Component {
         }
       }
 
+      // Utility function to find all variables
       const finder = url => {
         let match = regex.exec(url);
     		while (match != null) {
@@ -127,11 +160,13 @@ class API extends Component {
     		}
       }
 
+      // Replace url with user set variables
       let new_url
       new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
       if(!_.isNull(url)){
     		finder(url);
-        if (bodyInputType == 'rawInput') {
+        // Distinguish between body rawInput and pairs
+        if (bodyInputType === 'rawInput') {
           finder(content);
         } else {
           _.forEach(_.concat(body), nodeValue => {
@@ -140,15 +175,22 @@ class API extends Component {
             })
           })
         }
+        // Find variables inside of Headers, Body, and Params
         _.forEach(_.concat(headers, params), nodeValue => {
           _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
             finder(draftToMarkdown(value));
           })
         });
+        // Find variables inside of result variable mappings
+        _.forEach(mapping, map => {
+          finder(draftToMarkdown(map.path));
+        });
 
+        // Check if user requires variables to be filled
         if ( !_.isEmpty(variables) && firstClick)  {
           this.setState({variables: variables})
         } else {
+          // Set time before response
           let time = Date.now();
           const markdownToObject = nodes => {
             let object = {};
@@ -169,24 +211,43 @@ class API extends Component {
           }
           userParam = markdownToObject(params);
 
+          let varMap = {};
           axios({ method: method, url: new_url, headers: userHeader, body: userBody, params: userParam })
           .then(res => {
+            // Map all paths user requires to varMap
+            _.forEach(mapping, map => {
+              try {
+                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
+              } catch(error) {
+                varMap[map.var] = null;
+              }
+            })
             this.setState({
               testHeader: update(this.state.testHeader, {
                 'status': {$set: res.status},
                 'time': {$set: Date.now()-time},
                 'size': {$set: pretty(JSON.stringify(res).length * 7)},
               }),
-              modalContent: JSON.stringify(res, null, 4)
+              testVariablesMapping: varMap,
+              modalContent: JSON.stringify(res.data, null, 4)
             })
           })
           .catch(err => {
+            // Map all paths user requires to varMap
+            _.forEach(mapping, map => {
+              try {
+                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), err), null, 4)
+              } catch(error) {
+                varMap[map.var] = null;
+              }
+            })
             this.setState({
               testHeader: update(this.state.testHeader, {
                 'status': {$set: err.status},
                 'time': {$set: Date.now()-time},
                 'size': {$set: pretty(JSON.stringify(err).length * 7)},
               }),
+              testVariablesMapping: varMap,
               modalContent: JSON.stringify(err, null, 4)
             })
           })
@@ -198,6 +259,10 @@ class API extends Component {
     renderAPITest() {
       if (_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) {
         return null;
+      }
+      let borderStyle = {borderColor: 'red'};
+      if (this.state.testHeader.status) {
+        borderStyle = {borderColor: 'green'}
       }
       return (
       <div className='projects-menu'>
@@ -218,16 +283,38 @@ class API extends Component {
               </InputGroup>
             </React.Fragment>
           ))}
-        <div>
-          <div className="property">
-            <div>
-              <div className="last-save">{this.state.testHeader.status ? 'Status: ' + this.state.testHeader.status : null}</div>
-              <div className="last-save">{this.state.testHeader.time ? 'Time: ' + this.state.testHeader.time + 'ms': null}</div>
-              <div className="last-save">{this.state.testHeader.size ? 'Size: ' + this.state.testHeader.size : null}</div>
+        {!_.isNull(this.state.modalContent) ?
+          <div>
+            <div className="property">
+              <div>
+                <div className="last-save">{this.state.testHeader.status ? 'Status: ' + this.state.testHeader.status : null}</div>
+                <div className="last-save">{this.state.testHeader.time ? 'Time: ' + this.state.testHeader.time + 'ms': null}</div>
+                <div className="last-save">{this.state.testHeader.size ? 'Size: ' + this.state.testHeader.size : null}</div>
+              </div>
             </div>
-          </div>
-          <pre>{this.state.modalContent}</pre>
-        </div>
+            <ButtonGroup className="toggle-group mb-2">
+              {_.map(TABS, tab => (
+                <Button
+                  key={tab}
+                  onClick={() => this.switchTab(tab)}
+                  outline={this.state.activeTab !== tab}
+                  disabled={this.state.activeTab === tab}
+                >
+                  {tab}
+                </Button>
+              ))}
+            </ButtonGroup>
+            {this.state.activeTab === TABS[0] ?
+              <div style={borderStyle} className="response-box">
+                <pre>{this.state.modalContent}</pre>
+              </div> :
+              _.map(this.state.testVariablesMapping, (val, key) => {
+                let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
+                return <pre key={key}>{draftToMarkdown(path) + ' = ' + key + ' => ' + val}</pre>
+              })
+            }
+          </div> : null
+        }
       </div>);
     }
 
@@ -244,6 +331,14 @@ class API extends Component {
         this.setState({
             node: node
         }, this.props.onUpdate);
+    }
+
+    switchTab(tab) {
+      if(tab !== this.state.activetTab){
+        this.setState({
+          activeTab: tab
+        }, ()=>localStorage.setItem('api_test_tab', tab))
+      }
     }
 
     toggle() {

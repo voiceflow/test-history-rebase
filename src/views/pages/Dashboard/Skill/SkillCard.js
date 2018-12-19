@@ -4,10 +4,43 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import axios from 'axios'
+
+import { ButtonDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap'
 
 import {Link} from 'react-router-dom'; 
 
 class SkillCard extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      dropdownOpen: false
+    }
+
+    this.toggle = this.toggle.bind(this)
+    this.copySkill = this.copySkill.bind(this)
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    })
+  }
+
+  copySkill() {
+    console.log("Copying", this.props.skill.skill_id)
+    axios.post(`/skill/${this.props.skill.skill_id}/copy`)
+    .then(res => {
+      this.props.handleCopySkill(res.data)
+    })  
+    .catch(err => {
+      console.log(err.response)
+      this.setState({
+        error: 'Error copying skill'
+      })
+    })
+  }
 
   render() {
     let image = this.props.skill.image;
@@ -17,28 +50,38 @@ class SkillCard extends React.Component {
     name = name.substring(0,3) 
 
     return (
-      <div className="skill-card-container">
+      <div className="skill-card-container"
+           onMouseEnter={() => {this.setState({hover: true})}}
+           onMouseLeave={() => {this.setState({hover: false})}}>
         <Card className='skill-card'>
-          <CardActionArea className="card-action" onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>
+          <CardActionArea className="card-action">
+            <div className="d-flex justify-content-end">
+              <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} direction="left">
+                <DropdownToggle>
+                  <i className="far fa-ellipsis-v mr-2"></i>
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={()=>{this.props.history.push('/publish/amzn/' + this.props.skill.skill_id)}}>
+                    Publish <span className="button-circle"><i className="fab fa-amazon"/></span>
+                  </DropdownItem>
+                  <DropdownItem onClick={this.copySkill}>
+                    Copy Skill
+                  </DropdownItem>
+                </DropdownMenu>
+              </ButtonDropdown>
+            </div>
             { image ?
-              <div style={{backgroundImage: `url(${image})`}} className='card-image'/> :
-              <div className='no-image card-image' >
+              <div style={{backgroundImage: `url(${image})`}} className='card-image' onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}/> :
+              <div className='no-image card-image' onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>
                 <h1>{ name }</h1>
               </div>
             }
-            <CardContent>
+            <CardContent onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>
               <h5>
                 {this.props.skill.name}
               </h5>
             </CardContent>
           </CardActionArea>
-          <CardActions>
-            <Link to={"/publish/amzn/" + this.props.skill.skill_id} className="no-underline">
-              <Button size="small" color="primary" className="normal-btn">
-                <i className="far fa-ellipsis-v mr-2"/> Settings
-              </Button>
-            </Link>
-          </CardActions>
         </Card>
       </div>
     );

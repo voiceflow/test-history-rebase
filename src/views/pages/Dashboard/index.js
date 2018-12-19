@@ -22,6 +22,7 @@ class DashBoard extends Component {
 
         this.onLoadSkills = this.onLoadSkills.bind(this);
         this.openSkill = this.openSkill.bind(this);
+        this.handleCopySkill = this.handleCopySkill.bind(this)
     }
 
     openSkill(skill, diagram){
@@ -100,6 +101,14 @@ class DashBoard extends Component {
         });
     }
 
+    handleCopySkill(skill) {
+        let skills = this.state.skills
+        skills.push(skill)
+        this.setState({
+            skills: skills
+        })
+    }
+
     render() {
         let skills;
 
@@ -136,6 +145,8 @@ class DashBoard extends Component {
                         key={i}
                         skill={skill}
                         open={this.openSkill}
+                        history={this.props.history}
+                        handleCopySkill={this.handleCopySkill}
                     />)}
             </Masonry>
         }

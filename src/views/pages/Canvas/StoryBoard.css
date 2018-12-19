@@ -423,6 +423,14 @@
   margin-top: -10px !important;
   white-space: pre-wrap;
 }
+
+.response-box {
+  overflow: scroll;
+  max-height: 555.51px;
+  border-style: solid;
+  border-width: 1px;
+  margin-top: 10px;
+}
 .projects-menu {
     /*padding: 0 !important;*/
     /*overflow: hidden;*/

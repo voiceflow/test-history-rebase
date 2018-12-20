@@ -112,38 +112,34 @@ class ActionGroup extends PureComponent {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(() => {
-            if(this.props.skill.amzn_id && (!this.props.skill.intents || this.props.skill.intents.length === 0 )){
-                this.setState({stage: 2});
-            }else{
-                this.setState({stage: 11}, () => {
-                    axios.post(`/skill/${this.props.skill.skill_id}/publish`)
-                    .then(res => {
-                        let skill = this.props.skill;
-                        skill.amzn_id = res.data;
-                        this.props.updateSkill(skill);
+            this.setState({stage: 11}, () => {
+                axios.post(`/skill/${this.props.skill.skill_id}/publish`)
+                .then(res => {
+                    let skill = this.props.skill;
+                    skill.amzn_id = res.data;
+                    this.props.updateSkill(skill);
+                    this.setState({
+                        stage: 2
+                    });
+                })
+                .catch(err => {
+                    if(err.status === 403 || err.response.status === 403){
+                        // No Vendor ID/Amazon Developer Account
                         this.setState({
-                            stage: 2
+                            stage: 6
                         });
-                    })
-                    .catch(err => {
-                        if(err.status === 403 || err.response.status === 403){
-                            // No Vendor ID/Amazon Developer Account
-                            this.setState({
-                                stage: 6
-                            });
-                        }else{
-                            console.dir(err);
-                            this.setState({
-                                upload_error: ((
-                                    err.response && 
-                                    err.response.data && 
-                                    err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
-                                stage: 9
-                            })
-                        }
-                    })
-                });
-            }
+                    }else{
+                        console.dir(err);
+                        this.setState({
+                            upload_error: ((
+                                err.response && 
+                                err.response.data && 
+                                err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
+                            stage: 9
+                        })
+                    }
+                })
+            });
         })
         .catch(err => {
             this.setState({stage: 4});

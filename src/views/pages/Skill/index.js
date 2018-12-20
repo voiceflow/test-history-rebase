@@ -147,13 +147,25 @@ class Skill extends Component {
 
     handleError(err, default_error){
         console.error(err);
+
+        let error_message = ''
+        if(err.response && err.response.data && err.response.data.message){
+            error_message += err.response.data.message
+
+            if (err.response.data.violations) {
+                for (let i = 0; i < err.response.data.violations.length; i++){
+                    error_message += '\n' + err.response.data.violations[i].message
+                }
+            }
+        }
+
         this.setState({
             publish: false,
             stage: 2,
             error: ((
                 err.response && 
                 err.response.data && 
-                err.response.data.message) ? err.response.data : default_error)
+                err.response.data.message) ? error_message : default_error)
         });
     }
 
@@ -291,6 +303,7 @@ class Skill extends Component {
 
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
+        let split_keywords = s.keywords.split(',')
 
         if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
             this.setState({
@@ -300,6 +313,14 @@ class Skill extends Component {
             this.setState({
                 error: 'Terms and conditions must be a url'
             })
+        } else if(split_keywords.length > 30) {
+            this.setState({
+                error: 'Limited to 30 keywords'
+            })
+        } else if(s.keywords.length - split_keywords.length + 1> 150) {
+            this.setState({
+                error: 'The total length of all keywords must be less than or equal to 150'
+            })  
         } else {
             let store;
 
@@ -963,7 +984,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info">
                                     <p className="text-secondary">
-                                        <b>Keywords</b> are words that will help your Skill be found when users are searching. Try to use words that pertain to your Skill.
+                                        <b>Keywords</b> are words that will help your Skill be found when users are searching. There is a limit of 30 keywords and their total length must be less than or equal to 150.
                                     </p> 
                                 </div>
                                 <div className="col-9">

@@ -1342,7 +1342,7 @@ class Canvas extends Component {
                     admin={this.state.admin}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
-                    diagram_id={this.state.diagram_id}
+                    diagram_id={this.diagram_id}
                     history={this.props.history}
                 /> }
                 {this.state.loading_diagram && <div id="loading-diagram">

@@ -92,7 +92,7 @@ const getVariables = (req, res) => {
         } else {
             res.sendStatus(404);
         }
-    });
+    })
 }
 
 const getDiagrams = (req, res) => {

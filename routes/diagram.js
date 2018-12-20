@@ -92,7 +92,7 @@ const getVariables = (req, res) => {
         } else {
             res.sendStatus(404);
         }
-    });
+    })
 }
 
 const getDiagrams = (req, res) => {
@@ -521,7 +521,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     if (inputs && used_choices) {
                         node.extras.inputs.forEach(input => {
                             if(input.trim() !== ''){
-                                used_choices.add(input)
+                                input.split('\n').forEach(c => {
+                                    used_choices.add(c)                            
+                                })
                             }
                         })
                     }

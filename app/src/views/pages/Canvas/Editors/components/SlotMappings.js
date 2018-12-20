@@ -12,6 +12,32 @@ class SlotMappings extends Component {
             slots: _.cloneDeep(this.props.slots)
         }
 
+        this.handleAddMap = this.handleAddMap.bind(this)
+        this.handleRemoveMap = this.handleRemoveMap.bind(this)
+        this.handleSelection = this.handleSelection.bind(this)
+    }
+
+    handleAddMap() {
+        this.props.arguments.push({
+            variable: null,
+            slot: null
+        })
+
+        this.props.update()
+    }
+
+    handleRemoveMap(i) {
+        this.props.arguments.splice(i, 1);
+
+        this.props.update()
+    }
+
+    handleSelection(i, arg, value) {
+        if(this.props.arguments[i][arg] !== value){
+            this.props.arguments[i][arg] = value
+            
+            this.props.update()
+        }
     }
 
     static getDerivedStateFromProps(props, current_state) {
@@ -59,7 +85,7 @@ class SlotMappings extends Component {
                                 classNamePrefix="select-box"
                                 className="map-box"
                                 value={argument.slot}
-                                onChange={(selected)=>this.props.handleSelection(i, 'slot', selected)}
+                                onChange={(selected)=>this.handleSelection(i, 'slot', selected)}
                                 placeholder="Slot"
                                 options={this.state.slot_options}
                             />
@@ -68,17 +94,17 @@ class SlotMappings extends Component {
                                 classNamePrefix="variable-box"
                                 className="map-box"
                                 value={argument.variable ? {label: '{' + argument.variable + '}', variable: argument.variable} : null}
-                                onChange={(selected)=>this.props.handleSelection(i, 'variable', selected.value)}
+                                onChange={(selected)=>this.handleSelection(i, 'variable', selected.value)}
                                 placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
                                 options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                     return {label: '{' + variable + '}', value: variable}
                                 }) : []}
                             />
                         </div>
-                        <div className="close pl-2" onClick={() => this.props.onRemove(i)}>×</div>
+                        <div className="close pl-2" onClick={() => this.handleRemoveMap(i)}>×</div>
                     </div>)
                 })}
-                <button className="btn btn-clear btn-block mb-2" onClick={this.props.onAdd}>
+                <button className="btn btn-clear btn-block mb-2" onClick={this.handleAddMap}>
                     <i className="far fa-plus"></i> Add Variable Map
                 </button>
             </React.Fragment>

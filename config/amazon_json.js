@@ -68,7 +68,7 @@ const interactionModel = (req) => {
 	
 	const intents_for_amazon = []
 	const entered_intents = new Set()
-	console.log(used_intents)
+
 	used_intents.forEach(intent_key => {
 		if(typeof intent_key !== 'string') return
 

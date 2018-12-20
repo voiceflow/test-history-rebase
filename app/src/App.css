@@ -956,7 +956,12 @@ body.modal-open {
 .tippy-tooltip {
     /*background-color: #42A5FF !important;*/
     font-size: 13px;
-    background-color: #42A5FF !important;
+}
+.tippy-tooltip.menu-theme{
+    max-width: 220px;
+}
+.tippy-tooltip.block-theme{
+    max-width: 300px;
 }
 .tippy-tooltip.warning-theme .arrow-regular{
     left: 15px !important;

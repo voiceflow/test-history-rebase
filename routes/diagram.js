@@ -450,7 +450,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                 lines: {},
                 variables: data.Item.variables,
                 commands: []
-            };
+            }
 
             // Iterate through every block in the diagram
             for (var i = 0; i < diagram.nodes.length; i++) {
@@ -476,25 +476,43 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     };
                 } else if (node.extras.type === 'command') {
 
-                    if(node.extras.commands){
-                        let nextLink = null;
-                        for (var j = 0; j < node.ports.length; j++) {
-                            if (!node.ports[j].in) {
-                                [nextLink] = node.ports[j].links;
-                            }
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    let nextId = getLink(nextLink)
+                    if(node.extras.intent){
+                        let intent = node.extras.intent
+                        // Log that this intent has been used
+                        if (used_intents) {
+                            used_intents.add(intent.key)
+                        }
+                        
+                        if(intent.built_in){
+                            intent = intent.label
+                        }else if(intent.key in intents){
+                            intent = intents[intent.key]
                         }
 
-                        let nextId = getLink(nextLink)
-                        let commands = node.extras.commands.split('\n').filter(i => { return !!i });
+                        story.commands.push({
+                            intent: intent,
+                            mappings: node.extras.mappings,
+                            resume: node.extras.resume,
+                            next: nextId
+                        })
+                    }else if(node.extras.commands){
+                        let commands = node.extras.commands.split('\n').filter(i => { return !!i })
 
                         commands.forEach(command => {
                             story.commands.push({
                                 string: command,
                                 value: nextId
-                            });
-                        });
+                            })
+                        })
                     }
-
                 } else if (node.extras.type === 'random') {
                     let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => getLink(port.links[0]))
                     story.lines[node.id] = {
@@ -801,18 +819,11 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                 } else if (node.extras.type === 'api') {
 
-                    let formattedRawContent = '';
-                    if (node.extras.content){
-                        formattedRawContent = node.extras.content
-                    }else if(!_.isNil(node.extras.rawContent)){
-                        formattedRawContent = draftToMarkdown(node.extras.rawContent);
-                    }
-
                     if (!_.isNil(node.extras.params)) {
                         node.extras.params.forEach(param_map => {
-                            param_map.val = draftToMarkdown(param_map.val);
-                            param_map.key = draftToMarkdown(param_map.key);
-                        });
+                            param_map.val = draftToMarkdown(param_map.val)
+                            param_map.key = draftToMarkdown(param_map.key)
+                        })
                     }
 
                     let headers = []
@@ -824,19 +835,29 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                     key: draftToMarkdown(param_map.key)
                                 })
                             }
-                        });
+                        })
                     }
 
-                    if (!_.isNil(node.extras.body)) {
+                    let formattedBody
+                    if(node.extras.bodyInputType = 'rawInput'){
+                        if (node.extras.content){
+                            formattedBody = node.extras.content
+                        }else if(!_.isNil(node.extras.rawContent)){
+                            formattedBody = draftToMarkdown(node.extras.rawContent)
+                        }
+                    }else if (!_.isNil(node.extras.body)) {
+                        formattedBody = []
                         node.extras.body.forEach(param_map => {
-                            param_map.val = draftToMarkdown(param_map.val);
-                            param_map.key = draftToMarkdown(param_map.key);
-                        });
+                            formattedBody.push({
+                                val: draftToMarkdown(param_map.val),
+                                key: draftToMarkdown(param_map.key)
+                            })
+                        })
                     }
 
                     let formattedUrl = '';
                     if (!_.isNil(node.extras.url)) {
-                        formattedUrl = draftToMarkdown(node.extras.url);
+                        formattedUrl = draftToMarkdown(node.extras.url)
                     }
 
                     if (!_.isNil(node.extras.mapping)) {
@@ -845,21 +866,19 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                 param_map.path = draftToMarkdown(param_map.path)
                             }
                             param_map.path = param_map.path.trim()
-                        });
+                        })
                     }
                     
                     story.lines[node.id] = {
-                        body: node.extras.body,
+                        body: formattedBody,
                         headers: headers,
                         params: node.extras.params,
                         url: formattedUrl,
                         method: node.extras.method,
                         mapping: node.extras.mapping,
-                        bodyInputType: node.extras.bodyInputType,
-                        rawContent: formattedRawContent,
                         success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
                         fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
-                    };
+                    }
 
                 } else if (node.extras.type === 'mail') {
 
@@ -956,7 +975,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         }
                     })
                 }
-            });
+            })
         } else {
             resolve(404)
         }
@@ -1019,7 +1038,7 @@ const publish = (req, res) => {
 
         let used_intents = new Set()
         let used_choices = new Set()
-        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots);
+        let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots)
 
         used_intents = [...used_intents]
         used_choices = [...used_choices]
@@ -1028,7 +1047,7 @@ const publish = (req, res) => {
             if(err){
                 return res.sendStatus(500)
             }
-            res.sendStatus(status);
+            res.sendStatus(status)
         })
     })
 }

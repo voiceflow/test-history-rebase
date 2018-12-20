@@ -14,7 +14,7 @@ class ChoiceDropdownInputs extends Component {
         }
     }
 
-    static getDerivedStateFromProps(props, current_state) {
+    static getDerivedStateFromProps(props) {
         const new_choices = props.choices.map(choice_obj => {
             delete choice_obj.invalid
             if (!choice_obj.intent || choice_obj.intent.built_in) {
@@ -98,38 +98,6 @@ class ChoiceDropdownInputs extends Component {
         }, () => {this.props.onChange(choices)})
     }
 
-    handleAddMap(choice_i) {
-        var choices = this.state.choices;
-        choices[choice_i].mappings.push({
-            variable: null,
-            slot: null
-        });
-
-        this.setState({
-            choices: choices
-        }, () => {this.props.onChange(choices)});
-    }
-
-    handleRemoveMap(choice_i, i) {
-        let choices = this.state.choices;
-
-        choices[choice_i].mappings.splice(i, 1);
-
-        this.setState({
-            choices: choices
-        }, () => {this.props.onChange(choices)});
-    }
-
-    handleSelection(choice_i, i, arg, value) {
-        let choices = this.state.choices;
-        if(choices[choice_i].mappings[i][arg] !== value){
-            choices[choice_i].mappings[i][arg] = value
-            this.setState({
-                choices: choices
-            },  () => {this.props.onChange(choices)})
-        }
-    }
-
     render() {
         return (
             <div className="w-100">
@@ -180,9 +148,7 @@ class ChoiceDropdownInputs extends Component {
                                         slot_options={slots}
                                         slots={this.props.slots}
                                         arguments={choice.mappings}
-                                        onAdd={() => this.handleAddMap(i)}
-                                        onRemove={(index) => this.handleRemoveMap(i, index)}
-                                        handleSelection={(index, arg, value) => this.handleSelection(i, index, arg, value)}
+                                        update={this.props.update}
                                     />
                                 </React.Fragment>
                             }

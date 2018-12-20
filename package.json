@@ -24,7 +24,7 @@
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
-    "natural-language-commander": "github:WxnChen11/natural-language-commander",
+    "natural-language-commander": "git+https://github.com/WxnChen11/natural-language-commander.git",
     "number-to-words": "^1.2.4",
     "query-string": "^6.2.0",
     "randomstring": "^1.1.5",

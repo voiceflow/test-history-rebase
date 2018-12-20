@@ -236,15 +236,6 @@ class ActionGroup extends PureComponent {
     }
 
     toggleShare() {
-      // axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
-      //     isPreview: true,
-      // })
-      // .then(res => {
-      //     this.setState({ allowPreview: true});
-      // })
-      // .catch(err => {
-      //     console.log(err);
-      // })
       this.setState({
           share: !this.state.share
       });

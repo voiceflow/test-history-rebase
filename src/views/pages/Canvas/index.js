@@ -170,7 +170,8 @@ class Canvas extends Component {
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
 
-        if(!this.preview && (!diagram_id || !skill_id)){
+
+        if(!this.props.preview && (!diagram_id || !skill_id)){
             // DEFAULT TEMPLATE FOR CREATING A SKILL
             newSkill = true
             open = true
@@ -446,7 +447,6 @@ class Canvas extends Component {
     clickDiagram(e){
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
-
         if (selected.length === 1 && selected[0].extras.type !== 'comment') {
             engine.setSuperSelect(selected[0])
             this.setState({
@@ -655,6 +655,9 @@ class Canvas extends Component {
         } catch (e) {
             console.log(e)
         }
+        if (this.props.preview){
+          model.setLocked(true);
+        }
         if (diagram_json) {
             // DEPRECATE CONVERT DIAGRAM BLOCK NAMES
             diagram_json.nodes.forEach(node => {
@@ -687,7 +690,6 @@ class Canvas extends Component {
 
             engine.stopMove()
             engine.setDiagramModel(model)
-
             // make sure variables are unique and don't overlap with global variables
             let variables = []
             if (Array.isArray(diagram.variables)) {
@@ -1306,6 +1308,13 @@ class Canvas extends Component {
     }
 
     render() {
+        if (this.props.preview && !this.state.skill.preview){
+          return (
+            <div className='App'>
+              <WarningModal error={'Author has not allowed preview'} />
+            </div>
+          )
+        }
         return (
             <div className='App'>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>

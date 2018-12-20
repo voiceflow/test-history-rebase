@@ -129,13 +129,23 @@ class ActionGroup extends PureComponent {
                             stage: 6
                         });
                     }else{
-                        console.dir(err);
+                        let error_message = ''
+                        if(err.response && err.response.data && err.response.data.message){
+                            error_message += err.response.data.message
+
+                            if (err.response.data.violations) {
+                                for (let i = 0; i < err.response.data.violations.length; i++){
+                                    error_message += '\n' + err.response.data.violations[i].message
+                                }
+                            }
+                        }
+
                         this.setState({
+                            stage: 9,
                             upload_error: ((
                                 err.response && 
                                 err.response.data && 
-                                err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
-                            stage: 9
+                                err.response.data.message) ? error_message : 'Error Encountered')
                         })
                     }
                 })

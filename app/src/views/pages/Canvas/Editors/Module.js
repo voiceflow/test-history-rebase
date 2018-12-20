@@ -36,7 +36,7 @@ class Module extends Component {
         return (
             <React.Fragment>
                 <Label>Module Description</Label>
-                {this.state.module.descr ? 
+                {this.state.module.descr ?
                     <div className="module-desc">
                         {this.state.module.descr}
                     </div> : null
@@ -45,7 +45,7 @@ class Module extends Component {
                 <div>
                     {
                         this.state.node.extras.mapping.inputs.length > 0 ?
-                            <React.Fragment> 
+                            <React.Fragment>
                                 {this.state.node.extras.mapping.inputs.map((v, i) => {
                                     return <div key={i} className="variable_map mb-2">
                                         <Select
@@ -62,8 +62,8 @@ class Module extends Component {
                                         <input readOnly className="map-box form-control" value={`{${v.key}}`}/>
                                     </div>
                                 })}
-                            </React.Fragment> 
-                            : 
+                            </React.Fragment>
+                            :
                             <i className="text-muted">No input variables exist for this module</i>
                     }
                 </div>
@@ -72,13 +72,14 @@ class Module extends Component {
                 <div>
                 {
                     this.state.node.extras.mapping.outputs.length > 0 ?
-                        <React.Fragment> 
+                        <React.Fragment>
                             {this.state.node.extras.mapping.outputs.map((v, i) => {
                                 return <div key={i} className="variable_map mb-2 reverse">
                                     <Select
                                         className="map-box"
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
+                                        isDisabled={this.props.locked}
                                         value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
                                         onChange={(select) => this.selectVariable(select, i, 'outputs')}
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
@@ -89,14 +90,18 @@ class Module extends Component {
                                     <input readOnly className="map-box form-control" value={`{${v.key}}`}/>
                                 </div>
                             })}
-                        </React.Fragment> 
-                        : 
+                        </React.Fragment>
+                        :
                         <i className="text-muted">No output variables exist for this module</i>
                 }
                 </div>
             </React.Fragment>
         );
     }
+}
+
+Module.defaultProps = {
+  locked: false
 }
 
 export default Module;

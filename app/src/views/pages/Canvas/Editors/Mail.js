@@ -73,7 +73,7 @@ class Mail extends Component {
     }
 
     selectTemplate(selected) {
-        
+
         if(selected.template_id === this.state.node.extras.template_id) return;
 
         let find = this.props.templates.find(t => t.template_id === selected.value);
@@ -112,6 +112,7 @@ class Mail extends Component {
                 <Select
                     classNamePrefix="select-box"
                     value={this.state.selected}
+                    isDisabled={this.props.locked}
                     onChange={this.selectTemplate}
                     placeholder='Select Email Template'
                     options={this.props.templates.map(t => {return {
@@ -136,13 +137,13 @@ class Mail extends Component {
                     }}>Defined</Button>
                 </div>
                 {
-                    !user ? 
+                    !user ?
                     <React.Fragment>
-                        <Input 
+                        <Input
                             className="form-bg"
                             name='to'
                             type='email'
-                            value={this.state.node.extras.to} 
+                            value={this.state.node.extras.to}
                             onChange={this.onChange}
                             placeholder="E-mail"
                         />
@@ -157,13 +158,14 @@ class Mail extends Component {
                 <div>
                 {
                     this.state.node.extras.mapping.length !== 0 ?
-                        <React.Fragment> 
+                        <React.Fragment>
                             {this.state.node.extras.mapping.map((v, i) => {
                                 return <div key={i} className="variable_map mb-2">
                                     <Select
                                         className="map-box"
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
+                                        isDisabled={this.props.locked}
                                         value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
                                         onChange={(select) => this.selectVariable(select, i)}
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
@@ -180,6 +182,10 @@ class Mail extends Component {
             </div>
         );
     }
+}
+
+Mail.defaultProps = {
+  locked: false
 }
 
 export default Mail;

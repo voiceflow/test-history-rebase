@@ -86,6 +86,7 @@ class SetBlock extends Component {
             				key={i}
             				block={block}
 		                	onRemove={() => this.handleRemoveBlock(i)}
+                      locked={this.props.locked}
 		                	onSelection={(selected) => this.handleSelection(i, selected.value)}
 		                	onUpdate={this.onUpdate}
 		                	variables={this.props.variables}
@@ -93,7 +94,7 @@ class SetBlock extends Component {
 	                )
             	})}
                 { this.state.node.extras.sets.length < 20 ?
-                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
+                    <button className="btn btn-clear btn-lg btn-block" disabled={this.props.locked} onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add Variable Set
                     </button> : null
                 }

@@ -9,7 +9,7 @@ class Choice extends Component {
             node: this.props.node,
             voices: Array.isArray(this.props.voices) ? this.props.voices : []
         };
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleAddChoice = this.handleAddChoice.bind(this);
         this.handleRemoveChoice = this.handleRemoveChoice.bind(this);
@@ -72,6 +72,7 @@ class Choice extends Component {
                     Choices
                 </label>
                 <ChoiceInputs
+                    locked={this.props.locked}
                     choices={this.state.node.extras.choices}
                     inputs={this.state.node.extras.inputs}
                     onAdd={this.handleAddChoice}

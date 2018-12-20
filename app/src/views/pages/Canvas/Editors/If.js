@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
@@ -95,26 +96,30 @@ class IfBlock extends Component {
                     return (
                         <div key={i} className="solid-border set-block">
                             {this.state.node.extras.expressions.length > 1 ?
-                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}>×</div> 
-                                : null 
+                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}>×</div>
+                                : null
                             }
                             <div className="variable-group">
                                 <div className="square-bubble mr-1">{i + 1}</div><span>If </span>
                             </div>
                             { show ? <Expressionfy expression={expression}/> : null}
-                            <Expression expression={expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
+                            <Expression locked={this.props.locked} expression={expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
                         </div>
                     )
                 })}
 
                 { this.state.node.extras.expressions.length < BLOCK_LIMIT ?
-                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
+                    <button className="btn btn-clear btn-lg btn-block" onClick={!this.props.locked ? this.handleAddBlock : _.noop()}>
                         <i className="far fa-plus"></i> Add If Statement
                     </button> : null
                 }
             </div>
         );
     }
+}
+
+IfBlock.defaultProps = {
+  locked: false,
 }
 
 export default IfBlock;

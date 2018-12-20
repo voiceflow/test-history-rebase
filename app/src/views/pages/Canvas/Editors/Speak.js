@@ -159,7 +159,7 @@ class Speak extends Component {
                             <div className="multi-title-block">
                                 <div className="multi-title" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                     <span className="text-muted">
-                                        {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
+                                        {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}
                                         {properties.randomize ? <i className="far fa-random"/> : (i + 1)}
                                     </span>
                                 </div>
@@ -171,6 +171,7 @@ class Speak extends Component {
                             <Collapse isOpen={d.open} className="speak-audio">
                                 <div className="mb-3">
                                     <AudioDrop
+                                        locked={this.props.locked}
                                         audio={d.audio}
                                         update={(audio)=>{
                                             d.audio = audio
@@ -186,13 +187,14 @@ class Speak extends Component {
                             <div className="multi-title-block mb-2">
                                 <div className="multi-title">
                                     <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
-                                        {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
+                                        {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}
                                         {properties.randomize ? <i className="far fa-random"/> : (i + 1)}
                                     </span>
                                 </div>
                                 <div className="super-center flex-hard">
                                     <b>Speak As</b>
                                     <Select
+                                        isDisabled={this.props.locked}
                                         className="speak-box"
                                         classNamePrefix="select-box"
                                         value={{label: d.voice, value: d.voice}}
@@ -205,6 +207,7 @@ class Speak extends Component {
                             <Collapse isOpen={d.open}>
                                 <VariableText
                                     raw={d.rawContent}
+                                    locked={this.props.locked}
                                     placeholder={<React.Fragment>{`Tell ${d.voice} what to say`}<br/>{'Use {variable} to add Variables'}</React.Fragment>}
                                     variables={this.props.variables}
                                     updateRaw={(raw) => {d.rawContent = raw; this.props.onUpdate()}}
@@ -217,18 +220,18 @@ class Speak extends Component {
                 { properties.dialogs.length < 20 ?
                     <React.Fragment>
                         <div className="d-flex my-3">
-                            <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
+                            <button className="btn btn-clear btn-vertical mr-3" disabled={this.props.locked} onClick={() => this.handleAddBlock(false)}>
                                 <i className="fas fa-comment-alt"/>
                                 Add Speech
                             </button>
-                            <button className="btn btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
-                                <i className="fas fa-volume-up"/> 
+                            <button className="btn btn-clear btn-vertical" disabled={this.props.locked} onClick={() => this.handleAddBlock(true)}>
+                                <i className="fas fa-volume-up"/>
                                 Add Audio
                             </button>
                         </div>
                         <InputGroup className="my-2">
                             <label className="input-group-text w-100 m-0 text-left">
-                                <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
+                                <Input addon type="checkbox" disabled={this.props.locked} checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
                                 <span className="ml-2 span-small">Output Random Entry</span>
                             </label>
                         </InputGroup>
@@ -240,4 +243,7 @@ class Speak extends Component {
     }
 }
 
+Speak.defaultProps = {
+  locked: false,
+}
 export default Speak;

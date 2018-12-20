@@ -21,6 +21,8 @@ import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import Onboarding from './Onboarding'
+import ErrorModal from './../../components/Modals/ErrorModal'
+import ConfirmModal from './../../components/Modals/ConfirmModal'
 import {
     Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
@@ -31,6 +33,18 @@ import {
 
 import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
 
+const BUILT_INS = BUILT_IN_INTENTS.map( intent => {
+    return {
+        built_in: true,
+        name: intent.name,
+        key: intent.name,
+        inputs: [{
+            text: '',
+            slots: intent.slots
+        }]
+    }
+})
+
 class Editor extends Component {
     constructor(props) {
         super(props)
@@ -40,15 +54,24 @@ class Editor extends Component {
             voices: [],
             templates: [],
             permission_options: [],
-            slot_types: SLOT_TYPES,
-            built_ins: BUILT_IN_INTENTS,
             modal: false,
-            expanded: false
+            expanded: false,
+            error: null,
+            confirm: null
         }
 
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
-        // this.copyFlow = this.copyFlow.bind(this)
+        this.showErrorPopup = this.showErrorPopup.bind(this)
+        this.showConfirmPopup = this.showConfirmPopup.bind(this)
+    }
+
+    showErrorPopup(message) {
+        this.setState({error: message})
+    }
+
+    showConfirmPopup(confirm){
+        this.setState({confirm: confirm})
     }
 
     componentDidMount() {
@@ -107,7 +130,7 @@ class Editor extends Component {
     componentWillReceiveProps(props) {
         this.setState({
             node: props.node
-        });
+        })
     }
 
     handleChange(e, key = undefined) {
@@ -144,20 +167,31 @@ class Editor extends Component {
                 if(typeof this.state.node.commands === 'string'){
                     return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
                 }else{
-                    return <Command node={this.state.node} 
+                    return <Command
+                        node={this.state.node} 
                         onUpdate={this.props.onUpdate}
                         intents={this.props.intents} 
                         slots={this.props.slots} 
-                        onSlot={this.props.onSlot} onIntent={this.props.onIntent}
-                        variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
+                        variables={variables} 
+                        slot_types={SLOT_TYPES} 
+                        built_ins={BUILT_INS}
+                        onError={this.showErrorPopup}
                     />
                 }
             case 'intent':
                 return <Interaction 
                     node={this.state.node} 
-                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
-                    onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
-                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
+                    onUpdate={this.props.onUpdate} 
+                    repaint={this.props.repaint} 
+                    intents={this.props.intents} 
+                    slots={this.props.slots} 
+                    onSlot={this.props.onSlot} 
+                    onIntent={this.props.onIntent} 
+                    variables={variables} 
+                    slot_types={SLOT_TYPES} 
+                    built_ins={BUILT_INS} 
+                    onError={this.showErrorPopup}
+                    onConfirm={this.showConfirmPopup}
                     />
             case 'combine':
             case 'line':
@@ -244,35 +278,8 @@ class Editor extends Component {
         }
     }
 
-    // copyFlow(){
-    //     if(this.state.node.extras.diagram_id){
-    //         console.log("Copy this flow")
-    //         console.log(this.state.node)
-    //         axios.get(`/diagram/copy/${this.state.node.extras.diagram_id}`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             window.alert('Error copying flow')
-    //         })
-    //     }
-    // }
-
     render() {
         const type = this.state.node ? this.state.node.extras.type : null;
-        // <Tooltip
-        //     position="bottom"
-        //     interactive={true}
-        //     offset={-30}
-        //     arrow
-        //     hideOnClick={false}
-        //     html={<React.Fragment>
-        //         Delete Block
-        //         <br/>
-        //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
-        //     </React.Fragment>}
-        // >
 
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} 
@@ -280,6 +287,10 @@ class Editor extends Component {
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
+
+                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
+                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
+
                 {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
                     <div className="controls" key={this.state.node.id}>

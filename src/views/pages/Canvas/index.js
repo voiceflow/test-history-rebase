@@ -130,8 +130,6 @@ class Canvas extends Component {
         this.hotKeys=this.hotKeys.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
-        this.setIntents = this.setIntents.bind(this);
-        this.setSlots = this.setSlots.bind(this);
         // preview mode
         this.preview = !!this.props.preview
 
@@ -818,24 +816,6 @@ class Canvas extends Component {
         })
     }
 
-    setSlots(slots) {
-        const skill = this.state.skill
-        skill.slots = slots
-        this.setState({
-            skill: skill,
-            saved: false
-        });
-    }
-
-    setIntents(intents) {
-        const skill = this.state.skill
-        skill.intents = intents
-        this.setState({
-            skill: skill,
-            saved: false
-        })
-    }
-
     setGlobalVariables(variables) {
         this.setState({
             global_variables: variables,
@@ -1142,7 +1122,9 @@ class Canvas extends Component {
             } else if (type === 'command') {
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    command: null
+                    intent: null,
+                    mappings: [],
+                    resume: true
                 }
             } else if (type === 'comment') {
                 node.name = 'New Comment'
@@ -1386,9 +1368,7 @@ class Canvas extends Component {
                     user_modules={this.state.user_modules}
                     copyNode={this.copyNode}
                     intents={this.state.skill.intents}
-                    onIntent={this.setIntents}
                     slots={this.state.skill.slots}
-                    onSlot={this.setSlots}
                     onboarding={this.onboarding}
                     finished={()=>{this.onboarding = false}}
                 />

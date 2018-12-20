@@ -140,7 +140,7 @@ class Canvas extends Component {
         engine.registerNodeFactory(new BlockNodeFactory())
         engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width))
         engine.registerPortFactory(new BlockPortFactory())
-        
+
         let open, diagram_id, skill_id
         let diagram_name = ''
 
@@ -434,7 +434,7 @@ class Canvas extends Component {
         this.setState({
             engine: engine
         })
-        
+
     }
 
     clickDiagram(e){
@@ -459,6 +459,11 @@ class Canvas extends Component {
         }
     }
 
+    onKeyPress(event) {
+      if(this.state.skill.preview){
+        event.preventDefault();
+      }
+    }
     componentDidMount() {
         // If not preview mode
         if(!this.preview){
@@ -533,7 +538,7 @@ class Canvas extends Component {
             let permissions = new Set()
             let used_intent_names = new Set()
             let used_intents = []
-            
+
             serialize.nodes.forEach(node => {
                 if(node.extras.type === 'flow' && node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id)
@@ -678,7 +683,7 @@ class Canvas extends Component {
                 links[key].setColor(line_color)
                 links[key].setWidth(line_width)
             }
-            
+
             engine.stopMove()
             engine.setDiagramModel(model)
 
@@ -744,11 +749,11 @@ class Canvas extends Component {
         axios.get(`/skill/${skill_id}?${this.preview ? 'preview=1' : 'simple=1'}`)
         .then(res => {
 
-            // prevent redundant saving of global variables in the skill object 
+            // prevent redundant saving of global variables in the skill object
             let skill = res.data
             let res_globals = skill.global
             delete skill.global
-            
+
             // make sure that there are no duplicate variables and that the defaults are included
             let global_variables = defaultVariables.slice(0)
             if (Array.isArray(res_globals)) {
@@ -860,14 +865,14 @@ class Canvas extends Component {
         let nlc_promise = new Promise(resolve => {
             nlc_resolve = resolve
         })
-        
+
         let nodes = []
         data.nodes.forEach((node) => {
             if(node.extras && node.extras.type !== "story"){
                 nodes.push({
                     value: node.id,
                     label: node.name
-                })               
+                })
             }
         })
         if (!nlc) {
@@ -885,7 +890,7 @@ class Canvas extends Component {
                     samples = _getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
                 }
                 const _slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
-        
+
                 console.log("REGISTER INTENT", nlc, {
                     intent: intent.name,
                     slots: _slots,
@@ -1028,7 +1033,7 @@ class Canvas extends Component {
             let new_flow_name = 'New Flow'
             let index = 1
             const exists = (name) => this.state.diagrams.find(d => d.name === name)
-            
+
             while(exists(new_flow_name)){
                 new_flow_name = `New Flow ${index}`
                 index++
@@ -1304,13 +1309,13 @@ class Canvas extends Component {
                     toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
                     setHelp={(help) => this.setState({help: help})}
                 />
-                { this.state.newSkill !== null ?  
-                    <SkillModal 
+                { this.state.newSkill !== null ?
+                    <SkillModal
                         modal={!!this.state.newSkill}
-                        toggle={()=>this.setState({newSkill: false})} 
+                        toggle={()=>this.setState({newSkill: false})}
                         createSkill={this.createSkill}
-                        onClose={this.state.newSkill === false ? 
-                            () => this.props.history.push('/dashboard') : 
+                        onClose={this.state.newSkill === false ?
+                            () => this.props.history.push('/dashboard') :
                             () => this.setState({newSkill: null})}
                         user_templates={this.state.user_templates}
                         onTemplateChoice={this.createWithTemplate}
@@ -1323,8 +1328,8 @@ class Canvas extends Component {
                     }
                 />
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
-                {this.state.testing_modal ? 
-                    <TestModal 
+                {this.state.testing_modal ?
+                    <TestModal
                         open={this.state.testing_modal}
                         toggle={this.toggleTestModal}
                         testing_info={this.state.testing_info}
@@ -1333,7 +1338,7 @@ class Canvas extends Component {
                         globals={this.state.global_variables}
                     />
                 : null}
-                <Menu 
+                <Menu
                     unfocus={this.onDiagramUnfocus}
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
@@ -1416,7 +1421,7 @@ class Canvas extends Component {
                         </ButtonGroup>
                     </div>
                     <SRD.DiagramWidget
-                        diagramEngine={this.state.engine} 
+                        diagramEngine={this.state.engine}
                         allowLooseLinks={false}
                     />
                 </div>
@@ -1426,4 +1431,3 @@ class Canvas extends Component {
 }
 
 export default Canvas
-

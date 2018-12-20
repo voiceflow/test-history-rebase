@@ -61,6 +61,7 @@ class Stream extends Component {
             <div>
                 <label>Stream File (AAC/MP4, MP3, HLS)</label>
                 <AudioDrop
+                    locked={this.props.locked}
                     audio={this.state.node.extras.audio}
                     update={(audio)=>{
                         let node = this.state.node;
@@ -71,23 +72,23 @@ class Stream extends Component {
                 />
                 <InputGroup className="mt-3">
                     <label className="input-group-text w-100 m-0 text-left">
-                        <Input addon type="checkbox" checked={!!this.state.node.extras.loop} onChange={this.toggleLoop}/>
+                        <Input addon type="checkbox" disabled={this.props.locked} checked={!!this.state.node.extras.loop} onChange={this.toggleLoop}/>
                         <span className="ml-2">Loop Audio {this.state.node.extras.player ? ' By Default' : ''}</span>
                     </label>
                 </InputGroup>
                 <InputGroup className="mb-1 mt-2">
                     <label className="input-group-text w-100 m-0 text-left">
-                        <Input addon type="checkbox" checked={!!this.state.node.extras.player} onChange={this.togglePlayer}/>
+                        <Input addon type="checkbox" disabled={this.props.locked} checked={!!this.state.node.extras.player} onChange={this.togglePlayer}/>
                         <span className="ml-2">Audio Player Functions</span>
                     </label>
                 </InputGroup>
-                {this.state.node.extras.player ? 
+                {this.state.node.extras.player ?
                     <span className="text-muted">
-                        Users will be able to say playlist commands such as 'Next', 'Previous', 'Start Over', and toggle 'Loop' 
+                        Users will be able to say playlist commands such as 'Next', 'Previous', 'Start Over', and toggle 'Loop'
                     </span> :
                     <span className="text-muted">
                         User Commands such as 'Next', 'Previous' will be routed to stop/pause
-                    </span> 
+                    </span>
                 }
             </div>
         );

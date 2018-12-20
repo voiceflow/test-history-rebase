@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import _ from 'lodash';
 import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
          ModalHeader, ModalBody, Button, ButtonGroup, Dropdown, DropdownToggle, DropdownMenu,
          DropdownItem, FormGroup, Label } from 'reactstrap';
@@ -528,7 +529,7 @@ class ActionGroup extends PureComponent {
                         title="Save"
                         position="bottom"
                     >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
+                        <MUIButton variant="contained" className="white-btn save-btn" onClick={!this.props.preview ? this.props.onSave : _.noop()}>
                             {this.props.saving ?
                                 <span className="loader"/> :
                                 <React.Fragment>

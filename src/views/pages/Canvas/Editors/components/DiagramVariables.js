@@ -11,6 +11,7 @@ class DiagramVariables extends Component {
                             <Select
                                 classNamePrefix="variable-box"
                                 className="map-box"
+                                isDisabled={this.props.locked}
                                 value={argument.arg1 ? {label: '{' + argument.arg1 + '}', variable: argument.arg1} : null}
                                 onChange={(selected)=>this.props.handleSelection(i, 'arg1', selected.value)}
                                 placeholder={this.props.arg1_options.length > 0 ? "Variable" : "No Var.."}
@@ -22,6 +23,7 @@ class DiagramVariables extends Component {
                             <Select
                                 classNamePrefix="select-box"
                                 className="map-box"
+                                isDisabled={this.props.locked}
                                 value={argument.arg2 ? {label: '{' + argument.arg2 + '}', variable: argument.arg2} : null}
                                 onChange={(selected)=>this.props.handleSelection(i, 'arg2', selected.value)}
                                 placeholder="Flow Var.."
@@ -33,12 +35,16 @@ class DiagramVariables extends Component {
                         <div className="close pl-2" onClick={() => this.props.onRemove(i)}>×</div>
                     </div>)
                 })}
-                <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
+                <button className="btn btn-default btn-block" disabled={this.props.locked} onClick={this.props.onAdd}>
                     <i className="far fa-plus"></i> Add Variable Map
                 </button>
             </React.Fragment>
         );
     }
+}
+
+DiagramVariables.defaultProps = {
+  locked: false,
 }
 
 export default DiagramVariables;

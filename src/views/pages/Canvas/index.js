@@ -103,6 +103,7 @@ class Canvas extends Component {
         this.repaint = this.repaint.bind(this)
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
+        this.onKeydown = this.onKeydown.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.createSkill = this.createSkill.bind(this)
@@ -251,6 +252,11 @@ class Canvas extends Component {
         }
     }
 
+    onKeydown(event){
+      if(this.props.preview){
+        event.preventDefault();
+      }
+    }
     zoom(delta){
         let engine = this.state.engine
         let diagramModel = engine.getDiagramModel()
@@ -459,11 +465,6 @@ class Canvas extends Component {
         }
     }
 
-    onKeyPress(event) {
-      if(this.state.skill.preview){
-        event.preventDefault();
-      }
-    }
     componentDidMount() {
         // If not preview mode
         if(!this.preview){
@@ -716,7 +717,8 @@ class Canvas extends Component {
     onLoadDiagrams(){
         if(this.preview){
             this.onLoadId(this.diagram_id)
-        }else{
+            console.log(this.diagram_id);
+        }
             axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
             .then(res => {
                 this.setState({
@@ -735,14 +737,16 @@ class Canvas extends Component {
                         }
                     })
                 }, () => {
+                    if (!this.preview){
                     this.onLoadId(this.diagram_id)
+                    }
                 })
             })
             .catch(err => {
                 console.error(err.response)
                 this.setState({ error: 'Could Not Retrieve Project Diagrams' })
             })
-        }
+
     }
 
     onLoadSkill(skill_id){
@@ -1080,10 +1084,12 @@ class Canvas extends Component {
     enterFlow(new_diagram_id, save=true) {
         if(new_diagram_id !== this.diagram_id){
             this.setState({loading_diagram: true})
-            if(save){
+            if(save && !this.props.preview){
                 this.onSave(() => {
                     this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
                 })
+            }else if (this.props.preview){
+                this.props.history.push(`/preview/${this.state.skill.skill_id}/${new_diagram_id}`)
             }else{
                 this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
             }
@@ -1357,13 +1363,15 @@ class Canvas extends Component {
                     loading_diagram={this.state.loading_diagram}
                     changeLoading={(state) => this.setState({loading_diagram: state})}
                     saving={this.state.saving}
+                    preview={this.props.preview}
                     onSave={this.onSave}
                 />
                 <TitleBar
                     onTest={this.onTest}
+                    preview={this.props.preview}
                     skill={this.state.skill}
                 />
-                { !this.state.preview && <ActionGroup
+              { !this.props.preview ? <ActionGroup
                     lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
                     skill={this.state.skill}
                     preview={this.preview}
@@ -1377,7 +1385,11 @@ class Canvas extends Component {
                     publishMarket={this.publishMarket}
                     diagram_id={this.diagram_id}
                     history={this.props.history}
-                /> }
+                /> :
+                <div className="title-group no-select">
+                  <div className="last-save">Preview</div>
+                </div>
+              }
                 {this.state.loading_diagram && <div id="loading-diagram">
                     <div className="text-center">
                         <h5 className="text-muted mb-2">Loading Flow</h5>
@@ -1397,13 +1409,14 @@ class Canvas extends Component {
                     diagrams={this.state.diagrams}
                     createDiagram={this.createDiagram}
                     enterFlow={this.enterFlow}
-                    removeNode={this.removeNode}
+                    removeNode={!this.props.preview ? this.removeNode : _.noop()}
                     user_modules={this.state.user_modules}
-                    copyNode={this.copyNode}
+                    copyNode={!this.props.preview ? this.copyNode : _.noop()}
                     intents={this.state.skill.intents}
                     onIntent={this.setIntents}
                     slots={this.state.skill.slots}
                     onSlot={this.setSlots}
+                    preview={this.props.preview}
                     onboarding={this.onboarding}
                     finished={()=>{this.onboarding = false}}
                 />
@@ -1423,6 +1436,8 @@ class Canvas extends Component {
                     <SRD.DiagramWidget
                         diagramEngine={this.state.engine}
                         allowLooseLinks={false}
+                        locked={this.props.preview}
+                        onKeyDown={() => console.log('hi')}
                     />
                 </div>
             </div>

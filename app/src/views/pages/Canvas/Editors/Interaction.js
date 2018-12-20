@@ -238,6 +238,7 @@ class Interaction extends Component {
                     </label>
                     <IntentInputs
                         intents={this.state.intents}
+                        locked={this.props.locked}
                         onAdd={this.handleAddIntent}
                         onRemove={this.handleRemoveIntent}
                         slots = {this.state.slots}

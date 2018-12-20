@@ -49,7 +49,7 @@ class Permissions extends Component {
                         value: permission.value
                     }
                     break;
-                }      
+                }
             }
 
             node.extras.permissions.push({
@@ -114,12 +114,13 @@ class Permissions extends Component {
                             permissions={this.state.permission_options}
                             disabled_perms={this.state.node.extras.permissions}
                             onUpdate={this.onUpdate}
+                            locked={this.props.locked}
                             variables={this.props.variables}
                         />
                     )
                 })}
                 { this.state.node.extras.permissions.length < this.state.permission_options.length ?
-                    <button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddBlock}>
+                    <button className="btn btn-clear btn-lg btn-block" disabled={this.props.locked} onClick={this.handleAddBlock}>
                         <i className="far fa-plus"></i> Add Permission Request
                     </button> : null
                 }

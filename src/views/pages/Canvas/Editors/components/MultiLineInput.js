@@ -64,12 +64,13 @@ class MultiLineInput extends Component {
             <div className="multiline">
                 <div className="multi-title-block" >
                     <div className="multi-title" onClick={()=>{this.toggleCollapse('collapse')}}>
-                        <span className="text-muted">{this.state.line.collapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {this.state.index + 1}</span> {this.state.line.title} 
+                        <span className="text-muted">{this.state.line.collapse ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} {this.state.index + 1}</span> {this.state.line.title}
                     </div>
                     <button className="close" onClick={() => {this.props.onRemove(this.state.index)}}>&times;</button>
                 </div>
                 <Collapse isOpen={this.state.line.collapse}>
                     <AudioDrop
+                        disabled={this.props.locked}
                         audio={this.state.line.audio}
                         update={(audio)=>{
                             let line = this.state.line
@@ -84,6 +85,7 @@ class MultiLineInput extends Component {
                                 <div className="textarea-collapse">
                                     <Textarea
                                         name="text"
+                                        readOnly={this.props.locked}
                                         value={this.state.line.text}
                                         onChange={this.handleChange}
                                         minRows={2}
@@ -94,6 +96,7 @@ class MultiLineInput extends Component {
                                             classNamePrefix="select-box"
                                             placeholder="Select Voice"
                                             className="select-box"
+                                            isDisabled={this.props.locked}
                                             value={this.state.line.voice ? {label: this.state.line.voice, value: this.state.line.voice} : null}
                                             onChange={this.handleSelection}
                                             options={Array.isArray(this.state.voices) ? this.state.voices.map(voice => {
@@ -113,6 +116,10 @@ class MultiLineInput extends Component {
             </div>
         );
     }
+}
+
+MultiLineInput.defaultProps = {
+  locked: false
 }
 
 export default MultiLineInput;

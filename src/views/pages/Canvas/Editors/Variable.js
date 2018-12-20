@@ -57,6 +57,7 @@ class SetBlock extends Component {
                         classNamePrefix="variable-box"
                         placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                         className="variable-box"
+                        isDisabled={this.props.locked}
                         value={this.state.node.extras.variable ? {label: '{' + this.state.node.extras.variable + '}', value: this.state.node.extras.variable} : null}
                         onChange={this.handleSelection}
                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
@@ -66,7 +67,7 @@ class SetBlock extends Component {
                     <span> to:</span>
                 </div>
                 { show ? <Expressionfy expression={this.state.node.extras.expression} />:null}
-                <Expression expression={this.state.node.extras.expression} variables={this.props.variables} onUpdate={this.onUpdate}/>
+                <Expression expression={this.state.node.extras.expression} locked={this.props.locked} variables={this.props.variables} onUpdate={this.onUpdate}/>
             </div>
         );
     }

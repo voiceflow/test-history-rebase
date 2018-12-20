@@ -51,7 +51,7 @@ class AudioDrop extends Component {
                     <br/>
                     consider hosting on
                     <div className="seperated-links my-2">
-                        <a href="https://www.google.com/drive/" target='_blank' rel="noopener noreferrer"><i className="fab fa-google"/> Drive</a>| 
+                        <a href="https://www.google.com/drive/" target='_blank' rel="noopener noreferrer"><i className="fab fa-google"/> Drive</a>|
                         <a href="https://www.digitalocean.com/products/spaces/" target='_blank' rel="noopener noreferrer"><i className="fab fa-digital-ocean"/> Spaces</a>|
                         <a href="https://aws.amazon.com/s3/" target='_blank' rel="noopener noreferrer"><i className="fab fa-aws"/> S3</a>|
                         <a href="https://www.dropbox.com" target='_blank' rel="noopener noreferrer"><i className="fab fa-dropbox"/> Dropbox</a>
@@ -93,7 +93,7 @@ class AudioDrop extends Component {
             return <div className="dropzone enter-url">
                 <div className="text-center w-100">
                     <b className="text-muted">Enter Audio URL</b>
-                    <Input placeholder="URL Link" value={this.state.url} onChange={this.handleChange} name="url"/>
+                    <Input placeholder="URL Link" value={this.state.url} disabled={this.props.locked} onChange={this.handleChange} name="url"/>
                     <button onClick={()=>this.setState({url_open: false})} className="upload-btn btn btn-default exit"><i className="far fa-chevron-left"/>Back</button>
                     <button onClick={()=>this.props.update(this.state.url)} className="upload-btn btn btn-primary-small">Confirm</button>
                 </div>
@@ -107,6 +107,7 @@ class AudioDrop extends Component {
                 disableClick={false}
                 maxSize={MAX_SIZE}
                 accept={(this.props.stream ? ".m3u,.m3u8," : "") + "audio/*"}
+								disabled={this.props.locked}
                 onDrop={this.onDrop}
             >
                 <div>
@@ -132,6 +133,10 @@ class AudioDrop extends Component {
             </Dropzone>
         }
 	}
+}
+
+AudioDrop.defaultProps = {
+	locked: false,
 }
 
 export default AudioDrop;

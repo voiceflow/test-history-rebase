@@ -18,7 +18,7 @@ class API extends Component {
         super(props);
 
         let node = props.node;
-        
+
         // DEPRECATE turning from string to draftjs for SUPER old api blocks
         if(node.extras.mapping){
             node.extras.mapping = node.extras.mapping.map((choice) => {
@@ -129,7 +129,7 @@ class API extends Component {
     handleRemovePair(type, i) {
         let node = this.state.node;
         node.extras[type].splice(i, 1);
-        
+
         this.setState({
             node: node
         }, this.props.onUpdate);
@@ -180,6 +180,7 @@ class API extends Component {
             type={this.state.type}
             pairs={this.state.node.extras[this.state.type]}
             variables={this.props.variables}
+            locked={this.props.locked}
             onAdd={() => this.handleAddPair(this.state.type)}
             onRemove={(e, i) => this.handleRemovePair(this.state.type, i)}
             onChange={this.handleKVChange}
@@ -200,7 +201,7 @@ class API extends Component {
                                 if(method === this.state.node.extras.method){
                                     return <DropdownItem key={i} disabled>{method}</DropdownItem>
                                 }else{
-                                    return <DropdownItem key={i} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
+                                    return <DropdownItem key={i} disabled={this.props.locked} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
                                 }
                             })}
                         </DropdownMenu>
@@ -209,8 +210,9 @@ class API extends Component {
                         className='form-control-border top-left form-control right'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
+                        locked={this.props.locked}
                         updateRaw={(raw) => {
-                            let node = this.state.node; 
+                            let node = this.state.node;
                             node.extras.url = raw
                             this.setState({
                                 node: node
@@ -226,10 +228,10 @@ class API extends Component {
                             Headers
                         </NavLink>
                     </NavItem>
-                    <NavItem className="mr-2" onClick={() => {if (this.state.node.extras.method !== 'GET') this.setState({type: 'body'})}}> 
+                    <NavItem className="mr-2" onClick={() => {if (this.state.node.extras.method !== 'GET') this.setState({type: 'body'})}}>
                         <NavLink href="#" active={this.state.type === 'body'} disabled={this.state.node.extras.method === 'GET'}>Body</NavLink>
                     </NavItem>
-                    <NavItem className="mr-2" onClick={() => this.setState({type: 'params'})}> 
+                    <NavItem className="mr-2" onClick={() => this.setState({type: 'params'})}>
                         <NavLink href="#" active={this.state.type === 'params'}>Params</NavLink>
                     </NavItem>
                 </Nav>
@@ -249,13 +251,13 @@ class API extends Component {
                                 const node = this.state.node;
                                 node.extras.bodyInputType = 'rawInput';
                                 this.setState({ node: node })
-                                }}> 
+                                }}>
                             <NavLink href="#" active={this.state.node.extras.bodyInputType === 'rawInput'}>
                                 Raw Input
                             </NavLink>
                         </NavItem>
                     </Nav>
-                    { (this.state.node.extras.bodyInputType === 'rawInput') ? 
+                    { (this.state.node.extras.bodyInputType === 'rawInput') ?
                     <AceEditor
                         height='300px'
                         width='100%'
@@ -263,6 +265,7 @@ class API extends Component {
                         mode="javascript"
                         theme="chrome"
                         onChange={this.onChangeAce}
+                        readOnly={this.props.locked}
                         fontSize={14}
                         showPrintMargin={true}
                         showGutter={false}
@@ -284,6 +287,7 @@ class API extends Component {
                 <APIMapping
                     pairs={this.state.node.extras.mapping}
                     onAdd={() => this.handleAddPairMapping()}
+                    locked={this.props.locked}
                     onRemove={(e, i) => this.handleRemovePairMapping(i)}
                     onChange={this.handleKVMappingChange}
                     variables={this.props.variables}
@@ -293,7 +297,7 @@ class API extends Component {
         )
 
         // return <React.Fragment>
-        //     {this.state.body_state ? 
+        //     {this.state.body_state ?
         //         <React.Fragment>
         //             <Button color='clear' block onClick={
         //                 ()=>this.setState({
@@ -303,7 +307,7 @@ class API extends Component {
         //             }><i className="far fa-expand-arrows-alt"/> Expand</Button>
         //             {content}
         //         </React.Fragment>
-        //         : 
+        //         :
         //         <React.Fragment>
         //             <Button color='clear' block disabled>{ this.state.modal ?
         //                 <React.Fragment>
@@ -312,8 +316,8 @@ class API extends Component {
         //                 <span className="loader"/>
         //             }</Button>
 
-        //             <Modal 
-        //                 isOpen={this.state.modal} 
+        //             <Modal
+        //                 isOpen={this.state.modal}
         //                 toggle={()=>this.setState({modal: false})}
         //                 onClosed={()=>this.setState({body_state: true})}
         //                 size="lg"

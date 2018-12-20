@@ -119,12 +119,13 @@ class DiagramBlock extends Component {
 
         return (
             <div>
-                {!this.state.node.extras.diagram_id ? 
+                {!this.state.node.extras.diagram_id ?
                     <React.Fragment>
-                        {this.props.diagrams && this.props.diagrams.length > 0 ? 
+                        {this.props.diagrams && this.props.diagrams.length > 0 ?
                             <React.Fragment>
                                 <label>Select Existing Flow</label>
                                 <Select
+                                    isDisabled={this.props.locked}
                                     classNamePrefix="select-box"
                                     onChange={(selected) => {
                                         let node = this.state.node;
@@ -141,22 +142,24 @@ class DiagramBlock extends Component {
                             Create New Flow <i className="fas fa-sign-in"/>
                         </Button>
                     </React.Fragment>
-                    : 
+                    :
                     <React.Fragment>
                         <Button block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
                         <label>Input Variables</label>
                         <DiagramVariables
+                            locked={this.props.locked}
                             arg1_options={this.props.variables}
                             arg2_options={this.state.variables}
                             arguments={this.state.node.extras.inputs}
                             onAdd={() => this.handleAddMap('inputs')}
                             onRemove={(i) => this.handleRemoveMap('inputs', i)}
                             handleSelection={(i, arg, value) => this.handleSelection('inputs', i, arg, value)}
-                        /> 
+                        />
                         <hr className="mb-1"/>
                         <label>Output Variables</label>
                         <DiagramVariables
                             reverse
+                            locked={this.props.locked}
                             arg1_options={this.props.variables}
                             arg2_options={this.state.variables}
                             arguments={this.state.node.extras.outputs}

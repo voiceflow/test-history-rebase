@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap'
 
-import {Link} from 'react-router-dom'; 
+import {Link} from 'react-router-dom';
 
 class SkillCard extends React.Component {
   constructor(props) {
@@ -16,13 +16,20 @@ class SkillCard extends React.Component {
       dropdownOpen: false
     }
 
-    this.toggle = this.toggle.bind(this)
+    this.onMouseEnter = this.onMouseEnter.bind(this)
+    this.onMouseLeave = this.onMouseLeave.bind(this)
     this.copySkill = this.copySkill.bind(this)
   }
 
-  toggle() {
+  onMouseEnter() {
     this.setState({
-      dropdownOpen: !this.state.dropdownOpen
+      dropdownOpen: true,
+    })
+  }
+
+  onMouseLeave() {
+    this.setState({
+      dropdownOpen: false,
     })
   }
 
@@ -30,7 +37,7 @@ class SkillCard extends React.Component {
     axios.post(`/skill/${this.props.skill.skill_id}/${window.user_detail.id}/copy`)
     .then(res => {
       this.props.handleCopySkill(res.data)
-    })  
+    })
     .catch(err => {
       console.log(err.response)
       this.setState({
@@ -44,7 +51,7 @@ class SkillCard extends React.Component {
     let name = this.props.skill.name.match(/\b(\w)/g)
     if(name) { name = name.join('') }
     else { name = this.props.skill.name }
-    name = name.substring(0,3) 
+    name = name.substring(0,3)
 
     return (
       <div className="skill-card-container"
@@ -53,11 +60,11 @@ class SkillCard extends React.Component {
         <Card className='skill-card'>
           <CardActionArea className="card-action">
             <div className="d-flex justify-content-end">
-              <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} direction="left">
-                <DropdownToggle tag="div" className="btn btn-primary">
-                  <i className="far fa-ellipsis-v mr-2"></i>
+              <Dropdown isOpen={this.state.dropdownOpen} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave} toggle={this.onMouseEnter} direction="left">
+                <DropdownToggle tag="div" className="btn">
+                  <i className="far fa-ellipsis-h mr-2"></i>
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu className="card-dropdown">
                   <DropdownItem tag="div" onClick={()=>{this.props.history.push('/publish/amzn/' + this.props.skill.skill_id)}}>
                     Publish <span className="button-circle"><i className="fab fa-amazon"/></span>
                   </DropdownItem>

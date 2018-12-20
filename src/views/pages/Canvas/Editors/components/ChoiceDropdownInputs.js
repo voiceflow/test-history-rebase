@@ -190,7 +190,7 @@ class ChoiceDropdownInputs extends Component {
                             </Collapse>
                         </div> )
                 }) : null}
-                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" disabled={this.props.locked} onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }

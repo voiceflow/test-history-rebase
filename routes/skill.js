@@ -859,25 +859,74 @@ exports.copySkill = (req, res) => {
         }
 
         // Create copy of the skill
-        let copy_query = 
-            `
-            BEGIN;
-            CREATE TEMP TABLE temp_tab ON COMMIT DROP AS SELECT * FROM skills WHERE skill_id = ${id};
-            UPDATE temp_tab SET skill_id = ( select MAX(skill_id) + 1 FROM skills ), diagram = '${diagram_mapping[root_diagram_id]}', name = (SELECT name FROM temp_tab) || ' copy', creator_id = ${new_creator_id};
-            INSERT INTO skills select * FROM temp_tab RETURNING *;
-            COMMIT;
-            `
+        let copy_query = `
+            INSERT INTO skills (
+                name,
+                diagram,
+                creator_id,
+                summary,
+                description,
+                keywords,
+                invocations,
+                small_icon,
+                large_icon,
+                category,
+                purchase,
+                personal,
+                copa,
+                ads,
+                export,
+                instructions,
+                inv_name,
+                locales,
+                restart,
+                global,
+                privacy_policy,
+                terms_and_cond,
+                intents,
+                slots,
+                used_intents,
+                used_choices
+            )
+            SELECT 
+                coalesce(name, '') || ' Copy' AS name,
+                $1 AS diagram,
+                $2 AS creator_id,
+                summary,
+                description,
+                keywords,
+                invocations,
+                small_icon,
+                large_icon,
+                category,
+                purchase,
+                personal,
+                copa,
+                ads,
+                export,
+                instructions,
+                inv_name,
+                locales,
+                restart,
+                global,
+                privacy_policy,
+                terms_and_cond,
+                intents,
+                slots,
+                used_intents,
+                used_choices
+            FROM skills WHERE skill_id = $3 RETURNING *`
         pool.query(
-            copy_query, 
+            copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],
             (err, data) => {
                 if (err) {
                     console.log(err)
                     res.sendStatus(500)
                 } else {
-                    let new_skill_id = data[3].rows[0].skill_id
+                    let new_skill_id = data.rows[0].skill_id
                     retrieveDiagram(root_diagram_id, new_skill_id)
-                    data[3].rows[0].skill_id = hashids.encode(data[3].rows[0].skill_id)
-                    res.send(data[3].rows[0])
+                    data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
+                    res.send(data.rows[0])
                 }
             }
         )

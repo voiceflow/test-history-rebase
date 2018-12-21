@@ -45,6 +45,7 @@ class Editor extends Component {
             expanded: false
         }
 
+        this.eventHandler = this.eventHandler.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
         // this.copyFlow = this.copyFlow.bind(this)
@@ -227,46 +228,29 @@ class Editor extends Component {
               return (<input id="label" placeholder="Block Label"
                     type="text"
                     name="name"
+                    readOnly={this.props.preview}
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
                     onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                    />);
+                />);
         }
     }
 
-    // copyFlow(){
-    //     if(this.state.node.extras.diagram_id){
-    //         console.log("Copy this flow")
-    //         console.log(this.state.node)
-    //         axios.get(`/diagram/copy/${this.state.node.extras.diagram_id}`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             window.alert('Error copying flow')
-    //         })
-    //     }
-    // }
+    eventHandler(e){
+        if(this.props.preview){
+            e.preventDefault()
+            e.stopPropagation()
+        }
+    }
 
     render() {
-        const type = this.state.node ? this.state.node.extras.type : null;
-        // <Tooltip
-        //     position="bottom"
-        //     interactive={true}
-        //     offset={-30}
-        //     arrow
-        //     hideOnClick={false}
-        //     html={<React.Fragment>
-        //         Delete Block
-        //         <br/>
-        //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
-        //     </React.Fragment>}
-        // >
+        const type = this.state.node ? this.state.node.extras.type : null
 
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
                 onFocus={this.props.unfocus}
+                onClickCapture={this.eventHandler}
+                onKeyDownCapture={this.eventHandler}
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import _ from 'lodash';
 import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
          ModalHeader, ModalBody, Button, ButtonGroup, Dropdown, DropdownToggle, DropdownMenu,
          DropdownItem, FormGroup, Label } from 'reactstrap';

@@ -513,14 +513,8 @@
     flex-direction: column;
 /*    margin-top: 10px;*/
 }
-.normal-btn{
-    background-color: transparent!important;
-}
 .tool.border-top-none {
     border-top: none !important;
-}
-.normal-btn:hover{
-    background-color: #F5F7F8 !important;
 }
 .toolbar>.spacer{
     flex: 1;

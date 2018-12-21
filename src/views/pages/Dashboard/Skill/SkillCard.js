@@ -1,12 +1,10 @@
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import axios from 'axios'
+import React from 'react'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardContent from '@material-ui/core/CardContent'
+import Button from '@material-ui/core/Button'
 
 import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap'
-
-import {Link} from 'react-router-dom';
 
 class SkillCard extends React.Component {
   constructor(props) {
@@ -18,7 +16,6 @@ class SkillCard extends React.Component {
 
     this.onMouseEnter = this.onMouseEnter.bind(this)
     this.onMouseLeave = this.onMouseLeave.bind(this)
-    this.copySkill = this.copySkill.bind(this)
   }
 
   onMouseEnter() {
@@ -30,19 +27,6 @@ class SkillCard extends React.Component {
   onMouseLeave() {
     this.setState({
       dropdownOpen: false,
-    })
-  }
-
-  copySkill() {
-    axios.post(`/skill/${this.props.skill.skill_id}/${window.user_detail.id}/copy`)
-    .then(res => {
-      this.props.handleCopySkill(res.data)
-    })
-    .catch(err => {
-      console.log(err.response)
-      this.setState({
-        error: 'Error copying skill'
-      })
     })
   }
 
@@ -58,22 +42,27 @@ class SkillCard extends React.Component {
            onMouseEnter={() => {this.setState({hover: true})}}
            onMouseLeave={() => {this.setState({hover: false})}}>
         <Card className='skill-card'>
-          <CardActionArea className="card-action">
-            <div className="d-flex justify-content-end">
-              <Dropdown isOpen={this.state.dropdownOpen} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave} toggle={this.onMouseEnter} direction="left">
-                <DropdownToggle tag="div" className="btn">
-                  <i className="far fa-ellipsis-h mr-2"></i>
+          <div className="p-1 px-2">
+              <Dropdown isOpen={this.state.dropdownOpen} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave} toggle={this.onMouseEnter} direction="down" className="d-inline-block">
+                <DropdownToggle tag="div" className="d-inline-block">
+                  <Button size="small" color="primary" className="normal-btn">
+                    <i className="far fa-ellipsis-h"></i>
+                  </Button>
                 </DropdownToggle>
                 <DropdownMenu className="card-dropdown">
-                  <DropdownItem tag="div" onClick={()=>{this.props.history.push('/publish/amzn/' + this.props.skill.skill_id)}}>
-                    Publish <span className="button-circle"><i className="fab fa-amazon"/></span>
+                  <DropdownItem tag="div" className="space-between" onClick={()=>{this.props.history.push('/publish/amzn/' + this.props.skill.skill_id)}}>
+                    Publish <span className="button-circle text-muted"><i className="fab fa-amazon"/></span>
                   </DropdownItem>
-                  <DropdownItem tag="div" onClick={this.copySkill}>
+                  <DropdownItem tag="div" onClick={this.props.copySkill}>
                     Copy Skill
+                  </DropdownItem>
+                  <DropdownItem tag="div" onClick={this.props.deleteSkill}>
+                    Delete Skill
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-            </div>
+          </div>
+          <CardActionArea className="card-action">
             { image ?
               <div style={{backgroundImage: `url(${image})`}} className='card-image' onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}/> :
               <div className='no-image card-image' onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>

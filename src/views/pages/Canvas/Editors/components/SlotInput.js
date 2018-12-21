@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
@@ -143,16 +142,15 @@ class SlotInput extends Component {
                         distance={5}
                         html={this.state.name_error}
                     >
-                        <input placeholder="Enter Slot Name"
+                        <input placeholder="Enter Slot Name" 
                             type="text"
                             value={this.state.name}
-                            readOnly={this.props.locked}
                             onChange={this.onNameChange}
                             onBlur={this.onNameSave}
                             onKeyPress={(e)=>{if(e.charCode===13){e.preventDefault()}}}
                             className="interaction-name-input"
                         />
-                    </Tooltip>
+                    </Tooltip>                                
                     <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
@@ -161,7 +159,6 @@ class SlotInput extends Component {
                             placeholder="Select Slot Type"
                             classNamePrefix="select-box"
                             className='select-box mb-2'
-                            isDisabled={this.props.locked}
                             value={this.props.slot.type}
                             onChange={this.updateSlotType}
                             options={this.props.slot_types.map(type => {
@@ -173,26 +170,21 @@ class SlotInput extends Component {
                     <div>
                         {this.renderUtterances(this.props.slot.inputs)}
                     </div>
-                    <Textarea
+                    <Textarea 
                         className="slot-input"
                         name="inputs"
-                        readOnly={this.props.locked}
-                        value={this.state.text}
+                        value={this.state.text} 
                         onKeyPress={this.handleKeyPress}
                         onChange={this.onTextChange}
-                        placeholder="Enter Slot Content Example"
+                        placeholder="Enter Slot Content Example" 
                     />
                     <div className="text-center mt-2">
-                        <span className="key-bubble forward pointer" onClick={!this.props.locked ? this.addValue : _.noop()}><i className="far fa-long-arrow-right"/></span>
+                        <span className="key-bubble forward pointer" onClick={this.addValue}><i className="far fa-long-arrow-right"/></span>
                     </div>
                 </Collapse>
-            </div>
+            </div> 
         )
     }
-}
-
-SlotInput.defaultProps = {
-  locked: false
 }
 
 export default SlotInput;

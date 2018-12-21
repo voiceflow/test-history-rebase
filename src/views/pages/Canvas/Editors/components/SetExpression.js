@@ -17,7 +17,6 @@ class SetExpression extends Component {
                         classNamePrefix="variable-box"
                         placeholder="Variable Name"
                         className="variable-box"
-                        isDisabled={this.props.locked}
                         value={block.variable ? {label: '{' + block.variable + '}', value: block.variable} : null}
                         onChange={this.props.onSelection}
                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
@@ -27,14 +26,10 @@ class SetExpression extends Component {
                     <span>To:</span>
                 </div>
                 { show ? <Expressionfy expression={block.expression} />:null}
-                <Expression locked={this.props.locked} expression={block.expression} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                <Expression expression={block.expression} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
             </div>
         );
     }
-}
-
-SetExpression.defaultProps = {
-  locked: false,
 }
 
 export default SetExpression;

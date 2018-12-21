@@ -37,7 +37,7 @@ class IntentInputs extends Component {
             slot_keys.add(key)
           }
       } while (m);
-
+      
       return slot_keys
     }
 
@@ -73,7 +73,7 @@ class IntentInputs extends Component {
                 let intent = this.props.intents[i]
 
                 if (intent.name.indexOf(this.state.search_value) !== -1) {
-                    reverse.push(<IntentInput
+                    reverse.push(<IntentInput 
                         key={intent.key}
                         slots={this.props.slots}
                         intent={intent}
@@ -89,16 +89,12 @@ class IntentInputs extends Component {
 
         return (
             <div className="w-100">
-                {length > 4 && <Input type="search" disabled={this.props.locked} onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>}
-                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" disabled={this.props.locked} onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>}
+                {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>}
+                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>}
                 {reverse}
             </div>
         );
     }
-}
-
-IntentInputs.defaultProps = {
-  locked: false
 }
 
 export default IntentInputs

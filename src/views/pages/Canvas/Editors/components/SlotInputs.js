@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import { Input } from 'reactstrap'
 import SlotInput from './SlotInput'
@@ -60,16 +59,12 @@ class SlotInputs extends Component {
 
         return (
             <div className="w-100">
-                {length > 4 && <Input type="search" onChange={!this.props.locked ? this.onSearchChange : _.noop()} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>}
-                {length < 251 && <button className="btn btn-lg btn-clear btn-block mb-3" onClick={!this.props.locked ? this.onAdd : _.noop()}><i className="far fa-plus"></i> Add Slot</button>}
+                {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchSlots" placeholder="Search Slots" className="mb-3 form-control-border search-input" value={this.state.search_value}></Input>}
+                {length < 251 && <button className="btn btn-lg btn-clear btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Slot</button>}
                 {reverse}
             </div>
         );
     }
-}
-
-SlotInputs.defaultProps = {
-  locked: false,
 }
 
 export default SlotInputs;

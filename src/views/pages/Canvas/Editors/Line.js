@@ -96,7 +96,7 @@ class Line extends Component {
             <div>
                 <Collapse isOpen={(!!this.state.node.extras.audio || !!this.state.loading)}>
                     { this.state.node.extras.audio || this.state.loading ?
-                        <div>{ this.state.loading ?
+                        <div>{ this.state.loading ? 
                             <div className="combined-box">
                                 <h1><span className="loader"/></h1>
                             </div> :
@@ -110,18 +110,17 @@ class Line extends Component {
                     }
                 </Collapse>
                 {this.state.node.extras.lines.map((line, index) => {
-                    return <MultiLineInput
-                        key={index}
-                        index={index}
-                        line={line}
-                        locked={this.props.locked}
-                        voices={this.state.voices}
+                    return <MultiLineInput 
+                        key={index} 
+                        index={index} 
+                        line={line} 
+                        voices={this.state.voices} 
                         onUpdate={this.props.onUpdate}
                         onRemove={this.handleRemoveLine}
                         newAudio={this.handleNewAudio}
                     />
                 })}
-                <div className="mt-3"><button className="btn btn-clear btn-lg btn-block" disabled={this.props.locked} onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div>
+                <div className="mt-3"><button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddLine}>Add Line Audio <i className="fas fa-plus-circle ml-1"></i></button></div>
             </div>
         );
     }

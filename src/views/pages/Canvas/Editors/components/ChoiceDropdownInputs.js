@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Collapse, Alert } from 'reactstrap'
 import Select from 'react-select'
-import SlotMappings from '../../Editors/components/SlotMappings'
+import SlotMappings from '../../Editors/components/SlotMappings' 
 
 const _ = require('lodash')
 
@@ -25,7 +25,7 @@ class ChoiceDropdownInputs extends Component {
             if(!key && key!==0) return null
 
             const intent = _.find(props.intents, { key: key })
-
+            
             if (intent) {
                 choice_obj.intent = {
                     label: intent.name,
@@ -84,7 +84,7 @@ class ChoiceDropdownInputs extends Component {
             }
         }
 
-        const choices = this.state.choices
+        const choices = this.state.choices        
         delete choices[i].invalid
         choices[i].intent = target
         choices[i].mappings = choices[i].mappings.map(m => {
@@ -144,7 +144,7 @@ class ChoiceDropdownInputs extends Component {
                         for(var slot of slots){
                             if(slot.length !== 0){
                                 has_slots = true
-                                break
+                                break 
                             }
                         }
                         if(!has_slots){
@@ -165,7 +165,6 @@ class ChoiceDropdownInputs extends Component {
                                     placeholder="Select Intent"
                                     className="select-box mb-1"
                                     classNamePrefix="select-box"
-                                    isDisabled={this.props.locked}
                                     value={choice.intent}
                                     onChange={(e) => this.updateChoice(e, i)}
                                     options={this.props.intents.concat(this.props.built_ins).map(intent => {
@@ -173,7 +172,7 @@ class ChoiceDropdownInputs extends Component {
                                     })}
                                 />
                             </div>
-                            {!!slots &&
+                            {!!slots && 
                                 <React.Fragment>
                                     <div className="diagram-title">Slot Mapping</div>
                                     <SlotMappings
@@ -190,14 +189,10 @@ class ChoiceDropdownInputs extends Component {
                             </Collapse>
                         </div> )
                 }) : null}
-                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" disabled={this.props.locked} onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }
-}
-
-ChoiceDropdownInputs.defaultProps = {
-  locked: false,
 }
 
 export default ChoiceDropdownInputs;

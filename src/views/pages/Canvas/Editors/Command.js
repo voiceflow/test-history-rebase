@@ -24,7 +24,6 @@ class Command extends Component {
         return (
             <div>
                 <Textarea
-                    readOnly={this.props.locked}
                     value={this.state.node.extras.commands}
                     onChange={this.handleChange}
                     placeholder="eg.&#10;STOP&#10;RESET&#10;RESTART&#10;(new command each line)"

@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 // import moment from 'moment'
 // import 'react-table/react-table.css'
-import { Link } from 'react-router-dom';
-import Masonry from 'react-masonry-component';
-import './DashBoard.css';
-import axios from 'axios';
-import ConfirmModal from './../../components/Modals/ConfirmModal';
-import SkillCard from './Skill/SkillCard';
+import { Link } from 'react-router-dom'
+import Masonry from 'react-masonry-component'
+import './DashBoard.css'
+import axios from 'axios'
+import ConfirmModal from './../../components/Modals/ConfirmModal'
+import WarningModal from './../../components/Modals/WarningModal'
+import SkillCard from './Skill/SkillCard'
+import {Alert} from 'reactstrap'
 
 class DashBoard extends Component {
     constructor(props) {
@@ -17,12 +19,41 @@ class DashBoard extends Component {
             loading: false,
             skills: null,
             modal: false,
-            onboarding: false
+            onboarding: false,
+            error: null
         }
 
-        this.onLoadSkills = this.onLoadSkills.bind(this);
-        this.openSkill = this.openSkill.bind(this);
-        this.handleCopySkill = this.handleCopySkill.bind(this)
+        this.onLoadSkills = this.onLoadSkills.bind(this)
+        this.openSkill = this.openSkill.bind(this)
+        this.copySkill = this.copySkill.bind(this)
+        this.deleteSkill = this.deleteSkill.bind(this)
+    }
+
+    deleteSkill(skill_id, skill_name){
+        this.setState({
+            confirm: {
+                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{skill_name}</i> and all flows can not be recovered</Alert>,
+                warning: true,
+                confirm: () => {
+                    axios.delete(`/skill/${skill_id}`)
+                    .then(() => {
+                        let skills = this.state.skills
+                        skills = skills.filter(s => s.skill_id !== skill_id)
+                        this.setState({
+                            confirm: null,
+                            skills: skills
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        this.setState({
+                            confirm: null,
+                            error: 'Error Deleting Skill'
+                        })
+                    })
+                }
+            }
+        })
     }
 
     openSkill(skill, diagram){
@@ -72,40 +103,19 @@ class DashBoard extends Component {
         });
     }
 
-    onDeleteDiagram(id) {
-        this.setState({
-            confirm: {
-                text: "Are you sure you want to delete this diagram? Diagrams can not be recovered",
-                confirm: () => {
-                    this.setState({
-                        loading: true,
-                        error: false,
-                        success: false,
-                        confirm: false
-                    });
-                    axios.delete('/diagram/'+id)
-                    .then(res => {
-                        this.onLoad();
-                    })
-                    .catch(error => {
-                        this.setState({ error: "Unable to Delete" });
-                    });
-                }
-            }
-        });
-    }
-
-    toggleConfirm() {
-        this.setState({
-            confirm: null
-        });
-    }
-
-    handleCopySkill(skill) {
-        let skills = this.state.skills
-        skills.push(skill)
-        this.setState({
-            skills: skills
+    copySkill(skill_id) {
+        axios.post(`/skill/${skill_id}/${window.user_detail.id}/copy`)
+        .then(res => {
+            let skills = this.state.skills
+            skills.push(res.data)
+            this.setState({
+                skills: skills
+            })
+        })
+        .catch(err => {
+            this.setState({
+                error: 'Error copying skill'
+            })
         })
     }
 
@@ -146,7 +156,8 @@ class DashBoard extends Component {
                         skill={skill}
                         open={this.openSkill}
                         history={this.props.history}
-                        handleCopySkill={this.handleCopySkill}
+                        copySkill={()=>this.copySkill(skill.skill_id)}
+                        deleteSkill={()=>this.deleteSkill(skill.skill_id, skill.name)}
                     />)}
             </Masonry>
         }
@@ -171,7 +182,8 @@ class DashBoard extends Component {
                         </div>
                     </div>
                 </div>
-                <ConfirmModal confirm={this.state.confirm} toggle={this.toggleConfirm}/>
+                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
+                <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <div className="my-5 pt-5 container">
                     {skills}
                 </div>

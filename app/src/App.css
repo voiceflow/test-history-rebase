@@ -48,6 +48,9 @@ body {
 .rotate{
     transition: transform .15s ease-in-out;
 }
+.z-hard{
+    z-index: 10;
+}
 .modal {
     overflow: scroll !important;
 }
@@ -209,7 +212,6 @@ audio {
     border: 1px solid #ffb9b9 !important; 
 }
 .btn-warning{
-    padding: 10px 25px !important;
     font-weight: normal !important;
     color: #fff !important;
     border-radius: 5px !important;
@@ -300,6 +302,11 @@ audio {
 .normal-btn{
     text-transform: none !important;
     color: #94A6BD !important;
+    min-width: 42px !important;
+    background-color: transparent!important;
+}
+.normal-btn:hover{
+    background-color: #F5F7F8 !important;
 }
 .no-underline{
     text-decoration: none !important;

@@ -744,7 +744,7 @@ exports.withdrawSkill = (req, res) => {
     });
 }
 
-exports.copySkill = (req, res) => {
+exports.copySkill = async (req, res) => {
     let id = hashids.decode(req.params.id)[0]
     let new_creator_id = req.params.target_creator
     let diagram_mapping = {}
@@ -845,8 +845,20 @@ exports.copySkill = (req, res) => {
             }
         })
     }
-
-    // Starts here 
+    
+    // Starts here verify that the skill is under the current creator
+    if(req.user.admin < 100){
+        try{
+            let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
+            if(data.rows.length === 0 || data.rows[0].creator_id !== req.user.id){
+                throw new Error('Not your skill')
+            }
+        }catch(err){
+            // forbidden
+            return res.sendStatus(401)
+        }
+    }
+    
     pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [id], (err, data) => {
         let root_diagram_id
         for (let i = 0; i < data.rows.length; i++){

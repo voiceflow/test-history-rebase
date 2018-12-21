@@ -3,7 +3,6 @@ import update from 'immutability-helper';
 import pretty from 'prettysize';
 import * as _ from 'lodash';
 import axios from 'axios';
-import stringifyObject from 'stringify-object';
 import isVarName from 'is-var-name';
 import { Button, ButtonGroup, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
@@ -188,7 +187,7 @@ class API extends Component {
 
             // Check if user requires variables to be filled
             if ( !_.isEmpty(variables) && firstClick)  {
-            this.setState({variables: variables})
+                this.setState({variables: variables})
             } else {
                 // Set time before response
                 this.setState({loading: true})
@@ -250,16 +249,7 @@ class API extends Component {
                     })
                 })
                 .catch(err => {
-                    // Map all paths user requires to varMap
-                    _.forEach(mapping, map => {
-                        if(map.var){
-                            try {
-                                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), err), null, 4)
-                            } catch(error) {
-                                varMap[map.var] = 'undefined';
-                            }
-                        }
-                    })
+                    if(err.response) err = err.response
                     this.setState({
                         testHeader: update(this.state.testHeader, {
                             'status': {$set: err.status},
@@ -268,7 +258,7 @@ class API extends Component {
                         }),
                         loading: false,
                         testVariablesMapping: varMap,
-                        modalContent: JSON.stringify(err, null, 4)
+                        modalContent: JSON.stringify((err.data ? err.data : err), null, 4)
                     })
                 })
             }
@@ -278,41 +268,35 @@ class API extends Component {
 
     // Render entire modal
     renderAPITest() {
-      if ((_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) || this.state.loading) {
-        return <div className="text-center"><h1 className="loader"></h1></div>
-      }
-      let borderStyle = {borderColor: 'red'};
-      if (this.state.testHeader.status) {
-        borderStyle = {borderColor: '#e7ecef'}
+        let loading = <div className="text-center mt-3"><div className="loader text-lg"/></div>
+      if ((_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables))) {
+        return loading
       }
 
       return (
       <div className='projects-menu'>
           {
-            !_.isEmpty(this.state.variables) ?
+            !_.isEmpty(this.state.variables) &&
               <React.Fragment>
-                <label>We've detected you are using variables, please set variables and run again</label><br/>
-                <Button color="primary mb-3" onClick={()=>this.getEndpoint(false)} size="lg"><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Run</Button>
+                <Button color="primary" onClick={()=>this.getEndpoint(false)} className="mt-2"><i className="fas fa-play mr-2"/> Run</Button>
                 <br />
-              </React.Fragment> :
-              null
+                <label>We've detected you are using variables in your API call, please set variables and run</label><br/>
+                {_.map(this.state.variables, (val, key) => (
+                    <React.Fragment key={key}>
+                    <InputGroup className="mb-2">
+                        <InputGroupAddon addonType='prepend'>{val}</InputGroupAddon>
+                        <Input className='form-control form-control-border right' name={val} placeholder='set variable' onChange={this.handleVariableChange} />
+                    </InputGroup>
+                    </React.Fragment>
+                ))}
+              </React.Fragment>
           }
-          {_.map(this.state.variables, (val, key) => (
-            <React.Fragment key={key}>
-              <InputGroup>
-                <InputGroupAddon addonType='prepend'>{val}</InputGroupAddon>
-                <Input className='form-control form-control-border right' name={val} placeholder='set variable' onChange={this.handleVariableChange} />
-              </InputGroup>
-            </React.Fragment>
-          ))}
         {!_.isNull(this.state.modalContent) ?
-          <div>
-            <div className="property">
-              <div>
-                <div className="last-save">{this.state.testHeader.status ? 'Status: ' + this.state.testHeader.status : null}</div>
-                <div className="last-save">{this.state.testHeader.time ? 'Time: ' + this.state.testHeader.time + 'ms': null}</div>
-                <div className="last-save">{this.state.testHeader.size ? 'Size: ' + this.state.testHeader.size : null}</div>
-              </div>
+            <div className={"status " + ((this.state.testHeader.status && this.state.testHeader.status < 300) ? 'success' : 'fail')}>
+            <div className="my-3">
+                <div className="last-save">Status: {this.state.testHeader.status ? <span>{this.state.testHeader.status}</span> : null}</div>
+                <div className="last-save">Time: {this.state.testHeader.time ?  this.state.testHeader.time + 'ms': null}</div>
+                <div className="last-save">Size: {this.state.testHeader.size ? this.state.testHeader.size : null}</div>
             </div>
             <ButtonGroup className="toggle-group mb-2">
               {_.map(TABS, tab => (
@@ -327,15 +311,17 @@ class API extends Component {
               ))}
             </ButtonGroup>
             {this.state.activeTab === TABS[0] ?
-              <div style={borderStyle} className="response-box">
-                <pre>{this.state.modalContent}</pre>
+              <div className="response-box">
+                <pre className="mb-0">{(_.isEmpty(this.state.modalContent) || this.state.modalContent === '{}') ? 'EMPTY RESPONSE' : this.state.modalContent}</pre>
               </div> :
-              _.map(this.state.testVariablesMapping, (val, key) => {
-                let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
-                return <pre key={key}>{draftToMarkdown(path) + ': ' + key + ' => ' + val}</pre>
-              })
+              <div className="mt-3">
+                {_.map(this.state.testVariablesMapping, (val, key) => {
+                    let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
+                    return <pre key={key}>{draftToMarkdown(path) + ': ' + val + ' => {' + key + '}'}</pre>
+                })}
+              </div>
             }
-          </div> : null
+          </div> : (this.state.loading ? loading : null )
         }
       </div>);
     }
@@ -484,7 +470,7 @@ class API extends Component {
                 </label>
                 <br />
                 <InputGroup>
-                    <InputGroupButtonDropdown addonType="prepend mb-3" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <InputGroupButtonDropdown addonType="prepend" className="mb-3" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret>
                           {this.state.node.extras.method}
                         </DropdownToggle>
@@ -512,7 +498,7 @@ class API extends Component {
                         placeholder="URL Endpoint"
                     />
                 </InputGroup>
-<Button color="primary" onClick={this.getEndpoint} size="sm" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Test Endpoint</Button>
+                <Button color="clear" onClick={this.getEndpoint} size="sm" block><i className="fas fa-power-off mr-1"></i>Test Endpoint</Button>
                 <hr/>
                 <Nav tabs className="mb-3">
                     <NavItem className="mr-2" onClick={() => this.setState({type: 'headers'})}>

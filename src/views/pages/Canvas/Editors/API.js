@@ -263,15 +263,15 @@ class API extends Component {
       }
       let borderStyle = {borderColor: 'red'};
       if (this.state.testHeader.status) {
-        borderStyle = {borderColor: 'green'}
+        borderStyle = {borderColor: '#e7ecef'}
       }
       return (
       <div className='projects-menu'>
           {
             !_.isEmpty(this.state.variables) ?
               <React.Fragment>
-                <label>We've detected you are using variables, please set variables and run again</label>
-                <Button color="primary" onClick={()=>this.getEndpoint(false)} size="sm" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Run</Button>
+                <label>We've detected you are using variables, please set variables and run again</label><br/>
+                <Button color="primary mb-3" onClick={()=>this.getEndpoint(false)} size="lg"><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Run</Button>
                 <br />
               </React.Fragment> :
               null
@@ -280,7 +280,7 @@ class API extends Component {
             <React.Fragment key={key}>
               <InputGroup>
                 <InputGroupAddon addonType='prepend'>{val}</InputGroupAddon>
-                <Input name={val} placeholder='set variable' onChange={this.handleVariableChange} />
+                <Input className='form-control form-control-border right' name={val} placeholder='set variable' onChange={this.handleVariableChange} />
               </InputGroup>
             </React.Fragment>
           ))}
@@ -440,7 +440,7 @@ class API extends Component {
 
         return (
             <React.Fragment>
-              <Modal
+              <Modal size='lg'
                 isOpen={this.state.modal}
                 toggle={()=>this.setState({
                   modalContent: null, modal: false,
@@ -461,10 +461,9 @@ class API extends Component {
                 <label>
                     URL Endpoint
                 </label>
-                <Button color="primary" onClick={this.getEndpoint} size="sm" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Test Endpoint</Button>
                 <br />
                 <InputGroup>
-                    <InputGroupButtonDropdown addonType="prepend" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <InputGroupButtonDropdown addonType="prepend mb-3" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret>
                           {this.state.node.extras.method}
                         </DropdownToggle>
@@ -479,7 +478,7 @@ class API extends Component {
                         </DropdownMenu>
                     </InputGroupButtonDropdown>
                     <VariableInput
-                        className='form-control-border top-left form-control right'
+                        className='form-control-border top-left form-control right mb-3'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
                         updateRaw={(raw) => {
@@ -492,6 +491,7 @@ class API extends Component {
                         placeholder="URL Endpoint"
                     />
                 </InputGroup>
+<Button color="primary" onClick={this.getEndpoint} size="sm" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Test Endpoint</Button>
                 <hr/>
                 <Nav tabs className="mb-3">
                     <NavItem className="mr-2" onClick={() => this.setState({type: 'headers'})}>

@@ -101,8 +101,8 @@ class Variables extends PureComponent {
                     <FormGroup className="mb-0">
                         <Label>Add New Global Variable</Label>
                         <InputGroup>
-                            <Input className="form-control-border left" name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
-                            <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                            <Input className="form-control-border left" readOnly={this.props.locked} name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
+                            <InputGroupAddon addonType="append"><Button type="submit" disabled={this.props.locked} className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                 </form>
@@ -129,12 +129,12 @@ class Variables extends PureComponent {
                     <FormGroup className="mb-0">
                         <Label>Add New Local Variable</Label>
                         <InputGroup>
-                            <Input className="form-control-border left"  name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
-                            <InputGroupAddon addonType="append"><Button type="submit" className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
+                            <Input className="form-control-border left"  readOnly={this.props.locked} name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
+                            <InputGroupAddon addonType="append"><Button type="submit" className="new_var" disabled={this.props.locked}><i className="fas fa-plus"/></Button></InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                 </form>
-                <h1 className="down-arrow"><i class="far fa-long-arrow-alt-down"></i></h1>
+                <h1 className="down-arrow"><i className="far fa-long-arrow-alt-down"></i></h1>
                 <div>
                     <Label>Local Variables</Label>
                     <div className="variables">
@@ -153,9 +153,9 @@ class Variables extends PureComponent {
                 {TABS.map(tab => {
                     return <Button
                         key={tab}
-                        onClick={() => this.switchTab(tab)} 
+                        onClick={() => this.switchTab(tab)}
                         outline={this.state.tab !== tab}
-                        disabled={this.state.tab === tab}> 
+                        disabled={this.state.tab === tab}>
                         {tab}
                     </Button>
                 })}

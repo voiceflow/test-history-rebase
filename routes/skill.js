@@ -51,7 +51,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview
             FROM
                 skills
             WHERE
@@ -83,7 +83,7 @@ exports.getSkill = (req, res) => {
             skill.skill_id = req.params.id;
 
             if(req.query.preview || !skill.amzn_id){
-                res.send(skill);
+                res.send(skill)
             }else{
                 // Sync up with AMAZON
                 // Check Current Amazon Status
@@ -269,7 +269,6 @@ exports.patchSkill = (req, res) => {
 
     let id = hashids.decode(req.params.id)[0];
 
-    console.log(req);
     // only need to update the name/restart
     if(req.query.settings){
         pool.query(`UPDATE skills SET name = $1, restart = $2 WHERE skill_id = $3`, [req.body.name, req.body.restart, id], (err) => {
@@ -345,7 +344,7 @@ exports.patchSkill = (req, res) => {
           preview = $2
         WHERE
           skill_id = $1`,
-        [id, b.isPreview], (err, data) => {
+        [id, b.isPreview], (err) => {
           if(err){
             console.error(err);
             res.sendStatus(500);

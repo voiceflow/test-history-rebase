@@ -769,7 +769,6 @@ class Canvas extends Component {
                     }
                 })
             }
-
             this.setState({
                 skill: skill,
                 global_variables: global_variables

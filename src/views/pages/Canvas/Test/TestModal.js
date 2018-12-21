@@ -290,7 +290,7 @@ class TestModal extends React.Component {
 
     if(start){
       data.testing = {
-        line: this.story_state.line ? this.story_state.line : "START",
+        line: this.story_state.line_id ? this.story_state.line_id : "START",
       };
       data.diagrams = [{id: this.props.testing_info.id}]
     }
@@ -314,7 +314,7 @@ class TestModal extends React.Component {
     axios.post(test_endpoint, data)
     .then(async res => {
       res = res.data
-      if(res.line) {
+      if(res.line_id) {
         this.story_state = res
       }
       if(res.output && res.output.length > 0){
@@ -437,7 +437,7 @@ class TestModal extends React.Component {
   startline(){
     if(!this.state.selected_line) return;
     this.initializeStory();
-    this.story_state.line = this.state.selected_line.value
+    this.story_state.line_id = this.state.selected_line.value
     this.setState({
       started: true
     }, () => {this.updateState(true)});

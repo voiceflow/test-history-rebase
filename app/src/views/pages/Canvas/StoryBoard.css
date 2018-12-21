@@ -394,6 +394,9 @@
 .TitleBar .project {
     height: 55px;
 }
+.card-dropdown .show{
+  width: 10px;
+}
 .TitleBar .status {
     width: 400px;
     line-height: 49px;
@@ -522,9 +525,6 @@
     display: flex;
     flex-direction: column;
 /*    margin-top: 10px;*/
-}
-.normal-btn{
-    background-color: transparent!important;
 }
 .tool.border-top-none {
     border-top: none !important;

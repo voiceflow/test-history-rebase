@@ -3,6 +3,14 @@ const {docClient, pool, config, hashids} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 
+const generateID = () => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0
+        const v = c === "x" ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+    })
+}
+
 exports.getSkills = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
@@ -198,9 +206,45 @@ exports.deleteSkill = (req, res) => {
         return;
     }
 
+    const deleteDiagrams = (diagram_id) => {
+        pool.query('SELECT * FROM diagrams WHERE id = $1', [diagram_id], (err, results) => {
+            let sub_diagrams;
+            try {
+                sub_diagrams = JSON.parse(results.rows[0].sub_diagrams)
+            } catch (err) {
+                sub_diagrams = []
+            }
+
+            if (sub_diagrams.length > 0) {
+                for (let i = 0; i < sub_diagrams.length; i++){
+                    deleteDiagrams(sub_diagrams[i])
+                }
+            }
+
+            // Delete diagram from dynamo
+            let params = {
+                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                Key: {'id': diagram_id}
+            }
+
+            docClient.delete(params, async(err) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    // Delete diagram from our tables
+                    pool.query('DELETE FROM diagrams WHERE id = $1', [diagram_id], (err) => {
+                        if(err){
+                            console.log(err)
+                        }
+                    })
+                }
+            })
+        })
+    }
+
     let id = hashids.decode(req.params.id)[0];
-    pool.query('SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err, results) => {
-        // Delete off Amazon
+    pool.query("SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2", [req.user.id, id], (err, results) => {    
+        // Delete skill off Amazon
         if(results.rows[0].amzn_id){
             AccessToken(req.user.id, token => {
                 if(token === null){
@@ -218,19 +262,22 @@ exports.deleteSkill = (req, res) => {
                     // Successfully deleted
                 })
                 .catch(err => {
-                    console.log(err);
-                });
-            });
+                    console.log(err)
+                })
+            })
         }
-
-        // Delete off our servers
+        
+        // Delete skill off our servers
         pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
             if(err){
-                res.sendStatus(500);
+                res.sendStatus(500)
             }else{
-                res.sendStatus(200);
+                res.sendStatus(200)
             }
-        });
+        })
+
+        // Delete diagrams recursively
+        deleteDiagrams(results.rows[0].diagram)
     });
 };
 
@@ -713,4 +760,205 @@ exports.withdrawSkill = (req, res) => {
             res.status(500).send(err.response.data);
         });
     });
+}
+
+exports.copySkill = async (req, res) => {
+    let id = hashids.decode(req.params.id)[0]
+    let new_creator_id = req.params.target_creator
+    let diagram_mapping = {}
+    let diagram_names = {}
+    let sub_diagrams = {}
+
+    const remapDiagramIds = (diagram, new_skill_id) => {
+        diagram.id = diagram_mapping[diagram.id]
+        diagram.skill = new_skill_id
+        sub_diagrams[diagram.id] = []
+
+        let JSON_diagram_data = JSON.parse(diagram.data)
+        let nodes = JSON_diagram_data.nodes
+        if(!!nodes) {
+            for (let i = 0; i < nodes.length; i++){
+                let node = nodes[i]
+                if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+                    // If this diagram id hasn't been seen yet, create a new mapping for it and recursively call remapping
+                    if (!diagram_mapping[node.extras.diagram_id]) {
+                        diagram_mapping[node.extras.diagram_id] = generateID()
+                        retrieveDiagram(node.extras.diagram_id, new_skill_id)
+                    }
+                    node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
+                    sub_diagrams[diagram.id].push(node.extras.diagram_id)
+                }
+            }
+        }
+        diagram.data = JSON.stringify(JSON_diagram_data)
+        return diagram
+    }
+
+    const uploadNewDiagram = (remapped_diagram, old_diagram_id, new_skill_id) => {
+        let params = {
+            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            Item: {
+                id: remapped_diagram.id,
+                variables: remapped_diagram.variables,
+                data: remapped_diagram.data,
+                skill: remapped_diagram.skill,
+                creator: new_creator_id
+            }
+        }
+
+        // Called if SQL insert fails
+        const cleanUpDynamo = (new_diagram_id) => {
+            let clean_up_params = {
+                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                Key: {'id': new_diagram_id}
+            };
+            docClient.delete(clean_up_params, err => {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(err.statusCode)
+                }
+            });
+        }
+
+        const insertDiagramRow = (new_diagram_id, old_diagram_id) => {
+            let diagram_name = diagram_names[old_diagram_id]
+
+            pool.query(
+                `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents) 
+                (SELECT $1, $2, $3, $4, permissions, used_intents FROM diagrams WHERE id = $5)`,
+                [new_diagram_id, diagram_name, new_skill_id, JSON.stringify(sub_diagrams[new_diagram_id]), old_diagram_id],
+                (err) => {
+                    if(err) {
+                        console.log(err)
+                        cleanUpDynamo(new_diagram_id)
+                        res.sendStatus(500)
+                    }
+                }    
+            )
+        }
+
+        docClient.put(params, async(err) => {
+            if (err) {
+                console.log(err)
+                res.sendStatus(err.statusCode)
+            } else {
+                insertDiagramRow(remapped_diagram.id, old_diagram_id)
+            }
+        });
+    }
+
+    const retrieveDiagram = (diagram_id, new_skill_id) => {
+        let get_params = {
+            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            Key: {'id': diagram_id}
+        }
+
+        docClient.get(get_params, (err, data) => {
+            if(err) {
+                console.log(err)
+                res.sendStatus(err.statusCode)
+            } else if (data.Item) {
+                let remapped_diagram = remapDiagramIds(data.Item, new_skill_id)
+                uploadNewDiagram(remapped_diagram, diagram_id, new_skill_id)
+            }
+        })
+    }
+    
+    // Starts here verify that the skill is under the current creator
+    if(req.user.admin < 100){
+        try{
+            let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
+            if(data.rows.length === 0 || data.rows[0].creator_id !== req.user.id){
+                throw new Error('Not your skill')
+            }
+        }catch(err){
+            // forbidden
+            return res.sendStatus(401)
+        }
+    }
+    
+    pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [id], (err, data) => {
+        let root_diagram_id
+        for (let i = 0; i < data.rows.length; i++){
+            diagram_names[data.rows[i].id] = data.rows[i].name
+
+            if (data.rows[i].name === 'ROOT') {
+                root_diagram_id = data.rows[i].id
+                diagram_mapping[root_diagram_id] = generateID()
+            }
+        }
+
+        // Create copy of the skill
+        let copy_query = `
+            INSERT INTO skills (
+                name,
+                diagram,
+                creator_id,
+                summary,
+                description,
+                keywords,
+                invocations,
+                small_icon,
+                large_icon,
+                category,
+                purchase,
+                personal,
+                copa,
+                ads,
+                export,
+                instructions,
+                inv_name,
+                locales,
+                restart,
+                global,
+                privacy_policy,
+                terms_and_cond,
+                intents,
+                slots,
+                used_intents,
+                used_choices
+            )
+            SELECT 
+                coalesce(name, '') || ' Copy' AS name,
+                $1 AS diagram,
+                $2 AS creator_id,
+                summary,
+                description,
+                keywords,
+                invocations,
+                small_icon,
+                large_icon,
+                category,
+                purchase,
+                personal,
+                copa,
+                ads,
+                export,
+                instructions,
+                inv_name,
+                locales,
+                restart,
+                global,
+                privacy_policy,
+                terms_and_cond,
+                intents,
+                slots,
+                used_intents,
+                used_choices
+            FROM skills WHERE skill_id = $3 RETURNING *`
+        pool.query(
+            copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],
+            (err, data) => {
+                if (err) {
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    let new_skill_id = data.rows[0].skill_id
+                    retrieveDiagram(root_diagram_id, new_skill_id)
+                    data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
+                    res.send(data.rows[0])
+                }
+            }
+        )
+    })
 }

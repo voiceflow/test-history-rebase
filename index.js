@@ -144,6 +144,7 @@ app.delete('/email/template/:id', ensureLoggedIn(), Email.deleteTemplate);
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
+app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
 app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);

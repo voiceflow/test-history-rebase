@@ -71,7 +71,8 @@ class API extends Component {
             dropdownOpen: false,
             type: 'headers',
             testHeader: {'status': null, 'time': null, 'size': null},
-            popoverOpen: false
+            popoverOpen: false,
+            loading: false
         };
 
         this.onChangeAce = this.onChangeAce.bind(this)
@@ -133,138 +134,158 @@ class API extends Component {
     }
 
     getEndpoint(firstClick=true){
-      let regex = /\{([^{}]*)\}/g;
-      let variables = [];
-      let userHeader = {};
-      let userBody = {};
-      let userParam = {};
-      let url = draftToMarkdown(this.state.node.extras.url);
-      let method = this.state.node.extras.method;
-      const { body, headers, params, bodyInputType, content, mapping } = this.props.node.extras;
-      const replacer = (match, inner, variables_map) => {
-        if(inner in variables_map){
-          return variables_map[inner];
-        }else{
-          return match;
+        let regex = /\{([^{}]*)\}/g;
+        let variables = []
+        let userHeader = {}
+        let userBody = {}
+        let url = draftToMarkdown(this.state.node.extras.url);
+        let method = this.state.node.extras.method;
+        const { body, headers, params, bodyInputType, content, mapping } = this.props.node.extras
+        const replacer = (match, inner, variables_map) => {
+            if(inner in variables_map){
+                return variables_map[inner];
+            }else{
+                return match;
+            }
         }
-      }
 
-      // Utility function to find all variables
-      const finder = url => {
-        let match = regex.exec(url);
+        // Utility function to find all variables
+        const finder = url => {
+            let match = regex.exec(url);
     		while (match != null) {
     			if(isVarName(match[1]) && !_.includes(variables, match[1])){
     		    	variables.push(match[1]);
     		    }
     		    match = regex.exec(url);
     		}
-      }
+        }
 
-      // Replace url with user set variables
-      let new_url
-      new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
-      if(!_.isNull(url)){
+        // Replace url with user set variables
+        let new_url
+        new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+        if(!_.isNull(url)){
     		finder(url);
-        // Distinguish between body rawInput and pairs
-        if (bodyInputType === 'rawInput') {
-          finder(content);
-        } else {
-          _.forEach(_.concat(body), nodeValue => {
+            // Distinguish between body rawInput and pairs
+            if (bodyInputType === 'rawInput') {
+            finder(content);
+            } else {
+            _.forEach(_.concat(body), nodeValue => {
+                _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
+                finder(draftToMarkdown(value))
+                })
+            })
+            }
+            // Find variables inside of Headers, Body, and Params
+            _.forEach(_.concat(headers, params), nodeValue => {
             _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
-              finder(draftToMarkdown(value));
+                finder(draftToMarkdown(value))
             })
-          })
-        }
-        // Find variables inside of Headers, Body, and Params
-        _.forEach(_.concat(headers, params), nodeValue => {
-          _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
-            finder(draftToMarkdown(value));
-          })
-        });
-        // Find variables inside of result variable mappings
-        _.forEach(mapping, map => {
-          finder(draftToMarkdown(map.path));
-        });
-
-        // Check if user requires variables to be filled
-        if ( !_.isEmpty(variables) && firstClick)  {
-          this.setState({variables: variables})
-        } else {
-          // Set time before response
-          let time = Date.now();
-          const markdownToObject = nodes => {
-            let object = {};
-            _.forEach(nodes, node => {
-              object[draftToMarkdown(
-                node.key
-              ).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))]=draftToMarkdown(
-                node.val
-              ).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
-            })
-            return object;
-          }
-          userHeader = markdownToObject(headers);
-          if (bodyInputType === 'rawInput') {
-            userBody = content.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables));
-          } else {
-            userBody = markdownToObject(body);
-          }
-          userParam = markdownToObject(params);
-
-          let varMap = {};
-          axios({ method: method, url: new_url, headers: userHeader, body: userBody, params: userParam })
-          .then(res => {
-            // Map all paths user requires to varMap
+            });
+            // Find variables inside of result variable mappings
             _.forEach(mapping, map => {
-              try {
-                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
-              } catch(error) {
-                varMap[map.var] = 'undefined';
-              }
-            })
-            this.setState({
-              testHeader: update(this.state.testHeader, {
-                'status': {$set: res.status},
-                'time': {$set: Date.now()-time},
-                'size': {$set: pretty(JSON.stringify(res).length * 7)},
-              }),
-              testVariablesMapping: varMap,
-              modalContent: JSON.stringify(res.data, null, 4)
-            })
-          })
-          .catch(err => {
-            // Map all paths user requires to varMap
-            _.forEach(mapping, map => {
-              try {
-                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), err), null, 4)
-              } catch(error) {
-                varMap[map.var] = 'undefined';
-              }
-            })
-            this.setState({
-              testHeader: update(this.state.testHeader, {
-                'status': {$set: err.status},
-                'time': {$set: Date.now()-time},
-                'size': {$set: pretty(JSON.stringify(err).length * 7)},
-              }),
-              testVariablesMapping: varMap,
-              modalContent: JSON.stringify(err, null, 4)
-            })
-          })
-        }
+            finder(draftToMarkdown(map.path))
+            });
+
+            // Check if user requires variables to be filled
+            if ( !_.isEmpty(variables) && firstClick)  {
+            this.setState({variables: variables})
+            } else {
+                // Set time before response
+                this.setState({loading: true})
+                let time = Date.now()
+                const markdownToObject = nodes => {
+                    let object = {}
+                    _.forEach(nodes, node => {
+                        let value = object[draftToMarkdown(node.key).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))]
+                        if(value){
+                            object[value] = draftToMarkdown(node.val).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                        }
+                    })
+                    return object
+                }
+
+                // Check that variables are set before pushing in 
+                let request_obj = {
+                    method: method ? method : 'GET',
+                    url: new_url,
+                    params: markdownToObject(params)
+                }
+
+                userHeader = markdownToObject(headers)
+                if(!_.isEmpty(userHeader)){
+                    request_obj.headers = userHeader
+                }
+                if (bodyInputType === 'rawInput') {
+                    request_obj.body = content.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                } else {
+                    userBody = markdownToObject(body)
+                    if(!_.isEmpty(userBody)){
+                        request_obj.body = userBody
+                    }
+                }
+
+                let varMap = {}
+
+                axios(request_obj)
+                .then(res => {
+                    // Map all paths user requires to varMap
+                    _.forEach(mapping, map => {
+                        if(map.var){
+                            try {
+                                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
+                            } catch(error) {
+                                varMap[map.var] = 'undefined'
+                            }
+                        }
+                    })
+                    this.setState({
+                        testHeader: update(this.state.testHeader, {
+                            'status': {$set: res.status},
+                            'time': {$set: Date.now()-time},
+                            'size': {$set: pretty(JSON.stringify(res).length * 7)},
+                        }),
+                        loading: false,
+                        testVariablesMapping: varMap,
+                        modalContent: JSON.stringify(res.data, null, 4)
+                    })
+                })
+                .catch(err => {
+                    // Map all paths user requires to varMap
+                    _.forEach(mapping, map => {
+                        if(map.var){
+                            try {
+                                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), err), null, 4)
+                            } catch(error) {
+                                varMap[map.var] = 'undefined';
+                            }
+                        }
+                    })
+                    this.setState({
+                        testHeader: update(this.state.testHeader, {
+                            'status': {$set: err.status},
+                            'time': {$set: Date.now()-time},
+                            'size': {$set: pretty(JSON.stringify(err).length * 7)},
+                        }),
+                        loading: false,
+                        testVariablesMapping: varMap,
+                        modalContent: JSON.stringify(err, null, 4)
+                    })
+                })
+            }
     	}
-      this.setState({ modal: true });
+        this.setState({ modal: true });
     }
 
     // Render entire modal
     renderAPITest() {
-      if (_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) {
-        return null;
+      if ((_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables)) || this.state.loading) {
+        return <div className="text-center"><h1 className="loader"></h1></div>
       }
       let borderStyle = {borderColor: 'red'};
       if (this.state.testHeader.status) {
         borderStyle = {borderColor: 'green'}
       }
+
       return (
       <div className='projects-menu'>
           {

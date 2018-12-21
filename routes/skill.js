@@ -14,7 +14,7 @@ exports.getSkills = (req, res) => {
         FROM
             skills
         WHERE
-            creator_id = $1`, 
+            creator_id = $1`,
         [req.user.id], (err, data) => {
         if(err){
             console.error(err);
@@ -41,7 +41,8 @@ exports.getSkill = (req, res) => {
         // expose as little information as possible if previewing
         sql = `
             SELECT
-                name
+                name,
+                preview
             FROM
                 skills
             WHERE
@@ -50,7 +51,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview
             FROM
                 skills
             WHERE
@@ -77,11 +78,12 @@ exports.getSkill = (req, res) => {
             res.sendStatus(404);
         }else{
             let skill = data.rows[0];
+
             // Rehash the skill id
             skill.skill_id = req.params.id;
 
             if(req.query.preview || !skill.amzn_id){
-                res.send(skill);
+                res.send(skill)
             }else{
                 // Sync up with AMAZON
                 // Check Current Amazon Status
@@ -204,7 +206,7 @@ exports.deleteSkill = (req, res) => {
                 if(token === null){
                     return;
                 }
-    
+
                 axios.request({
                     url: `https://api.amazonalexa.com/v1/skills/${results.rows[0].amzn_id}`,
                     method: 'DELETE',
@@ -220,7 +222,7 @@ exports.deleteSkill = (req, res) => {
                 });
             });
         }
-        
+
         // Delete off our servers
         pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
             if(err){
@@ -248,13 +250,13 @@ exports.setSkill = (req, res) => {
                 name, diagram, creator_id, summary, description, invocations, inv_name
             ) VALUES (
                 $1, $2, $3, $4, $5, $6, $7
-            ) RETURNING skill_id`, 
+            ) RETURNING skill_id`,
             [name, req.body.diagram, req.user.id, sum, desc, value, name], (err, data) => {
         if(err){
-            console.error(err); 
-            res.sendStatus(500); 
-        } else { 
-            res.send({id: hashids.encode(data.rows[0].skill_id)}) 
+            console.error(err);
+            res.sendStatus(500);
+        } else {
+            res.send({id: hashids.encode(data.rows[0].skill_id)})
         }
     });
 };
@@ -287,11 +289,11 @@ exports.patchSkill = (req, res) => {
 
     if (req.query.intents) {
         pool.query(`
-            UPDATE skills 
+            UPDATE skills
             SET
             intents = $2,
             slots = $3
-            WHERE skill_id = $1`, 
+            WHERE skill_id = $1`,
             [id, b.intents, b.slots], (err) => {
             if(err){
                 console.log(err);
@@ -302,29 +304,29 @@ exports.patchSkill = (req, res) => {
         })
     } else if(req.query.publish){
         pool.query(`
-            UPDATE skills 
+            UPDATE skills
             SET
             name = $2,
             inv_name = $3,
-            summary = $4, 
-            description = $5, 
-            keywords = $6, 
-            invocations = $7, 
-            small_icon = $8, 
-            large_icon = $9, 
+            summary = $4,
+            description = $5,
+            keywords = $6,
+            invocations = $7,
+            small_icon = $8,
+            large_icon = $9,
             category = $10,
-            purchase = $11, 
-            personal = $12, 
-            copa = $13, 
-            ads = $14, 
-            export = $15, 
+            purchase = $11,
+            personal = $12,
+            copa = $13,
+            ads = $14,
+            export = $15,
             instructions = $16,
             locales = $17,
             privacy_policy = $18,
             terms_and_cond = $19
-            WHERE skill_id = $1`, 
-            [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
-            {value: b.invocations}, b.small_icon, b.large_icon, b.category, 
+            WHERE skill_id = $1`,
+            [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
+            {value: b.invocations}, b.small_icon, b.large_icon, b.category,
             b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales,
             b.privacy_policy, b.terms_and_cond], (err) => {
             if(err){
@@ -334,24 +336,40 @@ exports.patchSkill = (req, res) => {
                 res.sendStatus(200);
             }
         })
+    } else if(req.query.preview){
+      pool.query(`
+        UPDATE
+          skills
+        SET
+          preview = $2
+        WHERE
+          skill_id = $1`,
+        [id, b.isPreview], (err) => {
+          if(err){
+            console.error(err);
+            res.sendStatus(500);
+          }else{
+            res.sendStatus(200);
+          }
+        })
     }else{
         pool.query(`
-            UPDATE skills 
+            UPDATE skills
             SET
             name = $2,
             inv_name = $3,
-            summary = $4, 
+            summary = $4,
             description = $5,
-            keywords = $6, 
-            invocations = $7, 
-            small_icon = $8, 
-            large_icon = $9, 
+            keywords = $6,
+            invocations = $7,
+            small_icon = $8,
+            large_icon = $9,
             category = $10,
             locales = $11,
             privacy_policy = $12,
             terms_and_cond = $13
-            WHERE skill_id = $1`, 
-            [id, b.name, b.inv_name, b.summary, b.description, b.keywords, 
+            WHERE skill_id = $1`,
+            [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
             {value: b.invocations}, b.small_icon, b.large_icon, b.category, b.locales,
             b.privacy_policy, b.terms_and_cond], (err) => {
             if(err){
@@ -398,7 +416,7 @@ exports.buildSkill = async (req,res) => {
             }
         }))
     })
-    
+
     permissions = Array.from(permissions).map(perm => {return {name: perm}})
 
     AccessToken(req.user.id, token => {
@@ -408,19 +426,19 @@ exports.buildSkill = async (req,res) => {
             });
             return;
         }
-    
+
         pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
             if(err){
-                console.error(err) 
+                console.error(err)
                 res.sendStatus(500)
-            } else { 
-                
+            } else {
+
                 let r = data.rows[0]
 
                 let amzn_id = r.amzn_id
                 r.permissions = permissions
                 let manifest = JSONs.manifest(r, original_id)
-                
+
                 try{
                     if(amzn_id){
                         try{
@@ -431,7 +449,7 @@ exports.buildSkill = async (req,res) => {
                                     Authorization: token
                                 }
                             });
-                            if (request.data.manifest && 
+                            if (request.data.manifest &&
                                 request.data.manifest.lastUpdateRequest &&
                                 request.data.manifest.lastUpdateRequest.status === 'FAILED'){
                                 amzn_id = null;
@@ -466,7 +484,7 @@ exports.buildSkill = async (req,res) => {
                                 data: JSON.stringify(vendor_request.data)
                             });
                         }
-                        
+
 
                         let request = await axios.request({
                             url: 'https://api.amazonalexa.com/v1/skills',
@@ -503,7 +521,7 @@ exports.buildSkill = async (req,res) => {
                             return;
                         }else{
                             setTimeout(()=> {
-                                
+
                                 const interactionModels = []
                                 r.locales.forEach(locale => {
                                     interactionModels.push(axios.request({
@@ -579,8 +597,8 @@ exports.buildSkill = async (req,res) => {
                     }
                 }
             }
-        }); 
-    });    
+        });
+    });
 }
 
 exports.certifySkill = (req, res) => {
@@ -618,11 +636,11 @@ exports.certifySkill = (req, res) => {
                         })
                         .then(response => {
                             pool.query(`
-                                UPDATE skills 
+                                UPDATE skills
                                 SET
                                 review = TRUE
-                                WHERE amzn_id = $1`, 
-                                [req.params.amzn_id], 
+                                WHERE amzn_id = $1`,
+                                [req.params.amzn_id],
                                 (err) => {
                                     if(err){
                                         console.log(err);
@@ -661,7 +679,7 @@ exports.withdrawSkill = (req, res) => {
             });
             return;
         }
-        
+
         axios.request({
             url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/withdraw`,
             method: 'POST',
@@ -675,11 +693,11 @@ exports.withdrawSkill = (req, res) => {
         })
         .then(response => {
              pool.query(`
-                UPDATE skills 
+                UPDATE skills
                 SET
                 review=FALSE
-                WHERE amzn_id = $1`, 
-                [req.params.amzn_id, 0], 
+                WHERE amzn_id = $1`,
+                [req.params.amzn_id, 0],
                 (err) => {
                     if(err){
                         console.log(err);

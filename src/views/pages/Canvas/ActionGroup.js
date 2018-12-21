@@ -471,29 +471,30 @@ class ActionGroup extends PureComponent {
                     </Tooltip>
                     <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
                         <PopoverHeader>Share Link</PopoverHeader>
-                          <FormGroup>
-                            <Label>Allow preview sharing:</Label>
-                              <Switch
-                                checked={this.state.allowPreview}
-                                onChange={this.togglePreview}
-                                color="primary"
-                              />
-                              <b>{this.state.allowPreview ? 'Yes': 'No'}</b>
-                          </FormGroup>
-                        <PopoverBody>
-                            <InputGroup>
-                                <InputGroupAddon addonType="prepend" id="copyShare">
-                                    <ClipBoard
-                                        component="button"
-                                        className="btn btn-secondary"
-                                        value={link}
-                                        id="shareLink"
-                                    >
-                                        <i className="fas fa-copy"/>
-                                    </ClipBoard>
-                                </InputGroupAddon>
-                                <Input readOnly value={link}/>
-                            </InputGroup>
+                        <PopoverBody style={{minWidth: '260px'}}>
+                            <div className="space-between">
+                                <Label>Allow preview sharing</Label>
+                                <Switch
+                                    checked={this.state.allowPreview}
+                                    onChange={this.togglePreview}
+                                    color="primary"
+                                />
+                            </div>
+                            {this.state.allowPreview &&
+                                <InputGroup className="mb-3">
+                                    <InputGroupAddon addonType="prepend">
+                                        <ClipBoard
+                                            component="button"
+                                            className="btn btn-primary"
+                                            value={link}
+                                            id="shareLink"
+                                        >
+                                            <i className="fas fa-copy"/>
+                                        </ClipBoard>
+                                    </InputGroupAddon>
+                                    <Input readOnly value={link} className="form-control-border right"/>
+                                </InputGroup>
+                            }
                         </PopoverBody>
                     </Popover>
                     <Tooltip

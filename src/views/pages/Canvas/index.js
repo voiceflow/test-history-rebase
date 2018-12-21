@@ -717,38 +717,31 @@ class Canvas extends Component {
     }
 
     onLoadDiagrams(){
-        if(this.preview){
-            this.onLoadId(this.diagram_id)
-            console.log(this.diagram_id);
-        }
-            axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
-            .then(res => {
-                this.setState({
-                    diagrams: res.data.map(flow => {
-                        try {
-                            return {
-                                id: flow.id,
-                                name: flow.name,
-                                sub_diagrams: JSON.parse(flow.sub_diagrams)
-                            }
-                        } catch(err) {
-                            return {
-                                id: flow.id,
-                                name: flow.name
-                            }
+        axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
+        .then(res => {
+            this.setState({
+                diagrams: res.data.map(flow => {
+                    try {
+                        return {
+                            id: flow.id,
+                            name: flow.name,
+                            sub_diagrams: JSON.parse(flow.sub_diagrams)
                         }
-                    })
-                }, () => {
-                    if (!this.preview){
-                    this.onLoadId(this.diagram_id)
+                    } catch(err) {
+                        return {
+                            id: flow.id,
+                            name: flow.name
+                        }
                     }
                 })
+            }, () => {
+                this.onLoadId(this.diagram_id)
             })
-            .catch(err => {
-                console.error(err.response)
-                this.setState({ error: 'Could Not Retrieve Project Diagrams' })
-            })
-
+        })
+        .catch(err => {
+            console.error(err.response)
+            this.setState({ error: 'Could Not Retrieve Project Diagrams' })
+        })
     }
 
     onLoadSkill(skill_id){
@@ -768,6 +761,10 @@ class Canvas extends Component {
                         global_variables.push(v)
                     }
                 })
+            }
+
+            if(this.props.preview && !skill.preview){
+                return this.setState({error: 'Skill Creator has not enabled previews'})
             }
             this.setState({
                 skill: skill,
@@ -1297,13 +1294,6 @@ class Canvas extends Component {
     }
 
     render() {
-        if (this.props.preview && !this.state.skill.preview){
-          return (
-            <div className='App'>
-              <WarningModal error={'Author has not allowed preview'} />
-            </div>
-          )
-        }
         return (
             <div className='App'>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
@@ -1385,7 +1375,7 @@ class Canvas extends Component {
                     history={this.props.history}
                 /> :
                 <div className="title-group no-select">
-                  <div className="last-save">Preview</div>
+                  <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
                 </div>
               }
                 {this.state.loading_diagram && <div id="loading-diagram">

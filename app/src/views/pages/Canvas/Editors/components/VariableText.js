@@ -85,7 +85,6 @@ class VariableText extends Component {
                     editorState={this.state.editorState}
                     onChange={this.onChange}
                     placeholder={this.props.placeholder ? this.props.placeholder : 'Enter Text Here'}
-                    readOnly={this.props.preview}
                     // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions
@@ -96,10 +95,6 @@ class VariableText extends Component {
             </div>
         );
     }
-}
-
-VariableText.defaultProps = {
-  preview: true,
 }
 
 export default VariableText;

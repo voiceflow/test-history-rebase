@@ -23,7 +23,7 @@ class API extends Component {
     constructor(props) {
         super(props);
 
-        let node = props.node
+        let node = props.node;
         let tab = localStorage.getItem('api_test_tab')
         if(!tab) tab = TABS[0]
 
@@ -440,7 +440,6 @@ class API extends Component {
             type={this.state.type}
             pairs={this.state.node.extras[this.state.type]}
             variables={this.props.variables}
-            locked={this.props.locked}
             onAdd={() => this.handleAddPair(this.state.type)}
             onRemove={(e, i) => this.handleRemovePair(this.state.type, i)}
             onChange={this.handleKVChange}
@@ -480,7 +479,7 @@ class API extends Component {
                                 if(method === this.state.node.extras.method){
                                     return <DropdownItem key={i} disabled>{method}</DropdownItem>
                                 }else{
-                                    return <DropdownItem key={i} disabled={this.props.locked} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
+                                    return <DropdownItem key={i} onClick={()=>this.handleUpdate('method', method)}>{method}</DropdownItem>
                                 }
                             })}
                         </DropdownMenu>
@@ -489,7 +488,6 @@ class API extends Component {
                         className='form-control-border top-left form-control right mb-3'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
-                        locked={this.props.locked}
                         updateRaw={(raw) => {
                             let node = this.state.node;
                             node.extras.url = raw
@@ -545,7 +543,6 @@ class API extends Component {
                         mode="javascript"
                         theme="chrome"
                         onChange={this.onChangeAce}
-                        readOnly={this.props.locked}
                         fontSize={14}
                         showPrintMargin={true}
                         showGutter={false}
@@ -567,7 +564,6 @@ class API extends Component {
                 <APIMapping
                     pairs={this.state.node.extras.mapping}
                     onAdd={() => this.handleAddPairMapping()}
-                    locked={this.props.locked}
                     onRemove={(e, i) => this.handleRemovePairMapping(i)}
                     onChange={this.handleKVMappingChange}
                     variables={this.props.variables}

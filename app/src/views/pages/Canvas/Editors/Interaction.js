@@ -11,7 +11,7 @@ import randomstring from 'randomstring';
 class Interaction extends Component {
     constructor(props) {
         super(props);
-
+        
         const formatted_built_ins = this.props.built_ins.map( intent => {
             return {
                 built_in: true,
@@ -33,7 +33,7 @@ class Interaction extends Component {
             built_ins: formatted_built_ins,
             confirm: null
         }
-
+        
         this.handleIntentsChange = this.handleIntentsChange.bind(this)
         this.handleAddIntent = this.handleAddIntent.bind(this)
         this.handleRemoveIntent = this.handleRemoveIntent.bind(this)
@@ -59,7 +59,7 @@ class Interaction extends Component {
         return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')
     }
 
-    handleIntentsChange(intents) {
+    handleIntentsChange(intents) {  
         this.setState({
             intents: intents
         }, () => {this.props.onIntent(intents)});
@@ -216,7 +216,6 @@ class Interaction extends Component {
                     </label>
                     <ChoiceDropdownInputs
                         choices={this.state.node.extras.choices}
-                        locked={this.props.locked}
                         onAdd={this.handleAddChoice}
                         onRemove={this.handleRemoveChoice}
                         onChange={this.handleChoicesChange}
@@ -238,7 +237,6 @@ class Interaction extends Component {
                     </label>
                     <IntentInputs
                         intents={this.state.intents}
-                        locked={this.props.locked}
                         onAdd={this.handleAddIntent}
                         onRemove={this.handleRemoveIntent}
                         slots = {this.state.slots}
@@ -257,7 +255,6 @@ class Interaction extends Component {
                     </label>
                     <SlotInputs
                         slots = {this.state.slots}
-                        locked={this.props.locked}
                         onAdd={this.handleAddSlot}
                         onRemove={this.handleRemoveSlot}
                         onChange={this.handleSlotsChange}
@@ -272,7 +269,7 @@ class Interaction extends Component {
         return (
             <React.Fragment>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
-                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
+                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>  
                 <ButtonGroup className="toggle-group mb-2">
                     <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
                     <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>

@@ -23,9 +23,8 @@ class APIMapping extends Component {
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
                                         className="variable-box right"
-                                        disabled={this.props.locked}
                                         value={this.props.pairs[i]['var'] ? {value: this.props.pairs[i]['var'], label: this.props.pairs[i]['var']} : null}
-                                        onChange={e => this.props.onChange(e.value, i, 'var')}
+                                        onChange={e => this.props.onChange(e.value, i, 'var')} 
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
                                             return {label: variable, value: variable}
                                         }) : null}
@@ -34,7 +33,7 @@ class APIMapping extends Component {
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-clear btn-block" disabled={this.props.locked} onClick={this.props.onAdd}>
+                    <button className="btn btn-clear btn-block" onClick={this.props.onAdd}>
                         <i className="far fa-plus"></i> Add Mapping
                     </button>
                 </div>

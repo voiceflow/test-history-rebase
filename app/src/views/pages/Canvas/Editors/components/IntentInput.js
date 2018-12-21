@@ -43,7 +43,7 @@ class IntentInput extends Component {
             slot_keys.add(key)
           }
       } while (m);
-
+      
       return slot_keys
     }
 
@@ -69,7 +69,7 @@ class IntentInput extends Component {
                 text_error: 'Sample utterances can consist of only unicode characters, spaces, periods for abbreviations, underscores, possessive apostrophes, curly braces, and hyphens'
             })
         }
-
+        
         if(this.props.utteranceExists(newValue)){
             return this.props.onError('Duplicate utterances are not allowed!')
         }
@@ -200,7 +200,7 @@ class IntentInput extends Component {
                         distance={5}
                         html={this.state.name_error}
                     >
-                        <input placeholder="Enter Intent Name"
+                        <input placeholder="Enter Intent Name" 
                             type="text"
                             value={this.state.name}
                             onChange={this.onNameChange}
@@ -209,7 +209,7 @@ class IntentInput extends Component {
                             className="interaction-name-input"
                         />
                     </Tooltip>
-                    <button className="close" onClick={!this.props.locked ? ()=>this.props.removeIntent(this.props.intent.key) : _.noop()}>&times;</button>
+                    <button className="close" onClick={()=>this.props.removeIntent(this.props.intent.key)}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.intent.open}>
                     <div>
@@ -224,11 +224,10 @@ class IntentInput extends Component {
                         distance={5}
                         html={this.state.text_error}
                     >
-                        <MentionsInput
-                            className="mentions-input"
+                        <MentionsInput 
+                            className="mentions-input" 
                             markup='{{[__display__].__id__}}'
                             displayTransform={(id, display) => { return '[' + display + ']'}}
-                            readOnly={this.props.locked}
                             value={this.state.text}
                             onChange={this.onTextChange}
                             onKeyPress={this.handleKeyPress}
@@ -248,10 +247,6 @@ class IntentInput extends Component {
             </div>
         );
     }
-}
-
-IntentInput.defaultProps = {
-  locked: false,
 }
 
 export default IntentInput;

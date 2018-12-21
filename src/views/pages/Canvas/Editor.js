@@ -138,14 +138,13 @@ class Editor extends Component {
                         voices={this.state.voices}
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
-                        locked={this.props.preview}
                     />
             case 'intent':
                 return <Interaction
                     node={this.state.node}
                     onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots}
                     slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent}
-                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins} locked={this.props.preview}
+                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
                     />
             case 'combine':
             case 'line':
@@ -157,31 +156,31 @@ class Editor extends Component {
                     node.extras.type = 'combine'
                     this.setState({node: node})
                 }
-                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate} locked={this.props.preview}/>
+                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
             case 'set':
-                return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} locked={this.props.preview}/>
+                return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'variable':
-                return <Variable node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} locked={this.props.preview}/>
+                return <Variable node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'if':
                 // DEPRECATE OLD IF BLOCK
                 if(this.state.node.extras.expressions){
-                    return <IfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint} locked={this.props.preview}/>
+                    return <IfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }else{
-                    return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint} locked={this.props.preview}/>
+                    return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }
             case 'random':
-                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} locked={this.props.preview}/>
+                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
-                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} locked={this.props.preview}/>
+                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 } else {
-                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} locked={this.props.preview}/>
+                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 }
             case 'capture':
-                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} locked={this.props.preview}/>
+                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'command':
-                return <Command node={this.state.node} onUpdate={this.props.onUpdate} locked={this.props.preview}/>
+                return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'flow':
                 return <Diagram node={this.state.node}
                     onUpdate={this.props.onUpdate}
@@ -189,18 +188,18 @@ class Editor extends Component {
                     createDiagram={this.props.createDiagram}
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
-                    locked={this.props.preview}
+                   
                 />
             case 'api':
-                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} locked={this.props.preview}/>
+                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'module':
-                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules} locked={this.props.preview}/>
+                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.state.templates} locked={this.props.preview}/>
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.state.templates}/>
             case 'stream':
-                return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint} locked={this.props.preview}/>
+                return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options} locked={this.props.preview}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
             default:
               return null
         }
@@ -228,7 +227,6 @@ class Editor extends Component {
               return (<input id="label" placeholder="Block Label"
                     type="text"
                     name="name"
-                    readOnly={this.props.preview}
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
                     onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}

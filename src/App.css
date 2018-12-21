@@ -63,6 +63,9 @@ body {
 button:focus{
     outline: none;
 }
+.text-blue {
+    color: #93CBFF;
+}
 .text-secondary{
     color: #8da2b5 !important;
 }

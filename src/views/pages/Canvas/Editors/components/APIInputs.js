@@ -32,11 +32,11 @@ class APIInputs extends Component {
                                     </InputGroupAddon>
                                     <VariableInput className="form-control form-control-border no-radius" placeholder="key" updateRaw={e => this.props.onChange(e, i, 'key')} variables={this.props.variables} raw={pair.key}/>
                                     <VariableInput className="form-control form-control-border right" placeholder="value" updateRaw={e => this.props.onChange(e, i, 'val')} variables={this.props.variables} raw={pair.val}/>
-                                            <button className="btn-float" disabled={this.props.locked} onClick={e => this.props.onRemove(e, i)}>&times;</button>
+                                            <button className="btn-float" onClick={e => this.props.onRemove(e, i)}>&times;</button>
                                 </InputGroup>
                             </div> )
                     }) : null}
-                    <button className="btn btn-clear btn-block" disabled={this.props.locked} onClick={this.props.onAdd}>
+                    <button className="btn btn-clear btn-block" onClick={this.props.onAdd}>
                         <i className="far fa-plus"></i> Add Pair
                     </button>
                 </div>
@@ -44,10 +44,6 @@ class APIInputs extends Component {
             </React.Fragment>
         );
     }
-}
-
-APIInputs.defaultProps = {
-  locked: false
 }
 
 export default APIInputs;

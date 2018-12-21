@@ -101,7 +101,6 @@ class VariableInput extends Component {
                         editorState={this.state.editorState}
                         onChange={this.onChange}
                         placeholder={this.props.placeholder}
-                        readOnly={this.props.locked}
                         blockRenderMap={this.singleLinePlugin.blockRenderMap}
                     />
                 </div>
@@ -113,10 +112,6 @@ class VariableInput extends Component {
             </React.Fragment>
         );
     }
-}
-
-VariableInput.defaultProps = {
-  locked: false,
 }
 
 export default VariableInput;

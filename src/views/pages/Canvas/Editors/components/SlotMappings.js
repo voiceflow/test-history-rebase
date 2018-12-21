@@ -59,7 +59,6 @@ class SlotMappings extends Component {
                                 classNamePrefix="select-box"
                                 className="map-box"
                                 value={argument.slot}
-                                isDisabled={this.props.locked}
                                 onChange={(selected)=>this.props.handleSelection(i, 'slot', selected)}
                                 placeholder="Slot"
                                 options={this.state.slot_options}
@@ -68,7 +67,6 @@ class SlotMappings extends Component {
                             <Select
                                 classNamePrefix="variable-box"
                                 className="map-box"
-                                isDisabled={this.props.locked}
                                 value={argument.variable ? {label: '{' + argument.variable + '}', variable: argument.variable} : null}
                                 onChange={(selected)=>this.props.handleSelection(i, 'variable', selected.value)}
                                 placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
@@ -88,7 +86,4 @@ class SlotMappings extends Component {
     }
 }
 
-SlotMappings.defaultProps = {
-  locked: false,
-}
 export default SlotMappings;

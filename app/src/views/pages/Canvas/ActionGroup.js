@@ -527,7 +527,7 @@ class ActionGroup extends PureComponent {
                         title="Save"
                         position="bottom"
                     >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={!this.props.preview ? this.props.onSave : _.noop()}>
+                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
                             {this.props.saving ?
                                 <span className="loader"/> :
                                 <React.Fragment>

@@ -61,7 +61,7 @@ class ActionGroup extends PureComponent {
                     name: props.skill.name,
                     restart: props.skill.restart
                 },
-                allowPreview: this.props.skill.preview
+                allowPreview: props.skill.preview
             });
         }
     }

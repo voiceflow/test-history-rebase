@@ -9,8 +9,8 @@ class TitleBar extends Component {
                     <div className="skill-name">
                         {this.props.skill.name} {this.props.preview ? ' (PREVIEW)' : ''}
                     </div>
-                    <MUIButton id="test" variant="extendedFab" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><i className="fas fa-play"/></span></MUIButton>
-                  </div>
+                    <MUIButton id="test" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><i className="fas fa-play"/></span></MUIButton>
+                </div>
             </div>
         );
     }

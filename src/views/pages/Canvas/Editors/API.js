@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
+import update from 'immutability-helper';
+import pretty from 'prettysize';
+import * as _ from 'lodash';
+import axios from 'axios';
+import isVarName from 'is-var-name';
+import { Button, ButtonGroup, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
 import VariableInput from './components/VariableInput';
@@ -12,12 +17,15 @@ import 'brace/mode/javascript'
 import 'brace/theme/chrome'
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+const TABS = ['raw', 'results'];
 
 class API extends Component {
     constructor(props) {
         super(props);
 
-        let node = props.node;
+        let node = props.node
+        let tab = localStorage.getItem('api_test_tab')
+        if(!tab) tab = TABS[0]
 
         // DEPRECATE turning from string to draftjs for SUPER old api blocks
         if(node.extras.mapping){
@@ -53,15 +61,27 @@ class API extends Component {
         this.state = {
             node: node,
             modal: false,
+            activeTab: tab,
             body_state: true,
+            modalContent: null,
+            variables: [],
+            innerVariables: {},
+            testVariablesMapping: {},
             dropdownOpen: false,
             type: 'headers',
-            popoverOpen: false
+            testHeader: {'status': null, 'time': null, 'size': null},
+            popoverOpen: false,
+            loading: false
         };
 
         this.onChangeAce = this.onChangeAce.bind(this)
+        this.getEndpoint = this.getEndpoint.bind(this);
+        this.renderAPITest = this.renderAPITest.bind(this);
+        this.findPath = this.findPath.bind(this);
+        this.switchTab = this.switchTab.bind(this);
         this.toggle = this.toggle.bind(this);
         this.togglePopover = this.togglePopover.bind(this)
+        this.handleVariableChange = this.handleVariableChange.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this)
         this.handleSelection = this.handleSelection.bind(this)
         this.handleAddPair = this.handleAddPair.bind(this)
@@ -72,12 +92,244 @@ class API extends Component {
         this.handleKVMappingChange = this.handleKVMappingChange.bind(this)
     }
 
+    componentDidMount() {
+      let variable_map = {}
+      this.props.variables.forEach(val =>
+        variable_map[val] = ''
+      );
+      this.setState({innerVariables: variable_map});
+    }
+
     onChangeAce(content){
         let node = this.state.node
         node.extras.content = content
         this.setState({
             node: node
         }, this.props.onUpdate)
+    }
+
+    findPath(path, data){
+      const props = path.split('.')
+      let cur_data = { response: data }
+      props.forEach( prop => {
+          const props_and_inds = prop.split('[');
+          props_and_inds.forEach( prop_or_ind => {
+              if (prop_or_ind.indexOf(']') >= 0) {
+                  const index_str = prop_or_ind.slice(0, -1);
+                  let index;
+                  if (index_str.toLowerCase() === '{random}') {
+                      index = Math.floor(Math.random() * cur_data.length)
+                  } else {
+                      index = parseInt(index_str)
+                  }
+                  cur_data = cur_data[index]
+              } else {
+                  cur_data = cur_data[prop_or_ind]
+              }
+          })
+      })
+
+      return cur_data
+    }
+
+    getEndpoint(firstClick=true){
+        let regex = /\{([^{}]*)\}/g;
+        let variables = []
+        let userHeader = {}
+        let userBody = {}
+        let url = draftToMarkdown(this.state.node.extras.url);
+        let method = this.state.node.extras.method;
+        const { body, headers, params, bodyInputType, content, mapping } = this.props.node.extras
+        const replacer = (match, inner, variables_map) => {
+            if(inner in variables_map){
+                return variables_map[inner];
+            }else{
+                return match;
+            }
+        }
+
+        // Utility function to find all variables
+        const finder = url => {
+            let match = regex.exec(url);
+    		while (match != null) {
+    			if(isVarName(match[1]) && !_.includes(variables, match[1])){
+    		    	variables.push(match[1]);
+    		    }
+    		    match = regex.exec(url);
+    		}
+        }
+
+        // Replace url with user set variables
+        let new_url
+        new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+        if(!_.isNull(url)){
+    		finder(url);
+            // Distinguish between body rawInput and pairs
+            if (bodyInputType === 'rawInput') {
+            finder(content);
+            } else {
+            _.forEach(_.concat(body), nodeValue => {
+                _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
+                finder(draftToMarkdown(value))
+                })
+            })
+            }
+            // Find variables inside of Headers, Body, and Params
+            _.forEach(_.concat(headers, params), nodeValue => {
+            _.forEach(_.concat(nodeValue['key'], nodeValue['val']), value => {
+                finder(draftToMarkdown(value))
+            })
+            });
+            // Find variables inside of result variable mappings
+            _.forEach(mapping, map => {
+            finder(draftToMarkdown(map.path))
+            });
+
+            // Check if user requires variables to be filled
+            if ( !_.isEmpty(variables) && firstClick)  {
+                this.setState({variables: variables})
+            } else {
+                // Set time before response
+                this.setState({loading: true})
+                let time = Date.now()
+                const markdownToObject = nodes => {
+                    let object = {}
+                    _.forEach(nodes, node => {
+                        let value = object[draftToMarkdown(node.key).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))]
+                        if(value){
+                            object[value] = draftToMarkdown(node.val).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                        }
+                    })
+                    return object
+                }
+
+                // Check that variables are set before pushing in 
+                let request_obj = {
+                    method: method ? method : 'GET',
+                    url: new_url,
+                    params: markdownToObject(params)
+                }
+
+                userHeader = markdownToObject(headers)
+                if(!_.isEmpty(userHeader)){
+                    request_obj.headers = userHeader
+                }
+                if (bodyInputType === 'rawInput') {
+                    request_obj.body = content.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+                } else {
+                    userBody = markdownToObject(body)
+                    if(!_.isEmpty(userBody)){
+                        request_obj.body = userBody
+                    }
+                }
+
+                let varMap = {}
+
+                axios(request_obj)
+                .then(res => {
+                    // Map all paths user requires to varMap
+                    _.forEach(mapping, map => {
+                        if(map.var){
+                            try {
+                                varMap[map.var] = JSON.stringify(this.findPath(draftToMarkdown(map.path).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)), res.data), null, 4)
+                            } catch(error) {
+                                varMap[map.var] = 'undefined'
+                            }
+                        }
+                    })
+                    this.setState({
+                        testHeader: update(this.state.testHeader, {
+                            'status': {$set: res.status},
+                            'time': {$set: Date.now()-time},
+                            'size': {$set: pretty(JSON.stringify(res).length * 7)},
+                        }),
+                        loading: false,
+                        testVariablesMapping: varMap,
+                        modalContent: JSON.stringify(res.data, null, 4)
+                    })
+                })
+                .catch(err => {
+                    if(err.response) err = err.response
+                    this.setState({
+                        testHeader: update(this.state.testHeader, {
+                            'status': {$set: err.status},
+                            'time': {$set: Date.now()-time},
+                            'size': {$set: pretty(JSON.stringify(err).length * 7)},
+                        }),
+                        loading: false,
+                        testVariablesMapping: varMap,
+                        modalContent: JSON.stringify((err.data ? err.data : err), null, 4)
+                    })
+                })
+            }
+    	}
+        this.setState({ modal: true });
+    }
+
+    // Render entire modal
+    renderAPITest() {
+        let loading = <div className="text-center mt-3"><div className="loader text-lg"/></div>
+      if ((_.isNull(this.state.modalContent) && _.isEmpty(this.state.variables))) {
+        return loading
+      }
+
+      return (
+      <div className='projects-menu'>
+          {
+            !_.isEmpty(this.state.variables) &&
+              <React.Fragment>
+                <Button color="primary" onClick={()=>this.getEndpoint(false)} className="mt-2"><i className="fas fa-play mr-2"/> Run</Button>
+                <br />
+                <label>We've detected you are using variables in your API call, please set variables and run</label><br/>
+                {_.map(this.state.variables, (val, key) => (
+                    <React.Fragment key={key}>
+                    <InputGroup className="mb-2">
+                        <InputGroupAddon addonType='prepend'>{val}</InputGroupAddon>
+                        <Input className='form-control form-control-border right' name={val} placeholder='set variable' onChange={this.handleVariableChange} />
+                    </InputGroup>
+                    </React.Fragment>
+                ))}
+              </React.Fragment>
+          }
+        {!_.isNull(this.state.modalContent) ?
+            <div className={"status " + ((this.state.testHeader.status && this.state.testHeader.status < 300) ? 'success' : 'fail')}>
+            <div className="my-3">
+                <div className="last-save">Status: {this.state.testHeader.status ? <span>{this.state.testHeader.status}</span> : null}</div>
+                <div className="last-save">Time: {this.state.testHeader.time ?  this.state.testHeader.time + 'ms': null}</div>
+                <div className="last-save">Size: {this.state.testHeader.size ? this.state.testHeader.size : null}</div>
+            </div>
+            <ButtonGroup className="toggle-group mb-2">
+              {_.map(TABS, tab => (
+                <Button
+                  key={tab}
+                  onClick={() => this.switchTab(tab)}
+                  outline={this.state.activeTab !== tab}
+                  disabled={this.state.activeTab === tab}
+                >
+                  {tab}
+                </Button>
+              ))}
+            </ButtonGroup>
+            {this.state.activeTab === TABS[0] ?
+              <div className="response-box">
+                <pre className="mb-0">{(_.isEmpty(this.state.modalContent) || this.state.modalContent === '{}') ? 'EMPTY RESPONSE' : this.state.modalContent}</pre>
+              </div> :
+              <div className="mt-3">
+                {_.map(this.state.testVariablesMapping, (val, key) => {
+                    let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
+                    return <pre key={key}>{draftToMarkdown(path) + ': ' + val + ' => {' + key + '}'}</pre>
+                })}
+              </div>
+            }
+          </div> : (this.state.loading ? loading : null )
+        }
+      </div>);
+    }
+
+    handleVariableChange = event => {
+      this.setState({
+        innerVariables: update(this.state.innerVariables, {[event.target.name]: {$set:event.target.value}})
+      })
     }
 
     handleUpdate(name, value) {
@@ -87,6 +339,14 @@ class API extends Component {
         this.setState({
             node: node
         }, this.props.onUpdate);
+    }
+
+    switchTab(tab) {
+      if(tab !== this.state.activetTab){
+        this.setState({
+          activeTab: tab
+        }, ()=>localStorage.setItem('api_test_tab', tab))
+      }
     }
 
     toggle() {
@@ -188,11 +448,30 @@ class API extends Component {
 
         return (
             <React.Fragment>
+              <Modal size='lg'
+                isOpen={this.state.modal}
+                toggle={()=>this.setState({
+                  modalContent: null, modal: false,
+                  variables: [],
+                  testHeader: {'status': null, 'time': null, 'size': null}
+                })}
+              >
+                <ModalHeader toggle={()=>this.setState({
+                  modalContent: null,
+                  modal: false,
+                  variables: [],
+                  testHeader: {'status': null, 'time': null, 'size': null}
+                })}>API Test</ModalHeader>
+                <ModalBody>
+                  {this.renderAPITest()}
+                </ModalBody>
+              </Modal>
                 <label>
                     URL Endpoint
                 </label>
+                <br />
                 <InputGroup>
-                    <InputGroupButtonDropdown addonType="prepend" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <InputGroupButtonDropdown addonType="prepend" className="mb-3" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret>
                           {this.state.node.extras.method}
                         </DropdownToggle>
@@ -207,7 +486,7 @@ class API extends Component {
                         </DropdownMenu>
                     </InputGroupButtonDropdown>
                     <VariableInput
-                        className='form-control-border top-left form-control right'
+                        className='form-control-border top-left form-control right mb-3'
                         raw={this.state.node.extras.url}
                         variables={this.props.variables}
                         locked={this.props.locked}
@@ -221,6 +500,7 @@ class API extends Component {
                         placeholder="URL Endpoint"
                     />
                 </InputGroup>
+                <Button color="clear" onClick={this.getEndpoint} size="sm" block><i className="fas fa-power-off mr-1"></i>Test Endpoint</Button>
                 <hr/>
                 <Nav tabs className="mb-3">
                     <NavItem className="mr-2" onClick={() => this.setState({type: 'headers'})}>

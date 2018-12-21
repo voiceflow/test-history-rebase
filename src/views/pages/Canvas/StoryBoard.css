@@ -424,19 +424,11 @@
   white-space: pre-wrap;
 }
 
-.response-box {
-  overflow: scroll;
-  max-height: 550px;
-  border-style: solid;
-  border-width: 1px;
-  margin-top: 10px;
-  border-radius: 6px;
-}
 .projects-menu {
     /*padding: 0 !important;*/
     /*overflow: hidden;*/
-    overflow: scroll;
-    max-height: 555.51px;
+    /* overflow: scroll; */
+    /* max-height: 555.51px; */
     margin-top: -10px !important;
 }
 
@@ -1481,6 +1473,38 @@ button.close:hover{
 .property{
     display: flex;
     justify-content: space-between;
+}
+
+.response-box {
+    overflow: scroll;
+    max-height: 550px;
+    border: 1px solid #E2E9EC;
+    margin-top: 10px;
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.status.success .last-save>span {
+    color: #62D6A8;
+    font-weight: bold;
+}
+
+.status.fail .last-save>span {
+    color: #ff3562;
+    font-weight: bold;
+}
+
+.status.fail .last-save>span:after{
+    content: ' (FAILED)'
+}
+
+.status.fail .response-box{
+    border-color: #f5c6cb;
+    background-color: #FFEEEF;
+}
+
+.status.fail .response-box pre {
+    color: #ff3562;
 }
 
 #label-label{

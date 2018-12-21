@@ -103,7 +103,6 @@ class Canvas extends Component {
         this.repaint = this.repaint.bind(this)
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
-        this.onKeydown = this.onKeydown.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.createSkill = this.createSkill.bind(this)
@@ -253,11 +252,6 @@ class Canvas extends Component {
         }
     }
 
-    onKeydown(event){
-      if(this.props.preview){
-        event.preventDefault();
-      }
-    }
     zoom(delta){
         let engine = this.state.engine
         let diagramModel = engine.getDiagramModel()
@@ -1425,7 +1419,6 @@ class Canvas extends Component {
                         diagramEngine={this.state.engine}
                         allowLooseLinks={false}
                         locked={this.props.preview}
-                        onKeyDown={() => console.log('hi')}
                     />
                 </div>
             </div>

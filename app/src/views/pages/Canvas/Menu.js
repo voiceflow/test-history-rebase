@@ -155,7 +155,7 @@ class Menu extends PureComponent {
                         console.log(err)
                         alert('failed to delete diagram')
                     })
-                } 
+                }
             }
         })
     }
@@ -175,7 +175,7 @@ class Menu extends PureComponent {
             }
 
             if(Array.isArray(sub_diagrams) && sub_diagrams.length !== 0){
-                
+
                 tree = sub_diagrams.map((diagram_id, i) => {
                     let block = this.props.diagrams.find(d => d.id === diagram_id);
 
@@ -191,10 +191,10 @@ class Menu extends PureComponent {
             }
 
             return (<React.Fragment>
-                <FlowButton 
-                    flow={node} 
-                    active={current_id} 
-                    enterFlow={this.props.enterFlow} 
+                <FlowButton
+                    flow={node}
+                    active={current_id}
+                    enterFlow={this.props.enterFlow}
                     renameFlow={this.renameFlow}
                     copyFlow={()=>this.copyFlow(node.id)}
                     deleteFlow={()=>this.deleteFlow(node.id)}
@@ -232,8 +232,9 @@ class Menu extends PureComponent {
             case 'blocks':
                 return <Blocks user_modules={this.props.user_modules}/>
             case 'variables':
-                return <Variables 
-                    variables={this.props.variables} 
+                return <Variables
+                    variables={this.props.variables}
+                    locked={this.props.preview}
                     global_variables={this.props.global_variables}
                     onGlobalVariable={this.props.onGlobalVariable}
                     onVariable={this.props.onVariable}
@@ -265,7 +266,7 @@ class Menu extends PureComponent {
                         {tabs.top.map((tab, i) => {
                             return (
                                 <Tooltip key={i} title={tab.tip} position='right' disabled={true && tab.tab === this.state.tab && this.state.open}>
-                                    <div className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')} 
+                                    <div className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')}
                                         onClick={() => this.openTab(tab.tab)}>
                                         {tab.icon}
                                     </div>
@@ -287,7 +288,7 @@ class Menu extends PureComponent {
                     </div>
                 </div>
                 <div id="sidebar" className={(this.state.open ? 'open' : '')}>
-                    {this.props.loading_diagram ? 
+                    {this.props.loading_diagram ?
                         null :
                         <React.Fragment>
                             <div>

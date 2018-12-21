@@ -264,15 +264,27 @@ class TestModal extends React.Component {
 
     if (nlc) {
       try {
-        await nlc.handleCommand(data.input)
-        const nlc_results = await this.props.testing_info.nlc_promise
+        const result = await nlc.handleCommand(data.input)
+        const intent_name = result.name
+        const detected_slots = result.slots
+        const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : []
 
-        data.detected_intent = {
-          intent: nlc_results.intent,
-          slots: nlc_results.slots
+        const formatted_slots = {}
+        slot_mapping.forEach((slot, i) => {
+            if (detected_slots[i]) {
+                formatted_slots[slot.name] = {
+                    value: detected_slots[i]
+                }
+            }
+        })
+        if (intent_name) {
+          data.detected_intent = {
+            intent: intent_name,
+            slots: formatted_slots
+          }
         }
       } catch (err) {
-        console.error("NLC NO MATCH")
+        // NLC No Match
       }
     }
 

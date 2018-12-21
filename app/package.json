@@ -56,7 +56,6 @@
     "react-tippy": "^1.2.3",
     "reactstrap": "^6.5.0",
     "storm-react-diagrams": "github:DecathectZero/react-diagrams",
-    "stringify-object": "^3.3.0",
     "universal-cookie": "^3.0.4"
   },
   "scripts": {

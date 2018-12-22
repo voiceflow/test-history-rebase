@@ -165,7 +165,7 @@ class Editor extends Component {
                     />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
-                if(typeof this.state.node.commands === 'string'){
+                if(typeof this.state.node.extras.commands === 'string'){
                     return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
                 }else{
                     return <Command
@@ -177,6 +177,11 @@ class Editor extends Component {
                         slot_types={SLOT_TYPES} 
                         built_ins={BUILT_INS}
                         onError={this.showErrorPopup}
+                        repaint={this.props.repaint}
+                        createDiagram={this.props.createDiagram}
+                        current={this.props.diagram_id}
+                        diagrams={this.props.diagrams}
+                        enterFlow={this.props.enterFlow}
                     />
                 }
             case 'intent':

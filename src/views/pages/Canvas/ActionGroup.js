@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, 
-         ModalHeader, ModalBody, Button, ButtonGroup, Dropdown, DropdownToggle, DropdownMenu, 
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
+         ModalHeader, ModalBody, Button, ButtonGroup, Dropdown, DropdownToggle, DropdownMenu,
          DropdownItem, FormGroup, Label } from 'reactstrap';
 import MUIButton from '@material-ui/core/Button';
 import ClipBoard from './../../components/ClipBoard';
@@ -22,6 +22,7 @@ class ActionGroup extends PureComponent {
             publish: false,
             diagrams: [],
             share: false,
+            allowPreview: false,
             platform: 'amazon',
             updateModal: false,
             settingsModal: false,
@@ -35,6 +36,7 @@ class ActionGroup extends PureComponent {
 
         this.toggle = this.toggle.bind(this);
         this.toggleShare = this.toggleShare.bind(this);
+        this.togglePreview = this.togglePreview.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.toggleUpdate = this.toggleUpdate.bind(this);
         this.toggleSettings = this.toggleSettings.bind(this);
@@ -57,7 +59,8 @@ class ActionGroup extends PureComponent {
                 skill: {
                     name: props.skill.name,
                     restart: props.skill.restart
-                }
+                },
+                allowPreview: props.skill.preview
             });
         }
     }
@@ -74,7 +77,7 @@ class ActionGroup extends PureComponent {
             amzn_error: false,
             stage: this.token ? 0 : 5
         });
-        // 
+        //
     }
 
     updateSkill(e) {
@@ -129,13 +132,23 @@ class ActionGroup extends PureComponent {
                             stage: 6
                         });
                     }else{
-                        console.dir(err);
+                        let error_message = ''
+                        if(err.response && err.response.data && err.response.data.message){
+                            error_message += err.response.data.message
+
+                            if (err.response.data.violations) {
+                                for (let i = 0; i < err.response.data.violations.length; i++){
+                                    error_message += '\n' + err.response.data.violations[i].message
+                                }
+                            }
+                        }
+
                         this.setState({
+                            stage: 9,
                             upload_error: ((
-                                err.response && 
-                                err.response.data && 
-                                err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
-                            stage: 9
+                                err.response &&
+                                err.response.data &&
+                                err.response.data.message) ? error_message : 'Error Encountered')
                         })
                     }
                 })
@@ -171,7 +184,7 @@ class ActionGroup extends PureComponent {
         let node = this.state.story;
         let name = e.target.getAttribute('name');
         let value = e.target.value;
-        
+
         node.extras[name] = value;
     }
 
@@ -209,15 +222,27 @@ class ActionGroup extends PureComponent {
         });
     }
 
+    togglePreview() {
+      axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
+          isPreview: !this.state.allowPreview,
+      })
+      .then(res => {
+          this.setState({ allowPreview: !this.state.allowPreview});
+      })
+      .catch(err => {
+          console.log(err);
+      })
+    }
+
     toggleShare() {
-        this.setState({
-            share: !this.state.share
-        });
+      this.setState({
+          share: !this.state.share
+      });
     }
 
     saveSettings() {
         let different = false
-        for (var key in this.state.skill) {  
+        for (var key in this.state.skill) {
             if(this.state.skill[key] !== this.props.skill[key]) different = true;
         }
         if(!different) return this.setState({settingsModal: false});
@@ -264,7 +289,7 @@ class ActionGroup extends PureComponent {
                         You may test on the Alexa simulator or live on your personal Alexa device.
                     </span>
                     <div className="my-3">
-                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`} 
+                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
                         className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                             Test on Alexa Simulator
                         </a>
@@ -272,7 +297,7 @@ class ActionGroup extends PureComponent {
                 </React.Fragment>
             case 4:
                 return <Alert color="danger">
-                    Rendering Error  
+                    Rendering Error
                 </Alert>
             case 5:
                 return <div className="modal-txt flex-fill text-center mt-3">
@@ -297,7 +322,7 @@ class ActionGroup extends PureComponent {
                  return <React.Fragment>
                     Your Amazon Account needs to set up developer settings to Upload Skills
                     <span className="text-muted text-center font-italic">
-                        Press "Create your Amazon Developer account"<br/> 
+                        Press "Create your Amazon Developer account"<br/>
                         and sign up with the same email as your Amazon Account.
                     </span>
                     <div className="my-3">
@@ -316,7 +341,7 @@ class ActionGroup extends PureComponent {
                         <p className="loading">Checking Vendor</p>
                     </div>
                 </div>
-            case 8: 
+            case 8:
                 return <div className="super-center mb-4">
                     <div className='text-center'>
                         <h1><span className="loader"/></h1>
@@ -330,7 +355,7 @@ class ActionGroup extends PureComponent {
                         {this.state.upload_error}
                     </Alert>
                 </div>
-            case 11: 
+            case 11:
                 return <div className="super-center mb-4">
                     <div className='text-center'>
                         <h1><span className="loader"/></h1>
@@ -347,7 +372,7 @@ class ActionGroup extends PureComponent {
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
                         {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
                     </div>
-                
+
                     <div className="super-center mb-3 mt-3">
                         <Button color="primary" onClick={this.updateAlexa}>Confirm Upload</Button>
                     </div>
@@ -362,7 +387,7 @@ class ActionGroup extends PureComponent {
         let settings_modal_content;
         if(this.state.skill){
             if(this.state.settings_tab_state === 'basic'){
-                settings_modal_content = 
+                settings_modal_content =
                 <React.Fragment>
                     <FormGroup>
                         <Label>Project Name</Label>
@@ -378,8 +403,8 @@ class ActionGroup extends PureComponent {
                             />
                             <b>{this.state.skill.restart ? 'on': 'off'}</b>
                             <div className="text-muted">{
-                                this.state.skill.restart ? 
-                                'The project will start from the beginning every time the user starts a session' : 
+                                this.state.skill.restart ?
+                                'The project will start from the beginning every time the user starts a session' :
                                 'The project will resume from the last block the user was on before quitting'
                             }</div>
                         </div>
@@ -389,7 +414,7 @@ class ActionGroup extends PureComponent {
                     </div>
                 </React.Fragment>
             } else{
-                settings_modal_content = 
+                settings_modal_content =
                 <React.Fragment>
                     <FormGroup>
                         <Label>Delete Project</Label>
@@ -420,7 +445,7 @@ class ActionGroup extends PureComponent {
                 <ModalHeader toggle={this.toggleSettings}>
                     Project Settings
                 </ModalHeader>
-                {   
+                {
                     !!this.state.skill &&
                     <ModalBody>
                         <ButtonGroup className="toggle-group mb-2">
@@ -434,7 +459,7 @@ class ActionGroup extends PureComponent {
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
-                    <Tooltip 
+                    <Tooltip
                         title="Share"
                         position="bottom"
                         distance={16}
@@ -445,20 +470,30 @@ class ActionGroup extends PureComponent {
                     </Tooltip>
                     <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
                         <PopoverHeader>Share Link</PopoverHeader>
-                        <PopoverBody>
-                            <InputGroup>
-                                <InputGroupAddon addonType="prepend" id="copyShare">
-                                    <ClipBoard 
-                                        component="button" 
-                                        className="btn btn-secondary" 
-                                        value={link}
-                                        id="shareLink"
-                                    >
-                                        <i className="fas fa-copy"/>
-                                    </ClipBoard>
-                                </InputGroupAddon>
-                                <Input readOnly value={link}/>
-                            </InputGroup>
+                        <PopoverBody style={{minWidth: '260px'}}>
+                            <div className="space-between">
+                                <Label>Allow preview sharing</Label>
+                                <Switch
+                                    checked={this.state.allowPreview}
+                                    onChange={this.togglePreview}
+                                    color="primary"
+                                />
+                            </div>
+                            {this.state.allowPreview &&
+                                <InputGroup className="mb-3">
+                                    <InputGroupAddon addonType="prepend">
+                                        <ClipBoard
+                                            component="button"
+                                            className="btn btn-primary"
+                                            value={link}
+                                            id="shareLink"
+                                        >
+                                            <i className="fas fa-copy"/>
+                                        </ClipBoard>
+                                    </InputGroupAddon>
+                                    <Input readOnly value={link} className="form-control-border right"/>
+                                </InputGroup>
+                            }
                         </PopoverBody>
                     </Popover>
                     <Tooltip
@@ -472,7 +507,7 @@ class ActionGroup extends PureComponent {
                     </Tooltip>
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                         <DropdownToggle className="anti-btn" tag="div">
-                            <Tooltip 
+                            <Tooltip
                                 title="Publish"
                                 position="bottom"
                                 distance={16}
@@ -492,8 +527,8 @@ class ActionGroup extends PureComponent {
                         position="bottom"
                     >
                         <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
-                            {this.props.saving ? 
-                                <span className="loader"/> : 
+                            {this.props.saving ?
+                                <span className="loader"/> :
                                 <React.Fragment>
                                     {!this.props.saved && <span className="unsaved"/>}
                                     <i className="fas fa-save"/>
@@ -502,8 +537,8 @@ class ActionGroup extends PureComponent {
                         </MUIButton>
                     </Tooltip>
                 </div>
-                <Tooltip 
-                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>} 
+                <Tooltip
+                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
                     position="bottom"
                     distance={16}
                 >

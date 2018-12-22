@@ -53,13 +53,13 @@
 /*    width: 100px;*/
 }
 .dot {
-	background-color: #C9E5FC;
-	border: 1px solid #42A5FF;
+	background-color: #42A5FF;
+	/* border: 1px solid #42A5FF; */
 	padding: 3px;
 	margin-right: 5px;
 	display: inline-block;
 	border-radius: 100%;
-	margin-bottom: 1px;
+	margin-bottom: 0.15em;
 }
 
 #navbar .account-dropdown .account i {

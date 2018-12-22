@@ -82,12 +82,12 @@ class App extends Component {
     if(AuthenticationService.isAuth()){
         AuthenticationService.check((err, res) => {
             if (err) {
-                this.setState({ 
+                this.setState({
                   loading: false
                 });
                 history.push('/login');
             } else {
-                this.setState({ 
+                this.setState({
                   loading: false,
                   session: true
                 });

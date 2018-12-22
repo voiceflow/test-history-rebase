@@ -1,6 +1,6 @@
 export default {
-   "offsetX":450,
-   "offsetY":125,
+   "offsetX":420,
+   "offsetY":240,
    "zoom":70,
    "gridSize":0,
    "links":[
@@ -16,46 +16,14 @@ export default {
             {
                "id":"bd5d439e-76c0-45fc-9a69-a4440006d944",
                "selected":false,
-               "x":-33.26529894930683,
-               "y":189.22560700985534
+               "x":-39.444187709263396,
+               "y":189.26561628069197
             },
             {
                "id":"047f28bc-01f8-4c50-9983-8ea5ddeaa51b",
                "selected":false,
-               "x":45.3906836187756,
-               "y":189.29688129299544
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":2.5,
-         "color":"#D1D8E2",
-         "curvyness":50
-      },
-      {
-         "id":"cbb1e734-8303-4d92-b13a-44537aa78a42",
-         "type":"default",
-         "selected":false,
-         "source":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-         "sourcePort":"bd48e384-c089-43bc-b483-a194cd100aec",
-         "target":"f645b922-a930-4c86-af0a-a2482296a065",
-         "targetPort":"9baaeae1-0800-4750-beb4-8bc5e66cefd9",
-         "points":[
-            {
-               "id":"396be488-e330-4624-84b9-b4d50222910e",
-               "selected":false,
-               "x":-41.07812724205532,
-               "y":350.3437581923403
-            },
-            {
-               "id":"273a4ed6-1a13-44fd-880c-93f8afa9c7ab",
-               "selected":false,
-               "x":44.51562525435891,
-               "y":350.45312960299884
+               "x":45.390625,
+               "y":189.296875
             }
          ],
          "extras":{
@@ -80,14 +48,14 @@ export default {
             {
                "id":"a1759b59-7a90-4066-869a-9b2181dfaf70",
                "selected":false,
-               "x":-70.29683892611381,
-               "y":528.2031369332094
+               "x":-70.29689243861608,
+               "y":528.203125
             },
             {
                "id":"8595e814-ab28-494e-905a-66e86dddf12b",
                "selected":false,
-               "x":530.6250453660723,
-               "y":530.8437685753383
+               "x":530.625,
+               "y":530.843767438616
             }
          ],
          "extras":{
@@ -112,14 +80,14 @@ export default {
             {
                "id":"33bc062c-ed6d-4ae7-ad0d-d0f4830ff6c2",
                "selected":false,
-               "x":657.5000615290763,
-               "y":530.8437685753383
+               "x":657.5,
+               "y":530.843767438616
             },
             {
                "id":"b955af9f-aece-4090-a1b1-756f7bfdc385",
                "selected":false,
-               "x":760.9999864340256,
-               "y":531.5156277464655
+               "x":761.0000174386162,
+               "y":531.5156337193081
             }
          ],
          "extras":{
@@ -144,14 +112,14 @@ export default {
             {
                "id":"af4c3daf-04d9-4c0e-bbdc-cc6462894dfa",
                "selected":false,
-               "x":952.0781105531411,
-               "y":591.5156428968768
+               "x":952.0781598772322,
+               "y":591.5155901227679
             },
             {
                "id":"afd2ef9e-d8f7-4a8f-97eb-3950a78b7f68",
                "selected":false,
-               "x":1126.1094463813881,
-               "y":693.3437352275961
+               "x":1126.1094447544644,
+               "y":693.3437674386162
             }
          ],
          "extras":{
@@ -176,14 +144,14 @@ export default {
             {
                "id":"e366f1cc-73f2-48b6-b9d9-d1b14583272a",
                "selected":false,
-               "x":952.0781105531411,
-               "y":561.5156135518839
+               "x":952.0781598772322,
+               "y":561.5156337193081
             },
             {
                "id":"5d725ac4-eae8-45e7-91f8-8ccf1002e22c",
                "selected":false,
-               "x":1122.8749784852896,
-               "y":558.8437640349771
+               "x":1122.8749302455358,
+               "y":558.843732561384
             }
          ],
          "extras":{
@@ -208,14 +176,14 @@ export default {
             {
                "id":"9d318c59-18e7-434f-8193-3a4213b06555",
                "selected":false,
-               "x":952.0781105531411,
-               "y":531.5156277464655
+               "x":952.0781598772322,
+               "y":531.5156337193081
             },
             {
                "id":"12687429-a988-489e-abac-b0b039b673ff",
                "selected":false,
-               "x":1119.0313048654914,
-               "y":416.8593835586053
+               "x":1119.031284877232,
+               "y":416.8593924386161
             }
          ],
          "extras":{
@@ -295,19 +263,7 @@ export default {
             ]
          },
          "ports":[
-            {
-               "id":"bd48e384-c089-43bc-b483-a194cd100aec",
-               "type":"default",
-               "selected":false,
-               "name":"b3aa190c-37c5-41a1-93e2-11a8cfac778f",
-               "parentNode":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-               "links":[
-                  "cbb1e734-8303-4d92-b13a-44537aa78a42"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
+
          ],
          "name":"Command: Help",
          "color":"rgb(0,192,255)"
@@ -316,7 +272,7 @@ export default {
          "id":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
          "type":"default",
          "selected":false,
-         "x":-213.03028396054984,
+         "x":-214.45885538912125,
          "y":137.77967574465535,
          "extras":{
             "type":"command",
@@ -502,74 +458,6 @@ export default {
             }
          ],
          "name":"Speak: stop",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"f645b922-a930-4c86-af0a-a2482296a065",
-         "type":"default",
-         "selected":false,
-         "x":32.02836166947199,
-         "y":298.95311926012926,
-         "extras":{
-            "type":"speak",
-            "dialogs":[
-               {
-                  "index":"05MFG",
-                  "voice":"Alexa",
-                  "rawContent":{
-                     "blocks":[
-                        {
-                           "key":"13khb",
-                           "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen! Amazon states that all help blocks must end with a choice like this one",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        }
-                     ],
-                     "entityMap":{
-
-                     }
-                  },
-                  "open":true
-               }
-            ]
-         },
-         "ports":[
-            {
-               "id":"9baaeae1-0800-4750-beb4-8bc5e66cefd9",
-               "type":"default",
-               "selected":false,
-               "name":"469a3cb9-d731-461b-beef-9b98c78691d9",
-               "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
-               "links":[
-                  "cbb1e734-8303-4d92-b13a-44537aa78a42"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
-               "type":"default",
-               "selected":false,
-               "name":"ff0e9910-7609-4430-a011-d1a911406543",
-               "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: help",
          "color":"rgb(0,192,255)"
       },
       {

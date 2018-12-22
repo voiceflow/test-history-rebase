@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup, InputGroup, Input, Alert } from 'reactstrap'
+import { Button, ButtonGroup, InputGroup, Input } from 'reactstrap'
 import {Tooltip} from 'react-tippy'
 import Select from 'react-select'
 import SlotMappings from './components/SlotMappings' 

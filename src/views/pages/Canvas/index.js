@@ -352,7 +352,7 @@ class Canvas extends Component {
                 open: type !== 'comment',
                 template_confirm: null
             })
-            this.createDiagram(node, JSON.parse(res.data.data))
+            this.createDiagram(node, undefined, JSON.parse(res.data.data))
         })
         .catch(err => {
             console.log(err.response)
@@ -974,7 +974,7 @@ class Canvas extends Component {
     }
 
     // Create a new diagram from the flow block
-    createDiagram(node, template=null){
+    createDiagram(node, base_flow_name='New Flow', template=null){
         this.setState({
             loading_diagram: true
         })
@@ -996,12 +996,12 @@ class Canvas extends Component {
             let data = JSON.stringify(curr_template)
 
             // No Duplicate Flow Names
-            let new_flow_name = 'New Flow'
+            let new_flow_name = base_flow_name
             let index = 1
             const exists = (name) => this.state.diagrams.find(d => d.name === name)
 
             while(exists(new_flow_name)){
-                new_flow_name = `New Flow ${index}`
+                new_flow_name = `${base_flow_name} ${index}`
                 index++
             }
 
@@ -1127,7 +1127,7 @@ class Canvas extends Component {
                 node.extras = {
                     intent: null,
                     mappings: [],
-                    resume: true
+                    resume: false
                 }
             } else if (type === 'comment') {
                 node.name = 'New Comment'
@@ -1380,6 +1380,7 @@ class Canvas extends Component {
                     slots={this.state.skill.slots}
                     preview={this.props.preview}
                     onboarding={this.onboarding}
+                    diagram_id={this.diagram_id}
                     finished={()=>{this.onboarding = false}}
                 />
                 <div

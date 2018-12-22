@@ -1,7 +1,7 @@
 export default {
-   "offsetX":431.59056327783765,
-   "offsetY":96.3762825906415,
-   "zoom":70.09158589839933,
+   "offsetX":450,
+   "offsetY":125,
+   "zoom":70,
    "gridSize":0,
    "links":[
       {
@@ -16,14 +16,14 @@ export default {
             {
                "id":"bd5d439e-76c0-45fc-9a69-a4440006d944",
                "selected":false,
-               "x":-38.028752198942634,
-               "y":189.2772900042488
+               "x":-33.26529894930683,
+               "y":189.22560700985534
             },
             {
                "id":"047f28bc-01f8-4c50-9983-8ea5ddeaa51b",
                "selected":false,
-               "x":45.38807040486208,
-               "y":189.29289756563276
+               "x":45.3906836187756,
+               "y":189.29688129299544
             }
          ],
          "extras":{
@@ -48,14 +48,14 @@ export default {
             {
                "id":"396be488-e330-4624-84b9-b4d50222910e",
                "selected":false,
-               "x":-41.08290162907456,
-               "y":348.9262556847816
+               "x":-41.07812724205532,
+               "y":350.3437581923403
             },
             {
                "id":"273a4ed6-1a13-44fd-880c-93f8afa9c7ab",
                "selected":false,
-               "x":43.09951981680604,
-               "y":350.4471212005409
+               "x":44.51562525435891,
+               "y":350.45312960299884
             }
          ],
          "extras":{
@@ -80,14 +80,14 @@ export default {
             {
                "id":"a1759b59-7a90-4066-869a-9b2181dfaf70",
                "selected":false,
-               "x":-70.2929712637855,
-               "y":528.2024880532393
+               "x":-70.29683892611381,
+               "y":528.2031369332094
             },
             {
                "id":"8595e814-ab28-494e-905a-66e86dddf12b",
                "selected":false,
-               "x":530.6136378704832,
-               "y":530.8315464568868
+               "x":530.6250453660723,
+               "y":530.8437685753383
             }
          ],
          "extras":{
@@ -112,14 +112,14 @@ export default {
             {
                "id":"33bc062c-ed6d-4ae7-ad0d-d0f4830ff6c2",
                "selected":false,
-               "x":657.4886378704832,
-               "y":530.8315464568868
+               "x":657.5000615290763,
+               "y":530.8437685753383
             },
             {
                "id":"b955af9f-aece-4090-a1b1-756f7bfdc385",
                "selected":false,
-               "x":761.0050507122825,
-               "y":531.5202117284141
+               "x":760.9999864340256,
+               "y":531.5156277464655
             }
          ],
          "extras":{
@@ -144,14 +144,14 @@ export default {
             {
                "id":"af4c3daf-04d9-4c0e-bbdc-cc6462894dfa",
                "selected":false,
-               "x":952.0831931508986,
-               "y":591.5202117284141
+               "x":952.0781105531411,
+               "y":591.5156428968768
             },
             {
                "id":"afd2ef9e-d8f7-4a8f-97eb-3950a78b7f68",
                "selected":false,
-               "x":1126.0978912614014,
-               "y":693.354000097171
+               "x":1126.1094463813881,
+               "y":693.3437352275961
             }
          ],
          "extras":{
@@ -176,14 +176,14 @@ export default {
             {
                "id":"e366f1cc-73f2-48b6-b9d9-d1b14583272a",
                "selected":false,
-               "x":952.0831931508986,
-               "y":561.5202117284141
+               "x":952.0781105531411,
+               "y":561.5156135518839
             },
             {
                "id":"5d725ac4-eae8-45e7-91f8-8ccf1002e22c",
                "selected":false,
-               "x":1122.8837240742762,
-               "y":558.8522418983431
+               "x":1122.8749784852896,
+               "y":558.8437640349771
             }
          ],
          "extras":{
@@ -194,70 +194,6 @@ export default {
          ],
          "width":2.5,
          "color":"#D1D8E2",
-         "curvyness":50
-      },
-      {
-         "id":"a815bd6f-a3c1-4a87-9b6c-436ddef0aded",
-         "type":"default",
-         "selected":false,
-         "source":"f645b922-a930-4c86-af0a-a2482296a065",
-         "sourcePort":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
-         "target":"2d316690-a0b5-4955-8558-7269043e4409",
-         "targetPort":"02d61b64-d4aa-44e8-9e14-c675e717b413",
-         "points":[
-            {
-               "id":"2e141d8e-be8c-4edd-adfd-1ce385970961",
-               "selected":false,
-               "x":174.75364654309274,
-               "y":350.44707614303564
-            },
-            {
-               "id":"64438b1f-d08a-4c24-a6af-98d3d84f011d",
-               "selected":false,
-               "x":267.7323490691958,
-               "y":351.60656629978405
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":1,
-         "color":"#555D6D",
-         "curvyness":50
-      },
-      {
-         "id":"250bdfcb-a18b-4f53-92eb-ba2e940e12ed",
-         "type":"default",
-         "selected":false,
-         "source":"2d316690-a0b5-4955-8558-7269043e4409",
-         "sourcePort":"46935f2b-333d-4b55-855d-8ae0307a6421",
-         "target":"82faa43a-678c-49b7-8c64-c4772080a013",
-         "targetPort":"7545e1f2-794f-45e6-b327-32d9d244f27a",
-         "points":[
-            {
-               "id":"47220e15-4e2a-4254-a628-f3bfad7e2d9d",
-               "selected":false,
-               "x":370.67000880551035,
-               "y":381.6448069877383
-            },
-            {
-               "id":"01d21d50-6d29-47e6-af91-e7b9dda9c88f",
-               "selected":false,
-               "x":528.3435518632109,
-               "y":530.8016993010112
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":1,
-         "color":"#555D6D",
          "curvyness":50
       },
       {
@@ -272,14 +208,14 @@ export default {
             {
                "id":"9d318c59-18e7-434f-8193-3a4213b06555",
                "selected":false,
-               "x":952.0780947262207,
-               "y":531.5150182120831
+               "x":952.0781105531411,
+               "y":531.5156277464655
             },
             {
                "id":"12687429-a988-489e-abac-b0b039b673ff",
                "selected":false,
-               "x":1117.201565192263,
-               "y":416.82694198727506
+               "x":1119.0313048654914,
+               "y":416.8593835586053
             }
          ],
          "extras":{
@@ -288,8 +224,8 @@ export default {
          "labels":[
 
          ],
-         "width":1,
-         "color":"#555D6D",
+         "width":2.5,
+         "color":"#D1D8E2",
          "curvyness":50
       }
    ],
@@ -336,10 +272,27 @@ export default {
          "type":"default",
          "selected":false,
          "x":-216.14774729776403,
-         "y":297.43084616391235,
+         "y":298.8575509347953,
          "extras":{
-            "commands":"Help",
-            "type":"command"
+            "type":"command",
+            "resume":true,
+            "intent":{
+               "label":"AMAZON.HelpIntent",
+               "value":"AMAZON.HelpIntent",
+               "key":"AMAZON.HelpIntent",
+               "inputs":[
+                  {
+                     "text":"",
+                     "slots":[
+
+                     ]
+                  }
+               ],
+               "built_in":true
+            },
+            "mappings":[
+
+            ]
          },
          "ports":[
             {
@@ -366,8 +319,25 @@ export default {
          "x":-213.03028396054984,
          "y":137.77967574465535,
          "extras":{
-            "commands":"Stop",
-            "type":"command"
+            "type":"command",
+            "intent":{
+               "label":"AMAZON.StopIntent",
+               "value":"AMAZON.StopIntent",
+               "key":"AMAZON.StopIntent",
+               "inputs":[
+                  {
+                     "text":"",
+                     "slots":[
+
+                     ]
+                  }
+               ],
+               "built_in":true
+            },
+            "mappings":[
+
+            ],
+            "resume":false
          },
          "ports":[
             {
@@ -538,7 +508,7 @@ export default {
          "id":"f645b922-a930-4c86-af0a-a2482296a065",
          "type":"default",
          "selected":false,
-         "x":30.601656898589017,
+         "x":32.02836166947199,
          "y":298.95311926012926,
          "extras":{
             "type":"speak",
@@ -550,37 +520,7 @@ export default {
                      "blocks":[
                         {
                            "key":"13khb",
-                           "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen! Amazon states that all help blocks must end with a choice like this one.",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        },
-                        {
-                           "key":"cl7c2",
-                           "text":"",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        },
-                        {
-                           "key":"6j7r9",
-                           "text":"<break time=\"0.3s\"/> Would you like to continue?",
+                           "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen! Amazon states that all help blocks must end with a choice like this one",
                            "type":"unstyled",
                            "depth":0,
                            "inlineStyleRanges":[
@@ -622,7 +562,7 @@ export default {
                "name":"ff0e9910-7609-4430-a011-d1a911406543",
                "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
                "links":[
-                  "a815bd6f-a3c1-4a87-9b6c-436ddef0aded"
+
                ],
                "maximumLinks":1,
                "in":false,
@@ -678,8 +618,7 @@ export default {
                "name":"bd3317da-1ec5-402c-8725-f553743d64e7",
                "parentNode":"82faa43a-678c-49b7-8c64-c4772080a013",
                "links":[
-                  "19fc13c0-5dd6-4c87-b153-a9eeeee7e2be",
-                  "250bdfcb-a18b-4f53-92eb-ba2e940e12ed"
+                  "19fc13c0-5dd6-4c87-b153-a9eeeee7e2be"
                ],
                "in":true,
                "label":" "
@@ -835,85 +774,6 @@ export default {
             }
          ],
          "name":"Speak: no",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"2d316690-a0b5-4955-8558-7269043e4409",
-         "type":"default",
-         "selected":false,
-         "x":257.1298677729828,
-         "y":300.1458149789657,
-         "extras":{
-            "audio":"",
-            "audioText":"",
-            "audioVoice":"",
-            "prompt":"",
-            "promptText":"",
-            "promptVoice":"",
-            "choices":[
-               "New Choice",
-               "New Choice"
-            ],
-            "inputs":[
-               "Yes",
-               "No"
-            ],
-            "type":"choice"
-         },
-         "ports":[
-            {
-               "id":"02d61b64-d4aa-44e8-9e14-c675e717b413",
-               "type":"default",
-               "selected":false,
-               "name":"4deb0652-ed58-417c-ac75-b9bc9f4a380e",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-                  "a815bd6f-a3c1-4a87-9b6c-436ddef0aded"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"7911fe36-0a6a-4d4c-97b2-15d4f19a565d",
-               "type":"default",
-               "selected":false,
-               "name":"7ac31a37-c4fc-4e79-aa5a-de218dbcb042",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":"else"
-            },
-            {
-               "id":"46935f2b-333d-4b55-855d-8ae0307a6421",
-               "type":"default",
-               "selected":false,
-               "name":"7bd482a3-f943-410e-9740-652c29f61dca",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-                  "250bdfcb-a18b-4f53-92eb-ba2e940e12ed"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":1
-            },
-            {
-               "id":"a195b57d-46ec-48f8-b068-f924a082401a",
-               "type":"default",
-               "selected":false,
-               "name":"c3fba72d-cc5b-4d4f-accd-5c9a754c8552",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":2
-            }
-         ],
-         "name":"Choice",
          "color":"rgb(0,192,255)"
       },
       {

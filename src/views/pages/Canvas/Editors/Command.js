@@ -26,7 +26,9 @@ class Command extends Component {
     updateResume(){
         let node = this.state.node
         node.extras.resume = !this.state.node.extras.resume
-        this.forceUpdate()
+        this.setState({
+            node: node
+        })
     }
 
     updateCommand(selected) {
@@ -139,7 +141,7 @@ class Command extends Component {
             }
             <InputGroup className="my-3">
                 <label className="input-group-text w-100 m-0 d-flex">
-                    <Input addon type="checkbox" value={this.state.node.extras.resume} onChange={this.updateResume}/>
+                    <Input addon type="checkbox" value={this.state.node.extras.resume} checked={this.state.node.extras.resume} onChange={this.updateResume}/>
                     <div className="ml-2 space-between flex-hard">
                         <span>
                             Resume from Previous Block

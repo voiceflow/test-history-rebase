@@ -84,7 +84,6 @@ class TestModal extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputSubmit = this.inputSubmit.bind(this);
-    this.removeAudio = this.removeAudio.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.recursivePlay = this.recursivePlay.bind(this);
     this.beginning = this.beginning.bind(this);
@@ -93,6 +92,26 @@ class TestModal extends React.Component {
     this.handleRestart = this.handleRestart.bind(this);
     this.getVariables = this.getVariables.bind(this);
     this.parseBlock = this.parseBlock.bind(this);
+    this.removeAudio = this.removeAudio.bind(this)
+  }
+
+  removeAudio() {
+    return new Promise((resolve) => {
+      if(this.state.audio){
+        let audio = this.state.audio;
+        audio.onended = null;
+        audio.ontimeupdate = null;
+        audio.onloadedmetadata = null;
+        this.state.audio.pause();
+        this.state.audio.removeAttribute('src');
+        this.state.audio.load();
+        this.setState({
+          audio: null
+        }, resolve)
+      }else{
+        resolve()
+      }
+    })
   }
 
   componentWillReceiveProps(nextProps){
@@ -125,21 +144,6 @@ class TestModal extends React.Component {
     this.story_state.globals[0].user_id = 'TEST_USER'
   }
 
-  removeAudio(){
-    if(this.state.audio){
-      let audio = this.state.audio;
-      audio.onended = null;
-      audio.ontimeupdate = null;
-      audio.onloadedmetadata = null;
-      this.state.audio.pause();
-      this.state.audio.removeAttribute('src');
-      this.state.audio.load();
-      this.setState({
-        audio: null
-      })
-    }
-  }
-
   componentWillUnmount() {
     this.removeAudio();
   }
@@ -169,24 +173,24 @@ class TestModal extends React.Component {
       if(!this.pause){
         this.setState({
           audio: null
-        });
+        }, () => {
+          if(this.story_state.play && ['START', 'RESUME'].includes(this.story_state.play.action)){
+            this.next = true
+            this.updateState()
+          }
+        })
       }
       if(ended){
-        this.handleEnd();
-      }else{
-        if(this.story_state.play){
-          this.next = true;
-          this.updateState();
-        }
+        this.handleEnd()
       }
-      return;
-    };
+      return
+    }
 
     let b = urls[index];
 
     if(b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src){
       // AUDIO TAGS
-      let audio = new Audio(b.attrs.src);
+      let audio = new Audio(b.attrs.src)
 
       this.setState({
         audio: audio
@@ -228,14 +232,14 @@ class TestModal extends React.Component {
 
   parseBlock(block) {
       // TEXT TYPE
-      let text = recurse(block);
+      let text = recurse(block)
       if(text){
-        let inputs = this.state.inputs;
+        let inputs = this.state.inputs
         inputs.push({
           text: text,
           time: moment().format('h:mm:ss A')
         });
-        this.forceUpdate();
+        this.forceUpdate()
       }
   }
 
@@ -290,15 +294,15 @@ class TestModal extends React.Component {
 
     if(start){
       data.testing = {
-        line: this.story_state.line ? this.story_state.line : "START",
+        line: this.story_state.line_id ? this.story_state.line_id : "START",
       };
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
     if(this.next){
       if(this.story_state.play.loop){
-        this.removeAudio();
-        this.next = false;
+        await this.removeAudio()
+        this.next = false
         return this.recursivePlay(0, [{
           name: 'audio',
           type: 'tag',
@@ -314,7 +318,7 @@ class TestModal extends React.Component {
     axios.post(test_endpoint, data)
     .then(async res => {
       res = res.data
-      if(res.line) {
+      if(res.line_id) {
         this.story_state = res
       }
       if(res.output && res.output.length > 0){
@@ -341,10 +345,12 @@ class TestModal extends React.Component {
                 res.output += '<audio src="'+res.play.url+'" />';
               }
             }else if(res.play.action === 'PAUSE'){
-              this.pause = true;
-              if(this.state.audio) this.state.audio.pause();
+              this.pause = true
+              if(this.state.audio) this.state.audio.pause()
             }else if(res.play.action === 'RESUME'){
-              if(this.state.audio) this.state.audio.play();
+              if(this.state.audio){
+                this.state.audio.play()
+              }
               return;
             }
           }
@@ -404,16 +410,20 @@ class TestModal extends React.Component {
         input: ""
       });
     }else{
-      this.story_state.input = this.state.input;
-      let inputs = this.state.inputs;
-
-      inputs.push({
-        self: this.state.input,
-        time: moment().format('h:mm:ss A')
-      });
+      let inputs = this.state.inputs
+      this.story_state.input = this.state.input
+      if(this.state.intent){
+        this.story_state.intent = this.state.intent
+      }else{
+        inputs.push({
+          self: this.state.input,
+          time: moment().format('h:mm:ss A')
+        })
+      }
 
       this.setState({
         input: "", 
+        intent: "",
         inputs: inputs
       }, this.updateState);
     }
@@ -437,7 +447,7 @@ class TestModal extends React.Component {
   startline(){
     if(!this.state.selected_line) return;
     this.initializeStory();
-    this.story_state.line = this.state.selected_line.value
+    this.story_state.line_id = this.state.selected_line.value
     this.setState({
       started: true
     }, () => {this.updateState(true)});
@@ -546,13 +556,13 @@ class TestModal extends React.Component {
                         <Alert onClick={this.handleRestart} color="warning" className="m-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> :
                         <React.Fragment>
                           {this.state.audioplayer ?
-                            <div className="audioplayer-options">
+                            <div className="audioplayer-options mb-2">
                               {this.pause ?
-                                <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.ResumeIntent'}, this.inputSubmit)}>Resume</Button> :
-                                <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.PauseIntent'}, this.inputSubmit)}>Stop/Pause</Button>
+                                <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.ResumeIntent'}, this.inputSubmit)}>Resume</Button> :
+                                <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PauseIntent'}, this.inputSubmit)}>Stop/Pause</Button>
                               }
-                              <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
-                              <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
+                              <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
+                              <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
                             </div> 
                             :
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">

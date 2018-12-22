@@ -92,7 +92,7 @@ const getVariables = (req, res) => {
         } else {
             res.sendStatus(404);
         }
-    });
+    })
 }
 
 const getDiagrams = (req, res) => {
@@ -490,6 +490,23 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         if (used_intents) {
                             used_intents.add(intent.key)
                         }
+
+                        let mappings = []
+                        if(Array.isArray(node.extras.mappings)){
+                            node.extras.mappings.forEach(mapping => {
+                                if(intent.built_in){
+                                    mappings.push({
+                                        variable: mapping.variable,
+                                        slot: mapping.slot.label
+                                    })
+                                }else if(mapping.slot.key in slots){
+                                    mappings.push({
+                                        variable: mapping.variable,
+                                        slot: slots[mapping.slot.key]
+                                    })
+                                }
+                            })
+                        }
                         
                         if(intent.built_in){
                             intent = intent.label
@@ -499,7 +516,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
                         story.commands.push({
                             intent: intent,
-                            mappings: node.extras.mappings,
+                            mappings: mappings,
                             resume: node.extras.resume,
                             next: nextId
                         })

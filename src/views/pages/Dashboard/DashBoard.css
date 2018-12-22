@@ -10,7 +10,9 @@
 .add-skill h2{
   font-weight: lighter;
 }
-
+.card-dropdown .dropdown-item {
+  cursor: pointer;
+}
 
 .hr-label {
   display: inline-block;

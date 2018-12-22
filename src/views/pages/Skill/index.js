@@ -317,7 +317,7 @@ class Skill extends Component {
             this.setState({
                 error: 'Limited to 30 keywords'
             })
-        } else if(s.keywords.length - split_keywords.length + 1> 150) {
+        } else if(s.keywords.length - split_keywords.length + 1> 500) {
             this.setState({
                 error: 'The total length of all keywords must be less than or equal to 150'
             })  

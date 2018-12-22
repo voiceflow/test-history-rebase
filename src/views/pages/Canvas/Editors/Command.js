@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup, InputGroup, Input } from 'reactstrap'
+import { Button, ButtonGroup, InputGroup, Input, Alert } from 'reactstrap'
 import {Tooltip} from 'react-tippy'
 import Select from 'react-select'
 import SlotMappings from './components/SlotMappings' 
@@ -157,6 +157,10 @@ class Command extends Component {
                     </div>
                 </label>
             </InputGroup>
+            {this.state.node.extras.resume && <Alert color="danger">
+                {/* <span className="top-right close mt-1 mr-2">×</span> */}
+                <span style={{lineHeight: '10px', fontSize: '14px'}}>Do not link the last block linked to your command to your main project, keep seperate or errors will occur</span>
+            </Alert>}
         </React.Fragment>
     }
 

@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import { Input } from 'reactstrap'
+import { Input, Alert } from 'reactstrap'
 import IntentInput from './IntentInput'
 import './IntentInputs.css'
+import randomstring from 'randomstring'
+import converter from 'number-to-words'
+const _getIndex = (index) => {
+    return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')
+}
 
 class IntentInputs extends Component {
     constructor(props) {
@@ -14,15 +19,39 @@ class IntentInputs extends Component {
         this.onSearchChange = this.onSearchChange.bind(this)
         this.checkUtterances = this.checkUtterances.bind(this)
         this.checkName = this.checkName.bind(this)
-        this.onAdd = this.onAdd.bind(this)
+
+        this.handleAddIntent = this.handleAddIntent.bind(this)
+        this.handleRemoveIntent = this.handleRemoveIntent.bind(this)
     }
 
-    onAdd(e){
-        e.preventDefault()
+    handleAddIntent() {
+        let name = 'intent_' + _getIndex(this.props.intents.length+1)
+
+        const find = (name) => this.props.intents.find(e => e.name === name)
+        while(find(name)) {
+            name = 'new_' + name
+        }
+
+        this.props.intents.push({name: name, inputs: [], key: randomstring.generate(12), open: true});
+
+        this.props.update()
         this.setState({
-            search_value: ''
+            search: '',
+        });
+    }
+
+    handleRemoveIntent(key) {
+        this.props.onConfirm({
+            text: <Alert color="warning" className="mb-0">Make sure this Intent isn't used in any Command or Intent blocks<br/>-<br/>Deleting may cause unexpected behavior</Alert>,
+            confirm: () => {
+                let i = this.props.intents.findIndex(i => i.key === key)
+                if(i !== -1){
+                    this.props.intents.splice(i, 1)
+                    this.props.update()
+                    this.props.onConfirm(null)
+                }
+            }
         })
-        this.props.onAdd()
     }
 
     _getSlotKeys(input) {
@@ -80,7 +109,7 @@ class IntentInputs extends Component {
                         onError={this.props.onError}
                         utteranceExists={this.checkUtterances}
                         nameExists={this.checkName}
-                        removeIntent={this.props.onRemove}
+                        removeIntent={this.handleRemoveIntent}
                         update={this.props.update}
                     />)
                 }
@@ -90,7 +119,7 @@ class IntentInputs extends Component {
         return (
             <div className="w-100">
                 {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>}
-                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.onAdd}><i className="far fa-plus"></i> Add Intent</button>}
+                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.handleAddIntent}><i className="far fa-plus"></i> Add Intent</button>}
                 {reverse}
             </div>
         );

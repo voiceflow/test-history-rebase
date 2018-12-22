@@ -7,11 +7,19 @@ class Line extends Component {
     constructor(props) {
         super(props);
 
+        // DEPRECATE extremely old audio blocks
+        if(props.node.extras.audio){
+            props.node.extras.lines = []
+            props.node.extras.lines.push({
+                audio: props.node.extras.audio
+            })
+        }
+
         this.state = {
             node: this.props.node,
             voices: this.props.voices,
             loading: false
-        };
+        }
 
         this.handleAddLine = this.handleAddLine.bind(this);
         this.handleRemoveLine = this.handleRemoveLine.bind(this);

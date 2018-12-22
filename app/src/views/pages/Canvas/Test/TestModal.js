@@ -411,10 +411,10 @@ class TestModal extends React.Component {
       });
     }else{
       let inputs = this.state.inputs
-      this.story_state.input = this.state.input
       if(this.state.intent){
         this.story_state.intent = this.state.intent
       }else{
+        this.story_state.input = this.state.input
         inputs.push({
           self: this.state.input,
           time: moment().format('h:mm:ss A')

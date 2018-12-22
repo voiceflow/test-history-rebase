@@ -513,14 +513,33 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         }else if(intent.key in intents){
                             intent = intents[intent.key]
                         }
-
-                        story.commands.push({
-                            intent: intent,
-                            mappings: mappings,
-                            resume: node.extras.resume,
-                            next: nextId
-                        })
+                        if(intent){
+                            if(node.extras.resume){
+                                if(node.extras.diagram_id){
+                                    let result
+                                    try{
+                                        result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options, used_intents, used_choices, intents, slots)
+                                    }catch(err){
+                                        result = 500
+                                    }
+                                    if(result < 300){
+                                        story.commands.push({
+                                            intent: intent,
+                                            mappings: node.extras.mappings,
+                                            diagram_id: node.extras.diagram_id
+                                        })
+                                    }
+                                }
+                            }else if(nextId){
+                                story.commands.push({
+                                    intent: intent,
+                                    mappings: node.extras.mappings,
+                                    next: nextId
+                                })
+                            }
+                        }
                     }else if(node.extras.commands){
+                        // DEPRECATE OLD COMMANDS
                         let commands = node.extras.commands.split('\n').filter(i => { return !!i })
 
                         commands.forEach(command => {

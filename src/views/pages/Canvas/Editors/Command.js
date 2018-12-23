@@ -119,15 +119,25 @@ class Command extends Component {
         }
 
         let options
-        if(!this.state.node.extras.diagram_id && this.state.node.extras.resume){
-            options = this.props.diagrams
-            .filter(diagram => (diagram.name !== 'ROOT' && diagram.id !== this.props.current))
-            .map(diagram => {
-                return {
-                    value: diagram.id,
-                    label: diagram.name
+        let diagram_name
+        if(this.state.node.extras.resume){
+            // has an attached diagram
+            if(this.state.node.extras.diagram_id){
+                let find = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
+                if(find){
+                    diagram_name = find.name
                 }
-            });
+            }else{
+                // doesn't have an attached diagram
+                options = this.props.diagrams
+                .filter(diagram => (diagram.name !== 'ROOT' && diagram.id !== this.props.current))
+                .map(diagram => {
+                    return {
+                        value: diagram.id,
+                        label: diagram.name
+                    }
+                })
+            }
         }
 
         return <React.Fragment>
@@ -180,13 +190,19 @@ class Command extends Component {
                 </label>
             </InputGroup>
             {this.state.node.extras.resume && <div className="choice-block py-4">
-                <h5 className="mb-0">Command Flow</h5>
                 {this.state.node.extras.diagram_id ? 
                     <React.Fragment>
+                        <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2"/>{diagram_name}</span></h5>
                         <Button block className="mt-3" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
                         <Button block className="mt-2" onClick={() => {let node = this.state.node; node.extras.diagram_id=null; this.setState({node: node})}} color="clear">Unlink Flow</Button>
                     </React.Fragment> :
                     <React.Fragment>
+                        <h5 className="mb-0">Command Flow</h5>
+                        <label>Create a New Flow</label>
+                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'))}>
+                            Create New Flow <i className="fas fa-sign-in"/>
+                        </Button>
+                        <hr className="mb-1"/>
                         {this.props.diagrams && this.props.diagrams.length > 0 ? 
                             <React.Fragment>
                                 <label>Select Existing Flow</label>
@@ -199,13 +215,8 @@ class Command extends Component {
                                     }}
                                     options={options}
                                 />
-                                <hr className="mb-1"/>
-                                </React.Fragment>
+                            </React.Fragment>
                         : null}
-                        <label>Create a New Flow</label>
-                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'))}>
-                            Create New Flow <i className="fas fa-sign-in"/>
-                        </Button>
                     </React.Fragment>
                 }
             </div>}

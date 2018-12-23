@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import validUrl from 'valid-url'
 
-import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert, Fade } from 'reactstrap'
+import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert, Collapse } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import MUFormGroup from '@material-ui/core/FormGroup'
@@ -740,15 +740,15 @@ class Skill extends Component {
                         <div className="alert alert-success mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">
                                 <span>This skill is linked on Amazon Developer Console</span> 
-                                <b>
-                                    <Fade in={this.state.id_collapse} className="d-inline-block">
-                                        <a href={`https://developer.amazon.com/alexa/console/ask/build/${this.state.amzn_id}/development/${this.state.locales[0].replace('-', '_')}/`} target="_blank" rel="noopener noreferrer">
-                                            <u>{this.state.amzn_id}</u>
-                                        </a>
-                                    </Fade>
-                                    <span onClick={()=>this.setState({id_collapse: !this.state.id_collapse})} className="pointer text-right d-inline-block" style={{width: '70px'}}>{this.state.id_collapse ? 'Hide Info' : 'More Info'}</span>
-                                </b>
+                                <b onClick={()=>this.setState({id_collapse: !this.state.id_collapse})} className="pointer">{this.state.id_collapse ? 'Hide' : 'More Info'} <span style={{width: '9px', display: 'inline-block', textAlign: 'right'}}><i className={"fas fa-caret-left rotate" + (this.state.id_collapse ? " fa-rotate--90" : "")}/></span></b>
                             </div>
+                            <Collapse isOpen={this.state.id_collapse}>
+                                <hr/>
+                                <span>Skill ID | </span>
+                                <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/${this.state.locales[0].replace('-', '_')}/`} target="_blank" rel="noopener noreferrer">
+                                    <b>{this.state.amzn_id}</b>
+                                </a>
+                            </Collapse>
                         </div>
                     : null }
                     {disabled_stages.has(this.state.stage)?

@@ -253,6 +253,10 @@ audio {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.fa-rotate--90{
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
 .hr{
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -263,6 +267,9 @@ audio {
     background-color: #42A5FF20;
     color: #42A5FF;
     border: 1px solid #42A5FF40;
+}
+.alert-success hr{
+    border-color: #42A5FF40
 }
 .between {
     display: flex;

@@ -73,7 +73,6 @@ class TestModal extends React.Component {
       selected_line: null,
       nodes: [],
       ended: false,
-      last_diagram: "",
       debug: false,
       audioplayer: false,
     }
@@ -93,6 +92,7 @@ class TestModal extends React.Component {
     this.getVariables = this.getVariables.bind(this);
     this.parseBlock = this.parseBlock.bind(this);
     this.removeAudio = this.removeAudio.bind(this)
+    this.current_diagram = null
   }
 
   removeAudio() {
@@ -325,10 +325,7 @@ class TestModal extends React.Component {
         // TYLER'S SUPER JANKY AUDIO THING
 
         if (res.diagrams.length > 0) {
-          const current_diagram = res.diagrams[res.diagrams.length-1]['id'];
-          this.setState({
-            last_diagram: current_diagram
-          })
+          this.current_diagram = res.diagrams[res.diagrams.length-1]
         }
 
         this.pause = false;
@@ -462,15 +459,16 @@ class TestModal extends React.Component {
   }
 
   getVariables(){
-    let state = this.story_state;
-    let diagram_id = this.state.last_diagram;
-    if(state){
-      if(!state.diagram_states || !state.diagram_states[diagram_id]){
-        return null;
+    let state = this.story_state
+    if(Array.isArray(state.globals) && state.globals.length !== 0){
+      if(!this.current_diagram){
+        return null
       }
-      let variables = state.diagram_states[diagram_id].variables;
-      let v_array = [];
-      for (var key in variables) {
+      let variables = this.current_diagram.variable_state
+      let v_array = []
+      let g_array = []
+      var key
+      for (key in variables) {
           if (variables.hasOwnProperty(key)) {
               v_array.push({
                 name: key,
@@ -478,22 +476,46 @@ class TestModal extends React.Component {
               })
           }
       }
-      return (<Table className="var-table">
+      let globals = state.globals[0]
+      for (key in globals) {
+        if (globals.hasOwnProperty(key)) {
+            g_array.push({
+              name: key,
+              value: globals[key]
+            })
+        }
+      }
+      return (<React.Fragment>
+        <span className="text-muted">Local Variables</span>
+        <Table className="var-table">
         <tbody>
           {v_array.map(v => <tr key={v.name}>
             <td className="v"><span>{`{${v.name}}`}</span></td>
             <td>{v.value}</td>
           </tr>)}
         </tbody>
-      </Table>)
+        </Table>
+        <span className="text-muted">Global Variables</span>
+        <Table className="var-table">
+        <tbody>
+          {g_array.map(v => <tr key={v.name}>
+            <td className="v"><span>{`{${v.name}}`}</span></td>
+            <td>{v.value}</td>
+          </tr>)}
+        </tbody>
+      </Table>
+      </React.Fragment>
+      )
+    }else{
+      return null
     }
   }
 
   render() {
 
-    let flow;
-    if(this.state.last_diagram){
-      let find = this.props.diagrams.find(d => d.id === this.state.last_diagram)
+    let flow
+    if(this.current_diagram){
+      let find = this.props.diagrams.find(d => d.id === this.current_diagram.id)
       if(find){
         flow = find.name;
       }

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
@@ -29,7 +30,7 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
+import { SLOT_TYPES_MAP, BUILT_IN_INTENTS } from './Constants'
 
 const BUILT_INS = BUILT_IN_INTENTS.map( intent => {
     return {
@@ -58,6 +59,7 @@ class Editor extends Component {
         }
 
         this.eventHandler = this.eventHandler.bind(this)
+        this.getSlotTypes = this.getSlotTypes.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
     }
@@ -125,6 +127,14 @@ class Editor extends Component {
         });
     }
 
+    getSlotTypes(locales) {
+      let SLOT_TYPES = [];
+      _.map(locales, locale => {
+        SLOT_TYPES.push(SLOT_TYPES_MAP[locale]);
+      })
+      return _.uniq(_.flatten(SLOT_TYPES));
+    }
+
     BlockViewer() {
         let variables = this.props.global_variables.concat(this.props.variables)
 
@@ -144,12 +154,12 @@ class Editor extends Component {
                     return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
                 }else{
                     return <Command
-                        node={this.state.node} 
+                        node={this.state.node}
                         onUpdate={this.props.onUpdate}
-                        intents={this.props.intents} 
-                        slots={this.props.slots} 
-                        variables={variables} 
-                        slot_types={SLOT_TYPES} 
+                        intents={this.props.intents}
+                        slots={this.props.slots}
+                        variables={variables}
+                        slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={BUILT_INS}
                         onError={this.props.onError}
                         repaint={this.props.repaint}
@@ -169,7 +179,7 @@ class Editor extends Component {
                     onSlot={this.props.onSlot} 
                     onIntent={this.props.onIntent} 
                     variables={variables} 
-                    slot_types={SLOT_TYPES} 
+                    slot_types={this.getSlotTypes(this.props.locales)}
                     built_ins={BUILT_INS} 
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
@@ -214,7 +224,7 @@ class Editor extends Component {
                     createDiagram={this.props.createDiagram}
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
-                   
+
                 />
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>

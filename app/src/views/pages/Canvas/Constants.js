@@ -1655,5 +1655,4 @@ const VOICES = [
 ]
 
 exports.VOICES = VOICES
-exports.SLOT_TYPES = SLOT_TYPES;
 exports.BUILT_IN_INTENTS = BUILT_IN_INTENTS;

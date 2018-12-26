@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import * as React from "react";
-import { NodeModel, PortModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
+import { NodeModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
 
 export interface PortProps extends BaseWidgetProps {
 	name: string;
@@ -18,7 +18,7 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 	constructor(props: PortProps) {
 		super("srd-port", props);
 		this.state = {
-			selected: false,
+			selected: false
 		};
 		this.setLink = this.setLink.bind(this);
 	}

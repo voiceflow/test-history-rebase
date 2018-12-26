@@ -156,8 +156,9 @@ class Editor extends Component {
       _.map(locales, locale => {
         SLOT_TYPES.push(SLOT_TYPES_MAP[locale]);
       })
-      return _.sortedUniq(SLOT_TYPES);
+      return _.uniq(_.flatten(SLOT_TYPES));
     }
+
     BlockViewer() {
         let variables = this.props.global_variables.concat(this.props.variables)
 
@@ -183,7 +184,7 @@ class Editor extends Component {
                         intents={this.props.intents}
                         slots={this.props.slots}
                         variables={variables}
-                        slot_types={_.flatten(this.getSlotTypes(this.props.locales))}
+                        slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={BUILT_INS}
                         onError={this.showErrorPopup}
                         repaint={this.props.repaint}
@@ -203,7 +204,7 @@ class Editor extends Component {
                     onSlot={this.props.onSlot}
                     onIntent={this.props.onIntent}
                     variables={variables}
-                    slot_types={_.flatten(this.getSlotTypes(this.props.locales))}
+                    slot_types={this.getSlotTypes(this.props.locales)}
                     built_ins={BUILT_INS}
                     onError={this.showErrorPopup}
                     onConfirm={this.showConfirmPopup}

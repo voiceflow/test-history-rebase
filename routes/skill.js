@@ -59,7 +59,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt 
             FROM
                 skills
             WHERE
@@ -315,10 +315,16 @@ exports.patchSkill = (req, res) => {
     }
 
     let id = hashids.decode(req.params.id)[0];
+    let b = req.body;
+
+    if(!b.locales){
+        b.locales = '["en-US"]';
+    }
 
     // only need to update the name/restart
     if(req.query.settings){
-        pool.query(`UPDATE skills SET name = $1, restart = $2 WHERE skill_id = $3`, [req.body.name, req.body.restart, id], (err) => {
+        pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`, 
+        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
             if(err){
                 res.sendStatus(500);
             }else{
@@ -326,22 +332,14 @@ exports.patchSkill = (req, res) => {
             }
         });
         return;
-    }
-
-    let b = req.body;
-
-    if(!b.locales){
-        b.locales = '["en-US"]';
-    }
-
-    if (req.query.intents) {
+    }else if (req.query.intents) {
         pool.query(`
             UPDATE skills
             SET
             intents = $2,
             slots = $3
-            WHERE skill_id = $1`,
-            [id, b.intents, b.slots], (err) => {
+            WHERE skill_id = $1 AND creator_id = $4`,
+            [id, b.intents, b.slots, req.user.id], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -371,16 +369,16 @@ exports.patchSkill = (req, res) => {
             locales = $17,
             privacy_policy = $18,
             terms_and_cond = $19
-            WHERE skill_id = $1`,
+            WHERE skill_id = $1 AND creator_id = $20`,
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
             {value: b.invocations}, b.small_icon, b.large_icon, b.category,
             b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales,
-            b.privacy_policy, b.terms_and_cond], (err) => {
+            b.privacy_policy, b.terms_and_cond, req.user.id], (err) => {
             if(err){
                 console.log(err);
-                res.sendStatus(500);
+                res.sendStatus(500)
             }else{
-                res.sendStatus(200);
+                res.sendStatus(200)
             }
         })
     } else if(req.query.preview){
@@ -390,13 +388,13 @@ exports.patchSkill = (req, res) => {
         SET
           preview = $2
         WHERE
-          skill_id = $1`,
-        [id, b.isPreview], (err) => {
+          skill_id = $1 AND creator_id = $3`,
+        [id, b.isPreview, req.user.id], (err) => {
           if(err){
             console.error(err);
-            res.sendStatus(500);
+            res.sendStatus(500)
           }else{
-            res.sendStatus(200);
+            res.sendStatus(200)
           }
         })
     }else{
@@ -415,10 +413,10 @@ exports.patchSkill = (req, res) => {
             locales = $11,
             privacy_policy = $12,
             terms_and_cond = $13
-            WHERE skill_id = $1`,
+            WHERE skill_id = $1 AND creator_id = $14`,
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
             {value: b.invocations}, b.small_icon, b.large_icon, b.category, b.locales,
-            b.privacy_policy, b.terms_and_cond], (err) => {
+            b.privacy_policy, b.terms_and_cond, req.user.id], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);

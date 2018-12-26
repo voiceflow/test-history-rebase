@@ -62,7 +62,6 @@ class SettingsModal extends PureComponent {
     }
 
     toggleSwitch(e) {
-        console.log(e.target.name)
         this.setState({
             skill: update(this.state.skill, {
                 [e.target.name]: {$set: !this.state.skill[e.target.name]}

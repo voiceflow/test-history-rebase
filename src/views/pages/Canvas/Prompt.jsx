@@ -4,6 +4,7 @@ import AudioDrop from '../../components/Uploads/AudioDrop'
 import Textarea from 'react-textarea-autosize'
 import Select from 'react-select'
 import {Button, ButtonGroup} from 'reactstrap'
+import {clone} from 'lodash'
 
 const TABS = ['text', 'audio']
 
@@ -19,6 +20,7 @@ class Prompt extends PureComponent {
         this.updateContent = this.updateContent.bind(this)
         this.renderTab = this.renderTab.bind(this)
         this.switchTab = this.switchTab.bind(this)
+        this.local_save = null
     }
 
     switchTab(tab){
@@ -26,10 +28,21 @@ class Prompt extends PureComponent {
             this.setState({
                 tab: tab
             })
-            this.props.updatePrompt({
-                voice: tab === 'audio' ? 'audio' : 'Alexa',
-                content: ''
-            })
+
+            let copy = clone(this.local_save)
+            this.local_save = {
+                voice: this.props.voice,
+                content: this.props.content
+            }
+
+            if(copy){
+                this.props.updatePrompt(copy)
+            }else{
+                this.props.updatePrompt({
+                    voice: tab === 'audio' ? 'audio' : 'Alexa',
+                    content: ''
+                })
+            }
         }
     }
 

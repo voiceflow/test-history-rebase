@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal, ModalBody, Button, Input } from 'reactstrap';
+import { Modal, ModalBody, Button, Input, ButtonGroup } from 'reactstrap';
+import LOCALE_MAP from './../../../../services/LocaleMap'
+const _ = require('lodash');
 
 // import Card from '@material-ui/core/Card';
 // import CardActionArea from '@material-ui/core/CardActionArea';
@@ -37,7 +39,8 @@ class SkillModal extends React.Component {
     this.state = {
       name: '',
       template: 'blank',
-      curr_state: 'name'
+      curr_state: 'name',
+      locales: ['en-US']
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,6 +48,7 @@ class SkillModal extends React.Component {
       template: template
     })}
     this.handleTemplateChoice = this.handleTemplateChoice.bind(this);
+    this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this)
   }
 
   handleChange(event) {
@@ -56,6 +60,21 @@ class SkillModal extends React.Component {
   handleTemplateChoice(user_template){
     this.props.onTemplateChoice(user_template);
   }
+
+  onLocaleBtnClick(locale) {
+    let locales = this.state.locales;
+    if (locales.includes(locale)) {
+        if (locales.length > 1) {
+            _.remove(locales, (v) => { return v === locale})
+        }
+    } else {
+        locales.push(locale)
+    }
+    this.setState({
+        saved: false,
+        locales : locales
+    })
+}
 
 // <div className="hr-label">Templates</div>
 // <Card className="add-skill">
@@ -103,12 +122,20 @@ class SkillModal extends React.Component {
                   bsSize="lg"
                   ref={c => (this._input = c)}
                 />
+                <div>
+                  <ButtonGroup className="locale-button-group">
+                    {LOCALE_MAP.map((locale, i) => {
+                      const active = this.state.locales.includes(locale.value) ? "active" : "";
+                      return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>{locale.name}</Button>
+                    })}
+                  </ButtonGroup>
+                </div>
                 <div className="text-center my-3">
                   <Button 
                     className="create-skill" 
                     color="primary" block 
                     size="lg" 
-                    onClick={() => this.props.createSkill(this.state.name)}>
+                    onClick={() => this.props.createSkill(this.state.name, this.state.locales)}>
                     <i className="fas fa-plus mr-2"/> Create Skill
                   </Button>
                   {/*<Button 

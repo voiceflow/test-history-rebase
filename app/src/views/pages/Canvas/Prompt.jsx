@@ -51,7 +51,7 @@ class Prompt extends PureComponent {
                 <div className="mb-3">
                     <AudioDrop
                         audio={this.props.content}
-                        update={this.props.updateContent}
+                        update={this.updateContent}
                     />
                 </div>
             </div>

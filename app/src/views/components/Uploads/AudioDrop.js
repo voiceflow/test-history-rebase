@@ -41,7 +41,6 @@ class AudioDrop extends Component {
                 })
                 .catch(err => {
                     this.setState({loading: false})
-                    window.alert('Error22')
                 })
             }
         }else if(Array.isArray(rejected) && rejected.length === 1 && rejected[0].size > MAX_SIZE){

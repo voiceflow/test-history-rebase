@@ -122,13 +122,12 @@ class SkillModal extends React.Component {
                   bsSize="lg"
                   ref={c => (this._input = c)}
                 />
-                <div>
-                  <ButtonGroup className="locale-button-group">
-                    {LOCALE_MAP.map((locale, i) => {
-                      const active = this.state.locales.includes(locale.value) ? "active" : "";
-                      return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>{locale.name}</Button>
-                    })}
-                  </ButtonGroup>
+                <div className="text-muted mt-4">Skill Languages</div>
+                <div className="grid-col-3 mx--1">
+                  {LOCALE_MAP.map((locale, i) => {
+                    const active = this.state.locales.includes(locale.value) ? "active" : "";
+                    return <Button outline color="primary" className={`m-1 ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>{locale.name}</Button>
+                  })}
                 </div>
                 <div className="text-center my-3">
                   <Button 

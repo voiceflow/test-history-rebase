@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalBody, Button, Input, ButtonGroup } from 'reactstrap';
+import { Modal, ModalBody, Button, Input } from 'reactstrap';
 import LOCALE_MAP from './../../../../services/LocaleMap'
 const _ = require('lodash');
 

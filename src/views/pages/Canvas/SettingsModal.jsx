@@ -4,6 +4,7 @@ import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
 import Prompt from './Prompt'
+import {clone} from 'lodash'
 
 const TABS = ['basic', 'advanced']
 
@@ -101,7 +102,7 @@ class SettingsModal extends PureComponent {
             return
         }
 
-        let skill  = this.state.skill
+        let skill = clone(this.state.skill)
         if(this.state.hide_resume || !this.state.skill.resume_prompt.content){
             skill.resume_prompt = null
         }

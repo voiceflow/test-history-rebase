@@ -1,6 +1,7 @@
 // Regex'd from https://developer.amazon.com/docs/custom-skills/slot-type-reference.html#availability
 
-const SLOT_TYPES = [
+
+const SLOT_TYPES_US = [
     "CUSTOM",
     "AMAZON.DATE",
     "AMAZON.DURATION",
@@ -102,6 +103,325 @@ const SLOT_TYPES = [
     "AMAZON.WeatherCondition",
     "AMAZON.WrittenCreativeWorkType",
  ]
+
+const SLOT_TYPES_AU = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.Author",
+  "AMAZON.Book",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Corporation",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Movie",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_CA = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.AT_CITY",
+  "AMAZON.AT_REGION",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Corporation",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.DE_CITY",
+  "AMAZON.DE_FIST_NAME",
+  "AMAZON.DE_REGION",
+  "AMAZON.EUROPE_CITY",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.GB_CITY",
+  "AMAZON.GB_FIRST_NAME",
+  "AMAZON.GB_REGION",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.LocalBusiness",
+  "AMAZON.Month",
+  "AMAZON.Movie",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.StreetName",
+  "AMAZON.US_CITY",
+  "AMAZON.US_FIRST_NAME",
+  "AMAZON.US_STATE",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_IN = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.Artist",
+  "AMAZON.Author",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Corporation",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_UK = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.AT_CITY",
+  "AMAZON.AT_REGION",
+  "AMAZON.Book",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Corporation",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.DE_CITY",
+  "AMAZON.DE_FIRST_NAME",
+  "AMAZON.DE_REGION",
+  "AMAZON.EUROPE_CITY",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.GB_CITY",
+  "AMAZON.GB_FIRST_NAME",
+  "AMAZON.GB_REGION",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Movie",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.US_CITY",
+  "AMAZON.US_FIRST_NAME",
+  "AMAZON.US_STATE",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_FR_CA = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_FR = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.Artist",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Movie",
+  "AMAZON.MusicGroup",
+  "AMAZON.Musician",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_DE = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.Artist",
+  "AMAZON.AT_CITY",
+  "AMAZON.AT_REGION",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Corporation",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.DE_CITY",
+  "AMAZON.DE_FIRST_NAME",
+  "AMAZON.DE_REGION",
+  "AMAZON.EUROPE_CITY",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.GB_CITY",
+  "AMAZON.GB_FIRST_NAME",
+  "AMAZON.GB_REGION",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Movie",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.US_CITY",
+  "AMAZON.US_FIRST_NAME",
+  "AMAZON.US_STATE",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_IT = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_JP = [
+  "CUSTOM",
+  "AMAZON.DATE",
+  "AMAZON.DURATION",
+  "AMAZON.FOUR_DIGIT_NUMBER",
+  "AMAZON.NUMBER",
+  "AMAZON.Ordinal",
+  "AMAZON.PhoneNumber",
+  "AMAZON.TIME",
+]
+
+const SLOT_TYPES_ES = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_MX = [
+  "CUSTOM",
+  "AMAZON.Actor",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.StreetName",
+  "AMAZON.VideoGame",
+]
+
+const SLOT_TYPES_MAP = {
+  "en-US": SLOT_TYPES_US,
+  "en-AU": SLOT_TYPES_AU,
+  "en_CA": SLOT_TYPES_CA,
+  "en_IN": SLOT_TYPES_IN,
+  "en_GB": SLOT_TYPES_UK,
+  "fr_CA": SLOT_TYPES_FR_CA,
+  "fr_FR": SLOT_TYPES_FR,
+  "de_DE": SLOT_TYPES_DE,
+  "it_IT": SLOT_TYPES_IT,
+  "ja_JP": SLOT_TYPES_JP,
+  "es_ES": SLOT_TYPES_ES,
+  "es_MX": SLOT_TYPES_MX,
+}
 
  const BUILT_IN_INTENTS = [
     // { name: "AMAZON.AddAction<object@Book,targetCollection@ReadingList>",
@@ -1236,9 +1556,104 @@ const SLOT_TYPES = [
       slots: [
 
       ]
-    } 
+    }
 ]
 
+exports.SLOT_TYPES_MAP = SLOT_TYPES_MAP;
+exports.SLOT_TYPES_US = SLOT_TYPES_US;
+exports.SLOT_TYPES_AU = SLOT_TYPES_AU;
+exports.SLOT_TYPES_CA = SLOT_TYPES_CA;
+exports.SLOT_TYPES_IN = SLOT_TYPES_IN;
+exports.SLOT_TYPES_UK = SLOT_TYPES_UK;
+exports.SLOT_TYPES_FR_CA = SLOT_TYPES_FR_CA;
+exports.SLOT_TYPES_FR = SLOT_TYPES_FR;
+exports.SLOT_TYPES_DE = SLOT_TYPES_DE;
+exports.SLOT_TYPES_IT = SLOT_TYPES_IT;
+exports.SLOT_TYPES_JP = SLOT_TYPES_JP;
+exports.SLOT_TYPES_ES = SLOT_TYPES_ES;
+exports.SLOT_TYPES_MX = SLOT_TYPES_MX;
 
+const VOICES = [
+  {
+      label: 'Default',
+      options: [
+          {value: 'Alexa', label: 'Alexa'}
+      ]
+  },
+  {
+      label: 'English US',
+      options: [
+          {value: 'Ivy', label: 'Ivy'},
+          {value: 'Joanna', label: 'Joanna'},
+          {value: 'Joey', label: 'Joey'},
+          {value: 'Justin', label: 'Justin'},
+          {value: 'Kendra', label: 'Kendra'},
+          {value: 'Kimberly', label: 'Kimberly'},
+          {value: 'Matthew', label: 'Matthew'},
+          {value: 'Salli', label: 'Salli'},
+      ]
+  },
+  {
+      label: 'English AU',
+      options: [
+          {value: 'Nicole', label: 'Nicole'},
+          {value: 'Russell', label: 'Russell'},
+      ]
+  },
+    {
+      label: 'English GB',
+      options: [
+          {value: 'Amy', label: 'Amy'},
+          {value: 'Brian', label: 'Brian'},
+          {value: 'Emma', label: 'Emma'}
+      ]
+  },
+  {
+      label: 'English IN',
+      options: [
+          {value: 'Aditi', label: 'Aditi'},
+          {value: 'Raveena', label: 'Raveena'},
+      ]
+  },
+  {
+      label: 'German',
+      options: [
+          {value: 'Hans', label: 'Hans'},
+          {value: 'Marlene', label: 'Marlene'},
+          {value: 'Vicki', label: 'Vicki'},
+      ]
+  },
+  {
+      label: 'Spanish',
+      options: [
+          {value: 'Conchita', label: 'Conchita'},
+          {value: 'Enrique', label: 'Enrique'},
+      ]
+  },
+  {
+      label: 'Italian',
+      options: [
+          {value: 'Carla', label: 'Carla'},
+          {value: 'Giorgio', label: 'Giorgio'},
+      ]
+  },
+  {
+      label: 'Japanese',
+      options: [
+          {value: 'Mizuki', label: 'Mizuki'},
+          {value: 'Takumi', label: 'Takumi'},
+      ]
+  },
+  {
+      label: 'French',
+      options: [
+          {value: 'Celine', label: 'Celine'},
+          {value: 'Lea', label: 'Lea'},
+          {value: 'Mathieu', label: 'Mathieu'},
+      ]
+  }
+]
+
+exports.VOICES = VOICES
 exports.SLOT_TYPES = SLOT_TYPES;
 exports.BUILT_IN_INTENTS = BUILT_IN_INTENTS;

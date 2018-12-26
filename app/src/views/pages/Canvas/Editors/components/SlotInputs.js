@@ -17,7 +17,7 @@ class SlotInputs extends Component {
 
         this.onSearchChange = this.onSearchChange.bind(this)
         this.checkNames = this.checkNames.bind(this)
-        
+
         this.handleAddSlot = this.handleAddSlot.bind(this)
         this.handleRemoveSlot = this.handleRemoveSlot.bind(this)
     }

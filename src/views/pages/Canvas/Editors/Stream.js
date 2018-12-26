@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, InputGroup } from 'reactstrap';
-import AudioDrop from './components/AudioDrop';
+import AudioDrop from './../../../components/Uploads/AudioDrop';
 
 const outputs = ['next', 'previous'];
 

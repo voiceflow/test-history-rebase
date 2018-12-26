@@ -27,7 +27,7 @@ export class BlockPortLabel extends BaseWidget<BlockPortLabelProps, BlockPortLab
 		    return true;
 		}
 
-		var port = <BlockPortWidget node={this.props.model.getParent()} name={this.props.model.name} link={isEmpty(this.props.model.links)}/>;
+		var port = <BlockPortWidget diagramEngine={this.props.diagramEngine} node={this.props.model.getParent()} name={this.props.model.name} link={isEmpty(this.props.model.links)}/>;
 		var label = <div className="name">{this.props.model.label}</div>;
 
 		return (

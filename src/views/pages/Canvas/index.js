@@ -1378,6 +1378,7 @@ class Canvas extends Component {
                     copyNode={!this.props.preview ? this.copyNode : _.noop()}
                     intents={this.state.skill.intents}
                     slots={this.state.skill.slots}
+                    locales={this.state.skill.locales}
                     preview={this.props.preview}
                     onboarding={this.onboarding}
                     diagram_id={this.diagram_id}

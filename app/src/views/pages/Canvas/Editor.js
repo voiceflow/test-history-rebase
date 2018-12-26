@@ -21,8 +21,6 @@ import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import Onboarding from './Onboarding'
-import ErrorModal from './../../components/Modals/ErrorModal'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import {
     Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
@@ -51,7 +49,6 @@ class Editor extends Component {
 
         this.state = {
             node: this.props.node,
-            voices: [],
             templates: [],
             permission_options: [],
             modal: false,
@@ -63,30 +60,9 @@ class Editor extends Component {
         this.eventHandler = this.eventHandler.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
-        this.showErrorPopup = this.showErrorPopup.bind(this)
-        this.showConfirmPopup = this.showConfirmPopup.bind(this)
-    }
-
-    showErrorPopup(message) {
-        this.setState({error: message})
-    }
-
-    showConfirmPopup(confirm){
-        this.setState({confirm: confirm})
     }
 
     componentDidMount() {
-        axios.get('/voices')
-        .then(res => {
-            this.setState({
-                voices: res.data
-            });
-        })
-        .catch(err => {
-            console.error(err.response);
-            window.alert('Couldn\'t Retrieve Voices');
-        })
-
         axios.get('/email/templates')
         .then(res => {
             let templates = res.data.map(t => {
@@ -159,7 +135,6 @@ class Editor extends Component {
             case 'choicenew':
                 return <Choice
                         node={this.state.node}
-                        voices={this.state.voices}
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
@@ -176,7 +151,7 @@ class Editor extends Component {
                         variables={variables} 
                         slot_types={SLOT_TYPES} 
                         built_ins={BUILT_INS}
-                        onError={this.showErrorPopup}
+                        onError={this.props.onError}
                         repaint={this.props.repaint}
                         createDiagram={this.props.createDiagram}
                         current={this.props.diagram_id}
@@ -196,8 +171,8 @@ class Editor extends Component {
                     variables={variables} 
                     slot_types={SLOT_TYPES} 
                     built_ins={BUILT_INS} 
-                    onError={this.showErrorPopup}
-                    onConfirm={this.showConfirmPopup}
+                    onError={this.props.onError}
+                    onConfirm={this.props.onConfirm}
                     />
             case 'combine':
             case 'line':
@@ -209,7 +184,7 @@ class Editor extends Component {
                     node.extras.type = 'combine'
                     this.setState({node: node})
                 }
-                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+                return <Line node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'set':
                 return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'variable':
@@ -303,10 +278,6 @@ class Editor extends Component {
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
-
-                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
-
                 {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
                     <div className="controls" key={this.state.node.id}>

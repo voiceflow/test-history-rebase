@@ -8,6 +8,14 @@ body {
     color: #2b3950;
     width: 100%;
 }
+.grid-col-3{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.mx--1{
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+}
 .white-pill {
     cursor: pointer;
     background-color: #fff;

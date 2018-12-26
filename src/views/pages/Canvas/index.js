@@ -10,8 +10,9 @@ import 'storm-react-diagrams/dist/style.min.css'
 import './StoryBoard.css'
 import TitleBar from './TitleBar'
 import ActionGroup from './ActionGroup'
-import WarningModal from './../../components/Modals/WarningModal'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
+import ErrorModal from './../../components/Modals/ErrorModal'
+import ConfirmModal from './../../components/Modals/ConfirmModal'
 import HelpModal from './HelpModal'
 import SkillModal from './../Dashboard/Skill/SkillModal'
 import TestModal from './Test/TestModal'
@@ -25,6 +26,7 @@ import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
+
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
 
@@ -128,6 +130,8 @@ class Canvas extends Component {
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
         this.hotKeys=this.hotKeys.bind(this)
+        this.showErrorPopup = this.showErrorPopup.bind(this)
+        this.showConfirmPopup = this.showConfirmPopup.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -216,6 +220,7 @@ class Canvas extends Component {
             diagrams: [],
             loading_diagram: !newSkill,
             error: null,
+            confirm: null,
             saving: false,
             saved: true,
             last_save: false,
@@ -248,6 +253,14 @@ class Canvas extends Component {
                 open: false
             }, () => this.onLoadId(diagram_id))
         }
+    }
+
+    showErrorPopup(message) {
+        this.setState({error: message})
+    }
+
+    showConfirmPopup(confirm){
+        this.setState({confirm: confirm})
     }
 
     zoom(delta){
@@ -625,7 +638,7 @@ class Canvas extends Component {
                 this.setState({
                     saving: false,
                     error: 'Error Saving to Cloud (Check Logs)'
-                });
+                })
                 if(typeof cb === "function") cb(null)
             })
         } catch (e) {
@@ -1272,7 +1285,8 @@ class Canvas extends Component {
     render() {
         return (
             <div className='App'>
-                <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
+                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
+                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <HelpModal
                     open={this.state.helpOpen}
                     help={this.state.help}
@@ -1349,6 +1363,8 @@ class Canvas extends Component {
                     publishMarket={this.publishMarket}
                     diagram_id={this.diagram_id}
                     history={this.props.history}
+                    onError={this.showErrorPopup}
+                    onConfirm={this.showConfirmPopup}
                 /> :
                 <div className="title-group no-select">
                   <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -1383,6 +1399,8 @@ class Canvas extends Component {
                     onboarding={this.onboarding}
                     diagram_id={this.diagram_id}
                     finished={()=>{this.onboarding = false}}
+                    onError={this.showErrorPopup}
+                    onConfirm={this.showConfirmPopup}
                 />
                 <div
                     id="diagram"

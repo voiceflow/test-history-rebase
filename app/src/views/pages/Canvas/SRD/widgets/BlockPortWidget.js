@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import * as React from "react";
-import { NodeModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
+import { NodeModel, PortModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
 
 export interface PortProps extends BaseWidgetProps {
 	name: string;
@@ -17,12 +18,20 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 	constructor(props: PortProps) {
 		super("srd-port", props);
 		this.state = {
-			selected: false
+			selected: false,
 		};
+		this.setLink = this.setLink.bind(this);
 	}
 
-	getClassName() {
+	getClassName(){
 		return "port " + super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
+	}
+
+	setLink(isSelected = false){
+		_.forEach(this.props.node.ports[this.props.name].links, (link) => {
+			link.setSelected(isSelected);
+		})
+		this.props.diagramEngine.repaintCanvas();
 	}
 
 	render() {
@@ -31,9 +40,11 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 				{...this.getProps()}
 				onMouseEnter={() => {
 					this.setState({ selected: true });
+					this.setLink(true);
 				}}
 				onMouseLeave={() => {
 					this.setState({ selected: false });
+					this.setLink(false);
 				}}
 				data-name={this.props.name}
 				data-nodeid={this.props.node.getID()}

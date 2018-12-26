@@ -21,7 +21,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 	}
 
 	generatePort(port) {
-		return <BlockPortLabel model={port} key={port.id} />;
+		return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine}/>;
 	}
 
 	// {this.props.node.extras && this.props.node.extras.reads ? <div className="block-reads">{this.props.node.extras.reads}</div> : null}

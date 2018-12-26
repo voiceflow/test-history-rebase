@@ -105,6 +105,7 @@ const SLOT_TYPES_US = [
  ]
 
 const SLOT_TYPES_AU = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -132,6 +133,7 @@ const SLOT_TYPES_AU = [
 ]
 
 const SLOT_TYPES_CA = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -169,31 +171,33 @@ const SLOT_TYPES_CA = [
 ]
 
 const SLOT_TYPES_IN = [
+  "CUSTOM",
   "AMAZON.Actor",
-"AMAZON.Airline",
-"AMAZON.Airport",
-"AMAZON.Animal",
-"AMAZON.Artist",
-"AMAZON.Author",
-"AMAZON.City",
-"AMAZON.Color",
-"AMAZON.Corporation",
-"AMAZON.Country",
-"AMAZON.CreativeWorkType",
-"AMAZON.DayOfWeek",
-"AMAZON.FirstName",
-"AMAZON.Food",
-"AMAZON.Genre",
-"AMAZON.Language",
-"AMAZON.Month",
-"AMAZON.Person",
-"AMAZON.Region",
-"AMAZON.Room",
-"AMAZON.Sport",
-"AMAZON.VideoGame",
+  "AMAZON.Airline",
+  "AMAZON.Airport",
+  "AMAZON.Animal",
+  "AMAZON.Artist",
+  "AMAZON.Author",
+  "AMAZON.City",
+  "AMAZON.Color",
+  "AMAZON.Corporation",
+  "AMAZON.Country",
+  "AMAZON.CreativeWorkType",
+  "AMAZON.DayOfWeek",
+  "AMAZON.FirstName",
+  "AMAZON.Food",
+  "AMAZON.Genre",
+  "AMAZON.Language",
+  "AMAZON.Month",
+  "AMAZON.Person",
+  "AMAZON.Region",
+  "AMAZON.Room",
+  "AMAZON.Sport",
+  "AMAZON.VideoGame",
 ]
 
 const SLOT_TYPES_UK = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -232,6 +236,7 @@ const SLOT_TYPES_UK = [
 ]
 
 const SLOT_TYPES_FR_CA = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -254,6 +259,7 @@ const SLOT_TYPES_FR_CA = [
 ]
 
 const SLOT_TYPES_FR = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -281,6 +287,7 @@ const SLOT_TYPES_FR = [
 ]
 
 const SLOT_TYPES_DE = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -319,6 +326,7 @@ const SLOT_TYPES_DE = [
 ]
 
 const SLOT_TYPES_IT = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -342,6 +350,7 @@ const SLOT_TYPES_IT = [
 ]
 
 const SLOT_TYPES_JP = [
+  "CUSTOM",
   "AMAZON.DATE",
   "AMAZON.DURATION",
   "AMAZON.FOUR_DIGIT_NUMBER",
@@ -352,6 +361,7 @@ const SLOT_TYPES_JP = [
 ]
 
 const SLOT_TYPES_ES = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",
@@ -375,6 +385,7 @@ const SLOT_TYPES_ES = [
 ]
 
 const SLOT_TYPES_MX = [
+  "CUSTOM",
   "AMAZON.Actor",
   "AMAZON.Airline",
   "AMAZON.Airport",

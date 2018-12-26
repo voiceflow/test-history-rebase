@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
@@ -21,8 +22,6 @@ import Mail from './Editors/Mail';
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import Onboarding from './Onboarding'
-import ErrorModal from './../../components/Modals/ErrorModal'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import {
     Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
@@ -31,7 +30,7 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
+import { SLOT_TYPES_MAP, BUILT_IN_INTENTS } from './Constants'
 
 const BUILT_INS = BUILT_IN_INTENTS.map( intent => {
     return {
@@ -51,7 +50,6 @@ class Editor extends Component {
 
         this.state = {
             node: this.props.node,
-            voices: [],
             templates: [],
             permission_options: [],
             modal: false,
@@ -61,32 +59,12 @@ class Editor extends Component {
         }
 
         this.eventHandler = this.eventHandler.bind(this)
+        this.getSlotTypes = this.getSlotTypes.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
-        this.showErrorPopup = this.showErrorPopup.bind(this)
-        this.showConfirmPopup = this.showConfirmPopup.bind(this)
-    }
-
-    showErrorPopup(message) {
-        this.setState({error: message})
-    }
-
-    showConfirmPopup(confirm){
-        this.setState({confirm: confirm})
     }
 
     componentDidMount() {
-        axios.get('/voices')
-        .then(res => {
-            this.setState({
-                voices: res.data
-            });
-        })
-        .catch(err => {
-            console.error(err.response);
-            window.alert('Couldn\'t Retrieve Voices');
-        })
-
         axios.get('/email/templates')
         .then(res => {
             let templates = res.data.map(t => {
@@ -149,6 +127,14 @@ class Editor extends Component {
         });
     }
 
+    getSlotTypes(locales) {
+      let SLOT_TYPES = [];
+      _.map(locales, locale => {
+        SLOT_TYPES.push(SLOT_TYPES_MAP[locale]);
+      })
+      return _.uniq(_.flatten(SLOT_TYPES));
+    }
+
     BlockViewer() {
         let variables = this.props.global_variables.concat(this.props.variables)
 
@@ -159,7 +145,6 @@ class Editor extends Component {
             case 'choicenew':
                 return <Choice
                         node={this.state.node}
-                        voices={this.state.voices}
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
@@ -169,14 +154,14 @@ class Editor extends Component {
                     return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
                 }else{
                     return <Command
-                        node={this.state.node} 
+                        node={this.state.node}
                         onUpdate={this.props.onUpdate}
-                        intents={this.props.intents} 
-                        slots={this.props.slots} 
-                        variables={variables} 
-                        slot_types={SLOT_TYPES} 
+                        intents={this.props.intents}
+                        slots={this.props.slots}
+                        variables={variables}
+                        slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={BUILT_INS}
-                        onError={this.showErrorPopup}
+                        onError={this.props.onError}
                         repaint={this.props.repaint}
                         createDiagram={this.props.createDiagram}
                         current={this.props.diagram_id}
@@ -194,10 +179,10 @@ class Editor extends Component {
                     onSlot={this.props.onSlot} 
                     onIntent={this.props.onIntent} 
                     variables={variables} 
-                    slot_types={SLOT_TYPES} 
+                    slot_types={this.getSlotTypes(this.props.locales)}
                     built_ins={BUILT_INS} 
-                    onError={this.showErrorPopup}
-                    onConfirm={this.showConfirmPopup}
+                    onError={this.props.onError}
+                    onConfirm={this.props.onConfirm}
                     />
             case 'combine':
             case 'line':
@@ -209,7 +194,7 @@ class Editor extends Component {
                     node.extras.type = 'combine'
                     this.setState({node: node})
                 }
-                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+                return <Line node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'set':
                 return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'variable':
@@ -239,7 +224,7 @@ class Editor extends Component {
                     createDiagram={this.props.createDiagram}
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
-                   
+
                 />
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
@@ -303,10 +288,6 @@ class Editor extends Component {
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
-
-                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
-
                 {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
                     <div className="controls" key={this.state.node.id}>

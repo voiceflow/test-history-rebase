@@ -8,6 +8,14 @@ body {
     color: #2b3950;
     width: 100%;
 }
+.grid-col-3{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.mx--1{
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+}
 .helper-text{
     color:  #8da2b5;
     font-size: 13px;

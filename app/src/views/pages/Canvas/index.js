@@ -938,7 +938,7 @@ class Canvas extends Component {
         }
     }
 
-    createSkill(name){
+    createSkill(name, locales){
         // CREATE NEW PROJECT
         if(!name){
             name = 'New Skill'
@@ -948,7 +948,8 @@ class Canvas extends Component {
 
         axios.post('/skill', {
           name: name,
-          diagram: diagram_id
+          diagram: diagram_id,
+          locales: locales
         })
         .then(res => {
             let skill_id = res.data.id
@@ -963,7 +964,7 @@ class Canvas extends Component {
                     live: false,
                     restart: true,
                     diagram: diagram_id,
-                    locales: ["en-US"],
+                    locales: locales,
                     intents: [],
                     slots: []
                 },

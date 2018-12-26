@@ -291,14 +291,19 @@ exports.setSkill = (req, res) => {
     let value = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
     let sum = `This is a new summary for the skill ${name}`;
     let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
+    let locales = ['en-US']
+
+    if (req.body.locales) {
+        locales = req.body.locales
+    }
 
     pool.query(`
             INSERT INTO skills (
-                name, diagram, creator_id, summary, description, invocations, inv_name
+                name, diagram, creator_id, summary, description, invocations, inv_name, locales
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7
+                $1, $2, $3, $4, $5, $6, $7, $8
             ) RETURNING skill_id`,
-            [name, req.body.diagram, req.user.id, sum, desc, value, name], (err, data) => {
+            [name, req.body.diagram, req.user.id, sum, desc, value, name, JSON.stringify(locales)], (err, data) => {
         if(err){
             console.error(err);
             res.sendStatus(500);

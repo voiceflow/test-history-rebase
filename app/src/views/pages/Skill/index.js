@@ -19,6 +19,7 @@ import Select from 'react-select'
 import './Skill.css'
 import {Link} from 'react-router-dom'
 import AuthenticationService from './../../../services/Authentication'
+import LOCALE_MAP from './../../../services/LocaleMap'
 
 import categories from './../../../services/Categories'
 const _ = require('lodash');
@@ -39,21 +40,6 @@ const stage_title = {
     "11": "Awaiting Review",
     "12": "Confirming Withdraw"
 }
-
-const LOCALE_MAP = [
-    { value: "de-DE", name: "German (DE)" },
-    { value: "en-AU", name: "English (AU)" },
-    { value: "en-CA", name: "English (CA)" },
-    { value: "en-GB", name: "English (UK)" },
-    { value: "en-IN", name: "English (IN)" },
-    { value: "en-US", name: "English (US)" },
-    { value: "es-ES", name: "Spanish (ES)" },
-    { value: "es-MX", name: "Spanish (MX)" },
-    { value: "fr-CA", name: "French (CA)" },
-    { value: "fr-FR", name: "French (FR)" },
-    { value: "it-IT", name: "Italian (IT)" },
-    { value: "ja-JP", name: "Japanese (JP)" }
-]
 
 const disabled_stages = new Set([11,12]);
 

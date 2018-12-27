@@ -777,6 +777,10 @@ exports.copySkill = async (req, res) => {
     let diagram_names = {}
     let sub_diagrams = {}
 
+    if (new_creator_id === 'me') {
+        new_creator_id = req.user.id
+    }
+
     const remapDiagramIds = (diagram, new_skill_id) => {
         diagram.id = diagram_mapping[diagram.id]
         diagram.skill = new_skill_id

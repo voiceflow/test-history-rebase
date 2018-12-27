@@ -13,6 +13,9 @@ exports.convertDiagram = (diagram, diagrams) => {
             }else if(node.extras.type === 'command' && (typeof node.extras.commands !== 'string')){
                 if(!node.extras.resume){
                     node.extras.type = 'jump'
+                    if(node.name.toLowerCase() === 'command'){
+                        node.name = 'Jump'
+                    }
                 }else{
                     node.ports = []
                 }

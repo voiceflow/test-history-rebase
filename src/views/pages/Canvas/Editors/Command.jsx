@@ -159,7 +159,7 @@ class Command extends Component {
                     />
                 </React.Fragment>
             }
-            <div className="choice-block pb-4 pt-3 mt-2">
+            <div className="choice-block pb-4 pt-3 mt-3">
                 {this.state.node.extras.diagram_id ? 
                     <React.Fragment>
                         <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2"/>{diagram_name}</span></h5>
@@ -202,7 +202,7 @@ class Command extends Component {
                                 className="menu-tip"
                                 html='The skill will end on completion of the command'
                                 position="bottom"
-                                theme="block"
+                                theme="menu"
                             >
                                 ?
                             </Tooltip>
@@ -238,6 +238,7 @@ class Command extends Component {
                         Slots
                     </label>
                     <SlotInputs
+                        intents={this.props.intents}
                         slots={this.props.slots}
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}

@@ -159,6 +159,7 @@ class Editor extends Component {
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={BUILT_INS}
                         onError={this.props.onError}
+                        onConfirm={this.props.onConfirm}
                     />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
@@ -179,6 +180,7 @@ class Editor extends Component {
                         current={this.props.diagram_id}
                         diagrams={this.props.diagrams}
                         enterFlow={this.props.enterFlow}
+                        onConfirm={this.props.onConfirm}
                     />
                 }
             case 'intent':

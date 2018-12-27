@@ -169,27 +169,7 @@ class Command extends Component {
                     />
                 </React.Fragment>
             }
-            <InputGroup className="my-3">
-                <label className="input-group-text w-100 m-0 d-flex">
-                    <Input addon type="checkbox" value={this.state.node.extras.resume} checked={this.state.node.extras.resume} onChange={this.updateResume}/>
-                    <div className="ml-2 space-between flex-hard">
-                        <span>
-                            Resume from Previous Block
-                        </span>
-                        <span>
-                            <Tooltip
-                                className="menu-tip"
-                                title='When this option is checked, on completion of the command users will resume the skill from the block where they invoked the command'
-                                position="bottom"
-                                theme="block"
-                            >
-                                ?
-                            </Tooltip>
-                        </span>
-                    </div>
-                </label>
-            </InputGroup>
-            {this.state.node.extras.resume && <div className="choice-block py-4">
+            {this.state.node.extras.resume && <div className="choice-block py-4 mt-2">
                 {this.state.node.extras.diagram_id ? 
                     <React.Fragment>
                         <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2"/>{diagram_name}</span></h5>

@@ -11,7 +11,7 @@ import VariableInput from './components/VariableInput';
 import randomstring from 'randomstring';
 import { ContentState, convertToRaw } from 'draft-js';
 import AceEditor from 'react-ace'
-import draftToMarkdown from './../../../../services/draftConvert'
+import draftToMarkdown from '../../../../services/draftConvert'
 
 import 'brace/mode/javascript'
 import 'brace/theme/chrome'

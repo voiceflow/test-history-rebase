@@ -3,8 +3,8 @@ import VariableText from './components/VariableText';
 import randomstring from 'randomstring';
 import Select from 'react-select';
 import {Collapse, Input, InputGroup} from 'reactstrap';
-import AudioDrop from './../../../components/Uploads/AudioDrop'
-import { VOICES } from './../Constants'
+import AudioDrop from '../../../components/Uploads/AudioDrop'
+import { VOICES } from '../Constants'
 
 class Speak extends Component {
 

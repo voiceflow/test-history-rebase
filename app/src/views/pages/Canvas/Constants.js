@@ -411,16 +411,16 @@ const SLOT_TYPES_MX = [
 const SLOT_TYPES_MAP = {
   "en-US": SLOT_TYPES_US,
   "en-AU": SLOT_TYPES_AU,
-  "en_CA": SLOT_TYPES_CA,
-  "en_IN": SLOT_TYPES_IN,
-  "en_GB": SLOT_TYPES_UK,
-  "fr_CA": SLOT_TYPES_FR_CA,
-  "fr_FR": SLOT_TYPES_FR,
-  "de_DE": SLOT_TYPES_DE,
-  "it_IT": SLOT_TYPES_IT,
-  "ja_JP": SLOT_TYPES_JP,
-  "es_ES": SLOT_TYPES_ES,
-  "es_MX": SLOT_TYPES_MX,
+  "en-CA": SLOT_TYPES_CA,
+  "en-IN": SLOT_TYPES_IN,
+  "en-GB": SLOT_TYPES_UK,
+  "fr-CA": SLOT_TYPES_FR_CA,
+  "fr-FR": SLOT_TYPES_FR,
+  "de-DE": SLOT_TYPES_DE,
+  "it-IT": SLOT_TYPES_IT,
+  "ja-JP": SLOT_TYPES_JP,
+  "es-ES": SLOT_TYPES_ES,
+  "es-MX": SLOT_TYPES_MX,
 }
 
  const BUILT_IN_INTENTS = [

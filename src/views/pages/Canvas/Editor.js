@@ -128,11 +128,11 @@ class Editor extends Component {
     }
 
     getSlotTypes(locales) {
-      let SLOT_TYPES = [];
-      _.map(locales, locale => {
-        SLOT_TYPES.push(SLOT_TYPES_MAP[locale]);
-      })
-      return _.uniq(_.flatten(SLOT_TYPES));
+        let SLOT_TYPES = []
+        _.map(locales, locale => {
+            SLOT_TYPES.push(SLOT_TYPES_MAP[locale])
+        })
+        return _.uniq(_.flatten(SLOT_TYPES))
     }
 
     BlockViewer() {

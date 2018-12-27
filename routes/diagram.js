@@ -494,6 +494,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         let mappings = []
                         if(Array.isArray(node.extras.mappings)){
                             node.extras.mappings.forEach(mapping => {
+                                if(!mapping.slot){
+                                    return
+                                }
                                 if(intent.built_in){
                                     mappings.push({
                                         variable: mapping.variable,

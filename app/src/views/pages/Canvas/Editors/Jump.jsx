@@ -157,6 +157,7 @@ class Jump extends Component {
                         Slots
                     </label>
                     <SlotInputs
+                        intents={this.props.intents}
                         slots={this.props.slots}
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}

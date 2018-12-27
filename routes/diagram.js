@@ -474,7 +474,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         nextId: getLink(nextLink)
                     };
-                } else if (node.extras.type === 'command') {
+                } else if (node.extras.type === 'command' || node.extras.type === 'jump') {
 
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {

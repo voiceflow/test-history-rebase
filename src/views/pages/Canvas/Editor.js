@@ -159,8 +159,6 @@ class Editor extends Component {
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={BUILT_INS}
                         onError={this.props.onError}
-                        repaint={this.props.repaint}
-                        current={this.props.diagram_id}
                     />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS

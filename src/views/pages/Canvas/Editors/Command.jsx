@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup, InputGroup, Input } from 'reactstrap'
-import {Tooltip} from 'react-tippy'
 import Select from 'react-select'
+import {Tooltip} from 'react-tippy'
 import SlotMappings from './components/SlotMappings' 
 const _ = require('lodash')
 
@@ -19,24 +19,14 @@ class Command extends Component {
         
         this.renderTab = this.renderTab.bind(this)
         this.updateCommand = this.updateCommand.bind(this)
-        this.updateResume = this.updateResume.bind(this)
+        this.updateEnd = this.updateEnd.bind(this)
         this.update = this.update.bind(this)
     }
 
-    updateResume(){
+    updateEnd(){
         let node = this.state.node
-        node.extras.resume = !this.state.node.extras.resume
-        if(node.extras.resume){
-            // no ports
-            for (var name in node.getPorts()) {
-                var port = node.getPort(name);
-                node.removePort(port)
-            }
-        }else{
-            node.addOutPort(' ').setMaximumLinks(1)
-        }
+        node.extras.end = !this.state.node.extras.end
         this.forceUpdate()
-        this.props.repaint()
     }
 
     updateCommand(selected) {
@@ -169,7 +159,7 @@ class Command extends Component {
                     />
                 </React.Fragment>
             }
-            {this.state.node.extras.resume && <div className="choice-block py-4 mt-2">
+            <div className="choice-block pb-4 pt-3 mt-2">
                 {this.state.node.extras.diagram_id ? 
                     <React.Fragment>
                         <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2"/>{diagram_name}</span></h5>
@@ -199,7 +189,27 @@ class Command extends Component {
                         : null}
                     </React.Fragment>
                 }
-            </div>}
+            </div>
+            <InputGroup className="my-3">
+                <label className="input-group-text w-100 m-0 d-flex">
+                    <Input addon type="checkbox" value={!!this.state.node.extras.end} checked={!!this.state.node.extras.end} onChange={this.updateEnd}/>
+                    <div className="ml-2 space-between flex-hard">
+                        <span>
+                            Command Ends Skill
+                        </span>
+                        <span>
+                            <Tooltip
+                                className="menu-tip"
+                                html='The skill will end on completion of the command'
+                                position="bottom"
+                                theme="block"
+                            >
+                                ?
+                            </Tooltip>
+                        </span>
+                    </div>
+                </label>
+            </InputGroup>
         </React.Fragment>
     }
 

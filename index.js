@@ -105,11 +105,14 @@ const ensureLoggedIn = () => {
         else res.sendStatus(401);
     }
 }
-const ensureAdmin = () => {
+const ensurePlan = plan => {
     return (req, res, next) => {
-        if(req.user && req.user.admin===10) next();
+        if(req.user && req.user.admin>=plan) next();
         else res.sendStatus(401);
     }
+}
+const ensureAdmin = () => {
+    return ensurePlan(100);
 }
 const ensureLoggedOut = () => {
     return (req, res, next) => {
@@ -133,13 +136,16 @@ app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
-app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
+app.get('/business', ensurePlan(1));
+app.get('/business/*', ensurePlan(1));
 
-app.get('/email/templates', ensureLoggedIn(), Email.getTemplates);
-app.get('/email/template/:id', ensureLoggedIn(), Email.getTemplate);
-app.post('/email/template', ensureLoggedIn(), Email.setTemplate);
-app.patch('/email/template/:id', ensureLoggedIn(), Email.setTemplate);
-app.delete('/email/template/:id', ensureLoggedIn(), Email.deleteTemplate);
+app.get('/email/templates', ensurePlan(1), Email.getTemplates);
+
+app.get('/email/templates', ensurePlan(1), Email.getTemplates);
+app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
+app.post('/email/template', ensurePlan(1), Email.setTemplate);
+app.patch('/email/template/:id', ensurePlan(1), Email.setTemplate);
+app.delete('/email/template/:id', ensurePlan(1), Email.deleteTemplate);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
@@ -199,6 +205,9 @@ app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrie
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
+
+app.get('/admin', ensureAdmin());
+app.get('/admin/*', ensureAdmin());
 
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 

@@ -21,6 +21,7 @@ import blank_template from './../../../assets/templates/blank'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
+import {convertDiagram} from './util'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -664,15 +665,10 @@ class Canvas extends Component {
           model.setLocked(true);
         }
         if (diagram_json) {
-            // DEPRECATE CONVERT DIAGRAM BLOCK NAMES
-            diagram_json.nodes.forEach(node => {
-                if (node.extras && node.extras.type === 'flow' && node.extras.diagram_id) {
-                    let find = this.state.diagrams.find(x => x.id === node.extras.diagram_id)
-                    if(find){
-                        node.name = find.name
-                    }
-                }
-            })
+            // CONVERT DEPRECATED BLOCKS
+            diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+
+            // This should not happen
             if(diagram_json.nodes.length === 0){
                 diagram_json = new_template
             }

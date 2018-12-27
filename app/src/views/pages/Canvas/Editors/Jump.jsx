@@ -18,24 +18,7 @@ class Jump extends Component {
         
         this.renderTab = this.renderTab.bind(this)
         this.updateCommand = this.updateCommand.bind(this)
-        this.updateResume = this.updateResume.bind(this)
         this.update = this.update.bind(this)
-    }
-
-    updateResume(){
-        let node = this.state.node
-        node.extras.resume = !this.state.node.extras.resume
-        if(node.extras.resume){
-            // no ports
-            for (var name in node.getPorts()) {
-                var port = node.getPort(name);
-                node.removePort(port)
-            }
-        }else{
-            node.addOutPort(' ').setMaximumLinks(1)
-        }
-        this.forceUpdate()
-        this.props.repaint()
     }
 
     updateCommand(selected) {

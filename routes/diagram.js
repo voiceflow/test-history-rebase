@@ -526,7 +526,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                         story.commands.push({
                                             intent: intent,
                                             mappings: node.extras.mappings,
-                                            diagram_id: node.extras.diagram_id
+                                            diagram_id: node.extras.diagram_id,
+                                            end: !!node.extras.end
                                         })
                                     }
                                 }

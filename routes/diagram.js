@@ -474,7 +474,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         nextId: getLink(nextLink)
                     };
-                } else if (node.extras.type === 'command') {
+                } else if (node.extras.type === 'command' || node.extras.type === 'jump') {
 
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -494,6 +494,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         let mappings = []
                         if(Array.isArray(node.extras.mappings)){
                             node.extras.mappings.forEach(mapping => {
+                                if(!mapping.slot){
+                                    return
+                                }
                                 if(intent.built_in){
                                     mappings.push({
                                         variable: mapping.variable,
@@ -526,7 +529,8 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                         story.commands.push({
                                             intent: intent,
                                             mappings: node.extras.mappings,
-                                            diagram_id: node.extras.diagram_id
+                                            diagram_id: node.extras.diagram_id,
+                                            end: !!node.extras.end
                                         })
                                     }
                                 }

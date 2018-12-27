@@ -1136,12 +1136,18 @@ class Canvas extends Component {
                     inputs: [],
                     outputs: []
                 }
-            } else if (type === 'command') {
+            } else if (type === 'jump'){
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     intent: null,
                     mappings: [],
                     resume: false
+                }
+            } else if (type === 'command') {
+                node.extras = {
+                    intent: null,
+                    mappings: [],
+                    resume: true
                 }
             } else if (type === 'comment') {
                 node.name = 'New Comment'

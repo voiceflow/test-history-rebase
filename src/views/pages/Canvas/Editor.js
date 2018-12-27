@@ -149,6 +149,7 @@ class Editor extends Component {
                         repaint={this.props.repaint}
                     />
             case 'command':
+            case 'jump':
                 // DEPRECATE OLD COMMAND BLOCKS
                 if(typeof this.state.node.extras.commands === 'string'){
                     return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>

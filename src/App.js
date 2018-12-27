@@ -147,6 +147,7 @@ class App extends Component {
                 <PrivateRoute path="/business/email/template/:id" name="Business" component={Business} page='template'/>
                 <PrivateRoute path="/business/email/templates" name="Business" component={Business} page='email'/>
                 <PrivateRoute path="/business" name="Business" component={Business} page='default'/>
+                <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={Skill}/>

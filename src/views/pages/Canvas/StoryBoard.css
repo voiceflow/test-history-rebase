@@ -971,7 +971,7 @@
 }
 .App .Menu #sidebar .MenuItem.command:hover {
     background-color: #F4F6F7;
-} .MenuItem.command>.MenuIcon {
+} .MenuItem.command>.MenuIcon, .MenuItem.jump>.MenuIcon {
     color: #EC5594 !important;
 }
 .App .Menu #sidebar .MenuItem.flow:hover {
@@ -1332,7 +1332,7 @@ label {
     border-color: #bd7eff !important;
 }
 
-.srd-default-node.command {
+.srd-default-node.command, .srd-default-node.jump {
     background-color: #fff;
     border-top: 6px solid #EC5594;
     border-color: #EC5594 !important;
@@ -1610,7 +1610,7 @@ button.close:hover{
     color: #88bbd8;
 }
 
-.block.command {
+.block.command, .block.jump {
 /*    border: 1px solid #EC559450;*/
     background-color: #EC559420;
     color: #EC5594;

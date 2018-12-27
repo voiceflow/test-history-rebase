@@ -16,6 +16,11 @@ exports.getSkills = (req, res) => {
         res.sendStatus(401);
         return;
     }
+    if (req.query.user && req.user.admin < 100) {
+        res.sendStatus(401);
+        return;
+    }
+    let userId = req.query.user ? req.query.user : req.user.id;
     pool.query(`
         SELECT
             *
@@ -23,7 +28,7 @@ exports.getSkills = (req, res) => {
             skills
         WHERE
             creator_id = $1`,
-        [req.user.id], (err, data) => {
+        [userId], (err, data) => {
         if(err){
             console.error(err);
             res.sendStatus(500);

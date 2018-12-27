@@ -140,8 +140,6 @@ app.get('/business', ensurePlan(1));
 app.get('/business/*', ensurePlan(1));
 
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
-
-app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
 app.patch('/email/template/:id', ensurePlan(1), Email.setTemplate);

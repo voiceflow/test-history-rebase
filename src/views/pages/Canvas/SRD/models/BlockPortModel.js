@@ -38,6 +38,10 @@ export class BlockPortModel extends PortModel {
 		return link
 	}
 
+	setSelected(selected: boolean) {
+		this.selected = selected
+	}
+
 	canLinkToPort(port: PortModel): boolean {
 		if (port instanceof BlockPortModel) {
 			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks))
@@ -46,6 +50,7 @@ export class BlockPortModel extends PortModel {
 	}
 
 	removeLink(link: LinkModel) {
+		this.setSelected(false)
 		delete this.links[link.getID()]
 	}
 
@@ -56,6 +61,7 @@ export class BlockPortModel extends PortModel {
 		if (this.maximumLinks === 1 && numberOfLinks >= 1) {
 			_.values(this.links).forEach(link => link.remove())
 		}
+		this.setSelected(true)
 
 		if(!link) link = new BlockLinkModel()
 

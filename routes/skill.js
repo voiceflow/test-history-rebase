@@ -11,6 +11,15 @@ const generateID = () => {
     })
 }
 
+const latestSkillToIntercom = (id, name) => {
+    intercom.users.create({
+        user_id: id,
+        custom_attributes: {
+            latest_skill: name
+        }
+    });
+}
+
 exports.getSkills = (req, res) => {
     if (!req.user) {
         res.sendStatus(401);
@@ -313,12 +322,7 @@ exports.setSkill = (req, res) => {
             console.error(err);
             res.sendStatus(500);
         } else {
-            intercom.users.create({
-                user_id: req.user.id,
-                custom_attributes: {
-                    latest_skill: name
-                }
-            });
+            latestSkillToIntercom(req.user.id, name)
             res.send({id: hashids.encode(data.rows[0].skill_id)})
         }
     });
@@ -344,12 +348,7 @@ exports.patchSkill = (req, res) => {
             if(err){
                 res.sendStatus(500);
             }else{
-                intercom.users.create({
-                    user_id: req.user.id,
-                    custom_attributes: {
-                        latest_skill: b.name
-                    }
-                });
+                latestSkillToIntercom(req.user.id, b.name)
                 res.sendStatus(200);
             }
         });
@@ -400,12 +399,7 @@ exports.patchSkill = (req, res) => {
                 console.log(err);
                 res.sendStatus(500)
             }else{
-                intercom.users.create({
-                    user_id: req.user.id,
-                    custom_attributes: {
-                        latest_skill: b.name
-                    }
-                });
+                latestSkillToIntercom(req.user.id, b.name)
                 res.sendStatus(200)
             }
         })
@@ -449,12 +443,7 @@ exports.patchSkill = (req, res) => {
                 console.log(err);
                 res.sendStatus(500);
             }else{
-                intercom.users.create({
-                    user_id: req.user.id,
-                    custom_attributes: {
-                        latest_skill: b.name
-                    }
-                });
+                latestSkillToIntercom(req.user.id, b.name)
                 res.sendStatus(200);
             }
         })

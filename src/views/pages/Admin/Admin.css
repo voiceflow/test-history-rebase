@@ -1,0 +1,98 @@
+.admin.Window{
+	height: 100%;
+	display: flex;
+}
+/*.admin.Window > .row {
+	height: 100%;
+}*/
+.admin.Window  .admin-page {
+	height: 100%;
+	overflow-x: scroll;
+	flex: 1;
+}
+.admin.Window  .sidebar {
+	background-color: #fff;
+	width: 160px;
+	border-right: 1px solid #E2E9EC;
+}
+
+.admin.Window  .sidebar>.title {
+	font-weight: lighter;
+	padding: 24px 20px 40px 20px;
+	font-size: 1.5rem;
+/*	border-bottom: 1px solid #E2E9EC;*/
+}
+.fal{
+    font-weight: 900;
+    margin-right: 5px;
+}
+.admin.Window .admin-page-inner {
+	width: 100%;
+	position: relative;
+	height: 100%;
+}
+
+.admin.Window .admin-page-inner>.subheader {
+	padding-left: 20px;
+	padding-right: 20px;
+	width: auto;
+	left: 160px;
+	right: 0px;
+}
+.admin.Window .admin-page-inner>.subheader>div{
+	flex: 1;
+	height: 41px;    
+}
+.admin.Window .admin-page-inner>.content {
+	padding: 100px 20px 50px 20px;
+}
+
+.admin.Window  .sidebar>.sidebar-option {
+	padding: 10px 20px;
+	display: block;
+	transition: background-color 0.1s linear;
+	text-decoration: none;
+	cursor: pointer;
+	color: #C2C6D5;
+
+}
+
+.admin.Window  .sidebar>.sidebar-option:hover {
+	background-color: #F5F9FA;
+}
+
+.admin.Window  .sidebar>.sidebar-option.active {
+	cursor: default;
+	background-color: #42A5FF !important;
+	color: #fff !important;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    border-right: 2px solid #fff;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+    width: 105%;
+    z-index: 10;
+/*
+transform: scale(1.03);
+    transition: all .9s ease-in-out;
+*/
+}
+
+.content .form-group>label{
+	margin-bottom: 2px;
+}
+
+/*.admin-image{
+	height: 100%;
+	width: 100%;
+	background-image: url('/admin.svg')
+}*/
+
+.empty-badge{
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 10px;
+	padding: 3px 5px;
+	background-color: #ffc107;
+	color: #fff;
+}

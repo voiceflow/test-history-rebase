@@ -90,7 +90,7 @@ class Editor extends Component {
             })
         })
         .catch(err => {
-            window.alert('Couldn\'t Retrieve Templates');
+            //window.alert('Couldn\'t Retrieve Templates'); TODO
         })
 
         // Hard-code for now, but eventually should retrieve from

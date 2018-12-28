@@ -230,7 +230,6 @@ class API extends Component {
                 axios(request_obj)
                 .then(res => {
                     // Map all paths user requires to varMap
-                    console.log(res.data);
                     _.forEach(mapping, map => {
                         if(map.var){
                             try {

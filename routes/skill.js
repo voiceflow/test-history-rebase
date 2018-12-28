@@ -1,5 +1,5 @@
 const axios = require('axios')
-const {docClient, pool, config, hashids} = require('./../services')
+const {docClient, pool, config, hashids, intercom} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 
@@ -313,6 +313,12 @@ exports.setSkill = (req, res) => {
             console.error(err);
             res.sendStatus(500);
         } else {
+            intercom.users.create({
+                user_id: req.user.id,
+                custom_attributes: {
+                    latest_skill: name
+                }
+            });
             res.send({id: hashids.encode(data.rows[0].skill_id)})
         }
     });
@@ -338,6 +344,12 @@ exports.patchSkill = (req, res) => {
             if(err){
                 res.sendStatus(500);
             }else{
+                intercom.users.create({
+                    user_id: req.user.id,
+                    custom_attributes: {
+                        latest_skill: b.name
+                    }
+                });
                 res.sendStatus(200);
             }
         });
@@ -388,6 +400,12 @@ exports.patchSkill = (req, res) => {
                 console.log(err);
                 res.sendStatus(500)
             }else{
+                intercom.users.create({
+                    user_id: req.user.id,
+                    custom_attributes: {
+                        latest_skill: b.name
+                    }
+                });
                 res.sendStatus(200)
             }
         })
@@ -431,6 +449,12 @@ exports.patchSkill = (req, res) => {
                 console.log(err);
                 res.sendStatus(500);
             }else{
+                intercom.users.create({
+                    user_id: req.user.id,
+                    custom_attributes: {
+                        latest_skill: b.name
+                    }
+                });
                 res.sendStatus(200);
             }
         })

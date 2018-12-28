@@ -20,9 +20,15 @@ const latestSkillToIntercom = (id, name) => {
     })
 }
 
-const incrementSkillsIntercom = (id) => {
+const incrementSkillsIntercom = async (id) => {
     intercom.users.find({ id: id }, (res) => {
-        let sc = res.custom_attributes.skills_created ? res.custom_attributes.skills_created : 0
+        let sc = res.custom_attributes.skills_created
+        if (!sc) {
+            let data = await pool.query('SELECT * FROM skills WHERE creator_id = $1', [id])
+            if (Array.isArray(data.rows) && data.rows.length === 0){
+                sc = res.rows.length
+            }
+        }
         intercom.users.create({
             user_id: id,
             custom_attributes: {

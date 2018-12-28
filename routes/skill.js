@@ -17,7 +17,19 @@ const latestSkillToIntercom = (id, name) => {
         custom_attributes: {
             latest_skill: name
         }
-    });
+    })
+}
+
+const incrementSkillsIntercom = (id) => {
+    intercom.users.find({ id: id }, (res) => {
+        let sc = res.custom_attributes.skills_created ? res.custom_attributes.skills_created : 0
+        intercom.users.create({
+            user_id: id,
+            custom_attributes: {
+                skills_created: sc + 1
+            }
+        })
+    })
 }
 
 exports.getSkills = (req, res) => {
@@ -323,6 +335,7 @@ exports.setSkill = (req, res) => {
             res.sendStatus(500);
         } else {
             latestSkillToIntercom(req.user.id, name)
+            incrementSkillsIntercom(req.user.id)
             res.send({id: hashids.encode(data.rows[0].skill_id)})
         }
     });

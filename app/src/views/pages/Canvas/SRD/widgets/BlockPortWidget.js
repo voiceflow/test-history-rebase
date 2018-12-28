@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import * as React from "react";
-import { NodeModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
+import { NodeModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams"
 
 export interface PortProps extends BaseWidgetProps {
 	name: string;
@@ -20,17 +20,29 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 		this.state = {
 			selected: false
 		};
-		this.setLinks = this.setLinks.bind(this);
+		this.setLinks = this.setLinks.bind(this)
 	}
 
 	getClassName(){
-		return "port " + super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
+		return "port " + super.getClassName() + ((this.state.selected || this.props.port.selected) ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
 	}
 
 	setLinks(isSelected = false){
+		// const nodes = []
 		_.forEach(this.props.node.ports[this.props.name].links, (link) => {
-			link.setSelected(isSelected);
+			link.setSelected(isSelected)
+			// if(link.sourcePort.id === this.props.port.id){
+			// 	if(link.targetPort){
+			// 		link.targetPort.setSelected(isSelected)
+			// 		nodes.push(link.targetPort.parent)
+			// 	}
+			// }else if(link.sourcePort){
+			// 	link.sourcePort.setSelected(isSelected)
+			// 	nodes.push(link.sourcePort.parent)
+			// }
 		})
+		this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
+		this.props.diagramEngine.repaintCanvas(false)
 	}
 
 	render() {
@@ -40,15 +52,11 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 				onMouseEnter={() => {
 					this.setState({ selected: true }, () => {
 						this.setLinks(true)
-						this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
-						this.props.diagramEngine.repaintCanvas(false)
 					})
 				}}
 				onMouseLeave={() => {
 					this.setState({ selected: false }, () => {
 						this.setLinks(false)
-						this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
-						this.props.diagramEngine.repaintCanvas(false)
 					})
 				}}
 				data-name={this.props.name}

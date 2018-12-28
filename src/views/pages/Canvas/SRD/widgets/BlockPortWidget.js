@@ -20,18 +20,17 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 		this.state = {
 			selected: false
 		};
-		this.setLink = this.setLink.bind(this);
+		this.setLinks = this.setLinks.bind(this);
 	}
 
 	getClassName(){
 		return "port " + super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
 	}
 
-	setLink(isSelected = false){
+	setLinks(isSelected = false){
 		_.forEach(this.props.node.ports[this.props.name].links, (link) => {
 			link.setSelected(isSelected);
 		})
-		this.props.diagramEngine.repaintCanvas();
 	}
 
 	render() {
@@ -39,12 +38,18 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 			<div
 				{...this.getProps()}
 				onMouseEnter={() => {
-					this.setState({ selected: true });
-					this.setLink(true);
+					this.setState({ selected: true }, () => {
+						this.setLinks(true)
+						this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
+						this.props.diagramEngine.repaintCanvas(false)
+					})
 				}}
 				onMouseLeave={() => {
-					this.setState({ selected: false });
-					this.setLink(false);
+					this.setState({ selected: false }, () => {
+						this.setLinks(false)
+						this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
+						this.props.diagramEngine.repaintCanvas(false)
+					})
 				}}
 				data-name={this.props.name}
 				data-nodeid={this.props.node.getID()}

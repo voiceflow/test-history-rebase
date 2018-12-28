@@ -1250,7 +1250,7 @@ label {
     transform: translateY(-4px);
     transform: scale(1.02);
 }
-.srd-port:hover, .srd-port.selected {
+.srd-port:hover, .srd-port--selected {
     background: #d1d8e2 !important;
     cursor: pointer !important;
 }

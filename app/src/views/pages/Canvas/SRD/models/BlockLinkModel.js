@@ -11,6 +11,7 @@ export class BlockLinkModel extends LinkModel<DefaultLinkModelListener> {
 		this.color = "#555D6D";
 		this.width = 1;
 		this.curvyness = 50;
+		this.setSelected = this.setSelected.bind(this);
 	}
 
 	serialize() {
@@ -51,6 +52,15 @@ export class BlockLinkModel extends LinkModel<DefaultLinkModelListener> {
 		this.iterateListeners((listener: DefaultLinkModelListener, event: BaseEvent) => {
 			if (listener.colorChanged) {
 				listener.colorChanged({ ...event, color: color });
+			}
+		});
+	}
+
+	setSelected(selected: boolean) {
+		this.selected = selected;
+		this.iterateListeners((listener: DefaultLinkModelListener, event: BaseEvent) => {
+			if (listener.selectedChanged) {
+				listener.selectedChanged({ ...event, selected: selected });
 			}
 		});
 	}

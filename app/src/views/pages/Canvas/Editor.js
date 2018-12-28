@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
+import Jump from './Editors/Jump'
 import Interaction from './Editors/Interaction';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
@@ -128,11 +129,11 @@ class Editor extends Component {
     }
 
     getSlotTypes(locales) {
-      let SLOT_TYPES = [];
-      _.map(locales, locale => {
-        SLOT_TYPES.push(SLOT_TYPES_MAP[locale]);
-      })
-      return _.uniq(_.flatten(SLOT_TYPES));
+        let SLOT_TYPES = []
+        _.map(locales, locale => {
+            SLOT_TYPES.push(SLOT_TYPES_MAP[locale])
+        })
+        return _.uniq(_.flatten(SLOT_TYPES))
     }
 
     BlockViewer() {
@@ -147,6 +148,18 @@ class Editor extends Component {
                         node={this.state.node}
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
+                    />
+            case 'jump':
+                return <Jump
+                        node={this.state.node}
+                        onUpdate={this.props.onUpdate}
+                        intents={this.props.intents}
+                        slots={this.props.slots}
+                        variables={variables}
+                        slot_types={this.getSlotTypes(this.props.locales)}
+                        built_ins={BUILT_INS}
+                        onError={this.props.onError}
+                        onConfirm={this.props.onConfirm}
                     />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
@@ -167,6 +180,7 @@ class Editor extends Component {
                         current={this.props.diagram_id}
                         diagrams={this.props.diagrams}
                         enterFlow={this.props.enterFlow}
+                        onConfirm={this.props.onConfirm}
                     />
                 }
             case 'intent':

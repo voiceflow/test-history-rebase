@@ -21,6 +21,7 @@ import blank_template from './../../../assets/templates/blank'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
+import {convertDiagram} from './util'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -664,15 +665,10 @@ class Canvas extends Component {
           model.setLocked(true);
         }
         if (diagram_json) {
-            // DEPRECATE CONVERT DIAGRAM BLOCK NAMES
-            diagram_json.nodes.forEach(node => {
-                if (node.extras && node.extras.type === 'flow' && node.extras.diagram_id) {
-                    let find = this.state.diagrams.find(x => x.id === node.extras.diagram_id)
-                    if(find){
-                        node.name = find.name
-                    }
-                }
-            })
+            // CONVERT DEPRECATED BLOCKS
+            diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+
+            // This should not happen
             if(diagram_json.nodes.length === 0){
                 diagram_json = new_template
             }
@@ -938,7 +934,7 @@ class Canvas extends Component {
         }
     }
 
-    createSkill(name){
+    createSkill(name, locales){
         // CREATE NEW PROJECT
         if(!name){
             name = 'New Skill'
@@ -948,7 +944,8 @@ class Canvas extends Component {
 
         axios.post('/skill', {
           name: name,
-          diagram: diagram_id
+          diagram: diagram_id,
+          locales: locales
         })
         .then(res => {
             let skill_id = res.data.id
@@ -963,7 +960,7 @@ class Canvas extends Component {
                     live: false,
                     restart: true,
                     diagram: diagram_id,
-                    locales: ["en-US"],
+                    locales: locales,
                     intents: [],
                     slots: []
                 },
@@ -1135,12 +1132,18 @@ class Canvas extends Component {
                     inputs: [],
                     outputs: []
                 }
-            } else if (type === 'command') {
+            } else if (type === 'jump'){
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     intent: null,
                     mappings: [],
                     resume: false
+                }
+            } else if (type === 'command') {
+                node.extras = {
+                    intent: null,
+                    mappings: [],
+                    resume: true
                 }
             } else if (type === 'comment') {
                 node.name = 'New Comment'

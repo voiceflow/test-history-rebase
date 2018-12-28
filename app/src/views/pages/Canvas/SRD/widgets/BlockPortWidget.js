@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import * as React from "react";
-import { NodeModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
+import { NodeModel, BaseWidget, BaseWidgetProps } from "storm-react-diagrams"
 
 export interface PortProps extends BaseWidgetProps {
 	name: string;
@@ -19,10 +20,29 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 		this.state = {
 			selected: false
 		};
+		this.setLinks = this.setLinks.bind(this)
 	}
 
-	getClassName() {
-		return "port " + super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
+	getClassName(){
+		return "port " + super.getClassName() + ((this.state.selected || this.props.port.selected) ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
+	}
+
+	setLinks(isSelected = false){
+		// const nodes = []
+		_.forEach(this.props.node.ports[this.props.name].links, (link) => {
+			link.setSelected(isSelected)
+			// if(link.sourcePort.id === this.props.port.id){
+			// 	if(link.targetPort){
+			// 		link.targetPort.setSelected(isSelected)
+			// 		nodes.push(link.targetPort.parent)
+			// 	}
+			// }else if(link.sourcePort){
+			// 	link.sourcePort.setSelected(isSelected)
+			// 	nodes.push(link.sourcePort.parent)
+			// }
+		})
+		this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
+		this.props.diagramEngine.repaintCanvas(false)
 	}
 
 	render() {
@@ -30,10 +50,14 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 			<div
 				{...this.getProps()}
 				onMouseEnter={() => {
-					this.setState({ selected: true });
+					this.setState({ selected: true }, () => {
+						this.setLinks(true)
+					})
 				}}
 				onMouseLeave={() => {
-					this.setState({ selected: false });
+					this.setState({ selected: false }, () => {
+						this.setLinks(false)
+					})
 				}}
 				data-name={this.props.name}
 				data-nodeid={this.props.node.getID()}

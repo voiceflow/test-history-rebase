@@ -17,6 +17,11 @@ exports.getSkills = (req, res) => {
         res.sendStatus(401);
         return;
     }
+    if (req.query.user && req.user.admin < 100) {
+        res.sendStatus(401);
+        return;
+    }
+    let userId = req.query.user ? req.query.user : req.user.id;
     pool.query(`
         SELECT
             *
@@ -24,7 +29,7 @@ exports.getSkills = (req, res) => {
             skills
         WHERE
             creator_id = $1`,
-        [req.user.id], (err, data) => {
+        [userId], (err, data) => {
         if(err){
             console.error(err);
             res.sendStatus(500);
@@ -292,14 +297,19 @@ exports.setSkill = (req, res) => {
     let value = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
     let sum = `This is a new summary for the skill ${name}`;
     let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
+    let locales = ['en-US']
+
+    if (req.body.locales) {
+        locales = req.body.locales
+    }
 
     pool.query(`
             INSERT INTO skills (
-                name, diagram, creator_id, summary, description, invocations, inv_name
+                name, diagram, creator_id, summary, description, invocations, inv_name, locales
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7
+                $1, $2, $3, $4, $5, $6, $7, $8
             ) RETURNING skill_id`,
-            [name, req.body.diagram, req.user.id, sum, desc, value, name], (err, data) => {
+            [name, req.body.diagram, req.user.id, sum, desc, value, name, JSON.stringify(locales)], (err, data) => {
         if(err){
             console.error(err);
             res.sendStatus(500);
@@ -767,6 +777,10 @@ exports.copySkill = async (req, res) => {
     let diagram_mapping = {}
     let diagram_names = {}
     let sub_diagrams = {}
+
+    if (new_creator_id === 'me') {
+        new_creator_id = req.user.id
+    }
 
     const remapDiagramIds = (diagram, new_skill_id) => {
         diagram.id = diagram_mapping[diagram.id]

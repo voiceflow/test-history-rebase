@@ -56,8 +56,10 @@ class NavBar extends Component {
     if(user.id !== null){
       if(user.admin > 0){
         tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
-        // tabs.push({link: 'admin', text: <span>Admin <i className="fas fa-columns"></i></span>});
-        // tabs.push({link: 'analytics', text: <span>Analytics <i className="fas fa-chart-line"></i></span>});
+      }
+      if(user.admin >= 100) {
+        tabs.push({link: '/admin', text: <React.Fragment>Admin</React.Fragment>});
+        //tabs.push({link: '/analytics', text: <React.Fragment>Analytics</React.Fragment>});
       }
       this.intercom_user = {
         user_id: user.id,

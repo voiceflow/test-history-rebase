@@ -16,6 +16,7 @@ import Account from './views/pages/Account';
 import Canvas from './views/pages/Canvas';
 import DashBoard from './views/pages/Dashboard';
 import Business from './views/pages/Business';
+import Admin from './views/pages/Admin';
 import Register from './views/pages/Register';
 import Reset from './views/pages/Register/reset';
 import ResetPassword from './views/pages/Register/resetPassword';
@@ -146,6 +147,8 @@ class App extends Component {
                 <PrivateRoute path="/business/email/template/:id" name="Business" component={Business} page='template'/>
                 <PrivateRoute path="/business/email/templates" name="Business" component={Business} page='email'/>
                 <PrivateRoute path="/business" name="Business" component={Business} page='default'/>
+                <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
+                <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={Skill}/>
                 <PrivateRoute path="/publish/market/:id" name="Skill Dashboard" component={PublishMarket}/>

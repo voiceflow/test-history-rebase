@@ -66,32 +66,38 @@ class Editor extends Component {
     }
 
     componentDidMount() {
-        axios.get('/email/templates')
-        .then(res => {
-            let templates = res.data.map(t => {
-                let variables = [];
-                if(t.variables){
-                    try{
-                        variables = JSON.parse(t.variables);
-                    }catch(err){
-                        console.error(err);
+        if(window.user_detail.admin >= 1){
+            axios.get('/email/templates')
+            .then(res => {
+                let templates = res.data.map(t => {
+                    let variables = [];
+                    if(t.variables){
+                        try{
+                            variables = JSON.parse(t.variables);
+                        }catch(err){
+                            console.error(err);
+                        }
                     }
-                }
 
-                return {
-                    title: t.title,
-                    sender: t.sender,
-                    template_id: t.template_id,
-                    variables: variables
-                }
+                    return {
+                        title: t.title,
+                        sender: t.sender,
+                        template_id: t.template_id,
+                        variables: variables
+                    }
+                })
+                this.setState({
+                    templates: templates
+                })
             })
+            .catch(err => {
+                window.alert('Couldn\'t Retrieve Templates')
+            })
+        } else {
             this.setState({
-                templates: templates
+                templates: []
             })
-        })
-        .catch(err => {
-            //window.alert('Couldn\'t Retrieve Templates'); TODO
-        })
+        }
 
         // Hard-code for now, but eventually should retrieve from
         // AMZN website if possible

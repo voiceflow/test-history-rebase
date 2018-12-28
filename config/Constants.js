@@ -1190,36 +1190,6 @@ exports.BUILT_IN_INTENTS = [
 exports.CATCHALL_SLOT_VALUES = [
   {
     "name": {
-      "value": "one"
-    }
-  },
-  {
-    "name": {
-      "value": "two"
-    }
-  },
-  {
-    "name": {
-      "value": "three"
-    }
-  },
-  {
-    "name": {
-      "value": "1"
-    }
-  },
-  {
-    "name": {
-      "value": "2"
-    }
-  },
-  {
-    "name": {
-      "value": "3"
-    }
-  },
-  {
-    "name": {
       "value": "hey hey"
     }
   },

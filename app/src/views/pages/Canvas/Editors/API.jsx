@@ -313,7 +313,7 @@ class API extends Component {
             </ButtonGroup>
             {this.state.activeTab === TABS[0] ?
               <div className="response-box">
-                <ReactJson src={this.state.modalContent} displayDataTypes={false}/>
+                <ReactJson src={this.state.modalContent} displayDataTypes={false} name={null}/>
               </div> :
               <div className="mt-3">
                 {_.map(this.state.testVariablesMapping, (val, key) => {

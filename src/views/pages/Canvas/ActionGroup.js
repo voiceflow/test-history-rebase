@@ -7,7 +7,6 @@ import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
 import {Tooltip} from 'react-tippy'
-import SettingsModal from './SettingsModal'
 import Switch from '@material-ui/core/Switch'
 
 import AuthenticationService from './../../../services/Authentication'
@@ -25,7 +24,6 @@ class ActionGroup extends PureComponent {
             allowPreview: false,
             platform: 'amazon',
             updateModal: false,
-            settingsModal: false,
             stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
@@ -39,7 +37,6 @@ class ActionGroup extends PureComponent {
         this.togglePreview = this.togglePreview.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.toggleUpdate = this.toggleUpdate.bind(this)
-        this.toggleSettings = this.toggleSettings.bind(this)
         this.updateAlexa = this.updateAlexa.bind(this)
         this.openUpdate = this.openUpdate.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
@@ -147,12 +144,6 @@ class ActionGroup extends PureComponent {
     toggleUpdate() {
         this.setState({
             updateModal: false
-        });
-    }
-
-    toggleSettings() {
-        this.setState({
-            settingsModal: !this.state.settingsModal
         });
     }
 
@@ -316,15 +307,6 @@ class ActionGroup extends PureComponent {
                     </div>
                 </ModalBody>
             </Modal>
-            <SettingsModal 
-                open={this.state.settingsModal} 
-                toggle={this.toggleSettings}
-                skill={this.props.skill}
-                onConfirm={this.props.onConfirm}
-                onError={this.props.onError}
-                history={this.props.history}
-                updateSkill={this.props.updateSkill}
-            />
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
@@ -365,15 +347,6 @@ class ActionGroup extends PureComponent {
                             }
                         </PopoverBody>
                     </Popover>
-                    <Tooltip
-                        distance={16}
-                        title="Settings"
-                        position="bottom"
-                    >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.toggleSettings}>
-                            <i className="fas fa-cog"/>
-                        </MUIButton>
-                    </Tooltip>
                     <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
                         <DropdownToggle className="anti-btn" tag="div">
                             <Tooltip

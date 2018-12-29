@@ -14,10 +14,8 @@ import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal
 import ErrorModal from './../../components/Modals/ErrorModal'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
 import HelpModal from './HelpModal'
-import SkillModal from './../Dashboard/Skill/SkillModal'
 import TestModal from './Test/TestModal'
 import { Prompt } from 'react-router'
-import blank_template from './../../../assets/templates/blank'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
@@ -33,7 +31,6 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-
 const defaultVariables = ['sessions', 'user_id', 'timestamp']
 const line_color = '#D1D8E2'
 const line_width = 2.5
@@ -138,86 +135,33 @@ class Canvas extends Component {
         // preview mode
         this.preview = !!this.props.preview
 
+        let last_session = localStorage.getItem('flow')
+        if(last_session){
+            let parts = last_session.split('/')
+            if(parts.length === 2){
+                this.props.history.push('/canvas/' + last_session)
+            }
+        }
+
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
         engine.registerNodeFactory(new BlockNodeFactory())
         engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width))
         engine.registerPortFactory(new BlockPortFactory())
 
-        let open, diagram_id, skill_id
+        let open
         let diagram_name = ''
-
-        let last_session = localStorage.getItem('flow')
-        let url = this.props.computedMatch
 
         let newSkill = !!this.props.new
         let global_variables = defaultVariables.slice(0)
 
-        if(!newSkill){
-            if (url && url.params.skill_id && url.params.diagram_id) {
-                skill_id = url.params.skill_id
-                diagram_id = url.params.diagram_id
-            }else if(last_session){
-                let parts = last_session.split('/')
-                if(parts.length === 2){
-                    this.props.history.push('/canvas/' + last_session)
-                    skill_id = parts[0]
-                    diagram_id = parts[1]
-                }
-            }else{
-                this.props.history.push('/canvas/new')
-            }
-        }
-
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
-
-
-        if(!this.props.preview && (!diagram_id || !skill_id)){
-            // DEFAULT TEMPLATE FOR CREATING A SKILL
-            newSkill = true
-            open = true
-
-            let model = new SRD.DiagramModel()
-            let blank = this.onboarding ? new_template : blank_template
-            blank.id = generateID()
-
-            model.deSerializeDiagram(blank, engine)
-
-            let nodes = model.getNodes()
-            for (let key in nodes) {
-                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
-                    nodes[key].clearListeners()
-                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
-                }
-            }
-
-            var links = model.getLinks()
-            for (let key in links) {
-                links[key].setColor(line_color)
-                links[key].setWidth(line_width)
-            }
-
-            engine.setDiagramModel(model)
-
-            model.addListener({nodesUpdated: this.unsave})
-            model.addListener({linksUpdated: this.unsave})
-
-            diagram_name = 'ROOT'
-        }
-
-        this.diagram_id = diagram_id
 
         this.state = {
             engine: engine,
             open: open,
             diagram_name: diagram_name,
-            skill: {
-                skill_id: skill_id,
-                name: '...',
-                intents: [],
-                slots: []
-            },
             diagrams: [],
             loading_diagram: !newSkill,
             error: null,
@@ -235,24 +179,52 @@ class Canvas extends Component {
             user_modules: null,
             user_templates: []
         }
+    }
 
-        if(!this.state.newSkill){
-            this.onLoadSkill(this.state.skill.skill_id)
+    static getDerivedStateFromProps(props, state) {
+        if(!state.skill){
+            // prevent redundant saving of global variables in the skill object
+            let skill = props.skill
+            let globals = skill.global
+            delete skill.global
+
+            // make sure that there are no duplicate variables and that the defaults are included
+            let global_variables = defaultVariables.slice(0)
+            if (Array.isArray(globals)) {
+                globals.forEach(v => {
+                    if(!global_variables.includes(v)){
+                        global_variables.push(v)
+                    }
+                })
+            }
+
+            return {
+                skill: props.skill,
+                global_variables: global_variables
+            }
+        }else{
+            return null
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        // LOADING IN A NEW DIAGRAM
-        let url = nextProps.computedMatch
-        if (url && url.params.diagram_id && url.params.diagram_id !== this.diagram_id) {
-            let diagram_id = url.params.diagram_id
+    componentDidMount() {
+        // If not preview mode
+        if(!this.preview){
+            this.loadUserModules()
+            document.addEventListener('keydown', this.hotKeys)
+        }
+        this.onLoadDiagrams()
+    }
+
+    componentDidUpdate(props) {
+        if(props.diagram_id !== this.props.diagram_id){
             if(this.buildDiagrams !== null){
-                this.buildDiagrams(diagram_id)
+                this.buildDiagrams(this.props.diagram_id)
             }
             this.setState({
                 loading_diagram: true,
                 open: false
-            }, () => this.onLoadId(diagram_id))
+            }, () => this.onLoadId(this.props.diagram_id))
         }
     }
 
@@ -320,10 +292,10 @@ class Canvas extends Component {
         })
 
         axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.diagram_id
+            diagram_id: this.props.diagram_id
         })
         .then(res => {
-            this.loadDiagram(this.diagram_id, res.data)
+            this.loadDiagram(res.data)
         })
         .catch(err => {
             console.log(err.response)
@@ -341,7 +313,7 @@ class Canvas extends Component {
         var type = 'flow'
 
         axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.diagram_id
+            diagram_id: this.props.diagram_id
         })
         .then(res => {
             var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
@@ -396,10 +368,10 @@ class Canvas extends Component {
 
     createWithTemplate(module){
         axios.get(`/marketplace/template/${module.module_id}/`, {
-            diagram_id: this.diagram_id
+            diagram_id: this.props.diagram_id
         })
         .then(res => {
-            this.loadDiagram(this.diagram_id, res.data)
+            this.loadDiagram(res.data)
             this.createSkill(module.title + " Copy")
         })
         .catch(err => {
@@ -471,14 +443,6 @@ class Canvas extends Component {
         }
     }
 
-    componentDidMount() {
-        // If not preview mode
-        if(!this.preview){
-            this.loadUserModules()
-            document.addEventListener('keydown', this.hotKeys)
-        }
-    }
-
     componentWillUnmount() {
         document.removeEventListener('keydown', this.hotKeys)
     }
@@ -538,7 +502,7 @@ class Canvas extends Component {
             var engine = this.state.engine
             var model = engine.getDiagramModel()
             let serialize = model.serializeDiagram()
-            serialize.id = this.diagram_id
+            serialize.id = this.props.diagram_id
             var data = JSON.stringify(serialize)
 
             let sub_diagrams = []
@@ -579,20 +543,20 @@ class Canvas extends Component {
 
             for (var i = 0; i < this.state.diagrams.length; i++) {
                 let diagrams = this.state.diagrams
-                if(diagrams[i].id === this.diagram_id){
+                if(diagrams[i].id === this.props.diagram_id){
                     diagrams[i].sub_diagrams = sub_diagrams
                 }
                 this.setState({
                     diagrams: diagrams
                 }, () => {
                     if(this.buildDiagrams !== null){
-                        this.buildDiagrams(this.diagram_id)
+                        this.buildDiagrams(this.props.diagram_id)
                     }
                 })
             }
 
             var diagram = {
-                id: this.diagram_id,
+                id: this.props.diagram_id,
                 title: this.state.diagram_name,
                 variables: this.state.variables,
                 data: data,
@@ -633,12 +597,12 @@ class Canvas extends Component {
                     saved: true,
                     last_save: Date.now()
                 });
-                if(typeof cb === "function") cb(this.diagram_id)
+                if(typeof cb === "function") cb(this.props.diagram_id)
             }, rej_err => {
                 console.log(rej_err)
                 this.setState({
                     saving: false,
-                    error: 'Error Saving to Cloud (Check Logs)'
+                    error: 'Error Saving Project'
                 })
                 if(typeof cb === "function") cb(null)
             })
@@ -651,7 +615,7 @@ class Canvas extends Component {
         }
     }
 
-    loadDiagram(diagram_id, diagram) {
+    loadDiagram(diagram) {
         var engine = this.state.engine
         var model = new SRD.DiagramModel()
 
@@ -701,7 +665,6 @@ class Canvas extends Component {
                 })
             }
 
-            this.diagram_id = diagram_id
             this.setState({
                 open: false,
                 engine: engine,
@@ -736,7 +699,7 @@ class Canvas extends Component {
                     }
                 })
             }, () => {
-                this.onLoadId(this.diagram_id)
+                this.onLoadId(this.props.diagram_id)
             })
         })
         .catch(err => {
@@ -745,43 +708,10 @@ class Canvas extends Component {
         })
     }
 
-    onLoadSkill(skill_id){
-        axios.get(`/skill/${skill_id}?${this.preview ? 'preview=1' : 'simple=1'}`)
-        .then(res => {
-
-            // prevent redundant saving of global variables in the skill object
-            let skill = res.data
-            let res_globals = skill.global
-            delete skill.global
-
-            // make sure that there are no duplicate variables and that the defaults are included
-            let global_variables = defaultVariables.slice(0)
-            if (Array.isArray(res_globals)) {
-                res_globals.forEach(v => {
-                    if(!global_variables.includes(v)){
-                        global_variables.push(v)
-                    }
-                })
-            }
-
-            if(this.props.preview && !skill.preview){
-                return this.setState({error: 'Skill Creator has not enabled previews'})
-            }
-            this.setState({
-                skill: skill,
-                global_variables: global_variables
-            }, this.onLoadDiagrams)
-        })
-        .catch(err => {
-            console.error(err.response)
-            this.setState({ error: 'Could Not Retrieve Project' })
-        })
-    }
-
     onLoadId(diagram_id) {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
-            this.loadDiagram(diagram_id, res.data)
+            this.loadDiagram(res.data)
             if(!this.preview){
                 localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
             }
@@ -896,7 +826,7 @@ class Canvas extends Component {
 
         this.setState({
             testing_info: {
-                id: this.diagram_id,
+                id: this.props.diagram_id,
                 nodes: nodes,
                 nlc: nlc,
                 slot_mappings: slot_mappings
@@ -950,7 +880,7 @@ class Canvas extends Component {
         .then(res => {
             let skill_id = res.data.id
             localStorage.setItem('flow', `${skill_id}/${diagram_id}`)
-            this.diagram_id = diagram_id
+            this.props.diagram_id = diagram_id
 
             this.setState({
                 skill: {
@@ -1054,7 +984,7 @@ class Canvas extends Component {
     }
 
     enterFlow(new_diagram_id, save=true) {
-        if(new_diagram_id !== this.diagram_id){
+        if(new_diagram_id !== this.props.diagram_id){
             this.setState({loading_diagram: true})
             if(save && !this.props.preview){
                 this.onSave(() => {
@@ -1287,7 +1217,7 @@ class Canvas extends Component {
 
     render() {
         return (
-            <div className='App'>
+            <React.Fragment>
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <HelpModal
@@ -1296,19 +1226,6 @@ class Canvas extends Component {
                     toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
                     setHelp={(help) => this.setState({help: help})}
                 />
-                { this.state.newSkill !== null ?
-                    <SkillModal
-                        modal={!!this.state.newSkill}
-                        toggle={()=>this.setState({newSkill: false})}
-                        createSkill={this.createSkill}
-                        onClose={this.state.newSkill === false ?
-                            () => this.props.history.push('/dashboard') :
-                            () => this.setState({newSkill: null})}
-                        user_templates={this.state.user_templates}
-                        onTemplateChoice={this.createWithTemplate}
-                        history={this.props.history}
-                    /> : null
-                }
                 <Prompt
                     when={!this.state.saved}
                     message={location => 'Are you sure you want to leave without saving?'
@@ -1329,7 +1246,7 @@ class Canvas extends Component {
                     unfocus={this.onDiagramUnfocus}
                     helpModal={() => this.setState({help: true, helpOpen: true})}
                     diagrams={this.state.diagrams}
-                    current={this.diagram_id}
+                    current={this.props.diagram_id}
                     enterFlow={this.enterFlow}
                     variables={this.state.variables}
                     global_variables={this.state.global_variables}
@@ -1364,7 +1281,7 @@ class Canvas extends Component {
                     admin={this.state.admin}
                     publishAMZN={this.publishAMZN}
                     publishMarket={this.publishMarket}
-                    diagram_id={this.diagram_id}
+                    diagram_id={this.props.diagram_id}
                     history={this.props.history}
                     onError={this.showErrorPopup}
                     onConfirm={this.showConfirmPopup}
@@ -1380,6 +1297,7 @@ class Canvas extends Component {
                     </div>
                 </div>}
                 <Editor
+                    skill_id={this.state.skill.skill_id}
                     unfocus={this.onDiagramUnfocus}
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
@@ -1400,7 +1318,7 @@ class Canvas extends Component {
                     locales={this.state.skill.locales}
                     preview={this.props.preview}
                     onboarding={this.onboarding}
-                    diagram_id={this.diagram_id}
+                    diagram_id={this.props.diagram_id}
                     finished={()=>{this.onboarding = false}}
                     onError={this.showErrorPopup}
                     onConfirm={this.showConfirmPopup}
@@ -1424,7 +1342,7 @@ class Canvas extends Component {
                         locked={this.props.preview}
                     />
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }

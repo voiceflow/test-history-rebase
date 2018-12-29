@@ -8,6 +8,16 @@ body {
     color: #2b3950;
     width: 100%;
 }
+#app {
+    position: absolute;
+    top: 65px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+#app.secondary-padding {
+    top: 104px;
+}
 .grid-col-3{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

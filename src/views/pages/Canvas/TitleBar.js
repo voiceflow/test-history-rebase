@@ -4,7 +4,7 @@ import MUIButton from '@material-ui/core/Button';
 class TitleBar extends Component {
     render() {
         return (
-            <div className="TitleBar no-select">
+            <div className="no-select" id="TitleBar">
                 <div className="project">
                     <div className="skill-name">
                         {this.props.skill.name} {this.props.preview ? ' (PREVIEW)' : ''}

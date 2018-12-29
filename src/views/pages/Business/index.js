@@ -1,23 +1,25 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import './Business.css';
-import Template from './Template';
-import Templates from './Templates';
-import Home from './Home';
+import Template from './Template'
+import Templates from './Templates'
+import Home from './Home'
 
-import {ButtonGroup} from 'reactstrap'
+const updateLink = (link, skill_id) => {
+    return link.replace(':skill_id', skill_id)
+}
 
 const tabs = [
     {
-        display: <React.Fragment><i className="fal fa-home"/> Home</React.Fragment>,
-        match: ['default'],
-        link: '/business'
+        display: <React.Fragment><i className="fal fa-home mr-2"/> Home</React.Fragment>,
+        match: ['home'],
+        link: '/business/:skill_id'
     },
     {
-        display: <React.Fragment><i className="fal fa-envelope"/> Email</React.Fragment>,
-        match: ['email', 'template'],
-        link: '/business/email/templates'
+        display: <React.Fragment><i className="fal fa-envelope mr-2"/> Email</React.Fragment>,
+        match: ['emails', 'template'],
+        link: '/business/:skill_id/email/templates'
     },
 ]
 
@@ -26,7 +28,7 @@ class Business extends Component {
     render() {
         let page;
         switch(this.props.page){
-            case 'email':
+            case 'emails':
                 page = <Templates {...this.props}/>
                 break;
             case 'template':
@@ -37,24 +39,19 @@ class Business extends Component {
         }
 
         return (
-            <div className="business Window">
-                <div md="3" className="sidebar">
-                    <div className="title">
-                        Tools
-                    </div>
-                    <ButtonGroup vertical>
-                        {tabs.map((tab, i) => {
-                            if(tab.match.includes(this.props.page)){
-                                return <div key={i} className="active-btn">
-                                    {tab.display}
-                                </div>
-                            }else{
-                                return <Link key={i} to={tab.link} className="inactive-btn">
-                                    {tab.display}
-                                </Link>
-                            }
-                        })}
-                    </ButtonGroup>
+            <div id="business">
+                <div md="3" className="sidebar-nav">
+                    {tabs.map((tab, i) => {
+                        if(tab.match.includes(this.props.page)){
+                            return <div key={i} className="nav-item active">
+                                {tab.display}
+                            </div>
+                        }else{
+                            return <Link key={i} to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
+                                {tab.display}
+                            </Link>
+                        }
+                    })}
                 </div>
                 <div md="9" className="business-page">
                     {page}

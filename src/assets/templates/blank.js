@@ -1,41 +1,9 @@
 export default {
-   "offsetX":420,
-   "offsetY":240,
-   "zoom":70,
+   "offsetX":395,
+   "offsetY":160,
+   "zoom":65,
    "gridSize":0,
    "links":[
-      {
-         "id":"a89551e3-94bd-48fd-bdae-62dd449efa38",
-         "type":"default",
-         "selected":false,
-         "source":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-         "sourcePort":"4a5323f2-eceb-4afd-91b1-7c11712ee3af",
-         "target":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-         "targetPort":"06609fa4-937b-42b8-82c6-3f82f439c728",
-         "points":[
-            {
-               "id":"bd5d439e-76c0-45fc-9a69-a4440006d944",
-               "selected":false,
-               "x":-39.444187709263396,
-               "y":189.26561628069197
-            },
-            {
-               "id":"047f28bc-01f8-4c50-9983-8ea5ddeaa51b",
-               "selected":false,
-               "x":45.390625,
-               "y":189.296875
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":2.5,
-         "color":"#D1D8E2",
-         "curvyness":50
-      },
       {
          "id":"19fc13c0-5dd6-4c87-b153-a9eeeee7e2be",
          "type":"default",
@@ -87,7 +55,7 @@ export default {
                "id":"b955af9f-aece-4090-a1b1-756f7bfdc385",
                "selected":false,
                "x":761.0000174386162,
-               "y":531.5156337193081
+               "y":531.5155901227679
             }
          ],
          "extras":{
@@ -145,7 +113,7 @@ export default {
                "id":"e366f1cc-73f2-48b6-b9d9-d1b14583272a",
                "selected":false,
                "x":952.0781598772322,
-               "y":561.5156337193081
+               "y":561.5155901227679
             },
             {
                "id":"5d725ac4-eae8-45e7-91f8-8ccf1002e22c",
@@ -177,7 +145,7 @@ export default {
                "id":"9d318c59-18e7-434f-8193-3a4213b06555",
                "selected":false,
                "x":952.0781598772322,
-               "y":531.5156337193081
+               "y":531.5155901227679
             },
             {
                "id":"12687429-a988-489e-abac-b0b039b673ff",
@@ -234,84 +202,6 @@ export default {
          ],
          "name":"Start Block",
          "color":"#FBE9E7"
-      },
-      {
-         "id":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-         "type":"default",
-         "selected":false,
-         "x":-216.14774729776403,
-         "y":298.8575509347953,
-         "extras":{
-            "type":"command",
-            "resume":true,
-            "intent":{
-               "label":"AMAZON.HelpIntent",
-               "value":"AMAZON.HelpIntent",
-               "key":"AMAZON.HelpIntent",
-               "inputs":[
-                  {
-                     "text":"",
-                     "slots":[
-
-                     ]
-                  }
-               ],
-               "built_in":true
-            },
-            "mappings":[
-
-            ]
-         },
-         "ports":[
-
-         ],
-         "name":"Command: Help",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-         "type":"default",
-         "selected":false,
-         "x":-214.45885538912125,
-         "y":137.77967574465535,
-         "extras":{
-            "type":"command",
-            "intent":{
-               "label":"AMAZON.StopIntent",
-               "value":"AMAZON.StopIntent",
-               "key":"AMAZON.StopIntent",
-               "inputs":[
-                  {
-                     "text":"",
-                     "slots":[
-
-                     ]
-                  }
-               ],
-               "built_in":true
-            },
-            "mappings":[
-
-            ],
-            "resume":false
-         },
-         "ports":[
-            {
-               "id":"4a5323f2-eceb-4afd-91b1-7c11712ee3af",
-               "type":"default",
-               "selected":false,
-               "name":"fa162a04-3ed0-448f-a93a-7971293c7d8b",
-               "parentNode":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-               "links":[
-                  "a89551e3-94bd-48fd-bdae-62dd449efa38"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Command: Stop",
-         "color":"rgb(0,192,255)"
       },
       {
          "id":"0c549b99-480c-4cf4-b069-d560902dada9",
@@ -390,74 +280,6 @@ export default {
             }
          ],
          "name":"Choice: Ask the user",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-         "type":"default",
-         "selected":false,
-         "x":32.8945748519903,
-         "y":137.79802030827875,
-         "extras":{
-            "type":"speak",
-            "dialogs":[
-               {
-                  "index":"fLCPd",
-                  "voice":"Alexa",
-                  "rawContent":{
-                     "blocks":[
-                        {
-                           "key":"3bc7t",
-                           "text":"When a block is not connected to anything, like this one, it will end the session!",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        }
-                     ],
-                     "entityMap":{
-
-                     }
-                  },
-                  "open":true
-               }
-            ]
-         },
-         "ports":[
-            {
-               "id":"06609fa4-937b-42b8-82c6-3f82f439c728",
-               "type":"default",
-               "selected":false,
-               "name":"94479727-255a-4e58-a6bb-5222cb37b815",
-               "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-               "links":[
-                  "a89551e3-94bd-48fd-bdae-62dd449efa38"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"bfef74af-c70e-4af5-a163-6ec20c92ddf0",
-               "type":"default",
-               "selected":false,
-               "name":"30be1c99-e38f-4770-ad6b-9a12d4dea046",
-               "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: stop",
          "color":"rgb(0,192,255)"
       },
       {
@@ -730,6 +552,73 @@ export default {
             }
          ],
          "name":"Speak: Else",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"1f487b62-0882-44b8-aa59-0fecea84c6bf",
+         "type":"default",
+         "selected":false,
+         "x":-211.70298512779175,
+         "y":365.29856380127546,
+         "extras":{
+            "intent":{
+               "label":"AMAZON.HelpIntent",
+               "value":"AMAZON.HelpIntent",
+               "key":"AMAZON.HelpIntent",
+               "inputs":[
+                  {
+                     "text":"",
+                     "slots":[
+
+                     ]
+                  }
+               ],
+               "built_in":true
+            },
+            "mappings":[
+
+            ],
+            "resume":true,
+            "type":"command"
+         },
+         "ports":[
+
+         ],
+         "name":"Command: HELP",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"f422a868-961b-4e5c-babc-7885607708c6",
+         "type":"default",
+         "selected":false,
+         "x":-210.2955255922534,
+         "y":260.1981092990842,
+         "extras":{
+            "intent":{
+               "label":"AMAZON.StopIntent",
+               "value":"AMAZON.StopIntent",
+               "key":"AMAZON.StopIntent",
+               "inputs":[
+                  {
+                     "text":"",
+                     "slots":[
+
+                     ]
+                  }
+               ],
+               "built_in":true
+            },
+            "mappings":[
+
+            ],
+            "resume":true,
+            "type":"command",
+            "end":true
+         },
+         "ports":[
+
+         ],
+         "name":"Command: STOP",
          "color":"rgb(0,192,255)"
       }
    ]

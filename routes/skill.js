@@ -20,7 +20,7 @@ const latestSkillToIntercom = (id, name) => {
     })
 }
 
-const incrementSkillsIntercom = (id) => {
+const incrementSkillsCreatedIntercom = (id) => {
     intercom.users.find({ user_id: id }, async (res) => {
         if (!res.body) {
             return
@@ -38,6 +38,38 @@ const incrementSkillsIntercom = (id) => {
             user_id: id,
             custom_attributes: {
                 skills_created: sc + 1
+            }
+        })
+    })
+}
+
+const incrementTimesPublishedIntercom = (id) => {
+    intercom.users.find({ user_id: id }, async (res) => {
+        if (!res.body) {
+            return
+        }
+        let n = res.body.custom_attributes.times_published
+                ? res.body.custom_attributes.times_published : 0
+        intercom.users.create({
+            user_id: id,
+            custom_attributes: {
+                times_published: n + 1
+            }
+        })
+    })
+}
+
+const incrementTimesPublishedSuccessfulIntercom = (id) => {
+    intercom.users.find({ user_id: id }, async (res) => {
+        if (!res.body) {
+            return
+        }
+        let n = res.body.custom_attributes.times_published_successful
+                ? res.body.custom_attributes.times_published_successful : 0
+        intercom.users.create({
+            user_id: id,
+            custom_attributes: {
+                times_published_successful: n + 1
             }
         })
     })
@@ -345,7 +377,7 @@ exports.setSkill = (req, res) => {
             console.error(err);
             res.sendStatus(500);
         } else {
-            incrementSkillsIntercom(req.user.id)
+            incrementSkillsCreatedIntercom(req.user.id)
             latestSkillToIntercom(req.user.id, name)
             res.send({id: hashids.encode(data.rows[0].skill_id)})
         }
@@ -492,6 +524,7 @@ exports.buildSkill = async (req,res) => {
     if (!req.params.id) {
         res.sendStatus(401)
     }
+    incrementTimesPublishedIntercom(req.user.id);
 
     let id = hashids.decode(req.params.id)[0];
     let original_id = req.params.id
@@ -642,6 +675,7 @@ exports.buildSkill = async (req,res) => {
                                                 if(response.hasOwnProperty('violations')){
                                                     getSkillStatus(depth + 1)
                                                 }else{
+                                                    incrementTimesPublishedSuccessfulIntercom(req.user.id);
                                                     res.send(amzn_id)
                                                 }
                                             })

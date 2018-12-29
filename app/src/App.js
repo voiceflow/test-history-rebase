@@ -12,16 +12,15 @@ import './assets/fontawesome/css/all.min.css';
 import './App.css';
 
 // Pages
+import Skill from './Skill'
 import Account from './views/pages/Account';
-import Canvas from './views/pages/Canvas';
 import DashBoard from './views/pages/Dashboard';
-import Business from './views/pages/Business';
 import Admin from './views/pages/Admin';
 import Register from './views/pages/Register';
 import Reset from './views/pages/Register/reset';
 import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
-import Skill from './views/pages/Skill';
+import SkillPage from './views/pages/Skill';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
@@ -36,18 +35,20 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
 }
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={props => (
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  return <Route {...rest} render={props => (
     !AuthenticationService.isAuth() ? (
       <Redirect to={{
         pathname: '/login',
         state: { from: props.location }
       }}/>
     ) : (
-      <Component {...props} {...rest} user={AuthenticationService.getUser()}/>
+      <React.Fragment>
+        <Component {...props} {...rest} user={AuthenticationService.getUser()}/>
+      </React.Fragment>
     )
   )}/>
-)
+}
 
 const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (
@@ -140,17 +141,18 @@ class App extends Component {
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
-                <PrivateRoute exact path="/canvas/new" name="Canvas" new component={Canvas}/>
-                <PrivateRoute path="/preview/:skill_id/:diagram_id" name="Canvas" preview component={Canvas}/>
-                <PrivateRoute path="/canvas/:skill_id/:diagram_id" name="Canvas" component={Canvas}/>
-                <PrivateRoute path="/canvas" name="Canvas" component={Canvas}/>
-                <PrivateRoute path="/business/email/template/:id" name="Business" component={Business} page='template'/>
-                <PrivateRoute path="/business/email/templates" name="Business" component={Business} page='email'/>
-                <PrivateRoute path="/business" name="Business" component={Business} page='default'/>
+                <PrivateRoute exact path="/canvas/new" component={Skill} page="canvas" new/>
+                <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
+                <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
+                <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
+                <PrivateRoute path="/settings/:skill_id" component={Skill} page="settings"/>
+                <PrivateRoute path="/business/:skill_id/email/template/:id" component={Skill} page='business' secondaryPage="template"/>
+                <PrivateRoute path="/business/:skill_id/email/templates" component={Skill} page='business' secondaryPage="emails"/>
+                <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={Skill}/>
+                <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={SkillPage}/>
                 <PrivateRoute path="/publish/market/:id" name="Skill Dashboard" component={PublishMarket}/>
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />

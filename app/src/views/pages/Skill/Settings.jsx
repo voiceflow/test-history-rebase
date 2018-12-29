@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react'
-import { Input, Alert, Modal, ModalHeader, ModalBody, Button, ButtonGroup, FormGroup, Label } from 'reactstrap'
+import React, { Component } from 'react'
+import { Input, Alert, Button, ButtonGroup, FormGroup, Label } from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
@@ -8,7 +8,7 @@ import {clone} from 'lodash'
 
 const TABS = ['basic', 'advanced']
 
-class SettingsModal extends PureComponent {
+class Settings extends Component {
     constructor(props) {
         super(props)
 
@@ -240,4 +240,4 @@ class SettingsModal extends PureComponent {
     }
 }
 
-export default SettingsModal
+export default Settings

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import ErrorModal from './../../components/Modals/ErrorModal'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
 import axios from 'axios';
-import MUIButton from '@material-ui/core/Button';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import { Card } from 'reactstrap';
+import MUIButton from '@material-ui/core/Button'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import { Card } from 'reactstrap'
 
 class Templates extends Component {
 
@@ -24,12 +24,18 @@ class Templates extends Component {
     }
 
     componentWillMount() {
-        axios.get('/email/templates')
+        axios.get(`/email/templates?skill_id=${this.props.skill_id}`)
         .then(res => {
-            this.setState({
-                templates: res.data,
-                loading: false
-            })
+            if(Array.isArray(res.data)){
+                this.setState({
+                    templates: res.data,
+                    loading: false
+                })
+            }else{
+                this.setState({
+                    loading: false
+                })
+            }
         })
         .catch(err => {
             console.error(err);
@@ -45,7 +51,7 @@ class Templates extends Component {
     deleteTemplate(id) {
         this.setState({confirm: null});
 
-        axios.delete('/email/template/' + id)
+        axios.delete(`/email/template/${id}`)
         .then(()=>{
             let templates = this.state.templates;
             let index = templates.findIndex(t => t.template_id === id);
@@ -71,28 +77,13 @@ class Templates extends Component {
         return (
             <div className="business-page-inner">
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
+                <Link to={`/business/${this.props.skill_id}/email/template/new`} className="no-underline">
+                    <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Template</MUIButton>
+                </Link>
                 {!!this.state.confirm && <ConfirmModal 
                     toggle={() => this.setState({confirm: null})}
                     confirm={this.state.confirm}
                 />}
-                <div className="subheader">
-                    <div className="space-between">
-                        <span className="subheader-title">
-                            <b>Email</b>
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '} 
-                                {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '} 
-                                <span className="text-secondary">Templates</span>
-                            </div>
-                        </span>
-                        <div className="subheader-right">
-                            <Link to="/business/email/template/new" className="no-underline">
-                                <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Template</MUIButton>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
                 { this.state.loading ? 
                     <div className="super-center h-100 w-100">Loading...</div> :
                     <div className="content">
@@ -102,7 +93,7 @@ class Templates extends Component {
                                 {this.state.templates.map(template => 
                                     <Card key={template.template_id} className="template-card">
                                         <CardActionArea className="template-card-action"
-                                            onClick={()=>this.props.history.push('/business/email/template/' + template.template_id)}>
+                                            onClick={()=>this.props.history.push(`/business/${this.props.skill_id}/email/template/${template.template_id}`)}>
                                             <div>
                                                 <h5>{template.title}</h5>
                                                 <small className="text-muted"><b>id:</b> {template.template_id}</small><br/>

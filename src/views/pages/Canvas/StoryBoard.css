@@ -1,8 +1,3 @@
-.App {
-    width: 100vw;
-    height: 100vh;
-}
-
 .templates {
     font-size: 1rem;
     color: #CCC;
@@ -13,16 +8,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
+    position: fixed;
     background-color: #fff;
     font-size: 4rem;
     height: 100%;
     width: 100%;
-    z-index: 6
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
 }
 
-.TitleBar{
-    top:60px;
+#TitleBar{
     width: 100%;
     position: absolute;
     z-index: 3;
@@ -75,17 +73,17 @@
     -moz-box-shadow: 0px 15px 56px 16px rgba(245,246,250,1);
     box-shadow: 0px 15px 56px 16px rgba(245,246,250,1);
 }
-.TitleBar .main-menu-btn{
+#TitleBar .main-menu-btn{
     width: 90px;
     border-radius: 0;
 }
 
-.TitleBar .main-menu-btn-group {
+#TitleBar .main-menu-btn-group {
     padding-left: 10px;
     background-color: #333;
 }
 
-.TitleBar .dropdown-menu {
+#TitleBar .dropdown-menu {
     /*transform: translate3d(0px, 50px, 0px) !important;*/
 /*    border-radius: 0;
     margin-left: -5px;
@@ -106,7 +104,7 @@
     border-color: #E2E9EC;
 }
 
-.TitleBar input {
+#TitleBar input {
     font-size: 24px;
     background-color: transparent;
     border: none;
@@ -116,7 +114,7 @@
     transition: background-color .4s ease;
 }
 
-.TitleBar .skill-name {
+#TitleBar .skill-name {
     padding: 1px 12px 7px 10px;
     font-size: 24px;
     font-weight: 1000;
@@ -128,13 +126,13 @@
     text-overflow: ellipsis;
 }
 
-.TitleBar .project {
+#TitleBar .project {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.TitleBar .platform-dropdown {
+#TitleBar .platform-dropdown {
     border: none;
     padding: 5px 0px 5px 0px;
     width: 150px !important;
@@ -165,7 +163,7 @@
     border: 1px solid #fff;
     color: #2b3950;
 }
-.TitleBar .platform-btn {
+#TitleBar .platform-btn {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -182,7 +180,7 @@
     padding-right: 15px;
     transform: translate3d(-19px, 63px, 0px) !important;
 }
-.TitleBar .platform-btn:active{
+#TitleBar .platform-btn:active{
     color: #fff;
 }
 .coming-soon-btn{
@@ -221,7 +219,7 @@
     margin-left: 17px;
     margin-top: 5px;
 }
-.TitleBar .white-btn.play{
+#TitleBar .white-btn.play{
     padding: 0px 5px 0px 18px !important;
     height: 20px !important;
     display: flex;
@@ -235,7 +233,7 @@
     line-height: 30px;
     margin-top: -8px;
 }
-.TitleBar .share-btn {
+#TitleBar .share-btn {
     border: none !important;
     padding: 15px 15px !important;
     min-width: 0 !important;
@@ -246,14 +244,14 @@
     padding: 0px 20px 0px 20px !important;
 
 }
-.TitleBar .white-btn.play:hover{
+#TitleBar .white-btn.play:hover{
   transform: translateY(-1px);
   box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.06) !important;
     color: #42A5FF !important;
     /*background-color: #edf3fe !important;*/
     /*border: 1px solid #42A5FF !important;*/
 }
-.TitleBar .white-btn.play span.button-circle{
+#TitleBar .white-btn.play span.button-circle{
 /*    background-color: #fff;*/
     border-radius: 20px;
     width: 25px;
@@ -268,10 +266,10 @@
     background-color: #fff;
     transition: border-color .25s ease-in-out;
 }
-.TitleBar .white-btn.play:hover span.button-circle{
+#TitleBar .white-btn.play:hover span.button-circle{
     /*border-color: #42A5FF;*/
 }
-.TitleBar .white-btn.play span.words{
+#TitleBar .white-btn.play span.words{
     display: inline-block;
     font-size: 0.875rem !important;
 }
@@ -378,7 +376,7 @@
   from { background-color: #EDF3FE; }
 }
 
-/*.TitleBar .title-group-sub:hover{
+/*#TitleBar .title-group-sub:hover{
     box-shadow: 0px 3px 10px rgba(14,30,37,.10) !important;
     transform: translateY(-1px);
 }*/
@@ -391,13 +389,13 @@
     margin-right: 25px;
     font-size: 14px;
 }
-.TitleBar .project {
+#TitleBar .project {
     height: 55px;
 }
 .card-dropdown .show{
   width: 10px;
 }
-.TitleBar .status {
+#TitleBar .status {
     width: 400px;
     line-height: 49px;
     color: #AAA;
@@ -405,12 +403,12 @@
     text-align: right;
 }
 
-.TitleBar input:focus {
+#TitleBar input:focus {
     outline: 0;
     background-color: #EFEFEF;
 }
 
-.TitleBar input::placeholder {
+#TitleBar input::placeholder {
     color: #CCC;
 }
 
@@ -439,33 +437,33 @@
     margin-top: -10px !important;
 }
 
-.App .Menu .navbar .navigation {
+.Menu .navbar .navigation {
     float: left;
     margin: 0;
     line-height: 36px;
     padding: 12px;
 }
 
-.App .Menu .navbar .navigation a {
+.Menu .navbar .navigation a {
     text-decoration: none;
     color: #ffffff;
     font-weight: bold;
 }
 
-.App .Menu .navbar .user {
+.Menu .navbar .user {
     float: right;
     margin: 0;
     line-height: 36px;
     padding: 12px;
 }
 
-.App .Menu .navbar .user a {
+.Menu .navbar .user a {
     text-decoration: none;
     color: #ffffff;
     font-weight: bold;
 }
 
-.App .Menu #sidebar .block-title {
+.Menu #sidebar .block-title {
     margin-top: 0px;
 /*    margin-bottom: 10px;*/
     font-weight: lighter;
@@ -477,15 +475,15 @@
     color: #545D6D;
 }
 
-/*.App .Menu #sidebar .block-title:hover {
+/*.Menu #sidebar .block-title:hover {
     color: #95a6bd;
 }
 */
-.App .Menu #sidebar .block-title:hover .close{
+.Menu #sidebar .block-title:hover .close{
     color: #000 !important;
 }
 
-.App .Menu .block-title h5{
+.Menu .block-title h5{
     font-weight: normal;
     color: #2b3950;
     font-size: 14px;
@@ -494,31 +492,23 @@
 /*    transition: color 0.3s ease;*/
 }
 
-/*.App .Menu .block-title h5:hover{*/
+/*.Menu .block-title h5:hover{*/
     /*color: #95a6bd;*/
     /*text-decoration: underline;*/
     /*border-bottom: 1px solid #545D6D;*/
 /*}*/
 
-.App .Menu .block-title p {
+.Menu .block-title p {
     color: #95a6bd;
     font-size: 0.95rem;
 }
 
 .toolbar{
-    padding-top: 59px;
-    position: fixed;
-    z-index: 1000;
+    position: absolute;
+    z-index: 10;
     display: flex;
     height: 100%;
     flex-direction: column;
-
-/*
-    padding-left: 5px;
-    padding-right: 5px;
-*/
-/*    border-right: 1px solid #E2E9EC !important;*/
-    /*border-right: 1px solid #EEE;*/
 }
 
 .toolbar>div{
@@ -623,9 +613,8 @@
     width: 100%;
 }
 
-.App .Menu #sidebar {
-    position: fixed;
-    top: 59px;
+.Menu #sidebar {
+    position: absolute;
     left: 40px;
     z-index: 8;
     width: 230px;
@@ -652,7 +641,7 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.App .Menu #sidebar.open {
+.Menu #sidebar.open {
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
     -ms-transform: translateX(0);
@@ -660,14 +649,14 @@
     transform: translateX(0);
 }
 
-.App .Menu #sidebar .section-title{
+.Menu #sidebar .section-title{
     text-transform: uppercase;
     font-size: 0.75rem;
     /*font-weight: bold;*/
     color: #95a6bd;
 }
 
-.App .Menu #sidebar .section-title>i{
+.Menu #sidebar .section-title>i{
     width: 10px;
     text-align: left;
     display: inline-block;
@@ -678,30 +667,30 @@
     cursor: pointer;
 }
 
-.App .Menu #sidebar .blocks {
+.Menu #sidebar .blocks {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border: 1px solid #DDD;
     border-left: none !important;
 }
 
-/*.App .Menu #sidebar button {
+/*.Menu #sidebar button {
     width: 75px;
     height: 25px;
     margin-top: 10px;
 }*/
 
-/*.App .Menu #sidebar .menuitem-container {
+/*.Menu #sidebar .menuitem-container {
     display: flex;
     align-items: center;
 }
 
-.App .Menu #sidebar .menuitem-container>i {
+.Menu #sidebar .menuitem-container>i {
     width: 10%;
 }
 */
 
-.App .Menu #sidebar .MenuItem {
+.Menu #sidebar .MenuItem {
     cursor: pointer;
     overflow: hidden;
     border-radius: 6px;
@@ -791,7 +780,7 @@
     background-color: transparent !important;
     color: aqua !important;
 }
-.App .Menu #sidebar .MenuItem .menu-tip {
+.Menu #sidebar .MenuItem .menu-tip {
     padding: 0px 8px 0px 8px !important;
     color: #fff;
     font-size: 14px;
@@ -802,7 +791,7 @@
     top: 2px;
     right: 0px;
 }
-.App .Menu #sidebar .MenuItem:hover .menu-tip {
+.Menu #sidebar .MenuItem:hover .menu-tip {
     display: block !important;
 }
 .menu-tip {
@@ -836,13 +825,13 @@
     background-color: #b8daff !important;
     color: #42A5FF !important;
 }
-.App .Menu #sidebar .section-blocks {
+.Menu #sidebar .section-blocks {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -4px;
 }
 
-.App .Menu #sidebar .MenuItem .MenuText{
+.Menu #sidebar .MenuItem .MenuText{
     flex: 1;
     display: block;
     align-items: center;
@@ -850,7 +839,7 @@
 
 }
 
-.App .Menu #sidebar .MenuItem:hover {
+.Menu #sidebar .MenuItem:hover {
     /*transform: scale(1.03);*/
     transform: translateY(-1px);
     box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 2px 6px rgba(0,0,0,.18);
@@ -860,10 +849,10 @@
     color: #2b3950 !important;
 }
 
-.App .Menu #sidebar .MenuItem:active{
+.Menu #sidebar .MenuItem:active{
 /*    transform: rotate(-6deg);*/
 }
-.App .Menu #sidebar .MenuItem .MenuIcon {
+.Menu #sidebar .MenuItem .MenuIcon {
     display: inline-block;
     justify-content: center;
     align-items: center;
@@ -901,101 +890,101 @@
     margin-bottom: 0;
 }
 
-.App .Menu #sidebar .MenuItem.choice:hover {
+.Menu #sidebar .MenuItem.choice:hover {
     background-color: #F4F6F7;
 } .MenuItem.choice>.MenuIcon {
     color: #62D6A8 !important;
 }
-.App .Menu #sidebar .MenuItem.intent:hover {
+.Menu #sidebar .MenuItem.intent:hover {
     background-color: #F4F6F7;
 } .MenuItem.intent>.MenuIcon {
     color: #8699ff !important;
 }
-.App .Menu #sidebar .MenuItem.mail:hover {
+.Menu #sidebar .MenuItem.mail:hover {
     background-color: #F4F6F7;
 } .MenuItem.mail>.MenuIcon {
     color: #ffa477 !important;
 }
-.App .Menu #sidebar .MenuItem.stream:hover {
+.Menu #sidebar .MenuItem.stream:hover {
     background-color: #163898;
 } .MenuItem.stream>.MenuIcon {
     color: #4584e8 !important;
 }
-.App .Menu #sidebar .MenuItem.api:hover {
+.Menu #sidebar .MenuItem.api:hover {
     background-color: #F4F6F7;
 } .MenuItem.api>.MenuIcon {
     color: #f18383 !important;
 }
-.App .Menu #sidebar .MenuItem.permissions:hover {
+.Menu #sidebar .MenuItem.permissions:hover {
     background-color: #F4F6F7;
 } .MenuItem.permissions>.MenuIcon {
     color: #88bbd8 !important;
 
 }
-.App .Menu #sidebar .MenuItem.speak:hover {
+.Menu #sidebar .MenuItem.speak:hover {
     background-color: #F4F6F7;
 } .MenuItem.speak>.MenuIcon {
     color: #42A5FF !important;
     font-size: 18px;
 }
-.App .Menu #sidebar .MenuItem.audio:hover, .App .Menu #sidebar .MenuItem.combine:hover {
+.Menu #sidebar .MenuItem.audio:hover, .Menu #sidebar .MenuItem.combine:hover {
     background-color: #ff8b35;
 } .MenuItem.audio>.MenuIcon, .MenuItem.combine>.MenuIcon  {
     color: #ff8b35 !important;
 }
-.App .Menu #sidebar .MenuItem.random:hover {
+.Menu #sidebar .MenuItem.random:hover {
     background-color: #F4F6F7;
 } .MenuItem.random>.MenuIcon {
     color: #FA755A !important;
     font-size: 18px;
 }
-.App .Menu #sidebar .MenuItem.set:hover {
+.Menu #sidebar .MenuItem.set:hover {
     background-color: #F4F6F7;
 } .MenuItem.set>.MenuIcon {
     color: #69D4F8 !important;
 }
-.App .Menu #sidebar .MenuItem.variable:hover {
+.Menu #sidebar .MenuItem.variable:hover {
     background-color: #F4F6F7;
 } .MenuItem.variable>.MenuIcon {
     background-color: #9575CD;
 }
-.App .Menu #sidebar .MenuItem.if:hover {
+.Menu #sidebar .MenuItem.if:hover {
     background-color: #F4F6F7;
 } .MenuItem.if>.MenuIcon {
     color: #F5BE58 !important;
 }
-.App .Menu #sidebar .MenuItem.capture:hover {
+.Menu #sidebar .MenuItem.capture:hover {
     background-color: #F4F6F7;
 } .MenuItem.capture>.MenuIcon {
     color: #c48cff !important;
 }
-.App .Menu #sidebar .MenuItem.command:hover {
+.Menu #sidebar .MenuItem.command:hover {
     background-color: #F4F6F7;
 } .MenuItem.command>.MenuIcon, .MenuItem.jump>.MenuIcon {
     color: #EC5594 !important;
 }
-.App .Menu #sidebar .MenuItem.flow:hover {
+.Menu #sidebar .MenuItem.flow:hover {
     background-color: #F4F6F7;
 } .MenuItem.flow>.MenuIcon {
     color: #7abcdb!important;
 }
-.App .Menu #sidebar .MenuItem.comment:hover {
+.Menu #sidebar .MenuItem.comment:hover {
     background-color: #F4F6F7;
 } .MenuItem.comment>.MenuIcon {
     color: #b6c9d4 !important;
     font-size: 18px;
 }
 
-.App #diagram {
+#diagram {
     width: 100%;
     height: 100%;
     padding-left: 40px;
 }
-.App #diagram.no-padding {
+#diagram.no-padding {
     padding-left: 0 !important;
 }
 
-.App .srd-diagram {
+.srd-diagram {
     width: 100%;
     height: 100%;
     background-color: #f2f7f8;
@@ -1011,7 +1000,7 @@
 .App.review #diagram {
     /*border: 10px solid #D84315;*/
 }
-.App.review .TitleBar{
+.App.review #TitleBar{
     /*border-bottom: 10px solid #D84315 !important;*/
 }
 
@@ -1040,14 +1029,12 @@
     z-index: 500
 }
 
-.App #Editor {
+#Editor {
     position: fixed;
-    top: 0;
     right: 0;
     z-index: 5;
     width: 350px;
     height: 100%;
-    padding-top: 59px;
     background-color: #fff;
     /*opacity: 0.9;*/
     -webkit-touch-callout: none;
@@ -1056,7 +1043,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    border-left: 1px solid #E2E9EC;
+    border-left: 1px solid #e2e9ec;
     -webkit-transform: translateX(350px);
     -moz-transform: translateX(350px);
     -ms-transform: translateX(350px);
@@ -1074,7 +1061,7 @@
     overflow: scroll;
 }
 
-.App #Editor.open {
+#Editor.open {
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
     -ms-transform: translateX(0);
@@ -1082,7 +1069,7 @@
     transform: translateX(0);
 }
 
-.App #Editor label {
+#Editor label {
     display: inline-block;
     font-weight: 400;
     vertical-align: middle;
@@ -1105,7 +1092,7 @@
     border: none;
 }
 
-.App .Loader {
+#app .Loader {
     position: fixed;
     left: 50%;
     top: 50%;
@@ -2217,7 +2204,7 @@ button.close:hover{
     .title-group .last-save {
         display: none;
     }
-    .TitleBar{
+    #TitleBar{
         /*height: 105px;*/
         display: block;
         padding-left: 275px;

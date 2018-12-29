@@ -5,6 +5,70 @@
     color: #8da2b5;
 }
 
+.nav-item{
+	font-size: 15px;
+}
+#secondary-nav{
+	width: 100%;
+	display: flex;
+	position: fixed;
+	top: 59px;
+	z-index: 200;
+	padding: 0 0px;
+	background-color: #F0F6F7;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .08);
+	border-bottom: 1px solid #e2e9ec;
+}
+#secondary-nav>.nav-item{
+	color: #8da2b5;
+	margin: 0 20px;
+	padding: 9px 0 10px 0;
+	width: 84px;
+	text-align: center;
+	text-transform: capitalize;
+	text-decoration: none;
+	-webkit-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+	display: inline-block;
+	border-top: 3px solid transparent;
+}
+
+#secondary-nav>.nav-item:hover, #app .sidebar-nav .nav-item:hover{
+	color: #42a5ff;
+}
+
+#secondary-nav>.nav-item:active, #app .sidebar-nav .nav-item:active{
+	border-color: #e2e9ec;
+}
+#secondary-nav>.nav-item.active, #app .sidebar-nav .nav-item.active{
+	color: #42a5ff;
+	border-color: #42a5ff;
+}
+
+div.nav-item{
+	cursor: default;
+}
+
+#app .sidebar-nav {
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	width: 180px;
+	padding: 15px 0;
+	z-index: 20;
+	border-right: 1px solid #E2E9EC;
+}
+
+#app .sidebar-nav .nav-item {
+	-webkit-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+	padding: 2px 25px;
+	margin: 8px 0;
+	border-right: 3px solid transparent;
+	text-decoration: none;
+	color: #8da2b5;
+}
+
 #navbar  {
 	padding: 0rem 1rem;
 	-webkit-transition : background-color 800ms ease;

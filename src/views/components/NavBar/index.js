@@ -3,7 +3,6 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   NavLink,
@@ -45,22 +44,22 @@ class NavBar extends Component {
     this.logout = this.logout.bind(this);
     this.intercom_user = {}
 
-    let tabs = [
-      {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
-      {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
-      // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
-    ]
+    let tabs = []
+    //   {link: '/dashboard', 'text': <React.Fragment>Dashboard</React.Fragment>},
+    //   {link: '/canvas', 'text': <React.Fragment>Canvas</React.Fragment>},
+    //   // {link: '/market', 'text': <React.Fragment>Marketplace</React.Fragment>},
+    // ]
 
     let user = window.user_detail
 
     if(user.id !== null){
-      if(user.admin > 0){
-        tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
-      }
-      if(user.admin >= 100) {
-        tabs.push({link: '/admin', text: <React.Fragment>Admin</React.Fragment>});
-        //tabs.push({link: '/analytics', text: <React.Fragment>Analytics</React.Fragment>});
-      }
+      // if(user.admin > 0){
+      //   tabs.push({link: '/business', 'text': <React.Fragment>Business</React.Fragment>})
+      // }
+      // if(user.admin >= 100) {
+      //   tabs.push({link: '/admin', text: <React.Fragment>Admin</React.Fragment>});
+      //   //tabs.push({link: '/analytics', text: <React.Fragment>Analytics</React.Fragment>});
+      // }
       this.intercom_user = {
         user_id: user.id,
         name: user.name,
@@ -111,11 +110,11 @@ class NavBar extends Component {
     return (
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
-            <NavbarBrand href="https://www.getvoiceflow.com" target="_blank" className="mx-2">
+            <Link to="/" className="mx-2 navbar-brand">
               <img className='voiceflow-logo' src={process.env.PUBLIC_URL+'/wordmark.svg'} alt='logo' 
                 height="30" width="120"
               />
-            </NavbarBrand>
+            </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="mr-auto" navbar>

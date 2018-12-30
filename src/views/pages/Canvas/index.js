@@ -11,15 +11,14 @@ import './StoryBoard.css'
 import TitleBar from './TitleBar'
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
-import ErrorModal from './../../components/Modals/ErrorModal'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
-import { Prompt } from 'react-router'
 import new_template from './../../../assets/templates/new'
+import blank_template from './../../../assets/templates/blank'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import {convertDiagram} from './util'
+import SkillModal from './../Dashboard/Skill/SkillModal'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -105,7 +104,6 @@ class Canvas extends Component {
         this.setVariables = this.setVariables.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
-        this.createSkill = this.createSkill.bind(this)
         this.publishAMZN = this.publishAMZN.bind(this)
         this.publishMarket = this.publishMarket.bind(this)
         this.onSave = this.onSave.bind(this)
@@ -128,20 +126,10 @@ class Canvas extends Component {
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
         this.hotKeys=this.hotKeys.bind(this)
-        this.showErrorPopup = this.showErrorPopup.bind(this)
-        this.showConfirmPopup = this.showConfirmPopup.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
         this.preview = !!this.props.preview
-
-        let last_session = localStorage.getItem('flow')
-        if(last_session){
-            let parts = last_session.split('/')
-            if(parts.length === 2){
-                this.props.history.push('/canvas/' + last_session)
-            }
-        }
 
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
@@ -152,20 +140,55 @@ class Canvas extends Component {
         let open
         let diagram_name = ''
 
-        let newSkill = !!this.props.new
         let global_variables = defaultVariables.slice(0)
 
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
+        this.loaded = false
+
+        if(this.props.new){
+            // DEFAULT TEMPLATE FOR CREATING A SKILL
+            open = true
+
+            let model = new SRD.DiagramModel()
+            let blank = this.onboarding ? new_template : blank_template
+            blank.id = generateID()
+
+            model.deSerializeDiagram(blank, engine)
+
+            let nodes = model.getNodes()
+            for (let key in nodes) {
+                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
+                    nodes[key].clearListeners()
+                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
+                }
+            }
+
+            var links = model.getLinks()
+            for (let key in links) {
+                links[key].setColor(line_color)
+                links[key].setWidth(line_width)
+            }
+
+            engine.setDiagramModel(model)
+
+            model.addListener({nodesUpdated: this.unsave})
+            model.addListener({linksUpdated: this.unsave})
+
+            diagram_name = 'ROOT'
+        }
 
         this.state = {
+            skill: {
+                name: '...',
+                intents: [],
+                slots: []
+            },
             engine: engine,
             open: open,
             diagram_name: diagram_name,
             diagrams: [],
-            loading_diagram: !newSkill,
-            error: null,
-            confirm: null,
+            loading_diagram: !this.props.new,
             saving: false,
             saved: true,
             last_save: false,
@@ -173,18 +196,42 @@ class Canvas extends Component {
             testing_info: false,
             variables: [],
             global_variables: global_variables,
-            newSkill: newSkill,
+            new_skill_step: this.props.new ? 5 : 0,
             help: null,
             helpOpen: false,
             user_modules: null,
-            user_templates: []
+            user_templates: [],
+            email_templates: []
         }
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if(!state.skill){
-            // prevent redundant saving of global variables in the skill object
-            let skill = props.skill
+    componentWillMount() {
+        // If not preview mode
+        if(!this.preview){
+            document.addEventListener('keydown', this.hotKeys)
+        }
+        this.checkSkill()
+    }
+
+    componentDidUpdate(previous_props) {
+
+        this.checkSkill()
+        
+        if(previous_props.diagram_id !== this.props.diagram_id && this.state.new_skill_step === 0){
+            if(this.buildDiagrams !== null){
+                this.buildDiagrams(this.props.diagram_id)
+            }
+            this.setState({
+                loading_diagram: true,
+                open: false
+            }, () => this.onLoadId(this.props.diagram_id))
+        }
+    }
+
+    checkSkill(){
+        if(!this.state.skill.skill_id && this.props.skill && this.props.skill.skill_id){
+            // load in diagrams whenever skill is ready
+            let skill = this.props.skill
             let globals = skill.global
             delete skill.global
 
@@ -198,42 +245,72 @@ class Canvas extends Component {
                 })
             }
 
-            return {
-                skill: props.skill,
-                global_variables: global_variables
-            }
-        }else{
-            return null
-        }
-    }
-
-    componentDidMount() {
-        // If not preview mode
-        if(!this.preview){
-            this.loadUserModules()
-            document.addEventListener('keydown', this.hotKeys)
-        }
-        this.onLoadDiagrams()
-    }
-
-    componentDidUpdate(props) {
-        if(props.diagram_id !== this.props.diagram_id){
-            if(this.buildDiagrams !== null){
-                this.buildDiagrams(this.props.diagram_id)
-            }
             this.setState({
-                loading_diagram: true,
-                open: false
-            }, () => this.onLoadId(this.props.diagram_id))
+                skill: {...this.state.skill, ...skill},
+                global_variables: global_variables
+            }, () => {
+                if(this.state.new_skill_step > 1){
+                    // NEW SKILL CREATED
+                    this.setState({new_skill_step: 1})
+
+                    let diagram_id = this.state.skill.diagram
+                    localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
+
+                    this.onSave(() => {
+                        this.state.diagrams.push({
+                            id: diagram_id,
+                            name: 'ROOT'
+                        })
+                        if(this.buildDiagrams !== null){
+                            this.buildDiagrams(diagram_id)
+                        }
+                    }, true)
+
+                    this.props.history.push(`/canvas/${this.state.skill.skill_id}/${diagram_id}`)
+                }else{
+                    // SKILL IS LOADED HERE
+                    if(!this.preview){
+                        this.loadUserModules()
+                        this.onLoadEmailTemplates()
+                    }
+                    this.onLoadDiagrams()
+                }
+            })
         }
     }
 
-    showErrorPopup(message) {
-        this.setState({error: message})
-    }
+    onLoadEmailTemplates(){
+        if(window.user_detail && window.user_detail.admin > 0 && this.props.skill){
+            axios.get(`/email/templates?skill_id=${this.props.skill.skill_id}`)
+            .then(res => {
+                if(Array.isArray(res.data)){
+                    let templates = res.data.map(t => {
+                        let variables = [];
+                        if(t.variables){
+                            try{
+                                variables = JSON.parse(t.variables);
+                            }catch(err){
+                                console.error(err);
+                            }
+                        }
 
-    showConfirmPopup(confirm){
-        this.setState({confirm: confirm})
+                        return {
+                            title: t.title,
+                            sender: t.sender,
+                            template_id: t.template_id,
+                            variables: variables
+                        }
+                    })
+                    this.setState({
+                        email_templates: templates
+                    })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                this.props.onError('Unable to Retrieve Email Templates')
+            })
+        }
     }
 
     zoom(delta){
@@ -300,9 +377,9 @@ class Canvas extends Component {
         .catch(err => {
             console.log(err.response)
             this.setState({
-                saving: false,
-                error: 'Error retrieving template'
+                saving: false
             })
+            this.props.onError('Error retrieving template')
         })
     }
 
@@ -343,9 +420,9 @@ class Canvas extends Component {
         .catch(err => {
             console.log(err.response)
             this.setState({
-                saving: false,
-                error: 'Error retrieving template'
+                saving: false
             })
+            this.props.onError('Error retrieving template')
         })
     }
 
@@ -372,14 +449,13 @@ class Canvas extends Component {
         })
         .then(res => {
             this.loadDiagram(res.data)
-            this.createSkill(module.title + " Copy")
         })
         .catch(err => {
             console.log(err.response)
             this.setState({
-                saving: false,
-                error: 'Error retrieving template'
+                saving: false
             })
+            this.props.onError('Error retrieving template')
         })
     }
 
@@ -445,6 +521,9 @@ class Canvas extends Component {
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.hotKeys)
+        if(this.state.skill && this.state.skill.skill_id && this.props.diagram_id){
+            this.onSave(null, false, false)
+        }
     }
 
     hotKeys(event){
@@ -481,9 +560,9 @@ class Canvas extends Component {
         .catch(err => {
             console.log(err.response)
             this.setState({
-                saving: false,
-                error: 'Error retrieving modules'
+                saving: false
             })
+            this.props.onError('Error retrieving modules')
         })
     }
 
@@ -495,10 +574,10 @@ class Canvas extends Component {
         this.state.engine.repaintCanvas()
     }
 
-    onSave(cb, is_new=false) {
+    onSave(cb, is_new=false, state=true) {
 
         try {
-            this.setState({ saving: true })
+            state && this.setState({ saving: true })
             var engine = this.state.engine
             var model = engine.getDiagramModel()
             let serialize = model.serializeDiagram()
@@ -546,7 +625,7 @@ class Canvas extends Component {
                 if(diagrams[i].id === this.props.diagram_id){
                     diagrams[i].sub_diagrams = sub_diagrams
                 }
-                this.setState({
+                state && this.setState({
                     diagrams: diagrams
                 }, () => {
                     if(this.buildDiagrams !== null){
@@ -592,7 +671,7 @@ class Canvas extends Component {
             })
 
             Promise.all([save_skill_intents, save_diagram]).then(res => {
-                this.setState({
+                state && this.setState({
                     saving: false,
                     saved: true,
                     last_save: Date.now()
@@ -600,17 +679,14 @@ class Canvas extends Component {
                 if(typeof cb === "function") cb(this.props.diagram_id)
             }, rej_err => {
                 console.log(rej_err)
-                this.setState({
-                    saving: false,
-                    error: 'Error Saving Project'
-                })
+                state && this.setState({
+                    saving: false
+                }) && this.props.onError('Error Saving Project')
                 if(typeof cb === "function") cb(null)
             })
         } catch (e) {
             console.log(e)
-            this.setState({
-                error: 'Error Saving - Project Structure (Check Logs)'
-            })
+            state && this.props.onError('Error Saving - Project Structure (Check Logs)')
             if(typeof cb === "function") cb(null)
         }
     }
@@ -676,7 +752,7 @@ class Canvas extends Component {
 
             this.setState({ saved: true })
         } else {
-            this.setState({ error: 'Could Not Open Project - Corrupted File' })
+            this.props.onError('Could Not Open Project - Corrupted File')
         }
     }
 
@@ -704,7 +780,7 @@ class Canvas extends Component {
         })
         .catch(err => {
             console.error(err.response)
-            this.setState({ error: 'Could Not Retrieve Project Diagrams' })
+            this.props.onError('Could Not Retrieve Project Diagrams')
         })
     }
 
@@ -720,7 +796,7 @@ class Canvas extends Component {
             }
         })
         .catch(err => {
-            this.setState({ error: 'Could Not Retrieve Project' })
+            this.props.onError('Could Not Retrieve Project')
         })
     }
 
@@ -855,62 +931,13 @@ class Canvas extends Component {
                     .catch(err => {
                         console.log(err.response)
                         this.setState({
-                            error: "Could Not Render Your Project",
                             testing_modal: false
                         })
+                        this.props.onError("Could Not Render Your Project")
                     })
                 }
             })
         }
-    }
-
-    createSkill(name, locales){
-        // CREATE NEW PROJECT
-        if(!name){
-            name = 'New Skill'
-        }
-
-        let diagram_id = generateID()
-
-        axios.post('/skill', {
-          name: name,
-          diagram: diagram_id,
-          locales: locales
-        })
-        .then(res => {
-            let skill_id = res.data.id
-            localStorage.setItem('flow', `${skill_id}/${diagram_id}`)
-            this.props.diagram_id = diagram_id
-
-            this.setState({
-                skill: {
-                    skill_id: skill_id,
-                    name: name,
-                    review: false,
-                    live: false,
-                    restart: true,
-                    diagram: diagram_id,
-                    locales: locales,
-                    intents: [],
-                    slots: []
-                },
-                newSkill: 0
-            }, () => {
-                this.onSave(() => {
-                    this.state.diagrams.push({
-                        id: diagram_id,
-                        name: 'ROOT'
-                    })
-                    if(this.buildDiagrams !== null){
-                        this.buildDiagrams(diagram_id)
-                    }
-                    this.props.history.push(`/canvas/${skill_id}/${diagram_id}`)
-                }, true)
-            })
-        })
-        .catch(err => {
-            this.setState({ error: 'Could Not Create Project - Error' })
-        })
     }
 
     // Create a new diagram from the flow block
@@ -964,9 +991,9 @@ class Canvas extends Component {
             .catch(err => {
                 console.log(err.response)
                 this.setState({
-                    saving: false,
-                    error: 'Unable to create new Flow'
+                    saving: false
                 })
+                this.props.onError('Unable to create new Flow')
             })
         })
     }
@@ -1194,9 +1221,7 @@ class Canvas extends Component {
                     }
                 }catch(err){
                     console.error(err)
-                    return this.setState({
-                        error: 'Error - Module Broken'
-                    })
+                    return this.props.onError('Error - Module Broken')
                 }
             }
             engine.stopMove()
@@ -1218,20 +1243,23 @@ class Canvas extends Component {
     render() {
         return (
             <React.Fragment>
-                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <HelpModal
                     open={this.state.helpOpen}
                     help={this.state.help}
                     toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
                     setHelp={(help) => this.setState({help: help})}
                 />
-                <Prompt
-                    when={!this.state.saved}
-                    message={location => 'Are you sure you want to leave without saving?'
-                    }
-                />
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
+                { this.state.new_skill_step !== 0 ?
+                    <SkillModal
+                        status={this.state.new_skill_step}
+                        createSkill={this.props.createSkill}
+                        user_templates={this.state.user_templates}
+                        onTemplateChoice={this.createWithTemplate}
+                        onClose={()=>this.setState({new_skill_step: 0})}
+                        cancel={()=>this.props.history.push('/dashboard')}
+                    /> : null
+                }
                 {this.state.testing_modal ?
                     <TestModal
                         open={this.state.testing_modal}
@@ -1274,7 +1302,6 @@ class Canvas extends Component {
                     skill={this.state.skill}
                     preview={this.preview}
                     title={this.state.diagram_name}
-                    updateSkill={(skill) => {this.setState({skill: skill})}}
                     onSave={this.onSave}
                     saving={this.state.saving}
                     saved={this.state.saved}
@@ -1283,8 +1310,8 @@ class Canvas extends Component {
                     publishMarket={this.publishMarket}
                     diagram_id={this.props.diagram_id}
                     history={this.props.history}
-                    onError={this.showErrorPopup}
-                    onConfirm={this.showConfirmPopup}
+                    onError={this.props.onError}
+                    onConfirm={this.props.onConfirm}
                 /> :
                 <div className="title-group no-select">
                   <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -1297,7 +1324,7 @@ class Canvas extends Component {
                     </div>
                 </div>}
                 <Editor
-                    skill_id={this.state.skill.skill_id}
+                    skill={this.state.skill}
                     unfocus={this.onDiagramUnfocus}
                     open={this.state.open}
                     node={this.state.engine.getSuperSelect()}
@@ -1320,8 +1347,9 @@ class Canvas extends Component {
                     onboarding={this.onboarding}
                     diagram_id={this.props.diagram_id}
                     finished={()=>{this.onboarding = false}}
-                    onError={this.showErrorPopup}
-                    onConfirm={this.showConfirmPopup}
+                    onError={this.props.onError}
+                    onConfirm={this.props.onConfirm}
+                    templates={this.state.email_templates}
                 />
                 <div
                     id="diagram"

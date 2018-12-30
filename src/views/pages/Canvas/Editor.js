@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
 import Jump from './Editors/Jump'
@@ -51,7 +50,6 @@ class Editor extends Component {
 
         this.state = {
             node: this.props.node,
-            templates: [],
             permission_options: [],
             modal: false,
             expanded: false,
@@ -66,38 +64,6 @@ class Editor extends Component {
     }
 
     componentDidMount() {
-        if(window.user_detail && window.user_detail.admin > 0){
-            axios.get(`/email/templates?skill_id=${this.props.skill_id}`)
-            .then(res => {
-                if(Array.isArray(res.data)){
-                    let templates = res.data.map(t => {
-                        let variables = [];
-                        if(t.variables){
-                            try{
-                                variables = JSON.parse(t.variables);
-                            }catch(err){
-                                console.error(err);
-                            }
-                        }
-
-                        return {
-                            title: t.title,
-                            sender: t.sender,
-                            template_id: t.template_id,
-                            variables: variables
-                        }
-                    })
-                    this.setState({
-                        templates: templates
-                    })
-                }
-            })
-            .catch(err => {
-                console.error(err)
-                this.props.onError('Unable to Retrieve Email Templates')
-            })
-        }
-
         // Hard-code for now, but eventually should retrieve from
         // AMZN website if possible
 
@@ -240,7 +206,7 @@ class Editor extends Component {
                 return <Diagram node={this.state.node}
                     onUpdate={this.props.onUpdate}
                     variables={this.props.variables}
-                    createDiagram={this.props.createDiagram}
+                    createDiagram={this.props.createDiagram} 
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
 
@@ -250,7 +216,7 @@ class Editor extends Component {
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.state.templates}/>
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates}/>
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':

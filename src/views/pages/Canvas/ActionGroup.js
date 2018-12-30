@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
-         ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu,
-         DropdownItem, Label } from 'reactstrap'
+         ModalHeader, ModalBody, Button, Label } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
@@ -347,22 +346,6 @@ class ActionGroup extends PureComponent {
                             }
                         </PopoverBody>
                     </Popover>
-                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-                        <DropdownToggle className="anti-btn" tag="div">
-                            <Tooltip
-                                title="Publish"
-                                position="bottom"
-                                distance={16}
-                            >
-                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-rocket"/></MUIButton>
-                            </Tooltip>
-                        </DropdownToggle>
-                        <DropdownMenu className="platform-dropdown arrow"><p className="small-caps text-center mt-2 mb-2">Publish to</p>
-                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
-                            {/*<p className="small-caps-muted text-center mt-1 mb-1">or</p>
-                            <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>*/}
-                        </DropdownMenu>
-                    </Dropdown>
                     <Tooltip
                         distance={16}
                         title="Save"

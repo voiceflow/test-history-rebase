@@ -10,18 +10,18 @@ import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Textarea from 'react-textarea-autosize'
 import moment from 'moment'
-import Image from './../../components/Uploads/Image'
-import Multiple from './../../components/Forms/Multiple'
-import ErrorModal from './../../components/Modals/ErrorModal'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
-import AmazonLogin from './../../components/Forms/AmazonLogin'
+import Image from '../../components/Uploads/Image'
+import Multiple from '../../components/Forms/Multiple'
+import ErrorModal from '../../components/Modals/ErrorModal'
+import ConfirmModal from '../../components/Modals/ConfirmModal'
+import AmazonLogin from '../../components/Forms/AmazonLogin'
 import Select from 'react-select'
 import './Skill.css'
 import {Link} from 'react-router-dom'
-import AuthenticationService from './../../../services/Authentication'
-import LOCALE_MAP from './../../../services/LocaleMap'
+import AuthenticationService from '../../../services/Authentication'
+import LOCALE_MAP from '../../../services/LocaleMap'
 
-import categories from './../../../services/Categories'
+import categories from '../../../services/Categories'
 const _ = require('lodash');
 
 const stage_title = {
@@ -48,22 +48,18 @@ class Skill extends Component {
     constructor(props) {
         super(props);
 
-        if(this.props.computedMatch && this.props.computedMatch.params.id){
-            this.state = {
-                loaded: false,
-                dropdown: false,
-                saved: true,
-                skill_id: this.props.computedMatch.params.id,
-                error: null,
-                stage: 1,
-                publish: false,
-                id_collapse: false,
-                amzn_id: null,
-                stage_error: null,
-                displayingConfirmWithdraw: false,
-            }
-        } else {
-            this.props.history.push('/dashboard');
+        this.state = {
+            loaded: false,
+            dropdown: false,
+            saved: true,
+            skill_id: this.props.skill.skill_id,
+            error: null,
+            stage: 1,
+            publish: false,
+            id_collapse: false,
+            amzn_id: null,
+            stage_error: null,
+            displayingConfirmWithdraw: false,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -573,17 +569,12 @@ class Skill extends Component {
             </div>;
 
         return (
-            <div className='Window skill'>
+            <React.Fragment>
                 <div className="subheader">
                     <div className="container space-between">
-                        <span className="subheader-title">
-                            <b>Settings</b>
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small> {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '}
-                                <span className="text-secondary">{this.state.name}</span>{' '}
-                                <small> / created {moment(this.state.created).fromNow()}</small>
-                            </div>
+                        <span className="text-muted">
+                            <span className="text-secondary">{this.state.name}</span>{' '}
+                            <small> / created {moment(this.state.created).fromNow()}</small>
                         </span>
                         {disabled_stages.has(this.state.stage)?
                             null:
@@ -714,7 +705,9 @@ class Skill extends Component {
                     </div>
                 </span>
 
-                <div className='container mt-3'>
+                <div className='subheader-page-container'>
+                <div>
+                    <div className='container pt-3'>
                     {this.state.live ?
                         <div className="alert alert-success mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">
@@ -997,7 +990,9 @@ class Skill extends Component {
 
                       </Form>
                 </div>
-            </div>
+                </div>
+                </div>
+            </React.Fragment>
         );
     }
 }

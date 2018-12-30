@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import ErrorModal from './../../components/Modals/ErrorModal'
 import axios from 'axios';

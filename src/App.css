@@ -133,6 +133,10 @@ audio {
     font-size: 80%;
 }
 
+.btn-thicc{
+    padding: 12px 20px;
+}
+
 .btn-primary{
     border: 1px solid #2295FA !important;
     color: #fff;
@@ -143,6 +147,21 @@ audio {
     display: inline-block;
     box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
     transition: all 0.25s;
+}
+.btn-success{
+    background-color: #23e4a6;
+    border-color: #23e4a6;
+    color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(43, 57, 80, .15);
+}
+.btn-success:hover{
+    background-color: #13ca8f;
+    border-color: #13ca8f;
+    transform: translateY(-1px);
+}
+.btn-success:active{
+    background-color: #01b37a !important;
+    border-color: #01b37a !important;
 }
 .btn-primary:hover{
 /*    box-shadow: 0 2px 10px 0 rgba(74,144,226,.4) !important;*/
@@ -566,7 +585,7 @@ audio {
     box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
     border-radius: 10px;
     border: none !important;
-    padding: 0px !important;
+    padding: 0px;
     transition-duration: 172ms;
     will-change: transform, box-shadow;
 }

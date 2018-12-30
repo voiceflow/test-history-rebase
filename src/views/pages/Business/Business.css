@@ -2,6 +2,18 @@
 	height: 100%;
 	display: flex;
 }
+
+#upgrade{
+	padding: 40px;
+	padding-right: 100px;
+	padding-bottom: 60px;
+	width: 50%;
+	min-width: 680px;
+	background-image: url(/upgrade.svg);
+    background-position: 104% 142%, 0px 0px;
+    background-size: 400px, auto;
+    background-repeat: no-repeat, repeat;
+}
 /*#business > .row {
 	height: 100%;
 }*/

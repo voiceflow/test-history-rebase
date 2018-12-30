@@ -77,9 +77,6 @@ class Templates extends Component {
         return (
             <div className="business-page-inner">
                 <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                <Link to={`/business/${this.props.skill_id}/email/template/new`} className="no-underline">
-                    <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Template</MUIButton>
-                </Link>
                 {!!this.state.confirm && <ConfirmModal 
                     toggle={() => this.setState({confirm: null})}
                     confirm={this.state.confirm}
@@ -87,6 +84,10 @@ class Templates extends Component {
                 { this.state.loading ? 
                     <div className="super-center h-100 w-100">Loading...</div> :
                     <div className="content">
+                        <Link to={`/business/${this.props.skill_id}/email/template/new`} className="no-underline">
+                            <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Template</MUIButton>
+                        </Link>
+                        <hr/>
                         {this.state.templates.length === 0 ? 
                             <h5 className="text-muted">No Email Templates <i className="fal fa-frown"/></h5> :
                             <React.Fragment>

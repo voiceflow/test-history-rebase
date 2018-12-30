@@ -41,13 +41,15 @@ class Business extends Component {
                     page = <Home user={this.props.user}/>
             }
         }else{
-            page = <div className="super-center w-100 h-100">
-                <div className="card" id="upgrade">
-                    <h2>Upgrade to access business features</h2>
-                    <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
-                    {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/check.svg" width={20} className="mr-3" alt="check"/>{feature}</p>)}
-                    <div className="mt-2">
-                        <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan</Link>
+            page = <div className="w-100 h-100">
+                <div className="d-flex justify-content-center mt-5">
+                    <div className="card" id="upgrade">
+                        <h2>Upgrade to access business features</h2>
+                        <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
+                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/check.svg" width={20} className="mr-3" alt="check"/>{feature}</p>)}
+                        <div className="mt-2">
+                            <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan</Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -20,10 +20,9 @@ import Register from './views/pages/Register';
 import Reset from './views/pages/Register/reset';
 import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
-import SkillPage from './views/pages/Skill';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
-import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
+// import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
@@ -121,10 +120,10 @@ class App extends Component {
 
   render() {
     if(this.state.loading){
-      return <div className='super-center h-100 w-100'>
+      return <div id="loading-diagram">
           <div className="text-center">
-              <h5 className="pb-3">Loading</h5>
-              <h1><span className="loader"/></h1>
+              <h5 className="text-muted mb-2">Loading Account</h5>
+              <span className="loader"/>
           </div>
       </div>
     }
@@ -152,8 +151,9 @@ class App extends Component {
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/publish/amzn/:id" name="Skill Dashboard" component={SkillPage}/>
-                <PrivateRoute path="/publish/market/:id" name="Skill Dashboard" component={PublishMarket}/>
+                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
+                <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
+                <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />

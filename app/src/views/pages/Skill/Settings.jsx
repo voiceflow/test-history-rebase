@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Alert, Button, ButtonGroup, FormGroup, Label } from 'reactstrap'
+import { Input, Alert, Button, FormGroup, Label } from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
@@ -15,7 +15,7 @@ class Settings extends Component {
         this.state = {
             tab: 'basic',
             skill: null,
-            open: false,
+            saving: false,
             hide_resume: true
         }
 
@@ -29,7 +29,7 @@ class Settings extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if(!state.open && props.open){
+        if(!state.skill){
             let hidden = false
             if(!props.skill.error_prompt){
                 props.skill.error_prompt = {
@@ -51,13 +51,10 @@ class Settings extends Component {
                     error_prompt: props.skill.error_prompt,
                     resume_prompt: props.skill.resume_prompt
                 },
-                hide_resume: hidden,
-                open: props.open
+                hide_resume: hidden
             }
         }else{
-            return {
-                open: props.open
-            }
+            return null
         }
     }
 
@@ -89,18 +86,6 @@ class Settings extends Component {
     }
 
     saveSettings() {
-        let different = false
-        // check to make sure there are actual differences before making a server call
-        for (var key in this.state.skill) {
-            if(this.state.skill[key] !== this.props.skill[key]){
-                different = true
-            }
-        }
-        if(different === false){
-            this.props.toggle()
-            return
-        }
-
         let skill = clone(this.state.skill)
         if(this.state.hide_resume || !this.state.skill.resume_prompt.content){
             skill.resume_prompt = null
@@ -109,13 +94,14 @@ class Settings extends Component {
             skill.error_prompt = null
         }
 
+        this.setState({saving: true})
         axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.state.skill)
         .then(() => {
             this.props.updateSkill({...this.props.skill, ...skill})
-            this.props.toggle()
+            this.setState({saving: false, skill: null})
         })
         .catch(err => {
-            console.log(err)
+            this.setState({saving: false})
             this.props.onError('Settings Save Error')
         })
     }
@@ -145,6 +131,46 @@ class Settings extends Component {
             case 'advanced':
                 return <React.Fragment>
                     <FormGroup>
+                        <Label>Error Prompt</Label>
+                        <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
+                        <Prompt
+                            placeholder="Sorry, this skill has encountered an error"
+                            voice={this.state.skill.error_prompt.voice}
+                            content={this.state.skill.error_prompt.content}
+                            updatePrompt={(prompt) => this.setState({skill: update(this.state.skill, {
+                                error_prompt: {$merge: prompt}
+                            })})}
+                        />
+                        <hr/>
+                        <Label>Delete Project</Label>
+                        <Alert color="danger between">
+                            <span>WARNING: This action can not be undone</span><br/>
+                            <Button color="danger" onClick={this.confirmDelete}>Delete Skill</Button>
+                        </Alert>
+                    </FormGroup>
+                </React.Fragment>
+            default:
+                return <React.Fragment>
+                    <FormGroup>
+                        <Label>Project Name</Label>
+                        <Input name="name" value={this.state.skill.name} onChange={this.handleUpdate}/>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label className="mb-0">Restart Every Session</Label>
+                        <div className="helper-text">{
+                            this.state.skill.restart ?
+                            'The project will restart from the beginning every time the user starts a session' :
+                            'The project will resume from the last block the user was on before quitting'
+                        }</div>
+                        <div className="mb-2">
+                            <Switch
+                                name="restart"
+                                checked={this.state.skill.restart}
+                                onChange={this.toggleSwitch}
+                                color="primary"
+                            />
+                            <b>{this.state.skill.restart ? 'ON': 'OFF'}</b>
+                        </div>
                         {!this.state.skill.restart && <React.Fragment>
                                 <Label>Resume Prompt 
                                 </Label>
@@ -169,74 +195,44 @@ class Settings extends Component {
                                 <hr/>
                             </React.Fragment>
                         }
-                        <Label>Error Prompt</Label>
-                        <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
-                        <Prompt
-                            placeholder="Sorry, this skill has encountered an error"
-                            voice={this.state.skill.error_prompt.voice}
-                            content={this.state.skill.error_prompt.content}
-                            updatePrompt={(prompt) => this.setState({skill: update(this.state.skill, {
-                                error_prompt: {$merge: prompt}
-                            })})}
-                        />
-                        <hr/>
-                        <Label>Delete Project</Label>
-                        <Alert color="danger between">
-                            <span>WARNING: This action can not be undone</span>
-                            <Button color="danger" onClick={this.confirmDelete}>Delete Skill</Button>
-                        </Alert>
-                    </FormGroup>
-                </React.Fragment>
-            default:
-                return <React.Fragment>
-                    <FormGroup>
-                        <Label>Project Name</Label>
-                        <Input name="name" value={this.state.skill.name} onChange={this.handleUpdate}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label className="mb-0">Restart Every Session</Label>
-                        <div className="helper-text">{
-                            this.state.skill.restart ?
-                            'The project will restart from the beginning every time the user starts a session' :
-                            'The project will resume from the last block the user was on before quitting'
-                        }</div>
-                        <div>
-                            <Switch
-                                name="restart"
-                                checked={this.state.skill.restart}
-                                onChange={this.toggleSwitch}
-                                color="primary"
-                            />
-                            <b>{this.state.skill.restart ? 'ON': 'OFF'}</b>
-                        </div>
                     </FormGroup>
                 </React.Fragment>
         }
     }
 
     render(){
-        return (<Modal isOpen={this.state.open} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.props.toggle}>
-                Project Settings
-            </ModalHeader>
-            <ModalBody>
-                <ButtonGroup className="toggle-group mb-2">
-                    {TABS.map(tab => {
-                        return <Button
-                            key={tab}
-                            onClick={() => this.switchTab(tab)}
-                            outline={this.state.tab !== tab}
-                            disabled={this.state.tab === tab}>
+        let different = false
+        // check to make sure there are actual differences before making a server call
+        if(this.state.skill){
+            for (var key in this.state.skill) {
+                if(this.state.skill[key] !== this.props.skill[key]){
+                    different = true
+                }
+            }
+        }
+
+        return <div id="business">
+            <div className="sidebar-nav">
+                {TABS.map((tab, i) => {
+                    if(this.state.tab === tab){
+                        return <div key={i} className="nav-item active">
                             {tab}
-                        </Button>
-                    })}
-                </ButtonGroup>
+                        </div>
+                    }else{
+                        return <div key={i} onClick={() => this.switchTab(tab)} className="nav-item">
+                            {tab}
+                        </div>
+                    }
+                })}
+            </div>
+            <div className="content">
+                <Button color="primary" style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
+                    {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
+                </Button>
+                <hr/>
                 {this.modalContent()}
-                <div className="super-center">
-                    <Button color="primary" onClick={this.saveSettings}>Save Settings</Button>
-                </div>
-            </ModalBody>
-        </Modal>)
+            </div>
+        </div>
     }
 }
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 
-const PAGES = ['canvas', 'visuals', 'business', 'settings', 'publish'] 
+const PAGES = ['canvas', 'business', 'settings', 'publish'] 
 
 class SecondaryNavBar extends Component {
     render(){

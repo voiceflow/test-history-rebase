@@ -746,21 +746,25 @@
     margin-left: auto;
     margin-right: auto;
 }
+.toggle-group{
+    display: flex;
+    width: 100%;
+}
 .toggle-group .btn.btn-secondary{
+    flex: 1;
     background-color: #cce5ff70 !important;
     height: 30px;
     line-height: 15px !important;
     border: 1px solid #b8daff !important;
     color: #42A5FF !important;
-    width: 100px;
     text-transform: capitalize;
 }
 .toggle-group .btn.btn-outline-secondary{
+    flex: 1;
     height: 30px;
     font-weight: lighter !important;
     color: #8da2b5 !important;
     line-height: 15px;
-    width: 100px;
     text-transform: capitalize;
 }
 .toggle-group .btn.btn-outline-secondary:hover{

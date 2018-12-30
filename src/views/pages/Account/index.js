@@ -14,7 +14,14 @@ const LINKED = 2
 const STATUS = {
   0: {name: "Community (Free)", price: "0"},
   1: {name: "Basic", price: "29"},
-  10: {name: "Admin", price: "100000000"}
+  100: {name: "Admin", price: "100000000"}
+}
+const GET_STATUS = (status) => {
+  if(status in STATUS){
+    return STATUS[status]
+  }else{
+    return {name: 'Unknown', price: "0"}
+  }
 }
 
 const options = [
@@ -122,7 +129,7 @@ class Account extends Component {
   }
 
   render() {
-    return <div className='Window'>
+    return <div id="app">
               <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})} warning/>
               <div className="subheader">
                   <div className="container space-between">
@@ -158,7 +165,7 @@ class Account extends Component {
                     <Col sm="5" className="border-left">
                       <div className="text-muted">Payment</div>
                       <Elements>
-                        <CheckoutForm user={this.props.user} plan={STATUS[this.state.selected_plan]} selected={this.state.selected_plan} logout={this.logout}/>
+                        <CheckoutForm user={this.props.user} plan={GET_STATUS(this.state.selected_plan)} selected={this.state.selected_plan} logout={this.logout}/>
                       </Elements>
                     </Col>
                   </Row>
@@ -168,7 +175,7 @@ class Account extends Component {
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">
                   <div className="p-4 space-between">
-                    <h4 className="mb-0 text-muted">{STATUS[this.props.user.admin].name}</h4>
+                    <h4 className="mb-0 text-muted">{GET_STATUS(this.props.user.admin).name}</h4>
                     <div className="super-center">
                       {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
                       {this.props.user.admin < 1 && <Button onClick={this.toggle}>Upgrade</Button>}

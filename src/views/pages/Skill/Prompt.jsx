@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { VOICES } from './Constants'
+import { VOICES } from './../Canvas/Constants'
 import AudioDrop from '../../components/Uploads/AudioDrop'
 import Textarea from 'react-textarea-autosize'
 import Select from 'react-select'

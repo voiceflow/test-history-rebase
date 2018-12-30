@@ -60,6 +60,7 @@ div.nav-item{
 }
 
 #app .sidebar-nav .nav-item {
+	text-transform: capitalize;
 	-webkit-transition: all .2s ease-out;
 	transition: all .2s ease-out;
 	padding: 2px 25px;
@@ -111,6 +112,7 @@ div.nav-item{
 	cursor: pointer;
 }
 .navbar-brand{
+	height: 100%;
     font-size: 0rem !important;
     margin-right: 20px !important;
     margin-top: -3px !important;

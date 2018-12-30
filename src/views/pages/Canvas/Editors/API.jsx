@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
+import serializeError from 'serialize-error';
 import pretty from 'prettysize';
 import * as _ from 'lodash';
 import axios from 'axios';
 import isVarName from 'is-var-name';
+import ReactJson from 'react-json-view';
 import { Button, ButtonGroup, Modal, ModalHeader, ModalBody, Nav, NavItem, NavLink, InputGroupAddon, Input, InputGroupButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, InputGroup } from 'reactstrap';
 import APIInputs from './components/APIInputs.js';
 import APIMapping from './components/APIMapping.js';
@@ -203,7 +205,7 @@ class API extends Component {
                     return object
                 }
 
-                // Check that variables are set before pushing in 
+                // Check that variables are set before pushing in
                 let request_obj = {
                     method: method ? method : 'GET',
                     url: new_url,
@@ -245,11 +247,10 @@ class API extends Component {
                         }),
                         loading: false,
                         testVariablesMapping: varMap,
-                        modalContent: JSON.stringify(res.data, null, 4)
+                        modalContent: res.data
                     })
                 })
                 .catch(err => {
-                    if(err.response) err = err.response
                     this.setState({
                         testHeader: update(this.state.testHeader, {
                             'status': {$set: err.status},
@@ -258,7 +259,7 @@ class API extends Component {
                         }),
                         loading: false,
                         testVariablesMapping: varMap,
-                        modalContent: JSON.stringify((err.data ? err.data : err), null, 4)
+                        modalContent: serializeError(err)
                     })
                 })
             }
@@ -312,7 +313,7 @@ class API extends Component {
             </ButtonGroup>
             {this.state.activeTab === TABS[0] ?
               <div className="response-box">
-                <pre className="mb-0">{(_.isEmpty(this.state.modalContent) || this.state.modalContent === '{}') ? 'EMPTY RESPONSE' : this.state.modalContent}</pre>
+                <ReactJson src={this.state.modalContent} displayDataTypes={false} name={null}/>
               </div> :
               <div className="mt-3">
                 {_.map(this.state.testVariablesMapping, (val, key) => {

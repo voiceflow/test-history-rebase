@@ -1,13 +1,78 @@
 const axios = require('axios')
-const {docClient, pool, config, hashids} = require('./../services')
+const {docClient, pool, config, hashids, intercom} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
+const squel = require('squel')
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
         const v = c === "x" ? r : (r & 0x3) | 0x8
         return v.toString(16)
+    })
+}
+
+const latestSkillToIntercom = (id, name) => {
+    intercom.users.create({
+        user_id: id,
+        custom_attributes: {
+            latest_skill: name
+        }
+    })
+}
+
+const incrementSkillsCreatedIntercom = (id) => {
+    intercom.users.find({ user_id: id }, async (res) => {
+        if (!res.body) {
+            return
+        }
+        let sc = res.body.custom_attributes.skills_created
+        if (!sc) {
+            let data = await pool.query('SELECT * FROM skills WHERE creator_id = $1', [id])
+            if (Array.isArray(data.rows)) {
+                sc = data.rows.length
+            } else {
+                sc = 0
+            }
+        }
+        intercom.users.create({
+            user_id: id,
+            custom_attributes: {
+                skills_created: sc + 1
+            }
+        })
+    })
+}
+
+const incrementTimesPublishedIntercom = (id) => {
+    intercom.users.find({ user_id: id }, async (res) => {
+        if (!res.body) {
+            return
+        }
+        let n = res.body.custom_attributes.times_published
+                ? res.body.custom_attributes.times_published : 0
+        intercom.users.create({
+            user_id: id,
+            custom_attributes: {
+                times_published: n + 1
+            }
+        })
+    })
+}
+
+const incrementTimesPublishedSuccessfulIntercom = (id) => {
+    intercom.users.find({ user_id: id }, async (res) => {
+        if (!res.body) {
+            return
+        }
+        let n = res.body.custom_attributes.times_published_successful
+                ? res.body.custom_attributes.times_published_successful : 0
+        intercom.users.create({
+            user_id: id,
+            custom_attributes: {
+                times_published_successful: n + 1
+            }
+        })
     })
 }
 
@@ -313,6 +378,8 @@ exports.setSkill = (req, res) => {
             console.error(err);
             res.sendStatus(500);
         } else {
+            incrementSkillsCreatedIntercom(req.user.id)
+            latestSkillToIntercom(req.user.id, name)
             res.send({id: hashids.encode(data.rows[0].skill_id)})
         }
     });
@@ -338,6 +405,7 @@ exports.patchSkill = (req, res) => {
             if(err){
                 res.sendStatus(500);
             }else{
+                latestSkillToIntercom(req.user.id, b.name)
                 res.sendStatus(200);
             }
         });
@@ -388,6 +456,7 @@ exports.patchSkill = (req, res) => {
                 console.log(err);
                 res.sendStatus(500)
             }else{
+                latestSkillToIntercom(req.user.id, b.name)
                 res.sendStatus(200)
             }
         })
@@ -431,6 +500,7 @@ exports.patchSkill = (req, res) => {
                 console.log(err);
                 res.sendStatus(500);
             }else{
+                latestSkillToIntercom(req.user.id, b.name)
                 res.sendStatus(200);
             }
         })
@@ -455,6 +525,7 @@ exports.buildSkill = async (req,res) => {
     if (!req.params.id) {
         res.sendStatus(401)
     }
+    incrementTimesPublishedIntercom(req.user.id);
 
     let id = hashids.decode(req.params.id)[0];
     let original_id = req.params.id
@@ -605,6 +676,7 @@ exports.buildSkill = async (req,res) => {
                                                 if(response.hasOwnProperty('violations')){
                                                     getSkillStatus(depth + 1)
                                                 }else{
+                                                    incrementTimesPublishedSuccessfulIntercom(req.user.id);
                                                     res.send(amzn_id)
                                                 }
                                             })
@@ -888,6 +960,59 @@ exports.copySkill = async (req, res) => {
             return res.sendStatus(401)
         }
     }
+
+    const copySkillRow = (skill_id, new_diagram_id, root_diagram_id, new_creator_id) => {
+        pool.query(
+            `SELECT * FROM skills WHERE skill_id = $1`,
+            [skill_id],
+            (err, data) => {
+                if(err){
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    if(data.rows.length > 0){
+                        data.rows[0].name += ' Copy'
+                        data.rows[0].diagram = new_diagram_id
+                        data.rows[0].creator_id = new_creator_id
+                        
+                        // Setup custom value types for squel.js
+                        squel.registerValueHandler(Array, function(data) {
+                            return "'" + JSON.stringify(data) + "'"
+                        })
+
+                        squel.registerValueHandler(Object, function(data) {
+                            return "'" + JSON.stringify(data) + "'"
+                        })
+
+                        // Delete cols we don't need so psql can assign new
+                        let delete_cols = ['skill_id', 'created', 'amzn_id', 'stage', 'review', 'live', 'preview', 'resume_prompt', 'error_prompt', 'account_linking', 'access_token_variable']
+                        for(let j=0; j<delete_cols.length; j++){
+                            delete data.rows[0][delete_cols[j]]
+                        }
+
+                        let insert_query = squel.insert().into("skills").setFields(data.rows[0]).toString() + ' RETURNING *'
+                        pool.query(
+                            insert_query,
+                            [],
+                            (err, data) => {
+                                if(err){
+                                    console.log(err)
+                                    res.sendStatus(500)
+                                } else {
+                                    let new_skill_id = data.rows[0].skill_id
+                                    retrieveDiagram(root_diagram_id, new_skill_id)
+                                    data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
+                                    res.send(data.rows[0])
+                                }
+                            }
+                        )
+                    } else {
+                        res.sendStatus(404)
+                    }
+                }
+            }
+        )
+    }
     
     pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [id], (err, data) => {
         let root_diagram_id
@@ -899,78 +1024,6 @@ exports.copySkill = async (req, res) => {
                 diagram_mapping[root_diagram_id] = generateID()
             }
         }
-
-        // Create copy of the skill
-        let copy_query = `
-            INSERT INTO skills (
-                name,
-                diagram,
-                creator_id,
-                summary,
-                description,
-                keywords,
-                invocations,
-                small_icon,
-                large_icon,
-                category,
-                purchase,
-                personal,
-                copa,
-                ads,
-                export,
-                instructions,
-                inv_name,
-                locales,
-                restart,
-                global,
-                privacy_policy,
-                terms_and_cond,
-                intents,
-                slots,
-                used_intents,
-                used_choices
-            )
-            SELECT 
-                coalesce(name, '') || ' Copy' AS name,
-                $1 AS diagram,
-                $2 AS creator_id,
-                summary,
-                description,
-                keywords,
-                invocations,
-                small_icon,
-                large_icon,
-                category,
-                purchase,
-                personal,
-                copa,
-                ads,
-                export,
-                instructions,
-                inv_name,
-                locales,
-                restart,
-                global,
-                privacy_policy,
-                terms_and_cond,
-                intents,
-                slots,
-                used_intents,
-                used_choices
-            FROM skills WHERE skill_id = $3 RETURNING *`
-        pool.query(
-            copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],
-            (err, data) => {
-                if (err) {
-                    console.log(err)
-                    res.sendStatus(500)
-                } else {
-                    let new_skill_id = data.rows[0].skill_id
-                    retrieveDiagram(root_diagram_id, new_skill_id)
-                    data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
-                    res.send(data.rows[0])
-                }
-            }
-        )
+        copySkillRow(id, diagram_mapping[root_diagram_id], root_diagram_id, new_creator_id)
     })
 }

@@ -15,8 +15,8 @@
 }
 
 .hr-label {
-  display: inline-block;
   margin-left: 25px;
+  display: inline-block;
   font-size: 16px;
   color: #94A6BD;
 }

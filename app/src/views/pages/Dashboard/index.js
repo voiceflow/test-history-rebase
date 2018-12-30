@@ -163,7 +163,7 @@ class DashBoard extends Component {
         }
 
         return (
-            <div className='Window'>
+            <div id="app">
                 <div className="subheader">
                     <div className="container space-between">
                         <span className="subheader-title">

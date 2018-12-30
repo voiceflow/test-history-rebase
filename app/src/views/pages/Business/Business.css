@@ -1,53 +1,55 @@
-.business.Window{
+#business{
 	height: 100%;
 	display: flex;
 }
-/*.business.Window > .row {
+
+#upgrade{
+	padding: 40px;
+	padding-right: 100px;
+	padding-bottom: 60px;
+	width: 50%;
+	min-width: 680px;
+	background-image: url(/upgrade.svg);
+    background-position: 104% 142%, 0px 0px;
+    background-size: 400px, auto;
+    background-repeat: no-repeat, repeat;
+}
+/*#business > .row {
 	height: 100%;
 }*/
-.business.Window  .business-page {
+.business-page {
 	height: 100%;
+	position: relative;
 	overflow-x: scroll;
 	flex: 1;
-}
-.business.Window  .sidebar {
-	background-color: #fff;
-	width: 160px;
-	border-right: 1px solid #E2E9EC;
-}
-
-.business.Window  .sidebar>.title {
-	font-weight: lighter;
-	padding: 24px 20px 40px 20px;
-	font-size: 1.5rem;
-/*	border-bottom: 1px solid #E2E9EC;*/
 }
 .fal{
     font-weight: 900;
     margin-right: 5px;
 }
-.business.Window .business-page-inner {
+#business .business-page-inner {
 	width: 100%;
 	position: relative;
 	height: 100%;
 }
 
-.business.Window .business-page-inner>.subheader {
+#business .business-page-inner>.subheader {
 	padding-left: 20px;
 	padding-right: 20px;
 	width: auto;
 	left: 160px;
 	right: 0px;
 }
-.business.Window .business-page-inner>.subheader>div{
+#business .business-page-inner>.subheader>div{
 	flex: 1;
 	height: 41px;    
 }
-.business.Window .business-page-inner>.content {
-	padding: 100px 20px 50px 20px;
+.content {
+	min-width: 600px;
+	padding: 20px 20px 50px 20px;
 }
 
-.business.Window  .sidebar>.sidebar-option {
+#business  .sidebar>.sidebar-option {
 	padding: 10px 20px;
 	display: block;
 	transition: background-color 0.1s linear;
@@ -57,11 +59,11 @@
 
 }
 
-.business.Window  .sidebar>.sidebar-option:hover {
+#business  .sidebar>.sidebar-option:hover {
 	background-color: #F5F9FA;
 }
 
-.business.Window  .sidebar>.sidebar-option.active {
+#business  .sidebar>.sidebar-option.active {
 	cursor: default;
 	background-color: #42A5FF !important;
 	color: #fff !important;

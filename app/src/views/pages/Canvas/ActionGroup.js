@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react'
 import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
-         ModalHeader, ModalBody, Button, Dropdown, DropdownToggle, DropdownMenu,
-         DropdownItem, Label } from 'reactstrap'
+         ModalHeader, ModalBody, Button, Label } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
 import {Tooltip} from 'react-tippy'
-import SettingsModal from './SettingsModal'
 import Switch from '@material-ui/core/Switch'
 
 import AuthenticationService from './../../../services/Authentication'
@@ -25,7 +23,6 @@ class ActionGroup extends PureComponent {
             allowPreview: false,
             platform: 'amazon',
             updateModal: false,
-            settingsModal: false,
             stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
@@ -39,7 +36,6 @@ class ActionGroup extends PureComponent {
         this.togglePreview = this.togglePreview.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.toggleUpdate = this.toggleUpdate.bind(this)
-        this.toggleSettings = this.toggleSettings.bind(this)
         this.updateAlexa = this.updateAlexa.bind(this)
         this.openUpdate = this.openUpdate.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
@@ -147,12 +143,6 @@ class ActionGroup extends PureComponent {
     toggleUpdate() {
         this.setState({
             updateModal: false
-        });
-    }
-
-    toggleSettings() {
-        this.setState({
-            settingsModal: !this.state.settingsModal
         });
     }
 
@@ -316,15 +306,6 @@ class ActionGroup extends PureComponent {
                     </div>
                 </ModalBody>
             </Modal>
-            <SettingsModal 
-                open={this.state.settingsModal} 
-                toggle={this.toggleSettings}
-                skill={this.props.skill}
-                onConfirm={this.props.onConfirm}
-                onError={this.props.onError}
-                history={this.props.history}
-                updateSkill={this.props.updateSkill}
-            />
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
@@ -365,31 +346,6 @@ class ActionGroup extends PureComponent {
                             }
                         </PopoverBody>
                     </Popover>
-                    <Tooltip
-                        distance={16}
-                        title="Settings"
-                        position="bottom"
-                    >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.toggleSettings}>
-                            <i className="fas fa-cog"/>
-                        </MUIButton>
-                    </Tooltip>
-                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-                        <DropdownToggle className="anti-btn" tag="div">
-                            <Tooltip
-                                title="Publish"
-                                position="bottom"
-                                distance={16}
-                            >
-                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-rocket"/></MUIButton>
-                            </Tooltip>
-                        </DropdownToggle>
-                        <DropdownMenu className="platform-dropdown arrow"><p className="small-caps text-center mt-2 mb-2">Publish to</p>
-                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
-                            {/*<p className="small-caps-muted text-center mt-1 mb-1">or</p>
-                            <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>*/}
-                        </DropdownMenu>
-                    </Dropdown>
                     <Tooltip
                         distance={16}
                         title="Save"

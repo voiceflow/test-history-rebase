@@ -145,7 +145,7 @@ class Skill extends Component {
     renderPage(){
         switch(this.props.page){
             case 'canvas':
-                return <Canvas {...this.props} skill={this.state.skill} diagram_id={this.state.diagram_id} onError={this.onError} onConfirm={this.onConfirm} createSkill={this.createSkill}/>
+                return <Canvas {...this.props} skill={this.state.skill} diagram_id={this.state.diagram_id} onError={this.onError} onConfirm={this.onConfirm} createSkill={this.createSkill} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':

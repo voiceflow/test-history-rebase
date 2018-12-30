@@ -1312,6 +1312,7 @@ class Canvas extends Component {
                     history={this.props.history}
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
+                    updateSkill={(skill) => {this.setState({skill: skill}); this.props.updateSkill(skill)}}
                 /> :
                 <div className="title-group no-select">
                   <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>

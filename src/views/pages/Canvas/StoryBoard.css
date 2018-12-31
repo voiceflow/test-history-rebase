@@ -1242,7 +1242,7 @@ label {
     transform: scale(1.02);
 }
 .srd-port:hover, .srd-port--selected {
-    background: #d1d8e2 !important;
+    background: #dce3eb !important;
     cursor: pointer !important;
 }
 

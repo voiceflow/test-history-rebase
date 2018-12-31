@@ -1034,7 +1034,7 @@
 }
 
 #Editor {
-    position: fixed;
+    position: absolute;
     right: 0;
     z-index: 5;
     width: 350px;

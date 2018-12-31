@@ -1,16 +1,18 @@
 // Regex'd from https://developer.amazon.com/docs/custom-skills/slot-type-reference.html#availability
 
+const SLOT_TYPES_UNIVERSAL = [
+  "AMAZON.DATE",
+  "AMAZON.DURATION",
+  "AMAZON.FOUR_DIGIT_NUMBER",
+  "AMAZON.NUMBER",
+  "AMAZON.TIME",
+  "AMAZON.SearchQuery"
+]
 
 const SLOT_TYPES_US = [
     "CUSTOM",
-    "AMAZON.DATE",
-    "AMAZON.DURATION",
-    "AMAZON.FOUR_DIGIT_NUMBER",
-    "AMAZON.NUMBER",
     "AMAZON.Ordinal",
     "AMAZON.PhoneNumber",
-    "AMAZON.TIME",
-    "AMAZON.SearchQuery",
     "AMAZON.US_CITY",
     "AMAZON.Actor",
     "AMAZON.AdministrativeArea",
@@ -351,13 +353,8 @@ const SLOT_TYPES_IT = [
 
 const SLOT_TYPES_JP = [
   "CUSTOM",
-  "AMAZON.DATE",
-  "AMAZON.DURATION",
-  "AMAZON.FOUR_DIGIT_NUMBER",
-  "AMAZON.NUMBER",
   "AMAZON.Ordinal",
-  "AMAZON.PhoneNumber",
-  "AMAZON.TIME",
+  "AMAZON.PhoneNumber"
 ]
 
 const SLOT_TYPES_ES = [
@@ -1572,6 +1569,7 @@ exports.SLOT_TYPES_IT = SLOT_TYPES_IT;
 exports.SLOT_TYPES_JP = SLOT_TYPES_JP;
 exports.SLOT_TYPES_ES = SLOT_TYPES_ES;
 exports.SLOT_TYPES_MX = SLOT_TYPES_MX;
+exports.SLOT_TYPES_UNIVERSAL = SLOT_TYPES_UNIVERSAL;
 
 const VOICES = [
   {

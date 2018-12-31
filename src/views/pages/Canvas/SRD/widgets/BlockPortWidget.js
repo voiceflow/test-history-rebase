@@ -28,18 +28,18 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 	}
 
 	setLinks(isSelected = false){
-		const nodes = []
+		// const nodes = []
 		_.forEach(this.props.node.ports[this.props.name].links, (link) => {
 			link.setSelected(isSelected)
-			if(link.sourcePort.id === this.props.port.id){
-				if(link.targetPort){
-					link.targetPort.setSelected(isSelected)
-					nodes.push(link.targetPort.parent)
-				}
-			}else if(link.sourcePort){
-				link.sourcePort.setSelected(isSelected)
-				nodes.push(link.sourcePort.parent)
-			}
+			// if(link.sourcePort.id === this.props.port.id){
+			// 	if(link.targetPort){
+			// 		link.targetPort.setSelected(isSelected)
+			// 		nodes.push(link.targetPort.parent)
+			// 	}
+			// }else if(link.sourcePort){
+			// 	link.sourcePort.setSelected(isSelected)
+			// 	nodes.push(link.sourcePort.parent)
+			// }
 		})
 		this.props.diagramEngine.enableRepaintEntities([this.props.node, ...this.props.diagramEngine.getDiagramModel().getSelectedItems()])
 		this.props.diagramEngine.repaintCanvas(false)

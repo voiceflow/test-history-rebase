@@ -6,7 +6,6 @@
   "dependencies": {
     "@material-ui/core": "^3.2.2",
     "axios": "^0.18.0",
-    "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.1",
@@ -22,7 +21,6 @@
     "html-parse-stringify": "^1.0.3",
     "immutability-helper": "^2.9.0",
     "is-var-name": "^2.0.0",
-    "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "natural-language-commander": "git+https://github.com/WxnChen11/natural-language-commander.git",
@@ -67,7 +65,12 @@
     "eject": "react-scripts eject"
   },
   "proxy": "https://localhost",
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "regenerator-runtime": "^0.13.1"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",

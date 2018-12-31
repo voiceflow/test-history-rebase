@@ -30,7 +30,7 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-import { SLOT_TYPES_MAP, BUILT_IN_INTENTS } from './Constants'
+import { SLOT_TYPES_MAP, BUILT_IN_INTENTS, SLOT_TYPES_UNIVERSAL } from './Constants'
 
 const BUILT_INS = BUILT_IN_INTENTS.map( intent => {
     return {
@@ -104,7 +104,12 @@ class Editor extends Component {
         _.map(locales, locale => {
             SLOT_TYPES.push(SLOT_TYPES_MAP[locale])
         })
-        return _.uniq(_.flatten(SLOT_TYPES))
+        SLOT_TYPES.push(SLOT_TYPES_UNIVERSAL)
+        SLOT_TYPES = _.uniq(_.flatten(SLOT_TYPES))
+        if (SLOT_TYPES.length > 0) {
+            SLOT_TYPES = SLOT_TYPES.slice(0, 1).concat(SLOT_TYPES.slice(1).sort())
+        }
+        return SLOT_TYPES
     }
 
     BlockViewer() {

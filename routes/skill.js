@@ -32,13 +32,13 @@ const incrementSkillsCreatedIntercom = (id) => {
             if (Array.isArray(data.rows)) {
                 sc = data.rows.length
             } else {
-                sc = 0
+                sc = 1
             }
         }
         intercom.users.create({
             user_id: id,
             custom_attributes: {
-                skills_created: sc + 1
+                skills_created: sc
             }
         })
     })

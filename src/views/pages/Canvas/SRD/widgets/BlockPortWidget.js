@@ -24,7 +24,7 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 	}
 
 	getClassName(){
-		return "port " + super.getClassName() + ((this.state.selected || this.props.port.selected) ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
+		return "port " + super.getClassName() + ((this.state.selected) ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
 	}
 
 	setLinks(isSelected = false){
@@ -50,14 +50,14 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 			<div
 				{...this.getProps()}
 				onMouseEnter={e => {
-					this.setLinks(true);
-					this.setState({ selected: true });
-					e.preventDefault();
+					this.setState({ selected: true }, () => {;
+						this.setLinks(true)
+					});
 				}}
 				onMouseLeave={e => {
-					this.setLinks(false);
-					this.setState({ selected: false });
-					e.preventDefault();
+					this.setState({ selected: false }, () => {;
+						this.setLinks(false)
+					});
 				}}
 				data-name={this.props.name}
 				data-nodeid={this.props.node.getID()}

@@ -21,7 +21,7 @@
 	border-bottom: 1px solid #e2e9ec;
 	align-items: center;
 }
-#secondary-nav>div>.nav-item{
+#secondary-nav .nav-item{
 	color: #8da2b5;
 	margin-right: 20px;
 	padding: 9px 0 10px 0;
@@ -35,14 +35,14 @@
 	border-top: 3px solid transparent;
 }
 
-#secondary-nav>div>.nav-item:hover, #app .sidebar-nav .nav-item:hover{
+#secondary-nav .nav-item:hover, #app .sidebar-nav .nav-item:hover{
 	color: #42a5ff;
 }
 
-#secondary-nav>div>.nav-item:active, #app .sidebar-nav .nav-item:active{
+#secondary-nav .nav-item:active, #app .sidebar-nav .nav-item:active{
 	border-color: #e2e9ec;
 }
-#secondary-nav>div>.nav-item.active, #app .sidebar-nav .nav-item.active{
+#secondary-nav .nav-item.active, #app .sidebar-nav .nav-item.active{
 	color: #42a5ff;
 	border-color: #42a5ff;
 }

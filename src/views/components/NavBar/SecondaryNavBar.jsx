@@ -5,7 +5,7 @@ const PAGES = ['canvas', 'business', 'settings', 'publish']
 
 class SecondaryNavBar extends Component {
     render(){
-        return <div id="secondary-nav space-between">
+        return <div id="secondary-nav">
             <div>
                 {
                     PAGES.map(page => {

@@ -140,8 +140,6 @@ class Canvas extends Component {
         let open
         let diagram_name = ''
 
-        let global_variables = defaultVariables.slice(0)
-
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
         this.loaded = false
@@ -195,7 +193,7 @@ class Canvas extends Component {
             testing_modal: false,
             testing_info: false,
             variables: [],
-            global_variables: global_variables,
+            global_variables: [],
             new_skill_step: this.props.new ? 5 : 0,
             help: null,
             helpOpen: false,
@@ -233,7 +231,6 @@ class Canvas extends Component {
             // load in diagrams whenever skill is ready
             let skill = this.props.skill
             let globals = skill.global
-            delete skill.global
 
             // make sure that there are no duplicate variables and that the defaults are included
             let global_variables = defaultVariables.slice(0)
@@ -633,6 +630,11 @@ class Canvas extends Component {
                     }
                 })
             }
+
+            // UPDATE SKILL GLOBALS HOTFIX
+            let skill = this.state.skill;
+            skill.global = this.state.global_variables
+            this.props.updateSkill(skill)
 
             var diagram = {
                 id: this.props.diagram_id,

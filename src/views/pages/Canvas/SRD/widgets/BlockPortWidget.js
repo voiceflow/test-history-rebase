@@ -49,15 +49,15 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 		return (
 			<div
 				{...this.getProps()}
-				onMouseEnter={() => {
-					this.setState({ selected: true }, () => {
-						this.setLinks(true)
-					})
+				onMouseEnter={e => {
+					this.setLinks(true);
+					this.setState({ selected: true });
+					e.preventDefault();
 				}}
-				onMouseLeave={() => {
-					this.setState({ selected: false }, () => {
-						this.setLinks(false)
-					})
+				onMouseLeave={e => {
+					this.setLinks(false);
+					this.setState({ selected: false });
+					e.preventDefault();
 				}}
 				data-name={this.props.name}
 				data-nodeid={this.props.node.getID()}

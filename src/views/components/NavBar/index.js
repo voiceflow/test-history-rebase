@@ -150,6 +150,11 @@ class NavBar extends Component {
                     <Link className="dropdown-item" to="/account">
                       Settings
                     </Link>
+                    { window.user_detail.admin >= 100 &&
+                        <Link className="dropdown-item" to="/admin">
+                          Admin
+                        </Link>
+                    }
                     <DropdownItem onClick={this.logout} tag="a" href="#">
                       Logout
                     </DropdownItem>

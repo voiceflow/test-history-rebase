@@ -392,6 +392,9 @@
 #TitleBar .project {
     height: 55px;
 }
+.card-dropdown{
+    margin-top: 0px !important;
+}
 .card-dropdown .show{
   width: 10px;
 }

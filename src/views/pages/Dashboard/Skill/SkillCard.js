@@ -50,7 +50,7 @@ class SkillCard extends React.Component {
                   </Button>
                 </DropdownToggle>
                 <DropdownMenu className="card-dropdown">
-                  <DropdownItem tag="div" className="space-between" onClick={()=>{this.props.history.push('/publish/amzn/' + this.props.skill.skill_id)}}>
+                  <DropdownItem tag="div" className="space-between" onClick={()=>{this.props.history.push('/publish/' + this.props.skill.skill_id)}}>
                     Publish <span className="button-circle text-muted"><i className="fab fa-amazon"/></span>
                   </DropdownItem>
                   <DropdownItem tag="div" onClick={this.props.copySkill}>

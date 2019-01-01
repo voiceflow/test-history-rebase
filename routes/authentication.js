@@ -370,6 +370,16 @@ const reset = (req, res, reset=false) => {
 	})
 }
 
+const getUser = (req, res) => {
+	pool.query('SELECT expiry, created FROM creators WHERE creator_id = $1', [req.user.id], (err, data) => {
+		if(!err && data.rows && data.rows.length !== 0 ){
+			res.send(data.rows[0])
+		}else{
+			res.sendStatus(404)
+		}
+	})
+}
+
 module.exports = {
 	AccessToken: AccessToken,
 	hasAccessToken: hasAccessToken,
@@ -378,6 +388,7 @@ module.exports = {
 	putSession: putSession,
 	deleteSession: deleteSession,
 	putUser: putUser,
+	getUser: getUser,
 	getVendor: getVendor,
 	deleteAmazon: deleteAmazon,
 	resetPasswordEmail: resetPasswordEmail,

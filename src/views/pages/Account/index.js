@@ -4,6 +4,7 @@ import ConfirmModal from './../../components/Modals/ConfirmModal'
 import {Button, Modal, ModalHeader, ModalBody, Row, Col, Alert} from 'reactstrap'
 import {Elements} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm'
+import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
 
@@ -47,6 +48,7 @@ class Account extends Component {
       upgrade_modal: false,
       selected_plan: 1,
       amzn: LOADING,
+      expiry: null,
       confirm: null
     };
 
@@ -84,7 +86,16 @@ class Account extends Component {
           this.setState({
               amzn: !!token ? LINKED : UNLINKED
           });
-      });
+      })
+
+      axios.get('/user')
+      .then(res => {
+        if(res.data && !isNaN(res.data.expiry) && (res.data.expiry*1000) > Date.now()){
+          this.setState({
+            expiry: moment.unix(res.data.expiry).fromNow()
+          })
+        }
+      })
   }
 
   handleChange = event => {
@@ -178,7 +189,8 @@ class Account extends Component {
                     <h4 className="mb-0 text-muted">{GET_STATUS(this.props.user.admin).name}</h4>
                     <div className="super-center">
                       {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
-                      {this.props.user.admin < 1 && <Button onClick={this.toggle}>Upgrade</Button>}
+                      {this.props.user.admin > 0 ? <React.Fragment>{this.state.expiry ? <div className="btn btn-clear disabled">Renews {this.state.expiry}</div> : null}</React.Fragment> : 
+                      <Button onClick={this.toggle}>Upgrade</Button>}
                     </div>
                   </div>
                 </div>

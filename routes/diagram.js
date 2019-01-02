@@ -981,6 +981,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             nextId: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
                         }
                     }
+                } else if (node.extras.type === 'display') {
+                    let id = hashids.decode(node.extras.display_id)
+
+                    story.lines[node.id] = {
+                        display_id: id[0],
+                        datasource: node.extras.datasource,
+                        update_on_change: node.extras.update_on_change,
+                        nextId: getLink(node.ports.filter(a => a.in === false)[0].links[0])
+                    }
                 } else if (node.extras.type === 'permissions') {
 
                     const permissions = node.extras.permissions ? node.extras.permissions : [];

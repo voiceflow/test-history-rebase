@@ -28,6 +28,7 @@ const Code = require('./config/codes.js');
 const Decode = require('./routes/decode.js');
 const Marketplace = require('./routes/marketplace.js');
 const Email = require('./routes/email.js');
+const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 
 const port = 8080;
@@ -145,6 +146,13 @@ app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
 app.patch('/email/template/:id', ensurePlan(1), Email.setTemplate);
 app.delete('/email/template/:id', ensurePlan(1), Email.deleteTemplate);
+
+app.get('/multimodal/displays', ensureLoggedIn(), Multimodal.getDisplays);
+app.get('/multimodal/display/:id', ensureLoggedIn(), Multimodal.getDisplay);
+app.post('/multimodal/display', ensureLoggedIn(), Multimodal.setDisplay);
+app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
+app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
+app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);

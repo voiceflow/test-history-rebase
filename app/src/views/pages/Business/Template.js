@@ -162,7 +162,7 @@ class Template extends Component {
                 }}/>
                 <div className="content">
                     <div className="space-between">
-                        <h5 className="text-muted">Email Template</h5>
+                        <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
                             <MUIButton varient="contained" className="purple-btn mr-2" onClick={()=>{
                                 this.props.history.push(`/business/${this.props.skill_id}/email/templates`);
@@ -179,10 +179,11 @@ class Template extends Component {
                             </MUIButton>
                         </div>
                     </div>
+                    <hr/>
                     { this.state.loading ? 
                         <div id="loading-diagram">
                             <div className="text-center">
-                                <h5 className="text-muted mb-2">Loading Skill</h5>
+                                <h5 className="text-muted mb-2">Loading Template</h5>
                                 <span className="loader"/>
                             </div>
                         </div> :
@@ -235,7 +236,7 @@ class Template extends Component {
                                     <Col md="6">
                                         <AceEditor
                                             name="email_editor"
-                                            className="email_editor"
+                                            className="email_editor w-100"
                                             mode="html"
                                             theme="monokai"
                                             onChange={this.onChangeAce}

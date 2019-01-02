@@ -56,16 +56,19 @@
     "reactstrap": "^6.5.0",
     "serialize-error": "^3.0.0",
     "storm-react-diagrams": "github:DecathectZero/react-diagrams",
-    "universal-cookie": "^3.0.4"
+    "universal-cookie": "^3.0.4",
+    "ws": "^6.1.2"
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "patch-package"
   },
   "proxy": "https://localhost",
   "devDependencies": {
+    "patch-package": "^5.1.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",

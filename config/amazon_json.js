@@ -239,7 +239,9 @@ const manifest = (r, encoded_id) => {
                      },
                      "interfaces": [{
 	                 	"type": "AUDIO_PLAYER"
-	                 }]
+	                 }, {
+						 "type": "ALEXA_PRESENTATION_APL"
+					 }]
                  }
              },
              "manifestVersion": "1.0",

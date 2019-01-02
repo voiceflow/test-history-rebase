@@ -20,6 +20,7 @@ import Diagram from './Editors/Diagram';
 import API from './Editors/API';
 import Module from './Editors/Module';
 import Mail from './Editors/Mail';
+import Display from './Editors/Display'
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import Onboarding from './Onboarding'
@@ -228,6 +229,8 @@ class Editor extends Component {
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
                 return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates}/>
+            case 'display':
+                return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays}/>
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':

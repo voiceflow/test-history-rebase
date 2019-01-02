@@ -230,7 +230,7 @@ class Editor extends Component {
             case 'mail':
                 return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates}/>
             case 'display':
-                return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays}/>
+                return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays} skill={this.props.skill}/>
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':

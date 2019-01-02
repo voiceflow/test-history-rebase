@@ -68,7 +68,6 @@ class Card extends Component {
                         <Image 
                             url
                             max_size={512*1024}
-                            path='/image'
                             image={this.state.node.extras.large_img} 
                             update={(url) => this.updateContent('large_img', url)}
                         />
@@ -77,7 +76,6 @@ class Card extends Component {
                             <Image 
                                 url
                                 max_size={512*1024}
-                                path='/image'
                                 image={this.state.node.extras.small_img} 
                                 update={(url) => this.updateContent('small_img', url)}
                                 margin

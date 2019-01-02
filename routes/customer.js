@@ -1,19 +1,8 @@
 const {docClient, pool} = require('./../services')
 
 // SECRET TODO:
-var endpointSecret
-var SECRET_KEY
-if(process.env.PROD){
-	endpointSecret = 'whsec_pTuHAy6RQ4diYQzs6GVyZo4orFzxVE0z'
-	SECRET_KEY = 'sk_live_miu69x3c44doaSO26hVsBJrX'
-}else{
-	if(process.env.STAGING){
-		endpointSecret = 'whsec_wu3v6L6NrB7A8SLMNSTbmCDeMhtnsCYP'
-	}else{
-		endpointSecret = 'whsec_1NmXHw7SU5xke899IKE9xgEzsBQfRpO9'
-	}
-	SECRET_KEY = 'sk_test_pDf3vhMzNkojtn4dqBs9zVsW'
-}
+var endpointSecret = process.env.STRIPE_ENDPOINT_SECRET
+const SECRET_KEY = process.env.STRIPE_SK
 const stripe = require('stripe')(SECRET_KEY)
 
 const PLANS = [
@@ -97,7 +86,7 @@ exports.webhook = async (req, res) => {
 			}else if(req.body.type === 'invoice.payment_succeeded'){
 				// payment succeeded, extend current period by a month
 				// and add one extra day of padding
-				let expiry = req.body.data.object.period_end + 24*3600
+				let expiry = req.body.data.object.lines.data[0].period.end + 24*3600
 
 				// get the plan type from the invoice
 				let name = req.body.data.object.lines.data[0].plan.id

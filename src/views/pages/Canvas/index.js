@@ -25,6 +25,8 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
+import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL } from './Constants'
+
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
 
@@ -84,9 +86,6 @@ const _getSlotsForKeys = (keys, slots) => {
 	return key_set.map(key => {
         const slot = _.find(slots, {key: key})
         let type = slot.type.value !== 'CUSTOM' ? slot.type.value : slot.name
-        if (type.indexOf('AMAZON.') !== -1) {
-            type = 'STRING'
-        }
 
 		return {
 			name: slot.name,
@@ -875,7 +874,7 @@ class Canvas extends Component {
         let engine = this.state.engine
         let model = engine.getDiagramModel()
         let data = model.serializeDiagram()
-        // model.deSerializeDiagram(JSON.parse(JSON.stringify(data)), engine);
+
         let nlc = this.state.testing_info ? this.state.testing_info.nlc : null
         let slot_mappings = this.state.testing_info ? this.state.testing_info.slot_mappings : {}
 
@@ -890,20 +889,31 @@ class Canvas extends Component {
         })
         if (!nlc) {
             nlc = new NLC()
+
+            let amazon_slots = []
+
+            _.values(SLOT_TYPES_MAP).forEach(a => {
+                amazon_slots = amazon_slots.concat(a)
+            })
+            amazon_slots = amazon_slots.concat(SLOT_TYPES_UNIVERSAL)
+            amazon_slots = _.uniq(amazon_slots)
+            amazon_slots.forEach(s => {
+                const matcher = /[\s\S]*/
+                nlc.addSlotType({
+                    type: s,
+                    matcher: matcher
+                })
+            })
+
             slot_mappings = {}
             this.state.skill.slots.forEach(slot => {
 
-                let matcher
-                if (slot.type.value && slot.type.value !== 'CUSTOM') {
-                    matcher = /[\s\S]*/
-                } else {
-                    matcher = slot.inputs
+                if (slot.type.value && slot.type.value === 'CUSTOM') {
+                    nlc.addSlotType({
+                        type: slot.name,
+                        matcher: slot.inputs
+                    })
                 }
-
-                nlc.addSlotType({
-                    type: slot.name,
-                    matcher: matcher
-                })
             })
 
             this.state.skill.intents.forEach(intent => {
@@ -954,7 +964,7 @@ class Canvas extends Component {
                     })
                     .then(this.runTest)
                     .catch(err => {
-                        console.log(err.response)
+                        console.log(err)
                         this.setState({
                             testing_modal: false
                         })

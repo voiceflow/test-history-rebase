@@ -92,6 +92,7 @@ class API extends Component {
         this.handleAddPairMapping = this.handleAddPairMapping.bind(this)
         this.handleRemovePairMapping = this.handleRemovePairMapping.bind(this)
         this.handleKVMappingChange = this.handleKVMappingChange.bind(this)
+        this.copyJSONPath = this.copyJSONPath.bind(this)
     }
 
     componentDidMount() {
@@ -132,6 +133,25 @@ class API extends Component {
       })
 
       return cur_data
+    }
+
+    copyJSONPath(copy_event){
+        let total_path = copy_event.namespace.slice()
+
+        if(copy_event.name != ''){
+            total_path.push(copy_event.name)
+        }
+
+        // Copy to clipboard
+        const el = document.createElement('textarea');
+        el.value = total_path.join('.');
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
     }
 
     getEndpoint(firstClick=true){
@@ -251,9 +271,10 @@ class API extends Component {
                     })
                 })
                 .catch(err => {
+                    let status = (err.response) ? err.response.status : err.status                     
                     this.setState({
                         testHeader: update(this.state.testHeader, {
-                            'status': {$set: err.status},
+                            'status': {$set: status},
                             'time': {$set: Date.now()-time},
                             'size': {$set: pretty(JSON.stringify(err).length * 7)},
                         }),
@@ -313,7 +334,7 @@ class API extends Component {
             </ButtonGroup>
             {this.state.activeTab === TABS[0] ?
               <div className="response-box">
-                <ReactJson src={this.state.modalContent} displayDataTypes={false} name={null}/>
+                <ReactJson src={this.state.modalContent} displayDataTypes={false} name='response' enableClipboard={this.copyJSONPath}/>
               </div> :
               <div className="mt-3">
                 {_.map(this.state.testVariablesMapping, (val, key) => {

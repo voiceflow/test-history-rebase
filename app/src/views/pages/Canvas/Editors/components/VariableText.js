@@ -79,7 +79,7 @@ class VariableText extends Component {
         const plugins = [this.mentionPlugin];
 
         return (
-            <div className="editor">
+            <div className={this.props.className}>
                 <Editor
                     plugins={plugins}
                     editorState={this.state.editorState}

@@ -220,19 +220,19 @@ app.post('/raw_audio', ensureLoggedIn(), upload.single('audio'), (req, res) => {
     res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.file.key}`);
 });
 
-app.post('/image/large_icon', uploadResize(512,512).single('image'), (req, res) => {
+app.post('/image/large_icon', ensureLoggedIn(), uploadResize(512,512).single('image'), (req, res) => {
     let filename = req.file.transforms[0].key;
     res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
 });
-app.post('/image/small_icon', uploadResize(108,108).single('image'), (req, res) => {
+app.post('/image/small_icon', ensureLoggedIn(), uploadResize(108,108).single('image'), (req, res) => {
     let filename = req.file.transforms[0].key;
     res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
 });
-app.post('/image/module_icon', uploadResize(40,40).single('image'), (req, res) => {
+app.post('/image/module_icon', ensureLoggedIn(), uploadResize(40,40).single('image'), (req, res) => {
     let filename = req.file.transforms[0].key;
     res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
 });
-app.post('/image/card_icon', uploadResize(108,108).single('image'), (req, res) => {
+app.post('/image/card_icon', ensureLoggedIn(), uploadResize(108,108).single('image'), (req, res) => {
     let filename = req.file.transforms[0].key;
     res.send(`https://s3.amazonaws.com/com.getstoryflow.api.images/${filename}`);
 });

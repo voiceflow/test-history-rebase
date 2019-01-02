@@ -298,12 +298,14 @@ function renderBlock(block, index, rawDraftObject, options) {
 function draftToMarkdown(rawDraftObject, options) {
   options = options || {};
   var markdownString = '';
-  rawDraftObject.blocks.forEach(function (block, index) {
-    markdownString += renderBlock(block, index, rawDraftObject, options);
-  });
+  if(typeof rawDraftObject === 'object'){
+    rawDraftObject.blocks.forEach(function (block, index) {
+      markdownString += renderBlock(block, index, rawDraftObject, options)
+    })
+  }
 
-  orderedListNumber = {}; // See variable definitions at the top of the page to see why we have to do this sad hack.
-  return markdownString;
+  orderedListNumber = {} // See variable definitions at the top of the page to see why we have to do this sad hack.
+  return markdownString
 }
 
 module.exports = draftToMarkdown;

@@ -845,6 +845,40 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         story.lines[node.id].speak = markdownstring
                     }
 
+                } else if (node.extras.type === 'card' && node.extras.cardtype && node.extras.title) {
+                    let nextLink = null;
+                    for (var j = 0; j < node.ports.length; j++) {
+                        if (!node.ports[j].in) {
+                            [nextLink] = node.ports[j].links;
+                        }
+                    }
+
+                    let card = {
+                        type: node.extras.cardtype,
+                        title: draftToMarkdown(node.extras.title, {alexa: false})
+                    }
+                    
+                    if(card.type === 'Standard'){
+                        card.text = draftToMarkdown(node.extras.text, {alexa: false})
+                        if(node.extras.large_img){
+                            card.image = {}
+                            card.image.largeImageUrl = node.extras.large_img
+
+                            if(node.extras.small_img){
+                                card.image.smallImageUrl = node.extras.small_img
+                            }
+                        }
+                    }else if(card.type === 'Simple'){
+                        card.content = draftToMarkdown(node.extras.content, {alexa: false})
+                    }else{
+                        card = undefined
+                    }
+
+                    story.lines[node.id] = {
+                        card: card,
+                        nextId: getLink(nextLink)
+                    }
+
                 } else if (node.extras.type === 'capture') {
 
                     let nextLink = null;

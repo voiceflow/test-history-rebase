@@ -268,25 +268,33 @@ class TestModal extends React.Component {
 
     if (nlc) {
       try {
-        const result = await nlc.handleCommand(data.input)
-        const intent_name = result.name
-        const detected_slots = result.slots
-        const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : []
+        const results = await nlc.handleCommand(data.input)
+        const detected_intents = []
 
-        const formatted_slots = {}
-        slot_mapping.forEach((slot, i) => {
-            if (detected_slots[i]) {
-                formatted_slots[slot.name] = {
-                    value: detected_slots[i]
-                }
-            }
-        })
-        if (intent_name) {
-          data.detected_intent = {
-            intent: intent_name,
-            slots: formatted_slots
+        for (let i = 0; i < results.length; i ++) {
+          const result = results[i]
+
+          const intent_name = result.name
+          const detected_slots = result.slots
+          const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : []
+
+          const formatted_slots = {}
+          slot_mapping.forEach((slot, i) => {
+              if (detected_slots[i]) {
+                  formatted_slots[slot.name] = {
+                      value: detected_slots[i]
+                  }
+              }
+          })
+          if (intent_name) {
+            detected_intents.push({
+              intent: intent_name,
+              slots: formatted_slots
+            })
           }
         }
+
+        data.detected_intents = detected_intents
       } catch (err) {
         // NLC No Match
       }

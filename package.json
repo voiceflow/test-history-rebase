@@ -64,8 +64,8 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prepare": "patch-package"
-  },
+    "prepublish": "patch-package"
+},
   "proxy": "https://localhost",
   "devDependencies": {
     "patch-package": "^5.1.1",

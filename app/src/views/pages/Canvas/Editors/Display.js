@@ -3,6 +3,7 @@ import Select from 'react-select'
 import axios from 'axios';
 import { Button, InputGroup, Input, Modal, ModalHeader, ModalBody, InputGroupAddon } from 'reactstrap'
 import {Tooltip} from 'react-tippy'
+import {Link} from 'react-router-dom'
 
 import AceEditor from 'react-ace';
 import './Display.css'
@@ -221,7 +222,10 @@ class Display extends Component {
 
     render() {
         if(this.props.displays.length === 0){
-            return 'No Multimodal Displays Exist! Add them in Business > Displays'
+            return <div>
+                <span className="text-muted">You currently have no Multimodal Displays</span>
+                <Link className="btn btn-clear btn-block mt-2" to={`/visuals/${this.props.skill.skill_id}`}>Add Displays</Link> 
+            </div>
         }
 
         return (

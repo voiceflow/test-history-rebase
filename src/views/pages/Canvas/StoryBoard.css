@@ -915,6 +915,11 @@
 } .MenuItem.mail>.MenuIcon {
     color: #ffa477 !important;
 }
+.Menu #sidebar .MenuItem.display:hover {
+    background-color: #F4F6F7;
+} .MenuItem.display>.MenuIcon {
+    color: #ffa477 !important;
+}
 .Menu #sidebar .MenuItem.stream:hover {
     background-color: #163898;
 } .MenuItem.stream>.MenuIcon {
@@ -1288,6 +1293,14 @@ label {
     border-color: #ffc2a4 !important;
 }
 .srd-default-node.mail:hover{
+    border-top: 6px solid #ffc2a4;
+}
+.srd-default-node.display{
+    background-color: #fff;
+    border-top: 6px solid #ffc2a4;
+    border-color: #ffc2a4 !important;
+}
+.srd-default-node.display:hover{
     border-top: 6px solid #ffc2a4;
 }
 .srd-default-node.stream{

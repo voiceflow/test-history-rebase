@@ -128,6 +128,7 @@ app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
+app.get('/user', ensureLoggedIn(), Authentication.getUser)
 app.put('/user', Authentication.putUser);
 app.post('/user/reset', Authentication.resetPasswordEmail);
 app.get('/user/reset/:token', Authentication.checkReset);

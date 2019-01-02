@@ -301,6 +301,9 @@ function draftToMarkdown(rawDraftObject, options) {
   if(typeof rawDraftObject === 'object'){
     rawDraftObject.blocks.forEach(function (block, index) {
       markdownString += renderBlock(block, index, rawDraftObject, options)
+      if(options.newline && (index < rawDraftObject.blocks.length - 1)){
+        markdownString += '\n'
+      }
     })
   }
 

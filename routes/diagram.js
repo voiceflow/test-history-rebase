@@ -859,7 +859,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     }
                     
                     if(card.type === 'Standard'){
-                        card.text = draftToMarkdown(node.extras.text, {alexa: false})
+                        card.text = draftToMarkdown(node.extras.content, {alexa: false, newline: true})
                         if(node.extras.large_img){
                             card.image = {}
                             card.image.largeImageUrl = node.extras.large_img
@@ -869,7 +869,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             }
                         }
                     }else if(card.type === 'Simple'){
-                        card.content = draftToMarkdown(node.extras.content, {alexa: false})
+                        card.content = draftToMarkdown(node.extras.content, {alexa: false, newline: true})
                     }else{
                         card = undefined
                     }

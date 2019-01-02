@@ -50,18 +50,6 @@ class Card extends Component {
                     variables={this.props.variables}
                     updateRaw={(raw) => this.updateContent('title', raw)}
                 />
-                {type === 'Simple' && 
-                    <React.Fragment>
-                        <label>Content</label>
-                        <VariableText
-                            className="editor"
-                            raw={this.state.node.extras.content}
-                            placeholder={<React.Fragment>{'Here are some actions you can do'}<br/>- Action 1<br/>- Action 2 etc.<br/></React.Fragment>}
-                            variables={this.props.variables}
-                            updateRaw={(raw) => this.updateContent('content', raw)}
-                        />
-                    </React.Fragment>
-                }
                 {type === 'Standard' && 
                     <React.Fragment>
                         <label className="space-between">Image <span className="section-title">OPTIONAL</span></label>
@@ -92,18 +80,16 @@ class Card extends Component {
                         </div>
                     </React.Fragment>
                 }
-                {type === 'Standard' && 
-                    <React.Fragment>
-                        <label>Text</label>
-                        <VariableText
-                            className="editor"
-                            raw={this.state.node.extras.text}
-                            placeholder={<React.Fragment>{'Here are some actions you can do'}<br/>- Action 1<br/>- Action 2 etc.<br/></React.Fragment>}
-                            variables={this.props.variables}
-                            updateRaw={(raw) => this.updateContent('text', raw)}
-                        />
-                    </React.Fragment>
-                }
+                <React.Fragment>
+                    <label>{type === 'Standard' ? 'Text' : 'Content'}</label>
+                    <VariableText
+                        className="editor"
+                        raw={this.state.node.extras.content}
+                        placeholder={<React.Fragment>{'Here are some actions you can do'}<br/>- Action 1<br/>- Action 2 etc.<br/></React.Fragment>}
+                        variables={this.props.variables}
+                        updateRaw={(raw) => this.updateContent('content', raw)}
+                    />
+                </React.Fragment>
             </React.Fragment>
         );
     }

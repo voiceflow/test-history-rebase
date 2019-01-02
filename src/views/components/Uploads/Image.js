@@ -90,7 +90,7 @@ class Image extends Component {
                 rejectClassName="reject"
                 multiple={false}
                 disableClick={false}
-                maxSize={MAX_SIZE}
+                maxSize={this.props.max_size ? this.props.max_size : MAX_SIZE}
                 accept="image/jpeg, image/png"
                 onDrop={this.onDropImage}
             >
@@ -102,12 +102,12 @@ class Image extends Component {
                             <div className="upload-btn btn btn-primary-small">
                                 Add File
                             </div>
-                            {/*<button className="upload-btn btn btn-default" onClick={(e)=>{
+                            {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()
                                 this.setState({url_open: true})
                                 return false
-                            }}>URL</button>*/}
+                            }}>URL</button>}
                         </div>
                     </div>
                     <div className="rejected-file text-danger">
@@ -117,7 +117,7 @@ class Image extends Component {
             </Dropzone>
         }
 
-        return <div className={this.props.className + (this.props.isDisabled ? ' disabled-image' : '')}>
+        return <div className={(this.props.className ? this.props.className : 'image-standard' ) + (this.props.isDisabled ? ' disabled-image' : '')}>
             {render}
         </div>
 	}

@@ -652,14 +652,14 @@
     transform: translateX(0);
 }
 
-.Menu #sidebar .section-title{
+.section-title{
     text-transform: uppercase;
     font-size: 0.75rem;
     /*font-weight: bold;*/
     color: #95a6bd;
 }
 
-.Menu #sidebar .section-title>i{
+.section-title>i{
     width: 10px;
     text-align: left;
     display: inline-block;
@@ -693,26 +693,6 @@
 }
 */
 
-.Menu #sidebar .MenuItem {
-    cursor: pointer;
-    overflow: hidden;
-    border-radius: 6px;
-    padding: 4px;
-    padding-top: 10px;
-    position: relative;
-    /*transition: background-color .3s cubic-bezier(0.9, 0.2, 0.2, 1);*/
-    backface-visibility: hidden;
-    color: #2b3950;
-    background-color: #fff;
-    transition: all .1s ease-in-out;
-/*    box-shadow: 0 2px 3px rgba(0,0,0,.08);*/
-    font-size: 13px;
-    color: #8DA2B5 !important;
-    text-align: center;
-    border: 1px solid #eaeff4;
-    transition: all 0.25s ease;
-    margin: 0 4px;
-}
 #sidebar .wrap{
     width: 50%;
     margin-bottom: 8px;
@@ -832,6 +812,7 @@
     background-color: #b8daff !important;
     color: #42A5FF !important;
 }
+
 .Menu #sidebar .section-blocks {
     display: flex;
     flex-wrap: wrap;
@@ -846,11 +827,33 @@
 
 }
 
+.Menu #sidebar .MenuItem {
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 6px;
+    padding: 4px;
+    padding-top: 10px;
+    position: relative;
+    /*transition: background-color .3s cubic-bezier(0.9, 0.2, 0.2, 1);*/
+    backface-visibility: hidden;
+    color: #2b3950;
+    background-color: #fff;
+    transition: all .1s ease-in-out;
+/*    box-shadow: 0 2px 3px rgba(0,0,0,.08);*/
+    font-size: 13px;
+    color: #8DA2B5 !important;
+    text-align: center;
+    border: 1px solid #eaeff4;
+    transition: all 0.25s ease;
+    box-shadow: none !important;
+    margin: 0 4px;
+}
+
 .Menu #sidebar .MenuItem:hover {
     /*transform: scale(1.03);*/
     transform: translateY(-1px);
-    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 2px 6px rgba(0,0,0,.18);
-   border: 1px solid transparent !important;
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 2px 6px rgba(0,0,0,.18) !important;
+    border: 1px solid transparent !important;
 /*    border-radius: 10px;*/
     background-color: #fff !important;
     color: #2b3950 !important;
@@ -933,6 +936,9 @@
 } .MenuItem.speak>.MenuIcon {
     color: #42A5FF !important;
     font-size: 18px;
+}
+.MenuItem.card>.MenuIcon {
+    color: blue !important;
 }
 .Menu #sidebar .MenuItem.audio:hover, .Menu #sidebar .MenuItem.combine:hover {
     background-color: #ff8b35;
@@ -1210,7 +1216,7 @@ label {
     min-width: 120px !important;
     min-height: 80px !important;
     border-radius: 10px !important;
-    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
     border: 0px solid;
     border-top: 6px solid #E2E9EC;
     /*border-color: #c5c6c9 #bfc0c4 #b0b1b5 !important;*/
@@ -1383,9 +1389,15 @@ label {
 }
 
 .srd-default-node.speak {
-    background-color: #B2EBF2;
-    border-top: 6px solid #42A5FF;
-    border-color: #42A5FF !important;
+    background-color: #b2ebf2;
+    border-top: 6px solid #42a5ff;
+    border-color: #42a5ff !important;
+}
+
+.srd-default-node.card {
+    background-color: #fff;
+    border-top: 6px solid blue;
+    border-color: blue !important;
 }
 
 .srd-default-node.if {
@@ -1564,6 +1576,9 @@ button.close:hover{
     background-color: #D1D8DE;
     color: #2b3950;
     border-radius: 20px;
+    box-shadow: none !important;
+    position: static !important;
+    display: block !important;
 }
 
 .block>i{

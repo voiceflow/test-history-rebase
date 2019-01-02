@@ -4,12 +4,12 @@ import ModuleItem from './components/ModuleItem';
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
-
+// { text: 'Card', type: 'card', icon: <i className="fas fa-sticky-note"/>, tip: 'Tell Alexa to show a card'  }
 const SECTIONS = [{
     title: 'Basic',
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  }
+        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
     ]
 },{
     title: 'Logic',

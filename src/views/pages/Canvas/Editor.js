@@ -12,6 +12,7 @@ import IfBlock from './Editors/If';
 import OldIfBlock from './Editors/OldIf';
 import Speak from './Editors/Speak';
 import OldSpeak from './Editors/OldSpeak';
+import Card from './Editors/Card';
 import Capture from './Editors/Capture';
 import OldCommand from './Editors/OldCommand';
 import Command from './Editors/Command';
@@ -205,6 +206,11 @@ class Editor extends Component {
                 } else {
                     return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 }
+            case 'card':
+                return <Card node={this.state.node} 
+                            onUpdate={this.props.onUpdate} 
+                            variables={variables}
+                        />
             case 'capture':
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'flow':
@@ -268,7 +274,7 @@ class Editor extends Component {
     }
 
     render() {
-        const type = this.state.node ? this.state.node.extras.type : null
+        let type = this.state.node ? this.state.node.extras.type : null
 
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}

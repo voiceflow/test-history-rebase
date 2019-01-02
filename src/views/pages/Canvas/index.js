@@ -1083,6 +1083,12 @@ class Canvas extends Component {
                 // if(this.onboarding && this.state.onboarding_step < 1){
                 //     setTimeout(()=>this.setState({onboarding_step: 1, onboarding_run: true}), 400)
                 // }
+            } else if (type === 'card') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.extras = {
+                    cardtype: 'Simple'
+                }
             } else if (type === 'flow') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)

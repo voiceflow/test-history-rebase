@@ -392,6 +392,9 @@
 #TitleBar .project {
     height: 55px;
 }
+.card-dropdown{
+    margin-top: 0px !important;
+}
 .card-dropdown .show{
   width: 10px;
 }
@@ -1034,7 +1037,7 @@
 }
 
 #Editor {
-    position: fixed;
+    position: absolute;
     right: 0;
     z-index: 5;
     width: 350px;
@@ -1242,7 +1245,7 @@ label {
     transform: scale(1.02);
 }
 .srd-port:hover, .srd-port--selected {
-    background: #d1d8e2 !important;
+    background: #aec5e0 !important;
     cursor: pointer !important;
 }
 
@@ -1424,7 +1427,7 @@ label {
     font-size: 14px;
 }
 .srd-port {
-    background: #f0f3f7;
+    background: #dce3eb;
     width: 25px;
     height: 25px;
     margin-bottom: 4px;
@@ -1437,6 +1440,10 @@ label {
 .srd-default-port--out > .srd-port {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+}
+
+.srd-port.unlinked {
+    background: #f0f3f7;
 }
 
 .srd-default-node__name {

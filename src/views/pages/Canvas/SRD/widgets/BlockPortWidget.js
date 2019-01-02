@@ -19,12 +19,17 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 		super("srd-port", props);
 		this.state = {
 			selected: false
-		};
+		}
+		this.isUnlinked = this.isUnlinked.bind(this)
 		this.setLinks = this.setLinks.bind(this)
 	}
 
-	getClassName(){
-		return "port " + super.getClassName() + ((this.state.selected || this.props.port.selected) ? this.bem("--selected") : "" + (this.props.link ? "used" : ""));
+	isUnlinked() {
+		return _.isEmpty(this.props.node.ports[this.props.name].links);
+	}
+
+	getClassName() {
+		return "port " + super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.isUnlinked() ? "unlinked" : ""));
 	}
 
 	setLinks(isSelected = false){
@@ -49,15 +54,13 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 		return (
 			<div
 				{...this.getProps()}
-				onMouseEnter={() => {
-					this.setState({ selected: true }, () => {
-						this.setLinks(true)
-					})
+				onMouseEnter={e => {
+					this.setLinks(true);
+					this.setState({ selected: true });
 				}}
-				onMouseLeave={() => {
-					this.setState({ selected: false }, () => {
-						this.setLinks(false)
-					})
+				onMouseLeave={e => {
+					this.setLinks(false);
+					this.setState({ selected: false });
 				}}
 				data-name={this.props.name}
 				data-nodeid={this.props.node.getID()}

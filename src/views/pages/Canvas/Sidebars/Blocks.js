@@ -4,7 +4,7 @@ import ModuleItem from './components/ModuleItem';
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
-// { text: 'Card', type: 'card', icon: <i className="fas fa-sticky-note"/>, tip: 'Tell Alexa to show a card'  }
+
 const SECTIONS = [{
     title: 'Basic',
     items: [
@@ -34,6 +34,12 @@ const SECTIONS = [{
     items: [
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
         { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'},
+    ]
+},{
+    title: 'Visuals',
+    items: [
+        { text: 'Card', type: 'card', icon: <i className="fas fa-sticky-note"/>, tip: 'Tell Alexa to show a card'  },
+        { text: 'Display', type: 'display', icon: <i className="far fa-image"/>, tip: 'Show a Multimodal Display on the screen using APL' }
     ]
 }]
 

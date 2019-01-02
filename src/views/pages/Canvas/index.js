@@ -199,7 +199,8 @@ class Canvas extends Component {
             helpOpen: false,
             user_modules: null,
             user_templates: [],
-            email_templates: []
+            email_templates: [],
+            display_templates: []
         }
     }
 
@@ -268,7 +269,7 @@ class Canvas extends Component {
                     // SKILL IS LOADED HERE
                     if(!this.preview){
                         this.loadUserModules()
-                        this.onLoadEmailTemplates()
+                        this.onLoadTemplates()
                     }
                     this.onLoadDiagrams()
                 }
@@ -276,10 +277,11 @@ class Canvas extends Component {
         }
     }
 
-    onLoadEmailTemplates(){
+    async onLoadTemplates(){
         if(window.user_detail && window.user_detail.admin > 0 && this.props.skill){
-            axios.get(`/email/templates?skill_id=${this.props.skill.skill_id}`)
-            .then(res => {
+            // LOAD EMAIL TEMPLATES IF ON PLAN > 1
+            try {
+                const res = await axios.get(`/email/templates?skill_id=${this.props.skill.skill_id}`)
                 if(Array.isArray(res.data)){
                     let templates = res.data.map(t => {
                         let variables = [];
@@ -290,7 +292,7 @@ class Canvas extends Component {
                                 console.error(err);
                             }
                         }
-
+            
                         return {
                             title: t.title,
                             sender: t.sender,
@@ -299,14 +301,35 @@ class Canvas extends Component {
                         }
                     })
                     this.setState({
-                        email_templates: templates
+                        templates: templates
                     })
                 }
-            })
-            .catch(err => {
+            } catch(err) {
                 console.error(err)
-                this.props.onError('Unable to Retrieve Email Templates')
-            })
+                // this.props.onError('Unable to Retrieve Email Templates')
+            }
+        }
+
+        // LOAD MULTIMODAL/VISUAL TEMPLATES
+        try {
+            const res = await axios.get(`/multimodal/displays?skill_id=${this.state.skill.skill_id}`)
+            if(Array.isArray(res.data)){
+                let displays = res.data.map(t => {
+                    return {
+                        title: t.title,
+                        display_id: t.id,
+                        document: t.document,                    
+                        description: t.description,
+                        datasource: t.datasource
+                    }
+                })
+                this.setState({
+                    display_templates: displays
+                })
+            }
+        } catch(err) {
+            console.error(err)
+            // this.props.onError('Unable to Retrieve Visual Templates')
         }
     }
 
@@ -1180,6 +1203,14 @@ class Canvas extends Component {
                     mapping: [],
                     to: ''
                 }
+            } else if (type === 'display') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.extras = {
+                    display_id: null,
+                    datasource: '',
+                    update_on_change: false
+                }
             } else if (type === 'stream') {
                 node.addInPort(' ')
                 node.addOutPort('stop/pause').setMaximumLinks(1)
@@ -1359,6 +1390,7 @@ class Canvas extends Component {
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
                     templates={this.state.email_templates}
+                    displays={this.state.display_templates}
                 />
                 <div
                     id="diagram"

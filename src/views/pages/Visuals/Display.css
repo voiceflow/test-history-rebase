@@ -1,0 +1,102 @@
+#page-drop{
+    border: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    overflow: scroll;
+}
+#page-drop .drop-overlay{
+    visibility: hidden;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 250ms ease;
+    padding: 30px;
+}
+
+#page-drop.active .drop-overlay.active{
+    visibility: visible;
+    background-color: #42A5FFDD;
+    opacity: 1;
+}
+
+#page-drop.reject .drop-overlay.reject{
+    visibility: visible;
+    background-color: #ff3562DD;
+    opacity: 1;
+}
+
+#page-drop.reject .drop-overlay.active {
+    display: none !important
+}
+
+#page-drop.active .drop-overlay>div{
+    height: 100%;
+    width: 100%;
+    border: 2px dashed #fff;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #fff;
+}
+
+.display-tabs .btn.btn-secondary{
+    background-color: #cce5ff70 !important;
+    height: 30px;
+    line-height: 15px !important;
+    border: 1px solid #b8daff !important;
+    color: #42A5FF !important;
+    text-transform: capitalize;
+}
+.display-tabs .btn.btn-outline-secondary{
+    height: 30px;
+    font-weight: lighter !important;
+    color: #8da2b5 !important;
+    line-height: 15px;
+    text-transform: capitalize;
+}
+.display-tabs .btn.btn-outline-secondary:hover{
+    height: 30px;
+    font-weight: lighter !important;
+    color: #42A5FF !important;
+    line-height: 15px;
+}
+.display-tabs .btn.btn-outline-secondary:active{
+    background-color: #f9f9f9;
+    height: 30px;
+    font-weight: lighter !important;
+    color: #42A5FF !important;
+    line-height: 15px;
+}
+
+.display-card{
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.display-card-action{
+	flex: 1;
+
+}
+.display-card-action>div{
+	padding: 70px;
+    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12) !important;
+}
+
+.display-card-delete{
+	display: flex;
+	cursor: pointer;
+	border-left: 1px solid #E2E9EC;
+	align-items: center;
+	padding: 10px 20px;
+}
+.display-card-delete:hover{
+	color:#fff;
+	background-color: #2b3950;
+}

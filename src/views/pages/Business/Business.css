@@ -84,9 +84,15 @@ transform: scale(1.03);
 	margin-bottom: 2px;
 }
 
-.email_editor{
+.document_editor{
 	width: 100% !important;
-	height: 500px !important;
+	height: 420px !important;
+}
+
+.datasource_editor{
+	width: 100% !important;
+	height: 420px !important;
+	border-radius: 5px;
 }
 
 .template-card{

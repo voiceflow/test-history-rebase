@@ -22,7 +22,7 @@ const tabs = [
         display: <React.Fragment><i className="fal fa-envelope mr-2"/> Email</React.Fragment>,
         match: ['emails', 'template'],
         link: '/business/:skill_id/email/templates'
-    },
+    }
 ]
 
 class Business extends Component {

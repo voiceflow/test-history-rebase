@@ -910,6 +910,12 @@
 } .MenuItem.intent>.MenuIcon {
     color: #8699ff !important;
 }
+.MenuItem.exit>.MenuIcon {
+    color: #ff0000 !important;
+}
+.MenuItem.exit>.MenuIcon i{
+    transform: translateX(0) !important;
+}
 .Menu #sidebar .MenuItem.mail:hover {
     background-color: #F4F6F7;
 } .MenuItem.mail>.MenuIcon {
@@ -1269,8 +1275,11 @@ label {
 /*    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25)*/
 }
 
+.srd-default-node.exit{
+    border-top: 6px solid red;
+    border-color: red !important;
+}
 .srd-default-node.flow {
-    background-color: #fff;
     border-top: 6px solid #7abcdb;
     border-color: #7abcdb !important;
 }
@@ -1599,6 +1608,10 @@ button.close:hover{
     position: relative;
     top: 1px;
 }
+.block.exit{
+    background-color: #ff000050;
+    color: #f18383;
+}
 .block.api{
 /*    border: 1px solid #D7396540;*/
     background-color: #f1838350;
@@ -1681,12 +1694,6 @@ button.close:hover{
     border: 1px solid #ff8b35;
     background-color: #ff8b3530;
     color: #ff8b35;
-}
-
-.block.ending {
-    border: 1px solid #e3e9ec;
-    background-color: #e3e9ec;
-    color: #2b3950;
 }
 
 .block.comment {

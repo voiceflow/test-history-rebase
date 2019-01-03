@@ -1091,6 +1091,8 @@ class Canvas extends Component {
                     choices: [],
                     inputs: []
                 };
+            } else if(type === 'exit'){
+                node.addInPort(' ')
             } else if (type === 'intent') {
                 node.addInPort(' ');
                 node.addOutPort('else').setMaximumLinks(1);

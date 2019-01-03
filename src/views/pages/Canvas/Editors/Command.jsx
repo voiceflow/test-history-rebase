@@ -190,26 +190,29 @@ class Command extends Component {
                     </React.Fragment>
                 }
             </div>
-            <InputGroup className="my-3">
-                <label className="input-group-text w-100 m-0 d-flex">
-                    <Input addon type="checkbox" value={!!this.state.node.extras.end} checked={!!this.state.node.extras.end} onChange={this.updateEnd}/>
-                    <div className="ml-2 space-between flex-hard">
-                        <span>
-                            Command Ends Skill
-                        </span>
-                        <span>
-                            <Tooltip
-                                className="menu-tip"
-                                html='The skill will end on completion of the command'
-                                position="bottom"
-                                theme="menu"
-                            >
-                                ?
-                            </Tooltip>
-                        </span>
-                    </div>
-                </label>
-            </InputGroup>
+            {/* DEPPRECATE THIS */}
+            {!!this.state.node.extras.end &&
+                <InputGroup className="my-3">
+                    <label className="input-group-text w-100 m-0 d-flex">
+                        <Input addon type="checkbox" value={!!this.state.node.extras.end} checked={!!this.state.node.extras.end} onChange={this.updateEnd}/>
+                        <div className="ml-2 space-between flex-hard">
+                            <span>
+                                Command Ends Skill
+                            </span>
+                            <span>
+                                <Tooltip
+                                    className="menu-tip"
+                                    html='The skill will end on completion of the command'
+                                    position="bottom"
+                                    theme="menu"
+                                >
+                                    ?
+                                </Tooltip>
+                            </span>
+                        </div>
+                    </label>
+                </InputGroup>
+            }
         </React.Fragment>
     }
 

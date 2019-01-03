@@ -214,7 +214,7 @@ class Canvas extends Component {
     componentDidUpdate(previous_props) {
 
         this.checkSkill()
-        
+
         if(previous_props.diagram_id !== this.props.diagram_id && this.state.new_skill_step === 0){
             if(this.buildDiagrams !== null){
                 this.buildDiagrams(this.props.diagram_id)
@@ -222,7 +222,12 @@ class Canvas extends Component {
             this.setState({
                 loading_diagram: true,
                 open: false
-            }, () => this.onLoadId(this.props.diagram_id))
+            }, () => {
+              let nodes = _.values(this.state.engine.diagramModel.nodes);
+              this.state.engine.enableRepaintEntities(nodes);
+              this.state.engine.repaintCanvas(false);
+              this.onLoadId(this.props.diagram_id)
+            })
         }
     }
 
@@ -291,7 +296,7 @@ class Canvas extends Component {
                                 console.error(err);
                             }
                         }
-            
+
                         return {
                             title: t.title,
                             sender: t.sender,
@@ -317,7 +322,7 @@ class Canvas extends Component {
                     return {
                         title: t.title,
                         display_id: t.id,
-                        document: t.document,                    
+                        document: t.document,
                         description: t.description,
                         datasource: t.datasource
                     }

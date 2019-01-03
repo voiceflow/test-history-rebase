@@ -21,8 +21,7 @@ const Customer = require('./routes/customer.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
 const Audio = require('./routes/audio.js');
-const Analytics = require('./routes/analytics.js')
-const Review = require('./routes/review.js');
+const Test = require('./routes/test.js');
 const Authentication = require('./routes/authentication');
 const Code = require('./config/codes.js');
 const Decode = require('./routes/decode.js');
@@ -141,6 +140,8 @@ app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 app.get('/business', ensurePlan(1));
 app.get('/business/*', ensurePlan(1));
 
+app.post('/test/api', ensureLoggedIn(), Test.api)
+
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
@@ -178,21 +179,6 @@ app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);
 app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
-
-// app.get('/analytics/:env/aggregate', ensureAdmin(), Analytics.getAggregate);
-// app.get('/analytics/:skill_id/totalUsers', ensureAdmin(), Analytics.getTotalUsers);
-// app.get('/analytics/:skill_id/weekly', ensureAdmin(), Analytics.getWeeklyUsers);
-// app.get('/analytics/:skill_id/monthly', ensureAdmin(), Analytics.getMonthlyUsers);
-// app.get('/analytics/:skill_id/sessions', ensureAdmin(), Analytics.getSessions);
-// app.get('/analytics/:env/stories', ensureAdmin(), Analytics.getStories);
-// app.get('/analytics/:env/stories/:start/:end', ensureAdmin(), Analytics.getStories);
-// app.get('/analytics/:env/reads/', ensureAdmin(), Analytics.getReads);
-// app.get('/analytics/:env/reads/:start/:end', ensureAdmin(), Analytics.getReads);
-// app.get('/analytics/:env/users', ensureAdmin(), Analytics.getUsers);
-// app.get('/analytics/:env/users/bucket', ensureAdmin(), Analytics.getBucketUsers);
-// app.get('/analytics/:env/user/:id/stories', ensureAdmin(), Analytics.getUserStories);
-// app.get('/analytics/:env/user/:id/stories/data', ensureAdmin(), Analytics.getUserStoriesData);
-// app.get('/analytics/story/:id/lines', ensureAdmin(), Analytics.getStoryLines);
 
 app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)

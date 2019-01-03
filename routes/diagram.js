@@ -805,7 +805,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     
                     if(Array.isArray(node.extras.dialogs)){
                         node.extras.dialogs.forEach(d => {
-                            if(d.audio && validUrl.isUri(d.audio)){
+                            if(d.audio){
                                 add(`<audio src="${d.audio}"/>`)
                             }else if(d.rawContent){
                                 temp = draftToMarkdown(d.rawContent, {alexa: true});

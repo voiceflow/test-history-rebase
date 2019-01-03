@@ -138,7 +138,7 @@ class API extends Component {
     copyJSONPath(copy_event){
         let total_path = copy_event.namespace.slice()
 
-        if(copy_event.name != ''){
+        if(copy_event.name !== ''){
             total_path.push(copy_event.name)
         }
 

@@ -474,6 +474,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         nextId: getLink(nextLink)
                     };
+                } else if(node.extras.type === 'exit'){
+                    story.lines[node.id] = {
+                        end: true
+                    }
                 } else if (node.extras.type === 'command' || node.extras.type === 'jump') {
 
                     let nextLink = null;

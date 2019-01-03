@@ -47,7 +47,7 @@ class Skill extends Component {
             }else if(!match && state.skill){
                 if(!state.diagram_id){
                     let diagram_id = state.skill.diagram
-    
+
                     let last_session = localStorage.getItem('flow')
                     if(last_session){
                         let parts = last_session.split('/')
@@ -55,7 +55,7 @@ class Skill extends Component {
                             diagram_id = last_session.split('/')[1]
                         }
                     }
-    
+
                     props.history.push(`/canvas/${state.skill.skill_id}/${diagram_id}`)
                     return {
                         diagram_id: diagram_id
@@ -175,7 +175,7 @@ class Skill extends Component {
 
         return <React.Fragment>
             {this.state.secondary && <SecondaryNavBar skill={this.state.skill} page={this.props.page}/>}
-            
+
             <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
             <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
 

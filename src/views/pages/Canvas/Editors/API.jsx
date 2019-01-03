@@ -183,7 +183,7 @@ class API extends Component {
 
         // Replace url with user set variables
         let new_url
-        new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
+        new_url = url.replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables)).trim()
         if(!_.isNull(url)){
     		finder(url);
             // Distinguish between body rawInput and pairs
@@ -247,7 +247,7 @@ class API extends Component {
 
                 let varMap = {}
 
-                axios(request_obj)
+                axios.post('/test/api', {api: request_obj})
                 .then(res => {
                     // Map all paths user requires to varMap
                     _.forEach(mapping, map => {
@@ -271,6 +271,7 @@ class API extends Component {
                     })
                 })
                 .catch(err => {
+                    console.log(err)
                     let status = (err.response) ? err.response.status : err.status                     
                     this.setState({
                         testHeader: update(this.state.testHeader, {

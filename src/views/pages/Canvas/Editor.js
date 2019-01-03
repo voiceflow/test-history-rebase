@@ -25,6 +25,7 @@ import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import Onboarding from './Onboarding'
 import {
+    Alert,
     Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
     DropdownToggle,
@@ -221,7 +222,6 @@ class Editor extends Component {
                     createDiagram={this.props.createDiagram} 
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
-
                 />
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
@@ -235,6 +235,8 @@ class Editor extends Component {
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
                 return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
+            case 'exit':
+                return <Alert>This block ends the skill in its current flow and state</Alert>
             default:
               return null
         }

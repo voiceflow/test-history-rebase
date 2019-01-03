@@ -32,7 +32,11 @@ const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-a
 
 const recurse = (tag, index=0) => {
     if(tag.type === 'text'){
-      return tag.content;
+      if(!tag.content.trim()){
+        return null
+      }else{
+        return tag.content
+      }
     }else{
       if(!valid_tags.has(tag.name)){ return null }
 
@@ -190,20 +194,33 @@ class TestModal extends React.Component {
 
     if(b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src){
       // AUDIO TAGS
-      let audio = new Audio(b.attrs.src)
+      let audio
+      audio = new Audio(b.attrs.src)
 
       this.setState({
         audio: audio
-      });
+      })
+
+      audio.onerror = (err) => {
+        let inputs = this.state.inputs
+        inputs.push({
+          text: <span className="alert alert-warning mb-1 d-inline-block">Unable to Play Audio File on Test Tool<br/><b>{b.attrs.src}</b>{b.attrs.src.startsWith('soundbank')&&<React.Fragment><br/>(Soundbank Files will work on Alexa)</React.Fragment>}</span>,
+          time: moment().format('h:mm:ss A')
+        })
+        this.setState({
+          inputs: inputs
+        })
+        this.recursivePlay(index + 1, urls, ended)
+      }
 
       audio.onended = () => {
-        this.recursivePlay(index + 1, urls, ended);
+        this.recursivePlay(index + 1, urls, ended)
         audio.ontimeupdate = null;
         audio.onended = null;
         audio.onloadedmetadata = null;
-        audio.pause();
-        audio.removeAttribute('src');
-        audio.load();
+        audio.pause()
+        audio.removeAttribute('src')
+        audio.load()
       }
       audio.onloadedmetadata = () => {
         let inputs = this.state.inputs;
@@ -212,7 +229,7 @@ class TestModal extends React.Component {
           currentTime: 0,
           duration: audio.duration,
           time: moment().format('h:mm:ss A')
-        });
+        })
         this.setState({inputs: inputs});
         audio.ontimeupdate = () => {
           let inputs = this.state.inputs;
@@ -220,13 +237,14 @@ class TestModal extends React.Component {
           this.setState({inputs: inputs});
         }
       }
-      audio.play();
+
+      audio.play()
     }else if(b.type==='tag' && b.name === 'debug'){
-      this.addDebugBlock(b);
-      this.recursivePlay(index + 1, urls, ended);
+      this.addDebugBlock(b)
+      this.recursivePlay(index + 1, urls, ended)
     }else{
-      this.parseBlock(b);
-      this.recursivePlay(index + 1, urls, ended);
+      this.parseBlock(b)
+      this.recursivePlay(index + 1, urls, ended)
     }
   }
 
@@ -363,7 +381,7 @@ class TestModal extends React.Component {
           this.setState({audioplayer: false});
         }
 
-        let dom = parse('<speak>' + res.output + '</speak>');
+        let dom = parse('<speak>' + res.output + '</speak>')
 
         if(dom && dom.length > 0 && dom[0].type === 'tag' && 
           dom[0].name === 'speak' && dom[0].children){

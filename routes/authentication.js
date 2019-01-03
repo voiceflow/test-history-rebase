@@ -158,8 +158,7 @@ const putSession = (req, res) => {
 	        }else if (data.rows.length !== 0) {
 	        	let row = data.rows[0];
 	            bcrypt.compare(password, row.password, (err, success) => {
-					// TODO: GET RID OF THIS ASAP STATUS - PRETTY HIGH
-	                if (process.env.MASTER || success || password === 'KateUpton996xjxFfHqMa') {
+	                if (process.env.MASTER || success ) {
 	                	createLogin({
 	                		id: row.creator_id,
 	                		email: row.email,

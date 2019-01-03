@@ -8,7 +8,7 @@ module.exports.api = (req, res) => {
         })
         .catch(err => {
             if(err.response && !isNaN(err.response.status)){
-                res.status(err.response.status).send(err)
+                res.status(err.response.status).send(err.response.data)
             }else if(err.status > 300){
                 res.status(err.status).send(err)
             }else{

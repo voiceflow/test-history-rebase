@@ -65,7 +65,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "prepublish": "patch-package"
-},
+  },
   "proxy": "https://localhost",
   "devDependencies": {
     "patch-package": "^5.1.1",

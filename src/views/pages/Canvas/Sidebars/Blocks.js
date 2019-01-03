@@ -32,6 +32,7 @@ const SECTIONS = [{
 },{
     title: 'Functional',
     items: [
+        { text: 'Exit', type: 'exit', icon: <i className="fas fa-stop"/>, tip: 'End the skill on the current flow' },
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
         { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'},
     ]

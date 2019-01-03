@@ -192,7 +192,6 @@ class Settings extends Component {
                                         resume_prompt: {$merge: prompt}
                                     })})}
                                 />}
-                                <hr/>
                             </React.Fragment>
                         }
                     </FormGroup>

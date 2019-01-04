@@ -4,6 +4,7 @@ import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
 import Settings from './views/pages/Skill/Settings'
 import Publish from './views/pages/Skill/Publish'
+import Logs from './views/pages/Logs'
 import axios from 'axios'
 import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
 import ErrorModal from './views/components/Modals/ErrorModal'
@@ -153,6 +154,8 @@ class Skill extends Component {
                 return <Settings {...this.props} skill={this.state.skill} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
+            case 'logs':
+                return <Logs {...this.props}/>
             case 'visuals':
                 return <Visuals {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             default:

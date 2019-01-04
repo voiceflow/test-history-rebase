@@ -55,6 +55,7 @@
     "react-tippy": "^1.2.3",
     "reactstrap": "^6.5.0",
     "serialize-error": "^3.0.0",
+    "socket.io-client": "^2.2.0",
     "storm-react-diagrams": "github:DecathectZero/react-diagrams",
     "universal-cookie": "^3.0.4",
     "ws": "^6.1.2"

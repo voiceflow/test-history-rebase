@@ -59,6 +59,9 @@ class SkillCard extends React.Component {
                   <DropdownItem tag="div" onClick={this.props.deleteSkill}>
                     Delete Skill
                   </DropdownItem>
+                  <DropdownItem tag="div" onClick={()=>{this.props.history.push('/creator_logs/' + this.props.skill.skill_id)}}>
+                    Logs
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
           </div>

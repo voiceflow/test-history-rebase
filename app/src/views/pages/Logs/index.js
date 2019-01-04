@@ -20,7 +20,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     socket_endpoint = 'http://localhost:4000'
 } else {
     // production code
-    socket_endpoint = 'https://app.getvoiceflow.com:8080'
+    socket_endpoint = 'https://app.getvoiceflow.com'
 }
 
 const actionsStyles = theme => ({

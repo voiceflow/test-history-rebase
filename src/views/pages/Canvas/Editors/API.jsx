@@ -19,7 +19,7 @@ import 'brace/mode/javascript'
 import 'brace/theme/chrome'
 
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
-const TABS = ['raw', 'results'];
+const TABS = ['raw', 'formatted', 'results'];
 
 class API extends Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class API extends Component {
 
         let node = props.node;
         let tab = localStorage.getItem('api_test_tab')
-        if(!tab) tab = TABS[0]
+        if(!tab) tab = TABS[1]
 
         // DEPRECATE turning from string to draftjs for SUPER old api blocks
         if(node.extras.mapping){
@@ -272,7 +272,8 @@ class API extends Component {
                 })
                 .catch(err => {
                     console.log(err)
-                    let status = (err.response) ? err.response.status : err.status                     
+                    let status = (err.response) ? err.response.status : err.status
+                    let error = err && err.response && err.response.data
                     this.setState({
                         testHeader: update(this.state.testHeader, {
                             'status': {$set: status},
@@ -281,7 +282,7 @@ class API extends Component {
                         }),
                         loading: false,
                         testVariablesMapping: varMap,
-                        modalContent: serializeError(err)
+                        modalContent: serializeError(error)
                     })
                 })
             }
@@ -333,16 +334,23 @@ class API extends Component {
                 </Button>
               ))}
             </ButtonGroup>
-            {this.state.activeTab === TABS[0] ?
-              <div className="response-box">
-                <ReactJson src={this.state.modalContent} displayDataTypes={false} name='response' enableClipboard={this.copyJSONPath}/>
-              </div> :
-              <div className="mt-3">
-                {_.map(this.state.testVariablesMapping, (val, key) => {
-                    let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
-                    return <pre key={key}>{draftToMarkdown(path) + ': ' + val + ' => {' + key + '}'}</pre>
-                })}
-              </div>
+            {this.state.activeTab === TABS[0] &&
+                <div className="response-box">
+                    <pre className="mb-0 p-1">{typeof this.state.modalContent === 'string' ? this.state.modalContent : JSON.stringify(this.state.modalContent, null, 2)}</pre>
+                </div>
+            }
+            {this.state.activeTab === TABS[1] &&
+                <div className="response-box">
+                    <ReactJson src={this.state.modalContent} displayDataTypes={false} name='response' enableClipboard={this.copyJSONPath}/>
+                </div>
+            }
+            {this.state.activeTab === TABS[2] && 
+                <div className="mt-3">
+                    {_.map(this.state.testVariablesMapping, (val, key) => {
+                        let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
+                        return <pre key={key}>{draftToMarkdown(path) + ': ' + val + ' => {' + key + '}'}</pre>
+                    })}
+                </div>
             }
           </div> : (this.state.loading ? loading : null )
         }

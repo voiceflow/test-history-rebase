@@ -161,6 +161,7 @@ class App extends Component {
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
                 <PrivateRoute path="/account" name="Account" component={Account} />
+                <PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

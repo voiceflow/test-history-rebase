@@ -29,6 +29,7 @@ const Marketplace = require('./routes/marketplace.js');
 const Email = require('./routes/email.js');
 const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
+const Logs = require('./routes/logs.js')
 
 const port = 8080;
 const name = npmPackage.name+' v'+npmPackage.version;
@@ -198,6 +199,8 @@ app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrie
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
+
+app.get('/logs/:skill_id', ensureLoggedIn(), Logs.getLogs)
 
 app.get('/admin', ensureAdmin());
 app.get('/admin/*', ensureAdmin());

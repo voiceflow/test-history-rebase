@@ -14,6 +14,7 @@ routes/tmp/*
 package-lock.json
 */yarn.lock
 yarn-lock.json
+yarn.lock
 
 # dotenv environment variables files
 .env*

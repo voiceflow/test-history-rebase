@@ -234,7 +234,7 @@ const manifest = (r, encoded_id) => {
              "apis": {
                  "custom": {
                      "endpoint": {
-                         "uri": `https://app.getvoiceflow.com/state/skill/${encoded_id}`,
+                         "uri": `${process.env.SKILL_ENDPOINT ? process.env.SKILL_ENDPOINT : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
                          "sslCertificateType": "Wildcard"
                      },
                      "interfaces": [{

@@ -18,3 +18,5 @@ yarn-lock.json
 # dotenv environment variables files
 .env*
 !.env.example
+
+yarn.lock

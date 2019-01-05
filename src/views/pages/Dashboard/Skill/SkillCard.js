@@ -39,8 +39,13 @@ class SkillCard extends React.Component {
 
     return (
       <div className="skill-card-container"
-           onMouseEnter={() => {this.setState({hover: true})}}
-           onMouseLeave={() => {this.setState({hover: false})}}>
+           onMouseEnter={() => {
+             this.setState({hover: true})
+           }}
+           onMouseLeave={() => {
+             this.setState({hover: false})
+           }}
+        >
         <Card className='skill-card'>
           <div className="p-1 px-2">
               <Dropdown isOpen={this.state.dropdownOpen} onMouseOver={this.onMouseEnter} onMouseLeave={this.onMouseLeave} toggle={this.onMouseEnter} direction="down" className="d-inline-block">
@@ -65,14 +70,19 @@ class SkillCard extends React.Component {
                 </DropdownMenu>
               </Dropdown>
           </div>
-          <CardActionArea className="card-action">
+          <CardActionArea className="card-action" onClick={() =>
+            this.props.open(this.props.skill.skill_id, this.props.skill.diagram)
+          }>
             { image ?
-              <div style={{backgroundImage: `url(${image})`}} className='card-image' onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}/> :
-              <div className='no-image card-image' onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>
+              <div
+                style={{backgroundImage: `url(${image})`}}
+                className='card-image'
+              /> :
+              <div className='no-image card-image'>
                 <h1>{ name }</h1>
               </div>
             }
-            <CardContent onClick={()=>this.props.open(this.props.skill.skill_id, this.props.skill.diagram)}>
+            <CardContent>
               <h5>
                 {this.props.skill.name}
               </h5>

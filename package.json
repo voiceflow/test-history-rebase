@@ -6,7 +6,6 @@
   "dependencies": {
     "@material-ui/core": "^3.2.2",
     "axios": "^0.18.0",
-    "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "bootstrap": "^4.1.1",
@@ -20,11 +19,13 @@
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "html-parse-stringify": "^1.0.3",
+    "immutability-helper": "^2.9.0",
     "is-var-name": "^2.0.0",
-    "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
+    "natural-language-commander": "git+https://github.com/WxnChen11/natural-language-commander.git",
     "number-to-words": "^1.2.4",
+    "prettysize": "^2.0.0",
     "query-string": "^6.2.0",
     "randomstring": "^1.1.5",
     "react": "^16.5.2",
@@ -38,6 +39,7 @@
     "react-ga": "^2.5.3",
     "react-intercom": "^1.0.14",
     "react-joyride": "^2.0.0-15",
+    "react-json-view": "github:groovy-tunes/react-json-view",
     "react-masonry-component": "^6.2.1",
     "react-mentions": "^2.4.1",
     "react-router-dom": "^4.3.1",
@@ -52,17 +54,27 @@
     "react-textarea-autosize": "^7.0.4",
     "react-tippy": "^1.2.3",
     "reactstrap": "^6.5.0",
+    "serialize-error": "^3.0.0",
+    "socket.io-client": "^2.2.0",
     "storm-react-diagrams": "github:DecathectZero/react-diagrams",
-    "universal-cookie": "^3.0.4"
+    "universal-cookie": "^3.0.4",
+    "ws": "^6.1.2"
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepublish": "patch-package"
   },
   "proxy": "https://localhost",
-  "devDependencies": {},
+  "devDependencies": {
+    "patch-package": "^5.1.1",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "regenerator-runtime": "^0.13.1"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",

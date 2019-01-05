@@ -1,16 +1,14 @@
-import React, { PureComponent } from 'react';
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal, 
-         ModalHeader, ModalBody, Button, ButtonGroup, Dropdown, DropdownToggle, DropdownMenu, 
-         DropdownItem, FormGroup, Label } from 'reactstrap';
-import MUIButton from '@material-ui/core/Button';
-import ClipBoard from './../../components/ClipBoard';
-import AmazonLogin from './../../components/Forms/AmazonLogin';
-import axios from 'axios';
-import {Tooltip} from 'react-tippy';
-import Switch from '@material-ui/core/Switch';
-import ConfirmModal from './../../components/Modals/ConfirmModal'
+import React, { PureComponent } from 'react'
+import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
+         ModalHeader, ModalBody, Button, Label } from 'reactstrap'
+import MUIButton from '@material-ui/core/Button'
+import ClipBoard from './../../components/ClipBoard'
+import AmazonLogin from './../../components/Forms/AmazonLogin'
+import axios from 'axios'
+import {Tooltip} from 'react-tippy'
+import Switch from '@material-ui/core/Switch'
 
-import AuthenticationService from './../../../services/Authentication';
+import AuthenticationService from './../../../services/Authentication'
 
 class ActionGroup extends PureComponent {
     constructor(props) {
@@ -22,9 +20,9 @@ class ActionGroup extends PureComponent {
             publish: false,
             diagrams: [],
             share: false,
+            allowPreview: false,
             platform: 'amazon',
             updateModal: false,
-            settingsModal: false,
             stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
@@ -33,21 +31,16 @@ class ActionGroup extends PureComponent {
             displayingConfirmDelete: false
         }
 
-        this.toggle = this.toggle.bind(this);
-        this.toggleShare = this.toggleShare.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.toggleUpdate = this.toggleUpdate.bind(this);
-        this.toggleSettings = this.toggleSettings.bind(this);
-        this.updateAlexa = this.updateAlexa.bind(this);
-        this.openUpdate = this.openUpdate.bind(this);
-        this.checkVendor = this.checkVendor.bind(this);
-        this.updateSkill = this.updateSkill.bind(this);
-        this.toggleRestart = this.toggleRestart.bind(this);
-        this.saveSettings = this.saveSettings.bind(this);
-        this.reset = this.reset.bind(this);
-        this.token = null;
-        this.toggleConfirmDelete = this.toggleConfirmDelete.bind(this)
-        this.onDelete = this.onDelete.bind(this)
+        this.toggle = this.toggle.bind(this)
+        this.toggleShare = this.toggleShare.bind(this)
+        this.togglePreview = this.togglePreview.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.toggleUpdate = this.toggleUpdate.bind(this)
+        this.updateAlexa = this.updateAlexa.bind(this)
+        this.openUpdate = this.openUpdate.bind(this)
+        this.checkVendor = this.checkVendor.bind(this)
+        this.reset = this.reset.bind(this)
+        this.token = null
     }
 
     componentWillReceiveProps(props){
@@ -57,7 +50,8 @@ class ActionGroup extends PureComponent {
                 skill: {
                     name: props.skill.name,
                     restart: props.skill.restart
-                }
+                },
+                allowPreview: props.skill.preview
             });
         }
     }
@@ -74,17 +68,7 @@ class ActionGroup extends PureComponent {
             amzn_error: false,
             stage: this.token ? 0 : 5
         });
-        // 
-    }
-
-    updateSkill(e) {
-        let skill = this.state.skill;
-        skill[e.target.name] = e.target.value;
-
-        this.setState({
-            skill: skill
-        });
-        this.forceUpdate();
+        //
     }
 
     openUpdate() {
@@ -112,51 +96,48 @@ class ActionGroup extends PureComponent {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(() => {
-            if(this.props.skill.amzn_id && (!this.props.skill.intents || this.props.skill.intents.length === 0 )){
-                this.setState({stage: 2});
-            }else{
-                this.setState({stage: 11}, () => {
-                    axios.post(`/skill/${this.props.skill.skill_id}/publish`)
-                    .then(res => {
-                        let skill = this.props.skill;
-                        skill.amzn_id = res.data;
-                        this.props.updateSkill(skill);
+            this.setState({stage: 11}, () => {
+                axios.post(`/skill/${this.props.skill.skill_id}/publish`)
+                .then(res => {
+                    let skill = this.props.skill;
+                    skill.amzn_id = res.data;
+                    this.props.updateSkill(skill);
+                    this.setState({
+                        stage: 2
+                    });
+                })
+                .catch(err => {
+                    if(err.status === 403 || err.response.status === 403){
+                        // No Vendor ID/Amazon Developer Account
                         this.setState({
-                            stage: 2
+                            stage: 6
                         });
-                    })
-                    .catch(err => {
-                        if(err.status === 403 || err.response.status === 403){
-                            // No Vendor ID/Amazon Developer Account
-                            this.setState({
-                                stage: 6
-                            });
-                        }else{
-                            console.dir(err);
-                            this.setState({
-                                upload_error: ((
-                                    err.response && 
-                                    err.response.data && 
-                                    err.response.data.message) ? err.response.data.message : 'Error Encountered').toString(),
-                                stage: 9
-                            })
+                    }else{
+                        let error_message = ''
+                        if(err.response && err.response.data && err.response.data.message){
+                            error_message += err.response.data.message
+
+                            if (err.response.data.violations) {
+                                for (let i = 0; i < err.response.data.violations.length; i++){
+                                    error_message += '\n' + err.response.data.violations[i].message
+                                }
+                            }
                         }
-                    })
-                });
-            }
+
+                        this.setState({
+                            stage: 9,
+                            upload_error: ((
+                                err.response &&
+                                err.response.data &&
+                                err.response.data.message) ? error_message : 'Error Encountered')
+                        })
+                    }
+                })
+            });
         })
         .catch(err => {
             this.setState({stage: 4});
         })
-    }
-
-    toggleRestart() {
-        let skill = this.state.skill;
-        skill.restart = !skill.restart;
-        this.setState({
-            skill: skill
-        });
-        this.forceUpdate();
     }
 
     toggleUpdate() {
@@ -165,46 +146,12 @@ class ActionGroup extends PureComponent {
         });
     }
 
-    toggleSettings() {
-        this.setState({
-            settingsModal: !this.state.settingsModal
-        });
-    }
-
     handleChange(e) {
         let node = this.state.story;
         let name = e.target.getAttribute('name');
         let value = e.target.value;
-        
+
         node.extras[name] = value;
-    }
-
-    toggleConfirmDelete() {
-        if(!this.state.displayingConfirmDelete){
-            this.setState({
-                displayingConfirmDelete: {
-                    text: "Are you sure you want to delete this Skill? This action cannot be undone and will delete all resources this Skill currently depends on.",
-                    confirm: this.onDelete
-                },
-                stage: 13
-            });
-        }else{
-            this.setState({
-                displayingConfirmDelete: false,
-                stage: 0
-            });
-        }
-    }
-
-    onDelete(){
-        axios.delete(`/skill/${this.props.skill.skill_id}`)
-        .then(() => {
-            this.props.history.push('/dashboard');
-        })
-        .catch(err => {
-            console.log(err)
-            alert('Error deleting Skill');
-        });
     }
 
     toggle() {
@@ -213,36 +160,22 @@ class ActionGroup extends PureComponent {
         });
     }
 
-    toggleShare() {
-        this.setState({
-            share: !this.state.share
-        });
+    togglePreview() {
+      axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
+          isPreview: !this.state.allowPreview,
+      })
+      .then(() => {
+          this.setState({ allowPreview: !this.state.allowPreview});
+      })
+      .catch(err => {
+          console.log(err);
+      })
     }
 
-    saveSettings() {
-        let different = false
-        for (var key in this.state.skill) {  
-            if(this.state.skill[key] !== this.props.skill[key]) different = true;
-        }
-        if(!different) return this.setState({settingsModal: false});
-
-        axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, {
-            name: this.state.skill.name,
-            restart: this.state.skill.restart
-        })
-        .then(() => {
-            let skill = this.props.skill;
-            skill.name = this.state.skill.name;
-            skill.restart = this.state.skill.restart;
-            this.props.updateSkill(skill);
-            this.setState({
-                settingsModal: false
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            alert('Save Error');
-        })
+    toggleShare() {
+      this.setState({
+          share: !this.state.share
+      });
     }
 
     render_body() {
@@ -268,7 +201,7 @@ class ActionGroup extends PureComponent {
                         You may test on the Alexa simulator or live on your personal Alexa device.
                     </span>
                     <div className="my-3">
-                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`} 
+                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
                         className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                             Test on Alexa Simulator
                         </a>
@@ -276,7 +209,7 @@ class ActionGroup extends PureComponent {
                 </React.Fragment>
             case 4:
                 return <Alert color="danger">
-                    Rendering Error  
+                    Rendering Error
                 </Alert>
             case 5:
                 return <div className="modal-txt flex-fill text-center mt-3">
@@ -301,7 +234,7 @@ class ActionGroup extends PureComponent {
                  return <React.Fragment>
                     Your Amazon Account needs to set up developer settings to Upload Skills
                     <span className="text-muted text-center font-italic">
-                        Press "Create your Amazon Developer account"<br/> 
+                        Press "Create your Amazon Developer account"<br/>
                         and sign up with the same email as your Amazon Account.
                     </span>
                     <div className="my-3">
@@ -320,7 +253,7 @@ class ActionGroup extends PureComponent {
                         <p className="loading">Checking Vendor</p>
                     </div>
                 </div>
-            case 8: 
+            case 8:
                 return <div className="super-center mb-4">
                     <div className='text-center'>
                         <h1><span className="loader"/></h1>
@@ -334,7 +267,7 @@ class ActionGroup extends PureComponent {
                         {this.state.upload_error}
                     </Alert>
                 </div>
-            case 11: 
+            case 11:
                 return <div className="super-center mb-4">
                     <div className='text-center'>
                         <h1><span className="loader"/></h1>
@@ -351,7 +284,7 @@ class ActionGroup extends PureComponent {
                         {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
                         {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
                     </div>
-                
+
                     <div className="super-center mb-3 mt-3">
                         <Button color="primary" onClick={this.updateAlexa}>Confirm Upload</Button>
                     </div>
@@ -363,55 +296,8 @@ class ActionGroup extends PureComponent {
 
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
-        let settings_modal_content;
-        if(this.state.skill){
-            if(this.state.settings_tab_state === 'basic'){
-                settings_modal_content = 
-                <React.Fragment>
-                    <FormGroup>
-                        <Label>Project Name</Label>
-                        <Input name="name" value={this.state.skill.name} onChange={this.updateSkill}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Restart Every Session</Label>
-                        <div>
-                            <Switch
-                                checked={this.state.skill.restart}
-                                onChange={this.toggleRestart}
-                                color="primary"
-                            />
-                            <b>{this.state.skill.restart ? 'on': 'off'}</b>
-                            <div className="text-muted">{
-                                this.state.skill.restart ? 
-                                'The project will start from the beginning every time the user starts a session' : 
-                                'The project will resume from the last block the user was on before quitting'
-                            }</div>
-                        </div>
-                    </FormGroup>
-                    <div className="super-center">
-                        <Button color="primary" onClick={this.saveSettings}>Save Settings</Button>
-                    </div>
-                </React.Fragment>
-            } else{
-                settings_modal_content = 
-                <React.Fragment>
-                    <FormGroup>
-                        <Label>Delete Project</Label>
-                        <Alert color="danger between">
-                            <span>WARNING: This action can not be undone</span>
-                            <Button color="danger" onClick={this.toggleConfirmDelete}>Delete Skill</Button>
-                        </Alert>
-                    </FormGroup>
-                </React.Fragment>
-            }
-        }
-
         return (
             <React.Fragment>
-            <ConfirmModal
-                confirm = {this.state.displayingConfirmDelete}
-                toggle = {this.toggleConfirmDelete}
-            />
             <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
                 <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
                 <ModalBody className="modal-info">
@@ -420,25 +306,10 @@ class ActionGroup extends PureComponent {
                     </div>
                 </ModalBody>
             </Modal>
-            <Modal isOpen={this.state.settingsModal} toggle={this.toggleSettings}>
-                <ModalHeader toggle={this.toggleSettings}>
-                    Project Settings
-                </ModalHeader>
-                {   
-                    !!this.state.skill &&
-                    <ModalBody>
-                        <ButtonGroup className="toggle-group mb-2">
-                            <Button outline={this.state.settings_tab_state !== 'basic'} onClick={() => {this.setState({settings_tab_state: 'basic'})}} disabled={this.state.block_tab_state === 'basic'}> Basic </Button>
-                            <Button outline={this.state.settings_tab_state !== 'advanced'} onClick={() => {this.setState({settings_tab_state: 'advanced'})}} disabled={this.state.block_tab_state === 'advanced'}>Advanced</Button>
-                        </ButtonGroup>
-                        {settings_modal_content}
-                    </ModalBody>
-                }
-            </Modal>
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="title-group-sub">
-                    <Tooltip 
+                    <Tooltip
                         title="Share"
                         position="bottom"
                         distance={16}
@@ -449,55 +320,40 @@ class ActionGroup extends PureComponent {
                     </Tooltip>
                     <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
                         <PopoverHeader>Share Link</PopoverHeader>
-                        <PopoverBody>
-                            <InputGroup>
-                                <InputGroupAddon addonType="prepend" id="copyShare">
-                                    <ClipBoard 
-                                        component="button" 
-                                        className="btn btn-secondary" 
-                                        value={link}
-                                        id="shareLink"
-                                    >
-                                        <i className="fas fa-copy"/>
-                                    </ClipBoard>
-                                </InputGroupAddon>
-                                <Input readOnly value={link}/>
-                            </InputGroup>
+                        <PopoverBody style={{minWidth: '260px'}}>
+                            <div className="space-between">
+                                <Label>Allow preview sharing</Label>
+                                <Switch
+                                    checked={this.state.allowPreview}
+                                    onChange={this.togglePreview}
+                                    color="primary"
+                                />
+                            </div>
+                            {this.state.allowPreview &&
+                                <InputGroup className="mb-3">
+                                    <InputGroupAddon addonType="prepend">
+                                        <ClipBoard
+                                            component="button"
+                                            className="btn btn-primary"
+                                            value={link}
+                                            id="shareLink"
+                                        >
+                                            <i className="fas fa-copy"/>
+                                        </ClipBoard>
+                                    </InputGroupAddon>
+                                    <Input readOnly value={link} className="form-control-border right"/>
+                                </InputGroup>
+                            }
                         </PopoverBody>
                     </Popover>
-                    <Tooltip
-                        distance={16}
-                        title="Settings"
-                        position="bottom"
-                    >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.toggleSettings}>
-                            <i className="fas fa-cog"/>
-                        </MUIButton>
-                    </Tooltip>
-                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className="d-inline-block">
-                        <DropdownToggle className="anti-btn" tag="div">
-                            <Tooltip 
-                                title="Publish"
-                                position="bottom"
-                                distance={16}
-                            >
-                            <MUIButton variant="contained" className="white-btn update-btn"><i className="fas fa-rocket"/></MUIButton>
-                            </Tooltip>
-                        </DropdownToggle>
-                        <DropdownMenu className="platform-dropdown arrow"><p className="small-caps text-center mt-2 mb-2">Publish to</p>
-                            <DropdownItem className="platform-btn" onClick={this.props.publishAMZN}>Amazon<span className="button-circle"><i className="fab fa-amazon"/></span></DropdownItem>
-                            {/*<p className="small-caps-muted text-center mt-1 mb-1">or</p>
-                            <DropdownItem className="platform-btn" onClick={this.props.publishMarket}><span>Marketplace</span><span className="button-circle"><i className="fas fa-store-alt"></i></span></DropdownItem>*/}
-                        </DropdownMenu>
-                    </Dropdown>
                     <Tooltip
                         distance={16}
                         title="Save"
                         position="bottom"
                     >
                         <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
-                            {this.props.saving ? 
-                                <span className="loader"/> : 
+                            {this.props.saving ?
+                                <span className="loader"/> :
                                 <React.Fragment>
                                     {!this.props.saved && <span className="unsaved"/>}
                                     <i className="fas fa-save"/>
@@ -506,8 +362,8 @@ class ActionGroup extends PureComponent {
                         </MUIButton>
                     </Tooltip>
                 </div>
-                <Tooltip 
-                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>} 
+                <Tooltip
+                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
                     position="bottom"
                     distance={16}
                 >

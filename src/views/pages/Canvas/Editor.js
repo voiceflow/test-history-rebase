@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import axios from 'axios';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
+import Jump from './Editors/Jump'
 import Interaction from './Editors/Interaction';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
@@ -11,16 +12,20 @@ import IfBlock from './Editors/If';
 import OldIfBlock from './Editors/OldIf';
 import Speak from './Editors/Speak';
 import OldSpeak from './Editors/OldSpeak';
+import Card from './Editors/Card';
 import Capture from './Editors/Capture';
+import OldCommand from './Editors/OldCommand';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
 import Module from './Editors/Module';
 import Mail from './Editors/Mail';
+import Display from './Editors/Display'
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import Onboarding from './Onboarding'
 import {
+    Alert,
     Modal, ModalBody, ModalHeader,
     UncontrolledDropdown,
     DropdownToggle,
@@ -28,7 +33,19 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-import { SLOT_TYPES, BUILT_IN_INTENTS } from './Constants'
+import { SLOT_TYPES_MAP, BUILT_IN_INTENTS, SLOT_TYPES_UNIVERSAL } from './Constants'
+
+const BUILT_INS = BUILT_IN_INTENTS.map( intent => {
+    return {
+        built_in: true,
+        name: intent.name,
+        key: intent.name,
+        inputs: [{
+            text: '',
+            slots: intent.slots
+        }]
+    }
+})
 
 class Editor extends Component {
     constructor(props) {
@@ -36,59 +53,20 @@ class Editor extends Component {
 
         this.state = {
             node: this.props.node,
-            voices: [],
-            templates: [],
             permission_options: [],
-            slot_types: SLOT_TYPES,
-            built_ins: BUILT_IN_INTENTS,
             modal: false,
-            expanded: false
+            expanded: false,
+            error: null,
+            confirm: null
         }
 
+        this.eventHandler = this.eventHandler.bind(this)
+        this.getSlotTypes = this.getSlotTypes.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
-        // this.copyFlow = this.copyFlow.bind(this)
     }
 
     componentDidMount() {
-        axios.get('/voices')
-        .then(res => {
-            this.setState({
-                voices: res.data
-            });
-        })
-        .catch(err => {
-            console.error(err.response);
-            window.alert('Couldn\'t Retrieve Voices');
-        })
-
-        axios.get('/email/templates')
-        .then(res => {
-            let templates = res.data.map(t => {
-                let variables = [];
-                if(t.variables){
-                    try{
-                        variables = JSON.parse(t.variables);
-                    }catch(err){
-                        console.error(err);
-                    }
-                }
-
-                return {
-                    title: t.title,
-                    sender: t.sender,
-                    template_id: t.template_id,
-                    variables: variables
-                }
-            })
-            this.setState({
-                templates: templates
-            })
-        })
-        .catch(err => {
-            window.alert('Couldn\'t Retrieve Templates');
-        })
-
         // Hard-code for now, but eventually should retrieve from
         // AMZN website if possible
 
@@ -106,7 +84,7 @@ class Editor extends Component {
     componentWillReceiveProps(props) {
         this.setState({
             node: props.node
-        });
+        })
     }
 
     handleChange(e, key = undefined) {
@@ -124,6 +102,19 @@ class Editor extends Component {
         });
     }
 
+    getSlotTypes(locales) {
+        let SLOT_TYPES = []
+        _.map(locales, locale => {
+            SLOT_TYPES.push(SLOT_TYPES_MAP[locale])
+        })
+        SLOT_TYPES.push(SLOT_TYPES_UNIVERSAL)
+        SLOT_TYPES = _.uniq(_.flatten(SLOT_TYPES))
+        if (SLOT_TYPES.length > 0) {
+            SLOT_TYPES = SLOT_TYPES.slice(0, 1).concat(SLOT_TYPES.slice(1).sort())
+        }
+        return SLOT_TYPES
+    }
+
     BlockViewer() {
         let variables = this.props.global_variables.concat(this.props.variables)
 
@@ -133,21 +124,62 @@ class Editor extends Component {
             case 'choice':
             case 'choicenew':
                 return <Choice
-                        node={this.state.node} 
-                        voices={this.state.voices} 
+                        node={this.state.node}
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
+            case 'jump':
+                return <Jump
+                        node={this.state.node}
+                        onUpdate={this.props.onUpdate}
+                        intents={this.props.intents}
+                        slots={this.props.slots}
+                        variables={variables}
+                        slot_types={this.getSlotTypes(this.props.locales)}
+                        built_ins={BUILT_INS}
+                        onError={this.props.onError}
+                        onConfirm={this.props.onConfirm}
+                    />
+            case 'command':
+                // DEPRECATE OLD COMMAND BLOCKS
+                if(typeof this.state.node.extras.commands === 'string'){
+                    return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
+                }else{
+                    return <Command
+                        node={this.state.node}
+                        onUpdate={this.props.onUpdate}
+                        intents={this.props.intents}
+                        slots={this.props.slots}
+                        variables={variables}
+                        slot_types={this.getSlotTypes(this.props.locales)}
+                        built_ins={BUILT_INS}
+                        onError={this.props.onError}
+                        repaint={this.props.repaint}
+                        createDiagram={this.props.createDiagram}
+                        current={this.props.diagram_id}
+                        diagrams={this.props.diagrams}
+                        enterFlow={this.props.enterFlow}
+                        onConfirm={this.props.onConfirm}
+                    />
+                }
             case 'intent':
                 return <Interaction 
                     node={this.state.node} 
-                    onUpdate={this.props.onUpdate} repaint={this.props.repaint} intents={this.props.intents} slots={this.props.slots} 
-                    slots_open={this.props.slots_open} onSlot={this.props.onSlot} onIntent={this.props.onIntent} 
-                    variables={variables} slot_types={this.state.slot_types} built_ins={this.state.built_ins}
+                    onUpdate={this.props.onUpdate} 
+                    repaint={this.props.repaint} 
+                    intents={this.props.intents} 
+                    slots={this.props.slots} 
+                    onSlot={this.props.onSlot} 
+                    onIntent={this.props.onIntent} 
+                    variables={variables} 
+                    slot_types={this.getSlotTypes(this.props.locales)}
+                    built_ins={BUILT_INS} 
+                    onError={this.props.onError}
+                    onConfirm={this.props.onConfirm}
                     />
             case 'combine':
             case 'line':
-            case 'audio': 
+            case 'audio':
             case 'multiline':
                 // DEPRECATE OLD LINE BLOCKS
                 if(this.state.node.extras.type !== 'combine'){
@@ -155,7 +187,7 @@ class Editor extends Component {
                     node.extras.type = 'combine'
                     this.setState({node: node})
                 }
-                return <Line node={this.state.node} voices={this.state.voices} onUpdate={this.props.onUpdate}/>
+                return <Line node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'set':
                 return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
             case 'variable':
@@ -176,15 +208,18 @@ class Editor extends Component {
                 } else {
                     return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 }
+            case 'card':
+                return <Card node={this.state.node} 
+                            onUpdate={this.props.onUpdate} 
+                            variables={variables}
+                        />
             case 'capture':
                 return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
-            case 'command':
-                return <Command node={this.state.node} onUpdate={this.props.onUpdate}/>
             case 'flow':
-                return <Diagram node={this.state.node} 
-                    onUpdate={this.props.onUpdate} 
-                    variables={this.props.variables} 
-                    createDiagram={this.props.createDiagram}
+                return <Diagram node={this.state.node}
+                    onUpdate={this.props.onUpdate}
+                    variables={this.props.variables}
+                    createDiagram={this.props.createDiagram} 
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
                 />
@@ -193,11 +228,15 @@ class Editor extends Component {
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.state.templates}/>
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates}/>
+            case 'display':
+                return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays} skill={this.props.skill}/>
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
                 return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
+            case 'exit':
+                return <Alert>This block ends the skill in its current flow and state</Alert>
             default:
               return null
         }
@@ -222,49 +261,31 @@ class Editor extends Component {
                 }
                 return <div id="label">Add Flow</div>
             default:
-              return (<input id="label" placeholder="Block Label" 
+              return (<input id="label" placeholder="Block Label"
                     type="text"
                     name="name"
                     value={this.state.node.name}
                     onChange={this.handleChange.bind(this)}
                     onKeyPress={ (e) => {if(e.charCode===13){e.preventDefault()}}}
-                    />);
+                />);
         }
     }
 
-    // copyFlow(){
-    //     if(this.state.node.extras.diagram_id){
-    //         console.log("Copy this flow")
-    //         console.log(this.state.node)
-    //         axios.get(`/diagram/copy/${this.state.node.extras.diagram_id}`)
-    //         .then(res => {
-    //             console.log(res.data)
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             window.alert('Error copying flow')
-    //         })
-    //     }
-    // }
+    eventHandler(e){
+        if(this.props.preview){
+            e.preventDefault()
+            e.stopPropagation()
+        }
+    }
 
     render() {
-        const type = this.state.node ? this.state.node.extras.type : null;
-        // <Tooltip
-        //     position="bottom"
-        //     interactive={true}
-        //     offset={-30}
-        //     arrow
-        //     hideOnClick={false}
-        //     html={<React.Fragment>
-        //         Delete Block
-        //         <br/>
-        //         <Button color="danger" size="sm" className="py-0 mt-1" onClick={this.props.removeNode}>Confirm</Button>
-        //     </React.Fragment>}
-        // >
+        let type = this.state.node ? this.state.node.extras.type : null
 
         return (
-            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')} 
+            <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
                 onFocus={this.props.unfocus}
+                onClickCapture={this.eventHandler}
+                onKeyDownCapture={this.eventHandler}
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
@@ -279,7 +300,7 @@ class Editor extends Component {
                                         {type} block <i className="fas fa-question-circle mr-1"/>
                                     </div>
                                     <div className="d-flex pl-2">
-                                        <div 
+                                        <div
                                             className="delete-block"
                                             onClick={()=>this.setState({
                                                 expanded: true,
@@ -296,7 +317,7 @@ class Editor extends Component {
                                                 <DropdownItem header>
                                                     Block Options
                                                 </DropdownItem>
-                                                {/*this.state.node.extras.type === 'flow' && 
+                                                {/*this.state.node.extras.type === 'flow' &&
                                                     <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
                                                 }
                                                 <DropdownItem onClick={this.props.copyNode} className="pointer">
@@ -316,8 +337,8 @@ class Editor extends Component {
                             {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
                             {this.state.expanded &&
                                 <React.Fragment>
-                                    <Modal 
-                                        isOpen={this.state.modal} 
+                                    <Modal
+                                        isOpen={this.state.modal}
                                         toggle={()=>this.setState({modal: false})}
                                         onClosed={()=>this.setState({expanded: false})}
                                         size="lg"
@@ -330,7 +351,7 @@ class Editor extends Component {
                                 </React.Fragment>
                             }
                         </div>
-                    </div> 
+                    </div>
                 : null}
             </div>
         );

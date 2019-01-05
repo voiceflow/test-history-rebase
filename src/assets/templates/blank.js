@@ -1,73 +1,9 @@
 export default {
-   "offsetX":431.59056327783765,
-   "offsetY":96.3762825906415,
-   "zoom":70.09158589839933,
+   "offsetX":395,
+   "offsetY":160,
+   "zoom":65,
    "gridSize":0,
    "links":[
-      {
-         "id":"a89551e3-94bd-48fd-bdae-62dd449efa38",
-         "type":"default",
-         "selected":false,
-         "source":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-         "sourcePort":"4a5323f2-eceb-4afd-91b1-7c11712ee3af",
-         "target":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-         "targetPort":"06609fa4-937b-42b8-82c6-3f82f439c728",
-         "points":[
-            {
-               "id":"bd5d439e-76c0-45fc-9a69-a4440006d944",
-               "selected":false,
-               "x":-38.028752198942634,
-               "y":189.2772900042488
-            },
-            {
-               "id":"047f28bc-01f8-4c50-9983-8ea5ddeaa51b",
-               "selected":false,
-               "x":45.38807040486208,
-               "y":189.29289756563276
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":2.5,
-         "color":"#D1D8E2",
-         "curvyness":50
-      },
-      {
-         "id":"cbb1e734-8303-4d92-b13a-44537aa78a42",
-         "type":"default",
-         "selected":false,
-         "source":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-         "sourcePort":"bd48e384-c089-43bc-b483-a194cd100aec",
-         "target":"f645b922-a930-4c86-af0a-a2482296a065",
-         "targetPort":"9baaeae1-0800-4750-beb4-8bc5e66cefd9",
-         "points":[
-            {
-               "id":"396be488-e330-4624-84b9-b4d50222910e",
-               "selected":false,
-               "x":-41.08290162907456,
-               "y":348.9262556847816
-            },
-            {
-               "id":"273a4ed6-1a13-44fd-880c-93f8afa9c7ab",
-               "selected":false,
-               "x":43.09951981680604,
-               "y":350.4471212005409
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":2.5,
-         "color":"#D1D8E2",
-         "curvyness":50
-      },
       {
          "id":"19fc13c0-5dd6-4c87-b153-a9eeeee7e2be",
          "type":"default",
@@ -80,14 +16,14 @@ export default {
             {
                "id":"a1759b59-7a90-4066-869a-9b2181dfaf70",
                "selected":false,
-               "x":-70.2929712637855,
-               "y":528.2024880532393
+               "x":-70.29689243861608,
+               "y":528.203125
             },
             {
                "id":"8595e814-ab28-494e-905a-66e86dddf12b",
                "selected":false,
-               "x":530.6136378704832,
-               "y":530.8315464568868
+               "x":530.625,
+               "y":530.843767438616
             }
          ],
          "extras":{
@@ -112,14 +48,14 @@ export default {
             {
                "id":"33bc062c-ed6d-4ae7-ad0d-d0f4830ff6c2",
                "selected":false,
-               "x":657.4886378704832,
-               "y":530.8315464568868
+               "x":657.5,
+               "y":530.843767438616
             },
             {
                "id":"b955af9f-aece-4090-a1b1-756f7bfdc385",
                "selected":false,
-               "x":761.0050507122825,
-               "y":531.5202117284141
+               "x":761.0000174386162,
+               "y":531.5155901227679
             }
          ],
          "extras":{
@@ -144,14 +80,14 @@ export default {
             {
                "id":"af4c3daf-04d9-4c0e-bbdc-cc6462894dfa",
                "selected":false,
-               "x":952.0831931508986,
-               "y":591.5202117284141
+               "x":952.0781598772322,
+               "y":591.5155901227679
             },
             {
                "id":"afd2ef9e-d8f7-4a8f-97eb-3950a78b7f68",
                "selected":false,
-               "x":1126.0978912614014,
-               "y":693.354000097171
+               "x":1126.1094447544644,
+               "y":693.3437674386162
             }
          ],
          "extras":{
@@ -176,14 +112,14 @@ export default {
             {
                "id":"e366f1cc-73f2-48b6-b9d9-d1b14583272a",
                "selected":false,
-               "x":952.0831931508986,
-               "y":561.5202117284141
+               "x":952.0781598772322,
+               "y":561.5155901227679
             },
             {
                "id":"5d725ac4-eae8-45e7-91f8-8ccf1002e22c",
                "selected":false,
-               "x":1122.8837240742762,
-               "y":558.8522418983431
+               "x":1122.8749302455358,
+               "y":558.843732561384
             }
          ],
          "extras":{
@@ -194,70 +130,6 @@ export default {
          ],
          "width":2.5,
          "color":"#D1D8E2",
-         "curvyness":50
-      },
-      {
-         "id":"a815bd6f-a3c1-4a87-9b6c-436ddef0aded",
-         "type":"default",
-         "selected":false,
-         "source":"f645b922-a930-4c86-af0a-a2482296a065",
-         "sourcePort":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
-         "target":"2d316690-a0b5-4955-8558-7269043e4409",
-         "targetPort":"02d61b64-d4aa-44e8-9e14-c675e717b413",
-         "points":[
-            {
-               "id":"2e141d8e-be8c-4edd-adfd-1ce385970961",
-               "selected":false,
-               "x":174.75364654309274,
-               "y":350.44707614303564
-            },
-            {
-               "id":"64438b1f-d08a-4c24-a6af-98d3d84f011d",
-               "selected":false,
-               "x":267.7323490691958,
-               "y":351.60656629978405
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":1,
-         "color":"#555D6D",
-         "curvyness":50
-      },
-      {
-         "id":"250bdfcb-a18b-4f53-92eb-ba2e940e12ed",
-         "type":"default",
-         "selected":false,
-         "source":"2d316690-a0b5-4955-8558-7269043e4409",
-         "sourcePort":"46935f2b-333d-4b55-855d-8ae0307a6421",
-         "target":"82faa43a-678c-49b7-8c64-c4772080a013",
-         "targetPort":"7545e1f2-794f-45e6-b327-32d9d244f27a",
-         "points":[
-            {
-               "id":"47220e15-4e2a-4254-a628-f3bfad7e2d9d",
-               "selected":false,
-               "x":370.67000880551035,
-               "y":381.6448069877383
-            },
-            {
-               "id":"01d21d50-6d29-47e6-af91-e7b9dda9c88f",
-               "selected":false,
-               "x":528.3435518632109,
-               "y":530.8016993010112
-            }
-         ],
-         "extras":{
-
-         },
-         "labels":[
-
-         ],
-         "width":1,
-         "color":"#555D6D",
          "curvyness":50
       },
       {
@@ -272,14 +144,14 @@ export default {
             {
                "id":"9d318c59-18e7-434f-8193-3a4213b06555",
                "selected":false,
-               "x":952.0780947262207,
-               "y":531.5150182120831
+               "x":952.0781598772322,
+               "y":531.5155901227679
             },
             {
                "id":"12687429-a988-489e-abac-b0b039b673ff",
                "selected":false,
-               "x":1117.201565192263,
-               "y":416.82694198727506
+               "x":1119.031284877232,
+               "y":416.8593924386161
             }
          ],
          "extras":{
@@ -288,8 +160,8 @@ export default {
          "labels":[
 
          ],
-         "width":1,
-         "color":"#555D6D",
+         "width":2.5,
+         "color":"#D1D8E2",
          "curvyness":50
       }
    ],
@@ -330,62 +202,6 @@ export default {
          ],
          "name":"Start Block",
          "color":"#FBE9E7"
-      },
-      {
-         "id":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-         "type":"default",
-         "selected":false,
-         "x":-216.14774729776403,
-         "y":297.43084616391235,
-         "extras":{
-            "commands":"Help",
-            "type":"command"
-         },
-         "ports":[
-            {
-               "id":"bd48e384-c089-43bc-b483-a194cd100aec",
-               "type":"default",
-               "selected":false,
-               "name":"b3aa190c-37c5-41a1-93e2-11a8cfac778f",
-               "parentNode":"75b13607-bb7e-4bdc-8c35-7ab80a2186b4",
-               "links":[
-                  "cbb1e734-8303-4d92-b13a-44537aa78a42"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Command: Help",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-         "type":"default",
-         "selected":false,
-         "x":-213.03028396054984,
-         "y":137.77967574465535,
-         "extras":{
-            "commands":"Stop",
-            "type":"command"
-         },
-         "ports":[
-            {
-               "id":"4a5323f2-eceb-4afd-91b1-7c11712ee3af",
-               "type":"default",
-               "selected":false,
-               "name":"fa162a04-3ed0-448f-a93a-7971293c7d8b",
-               "parentNode":"f03f58c5-1f26-4833-bc9b-46e78a5da477",
-               "links":[
-                  "a89551e3-94bd-48fd-bdae-62dd449efa38"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Command: Stop",
-         "color":"rgb(0,192,255)"
       },
       {
          "id":"0c549b99-480c-4cf4-b069-d560902dada9",
@@ -467,172 +283,6 @@ export default {
          "color":"rgb(0,192,255)"
       },
       {
-         "id":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-         "type":"default",
-         "selected":false,
-         "x":32.8945748519903,
-         "y":137.79802030827875,
-         "extras":{
-            "type":"speak",
-            "dialogs":[
-               {
-                  "index":"fLCPd",
-                  "voice":"Alexa",
-                  "rawContent":{
-                     "blocks":[
-                        {
-                           "key":"3bc7t",
-                           "text":"When a block is not connected to anything, like this one, it will end the session!",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        }
-                     ],
-                     "entityMap":{
-
-                     }
-                  },
-                  "open":true
-               }
-            ]
-         },
-         "ports":[
-            {
-               "id":"06609fa4-937b-42b8-82c6-3f82f439c728",
-               "type":"default",
-               "selected":false,
-               "name":"94479727-255a-4e58-a6bb-5222cb37b815",
-               "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-               "links":[
-                  "a89551e3-94bd-48fd-bdae-62dd449efa38"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"bfef74af-c70e-4af5-a163-6ec20c92ddf0",
-               "type":"default",
-               "selected":false,
-               "name":"30be1c99-e38f-4770-ad6b-9a12d4dea046",
-               "parentNode":"8298ca01-e1c4-4c9a-a43d-c4b591074afc",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: stop",
-         "color":"rgb(0,192,255)"
-      },
-      {
-         "id":"f645b922-a930-4c86-af0a-a2482296a065",
-         "type":"default",
-         "selected":false,
-         "x":30.601656898589017,
-         "y":298.95311926012926,
-         "extras":{
-            "type":"speak",
-            "dialogs":[
-               {
-                  "index":"05MFG",
-                  "voice":"Alexa",
-                  "rawContent":{
-                     "blocks":[
-                        {
-                           "key":"13khb",
-                           "text":"Alexa mandates you have a help block that tells the user how your skill works, how to end the skill, and how to control it. Use a command block with the 'help' keyword to make it happen! Amazon states that all help blocks must end with a choice like this one.",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        },
-                        {
-                           "key":"cl7c2",
-                           "text":"",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        },
-                        {
-                           "key":"6j7r9",
-                           "text":"<break time=\"0.3s\"/> Would you like to continue?",
-                           "type":"unstyled",
-                           "depth":0,
-                           "inlineStyleRanges":[
-
-                           ],
-                           "entityRanges":[
-
-                           ],
-                           "data":{
-
-                           }
-                        }
-                     ],
-                     "entityMap":{
-
-                     }
-                  },
-                  "open":true
-               }
-            ]
-         },
-         "ports":[
-            {
-               "id":"9baaeae1-0800-4750-beb4-8bc5e66cefd9",
-               "type":"default",
-               "selected":false,
-               "name":"469a3cb9-d731-461b-beef-9b98c78691d9",
-               "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
-               "links":[
-                  "cbb1e734-8303-4d92-b13a-44537aa78a42"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"b9cba42f-b31e-4155-93c3-5982e3d2fdfc",
-               "type":"default",
-               "selected":false,
-               "name":"ff0e9910-7609-4430-a011-d1a911406543",
-               "parentNode":"f645b922-a930-4c86-af0a-a2482296a065",
-               "links":[
-                  "a815bd6f-a3c1-4a87-9b6c-436ddef0aded"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":" "
-            }
-         ],
-         "name":"Speak: help",
-         "color":"rgb(0,192,255)"
-      },
-      {
          "id":"82faa43a-678c-49b7-8c64-c4772080a013",
          "type":"default",
          "selected":false,
@@ -678,8 +328,7 @@ export default {
                "name":"bd3317da-1ec5-402c-8725-f553743d64e7",
                "parentNode":"82faa43a-678c-49b7-8c64-c4772080a013",
                "links":[
-                  "19fc13c0-5dd6-4c87-b153-a9eeeee7e2be",
-                  "250bdfcb-a18b-4f53-92eb-ba2e940e12ed"
+                  "19fc13c0-5dd6-4c87-b153-a9eeeee7e2be"
                ],
                "in":true,
                "label":" "
@@ -838,85 +487,6 @@ export default {
          "color":"rgb(0,192,255)"
       },
       {
-         "id":"2d316690-a0b5-4955-8558-7269043e4409",
-         "type":"default",
-         "selected":false,
-         "x":257.1298677729828,
-         "y":300.1458149789657,
-         "extras":{
-            "audio":"",
-            "audioText":"",
-            "audioVoice":"",
-            "prompt":"",
-            "promptText":"",
-            "promptVoice":"",
-            "choices":[
-               "New Choice",
-               "New Choice"
-            ],
-            "inputs":[
-               "Yes",
-               "No"
-            ],
-            "type":"choice"
-         },
-         "ports":[
-            {
-               "id":"02d61b64-d4aa-44e8-9e14-c675e717b413",
-               "type":"default",
-               "selected":false,
-               "name":"4deb0652-ed58-417c-ac75-b9bc9f4a380e",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-                  "a815bd6f-a3c1-4a87-9b6c-436ddef0aded"
-               ],
-               "in":true,
-               "label":" "
-            },
-            {
-               "id":"7911fe36-0a6a-4d4c-97b2-15d4f19a565d",
-               "type":"default",
-               "selected":false,
-               "name":"7ac31a37-c4fc-4e79-aa5a-de218dbcb042",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":"else"
-            },
-            {
-               "id":"46935f2b-333d-4b55-855d-8ae0307a6421",
-               "type":"default",
-               "selected":false,
-               "name":"7bd482a3-f943-410e-9740-652c29f61dca",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-                  "250bdfcb-a18b-4f53-92eb-ba2e940e12ed"
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":1
-            },
-            {
-               "id":"a195b57d-46ec-48f8-b068-f924a082401a",
-               "type":"default",
-               "selected":false,
-               "name":"c3fba72d-cc5b-4d4f-accd-5c9a754c8552",
-               "parentNode":"2d316690-a0b5-4955-8558-7269043e4409",
-               "links":[
-
-               ],
-               "maximumLinks":1,
-               "in":false,
-               "label":2
-            }
-         ],
-         "name":"Choice",
-         "color":"rgb(0,192,255)"
-      },
-      {
          "id":"224b800b-81ad-4bca-a11c-a9578f86d7ba",
          "type":"default",
          "selected":false,
@@ -982,6 +552,73 @@ export default {
             }
          ],
          "name":"Speak: Else",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"1f487b62-0882-44b8-aa59-0fecea84c6bf",
+         "type":"default",
+         "selected":false,
+         "x":-211.70298512779175,
+         "y":365.29856380127546,
+         "extras":{
+            "intent":{
+               "label":"AMAZON.HelpIntent",
+               "value":"AMAZON.HelpIntent",
+               "key":"AMAZON.HelpIntent",
+               "inputs":[
+                  {
+                     "text":"",
+                     "slots":[
+
+                     ]
+                  }
+               ],
+               "built_in":true
+            },
+            "mappings":[
+
+            ],
+            "resume":true,
+            "type":"command"
+         },
+         "ports":[
+
+         ],
+         "name":"Command: HELP",
+         "color":"rgb(0,192,255)"
+      },
+      {
+         "id":"f422a868-961b-4e5c-babc-7885607708c6",
+         "type":"default",
+         "selected":false,
+         "x":-210.2955255922534,
+         "y":260.1981092990842,
+         "extras":{
+            "intent":{
+               "label":"AMAZON.StopIntent",
+               "value":"AMAZON.StopIntent",
+               "key":"AMAZON.StopIntent",
+               "inputs":[
+                  {
+                     "text":"",
+                     "slots":[
+
+                     ]
+                  }
+               ],
+               "built_in":true
+            },
+            "mappings":[
+
+            ],
+            "resume":true,
+            "type":"command",
+            "end":true
+         },
+         "ports":[
+
+         ],
+         "name":"Command: STOP",
          "color":"rgb(0,192,255)"
       }
    ]

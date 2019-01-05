@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import ModuleItem from './components/ModuleItem';
-import { Button, Collapse, ButtonGroup } from 'reactstrap';
+import { Button, Collapse } from 'reactstrap';
+// import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 
 const SECTIONS = [{
@@ -9,7 +10,6 @@ const SECTIONS = [{
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
-        { text: 'Command', type: 'command', icon: <i className="fas fa-exclamation"/>, tip: 'Add shortcuts for your users to navigate your skill quickly'},
     ]
 },{
     title: 'Logic',
@@ -22,20 +22,29 @@ const SECTIONS = [{
 },{
     title: 'Advanced',
     items: [
+        { text: 'Jump', type: 'jump', icon: <i className="fas fa-step-forward"/>, tip: 'Add commands for your users to navigate around quickly'},
+        { text: 'Command', type: 'command', icon: <i className="fas fa-exclamation"/>, tip: 'Give users info about their current state'},
         { text: 'Intent', type: 'intent', icon: <i className="fas fa-user-alt"/>, tip: 'Intent blocks select choices and capture slot values from user input' },
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables'  },
+        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
    ]
 },{
     title: 'Functional',
     items: [
+        { text: 'Exit', type: 'exit', icon: <i className="fas fa-stop"/>, tip: 'End the skill on the current flow' },
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
         { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'},
     ]
+},{
+    title: 'Visuals',
+    items: [
+        { text: 'Card', type: 'card', icon: <i className="fas fa-sticky-note"/>, tip: 'Tell Alexa to show a card'  },
+        { text: 'Display', type: 'display', icon: <i className="far fa-image"/>, tip: 'Show a Multimodal Display on the screen using APL' }
+    ]
 }]
 
-const TABS = ['blocks', 'modules']
+// const TABS = ['blocks', 'modules']
 
 class Blocks extends PureComponent {
     constructor(props) {

@@ -14,7 +14,7 @@ class DashBoard extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { 
+        this.state = {
             confirm: false,
             loading: false,
             skills: null,
@@ -57,7 +57,7 @@ class DashBoard extends Component {
     }
 
     openSkill(skill, diagram){
-        setTimeout(() => { 
+        setTimeout(() => {
             this.props.history.push(`/canvas/${skill}/${diagram}`);
         }, 100);
     }
@@ -150,7 +150,7 @@ class DashBoard extends Component {
              </div>
         }else{
             skills = <Masonry elementType='div' className="skills-container">
-                {this.state.skills.map((skill, i) => 
+                {this.state.skills.map((skill, i) =>
                     <SkillCard
                         key={i}
                         skill={skill}
@@ -171,7 +171,7 @@ class DashBoard extends Component {
                             <div className="hr-label">
                                 <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '} 
+                                <small><i className="far fa-chevron-right"/></small>{' '}
                                 <span className="text-secondary">Skills</span>
                             </div>
                         </span>

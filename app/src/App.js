@@ -22,7 +22,6 @@ import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
-// import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
@@ -153,9 +152,9 @@ class App extends Component {
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
+                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />

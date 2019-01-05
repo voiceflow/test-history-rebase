@@ -536,6 +536,23 @@ const getPendingModules = (req, res) => {
 	)
 }
 
+const getDefaultTemplates = (req, res) => {
+	pool.query(
+		`
+		SELECT * FROM modules WHERE default_template = true
+		`,
+		[],
+		(err, data) => {
+			if(err){
+				console.log(err)
+				res.sendStatus(500)
+			} else {
+				res.send(data.rows)
+			}
+		}
+	)
+}
+
 module.exports = {
 	getModules: getModules,
 	getModule: getModule,
@@ -551,5 +568,6 @@ module.exports = {
 	getCertModule: getCertModule,
 	getUserModules: getUserModules,
 	retrieveTemplate: retrieveTemplate,
-	getPendingModules: getPendingModules
+	getPendingModules: getPendingModules,
+	getDefaultTemplates: getDefaultTemplates
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import ErrorModal from './../../components/Modals/ErrorModal'
 import axios from 'axios';
@@ -59,7 +58,7 @@ class Template extends Component {
 
     componentDidMount() {
         if(this.state.template_id !== 'new'){
-            axios.get('/email/template/' + this.state.template_id)
+            axios.get(`/email/template/${this.state.template_id}`)
             .then(res => {
                 this.setState({
                     content: res.data.content,
@@ -116,10 +115,10 @@ class Template extends Component {
         }
 
         if(this.state.template_id === 'new'){
-            axios.post('/email/template', payload)
+            axios.post(`/email/template?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
                 // get template id back
-                this.props.history.push('/business/email/template/' + res.data);
+                this.props.history.push(`/business/${this.props.skill_id}/email/template/${res.data}`);
                 this.setState({
                     template_id: res.data,
                     saved: true,
@@ -136,7 +135,7 @@ class Template extends Component {
                 });
             });
         }else{
-            axios.patch('/email/template/' + this.state.template_id, payload)
+            axios.patch(`/email/template/${this.state.template_id}?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
                 this.setState({
                     saved: true,
@@ -161,22 +160,12 @@ class Template extends Component {
                 <ErrorModal error={this.state.error} dismiss={()=>{
                     this.setState({error: null});
                 }}/>
-                <div className="subheader">
+                <div className="content">
                     <div className="space-between">
-                        <span className="subheader-title">
-                            <b>Email</b>
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '} 
-                                {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '} 
-                                <Link to="/business/email/templates">Templates</Link>{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '}
-                                <span className="text-secondary">{this.state.title}</span>
-                            </div>
-                        </span>
+                        <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
                             <MUIButton varient="contained" className="purple-btn mr-2" onClick={()=>{
-                                this.props.history.push("/business/email/templates");
+                                this.props.history.push(`/business/${this.props.skill_id}/email/templates`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
                             </MUIButton>
@@ -190,88 +179,94 @@ class Template extends Component {
                             </MUIButton>
                         </div>
                     </div>
+                    <hr/>
+                    { this.state.loading ? 
+                        <div id="loading-diagram">
+                            <div className="text-center">
+                                <h5 className="text-muted mb-2">Loading Template</h5>
+                                <span className="loader"/>
+                            </div>
+                        </div> :
+                        <React.Fragment>
+                            <FormGroup className="mt-0">
+                                <label>Template Title (INTERNAL)</label>
+                                <Input 
+                                    name="title"
+                                    placeholder="Name of Template"
+                                    value={this.state.title}
+                                    onChange={this.onChange}
+                                />
+                            </FormGroup>
+                            <hr/>
+                            <FormGroup>
+                                <label>Subject</label>
+                                <Input 
+                                    name="subject"
+                                    placeholder="Subject of Email"
+                                    value={this.state.subject}
+                                    onChange={this.onChange}
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <label>From</label>
+                                <Input 
+                                    name="sender"
+                                    value={this.state.sender}
+                                    onChange={this.onChange}
+                                    readOnly
+                                    disabled
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Row className="no-padding-row">
+                                    <Col md="6">
+                                        <div>
+                                            HTML Code
+                                        </div>
+                                    </Col>
+                                    <Col md="6">
+                                        <div>
+                                            Preview
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="no-padding-row">
+                                    <Col md="6">
+                                        <AceEditor
+                                            name="email_editor"
+                                            className="email_editor w-100"
+                                            mode="html"
+                                            theme="monokai"
+                                            onChange={this.onChangeAce}
+                                            fontSize={14}
+                                            showPrintMargin={true}
+                                            showGutter={true}
+                                            highlightActiveLine={true}
+                                            value={this.state.content}
+                                            editorProps={{$blockScrolling: true}}
+                                            setOptions={{
+                                                enableBasicAutocompletion: true,
+                                                enableLiveAutocompletion: false,
+                                                enableSnippets: false,
+                                                showLineNumbers: true,
+                                                tabSize: 2
+                                            }}/>
+                                    </Col>
+                                    <Col md="6">
+                                        <iframe
+                                            title="email_preview"
+                                            className="email_preview"
+                                            ref={(frame) => { this.iframe = frame }} 
+                                            sandbox="allow-same-origin allow-scripts allow-popups" 
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                        </React.Fragment>
+                    }
                 </div>
-                { this.state.loading ? 
-                    <div className="super-center h-100 w-100">Loading...</div> :
-                    <div className="content">
-                        <FormGroup className="mt-0">
-                            <label>Template Title (INTERNAL)</label>
-                            <Input 
-                                name="title"
-                                placeholder="Name of Template"
-                                value={this.state.title}
-                                onChange={this.onChange}
-                            />
-                        </FormGroup>
-                        <hr/>
-                        <FormGroup>
-                            <label>Subject</label>
-                            <Input 
-                                name="subject"
-                                placeholder="Subject of Email"
-                                value={this.state.subject}
-                                onChange={this.onChange}
-                            />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <label>From</label>
-                            <Input 
-                                name="sender"
-                                value={this.state.sender}
-                                onChange={this.onChange}
-                                readOnly
-                                disabled
-                            />
-                        </FormGroup>
-
-                        <FormGroup>
-                            <Row className="no-padding-row">
-                                <Col md="6">
-                                    <div>
-                                        HTML Code
-                                    </div>
-                                </Col>
-                                <Col md="6">
-                                    <div>
-                                        Preview
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="no-padding-row">
-                                <Col md="6">
-                                    <AceEditor
-                                        name="email_editor"
-                                        className="email_editor"
-                                        mode="html"
-                                        theme="monokai"
-                                        onChange={this.onChangeAce}
-                                        fontSize={14}
-                                        showPrintMargin={true}
-                                        showGutter={true}
-                                        highlightActiveLine={true}
-                                        value={this.state.content}
-                                        editorProps={{$blockScrolling: true}}
-                                        setOptions={{
-                                            enableBasicAutocompletion: true,
-                                            enableLiveAutocompletion: false,
-                                            enableSnippets: false,
-                                            showLineNumbers: true,
-                                            tabSize: 2
-                                        }}/>
-                                </Col>
-                                <Col md="6">
-                                    <iframe
-                                        title="email_preview"
-                                        className="email_preview"
-                                        ref={(frame) => { this.iframe = frame }} 
-                                        sandbox="allow-same-origin allow-scripts allow-popups" 
-                                    />
-                                </Col>
-                            </Row>
-                        </FormGroup>
-                    </div>
-                }
             </div>
         )
     }

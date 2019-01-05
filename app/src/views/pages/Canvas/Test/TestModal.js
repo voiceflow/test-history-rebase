@@ -32,7 +32,11 @@ const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-a
 
 const recurse = (tag, index=0) => {
     if(tag.type === 'text'){
-      return tag.content;
+      if(!tag.content.trim()){
+        return null
+      }else{
+        return tag.content
+      }
     }else{
       if(!valid_tags.has(tag.name)){ return null }
 
@@ -73,7 +77,6 @@ class TestModal extends React.Component {
       selected_line: null,
       nodes: [],
       ended: false,
-      last_diagram: "",
       debug: false,
       audioplayer: false,
     }
@@ -84,7 +87,6 @@ class TestModal extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.inputSubmit = this.inputSubmit.bind(this);
-    this.removeAudio = this.removeAudio.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.recursivePlay = this.recursivePlay.bind(this);
     this.beginning = this.beginning.bind(this);
@@ -93,6 +95,27 @@ class TestModal extends React.Component {
     this.handleRestart = this.handleRestart.bind(this);
     this.getVariables = this.getVariables.bind(this);
     this.parseBlock = this.parseBlock.bind(this);
+    this.removeAudio = this.removeAudio.bind(this)
+    this.current_diagram = null
+  }
+
+  removeAudio() {
+    return new Promise((resolve) => {
+      if(this.state.audio){
+        let audio = this.state.audio;
+        audio.onended = null;
+        audio.ontimeupdate = null;
+        audio.onloadedmetadata = null;
+        this.state.audio.pause();
+        this.state.audio.removeAttribute('src');
+        this.state.audio.load();
+        this.setState({
+          audio: null
+        }, resolve)
+      }else{
+        resolve()
+      }
+    })
   }
 
   componentWillReceiveProps(nextProps){
@@ -125,21 +148,6 @@ class TestModal extends React.Component {
     this.story_state.globals[0].user_id = 'TEST_USER'
   }
 
-  removeAudio(){
-    if(this.state.audio){
-      let audio = this.state.audio;
-      audio.onended = null;
-      audio.ontimeupdate = null;
-      audio.onloadedmetadata = null;
-      this.state.audio.pause();
-      this.state.audio.removeAttribute('src');
-      this.state.audio.load();
-      this.setState({
-        audio: null
-      })
-    }
-  }
-
   componentWillUnmount() {
     this.removeAudio();
   }
@@ -169,37 +177,50 @@ class TestModal extends React.Component {
       if(!this.pause){
         this.setState({
           audio: null
-        });
+        }, () => {
+          if(this.story_state.play && ['START', 'RESUME'].includes(this.story_state.play.action)){
+            this.next = true
+            this.updateState()
+          }
+        })
       }
       if(ended){
-        this.handleEnd();
-      }else{
-        if(this.story_state.play){
-          this.next = true;
-          this.updateState();
-        }
+        this.handleEnd()
       }
-      return;
-    };
+      return
+    }
 
     let b = urls[index];
 
     if(b.type === 'tag' && b.name === 'audio' && b.attrs && b.attrs.src){
       // AUDIO TAGS
-      let audio = new Audio(b.attrs.src);
+      let audio
+      audio = new Audio(b.attrs.src)
 
       this.setState({
         audio: audio
-      });
+      })
+
+      audio.onerror = (err) => {
+        let inputs = this.state.inputs
+        inputs.push({
+          text: <span className="alert alert-warning mb-1 d-inline-block">Unable to Play Audio File on Test Tool<br/><b>{b.attrs.src}</b>{b.attrs.src.startsWith('soundbank')&&<React.Fragment><br/>(Soundbank Files will work on Alexa)</React.Fragment>}</span>,
+          time: moment().format('h:mm:ss A')
+        })
+        this.setState({
+          inputs: inputs
+        })
+        this.recursivePlay(index + 1, urls, ended)
+      }
 
       audio.onended = () => {
-        this.recursivePlay(index + 1, urls, ended);
+        this.recursivePlay(index + 1, urls, ended)
         audio.ontimeupdate = null;
         audio.onended = null;
         audio.onloadedmetadata = null;
-        audio.pause();
-        audio.removeAttribute('src');
-        audio.load();
+        audio.pause()
+        audio.removeAttribute('src')
+        audio.load()
       }
       audio.onloadedmetadata = () => {
         let inputs = this.state.inputs;
@@ -208,7 +229,7 @@ class TestModal extends React.Component {
           currentTime: 0,
           duration: audio.duration,
           time: moment().format('h:mm:ss A')
-        });
+        })
         this.setState({inputs: inputs});
         audio.ontimeupdate = () => {
           let inputs = this.state.inputs;
@@ -216,26 +237,27 @@ class TestModal extends React.Component {
           this.setState({inputs: inputs});
         }
       }
-      audio.play();
+
+      audio.play()
     }else if(b.type==='tag' && b.name === 'debug'){
-      this.addDebugBlock(b);
-      this.recursivePlay(index + 1, urls, ended);
+      this.addDebugBlock(b)
+      this.recursivePlay(index + 1, urls, ended)
     }else{
-      this.parseBlock(b);
-      this.recursivePlay(index + 1, urls, ended);
+      this.parseBlock(b)
+      this.recursivePlay(index + 1, urls, ended)
     }
   }
 
   parseBlock(block) {
       // TEXT TYPE
-      let text = recurse(block);
+      let text = recurse(block)
       if(text){
-        let inputs = this.state.inputs;
+        let inputs = this.state.inputs
         inputs.push({
           text: text,
           time: moment().format('h:mm:ss A')
         });
-        this.forceUpdate();
+        this.forceUpdate()
       }
   }
 
@@ -264,29 +286,49 @@ class TestModal extends React.Component {
 
     if (nlc) {
       try {
-        await nlc.handleCommand(data.input)
-        const nlc_results = await this.props.testing_info.nlc_promise
+        const results = await nlc.handleCommand(data.input)
+        const detected_intents = []
 
-        data.detected_intent = {
-          intent: nlc_results.intent,
-          slots: nlc_results.slots
+        for (let i = 0; i < results.length; i ++) {
+          const result = results[i]
+
+          const intent_name = result.name
+          const detected_slots = result.slots
+          const slot_mapping = this.props.testing_info.slot_mappings[intent_name] ? this.props.testing_info.slot_mappings[intent_name] : []
+
+          const formatted_slots = {}
+          slot_mapping.forEach((slot, i) => {
+              if (detected_slots[i]) {
+                  formatted_slots[slot.name] = {
+                      value: detected_slots[i]
+                  }
+              }
+          })
+          if (intent_name) {
+            detected_intents.push({
+              intent: intent_name,
+              slots: formatted_slots
+            })
+          }
         }
+
+        data.detected_intents = detected_intents
       } catch (err) {
-        console.error("NLC NO MATCH")
+        // NLC No Match
       }
     }
 
     if(start){
       data.testing = {
-        line: this.story_state.line ? this.story_state.line : "START",
+        line: this.story_state.line_id ? this.story_state.line_id : "START",
       };
       data.diagrams = [{id: this.props.testing_info.id}]
     }
 
     if(this.next){
       if(this.story_state.play.loop){
-        this.removeAudio();
-        this.next = false;
+        await this.removeAudio()
+        this.next = false
         return this.recursivePlay(0, [{
           name: 'audio',
           type: 'tag',
@@ -302,17 +344,14 @@ class TestModal extends React.Component {
     axios.post(test_endpoint, data)
     .then(async res => {
       res = res.data
-      if(res.line) {
+      if(res.line_id) {
         this.story_state = res
       }
       if(res.output && res.output.length > 0){
         // TYLER'S SUPER JANKY AUDIO THING
 
         if (res.diagrams.length > 0) {
-          const current_diagram = res.diagrams[res.diagrams.length-1]['id'];
-          this.setState({
-            last_diagram: current_diagram
-          })
+          this.current_diagram = res.diagrams[res.diagrams.length-1]
         }
 
         this.pause = false;
@@ -329,10 +368,12 @@ class TestModal extends React.Component {
                 res.output += '<audio src="'+res.play.url+'" />';
               }
             }else if(res.play.action === 'PAUSE'){
-              this.pause = true;
-              if(this.state.audio) this.state.audio.pause();
+              this.pause = true
+              if(this.state.audio) this.state.audio.pause()
             }else if(res.play.action === 'RESUME'){
-              if(this.state.audio) this.state.audio.play();
+              if(this.state.audio){
+                this.state.audio.play()
+              }
               return;
             }
           }
@@ -340,7 +381,7 @@ class TestModal extends React.Component {
           this.setState({audioplayer: false});
         }
 
-        let dom = parse('<speak>' + res.output + '</speak>');
+        let dom = parse('<speak>' + res.output + '</speak>')
 
         if(dom && dom.length > 0 && dom[0].type === 'tag' && 
           dom[0].name === 'speak' && dom[0].children){
@@ -392,16 +433,20 @@ class TestModal extends React.Component {
         input: ""
       });
     }else{
-      this.story_state.input = this.state.input;
-      let inputs = this.state.inputs;
-
-      inputs.push({
-        self: this.state.input,
-        time: moment().format('h:mm:ss A')
-      });
+      let inputs = this.state.inputs
+      if(this.state.intent){
+        this.story_state.intent = this.state.intent
+      }else{
+        this.story_state.input = this.state.input
+        inputs.push({
+          self: this.state.input,
+          time: moment().format('h:mm:ss A')
+        })
+      }
 
       this.setState({
         input: "", 
+        intent: "",
         inputs: inputs
       }, this.updateState);
     }
@@ -425,7 +470,7 @@ class TestModal extends React.Component {
   startline(){
     if(!this.state.selected_line) return;
     this.initializeStory();
-    this.story_state.line = this.state.selected_line.value
+    this.story_state.line_id = this.state.selected_line.value
     this.setState({
       started: true
     }, () => {this.updateState(true)});
@@ -440,15 +485,16 @@ class TestModal extends React.Component {
   }
 
   getVariables(){
-    let state = this.story_state;
-    let diagram_id = this.state.last_diagram;
-    if(state){
-      if(!state.diagram_states || !state.diagram_states[diagram_id]){
-        return null;
+    let state = this.story_state
+    if(Array.isArray(state.globals) && state.globals.length !== 0){
+      if(!this.current_diagram){
+        return null
       }
-      let variables = state.diagram_states[diagram_id].variables;
-      let v_array = [];
-      for (var key in variables) {
+      let variables = this.current_diagram.variable_state
+      let v_array = []
+      let g_array = []
+      var key
+      for (key in variables) {
           if (variables.hasOwnProperty(key)) {
               v_array.push({
                 name: key,
@@ -456,22 +502,46 @@ class TestModal extends React.Component {
               })
           }
       }
-      return (<Table className="var-table">
+      let globals = state.globals[0]
+      for (key in globals) {
+        if (globals.hasOwnProperty(key)) {
+            g_array.push({
+              name: key,
+              value: globals[key]
+            })
+        }
+      }
+      return (<React.Fragment>
+        <span className="text-muted">Local Variables</span>
+        <Table className="var-table">
         <tbody>
           {v_array.map(v => <tr key={v.name}>
             <td className="v"><span>{`{${v.name}}`}</span></td>
             <td>{v.value}</td>
           </tr>)}
         </tbody>
-      </Table>)
+        </Table>
+        <span className="text-muted">Global Variables</span>
+        <Table className="var-table">
+        <tbody>
+          {g_array.map(v => <tr key={v.name}>
+            <td className="v"><span>{`{${v.name}}`}</span></td>
+            <td>{v.value}</td>
+          </tr>)}
+        </tbody>
+      </Table>
+      </React.Fragment>
+      )
+    }else{
+      return null
     }
   }
 
   render() {
 
-    let flow;
-    if(this.state.last_diagram){
-      let find = this.props.diagrams.find(d => d.id === this.state.last_diagram)
+    let flow
+    if(this.current_diagram){
+      let find = this.props.diagrams.find(d => d.id === this.current_diagram.id)
       if(find){
         flow = find.name;
       }
@@ -534,13 +604,13 @@ class TestModal extends React.Component {
                         <Alert onClick={this.handleRestart} color="warning" className="m-3">Flow Ended - Reset <i className="far fa-sync-alt"/></Alert> :
                         <React.Fragment>
                           {this.state.audioplayer ?
-                            <div className="audioplayer-options">
+                            <div className="audioplayer-options mb-2">
                               {this.pause ?
-                                <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.ResumeIntent'}, this.inputSubmit)}>Resume</Button> :
-                                <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.PauseIntent'}, this.inputSubmit)}>Stop/Pause</Button>
+                                <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.ResumeIntent'}, this.inputSubmit)}>Resume</Button> :
+                                <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PauseIntent'}, this.inputSubmit)}>Stop/Pause</Button>
                               }
-                              <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
-                              <Button outline color='primary' onClick={()=>this.setState({input: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
+                              <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.NextIntent'}, this.inputSubmit)}>Next</Button>
+                              <Button outline color='primary' onClick={()=>this.setState({intent: 'AMAZON.PreviousIntent'}, this.inputSubmit)}>Previous</Button>
                             </div> 
                             :
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">

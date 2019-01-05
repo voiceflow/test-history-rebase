@@ -68,7 +68,7 @@ const interactionModel = (req) => {
 	
 	const intents_for_amazon = []
 	const entered_intents = new Set()
-	console.log(used_intents)
+
 	used_intents.forEach(intent_key => {
 		if(typeof intent_key !== 'string') return
 
@@ -120,11 +120,13 @@ const interactionModel = (req) => {
 	used_choices.forEach(choice => {
 		let reg = new RegExp('[^' + VALID_UTTERANCES + '|]')
 		let safe_choice = choice.replace(reg, ' ')
-		content_slot_values.push({
-			name: {
-				value: safe_choice
-			}
-		})
+		if(safe_choice.trim()){
+			content_slot_values.push({
+				name: {
+					value: safe_choice
+				}
+			})
+		}
 	})
 
 	// Add random catchall values
@@ -140,7 +142,7 @@ const interactionModel = (req) => {
 	]
 
 	slots.forEach(slot => {
-		if (slot.type.value === 'CUSTOM') {
+		if (slot.type.value === 'CUSTOM' || !slot.type.value) {
 			const slot_name = _formatName(slot.name)
 			const values = slot.inputs.map(input => {
 				return {
@@ -149,26 +151,18 @@ const interactionModel = (req) => {
 					}
 				}
 			})
-
+			if(values.length === 0){
+				values.push({
+					name: {
+						value: 'empty'
+					}
+				})
+			}
 			slot_types.push({
 				name: slot_name,
 				values: values
 			})
 		}
-		// else{
-		// 	const slot_name = slot.type.value
-		// 	const values = slot.inputs.map(input => {
-		// 		return {
-		// 			name: {
-		// 			  value: input
-		// 			}
-		// 		}
-		// 	})
-		// 	slot_types.push({
-		// 		name: slot_name,
-		// 		values: values
-		// 	})
-		// }
 	})
 
 	return {
@@ -240,12 +234,14 @@ const manifest = (r, encoded_id) => {
              "apis": {
                  "custom": {
                      "endpoint": {
-                         "uri": `https://app.getvoiceflow.com/state/skill/${encoded_id}`,
+                         "uri": `${process.env.SKILL_ENDPOINT ? process.env.SKILL_ENDPOINT : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
                          "sslCertificateType": "Wildcard"
                      },
                      "interfaces": [{
 	                 	"type": "AUDIO_PLAYER"
-	                 }]
+	                 }, {
+						 "type": "ALEXA_PRESENTATION_APL"
+					 }]
                  }
              },
              "manifestVersion": "1.0",

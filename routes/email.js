@@ -3,7 +3,7 @@ const isVarName = require('is-var-name');
 
 exports.getTemplate = (req, res) => {
 	let id = hashids.decode(req.params.id)[0];
-	if(!id){
+	if(isNaN(id)){
 		res.sendStatus(404);
 	}else{
 		pool.query('SELECT * FROM email_templates WHERE template_id = $1 AND creator_id = $2 LIMIT 1', 
@@ -23,22 +23,36 @@ exports.getTemplate = (req, res) => {
 }
 
 exports.getTemplates = (req, res) => {
-	pool.query('SELECT * FROM email_templates WHERE creator_id = $1', [req.user.id], (err, result)=>{
-		if(err){
-			res.sendStatus(500)
-			console.error(err)
-			console.trace()
-		}else{
-			res.send(result.rows.map(row => {
-				row.template_id = hashids.encode(row.template_id);
-				return row;
-			}));
-		}
-	});
+	let skill_id = hashids.decode(req.query.skill_id)[0]
+	if(isNaN(skill_id)){
+		res.sendStatus(400)
+	}else{
+		pool.query('SELECT * FROM email_templates WHERE creator_id = $1 AND (skill_id = $2 OR skill_id IS NULL)', [req.user.id, skill_id], (err, result)=>{
+			if(err){
+				res.sendStatus(500)
+				console.error(err)
+				console.trace()
+			}else{
+				if(result.rows && result.rows.length !== 0){
+					res.send(result.rows.map(row => {
+						row.template_id = hashids.encode(row.template_id);
+						return row;
+					}))
+				}else{
+					res.send([])
+				}
+			}
+		})
+	}
 }
 
 exports.setTemplate = (req, res) => {
-	let id = hashids.decode(req.params.id)[0];
+	let id = hashids.decode(req.params.id)[0]
+	let skill_id = hashids.decode(req.query.skill_id)[0]
+
+	if(isNaN(skill_id)){
+		return res.sendStatus(400)
+	}
 
 	// match all variables inside the email and put them to a list
 	let variables = new Set();
@@ -65,31 +79,31 @@ exports.setTemplate = (req, res) => {
 		}
 	}
 
-	variables = JSON.stringify(Array.from(variables));
-	if(id){
+	variables = JSON.stringify(Array.from(variables))
+	if(isNaN(id)){
 		pool.query(
-		'UPDATE email_templates SET title = $2, content = $3, sender = $4, modified = NOW(), variables=$5, subject=$6 WHERE creator_id = $1 AND template_id = $7',
-		[req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, id], (err, result) => {
-			if(err){
-				res.sendStatus(500);
-				console.error(err)
-				console.trace();
-			}else{
-				res.sendStatus(200);
-			}
-		});
+			'INSERT INTO email_templates (creator_id, title, content, sender, variables, subject, skill_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING template_id',
+			[req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, skill_id], (err, result) => {
+				if(err){
+					res.sendStatus(500)
+					console.error(err)
+					console.trace()
+				}else{
+					res.send(hashids.encode(result.rows[0].template_id))
+				}
+			})
 	}else{
 		pool.query(
-		'INSERT INTO email_templates (creator_id, title, content, sender, variables, subject) VALUES ($1, $2, $3, $4, $5, $6) RETURNING template_id',
-		[req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject], (err, result) => {
-			if(err){
-				res.sendStatus(500);
-				console.error(err)
-				console.trace();
-			}else{
-				res.send(hashids.encode(result.rows[0].template_id));
-			}
-		});
+			'UPDATE email_templates SET title = $2, content = $3, sender = $4, modified = NOW(), variables=$5, subject=$6, skill_id=$7 WHERE creator_id = $1 AND template_id = $8',
+			[req.user.id, req.body.title, req.body.content, req.body.sender, variables, req.body.subject, skill_id, id], (err) => {
+				if(err){
+					res.sendStatus(500)
+					console.error(err)
+					console.trace()
+				}else{
+					res.sendStatus(200)
+				}
+		})
 	}	
 }
 

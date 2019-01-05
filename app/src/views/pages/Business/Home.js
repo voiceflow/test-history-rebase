@@ -11,19 +11,6 @@ class Home extends Component {
     render() {
         return (
             <div className="business-page-inner">
-                <div className="subheader">
-                    <div className="space-between">
-                        <span className="subheader-title">
-                            <b>Home</b>
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '} 
-                                {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '} 
-                                <span className="text-secondary">Business</span>
-                            </div>
-                        </span>
-                    </div>
-                </div>
                 <div className="super-center w-100 h-100">
                     <img src="/business.svg" height={400} alt="placeholder"/>
                 </div>

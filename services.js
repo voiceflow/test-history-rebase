@@ -108,6 +108,14 @@ const validateEmail = (email) => {
 // SECRET
 const intercom_client = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
 
+const logging_pool = new pg.Pool({
+    user: process.env.LOGGING_USER,
+    host: process.env.LOGGING_HOST,
+    database: process.env.LOGGING_DB,
+    password: process.env.LOGGING_PW,
+    port: 5432
+})
+
 module.exports = {
     intercom: intercom_client,
     upload: upload,
@@ -119,6 +127,7 @@ module.exports = {
     s3: s3,
     uploadResize: uploadResize,
     hashids: hashids,
-    validateEmail: validateEmail
+    validateEmail: validateEmail,
+    logging_pool: logging_pool
 }
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import ModuleItem from './components/ModuleItem';
-import { Button, Collapse } from 'reactstrap';
+import { Button, Collapse, ButtonGroup } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -44,7 +44,7 @@ const SECTIONS = [{
     ]
 }]
 
-// const TABS = ['blocks', 'modules']
+const TABS = ['blocks', 'modules']
 
 class Blocks extends PureComponent {
     constructor(props) {

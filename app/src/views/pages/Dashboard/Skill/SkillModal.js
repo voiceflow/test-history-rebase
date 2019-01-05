@@ -1,15 +1,13 @@
 import React from 'react';
 import { Modal, ModalBody, Button, Input } from 'reactstrap';
 import LOCALE_MAP from './../../../../services/LocaleMap'
-const _ = require('lodash');
-
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-
 import SkillTemplates from './SkillTemplates'
+const _ = require('lodash');
 
 const templates = [
   {

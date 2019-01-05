@@ -17,27 +17,23 @@ class PublishMarket extends Component {
 	constructor(props){
 		super(props);
 
-		if(this.props.computedMatch && this.props.computedMatch.params.id){
-            this.state = {
-                saved: true,
-                skill_id: this.props.computedMatch.params.id,
-                descr: '',
-                overview: '',
-                error: '',
-                in_review: false,
-                title: '',
-                module_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
-                displayingConfirmWithdraw: false,
-                color: '',
-                input: [],
-                output: [],
-                show_incomp_alert: false,
-                variables: [],
-                tags: [],
-                tags_input: ''
-            }
-        } else {
-            this.props.history.push('/dashboard')
+        this.state = {
+            saved: true,
+            skill_id: this.props.skill.skill_id,
+            descr: '',
+            overview: '',
+            error: '',
+            in_review: false,
+            title: '',
+            module_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
+            displayingConfirmWithdraw: false,
+            color: '',
+            input: [],
+            output: [],
+            show_incomp_alert: false,
+            variables: [],
+            tags: [],
+            tags_input: ''
         }
 
         this.handleTypeSelection = this.handleTypeSelection.bind(this)
@@ -129,7 +125,7 @@ class PublishMarket extends Component {
             });
     	})
     	.catch(res => {
-    		// Non-existant
+    		// Non-existant keep default vals
     	});
 
     	axios.get('/marketplace/cert/status/' + this.state.skill_id)
@@ -140,8 +136,6 @@ class PublishMarket extends Component {
     	})
     	.catch(res => {
     	});
-
-
     }
 
     save(){
@@ -257,18 +251,12 @@ class PublishMarket extends Component {
 	render(){
 		return(
 			<div className="Window skill">
-				<div className="subheader">
+                <div className="subheader">
                     <div className="container space-between">
-                        <span className="subheader-title">
-                            <b>Settings</b>
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small> {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '}
-                                <span className="text-secondary">{this.state.title}</span>{' '}
-                                <small> / created {moment(this.state.created).fromNow()}</small>
-                            </div>
+                        <span className="text-muted">
+                            <span className="text-secondary">{this.props.skill.name}</span>{' '}
+                            <small> / created {moment(this.props.skill.created).fromNow()}</small>
                         </span>
-
                         {
                         	this.state.in_review?
                         	null

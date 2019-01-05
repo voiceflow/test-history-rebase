@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import PublishAmazon from './PublishAmazon'
+import PublishMarket from '../PublishMarket/PublishMarket'
 
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
@@ -12,6 +13,11 @@ const tabs = [
         display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
         match: ['alexa'],
         link: '/publish/:skill_id'
+    },
+    {
+        display: <React.Fragment><i className="fal fa-store-alt mr-2"/> Marketplace</React.Fragment>,
+        match: ['market'],
+        link: '/publish/:skill_id/market'
     }
 ]
 
@@ -19,9 +25,11 @@ class Publish extends Component {
 
     render() {
         let page;
-        switch(this.props.page){
-            default:
-                page = <PublishAmazon {...this.props}/>
+        console.log(this.props)
+        if(this.props.page === 'market'){
+            page = <PublishMarket {...this.props}/>
+        } else {
+            page = <PublishAmazon {...this.props}/>
         }
 
         return (
@@ -33,7 +41,7 @@ class Publish extends Component {
                                 {tab.display}
                             </div>
                         }else{
-                            return <Link key={i} to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
+                            return <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
                                 {tab.display}
                             </Link>
                         }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import Select from 'react-select';
-import AudioDrop from './AudioDrop';
+import AudioDrop from './../../../../components/Uploads/AudioDrop'
 import { Collapse } from 'reactstrap';
 
 class MultiLineInput extends Component {

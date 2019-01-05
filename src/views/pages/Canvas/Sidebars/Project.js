@@ -45,8 +45,8 @@ class Project extends PureComponent {
                     unused.push(
                         <FlowButton
                             key={diagram.id}
-                            flow={diagram} 
-                            active={this.props.current} 
+                            flow={diagram}
+                            active={this.props.current}
                             enterFlow={this.props.enterFlow}
                             renameFlow={this.props.renameFlow}
                             copyFlow={()=>this.props.copyFlow(diagram.id)}
@@ -63,7 +63,7 @@ class Project extends PureComponent {
                     <label>Other Flows</label>
                     {unused.map((diagram) => {
                         return diagram;
-                    })}             
+                    })}
                 </React.Fragment>}
             </React.Fragment>
         }else if(this.state.tab === 'flows'){
@@ -74,8 +74,8 @@ class Project extends PureComponent {
                     if(this.state.filter && !diagram.name.toLowerCase().includes(this.state.filter.toLowerCase())) return null
                     return <FlowButton
                         key={diagram.id}
-                        flow={diagram} 
-                        active={this.props.current} 
+                        flow={diagram}
+                        active={this.props.current}
                         enterFlow={this.props.enterFlow}
                         renameFlow={this.props.renameFlow}
                         copyFlow={()=>this.props.copyFlow(diagram.id)}
@@ -90,9 +90,9 @@ class Project extends PureComponent {
                 {TABS.map(tab => {
                     return <Button
                         key={tab}
-                        onClick={() => this.switchTab(tab)} 
+                        onClick={() => this.switchTab(tab)}
                         outline={this.state.tab !== tab}
-                        disabled={this.state.tab === tab}> 
+                        disabled={this.state.tab === tab}>
                         {tab}
                     </Button>
                 })}

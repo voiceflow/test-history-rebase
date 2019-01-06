@@ -842,30 +842,7 @@ exports.withdrawSkill = (req, res) => {
     });
 }
 
-// Copy skill function for internal server use
-exports.mockCopySkill = (skill_id, target_creator, user_id) => {
-    let req = {
-        params: {
-            id: skill_id,
-            target_creator: target_creator
-        },
-        user: {
-            id: user_id,
-            admin: 100
-        }
-    }
-    let res
-    res.sendStatus = (num) => {
-        // Do nothing
-    }
-    res.send = (data) => {
-        return data
-    }
-
-    copySkill(req, res)
-}
-
-exports.copySkill = async (req, res) => {
+exports.copySkill = async (req, res, cb) => {
     let id = hashids.decode(req.params.id)[0]
     let new_creator_id = req.params.target_creator
     let diagram_mapping = {}
@@ -1067,7 +1044,12 @@ exports.copySkill = async (req, res) => {
                     let new_skill_id = data.rows[0].skill_id
                     retrieveDiagram(root_diagram_id, new_skill_id)
                     data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
-                    res.send(data.rows[0])
+
+                    if(cb){
+                        cb(data.rows[0])
+                    } else {
+                        res.send(data.rows[0])
+                    }
                 }
             }
         )

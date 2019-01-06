@@ -1,6 +1,6 @@
 const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram');
-const { mockCopySkill } = require('./skill')
+const { copySkill } = require('./skill')
 
 const ADMIN_MARKETPLACE_ACC = 6
 const module_limit = 10;
@@ -125,10 +125,10 @@ const saveCertification = (req, res) => {
 const giveCertification = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	const updateVersionTable = (market_id, module_id) => {
+	const updateVersionTable = (market_id, module_id, template_skill_id) => {
 		pool.query(
-			`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
-			[market_id, module_id],
+			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
+			[market_id, template_skill_id, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -140,18 +140,19 @@ const giveCertification = (req, res) => {
 		)	
 	}
 
-	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		async (err, data) => {
 			if(err){
 				console.log(err);
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
-					let version_id = data.rows[0].version_id;
-					let diagram_id = data.rows[0].diagram_id;
-					let module_id = data.rows[0].module_id;
-					let market_id = "$" + version_id + '_' + diagram_id;
+					let version_id = data.rows[0].version_id
+					let diagram_id = data.rows[0].diagram_id
+					let module_id = data.rows[0].module_id
 					let skill_id = data.rows[0].skill_id
+					let market_id = "$" + version_id + '_' + diagram_id
+					
 
 					if(data.rows[0].type === 'FLOW') {
 						let status = await renderDiagram(req.user, diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
@@ -162,7 +163,14 @@ const giveCertification = (req, res) => {
 							res.sendStatus(500);
 						}
 					} else {
-						mockCopySkill(skill_id, ADMIN_MARKETPLACE_ACC, data.rows[0].creator_id)
+						// Alter request object to conform to copy skill, able to do this since we don't use req anymore in this fcn
+						req.params.id = hashids.encode(skill_id)
+						req.params.target_creator = ADMIN_MARKETPLACE_ACC
+						req.user.id = data.rows[0].creator_id
+						copySkill(req, res, (row) => {
+							let new_skill_id = hashids.decode(row.skill_id)[0]
+							updateVersionTable(market_id, module_id, new_skill_id)
+						})
 					}
 					
 				}else{
@@ -180,7 +188,7 @@ const requestCertification = (req, res) => {
 	const createNewVersion = (skill_id, diagram_id, module_id, global) => {
 		// Retrieve most recent version
 		pool.query(
-			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
+			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
 			[skill_id],
 			(err, data) => {
 				if(err){
@@ -216,7 +224,7 @@ const requestCertification = (req, res) => {
 	}
 
 	const getModule = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
+		pool.query(`SELECT * FROM modules WHERE modules.skill_id = $1`, [skill_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -231,7 +239,7 @@ const requestCertification = (req, res) => {
 	}
 
 	const checkVersions = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 			(err, data) => {
 				if(err){
 					console.log(err);

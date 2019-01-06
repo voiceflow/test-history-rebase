@@ -842,6 +842,29 @@ exports.withdrawSkill = (req, res) => {
     });
 }
 
+// Copy skill function for internal server use
+exports.mockCopySkill = (skill_id, target_creator, user_id) => {
+    let req = {
+        params: {
+            id: skill_id,
+            target_creator: target_creator
+        },
+        user: {
+            id: user_id,
+            admin: 100
+        }
+    }
+    let res
+    res.sendStatus = (num) => {
+        // Do nothing
+    }
+    res.send = (data) => {
+        return data
+    }
+
+    copySkill(req, res)
+}
+
 exports.copySkill = async (req, res) => {
     let id = hashids.decode(req.params.id)[0]
     let new_creator_id = req.params.target_creator

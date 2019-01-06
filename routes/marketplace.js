@@ -1,6 +1,8 @@
 const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram');
+const { mockCopySkill } = require('./skill')
 
+const ADMIN_MARKETPLACE_ACC = 6
 const module_limit = 10;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){
@@ -149,6 +151,7 @@ const giveCertification = (req, res) => {
 					let diagram_id = data.rows[0].diagram_id;
 					let module_id = data.rows[0].module_id;
 					let market_id = "$" + version_id + '_' + diagram_id;
+					let skill_id = data.rows[0].skill_id
 
 					if(data.rows[0].type === 'FLOW') {
 						let status = await renderDiagram(req.user, diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
@@ -159,34 +162,7 @@ const giveCertification = (req, res) => {
 							res.sendStatus(500);
 						}
 					} else {
-						// Copy current diagram's data to new entry on market
-						let params = {
-					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
-					        Key: {'id': diagram_id}
-						};
-					    docClient.get(params, (err, data) => {
-					        if (err) {
-					            console.log(err);
-					            res.sendStatus(err.statusCode);
-					        } else if (data.Item) {
-								data.Item.id = market_id;
-								let params = {
-									TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
-									Item: data.Item
-								};
-								docClient.put(params, (err, data) => {
-									if(err){
-										console.log(err);
-										res.sendStatus(500);
-									} else {
-										updateVersionTable(market_id, module_id);
-									}
-								});
-					        } else {
-					            res.sendStatus(404);
-					        }
-					    });
-						
+						mockCopySkill(skill_id, ADMIN_MARKETPLACE_ACC, data.rows[0].creator_id)
 					}
 					
 				}else{
@@ -293,7 +269,7 @@ const requestCertification = (req, res) => {
 const certStatus = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		(err, data) => {
 			if(err){
 				console.log(err);
@@ -494,6 +470,7 @@ const retrieveTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
+					console.log(data.rows[0])
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
 						TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
@@ -539,7 +516,15 @@ const getPendingModules = (req, res) => {
 const getDefaultTemplates = (req, res) => {
 	pool.query(
 		`
-		SELECT * FROM modules WHERE default_template = true
+		SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
+			ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type
+		FROM 
+		(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
+			(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
+			INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
+		) AS ultimate_versions  
+		INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
+		WHERE modules.default_template = true
 		`,
 		[],
 		(err, data) => {
@@ -547,6 +532,7 @@ const getDefaultTemplates = (req, res) => {
 				console.log(err)
 				res.sendStatus(500)
 			} else {
+				hashIds(data.rows)
 				res.send(data.rows)
 			}
 		}

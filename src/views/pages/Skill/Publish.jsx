@@ -25,7 +25,6 @@ class Publish extends Component {
 
     render() {
         let page;
-        console.log(this.props)
         if(this.props.page === 'market'){
             page = <PublishMarket {...this.props}/>
         } else {

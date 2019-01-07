@@ -19,16 +19,19 @@ body {
     width: 100%;
     padding-bottom: 120px;
 }
-#app {
+#app, #app>#canvas {
     position: absolute;
     top: 59px;
     right: 0;
     left: 0;
     bottom: 0;
-}
-#app.secondary-padding {
-    top: 104px;
     overflow-x: hidden;
+}
+#app.secondary-padding, #app.secondary-padding>#canvas {
+    top: 104px;
+}
+#app.canvas{
+    top: 0 !important;
 }
 .grid-col-3{
     display: grid;

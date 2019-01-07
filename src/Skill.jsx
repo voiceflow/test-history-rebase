@@ -9,6 +9,7 @@ import axios from 'axios'
 import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
 import ErrorModal from './views/components/Modals/ErrorModal'
 import ConfirmModal from './views/components/Modals/ConfirmModal'
+import {Alert} from 'reactstrap'
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -28,7 +29,8 @@ class Skill extends Component {
             secondary: !props.preview,
             error: null,
             confirm: null,
-            mounted: true
+            mounted: true,
+            error_screen: null
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -125,8 +127,12 @@ class Skill extends Component {
     onLoadSkill(skill_id){
         axios.get(`/skill/${skill_id}?${this.props.preview ? 'preview=1' : 'simple=1'}`)
         .then(res => {
-            // prevent redundant saving of global variables in the skill object
             let skill = res.data
+            if(this.props.preview && !skill.preview){
+                this.setState({
+                    error_screen: <Alert color="danger">Preview not enabled for this skill</Alert>
+                })
+            }
 
             // TODO SKILL PREVIEW NOT ENABLED
             this.setState({
@@ -167,6 +173,12 @@ class Skill extends Component {
 
         if(!this.state.mounted) return null
 
+        if(this.state.error_screen){
+            return <div className="super-center w-100 h-100">
+                {this.state.error_screen}
+            </div>
+        }
+
         if(this.state.load_skill || (!(this.state.skill && this.state.skill.skill_id) && !this.props.new)){
             return <div id="loading-diagram">
                 <div className="text-center">
@@ -182,7 +194,7 @@ class Skill extends Component {
             <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
             <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
 
-            <div id="app" className={this.state.secondary ? "secondary-padding" : ""}>
+            <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
                 {this.renderPage()}
             </div>
         </React.Fragment>

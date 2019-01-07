@@ -1305,6 +1305,27 @@ class Canvas extends Component {
                     toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
                     setHelp={(help) => this.setState({help: help})}
                 />
+                { !this.props.preview ? <ActionGroup
+                        lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
+                        skill={this.state.skill}
+                        preview={this.preview}
+                        title={this.state.diagram_name}
+                        onSave={this.onSave}
+                        saving={this.state.saving}
+                        saved={this.state.saved}
+                        admin={this.state.admin}
+                        publishAMZN={this.publishAMZN}
+                        publishMarket={this.publishMarket}
+                        diagram_id={this.props.diagram_id}
+                        history={this.props.history}
+                        onError={this.props.onError}
+                        onConfirm={this.props.onConfirm}
+                        updateSkill={(skill) => {this.setState({skill: skill}); this.props.updateSkill(skill)}}
+                    /> :
+                    <div className="title-group no-select">
+                    <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
+                    </div>
+                }
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
                 { this.state.new_skill_step !== 0 ?
                     <SkillModal
@@ -1326,107 +1347,88 @@ class Canvas extends Component {
                         globals={this.state.global_variables}
                     />
                 : null}
-                <Menu
-                    unfocus={this.onDiagramUnfocus}
-                    helpModal={() => this.setState({help: true, helpOpen: true})}
-                    diagrams={this.state.diagrams}
-                    current={this.props.diagram_id}
-                    enterFlow={this.enterFlow}
-                    variables={this.state.variables}
-                    global_variables={this.state.global_variables}
-                    onGlobalVariable={this.setGlobalVariables}
-                    onVariable={this.setVariables}
-                    build={fn => this.buildDiagrams = fn}
-                    user_modules={this.state.user_modules}
-                    user_templates={this.state.user_templates}
-                    onTemplateIntent={this.handleTemplateIntent}
-                    onFlowRenamed={this.onFlowRenamed}
-                    history={this.props.history}
-                    loading_diagram={this.state.loading_diagram}
-                    changeLoading={(state) => this.setState({loading_diagram: state})}
-                    saving={this.state.saving}
-                    preview={this.props.preview}
-                    onSave={this.onSave}
-                />
-                <TitleBar
-                    onTest={this.onTest}
-                    preview={this.props.preview}
-                    skill={this.state.skill}
-                />
-              { !this.props.preview ? <ActionGroup
-                    lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
-                    skill={this.state.skill}
-                    preview={this.preview}
-                    title={this.state.diagram_name}
-                    onSave={this.onSave}
-                    saving={this.state.saving}
-                    saved={this.state.saved}
-                    admin={this.state.admin}
-                    publishAMZN={this.publishAMZN}
-                    publishMarket={this.publishMarket}
-                    diagram_id={this.props.diagram_id}
-                    history={this.props.history}
-                    onError={this.props.onError}
-                    onConfirm={this.props.onConfirm}
-                    updateSkill={(skill) => {this.setState({skill: skill}); this.props.updateSkill(skill)}}
-                /> :
-                <div className="title-group no-select">
-                  <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
-                </div>
-              }
-                {this.state.loading_diagram && <div id="loading-diagram">
-                    <div className="text-center">
-                        <h5 className="text-muted mb-2">Loading Flow</h5>
-                        <span className="loader"/>
-                    </div>
-                </div>}
-                <Editor
-                    skill={this.state.skill}
-                    unfocus={this.onDiagramUnfocus}
-                    open={this.state.open}
-                    node={this.state.engine.getSuperSelect()}
-                    onUpdate={this.unsave}
-                    close={e => this.setState({ open: false })}
-                    repaint={this.repaint}
-                    variables={this.state.variables}
-                    global_variables={this.state.global_variables}
-                    setHelp={(help) => this.setState({help: help, helpOpen: true})}
-                    diagrams={this.state.diagrams}
-                    createDiagram={this.createDiagram}
-                    enterFlow={this.enterFlow}
-                    removeNode={!this.props.preview ? this.removeNode : _.noop()}
-                    user_modules={this.state.user_modules}
-                    copyNode={!this.props.preview ? this.copyNode : _.noop()}
-                    intents={this.state.skill.intents}
-                    slots={this.state.skill.slots}
-                    locales={this.state.skill.locales}
-                    preview={this.props.preview}
-                    onboarding={this.onboarding}
-                    diagram_id={this.props.diagram_id}
-                    finished={()=>{this.onboarding = false}}
-                    onError={this.props.onError}
-                    onConfirm={this.props.onConfirm}
-                    templates={this.state.email_templates}
-                    displays={this.state.display_templates}
-                />
-                <div
-                    id="diagram"
-                    className={this.preview ? " no-padding" : ""}
-                    onDrop={this.onDrop}
-                    onDragOver={e => e.preventDefault()}
-                    onClick={this.clickDiagram}
-                >
-                    <div id="widget-bar">
-                        <ButtonGroup>
-                            <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
-                            <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
-                        </ButtonGroup>
-                    </div>
-                    <SRD.DiagramWidget
-                        diagramEngine={this.state.engine}
-                        allowLooseLinks={false}
-                        locked={this.props.preview}
+                <div id="canvas">
+                    <Menu
+                        unfocus={this.onDiagramUnfocus}
+                        helpModal={() => this.setState({help: true, helpOpen: true})}
+                        diagrams={this.state.diagrams}
+                        current={this.props.diagram_id}
+                        enterFlow={this.enterFlow}
+                        variables={this.state.variables}
+                        global_variables={this.state.global_variables}
+                        onGlobalVariable={this.setGlobalVariables}
+                        onVariable={this.setVariables}
+                        build={fn => this.buildDiagrams = fn}
+                        user_modules={this.state.user_modules}
+                        user_templates={this.state.user_templates}
+                        onTemplateIntent={this.handleTemplateIntent}
+                        onFlowRenamed={this.onFlowRenamed}
+                        history={this.props.history}
+                        loading_diagram={this.state.loading_diagram}
+                        changeLoading={(state) => this.setState({loading_diagram: state})}
+                        saving={this.state.saving}
+                        preview={this.props.preview}
+                        onSave={this.onSave}
                     />
+                    <TitleBar
+                        onTest={this.onTest}
+                        preview={this.props.preview}
+                        skill={this.state.skill}
+                    />
+                    {this.state.loading_diagram && <div id="loading-diagram">
+                        <div className="text-center">
+                            <h5 className="text-muted mb-2">Loading Flow</h5>
+                            <span className="loader"/>
+                        </div>
+                    </div>}
+                    <Editor
+                        skill={this.state.skill}
+                        unfocus={this.onDiagramUnfocus}
+                        open={this.state.open}
+                        node={this.state.engine.getSuperSelect()}
+                        onUpdate={this.unsave}
+                        close={e => this.setState({ open: false })}
+                        repaint={this.repaint}
+                        variables={this.state.variables}
+                        global_variables={this.state.global_variables}
+                        setHelp={(help) => this.setState({help: help, helpOpen: true})}
+                        diagrams={this.state.diagrams}
+                        createDiagram={this.createDiagram}
+                        enterFlow={this.enterFlow}
+                        removeNode={!this.props.preview ? this.removeNode : _.noop()}
+                        user_modules={this.state.user_modules}
+                        copyNode={!this.props.preview ? this.copyNode : _.noop()}
+                        intents={this.state.skill.intents}
+                        slots={this.state.skill.slots}
+                        locales={this.state.skill.locales}
+                        preview={this.props.preview}
+                        onboarding={this.onboarding}
+                        diagram_id={this.props.diagram_id}
+                        finished={()=>{this.onboarding = false}}
+                        onError={this.props.onError}
+                        onConfirm={this.props.onConfirm}
+                        templates={this.state.email_templates}
+                        displays={this.state.display_templates}
+                    />
+                    <div
+                        id="diagram"
+                        className={this.preview ? " no-padding" : ""}
+                        onDrop={this.onDrop}
+                        onDragOver={e => e.preventDefault()}
+                        onClick={this.clickDiagram}
+                    >
+                        <div id="widget-bar">
+                            <ButtonGroup>
+                                <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
+                                <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
+                            </ButtonGroup>
+                        </div>
+                        <SRD.DiagramWidget
+                            diagramEngine={this.state.engine}
+                            allowLooseLinks={false}
+                            locked={this.props.preview}
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         )

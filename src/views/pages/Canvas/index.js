@@ -305,7 +305,7 @@ class Canvas extends Component {
                         }
                     })
                     this.setState({
-                        templates: templates
+                        email_templates: templates
                     })
                 }
             } catch(err) {

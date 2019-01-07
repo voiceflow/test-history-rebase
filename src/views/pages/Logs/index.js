@@ -132,8 +132,12 @@ class Logs extends Component {
     onLoad() {
         axios.get(`/logs/${this.state.skill_id}`)
         .then(res => {
+            let logs = []
+            if(res.data.rows > 0){
+                logs = res.data.rows
+            }
             this.setState({
-                logs: res.data.rows,
+                logs: logs,
                 name: res.data.name
             })
         })

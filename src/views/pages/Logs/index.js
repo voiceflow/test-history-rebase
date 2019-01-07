@@ -133,8 +133,7 @@ class Logs extends Component {
         axios.get(`/logs/${this.state.skill_id}`)
         .then(res => {
             this.setState({
-                logs: res.data.rows,
-                name: res.data.name
+                logs: res.data.rows
             })
         })
         .catch(err => {
@@ -182,7 +181,8 @@ class Logs extends Component {
 
         return(
             <div className='px-5 justify-content-start'>
-                <h5 className='pt-4'>{this.state.name} Error Logs</h5>       
+                <h5 className='pt-4'><b>{this.props.skill.name}</b> Error Logs</h5>
+                <hr/>
                 {
                     this.state.logs.length > 0?
                     <Table>
@@ -231,7 +231,7 @@ class Logs extends Component {
                     </Table>
                     :
                     <div className="alert alert-primary" role="alert">
-                        Your skill hasn't had any errors yet 👍
+                        Your skill hasn't had any errors yet <span role="img" aria-label="thumbs up">👍</span>
                     </div>
                 }
             </div>

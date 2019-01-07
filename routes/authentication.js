@@ -6,6 +6,7 @@ const axios = require('axios');
 const {jwt, docClient, pool, redisClient, config, hashids} = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
+const { getEnvVariable } = require('../util')
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -62,8 +63,8 @@ const AccessToken = (user_id, cb) => {
 			if(token.expire < Date.now()){
 				axios.post('https://api.amazon.com/auth/o2/token', {
 					grant_type: "refresh_token",
-		    		client_id: config.client_id,
-    				client_secret: config.client_secret,
+					client_id: getEnvVariable('CONFIG_CLIENT_ID'),
+					client_secret: getEnvVariable('CONFIG_CLIENT_SECRET'),
 					refresh_token: token.refresh_token
 				})
 				.then(result => {
@@ -107,8 +108,8 @@ const getAmazonCode = (req, res) => {
     	axios.post('https://api.amazon.com/auth/o2/token', {
     		grant_type: "authorization_code",
     		code: req.params.code,
-    		client_id: config.client_id,
-			client_secret: config.client_secret
+			client_id: getEnvVariable('CONFIG_CLIENT_ID'),
+			client_secret: getEnvVariable('CONFIG_CLIENT_SECRET')
     	})
     	.then(result => {
     		let data = {

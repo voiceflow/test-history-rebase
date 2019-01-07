@@ -1,5 +1,6 @@
 const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram');
+const { getEnvVariable } = require('../util')
 
 const module_limit = 10;
 const hashIds = (rows) => {
@@ -161,7 +162,7 @@ const giveCertification = (req, res) => {
 					} else {
 						// Copy current diagram's data to new entry on market
 						let params = {
-					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+					        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
 					        Key: {'id': diagram_id}
 						};
 					    docClient.get(params, (err, data) => {
@@ -171,7 +172,7 @@ const giveCertification = (req, res) => {
 					        } else if (data.Item) {
 								data.Item.id = market_id;
 								let params = {
-									TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
+									TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
 									Item: data.Item
 								};
 								docClient.put(params, (err, data) => {
@@ -412,7 +413,7 @@ const getCertModule = (req, res) => {
 				}else{
 					if(data.rows.length > 0){
 						let params = {
-					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+					        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
 					        Key: {'id': data.rows[0].diagram}
 					    };
 					    docClient.get(params, (err, data) => {
@@ -496,7 +497,7 @@ const retrieveTemplate = (req, res) => {
 				if(data.rows.length > 0){
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
-						TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
+						TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
 						Key: {'id': template_diagram_id}
 					}
 					docClient.get(params, (err, data) => {

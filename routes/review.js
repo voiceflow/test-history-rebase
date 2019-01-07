@@ -1,3 +1,5 @@
+const { getEnvVariable } = require('../util')
+
 module.exports = (docClient) => {
 
 const getReview = (req, res) => {
@@ -65,7 +67,7 @@ const setReview = (req, res) => {
         return;
     }
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Key: {'id': req.params.id }
     };
 
@@ -118,7 +120,7 @@ const getReviews = (req, res) => {
         TableName: 'com.getstoryflow.reviews.staging',
     };
 
-    if(!req.user.admin){
+    if(req.user.admin < 100){
         params.FilterExpression = 'creator = :creator';
         params.ExpressionAttributeValues = {':creator': req.user.id};
     }
@@ -141,7 +143,7 @@ const getReviews = (req, res) => {
                 params.ExclusiveStartKey = data.LastEvaluatedKey;
                 docClient.scan(params, onScan);
             }else{
-                if(req.query.author && req.user.admin && reviews.length !== 0){
+                if(req.query.author && req.user.admin >= 100 && reviews.length !== 0){
                     let length = reviews.length;
                     let items = [];
                     reviews.forEach((review, index) => {
@@ -191,7 +193,7 @@ const deleteReview = (req, res) => {
             console.log(err);
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
-            if(data.Item.status != "under_review" || req.user.admin){
+            if(data.Item.status != "under_review" || req.user.admin >= 100){
                 docClient.delete(params, err => {
                     if (err) {
                         console.log(err);

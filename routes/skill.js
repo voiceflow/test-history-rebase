@@ -1,8 +1,9 @@
 const axios = require('axios')
-const {docClient, pool, config, hashids, intercom} = require('./../services')
+const {docClient, pool, hashids, intercom} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const squel = require('squel')
+const { getEnvVariable } = require('../util')
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -293,7 +294,7 @@ exports.deleteSkill = (req, res) => {
 
             // Delete diagram from dynamo
             let params = {
-                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
                 Key: {'id': diagram_id}
             }
 
@@ -880,7 +881,7 @@ exports.copySkill = async (req, res) => {
 
     const uploadNewDiagram = (remapped_diagram, old_diagram_id, new_skill_id) => {
         let params = {
-            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
             Item: {
                 id: remapped_diagram.id,
                 variables: remapped_diagram.variables,
@@ -893,7 +894,7 @@ exports.copySkill = async (req, res) => {
         // Called if SQL insert fails
         const cleanUpDynamo = (new_diagram_id) => {
             let clean_up_params = {
-                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
                 Key: {'id': new_diagram_id}
             };
             docClient.delete(clean_up_params, err => {
@@ -933,7 +934,7 @@ exports.copySkill = async (req, res) => {
 
     const retrieveDiagram = (diagram_id, new_skill_id) => {
         let get_params = {
-            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
             Key: {'id': diagram_id}
         }
 

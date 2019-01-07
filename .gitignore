@@ -14,10 +14,12 @@ routes/tmp/*
 package-lock.json
 */yarn.lock
 yarn-lock.json
+coverage
 yarn.lock
 
 # dotenv environment variables files
 .env*
 !.env.example
 
-yarn.lock
+# Local DynamoDB
+shared-local-instance.db

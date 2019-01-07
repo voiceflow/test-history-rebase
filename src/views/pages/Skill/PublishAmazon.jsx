@@ -983,7 +983,7 @@ class Skill extends Component {
                                     </p> 
                                 </div>
                                 <div className="col-9">
-                                    <Input className="form-bg" type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Seperated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+                                    <Input className="form-bg" type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
                                 </div>
                             </div> 
                         </FormGroup>

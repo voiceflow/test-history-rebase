@@ -129,7 +129,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt 
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt
             FROM
                 skills
             WHERE
@@ -313,7 +313,7 @@ exports.deleteSkill = (req, res) => {
     }
 
     let id = hashids.decode(req.params.id)[0];
-    pool.query("SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2", [req.user.id, id], (err, results) => {    
+    pool.query("SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2", [req.user.id, id], (err, results) => {
         // Delete skill off Amazon
         if(results.rows[0].amzn_id){
             AccessToken(req.user.id, token => {
@@ -336,7 +336,7 @@ exports.deleteSkill = (req, res) => {
                 })
             })
         }
-        
+
         // Delete skill off our servers
         pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
             if(err){
@@ -400,7 +400,7 @@ exports.patchSkill = (req, res) => {
 
     // only need to update the name/restart
     if(req.query.settings){
-        pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`, 
+        pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`,
         [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
             if(err){
                 res.sendStatus(500);
@@ -563,7 +563,7 @@ exports.buildSkill = async (req,res) => {
 
                 let amzn_id = r.amzn_id
                 r.permissions = permissions
-                let manifest = JSONs.manifest(r, original_id)
+                let manifest = JSONs.manifest(r, original_id, req.user.name)
 
                 try{
                     if(amzn_id){
@@ -908,7 +908,7 @@ exports.copySkill = async (req, res) => {
             let diagram_name = diagram_names[old_diagram_id]
 
             pool.query(
-                `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents) 
+                `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents)
                 (SELECT $1, $2, $3, $4, permissions, used_intents FROM diagrams WHERE id = $5)`,
                 [new_diagram_id, diagram_name, new_skill_id, JSON.stringify(sub_diagrams[new_diagram_id]), old_diagram_id],
                 (err) => {
@@ -917,7 +917,7 @@ exports.copySkill = async (req, res) => {
                         cleanUpDynamo(new_diagram_id)
                         res.sendStatus(500)
                     }
-                }    
+                }
             )
         }
 
@@ -947,7 +947,7 @@ exports.copySkill = async (req, res) => {
             }
         })
     }
-    
+
     // Starts here verify that the skill is under the current creator
     if(req.user.admin < 100){
         try{
@@ -1004,7 +1004,7 @@ exports.copySkill = async (req, res) => {
                 resume_prompt,
                 error_prompt
             )
-            SELECT 
+            SELECT
                 coalesce(name, '') || ' Copy' AS name,
                 $1 AS diagram,
                 $2 AS creator_id,

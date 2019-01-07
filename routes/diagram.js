@@ -22,7 +22,9 @@ const expressionfy = (expression, depth=0) => {
         if(!expression.value){
             return 0
         }else if(isNaN(value)){
-            return "'" + value.replace(/'/g, '\"') + "'";
+            value = value.replace(/'/g, '\\\'')
+            value = value.replace(/"/g, '\\\"')
+            return "'" + value + "'";
         }else{
             return (value * 1)
         }

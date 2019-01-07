@@ -161,7 +161,7 @@ class Skill extends Component {
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':
-                return <Logs {...this.props}/>
+                return <Logs {...this.props} skill={this.state.skill}/>
             case 'visuals':
                 return <Visuals {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             default:

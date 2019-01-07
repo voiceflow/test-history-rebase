@@ -1,3 +1,4 @@
+require('dotenv').config()
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mount, shallow, render } from 'enzyme';
@@ -6,14 +7,14 @@ import App from '../App';
 
 jest.mock('react-ga');
 
-afterAll(() => {
-  pool.query('DELETE FROM creators WHERE email = \'tests@getvoiceflow.com\' LIMIT 1',
+/*beforeAll(() => {
+  pool.query('DELETE FROM creators WHERE email = \'tests@getvoiceflow.com\'',
     (err, result) => {
     if (err) {
       console.log(err);
     }
   });
-});
+});*/
 
 describe('Onboarding', () => {
   it('renders without crashing', () => {

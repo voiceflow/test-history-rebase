@@ -28,10 +28,10 @@ import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
 // SECRET
 var STRIPE_KEY
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
-}else{
+if (process.env.NODE_ENV === 'production') {
   STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
+}else{
+  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -111,10 +111,12 @@ class App extends Component {
     if (window.Stripe) {
       this.setState({stripe: window.Stripe(STRIPE_KEY)});
     } else {
-      document.querySelector('#stripe-js').addEventListener('load', () => {
-        // Create Stripe instance once Stripe.js loads
-        this.setState({stripe: window.Stripe(STRIPE_KEY)});
-      });
+      if (document.querySelector('#stripe-js')) {
+        document.querySelector('#stripe-js').addEventListener('load', () => {
+          // Create Stripe instance once Stripe.js loads
+          this.setState({stripe: window.Stripe(STRIPE_KEY)});
+        });
+      }
     }
   }
 

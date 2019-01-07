@@ -63,7 +63,7 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "prepublish": "patch-package"
   },

@@ -11,12 +11,12 @@ import Switch from '@material-ui/core/Switch'
 // const _ = require('lodash');
 
 var test_endpoint;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    // dev code
-    test_endpoint = 'http://localhost:4000/state/test'
-} else {
+if (process.env.NODE_ENV === 'production') {
     // production code
     test_endpoint = 'https://app.getvoiceflow.com/state/test'
+} else {
+    // dev code
+    test_endpoint = 'http://localhost:4000/state/test'
 }
 
 const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text'])

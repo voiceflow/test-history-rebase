@@ -65,7 +65,7 @@ const interactionModel = (req) => {
 	const slots = req.slots
 	const used_choices = req.used_choices
 	const used_intents = req.used_intents
-	
+
 	const intents_for_amazon = []
 	const entered_intents = new Set()
 
@@ -94,14 +94,14 @@ const interactionModel = (req) => {
 			let formatted_intent = {
 				name: name
 			}
-	
+
 			if (!intent.built_in) {
 				formatted_intent.samples = _getUtterancesWithSlotNames(intent.inputs, slots)
 				formatted_intent.slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
 			}else {
 				formatted_intent.samples = []
 			}
-	
+
 			intents_for_amazon.push(formatted_intent)
 		}
 	})
@@ -116,7 +116,7 @@ const interactionModel = (req) => {
 
 	const content_slot_values = []
 
-	
+
 	used_choices.forEach(choice => {
 		let reg = new RegExp('[^' + VALID_UTTERANCES + '|]')
 		let safe_choice = choice.replace(reg, ' ')
@@ -176,10 +176,10 @@ const interactionModel = (req) => {
 	}
 }
 
-const manifest = (r, encoded_id) => {
+const manifest = (r, encoded_id, name) => {
     r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
 	r.keywords = r.keywords.split(",").map(item => item.trim()).filter(word => !!word);
-	
+
 	const localeObj = {
 		"summary": r.summary,
 		"examplePhrases": r.invocations,
@@ -206,8 +206,8 @@ const manifest = (r, encoded_id) => {
 		locales[locale] = localeObj;
 	})
 
-	// TODO: in the future we need a different one for each 
-	
+	// TODO: in the future we need a different one for each
+
 	var privacyLocales = null
 
 	if(r.privacy_policy || r.terms_and_cond){
@@ -220,6 +220,8 @@ const manifest = (r, encoded_id) => {
 			}
 			if(r.privacy_policy){
 				privacyLocales[locale].privacyPolicyUrl = r.privacy_policy
+			} else {
+				privacyLocales[locale].privacyPolicyUrl = `https://creator.getvoiceflow.com/creator/privacy_policy?name=${name}&skill=${r.name}`
 			}
 		})
 	}

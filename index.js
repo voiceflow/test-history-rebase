@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const https = require('https');
 const {upload, uploadResize, redisClient, jwt, config} = require('./services');
-
+const policy = require('./policy');
 // IMPORT ROUTES
 const Diagram = require('./routes/diagram.js');
 const Customer = require('./routes/customer.js');
@@ -138,6 +138,7 @@ app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
+app.get('/creator/privacy_policy', policy);
 app.get('/business', ensurePlan(1));
 app.get('/business/*', ensurePlan(1));
 

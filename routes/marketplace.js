@@ -2,7 +2,13 @@ const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram');
 const { copySkill } = require('./skill')
 
-const ADMIN_MARKETPLACE_ACC = 6
+var ADMIN_MARKETPLACE_ACC
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+	ADMIN_MARKETPLACE_ACC = 19
+}else{
+	ADMIN_MARKETPLACE_ACC = 2125
+}
+
 const module_limit = 10;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){

@@ -1,4 +1,4 @@
-const TRAILING_WHITESPACE = /[ \u0020\t]*$/;
+const TRAILING_WHITESPACE = /[ \u0020\t]*$/
 
 // This escapes some markdown but there's a few cases that are TODO -
 // - List items
@@ -24,9 +24,12 @@ var orderedListNumber = {},
 
 const _escape = function (word) {
     if (typeof(word) === "string") {
-        // word = word.replace(/</g, '&lt;');
-        // word = word.replace(/>/g, '&gt;');
-        word = word.replace(/"/g, '\"').replace(/'/g, '\'').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/&/g, 'ampersand')
+        word = word.replace(/"/g, '\"')
+        .replace(/'/g, '\'')
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201C\u201D]/g, '"')
+        .replace(/&/g, 'ampersand')
+        .replace(/[\x00-\x1F\x7F-\x9F]/g, "")
         return word;
     }
     if (typeof(word) === "number") {

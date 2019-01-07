@@ -13,8 +13,8 @@ new file mode 100644
 +        this.$rules = {
 +            "start" : [
 +                {
-+                    token : "variable", // single line
-+                    regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]\\s*(?=:)'
++                    token : "custom_variable",
++                    regex : "\\{[\\w\\d]+\\}"
 +                }, {
 +                    token : "string", // single line
 +                    regex : '"',
@@ -39,8 +39,8 @@ new file mode 100644
 +                    regex : "\\/\\*",
 +                    next  : "comment"
 +                }, {
-+                    token : "custom_variable",
-+                    regex : "\\{[\\w\\d]+\\}"
++                    token : "variable", // single line
++                    regex : '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]\\s*(?=:)'
 +                }, {
 +                    token : "paren.lparen",
 +                    regex : "[[({]"

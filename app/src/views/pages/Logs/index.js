@@ -132,12 +132,8 @@ class Logs extends Component {
     onLoad() {
         axios.get(`/logs/${this.state.skill_id}`)
         .then(res => {
-            let logs = []
-            if(res.data.rows > 0){
-                logs = res.data.rows
-            }
             this.setState({
-                logs: logs,
+                logs: res.data.rows,
                 name: res.data.name
             })
         })
@@ -183,58 +179,56 @@ class Logs extends Component {
 
     render() {
         const empty_rows = this.state.rows_per_page - Math.min(this.state.rows_per_page, this.state.logs.length - this.state.page * this.state.rows_per_page)
-        const log_table =
-        <Table>
-            <colgroup>
-                <col style={{width:'10%'}}/>
-                <col style={{width:'10%'}}/>
-                <col style={{width:'40%'}}/>
-                <col style={{width:'40%'}}/>
-            </colgroup>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Timestamp</TableCell>
-                    <TableCell>User</TableCell>
-                    <TableCell>Errors</TableCell>
-                    <TableCell>Request</TableCell>
-                </TableRow>
-            </TableHead>
-        <TableBody>
-            {this.state.logs.slice(this.state.page * this.state.rows_per_page, this.state.page * this.state.rows_per_page + this.state.rows_per_page).map((log, i) => 
-                <TableRow key={i + this.state.page * this.state.rows_per_page}>
-                    <TableCell>{moment(log.timestamp).format('LTS')}</TableCell>
-                    <TableCell>{log.user_id.slice(0, 11)}</TableCell>
-                    {this.parseRequest(log.request)}
-                </TableRow>
-            )} 
-            {empty_rows > 0 && (
-            <TableRow style={{ height: 48 * empty_rows }}>
-                <TableCell colSpan={6} />
-            </TableRow>
-            )}
-        </TableBody>
-        <TableFooter>
-            <TableRow>
-                <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
-                count={this.state.logs.length}
-                colSpan={3}
-                rowsPerPage={this.state.rows_per_page}
-                page={this.state.page}
-                onChangePage={this.handleChangePage}
-                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActionsWrapped}
-                />
-            </TableRow>
-        </TableFooter>
-        </Table>
 
         return(
             <div className='px-5 justify-content-start'>
                 <h5 className='pt-4'>{this.state.name} Error Logs</h5>       
                 {
                     this.state.logs.length > 0?
-                    {log_table} 
+                    <Table>
+                        <colgroup>
+                            <col style={{width:'10%'}}/>
+                            <col style={{width:'10%'}}/>
+                            <col style={{width:'40%'}}/>
+                            <col style={{width:'40%'}}/>
+                        </colgroup>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Timestamp</TableCell>
+                                <TableCell>User</TableCell>
+                                <TableCell>Errors</TableCell>
+                                <TableCell>Request</TableCell>
+                            </TableRow>
+                        </TableHead>
+                    <TableBody>
+                        {this.state.logs.slice(this.state.page * this.state.rows_per_page, this.state.page * this.state.rows_per_page + this.state.rows_per_page).map((log, i) => 
+                            <TableRow key={i + this.state.page * this.state.rows_per_page}>
+                                <TableCell>{moment(log.timestamp).format('LTS')}</TableCell>
+                                <TableCell>{log.user_id.slice(0, 11)}</TableCell>
+                                {this.parseRequest(log.request)}
+                            </TableRow>
+                        )} 
+                        {empty_rows > 0 && (
+                        <TableRow style={{ height: 48 * empty_rows }}>
+                            <TableCell colSpan={6} />
+                        </TableRow>
+                        )}
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                            rowsPerPageOptions={[5, 10, 15]}
+                            count={this.state.logs.length}
+                            colSpan={3}
+                            rowsPerPage={this.state.rows_per_page}
+                            page={this.state.page}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActionsWrapped}
+                            />
+                        </TableRow>
+                    </TableFooter>
+                    </Table>
                     :
                     <div className="alert alert-primary" role="alert">
                         Your skill hasn't had any errors yet 👍

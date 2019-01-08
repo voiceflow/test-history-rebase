@@ -18,6 +18,8 @@ import OldCommand from './Editors/OldCommand';
 import Command from './Editors/Command';
 import Diagram from './Editors/Diagram';
 import API from './Editors/API';
+import Payment from './Editors/Payment';
+import CancelPayment from './Editors/CancelPayment';
 import Module from './Editors/Module';
 import Mail from './Editors/Mail';
 import Display from './Editors/Display'
@@ -53,6 +55,8 @@ class Editor extends Component {
 
         this.state = {
             node: this.props.node,
+            templates: [],
+            displays: [],
             permission_options: [],
             modal: false,
             expanded: false,
@@ -66,7 +70,7 @@ class Editor extends Component {
         this.renderTitle = this.renderTitle.bind(this)
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Hard-code for now, but eventually should retrieve from
         // AMZN website if possible
 
@@ -163,17 +167,17 @@ class Editor extends Component {
                     />
                 }
             case 'intent':
-                return <Interaction 
-                    node={this.state.node} 
-                    onUpdate={this.props.onUpdate} 
-                    repaint={this.props.repaint} 
-                    intents={this.props.intents} 
-                    slots={this.props.slots} 
-                    onSlot={this.props.onSlot} 
-                    onIntent={this.props.onIntent} 
-                    variables={variables} 
+                return <Interaction
+                    node={this.state.node}
+                    onUpdate={this.props.onUpdate}
+                    repaint={this.props.repaint}
+                    intents={this.props.intents}
+                    slots={this.props.slots}
+                    onSlot={this.props.onSlot}
+                    onIntent={this.props.onIntent}
+                    variables={variables}
                     slot_types={this.getSlotTypes(this.props.locales)}
-                    built_ins={BUILT_INS} 
+                    built_ins={BUILT_INS}
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
                     />
@@ -219,12 +223,30 @@ class Editor extends Component {
                 return <Diagram node={this.state.node}
                     onUpdate={this.props.onUpdate}
                     variables={this.props.variables}
-                    createDiagram={this.props.createDiagram} 
+                    createDiagram={this.props.createDiagram}
                     diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
                 />
             case 'api':
                 return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+            case 'payment':
+                return <Payment node={this.state.node}
+                    onUpdate={this.props.onUpdate}
+                    history={this.props.history}
+                    createProduct={this.props.createProduct}
+                    editProduct={this.props.editProduct}
+                    products={this.props.products}
+                    onError={this.showErrorPopup}
+                    skill_id={this.props.skill.skill_id}
+                />
+            case 'cancel_payment':
+                return <CancelPayment node={this.state.node}
+                    onUpdate={this.props.onUpdate}
+                    createProduct={this.props.createProduct}
+                    editProduct={this.props.editProduct}
+                    products={this.props.products}
+                    onError={this.showErrorPopup}
+                />
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
@@ -307,7 +329,7 @@ class Editor extends Component {
                                                 modal: true
                                             })}
                                         >
-                                            <i className="far fa-expand-arrows-alt"/>
+                                            <i className="far fa-expand-arrows-alt mr-2"/>
                                         </div>
                                         <UncontrolledDropdown nav inNavbar>
                                             <DropdownToggle className="delete-block" nav tag="div">

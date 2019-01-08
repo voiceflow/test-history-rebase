@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Alert, Button, FormGroup, Label } from 'reactstrap'
+import { Input, Alert, ButtonGroup, Button, FormGroup, Label } from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
@@ -151,10 +151,11 @@ class Settings extends Component {
                 </React.Fragment>
             default:
                 return <React.Fragment>
-                    <FormGroup>
+                    <FormGroup className='w-75 form-bg'>
                         <Label>Project Name</Label>
                         <Input name="name" value={this.state.skill.name} onChange={this.handleUpdate}/>
                     </FormGroup>
+                    
                     <FormGroup>
                         <Label className="mb-0">Restart Every Session</Label>
                         <div className="helper-text">{
@@ -172,7 +173,7 @@ class Settings extends Component {
                             <b>{this.state.skill.restart ? 'ON': 'OFF'}</b>
                         </div>
                         {!this.state.skill.restart && <React.Fragment>
-                                <Label>Resume Prompt 
+                                <Label>Resume Prompt
                                 </Label>
                                 <div className="helper-text mb-2">Give the user a YES/NO prompt whether to resume</div>
                                 <div className="mb-2">
@@ -210,26 +211,25 @@ class Settings extends Component {
             }
         }
 
-        return <div id="business">
-            <div className="sidebar-nav">
-                {TABS.map((tab, i) => {
-                    if(this.state.tab === tab){
-                        return <div key={i} className="nav-item active">
-                            {tab}
-                        </div>
-                    }else{
-                        return <div key={i} onClick={() => this.switchTab(tab)} className="nav-item">
-                            {tab}
-                        </div>
-                    }
+        return <div id="settings">
+          <div className="nav-bar-top">
+            <ButtonGroup className="toggle-group mb-2 toggle-group-settings mt-5">
+                {TABS.map(tab => {
+                    return <Button
+                        key={tab}
+                        onClick={() => this.switchTab(tab)}
+                        outline={this.state.tab !== tab}
+                        disabled={this.state.tab === tab}>
+                        {tab}
+                    </Button>
                 })}
+            </ButtonGroup>
             </div>
-            <div className="content">
-                <Button color="primary" style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
+            <div className="settings-content">
+                {this.modalContent()}
+                <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
                     {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
                 </Button>
-                <hr/>
-                {this.modalContent()}
             </div>
         </div>
     }

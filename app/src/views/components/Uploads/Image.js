@@ -111,7 +111,7 @@ class Image extends Component {
                         </div>
                     </div>
                     <div className="rejected-file text-danger">
-                        <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>
+                        <b>File not Accepted</b>
                     </div>
                 </div>
             </Dropzone>

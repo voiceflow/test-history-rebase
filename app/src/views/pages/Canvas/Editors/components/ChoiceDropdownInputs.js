@@ -122,7 +122,7 @@ class ChoiceDropdownInputs extends Component {
 
                     return (
                         <div className="interaction-block mb-3" key={choice.key}>
-                            <div className="interaction-title ml-1 mt-1">
+                            <div className="interaction-title">
                                 <span onClick={() => {this.toggleCollapse(i)}}>{choice.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
                                 <button className="close" onClick={() => this.props.onRemove(i)}>&times;</button>
                             </div>

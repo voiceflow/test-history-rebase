@@ -1024,6 +1024,18 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         },
                         nextId: getLink(nextLink)
                     };
+                } else if (node.extras.type === 'payment') {
+                    story.lines[node.id] = {
+                        product_id: node.extras.product_id,
+                        success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+                        fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+                    };
+                } else if (node.extras.type === 'cancel_payment') {
+                    story.lines[node.id] = {
+                        cancel_product_id: node.extras.product_id,
+                        success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+                        fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+                    };
                 } else {
                     let nextLink = null
                     for (var j = 0; j < node.ports.length; j++) {

@@ -3,10 +3,13 @@ const randomstring = require("randomstring");
 const crypto = require('crypto');
 const uuidv1 = require('uuid/v1');
 const axios = require('axios');
+const { OAuth2Client } = require('google-auth-library');
 const {jwt, docClient, pool, redisClient, config, hashids} = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
+
+const client = new OAuth2Client(process.env.GOOGLE_ID);
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -23,6 +26,40 @@ function generateUserHash(callback) {
 	});
 }
 
+function generateUserEmailLink(user_id, name, body, mailFunction, prefix, res) {
+  redisClient.get(`${prefix}${user_id}`, function(err, token) {
+    let random
+    if(err){
+			if(res)	res.status(500).send(err)
+    }else if(token){
+      let last_num = (token.substr(-1)*1)
+      if(last_num > 3){
+        // too many requests
+        if(res)	res.sendStatus(409)
+      }else{
+        // incremement the token by 1
+        random = token.slice(0, -1) + (last_num + 1).toString()
+      }
+    }else{
+      // generate a random string
+      random = randomstring.generate(12) + '1'
+    }
+    redisClient.set(`${prefix}${user_id}`, random, async (err) => {
+        redisClient.expire(`${prefix}${user_id}`, config.one_day)
+        if (err) {
+					if(res)	res.status(500).send(err)
+        } else {
+          try{
+              await mailFunction(name, user_id, random, body)
+              if(res)	res.sendStatus(200)
+          }catch(err){
+            if(res)	res.status(500).send(err)
+          }
+        }
+    })
+  })
+}
+
 function createLogin(data, cb) {
 	generateUserHash(function(userHash){
         let secret = crypto.randomBytes(256).toString('hex');
@@ -31,14 +68,16 @@ function createLogin(data, cb) {
         	id: data.id,
             email: data.email,
             name: data.name,
-            admin: data.admin
+            admin: data.admin,
+            first_login: data.first_login,
+            verified: data.verified,
       	}
         // cache the token
         const token = jwt.sign(user, secret);
         redisClient.set([userHash, secret], function (err, response) {
         	redisClient.expire(userHash, config.expire_time);
-	        if (err) { 
-	            cb(null); 
+	        if (err) {
+	            cb(null);
 	        } else {
 	          	cb({
 	          		token: token,
@@ -48,6 +87,28 @@ function createLogin(data, cb) {
 	        }
         });
 	  });
+}
+
+async function googleAuth(token, cb) {
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_ID,
+  });
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+  cb({payload: payload, userid: userid});
+}
+// googleAuth().catch(console.error);
+
+async function fbAuth(data, cb) {
+  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${process.env.APP_TOKEN}`)
+  .then(res => {
+    cb(res);
+  })
+  .catch(err => {
+    console.log(err);
+    cb(err);
+  })
 }
 
 // Gets the Amazon Login Access Token for Skill publishing
@@ -164,7 +225,9 @@ const putSession = (req, res) => {
 	                		id: row.creator_id,
 	                		email: row.email,
 	                		name: row.name,
-	                		admin: row.admin
+	                		admin: row.admin,
+                      first_login: false,
+                      verified: row.verified,
 	                	}, (credentials) => {
 	                		res.status(200).send({
                         		token: credentials.userHash + credentials.token,
@@ -178,7 +241,7 @@ const putSession = (req, res) => {
 	        } else {
 	            res.status(400).send("Username or Password Incorrect");
 	        }
-	    });	
+	    });
 	}
 };
 
@@ -190,58 +253,204 @@ const deleteSession = (req, res) => {
     res.sendStatus(200);
 };
 
-const putUser = async (req, res) => {
+const googleLogin = async(req, res) => {
     let name = req.body.name;
     let email = req.body.email;
-	let password = req.body.password;
-	let code = req.body.code;
+    let gid = req.body.googleId;
+    let token = req.body.token;
 
-    if (!name || !email || !password) {
-        res.status(400).send("Form not filled")
- 	} else {
-        email = email.trim().toLowerCase();
-        pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
-        	if(err){
-        		res.status(500).send("Unable to Access Database");
-        	}else if(result.rows.length !== 0){
-        		res.status(409).send("This Email Already Exists");
-        	}else{
-                bcrypt.hash(password, 10, (err, hash) => {
-	                if (err) {
-	                    console.log(err);
-	                    res.status(500).send('Password Error');
-	                } else {
-	                	pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3) RETURNING creator_id', 
-	                		[name, email, hash], (err, insert_result) => {
-	                        if (err) {
-	                            console.log(err);
-	                            res.status(500).send('Something Went Wrong');
-	                        } else {
-								
-	                        	// console.log(insert_result);
-						    	createLogin({
-						    		id: insert_result.rows[0].creator_id, 
-						    		email: email, 
-						    		name: name, 
-						    		admin: 0
-						    	}, async (credentials) => {
-	                            	res.status(200).send({
-	                            		token: credentials.userHash + credentials.token,
-										user: credentials.user
-										
-									});
-									//Mail.sendOnboarding(email, name, (err) => {
-									//	console.log(err);
-									//});
-								});
-	                        }
-                		});
-	                }
-	            });
-        	}
-        });
+    if (!name || !email || !gid || !token) {
+      res.status(400).send("Unable to Authenticate Through Google");
+    } else {
+      googleAuth(token, (payload, user) => {
+        if (payload.payload.email !== email){
+          res.status(400).send("invalid token")
+        } else {
+          email = email.trim().toLowerCase();
+          pool.query('SELECT 1 FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
+            if(err){
+              res.status(500).send("Unable to Access Database");
+            }else if(result.rows.length !== 0){
+              pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {
+                if (err) {
+                  console.log(err);
+                  res.status(500).send('Something went wrong with existing email');
+                } else {
+                  let row = data.rows[0];
+                  createLogin({
+                    id: row.creator_id,
+                    email: row.email,
+                    name: row.name,
+                    admin: row.admin,
+                    first_login: false,
+                    verified: row.verified,
+                  },(credentials) => {
+										res.status(200).send({
+											token: credentials.userHash + credentials.token,
+                    	user: credentials.user
+										})
+										// Send verification URL
+										generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_')
+                  })
+                }
+              })
+            }else{
+              pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id',
+                [name, email, gid], (err, insert_result) => {
+									if (err) {
+											console.log(err);
+											res.status(500).send('Something Went Wrong');
+									} else {
+
+										// console.log(insert_result);
+										createLogin({
+											id: insert_result.rows[0].creator_id,
+											email: email,
+											name: name,
+											admin: 0,
+											first_login: true,
+											verified: insert_result.rows[0].verified,
+										}, async (credentials) => {
+											res.status(200).send({
+												token: credentials.userHash + credentials.token,
+												user: credentials.user
+											})
+											generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_')
+										})
+                  }
+              })
+            }
+          })
+        }
+      })
     }
-};
+}
+
+const fbLogin = async(req, res) => {
+    let name = req.body.name;
+    let email = req.body.email;
+    let fid = req.body.fbId;
+    let uri = req.body.uri;
+    let code = req.body.code;
+
+    if (!name || !email || !fid || !uri) {
+      res.status(400).send("Unable to Authenticate with Facebook");
+    } else {
+      fbAuth({uri: uri, code: code}, (payload, user) => {
+        if (payload.data.data.user_id !== fid){
+          res.status(400).send("invalid token")
+        } else {
+          email = email.trim().toLowerCase();
+          pool.query('SELECT 1 FROM creators WHERE email = $1 OR fid = $2 LIMIT 1', [email, fid], (err, result) => {
+            if(err){
+              res.status(500).send("Unable to Access Database");
+            }else if(result.rows.length !== 0){
+              pool.query('UPDATE creators SET fid = $2 WHERE email = $1 RETURNING *', [email, fid], (err, data) => {
+                if (err) {
+                  console.log(err);
+                  res.status(500).send('Something went wrong with existing email');
+                } else {
+                  let row = data.rows[0]
+									createLogin({
+										id: row.creator_id,
+										email: row.email,
+										name: row.name,
+										admin: row.admin,
+										first_login: false,
+										verified: row.verified,
+									},(credentials) => {
+										res.status(200).send({
+											token: credentials.userHash + credentials.token,
+											user: credentials.user
+										})
+										// Send verification URL
+										generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_')
+									})
+                }
+              })
+            }else{
+              pool.query('INSERT INTO creators (name, email, fid) VALUES ($1, $2, $3) RETURNING creator_id',
+                [name, email, fid], (err, insert_result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send('Something Went Wrong');
+                    } else {
+
+                      // console.log(insert_result);
+                      createLogin({
+                        id: insert_result.rows[0].creator_id,
+                        email: email,
+                        name: name,
+                        admin: 0,
+                        first_login: true,
+                        verified: true,
+                      }, async (credentials) => {
+												res.status(200).send({
+													token: credentials.userHash + credentials.token,
+                        	user: credentials.user
+												})
+												generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_')
+                      })
+                  }
+              })
+            }
+          })
+        }
+      })
+    }
+}
+
+const putUser = async (req, res) => {
+	let name = req.body.name
+	let email = req.body.email
+	let password = req.body.password
+
+	if (!name || !email || !password) {
+		res.status(400).send("Form not filled")
+ 	} else {
+		email = email.trim().toLowerCase();
+		pool.query('SELECT 1 FROM creators WHERE email = $1 LIMIT 1', [email], (err, result) => {
+			if(err){
+				res.status(500).send("Unable to Access Database")
+			}else if(result.rows.length !== 0){
+				res.status(409).send("This Email Already Exists")
+			}else{
+				bcrypt.hash(password, 10, (err, hash) => {
+					if (err) {
+						console.log(err)
+						res.status(500).send('Password Error')
+					} else {
+						pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3) RETURNING creator_id',
+							[name, email, hash], (err, insert_result) => {
+								if (err) {
+									console.log(err);
+									res.status(500).send('Something Went Wrong')
+								} else {
+
+										// console.log(insert_result);
+									createLogin({
+											id: insert_result.rows[0].creator_id,
+											email: email,
+											name: name,
+											admin: 0,
+											first_login: true,
+											verified: insert_result.rows[0].verified,
+										}, async (credentials) => {
+											res.status(200).send({
+											token: credentials.userHash + credentials.token,
+											user: credentials.user
+										})
+										// Send verification URL
+										generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_')
+									})
+								}
+						})
+					}
+				})
+			}
+		})
+  }
+}
 
 const getVendor = async (req, res) => {
 	AccessToken(req.user.id, token => {
@@ -286,39 +495,38 @@ const resetPasswordEmail = (req, res) => {
 		}else{
 			let user_id = hashids.encode(result.rows[0].creator_id)
 			let name = result.rows[0].name
-			redisClient.get(`r_${user_id}`, function(err, token) {
-				let random
-				if(err){
-					return res.status(500).send(err)
-				}else if(token){
-					let last_num = (token.substr(-1)*1)
-					if(last_num > 3){
-						// too many requests
-						return res.sendStatus(409)
-					}else{
-						// incremement the token by 1
-						random = token.slice(0, -1) + (last_num + 1).toString()
-					}
-				}else{
-					// generate a random string
-					random = randomstring.generate(12) + '1'
-				}
+      return generateUserEmailLink(user_id, name, req.body.email, Mail.sendResetEmail, 'r_', res);
+		}
+	})
+}
 
-				redisClient.set(`r_${user_id}`, random, async (err) => {
-		        	redisClient.expire(`r_${user_id}`, config.one_day)
-			        if (err) {
-			            res.status(500).send(err)
-			        } else {
-			        	try{
-			          		await Mail.sendResetEmail(name, user_id, random, req.body.email)
-			          		res.sendStatus(200)
-				        }catch(err){
-				        	console.log(err)
-				        	res.status(500).send(err)
-				        }
-			        }
-		        })
-			})
+const verifyUser = (req, res) => {
+  if(req.params.token.length < 21){
+		return res.sendStatus(400)
+	}
+	let token = req.params.token.substring(0, 12)
+	let user_id = req.params.token.substring(13)
+	let decode_id = hashids.decode(user_id)
+	if(!decode_id){
+		return res.sendStatus(400)
+	}else{
+		decode_id = decode_id[0]
+	}
+	redisClient.get(`v_${user_id}`, function(err, res_token) {
+		if(err){
+			return res.status(500).send(err)
+		}else if(!res_token || res_token.substring(0,12) !== token){
+			return res.sendStatus(404)
+		}else{
+      pool.query('UPDATE creators SET verified = $1 WHERE creator_id = $2', [true, decode_id], (err) => {
+        if(err){
+          console.error(err)
+          return res.status(500).send(err)
+        }else{
+          redisClient.del(`v_${user_id}`);
+          return res.sendStatus(200)
+        }
+      })
 		}
 	})
 }
@@ -388,10 +596,13 @@ module.exports = {
 	putSession: putSession,
 	deleteSession: deleteSession,
 	putUser: putUser,
+  googleLogin: googleLogin,
+  fbLogin: fbLogin,
 	getUser: getUser,
 	getVendor: getVendor,
 	deleteAmazon: deleteAmazon,
 	resetPasswordEmail: resetPasswordEmail,
 	checkReset: (req, res) => reset(req, res),
-	resetPassword: (req, res) => reset(req, res, true)
+	resetPassword: (req, res) => reset(req, res, true),
+  verifyUser: verifyUser,
 }

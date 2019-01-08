@@ -135,11 +135,14 @@ app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
 app.delete('/session', Authentication.deleteSession);
+app.put('/googleLogin', Authentication.googleLogin);
+app.put('/fbLogin', Authentication.fbLogin);
 app.get('/user', ensureLoggedIn(), Authentication.getUser)
 app.put('/user', Authentication.putUser);
 app.post('/user/reset', Authentication.resetPasswordEmail);
 app.get('/user/reset/:token', Authentication.checkReset);
 app.post('/user/reset/:token', Authentication.resetPassword);
+app.post('/user/verify/:token', Authentication.verifyUser);
 app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);

@@ -368,7 +368,14 @@ class ActionGroup extends PureComponent {
                     distance={16}
                 >
                     <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
-                        Upload to Alexa <span className="launch"/>
+                        Upload to Alexa <div className="launch">
+                            <div className="first">
+                                <i className="far fa-long-arrow-up"/>
+                            </div>
+                            <div className="second">
+                                <i className="far fa-check"/>
+                            </div>
+                        </div>
                     </MUIButton>
                 </Tooltip>
             </div>

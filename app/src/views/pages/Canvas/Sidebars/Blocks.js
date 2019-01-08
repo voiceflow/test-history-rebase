@@ -32,9 +32,9 @@ const SECTIONS = [{
 },{
     title: 'Functional',
     items: [
-        { text: 'Exit', type: 'exit', icon: <i className="fas fa-stop"/>, tip: 'End the skill on the current flow' },
+        { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-sticky-note"/>, tip: 'Add notes to your diagram'},
+        { text: 'Comment', type: 'comment', icon: <i className="fas fa-comment"/>, tip: 'Add notes to your diagram'},
     ]
 },{
     title: 'Visuals',
@@ -93,8 +93,10 @@ class Blocks extends PureComponent {
             sections.push({
                 title: 'Business',
                 items: [
-                    { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"/>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
-                    { text: 'Mail', type: 'mail', icon: <i className="far fa-envelope"/>, tip: 'Send Emails via SendGrid' }
+                    { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"></i>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
+                    { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' },
+                    // { text: 'Payment', type: 'payment', icon: <i className="fas fa-money-bill-wave-alt"></i>, tip: 'Request payment from user'  },
+                    // { text: 'Unsubscribe', type: 'cancel_payment', icon: <i className="fas fa-undo-alt"></i>, tip: 'Cancel payment or subscription'  }
                 ]
             })
         }
@@ -119,17 +121,17 @@ class Blocks extends PureComponent {
             block_content =
                 this.state.sections.map((section, i) => {
                     return <div key={i} className="section no-select">
-                        <span 
+                        <div 
                             className="section-title" 
                             onClick={() => {this.toggleBlockSection(section.title)}}>
-                                {this.state.show[section.title]? 
-                                    <i className="fas fa-caret-down"></i>: 
-                                    <i className="fas fa-caret-right"></i>
-                                }
+                                <span>
+                                <i className={"fas fa-caret-down mr-1 rotate" + (this.state.show[section.title] ? "" : " fa-rotate--90")}/>
                                 {section.title}
-                        </span>
+                                </span>
+                                <span className={"title-dot " + section.title}/>
+                        </div>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            <div className="mb-2 section-blocks">
+                            <div className="mb-3 section-blocks">
                                 {section.items.map((item, i) => {
                                     return <MenuItem item={item} key={i} data-tip={item.tip}/>
                                 })}

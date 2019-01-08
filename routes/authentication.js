@@ -26,14 +26,14 @@ function generateUserHash(callback) {
 	});
 }
 
-function generateUserEmailLink(user_id, name, body, mailFunction, prefix, res) {
+function generateUserEmailLink(user_id, name, body, mailFunction, prefix, max_retry, res) {
   redisClient.get(`${prefix}${user_id}`, function(err, token) {
     let random
     if(err){
 			if(res)	res.status(500).send(err)
     }else if(token){
       let last_num = (token.substr(-1)*1)
-      if(last_num > 3){
+      if(last_num > max_retry){
         // too many requests
         if(res)	res.sendStatus(409)
       }else{
@@ -290,7 +290,7 @@ const googleLogin = async(req, res) => {
                     	user: credentials.user
 										})
 										// Send verification URL
-										generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_')
+										// generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_', 0)
                   })
                 }
               })
@@ -315,7 +315,7 @@ const googleLogin = async(req, res) => {
 												token: credentials.userHash + credentials.token,
 												user: credentials.user
 											})
-											generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_')
+											// generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
 										})
                   }
               })
@@ -364,7 +364,7 @@ const fbLogin = async(req, res) => {
 											user: credentials.user
 										})
 										// Send verification URL
-										generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_')
+										// generateUserEmailLink(hashids.encode(row.creator_id), row.name, row.email, Mail.sendVerificationEmail, 'v_', 0)
 									})
                 }
               })
@@ -389,7 +389,7 @@ const fbLogin = async(req, res) => {
 													token: credentials.userHash + credentials.token,
                         	user: credentials.user
 												})
-												generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_')
+												// generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
                       })
                   }
               })
@@ -441,7 +441,7 @@ const putUser = async (req, res) => {
 											user: credentials.user
 										})
 										// Send verification URL
-										generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_')
+										// generateUserEmailLink(hashids.encode(insert_result.rows[0].creator_id), name, email, Mail.sendVerificationEmail, 'v_', 0)
 									})
 								}
 						})
@@ -495,7 +495,7 @@ const resetPasswordEmail = (req, res) => {
 		}else{
 			let user_id = hashids.encode(result.rows[0].creator_id)
 			let name = result.rows[0].name
-      return generateUserEmailLink(user_id, name, req.body.email, Mail.sendResetEmail, 'r_', res);
+      return generateUserEmailLink(user_id, name, req.body.email, Mail.sendResetEmail, 'r_', 3, res);
 		}
 	})
 }

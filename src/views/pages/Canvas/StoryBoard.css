@@ -264,10 +264,10 @@
     line-height: 15px;
     font-size: 10px;
     padding: 5px 6px 8px 7px;
-    margin-left: 10px;
+    margin-left: 4px;
     display: inline-block;
     margin-top: -1px;
-    background-color: #eaeff4;
+    background-color: #fff;
     transition: border-color .25s ease-in-out;
 }
 #TitleBar .white-btn.play:hover span.button-circle{
@@ -769,7 +769,7 @@ h2 {
 .Menu #sidebar .section-title .title-dot.functional{
         background-color: #ff9f8d;
 }
-.Menu #sidebar .section-title .title-dot.Business{
+.Menu #sidebar .section-title .title-dot.business{
     background-color: #2fd0c1;
 }
 
@@ -895,7 +895,7 @@ h2 {
 .toggle-group .btn.btn-outline-secondary{
     flex: 1;
     height: 30px;
-    font-weight: lighter !important;
+    font-weight: 400 !important;
     color: #8da2b5 !important;
     line-height: 15px;
     text-transform: capitalize;
@@ -906,7 +906,7 @@ h2 {
 }
 .toggle-group .btn.btn-outline-secondary:hover{
     height: 30px;
-    font-weight: lighter !important;
+    font-weight: 400 !important;
     color: #8da2b5 !important;
     line-height: 15px;
     border-radius: 5px !important;
@@ -915,7 +915,7 @@ h2 {
 .toggle-group .btn.btn-outline-secondary:active{
     background-color: #f9f9f9;
     height: 30px;
-    font-weight: lighter !important;
+    font-weight: 400 !important;
     color: #42A5FF !important;
     line-height: 15px;
     font-size: 15px !important;

@@ -246,7 +246,7 @@
   opacity: 0
 }
 
-.card:hover {
+.product-card>.card:hover {
   transform: translateY(-5px);
 }
 

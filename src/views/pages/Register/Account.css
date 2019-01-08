@@ -20,18 +20,30 @@
     overflow: hidden;
 }
 .login-logo{
-    margin-bottom: 30px;
-    width: 150px !important;
+    margin-bottom: 20px;
+    width: 55px !important;
 }
 .login-btn{
-    padding: 15px !important;
-    font-size: 18px;
     font-weight: 600;
-    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
+    width: 100%;
+    box-shadow: 0 2px 5px 0 rgba(14,30,37,.15) !important;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    height: 50px;
+    cursor: pointer;
+    -webkit-transition: -webkit-transform 0.2s ease;
+    transition: -webkit-transform 0.2s ease;
+    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, -webkit-transform 0.25s ease;
+    border-radius: 5px !important
 }
 .login-btn:hover{
 /*    box-shadow: 0 4px 6px 0 rgba(14,30,37,.12);*/
     background-color: #3d96f0 !important;
+    box-shadow: 0 2px 5px 0 rgba(14,30,37,.15) !important;
+    transform: translateY(-2px);
+
 }
 #side-form{
     width: 100%;

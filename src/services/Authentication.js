@@ -151,5 +151,29 @@ export default {
 	    .catch(err => {
 	    	cb(err);
 	    });
+	},
+	googleLogin: (user, cb) => {
+		axios.put('/googleLogin', user)
+		.then(response => {
+			cookies.set('auth', response.data.token, {path: '/'});
+			cookies.remove('last_sesion');
+			window.user_detail = response.data.user;
+			cb(null, response.data.user)
+		})
+		.catch(err => {
+			cb(err);
+		})
+	},
+	fbLogin: (user, cb) => {
+		axios.put('/fbLogin', user)
+		.then(response => {
+			cookies.set('auth', response.data.token, {path: '/'});
+			cookies.remove('last_sesion');
+			window.user_detail = response.data.user;
+			cb(null, response.data.user)
+		})
+		.catch(err => {
+			cb(err);
+		})
 	}
 }

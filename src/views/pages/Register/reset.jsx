@@ -27,7 +27,6 @@ class Reset extends Component {
 
   resetEmail(e) {
     e.preventDefault()
-    console.log('ueet')
     this.setState({stage: 1})
     axios.post('/user/reset', {
       email: this.state.email
@@ -81,7 +80,7 @@ class Reset extends Component {
   }
 
   render() {
-    return (    
+    return (
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
           <div id="side-form">
             <div id="reset-form">

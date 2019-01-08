@@ -161,9 +161,9 @@ class Account extends Component {
                       <span className="text-muted">Plan</span>
                       {options.map((option, i) => {
                         return <Button key={i}
-                            disabled={this.state.selected_plan === option.plan} 
-                            color={this.state.selected_plan === option.plan ? undefined : "clear"} 
-                            block 
+                            disabled={this.state.selected_plan === option.plan}
+                            color={this.state.selected_plan === option.plan ? undefined : "clear"}
+                            block
                             className="mt-2">
                           {option.name}
                           </Button>
@@ -182,7 +182,7 @@ class Account extends Component {
                   </Row>
                 </ModalBody>
               </Modal>
-              <div className="container my-5 pt-5">
+              <div className="container my-5">
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">
                   <div className="p-4 space-between">

@@ -1,0 +1,44 @@
+import React from 'react';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+
+class ProductDescriptionForm extends React.Component {
+
+  render() {
+    return(
+      <div>
+      <AvForm onValidSubmit={() => this.props.continue(1)}>
+      <AvGroup>
+        <label>Product Name</label>
+        <AvInput className='form-bg'
+          name="name"
+          placeholder="e.g. Science"
+          value={this.props.name}
+          onChange={this.props.handleChange('name')}
+          required
+        />
+        <AvFeedback>Name is required</AvFeedback>
+        <label className="label-margin-top">Short Description</label>
+        <AvInput className='form-bg'
+          name="summary"
+          placeholder="e.g. This will unlock 150 science questions in Trivia Skill."
+          value={this.props.summary}
+          onChange={this.props.handleChange('summary')}
+          required
+        />
+        <AvFeedback>Description is required</AvFeedback>
+        </AvGroup>
+        <div className="product-stage-button">
+          <button className='purple-btn'
+            variant="contained"
+            color="publish"
+          >
+            Continue
+          </button>
+          </div>
+      </AvForm>
+      </div>
+    )
+  }
+}
+
+export default ProductDescriptionForm;

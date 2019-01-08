@@ -117,6 +117,7 @@ class Canvas extends Component {
         this.copyNode = this.copyNode.bind(this)
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
+        this.loadProducts = this.loadProducts.bind(this)
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
@@ -185,6 +186,8 @@ class Canvas extends Component {
             open: open,
             diagram_name: diagram_name,
             diagrams: [],
+            products: [],
+            error: null,
             loading_diagram: !this.props.new,
             saving: false,
             saved: true,
@@ -196,6 +199,7 @@ class Canvas extends Component {
             new_skill_step: this.props.new ? 5 : 0,
             help: null,
             helpOpen: false,
+            currentProduct: null,
             user_modules: null,
             user_templates: [],
             email_templates: [],
@@ -272,6 +276,7 @@ class Canvas extends Component {
                 }else{
                     // SKILL IS LOADED HERE
                     if(!this.preview){
+                        // this.loadProducts()
                         this.loadUserModules()
                         this.onLoadTemplates()
                     }
@@ -561,6 +566,19 @@ class Canvas extends Component {
 
             return false
         }
+    }
+
+    loadProducts(){
+        axios.get('/skill/'+this.state.skill.skill_id+'/products')
+        .then(res => {
+            this.setState({
+                products: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err.response)
+            this.props.onError('Error retrieving products')
+        })
     }
 
     loadUserModules(){
@@ -1205,6 +1223,20 @@ class Canvas extends Component {
                     success_id: '',
                     failure_id: ''
                 }
+            } else if (type === 'payment') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.extras = {
+                    product_id: null
+                }
+            } else if (type === 'cancel_payment') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.extras = {
+                    product_id: null
+                }
             } else if (type === 'capture') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1373,7 +1405,8 @@ class Canvas extends Component {
                     <TitleBar
                         onTest={this.onTest}
                         preview={this.props.preview}
-                        skill={this.state.skill}
+                        diagram={this.props.diagram_id}
+                        diagrams={this.state.diagrams}
                     />
                     {this.state.loading_diagram && <div id="loading-diagram">
                         <div className="text-center">
@@ -1411,6 +1444,7 @@ class Canvas extends Component {
                         displays={this.state.display_templates}
                     />
                     <div
+                        key={this.props.diagram_id}
                         id="diagram"
                         className={this.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}

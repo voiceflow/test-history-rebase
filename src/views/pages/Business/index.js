@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import './Business.css';
+import './Business.css'
 import Template from './Template'
 import Templates from './Templates'
 import Home from './Home'
@@ -33,10 +33,10 @@ class Business extends Component {
             switch(this.props.page){
                 case 'emails':
                     page = <Templates {...this.props}/>
-                    break;
+                    break
                 case 'template':
                     page = <Template {...this.props}/>
-                    break;
+                    break
                 default:
                     page = <Home user={this.props.user}/>
             }

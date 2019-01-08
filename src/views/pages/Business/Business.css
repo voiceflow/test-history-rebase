@@ -2,7 +2,10 @@
 	height: 100%;
 	display: flex;
 }
-
+#settings{
+	height: 70%;
+	display: block;
+}
 #upgrade{
 	padding: 40px;
 	padding-right: 100px;
@@ -23,10 +26,6 @@
 	overflow-x: scroll;
 	flex: 1;
 }
-.fal{
-    font-weight: 900;
-    margin-right: 5px;
-}
 #business .business-page-inner {
 	width: 100%;
 	position: relative;
@@ -42,13 +41,28 @@
 }
 #business .business-page-inner>.subheader>div{
 	flex: 1;
-	height: 41px;    
+	height: 41px;
 }
 .content {
-	min-width: 600px;
-	padding: 20px 20px 50px 20px;
+	min-width: 800px;
+    padding: 20px 20px 50px 20px;
+    border-radius: 10px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
-
+.settings-content{
+	min-width: 500px;
+    padding: 24px 32px;
+    border-radius: 10px;
+    height: auto;
+    margin-left: auto;
+	margin-right: auto;
+	background-color: #fff;
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+	border: 1px solid rgba(141, 162, 181, .28);
+	max-width: 40%;
+}
 #business  .sidebar>.sidebar-option {
 	padding: 10px 20px;
 	display: block;
@@ -85,6 +99,11 @@ transform: scale(1.03);
 }
 
 .document_editor{
+	width: 100% !important;
+	height: 500px !important;
+}
+
+.datasource_editor{
 	width: 100% !important;
 	height: 420px !important;
 }
@@ -138,6 +157,12 @@ transform: scale(1.03);
 	background-image: url('/business.svg')
 }*/
 
+.nav-bar-top{
+	align-items: center;
+	justify-content: center;
+	display: block;
+	text-align: center;
+}
 .empty-badge{
 	border-radius: 5px;
 	font-weight: bold;

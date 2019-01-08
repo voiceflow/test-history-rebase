@@ -28,6 +28,7 @@ class Products extends Component {
         this.onMouseEnter = this.onMouseEnter.bind(this)
         this.onMouseLeave = this.onMouseLeave.bind(this)
         this.onProductClick = this.onProductClick.bind(this)
+        this.copyProduct = this.copyProduct.bind(this)
     }
 
     componentWillMount() {
@@ -87,6 +88,27 @@ class Products extends Component {
         });
     }
 
+    copyProduct(product_id) {
+        axios.post(`/skill/${this.props.skill_id}/${product_id}/${window.user_detail.id}/copy`)
+        .then(res => {
+            console.log(res);
+            let products = this.state.products
+            let filter_products = this.state.filter_products
+            products.push(res.data)
+            filter_products.push(res.data)
+            this.setState({
+                products: products,
+                filter_products: filter_products,
+                error: null,
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                error: 'Error copying product'
+            })
+        })
+    }
 
     onProductClick(product_id){
       this.props.history.push(`/products/${this.props.skill_id}/template/${product_id}`);
@@ -153,10 +175,13 @@ class Products extends Component {
                                         icon = smallIcon
                                     }
 
-                                    let name = product.name.match(/\b(\w)/g)
-                                    if(name) { name = name.join('') }
-                                    else { name = product.name }
-                                    name = name.substring(0,3)
+                                    let name = ""
+                                    if(!icon){
+                                        name = product.name.match(/\b(\w)/g)
+                                        if(name) { name = name.join('') }
+                                        else { name = product.name }
+                                        name = name.substring(0,3)
+                                    }
 
                                     return(
                                         <VoiceCards

@@ -1015,6 +1015,33 @@ exports.withdrawSkill = (req, res) => {
     });
 }
 
+exports.copyProduct = async (req, res) => {
+    let id = hashids.decode(req.params.id)[0]
+    let pid = req.params.pid
+  
+     let copy_query = `
+      INSERT INTO products(
+        skill_id,
+        name,
+        data
+      )
+      SELECT
+        $1,
+        coalesce(name, '') || ' Copy' AS name,
+        data
+        FROM products where id = $2 RETURNING *
+    `
+    pool.query(copy_query, [id, pid], (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(500)
+      } else {
+        // let new_product_id = data.rows[0].id
+        data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
+        res.send(data.rows[0])
+      }
+    })  
+}
 
 exports.copySkill = async (req, res) => {
     let id = hashids.decode(req.params.id)[0]

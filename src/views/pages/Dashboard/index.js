@@ -193,44 +193,66 @@ class DashBoard extends Component {
                 </div>
              </div>
         }else{
-            skills = <Masonry elementType='div' className="skills-container">
-                {this.state.filter_skills.map((skill, i) => {
-                    let icon
-                    let smallIcon = skill.small_icon
-                    let largeIcon = skill.large_icon
-                    if (!_.isNull(largeIcon)) {
-                        icon = largeIcon
-                    } else if (!_.isNull(smallIcon)) {
-                        icon = smallIcon
-                    }
+            skills = <React.Fragment>
+                    <div className="search-header">
+                    <div className="searchBar w-25">
+                        <Input className='form-control-white mb-2 mt-3 search-input form-control' placeholder="Search" onChange={(e) => this.onFilter("name", e.target)}/>
+                    </div>
+                    {/* <div className="Button-select">
+                      <ButtonGroup className="toggle-group mb-2 toggle-group-2">
+                          {FILTER_OPTIONS.map(tab => {
+                              return <Button
+                                  key={tab}
+                                  onClick={() => {
+                                    this.switchTab(tab)
+                                  }}
+                                  outline={this.state.filter_tab !== tab}
+                                  disabled={this.state.filter_tab === tab}>
+                                  {tab}
+                              </Button>
+                          })}
+                      </ButtonGroup>
+                    </div> */}
+                  </div>
+                  <Masonry elementType='div' className="skills-container">
+                    {this.state.filter_skills.map((skill, i) => {
+                        let icon
+                        let smallIcon = skill.small_icon
+                        let largeIcon = skill.large_icon
+                        if (!_.isNull(largeIcon)) {
+                            icon = largeIcon
+                        } else if (!_.isNull(smallIcon)) {
+                            icon = smallIcon
+                        }
 
-                    let name = skill.name.match(/\b(\w)/g)
-                    if(name) { name = name.join('') }
-                    else { name = skill.name }
-                    name = name.substring(0,3)
-                    
-                    return(
-                        <VoiceCards
-                            key={i}
-                            id={skill.skill_id}
-                            icon={icon}
-                            name={skill.name}
-                            placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
-                            dropdownOpen={this.state.dropdownOpen}
-                            onDelete={this.deleteSkill}
-                            onCopy={this.copySkill}
-                            deleteLabel="Delete Skill"
-                            copyLabel="Copy Skill"
-                            onClick={this.openSkill}
-                            extension={skill.diagram}
-                            buttonLabel="Edit Skill"
-                        />
-                    )
-              })}
-              <EmptyCard
-                onClick={() => this.props.history.push(`/canvas/new`)}
-              />
-            </Masonry>
+                        let name = skill.name.match(/\b(\w)/g)
+                        if(name) { name = name.join('') }
+                        else { name = skill.name }
+                        name = name.substring(0,3)
+                        
+                        return(
+                            <VoiceCards
+                                key={i}
+                                id={skill.skill_id}
+                                icon={icon}
+                                name={skill.name}
+                                placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
+                                dropdownOpen={this.state.dropdownOpen}
+                                onDelete={this.deleteSkill}
+                                onCopy={this.copySkill}
+                                deleteLabel="Delete Skill"
+                                copyLabel="Copy Skill"
+                                onClick={this.openSkill}
+                                extension={skill.diagram}
+                                buttonLabel="Edit Skill"
+                            />
+                        )
+                    })}
+                    <EmptyCard
+                        onClick={() => this.props.history.push(`/canvas/new`)}
+                    />
+                </Masonry>
+            </React.Fragment>
         }
 
         return (
@@ -256,26 +278,6 @@ class DashBoard extends Component {
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 <div className="my-5 pt-5 container">
-                  <div className="search-header">
-                    <div className="searchBar w-25">
-                        <Input className='form-control-white mb-2 mt-3 search-input form-control' placeholder="Search" onChange={(e) => this.onFilter("name", e.target)}/>
-                    </div>
-                    {/* <div className="Button-select">
-                      <ButtonGroup className="toggle-group mb-2 toggle-group-2">
-                          {FILTER_OPTIONS.map(tab => {
-                              return <Button
-                                  key={tab}
-                                  onClick={() => {
-                                    this.switchTab(tab)
-                                  }}
-                                  outline={this.state.filter_tab !== tab}
-                                  disabled={this.state.filter_tab === tab}>
-                                  {tab}
-                              </Button>
-                          })}
-                      </ButtonGroup>
-                    </div> */}
-                  </div>
                     {skills}
                 </div>
             </div>

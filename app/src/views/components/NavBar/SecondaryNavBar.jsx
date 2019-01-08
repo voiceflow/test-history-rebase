@@ -35,7 +35,7 @@ class SecondaryNavBar extends Component {
                 {!!(this.props.skill && this.props.skill.amzn_id) &&
                     <React.Fragment>
                         {this.props.page === 'logs' ? 
-                            <div className="nav-item active">
+                            <div className="nav-item-2 active">
                                 <i className="far fa-window-alt"/>
                             </div> :
                             <Link to={`/creator_logs/${this.props.skill.skill_id}`} className="nav-item">

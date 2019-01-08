@@ -258,7 +258,7 @@ class DashBoard extends Component {
                 <div className="my-5 pt-5 container">
                   <div className="search-header">
                     <div className="searchBar w-25">
-                        <Input className='form-control-white mb-3 search-input form-control' placeholder="Search" onChange={(e) => this.onFilter("name", e.target)}/>
+                        <Input className='form-control-white mb-2 mt-3 search-input form-control' placeholder="Search" onChange={(e) => this.onFilter("name", e.target)}/>
                     </div>
                     {/* <div className="Button-select">
                       <ButtonGroup className="toggle-group mb-2 toggle-group-2">

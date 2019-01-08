@@ -14,12 +14,12 @@ const updateLink = (link, skill_id) => {
 
 const tabs = [
     {
-        display: <React.Fragment><i className="fal fa-home mr-2"/> Home</React.Fragment>,
+        display: <React.Fragment><i className="far fa-home mr-2"/> Home</React.Fragment>,
         match: ['home'],
         link: '/business/:skill_id'
     },
     {
-        display: <React.Fragment><i className="fal fa-envelope mr-2"/> Email</React.Fragment>,
+        display: <React.Fragment><i className="far fa-envelope mr-2"/> Email</React.Fragment>,
         match: ['emails', 'template'],
         link: '/business/:skill_id/email/templates'
     }

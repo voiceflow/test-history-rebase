@@ -16,6 +16,7 @@ package-lock.json
 yarn-lock.json
 coverage
 yarn.lock
+restart.sh
 
 # dotenv environment variables files
 .env*

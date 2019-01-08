@@ -223,7 +223,7 @@ class Account extends Component {
                     <FacebookLogin
                       appId={fbId}
                       cssClass="social-button class-fb"
-                      icons="fa-faceboo"
+                      icon="fa-facebook"
                       fields="name,email"
                       callback={this.fbLogin}
                     />

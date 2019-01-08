@@ -231,7 +231,7 @@ class Logs extends Component {
                     </Table>
                     :
                     <div className="alert alert-primary" role="alert">
-                        Your skill hasn't had any errors yet <span role="img" aria-label="thumbs up">👍</span>
+                        Your skill hasn't encountered any errors yet
                     </div>
                 }
             </div>

@@ -76,7 +76,7 @@ class Speak extends Component {
                 {properties.dialogs.map((d, i) => {
                     if(d.audio !== undefined){
                         return <div key={d.index} className="multiline mb-3">
-                            <div className="multi-title-block">
+                            <div className="multi-title-block mb-2">
                                 <div className="multi-title" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                     <span className="text-muted">
                                         {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
@@ -84,7 +84,7 @@ class Speak extends Component {
                                     </span>
                                 </div>
                                 <div className="d-flex align-items-center flex-hard">
-                                    <b>{d.audio ? d.audio.split('/').pop() : 'Audio'}</b>
+                                    {d.audio ? d.audio.split('/').pop() : 'Audio'}
                                 </div>
                                 <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>
                             </div>
@@ -103,17 +103,17 @@ class Speak extends Component {
                         </div>
                     }else{
                         return <div key={d.index} className="multiline mb-3">
-                            <div className="multi-title-block mb-2">
+                            <div className="multi-title-block mb-3">
                                 <div className="multi-title">
                                     <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                         {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
                                         {properties.randomize ? <i className="far fa-random"/> : (i + 1)}
                                     </span>
                                 </div>
-                                <div className="super-center flex-hard">
-                                    <b>Speak As</b>
+                                <div className="super-center flex-hard mr-5">
+                                    Speaking As
                                     <Select
-                                        className="speak-box"
+                                        className="speak-box ml-3"
                                         classNamePrefix="select-box"
                                         value={{label: d.voice, value: d.voice}}
                                         onChange={(selected) => {d.voice = selected.value; this.onUpdate()}}

@@ -138,18 +138,25 @@ class App extends Component {
                   return <NavBar {...props}/>
             }} /> }
               <Switch>
+                {/* User routes */}
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
+                {/* Canvas Routes */}
                 <PrivateRoute exact path="/canvas/new" component={Skill} page="canvas" new/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/settings/:skill_id" component={Skill} page="settings"/>
+                {/* Products Routes */}
+                <PrivateRoute path="/products/:skill_id/template/:id" component={Skill} page="products" secondaryPage="edit" />
+                <PrivateRoute path="/products/:skill_id" component={Skill} page="products" secondaryPage="home"/>
+                {/* Business routes */}
                 <PrivateRoute path="/business/:skill_id/email/template/:id" component={Skill} page='business' secondaryPage="template"/>
                 <PrivateRoute path="/business/:skill_id/email/templates" component={Skill} page='business' secondaryPage="emails"/>
                 <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
+                {/* Admin routes */}
                 <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>

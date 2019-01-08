@@ -73,7 +73,7 @@ class Multimodal extends Component {
                         </Link>
                         <hr/>
                         {this.state.displays.length === 0 ? 
-                            <h5 className="text-muted">No Multimodal Displays <i className="fal fa-frown"/></h5> :
+                            <h5 className="text-muted">No Multimodal Displays</h5> :
                             <React.Fragment>
                                 {this.state.displays.map(display => 
                                     <Card key={display.id} className="display-card">

@@ -615,7 +615,7 @@ class TestModal extends React.Component {
                             :
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
                               <InputGroup>
-                                <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                                <Input className='form-bg form-control-left'name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
                                 <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
                               </InputGroup>
                             </Form>

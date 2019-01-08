@@ -894,7 +894,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="col-9">
                                     <Multiple
-                                        className="mt-0"
+                                        className="mt-0 input-group-text"
                                         list={this.state.invocations}
                                         max={3}
                                         prepend="Alexa,"

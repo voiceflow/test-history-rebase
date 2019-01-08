@@ -688,7 +688,7 @@ label {
 .btn-secondary.dropdown-toggle{
     background-color: #fff !important;
     color: #8da2b5;
-    border-radius: 6px !important;
+    border-radius: 6px;
     cursor: pointer !important;
     box-shadow: 0 0 1px 1px rgba(43, 57, 80, 0.04) !important;
     border: 1px solid rgba(141, 162, 181, 0.4) !important;
@@ -696,7 +696,6 @@ label {
 .btn-secondary.dropdown-toggle:hover{
     background-color: #fff !important;
     color: #8da2b5 !important;
-    border-radius: 6px !important;
     cursor: pointer !important;
     box-shadow: 0 0 1px 1px rgba(43, 57, 80, 0.04) !important;
     border: 1px solid rgba(141, 162, 181, 0.4) !important;
@@ -766,7 +765,14 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     border-color: #b8daff;
     background-color: #EBF4FE;
     cursor: pointer;
-    min-height: 45px;
+    height: 36px;
+}
+.input-group-text-bg{
+    color: #42a5ff!important;
+    border-color: #b8daff;
+    background-color: #EBF4FE;
+    cursor: pointer;
+    height: 45px;
 }
 .box-shadow{
   box-shadow: 0 2px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);

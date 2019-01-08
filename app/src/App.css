@@ -605,7 +605,7 @@ border-radius: 0px 5px 5px 0px !important;
 .publish-btn .launch>div{
     position: absolute;
     transition: transform 0.1s;
-    margin-top: 7px;
+    margin-top: 6px;
     width: 100%;
 }
 .publish-btn .launch .first{
@@ -620,8 +620,11 @@ border-radius: 0px 5px 5px 0px !important;
 .publish-btn:hover .launch .second{
     transform: translateY(0)
 }
-.publish-btn .launch>div i{
-    font-size: 18px;
+.publish-btn .launch .first i{
+    font-size: 15px;
+}
+.publish-btn .launch .second i{
+    font-size: 13px;
 }
 .publish-btn:hover{
   box-shadow:0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08) !important;
@@ -730,7 +733,6 @@ input, textarea, .text-to-voice, .choice-block,{
 }
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
-    font-weight: lighter !important;
     color: #8da2b5 !important;
 }
 .TitleBar .publish-btn:hover{
@@ -1224,6 +1226,7 @@ body.modal-open {
     line-height: 59px;
     color: #2b3950;
     left: 10px;
+    background-color: #fff;
 }
 .skill-name-top-left i{
     color: #BCC3D1;

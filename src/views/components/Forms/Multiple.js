@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
+import { InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap';
 
 class Multiple extends Component {
 
@@ -45,7 +45,11 @@ class Multiple extends Component {
                     <span className="px-2 font-weight-bold">{i + 1}.</span>
                     <InputGroup>
                         {this.props.prepend ? 
-                            <InputGroupAddon className="input-prepend" addonType="prepend">{this.props.prepend}</InputGroupAddon> :
+                            <InputGroupAddon className="input-prepend" addonType="prepend">
+                                <InputGroupText className="input-group-text-bg">
+                                    {this.props.prepend}
+                                </InputGroupText>
+                            </InputGroupAddon> :
                             null
                         }
                         <Input className="form-control form-bg right outline"

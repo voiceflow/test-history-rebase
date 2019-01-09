@@ -33,8 +33,10 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 			</div>
 		}
 
+		const fade = this.props.node.fade ? " faded-node" : ""
+
 		return (
-			<div className={"srd-default-node " + this.props.node.extras.type} onMouseDown={() => window.getSelection ? window.getSelection().empty() : document.selection.empty()}>
+			<div className={"srd-default-node " + this.props.node.extras.type + fade} onMouseDown={() => window.getSelection ? window.getSelection().empty() : document.selection.empty()}>
 				<div className={this.bem("__title") + ' no-select'}>
 					<div className={this.bem("__name")}>
             			{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}

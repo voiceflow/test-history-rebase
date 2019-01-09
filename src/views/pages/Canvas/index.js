@@ -126,6 +126,8 @@ class Canvas extends Component {
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
         this.hotKeys=this.hotKeys.bind(this)
+        this.toggleGoogle = this.toggleGoogle.bind(this)
+
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -803,6 +805,28 @@ class Canvas extends Component {
         }
     }
 
+    toggleGoogle() {
+        const engine = this.state.engine
+        const model = engine.getDiagramModel()
+        const nodes = model.getNodes()
+        let google = this.state.google
+        google = !google
+
+        for (let key in nodes) {
+            const node = nodes[key]
+            if (!['choice', 'speak'].includes(node.extras.type)) {
+                nodes[key].fade = google
+            }
+        }
+        
+        engine.repaintCanvas()
+
+        this.setState({
+            google: google,
+            engine: engine
+        })
+    }
+
     onLoadDiagrams(){
         axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
         .then(res => {
@@ -1353,6 +1377,8 @@ class Canvas extends Component {
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         updateSkill={(skill) => {this.setState({skill: skill}); this.props.updateSkill(skill)}}
+                        toggleGoogle={this.toggleGoogle}
+                        isGoogle={this.state.google}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>

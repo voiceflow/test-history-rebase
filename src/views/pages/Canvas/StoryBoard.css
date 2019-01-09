@@ -282,9 +282,13 @@
     display: inline-block;
     margin-right: 30px;
     border-right: 1px solid #E2E9EC;
-     border-left: 1px solid #E2E9EC;
-
+    border-left: 1px solid #E2E9EC;
 }
+
+.title-group .toggle-google {
+    border-left: 1px solid #E2E9EC;
+}
+
 .back-btn{
     background: transparent !important;
     border: 1px solid none;
@@ -2507,4 +2511,8 @@ button.close:hover{
     /*color: #2325E2;*/
     color: #fff;
     border-radius: 10px;
+}
+
+.faded-node {
+    opacity: 0.25;
 }

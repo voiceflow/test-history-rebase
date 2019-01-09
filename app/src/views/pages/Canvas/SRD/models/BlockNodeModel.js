@@ -2,8 +2,9 @@ import { DefaultNodeModel, Toolkit, PortModel } from 'storm-react-diagrams'
 import { BlockPortModel } from './BlockPortModel';
 
 export class BlockNodeModel extends DefaultNodeModel {
-	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)") {
+	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)", fade: boolean = false) {
 		super(name, color);
+		this.fade = fade
 	}
 
 	addInPort(label: string): BlockPortModel {
@@ -15,7 +16,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 	}
 	
 	removePort(port: PortModel) {
-		//clear the parent node reference
+		// clear the parent node reference
 		if (this.ports[port.name]) {
 			this.ports[port.name].setParent(null);
 			let links = this.ports[port.name].getLinks();

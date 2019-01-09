@@ -308,6 +308,23 @@ class ActionGroup extends PureComponent {
             </Modal>
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
+                <div className="toggle-google">
+                    <Tooltip
+                        distance={16}
+                        title={this.props.isGoogle ? "Switch to Amazon" : "Switch to Google"}
+                        position="bottom"
+                    >
+                        <MUIButton variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
+                            {this.props.saving ?
+                                <span className="loader"/> :
+                                <React.Fragment>
+                                    {this.props.isGoogle && <i className="fab fa-amazon"/>}
+                                    {!this.props.isGoogle && <i className="fab fa-google"/>}
+                                </React.Fragment>
+                            }
+                        </MUIButton>
+                    </Tooltip>
+                </div>
                 <div className="title-group-sub">
                     <Tooltip
                         title="Share"

@@ -1,12 +1,36 @@
 /*@import url('https://fonts.googleapis.com/css?family=Lato');*/
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 body {
     /*font-family: 'Lato', sans-serif;*/
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background: #f0f5f8 !important;
-    color: #2b3950;
+    color: #132144;
     width: 100%;
+}
+.form-control{
+    display: block;
+    width: 100%;
+    padding: 8px 16px 10px;
+    font: normal 15px/1.4666666667 Open Sans,Arial,sans-serif;
+    color: #132144;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid #d4d9e6;
+    margin-bottom: 0;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0 3px 0 rgba(17,49,96,.06);
+    box-shadow: 0 0 3px 0 rgba(17,49,96,.06);
+    -webkit-transition: background-color .12s linear,color .12s linear,border-color .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
+    transition: background-color .12s linear,color .12s linear,border-color .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
+    -o-transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear;
+    transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear;
+    transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
+}
+.form-control:focus{
+    border: 1px solid #42a5ff !important;
+    box-shadow: rgba(50, 50, 93, 0.05) 0px 4px 6px, rgba(0, 0, 0, 0.05) 0px 1px 3px !important;
 }
 .subheader-page-container{
     height: 100%;
@@ -202,7 +226,7 @@ audio {
     font-size: 16px;
 }
 .btn-clear:hover{
-    color: #42A5FF;
+    color: #132144;
     background-color: #f7f9fb;
 }
 .btn-clear:active{
@@ -335,8 +359,13 @@ audio {
     color: #8da2b570;
     transition: all ease 0.25s;
     opacity: 1 !important;
+    background-image: url("/close.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 11px;
 }
 .close:hover{
+    background-image: url("/close-hover.svg");
     color: #8da2b5 !important;
 }
 .btn {
@@ -402,7 +431,6 @@ audio {
     padding: 0 !important;
 }
 .outline{
-    border: 1px solid red !important;
 }
 .outline-btn{
     font-weight: normal !important;
@@ -460,21 +488,6 @@ audio {
 }
 .form-bg{
     min-height: 45px;
-}
-.form-control{
-        border-color: #E2E9EC !important;
-        box-shadow: 0 0 1px 1px rgba(43, 57, 80, 0.03) !important;
-        border: 1px solid rgba(141, 162, 181, 0.4) !important;
-  /* -webkit-transition: box-shadow 150ms ease !important;
-  transition: box-shadow 150ms ease !important; */
-  border-radius: 6px !important;
-  font-size: 15px !important;
-  transition: all 0.50;
-  font-weight: 400 !important;
-}
-.form-control:focus{
-    border: 1px solid #42a5ff !important;
-    box-shadow: rgba(50, 50, 93, 0.05) 0px 4px 6px, rgba(0, 0, 0, 0.05) 0px 1px 3px !important;
 }
 .form-control-right{
     border-color: #E2E9EC !important;
@@ -592,20 +605,19 @@ border-radius: 0px 5px 5px 0px !important;
     width: 32px;
     height: 32px;
     /* margin-left: 5px; */
-    background-color: #fff;
-    color: #42a5ff;
+    background-color: #ffffff40;
+    color: #fff;
     overflow: hidden;
     text-align: center;
     border-radius: 100%;
     display: inline-block;
-    border-right: 1px solid #fff3;
     background-position: center;
     transition: all 0.2s;
 }
 .publish-btn .launch>div{
     position: absolute;
     transition: transform 0.1s;
-    margin-top: 6px;
+    margin-top: 5px;
     width: 100%;
 }
 .publish-btn .launch .first{
@@ -680,6 +692,10 @@ label {
     /* color: #8da2b5 !important; */
     font-weight: 400 !important;
     font-size: 14px !important;
+    display: block;
+    font-weight: 600;
+    color: #62778c;
+    margin-bottom: 11px;
     /*margin: 0px !important;*/
 }
 .show>.btn-secondary.dropdown-toggle {
@@ -1212,35 +1228,82 @@ body.modal-open {
 .btn-vertical{
     flex: 1;
     text-align: center;
-    padding: 12px 0;
+    padding: 15px 0;
+    vertical-align: middle;
 }
 .btn-vertical i{
     display: block;
     font-size: 24px;
-    padding: 10px 0;
+    padding: 0px 10px;
 }
 
 .seperated-links a {
     display: inline-block;
     margin: 0 10px;
 }
+.nav-btn-border{
+    border: 1px solid #EAEFF4;
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50%;
+    color: #42a5ff;
+    cursor: pointer;
+    transition: all 0.25s ease;  
+}
+.nav-btn-border:hover{
+    border-color: #DFE3ED;
+    background-image: url('/share-dark.svg') !important;
+}
+.nav-btn-border:active{
+    background-color: #EEF4F6;
+}
+.nav-btn{
+    border: 2px solid #fff;
+    width: 45px !important;
+    height: 45px !important;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px #11316013;
+    color: #42a5ff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.nav-btn:hover{
+    transform: translateY(-1px);
+    box-shadow: 0px 3px 5px #11316016;
+    border-style: double;
+    background-color: #5D9DF525;
 
+}
+.icon-share{
+    background-image: url("/share-gray.svg"); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    /* background-size: 15px; */
+}
+.icon-save{
+    background-image: url("/save-dark.svg"), linear-gradient(#5D9DF515,#5D9DF530);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    margin-top: -2px;
+}
 .skill-name-top-left {
-
-    font-size: 20px;
+    font-size: 18px;
     width: fit-content;
     width: 500px;
-    line-height: 59px;
-    color: #2b3950;
-    left: 10px;
+    color: #132144;
+    left: 9px;
     background-color: #fff;
+    padding-left: 7px;
+    padding-top: 20px;
 }
 .skill-name-top-left i{
     color: #BCC3D1;
     height: 20px;
     width: 20px;
     margin-left: 5px;
-    margin-right: 13px;
+    margin-right: 26px;
     transition: all 200ms;
     margin-top: 24px;
 }

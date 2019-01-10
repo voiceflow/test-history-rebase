@@ -599,7 +599,7 @@ class Skill extends Component {
                     onClosed={this.closePublish}>
                     <ModalBody>
                         <div className="d-flex justify-content-between" ref={this.privacyTop}>
-                            <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>×</button>
+                            <b>{stage_title[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}></button>
                         </div>
                         <div className="modal-info">
                             {content}

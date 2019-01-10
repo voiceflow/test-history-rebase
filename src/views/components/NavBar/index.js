@@ -139,8 +139,8 @@ class NavBar extends Component {
               </Nav>
               <Nav className="ml-auto" navbar>
                 <UncontrolledDropdown nav inNavbar className="account-dropdown">
-                  <DropdownToggle className="account" nav tag="div">
-                    <i className="fas fa-user-circle"/>
+                  <DropdownToggle className="account mr-1" nav tag="div">
+                    <img src={'/user.svg'} width="23"/>
                   </DropdownToggle>
                   <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>

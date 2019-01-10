@@ -368,10 +368,10 @@ class ActionGroup extends PureComponent {
                     <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
                         Upload to Alexa <div className="launch">
                             <div className="first">
-                                <i className="far fa-long-arrow-up"/>
+                            <img src={'/up-arrow.svg'} width="15" height="15"/>
                             </div>
                             <div className="second">
-                                <i className="far fa-check"/>
+                            <img src={'/check-upload.svg'} width="15" height="15"/>
                             </div>
                         </div>
                     </MUIButton>

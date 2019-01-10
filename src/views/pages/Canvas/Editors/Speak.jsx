@@ -139,11 +139,11 @@ class Speak extends Component {
                     <React.Fragment>
                         <div className="d-flex my-3">
                             <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
-                                <i className="fas fa-comment-alt"/>
+                                <img src={'/comment.svg'} width='30px'/>
                                 Add Speech
                             </button>
-                            <button className="btn btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
-                                <i className="fas fa-volume-up"/> 
+                            <button className="btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
+                            <img src={'/volume.svg'} width='30px'/>
                                 Add Audio
                             </button>
                         </div>

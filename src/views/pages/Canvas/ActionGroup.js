@@ -314,9 +314,7 @@ class ActionGroup extends PureComponent {
                         position="bottom"
                         distance={16}
                     >
-                        <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
-                            <i className="fas fa-share"/>
-                        </MUIButton>
+                        <button variant="contained" className="nav-btn-border icon-share" onClick={this.toggleShare} id="share"></button>
                     </Tooltip>
                     <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
                         <PopoverHeader>Share Link</PopoverHeader>
@@ -351,17 +349,17 @@ class ActionGroup extends PureComponent {
                         title="Save"
                         position="bottom"
                     >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
+                        
+                    </Tooltip>
+                </div>
+                <button variant="contained" className="nav-btn icon-save mr-4 ml-4" onClick={this.props.onSave}>
                             {this.props.saving ?
                                 <span className="loader"/> :
                                 <React.Fragment>
                                     {!this.props.saved && <span className="unsaved"/>}
-                                    <i className="fas fa-save"/>
                                 </React.Fragment>
                             }
-                        </MUIButton>
-                    </Tooltip>
-                </div>
+                        </button>
                 <Tooltip
                     html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
                     position="bottom"

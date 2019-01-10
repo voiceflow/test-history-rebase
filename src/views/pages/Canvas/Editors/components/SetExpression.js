@@ -10,7 +10,7 @@ class SetExpression extends Component {
 
         return (
             <div className="solid-border set-block">
-                <div className="close" onClick={this.props.onRemove}>×</div>
+                <div className="close" onClick={this.props.onRemove}></div>
                 <div className="variable-group">
                     <span>Set</span>
                     <Select

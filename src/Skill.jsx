@@ -195,7 +195,7 @@ class Skill extends Component {
 
             <div className="skill-name-top-left fixed-top">
                 <Link to="/" className="mx-2">
-                  <i className="fas fa-th" />
+                <img src={"/back.svg"} className='mr-3'/>
                 </Link>
                 {this.state.skill ? this.state.skill.name : 'New Skill'}
             </div>

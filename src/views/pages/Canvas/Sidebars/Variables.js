@@ -99,7 +99,7 @@ class Variables extends PureComponent {
                 {/*<span className="text-muted">Global variables can be accessed anywhere in the project</span>*/}
                 <form onSubmit={this.addGlobalVariable}>
                     <FormGroup className="mb-0">
-                        <Label>Add New Global Variable</Label>
+                        <Label className='section-title mt-4'>Add New Global Variable</Label>
                         <InputGroup>
                             <Input className="form-control-border left" readOnly={this.props.locked} name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
                             <InputGroupAddon addonType="append"><Button type="submit" disabled={this.props.locked} className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
@@ -108,7 +108,7 @@ class Variables extends PureComponent {
                 </form>
                 <h1 className="down-arrow"><i className="far fa-long-arrow-alt-down"></i></h1>
                 <div>
-                    <Label>Global Variables</Label>
+                    <Label className='section-title'>Global Variables</Label>
                     <div className="variables">
                         {this.props.global_variables.map((variable, i) => {
                             if(variable in defaultVariables){
@@ -127,7 +127,7 @@ class Variables extends PureComponent {
                 {/*<span className="text-muted">Local Variables are accessed only by the current flow</span>*/}
                 <form onSubmit={this.addVariable}>
                     <FormGroup className="mb-0">
-                        <Label>Add New Local Variable</Label>
+                        <Label className='section-title mt-4'>Add New Local Variable</Label>
                         <InputGroup>
                             <Input className="form-control-border left"  readOnly={this.props.locked} name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
                             <InputGroupAddon addonType="append"><Button type="submit" className="new_var" disabled={this.props.locked}><i className="fas fa-plus"/></Button></InputGroupAddon>
@@ -136,7 +136,7 @@ class Variables extends PureComponent {
                 </form>
                 <h1 className="down-arrow"><i className="far fa-long-arrow-alt-down"></i></h1>
                 <div>
-                    <Label>Local Variables</Label>
+                    <Label className='section-title'>Local Variables</Label>
                     <div className="variables">
                         {this.props.variables.length > 0 ? this.props.variables.map(function(variable, i){
                             return <div key={variable} className="variable_tag">

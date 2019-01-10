@@ -80,7 +80,7 @@
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4,end) 2000ms infinite;      
+  -webkit-animation: ellipsis steps(4,end) 2000ms infinite;
   animation: ellipsis steps(4,end) 2000ms infinite;
   content: "\2026"; /* ascii code for the ellipsis character */
   width: 0px;
@@ -88,13 +88,13 @@
 
 @keyframes ellipsis {
   to {
-    width: 1.25em;    
+    width: 1.25em;
   }
 }
 
 @-webkit-keyframes ellipsis {
   to {
-    width: 1.25em;    
+    width: 1.25em;
   }
 }
 .stage_modal .modal-info>div{
@@ -118,6 +118,30 @@
   margin-top: 10px !important;
 }
 
+.empty-container {
+  text-align: center;
+}
+
+.empty {
+  color: #2b3950;
+  font-size: 24px;
+  line-height:30px;
+  margin-top: 20px;
+}
+
+.return-button{
+  float: left;
+  height: 100%;
+  vertical-align: center !important;
+}
+
+.empty-desc {
+  margin-bottom: 15px;
+  color: #8da2b5;
+  font-size: 16px;
+  width: 350px;
+}
+
 .locale-button {
   margin: 5px 5px 5px 0px !important;
   width: 130px;
@@ -128,6 +152,298 @@
   background-color: aquamarine;
 }
 
+.product-card {
+  position: absolute;
+  width: 25%;
+  padding: 13px;
+}
+.product-card>.card{
+  overflow: hidden;
+  background-image: linear-gradient(180deg, #fff, #fff);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
+  cursor: pointer;
+}
+
+.product-header {
+  display: flex;
+  float: right;
+  height: 100px;
+  -webkit-box-pack: justify;
+  margin-top: -20px;
+  align-items: center;
+}
+
+.card .product-image {
+  height: 200px;
+  position: relative;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  /* border-bottom: 1px solid #E2E9EC; */
+  background-color: #FFF;
+}
+
+.product-list {
+  margin-right: 30px;
+  color: #8da2b5;
+  font-size: 15px;
+  line-height: 15px;
+  margin-bottom: 0px;
+}
+
+.product-list-count {
+  color: #2b3950;
+}
+.card .overlay .elispie {
+  position: absolute;
+  top: 0px;
+  right: 3px;
+  padding-left:20px;
+  margin-top: 7px;
+  margin-right: 6px;
+  transform: translateY(-30px);
+  background-repeat: no-repeat;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  transition: transform 0.2s ease;
+  color: #fff;
+}
+.card .overlay .elispie .elispie-button {
+  padding: 0px 12px;
+  border-radius: 5px;
+}
+.card .overlay .elispie.open .elispie-button {
+  background-color:#42A5FFAA !important;
+}
+.card .overlay .elispie .dropdown-menu {
+  top: -4px !important;
+}
+.card .overlay {
+  /* visibility: hidden; */
+  background-color:  #42A5FFAA;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  transition: all 0.2s ease;
+  opacity: 0
+}
+
+.card-body .overlay {
+  background-color:  #42A5FFAA;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  transition: all 0.2s ease;
+  opacity: 0
+}
+
+.product-card>.card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card>.card:hover .overlay {
+  visibility: visible;
+  opacity: 1
+}
+
+.card .overlay .edit-button {
+    padding: 10px 20px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: hsla(0, 0%, 100%, .31);
+    border-radius: 30px;
+    background-color: #ffffff40;
+    color: #fff;
+    font-size: 13px;
+    transform: translateY(-30px);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+}
+
+.card .overlay .edit-button:hover {
+    background-color: #fff;
+    color: #2b3950 !important;
+    cursor: pointer;
+}
+
+.product-card>.card:hover .overlay .edit-button {
+  margin-bottom: 0px;
+    transform: translateY(0);
+}
+
+.product-card>.card:hover .overlay .elispie {
+  margin-bottom: 0px;
+  transform: translateY(0);
+  z-index: 10;
+}
+
+.product-editor {
+  display: inline-block;
+  align-items: center;
+  align: center;
+  justify-content: center;
+  position: absolute;
+  margin: auto;
+  width: 580px;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 3%;
+}
+
+.stepper {
+  background: #eff5f8 !important;
+}
+
+.product-form {
+  display: flex;
+  padding-left: 10px;
+  width: 580px;
+  overflow: visible !important;
+  padding: 20px 40px;
+  overflow: hidden;
+  align-items: flex-start;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(141, 162, 181, .28);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+  left: 0;
+}
+
+.product-form .product-form-inner {
+  margin: 0 0 15px;
+  width: 95%;
+}
+
+.product-stage-button {
+  position: absolute;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+  left: 0px;
+  right: 0px;
+  display: flex;
+  height: 80px;
+  border-width: 1px;
+  border-radius: 0px 0px 8px 8px;
+  justify-content: center;
+  align-items: center;
+  width: 580px;
+  border-top: 1px solid #fff;
+  background: #eff5f8;
+  color: #eff5f8;
+  border: 1px solid rgba(141, 162, 181, .28);
+  margin-top: 15px;
+}
+
+.product-body {
+  display: flex;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 25px;
+  -webkit-box-pack: veritcal;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+}
+
+.product-title {
+  margin-bottom: 2px;
+  color: #2b3950;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+}
+
+.product-price {
+  color: #42a5ff;
+  font-weight: 700;
+}
+
+.product-desc {
+  margin-bottom: 0px;
+  color: #8da2b5;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: 0.2px;
+}
+
+.products-container {
+    /* display: flex; */
+    /* width: 100%; */
+    /* margin-top: 0px; */
+    /* margin-bottom: 16px; */
+    margin: 0 -10px;
+}
+
 .locale-button-group {
   flex-wrap: wrap;
+}
+
+.empty-card {
+  height: 298px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 25%;
+  padding: 13px;
+}
+.empty-card>div{
+  border: 1px dashed #c6d0da;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 10px;
+}
+.empty-card:hover>div:hover {
+  background-color: rgba(0, 0, 0, .03);
+}
+/* Line class */
+.MuiStepConnector-line{
+  border-color: #cdd7e0 !important;
+}
+/* Inactive Step */
+.MuiStepIcon-root{
+  color: #cdd7e0 !important;
+}
+/* Completed Step */
+.MuiStepIcon-completed{
+  color: #42a5ff !important;
+  border-radius: 50% !important;
+}
+/* Current Step */
+.MuiStepIcon-active{
+  color: #42a5ff !important;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .10);
+  border-radius: 50% !important;
+  margin: 0px !important;
+  transform: scale(1.35) !important;
+  transition: all 0.25s !important;
+  border: 1px solid #fff !important;
+}
+
+.MuiStepLabel-label{
+  color: #b6c2cc !important;
+}
+
+.MuiStepLabel-label-40.MuiStepLabel-active-41{
+  color: #2b3950 !important;
+}
+
+.label-margin-top {
+  margin-top: 1em !important;
 }

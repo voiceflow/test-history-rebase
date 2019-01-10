@@ -110,7 +110,7 @@ class AudioDrop extends Component {
             >
                 <div>
                     <div className="drop-child">
-                        <b>Drag and Drop files here</b><br/>
+                        Drag and Drop files here<br/>
                         <small>OR</small><br/>
                         <div className="space-between">
                             <div className="upload-btn btn btn-primary-small">
@@ -125,7 +125,7 @@ class AudioDrop extends Component {
                         </div>
                     </div>
                     <div className="rejected-file text-danger">
-                        <b>File not Accepted</b> <i className="far fa-frown ml-1"></i>
+                        <b>File not Accepted</b>
                     </div>
                 </div>
             </Dropzone>

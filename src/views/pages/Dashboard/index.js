@@ -173,7 +173,7 @@ class DashBoard extends Component {
                             <h1><span className="loader"/></h1>
                         </div>
                      </div>
-        }else if(this.state.filter_skills.length === 0){
+        }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
             skills = <div className="super-center w-100 text-muted mt-5">
                 <div className="horizontal-center mt-5">
                     <div className="">

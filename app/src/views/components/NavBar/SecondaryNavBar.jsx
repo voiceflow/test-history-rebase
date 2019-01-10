@@ -36,10 +36,10 @@ class SecondaryNavBar extends Component {
                     <React.Fragment>
                         {this.props.page === 'logs' ? 
                             <div className="nav-item-2 active">
-                                <i className="far fa-window-alt"/>
+                                <img src={'/logs.svg'}/>
                             </div> :
                             <Link to={`/creator_logs/${this.props.skill.skill_id}`} className="nav-item">
-                                <i className="far fa-window-alt"/>
+                                <img src={'/logs.svg'}/>
                             </Link>
                         }
                     </React.Fragment>

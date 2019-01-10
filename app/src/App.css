@@ -226,7 +226,7 @@ audio {
     font-size: 16px;
 }
 .btn-clear:hover{
-    color: #42A5FF;
+    color: #132144;
     background-color: #f7f9fb;
 }
 .btn-clear:active{
@@ -359,8 +359,13 @@ audio {
     color: #8da2b570;
     transition: all ease 0.25s;
     opacity: 1 !important;
+    background-image: url("/close.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 11px;
 }
 .close:hover{
+    background-image: url("/close-hover.svg");
     color: #8da2b5 !important;
 }
 .btn {
@@ -600,20 +605,19 @@ border-radius: 0px 5px 5px 0px !important;
     width: 32px;
     height: 32px;
     /* margin-left: 5px; */
-    background-color: #fff;
-    color: #42a5ff;
+    background-color: #ffffff40;
+    color: #fff;
     overflow: hidden;
     text-align: center;
     border-radius: 100%;
     display: inline-block;
-    border-right: 1px solid #fff3;
     background-position: center;
     transition: all 0.2s;
 }
 .publish-btn .launch>div{
     position: absolute;
     transition: transform 0.1s;
-    margin-top: 6px;
+    margin-top: 5px;
     width: 100%;
 }
 .publish-btn .launch .first{
@@ -1224,12 +1228,13 @@ body.modal-open {
 .btn-vertical{
     flex: 1;
     text-align: center;
-    padding: 12px 0;
+    padding: 15px 0;
+    vertical-align: middle;
 }
 .btn-vertical i{
     display: block;
     font-size: 24px;
-    padding: 10px 0;
+    padding: 0px 10px;
 }
 
 .seperated-links a {
@@ -1246,22 +1251,27 @@ body.modal-open {
     transition: all 0.25s ease;  
 }
 .nav-btn-border:hover{
-    background-color: #EEF4F6;
+    border-color: #DFE3ED;
     background-image: url('/share-dark.svg') !important;
+}
+.nav-btn-border:active{
+    background-color: #EEF4F6;
 }
 .nav-btn{
     border: 2px solid #fff;
     width: 45px !important;
     height: 45px !important;
     border-radius: 50%;
-    box-shadow: 0 1px 2px #11316020;
+    box-shadow: 0 1px 2px #11316013;
     color: #42a5ff;
     cursor: pointer;
     transition: all 0.25s ease;
 }
 .nav-btn:hover{
     transform: translateY(-1px);
-    box-shadow: 0px 5px 8px #11316010;
+    box-shadow: 0px 3px 5px #11316016;
+    border-style: double;
+    background-color: #5D9DF525;
 
 }
 .icon-share{
@@ -1282,7 +1292,7 @@ body.modal-open {
     font-size: 18px;
     width: fit-content;
     width: 500px;
-    color: #2b3950;
+    color: #132144;
     left: 9px;
     background-color: #fff;
     padding-left: 7px;

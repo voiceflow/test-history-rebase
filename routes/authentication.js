@@ -9,7 +9,7 @@ const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
 
-const client = new OAuth2Client(process.env.GOOGLE_ID);
+const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -92,7 +92,7 @@ function createLogin(data, cb) {
 async function googleAuth(token, cb) {
   const ticket = await client.verifyIdToken({
     idToken: token,
-    audience: process.env.GOOGLE_ID,
+    audience: getEnvVariable('GOOGLE_ID'),
   });
   const payload = ticket.getPayload();
   const userid = payload['sub'];
@@ -101,7 +101,7 @@ async function googleAuth(token, cb) {
 // googleAuth().catch(console.error);
 
 async function fbAuth(data, cb) {
-  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${process.env.APP_TOKEN}`)
+  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${getEnvVariable('APP_TOKEN')}`)
   .then(res => {
     cb(res);
   })

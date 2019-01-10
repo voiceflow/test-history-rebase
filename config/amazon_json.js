@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
+const { getEnvVariable } = require('./util')
 
 const _formatName = (name) => {
 	let formatted_name = name.replace(' ', '_')
@@ -236,7 +237,7 @@ const manifest = (r, encoded_id, name) => {
              "apis": {
                  "custom": {
                      "endpoint": {
-                         "uri": `${process.env.SKILL_ENDPOINT ? process.env.SKILL_ENDPOINT : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
+                         "uri": `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
                          "sslCertificateType": "Wildcard"
                      },
                      "interfaces": [{

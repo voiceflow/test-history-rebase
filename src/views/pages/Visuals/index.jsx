@@ -10,7 +10,7 @@ const updateLink = (link, skill_id) => {
 
 const tabs = [
     {
-        display: <React.Fragment><i className="fal fa-image"/> Multimodal</React.Fragment>,
+        display: <React.Fragment><i className="far fa-image"/> Multimodal</React.Fragment>,
         match: ['multimodal', 'displays'],
         link: '/visuals/:skill_id'
     }

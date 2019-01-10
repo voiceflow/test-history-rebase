@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap'
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
+
 import AuthenticationService from './../../../services/Authentication'
 import './Account.css'
 import {Link} from 'react-router-dom'
 import queryString from 'query-string'
+import {googleClient, fbId} from './social-id.js';
 // import axios from 'axios'
 
 class Account extends Component {
@@ -19,10 +23,14 @@ class Account extends Component {
       r_name: "",
       r_email: query.email ? query.email : "",
       r_password: "",
+      auth_error: null,
       login_error: null,
       signup_error: null,
       login_timeout: null,
-      signup_timeout: null
+      signup_timeout: null,
+      auth_timeout: null,
+      googleButton: true,
+      unverified: false,
     }
 
     this.openLogin = this.openLogin.bind(this);
@@ -33,10 +41,10 @@ class Account extends Component {
   }
 
   handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
+      this.setState({
+        [event.target.name]: event.target.value
+      });
+    }
 
   openLogin(e) {
     e.preventDefault();
@@ -68,12 +76,12 @@ class Account extends Component {
         this.setState({
           signup_error: error.response.data
         });
-        if(this.state.signup_timeout){
-          clearTimeout(this.state.signup_timeout)
+        if(this.signup_timeout){
+          clearTimeout(this.signup_timeout)
         }
-        this.setState({signup_timeout: setTimeout(function() {
+        this.signup_timeout = setTimeout(function() {
           this.setState({signup_error: false})
-        }.bind(this), 5000)})
+        }.bind(this), 5000)
       }else{
         this.props.history.push('/onboarding')
       }
@@ -91,12 +99,12 @@ class Account extends Component {
         this.setState({
           login_error: error.response.data
         });
-        if(this.state.login_timeout){
-          clearTimeout(this.state.login_timeout);
+        if(this.login_timeout){
+          clearTimeout(this.login_timeout);
         }
-        this.setState({login_timeout: setTimeout(function() {
+        this.login_timeout = setTimeout(function() {
           this.setState({login_error: false});
-        }.bind(this), 5000)})
+        }.bind(this), 5000)
       }else{
         this.props.history.push('/')
         // axios.get('/onboard')
@@ -115,6 +123,67 @@ class Account extends Component {
     return false;
   }
 
+  googleLogin = (userProfile) => {
+    AuthenticationService.googleLogin({
+      name: userProfile.profileObj.name,
+      email: userProfile.profileObj.email,
+      googleId: userProfile.profileObj.googleId,
+      token: userProfile.tokenId,
+    }, (error, res) => {
+      if(error){
+        this.setState({
+          auth_error: error.response.data
+        });
+        if(this.auth_timeout){
+          clearTimeout(this.auth_timeout);
+        }
+        this.auth_timeout = setTimeout(function() {
+          this.setState({auth_error: false});
+        }.bind(this), 5000)
+      }else{
+        if (!res.first_login) {
+          this.props.history.push('/')
+        } else {
+          this.props.history.push('/onboarding');
+        }
+      }
+    });
+    return false;
+  }
+
+  fbLogin = (fbUser) => {
+    AuthenticationService.fbLogin({
+      name: fbUser.name,
+      email: fbUser.email,
+      fbId: fbUser.id,
+      code: fbUser.accessToken,
+      uri: window.location.href,
+    }, (error, res) => {
+      if(error){
+        this.setState({
+          auth_error: error.response.data
+        });
+        if(this.auth_timeout){
+          clearTimeout(this.auth_timeout);
+        }
+        this.auth_timeout = setTimeout(function() {
+          this.setState({auth_error: false});
+        }.bind(this), 5000)
+      }else{
+        if (res){
+          if (!res.first_login) {
+            this.props.history.push('/')
+          } else {
+            this.props.history.push('/onboarding');
+          }
+        } else {
+            this.setState({unverified: true})
+        }
+      }
+    });
+    return false;
+  }
+
   render() {
     let login_error;
     if(this.state.login_error){
@@ -124,6 +193,17 @@ class Account extends Component {
     if(this.state.signup_error){
       signup_error = (<Alert color="danger"> {this.state.signup_error} </Alert>);
     }
+    let auth_error;
+    if(this.state.auth_error){
+      auth_error = (<Alert color="danger"> {this.state.auth_error} </Alert>)
+    }
+
+    if(this.state.unverified){
+      login_error = (
+        <Alert color="success">
+          Please Verify Your Email to use Facebook Login
+        </Alert>);
+    }
     return (
       <div className="d-flex flex-row align-items-center justify-content-center" id="main">
         <div className={"login-card " + (this.props.login ? null : "open-register")}>
@@ -131,19 +211,39 @@ class Account extends Component {
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <img className="login-logo" src="/logo.svg" alt="logo"/>
                 <div className="p-4 p-md-5">
+                  {auth_error}
+                  <div className="social-login">
+                    <GoogleLogin
+                      clientId={googleClient}
+                      className="social-button class-ggl mb-2"
+                      buttonText="Login with Google"
+                      onSuccess={this.googleLogin}
+                      onFailure={this.googleLoginError}
+                    />
+                    <FacebookLogin
+                      appId={fbId}
+                      cssClass="social-button class-fb"
+                      icon="fa-facebook"
+                      fields="name,email"
+                      callback={this.fbLogin}
+                    />
+                    <div className="break">
+                      <span className="or">
+                        OR
+                      </span>
+                    </div>
+                  </div>
                   {login_error}
                   <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="jeff@amazon.com" required minLength="6" value={this.state.email}/>
+                    <Input className="form-bg" type="email" name="email" onChange={this.handleChange} placeholder="Email" required minLength="6" value={this.state.email}/>
                   </FormGroup>
                   <FormGroup>
-                    <Label for="password">Password</Label>
                     <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
                   </FormGroup>
-                  <Button block className="login-btn" type="submit">Sign In</Button>
-                  <div className="text-center mt-3"><Link to='/reset'>Forgot your password?</Link></div>
+                  <Button block className="login-btn" type="submit">Login</Button>
+                  <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}}to='/reset'>Forgot your password?</Link></div>
                   <hr/>
-                  <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Register</a></div>
+                  <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Sign Up</a></div>
                 </div>
               </Form>
               <Form id="signup-form" onSubmit={this.signupSubmit}>

@@ -106,6 +106,7 @@ const SLOT_TYPES_US = [
     "AMAZON.WrittenCreativeWorkType",
  ]
 
+
 const SLOT_TYPES_AU = [
   "CUSTOM",
   "AMAZON.Actor",

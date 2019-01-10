@@ -5,7 +5,7 @@
 
 .input-select {
     flex: 1 1;
-    margin-left: 5px;
+    
 }
 
 .map-box {
@@ -45,7 +45,7 @@
 .interaction-block {
     width: 100%;
     border-radius: 5px;
-    padding: 5px 15px;
+    padding: 7px 7px;
     margin-bottom: 10px;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12) !important;
     border: 1px solid #fff !important;
@@ -97,6 +97,7 @@
     /* box-shadow: 0 2px 4px 0 rgba(14,30,37,.12); */
     font-weight: 600;
     margin-top: 3px;
+    margin-left: 2px;
 }
 
 .intent-title span {
@@ -143,6 +144,8 @@
 
 .mentions-input__input, .slot-input {
     border-color: #E2E9EC !important;
+    box-shadow: 0 0 1px 1px rgba(43, 57, 80, 0.03) !important;
+    border: 1px solid rgba(141, 162, 181, 0.4) !important;
 }
 .mentions-input__input:focus, .slot-input:focus{
     border-color: #42A5FF !important;

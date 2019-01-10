@@ -122,12 +122,6 @@ class Display extends Component {
 
             Object.entries(this.state.user_variables).forEach(([old_str, new_str]) => {
                 let replacement = new_str
-                try {
-                    JSON.parse(replacement)
-                } catch (e) {
-                    // String type
-                    replacement = JSON.stringify(replacement)
-                }
                 const re = new RegExp(`{${old_str}}`, 'g');
                 datasource = datasource.replace(re, replacement)
             })

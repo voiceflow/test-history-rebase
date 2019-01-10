@@ -1,0 +1,49 @@
+import React, {Component} from 'react'
+import Image from './../../components/Uploads/Image'
+import {Button} from 'reactstrap'
+
+
+class IconsForm extends Component {
+    render() {
+      return(
+        <div>
+          <div className="col-9 d-flex">
+              <div>
+                  <label className="mt-0"><b>Small icon</b> *</label>
+                  <Image
+                      className='icon-image small-icon'
+                      path='/small_icon'
+                      image={this.props.small_icon}
+                      update={this.props.handleChange('small_icon')}
+                    />
+              </div>
+              <div className="pl-3">
+                  <label className="mt-0"><b>Large icon</b> *</label>
+                  <Image
+                      className='icon-image large-icon'
+                      path='/large_icon'
+                      image={this.props.large_icon}
+                      update={this.props.handleChange('large_icon')}
+                    />
+              </div>
+          </div>
+          <div className="product-stage-button">
+            <Button className='previous-btn'
+              variant="contained"
+              onClick={() => this.props.updateStage(2)}
+            >
+              Previous
+            </Button>
+            <Button className='purple-btn ml-2'
+              variant="contained"
+              onClick={() => this.props.updateStage(4)}
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      )
+    }
+}
+
+export default IconsForm;

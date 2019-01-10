@@ -27,10 +27,10 @@ import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
 // SECRET
 var STRIPE_KEY
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
-}else{
+if (process.env.NODE_ENV === 'production') {
   STRIPE_KEY = 'pk_live_9QXjJjWc0sjk8VSwbQT3viub'
+}else{
+  STRIPE_KEY = 'pk_test_G3o7CC0pvrW2cIbIU1bLkMSR'
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -110,10 +110,12 @@ class App extends Component {
     if (window.Stripe) {
       this.setState({stripe: window.Stripe(STRIPE_KEY)});
     } else {
-      document.querySelector('#stripe-js').addEventListener('load', () => {
-        // Create Stripe instance once Stripe.js loads
-        this.setState({stripe: window.Stripe(STRIPE_KEY)});
-      });
+      if (document.querySelector('#stripe-js')) {
+        document.querySelector('#stripe-js').addEventListener('load', () => {
+          // Create Stripe instance once Stripe.js loads
+          this.setState({stripe: window.Stripe(STRIPE_KEY)});
+        });
+      }
     }
   }
 
@@ -135,18 +137,25 @@ class App extends Component {
                   return <NavBar {...props}/>
             }} /> }
               <Switch>
+                {/* User routes */}
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
+                {/* Canvas Routes */}
                 <PrivateRoute exact path="/canvas/new" component={Skill} page="canvas" new/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/settings/:skill_id" component={Skill} page="settings"/>
+                {/* Products Routes */}
+                <PrivateRoute path="/products/:skill_id/template/:id" component={Skill} page="products" secondaryPage="edit" />
+                <PrivateRoute path="/products/:skill_id" component={Skill} page="products" secondaryPage="home"/>
+                {/* Business routes */}
                 <PrivateRoute path="/business/:skill_id/email/template/:id" component={Skill} page='business' secondaryPage="template"/>
                 <PrivateRoute path="/business/:skill_id/email/templates" component={Skill} page='business' secondaryPage="emails"/>
                 <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
+                {/* Admin routes */}
                 <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>

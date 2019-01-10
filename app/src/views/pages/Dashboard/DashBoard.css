@@ -292,7 +292,7 @@
     background-color: #fff !important;
 }
 
-.skill-card .no-image {
+.product-card>.card .no-image {
   background-repeat: repeat !important;
   background-size: auto !important;
   background-color: #fff;
@@ -300,17 +300,17 @@
   justify-content: center;
   color: #42A5FF;
   align-items: center;
-
+  height: 100%;
+  width: 100%;
 }
 .subheader-title b{
     color: #2b3950;
 }
-.skill-card .no-image>h1 {
-  font-size: 48px;
-  font-weight: 900;
-}
-.skill-card .no-image:hover{
-    background-color: #fff !important;
+.product-card>.card .no-image>h1 {
+  font-size: 64px;
+  margin-bottom: 0px;
+  font-weight: lighter;
+  /* text-transform: uppercase; */
 }
 .skill-card .card-image {
   height: 170px;

@@ -2,12 +2,12 @@ const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram');
 const { copySkill } = require('./skill')
 
-var ADMIN_MARKETPLACE_ACC
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 19
 }else{
 	ADMIN_MARKETPLACE_ACC = 2125
 }
+const { getEnvVariable } = require('../util')
 
 const module_limit = 10;
 const hashIds = (rows) => {
@@ -169,14 +169,34 @@ const giveCertification = (req, res) => {
 							res.sendStatus(500);
 						}
 					} else {
-						// Alter request object to conform to copy skill, able to do this since we don't use req anymore in this fcn
-						req.params.id = hashids.encode(skill_id)
-						req.params.target_creator = ADMIN_MARKETPLACE_ACC
-						req.user.id = data.rows[0].creator_id
-						copySkill(req, res, (row) => {
-							let new_skill_id = hashids.decode(row.skill_id)[0]
-							updateVersionTable(market_id, module_id, new_skill_id)
-						})
+						// Copy current diagram's data to new entry on market
+						let params = {
+					        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+					        Key: {'id': diagram_id}
+						};
+					    docClient.get(params, (err, data) => {
+					        if (err) {
+					            console.log(err);
+					            res.sendStatus(err.statusCode);
+					        } else if (data.Item) {
+								data.Item.id = market_id;
+								let params = {
+									TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
+									Item: data.Item
+								};
+								docClient.put(params, (err, data) => {
+									if(err){
+										console.log(err);
+										res.sendStatus(500);
+									} else {
+										updateVersionTable(market_id, module_id);
+									}
+								});
+					        } else {
+					            res.sendStatus(404);
+					        }
+					    });
+						
 					}
 					
 				}else{
@@ -402,7 +422,7 @@ const getCertModule = (req, res) => {
 				}else{
 					if(data.rows.length > 0){
 						let params = {
-					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+					        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
 					        Key: {'id': data.rows[0].diagram}
 					    };
 					    docClient.get(params, (err, data) => {
@@ -487,7 +507,7 @@ const retrieveTemplate = (req, res) => {
 					console.log(data.rows[0])
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
-						TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
+						TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
 						Key: {'id': template_diagram_id}
 					}
 					docClient.get(params, (err, data) => {

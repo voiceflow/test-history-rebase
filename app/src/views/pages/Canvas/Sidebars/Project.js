@@ -56,11 +56,11 @@ class Project extends PureComponent {
                 }
             }
             flow_tab = <React.Fragment>
-                <label>Project Flows</label>
+                <label className='section-title mt-4'>Project Flows</label>
                 {this.props.tree}
                 {unused.length === 0 ? null : <React.Fragment>
                     <hr className='mb-2 mt-4'/>
-                    <label>Other Flows</label>
+                    <label className='section-title mt-4'>Other Flows</label>
                     {unused.map((diagram) => {
                         return diagram;
                     })}
@@ -68,7 +68,7 @@ class Project extends PureComponent {
             </React.Fragment>
         }else if(this.state.tab === 'flows'){
             flow_tab = <React.Fragment>
-                <label>All Flows</label>
+                <label className='section-title mt-4'>All Flows</label>
                 <Input placeholder="Search Flows" name="filter" value={this.state.filter} onChange={this.handleChange} className="form-control-border mb-3 search-input"/>
                 {this.props.diagrams.map(diagram => {
                     if(this.state.filter && !diagram.name.toLowerCase().includes(this.state.filter.toLowerCase())) return null

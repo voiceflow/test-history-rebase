@@ -9,9 +9,9 @@ import {Alert} from 'reactstrap'
 import axios from 'axios'
 const tabs = {
     top: [
-        {tab: "blocks", icon: <i className="fas fa-plus-square"/>, tip: 'Blocks'},
+        {tab: "blocks", icon: <i className="fas fa-plus-square"></i>, tip: 'Blocks'},
         {tab: "project", icon: <i className="fas fa-folder"/>, tip: 'Project'},
-        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'}
+        {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'},
     ],
     bottom: [
         {link: "https://university.getvoiceflow.com/", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
@@ -229,8 +229,6 @@ class Menu extends PureComponent {
 
     renderSideBar(){
         switch(this.state.tab){
-            case 'blocks':
-                return <Blocks user_modules={this.props.user_modules} history={this.props.history}/>
             case 'variables':
                 return <Variables
                     variables={this.props.variables}
@@ -239,7 +237,7 @@ class Menu extends PureComponent {
                     onGlobalVariable={this.props.onGlobalVariable}
                     onVariable={this.props.onVariable}
                 />
-            default:
+            case 'project':
                 return <Project
                     diagrams={this.props.diagrams}
                     tree={this.state.tree}
@@ -251,6 +249,8 @@ class Menu extends PureComponent {
                     deleteFlow={this.deleteFlow}
                     history={this.props.history}
                 />
+            default:
+                return <Blocks user_modules={this.props.user_modules}/>
         }
     }
 
@@ -295,7 +295,7 @@ class Menu extends PureComponent {
                             <div>
                                 <div className='block-title no-select' onClick={() => this.setState({open: false})}>
                                     <h5 className="mb-0">{this.state.tab}</h5>
-                                    <div className="close pr-1 pl-3 py-3">×</div>
+                                    <div className="close pl-3 py-3">×</div>
                                 </div>
                             </div>
                             <div className="sidebar-content">

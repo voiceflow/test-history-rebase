@@ -8,16 +8,19 @@ const config = require('./config/config');
 const sharp = require('sharp');
 const Hashids = require('hashids');
 const Intercom = require('intercom-client');
+const { getEnvVariable } = require('./util')
 
-const hashids = new Hashids(config.id_hash, 10);
+const hashids = new Hashids(getEnvVariable('CONFIG_ID_HASH'), 10);
 const MB = 1024*1024
 
 const AWS = require('aws-sdk'); 
 AWS.config = new AWS.Config({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+    accessKeyId: getEnvVariable('AWS_ACCESS_KEY_ID'),
+    secretAccessKey: getEnvVariable('AWS_SECRET_ACCESS_KEY'),
+    region: getEnvVariable('AWS_REGION'),
+    endpoint: getEnvVariable('AWS_ENDPOINT')
 });
+
 
 const docClient = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
@@ -30,17 +33,17 @@ types.setTypeParser(1114, function(stringValue) {
 
 
 const pool = new pg.Pool({
-    user: process.env.PSQL_USER,
-    host: process.env.PSQL_HOST,
-    database: process.env.PSQL_DB,
-    password: process.env.PSQL_PW,
+    user: getEnvVariable('PSQL_USER'),
+    host: getEnvVariable('PSQL_HOST'),
+    database: getEnvVariable('PSQL_DB'),
+    password: getEnvVariable('PSQL_PW'),
     port: 5432
 });
 
 // Create a Redis Client for sessions
-const redisClient = (process.env.PROD || process.env.STAGING ) ? redis.createClient({
-    host: config.redisClusterHost,
-    port: config.redisClusterPort
+const redisClient = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ? redis.createClient({
+    host: getEnvVariable('REDIS_CLUSTER_HOST'),
+    port: getEnvVariable('REDIS_CLUSTER_PORT')
 }) : redis.createClient();
 
 const s3 = new AWS.S3();
@@ -106,13 +109,13 @@ const validateEmail = (email) => {
 }
 
 // SECRET
-const intercom_client = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
+const intercom_client = new Intercom.Client({ token: getEnvVariable('INTERCOM_TOKEN') })
 
 const logging_pool = new pg.Pool({
-    user: process.env.LOGGING_USER,
-    host: process.env.LOGGING_HOST,
-    database: process.env.LOGGING_DB,
-    password: process.env.LOGGING_PW,
+    user: getEnvVariable('LOGGING_USER'),
+    host: getEnvVariable('LOGGING_HOST'),
+    database: getEnvVariable('LOGGING_DB'),
+    password: getEnvVariable('LOGGING_PW'),
     port: 5432
 })
 

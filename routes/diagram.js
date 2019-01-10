@@ -4,6 +4,7 @@ const isVarName = require('is-var-name');
 const {docClient, pool, hashids, validateEmail} = require('./../services');
 const validUrl = require('valid-url');
 const _ = require('lodash');
+const { getEnvVariable } = require('../util')
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -22,7 +23,9 @@ const expressionfy = (expression, depth=0) => {
         if(!expression.value){
             return 0
         }else if(isNaN(value)){
-            return "'" + value.replace(/'/g, '\"') + "'";
+            value = value.replace(/'/g, '\\\'')
+            value = value.replace(/"/g, '\\\"')
+            return "'" + value + "'";
         }else{
             return (value * 1)
         }
@@ -78,7 +81,7 @@ const expressionfy = (expression, depth=0) => {
 
 const getVariables = (req, res) => {
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Key: {'id': req.params.id},
         ProjectionExpression: 'variables'
     }
@@ -101,11 +104,11 @@ const getDiagrams = (req, res) => {
         return;
     }
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
     }
 
-    if(!req.user.admin){
+    if(req.user.admin < 100){
         params.FilterExpression = 'creator = :creator'
         params.ExpressionAttributeValues = {':creator': req.user.id}
     }
@@ -149,7 +152,7 @@ const getDiagram = (req, res) => {
     }
 
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Key: {'id': req.params.id}
     };
     docClient.get(params, (err, data) => {
@@ -206,7 +209,7 @@ const setDiagram = async (req, res) => {
     try{
         let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
 
-        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10){
+        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin < 100){
             return res.sendStatus(403)
         }else{
             diagram.creator = req.user.id
@@ -218,7 +221,7 @@ const setDiagram = async (req, res) => {
 
     diagram.last_save = Date.now();
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Item: {
             id: diagram.id,
             variables: diagram.variables,
@@ -287,7 +290,7 @@ const deleteDiagram = (req, res) => {
             }
             if(response.rowCount !== 0){
                 let params = {
-                    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
                     Key: {'id': req.params.id}
                 }
 
@@ -307,14 +310,14 @@ const deleteDiagram = (req, res) => {
 const copyDiagram = (req, res) => {
     let old_diagram_id = req.params.diagram_id
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Key: {'id': old_diagram_id}
     };
 
     // In case the insert row fails, delete on Dynamo
     const cleanUpDynamo = (new_diagram_id) => {
         let params = {
-            TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+            TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
             Key: {'id': new_diagram_id}
         };
         docClient.delete(params, err => {
@@ -374,7 +377,7 @@ const copyDiagram = (req, res) => {
             }
             
             let params = {
-                TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+                TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
                 Item: {
                     id: new_diagram_id,
                     variables: data.variables,
@@ -400,7 +403,7 @@ const copyDiagram = (req, res) => {
 
 const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Set()), type=undefined, options={}, used_intents, used_choices, intents, slots) => new Promise((resolve) => {
     let params = {
-        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Key: {'id': diagram_id}
     };
 
@@ -419,7 +422,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
 
             // Add to set of rendered diagrams to prevent looping
             rendered_set.add(diagram_id)
-            if (data.Item.creator !== user.id && !user.admin) {
+            if (data.Item.creator !== user.id && user.admin < 100) {
                 resolve(403);
                 return;
             }
@@ -1021,6 +1024,18 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         },
                         nextId: getLink(nextLink)
                     };
+                } else if (node.extras.type === 'payment') {
+                    story.lines[node.id] = {
+                        product_id: node.extras.product_id,
+                        success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+                        fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+                    };
+                } else if (node.extras.type === 'cancel_payment') {
+                    story.lines[node.id] = {
+                        cancel_product_id: node.extras.product_id,
+                        success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+                        fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+                    };
                 } else {
                     let nextLink = null
                     for (var j = 0; j < node.ports.length; j++) {
@@ -1043,7 +1058,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
             }
 
             let params = {
-                TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.${render_type}`,
+                TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.${render_type}`,
                 Item: story
             }
             docClient.put(params, err => {

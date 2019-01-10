@@ -63,6 +63,35 @@ exports.sendResetEmail = async (name, user_id, random, email) => {
             }
         ]
     }
-    
+
     await sgMail.send(data)
 };
+
+exports.sendVerificationEmail = async (name, user_id, random, email) => {
+  if (typeof name !== 'string') {
+      name = null
+  }
+
+  let data = {
+      'template_id': 'd-a0722d2554164efbaa6aed6075834048',
+      'from': {
+          'email': 'reset@getvoiceflow.com',
+          'name': 'VoiceFlow Team'
+      },
+      'personalizations': [
+          {
+              'to': [
+                  {
+                      'email': email
+                  }
+              ],
+              "dynamic_template_data":{
+                  link: `${random}${user_id}`,
+                  name: name
+              }
+          }
+      ]
+  }
+
+  await sgMail.send(data)
+}

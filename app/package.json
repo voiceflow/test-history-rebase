@@ -5,6 +5,7 @@
   "homepage": "/",
   "dependencies": {
     "@material-ui/core": "^3.2.2",
+    "availity-reactstrap-validation": "^2.4.0",
     "axios": "^0.18.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
@@ -36,7 +37,9 @@
     "react-datepicker": "^1.7.0",
     "react-dom": "^16.5.2",
     "react-dropzone": "^6.2.4",
+    "react-facebook-login": "^4.1.1",
     "react-ga": "^2.5.3",
+    "react-google-login": "^4.0.1",
     "react-intercom": "^1.0.14",
     "react-joyride": "^2.0.0-15",
     "react-json-view": "github:groovy-tunes/react-json-view",
@@ -63,7 +66,7 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "prepublish": "patch-package"
   },

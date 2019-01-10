@@ -118,20 +118,13 @@ class Onboarding extends Component{
 
 		if(this.state.programming){
 			content = <React.Fragment>
-				<p className="modal-txt text-center mb-4">
-					Last Question!<br/>
-					<b>Do you have any programming experience?</b><br/>
-					Voiceflow is great for any level, this helps us get started<br/>
-				</p>
+				<p className="modal-bg-txt text-center mb-2">Do you have programming experience?</p>
+				<p className='modal-txt text-center mb-4'>Voiceflow is great for any level, this helps us get started. </p>
 				<div className="row justify-content-center">
 		      		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(0)}>None</button> 
 		      		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(1)}>A Little</button> 
 		      		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(2)}>A Lot</button> 
 		      	</div>
-	      		<hr className="my-4"/>
-	      		<button className="btn btn-clear exit mr-2" onClick={()=>this.setState({programming: false})}>
-					<i className="far fa-chevron-left"/>Back
-				</button>
 			</React.Fragment>
 		}else if(this.state.usage_type === ""){
 			content = 
@@ -155,8 +148,8 @@ class Onboarding extends Component{
 		    		:
 		    		null
 		    	}
-				<Input className="mb-2" type="text" name="company_name" placeholder="Company Name" value={this.state.company_name} onChange={this.handleChange}/>
-				<Input className="mb-2" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
+				<Input className="mb-2 form-bg" type="text" name="company_name" placeholder="Company Name" value={this.state.company_name} onChange={this.handleChange}/>
+				<Input className="mb-2 form-bg" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
 				<Select
                     className="input-select mb-2 text-left"
                     classNamePrefix="select-box"
@@ -176,10 +169,10 @@ class Onboarding extends Component{
                     placeholder="Industry"
                 />
                 <div className="mt-3">
-                	<button className="btn btn-clear exit mr-2" onClick={()=>this.setState({usage_type: ""})}>
-						<i className="far fa-chevron-left"/>Back
+                	<button className="btn previous-btn exit mr-2" onClick={()=>this.setState({usage_type: ""})}>
+					Back
 					</button>
-                	<button className="btn btn-secondary" onClick={()=>this.setState({programming: true})}>
+                	<button className="btn purple-btn" onClick={()=>this.setState({programming: true})}>
                 		Get Started
                 	</button>
                 </div>
@@ -195,13 +188,13 @@ class Onboarding extends Component{
 		    		:
 		    		null
 		    	}
-				<Input className="mb-2" type="text" name="company_name" placeholder="Organization Name" value={this.state.company_name} onChange={this.handleChange}/>
-				<Input className="mb-2" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
+				<Input className="mb-2 form-bg" type="text" name="company_name" placeholder="Organization Name" value={this.state.company_name} onChange={this.handleChange}/>
+				<Input className="mb-2 form-bg" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
 				<div className="mt-3">
-                	<button className="btn btn-clear exit mr-2" onClick={()=>this.setState({usage_type: ""})}>
-						<i className="far fa-chevron-left"/>Back
+                	<button className="btn previous-btn exit mr-2" onClick={()=>this.setState({usage_type: ""})}>
+						Back
 					</button>
-                	<button className="btn btn-secondary" onClick={()=>this.setState({programming: true})}>
+                	<button className="btn purple-btn" onClick={()=>this.setState({programming: true})}>
                 		Get Started
                 	</button>
                 </div>
@@ -213,7 +206,7 @@ class Onboarding extends Component{
 		return(
 			<div className="container h-100 d-flex justify-content-center onboarding-page">
 			    <div className="my-auto border rounded p-4 text-center onboarding-survey">
-			    	<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.png'} alt='logo' 
+			    	<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
 						height="25"
 					/>
 			    	{content}

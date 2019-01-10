@@ -1,8 +1,9 @@
 const {docClient, pool} = require('./../services')
+const { getEnvVariable } = require('../util')
 
 // SECRET TODO:
-var endpointSecret = process.env.STRIPE_ENDPOINT_SECRET
-const SECRET_KEY = process.env.STRIPE_SK
+var endpointSecret = getEnvVariable('STRIPE_ENDPOINT_SECRET')
+const SECRET_KEY = getEnvVariable('STRIPE_SK')
 const stripe = require('stripe')(SECRET_KEY)
 
 const PLANS = [

@@ -11,12 +11,12 @@ import Switch from '@material-ui/core/Switch'
 // const _ = require('lodash');
 
 var test_endpoint;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    // dev code
-    test_endpoint = 'http://localhost:4000/state/test'
-} else {
+if (process.env.NODE_ENV === 'production') {
     // production code
     test_endpoint = 'https://app.getvoiceflow.com/state/test'
+} else {
+    // dev code
+    test_endpoint = 'http://localhost:4000/state/test'
 }
 
 const valid_tags = new Set(['voice', 'prosody', 'break', 's', 'w', 'sub', 'say-as', 'phoneme', 'p', 'lang', 'emphasis', 'amazon:effect', 'text'])
@@ -615,7 +615,7 @@ class TestModal extends React.Component {
                             :
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
                               <InputGroup>
-                                <Input name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                                <Input className='form-bg form-control-left'name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
                                 <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
                               </InputGroup>
                             </Form>

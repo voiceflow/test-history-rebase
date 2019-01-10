@@ -108,7 +108,7 @@ class SkillModal extends React.Component {
         <Modal isOpen={(this.props.status > 1)} centered onClosed={this.props.onClose}>
           <div className="modal-header justify-content-center">
             <h1 className="modal-bg-txt">Create New Skill</h1>
-            <button type="button" className="close close-absolute" onClick={this.props.cancel}>×</button>
+            <button type="button" className="close close-absolute" onClick={this.props.cancel}></button>
           </div>
           <ModalBody className="p-4">
             {this.state.curr_state === 'name'?

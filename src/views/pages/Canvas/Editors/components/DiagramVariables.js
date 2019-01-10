@@ -30,7 +30,7 @@ class DiagramVariables extends Component {
                                 }) : null}
                             />
                         </div>
-                        <div className="close pl-2" onClick={() => this.props.onRemove(i)}>×</div>
+                        <div className="close pl-2" onClick={() => this.props.onRemove(i)}></div>
                     </div>)
                 })}
                 <button className="btn btn-default btn-block" onClick={this.props.onAdd}>

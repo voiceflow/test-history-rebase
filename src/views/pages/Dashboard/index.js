@@ -129,10 +129,12 @@ class DashBoard extends Component {
     copySkill(skill_id) {
         axios.post(`/skill/${skill_id}/${window.user_detail.id}/copy`)
         .then(res => {
-            let skills = this.state.skills
-            let filter_skills = this.state.filter_skills
+            let skills = this.state.skills.slice()
+            let filter_skills = this.state.filter_skills.slice()
+
             skills.push(res.data)
             filter_skills.push(res.data)
+
             this.setState({
                 skills: skills,
                 filter_skills: filter_skills,

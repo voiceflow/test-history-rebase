@@ -130,7 +130,7 @@ const saveCertification = (req, res) => {
 const giveCertification = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	const updateVersionTable = (market_id, module_id) => {
+	const updateVersionTable = (market_id, module_id, template_skill_id) => {
 		pool.query(
 			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
 			[market_id, template_skill_id, module_id],
@@ -537,7 +537,7 @@ const getDefaultTemplates = (req, res) => {
 			INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
 		) AS ultimate_versions  
 		INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
-		WHERE modules.default_template = true
+		WHERE modules.template_index > 0 ORDER BY modules.template_index DESC
 		`,
 		[],
 		(err, data) => {

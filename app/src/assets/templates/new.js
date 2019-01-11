@@ -38,7 +38,7 @@ export default {
                   "label":" "
                }
             ],
-            "name":"Start Block",
+            "name":"Start",
             "color":"#FBE9E7"
          }
       ]

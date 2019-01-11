@@ -20,16 +20,18 @@ const tabs = [
 class Publish extends Component {
     constructor(props){
         super(props)
-        this.state = {
-            tabs: []
-        }
 
+        let TABS = cloneDeep(tabs)
         if(window.user_detail.admin >= 100){
-            this.state.tabs = [...cloneDeep(tabs), {
+            TABS.push({
                 display: <React.Fragment><i className="far fa-store-alt mr-2"/> Marketplace</React.Fragment>,
                 match: ['market'],
                 link: '/publish/:skill_id/market'
-            }]
+            })
+        }
+
+        this.state = {
+            tabs: TABS
         }
     }
 
@@ -49,11 +51,10 @@ class Publish extends Component {
                             return <div key={i} className="nav-item active">
                                 {tab.display}
                             </div>
-                        }else{
-                            return <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
-                                {tab.display}
-                            </Link>
                         }
+                        return <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
+                            {tab.display}
+                        </Link>
                     })}
                 </div>
                 <div md="9" className="business-page">

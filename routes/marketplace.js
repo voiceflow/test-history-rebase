@@ -133,8 +133,8 @@ const giveCertification = (req, res) => {
 
 	const updateVersionTable = (market_id, module_id, template_skill_id) => {
 		pool.query(
-			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
-			[market_id, template_skill_id, module_id],
+			`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
+			[market_id, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);

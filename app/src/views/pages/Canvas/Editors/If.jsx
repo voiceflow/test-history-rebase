@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Expression from './components/Expression';
 import Expressionfy from './components/Expressionfy';
 
-const BLOCK_LIMIT = 20
+const BLOCK_LIMIT = 50
 
 class IfBlock extends Component {
     constructor(props) {

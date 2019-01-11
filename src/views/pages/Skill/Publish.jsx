@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import PublishAmazon from './PublishAmazon'
 import PublishMarket from '../PublishMarket/PublishMarket'
+import cloneDeep from 'lodash/cloneDeep';
 
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
@@ -15,15 +16,22 @@ const tabs = [
         link: '/publish/:skill_id'
     }
 ]
-if(window.user_detail.admin >= 100){
-    tabs.push({
-        display: <React.Fragment><i className="fal fa-store-alt mr-2"/> Marketplace</React.Fragment>,
-        match: ['market'],
-        link: '/publish/:skill_id/market'
-    })
-}
 
 class Publish extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            tabs: []
+        }
+
+        if(window.user_detail.admin >= 100){
+            this.state.tabs = [...cloneDeep(tabs), {
+                display: <React.Fragment><i className="far fa-store-alt mr-2"/> Marketplace</React.Fragment>,
+                match: ['market'],
+                link: '/publish/:skill_id/market'
+            }]
+        }
+    }
 
     render() {
         let page;
@@ -36,7 +44,7 @@ class Publish extends Component {
         return (
             <div id="business">
                 <div md="3" className="sidebar-nav">
-                    {tabs.map((tab, i) => {
+                    {this.state.tabs.map((tab, i) => {
                         if(tab.match.includes(this.props.page)){
                             return <div key={i} className="nav-item active">
                                 {tab.display}

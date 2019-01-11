@@ -20,7 +20,7 @@
     z-index: 6;
 }
 
-#TitleBar{
+#TitleBar, #PreviewBar{
     width: 100%;
     position: absolute;
     z-index: 3;
@@ -32,6 +32,9 @@
     -moz-box-shadow: 0px 15px 56px 16px #f7f9fb;
     background: #f7f9fb;
     box-shadow: 0px 15px 56px 16px #f7f9fb;
+}
+#PreviewBar{
+    padding-top: 20px;
 }
 .white-circ{
     background-color: #fff !important;
@@ -270,9 +273,7 @@
     background-color: #fff;
     transition: border-color .25s ease-in-out;
 }
-#TitleBar .white-btn.play:hover span.button-circle{
-    /*border-color: #42A5FF;*/
-}
+
 #TitleBar .white-btn.play span.words{
     display: inline-block;
     font-size: 0.875rem !important;
@@ -653,7 +654,6 @@
     width: 100%;
 }
 .goback-btn{
-    position: fixed;
     width: 60px;
     height: 60px;
     border-radius: 100%;
@@ -667,8 +667,6 @@
     background-position: center center;
     transition: all 0.15s;
     cursor: pointer;
-    left: -10px;
-    top: 135px;
 
 }
 .goback-btn:hover{
@@ -1263,7 +1261,8 @@ h2 {
     height: 100%;
     padding: 13px 20px 50px 20px;
     -webkit-overflow-scrolling: touch;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #Editor.open {

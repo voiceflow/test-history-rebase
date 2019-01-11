@@ -140,7 +140,7 @@ class NavBar extends Component {
               <Nav className="ml-auto" navbar>
                 <UncontrolledDropdown nav inNavbar className="account-dropdown">
                   <DropdownToggle className="account mr-1" nav tag="div">
-                    <img src={'/user.svg'} width="23"/>
+                    <img src={'/user.svg'} alt="user" width="23"/>
                   </DropdownToggle>
                   <DropdownMenu right className="arrow arrow-right no-select">
                     <DropdownItem header>

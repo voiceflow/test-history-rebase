@@ -34,6 +34,10 @@ const defaultVariables = ['sessions', 'user_id', 'timestamp']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
+const commandHasIntent = (node, intent) => {
+    return (node.extras.type === 'command' && node.extras.intent && node.extras.intent.value === intent)
+}
+
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -111,6 +115,7 @@ class Canvas extends Component {
         this.createDiagram = this.createDiagram.bind(this)
         this.enterFlow = this.enterFlow.bind(this)
         this.removeNode = this.removeNode.bind(this)
+        this.addRemoveListener = this.addRemoveListener.bind(this)
         this.copyNode = this.copyNode.bind(this)
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
@@ -371,6 +376,7 @@ class Canvas extends Component {
             engine.getDiagramModel().clearSelection()
             engine.getDiagramModel().addNode(node)
             engine.setSuperSelect(node)
+            this.addRemoveListener(node)
             this.setState({
                 engine: engine,
                 open: type !== 'comment',
@@ -448,10 +454,10 @@ class Canvas extends Component {
         node.y = selected.y + 30
 
         engine.getDiagramModel().clearSelection()
-
         node.setSelected()
         engine.setSuperSelect(node)
         engine.getDiagramModel().addNode(node)
+        this.addRemoveListener(node)
 
         this.setState({
             engine: engine
@@ -693,15 +699,13 @@ class Canvas extends Component {
             }
             engine.setSuperSelect(null)
             model.deSerializeDiagram(diagram_json, engine)
-            model.addListener({ nodesUpdated: this.unsave })
             model.addListener({ linksUpdated: this.unsave })
+            model.addListener({ nodesUpdated: this.unsave })
             var nodes = model.getNodes()
             for (let key in nodes) {
-                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
-                    nodes[key].clearListeners()
-                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
-                }
+                this.addRemoveListener(nodes[key])
             }
+
             var links = model.getLinks()
             for (let key in links) {
                 links[key].setColor(line_color)
@@ -965,7 +969,7 @@ class Canvas extends Component {
             var diagram = {
                 id: id,
                 title: new_flow_name,
-                variables: defaultVariables.slice(0),
+                variables: [],
                 data: data,
                 skill: skill_id
             }
@@ -986,6 +990,42 @@ class Canvas extends Component {
                 this.props.onError('Unable to create new Flow')
             })
         })
+    }
+
+    addRemoveListener(node){
+        if (node.extras.type === 'story' || node.extras.type === 'comment') {
+            node.clearListeners()
+            node.addListener({ entityRemoved: e => e.stopPropagation() })
+        } else if (node.extras.type === 'command' && this.state.skill.diagram === this.props.diagram_id) {
+            // DO NOT ALLOW ROOT DIAGRAM HELP/STOP COMMANDS TO BE DELETED
+            node.clearListeners()
+            node.addListener({ entityRemoved: e => {
+                let block = e.entity
+                // TODO: make this better
+                if(block && block.id){
+                    let model = this.state.engine.getDiagramModel()
+                    let command_search
+                    if(commandHasIntent(block, 'AMAZON.HelpIntent')){
+                        command_search = 'AMAZON.HelpIntent'
+                    }else if(commandHasIntent(block, 'AMAZON.StopIntent')){
+                        command_search = 'AMAZON.StopIntent'
+                    }
+                    if(command_search){
+                        let nodes = model.getNodes()
+                        let already_exists = false
+                        for (let key in nodes) {
+                            if(commandHasIntent(nodes[key], command_search) && nodes[key].getID() !== block.id){
+                                already_exists = true
+                            }
+                        }
+                        // Don't remove this command if no other copies exist
+                        if(!already_exists) return
+                    }
+
+                    model.removeNode(block.id)
+                }
+            }})
+        }
     }
 
     enterFlow(new_diagram_id, save=true) {
@@ -1091,7 +1131,6 @@ class Canvas extends Component {
             } else if (type === 'comment') {
                 node.name = 'New Comment'
                 node.clearListeners()
-                node.addListener({ entityRemoved: e => e.stopPropagation() })
             } else if (type === 'ending') {
                 node.addInPort(' ')
                 node.extras = {
@@ -1241,6 +1280,7 @@ class Canvas extends Component {
             engine.getDiagramModel().clearSelection()
             engine.getDiagramModel().addNode(node)
             engine.setSuperSelect(node)
+            this.addRemoveListener(node)
             this.setState({
                 engine: engine,
                 open: type !== 'comment'

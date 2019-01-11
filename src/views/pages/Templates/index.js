@@ -70,7 +70,6 @@ class Templates extends Component {
             locales: this.state.locales
         })
         .then(res => {
-            console.log(res.data)
             if(res.data.skill_id && res.data.diagram){
                 this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
             }else{

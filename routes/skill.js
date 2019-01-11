@@ -98,7 +98,7 @@ exports.getSkills = (req, res) => {
             creator_id = $1`,
         [userId], (err, data) => {
         if(err){
-            console.error(err);
+            console.trace(err);
             res.sendStatus(500);
         }else{
             res.send(data.rows.map(skill => {
@@ -154,7 +154,7 @@ exports.getSkill = (req, res) => {
 
     pool.query( sql, params, (err, data) => {
         if(err){
-            console.error(err);
+            console.trace(err);
             res.sendStatus(500);
         }else if(data.rows.length === 0){
             res.sendStatus(404);
@@ -265,8 +265,7 @@ exports.getDiagrams = (req, res) => {
 
     pool.query(sql, [id], (err, data) => {
         if(err){
-            console.error(err);
-            console.trace();
+            console.trace(err);
             res.sendStatus(500);
         }else{
             res.send(data.rows);
@@ -286,8 +285,7 @@ exports.getProducts = (req, res) => {
 
     pool.query(sql, [id], (err, data) => {
         if(err){
-            console.error(err);
-            console.trace();
+            console.trace(err);
             res.sendStatus(500);
         }else{
             res.send(data.rows);
@@ -308,8 +306,7 @@ exports.getProduct = (req, res) => {
 
   pool.query(sql, [sid, pid], (err, data) => {
       if(err){
-          console.error(err);
-          console.trace();
+          console.trace(err);
           res.sendStatus(500);
       }else{
           res.send(data.rows);
@@ -330,7 +327,7 @@ exports.setProduct = async (req, res) => {
             product.creator = req.user.id
         }
     }catch(err){
-        console.error(err);
+        console.trace(err);
         return res.sendStatus(500)
     }
 
@@ -349,9 +346,8 @@ exports.setProduct = async (req, res) => {
                 res.sendStatus(200);
             });
         }
-    }catch(e){
-        console.error(e);
-        console.trace();
+    }catch(err){
+        console.trace(err);
         res.sendStatus(500);
     }
 }
@@ -372,7 +368,7 @@ exports.deleteProduct = async (req, res) => {
             return res.sendStatus(403)
         }
     }catch(err){
-        console.error(err);
+        console.trace(err);
         return res.sendStatus(500)
     }
 
@@ -385,9 +381,8 @@ exports.deleteProduct = async (req, res) => {
                 res.sendStatus(200);
             }
         });
-    }catch(e){
-        console.error(e);
-        console.trace();
+    }catch(err){
+        console.error(err);
         res.sendStatus(500);
     }
 }
@@ -462,6 +457,7 @@ exports.deleteSkill = (req, res) => {
         // Delete skill off our servers
         pool.query('DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2', [req.user.id, id], (err) => {
             if(err){
+                console.trace(err)
                 res.sendStatus(500)
             }else{
                 res.sendStatus(200)
@@ -492,6 +488,7 @@ exports.patchSkill = (req, res) => {
         pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`,
         [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
             if(err){
+                console.trace(err)
                 res.sendStatus(500)
             }else{
                 latestSkillToIntercom(req.user.id, b.name)
@@ -559,7 +556,7 @@ exports.patchSkill = (req, res) => {
           skill_id = $1 AND creator_id = $3`,
         [id, b.isPreview, req.user.id], (err) => {
           if(err){
-            console.error(err);
+            console.trace(err);
             res.sendStatus(500)
           }else{
             res.sendStatus(200)
@@ -601,8 +598,7 @@ const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
     let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
     pool.query(sql, [skill_id], (err, data) => {
         if(err){
-            console.error(err);
-            console.trace();
+            console.trace(err);
             reject(new Error(err))
         }else{
             resolve(data.rows);
@@ -644,7 +640,7 @@ exports.buildSkill = async (req,res) => {
 
         pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
             if(err){
-                console.error(err)
+                console.trace(err)
                 res.sendStatus(500)
             } else {
 
@@ -853,7 +849,7 @@ exports.buildSkill = async (req,res) => {
 
                 } catch(err) {
                     if(err.type === "VendorIdError"){
-                        // console.error(err);
+                        // console.trace(err);
                         res.sendStatus(403);
                     }else{
                         if(err.response){
@@ -861,7 +857,7 @@ exports.buildSkill = async (req,res) => {
                             console.error(JSON.stringify(err.response.data));
                             res.status(500).send(err.response.data);
                         }else{
-                            console.error(err);
+                            console.trace(err);
                             res.sendStatus(500);
                         }
                     }

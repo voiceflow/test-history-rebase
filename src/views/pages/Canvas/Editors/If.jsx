@@ -95,7 +95,7 @@ class IfBlock extends Component {
                     return (
                         <div key={i} className="solid-border set-block">
                             {this.state.node.extras.expressions.length > 1 ?
-                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}></div> 
+                                <div className="close" onClick={()=>this.handleRemoveBlock(i)}>&times;</div> 
                                 : null 
                             }
                             <div className="variable-group">

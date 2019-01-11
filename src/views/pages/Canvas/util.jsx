@@ -19,6 +19,8 @@ exports.convertDiagram = (diagram, diagrams) => {
                 }else{
                     node.ports = []
                 }
+            }else if(node.extras.type === 'story' && node.name === 'Start Block'){
+                node.name = 'Start'
             }
         }
         if(Array.isArray(node.ports)){

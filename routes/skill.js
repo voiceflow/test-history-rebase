@@ -1214,9 +1214,6 @@ exports.copySkill = async (req, res, cb=false, copying_default_template=false) =
                     console.log(err)
                     res.sendStatus(500)
                 } else {
-                    console.log(copy_query)
-                    console.log(data.rows)
-                    console.log(id)
                     let new_skill_id = data.rows[0].skill_id
                     retrieveDiagram(root_diagram_id, new_skill_id)
                     data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)

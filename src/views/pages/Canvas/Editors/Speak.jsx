@@ -6,6 +6,8 @@ import {Collapse, Input, InputGroup} from 'reactstrap';
 import AudioDrop from '../../../components/Uploads/AudioDrop'
 import { VOICES } from '../Constants'
 
+const BLOCK_LIMIT = 50
+
 class Speak extends Component {
 
     constructor(props) {
@@ -44,7 +46,7 @@ class Speak extends Component {
 
     handleAddBlock(audio=false) {
         var node = this.state.node;
-        if(node.extras.dialogs.length < 20){
+        if(node.extras.dialogs.length < BLOCK_LIMIT){
             if(audio){
                 node.extras.dialogs.push({
                     index: randomstring.generate(5),
@@ -135,7 +137,7 @@ class Speak extends Component {
                         </div>
                     }
                 })}
-                { properties.dialogs.length < 20 ?
+                { properties.dialogs.length < BLOCK_LIMIT ?
                     <React.Fragment>
                         <div className="d-flex my-3">
                             <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>

@@ -190,7 +190,7 @@ class Canvas extends Component {
         // SKILL IS LOADED HERE
         if(!this.preview){
             // this.loadProducts()
-            this.loadUserModules()
+            // this.loadUserModules()
             this.onLoadTemplates()
         }
         this.onLoadDiagrams()

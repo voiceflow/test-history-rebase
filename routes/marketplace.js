@@ -15,9 +15,6 @@ const hashIds = (rows) => {
 		rows[i].skill_id = hashids.encode(rows[i].skill_id);
 		rows[i].module_id = hashids.encode(rows[i].module_id);
 		rows[i].creator_id = hashids.encode(rows[i].creator_id);
-		if(rows[i].template_skill_id){
-			rows[i].template_skill_id = hashids.encode(rows[i].template_skill_id)
-		}
 	}
 }
 
@@ -133,10 +130,10 @@ const saveCertification = (req, res) => {
 const giveCertification = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	const updateVersionTable = (market_id, module_id, template_skill_id) => {
+	const updateVersionTable = (market_id, module_id) => {
 		pool.query(
-			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
-			[market_id, template_skill_id, module_id],
+			`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
+			[market_id, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -609,7 +606,7 @@ const copyDefaultTemplate = (req, res) => {
 		}
 	}
 
-	pool.query(`SELECT * FROM versions WHERE module_id = $1 AND cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = $1)`,
+	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 AND cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = $1)`,
 		[module_id],
 		(err, data) => {
 			if(err){
@@ -617,7 +614,7 @@ const copyDefaultTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-					let template_skill_id = hashids.encode(data.rows[0].template_skill_id)
+					let template_skill_id = hashids.encode(data.rows[0].skill_id)
 					req.params.id = template_skill_id
 					req.params.target_creator = req.user.id
 					req.user.id = ADMIN_MARKETPLACE_ACC

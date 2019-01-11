@@ -247,6 +247,7 @@ class Menu extends PureComponent {
                     enterFlow={this.props.enterFlow}
                     copyFlow={this.copyFlow}
                     deleteFlow={this.deleteFlow}
+                    history={this.props.history}
                 />
             default:
                 return <Blocks user_modules={this.props.user_modules}/>

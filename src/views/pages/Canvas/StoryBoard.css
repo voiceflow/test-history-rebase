@@ -228,7 +228,7 @@
 }
 #TitleBar .white-btn.play{
     padding: 0px 5px 0px 18px !important;
-    min-height: 35px !important;
+    min-height: 36px !important;
     display: flex;
     text-align: center;
     background-color: #fff !important;
@@ -1784,7 +1784,7 @@ button.close:hover{
 }
 
 .block {
-    padding: 2px 3px 1px 10px;
+    padding: 1px 3px 2px 10px;
     border: 1px solid #fff;
     cursor: pointer;
     background-color: #D1D8DE;
@@ -1795,9 +1795,7 @@ button.close:hover{
     display: block !important;
     font-size: 15px;
 }
-
-.block>i{
-    margin-top: 2px;
+.block i {
     position: relative;
     top: 1px;
 }

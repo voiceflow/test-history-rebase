@@ -608,15 +608,14 @@ border-radius: 0px 5px 5px 0px !important;
 /*    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08) !important;*/
     box-shadow: 0 2px 5px 0 rgba(50,50,93,.3) !important;
     transition: all 0.2s ease !important;
-    border-radius: 20px !important;
+    border-radius: 25px !important;
     cursor: pointer;
     font-weight: 400 !important;
     font-size: 15px !important;
-    margin-top: -2px !important;
 }
 .publish-btn .launch{
-    left: 7px;
-    top: 5px;
+    left: 8px;
+    top: 7px;
     position: absolute;
     height: 100%;
     width: 32px;
@@ -633,8 +632,8 @@ border-radius: 0px 5px 5px 0px !important;
 }
 .publish-btn .launch>div{
     position: absolute;
-    transition: transform 0.1s;
-    margin-top: 5px;
+    transition: transform 0.2s;
+    margin-top: 4px;
     width: 100%;
 }
 .publish-btn .launch .first{

@@ -25,7 +25,7 @@ class PublishMarket extends Component {
             error: '',
             in_review: false,
             title: '',
-            module_icon: 'https://s3.amazonaws.com/com.getstoryflow.api.images/default_module_card_icon.png',
+            module_icon: null,
             displayingConfirmWithdraw: false,
             color: '',
             input: [],
@@ -462,9 +462,8 @@ class PublishMarket extends Component {
                         <div className="col-9 d-flex">
                             <div>
                                 <label className="mt-0"><b>Icon</b> *</label>
-                                <Image 
-                                    className='icon-image small-icon'
-                                    path='/module_icon'
+                                <Image
+                                    path='/large_icon'
                                     isDisabled={this.state.in_review}
                                     image={this.state.module_icon} 
                                     update={(url) => this.setState({module_icon: url})}/>

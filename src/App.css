@@ -884,6 +884,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     background-position: center center;
     background-size: cover;
 }
+.image-standard{
+    min-width: 240px;
+}
 .image-standard .image-box{
     padding: 0px !important;
 }

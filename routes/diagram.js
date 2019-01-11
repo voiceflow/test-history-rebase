@@ -1126,32 +1126,25 @@ const publish = (req, res) => {
     copySkill(req, res, false, false, true, (new_skill_row) => {
       // Insert new row into skill_versions
       let new_skill_id = hashids.decode(new_skill_row.skill_id)[0]
-
       pool.query(
         `
-        INSERT INTO skill_versions (canonical_skill_id, skill_id, version)
+        INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
         SELECT canonical_skill_id, max(version) + 1, ${new_skill_id}
         FROM skill_versions
-        WHERE skill_id = ${skill_id}
-        `
+        WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = ${skill_id})
+        GROUP BY canonical_skill_id
+        `,
+        [],
+        (err) => {
+          if(err){
+            console.log(err)
+            res.sendStatus(500)
+          } else {
+            res.sendStatus(status)
+          }
+        } 
       )
-      res.sendStatus(status)
     })
-
-
-    // pool.query(`
-    //   SELECT canonical_skill_id, max(version) + 1
-    //   FROM skill_versions
-    //   WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1 LIMIT 1)`, 
-    //   [skill_id], 
-    //   (err, result) => {
-    //     if(err){
-    //       console.log(err)
-    //       res.sendStatus(500)
-    //     } else {
-          
-    //     }
-    // })
   }
 
   pool.query('SELECT creator_id, slots, intents FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {

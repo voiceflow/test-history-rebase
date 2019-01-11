@@ -1204,8 +1204,8 @@ exports.copySkill = async (req, res, cb=false, copying_default_template=false) =
                 slots,
                 used_intents,
                 used_choices,
-                error_prompt,
-                resume_prompt
+                resume_prompt,
+                error_prompt
             FROM skills WHERE skill_id = $3 RETURNING *`
         pool.query(
             copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],

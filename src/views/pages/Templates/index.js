@@ -108,6 +108,7 @@ class Templates extends Component {
         axios.get('/marketplace/default_templates')
         .then(res => {
             if(Array.isArray(res.data)){
+                console.log(res.data)
                 this.setState({
                     templates: res.data
                 })

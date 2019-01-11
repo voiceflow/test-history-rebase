@@ -9,7 +9,7 @@ const updateLink = (link, skill_id) => {
 
 const tabs = [
     {
-        display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
+        display: <React.Fragment><i className="fab fa-amazon mr-2"/> Alexa</React.Fragment>,
         match: ['alexa'],
         link: '/publish/:skill_id'
     }

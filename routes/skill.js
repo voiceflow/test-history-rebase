@@ -2,7 +2,6 @@ const axios = require('axios')
 const {docClient, pool, hashids, intercom} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
-const squel = require('squel')
 const { getEnvVariable } = require('../util')
 
 const generateID = () => {

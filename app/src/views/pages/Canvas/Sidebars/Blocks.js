@@ -153,7 +153,7 @@ class Blocks extends PureComponent {
         }
 
         return <React.Fragment>
-            {/*<ButtonGroup className="toggle-group mb-2">
+            {/* <ButtonGroup className="toggle-group mb-2">
                 {TABS.map(tab => {
                     return <Button
                         key={tab}
@@ -163,7 +163,7 @@ class Blocks extends PureComponent {
                         {tab}
                     </Button>
                 })}
-            </ButtonGroup>*/}
+            </ButtonGroup> */}
             {block_content}
         </React.Fragment>
     }

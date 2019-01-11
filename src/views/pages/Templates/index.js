@@ -86,7 +86,7 @@ class Templates extends Component {
         this.setState({
             preview: true,
             template: template,
-            diagram_id: template.diagram_id.split('_')[1]
+            diagram_id: template.diagram_id
         })
     }
 

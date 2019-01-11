@@ -463,6 +463,7 @@ class PublishMarket extends Component {
                             <div>
                                 <label className="mt-0"><b>Icon</b> *</label>
                                 <Image
+                                    path='/large_icon'
                                     max_size={512*1024}
                                     isDisabled={this.state.in_review}
                                     image={this.state.module_icon} 

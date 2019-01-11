@@ -22,6 +22,8 @@ import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
+import Templates from './views/pages/Templates'
+// import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 
@@ -142,8 +144,9 @@ class App extends Component {
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
+                {/* Template Routes */}
+                <PrivateRoute exact path="/templates" component={Templates}/>
                 {/* Canvas Routes */}
-                <PrivateRoute exact path="/canvas/new" component={Skill} page="canvas" new/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>

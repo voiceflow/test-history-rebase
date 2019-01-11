@@ -132,8 +132,8 @@ const giveCertification = (req, res) => {
 
 	const updateVersionTable = (market_id, module_id) => {
 		pool.query(
-			`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
-			[market_id, module_id],
+			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
+			[market_id, template_skill_id, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -530,9 +530,9 @@ const getDefaultTemplates = (req, res) => {
 	pool.query(
 		`
 		SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
-			ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type, modules.skill_id
+			ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type, ultimate_versions.template_skill_id
 		FROM 
-		(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
+		(SELECT versions.module_id, versions.version_id, versions.diagram_id, versions.template_skill_id FROM 
 			(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
 			INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
 		) AS ultimate_versions  

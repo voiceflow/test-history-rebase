@@ -7,19 +7,31 @@ import PublishMarket from '../PublishMarket/PublishMarket'
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
 }
+console.log(window)
+var tabs 
 
-const tabs = [
-    {
-        display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
-        match: ['alexa'],
-        link: '/publish/:skill_id'
-    },
-    {
-        display: <React.Fragment><i className="fal fa-store-alt mr-2"/> Marketplace</React.Fragment>,
-        match: ['market'],
-        link: '/publish/:skill_id/market'
+    if(window.user_detail.admin >= 100){
+        tabs = [
+            {
+                display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
+                match: ['alexa'],
+                link: '/publish/:skill_id'
+            },
+            {
+                display: <React.Fragment><i className="fal fa-store-alt mr-2"/> Marketplace</React.Fragment>,
+                match: ['market'],
+                link: '/publish/:skill_id/market'
+            }
+        ]
+    } else {
+        tabs = [
+            {
+                display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
+                match: ['alexa'],
+                link: '/publish/:skill_id'
+            }
+        ]
     }
-]
 
 class Publish extends Component {
 

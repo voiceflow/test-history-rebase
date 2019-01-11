@@ -228,7 +228,7 @@
 }
 #TitleBar .white-btn.play{
     padding: 0px 5px 0px 18px !important;
-    height: 20px !important;
+    min-height: 35px !important;
     display: flex;
     text-align: center;
     background-color: #fff !important;
@@ -267,7 +267,7 @@
     line-height: 15px;
     font-size: 10px;
     padding: 5px 6px 8px 7px;
-    margin-left: 4px;
+    margin-left: 2px;
     display: inline-block;
     margin-top: -1px;
     background-color: #fff;
@@ -712,7 +712,7 @@ background-color: rgb(245, 249, 255) !important;
     -o-transform: translateX(0);
     transform: translateX(0);
 }
-h2 {
+.cut-through {
     width: 100%;
     text-align: center;
     border-bottom: 1px solid #8da2b545;
@@ -723,7 +723,7 @@ h2 {
     font-weight: 900;
  }
 
- h2 span {
+ .cut-through>span {
      background:#fff;
      padding:0 10px;
      color: #8da2b5;

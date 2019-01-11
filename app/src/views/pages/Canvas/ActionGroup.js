@@ -314,11 +314,9 @@ class ActionGroup extends PureComponent {
                         position="bottom"
                         distance={16}
                     >
-                        <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
-                            <i className="fas fa-share"/>
-                        </MUIButton>
+                        <button id="icon-share" className="nav-btn-border" onClick={this.toggleShare}></button>
                     </Tooltip>
-                    <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
+                    <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                         <PopoverHeader>Share Link</PopoverHeader>
                         <PopoverBody style={{minWidth: '260px'}}>
                             <div className="space-between">
@@ -346,22 +344,16 @@ class ActionGroup extends PureComponent {
                             }
                         </PopoverBody>
                     </Popover>
-                    <Tooltip
-                        distance={16}
-                        title="Save"
-                        position="bottom"
-                    >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
-                            {this.props.saving ?
-                                <span className="loader"/> :
-                                <React.Fragment>
-                                    {!this.props.saved && <span className="unsaved"/>}
-                                    <i className="fas fa-save"/>
-                                </React.Fragment>
-                            }
-                        </MUIButton>
-                    </Tooltip>
                 </div>
+                <Tooltip
+                    distance={16}
+                    title="Save"
+                    position="bottom"
+                >
+                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn-border' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''} mr-4 ml-4`} onClick={this.props.onSave}>
+                        {this.props.saving && <span className="loader"/>}
+                    </button>
+                </Tooltip>
                 <Tooltip
                     html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
                     position="bottom"
@@ -370,10 +362,10 @@ class ActionGroup extends PureComponent {
                     <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
                         Upload to Alexa <div className="launch">
                             <div className="first">
-                                <i className="far fa-long-arrow-up"/>
+                            <img src={'/up-arrow.svg'} alt="upload" width="15" height="15"/>
                             </div>
                             <div className="second">
-                                <i className="far fa-check"/>
+                            <img src={'/check-upload.svg'} alt="check" width="15" height="15"/>
                             </div>
                         </div>
                     </MUIButton>

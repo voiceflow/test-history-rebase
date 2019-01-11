@@ -171,7 +171,7 @@ app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
-app.post('/skill', ensureLoggedIn(), Skill.setSkill);
+// app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
@@ -193,9 +193,9 @@ app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.pub
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
 app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
+app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
 app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)
-app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
 app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus)
 app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule)
@@ -207,6 +207,8 @@ app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.gi
 app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess)
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
+app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

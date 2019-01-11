@@ -255,7 +255,7 @@
   opacity: 1
 }
 
-.card .overlay .edit-button {
+.edit-button {
     padding: 10px 20px;
     border-style: solid;
     border-width: 1px;
@@ -263,27 +263,30 @@
     border-radius: 30px;
     background-color: #ffffff40;
     color: #fff;
-    font-size: 13px;
-    transform: translateY(-30px);
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: 0.3px;
     transition: all 0.2s ease;
     text-transform: capitalize;
+    text-align: center;
+    min-width: 100px;
 }
 
-.card .overlay .edit-button:hover {
+.edit-button:hover {
     background-color: #fff;
     color: #2b3950 !important;
     cursor: pointer;
 }
 
+.product-card .overlay .edit-button {
+  transform: translateY(-30px);
+}
+
 .product-card>.card:hover .overlay .edit-button {
-  margin-bottom: 0px;
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .product-card>.card:hover .overlay .elispie {
-  margin-bottom: 0px;
   transform: translateY(0);
   z-index: 10;
 }

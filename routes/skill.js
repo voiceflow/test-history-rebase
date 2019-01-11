@@ -2,7 +2,6 @@ const axios = require('axios')
 const {docClient, pool, hashids, intercom} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
-const squel = require('squel')
 const { getEnvVariable } = require('../util')
 
 const generateID = () => {
@@ -44,6 +43,9 @@ const incrementSkillsCreatedIntercom = (id) => {
         })
     })
 }
+
+exports.latestSkillToIntercom = latestSkillToIntercom
+exports.incrementSkillsCreatedIntercom = incrementSkillsCreatedIntercom
 
 const incrementTimesPublishedIntercom = (id) => {
     intercom.users.find({ user_id: id }, async (res) => {
@@ -121,7 +123,8 @@ exports.getSkill = (req, res) => {
         sql = `
             SELECT
                 name,
-                preview
+                preview,
+                diagram
             FROM
                 skills
             WHERE
@@ -468,41 +471,7 @@ exports.deleteSkill = (req, res) => {
         // Delete diagrams recursively
         deleteDiagrams(results.rows[0].diagram)
     });
-};
-
-exports.setSkill = (req, res) => {
-    if (!req.user || !req.body.name || !req.body.diagram) {
-        res.sendStatus(401);
-        return;
-    }
-
-    let name = req.body.name;
-    let value = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
-    let sum = `This is a new summary for the skill ${name}`;
-    let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
-    let locales = ['en-US']
-
-    if (req.body.locales) {
-        locales = req.body.locales
-    }
-
-    pool.query(`
-            INSERT INTO skills (
-                name, diagram, creator_id, summary, description, invocations, inv_name, locales
-            ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8
-            ) RETURNING skill_id`,
-            [name, req.body.diagram, req.user.id, sum, desc, value, name, JSON.stringify(locales)], (err, data) => {
-        if(err){
-            console.error(err);
-            res.sendStatus(500);
-        } else {
-            incrementSkillsCreatedIntercom(req.user.id)
-            latestSkillToIntercom(req.user.id, name)
-            res.send({id: hashids.encode(data.rows[0].skill_id)})
-        }
-    });
-};
+}
 
 exports.patchSkill = (req, res) => {
     if (!req.user || !req.params.id || !req.body) {
@@ -515,20 +484,21 @@ exports.patchSkill = (req, res) => {
 
     if(!b.locales){
         b.locales = '["en-US"]';
+    }else if(Array.isArray(b.locales)){
+        b.locales = JSON.stringify(b.locales)
     }
 
-    // only need to update the name/restart
     if(req.query.settings){
         pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`,
         [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
             if(err){
-                res.sendStatus(500);
+                res.sendStatus(500)
             }else{
                 latestSkillToIntercom(req.user.id, b.name)
-                res.sendStatus(200);
+                res.sendStatus(200)
             }
-        });
-        return;
+        })
+        return
     }else if (req.query.intents) {
         pool.query(`
             UPDATE skills
@@ -1043,7 +1013,7 @@ exports.copyProduct = async (req, res) => {
     })  
 }
 
-exports.copySkill = async (req, res, cb) => {
+exports.copySkill = async (req, res, cb=false, copying_default_template=false) => {
     let id = hashids.decode(req.params.id)[0]
     let new_creator_id = req.params.target_creator
     let diagram_mapping = {}
@@ -1149,16 +1119,18 @@ exports.copySkill = async (req, res, cb) => {
         })
     }
 
-    // Starts here verify that the skill is under the current creator
-    if(req.user.admin < 100){
-        try{
-            let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
-            if(data.rows.length === 0 || data.rows[0].creator_id !== req.user.id){
-                throw new Error('Not your skill')
+    // Starts here: verify that the skill is under the current creator
+    if(!copying_default_template){
+        if(req.user.admin < 100){
+            try{
+                let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
+                if(data.rows.length === 0 || data.rows[0].creator_id !== req.user.id){
+                    throw new Error('Not your skill')
+                }
+            }catch(err){
+                // forbidden
+                return res.sendStatus(401)
             }
-        }catch(err){
-            // forbidden
-            return res.sendStatus(401)
         }
     }
 
@@ -1246,7 +1218,8 @@ exports.copySkill = async (req, res, cb) => {
                     retrieveDiagram(root_diagram_id, new_skill_id)
                     data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
 
-                    if(cb){
+                    // Default name of cb when no callback provided is 'next'
+                    if(cb && cb.name !== 'next'){
                         cb(data.rows[0])
                     } else {
                         res.send(data.rows[0])

@@ -97,7 +97,7 @@ class PaymentBlock extends Component {
               : null}
                 {!current ?
                     <React.Fragment>
-                        <h2><span>or</span></h2>
+                        <h2 className="cut-through"><span>or</span></h2>
                         <Button className="purple-btn btn-block btn-lg" onClick={() => this.props.history.push(`/products/${this.props.skill_id}/`)}>
                             Create New Product <i className="fas fa-sign-in"/>
                         </Button>

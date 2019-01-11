@@ -231,7 +231,7 @@ class LightCanvas extends Component {
             }
         })
         .catch(err => {
-            this.props.onError('Could Not Retrieve Project')
+            console.error(err)
         })
     }
 

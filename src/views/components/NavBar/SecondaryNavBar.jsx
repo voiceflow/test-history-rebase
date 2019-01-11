@@ -36,10 +36,10 @@ class SecondaryNavBar extends Component {
                     <React.Fragment>
                         {this.props.page === 'logs' ? 
                             <div className="nav-item-2 active">
-                                <img src={'/logs.svg'}/>
+                                <img src={'/logs.svg'} alt="logs"/>
                             </div> :
                             <Link to={`/creator_logs/${this.props.skill.skill_id}`} className="nav-item">
-                                <img src={'/logs.svg'}/>
+                                <img src={'/logs.svg'} alt="logs"/>
                             </Link>
                         }
                     </React.Fragment>

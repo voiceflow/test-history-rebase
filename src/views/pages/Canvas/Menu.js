@@ -294,7 +294,7 @@ class Menu extends PureComponent {
                             <div>
                                 <div className='block-title no-select mt-3 mb-2' onClick={() => this.setState({open: false})}>
                                     <h5 className="mb-0">{this.state.tab}</h5>
-                                    <div className="close pl-3 py-3"></div>
+                                    <div className="close pl-3 py-3">&times;</div>
                                 </div>
                             </div>
                             <div className="sidebar-content">

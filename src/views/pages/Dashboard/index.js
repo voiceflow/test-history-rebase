@@ -179,7 +179,7 @@ class DashBoard extends Component {
                     <div className="">
                       <div className="card-body p-4">
                         <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" style={{height: 259}} className="mb-5"/><br/>
-                        <Link to="/canvas/new" className="no-underline super-center">
+                        <Link to="/templates" className="no-underline super-center">
                             <button varient="contained" className="purple-btn w-75" id="createskill">Create Skill</button>
                         </Link>
                             <small>
@@ -249,7 +249,7 @@ class DashBoard extends Component {
                         )
                     })}
                     <EmptyCard
-                        onClick={() => this.props.history.push(`/canvas/new`)}
+                        onClick={() => this.props.history.push(`/templates`)}
                     />
                 </Masonry>
             </React.Fragment>
@@ -269,7 +269,7 @@ class DashBoard extends Component {
                             </div>
                         </span>
                         <div className="subheader-right">
-                            <Link to="/canvas/new" className="no-underline">
+                            <Link to="/templates" className="no-underline">
                                 <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
                             </Link>
                         </div>

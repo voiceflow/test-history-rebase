@@ -14,11 +14,9 @@ import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
-import blank_template from './../../../assets/templates/blank'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import {convertDiagram} from './util'
-import SkillModal from './../Dashboard/Skill/SkillModal'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -98,6 +96,7 @@ class Canvas extends Component {
     constructor(props) {
         super(props)
 
+        this.updateSkill = this.updateSkill.bind(this)
         this.repaint = this.repaint.bind(this)
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
@@ -144,67 +143,57 @@ class Canvas extends Component {
         this.onboarding = localStorage.getItem('onboarding')
         this.loaded = false
 
-        if(this.props.new){
-            // DEFAULT TEMPLATE FOR CREATING A SKILL
-            open = true
+        let globals = props.skill.global
 
-            let model = new SRD.DiagramModel()
-            let blank = this.onboarding ? new_template : blank_template
-            blank.id = generateID()
-
-            model.deSerializeDiagram(blank, engine)
-
-            let nodes = model.getNodes()
-            for (let key in nodes) {
-                if (nodes[key].extras.type === 'story' || nodes[key].extras.type === 'comment') {
-                    nodes[key].clearListeners()
-                    nodes[key].addListener({ entityRemoved: e => e.stopPropagation() })
+        // make sure that there are no duplicate variables and that the defaults are included
+        let global_variables = defaultVariables.slice(0)
+        if (Array.isArray(globals)) {
+            globals.forEach(v => {
+                if(!global_variables.includes(v)){
+                    global_variables.push(v)
                 }
-            }
+            })
+        }
 
-            var links = model.getLinks()
-            for (let key in links) {
-                links[key].setColor(line_color)
-                links[key].setWidth(line_width)
-            }
-
-            engine.setDiagramModel(model)
-
-            model.addListener({nodesUpdated: this.unsave})
-            model.addListener({linksUpdated: this.unsave})
-
-            diagram_name = 'ROOT'
+        // Intent Variables All Skills Must Have
+        let skill = {
+            intents: [],
+            slots: []
         }
 
         this.state = {
-            skill: {
-                name: '...',
-                intents: [],
-                slots: []
-            },
+            skill: {...skill, ...props.skill},
             engine: engine,
             open: open,
             diagram_name: diagram_name,
             diagrams: [],
             products: [],
             error: null,
-            loading_diagram: !this.props.new,
+            loading_diagram: true,
             saving: false,
             saved: true,
             last_save: false,
             testing_modal: false,
             testing_info: false,
             variables: [],
-            global_variables: [],
-            new_skill_step: this.props.new ? 5 : 0,
+            global_variables: global_variables,
             help: null,
             helpOpen: false,
             currentProduct: null,
             user_modules: null,
             user_templates: [],
             email_templates: [],
-            display_templates: []
+            display_templates: [],
+            default_templates: []
         }
+
+        // SKILL IS LOADED HERE
+        if(!this.preview){
+            // this.loadProducts()
+            this.loadUserModules()
+            this.onLoadTemplates()
+        }
+        this.onLoadDiagrams()
     }
 
     componentWillMount() {
@@ -212,14 +201,10 @@ class Canvas extends Component {
         if(!this.preview){
             document.addEventListener('keydown', this.hotKeys)
         }
-        this.checkSkill()
     }
 
     componentDidUpdate(previous_props) {
-
-        this.checkSkill()
-
-        if(previous_props.diagram_id !== this.props.diagram_id && this.state.new_skill_step === 0){
+        if(previous_props.diagram_id !== this.props.diagram_id){
             if(this.buildDiagrams !== null){
                 this.buildDiagrams(this.props.diagram_id)
             }
@@ -227,70 +212,19 @@ class Canvas extends Component {
                 loading_diagram: true,
                 open: false
             }, () => {
-              let nodes = _.values(this.state.engine.diagramModel.nodes);
-              this.state.engine.enableRepaintEntities(nodes);
-              this.state.engine.repaintCanvas(false);
+              let nodes = _.values(this.state.engine.diagramModel.nodes)
+              this.state.engine.enableRepaintEntities(nodes)
+              this.state.engine.repaintCanvas(false)
               this.onLoadId(this.props.diagram_id)
             })
         }
     }
 
-    checkSkill(){
-        if(!this.state.skill.skill_id && this.props.skill && this.props.skill.skill_id){
-            // load in diagrams whenever skill is ready
-            let skill = this.props.skill
-            let globals = skill.global
-
-            // make sure that there are no duplicate variables and that the defaults are included
-            let global_variables = defaultVariables.slice(0)
-            if (Array.isArray(globals)) {
-                globals.forEach(v => {
-                    if(!global_variables.includes(v)){
-                        global_variables.push(v)
-                    }
-                })
-            }
-
-            this.setState({
-                skill: {...this.state.skill, ...skill},
-                global_variables: global_variables
-            }, () => {
-                if(this.state.new_skill_step > 1){
-                    // NEW SKILL CREATED
-                    this.setState({new_skill_step: 1})
-
-                    let diagram_id = this.state.skill.diagram
-                    localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
-
-                    this.onSave(() => {
-                        this.state.diagrams.push({
-                            id: diagram_id,
-                            name: 'ROOT'
-                        })
-                        if(this.buildDiagrams !== null){
-                            this.buildDiagrams(diagram_id)
-                        }
-                    }, true)
-
-                    this.props.history.push(`/canvas/${this.state.skill.skill_id}/${diagram_id}`)
-                }else{
-                    // SKILL IS LOADED HERE
-                    if(!this.preview){
-                        // this.loadProducts()
-                        this.loadUserModules()
-                        this.onLoadTemplates()
-                    }
-                    this.onLoadDiagrams()
-                }
-            })
-        }
-    }
-
     async onLoadTemplates(){
-        if(window.user_detail && window.user_detail.admin > 0 && this.props.skill){
+        if(window.user_detail && window.user_detail.admin > 0 && this.state.skill){
             // LOAD EMAIL TEMPLATES IF ON PLAN > 1
             try {
-                const res = await axios.get(`/email/templates?skill_id=${this.props.skill.skill_id}`)
+                const res = await axios.get(`/email/templates?skill_id=${this.state.skill.skill_id}`)
                 if(Array.isArray(res.data)){
                     let templates = res.data.map(t => {
                         let variables = [];
@@ -473,7 +407,7 @@ class Canvas extends Component {
     }
 
     createWithTemplate(module){
-        axios.get(`/marketplace/template/${module.module_id}/`, {
+        axios.get(`/marketplace/template/${module.module_id}`, {
             diagram_id: this.props.diagram_id
         })
         .then(res => {
@@ -1328,6 +1262,11 @@ class Canvas extends Component {
         }
     }
 
+    updateSkill(skill){
+        this.setState({skill: skill})
+        this.props.updateSkill(skill)
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1352,23 +1291,13 @@ class Canvas extends Component {
                         history={this.props.history}
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
-                        updateSkill={(skill) => {this.setState({skill: skill}); this.props.updateSkill(skill)}}
+                        updateSkill={this.updateSkill}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
                     </div>
                 }
                 {!!this.state.template_confirm && <TemplateConfirmModal confirm={this.state.template_confirm} toggle={this.toggleTemplateConfirm}/>}
-                { this.state.new_skill_step !== 0 ?
-                    <SkillModal
-                        status={this.state.new_skill_step}
-                        createSkill={this.props.createSkill}
-                        user_templates={this.state.user_templates}
-                        onTemplateChoice={this.createWithTemplate}
-                        onClose={()=>this.setState({new_skill_step: 0})}
-                        cancel={()=>this.props.history.push('/dashboard')}
-                    /> : null
-                }
                 {this.state.testing_modal ?
                     <TestModal
                         open={this.state.testing_modal}

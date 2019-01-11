@@ -98,7 +98,7 @@ class Project extends PureComponent {
                 })}
             </ButtonGroup>
             {flow_tab}
-            <label>Templates</label>
+            {/* <label>Templates</label>
             {this.props.user_templates && this.props.user_templates.length > 0?
                 <div>
                 {this.props.user_templates.map((user_template, i) => {
@@ -111,7 +111,7 @@ class Project extends PureComponent {
                     You have no templates, visit marketplace to get some!
                     <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button>
                 </div>
-            }
+            } */}
         </React.Fragment>
     }
 }

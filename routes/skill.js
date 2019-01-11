@@ -90,12 +90,17 @@ exports.getSkills = (req, res) => {
   }
   let userId = req.query.user ? req.query.user : req.user.id;
   pool.query(`
-        SELECT
-            *
-        FROM
-            skills
-        WHERE
-            creator_id = $1`,
+    SELECT * 
+    FROM skills
+    INNER JOIN skill_versions
+    ON skills.skill_id = skill_versions.skill_id
+    WHERE (canonical_skill_id, version) IN (
+      SELECT canonical_skill_id, max(version)
+      FROM skills
+      INNER JOIN skill_versions
+      ON skills.skill_id = skill_versions.skill_id
+      WHERE creator_id = $1
+      GROUP BY canonical_skill_id)`,
     [userId], (err, data) => {
       if (err) {
         console.error(err);

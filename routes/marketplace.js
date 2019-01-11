@@ -174,7 +174,7 @@ const giveCertification = (req, res) => {
 						req.user.id = data.rows[0].creator_id
 						copySkill(req, res, (row) => {
 							let new_skill_id = hashids.decode(row.skill_id)[0]
-							updateVersionTable(market_id, module_id, new_skill_id)
+							updateVersionTable(row.diagram, module_id, new_skill_id)
 						}, false)
 					}
 					
@@ -614,7 +614,7 @@ const copyDefaultTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-					let template_skill_id = hashids.encode(data.rows[0].skill_id)
+					let template_skill_id = hashids.encode(data.rows[0].template_skill_id)
 					req.params.id = template_skill_id
 					req.params.target_creator = req.user.id
 					req.user.id = ADMIN_MARKETPLACE_ACC

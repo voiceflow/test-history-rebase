@@ -353,15 +353,10 @@ class EditProduct extends React.Component {
           <ErrorModal error={this.state.error} dismiss={()=>{
               this.setState({error: null});
           }}/>
-          <div className="return-button super-center">
-            <div className="subheader-right">
-                <button varient="contained" className="goback-btn ml-5 mr-2" onClick={()=>{
-                    this.props.history.push(`/products/${this.props.skill_id}`);
-                }}>
-                    {' '}
-                </button>
-            </div>
-          </div>
+            <button className="goback-btn position-absolute" onClick={()=>{
+                this.props.history.push(`/products/${this.props.skill_id}`)
+            }} style={{top: 20, left: 30}}>
+            </button>
           <div>
               <div className="product-editor">
                   <div className="stepper">

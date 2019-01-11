@@ -13,7 +13,6 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
-const _ = require('lodash')
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -69,25 +68,10 @@ class LightCanvas extends Component {
     }
 
     componentWillMount() {
+        this.onLoadId(this.props.diagram_id)
     }
 
     componentWillUnmount() {
-    }
-
-    componentDidUpdate(previous_props) {
-        if(previous_props.diagram_id !== this.props.diagram_id && this.props.diagram_id){
-            if(this.buildDiagrams !== null){
-                this.buildDiagrams(this.props.diagram_id)
-            }
-            this.setState({
-                loading_diagram: true
-            }, () => {
-              let nodes = _.values(this.state.engine.diagramModel.nodes)
-              this.state.engine.enableRepaintEntities(nodes)
-              this.state.engine.repaintCanvas(false)
-              this.onLoadId(this.props.diagram_id)
-            })
-        }
     }
 
     zoom(delta){

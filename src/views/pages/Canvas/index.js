@@ -102,8 +102,6 @@ class Canvas extends Component {
         this.setVariables = this.setVariables.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
-        this.publishAMZN = this.publishAMZN.bind(this)
-        this.publishMarket = this.publishMarket.bind(this)
         this.onSave = this.onSave.bind(this)
         this.onTest = this.onTest.bind(this)
         this.onDiagramUnfocus = this.onDiagramUnfocus.bind(this)
@@ -987,18 +985,6 @@ class Canvas extends Component {
                 })
                 this.props.onError('Unable to create new Flow')
             })
-        })
-    }
-
-    publishAMZN() {
-        this.onSave(diagram_id => {
-            this.props.history.push('/publish/amzn/' + this.state.skill.skill_id)
-        })
-    }
-
-    publishMarket() {
-        this.onSave(diagram_id => {
-            this.props.history.push('/publish/market/' + this.state.skill.skill_id)
         })
     }
 

@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
-const { getEnvVariable } = require('./util')
+const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {
 	let formatted_name = name.replace(' ', '_')

@@ -20,7 +20,7 @@ class Templates extends Component {
             name: '',
             locales: ['en-US'],
             error: '',
-            template: null
+            template: {}
         }
 
         this.createSkill = this.createSkill.bind(this)
@@ -77,29 +77,16 @@ class Templates extends Component {
             }
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             alert('unable to create skill')
         })
     }
 
     previewTemplate(template){
-        let skill_id = template.template_skill_id
         this.setState({
             preview: true,
-            template: template
-        }, () => {
-            axios.get(`/skill/${skill_id}?preview=1`)
-            .then(res => {
-                let skill = res.data
-                this.setState({
-                    skill_id: skill.skill_id,
-                    diagram_id: skill.diagram
-                })
-            })
-            .catch(err => {
-                console.error(err)
-                alert('unable to load preview')
-            })
+            template: template,
+            diagram_id: template.diagram_id.split('_')[1]
         })
     }
 
@@ -107,7 +94,6 @@ class Templates extends Component {
         axios.get('/marketplace/default_templates')
         .then(res => {
             if(Array.isArray(res.data)){
-                console.log(res.data)
                 this.setState({
                     templates: res.data
                 })
@@ -184,18 +170,16 @@ class Templates extends Component {
                 {this.renderBody()}
             </div>
             <Modal isOpen={this.state.preview} size="xl" toggle={()=>this.setState({preview: false})} onClosed={()=>{this.setState({diagram_id: null})}} className="light-canvas-modal">
-                {!!this.state.template && <React.Fragment>
-                    <div id="light-canvas-wrap">
-                        <div className="no-select" id="PreviewBar">
-                            <h3 className="font-weight-light">{this.state.template.title} Preview</h3>
-                        </div>
-                        <LightCanvas skill_id={this.state.skill_id} diagram_id={this.state.diagram_id}/>
+                <div id="light-canvas-wrap">
+                    <div className="no-select" id="PreviewBar">
+                        <h3 className="font-weight-light">{this.state.template.title} Preview</h3>
                     </div>
-                    <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
-                    <div className="position-absolute" style={{bottom: -75, left: '50%', marginLeft: -73}}>
-                        <MUIButton varient="contained" className="purple-btn" onClick={()=>this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
-                    </div>
-                </React.Fragment>}
+                    <LightCanvas diagram_id={this.state.diagram_id}/>
+                </div>
+                <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+                <div className="position-absolute" style={{bottom: -75, left: '50%', marginLeft: -73}}>
+                    <MUIButton varient="contained" className="purple-btn" onClick={()=>this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
+                </div>
             </Modal>
         </div>
     }

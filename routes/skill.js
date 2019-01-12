@@ -658,7 +658,7 @@ exports.buildSkill = async (req, res) => {
         let amzn_id = r.amzn_id
         r.permissions = permissions
         let manifest = JSONs.manifest(r, original_id, req.user.name)
-
+        console.log(manifest)
         try {
           if (amzn_id) {
             try {
@@ -972,7 +972,7 @@ exports.withdrawSkill = (req, res) => {
                 SET
                 review=FALSE
                 WHERE amzn_id = $1`,
-          [req.params.amzn_id, 0],
+          [req.params.amzn_id],
           (err) => {
             if (err) {
               console.log(err);

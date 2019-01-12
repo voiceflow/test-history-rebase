@@ -646,7 +646,7 @@ exports.buildSkill = async (req, res) => {
       });
       return;
     }
-
+    console.log(id)
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
         console.error(err)
@@ -658,7 +658,6 @@ exports.buildSkill = async (req, res) => {
         let amzn_id = r.amzn_id
         r.permissions = permissions
         let manifest = JSONs.manifest(r, original_id, req.user.name)
-        console.log(manifest)
         try {
           if (amzn_id) {
             try {

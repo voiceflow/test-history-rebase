@@ -637,20 +637,21 @@ exports.buildSkill = async (req,res) => {
             });
             return;
         }
+        // check upload status
+        // axios.request({
+        //     url: `https://api.amazonalexa.com/v1/skills/amzn1.ask.skill.f0222d1f-8aea-43d0-9829-9b5872103eaa/status?resource=interactionModel`,
+        //     method: 'GET',
+        //     headers: {
+        //         Authorization: token
+        //     }
+        // }).then(res => {
+        //     console.log(res.data.interactionModel['en-US'])
+        // })
+        // .catch(err => {
+        //     console.log("err", err)
+        // })
+        // return res.sendStatus(200)
 
-        axios.request({
-            url: `https://api.amazonalexa.com/v1/skills/amzn1.ask.skill.f0222d1f-8aea-43d0-9829-9b5872103eaa/status?resource=interactionModel`,
-            method: 'GET',
-            headers: {
-                Authorization: token
-            }
-        }).then(res => {
-            console.log(res.data.interactionModel['en-US'])
-        })
-        .catch(err => {
-            console.log("err", err)
-        })
-        return res.sendStatus(200)
         pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
             if(err){
                 console.trace(err)

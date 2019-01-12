@@ -178,7 +178,11 @@ const interactionModel = (req) => {
 }
 
 const manifest = (r, encoded_id, name) => {
-    r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
+	if(r.invocations && Array.isArray(r.invocations.value)){
+		r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()))
+	}else{
+		r.invocations = [`Alexa, open ${r.inv_name}`]
+	}
 	r.keywords = r.keywords.split(",").map(item => item.trim()).filter(word => !!word);
 
 	const localeObj = {

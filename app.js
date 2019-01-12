@@ -214,7 +214,7 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 // app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
-app.post('/marketplace/template/:module_id/copy', ensureAdmin(), Marketplace.copyDefaultTemplate)
+app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureAdmin(), Marketplace.getFeaturedModules)
 app.get('/marketplace/user_module', ensureAdmin(), Marketplace.getUserModules)
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)

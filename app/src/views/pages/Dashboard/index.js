@@ -169,12 +169,12 @@ class DashBoard extends Component {
         let skills;
 
         if(this.state.filter_skills === null){
-            skills = <div className="super-center w-100 text-muted mt-5">
-                        <div className="text-center">
-                            <h5 className="pb-3">Loading Skills</h5>
-                            <h1><span className="loader"/></h1>
-                        </div>
-                     </div>
+            skills = <div id="loading-diagram">
+                <div className="text-center">
+                    <h5 className="text-muted mb-2">Loading Skills</h5>
+                    <span className="loader"/>
+                </div>
+            </div>
         }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
             skills = <div className="super-center w-100 text-muted mt-5">
                 <div className="horizontal-center mt-5">

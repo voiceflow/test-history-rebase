@@ -606,7 +606,7 @@ const copyDefaultTemplate = (req, res) => {
 		}
 	}
 
-	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 AND cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = $1)`,
+	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
 		[module_id],
 		(err, data) => {
 			if(err){

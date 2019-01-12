@@ -467,6 +467,13 @@
   white-space: pre-wrap;
 }
 
+#api-results {
+    width: 100%;
+    white-space: pre-wrap;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #989898;
+}
+
 .projects-menu {
     /*padding: 0 !important;*/
     /*overflow: hidden;*/

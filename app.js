@@ -228,7 +228,7 @@ app.post('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.giveA
 app.get('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.hasAccess)
 app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
-app.get('/marketplace/default_templates', ensureAdmin(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);

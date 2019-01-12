@@ -459,7 +459,7 @@ const getUserModules = (req, res) => {
 		[user_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				console.trace(err);
 				res.sendStatus(500);
 			}else{
 				hashIds(data.rows);
@@ -542,7 +542,7 @@ const getDefaultTemplates = (req, res) => {
 		[],
 		(err, data) => {
 			if(err){
-				console.log(err)
+				console.error(err)
 				res.sendStatus(500)
 			} else {
 				hashIds(data.rows)

@@ -9,6 +9,7 @@ import {Tooltip} from 'react-tippy'
 import Switch from '@material-ui/core/Switch'
 
 import AuthenticationService from './../../../services/Authentication'
+// import { timingSafeEqual } from 'crypto';
 
 class ActionGroup extends PureComponent {
     constructor(props) {
@@ -141,9 +142,11 @@ class ActionGroup extends PureComponent {
     }
 
     toggleUpdate() {
-        this.setState({
-            updateModal: false
-        });
+        if(![1,7,8,11].includes(this.state.stage)){
+            this.setState({
+                updateModal: false
+            })
+        }
     }
 
     handleChange(e) {

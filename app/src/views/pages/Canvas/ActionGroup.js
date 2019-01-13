@@ -251,7 +251,7 @@ class ActionGroup extends PureComponent {
                         <span className="modal-txt text-center">
                             You may test on the Alexa simulator or live on your personal Alexa device
                         </span>
-                        <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b><i> open {this.props.skill.inv_name}</i></Alert>
+                        <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
                         <div className="my-3">
                             <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
                             className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
@@ -267,7 +267,6 @@ class ActionGroup extends PureComponent {
                         <span className="modal-txt text-center">
                             You may test on the Alexa simulator or live on your personal Alexa device
                         </span>
-                        <Alert className="w-75 mb-1 mt-3 text-center">Enable Testing when Build finishes</Alert>
                         <div className="my-3">
                             <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
                             className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">

@@ -262,7 +262,7 @@ class DashBoard extends Component {
                 <div className="subheader">
                     <div className="container space-between">
                         <span className="subheader-title">
-                            <b>Dashboard</b>
+                            Dashboard
                             <div className="hr-label">
                                 <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
@@ -272,7 +272,7 @@ class DashBoard extends Component {
                         </span>
                         <div className="subheader-right">
                             <Link to="/templates" className="no-underline">
-                                <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
+                                <button varient="contained" className="btn purple-btn">New Project</button>
                             </Link>
                         </div>
                     </div>

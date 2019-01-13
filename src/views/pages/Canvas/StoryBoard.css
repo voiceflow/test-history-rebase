@@ -293,7 +293,7 @@
     border-right: 1px solid #E2E9EC;
     border-left: 1px solid #E2E9EC;
     height: 100%;
-    padding-top: 8.5px;
+    padding-top: 12px;
     padding-left: 23px;
     padding-right: 23px;
 }
@@ -389,13 +389,13 @@
 }
 .modal-bg-txt{
     /* color: #42A5FF; */
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 18px;
+    font-weight: 600;
 }
 .dark-txt-sm{
     color: #2b3950;
-    font-size: 16px;
-    font-weight: 900;
+    font-size: 15px;
+    font-weight: 600;
 }
 .title-group .white-btn:hover{
     color: #42A5FF !important;
@@ -527,6 +527,12 @@
     cursor: pointer;
 /*    border-bottom: 1px solid #f3f3f3;*/
     color: #545D6D;
+    width: 115%;
+    border-bottom: 1px solid #EAEFF4;
+    margin-left: -15px;
+    padding-left: 15px;
+    padding-right: 18px;
+    padding-top: 5px;
 }
 
 /*.Menu #sidebar .block-title:hover {
@@ -540,9 +546,9 @@
 .Menu .block-title h5{
     font-weight: normal;
     color: #132144;
-    font-size: 15px;
+    font-size: 18px;
     text-transform: capitalize !important;
-    font-weight: 900;
+    font-weight: 700;
 /*    transition: color 0.3s ease;*/
 }
 
@@ -660,6 +666,9 @@
     display: block;
     text-overflow: ellipsis;
     width: 100%;
+    padding-left: 10px;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .sub-diagram .diagram-block>.btn-block {
@@ -734,9 +743,9 @@ background-color: rgb(245, 249, 255) !important;
     border-bottom: 1px solid #8da2b545;
     line-height: 0.1em;
     margin: 20px 0 20px;
-    font-size: 12px;
+    font-size: 13px;
     text-transform: uppercase;
-    font-weight: 900;
+    font-weight: 700;
  }
 
  .cut-through>span {
@@ -747,25 +756,19 @@ background-color: rgb(245, 249, 255) !important;
 
 .section-title{
     text-transform: capitalize;
-    font-size: 14px !important;
-    /* font-weight: bold; */
+    font-size: 13px !important;
+    font-weight: 600;
     color: #8da2b5;
-    letter-spacing: 0.2px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-    /* font-weight: 900 !important; */
-    /* background-color: #f1f5f8; */
-    /* padding-left: 7px; */
     padding-top: 5px;
-    /* padding-bottom: 2px; */
-    /* padding-right: 7px; */
     border-radius: 5px;
     
 }
 
 .section-title i{
-    width: 8px;
+    width: 10px;
     text-align: left;
     display: inline-block;
 
@@ -785,7 +788,7 @@ background-color: rgb(245, 249, 255) !important;
     background-color: #42A5FF;
 }
 .Menu #sidebar .section-title .title-dot.logic{
-    background-color: #96b0ff;
+    background-color: #627ff9;
 }
 .Menu #sidebar .section-title .title-dot.advanced{
     background-color: #7dbee2;
@@ -1293,7 +1296,7 @@ background-color: rgb(245, 249, 255) !important;
     display: inline-block;
     font-weight: 400;
     vertical-align: middle;
-    margin-bottom: 3px !important;
+    margin-bottom: 10px !important;
 /*    background-color: #42A5FF !important;*/
 }
 #editor-section {
@@ -1390,6 +1393,7 @@ background-color: rgb(245, 249, 255) !important;
     box-sizing: border-box;
     resize: none;
     border: none;
+    font-size: 15px;
 }
 
 #Editor textarea:focus, textarea.blank:focus {
@@ -1690,6 +1694,8 @@ label {
 
 .srd-default-node__name {
     padding: 0 40px;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .srd-default-node__title {
@@ -1768,14 +1774,19 @@ button.close:hover{
     /*margin-left: 10px;*/
     flex-grow: 1;
     background-color: transparent;
-    border-bottom: 1px solid #f4f6f7 !important;
-    margin-bottom: 20px;
-    font-size: 20px;
+    border-bottom: 1px solid #EAEFF4 !important;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 700;
     /*line-height: 24px;*/
-    color: #2b3950;
+    color: #132144;
     width: 100%;
-    transition: border-color .4s ease;
+    transition: border-color .4s linear;
     border-radius: 0px !important;
+    padding-left: 20px;
+    width: 113%;
+    margin-left: -20px;
+    padding-bottom: 14px;
 }
 
 #label::placeholder {
@@ -1842,7 +1853,7 @@ button.close:hover{
 
 .block.if {
     background-color: #91afff36;
-    color: #91afff;
+    color: #627ff9;
     border: 1px solid #91afff50;
     font-size: 15px;
 }
@@ -1854,7 +1865,7 @@ button.close:hover{
 }
 .block.capture {
     background-color: #91afff36;
-    color: #91afff;
+    color: #627ff9;
     border: 1px solid #91afff50;
     font-size: 15px;
 }
@@ -1938,7 +1949,7 @@ button.close:hover{
 
 .block.random {
     background-color: #91afff36;
-    color: #91afff;
+    color: #627ff9;
     border: 1px solid #91afff50;
     font-size: 15px;
 }
@@ -2008,11 +2019,12 @@ button.close:hover{
     border: 1px dashed #c5d3e0 !important;
 }
 .diagram-block .diagram-edit{
-    padding-left: 4px;
-    padding-right: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-left: 0px !important;
     font-size: 12px !important;
     color: #2c3e563d !important;
+    height: 40px;
 }
 /*.diagram-block .diagram-edit:hover{
     background-color: transparent !important;
@@ -2034,7 +2046,7 @@ button.close:hover{
 }
 .btn-secondary.disabled, .btn-secondary:disabled {
     color: #fff;
-    background-color: #42A5FF;
+    background-image: #42A5FF;
     border-color: #42A5FF;
     opacity: 1;
 /*    box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);*/
@@ -2043,6 +2055,7 @@ button.close:hover{
 .diagram-block {
     width: 100%;
     margin-bottom: 5px;
+    height: 40px;
 }
 
 .diagram-block>button{
@@ -2053,7 +2066,7 @@ button.close:hover{
 }
 .diagram-block>input{
     padding: 0px 6px;
-    height: 32px;
+    height: 38px;
     font-size: 12px !important;
 }
 .choice-block {
@@ -2220,7 +2233,7 @@ button.close:hover{
 .multiline hr{
     margin: 0px;
     margin-left: -20px;
-    width: 111%;
+    width: 113%;
 }
 
 .variables {
@@ -2277,7 +2290,7 @@ button.close:hover{
     color: #fff !important;
 }
 .variable-group>span{
-    font-weight: bold;
+    font-weight: 500;
     margin-right: 7px;
     margin-left: 2px;
 }
@@ -2305,10 +2318,10 @@ button.close:hover{
     text-decoration: none;
 }
 .variable-box__control {
-    background-color: #42A5FF !important;
-    color: #fff !important;
+    background-color: #fff !important;
+    border: 1px solid #D4D9E6 !important;
+    color: #8DA2B5 !important;
     box-shadow: none !important;
-    border: none !important;
     border-radius: 5px !important;
     cursor: pointer !important;
 }
@@ -2324,7 +2337,8 @@ button.close:hover{
 .variable-box__dropdown-indicator,
 .variable-box__single-value,
 .variable-box__value-container--has-value>div {
-    color: #fff !important;
+    color: #8DA2B5 !important;
+    font-size: 15px !important;
 }
 
 .variable-box__indicator-separator {
@@ -2480,7 +2494,7 @@ button.close:hover{
 #widget-bar{
     position: absolute;
     bottom: 13px;
-    left: 302px;
+    left: 303px;
     z-index: 5;
 }
 
@@ -2491,7 +2505,7 @@ button.close:hover{
     #TitleBar{
         /*height: 105px;*/
         display: block;
-        padding-left: 300px;
+        padding-left: 289px;
         padding-right: 0px;
     }
 }

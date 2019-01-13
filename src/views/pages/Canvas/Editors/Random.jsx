@@ -73,10 +73,10 @@ class RandomBlock extends Component {
                 <InputGroup className="my-3">
                     <label className="input-group-text w-100 m-0 text-left">
                         <Input addon type="checkbox" checked={!!this.state.node.extras.smart} onChange={this.handleInputChange}/>
-                        <span className="ml-2">No duplicates</span>
+                        <span className="ml-1">No duplicates</span>
                     </label>
                 </InputGroup>
-                <div><button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddPath}><i className="fal fa-plus"/> Add Path</button></div>
+                <div><button className="btn btn-clear btn-lg btn-block" onClick={this.handleAddPath}>Add Path<i className="far fa-plus ml-2"/></button></div>
                 {this.state.node.extras.paths > 1 ? <div className="mt-3"><button className="btn btn-clear btn-lg btn-block" onClick={this.handleRemovePath}>Remove Path <i className="fas fa-minus-circle ml-1"></i></button></div> : null }
             </div>
         );

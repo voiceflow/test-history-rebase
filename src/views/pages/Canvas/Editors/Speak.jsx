@@ -150,9 +150,9 @@ class Speak extends Component {
                             </button>
                         </div>
                         <InputGroup className="my-2">
-                            <label className="input-group-text w-100 m-0 text-left">
+                            <label className="input-group-text w-100 text-left">
                                 <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
-                                <span className="ml-2 span-small">Output Random Entry</span>
+                                <span>Output Random Entry</span>
                             </label>
                         </InputGroup>
                     </React.Fragment>

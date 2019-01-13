@@ -151,9 +151,9 @@ class Settings extends Component {
                 </React.Fragment>
             default:
                 return <React.Fragment>
-                    <FormGroup className='w-75 form-bg'>
+                    <FormGroup>
                         <Label>Project Name</Label>
-                        <Input name="name" value={this.state.skill.name} onChange={this.handleUpdate}/>
+                        <Input className="form-bg" name="name" value={this.state.skill.name} onChange={this.handleUpdate}/>
                     </FormGroup>
                     
                     <FormGroup>

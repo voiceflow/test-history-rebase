@@ -904,7 +904,7 @@ background-color: rgb(245, 249, 255) !important;
   margin-right: auto;
 }
 .toggle-group-settings{
-  width: 220px;
+  width: 400px;
   margin-left: auto;
   margin-right: auto; 
 }
@@ -1097,9 +1097,9 @@ background-color: rgb(245, 249, 255) !important;
 } .MenuItem.choice>.MenuIcon {
     color: #b6c9d4 !important;
 }
-.Menu #sidebar .MenuItem.intent:hover {
+.Menu #sidebar .MenuItem.interaction:hover {
     background-color: #F4F6F7;
-} .MenuItem.intent>.MenuIcon {
+} .MenuItem.interaction>.MenuIcon {
     color: #b6c9d4 !important;
 }
 .MenuItem.exit>.MenuIcon {
@@ -1182,7 +1182,7 @@ background-color: rgb(245, 249, 255) !important;
 }
 .Menu #sidebar .MenuItem.command:hover {
     background-color: #F4F6F7;
-} .MenuItem.command>.MenuIcon, .MenuItem.jump>.MenuIcon {
+} .MenuItem.command>.MenuIcon, .MenuItem.intent>.MenuIcon {
     color: #b6c9d4 !important;
 }
 .Menu #sidebar .MenuItem.flow:hover {
@@ -1381,7 +1381,7 @@ background-color: rgb(245, 249, 255) !important;
     color: #2b3950 !important;
 }
 
-.input .textarea .text-to-voice .intent-block .solid-border{
+.input .textarea .text-to-voice .interaction-block .solid-border{
 /*    background-color: #FFF !important;*/
     color: aqua !important;
 }
@@ -1488,7 +1488,7 @@ label {
     border-color: #42A5FF !important;
 }
 
-.srd-default-node.intent {
+.srd-default-node.interaction {
     border-top: 6px solid #7dbee2 !important;
     border-color: #7dbee2 !important;
 }
@@ -1566,7 +1566,7 @@ label {
     border-color: #627ff9 !important;
 }
 
-.srd-default-node.command, .srd-default-node.jump {
+.srd-default-node.command, .srd-default-node.intent {
     background-color: #fff;
     border-top: 6px solid #7dbee2;
     border-color: #7dbee2 !important;
@@ -1877,7 +1877,7 @@ button.close:hover{
     font-size: 15px;
 }
 
-.block.command, .block.jump {
+.block.command, .block.intent {
     background-color: #7dbee235;
     color: #7dbee2;
     border: 1px solid #7dbee250;
@@ -1912,7 +1912,7 @@ button.close:hover{
     font-size: 15px;
 }
 
-.block.intent {
+.block.interaction {
     background-color: #7dbee235;
     color: #7dbee2;
     border: 1px solid #7dbee250;
@@ -2086,7 +2086,7 @@ button.close:hover{
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
 }
 
-.intent-block {
+.interaction-block {
     width: 100%;
     border-radius: 5px;
     padding: 8px 15px;

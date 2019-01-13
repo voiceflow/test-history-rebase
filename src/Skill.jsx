@@ -88,7 +88,10 @@ class Skill extends Component {
     }
 
     onConfirm(confirm){
-        this.setState({confirm: confirm})
+        this.setState({confirm: {...confirm, confirm: () => {
+            this.setState({confirm: null})
+            confirm.confirm()
+        }}})
     }
 
     onLoadSkill(skill_id){
@@ -126,7 +129,7 @@ class Skill extends Component {
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':
-                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} page={this.props.secondaryPage} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':

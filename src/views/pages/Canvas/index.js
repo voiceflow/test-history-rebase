@@ -17,6 +17,7 @@ import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import {convertDiagram} from './util'
+import Spotlight from './Spotlight'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -187,7 +188,8 @@ class Canvas extends Component {
             user_templates: [],
             email_templates: [],
             display_templates: [],
-            default_templates: []
+            default_templates: [],
+            spotlight: false
         }
 
         // SKILL IS LOADED HERE
@@ -504,6 +506,14 @@ class Canvas extends Component {
 
             return false
         }
+        // else if(event.keyCode === 0 || event.keyCode === 32){
+        //     // SPACE KEY
+        //     this.setState({spotlight: true})
+        // }else if(event.keyCode === 27){
+        //     if(this.state.spotlight){
+        //         this.setState({spotlight: false})
+        //     }
+        // }
     }
 
     loadProducts(){
@@ -1047,10 +1057,22 @@ class Canvas extends Component {
         if(this.preview) return
 
         var engine = this.state.engine
-        try {
-            var type = event.dataTransfer.getData('node')
-        } catch (e) {
-            return
+        var type
+        if(typeof event === 'string'){
+            type = event
+            event = {
+                clientX: window.innerWidth / 2,
+                clientY:  window.innerHeight / 2
+            }
+            if(this.state.spotlight){
+                this.setState({spotlight: false})
+            }
+        }else{
+            try {
+                type = event.dataTransfer.getData('node')
+            } catch (e) {
+                return
+            }
         }
 
         var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
@@ -1334,6 +1356,7 @@ class Canvas extends Component {
                         globals={this.state.global_variables}
                     />
                 : null}
+                {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
                 <div id="canvas">
                     <Menu
                         unfocus={this.onDiagramUnfocus}
@@ -1369,6 +1392,7 @@ class Canvas extends Component {
                             <span className="loader"/>
                         </div>
                     </div>}
+                    
                     <Editor
                         skill={this.state.skill}
                         unfocus={this.onDiagramUnfocus}

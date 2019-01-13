@@ -26,6 +26,8 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
 import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL } from './Constants'
 
+import { getIntentSlots } from '../../../util'
+
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
 
@@ -129,6 +131,9 @@ class Canvas extends Component {
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
         this.hotKeys=this.hotKeys.bind(this)
+        this.setCanFulfill = this.setCanFulfill.bind(this)
+        this.updateFulfillmentOnDeletion = this.updateFulfillmentOnDeletion.bind(this)
+        this.deleteNodeManually = this.deleteNodeManually.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -188,6 +193,9 @@ class Canvas extends Component {
             user_templates: [],
             email_templates: [],
             display_templates: [],
+            fulfillment: {},
+            diagram_level_intents: new Set(),
+            confirm_info: null,
             default_templates: [],
             spotlight: false
         }
@@ -588,7 +596,7 @@ class Canvas extends Component {
                         permissions.add(permission.selected.value)
                     })
                 }
-                else if (node.extras.type === 'intent') {
+                else if (node.extras.type === 'interaction') {
                     node.extras.choices.forEach(choice => {
                         if (choice.intent && !used_intent_names.has(choice.intent.value)) {
                             if (choice.intent.built_in) {
@@ -645,7 +653,8 @@ class Canvas extends Component {
             const save_skill_intents = new Promise((resolve, reject) => {
                 axios.patch('/skill/' + s.skill_id + '?intents=true', {
                     intents: JSON.stringify(s.intents),
-                    slots: JSON.stringify(s.slots)
+                    slots: JSON.stringify(s.slots),
+                    fulfillment: JSON.stringify(s.fulfillment)
                 })
                 .then(res => {
                     resolve()
@@ -711,9 +720,19 @@ class Canvas extends Component {
             model.deSerializeDiagram(diagram_json, engine)
             model.addListener({ linksUpdated: this.unsave })
             model.addListener({ nodesUpdated: this.unsave })
+
+            const diagram_level_intents = new Set()
+
             var nodes = model.getNodes()
             for (let key in nodes) {
-                this.addRemoveListener(nodes[key])
+                const node = nodes[key]
+                const type = node.extras.type
+                this.addRemoveListener(node)
+                if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
+                    if (node.extras.intent) {
+                        diagram_level_intents.add(node.extras.intent.key)
+                    }
+                }
             }
 
             var links = model.getLinks()
@@ -740,7 +759,8 @@ class Canvas extends Component {
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
                 last_save: diagram.last_save,
                 loading_diagram: false,
-                variables: variables
+                variables: variables,
+                diagram_level_intents: diagram_level_intents
             })
 
             this.setState({ saved: true })
@@ -789,6 +809,7 @@ class Canvas extends Component {
             }
         })
         .catch(err => {
+            console.log(err)
             this.props.onError('Could Not Retrieve Project')
         })
     }
@@ -1003,10 +1024,12 @@ class Canvas extends Component {
     }
 
     addRemoveListener(node){
-        if (node.extras.type === 'story' || node.extras.type === 'comment') {
+        const isRoot = this.state.skill.diagram === this.props.diagram_id
+        const type = node.extras.type
+        if (type === 'story' || type === 'comment') {
             node.clearListeners()
             node.addListener({ entityRemoved: e => e.stopPropagation() })
-        } else if (node.extras.type === 'command' && this.state.skill.diagram === this.props.diagram_id) {
+        } else if (type === 'command' && isRoot) {
             // DO NOT ALLOW ROOT DIAGRAM HELP/STOP COMMANDS TO BE DELETED
             node.clearListeners()
             node.addListener({ entityRemoved: e => {
@@ -1035,6 +1058,15 @@ class Canvas extends Component {
                     model.removeNode(block.id)
                 }
             }})
+        } else if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
+            if (isRoot) {
+                node.clearListeners()
+                node.addListener({
+                    entityRemoved: (e) => {
+                        this.onDeleteIntentNode(e.entity)
+                    }
+                })
+            }
         }
     }
 
@@ -1051,6 +1083,69 @@ class Canvas extends Component {
                 this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
             }
         }
+    }
+
+    setCanFulfill(intent_key, new_value) {
+
+        const skill = this.state.skill
+        const fulfillments = skill.fulfillment
+        let fulfillment = fulfillments[intent_key]
+        if (fulfillment && !new_value) {
+            // Remove fulfillment
+            delete fulfillments[intent_key]
+        } else if (!fulfillment && new_value) {
+            const slot_config = {}
+            const intent = _.find(this.state.skill.intents, {key:intent_key})
+            const intent_slots = getIntentSlots(intent, this.state.skill.slots)
+            intent_slots.forEach(slot => {
+                slot_config[slot.key] = []
+            })
+            fulfillments[intent_key] = {
+                slot_config: slot_config
+            }
+        }
+        this.setState({
+            skill: skill
+        })
+    }
+
+    updateFulfillmentOnDeletion(deleted_node) {
+        const id = deleted_node.id
+        if (deleted_node.extras.intent && deleted_node.extras.intent.key) {
+            const key = deleted_node.extras.intent.key
+            const new_value = false
+            this.setCanFulfill(key, new_value)
+            this.state.diagram_level_intents.delete(key)
+        }
+        this.deleteNodeManually(id)
+    }
+
+    onDeleteIntentNode(deleted_node) {
+        const skill = this.state.skill
+        const fulfillments = skill.fulfillment
+        const key = deleted_node.extras.intent ? deleted_node.extras.intent.key : null
+
+        if (key && fulfillments[key]) {
+            const confirm_info = {
+                text: `CanfulfillIntent is enabled for the "${deleted_node.extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
+                confirm: () => {
+                    this.updateFulfillmentOnDeletion(deleted_node)
+                    this.setState({
+                        confirm_info: null
+                    })
+                }
+            }
+            this.props.onConfirm(confirm_info)
+        } else {
+            this.updateFulfillmentOnDeletion(deleted_node)
+        }
+    }
+
+    deleteNodeManually(node_id) {
+        let engine = this.state.engine
+        let model = engine.getDiagramModel()
+        model.removeNode(node_id)
+        this.forceUpdate()
     }
 
     onDrop(event) {
@@ -1093,7 +1188,7 @@ class Canvas extends Component {
                 };
             } else if(type === 'exit'){
                 node.addInPort(' ')
-            } else if (type === 'intent') {
+            } else if (type === 'interaction') {
                 node.addInPort(' ');
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
@@ -1137,7 +1232,7 @@ class Canvas extends Component {
                     inputs: [],
                     outputs: []
                 }
-            } else if (type === 'jump'){
+            } else if (type === 'intent'){
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     intent: null,
@@ -1298,9 +1393,11 @@ class Canvas extends Component {
             var points = engine.getRelativeMousePoint(event)
             node.x = points.x-(node.name.length*4.5 + 40)
             node.y = points.y-30
+
             node.setSelected()
             engine.getDiagramModel().clearSelection()
             engine.getDiagramModel().addNode(node)
+
             engine.setSuperSelect(node)
             this.addRemoveListener(node)
             this.setState({
@@ -1421,6 +1518,9 @@ class Canvas extends Component {
                         onConfirm={this.props.onConfirm}
                         templates={this.state.email_templates}
                         displays={this.state.display_templates}
+                        setCanFulfill={this.setCanFulfill}
+                        history={this.props.history}
+                        diagram_level_intents={this.state.diagram_level_intents}
                     />
                     <div
                         key={this.props.diagram_id}

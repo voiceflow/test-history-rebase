@@ -93,6 +93,55 @@ class ActionGroup extends PureComponent {
         });
     }
 
+    async enableSkill(locale) {
+        this.setState({stage: 13})
+        try{
+            await axios.put(`/interaction_model/${this.props.skill.amzn_id}/enable`)
+            this.SucceedLocale = locale
+        }catch(err){
+            console.error(err)
+        }
+        this.setState({stage: 2})
+    }
+
+    checkInteractionModel() {
+        this.setState({stage: 12})
+        this.SucceedLocale = null
+        const iterate = (depth) => {
+            // wait up to 20 seconds
+            if(depth === 20){
+                this.setState({
+                    stage: 2
+                })
+            }else{
+                setTimeout(() => {
+                    axios.get(`/interaction_model/${this.props.skill.amzn_id}/status`)
+                    .then(res => {
+                        // console.log(res.data)
+                        if(res.data && res.data.interactionModel){
+                            for(let key in res.data.interactionModel){
+                                let locale = res.data.interactionModel[key]
+                                if(locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED'){
+                                    this.enableSkill(key)
+                                    return
+                                }
+                            }
+                        }
+                        iterate(depth + 1)
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        this.setState({
+                            stage: 2
+                        })
+                    })
+                }, 1000)
+            }
+        }
+
+        iterate(0)
+    }
+
     updateAlexa() {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
@@ -102,10 +151,8 @@ class ActionGroup extends PureComponent {
                 .then(res => {
                     let skill = this.props.skill;
                     skill.amzn_id = res.data;
-                    this.props.updateSkill(skill);
-                    this.setState({
-                        stage: 2
-                    });
+                    this.props.updateSkill(skill)
+                    this.checkInteractionModel()
                 })
                 .catch(err => {
                     if(err.status === 403 || err.response.status === 403){
@@ -196,20 +243,39 @@ class ActionGroup extends PureComponent {
                     </div>
                 </div>
             case 2:
-                return <React.Fragment>
-                    <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
-                    <br/>
-                    <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
-                    <span className="modal-txt text-center">
-                        You may test on the Alexa simulator or live on your personal Alexa device.
-                    </span>
-                    <div className="my-3">
-                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
-                        className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
-                            Test on Alexa Simulator
-                        </a>
-                    </div>
-                </React.Fragment>
+                if(this.SucceedLocale){
+                    return <React.Fragment>
+                        <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
+                        <br/>
+                        <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                        <span className="modal-txt text-center">
+                            You may test on the Alexa simulator or live on your personal Alexa device
+                        </span>
+                        <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b><i> open {this.props.skill.inv_name}</i></Alert>
+                        <div className="my-3">
+                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
+                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                Test on Alexa Simulator
+                            </a>
+                        </div>
+                    </React.Fragment>
+                }else{
+                    return <React.Fragment>
+                        <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
+                        <br/>
+                        <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                        <span className="modal-txt text-center">
+                            You may test on the Alexa simulator or live on your personal Alexa device
+                        </span>
+                        <Alert className="w-75 mb-1 mt-3 text-center">Enable Testing when Build finishes</Alert>
+                        <div className="my-3">
+                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
+                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                Test on Alexa Simulator
+                            </a>
+                        </div>
+                    </React.Fragment>
+                }
             case 4:
                 return <Alert color="danger">
                     Rendering Error
@@ -275,6 +341,20 @@ class ActionGroup extends PureComponent {
                     <div className='text-center'>
                         <h1><span className="loader"/></h1>
                         <p className="loading">Uploading to Alexa</p>
+                    </div>
+                </div>
+            case 12:
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Building Interaction Model</p>
+                    </div>
+                </div>
+            case 13:
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Enabling Skill</p>
                     </div>
                 </div>
             default:

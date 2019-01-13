@@ -133,7 +133,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
             FROM
                 skills
             WHERE
@@ -485,8 +485,8 @@ exports.patchSkill = (req, res) => {
     }
 
     if(req.query.settings){
-        pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`,
-        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
+        pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, fulfillment = $7 WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.fulfillment], (err) => {
             if(err){
                 console.trace(err)
                 res.sendStatus(500)
@@ -500,10 +500,11 @@ exports.patchSkill = (req, res) => {
         pool.query(`
             UPDATE skills
             SET
-            intents = $2,
-            slots = $3
-            WHERE skill_id = $1 AND creator_id = $4`,
-            [id, b.intents, b.slots, req.user.id], (err) => {
+            intents = $3,
+            slots = $4,
+            fulfillment = $5
+            WHERE skill_id = $1 AND creator_id = $2`,
+            [id, req.user.id, b.intents, b.slots, b.fulfillment], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -1222,7 +1223,8 @@ exports.copySkill = async (req, res, cb=false, copying_default_template=false) =
                 used_intents,
                 used_choices,
                 resume_prompt,
-                error_prompt
+                error_prompt,
+                fulfillment
             )
             SELECT
                 coalesce(name, '') || ' Copy' AS name,
@@ -1252,7 +1254,8 @@ exports.copySkill = async (req, res, cb=false, copying_default_template=false) =
                 used_intents,
                 used_choices,
                 resume_prompt,
-                error_prompt
+                error_prompt,
+                fulfillment
             FROM skills WHERE skill_id = $3 RETURNING *`
         pool.query(
             copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],

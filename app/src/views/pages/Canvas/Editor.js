@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
-import Jump from './Editors/Jump'
+import Intent from './Editors/Intent'
 import Interaction from './Editors/Interaction';
 import Story from './Editors/Story';
 import Random from './Editors/Random';
@@ -132,8 +132,8 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         repaint={this.props.repaint}
                     />
-            case 'jump':
-                return <Jump
+            case 'intent':
+                return <Intent
                         node={this.state.node}
                         onUpdate={this.props.onUpdate}
                         intents={this.props.intents}
@@ -143,6 +143,12 @@ class Editor extends Component {
                         built_ins={BUILT_INS}
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
+                        skill={this.props.skill}
+                        history={this.props.history}
+                        diagrams={this.props.diagrams}
+                        diagram_id={this.props.diagram_id}
+                        setCanFulfill={this.props.setCanFulfill}
+                        diagram_level_intents={this.props.diagram_level_intents}
                     />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
@@ -166,7 +172,7 @@ class Editor extends Component {
                         onConfirm={this.props.onConfirm}
                     />
                 }
-            case 'intent':
+            case 'interaction':
                 return <Interaction
                     node={this.state.node}
                     onUpdate={this.props.onUpdate}

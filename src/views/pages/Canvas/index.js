@@ -570,7 +570,7 @@ class Canvas extends Component {
             let used_intents = []
 
             serialize.nodes.forEach(node => {
-                if(node.extras.type === 'flow' && node.extras.diagram_id){
+                if(node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id)
                 }
                 else if (node.extras.type === 'permissions') {

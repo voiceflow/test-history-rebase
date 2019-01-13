@@ -274,7 +274,7 @@
 
 .edit-button:hover {
     background-color: #fff;
-    color: #2b3950 !important;
+    color: #132144 !important;
     cursor: pointer;
 }
 
@@ -363,10 +363,10 @@
 }
 
 .product-title {
-  margin-bottom: 2px;
-  color: #2b3950;
-  font-size: 20px;
-  letter-spacing: 0.3px;
+  margin-bottom: 0px;
+  color: #132144;
+  font-size: 18px;
+  letter-spacing: 0.2px;
 }
 
 .product-price {
@@ -395,7 +395,7 @@
 }
 
 .empty-card {
-  height: 298px;
+  height: 294px;
   position: absolute;
   left: 0px;
   top: 0px;

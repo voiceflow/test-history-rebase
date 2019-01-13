@@ -14,6 +14,11 @@ const tabs = [
         display: <React.Fragment><i className="fab fa-amazon mr-2"/> Alexa</React.Fragment>,
         match: ['alexa'],
         link: '/publish/:skill_id'
+    },
+    {
+        display: <React.Fragment><i className="fab fa-google mr-2"></i> Google<small> &nbsp; soon</small></React.Fragment>,
+        match: ['google'],
+        link: '/publish/:skill_id'
     }
 ]
 

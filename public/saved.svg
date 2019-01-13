@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>checkocircle</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#2FD0C1" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="#2FD0C1" offset="100%"></stop>
+        </linearGradient>
+        <path d="M10,0 C4.47682801,0 0,4.47762731 0,9.99948509 C0,15.5223727 4.47682801,20 10,20 C15.523172,20 20,15.5223727 20,9.99948509 C20,4.47762731 15.523172,0 10,0 L10,0 Z M9.99947791,18 C5.58154408,18 2,14.4184559 2,9.99947791 C2,5.58154408 5.58154408,2 9.99947791,2 C14.4184559,2 18,5.58154408 18,9.99947791 C18,14.4184559 14.4184559,18 9.99947791,18 L9.99947791,18 Z M8.63542419,10.7538308 L13.860197,6.17136793 C14.144739,5.9218062 14.5557504,5.94750673 14.8124051,6.23090949 C15.0625316,6.50710365 15.0625316,6.95198074 14.8124051,7.2281749 L9.06526366,13.5742715 C8.55483161,14.1378997 7.72307806,14.1424688 7.20749012,13.5844769 C7.17490357,13.5492103 7.14402851,13.5121027 7.11499171,13.4733065 L5.1611336,10.8627495 C4.93009903,10.5540634 4.94957435,10.104502 5.20626011,9.82106495 C5.46500773,9.53535118 5.87698944,9.50234572 6.17107589,9.74376979 L7.42723461,10.7749868 C7.78711492,11.0704229 8.28438419,11.0617155 8.63542419,10.7538308 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Icon/System/Checkmark" transform="translate(2.000000, 2.000000)">
+            <g id="Group-17" transform="translate(-2.000000, -2.000000)">
+                <g id="checkocircle">
+                    <use fill="#FFFFFF" xlink:href="#path-2"></use>
+                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -14,7 +14,8 @@ const LINKED = 2
 
 const STATUS = {
   0: {name: "Community (Free)", price: "0"},
-  1: {name: "Basic", price: "29"},
+  1: {name: "Plus", price: "29"},
+  30: {name: "Business", price: "199"},
   100: {name: "Admin", price: "100000000"}
 }
 const GET_STATUS = (status) => {
@@ -28,13 +29,25 @@ const GET_STATUS = (status) => {
 const options = [
   {
     plan: 1,
-    name: "Basic",
+    name: "Plus",
     features: [
-      "In Skill Purchases (Coming Soon)",
+      "Intercom Support",
       "Voiceflow Emails",
-      "Basic analytics (Coming Soon)",
-      "Priority Intercom support",
-      "50,000 utterances/mo"
+      "In Skill Purchases (Coming Soon)",
+      "Basic Analytics (Coming Soon)",
+      "30,000 utterances/mo"
+    ]
+  },
+  {
+    plan: 30,
+    name: "Business",
+    features: [
+      "Priority Business Support",
+      "Voiceflow Emails",
+      "In Skill Purchases (Coming Soon)",
+      "Account Linking (Coming Soon)",
+      "User Analytics (Coming Soon)",
+      "Staging Environment (Coming Soon)"
     ]
   }
 ]
@@ -163,6 +176,11 @@ class Account extends Component {
                         return <Button key={i}
                             disabled={this.state.selected_plan === option.plan}
                             color={this.state.selected_plan === option.plan ? undefined : "clear"}
+                            onClick={()=>{
+                              if(this.state.selected_plan !== option.plan ){
+                                this.setState({selected_plan: option.plan})
+                              }
+                            }}
                             block
                             className="mt-2">
                           {option.name}

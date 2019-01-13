@@ -14,7 +14,7 @@ class Templates extends Component {
 
         this.state = {
             stage: 0,
-            loading: true,
+            loading: false,
             preview: false,
             templates: [],
             name: '',
@@ -71,7 +71,10 @@ class Templates extends Component {
         })
         .then(res => {
             if(res.data.skill_id && res.data.diagram){
-                this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                this.setState({loading: true})
+                setTimeout(()=>{
+                    this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                }, 3000)
             }else{
                 throw new Error('Invalid Response Format')
             }
@@ -164,6 +167,15 @@ class Templates extends Component {
     }
 
     render() {
+        if(this.state.loading){
+            return <div id="loading-diagram">
+                <div className="text-center">
+                    <h5 className="text-muted mb-2">Loading New Skill</h5>
+                    <span className="loader"/>
+                </div>
+            </div>
+        }
+
         return <div id="template-box-container">
             <div className="card">
                 <Link id="exit-template" to='/dashboard' className="close">&times;</Link>

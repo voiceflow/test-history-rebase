@@ -356,7 +356,7 @@ class CheckoutForm extends React.Component {
             stage: 0
           })
         }}>
-          <i className="far fa-chevron-left"/>Return
+          <i className="far fa-chevron-left mr-2"/>Return
         </Button>
       </div>
     }else{
@@ -391,10 +391,10 @@ class CheckoutForm extends React.Component {
   render() {
     // success
     if(this.state.stage === 4){
-      return <div className="payment-form">
+      return <div className="payment-form pt-3">
+        <p>Your Account has been Successfully Updated</p>
         <Alert color="success">
-          Your Account has been Successfully Updated <br/>
-          <b>Please log out of your account and sign in again</b>
+          Please Log out and Sign In again
         </Alert>
         <Button onClick={this.props.logout} block>Logout</Button>
       </div>
@@ -406,7 +406,7 @@ class CheckoutForm extends React.Component {
             <div className="price">
                 <span className="text-pricing">
                   ${this.props.plan.price}
-                </span>/mo (USD)
+                </span>/mo
               </div>
             <div>
               <label>

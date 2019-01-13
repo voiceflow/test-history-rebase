@@ -501,7 +501,7 @@ class API extends Component {
                 </label>
                 <br />
                 <InputGroup>
-                    <InputGroupButtonDropdown addonType="prepend" className="mb-3" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <InputGroupButtonDropdown addonType="prepend" className="mb-3 pt-1 pb-1" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret>
                           {this.state.node.extras.method}
                         </DropdownToggle>

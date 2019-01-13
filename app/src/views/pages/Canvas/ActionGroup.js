@@ -368,7 +368,7 @@ class ActionGroup extends PureComponent {
                     </div>
 
                     <div className="super-center mb-3 mt-3">
-                        <Button color="primary" onClick={this.updateAlexa}>Confirm Upload</Button>
+                        <button className="purple-btn" onClick={this.updateAlexa}>Confirm Upload</button>
                     </div>
                 </div>
         }
@@ -432,8 +432,8 @@ class ActionGroup extends PureComponent {
                     title="Save"
                     position="bottom"
                 >
-                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn-border' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''} mr-4 ml-4`} onClick={this.props.onSave}>
-                        {this.props.saving && <span className="loader"/>}
+                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''} mr-4 ml-4`} onClick={this.props.onSave}>
+                        {this.props.saving && <span className="save-loader"/>}
                     </button>
                 </Tooltip>
                 <Tooltip
@@ -447,7 +447,7 @@ class ActionGroup extends PureComponent {
                             <img src={'/up-arrow.svg'} alt="upload" width="15" height="15"/>
                             </div>
                             <div className="second">
-                            <img src={'/check-upload.svg'} alt="check" width="15" height="15"/>
+                            <img src={'/rocket.svg'} alt="check" width="15" height="15"/>
                             </div>
                         </div>
                     </MUIButton>

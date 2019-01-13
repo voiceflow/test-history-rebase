@@ -33,7 +33,7 @@ class DiagramVariables extends Component {
                         <div className="close pl-2" onClick={() => this.props.onRemove(i)}></div>
                     </div>)
                 })}
-                <button className="btn btn-default btn-block" onClick={this.props.onAdd}>
+                <button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd}>
                     <i className="far fa-plus"></i> Add Variable Map
                 </button>
             </React.Fragment>

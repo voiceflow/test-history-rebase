@@ -256,7 +256,7 @@ class Editor extends Component {
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates}/>
+                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates} skill={this.props.skill}/>
             case 'display':
                 return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays} skill={this.props.skill}/>
             case 'stream':

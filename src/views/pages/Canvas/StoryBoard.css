@@ -8,9 +8,9 @@
     position: fixed;
     z-index: 1050;
     top: 170px;
-    width: 40%;
+    width: 36%;
     left: 50%;
-    margin-left: -20%;
+    margin-left: -18%;
 }
 
 #loading-diagram {

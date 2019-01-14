@@ -1317,3 +1317,28 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
     )
   })
 }
+
+exports.getSkillVersions = (req, res) => {
+    let id = hashids.decode(req.params.id)[0]
+    pool.query(`
+        SELECT skills.skill_id, created, version, diagram 
+        FROM skills 
+        INNER JOIN skill_versions 
+        ON skills.skill_id = skill_versions.skill_id 
+        WHERE skill_versions.canonical_skill_id = 
+            (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)
+        ORDER BY version DESC`,
+        [id],
+        (err, data) => {
+            if(err){
+                console.log(err)
+                res.sendStatus(500)
+            } else {
+                for(let i=0;i<data.rows.length;i++){
+                    data.rows[i].skill_id = hashids.encode(data.rows[i].skill_id)
+                }
+                res.send(data.rows)
+            }
+        }
+    )
+}

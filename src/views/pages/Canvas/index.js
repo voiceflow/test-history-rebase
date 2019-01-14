@@ -483,7 +483,6 @@ class Canvas extends Component {
     }
 
     clickDiagram(e){
-        this.diagram_focus = true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
         if (selected.length === 1 && selected[0].extras.type !== 'comment') {
@@ -526,7 +525,7 @@ class Canvas extends Component {
                 this.setState({spotlight: false})
             }
         } else if (this.diagram_focus) {
-            if(event.keyCode === 0 || event.keyCode === 32) {
+            if((event.keyCode === 0 || event.keyCode === 32)) {
                 // SPACE KEY
                 this.setState({spotlight: true})
                 event.preventDefault()
@@ -1480,6 +1479,7 @@ class Canvas extends Component {
                         diagrams={this.state.diagrams}
                         slots={this.state.skill.slots}
                         globals={this.state.global_variables}
+                        unfocus={this.onDiagramUnfocus}
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
@@ -1557,6 +1557,8 @@ class Canvas extends Component {
                         className={this.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
+                        onMouseOver={()=>this.diagram_focus=true}
+                        onMouseLeave={()=>this.diagram_focus=false}
                         onClick={this.clickDiagram}
                     >
                         <div id="widget-bar">

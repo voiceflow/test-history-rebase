@@ -83,6 +83,7 @@ class Variables extends PureComponent {
         let index = variables.indexOf(variable)
         if (index !== -1) variables.splice(index, 1)
         this.props.onVariable(variables)
+        this.forceUpdate()
     }
 
     deleteGlobalVariable(variable){
@@ -90,6 +91,7 @@ class Variables extends PureComponent {
         let index = variables.indexOf(variable)
         if (index !== -1) variables.splice(index, 1)
         this.props.onGlobalVariable(variables)
+        this.forceUpdate()
     }
 
     render() {

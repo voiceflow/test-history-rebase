@@ -51,7 +51,7 @@ const load = () => new Promise((resolve) => {
 const login = () => new Promise((resolve, reject) => {
   	window.amazon.Login.authorize(options, (response) => {
 	    if (response.error) {
-	      	reject();
+	      	reject()
 	    }else{
 	    	axios.get('/session/amazon/' + response.code)
 	    	.then(res => {

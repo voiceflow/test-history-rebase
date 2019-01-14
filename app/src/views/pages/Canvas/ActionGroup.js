@@ -189,7 +189,7 @@ class ActionGroup extends PureComponent {
     }
 
     toggleUpdate() {
-        if(![1,7,8,11].includes(this.state.stage)){
+        if(![1,7,11].includes(this.state.stage)){
             this.setState({
                 updateModal: false
             })

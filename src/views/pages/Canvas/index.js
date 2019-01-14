@@ -1434,7 +1434,7 @@ class Canvas extends Component {
                 nodes[key].setSelected()
                 this.setState({open: true})
                 model.setZoomLevel(80)
-                model.setOffset(nodes[key].x+850, nodes[key].y-600)
+                model.setOffset((300)-(nodes[key].x*0.8), (300)-(nodes[key].y*0.8))
                 this.repaint()
                 return
             }

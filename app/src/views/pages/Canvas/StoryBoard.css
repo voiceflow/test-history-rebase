@@ -289,13 +289,14 @@
 }
 
 .title-group .title-group-sub {
-    display: inline-block;
     border-right: 1px solid #E2E9EC;
     border-left: 1px solid #E2E9EC;
     height: 100%;
-    padding-top: 12px;
     padding-left: 23px;
     padding-right: 23px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title-group .toggle-google {
@@ -2556,4 +2557,9 @@ button.close:hover{
 
 .faded-node {
     opacity: 0.25;
+}
+
+.google-btn {
+    margin-top: 0px !important;
+    margin-right: 1em !important;
 }

@@ -24,7 +24,7 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
-import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL } from './Constants'
+import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL, ALLOWED_GOOGLE_BLOCKS } from './Constants'
 
 import { getIntentSlots } from '../../../util'
 
@@ -33,7 +33,7 @@ import { getIntentSlots } from '../../../util'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-const defaultVariables = ['sessions', 'user_id', 'timestamp']
+const defaultVariables = ['sessions', 'user_id', 'timestamp', 'platform']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -790,7 +790,7 @@ class Canvas extends Component {
 
         for (let key in nodes) {
             const node = nodes[key]
-            if (!['choice', 'speak'].includes(node.extras.type)) {
+            if (!ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)) {
                 nodes[key].fade = google
             }
         }

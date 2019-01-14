@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import { Button, Input, Alert } from 'reactstrap';
+import {Link} from 'react-router-dom'
 
 const validateEmail = (email) => {
     var re = /^(([^<>()[]\\.,;:\s@"]+(\.[^<>()[]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -101,7 +102,10 @@ class Mail extends Component {
 
     render() {
         if(this.props.templates.length === 0){
-            return 'No Email Templates Exist. Add them in Business > Email'
+            return <div>
+                <span className="text-muted">You currently have no Email Templates</span>
+                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill.skill_id}/email/templates`}>Add Templates</Link> 
+            </div>
         }
 
         let user = this.state.node.extras.to === '_USER';

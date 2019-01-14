@@ -119,7 +119,7 @@ class Settings extends Component {
         }
 
         this.setState({ saving: true })
-        axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.state.skill)
+        axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, skill)
             .then(() => {
                 this.props.updateSkill({ ...this.props.skill, ...skill })
                 this.setState({ saving: false, skill: null })
@@ -305,7 +305,7 @@ class Settings extends Component {
             <div className="settings-content clearfix">
                 {this.modalContent(fullfillment_intent_key)}
                 <hr />
-                <Button className='purple-btn save-btn' style={{ minWidth: 150 }} onClick={different ? this.saveSettings : null}>
+                <Button className='purple-btn save-btn' style={{ minWidth: 150 }} onClick={this.saveSettings}>
                     {this.state.saving ? <span className="loader" /> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
                 </Button>
                 {fullfillment_intent_key && <Button className='purple-btn back-btn save-btn mr-2' style={{ minWidth: 150 }} onClick={() => {

@@ -527,6 +527,7 @@ class Canvas extends Component {
         } else if (this.diagram_focus) {
             if((event.keyCode === 0 || event.keyCode === 32)) {
                 // SPACE KEY
+                this.onDiagramUnfocus()
                 this.setState({spotlight: true})
                 event.preventDefault()
                 event.stopPropagation()

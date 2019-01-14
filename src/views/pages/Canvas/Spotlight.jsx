@@ -7,7 +7,6 @@ class Spotlight extends Component {
         super(props)
 
         this.state = {
-            input: '',
             blocks: getBlocks()
         }
     }
@@ -23,6 +22,12 @@ class Spotlight extends Component {
                     label: block.text,
                     value: block.type
                 }))}
+                maxMenuHeight={124}
+                value={null}
+                placeholder="Add Block"
+                filterOption={(value, input) => {
+                    return value.value.toLowerCase().startsWith(input.toLowerCase().trim())
+                }}
             />
         </div>
     }

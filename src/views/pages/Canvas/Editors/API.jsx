@@ -348,7 +348,7 @@ class API extends Component {
                 <div className="mt-3">
                     {_.map(this.state.testVariablesMapping, (val, key) => {
                         let path = _.find(this.props.node.extras.mapping, {'var': key}).path;
-                        return <pre key={key}>{draftToMarkdown(path) + ': ' + val + ' => {' + key + '}'}</pre>
+                        return <pre id="api-results" key={key}>{draftToMarkdown(path) + ': ' + val + ' => {' + key + '}'}</pre>
                     })}
                 </div>
             }
@@ -501,7 +501,7 @@ class API extends Component {
                 </label>
                 <br />
                 <InputGroup>
-                    <InputGroupButtonDropdown addonType="prepend" className="mb-3" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                    <InputGroupButtonDropdown addonType="prepend" className="mb-3 pt-1 pb-1" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret>
                           {this.state.node.extras.method}
                         </DropdownToggle>

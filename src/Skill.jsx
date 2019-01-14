@@ -13,14 +13,6 @@ import ConfirmModal from './views/components/Modals/ConfirmModal'
 import { Link } from 'react-router-dom';
 import {Alert} from 'reactstrap'
 
-const generateID = () => {
-    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
-        const r = (Math.random() * 16) | 0
-        const v = c === "x" ? r : (r & 0x3) | 0x8
-        return v.toString(16)
-    })
-}
-
 class Skill extends Component {
     constructor(props){
         super(props)
@@ -38,7 +30,6 @@ class Skill extends Component {
         this.renderPage = this.renderPage.bind(this)
         this.onError = this.onError.bind(this)
         this.onConfirm = this.onConfirm.bind(this)
-        this.createSkill = this.createSkill.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
     }
 
@@ -97,31 +88,10 @@ class Skill extends Component {
     }
 
     onConfirm(confirm){
-        this.setState({confirm: confirm})
-    }
-
-    createSkill(name, locales){
-        // CREATE NEW PROJECT
-        if(!name){
-            name = 'New Skill'
-        }
-
-        let diagram_id = generateID()
-
-        axios.post('/skill', {
-          name: name,
-          diagram: diagram_id,
-          locales: locales
-        })
-        .then(res => {
-            if(res.data && res.data.id){
-                this.onLoadSkill(res.data.id)
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            this.onError('Could Not Create Project - Error')
-        })
+        this.setState({confirm: {...confirm, confirm: () => {
+            this.setState({confirm: null})
+            confirm.confirm()
+        }}})
     }
 
     onLoadSkill(skill_id){
@@ -153,13 +123,13 @@ class Skill extends Component {
     renderPage(){
         switch(this.props.page){
             case 'canvas':
-                return <Canvas {...this.props} skill={this.state.skill} diagram_id={this.state.diagram_id} onError={this.onError} onConfirm={this.onConfirm} createSkill={this.createSkill} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Canvas {...this.props} skill={this.state.skill} diagram_id={this.state.diagram_id} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'products':
                 return <Products {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':
-                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} page={this.props.secondaryPage} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':
@@ -195,7 +165,7 @@ class Skill extends Component {
 
             <div className="skill-name-top-left fixed-top">
                 <Link to="/" className="mx-2">
-                  <i className="fas fa-th" />
+                <img src={"/back.svg"} alt="back" className='mr-3'/>
                 </Link>
                 {this.state.skill ? this.state.skill.name : 'New Skill'}
             </div>

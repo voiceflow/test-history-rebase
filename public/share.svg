@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#6E849A" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="#6E849A" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="share-solid-(1)" fill="url(#linearGradient-1)">
+            <path d="M14.7565758,5.28467716 L9.6002074,0.195900561 C9.14885964,-0.249578747 8.43750204,0.112061388 8.43750204,0.804069381 L8.43750204,3.48441174 C3.73157317,3.54598531 0,4.62387448 0,9.72072026 C0,11.7778938 1.15959989,13.8158821 2.44139708,14.8813829 C2.84138741,15.2138936 3.41144614,14.7965728 3.26396563,14.257578 C1.93552781,9.40223855 3.89405368,8.11324476 8.43750204,8.0385462 L8.43750204,10.9821248 C8.43750204,11.6752042 9.14941628,12.0352372 9.6002074,11.5902936 L14.7565758,6.5010148 C15.0809216,6.18085898 15.0813611,5.60526824 14.7565758,5.28467716 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

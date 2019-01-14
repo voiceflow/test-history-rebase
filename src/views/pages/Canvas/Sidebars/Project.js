@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
-import { Button, ButtonGroup, Input } from 'reactstrap';
+import { Button, ButtonGroup, Input } from 'reactstrap'
 import FlowButton from './components/FlowButton'
+// import TemplateItem from './components/TemplateItem'
 
 const TABS = ['structure', 'flows']
 
@@ -97,16 +98,20 @@ class Project extends PureComponent {
                 })}
             </ButtonGroup>
             {flow_tab}
-            {/*<label>Templates</label>
-            {this.props.user_templates.length > 0?
+            {/* <label>Templates</label>
+            {this.props.user_templates && this.props.user_templates.length > 0?
                 <div>
                 {this.props.user_templates.map((user_template, i) => {
                     return <TemplateItem onTemplateChoice={this.props.onTemplateChoice} module={user_template} key={i} />;
                 })}
                 </div>
                 :
-                <div className="text-muted">You have no templates <span role="img" aria-label="crying emoji">😭</span> visit <Button color="link" className="pl-0 pr-0 pt-0 pb-0" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button> to get some!</div>
-            }*/}
+                <div className="text-muted text-center">
+                    <img className="image-editor mt-4 mb-3" src="/empty.png" alt="empty"/>
+                    You have no templates, visit marketplace to get some!
+                    <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button>
+                </div>
+            } */}
         </React.Fragment>
     }
 }

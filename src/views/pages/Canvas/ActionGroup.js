@@ -9,6 +9,7 @@ import {Tooltip} from 'react-tippy'
 import Switch from '@material-ui/core/Switch'
 
 import AuthenticationService from './../../../services/Authentication'
+// import { timingSafeEqual } from 'crypto';
 
 class ActionGroup extends PureComponent {
     constructor(props) {
@@ -92,6 +93,55 @@ class ActionGroup extends PureComponent {
         });
     }
 
+    async enableSkill(locale) {
+        this.setState({stage: 13})
+        try{
+            await axios.put(`/interaction_model/${this.props.skill.amzn_id}/enable`)
+            this.SucceedLocale = locale
+        }catch(err){
+            console.error(err)
+        }
+        this.setState({stage: 2})
+    }
+
+    checkInteractionModel() {
+        this.setState({stage: 12})
+        this.SucceedLocale = null
+        const iterate = (depth) => {
+            // wait up to 20 seconds
+            if(depth === 20){
+                this.setState({
+                    stage: 2
+                })
+            }else{
+                setTimeout(() => {
+                    axios.get(`/interaction_model/${this.props.skill.amzn_id}/status`)
+                    .then(res => {
+                        // console.log(res.data)
+                        if(res.data && res.data.interactionModel){
+                            for(let key in res.data.interactionModel){
+                                let locale = res.data.interactionModel[key]
+                                if(locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED'){
+                                    this.enableSkill(key)
+                                    return
+                                }
+                            }
+                        }
+                        iterate(depth + 1)
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        this.setState({
+                            stage: 2
+                        })
+                    })
+                }, 1000)
+            }
+        }
+
+        iterate(0)
+    }
+
     updateAlexa() {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
@@ -101,10 +151,8 @@ class ActionGroup extends PureComponent {
                 .then(res => {
                     let skill = this.props.skill;
                     skill.amzn_id = res.data;
-                    this.props.updateSkill(skill);
-                    this.setState({
-                        stage: 2
-                    });
+                    this.props.updateSkill(skill)
+                    this.checkInteractionModel()
                 })
                 .catch(err => {
                     if(err.status === 403 || err.response.status === 403){
@@ -141,9 +189,11 @@ class ActionGroup extends PureComponent {
     }
 
     toggleUpdate() {
-        this.setState({
-            updateModal: false
-        });
+        if(![1,7,8,11].includes(this.state.stage)){
+            this.setState({
+                updateModal: false
+            })
+        }
     }
 
     handleChange(e) {
@@ -193,20 +243,38 @@ class ActionGroup extends PureComponent {
                     </div>
                 </div>
             case 2:
-                return <React.Fragment>
-                    <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
-                    <br/>
-                    <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
-                    <span className="modal-txt text-center">
-                        You may test on the Alexa simulator or live on your personal Alexa device.
-                    </span>
-                    <div className="my-3">
-                        <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
-                        className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
-                            Test on Alexa Simulator
-                        </a>
-                    </div>
-                </React.Fragment>
+                if(this.SucceedLocale){
+                    return <React.Fragment>
+                        <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
+                        <br/>
+                        <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                        <span className="modal-txt text-center">
+                            You may test on the Alexa simulator or live on your personal Alexa device
+                        </span>
+                        <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
+                        <div className="my-3">
+                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
+                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                Test on Alexa Simulator
+                            </a>
+                        </div>
+                    </React.Fragment>
+                }else{
+                    return <React.Fragment>
+                        <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
+                        <br/>
+                        <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                        <span className="modal-txt text-center">
+                            You may test on the Alexa simulator or live on your personal Alexa device
+                        </span>
+                        <div className="my-3">
+                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
+                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                Test on Alexa Simulator
+                            </a>
+                        </div>
+                    </React.Fragment>
+                }
             case 4:
                 return <Alert color="danger">
                     Rendering Error
@@ -274,6 +342,20 @@ class ActionGroup extends PureComponent {
                         <p className="loading">Uploading to Alexa</p>
                     </div>
                 </div>
+            case 12:
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Building Interaction Model</p>
+                    </div>
+                </div>
+            case 13:
+                return <div className="super-center mb-4">
+                    <div className='text-center'>
+                        <h1><span className="loader"/></h1>
+                        <p className="loading">Enabling Skill</p>
+                    </div>
+                </div>
             default:
                 return <div>
                     <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
@@ -286,7 +368,7 @@ class ActionGroup extends PureComponent {
                     </div>
 
                     <div className="super-center mb-3 mt-3">
-                        <Button color="primary" onClick={this.updateAlexa}>Confirm Upload</Button>
+                        <button className="purple-btn" onClick={this.updateAlexa}>Confirm Upload</button>
                     </div>
                 </div>
         }
@@ -331,11 +413,9 @@ class ActionGroup extends PureComponent {
                         position="bottom"
                         distance={16}
                     >
-                        <MUIButton variant="contained" className="white-btn share-btn" onClick={this.toggleShare} id="share">
-                            <i className="fas fa-share"/>
-                        </MUIButton>
+                        <button id="icon-share" className="nav-btn-border" onClick={this.toggleShare}></button>
                     </Tooltip>
-                    <Popover placement="bottom" isOpen={this.state.share} target="share" toggle={this.toggleShare}>
+                    <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
                         <PopoverHeader>Share Link</PopoverHeader>
                         <PopoverBody style={{minWidth: '260px'}}>
                             <div className="space-between">
@@ -363,22 +443,16 @@ class ActionGroup extends PureComponent {
                             }
                         </PopoverBody>
                     </Popover>
-                    <Tooltip
-                        distance={16}
-                        title="Save"
-                        position="bottom"
-                    >
-                        <MUIButton variant="contained" className="white-btn save-btn" onClick={this.props.onSave}>
-                            {this.props.saving ?
-                                <span className="loader"/> :
-                                <React.Fragment>
-                                    {!this.props.saved && <span className="unsaved"/>}
-                                    <i className="fas fa-save"/>
-                                </React.Fragment>
-                            }
-                        </MUIButton>
-                    </Tooltip>
                 </div>
+                <Tooltip
+                    distance={16}
+                    title="Save"
+                    position="bottom"
+                >
+                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''} mr-4 ml-4`} onClick={this.props.onSave}>
+                        {this.props.saving && <span className="save-loader"/>}
+                    </button>
+                </Tooltip>
                 <Tooltip
                     html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
                     position="bottom"
@@ -387,10 +461,10 @@ class ActionGroup extends PureComponent {
                     <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
                         Upload to Alexa <div className="launch">
                             <div className="first">
-                                <i className="far fa-long-arrow-up"/>
+                            <img src={'/up-arrow.svg'} alt="upload" width="15" height="15"/>
                             </div>
                             <div className="second">
-                                <i className="far fa-check"/>
+                            <img src={'/rocket.svg'} alt="check" width="15" height="15"/>
                             </div>
                         </div>
                     </MUIButton>

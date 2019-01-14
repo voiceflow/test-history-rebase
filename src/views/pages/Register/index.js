@@ -210,7 +210,10 @@ class Account extends Component {
             <div id="side-form">
               <Form id="login-form" onSubmit={this.loginSubmit}>
                 <img className="login-logo" src="/logo.svg" alt="logo"/>
-                <div className="p-4 p-md-5">
+                <div className="px-5 pb-5 pt-4">
+                  <div className="text-center">
+                    <h3 className="mb-3">Login</h3>
+                  </div>
                   {auth_error}
                   <div className="social-login">
                     <GoogleLogin
@@ -248,7 +251,33 @@ class Account extends Component {
               </Form>
               <Form id="signup-form" onSubmit={this.signupSubmit}>
                   <img className="login-logo" src="/logo.svg" alt="logo"/>
-                <div className="p-4 p-md-5">
+                <div className="px-5 pb-5 pt-4">
+                  <div className="text-center">
+                    <h3 className="mb-3">Sign Up</h3>
+                  </div>
+                  {auth_error}
+                  <div className="social-login">
+                    <GoogleLogin
+                      clientId={googleClient}
+                      className="social-button class-ggl mb-2"
+                      buttonText="Sign up with Google"
+                      onSuccess={this.googleLogin}
+                      onFailure={this.googleLoginError}
+                    />
+                    <FacebookLogin
+                      appId={fbId}
+                      cssClass="social-button class-fb"
+                      icon="fa-facebook"
+                      textButton="Sign up with Facebook"
+                      fields="name,email"
+                      callback={this.fbLogin}
+                    />
+                    <div className="break">
+                      <span className="or">
+                        OR
+                      </span>
+                    </div>
+                  </div>
                   {signup_error}
                   <FormGroup>
                     <Label for="name">Name</Label>

@@ -247,6 +247,7 @@ class Menu extends PureComponent {
                     enterFlow={this.props.enterFlow}
                     copyFlow={this.copyFlow}
                     deleteFlow={this.deleteFlow}
+                    history={this.props.history}
                 />
             default:
                 return <Blocks user_modules={this.props.user_modules}/>
@@ -292,9 +293,9 @@ class Menu extends PureComponent {
                         null :
                         <React.Fragment>
                             <div>
-                                <div className='block-title no-select' onClick={() => this.setState({open: false})}>
+                                <div className='block-title no-select mb-3' onClick={() => this.setState({open: false})}>
                                     <h5 className="mb-0">{this.state.tab}</h5>
-                                    <div className="close pl-3 py-3">×</div>
+                                    <div className="close pl-3 py-3">&times;</div>
                                 </div>
                             </div>
                             <div className="sidebar-content">

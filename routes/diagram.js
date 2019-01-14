@@ -349,17 +349,14 @@ const copyDiagram = (req, res) => {
 
     // TODO: There might be no need to modify the flow blocks, i dunno
     const purgeSubflows = (diagram) => {
-        // for (var i = 0; i < diagram.nodes.length; i++) {
-        //     if(diagram.nodes[i].extras.type === 'flow' && diagram.nodes[i].extras.diagram_id){
-        //         diagram.nodes[i].name = 'Flow'
-        //         diagram.nodes[i].extras = {
-        //             type: 'flow',
-        //             diagram_id: null,
-        //             inputs: [],
-        //             outputs: []
-        //         }
-        //     }
-        // }
+        diagram.nodes.forEach(node => {
+            if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+                node.extras.diagram_id = null;
+                if(node.extras.type === 'flow'){
+                    node.name = 'Flow'
+                }
+            }
+        })
         return diagram
     }
 
@@ -481,7 +478,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                     story.lines[node.id] = {
                         end: true
                     }
-                } else if (node.extras.type === 'command' || node.extras.type === 'jump') {
+                } else if (node.extras.type === 'command' || node.extras.type === 'jump' || (node.extras.type === 'intent' && node.extras.intent)) {
 
                     let nextLink = null;
                     for (var j = 0; j < node.ports.length; j++) {
@@ -593,7 +590,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         })
                     }
 
-                } else if (node.extras.type === 'intent') {
+                } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && node.extras.choices)) {
                     
                     let interactions = []
                     node.extras.choices.forEach(choice => {

@@ -9,7 +9,7 @@ const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
 
-const client = new OAuth2Client(process.env.GOOGLE_ID);
+const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -92,7 +92,7 @@ function createLogin(data, cb) {
 async function googleAuth(token, cb) {
   const ticket = await client.verifyIdToken({
     idToken: token,
-    audience: process.env.GOOGLE_ID,
+    audience: getEnvVariable('GOOGLE_ID'),
   });
   const payload = ticket.getPayload();
   const userid = payload['sub'];
@@ -101,7 +101,7 @@ async function googleAuth(token, cb) {
 // googleAuth().catch(console.error);
 
 async function fbAuth(data, cb) {
-  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${process.env.APP_TOKEN}`)
+  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${getEnvVariable('APP_TOKEN')}`)
   .then(res => {
     cb(res);
   })
@@ -269,6 +269,7 @@ const googleLogin = async(req, res) => {
           email = email.trim().toLowerCase();
           pool.query('SELECT 1 FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
             if(err){
+							console.trace(err)
               res.status(500).send("Unable to Access Database");
             }else if(result.rows.length !== 0){
               pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {

@@ -112,10 +112,10 @@ const validateEmail = (email) => {
 const intercom_client = new Intercom.Client({ token: getEnvVariable('INTERCOM_TOKEN') })
 
 const logging_pool = new pg.Pool({
-    user: process.env.LOGGING_USER,
-    host: process.env.LOGGING_HOST,
-    database: process.env.LOGGING_DB,
-    password: process.env.LOGGING_PW,
+    user: getEnvVariable('LOGGING_USER'),
+    host: getEnvVariable('LOGGING_HOST'),
+    database: getEnvVariable('LOGGING_DB'),
+    password: getEnvVariable('LOGGING_PW'),
     port: 5432
 })
 

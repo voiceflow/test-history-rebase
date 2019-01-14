@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
+const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {
 	let formatted_name = name.replace(' ', '_')
@@ -16,16 +17,20 @@ const _getUtterancesWithSlotNames = (utterances, slots) => {
 
 	const utterance_text = utterances.map(e => e.text)
 
-	const new_utterances = utterance_text.map( input => {
+	const new_utterances = utterance_text.map(input => {
 		let new_input = input
 		do {
 			m = re.exec(input)
 			if (m) {
 				const replace = m[1]
 				const key = m[2]
-				const slot =_.find(slots, { key: key })
+				const slot = _.find(slots, {
+					key: key
+				})
 				if (slot) {
-					let slot_name = _.find(slots, { key: key }).name
+					let slot_name = _.find(slots, {
+						key: key
+					}).name
 					slot_name = _formatName(slot_name)
 					new_input = new_input.replace(replace, `{${slot_name}}`)
 				} else {
@@ -50,7 +55,9 @@ const _getSlotsForKeys = (keys, slots) => {
 	key_set = [...key_set]
 
 	return key_set.map(key => {
-		const slot = _.find(slots, {key: key})
+		const slot = _.find(slots, {
+			key: key
+		})
 		return {
 			name: _formatName(slot.name),
 			type: slot.type.value !== 'CUSTOM' ? slot.type.value : _formatName(slot.name)
@@ -70,14 +77,18 @@ const interactionModel = (req) => {
 	const entered_intents = new Set()
 
 	used_intents.forEach(intent_key => {
-		if(typeof intent_key !== 'string') return
+		if (typeof intent_key !== 'string') return
 
 		let intent
-		if(intent_key.startsWith('AMAZON.')){
-			intent = _.find(BUILT_IN_INTENTS, {name: intent_key})
+		if (intent_key.startsWith('AMAZON.')) {
+			intent = _.find(BUILT_IN_INTENTS, {
+				name: intent_key
+			})
 			intent.built_in = true
-		}else{
-			intent = _.find(intents, { key: intent_key })
+		} else {
+			intent = _.find(intents, {
+				key: intent_key
+			})
 		}
 
 		if (!intent) {
@@ -87,7 +98,7 @@ const interactionModel = (req) => {
 
 		const name = _formatName(intent.name)
 
-		if(!entered_intents.has(name)){
+		if (!entered_intents.has(name)) {
 
 			entered_intents.add(name)
 
@@ -98,7 +109,7 @@ const interactionModel = (req) => {
 			if (!intent.built_in) {
 				formatted_intent.samples = _getUtterancesWithSlotNames(intent.inputs, slots)
 				formatted_intent.slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
-			}else {
+			} else {
 				formatted_intent.samples = []
 			}
 
@@ -108,7 +119,7 @@ const interactionModel = (req) => {
 
 	// Write in default intents if they haven't been declared already
 	DEFAULT_INTENTS.forEach(intent => {
-		if(!entered_intents.has(intent.name)){
+		if (!entered_intents.has(intent.name)) {
 			entered_intents.add(intent.name)
 			intents_for_amazon.push(intent)
 		}
@@ -120,7 +131,7 @@ const interactionModel = (req) => {
 	used_choices.forEach(choice => {
 		let reg = new RegExp('[^' + VALID_UTTERANCES + '|]')
 		let safe_choice = choice.replace(reg, ' ')
-		if(safe_choice.trim()){
+		if (safe_choice.trim()) {
 			content_slot_values.push({
 				name: {
 					value: safe_choice
@@ -134,12 +145,10 @@ const interactionModel = (req) => {
 		content_slot_values.push(val)
 	})
 
-	const slot_types = [
-		{
-			"name": "Content",
-			"values": content_slot_values
-		}
-	]
+	const slot_types = [{
+		"name": "Content",
+		"values": content_slot_values
+	}]
 
 	slots.forEach(slot => {
 		if (slot.type.value === 'CUSTOM' || !slot.type.value) {
@@ -147,11 +156,11 @@ const interactionModel = (req) => {
 			const values = slot.inputs.map(input => {
 				return {
 					name: {
-					  value: input
+						value: input
 					}
 				}
 			})
-			if(values.length === 0){
+			if (values.length === 0) {
 				values.push({
 					name: {
 						value: 'empty'
@@ -166,18 +175,22 @@ const interactionModel = (req) => {
 	})
 
 	return {
-	    "interactionModel": {
-	        "languageModel": {
-	            "invocationName": invocation.toLowerCase(),
-	            "intents": intents_for_amazon,
-	            "types": slot_types
-	        }
-	    }
+		"interactionModel": {
+			"languageModel": {
+				"invocationName": invocation.toLowerCase(),
+				"intents": intents_for_amazon,
+				"types": slot_types
+			}
+		}
 	}
 }
 
 const manifest = (r, encoded_id, name) => {
-    r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()));
+	if(r.invocations && Array.isArray(r.invocations.value)){
+		r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()))
+	}else{
+		r.invocations = [`Alexa, open ${r.inv_name}`]
+	}
 	r.keywords = r.keywords.split(",").map(item => item.trim()).filter(word => !!word);
 
 	const localeObj = {
@@ -210,15 +223,15 @@ const manifest = (r, encoded_id, name) => {
 
 	var privacyLocales = null
 
-	if(r.privacy_policy || r.terms_and_cond){
+	if (r.privacy_policy || r.terms_and_cond) {
 		privacyLocales = {}
 
 		r.locales.forEach(locale => {
 			privacyLocales[locale] = {}
-			if(r.terms_and_cond){
+			if (r.terms_and_cond) {
 				privacyLocales[locale].termsOfUseUrl = r.terms_and_cond
 			}
-			if(r.privacy_policy){
+			if (r.privacy_policy) {
 				privacyLocales[locale].privacyPolicyUrl = r.privacy_policy
 			} else {
 				privacyLocales[locale].privacyPolicyUrl = `https://creator.getvoiceflow.com/creator/privacy_policy?name=${name}&skill=${r.name}`
@@ -226,47 +239,55 @@ const manifest = (r, encoded_id, name) => {
 		})
 	}
 
-    let ret = {
-     	"manifest": {
-             "publishingInformation": {
-                 "locales": locales,
-                 "isAvailableWorldwide": true,
-                 "testingInstructions": r.instructions
-             },
-             "apis": {
-                 "custom": {
-                     "endpoint": {
-                         "uri": `${process.env.SKILL_ENDPOINT ? process.env.SKILL_ENDPOINT : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
-                         "sslCertificateType": "Wildcard"
-                     },
-                     "interfaces": [{
-	                 	"type": "AUDIO_PLAYER"
-	                 }, {
-						 "type": "ALEXA_PRESENTATION_APL"
-					 }]
-                 }
-             },
-             "manifestVersion": "1.0",
-             "privacyAndCompliance": {
-                 "allowsPurchases": r.purchase,
-                 "isExportCompliant": r.export,
-                 "isChildDirected": r.copa,
-                 "usesPersonalInfo": r.personal,
-                 "containsAds": r.ads
-			 }
-         }
-    }
-    if(r.category){
-    	ret.manifest.publishingInformation.category = r.category
-    }
-    if(privacyLocales){
-    	ret.manifest.privacyAndCompliance.locales = privacyLocales
-    }
-    if(Array.isArray(r.permissions) && r.permissions.length !== 0){
-    	ret.manifest.permissions = r.permissions;
-    }
+	const interfaces = [{
+		"type": "AUDIO_PLAYER"
+	}, {
+		"type": "ALEXA_PRESENTATION_APL"
+	}]
+	const fulfillment = r.fulfillment
+	if (fulfillment && Object.keys(fulfillment).length > 0) {
+		interfaces.push({
+			"type": "CAN_FULFILL_INTENT_REQUEST"
+		})
+	}
 
-    return ret;
+	let ret = {
+		"manifest": {
+			"publishingInformation": {
+				"locales": locales,
+				"isAvailableWorldwide": true,
+				"testingInstructions": r.instructions
+			},
+			"apis": {
+				"custom": {
+					"endpoint": {
+						"uri": `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
+						"sslCertificateType": "Wildcard"
+					},
+					"interfaces": interfaces
+				}
+			},
+			"manifestVersion": "1.0",
+			"privacyAndCompliance": {
+				"allowsPurchases": r.purchase,
+				"isExportCompliant": r.export,
+				"isChildDirected": r.copa,
+				"usesPersonalInfo": r.personal,
+				"containsAds": r.ads
+			}
+		}
+	}
+	if (r.category) {
+		ret.manifest.publishingInformation.category = r.category
+	}
+	if (privacyLocales) {
+		ret.manifest.privacyAndCompliance.locales = privacyLocales
+	}
+	if (Array.isArray(r.permissions) && r.permissions.length !== 0) {
+		ret.manifest.permissions = r.permissions;
+	}
+
+	return ret;
 }
 
 

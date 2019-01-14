@@ -22,6 +22,7 @@ import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
+import Templates from './views/pages/Templates'
 // import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
@@ -143,12 +144,12 @@ class App extends Component {
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" login component={Register} />
                 <PublicRoute exact path="/signup" name="SignUp" component={Register} />
+                {/* Template Routes */}
+                <PrivateRoute exact path="/templates" component={Templates}/>
                 {/* Canvas Routes */}
-                <PrivateRoute exact path="/canvas/new" component={Skill} page="canvas" new/>
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
-                <PrivateRoute path="/settings/:skill_id" component={Skill} page="settings"/>
                 {/* Products Routes */}
                 <PrivateRoute path="/products/:skill_id/template/:id" component={Skill} page="products" secondaryPage="edit" />
                 <PrivateRoute path="/products/:skill_id" component={Skill} page="products" secondaryPage="home"/>
@@ -156,15 +157,20 @@ class App extends Component {
                 <PrivateRoute path="/business/:skill_id/email/template/:id" component={Skill} page='business' secondaryPage="template"/>
                 <PrivateRoute path="/business/:skill_id/email/templates" component={Skill} page='business' secondaryPage="emails"/>
                 <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
+                {/* Settings routes */}
+                <PrivateRoute path="/settings/:skill_id/discovery/canfulfill/:id" component={Skill} page='settings' secondaryPage="discovery"/>
+                <PrivateRoute path="/settings/:skill_id/discovery/" component={Skill} page='settings' secondaryPage="discovery"/>
+                <PrivateRoute path="/settings/:skill_id/basic/" component={Skill} page='settings' secondaryPage="basic"/>
+                <PrivateRoute path="/settings/:skill_id/advanced/" component={Skill} page='settings' secondaryPage="advanced"/>
                 {/* Admin routes */}
                 <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
+                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />

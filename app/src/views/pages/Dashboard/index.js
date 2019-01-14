@@ -129,10 +129,12 @@ class DashBoard extends Component {
     copySkill(skill_id) {
         axios.post(`/skill/${skill_id}/${window.user_detail.id}/copy`)
         .then(res => {
-            let skills = this.state.skills
-            let filter_skills = this.state.filter_skills
+            let skills = this.state.skills.slice()
+            let filter_skills = this.state.filter_skills.slice()
+
             skills.push(res.data)
             filter_skills.push(res.data)
+
             this.setState({
                 skills: skills,
                 filter_skills: filter_skills,
@@ -167,19 +169,19 @@ class DashBoard extends Component {
         let skills;
 
         if(this.state.filter_skills === null){
-            skills = <div className="super-center w-100 text-muted mt-5">
-                        <div className="text-center">
-                            <h5 className="pb-3">Loading Skills</h5>
-                            <h1><span className="loader"/></h1>
-                        </div>
-                     </div>
-        }else if(this.state.filter_skills.length === 0){
+            skills = <div id="loading-diagram">
+                <div className="text-center">
+                    <h5 className="text-muted mb-2">Loading Skills</h5>
+                    <span className="loader"/>
+                </div>
+            </div>
+        }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
             skills = <div className="super-center w-100 text-muted mt-5">
                 <div className="horizontal-center mt-5">
                     <div className="">
                       <div className="card-body p-4">
                         <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" style={{height: 259}} className="mb-5"/><br/>
-                        <Link to="/canvas/new" className="no-underline super-center">
+                        <Link to="/templates" className="no-underline super-center">
                             <button varient="contained" className="purple-btn w-75" id="createskill">Create Skill</button>
                         </Link>
                             <small>
@@ -249,7 +251,7 @@ class DashBoard extends Component {
                         )
                     })}
                     <EmptyCard
-                        onClick={() => this.props.history.push(`/canvas/new`)}
+                        onClick={() => this.props.history.push(`/templates`)}
                     />
                 </Masonry>
             </React.Fragment>
@@ -260,7 +262,7 @@ class DashBoard extends Component {
                 <div className="subheader">
                     <div className="container space-between">
                         <span className="subheader-title">
-                            <b>Dashboard</b>
+                            Dashboard
                             <div className="hr-label">
                                 <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
@@ -269,8 +271,8 @@ class DashBoard extends Component {
                             </div>
                         </span>
                         <div className="subheader-right">
-                            <Link to="/canvas/new" className="no-underline">
-                                <button varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Project</button>
+                            <Link to="/templates" className="no-underline">
+                                <button varient="contained" className="btn purple-btn">New Project</button>
                             </Link>
                         </div>
                     </div>

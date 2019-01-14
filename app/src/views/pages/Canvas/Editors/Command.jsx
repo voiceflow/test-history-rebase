@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup, InputGroup, Input } from 'reactstrap'
+import { Button, ButtonGroup, InputGroup, Input, Alert } from 'reactstrap'
 import Select from 'react-select'
 import {Tooltip} from 'react-tippy'
 import SlotMappings from './components/SlotMappings' 
@@ -162,8 +162,13 @@ class Command extends Component {
             <div className="choice-block pb-4 pt-3 mt-3">
                 {this.state.node.extras.diagram_id ? 
                     <React.Fragment>
-                        <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2"/>{diagram_name}</span></h5>
-                        <Button block className="mt-3" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
+                        {diagram_name ? <React.Fragment>
+                            <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2"/>{diagram_name}</span></h5>
+                            <Button block className="mt-3" onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
+                        </React.Fragment> :  <Alert color="danger" className="text-center">
+                            <i className="fas fa-exclamation-triangle fa-2x mb-2"/><br/>
+                            Unable to Retrieve Flow - This Flow may be broken or deleted
+                        </Alert>}
                         <Button block className="mt-2" onClick={() => {let node = this.state.node; node.extras.diagram_id=null; this.setState({node: node})}} color="clear">Unlink Flow</Button>
                     </React.Fragment> :
                     <React.Fragment>

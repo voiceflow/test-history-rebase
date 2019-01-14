@@ -1,5 +1,12 @@
 const { pool, hashids, docClient } = require('./../services');
-const { renderDiagram } = require('./diagram');
+const { renderDiagram } = require('./diagram')
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+	ADMIN_MARKETPLACE_ACC = 19
+}else{
+	ADMIN_MARKETPLACE_ACC = 2125
+}
+const { copySkill, latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 const { getEnvVariable } = require('../util')
 
 const module_limit = 10;
@@ -10,7 +17,6 @@ const hashIds = (rows) => {
 		rows[i].creator_id = hashids.encode(rows[i].creator_id);
 	}
 }
-
 
 const getModules = (req, res) => {
 	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id INNER JOIN creators ON creators.creator_id = modules.creator_id LIMIT $1', 
@@ -124,10 +130,10 @@ const saveCertification = (req, res) => {
 const giveCertification = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	const updateVersionTable = (market_id, module_id) => {
+	const updateVersionTable = (market_id, module_id, template_skill_id) => {
 		pool.query(
-			`UPDATE versions SET diagram_id = $1, cert_approved = now() WHERE module_id = $2 AND cert_approved IS NULL`,
-			[market_id, module_id],
+			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
+			[market_id, template_skill_id, module_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -139,17 +145,19 @@ const giveCertification = (req, res) => {
 		)	
 	}
 
-	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		async (err, data) => {
 			if(err){
 				console.log(err);
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
-					let version_id = data.rows[0].version_id;
-					let diagram_id = data.rows[0].diagram_id;
-					let module_id = data.rows[0].module_id;
-					let market_id = "$" + version_id + '_' + diagram_id;
+					let version_id = data.rows[0].version_id
+					let diagram_id = data.rows[0].diagram_id
+					let module_id = data.rows[0].module_id
+					let skill_id = data.rows[0].skill_id
+					let market_id = "$" + version_id + '_' + diagram_id
+					
 
 					if(data.rows[0].type === 'FLOW') {
 						let status = await renderDiagram(req.user, diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
@@ -160,34 +168,14 @@ const giveCertification = (req, res) => {
 							res.sendStatus(500);
 						}
 					} else {
-						// Copy current diagram's data to new entry on market
-						let params = {
-					        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-					        Key: {'id': diagram_id}
-						};
-					    docClient.get(params, (err, data) => {
-					        if (err) {
-					            console.log(err);
-					            res.sendStatus(err.statusCode);
-					        } else if (data.Item) {
-								data.Item.id = market_id;
-								let params = {
-									TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
-									Item: data.Item
-								};
-								docClient.put(params, (err, data) => {
-									if(err){
-										console.log(err);
-										res.sendStatus(500);
-									} else {
-										updateVersionTable(market_id, module_id);
-									}
-								});
-					        } else {
-					            res.sendStatus(404);
-					        }
-					    });
-						
+						// Alter request object to conform to copy skill, able to do this since we don't use req anymore in this fcn
+						req.params.id = hashids.encode(skill_id)
+						req.params.target_creator = ADMIN_MARKETPLACE_ACC
+						req.user.id = data.rows[0].creator_id
+						copySkill(req, res, (row) => {
+							let new_skill_id = hashids.decode(row.skill_id)[0]
+							updateVersionTable(row.diagram, module_id, new_skill_id)
+						}, false)
 					}
 					
 				}else{
@@ -205,7 +193,7 @@ const requestCertification = (req, res) => {
 	const createNewVersion = (skill_id, diagram_id, module_id, global) => {
 		// Retrieve most recent version
 		pool.query(
-			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
+			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
 			[skill_id],
 			(err, data) => {
 				if(err){
@@ -241,7 +229,7 @@ const requestCertification = (req, res) => {
 	}
 
 	const getModule = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
+		pool.query(`SELECT * FROM modules WHERE modules.skill_id = $1`, [skill_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -256,7 +244,7 @@ const requestCertification = (req, res) => {
 	}
 
 	const checkVersions = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 			(err, data) => {
 				if(err){
 					console.log(err);
@@ -294,7 +282,7 @@ const requestCertification = (req, res) => {
 const certStatus = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		(err, data) => {
 			if(err){
 				console.log(err);
@@ -471,7 +459,7 @@ const getUserModules = (req, res) => {
 		[user_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				console.trace(err);
 				res.sendStatus(500);
 			}else{
 				hashIds(data.rows);
@@ -495,6 +483,7 @@ const retrieveTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
+					console.log(data.rows[0])
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
 						TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
@@ -537,6 +526,107 @@ const getPendingModules = (req, res) => {
 	)
 }
 
+const getDefaultTemplates = (req, res) => {
+	pool.query(
+		`
+		SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
+			ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type, ultimate_versions.template_skill_id
+		FROM 
+		(SELECT versions.module_id, versions.version_id, versions.diagram_id, versions.template_skill_id FROM 
+			(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
+			INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
+		) AS ultimate_versions  
+		INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
+		WHERE modules.template_index > 0 ORDER BY modules.template_index DESC
+		`,
+		[],
+		(err, data) => {
+			if(err){
+				console.error(err)
+				res.sendStatus(500)
+			} else {
+				hashIds(data.rows)
+				res.send(data.rows)
+			}
+		}
+	)
+}
+
+// NEW PROJECTS CREATED HERE
+const copyDefaultTemplate = (req, res) => {
+	let module_id = hashids.decode(req.params.module_id)[0]
+
+	// Retrive diagram, trying 5 times 
+	const getDiagram = (row, num_tries) => {
+		let params = {
+			TableName: `${process.env.DIAGRAMS_DYNAMO_TABLE}`,
+			Key: {'id': row.diagram}
+		}
+
+		docClient.get(params, (err, data) => {
+			if (err) {
+				console.log(err)
+				res.sendStatus(err.statusCode)
+			} else if (data.Item) {
+				res.send({
+					skill: row,
+					diagram: data.Item
+				})
+			} else if (num_tries < 5) {
+				getDiagram(row, num_tries + 1)
+			} else {
+				res.sendStatus(500)
+			}
+		})
+	}
+
+	const updateSkill = (skill) => {
+		if(req.body.name && Array.isArray(req.body.locales)){
+			let name = req.body.name
+			let invs = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
+			let sum = `This is a new summary for the skill ${name}`;
+			let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
+			let locales = ['en-US']
+		
+			if (req.body.locales) {
+				locales = req.body.locales
+			}
+		
+			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6 WHERE skill_id = $7`,
+					[name, sum, desc, invs, name, JSON.stringify(locales), hashids.decode(skill.skill_id)[0]], (err) => {
+				if(err){
+					console.error(err)
+					res.sendStatus(500)
+				} else {
+					incrementSkillsCreatedIntercom(req.user.id)
+					latestSkillToIntercom(req.user.id, name)
+					res.send(skill)
+				}
+			})
+		}
+	}
+
+	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
+		[module_id],
+		(err, data) => {
+			if(err){
+				console.log(err)
+				res.sendStatus(500)
+			} else {
+				if(data.rows.length > 0){
+					let template_skill_id = hashids.encode(data.rows[0].template_skill_id)
+					req.params.id = template_skill_id
+					req.params.target_creator = req.user.id
+					req.user.id = ADMIN_MARKETPLACE_ACC
+					copySkill(req, res, updateSkill, true)
+				} else {
+					res.sendStatus(500)
+				}
+			}
+		}
+	)
+}
+
 module.exports = {
 	getModules: getModules,
 	getModule: getModule,
@@ -552,5 +642,7 @@ module.exports = {
 	getCertModule: getCertModule,
 	getUserModules: getUserModules,
 	retrieveTemplate: retrieveTemplate,
-	getPendingModules: getPendingModules
+	getPendingModules: getPendingModules,
+	getDefaultTemplates: getDefaultTemplates,
+	copyDefaultTemplate: copyDefaultTemplate
 }

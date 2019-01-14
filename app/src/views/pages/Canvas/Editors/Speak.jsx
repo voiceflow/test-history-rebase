@@ -6,6 +6,8 @@ import {Collapse, Input, InputGroup} from 'reactstrap';
 import AudioDrop from '../../../components/Uploads/AudioDrop'
 import { VOICES } from '../Constants'
 
+const BLOCK_LIMIT = 50
+
 class Speak extends Component {
 
     constructor(props) {
@@ -44,7 +46,7 @@ class Speak extends Component {
 
     handleAddBlock(audio=false) {
         var node = this.state.node;
-        if(node.extras.dialogs.length < 20){
+        if(node.extras.dialogs.length < BLOCK_LIMIT){
             if(audio){
                 node.extras.dialogs.push({
                     index: randomstring.generate(5),
@@ -135,22 +137,22 @@ class Speak extends Component {
                         </div>
                     }
                 })}
-                { properties.dialogs.length < 20 ?
+                { properties.dialogs.length < BLOCK_LIMIT ?
                     <React.Fragment>
                         <div className="d-flex my-3">
                             <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
-                                <i className="fas fa-comment-alt"/>
+                                <img src={'/comment.svg'} alt="comment" width='30px'/>
                                 Add Speech
                             </button>
-                            <button className="btn btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
-                                <i className="fas fa-volume-up"/> 
+                            <button className="btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
+                            <img src={'/volume.svg'} alt="volume" width='30px'/>
                                 Add Audio
                             </button>
                         </div>
                         <InputGroup className="my-2">
-                            <label className="input-group-text w-100 m-0 text-left">
+                            <label className="input-group-text w-100 text-left">
                                 <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
-                                <span className="ml-2 span-small">Output Random Entry</span>
+                                <span>Output Random Entry</span>
                             </label>
                         </InputGroup>
                     </React.Fragment>

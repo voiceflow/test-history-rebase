@@ -136,6 +136,7 @@ class Canvas extends Component {
         this.updateFulfillmentOnDeletion = this.updateFulfillmentOnDeletion.bind(this)
         this.deleteNodeManually = this.deleteNodeManually.bind(this)
         this.mouseMove = this.mouseMove.bind(this)
+        this.centerDiagram = this.centerDiagram.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -483,7 +484,6 @@ class Canvas extends Component {
     }
 
     clickDiagram(e){
-        this.diagram_focus = true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
         if (selected.length === 1 && selected[0].extras.type !== 'comment') {
@@ -526,8 +526,9 @@ class Canvas extends Component {
                 this.setState({spotlight: false})
             }
         } else if (this.diagram_focus) {
-            if(event.keyCode === 0 || event.keyCode === 32) {
+            if((event.keyCode === 0 || event.keyCode === 32)) {
                 // SPACE KEY
+                this.onDiagramUnfocus()
                 this.setState({spotlight: true})
                 event.preventDefault()
                 event.stopPropagation()
@@ -1446,6 +1447,23 @@ class Canvas extends Component {
         this.props.updateSkill(skill)
     }
 
+    centerDiagram(){
+        // RECENTERS THE DIAGRAM ON THE START BLOCK
+        let model = this.state.engine.getDiagramModel()
+        let nodes = model.getNodes()
+        for (let key in nodes) {
+            if(nodes[key].extras && nodes[key].extras.type === 'story'){
+                this.state.engine.setSuperSelect(nodes[key])
+                nodes[key].setSelected()
+                this.setState({open: true})
+                model.setZoomLevel(80)
+                model.setOffset((300)-(nodes[key].x*0.8), (300)-(nodes[key].y*0.8))
+                this.repaint()
+                return
+            }
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1487,6 +1505,7 @@ class Canvas extends Component {
                         diagrams={this.state.diagrams}
                         slots={this.state.skill.slots}
                         globals={this.state.global_variables}
+                        unfocus={this.onDiagramUnfocus}
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
@@ -1564,13 +1583,16 @@ class Canvas extends Component {
                         className={this.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
+                        onMouseOver={()=>this.diagram_focus=true}
+                        onMouseLeave={()=>this.diagram_focus=false}
                         onClick={this.clickDiagram}
                     >
                         <div id="widget-bar">
                             <ButtonGroup>
-                                <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
-                                <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
+                                <button onClick={()=>this.zoom(1000)} className="white-circ round-left"><i className="far fa-plus"/></button>
+                                <button onClick={()=>this.zoom(-1000)} className="white-circ round-right"><i className="far fa-minus"/></button>
                             </ButtonGroup>
+                            <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
                         </div>
                         <SRD.DiagramWidget
                             diagramEngine={this.state.engine}

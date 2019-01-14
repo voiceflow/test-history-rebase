@@ -10,7 +10,7 @@ class TitleBar extends PureComponent {
                     <div className="skill-name">
                         {!!block && block.name !== 'ROOT' && block.name}
                     </div>
-                    <MUIButton id="test" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><i className="fas fa-play"/></span></MUIButton>
+                    <MUIButton id="test" className="white-btn play" onClick={this.props.onTest}><span className="words">Test</span><span className="button-circle"><img src={'/play.svg'} alt="play" width='10'/></span></MUIButton>
                 </div>
             </div>
         );

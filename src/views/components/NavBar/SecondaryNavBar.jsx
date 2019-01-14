@@ -16,7 +16,11 @@ class SecondaryNavBar extends Component {
                 {page}
             </div>
         }else if(this.props.skill){
-            return <Link to={`/${page}/${this.props.skill.skill_id}`} key={page} className="nav-item">
+            let suffix = ''
+            if (page === 'settings') {
+                suffix = 'basic'
+            }
+            return <Link to={`/${page}/${this.props.skill.skill_id}/${suffix}`} key={page} className="nav-item">
                 {page}
             </Link>
         }else{
@@ -36,10 +40,10 @@ class SecondaryNavBar extends Component {
                     <React.Fragment>
                         {this.props.page === 'logs' ? 
                             <div className="nav-item-2 active">
-                                <i className="far fa-window-alt"/>
+                                <img src={'/logs.svg'} alt="logs"/>
                             </div> :
                             <Link to={`/creator_logs/${this.props.skill.skill_id}`} className="nav-item">
-                                <i className="far fa-window-alt"/>
+                                <img src={'/logs.svg'} alt="logs"/>
                             </Link>
                         }
                     </React.Fragment>

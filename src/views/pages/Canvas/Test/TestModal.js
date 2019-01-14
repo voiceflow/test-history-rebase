@@ -563,7 +563,7 @@ class TestModal extends React.Component {
                             if(chat.self){
                               return <div className="mt-2 text-right" key={i}>
                                 <div className="self-message message border rounded p-2 align-self-start">
-                                  <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-primary">{chat.time}</small></p>
+                                  <p className="mb-0 px-1 text-left">{chat.self}<br/><small className="text-muted">{chat.time}</small></p>
                                 </div>
                               </div>
                             }else if(chat.debug){
@@ -583,14 +583,14 @@ class TestModal extends React.Component {
                             }else if(chat.text){
                               return <div className="mt-2 text-left" key={i}>
                                 <div className="message border rounded p-2 align-self-start">
-                                  <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-primary">{chat.time}</small></p>
+                                  <p className="mb-0 px-1 text-left">{chat.text}<br/><small className="text-muted">{chat.time}</small></p>
                                 </div>
                               </div>
                             }else{
                               return <div className="mt-2 text-left" key={i}>
                                 <div className="message border rounded align-self-start">
                                   <div className="message-container p-2">
-                                    <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-primary">{chat.time}</small></p>
+                                    <p className="mb-0 px-1 text-left"><span className="text-muted"><i className="fas fa-volume-up"></i></span> {chat.src}<br/><small className="text-muted">{chat.time}</small></p>
                                   </div>
                                   <div className="message-progress" style={{width: ((chat.currentTime/chat.duration) * 100)+"%"}}>
                                   </div>
@@ -615,8 +615,8 @@ class TestModal extends React.Component {
                             :
                             <Form onSubmit={this.inputSubmit} className="px-3 mb-3">
                               <InputGroup>
-                                <Input className='form-bg form-control-left'name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
-                                <InputGroupAddon addonType="append"><Button color="primary" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
+                                <Input className='form-bg form-control' name="input" type="text" placeholder="response" value={this.state.input} onChange={this.handleChange} onKeyDown={this.onKeyDown}/>
+                                <InputGroupAddon addonType="append"><Button color="primary btn-thicc" type="submit"><i className="fas fa-bullhorn"></i></Button></InputGroupAddon>
                               </InputGroup>
                             </Form>
                           }
@@ -624,17 +624,21 @@ class TestModal extends React.Component {
                       }
                     </React.Fragment> :
                     <div className="p-3">
-                      <h6><b>Start Project from the beginning</b></h6>
-                      <Button color="primary" onClick={this.beginning} size="lg" block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp; Start From Beginning</Button>
-                      <hr/>
-                      <h6><b>Start from a specific point in the project</b></h6>
+                      <h6 className="mt-3 mb-3">Start Project from the beginning</h6>
+                      <button className="purple-btn mb-3" onClick={this.beginning} block><i className="fas fa-play"></i>&nbsp;&nbsp;&nbsp;Start Test</button>
+                      <div className="break">
+                      <span className="or">
+                        OR
+                      </span>
+                    </div>
+                      <h6 className="mt-4 mb-3">Start from a specific point in the project</h6>
                       <Select
                         classNamePrefix="select-box"
-                        className="text-left mb-2" 
+                        className="text-left mb-3 w-75 ml-5 pl-4" 
                         value={this.state.selected_line}
                         onChange={this.handleLineSelection}
                         options={this.state.nodes} />
-                      <Button color="primary" onClick={this.startline} size="lg" block><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp; Start From Block</Button>
+                      <button className="purple-btn" onClick={this.startline} block><i className="fas fa-fast-forward"></i>&nbsp;&nbsp;&nbsp;Start From Block</button>
                     </div>
                   }
                 </div>

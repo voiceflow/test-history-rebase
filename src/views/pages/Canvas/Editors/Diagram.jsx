@@ -137,13 +137,13 @@ class DiagramBlock extends Component {
                                 </React.Fragment>
                         : null}
                         <label>Create a New Flow</label>
-                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node)}>
+                        <Button className="btn-primary btn-block btn-lg btn btn-secondary" onClick={() => this.props.createDiagram(this.state.node)}>
                             Create New Flow <i className="fas fa-sign-in"/>
                         </Button>
                     </React.Fragment>
                     : 
                     <React.Fragment>
-                        <Button block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
+                        <Button className="btn-primary btn-block btn-lg btn btn-secondary mb-3" block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
                         <label>Input Variables</label>
                         <DiagramVariables
                             arg1_options={this.props.variables}

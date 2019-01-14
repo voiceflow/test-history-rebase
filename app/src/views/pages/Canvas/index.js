@@ -134,6 +134,7 @@ class Canvas extends Component {
         this.setCanFulfill = this.setCanFulfill.bind(this)
         this.updateFulfillmentOnDeletion = this.updateFulfillmentOnDeletion.bind(this)
         this.deleteNodeManually = this.deleteNodeManually.bind(this)
+        this.mouseMove = this.mouseMove.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -287,6 +288,11 @@ class Canvas extends Component {
             console.error(err)
             // this.props.onError('Unable to Retrieve Visual Templates')
         }
+    }
+
+    mouseMove({clientX, clientY}){
+        this.mouseX = clientX
+        this.mouseY = clientY
     }
 
     zoom(delta){
@@ -476,6 +482,7 @@ class Canvas extends Component {
     }
 
     clickDiagram(e){
+        this.diagram_focus = true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
         if (selected.length === 1 && selected[0].extras.type !== 'comment') {
@@ -513,15 +520,18 @@ class Canvas extends Component {
             }
 
             return false
+        } else if(event.keyCode === 27) {
+            if(this.state.spotlight){
+                this.setState({spotlight: false})
+            }
+        } else if (this.diagram_focus) {
+            if(event.keyCode === 0 || event.keyCode === 32) {
+                // SPACE KEY
+                this.setState({spotlight: true})
+                event.preventDefault()
+                event.stopPropagation()
+            }
         }
-        // else if(event.keyCode === 0 || event.keyCode === 32){
-        //     // SPACE KEY
-        //     this.setState({spotlight: true})
-        // }else if(event.keyCode === 27){
-        //     if(this.state.spotlight){
-        //         this.setState({spotlight: false})
-        //     }
-        // }
     }
 
     loadProducts(){
@@ -565,6 +575,7 @@ class Canvas extends Component {
     }
 
     onDiagramUnfocus() {
+        this.diagram_focus = false
         this.state.engine.getDiagramModel().clearSelection()
     }
 
@@ -1156,8 +1167,8 @@ class Canvas extends Component {
         if(typeof event === 'string'){
             type = event
             event = {
-                clientX: window.innerWidth / 2,
-                clientY:  window.innerHeight / 2
+                clientX: this.mouseX,
+                clientY: this.mouseY
             }
             if(this.state.spotlight){
                 this.setState({spotlight: false})
@@ -1454,7 +1465,7 @@ class Canvas extends Component {
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
-                <div id="canvas">
+                <div id="canvas" onMouseMove={this.mouseMove}>
                     <Menu
                         unfocus={this.onDiagramUnfocus}
                         helpModal={() => this.setState({help: true, helpOpen: true})}

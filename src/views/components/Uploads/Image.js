@@ -96,7 +96,7 @@ class Image extends Component {
             >
                 <div className="w-100">
                     <div className="drop-child">
-                        <b>Drag-n-Drop Image</b><br/>
+                        Drag-n-Drop Image<br/>
                         <small>OR</small><br/>
                         <div className="space-between">
                             <div className="upload-btn btn btn-primary-small">

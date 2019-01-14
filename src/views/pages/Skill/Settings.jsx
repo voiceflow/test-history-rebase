@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Input, Alert, ButtonGroup, Button, FormGroup, Label } from 'reactstrap'
+import { Input, Alert, ButtonGroup, Button, FormGroup, Label, Table } from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
 import Prompt from './Prompt'
 import {clone} from 'lodash'
 
-const TABS = ['basic', 'advanced']
+const TABS = ['basic', 'advanced', 'backups']
 
 class Settings extends Component {
     constructor(props) {
@@ -149,6 +149,34 @@ class Settings extends Component {
                         </Alert>
                     </FormGroup>
                 </React.Fragment>
+            case 'backups':
+            return <React.Fragment>
+                <FormGroup>
+                    <Label>Backups</Label>
+                    <div className="helper-text mb-2">Restore your skill to previous versions, saved when you upload your skill to Alexa.</div>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Saved</th>
+                                <th>Blocks</th>
+                                <th>Preview</th>
+                                <th>Restore</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.props.versions.map((version, i) => {
+                                return <tr key={i}>
+                                    <td>{version.created}</td>
+                                    <td>199</td>
+                                    <td>{version.skill_id}</td>
+                                    <td>Restore</td>
+                                </tr>
+                            })}
+                        </tbody>
+
+                    </Table>
+                </FormGroup>
+            </React.Fragment>
             default:
                 return <React.Fragment>
                     <FormGroup className='w-75 form-bg'>

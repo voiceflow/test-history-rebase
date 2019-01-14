@@ -112,7 +112,20 @@ class Skill extends Component {
             // TODO ERROR MESSAGE
             console.error(err.response)
             this.setState({
-                error: 'Unable to Load Project'
+                error: 'Unable to load project'
+            })
+        })
+
+        axios.get(`/skill/${skill_id}/versions`)
+        .then(res => {
+            this.setState({
+                versions: res.data
+            })
+        })
+        .catch(err => {
+            console.error(err.response)
+            this.setState({
+                error: 'Unable to load versions'
             })
         })
     }
@@ -126,7 +139,7 @@ class Skill extends Component {
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':
-                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Settings {...this.props} skill={this.state.skill} versions={this.state.versions} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':

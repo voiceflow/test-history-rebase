@@ -152,7 +152,7 @@ class Speak extends Component {
                         <InputGroup className="my-2">
                             <label className="input-group-text w-100 text-left">
                                 <Input addon type="checkbox" checked={!!properties.randomize} onChange={()=>{properties.randomize = !properties.randomize; this.forceUpdate()}}/>
-                                <span>Output Random Entry</span>
+                                <span className="ml-1">Output Random Entry</span>
                             </label>
                         </InputGroup>
                     </React.Fragment>

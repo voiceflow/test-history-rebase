@@ -390,10 +390,10 @@ class ActionGroup extends PureComponent {
             </Modal>
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
-                <div className="toggle-google">
+                <div className="title-group-sub">
                     <Tooltip
                         distance={16}
-                        title={this.props.isGoogle ? "Switch to Amazon" : "Switch to Google"}
+                        title={this.props.isGoogle ? "Switch to Amazon View" : "Switch to Google View"}
                         position="bottom"
                     >
                         <MUIButton variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
@@ -406,8 +406,6 @@ class ActionGroup extends PureComponent {
                             }
                         </MUIButton>
                     </Tooltip>
-                </div>
-                <div className="title-group-sub">
                     <Tooltip
                         title="Share"
                         position="bottom"

@@ -1653,5 +1653,21 @@ const VOICES = [
   }
 ]
 
+const ALLOWED_GOOGLE_BLOCKS = [
+  'choice',
+  'speak',
+  'start',
+  'if',
+  'set',
+  'capture',
+  'random',
+  'api',
+  'flow',
+  'comment',
+  'card',
+  'mail'
+]
+
 exports.VOICES = VOICES
 exports.BUILT_IN_INTENTS = BUILT_IN_INTENTS;
+exports.ALLOWED_GOOGLE_BLOCKS = ALLOWED_GOOGLE_BLOCKS;

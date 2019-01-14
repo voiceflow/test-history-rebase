@@ -254,8 +254,8 @@ class LightCanvas extends Component {
                     >
                         <div id="widget-bar">
                             <ButtonGroup>
-                                <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
-                                <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
+                                <button onClick={()=>this.zoom(1000)} className="white-circ round-left"><i className="far fa-plus"/></button>
+                                <button onClick={()=>this.zoom(-1000)} className="white-circ round-right"><i className="far fa-minus"/></button>
                             </ButtonGroup>
                         </div>
                         <SRD.DiagramWidget

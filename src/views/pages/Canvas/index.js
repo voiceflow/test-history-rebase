@@ -135,6 +135,7 @@ class Canvas extends Component {
         this.updateFulfillmentOnDeletion = this.updateFulfillmentOnDeletion.bind(this)
         this.deleteNodeManually = this.deleteNodeManually.bind(this)
         this.mouseMove = this.mouseMove.bind(this)
+        this.centerDiagram = this.centerDiagram.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -1423,6 +1424,23 @@ class Canvas extends Component {
         this.props.updateSkill(skill)
     }
 
+    centerDiagram(){
+        // RECENTERS THE DIAGRAM ON THE START BLOCK
+        let model = this.state.engine.getDiagramModel()
+        let nodes = model.getNodes()
+        for (let key in nodes) {
+            if(nodes[key].extras && nodes[key].extras.type === 'story'){
+                this.state.engine.setSuperSelect(nodes[key])
+                nodes[key].setSelected()
+                this.setState({open: true})
+                model.setZoomLevel(80)
+                model.setOffset(nodes[key].x+850, nodes[key].y-600)
+                this.repaint()
+                return
+            }
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1543,9 +1561,10 @@ class Canvas extends Component {
                     >
                         <div id="widget-bar">
                             <ButtonGroup>
-                                <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
-                                <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
+                                <button onClick={()=>this.zoom(1000)} className="white-circ round-left"><i className="far fa-plus"/></button>
+                                <button onClick={()=>this.zoom(-1000)} className="white-circ round-right"><i className="far fa-minus"/></button>
                             </ButtonGroup>
+                            <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
                         </div>
                         <SRD.DiagramWidget
                             diagramEngine={this.state.engine}

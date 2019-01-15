@@ -484,6 +484,10 @@ exports.patchSkill = (req, res) => {
         b.locales = JSON.stringify(b.locales)
     }
 
+    if(!b.fulfillment){
+        b.fulfillment = '{}'
+    }
+
     if(req.query.settings){
         pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, fulfillment = $7 WHERE skill_id = $1 AND creator_id = $2`,
         [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.fulfillment], (err) => {

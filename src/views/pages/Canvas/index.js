@@ -482,14 +482,19 @@ class Canvas extends Component {
     }
 
     clickDiagram(e){
+        this.diagram_focus=true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
-        if (selected.length === 1 && selected[0].extras.type !== 'comment') {
-            engine.setSuperSelect(selected[0])
-            this.setState({
-                engine: engine,
-                open: true
-            })
+        if (selected.length === 1) {
+            if(selected[0].extras.type === 'comment'){
+                this.diagram_focus=false
+            }else{
+                engine.setSuperSelect(selected[0])
+                this.setState({
+                    engine: engine,
+                    open: true
+                })
+            }
         } else if (selected.length === 0) {
             let model = engine.getDiagramModel()
             let nodes = model.getNodes()
@@ -1557,7 +1562,6 @@ class Canvas extends Component {
                         className={this.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
-                        onMouseOver={()=>this.diagram_focus=true}
                         onMouseLeave={()=>this.diagram_focus=false}
                         onClick={this.clickDiagram}
                     >

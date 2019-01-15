@@ -335,34 +335,31 @@ const copyDiagram = (req, res) => {
     pool.query(
       `INSERT INTO diagrams (id, name, skill_id, permissions, used_intents) 
             (SELECT $1, $2, skill_id, permissions, used_intents FROM diagrams WHERE id = $3)`,
-      [new_diagram_id, diagram_name, old_diagram_id],
-      (err, data) => {
-        if (err) {
-          console.log(err)
-          cleanUpDynamo(new_diagram_id)
-          res.sendStatus(500)
-        } else {
-          res.send(new_diagram_id)
-        }
-      }
-    )
-  }
+            [new_diagram_id, diagram_name, old_diagram_id],
+            (err, data) => {
+                if(err) {
+                    console.log(err)
+                    cleanUpDynamo(new_diagram_id)
+                    res.sendStatus(500)
+                } else {
+                    res.send(new_diagram_id)
+                }
+            }    
+        )
+    }
 
-  // TODO: There might be no need to modify the flow blocks, i dunno
-  const purgeSubflows = (diagram) => {
-    // for (var i = 0; i < diagram.nodes.length; i++) {
-    //     if(diagram.nodes[i].extras.type === 'flow' && diagram.nodes[i].extras.diagram_id){
-    //         diagram.nodes[i].name = 'Flow'
-    //         diagram.nodes[i].extras = {
-    //             type: 'flow',
-    //             diagram_id: null,
-    //             inputs: [],
-    //             outputs: []
-    //         }
-    //     }
-    // }
-    return diagram
-  }
+    // TODO: There might be no need to modify the flow blocks, i dunno
+    const purgeSubflows = (diagram) => {
+        diagram.nodes.forEach(node => {
+            if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+                node.extras.diagram_id = null;
+                if(node.extras.type === 'flow'){
+                    node.name = 'Flow'
+                }
+            }
+        })
+        return diagram
+    }
 
   // Copy on Dynamo
   docClient.get(params, (err, data) => {

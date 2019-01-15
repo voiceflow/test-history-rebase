@@ -8,8 +8,67 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 PROJECT_ROOT=$DIR'/..'
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    # Not implemented yet
-    exit 0
+
+    # # Start postgres if not up
+    # PSQL_READY=`pg_isready -h localhost`
+
+    # if [[ $PSQL_READY =~ "accepting connections" ]]; then
+    #     pretty_output "Postgres server running"
+    # else
+    pretty_output "Starting postgres server..."
+    sudo systemctl restart postgresql
+    # fi
+
+    # Create postgresql user
+    USER_CREATED=`sudo -u postgres psql -tc "SELECT 'created' FROM pg_roles WHERE rolname = 'voiceflowtest'"| grep created`
+    if [[ $USER_CREATED == " created" ]]; then
+        pretty_output "User voiceflowtest exists, continuing"
+    else
+        pretty_output "Creating role voiceflowtest"
+        sudo -u postgres psql -c "CREATE ROLE voiceflowtest LOGIN PASSWORD 'dealflow';"
+    fi
+
+    # Create postgresql database
+    DB_CREATED=`sudo -u postgres psql -tc "SELECT 'created' FROM pg_database WHERE datname = 'voiceflowtest'" | grep created`
+    if [[ $DB_CREATED == " created" ]]; then
+        pretty_output "Deleting existing test database"
+        sudo -u postgres psql -c "DROP DATABASE voiceflowtest;"
+    fi
+
+    pretty_output "Creating DB voiceflowtest"
+    sudo -u postgres psql -c "CREATE DATABASE voiceflowtest;"
+
+    KNEX="./node_modules/.bin/knex"
+    cd $PROJECT_ROOT
+
+    # Stop dynamo if running
+    DYNAMO_PID=`pgrep -f dynamo`
+    if [[ "$DYNAMO_PID" == "" ]]; then
+        pretty_output "No local Dynamodb instance found, continuing"
+    else
+        pretty_output "Terminating local Dynamodb"
+        kill -TERM `pgrep -f dynamo`
+    fi
+
+    # Start local dynamo in background
+    java -Djava.library.path=./tests/DynamoDBLocal_lib -jar ./test/dynamodb_local_latest/DynamoDBLocal.jar -sharedDb &
+
+    # Perform dynamo migrations and seeds
+    pretty_output "Start Dynamodb and Perform Migrations"
+    node ./test/migrate_dynamo.js
+
+    # Flush redis
+    pretty_output "Flushing Redis"
+    redis-cli flushdb
+
+    $KNEX migrate:latest --env test
+    $KNEX seed:run --env test
+
+    NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --coverage --forceExit --testMatch="**/(*.)+(itest).js?(x)" "$@"
+
+    # Kill Dynamo
+    kill -TERM `pgrep -f dynamo`
+    pretty_output "Dynamodb Stopped"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     # Start postgres if not up
@@ -55,7 +114,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     # Start local dynamo in background
     java -Djava.library.path=./tests/DynamoDBLocal_lib -jar ./test/dynamodb_local_latest/DynamoDBLocal.jar -sharedDb &
-    
+
     # Perform dynamo migrations and seeds
     pretty_output "Start Dynamodb and Perform Migrations"
     node ./test/migrate_dynamo.js
@@ -67,7 +126,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     $KNEX migrate:latest --env test
     $KNEX seed:run --env test
 
-    NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --coverage --testMatch="**/(*.)+(itest).js?(x)" "$@"
+    NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --coverage --forceExit --testMatch="**/(*.)+(itest).js?(x)" "$@"
 
     # Kill Dynamo
     kill -TERM `pgrep -f dynamo`
@@ -77,3 +136,4 @@ fi
 if [ $? -ne 0 ]; then
     exit 0
 fi
+

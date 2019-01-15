@@ -1,6 +1,7 @@
 const app = require('../app')
 const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
+const {pool} = require('./../services')
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -9,6 +10,16 @@ const generateID = () => {
         return v.toString(16)
     })
 }
+
+const getTemplate = new Promise((resolve, reject) => {
+  pool.query(`SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1`, (err, res)=>{
+    if(err || res.rows.length === 0){
+      reject(err)
+    }else{
+      resolve(res.rows[0].module_id)
+    }
+  })
+})
 
 describe('Skill', () => {
 
@@ -31,13 +42,14 @@ describe('Skill', () => {
     })
   })
 
-  describe('Creation', () => {
+  describe('Creation', async () => {
+    let module_id = await getTemplate
     it('creates skill', done => {
       request(app)
-        .post('/skill')
+        .post(`/marketplace/template/${module_id}/copy`)
         .send({
           name: 'Test',
-          diagram: diagram_id
+          locales: ['en-US']
         })
         .set('cookie', 'auth='+token)
         .expect(200)

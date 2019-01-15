@@ -85,6 +85,7 @@ class VariableText extends Component {
                     editorState={this.state.editorState}
                     onChange={this.onChange}
                     placeholder={this.props.placeholder ? this.props.placeholder : 'Enter Text Here'}
+                    stripPastedStyles={true}
                     // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions

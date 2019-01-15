@@ -115,31 +115,32 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
 // }
 
 exports.getSkills = (req, res) => {
-  if (!req.user) {
-    res.sendStatus(401);
-    return;
-  }
-  if (req.query.user && req.user.admin < 100) {
-    res.sendStatus(401);
-    return;
-  }
-  let userId = req.query.user ? req.query.user : req.user.id;
-  pool.query(`
-    SELECT * 
-    FROM skills
-    INNER JOIN skill_versions
-    ON skills.skill_id = skill_versions.skill_id
-    WHERE version IS NULL AND creator_id = $1`,
-    [userId], (err, data) => {
-      if (err) {
-        console.error(err);
-        res.sendStatus(500);
-      } else {
-        res.send(data.rows.map(skill => {
-          skill.skill_id = hashids.encode(skill.skill_id);
-          return skill;
-        }));
-      }
+    if (!req.user) {
+        res.sendStatus(401);
+        return;
+    }
+    if (req.query.user && req.user.admin < 100) {
+        res.sendStatus(401);
+        return;
+    }
+    let userId = req.query.user ? req.query.user : req.user.id;
+    pool.query(`
+        SELECT
+            *
+        FROM
+            skills
+        WHERE
+            creator_id = $1`,
+        [userId], (err, data) => {
+        if(err){
+            console.trace(err);
+            res.sendStatus(500);
+        }else{
+            res.send(data.rows.map(skill => {
+                skill.skill_id = hashids.encode(skill.skill_id);
+                return skill;
+            }));
+        }
     })
 }
 
@@ -167,7 +168,7 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
             FROM
                 skills
             WHERE
@@ -186,14 +187,28 @@ exports.getSkill = (req, res) => {
     params = [id, req.user.id];
   }
 
-  pool.query(sql, params, (err, data) => {
-    if (err) {
-      console.error(err);
-      res.sendStatus(500);
-    } else if (data.rows.length === 0) {
-      res.sendStatus(404);
-    } else {
-      let skill = data.rows[0];
+    pool.query( sql, params, (err, data) => {
+        if(err){
+            console.trace(err);
+            res.sendStatus(500);
+        }else if(data.rows.length === 0){
+            res.sendStatus(404);
+        }else{
+            let skill = data.rows[0];
+
+            // Rehash the skill id
+            skill.skill_id = req.params.id;
+
+            if(req.query.preview || !skill.amzn_id){
+                res.send(skill)
+            }else{
+                // Sync up with AMAZON
+                // Check Current Amazon Status
+                AccessToken(req.user.id, async (token) => {
+                    if(token === null){
+                        // throw('INVALID TOKEN');
+                        return res.send(skill);
+                    }
 
       // Rehash the skill id
       skill.skill_id = req.params.id;
@@ -297,15 +312,14 @@ exports.getDiagrams = (req, res) => {
 
   let id = hashids.decode(req.params.id)[0];
 
-  pool.query(sql, [id], (err, data) => {
-    if (err) {
-      console.error(err);
-      console.trace();
-      res.sendStatus(500);
-    } else {
-      res.send(data.rows);
-    }
-  });
+    pool.query(sql, [id], (err, data) => {
+        if(err){
+            console.trace(err);
+            res.sendStatus(500);
+        }else{
+            res.send(data.rows);
+        }
+    });
 }
 
 exports.getProducts = (req, res) => {
@@ -318,15 +332,14 @@ exports.getProducts = (req, res) => {
 
   let id = hashids.decode(req.params.id)[0];
 
-  pool.query(sql, [id], (err, data) => {
-    if (err) {
-      console.error(err);
-      console.trace();
-      res.sendStatus(500);
-    } else {
-      res.send(data.rows);
-    }
-  });
+    pool.query(sql, [id], (err, data) => {
+        if(err){
+            console.trace(err);
+            res.sendStatus(500);
+        }else{
+            res.send(data.rows);
+        }
+    });
 }
 
 exports.getProduct = (req, res) => {
@@ -341,13 +354,12 @@ exports.getProduct = (req, res) => {
   let pid = req.params.pid;
 
   pool.query(sql, [sid, pid], (err, data) => {
-    if (err) {
-      console.error(err);
-      console.trace();
-      res.sendStatus(500);
-    } else {
-      res.send(data.rows);
-    }
+      if(err){
+          console.trace(err);
+          res.sendStatus(500);
+      }else{
+          res.send(data.rows);
+      }
   });
 }
 
@@ -358,36 +370,35 @@ exports.setProduct = async (req, res) => {
   try {
     let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [product.skill])
 
-    if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10) {
-      return res.sendStatus(403)
-    } else {
-      product.creator = req.user.id
+        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10){
+            return res.sendStatus(403)
+        }else{
+            product.creator = req.user.id
+        }
+    }catch(err){
+        console.trace(err);
+        return res.sendStatus(500)
     }
-  } catch (err) {
-    console.error(err);
-    return res.sendStatus(500)
-  }
 
-  product.last_save = Date.now();
-  try {
-    if (req.query.new) {
-      console.log(product);
-      if (!product.name) {
-        product.name = 'New Product';
-      }
-      pool.query('INSERT INTO products (name, skill_id, data) VALUES ($1, $2, $3) RETURNING id', [product.name, product.skill, product.data], (err, results) => {
-        res.status(200).send({ id: results.rows[0].id });
-      });
-    } else {
-      pool.query('UPDATE products SET data = $1 WHERE id = $2', [product.data, product.id], (err, results) => {
-        res.sendStatus(200);
-      });
+    product.last_save = Date.now();
+    try{
+        if(req.query.new){
+            console.log(product);
+            if (!product.name){
+                product.name = 'New Product';
+            }
+            pool.query('INSERT INTO products (name, skill_id, data) VALUES ($1, $2, $3) RETURNING id', [product.name, product.skill, product.data], (err, results) => {
+                res.status(200).send({id: results.rows[0].id});
+            });
+        }else{
+            pool.query('UPDATE products SET data = $1 WHERE id = $2', [product.data, product.id], (err, results) => {
+                res.sendStatus(200);
+            });
+        }
+    }catch(err){
+        console.trace(err);
+        res.sendStatus(500);
     }
-  } catch (e) {
-    console.error(e);
-    console.trace();
-    res.sendStatus(500);
-  }
 }
 
 exports.deleteProduct = async (req, res) => {
@@ -402,23 +413,23 @@ exports.deleteProduct = async (req, res) => {
   try {
     let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [sid])
 
-    if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10) {
-      return res.sendStatus(403)
+        if(result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10){
+            return res.sendStatus(403)
+        }
+    }catch(err){
+        console.trace(err);
+        return res.sendStatus(500)
     }
-  } catch (err) {
-    console.error(err);
-    return res.sendStatus(500)
-  }
 
-  try {
-    pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
-      if (err) {
-        console.log(err);
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
-      }
-    });
+    try{
+        pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
+            if(err){
+                console.log(err);
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+            }
+        })
   } catch (e) {
     console.error(e);
     console.trace();
@@ -527,34 +538,40 @@ exports.patchSkill = (req, res) => {
     b.locales = JSON.stringify(b.locales)
   }
 
-  if (req.query.settings) {
-    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6 WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
-        if (err) {
-          res.sendStatus(500)
-        } else {
-          latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200)
-        }
-      })
-    return
-  } else if (req.query.intents) {
-    pool.query(`
+    if(!b.fulfillment){
+        b.fulfillment = '{}'
+    }
+
+    if(req.query.settings){
+        pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, fulfillment = $7 WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.fulfillment], (err) => {
+            if(err){
+                console.trace(err)
+                res.sendStatus(500)
+            }else{
+                latestSkillToIntercom(req.user.id, b.name)
+                res.sendStatus(200)
+            }
+        })
+        return
+    }else if (req.query.intents) {
+        pool.query(`
             UPDATE skills
             SET
-            intents = $2,
-            slots = $3
-            WHERE skill_id = $1 AND creator_id = $4`,
-      [id, b.intents, b.slots, req.user.id], (err) => {
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-        } else {
-          res.sendStatus(200);
-        }
-      })
-  } else if (req.query.publish) {
-    pool.query(`
+            intents = $3,
+            slots = $4,
+            fulfillment = $5
+            WHERE skill_id = $1 AND creator_id = $2`,
+            [id, req.user.id, b.intents, b.slots, b.fulfillment], (err) => {
+            if(err){
+                console.log(err);
+                res.sendStatus(500);
+            }else{
+                res.sendStatus(200);
+            }
+        })
+    } else if(req.query.publish){
+        pool.query(`
             UPDATE skills
             SET
             name = $2,
@@ -596,16 +613,16 @@ exports.patchSkill = (req, res) => {
           preview = $2
         WHERE
           skill_id = $1 AND creator_id = $3`,
-      [id, b.isPreview, req.user.id], (err) => {
-        if (err) {
-          console.error(err);
-          res.sendStatus(500)
-        } else {
-          res.sendStatus(200)
-        }
-      })
-  } else {
-    pool.query(`
+        [id, b.isPreview, req.user.id], (err) => {
+          if(err){
+            console.trace(err);
+            res.sendStatus(500)
+          }else{
+            res.sendStatus(200)
+          }
+        })
+    }else{
+        pool.query(`
             UPDATE skills
             SET
             name = $2,
@@ -637,21 +654,69 @@ exports.patchSkill = (req, res) => {
 
 // Helper Function
 const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
-  let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
-  pool.query(sql, [skill_id], (err, data) => {
-    if (err) {
-      console.error(err);
-      console.trace();
-      reject(new Error(err))
-    } else {
-      resolve(data.rows);
-    }
-  });
+    let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
+    pool.query(sql, [skill_id], (err, data) => {
+        if(err){
+            console.trace(err);
+            reject(new Error(err))
+        }else{
+            resolve(data.rows);
+        }
+    });
 })
 
-exports.buildSkill = async (req, res) => {
+exports.checkInterationModel = async (req, res) => {
+    AccessToken(req.user.id, token => {
+        if(token === null){
+            res.status(401).send({
+                message: "Invalid Amazon Login Token"
+            });
+            return;
+        }
+
+        axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/status?resource=interactionModel`,
+            method: 'GET',
+            headers: {
+                Authorization: token
+            }
+        }).then(result => {
+            res.send(result.data)
+        })
+        .catch(err => {
+            console.trace(err)
+            res.sendStatus(500)
+        })
+    })
+}
+
+exports.enableSkill = async (req, res) => {
+    AccessToken(req.user.id, token => {
+        if(token === null){
+            res.status(401).send({
+                message: "Invalid Amazon Login Token"
+            });
+            return
+        }
+
+        axios.request({
+            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/stages/development/enablement`,
+            method: 'PUT',
+            headers: {
+                Authorization: token
+            }
+        }).then(result => {
+            res.sendStatus(200)
+        })
+        .catch(err => {
+            res.status(500).send(err && err.response && err.response.data)
+        })
+    })
+}
+
+exports.buildSkill = async (req,res) => {
   if (!req.params.id) {
-    res.sendStatus(401)
+      res.sendStatus(401)
   }
   incrementTimesPublishedIntercom(req.user.id);
 
@@ -663,248 +728,252 @@ exports.buildSkill = async (req, res) => {
   let permissions = new Set()
 
   permissions_arr.forEach(r => {
-    r.permissions.forEach((perm => {
-      if (perm !== 'payments:autopay_consent') {
-        // lmao amazon engineering
-        permissions.add(perm)
-      }
-    }))
+      r.permissions.forEach((perm => {
+          if (perm !== 'payments:autopay_consent') {
+              // lmao amazon engineering
+              permissions.add(perm)
+          }
+      }))
   })
 
-  permissions = Array.from(permissions).map(perm => { return { name: perm } })
+  permissions = Array.from(permissions).map(perm => {return {name: perm}})
 
   AccessToken(req.user.id, token => {
-    if (token === null) {
-      res.status(401).send({
-        message: "Invalid Amazon Login Token"
-      });
-      return;
-    }
-    pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
-      if (err) {
-        console.error(err)
-        res.sendStatus(500)
-      } else {
-
-        let r = data.rows[0]
-
-        let amzn_id = r.amzn_id
-        r.permissions = permissions
-        let manifest = JSONs.manifest(r, original_id, req.user.name)
-        try {
-          if (amzn_id) {
-            try {
-              let request = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
-                method: 'GET',
-                headers: {
-                  Authorization: token
-                }
-              });
-              if (request.data.manifest &&
-                request.data.manifest.lastUpdateRequest &&
-                request.data.manifest.lastUpdateRequest.status === 'FAILED') {
-                amzn_id = null;
-              }
-              // console.log(JSON.stringify(request.data.manifest));
-            } catch (err) {
-              if (err.response.status === 404) {
-                amzn_id = null;
-              } else if (err.response) {
-                console.error(err.response.status);
-                console.error(JSON.stringify(err.response.data));
-              }
-            }
-          }
-
-          let vendor_request = await axios.request({
-            url: 'https://api.amazonalexa.com/v1/vendors',
-            method: 'GET',
-            headers: {
-              Authorization: token
-            }
+      if(token === null){
+          res.status(401).send({
+              message: "Invalid Amazon Login Token"
           });
-
-          let vendors = vendor_request.data.vendors;
-          let vendorId = null
-          if (Array.isArray(vendors) && vendors.length !== 0) {
-            vendorId = vendors[0].id;
-          } else {
-            throw ({
-              type: "VendorIdError",
-              data: JSON.stringify(vendor_request.data)
-            });
-          }
-
-          if (!amzn_id) {
-
-            manifest.vendorId = vendorId;
-
-            let request = await axios.request({
-              url: 'https://api.amazonalexa.com/v1/skills',
-              method: 'POST',
-              headers: {
-                Authorization: token
-              },
-              data: manifest
-            });
-
-            amzn_id = request.data.skillId;
-
-            await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
-          } else {
-
-            let request = await axios.request({
-              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
-              method: 'PUT',
-              headers: {
-                Authorization: token
-              },
-              data: manifest
-            });
-          }
-
-          let results = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
-
-          results.rows.forEach(row => {
-            let product = row.data;
-            let productId = row.amzn_prod_id;
-
-            if (productId) {
-              axios.request({
-                url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
-                method: 'PUT',
-                headers: {
-                  Authorization: token
-                },
-                data: {
-                  vendorId: vendorId,
-                  inSkillProductDefinition: product
-                }
-              })
-                .catch(err => {
-                  res.status(500).send(err.response.data)
-                });
-            } else {
-              axios.request({
-                url: `https://api.amazonalexa.com/v1/inSkillProducts`,
-                method: 'POST',
-                headers: {
-                  Authorization: token
-                },
-                data: {
-                  vendorId: vendorId,
-                  inSkillProductDefinition: product
-                }
-              })
-                .then(response => {
-                  pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [response.data.productId, r.skill_id]);
-                  axios.request({
-                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
-                    method: 'PUT',
-                    headers: {
-                      Authorization: token
-                    }
-                  })
-                    .catch(err => {
-                      res.status(500).send(err.response.data)
-                    });
-                })
-                .catch(err => {
-                  res.status(500).send(err.response.data)
-                });
-            }
-          });
-
-          let model = JSONs.interactionModel(r)
-          // console.log(JSON.stringify(model))
-
-          const iterate = (depth) => {
-            if (depth === 3) {
-              res.status(500).send({
-                message: "Skill is taking too long to be initialized"
-              });
-              return;
-            } else {
-              setTimeout(() => {
-
-                const interactionModels = []
-                r.locales.forEach(locale => {
-                  interactionModels.push(axios.request({
-                    url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
-                    method: 'PUT',
-                    headers: {
-                      Authorization: token
-                    },
-                    data: model
-                  }))
-                })
-
-                Promise.all(interactionModels)
-                  .then(() => {
-                    // Check whether building before certifying
-                    const getSkillStatus = (depth) => {
-                      setTimeout(() => {
-                        axios.request({
-                          url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
-                          method: 'GET',
-                          headers: {
-                            Authorization: token
-                          }
-                        })
-                          .then(response => {
-                            if (response.hasOwnProperty('violations')) {
-                              getSkillStatus(depth + 1)
-                            } else {
-                              incrementTimesPublishedSuccessfulIntercom(req.user.id);
-                              res.send(amzn_id)
-                            }
-                          })
-                          .catch(err => {
-                            console.log(err.response.status)
-                            res.status(500).send(err.response.data)
-                          });
-                      }, 10000)
-                    }
-                    getSkillStatus(0)
-                  })
-                  .catch(err => {
-                    console.log(err.response)
-                    if (err.response) {
-                      if (err.response.status === 404) {
-                        iterate(depth + 1)
-                      } else {
-                        console.error(err.response.data)
-                        res.status(500).send(err.response.data)
-                      }
-                    } else {
-                      console.log(err)
-                      res.sendStatus(500)
-                    }
-                  })
-              }, 5000)
-            }
-          }
-
-          iterate(0);
-
-        } catch (err) {
-          if (err.type === "VendorIdError") {
-            // console.error(err);
-            res.sendStatus(403);
-          } else {
-            if (err.response) {
-              // console.error(err.response.status);
-              console.error(JSON.stringify(err.response.data));
-              res.status(500).send(err.response.data);
-            } else {
-              console.error(err);
-              res.sendStatus(500);
-            }
-          }
-        }
+          return;
       }
-    });
+
+      pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
+          if(err){
+              console.trace(err)
+              res.sendStatus(500)
+          } else {
+
+              let r = data.rows[0]
+
+              let amzn_id = r.amzn_id
+              r.permissions = permissions
+              let manifest = JSONs.manifest(r, original_id, req.user.name)
+
+              try{
+                  if(amzn_id){
+                      try{
+                          let request = await axios.request({
+                              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                              method: 'GET',
+                              headers: {
+                                  Authorization: token
+                              }
+                          });
+                          if (request.data.manifest &&
+                              request.data.manifest.lastUpdateRequest &&
+                              request.data.manifest.lastUpdateRequest.status === 'FAILED'){
+                              amzn_id = null;
+                          }
+                          // console.log(JSON.stringify(request.data.manifest));
+                      }catch(err){
+                          if(err.response.status === 404){
+                              amzn_id = null;
+                          }else if(err.response){
+                              console.error(err.response.status);
+                              console.error(JSON.stringify(err.response.data));
+                          }
+                      }
+                  }
+
+                  let vendor_request = await axios.request({
+                      url: 'https://api.amazonalexa.com/v1/vendors',
+                      method: 'GET',
+                      headers: {
+                          Authorization: token
+                      }
+                  });
+
+                  let vendors = vendor_request.data.vendors;
+                  let vendorId = null
+                  if(Array.isArray(vendors) && vendors.length !== 0){
+                      vendorId = vendors[0].id;
+                  }else{
+                      throw ({
+                          type: "VendorIdError",
+                          data: JSON.stringify(vendor_request.data)
+                      });
+                  }
+
+                  if(!amzn_id){
+
+                      manifest.vendorId = vendorId;
+
+                      let request = await axios.request({
+                          url: 'https://api.amazonalexa.com/v1/skills',
+                          method: 'POST',
+                          headers: {
+                              Authorization: token
+                          },
+                          data: manifest
+                      });
+
+                      amzn_id = request.data.skillId;
+
+                      await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
+                  }else{
+
+                      let request = await axios.request({
+                          url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                          method: 'PUT',
+                          headers: {
+                              Authorization: token
+                          },
+                          data: manifest
+                      });
+                  }
+
+                  let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+
+                  if(Array.isArray(products.rows) && products.rows.length !== 0){
+                      products.rows.forEach(row => {
+                          let product = row.data;
+                          let productId = row.amzn_prod_id;
+
+                          if (productId) {
+                              axios.request({
+                                  url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
+                                  method: 'PUT',
+                                  headers: {
+                                      Authorization: token
+                                  },
+                                  data: {
+                                      vendorId: vendorId,
+                                      inSkillProductDefinition: product
+                                  }
+                              })
+                              .catch(err => {
+                                  res.status(500).send(err.response.data)
+                              });
+                          } else {
+                              axios.request({
+                                  url: `https://api.amazonalexa.com/v1/inSkillProducts`,
+                                  method: 'POST',
+                                  headers: {
+                                      Authorization: token
+                                  },
+                                  data: {
+                                      vendorId: vendorId,
+                                      inSkillProductDefinition: product
+                                  }
+                              })
+                              .then(response => {
+                                  pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [response.data.productId, r.skill_id]);
+                                  axios.request({
+                                      url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
+                                      method: 'PUT',
+                                      headers: {
+                                          Authorization: token
+                                      }
+                                  })
+                                  .catch(err => {
+                                      res.status(500).send(err.response.data)
+                                  });
+                              })
+                              .catch(err => {
+                                  res.status(500).send(err.response.data)
+                              });
+                          }
+                      })
+                  }
+
+                  let model = JSONs.interactionModel(r)
+                  // console.log(JSON.stringify(model))
+
+                  const iterate = (depth) => {
+                      if(depth === 3){
+                          res.status(500).send({
+                              message: "Skill is taking too long to be initialized"
+                          });
+                          return;
+                      }else{
+                          setTimeout(()=> {
+
+                              const interactionModels = []
+                              r.locales.forEach(locale => {
+                                  interactionModels.push(axios.request({
+                                      url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
+                                      method: 'PUT',
+                                      headers: {
+                                          Authorization: token
+                                      },
+                                      data: model
+                                  }))
+                              })
+
+                              Promise.all(interactionModels)
+                              .then((promise_res) => {
+                                  // Check whether building before certifying
+                                  const getSkillStatus = (depth) => {
+                                      setTimeout(() => {
+                                          axios.request({
+                                              url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
+                                              method: 'GET',
+                                              headers: {
+                                                  Authorization: token
+                                              }
+                                          })
+                                          .then(response => {
+                                              if(response.hasOwnProperty('violations')){
+                                                  getSkillStatus(depth + 1)
+                                              }else{
+                                                  incrementTimesPublishedSuccessfulIntercom(req.user.id);
+                                                  res.send(amzn_id)
+                                              }
+                                          })
+                                          .catch(err => {
+                                              console.log(err.response.status)
+                                              res.status(500).send(err.response.data)
+                                          });
+                                      }, 10000)
+                                  }
+                                  getSkillStatus(0)
+                              })
+                              .catch(err => {
+                                  console.log(err.response)
+                                  if(err.response){
+                                      if(err.response.status === 404){
+                                          iterate(depth + 1)
+                                      }else{
+                                          console.error(err.response.data)
+                                          res.status(500).send(err.response.data)
+                                      }
+                                  }else{
+                                      console.log(err)
+                                      res.sendStatus(500)
+                                  }
+                              })
+                          }, 5000)
+                      }
+                  }
+
+                  iterate(0);
+
+              } catch(err) {
+                  if(err.type === "VendorIdError"){
+                      // console.trace(err);
+                      res.sendStatus(403);
+                  }else{
+                      if(err.response){
+                          // console.error(err.response.status);
+                          console.error(JSON.stringify(err.response.data));
+                          res.status(500).send(err.response.data);
+                      }else{
+                          console.trace(err);
+                          res.sendStatus(500);
+                      }
+                  }
+              }
+          }
+      });
   });
 }
 
@@ -1293,7 +1362,8 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
                 used_intents,
                 used_choices,
                 resume_prompt,
-                error_prompt
+                error_prompt,
+                fulfillment
             )
             SELECT `
         + copy_str + `
@@ -1323,7 +1393,8 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
                 used_intents,
                 used_choices,
                 resume_prompt,
-                error_prompt
+                error_prompt,
+                fulfillment
             FROM skills WHERE skill_id = $3 RETURNING *`
     }
     pool.query(

@@ -171,6 +171,8 @@ app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
 app.post('/skill/:id/versions/:restore_id/:canonical_skill_id/restore', ensureLoggedIn(), Skill.restoreSkillVersion)
+app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
+app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
@@ -216,7 +218,7 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 // app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
-app.post('/marketplace/template/:module_id/copy', ensureAdmin(), Marketplace.copyDefaultTemplate)
+app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureAdmin(), Marketplace.getFeaturedModules)
 app.get('/marketplace/user_module', ensureAdmin(), Marketplace.getUserModules)
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
@@ -230,7 +232,7 @@ app.post('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.giveA
 app.get('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.hasAccess)
 app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
-app.get('/marketplace/default_templates', ensureAdmin(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);

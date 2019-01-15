@@ -16,7 +16,11 @@ class SecondaryNavBar extends Component {
                 {page}
             </div>
         }else if(this.props.skill){
-            return <Link to={`/${page}/${this.props.skill.skill_id}`} key={page} className="nav-item">
+            let suffix = ''
+            if (page === 'settings') {
+                suffix = 'basic'
+            }
+            return <Link to={`/${page}/${this.props.skill.skill_id}/${suffix}`} key={page} className="nav-item">
                 {page}
             </Link>
         }else{

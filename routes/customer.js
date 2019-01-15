@@ -8,7 +8,8 @@ const stripe = require('stripe')(SECRET_KEY)
 
 const PLANS = [
 	{id: 0, name: 'COMMUNITY'},
-	{id: 1, name: 'BASIC'}
+	{id: 1, name: 'BASIC'},
+	{id: 30, name: 'BUSINESS'}
 ]
 
 exports.create = async (req, res) => {

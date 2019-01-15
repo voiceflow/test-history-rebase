@@ -12,6 +12,7 @@ td {
 }
 
 .message {
+    border-radius: 15px 15px 15px 5px !important;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -27,7 +28,9 @@ td {
     word-break: break-word;
 }
 .self-message {
-    background-color: #ddf2ff;
+    background-color: #fff;
+    border: 1px solid #3A5999;
+    border-radius: 15px 15px 5px 15px !important;
     -webkit-box-align: end;
     -ms-flex-align: end;
     align-items: flex-end;
@@ -78,6 +81,7 @@ td {
 .test-sidebar p.list-group-item {
     padding: 10px 5px;
     color: #8DA2B5;
+    font-size: 15px;
 }
 .list-group-item{
     

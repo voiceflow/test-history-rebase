@@ -269,6 +269,7 @@ const googleLogin = async(req, res) => {
           email = email.trim().toLowerCase();
           pool.query('SELECT 1 FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
             if(err){
+							console.trace(err)
               res.status(500).send("Unable to Access Database");
             }else if(result.rows.length !== 0){
               pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {

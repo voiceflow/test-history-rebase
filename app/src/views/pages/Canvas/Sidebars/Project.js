@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Button, ButtonGroup, Input } from 'reactstrap'
 import FlowButton from './components/FlowButton'
-import TemplateItem from './components/TemplateItem'
+// import TemplateItem from './components/TemplateItem'
 
 const TABS = ['structure', 'flows']
 

@@ -351,10 +351,10 @@ class Settings extends Component {
             <div className="settings-content clearfix">
                 {this.modalContent(fullfillment_intent_key)}
                 <hr />
-                {this.state.tab !== 'backups' &&
-                <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
-                    {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
-                </Button>
+                {this.props.page !== 'backups' &&
+                    <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
+                        {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
+                    </Button>
                 }
                 {fullfillment_intent_key && <Button className='purple-btn back-btn save-btn mr-2' style={{ minWidth: 150 }} onClick={() => {
                     this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)

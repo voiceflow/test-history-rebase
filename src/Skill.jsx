@@ -140,6 +140,7 @@ class Skill extends Component {
     }
 
     onSwapVersions(skill_id, canonical_skill_id){
+        console.log(skill_id, canonical_skill_id)
         axios.post(`/skill/${this.state.skill.skill_id}/versions/${skill_id}/${canonical_skill_id}/restore`)
         .then(res => {
             this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
@@ -161,7 +162,7 @@ class Skill extends Component {
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':
-                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} page={this.props.secondaryPage} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} page={this.props.secondaryPage} versions={this.state.versions} onSwapVersions={this.onSwapVersions} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':

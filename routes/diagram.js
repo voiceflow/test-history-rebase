@@ -335,31 +335,31 @@ const copyDiagram = (req, res) => {
     pool.query(
       `INSERT INTO diagrams (id, name, skill_id, permissions, used_intents) 
             (SELECT $1, $2, skill_id, permissions, used_intents FROM diagrams WHERE id = $3)`,
-            [new_diagram_id, diagram_name, old_diagram_id],
-            (err, data) => {
-                if(err) {
-                    console.log(err)
-                    cleanUpDynamo(new_diagram_id)
-                    res.sendStatus(500)
-                } else {
-                    res.send(new_diagram_id)
-                }
-            }    
-        )
-    }
+      [new_diagram_id, diagram_name, old_diagram_id],
+      (err, data) => {
+        if (err) {
+          console.log(err)
+          cleanUpDynamo(new_diagram_id)
+          res.sendStatus(500)
+        } else {
+          res.send(new_diagram_id)
+        }
+      }
+    )
+  }
 
-    // TODO: There might be no need to modify the flow blocks, i dunno
-    const purgeSubflows = (diagram) => {
-        diagram.nodes.forEach(node => {
-            if (node.extras.diagram_id && node.extras.diagram_id !== null) {
-                node.extras.diagram_id = null;
-                if(node.extras.type === 'flow'){
-                    node.name = 'Flow'
-                }
-            }
-        })
-        return diagram
-    }
+  // TODO: There might be no need to modify the flow blocks, i dunno
+  const purgeSubflows = (diagram) => {
+    diagram.nodes.forEach(node => {
+      if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+        node.extras.diagram_id = null;
+        if (node.extras.type === 'flow') {
+          node.name = 'Flow'
+        }
+      }
+    })
+    return diagram
+  }
 
   // Copy on Dynamo
   docClient.get(params, (err, data) => {
@@ -1117,29 +1117,54 @@ const publish = (req, res) => {
 
   // Copy the skill, making sure it points to the same canonical skill point
   const createNewVersion = (status) => {
+    const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row) => {
+      let version_query = `
+            INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
+            SELECT canonical_skill_id, COALESCE(max(version) + 1, 0), ${new_skill_id_decoded}
+            FROM skill_versions
+            WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
+            GROUP BY canonical_skill_id
+            `
+
+      pool.query(version_query, [], (err) => {
+        if (err) {
+          console.log(err)
+          res.sendStatus(500)
+        } else {
+          res.send({ new_skill: new_skill_row })
+        }
+      })
+    }
+
     // Spoof the request cause we don't use it anymore
-    req.params.id = hashids.encode(skill_id) 
+    req.params.id = hashids.encode(skill_id)
     req.params.target_creator = req.user.id
     copySkill(req, res, false, false, true, (new_skill_row) => {
-      // Insert new row into skill_versions
-      let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
+      // Set the canonical_skill_id to the current working version  
       pool.query(
-        `
-        INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
-        SELECT canonical_skill_id, COALESCE(max(version) + 1, 0), ${new_skill_id_decoded}
-        FROM skill_versions
-        WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id}) FROM skill_versions WHERE skill_id = ${skill_id})
-        GROUP BY canonical_skill_id
-        `,
-        [],
-        (err) => {
-          if(err){
+        `UPDATE skill_versions SET version = 0 WHERE skill_id = $1 AND version IS NULL and skill_id = canonical_skill_id RETURNING *`,
+        [skill_id],
+        (err, data) => {
+          if (err) {
             console.log(err)
             res.sendStatus(500)
-          } else {
-            res.send({new_skill: new_skill_row})
           }
-        } 
+
+          let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
+          if (data.rows.length > 0) {
+            // Need to make a working version of the new version, so make another copy and create a row for it in skill_versions, set a timer for 3s to wait for first copy skill
+            setTimeout(() => {
+              req.params.id = new_skill_row.skill_id
+              copySkill(req, res, false, false, true, (newest_skill_row) => {
+                pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES (${data.rows[0].canonical_skill_id}, ${hashids.decode(newest_skill_row.skill_id)[0]})`, [], (err) => {
+                  updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
+                })
+              })
+            }, 3000)
+          } else {
+            updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
+          }
+        }
       )
     })
   }

@@ -115,189 +115,174 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
 // }
 
 exports.getSkills = (req, res) => {
-    if (!req.user) {
-        res.sendStatus(401);
-        return;
-    }
-    if (req.query.user && req.user.admin < 100) {
-        res.sendStatus(401);
-        return;
-    }
-    let userId = req.query.user ? req.query.user : req.user.id;
-    pool.query(`
-        SELECT
-            *
-        FROM
-            skills
-        WHERE
-            creator_id = $1`,
-        [userId], (err, data) => {
-        if(err){
-            console.trace(err);
-            res.sendStatus(500);
-        }else{
-            res.send(data.rows.map(skill => {
-                skill.skill_id = hashids.encode(skill.skill_id);
-                return skill;
-            }));
-        }
+  if (!req.user) {
+    res.sendStatus(401);
+    return;
+  }
+  if (req.query.user && req.user.admin < 100) {
+    res.sendStatus(401);
+    return;
+  }
+  let userId = req.query.user ? req.query.user : req.user.id;
+  pool.query(`
+    SELECT * 
+    FROM skills
+    INNER JOIN skill_versions
+    ON skills.skill_id = skill_versions.skill_id
+    WHERE version IS NULL AND creator_id = $1`,
+    [userId], (err, data) => {
+      if (err) {
+        console.error(err);
+        res.sendStatus(500);
+      } else {
+        res.send(data.rows.map(skill => {
+          skill.skill_id = hashids.encode(skill.skill_id);
+          return skill;
+        }));
+      }
     })
 }
 
 exports.getSkill = (req, res) => {
   if (!req.params.id) {
-    res.sendStatus(401);
-    return;
+      res.sendStatus(401);
+      return;
   }
 
   let id = hashids.decode(req.params.id)[0];
   let sql;
   let params;
-  if (req.query.preview) {
-    // expose as little information as possible if previewing
-    sql = `
-            SELECT
-                name,
-                preview,
-                diagram
-            FROM
-                skills
-            WHERE
-                skill_id = $1 LIMIT 1`;
-    params = [id];
-  } else if (req.query.simple) {
-    sql = `
-            SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
-            FROM
-                skills
-            WHERE
-                skill_id = $1 AND
-                creator_id = $2 LIMIT 1`;
-    params = [id, req.user.id];
-  } else {
-    sql = `
-            SELECT
-                *
-            FROM
-                skills
-            WHERE
-                skill_id = $1 AND
-                creator_id = $2 LIMIT 1`;
-    params = [id, req.user.id];
+  if(req.query.preview){
+      // expose as little information as possible if previewing
+      sql = `
+          SELECT
+              name,
+              preview,
+              diagram
+          FROM
+              skills
+          WHERE
+              skill_id = $1 LIMIT 1`;
+      params = [id];
+  }else if(req.query.simple){
+      sql = `
+          SELECT
+              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
+          FROM
+              skills
+          WHERE
+              skill_id = $1 AND
+              creator_id = $2 LIMIT 1`;
+      params = [id, req.user.id];
+  }else{
+      sql = `
+          SELECT
+              *
+          FROM
+              skills
+          WHERE
+              skill_id = $1 AND
+              creator_id = $2 LIMIT 1`;
+      params = [id, req.user.id];
   }
 
-    pool.query( sql, params, (err, data) => {
-        if(err){
-            console.trace(err);
-            res.sendStatus(500);
-        }else if(data.rows.length === 0){
-            res.sendStatus(404);
-        }else{
-            let skill = data.rows[0];
+  pool.query( sql, params, (err, data) => {
+      if(err){
+          console.trace(err);
+          res.sendStatus(500);
+      }else if(data.rows.length === 0){
+          res.sendStatus(404);
+      }else{
+          let skill = data.rows[0];
 
-            // Rehash the skill id
-            skill.skill_id = req.params.id;
+          // Rehash the skill id
+          skill.skill_id = req.params.id;
 
-            if(req.query.preview || !skill.amzn_id){
-                res.send(skill)
-            }else{
-                // Sync up with AMAZON
-                // Check Current Amazon Status
-                AccessToken(req.user.id, async (token) => {
-                    if(token === null){
-                        // throw('INVALID TOKEN');
-                        return res.send(skill);
-                    }
+          if(req.query.preview || !skill.amzn_id){
+              res.send(skill)
+          }else{
+              // Sync up with AMAZON
+              // Check Current Amazon Status
+              AccessToken(req.user.id, async (token) => {
+                  if(token === null){
+                      // throw('INVALID TOKEN');
+                      return res.send(skill);
+                  }
 
-      // Rehash the skill id
-      skill.skill_id = req.params.id;
+                  try {
+                      // get the vendorID
+                      let vendor_response = await axios.request({
+                          url: 'https://api.amazonalexa.com/v1/vendors',
+                          method: 'get',
+                          headers: {
+                              authorization: token
+                          }
+                      });
 
-      if (req.query.preview || !skill.amzn_id) {
-        res.send(skill)
-      } else {
-        // Sync up with AMAZON
-        // Check Current Amazon Status
-        AccessToken(req.user.id, async (token) => {
-          if (token === null) {
-            // throw('INVALID TOKEN');
-            return res.send(skill);
-          }
+                      let vendors = vendor_response.data.vendors;
+                      let vendorId;
+                      if(Array.isArray(vendors) && vendors.length !== 0){
+                          vendorId = vendors[0].id;
+                          // literal storyflow id amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb
+                          let skill_status = await axios.request({
+                              url: `https://api.amazonalexa.com/v1/skills?vendorId=${vendorId}&skillId=${skill.amzn_id}`,
+                              method: 'GET',
+                              headers: {
+                                  Authorization: token
+                              }
+                          });
 
-          try {
-            // get the vendorID
-            let vendor_response = await axios.request({
-              url: 'https://api.amazonalexa.com/v1/vendors',
-              method: 'get',
-              headers: {
-                authorization: token
-              }
-            });
+                          if(Array.isArray(skill_status.data.skills)){
+                              if(skill_status.data.skills.length === 0){
+                                  // If 0 reset
+                                  skill.review = false;
+                                  skill.live = false;
+                                  skill.amzn_id = null;
+                                  res.send(skill);
+                                  pool.query('UPDATE skills SET review=FALSE, live=FALSE, amzn_id=NULL WHERE skill_id = $1', [id]);
+                                  return;
+                              }
 
-            let vendors = vendor_response.data.vendors;
-            let vendorId;
-            if (Array.isArray(vendors) && vendors.length !== 0) {
-              vendorId = vendors[0].id;
-              // literal storyflow id amzn1.ask.skill.b8413998-5296-4cca-8a0f-6c04103cc3eb
-              let skill_status = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills?vendorId=${vendorId}&skillId=${skill.amzn_id}`,
-                method: 'GET',
-                headers: {
-                  Authorization: token
-                }
+                              let still_review = false;
+                              let has_live = false;
+
+                              for(instance of skill_status.data.skills){
+                                  if(instance.publicationStatus === 'PUBLISHED'){
+                                      has_live = true;
+                                  }
+                                  if(instance.publicationStatus === 'CERTIFICATION'){
+                                      still_review = true;
+                                  }
+                              }
+
+                              let update = false;
+                              if(skill.live !== has_live){
+                                  skill.live = has_live;
+                                  update = true;
+                              }
+                              if(skill.review !== still_review) {
+                                  skill.review = still_review;
+                                  update = true;
+                              }
+
+                              if(update){
+                                  pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
+                              }
+
+                              res.send(skill);
+
+                          }else{
+                              throw('NO SKILLS FOUND skill.js > 120');
+                          }
+                      }
+
+                  }catch(err){
+                      console.log(err);
+                      res.send(skill);
+                  }
               });
-
-              if (Array.isArray(skill_status.data.skills)) {
-                if (skill_status.data.skills.length === 0) {
-                  // If 0 reset
-                  skill.review = false;
-                  skill.live = false;
-                  skill.amzn_id = null;
-                  res.send(skill);
-                  pool.query('UPDATE skills SET review=FALSE, live=FALSE, amzn_id=NULL WHERE skill_id = $1', [id]);
-                  return;
-                }
-
-                let still_review = false;
-                let has_live = false;
-
-                for (instance of skill_status.data.skills) {
-                  if (instance.publicationStatus === 'PUBLISHED') {
-                    has_live = true;
-                  }
-                  if (instance.publicationStatus === 'CERTIFICATION') {
-                    still_review = true;
-                  }
-                }
-
-                let update = false;
-                if (skill.live !== has_live) {
-                  skill.live = has_live;
-                  update = true;
-                }
-                if (skill.review !== still_review) {
-                  skill.review = still_review;
-                  update = true;
-                }
-
-                if (update) {
-                  pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
-                }
-
-                res.send(skill);
-
-              } else {
-                throw ('NO SKILLS FOUND skill.js > 120');
-              }
-            }
-
-          } catch (err) {
-            console.log(err);
-            res.send(skill);
           }
-        });
       }
-    }
   });
 };
 
@@ -1363,6 +1348,8 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
                 used_choices,
                 resume_prompt,
                 error_prompt,
+                account_linking,
+                access_token_variable,
                 fulfillment
             )
             SELECT `
@@ -1394,6 +1381,8 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
                 used_choices,
                 resume_prompt,
                 error_prompt,
+                account_linking,
+                access_token_variable,
                 fulfillment
             FROM skills WHERE skill_id = $3 RETURNING *`
     }
@@ -1407,6 +1396,16 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
           let new_skill_id = data.rows[0].skill_id
           retrieveDiagram(root_diagram_id, new_skill_id)
           data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
+
+          // Add working version to tabl
+          if (copying_default_template) {
+            pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [new_skill_id, new_skill_id], (err) => {
+              if(err){
+                console.log(err)
+                res.sendStatus(500)
+              }
+            })  
+          }
 
           // Default name of cb when no callback provided is 'next'
           if (cb && cb.name !== 'next') {

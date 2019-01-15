@@ -175,7 +175,7 @@ const giveCertification = (req, res) => {
 						copySkill(req, res, false, true, false, (row) => {
 							let new_skill_id = hashids.decode(row.skill_id)[0]
 							updateVersionTable(row.diagram, module_id, new_skill_id)
-						}, false)
+						})
 					}
 					
 				}else{

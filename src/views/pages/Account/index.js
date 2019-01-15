@@ -200,7 +200,7 @@ class Account extends Component {
                   </Row>
                 </ModalBody>
               </Modal>
-              <div className="container my-5">
+              <div className="container my-5 pt-4">
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">
                   <div className="p-4 space-between">

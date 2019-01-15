@@ -1413,7 +1413,6 @@ label {
     /*flex-direction: row;*/
 }
 .srd-default-node:hover{
-    background-color: #fff!important;
 /*    min-width: 180px;
     min-height: 100px;*/
     border-radius: 10px !important;

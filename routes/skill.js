@@ -911,7 +911,25 @@ exports.buildSkill = async (req,res) => {
                                                   getSkillStatus(depth + 1)
                                               }else{
                                                   incrementTimesPublishedSuccessfulIntercom(req.user.id);
-                                                  res.send(amzn_id)
+
+                                                  // Make a working copy of skill at this point if it was published for the first time
+                                                  if(req.params.canonical_skill_id != -1){
+                                                    req.params.target_creator = req.user.id
+                                                    exports.copySkill(req, res, false, false, true, (new_skill_row) => {
+                                                      pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES 
+                                                        (${hashids.decode(req.params.canonical_skill_id)[0]}, ${hashids.decode(new_skill_row.skill_id)[0]})`,
+                                                        [], (err) => {
+                                                          if(err){
+                                                            console.log(err)
+                                                            res.sendStatus(500)
+                                                          } else {
+                                                            res.send(amzn_id)
+                                                          }
+                                                        })
+                                                    })
+                                                  } else {
+                                                    res.send(amzn_id)
+                                                  }
                                               }
                                           })
                                           .catch(err => {

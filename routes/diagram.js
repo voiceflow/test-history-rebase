@@ -1117,21 +1117,26 @@ const publish = (req, res) => {
 
   // Copy the skill, making sure it points to the same canonical skill point
   const createNewVersion = (status) => {
-    const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row) => {
+    const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row, was_first_publish) => {
       let version_query = `
             INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
             SELECT canonical_skill_id, COALESCE(max(version) + 1, 0), ${new_skill_id_decoded}
             FROM skill_versions
             WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
             GROUP BY canonical_skill_id
+            RETURNING *
             `
 
-      pool.query(version_query, [], (err) => {
+      pool.query(version_query, [], (err, data) => {
         if (err) {
           console.log(err)
           res.sendStatus(500)
         } else {
-          res.send({ new_skill: new_skill_row })
+          if(was_first_publish){
+            res.send({ new_skill: new_skill_row, canonical_skill_id: hashids.encode(data.rows[0].canonical_skill_id) })
+          } else {
+            res.send({ new_skill_id: new_skill_row, canonical_skill_id: -1 })
+          }
         }
       })
     }
@@ -1151,19 +1156,7 @@ const publish = (req, res) => {
           }
 
           let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
-          if (data.rows.length > 0) {
-            // Need to make a working version of the new version, so make another copy and create a row for it in skill_versions, set a timer for 3s to wait for first copy skill
-            setTimeout(() => {
-              req.params.id = new_skill_row.skill_id
-              copySkill(req, res, false, false, true, (newest_skill_row) => {
-                pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES (${data.rows[0].canonical_skill_id}, ${hashids.decode(newest_skill_row.skill_id)[0]})`, [], (err) => {
-                  updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
-                })
-              })
-            }, 3000)
-          } else {
-            updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
-          }
+          updateVersion(new_skill_id_decoded, skill_id, new_skill_row, data.rows.length > 0)
         }
       )
     })

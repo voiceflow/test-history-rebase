@@ -79,6 +79,41 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
+// exports.getSkills = (req, res) => {
+//   if (!req.user) {
+//     res.sendStatus(401);
+//     return;
+//   }
+//   if (req.query.user && req.user.admin < 100) {
+//     res.sendStatus(401);
+//     return;
+//   }
+//   let userId = req.query.user ? req.query.user : req.user.id;
+//   pool.query(`
+//     SELECT * 
+//     FROM skills
+//     INNER JOIN skill_versions
+//     ON skills.skill_id = skill_versions.skill_id
+//     WHERE (canonical_skill_id, version) IN (
+//       SELECT canonical_skill_id, max(version)
+//       FROM skills
+//       INNER JOIN skill_versions
+//       ON skills.skill_id = skill_versions.skill_id
+//       WHERE creator_id = $1
+//       GROUP BY canonical_skill_id)`,
+//     [userId], (err, data) => {
+//       if (err) {
+//         console.error(err);
+//         res.sendStatus(500);
+//       } else {
+//         res.send(data.rows.map(skill => {
+//           skill.skill_id = hashids.encode(skill.skill_id);
+//           return skill;
+//         }));
+//       }
+//     })
+// }
+
 exports.getSkills = (req, res) => {
   if (!req.user) {
     res.sendStatus(401);
@@ -94,13 +129,7 @@ exports.getSkills = (req, res) => {
     FROM skills
     INNER JOIN skill_versions
     ON skills.skill_id = skill_versions.skill_id
-    WHERE (canonical_skill_id, version) IN (
-      SELECT canonical_skill_id, max(version)
-      FROM skills
-      INNER JOIN skill_versions
-      ON skills.skill_id = skill_versions.skill_id
-      WHERE creator_id = $1
-      GROUP BY canonical_skill_id)`,
+    WHERE version IS NULL AND creator_id = $1`,
     [userId], (err, data) => {
       if (err) {
         console.error(err);
@@ -397,7 +426,7 @@ exports.deleteProduct = async (req, res) => {
   }
 }
 
-exports.deleteSkill = (req, res) => {
+exports.deleteSkill = (req, res, cb=false) => {
   if (!req.user || !req.params.id) {
     res.sendStatus(401);
     return;
@@ -469,7 +498,12 @@ exports.deleteSkill = (req, res) => {
       if (err) {
         res.sendStatus(500)
       } else {
-        res.sendStatus(200)
+        // Default name of cb when no callback provided is 'next'
+        if (cb && cb.name !== 'next') {
+          cb()
+        } else {
+          res.sendStatus(200)
+        }
       }
     })
 
@@ -646,7 +680,6 @@ exports.buildSkill = async (req, res) => {
       });
       return;
     }
-    console.log(id)
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
         console.error(err)
@@ -1158,7 +1191,6 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
                 name,
                 diagram,
                 creator_id,
-                created,
                 amzn_id,
                 summary,
                 description,
@@ -1197,7 +1229,6 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
         + copy_str + `
                 $1 AS diagram,
                 $2 AS creator_id,
-                created,
                 amzn_id,
                 summary,
                 description,
@@ -1321,12 +1352,13 @@ exports.copySkill = async (req, res, append_copy_str=true, copying_default_templ
 exports.getSkillVersions = (req, res) => {
     let id = hashids.decode(req.params.id)[0]
     pool.query(`
-        SELECT skills.skill_id, created, version, diagram 
+        SELECT skills.skill_id, created, version, diagram, canonical_skill_id
         FROM skills 
         INNER JOIN skill_versions 
         ON skills.skill_id = skill_versions.skill_id 
         WHERE skill_versions.canonical_skill_id = 
             (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)
+            AND version IS NOT NULL
         ORDER BY version DESC`,
         [id],
         (err, data) => {
@@ -1336,9 +1368,37 @@ exports.getSkillVersions = (req, res) => {
             } else {
                 for(let i=0;i<data.rows.length;i++){
                     data.rows[i].skill_id = hashids.encode(data.rows[i].skill_id)
+                    data.rows[i].canonical_skill_id = hashids.encode(data.rows[i].canonical_skill_id)
                 }
                 res.send(data.rows)
             }
         }
     )
+}
+
+exports.restoreSkillVersion = (req, res) => {
+  let id = hashids.decode(req.params.id)[0]
+  let restore_id = hashids.decode(req.params.restore_id)[0]
+  let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
+
+  // Delete existing null skill
+  exports.deleteSkill(req, res, () => {
+    req.params.id = hashids.encode(restore_id)
+    req.params.target_creator = req.user.id
+    exports.copySkill(req, res, false, false, true, (row) => {
+      let new_skill_id = hashids.decode(row.skill_id)[0]
+        pool.query(`
+          INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
+          [canonical_skill_id, new_skill_id],
+          (err) => {
+            if(err){
+              console.log(err)
+              res.sendStatus(500)
+            } else {
+              res.send(row)
+            }
+          }
+        )
+    })
+  })
 }

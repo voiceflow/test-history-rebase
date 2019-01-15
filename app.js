@@ -170,6 +170,7 @@ app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
+app.post('/skill/:id/versions/:restore_id/:canonical_skill_id/restore', ensureLoggedIn(), Skill.restoreSkillVersion)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);

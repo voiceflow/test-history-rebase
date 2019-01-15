@@ -226,7 +226,6 @@ const manifest = (r, encoded_id, name) => {
 			}
 		})
 	}
-	console.log("FUCKING ENDPOINT", `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`)
     let ret = {
      	"manifest": {
              "publishingInformation": {

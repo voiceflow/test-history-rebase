@@ -195,7 +195,6 @@ class Canvas extends Component {
             user_templates: [],
             email_templates: [],
             display_templates: [],
-            fulfillment: {},
             diagram_level_intents: new Set(),
             confirm_info: null,
             default_templates: [],

@@ -104,6 +104,11 @@ class Skill extends Component {
                 })
             }
 
+            // NULL CHECK ON FULFILLMENT
+            if(!skill.fulfillment){
+                skill.fulfillment = {}
+            }
+
             // TODO SKILL PREVIEW NOT ENABLED
             this.setState({
                 load_skill: false,

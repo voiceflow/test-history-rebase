@@ -3,30 +3,34 @@
   height: 200px;
 }
 
-.icon-image>.dropzone{
+.icon-image>.dropzone {
   height: 100%;
 }
-.icon-image>.image-box{
+
+.icon-image>.image-box {
   height: 100%;
   width: 100%;
   display: block;
 }
+
 .icon-image.small-icon>.image-box {
   padding: 50px;
 }
+
 .icon-image.large-icon>.image-box {
   padding: 10px;
 }
-.icon-image>.image-box>.image{
+
+.icon-image>.image-box>.image {
   height: 100%;
   width: 100%;
   background-position: center center;
-    background-size: cover;
-    border-radius: 100px;
-    border: 1px solid #AAA;
+  background-size: cover;
+  border-radius: 100px;
+  border: 1px solid #AAA;
 }
 
-.disabled-image>.image-box{
+.disabled-image>.image-box {
   background-color: #e9ecef;
 }
 
@@ -34,44 +38,53 @@
   margin: 15px 0;
 }
 
-.Window.skill .form-group{
+.Window.skill .form-group {
   margin-top: 1rem;
 }
 
-.Window.skill .form-group label{
+.Window.skill .form-group label {
   margin-bottom: 5px !important;
 }
 
-.Window.skill>.container{
+.Window.skill>.container {
   padding-top: 80px;
   padding-bottom: 6rem;
 }
-.text-success{
-    color: #62D6A8 !important;
+
+.text-success {
+  color: #62D6A8 !important;
 }
-.text-danger{
-    color: #ff3562 !important;
+
+.text-danger {
+  color: #ff3562 !important;
 }
-.Window.skill input::placeholder, textarea::placeholder{
+
+.Window.skill input::placeholder,
+textarea::placeholder {
   color: #CCC !important;
 }
 
-.LoginWithAmazon{
-    display: inline-block;
-    cursor: pointer;
+.LoginWithAmazon {
+  display: inline-block;
+  cursor: pointer;
 }
+
 .unpressed {
-    display: block;
+  display: block;
 }
+
 .pressed {
-    display: none;
+  display: none;
 }
+
 .LoginWithAmazon:hover .unpressed {
-    display: none;
+  display: none;
 }
+
 .LoginWithAmazon:hover .pressed {
-    display: block;
+  display: block;
 }
+
 .stage_modal .modal-info p.loading {
   font-size: 1rem;
 }
@@ -80,9 +93,10 @@
   overflow: hidden;
   display: inline-block;
   vertical-align: bottom;
-  -webkit-animation: ellipsis steps(4,end) 2000ms infinite;
-  animation: ellipsis steps(4,end) 2000ms infinite;
-  content: "\2026"; /* ascii code for the ellipsis character */
+  -webkit-animation: ellipsis steps(4, end) 2000ms infinite;
+  animation: ellipsis steps(4, end) 2000ms infinite;
+  content: "\2026";
+  /* ascii code for the ellipsis character */
   width: 0px;
 }
 
@@ -97,24 +111,29 @@
     width: 1.25em;
   }
 }
-.stage_modal .modal-info>div{
+
+.stage_modal .modal-info>div {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   min-height: 200px;
 }
-.stage_modal .modal-info>h1{
+
+.stage_modal .modal-info>h1 {
   font-size: 3rem;
 }
+
 .stage_modal .modal-body>.d-flex.justify-content-between {
   margin-bottom: 10px;
 }
-.stage_modal .modal-info>.MUIform>div{
+
+.stage_modal .modal-info>.MUIform>div {
   width: 100%;
   margin: 5px 0px !important;
 }
-.stage_modal .modal-info>.MUIform>.btn{
+
+.stage_modal .modal-info>.MUIform>.btn {
   margin-top: 10px !important;
 }
 
@@ -125,11 +144,11 @@
 .empty {
   color: #2b3950;
   font-size: 24px;
-  line-height:30px;
+  line-height: 30px;
   margin-top: 20px;
 }
 
-.return-button{
+.return-button {
   float: left;
   height: 100%;
   vertical-align: center !important;
@@ -157,7 +176,8 @@
   width: 25%;
   padding: 13px;
 }
-.product-card>.card{
+
+.product-card>.card {
   overflow: hidden;
   background-image: linear-gradient(180deg, #fff, #fff);
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .1);
@@ -195,11 +215,12 @@
 .product-list-count {
   color: #2b3950;
 }
+
 .card .overlay .elispie {
   position: absolute;
   top: 0px;
   right: 3px;
-  padding-left:20px;
+  padding-left: 20px;
   margin-top: 7px;
   margin-right: 6px;
   transform: translateY(-30px);
@@ -209,19 +230,23 @@
   transition: transform 0.2s ease;
   color: #fff;
 }
+
 .card .overlay .elispie .elispie-button {
   padding: 0px 12px;
   border-radius: 5px;
 }
+
 .card .overlay .elispie.open .elispie-button {
-  background-color:#42A5FFAA !important;
+  background-color: #42A5FFAA !important;
 }
+
 .card .overlay .elispie .dropdown-menu {
   top: -4px !important;
 }
+
 .card .overlay {
   /* visibility: hidden; */
-  background-color:  #42A5FFAA;
+  background-color: #42A5FFAA;
   width: 100%;
   height: 100%;
   display: flex;
@@ -234,7 +259,7 @@
 }
 
 .card-body .overlay {
-  background-color:  #42A5FFAA;
+  background-color: #42A5FFAA;
   width: 100%;
   height: 100%;
   display: flex;
@@ -274,7 +299,7 @@
 
 .edit-button:hover {
     background-color: #fff;
-    color: #2b3950 !important;
+    color: #132144 !important;
     cursor: pointer;
 }
 
@@ -363,10 +388,10 @@
 }
 
 .product-title {
-  margin-bottom: 2px;
-  color: #2b3950;
-  font-size: 20px;
-  letter-spacing: 0.3px;
+  margin-bottom: 0px;
+  color: #132144;
+  font-size: 18px;
+  letter-spacing: 0.2px;
 }
 
 .product-price {
@@ -383,11 +408,11 @@
 }
 
 .products-container {
-    /* display: flex; */
-    /* width: 100%; */
-    /* margin-top: 0px; */
-    /* margin-bottom: 16px; */
-    margin: 0 -10px;
+  /* display: flex; */
+  /* width: 100%; */
+  /* margin-top: 0px; */
+  /* margin-bottom: 16px; */
+  margin: 0 -10px;
 }
 
 .locale-button-group {
@@ -395,14 +420,15 @@
 }
 
 .empty-card {
-  height: 298px;
+  height: 294px;
   position: absolute;
   left: 0px;
   top: 0px;
   width: 25%;
   padding: 13px;
 }
-.empty-card>div{
+
+.empty-card>div {
   border: 1px dashed #c6d0da;
   width: 100%;
   height: 100%;
@@ -412,24 +438,29 @@
   display: flex;
   border-radius: 10px;
 }
+
 .empty-card:hover>div:hover {
   background-color: rgba(0, 0, 0, .03);
 }
+
 /* Line class */
-.MuiStepConnector-line{
+.MuiStepConnector-line {
   border-color: #cdd7e0 !important;
 }
+
 /* Inactive Step */
-.MuiStepIcon-root{
+.MuiStepIcon-root {
   color: #cdd7e0 !important;
 }
+
 /* Completed Step */
-.MuiStepIcon-completed{
+.MuiStepIcon-completed {
   color: #42a5ff !important;
   border-radius: 50% !important;
 }
+
 /* Current Step */
-.MuiStepIcon-active{
+.MuiStepIcon-active {
   color: #42a5ff !important;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .10);
   border-radius: 50% !important;
@@ -439,14 +470,49 @@
   border: 1px solid #fff !important;
 }
 
-.MuiStepLabel-label{
+.MuiStepLabel-label {
   color: #b6c2cc !important;
 }
 
-.MuiStepLabel-label-40.MuiStepLabel-active-41{
+.MuiStepLabel-label-40.MuiStepLabel-active-41 {
   color: #2b3950 !important;
 }
 
 .label-margin-top {
   margin-top: 1em !important;
+}
+
+.save-btn {
+  float: right;
+}
+
+.nb {
+  border: 0px;
+}
+
+.slot-box {
+  border: 1px solid #E2E9EC;
+  border-radius: 5px;
+}
+
+.slot-collapse {
+  padding: 10px;
+  padding-top: 5px;
+}
+
+.fulfill-value:first-child {
+  padding-top: 0px;
+}
+
+.selected-intent-label {
+  text-align: center;
+  color: #8da2b5;
+  font-size: 13px;
+  margin-bottom: 1em;
+  font-style: italic;
+}
+
+.all-badge {
+  font-size: 14px;
+  margin: 0px;
 }

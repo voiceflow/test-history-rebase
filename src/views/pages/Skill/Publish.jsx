@@ -3,37 +3,42 @@ import { Link } from 'react-router-dom'
 
 import PublishAmazon from './PublishAmazon'
 import PublishMarket from '../PublishMarket/PublishMarket'
+import cloneDeep from 'lodash/cloneDeep';
 
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
 }
-console.log(window)
-var tabs 
 
-    if(window.user_detail.admin >= 100){
-        tabs = [
-            {
-                display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
-                match: ['alexa'],
-                link: '/publish/:skill_id'
-            },
-            {
-                display: <React.Fragment><i className="fal fa-store-alt mr-2"/> Marketplace</React.Fragment>,
-                match: ['market'],
-                link: '/publish/:skill_id/market'
-            }
-        ]
-    } else {
-        tabs = [
-            {
-                display: <React.Fragment><i className="fal fa-home mr-2"/> Alexa</React.Fragment>,
-                match: ['alexa'],
-                link: '/publish/:skill_id'
-            }
-        ]
+const tabs = [
+    {
+        display: <React.Fragment><i className="fab fa-amazon mr-2"/> Alexa</React.Fragment>,
+        match: ['alexa'],
+        link: '/publish/:skill_id'
+    },
+    {
+        display: <React.Fragment><i className="fab fa-google mr-2"></i> Google<small> &nbsp; soon</small></React.Fragment>,
+        match: ['google'],
+        link: '/publish/:skill_id'
     }
+]
 
 class Publish extends Component {
+    constructor(props){
+        super(props)
+
+        let TABS = cloneDeep(tabs)
+        if(window.user_detail.admin >= 100){
+            TABS.push({
+                display: <React.Fragment><i className="far fa-store-alt mr-2"/> Marketplace</React.Fragment>,
+                match: ['market'],
+                link: '/publish/:skill_id/market'
+            })
+        }
+
+        this.state = {
+            tabs: TABS
+        }
+    }
 
     render() {
         let page;
@@ -46,16 +51,15 @@ class Publish extends Component {
         return (
             <div id="business">
                 <div md="3" className="sidebar-nav">
-                    {tabs.map((tab, i) => {
+                    {this.state.tabs.map((tab, i) => {
                         if(tab.match.includes(this.props.page)){
                             return <div key={i} className="nav-item active">
                                 {tab.display}
                             </div>
-                        }else{
-                            return <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
-                                {tab.display}
-                            </Link>
                         }
+                        return <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
+                            {tab.display}
+                        </Link>
                     })}
                 </div>
                 <div md="9" className="business-page">

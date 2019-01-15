@@ -18,9 +18,8 @@ class Button extends Component{
 		let that = this;
 		that.props.updateLogin(1);
 		AuthenticationService.amazon_login().then(
-			() => that.props.updateLogin(2),
-			() => that.props.updateLogin(-1)
-		)
+			() => that.props.updateLogin(2)
+		).catch(() => that.props.updateLogin(-1))
 	}
 
 	render(){

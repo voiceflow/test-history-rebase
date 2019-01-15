@@ -70,7 +70,7 @@
     "eject": "react-scripts eject",
     "prepublish": "patch-package"
   },
-  "proxy": "https://localhost",
+  "proxy": "http://localhost:8080",
   "devDependencies": {
     "patch-package": "^5.1.1",
     "babel-core": "^6.26.3",

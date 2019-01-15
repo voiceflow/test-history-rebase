@@ -1,7 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react';
-import { Modal, ModalBody } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
@@ -9,8 +9,7 @@ const blocks = [
   {
     type: "speak",
     info: "Speak blocks allow you to get Alexa to talk to the user. You can enter an unlimited amount of text, and even add variables in the text to have Alexa say the user’s names, or any other captured variable.",
-    icon: <i className="fas fa-megaphone"/>,
-    video: "https://youtu.be/embed/8mnlsOlqzEk"
+    video: "https://www.youtube.com/embed/auyT6IRljHo"
   },
   {
     type: "audio",
@@ -22,18 +21,19 @@ const blocks = [
     type: "choice",
     info: "Choice blocks listen for the user to speak, and then send them to the matching path. When you ask a user a question, add a choice block after. In the choice block, you can add multiple choices ‘right’, ‘left’ and drag the path to the corresponding block. The ‘else’ statement in the choice block handles any answer that isn’t one of the choice options. If you have choices for ‘yes’ and ‘no’, but the user says ‘pineapple’, the else path will be activated.",
     icon: <i className="fas fa-project-diagram"/>,
-    video: "https://youtu.be/embed/Tvocl3zXTV0"
+    video: "https://www.youtube.com/embed/Tk47S6gfEiM"
   },
   {
     type: "command",
     info: "The command block allows the user to access global commands across your whole skill. At any point, a user can ask for a command block that you create such as ‘STOP’ or ‘HOME’ and the command block associated with that command will be activated, no matter where they are in your skill’s flow.",
-    icon: '⌘'
+    icon: <i className="fas fa-exclamation"/>,
+    video: "https://www.youtube.com/embed/piU_PTL1wBQ"
   },
   {
     type: "random",
     info: "The random block acts similarly to a choice block. However, the major difference is there is no user input, and the choice block will randomly choose a path when it is activated. You can add multiple random paths, as well as remove them. If there is a path that is not connected to any following block, the skill will end so ensure you have all paths hooked up, or, remove the unused path. \n\n When smart descending random is turned on, if the same random block is activated again, it will not choose random paths it has already chosen.",
     icon: <i className="fas fa-random"/>,
-    video: "https://youtu.be/embed/g0oMJIobEg8"
+    video: "https://www.youtube.com/embed/AAkQVd4TsgY"
   },
   {
     type: "variable",
@@ -48,7 +48,92 @@ const blocks = [
   {
     type: "capture",
     info: "Capture blocks allow you to ask the user a question and capture their response in a variable as text. You must have a variable created (using a variable block) to use capture. \n\n As an example, you can ask the user what their name is, and then use a capture block to capture the response into a variable called ‘user_name’ and then use the user’s name in your skill using a speak block to better personalize the experience. If the user says a number, such as ‘six’, the response will automatically be converted to a number format (‘six’ turns to ‘6’) to allow you to capture and use numbers.",
-    icon: <i className="fas fa-microphone"/>
+    icon: <i className="fas fa-microphone"/>,
+    video: "https://www.youtube.com/embed/MYOW6FXvJ0o"
+  },
+  {
+    type: "set",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-code"/>,
+    video: "https://www.youtube.com/embed/6xgr-7GPZzU"
+  },
+  {
+    type: "jump",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-step-forward"/>,
+    video: "https://www.youtube.com/embed/-nwWqo2v86U"
+  },
+  {
+    type: "intent",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-user-alt"/>,
+    video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  },
+  {
+    type: "stream",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-play"/>,
+    video: "https://www.youtube.com/embed/I6rMkA4JPRM"
+  },
+  {
+    type: "api",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-globe"/>,
+    video: "https://www.youtube.com/embed/6rnoN8rnBrs"
+  },
+  {
+    type: "flow",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-clone"/>,
+    video: "https://www.youtube.com/embed/EMpqNf2HhKw"
+  },
+  {
+    type: "exit",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-sign-out"/>,
+    video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  },
+  {
+    type: "combine",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-compress-alt"/>,
+    video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  },
+  {
+    type: "comment",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-comment"/>,
+    video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  },
+  {
+    type: "card",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-sticky-note"/>,
+    video: "https://www.youtube.com/embed/bQLdxSoXh0Y"
+  },
+  {
+    type: "card",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-sticky-note"/>,
+    video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  },
+  {
+    type: "display",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="far fa-image"/>,
+    video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  },
+  {
+    type: "permissions",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-lock"/>,
+    video: "https://www.youtube.com/embed/EHQuYN8U1ew"
+  },
+  {
+    type: "mail",
+    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+    icon: <i className="fas fa-envelope"/>,
+    video: "https://www.youtube.com/embed/6yMxOQfmkVE"
   }
 ]
 
@@ -65,24 +150,23 @@ class HelpModal extends React.Component {
 
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle}>
+        <ModalHeader toggle={this.props.toggle}>{this.props.help && this.props.help.type ? this.props.help.type : 'Blocks'}</ModalHeader>
         <ModalBody>
           {this.props.help && this.props.help.type ? 
             <React.Fragment>
-              <h3>{this.props.help.type}</h3>
-              <hr/>
               <div className="text-muted p-3 pt-0">
                 {result ? <React.Fragment>
-                  <div className={"helpMenu MenuItem super-center mb-3 " + result.type}>
-                    <div className="MenuIcon">{result.icon}</div>
-                  </div>
-                  <p>{result.info}</p>
+                  <p className="mb-4">{result.info}</p>
+                  {result.video && 
+                    <div className="embed-responsive box-shadow embed-responsive-16by9 rounded">
+                      <iframe src={result.video} allowFullScreen title="intro"></iframe>
+                    </div>
+                  }
                 </React.Fragment> : 
                 "Information for this block doesn't exist yet. Check back again later"}
               </div>
             </React.Fragment> :
             <React.Fragment>
-              <h3>Blocks</h3>
-              <hr/>
               {blocks.map((block, i) => {
                 return (
                   <Card className="mb-1 MenuItem" key={i}>

@@ -102,6 +102,7 @@ class VariableInput extends Component {
                         onChange={this.onChange}
                         placeholder={this.props.placeholder}
                         blockRenderMap={this.singleLinePlugin.blockRenderMap}
+                        stripPastedStyles={true}
                     />
                 </div>
                 <MentionSuggestions

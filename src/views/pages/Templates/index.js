@@ -14,13 +14,13 @@ class Templates extends Component {
 
         this.state = {
             stage: 0,
-            loading: true,
+            loading: false,
             preview: false,
             templates: [],
             name: '',
             locales: ['en-US'],
             error: '',
-            template: null
+            template: {}
         }
 
         this.createSkill = this.createSkill.bind(this)
@@ -70,37 +70,26 @@ class Templates extends Component {
             locales: this.state.locales
         })
         .then(res => {
-            console.log(res.data)
             if(res.data.skill_id && res.data.diagram){
-                this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                this.setState({loading: true})
+                setTimeout(()=>{
+                    this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                }, 3000)
             }else{
                 throw new Error('Invalid Response Format')
             }
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             alert('unable to create skill')
         })
     }
 
     previewTemplate(template){
-        let skill_id = template.template_skill_id
         this.setState({
             preview: true,
-            template: template
-        }, () => {
-            axios.get(`/skill/${skill_id}?preview=1`)
-            .then(res => {
-                let skill = res.data
-                this.setState({
-                    skill_id: skill.skill_id,
-                    diagram_id: skill.diagram
-                })
-            })
-            .catch(err => {
-                console.error(err)
-                alert('unable to load preview')
-            })
+            template: template,
+            diagram_id: template.diagram_id
         })
     }
 
@@ -108,7 +97,6 @@ class Templates extends Component {
         axios.get('/marketplace/default_templates')
         .then(res => {
             if(Array.isArray(res.data)){
-                console.log(res.data)
                 this.setState({
                     templates: res.data
                 })
@@ -179,24 +167,31 @@ class Templates extends Component {
     }
 
     render() {
+        if(this.state.loading){
+            return <div id="loading-diagram">
+                <div className="text-center">
+                    <h5 className="text-muted mb-2">Loading New Skill</h5>
+                    <span className="loader"/>
+                </div>
+            </div>
+        }
+
         return <div id="template-box-container">
             <div className="card">
                 <Link id="exit-template" to='/dashboard' className="close">&times;</Link>
                 {this.renderBody()}
             </div>
             <Modal isOpen={this.state.preview} size="xl" toggle={()=>this.setState({preview: false})} onClosed={()=>{this.setState({diagram_id: null})}} className="light-canvas-modal">
-                {!!this.state.template && <React.Fragment>
-                    <div id="light-canvas-wrap">
-                        <div className="no-select" id="PreviewBar">
-                            <h3 className="font-weight-light">{this.state.template.title} Preview</h3>
-                        </div>
-                        <LightCanvas skill_id={this.state.skill_id} diagram_id={this.state.diagram_id}/>
+                <div id="light-canvas-wrap">
+                    <div className="no-select" id="PreviewBar">
+                        <h3 className="font-weight-light">{this.state.template.title} Preview</h3>
                     </div>
-                    <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
-                    <div className="position-absolute" style={{bottom: -75, left: '50%', marginLeft: -73}}>
-                        <MUIButton varient="contained" className="purple-btn" onClick={()=>this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
-                    </div>
-                </React.Fragment>}
+                    <LightCanvas diagram_id={this.state.diagram_id}/>
+                </div>
+                <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+                <div className="position-absolute" style={{bottom: -75, left: '50%', marginLeft: -73}}>
+                    <MUIButton varient="contained" className="purple-btn" onClick={()=>this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
+                </div>
             </Modal>
         </div>
     }

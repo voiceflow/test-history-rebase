@@ -1,5 +1,6 @@
 // Convert older deprecated blocks to newer ones
 exports.convertDiagram = (diagram, diagrams) => {
+
     const port_ids = new Set()
 
     diagram.nodes.forEach(node => {
@@ -19,6 +20,14 @@ exports.convertDiagram = (diagram, diagrams) => {
                 }else{
                     node.ports = []
                 }
+            } else if(node.extras.type === 'jump'){
+                node.extras.type = 'intent'
+                node.name = 'Intent'
+            } else if(node.extras.type === 'intent' && node.extras.choices){
+                node.extras.type = 'interaction'
+                node.name = 'Interaction'
+            } else if(node.extras.type === 'story' && node.name === 'Start Block'){
+                node.name = 'Start'
             }
         }
         if(Array.isArray(node.ports)){

@@ -1,0 +1,24 @@
+.menu-tip {
+  padding: 5px;
+}
+
+.fulfill-label {
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  color: #8da2b5;
+}
+
+.fulfill-switch {
+  margin: 2px;
+}
+
+.slot-fulfillment {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.va {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}

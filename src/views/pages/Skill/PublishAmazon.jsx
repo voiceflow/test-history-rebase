@@ -285,6 +285,10 @@ class Skill extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.save(true)
+    }
+
     save(publish=false, cb){
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
@@ -527,7 +531,7 @@ class Skill extends Component {
                         placeholder="Any Particular Testing Instructions for Amazon Approval Process"
                     />
                 </Paper>
-                <Button color="primary" onClick={this.onPublish} block>Submit to Alexa</Button>
+                <button className="purple-btn btn" onClick={this.onPublish} block>Submit to Alexa</button>
             </div>
         }else if(this.state.stage === 5 || this.state.stage === 6){
             content = <div>
@@ -583,7 +587,6 @@ class Skill extends Component {
                         {disabled_stages.has(this.state.stage)?
                             null:
                             <div className="subheader-right">
-                                <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
                                 <button variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></button>
                             </div>
                         }
@@ -751,7 +754,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Display Name </b>*</Label>
+                                    <Label>Display Name *</Label>
                                 </div>
                             </div>
                             <div className="row">
@@ -768,7 +771,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Invocation Name</b> *</Label>
+                                    <Label>Invocation Name *</Label>
                                 </div>
                             </div>
                             <div className="row">
@@ -787,7 +790,7 @@ class Skill extends Component {
                             </div>
                             <div className="col-9 d-flex">
                                 <div>
-                                    <label className="mt-0"><b>Small icon</b> *</label>
+                                    <label className="mt-0">Small icon *</label>
                                     <Image
                                         className='icon-image small-icon'
                                         isDisabled={disabled_stages.has(this.state.stage)}
@@ -796,7 +799,7 @@ class Skill extends Component {
                                         update={(url) => this.setState({small_icon: url})}/>
                                 </div>
                                 <div className="pl-3">
-                                    <label className="mt-0"><b>Large icon</b> *</label>
+                                    <label className="mt-0">Large icon *</label>
                                     <Image
                                         className='icon-image large-icon'
                                         isDisabled={disabled_stages.has(this.state.stage)}
@@ -811,7 +814,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Summary </b>*</Label>
+                                    <Label>Summary *</Label>
                                 </div>
                             </div>
                             <div className="row">
@@ -830,7 +833,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Description</b> *</Label>
+                                    <Label>Description *</Label>
                                 </div>
                             </div>
 
@@ -858,7 +861,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Category *</b></Label>
+                                    <Label>Category *</Label>
                                 </div>
                             </div>
                             <div className="row">
@@ -885,7 +888,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Invocations *</b></Label>
+                                    <Label>Invocations *</Label>
                                 </div>
                             </div>
                             <div className="row">
@@ -911,7 +914,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Locale </b><small>Select Your Skill's Locale(s)</small></Label>
+                                    <Label>Location(s)</Label>
                                 </div>
                             </div>
                             <div className="row">
@@ -935,7 +938,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Privacy Policy URL</b></Label>
+                                    <Label>Privacy Policy URL</Label>
                                 </div>
                             </div>
 
@@ -955,7 +958,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Terms and Conditions URL</b></Label>
+                                    <Label>Terms and Conditions URL</Label>
                                 </div>
                             </div>
 
@@ -977,7 +980,7 @@ class Skill extends Component {
                             <div className="row">
                                 <div className="col-3 publish-info"></div>
                                 <div className="col-9">
-                                    <Label><b>Keywords </b>(Search Tags) <small>optional</small></Label>
+                                    <Label>Keywords (Search Tags) <small>optional</small></Label>
                                 </div>
                             </div>
                             <div className="row">

@@ -89,7 +89,7 @@ class Templates extends Component {
                         </Link>
                         <hr/>
                         {this.state.templates.length === 0 ? 
-                            <h5 className="text-muted">No Email Templates <i className="fal fa-frown"/></h5> :
+                            <h5 className="text-muted">No Email Templates</h5> :
                             <React.Fragment>
                                 {this.state.templates.map(template => 
                                     <Card key={template.template_id} className="template-card">

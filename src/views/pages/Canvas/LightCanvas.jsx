@@ -13,7 +13,6 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
-const _ = require('lodash')
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -69,25 +68,10 @@ class LightCanvas extends Component {
     }
 
     componentWillMount() {
+        this.onLoadId(this.props.diagram_id)
     }
 
     componentWillUnmount() {
-    }
-
-    componentDidUpdate(previous_props) {
-        if(previous_props.diagram_id !== this.props.diagram_id && this.props.diagram_id){
-            if(this.buildDiagrams !== null){
-                this.buildDiagrams(this.props.diagram_id)
-            }
-            this.setState({
-                loading_diagram: true
-            }, () => {
-              let nodes = _.values(this.state.engine.diagramModel.nodes)
-              this.state.engine.enableRepaintEntities(nodes)
-              this.state.engine.repaintCanvas(false)
-              this.onLoadId(this.props.diagram_id)
-            })
-        }
     }
 
     zoom(delta){
@@ -247,7 +231,7 @@ class LightCanvas extends Component {
             }
         })
         .catch(err => {
-            this.props.onError('Could Not Retrieve Project')
+            console.error(err)
         })
     }
 
@@ -270,8 +254,8 @@ class LightCanvas extends Component {
                     >
                         <div id="widget-bar">
                             <ButtonGroup>
-                                <button onClick={()=>this.zoom(1000)} className="white-circ"><i className="far fa-plus"/></button>
-                                <button onClick={()=>this.zoom(-1000)} className="white-circ-right"><i className="far fa-minus"/></button>
+                                <button onClick={()=>this.zoom(1000)} className="white-circ round-left"><i className="far fa-plus"/></button>
+                                <button onClick={()=>this.zoom(-1000)} className="white-circ round-right"><i className="far fa-minus"/></button>
                             </ButtonGroup>
                         </div>
                         <SRD.DiagramWidget

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="7px" viewBox="0 0 8 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#5D9DF5" stop-opacity="0.85" offset="0%"></stop>
+            <stop stop-color="#2C85FF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M2.90833935,3.80306462 L7.08815759,0.137094346 C7.31579123,-0.0625550403 7.64460031,-0.0419946134 7.8499241,0.184727594 C8.0500253,0.40568292 8.0500253,0.76158459 7.8499241,0.982539917 L3.25221093,6.0594172 C2.84386528,6.51031978 2.17846245,6.51397506 1.7659921,6.06758151 C1.73992286,6.03936823 1.71522281,6.00968217 1.69199337,5.97864524 L0.12890688,3.89019962 C-0.055920774,3.64325071 -0.0403405209,3.28360157 0.165008085,3.05685196 C0.372006184,2.82828095 0.701591551,2.80187658 0.93686071,2.99501583 L1.94178769,3.81998944 C2.22969193,4.05633836 2.62750735,4.04937241 2.90833935,3.80306462 Z" id="path-2"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Combined-Shape-Copy">
+            <use fill="#FFFFFF" xlink:href="#path-2"></use>
+            <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+        </g>
+    </g>
+</svg>

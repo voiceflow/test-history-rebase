@@ -5,6 +5,7 @@ import axios from 'axios'
 import update from 'immutability-helper'
 import Prompt from './Prompt'
 import {clone} from 'lodash'
+import moment from 'moment'
 
 const TABS = ['basic', 'advanced', 'backups']
 
@@ -26,6 +27,7 @@ class Settings extends Component {
         this.confirmDelete = this.confirmDelete.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
         this.onDelete = this.onDelete.bind(this)
+        this.confirmRestore = this.confirmRestore.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -122,6 +124,15 @@ class Settings extends Component {
         }
     }
 
+    confirmRestore(skill_id, canonical_skill_id) {
+        this.props.onConfirm({
+            warning: true,
+            text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
+            confirm: this.props.onSwapVersions,
+            params: [skill_id, canonical_skill_id]
+        })
+    }
+
     modalContent(){
         if(!this.state.skill){
             return null
@@ -154,27 +165,34 @@ class Settings extends Component {
                 <FormGroup>
                     <Label>Backups</Label>
                     <div className="helper-text mb-2">Restore your skill to previous versions, saved when you upload your skill to Alexa.</div>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Saved</th>
-                                <th>Blocks</th>
-                                <th>Preview</th>
-                                <th>Restore</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.props.versions.map((version, i) => {
-                                return <tr key={i}>
-                                    <td>{version.created}</td>
-                                    <td>199</td>
-                                    <td>{version.skill_id}</td>
-                                    <td>Restore</td>
+                    {window.user_detail.admin > 10?
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>Saved</th>
+                                    <th>Blocks</th>
+                                    <th>Preview</th>
+                                    <th>Restore</th>
                                 </tr>
-                            })}
-                        </tbody>
+                            </thead>
+                            <tbody>
+                                {this.props.versions.map((version, i) => {
+                                    return <tr key={i}>
+                                        <td>{moment(version.created).fromNow()}</td>
+                                        <td>199</td>
+                                        <td>{version.skill_id}</td>
+                                        <td>
+                                            {/* <Button className='purple-btn' onClick={() => {this.props.onSwapVersions(version.skill_id, version.canonical_skill_id)}}>Restore</Button> */}
+                                            <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id)}>Restore</Button>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
 
-                    </Table>
+                        </Table>
+                        :
+                        <div>Don't @ me poor guy</div>
+                    }
                 </FormGroup>
             </React.Fragment>
             default:
@@ -255,9 +273,11 @@ class Settings extends Component {
             </div>
             <div className="settings-content">
                 {this.modalContent()}
+                {this.state.tab !== 'backups' &&
                 <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
                     {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
                 </Button>
+                }
             </div>
         </div>
     }

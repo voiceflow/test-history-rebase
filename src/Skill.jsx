@@ -31,6 +31,7 @@ class Skill extends Component {
         this.onError = this.onError.bind(this)
         this.onConfirm = this.onConfirm.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
+        this.onSwapVersions = this.onSwapVersions.bind(this)
     }
 
     static getDerivedStateFromProps(props, state){
@@ -130,6 +131,19 @@ class Skill extends Component {
         })
     }
 
+    onSwapVersions(skill_id, canonical_skill_id){
+        axios.post(`/skill/${this.state.skill.skill_id}/versions/${skill_id}/${canonical_skill_id}/restore`)
+        .then(res => {
+            this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+        })
+        .catch(err => {
+            console.error(err.response)
+            this.setState({
+                error: 'Unable to restore version'
+            })
+        })
+    }
+
     renderPage(){
         switch(this.props.page){
             case 'canvas':
@@ -139,7 +153,7 @@ class Skill extends Component {
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':
-                return <Settings {...this.props} skill={this.state.skill} versions={this.state.versions} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Settings {...this.props} skill={this.state.skill} versions={this.state.versions} onError={this.onError} onConfirm={this.onConfirm} onSwapVersions={this.onSwapVersions} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':

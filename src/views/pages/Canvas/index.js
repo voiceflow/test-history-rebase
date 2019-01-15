@@ -169,7 +169,8 @@ class Canvas extends Component {
         // Intent Variables All Skills Must Have
         let skill = {
             intents: [],
-            slots: []
+            slots: [],
+            fulfillment: {}
         }
 
         this.state = {

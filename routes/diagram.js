@@ -1129,9 +1129,9 @@ const publish = (req, res) => {
       pool.query(
         `
         INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
-        SELECT canonical_skill_id, max(version) + 1, ${new_skill_id_decoded}
+        SELECT canonical_skill_id, COALESCE(max(version) + 1, 0), ${new_skill_id_decoded}
         FROM skill_versions
-        WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = ${skill_id})
+        WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id}) FROM skill_versions WHERE skill_id = ${skill_id})
         GROUP BY canonical_skill_id
         `,
         [],

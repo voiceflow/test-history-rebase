@@ -247,8 +247,8 @@ class Skill extends Component {
             axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
             .then(res => {
                 this.setState({stage: 4});
-
-                axios.post(`/skill/${this.state.skill_id}/publish`)
+                let new_version_data = res.data
+                axios.post(`/skill/${new_version_data.new_skill.skill_id}/${new_version_data.canonical_skill_id}/publish`)
                 .then(res => {
                     this.setState({
                         stage: 8,

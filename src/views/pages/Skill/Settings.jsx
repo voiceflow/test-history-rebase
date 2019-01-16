@@ -150,12 +150,12 @@ class Settings extends Component {
         }
     }
 
-    confirmRestore(skill_id, canonical_skill_id) {
+    confirmRestore(skill_id, canonical_skill_id, skill) {
         this.props.onConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
             confirm: this.props.onSwapVersions,
-            params: [skill_id, canonical_skill_id]
+            params: [skill_id, canonical_skill_id, skill]
         })
     }
 
@@ -254,7 +254,7 @@ class Settings extends Component {
                                         <td>{version.skill_id}</td>
                                         <td>
                                             {/* <Button className='purple-btn' onClick={() => {this.props.onSwapVersions(version.skill_id, version.canonical_skill_id)}}>Restore</Button> */}
-                                            <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id)}>Restore</Button>
+                                            <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</Button>
                                         </td>
                                     </tr>
                                 })}

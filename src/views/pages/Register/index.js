@@ -221,7 +221,6 @@ class Account extends Component {
                       className="social-button class-ggl mb-2"
                       buttonText="Login with Google"
                       onSuccess={this.googleLogin}
-                      onFailure={this.googleLoginError}
                     />
                     <FacebookLogin
                       appId={fbId}

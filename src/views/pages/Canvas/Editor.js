@@ -245,13 +245,14 @@ class Editor extends Component {
                     onError={this.showErrorPopup}
                     skill_id={this.props.skill.skill_id}
                 />
-            case 'cancel_payment':
+            case 'cancel':
                 return <CancelPayment node={this.state.node}
                     onUpdate={this.props.onUpdate}
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
                     products={this.props.products}
                     onError={this.showErrorPopup}
+                    skill_id={this.props.skill.skill_id}
                 />
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>

@@ -3,7 +3,6 @@ import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
 import Settings from './views/pages/Skill/Settings'
-import Products from './views/pages/Products/Products';
 import Publish from './views/pages/Skill/Publish'
 import Logs from './views/pages/Logs'
 import axios from 'axios'
@@ -129,8 +128,6 @@ class Skill extends Component {
         switch(this.props.page){
             case 'canvas':
                 return <Canvas {...this.props} skill={this.state.skill} diagram_id={this.state.diagram_id} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
-            case 'products':
-                return <Products {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'business':
                 return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'settings':

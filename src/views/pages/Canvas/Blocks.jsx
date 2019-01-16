@@ -30,7 +30,7 @@ const SECTIONS = [{
     items: [
         { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
         { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
-        { text: 'Comment', type: 'comment', icon: <i className="fas fa-comment"/>, tip: 'Add notes to your diagram'},
+        { text: 'Comment', type: 'comment', icon: <i className="far fa-comment-alt"/>, tip: 'Add notes to your diagram'},
     ]
 },{
     title: 'visuals',
@@ -49,7 +49,9 @@ const getSections = () => {
             title: 'business',
             items: [
                 { text: 'Permissions', type: 'permissions', icon: <i className="fas fa-lock"></i>, tip: 'Ask users for access to their info (Name, Email, Phone)'  },
-                { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' }
+                { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' },
+                { text: 'Payment', type: 'payment', icon: <i className="fas fa-dollar-sign"/>, tip: 'Request payment from user'},
+                { text: 'Cancel Payment', type: 'cancel', icon: <i className="fas fa-user-minus"/>, tip: 'Refund a purchase or cancel an user\'s subscription'}
             ]
         })
     }

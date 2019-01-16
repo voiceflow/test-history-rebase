@@ -301,15 +301,15 @@ class ActionGroup extends PureComponent {
             case 6:
                  return <React.Fragment>
                     Your Amazon Account needs to set up developer settings to Upload Skills
-                    <span className="text-muted text-center font-italic">
-                        Press "Create your Amazon Developer account"<br/>
+                    <Alert className="mt-4">
+                        Press "Create your Amazon Developer account"
                         and sign up with the same email as your Amazon Account.
-                    </span>
+                    </Alert>
                     <div className="my-3">
                         <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank"  rel="noopener noreferrer">
                             Developer Sign Up
                         </a>
-                        <Button color="info" onClick={this.checkVendor}>
+                        <Button color="clear" onClick={this.checkVendor}>
                             <i className="fas fa-sync-alt"/> Check Again
                         </Button>
                     </div>

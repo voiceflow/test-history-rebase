@@ -10,6 +10,12 @@ class MenuItem extends Component {
                     draggable={true}
                     onDragStart={event => {
                         event.dataTransfer.setData('node', this.props.item.type);
+                        if(this.props.data){
+                            event.dataTransfer.setData('data', this.props.data)
+                        }
+                        if(this.props.name){
+                            event.dataTransfer.setData('name', this.props.name)
+                        }
                     }}
                 >
                     <div className="MenuIcon">

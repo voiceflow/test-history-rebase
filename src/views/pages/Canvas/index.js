@@ -33,7 +33,7 @@ import { getIntentSlots } from '../../../util'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-const defaultVariables = ['sessions', 'user_id', 'timestamp']
+const defaultVariables = ['sessions', 'user_id', 'timestamp', 'locale']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -122,7 +122,6 @@ class Canvas extends Component {
         this.copyNode = this.copyNode.bind(this)
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
-        this.loadProducts = this.loadProducts.bind(this)
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
@@ -288,6 +287,20 @@ class Canvas extends Component {
         } catch(err) {
             console.error(err)
             // this.props.onError('Unable to Retrieve Visual Templates')
+        }
+
+        // LOAD PRODUCTS
+        if(this.state.skill.locales.includes('en-US')){
+            try{
+                const res = await axios.get('/skill/'+this.state.skill.skill_id+'/products')
+                if(Array.isArray(res.data)){
+                    this.setState({
+                        products: res.data
+                    })
+                }
+            }catch(err){
+                console.error(err)
+            }
         }
     }
 
@@ -538,19 +551,6 @@ class Canvas extends Component {
                 event.stopPropagation()
             }
         }
-    }
-
-    loadProducts(){
-        axios.get('/skill/'+this.state.skill.skill_id+'/products')
-        .then(res => {
-            this.setState({
-                products: res.data
-            })
-        })
-        .catch(err => {
-            console.log(err.response)
-            this.props.onError('Error retrieving products')
-        })
     }
 
     loadUserModules(){
@@ -1187,7 +1187,11 @@ class Canvas extends Component {
             }
         }
 
-        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
+        let name = event.dataTransfer.getData('name')
+        if(!name){
+            name = type.charAt(0).toUpperCase() + type.substr(1)
+        }
+        var node = new BlockNodeModel(name)
 
         if(type){
             if (type === 'choice') {
@@ -1323,12 +1327,13 @@ class Canvas extends Component {
                 node.extras = {
                     product_id: null
                 }
-            } else if (type === 'cancel_payment') {
+            } else if (type === 'cancel') {
+                let data = event.dataTransfer.getData('data')
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.addOutPort('fail').setMaximumLinks(1)
                 node.extras = {
-                    product_id: null
+                    product_id: data ? (data*1) : null
                 }
             } else if (type === 'capture') {
                 node.addInPort(' ')
@@ -1556,6 +1561,7 @@ class Canvas extends Component {
                         setCanFulfill={this.setCanFulfill}
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
+                        products={this.state.products}
                     />
                     <div
                         key={this.props.diagram_id}

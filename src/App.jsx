@@ -150,12 +150,11 @@ class App extends Component {
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
-                {/* Products Routes */}
-                <PrivateRoute path="/products/:skill_id/template/:id" component={Skill} page="products" secondaryPage="edit" />
-                <PrivateRoute path="/products/:skill_id" component={Skill} page="products" secondaryPage="home"/>
                 {/* Business routes */}
-                <PrivateRoute path="/business/:skill_id/email/template/:id" component={Skill} page='business' secondaryPage="template"/>
-                <PrivateRoute path="/business/:skill_id/email/templates" component={Skill} page='business' secondaryPage="emails"/>
+                <PrivateRoute path="/business/:skill_id/email/:id" component={Skill} page='business' secondaryPage="email"/>
+                <PrivateRoute path="/business/:skill_id/emails" component={Skill} page='business' secondaryPage="emails"/>
+                <PrivateRoute path="/business/:skill_id/product/:id" component={Skill} page="business" secondaryPage="product"/>
+                <PrivateRoute path="/business/:skill_id/products" component={Skill} page="business" secondaryPage="products"/>
                 <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
                 {/* Settings routes */}
                 <PrivateRoute path="/settings/:skill_id/discovery/canfulfill/:id" component={Skill} page='settings' secondaryPage="discovery"/>

@@ -91,7 +91,11 @@ class Skill extends Component {
     onConfirm(confirm){
         this.setState({confirm: {...confirm, confirm: () => {
             this.setState({confirm: null})
-            confirm.confirm()
+            if(confirm.params){
+                confirm.confirm(...confirm.params)   
+            } else {
+                confirm.confirm()
+            }
         }}})
     }
 
@@ -139,10 +143,15 @@ class Skill extends Component {
         })
     }
 
-    onSwapVersions(skill_id, canonical_skill_id){
-        console.log(skill_id, canonical_skill_id)
+    onSwapVersions(skill_id, canonical_skill_id, skill){
         axios.post(`/skill/${this.state.skill.skill_id}/versions/${skill_id}/${canonical_skill_id}/restore`)
         .then(res => {
+            skill.skill_id = res.data.skill_id
+            skill.diagram = res.data.diagram
+            this.setState({
+                skill: skill,
+                diagram_id: skill.diagram
+            })
             this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
         })
         .catch(err => {

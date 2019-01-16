@@ -176,7 +176,7 @@ app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkil
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
-app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
+app.post('/skill/:id/:canonical_skill_id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);

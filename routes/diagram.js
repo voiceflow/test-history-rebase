@@ -1132,10 +1132,10 @@ const publish = (req, res) => {
           console.log(err)
           res.sendStatus(500)
         } else {
-          if(was_first_publish){
+          if (was_first_publish) {
             res.send({ new_skill: new_skill_row, canonical_skill_id: hashids.encode(data.rows[0].canonical_skill_id) })
           } else {
-            res.send({ new_skill_id: new_skill_row, canonical_skill_id: -1 })
+            res.send({ new_skill: new_skill_row, canonical_skill_id: -1 })
           }
         }
       })
@@ -1144,7 +1144,7 @@ const publish = (req, res) => {
     // Spoof the request cause we don't use it anymore
     req.params.id = hashids.encode(skill_id)
     req.params.target_creator = req.user.id
-    copySkill(req, res, false, false, true, (new_skill_row) => {
+    copySkill(req, res, false, false, true, false, (new_skill_row) => {
       // Set the canonical_skill_id to the current working version  
       pool.query(
         `UPDATE skill_versions SET version = 0 WHERE skill_id = $1 AND version IS NULL and skill_id = canonical_skill_id RETURNING *`,

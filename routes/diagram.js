@@ -1027,7 +1027,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                         success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
                         fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
                     };
-                } else if (node.extras.type === 'cancel_payment') {
+                } else if (node.extras.type === 'cancel') {
                     story.lines[node.id] = {
                         cancel_product_id: node.extras.product_id,
                         success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),

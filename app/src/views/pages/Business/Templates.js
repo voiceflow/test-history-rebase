@@ -84,7 +84,7 @@ class Templates extends Component {
                 { this.state.loading ? 
                     <div className="super-center h-100 w-100">Loading...</div> :
                     <div className="content">
-                        <Link to={`/business/${this.props.skill_id}/email/template/new`} className="no-underline">
+                        <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline">
                             <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Template</MUIButton>
                         </Link>
                         <hr/>
@@ -94,7 +94,7 @@ class Templates extends Component {
                                 {this.state.templates.map(template => 
                                     <Card key={template.template_id} className="template-card">
                                         <CardActionArea className="template-card-action"
-                                            onClick={()=>this.props.history.push(`/business/${this.props.skill_id}/email/template/${template.template_id}`)}>
+                                            onClick={()=>this.props.history.push(`/business/${this.props.skill_id}/email/${template.template_id}`)}>
                                             <div>
                                                 <h5>{template.title}</h5>
                                                 <small className="text-muted"><b>id:</b> {template.template_id}</small><br/>

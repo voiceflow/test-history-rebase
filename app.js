@@ -173,11 +173,15 @@ app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInter
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
+app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
+app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
+app.get('/skill/:sid/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
+app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 // STRIPE PAYMENT ENDPOINTS

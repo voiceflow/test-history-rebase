@@ -36,13 +36,13 @@ class PhrasesForm extends React.Component {
                         onClick={this.props.handleRemove(idx)}
                         className="btn-float mb-2 ml-2" style={{fontSize: '16px'}}
                       >
-                      <i class="fal fa-times"></i>
+                      <i className="fal fa-times"></i>
                       </button>
                     </div>
                   );
                 })}
               <div className="text-center">
-                <Button className='previous-btn' onClick={this.props.handleAdd}>Add Phrase<i class="far fa-long-arrow-right ml-2"></i></Button>
+                <Button className='previous-btn' onClick={this.props.handleAdd}>Add Phrase<i className="far fa-long-arrow-right ml-2"></i></Button>
               </div>
             </div>
             <div className="product-stage-button">

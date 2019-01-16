@@ -118,7 +118,7 @@ class Template extends Component {
             axios.post(`/email/template?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
                 // get template id back
-                this.props.history.push(`/business/${this.props.skill_id}/email/template/${res.data}`);
+                this.props.history.push(`/business/${this.props.skill_id}/email/${res.data}`);
                 this.setState({
                     template_id: res.data,
                     saved: true,
@@ -165,7 +165,7 @@ class Template extends Component {
                         <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
                             <MUIButton varient="contained" className="primary-btn mr-2" onClick={()=>{
-                                this.props.history.push(`/business/${this.props.skill_id}/email/templates`);
+                                this.props.history.push(`/business/${this.props.skill_id}/emails`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
                             </MUIButton>

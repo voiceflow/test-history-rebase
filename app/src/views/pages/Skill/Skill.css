@@ -355,7 +355,7 @@ textarea::placeholder {
 
 .product-form .product-form-inner {
   margin: 0 0 15px;
-  width: 95%;
+  width: 100%;
 }
 
 .product-stage-button {
@@ -375,6 +375,7 @@ textarea::placeholder {
   color: #eff5f8;
   border: 1px solid rgba(141, 162, 181, .28);
   margin-top: 15px;
+  margin-bottom: 40px;
 }
 
 .product-body {

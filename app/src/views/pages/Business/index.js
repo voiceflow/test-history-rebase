@@ -5,6 +5,8 @@ import './Business.css'
 import Template from './Template'
 import Templates from './Templates'
 import Home from './Home'
+import Products from './Products/Products';
+import EditProduct from './Products/EditProduct.js';
 
 const PAID_FEATURES = ['In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases']
 
@@ -20,8 +22,13 @@ const tabs = [
     },
     {
         display: <React.Fragment><i className="far fa-envelope mr-2"/> Email</React.Fragment>,
-        match: ['emails', 'template'],
-        link: '/business/:skill_id/email/templates'
+        match: ['emails'],
+        link: '/business/:skill_id/emails'
+    },
+    {
+        display: <React.Fragment><i className="far fa-cube mr-2"/> Products</React.Fragment>,
+        match: ['products'],
+        link: '/business/:skill_id/products'
     }
 ]
 
@@ -30,12 +37,19 @@ class Business extends Component {
     render() {
         let page
         if(window.user_detail.admin > 0){
+            console.log(this.props.page)
             switch(this.props.page){
                 case 'emails':
                     page = <Templates {...this.props}/>
                     break
-                case 'template':
+                case 'email':
                     page = <Template {...this.props}/>
+                    break
+                case 'products':
+                    page = <Products {...this.props}/>
+                    break
+                case 'product':
+                    page = <EditProduct {...this.props}/>
                     break
                 default:
                     page = <Home user={this.props.user}/>

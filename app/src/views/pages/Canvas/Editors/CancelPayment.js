@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import {Button} from 'reactstrap';
+import {Button, Alert} from 'reactstrap';
 import Select from 'react-select';
+import {Link} from 'react-router-dom';
+import _ from 'lodash';
 
 class CancelPaymentBlock extends Component {
     constructor(props) {
@@ -58,53 +60,65 @@ class CancelPaymentBlock extends Component {
     }
 
     render() {
-        let options;
-        let current;
-        if(!this.state.node.extras.product_id){
-            options = this.props.products
-            .map(product => {
-                return {
-                    value: product.id,
-                    label: product.name
-                }
-            });
-        } else {
-            current = this.props.products
-            .find(p => {
-                return p.id === this.state.node.extras.product_id;
-            });
+
+        if(!Array.isArray(this.props.products) || this.props.products.length === 0){
+            return <div>
+                <span className="text-muted">You currently have no In Skill Products</span>
+                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill_id}/products`}>Add Products</Link> 
+            </div>
         }
 
-        return (
-            <div>
-                {!(this.state.node.extras.product_id && current) ?
-                    <React.Fragment>
-                        <React.Fragment>
-                            <label>Select Existing Product</label>
-                            <Select
-                                classNamePrefix="select-box"
-                                onChange={selected => {
-                                    let node = this.state.node;
-                                    node.extras.product_id = selected.value;
-                                    this.setState({
-                                        node: node
-                                    })
-                                }}
-                                options={options}
-                            />
-                            <hr className="mb-1"/>
-                            </React.Fragment>
-                    </React.Fragment>
-                    :
-                    <React.Fragment>
-                        <label>{current.name}</label>
-                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.editProduct(current)}>
-                            Edit Product <i className="fas fa-sign-in"/>
-                        </Button>
-                    </React.Fragment>
-                }
-            </div>
-        );
+        let options = _.map(this.props.products, product => {
+            return {
+                value: product.id,
+                label: product.name
+            }
+        })
+
+        let current
+        if(this.state.node.extras.product_id){
+            current = _.find(this.props.products, p => {
+            return p.id === this.state.node.extras.product_id;
+            })
+        }
+
+        if(current){
+            return <React.Fragment>
+                <label className="space-between mb-3">
+                    <span>{current.name}</span>
+                    <span>($<span className="text-danger">{current.data.publishingInformation && 
+                        current.data.publishingInformation.pricing && 
+                        current.data.publishingInformation.pricing['amazon.com'] && 
+                        current.data.publishingInformation.pricing['amazon.com'].defaultPriceListing && 
+                        current.data.publishingInformation.pricing['amazon.com'].defaultPriceListing.price}</span>)</span>
+                </label>
+                <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.history.push(`/business/${this.props.skill_id}/product/${current.id}`)}>
+                    Edit Product <i className="fas fa-sign-in"/>
+                </Button>
+                <Button color="clear" block className="btn-lg mt-2" onClick={this.reset}>
+                    Unlink Product
+                </Button>
+                <Alert color='warning' className="mt-3">
+                    {current.data.type === 'SUBSCRIPTION' ? 'The user will have their subscription cancelled' : 'The user will be refunded their product purchase'}
+                </Alert>
+            </React.Fragment>
+        }else{
+            return <React.Fragment>
+                <label>Select Existing Product</label>
+                <Select
+                    classNamePrefix="select-box"
+                    onChange={selected => {
+                        let node = this.state.node;
+                        node.extras.product_id = selected.value
+                        this.setState({
+                            node: node,
+                            selectedProduct: selected
+                        })
+                    }}
+                    options={options}
+                />
+            </React.Fragment>
+        }
     }
 }
 

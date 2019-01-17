@@ -8,8 +8,8 @@ import './DashBoard.css'
 import axios from 'axios'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
 import WarningModal from './../../components/Modals/WarningModal'
-import VoiceCards from './../../components/Cards/VoiceCards'
-import EmptyCard from './../../components/Cards/EmptyCard'
+import VoiceCards from 'views/components/Cards/VoiceCards'
+import EmptyCard from 'views/components/Cards/EmptyCard'
 import {Alert, Input} from 'reactstrap'
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
@@ -239,7 +239,6 @@ class DashBoard extends Component {
                                 icon={icon}
                                 name={skill.name}
                                 placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
-                                dropdownOpen={this.state.dropdownOpen}
                                 onDelete={this.deleteSkill}
                                 onCopy={this.copySkill}
                                 deleteLabel="Delete Skill"

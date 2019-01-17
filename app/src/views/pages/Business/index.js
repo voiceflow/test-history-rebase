@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import './Business.css'
-import Template from './Template'
-import Templates from './Templates'
+import Email from './Email'
+import Emails from './Emails'
 import Home from './Home'
 import Products from './Products/Products';
 import EditProduct from './Products/EditProduct.js';
@@ -40,10 +40,10 @@ class Business extends Component {
             console.log(this.props.page)
             switch(this.props.page){
                 case 'emails':
-                    page = <Templates {...this.props}/>
+                    page = <Emails {...this.props}/>
                     break
                 case 'email':
-                    page = <Template {...this.props}/>
+                    page = <Email {...this.props}/>
                     break
                 case 'products':
                     page = <Products {...this.props}/>

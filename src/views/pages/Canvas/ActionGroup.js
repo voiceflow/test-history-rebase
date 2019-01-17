@@ -397,13 +397,10 @@ class ActionGroup extends PureComponent {
                         position="bottom"
                     >
                         <MUIButton variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
-                            {this.props.saving ?
-                                <span className="loader"/> :
-                                <React.Fragment>
-                                    {this.props.isGoogle && <i className="fab fa-amazon"/>}
-                                    {!this.props.isGoogle && <i className="fab fa-google"/>}
-                                </React.Fragment>
-                            }
+                            <React.Fragment>
+                                {this.props.isGoogle && <i className="fab fa-amazon"/>}
+                                {!this.props.isGoogle && <i className="fab fa-google"/>}
+                            </React.Fragment>
                         </MUIButton>
                     </Tooltip>
                     <Tooltip

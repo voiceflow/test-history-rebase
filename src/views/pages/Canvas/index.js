@@ -170,7 +170,8 @@ class Canvas extends Component {
         // Intent Variables All Skills Must Have
         let skill = {
             intents: [],
-            slots: []
+            slots: [],
+            fulfillment: {}
         }
 
         this.state = {
@@ -200,7 +201,8 @@ class Canvas extends Component {
             diagram_level_intents: new Set(),
             confirm_info: null,
             default_templates: [],
-            spotlight: false
+            spotlight: false,
+            google: false
         }
 
         // SKILL IS LOADED HERE
@@ -1425,6 +1427,13 @@ class Canvas extends Component {
             }
             engine.stopMove()
             node.extras.type = type
+
+            let google = this.state.google
+
+            if (!ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)) {
+                node.fade = google
+            }
+
             var points = engine.getRelativeMousePoint(event)
             node.x = points.x-(node.name.length*4.5 + 40)
             node.y = points.y-30

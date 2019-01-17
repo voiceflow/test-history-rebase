@@ -1252,7 +1252,7 @@ body.modal-open {
     background-image: url("/saved.svg"), linear-gradient(-180deg,rgba(47,208,193,.12),rgba(47,208,193,.15) 98%) !important;
 }
 .btn-successful:hover{
-    background-image: url("/saved-2.svg"), linear-gradient(-180deg,rgba(47,208,193,.15),rgba(47,208,193,.22) 98%) !important;
+    background-image: url("/saved.svg"), linear-gradient(-180deg,rgba(47,208,193,.15),rgba(47,208,193,.22) 98%) !important;
 }
 .tippy-tooltip {
     /*background-color: #42A5FF !important;*/

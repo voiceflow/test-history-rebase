@@ -1,4 +1,4 @@
-export default [
+exports.AMAZON_CATEGORIES = [
     {
         value: "ALARMS_AND_CLOCKS",
         label: "Alarms & Clocks"
@@ -234,5 +234,16 @@ export default [
     {
         value: "ZIP_CODE_LOOKUP",
         label: "Zip Code Look up"
+    }
+]
+
+exports.GOOGLE_CATEGORIES = [
+    {
+        value: "GOOGLE_TEST_CATEGORY",
+        label: "Google Test Category"
+    },
+    {
+        value: "DOGS", 
+        label: "Dogs"
     }
 ]

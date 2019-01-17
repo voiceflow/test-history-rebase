@@ -8,13 +8,10 @@ const {jwt, docClient, pool, redisClient, config, hashids} = require('./../servi
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
+var exec = require('child_process').execFile;
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
-const publishClient = new OAuth2Client(
-	getEnvVariable('GOOGLE_PUBLISH_CLIENT_ID'),
-	getEnvVariable('GOOGLE_PUBLISH_CLIENT_SECRET'),
-	getEnvVariable('GOOGLE_PUBLISH_REDIRECT_URI'),
-)
+const _ = require('lodash')
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -334,49 +331,52 @@ const googleLogin = async(req, res) => {
 
 const googlePublishLogin = async(req, res) => {
 	const creatorId = req.body.creator_id
-	const code = req.body.code
+	const access_token = req.body.access_token
 
-	console.log("google publish", req.body)
-
-	if (!code || !creatorId) {
+	if (!access_token || !creatorId) {
 		res.status(400).send("Unable to Authenticate Through Google");
 	} else {
-		console.log("getting token")
-		const tokens = await publishClient.getToken(code)
-		console.log("tokens", tokens, tokens.tokens)
-		
-		if (!tokens.refresh_token) {
-			res.status(400).send("No refresh token present in response")
-		} else {
-			pool.query('UPDATE creators SET google_refresh_token = $2 WHERE creator_id = $1', [creatorId, tokens.refresh_token], (err, data) => {
-				if(err){
-					console.trace(err)
-					res.status(500).send("Unable to Access Database");
-				} else{
-					res.status(200)
-				}
-			})
+		try {
+				pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creatorId, access_token], (err, data) => {
+					if(err){
+						console.trace(err)
+						res.status(500).send("Unable to Access Database");
+					} else{
+						// TODO: check if token is valid
+						res.status(200).send()
+					}
+				})
+		} catch (e) {
+			console.error('error fetching token', e)
 		}
 	}
 }
 
-const isLoggedInForGooglePublish = (req, res) => {
-	const creatorId = req.creatorId
-
-	pool.query('SELECT google_refresh_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+const hasGoogleAccessToken = (req, res) => {
+	const creatorId = req.body.creatorId
+	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
 		if(err){
 			console.trace(err)
 			res.status(500).send("Unable to Access Database");
-		} else if (!_.isNil(data.rows[0].google_refresh_token)) {
-			res.status(200)
+		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
+			res.status(200).send({token: true})
 		} else {
-			res.status(400).send('No refresh token found')
+			res.status(200).send({token: false})
 		}
 	})
 }
 
-const publishToGoogle = async(req, res) => {
+const verifyGoogleToken = (req, res) => {
+	const token = req.body.token
 
+	var fun = () => {
+		console.log("fun() start");
+		exec('HelloJithin.exe', function(err, data) {  
+			console.log(err)
+			console.log(data.toString());                       
+		});  
+	}
+	fun();
 }
 
 const fbLogin = async(req, res) => {
@@ -659,5 +659,6 @@ module.exports = {
 	resetPassword: (req, res) => reset(req, res, true),
 	verifyUser: verifyUser,
 	googlePublishLogin: googlePublishLogin,
-	isLoggedInForGooglePublish: isLoggedInForGooglePublish
+	hasGoogleAccessToken: hasGoogleAccessToken,
+	verifyGoogleToken: verifyGoogleToken
 }

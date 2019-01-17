@@ -516,3 +516,8 @@ textarea::placeholder {
   font-size: 14px;
   margin: 0px;
 }
+
+.google-link {
+  color: #3691b0;
+  text-decoration: underline;
+}

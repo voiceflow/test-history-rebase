@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.table('creators', function(t) {
-      t.string('google_refresh_token')
+      t.string('gactions_token')
   });
 };
 

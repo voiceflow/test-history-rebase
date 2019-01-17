@@ -132,8 +132,8 @@ app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAcce
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
-// app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
-// app.get('/session/google/:code', ensureLoggedIn(), Authentication.getGoogleCode);
+app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
+app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleToken);
 // app.delete('/session/google', ensureLoggedIn(), Authentication.deleteGoogle);
 app.put('/googlePublishLogin', Authentication.googlePublishLogin);
 

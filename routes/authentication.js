@@ -10,6 +10,11 @@ const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
+const publishClient = new OAuth2Client(
+	getEnvVariable('GOOGLE_PUBLISH_CLIENT_ID'),
+	getEnvVariable('GOOGLE_PUBLISH_CLIENT_SECRET'),
+	getEnvVariable('GOOGLE_PUBLISH_REDIRECT_URI'),
+)
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -327,6 +332,53 @@ const googleLogin = async(req, res) => {
     }
 }
 
+const googlePublishLogin = async(req, res) => {
+	const creatorId = req.body.creator_id
+	const code = req.body.code
+
+	console.log("google publish", req.body)
+
+	if (!code || !creatorId) {
+		res.status(400).send("Unable to Authenticate Through Google");
+	} else {
+		console.log("getting token")
+		const tokens = await publishClient.getToken(code)
+		console.log("tokens", tokens, tokens.tokens)
+		
+		if (!tokens.refresh_token) {
+			res.status(400).send("No refresh token present in response")
+		} else {
+			pool.query('UPDATE creators SET google_refresh_token = $2 WHERE creator_id = $1', [creatorId, tokens.refresh_token], (err, data) => {
+				if(err){
+					console.trace(err)
+					res.status(500).send("Unable to Access Database");
+				} else{
+					res.status(200)
+				}
+			})
+		}
+	}
+}
+
+const isLoggedInForGooglePublish = (req, res) => {
+	const creatorId = req.creatorId
+
+	pool.query('SELECT google_refresh_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+		if(err){
+			console.trace(err)
+			res.status(500).send("Unable to Access Database");
+		} else if (!_.isNil(data.rows[0].google_refresh_token)) {
+			res.status(200)
+		} else {
+			res.status(400).send('No refresh token found')
+		}
+	})
+}
+
+const publishToGoogle = async(req, res) => {
+
+}
+
 const fbLogin = async(req, res) => {
     let name = req.body.name;
     let email = req.body.email;
@@ -605,5 +657,7 @@ module.exports = {
 	resetPasswordEmail: resetPasswordEmail,
 	checkReset: (req, res) => reset(req, res),
 	resetPassword: (req, res) => reset(req, res, true),
-  verifyUser: verifyUser,
+	verifyUser: verifyUser,
+	googlePublishLogin: googlePublishLogin,
+	isLoggedInForGooglePublish: isLoggedInForGooglePublish
 }

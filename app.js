@@ -131,6 +131,12 @@ const ensureLoggedOut = () => {
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
+
+// app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
+// app.get('/session/google/:code', ensureLoggedIn(), Authentication.getGoogleCode);
+// app.delete('/session/google', ensureLoggedIn(), Authentication.deleteGoogle);
+app.put('/googlePublishLogin', Authentication.googlePublishLogin);
+
 app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);

@@ -175,5 +175,24 @@ export default {
 		.catch(err => {
 			cb(err);
 		})
-	}
+	},
+	googlePublishLogin: (user_code) => new Promise((resolve, reject) => {
+		axios.put('/googlePublishLogin', user_code)
+		.then(() => {
+			resolve()
+		})
+		.catch(err => {
+			reject(err);
+		})
+	}),
+	googleAccessToken: () => new Promise((resolve, reject) => {
+		axios.get('/session/google/access_token')
+		.then(res => {
+			resolve(true);
+		})
+		.catch(err => {
+			// console.error(err);
+			reject(err);
+		});
+	})
 }

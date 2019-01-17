@@ -24,7 +24,8 @@ class Skill extends Component {
             error: null,
             confirm: null,
             mounted: true,
-            error_screen: null
+            error_screen: null,
+            time_mounted: null
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -68,7 +69,10 @@ class Skill extends Component {
     }
 
     componentDidMount(){
-        this.setState({mounted: true})
+        this.setState({
+            mounted: true,
+            time_mounted: new Date()
+        })
         window.addEventListener('beforeunload', this.componentGracefulUnmount)
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
             this.onLoadSkill(this.props.computedMatch.params.skill_id)
@@ -80,6 +84,11 @@ class Skill extends Component {
     }
 
     componentWillUnmount(){
+        let time_unmounted = new Date()
+        axios.post('/analytics/track_canvas_time', {
+            duration: time_unmounted - this.state.time_mounted,
+            skill_id: this.state.skill.skill_id
+        }).then(()=>{}).catch(()=>{})
         this.componentGracefulUnmount()
     }
 

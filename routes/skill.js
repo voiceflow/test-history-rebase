@@ -733,7 +733,7 @@ const checkVersions = (req, id, token) => {
         console.log(err)
       } else {
         // Check whether user has more versions than they should
-        if ((req.user.admin >= 100 && data.rows.length > 50) || data.rows.length > 1) {
+        if ((req.user.admin >= 100 && data.rows.length > 50) || data.rows.length > 5) {
           try{
             // If so, we wanna know what version the live skill is pointing to rn
             let request = await axios.request({

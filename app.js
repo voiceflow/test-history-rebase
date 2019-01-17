@@ -42,6 +42,7 @@ const Email = require('./routes/email.js');
 const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
+const Analytics = require('./routes/analytics.js')
 
 app.use(cors())
 app.use(helmet())
@@ -232,6 +233,9 @@ app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.rem
 app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
+
+app.post('/analytics/track_onboarding', ensureLoggedIn(), Analytics.trackOnboarding)
+app.post('/analytics/track_canvas_time', ensureLoggedIn(), Analytics.trackCanvasTime)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

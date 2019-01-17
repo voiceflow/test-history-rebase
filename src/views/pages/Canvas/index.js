@@ -470,26 +470,26 @@ class Canvas extends Component {
         if(selected.extras.type !== 'story'){
             let engine = this.state.engine
             engine.stopMove()
-    
+
             var node = new BlockNodeModel(selected.name + ' copy')
             node.extras = cloneDeep(selected.extras)
-    
+
             let ports = selected.getPorts()
-    
+
             for (var name in ports) {
                 let port = ports[name]
                 port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
             }
-    
+
             node.x = selected.x + 30
             node.y = selected.y + 30
-    
+
             engine.getDiagramModel().clearSelection()
             node.setSelected()
             engine.setSuperSelect(node)
             engine.getDiagramModel().addNode(node)
             this.addRemoveListener(node)
-    
+
             this.setState({
                 engine: engine
             })
@@ -1170,7 +1170,7 @@ class Canvas extends Component {
         if(this.preview) return
 
         var engine = this.state.engine
-        var type
+        var type, name
         if(typeof event === 'string'){
             type = event
             event = {
@@ -1183,12 +1183,12 @@ class Canvas extends Component {
         }else{
             try {
                 type = event.dataTransfer.getData('node')
+                name = event.dataTransfer.getData('name')
             } catch (e) {
                 return
             }
         }
 
-        let name = event.dataTransfer.getData('name')
         if(!name){
             name = type.charAt(0).toUpperCase() + type.substr(1)
         }
@@ -1530,7 +1530,7 @@ class Canvas extends Component {
                             <span className="loader"/>
                         </div>
                     </div>}
-                    
+
                     <Editor
                         skill={this.state.skill}
                         unfocus={this.onDiagramUnfocus}

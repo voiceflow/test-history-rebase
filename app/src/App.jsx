@@ -23,6 +23,7 @@ import NavBar from './views/components/NavBar';
 import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import Templates from './views/pages/Templates'
+import Page404 from 'views/pages/404'
 // import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
@@ -183,6 +184,7 @@ class App extends Component {
                     <Redirect to="/signup"/>
                   )
                 )}/>
+                <Route component={Page404}/>
               </Switch>
           </div>
         </Router>

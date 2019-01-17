@@ -1076,7 +1076,7 @@ exports.certifySkill = (req, res) => {
         })
           .then(response => {
             if (response.hasOwnProperty('violations')) {
-              getSkillStatus(depth + 1);
+              Status(depth + 1);
             } else {
               axios.request({
                 url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
@@ -1405,7 +1405,6 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
       copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],
       (err, data) => {
         if (err) {
-          console.log(err)
           res.sendStatus(500)
         } else {
           let new_skill_id = data.rows[0].skill_id

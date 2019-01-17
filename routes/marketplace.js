@@ -555,9 +555,8 @@ const getDefaultTemplates = (req, res) => {
 // NEW PROJECTS CREATED HERE
 const copyDefaultTemplate = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
-	console.log("JFIESJOFJESOIJFOISEJOIEJIOFJE")
 
-	// Retrive diagram, trying 5 times 
+	// Retrieve diagram, trying 5 times 
 	const getDiagram = (row, num_tries) => {
 		let params = {
 			TableName: `${process.env.DIAGRAMS_DYNAMO_TABLE}`,

@@ -170,7 +170,7 @@ app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
-app.post('/skill/:id/versions/:restore_id/:canonical_skill_id/restore', ensureLoggedIn(), Skill.restoreSkillVersion)
+app.post('/skill/:restore_id/:canonical_skill_id/restore', ensureLoggedIn(), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)

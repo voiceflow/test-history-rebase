@@ -23,7 +23,7 @@
 .business-page {
 	height: 100%;
 	position: relative;
-	overflow-x: scroll;
+	overflow: auto;
 	flex: 1;
 }
 #business .business-page-inner {

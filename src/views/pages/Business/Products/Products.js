@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
-import VoiceCards from 'views/components/Cards/VoiceCards';
-import EmptyCard from 'views/components/Cards/EmptyCard';
-import MUIButton from '@material-ui/core/Button';
+import VoiceCards from 'views/components/Cards/VoiceCards'
+import EmptyCard from 'views/components/Cards/EmptyCard'
+import MUIButton from '@material-ui/core/Button'
 
 class Products extends Component {
     constructor(props) {
@@ -18,10 +18,8 @@ class Products extends Component {
           dropdownOpen: false
         }
 
-        this.fetchProducts = this.fetchProducts.bind(this);
-        this.deleteProduct = this.deleteProduct.bind(this);
-        this.onMouseEnter = this.onMouseEnter.bind(this)
-        this.onMouseLeave = this.onMouseLeave.bind(this)
+        this.fetchProducts = this.fetchProducts.bind(this)
+        this.deleteProduct = this.deleteProduct.bind(this)
         this.onProductClick = this.onProductClick.bind(this)
         this.copyProduct = this.copyProduct.bind(this)
     }
@@ -98,18 +96,6 @@ class Products extends Component {
       this.props.history.push(`/business/${this.props.skill_id}/product/${product_id}`);
     }
 
-    onMouseEnter() {
-      this.setState({
-        dropdownOpen: true,
-      })
-    }
-
-    onMouseLeave() {
-      this.setState({
-        dropdownOpen: false,
-      })
-    }
-
     render() {
         if(this.state.loading){
             return <div id="loading-diagram">
@@ -120,7 +106,7 @@ class Products extends Component {
             </div>
         }
         return(
-          <div className="h-100 w-100">
+            <div className="h-100 w-100">
                 <React.Fragment>
                     {this.state.products.length === 0 ?
                         <div className="super-center w-100 h-100">
@@ -134,19 +120,14 @@ class Products extends Component {
                         </div>
                         </div>
                         :
-                        <div className="px-5 mx-3 mb-5 pt-3">
-                        {this.props.secondaryPage !== "edit" ?
-                        <div className="product-header">
-                            <div>
-                            <p className="product-list">All Products <span className="product-list-count">({this.state.products.length})</span></p>
-                            </div>
-                            <Link to={`/business/${this.props.skill_id}/product/new`} className="no-underline">
-                                <MUIButton varient="contained" className="purple-btn">Create New Product</MUIButton>
+                        <div className="px-4 mx-3 mb-5 pt-3">
+                        <div className="products-container position-relative">
+                        <div className="space-between w-100 px-3">
+                            <h3 className="text-muted">Products</h3>
+                            <Link to={`/business/${this.props.skill_id}/product/new`} className="no-underline btn purple-btn">
+                                New Product
                             </Link>
-                        </div> :
-                        null
-                        }
-                        <div className="products-container pt-6" style={{position: 'relative', height: '288px'}}>
+                        </div>
                         <Masonry elementType='div' imagesLoadedOptions={{columnWidth: '200', itemSelector: ".grid-item"}}>
                             {_.map(this.state.products, product => {
                                 let icon
@@ -171,9 +152,6 @@ class Products extends Component {
                                         id={product.id}
                                         icon={icon}
                                         name={product.name}
-                                        onMouseEnter={this.onMouseEnter}
-                                        onMouseLeave={this.onMouseLeave}
-                                        dropdownOpen={this.state.dropdownOpen}
                                         placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
                                         onDelete={this.deleteProduct}
                                         onCopy={this.copyProduct}
@@ -185,9 +163,7 @@ class Products extends Component {
                                         secondaryDesc={`$${product.data.publishingInformation.pricing["amazon.com"].defaultPriceListing.price}`}
                                     />
                                 )})}
-                            <EmptyCard
-                            onClick={() => this.props.history.push(`/business/${this.props.skill_id}/product/new`)}
-                            />
+                            <EmptyCard onClick={() => this.props.history.push(`/business/${this.props.skill_id}/product/new`)}/>
                         </Masonry>
                         </div>
                     </div>

@@ -37,16 +37,10 @@ class Onboarding extends Component{
 		this.handleIndustrySelection = this.handleIndustrySelection.bind(this);
 	}
 
-	componentDidMount(){
-		// axios.get('/onboard')
-		// .then(res => {
-		// 	if(res.data){
-		// 		this.props.history.push('/');
-		// 	}
-		// })
-		// .catch(err => {
-		// 	console.log(err);
-		// });
+    componentWillUnmount(){
+		axios.post(`/analytics/track_onboarding`, {
+			state: this.state
+		})
 	}
 
 	handleChange(event){
@@ -87,7 +81,7 @@ class Onboarding extends Component{
     			});
     		}
     	} else if(s.usage_type === "EDUCATION"){
-    		if(s.org && s.role){
+    		if(s.company_name && s.role){
     			submitSurvey();
     		} else {
     			this.setState({

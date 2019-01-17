@@ -3,6 +3,8 @@ const {docClient, pool, hashids, intercom} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const { getEnvVariable } = require('../util')
+const Analytics = require('analytics-node')
+const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -703,6 +705,15 @@ exports.buildSkill = async (req,res) => {
                 r.permissions = permissions
                 let manifest = JSONs.manifest(r, original_id, req.user.name)
 
+                analytics.track({
+                    userId: req.user.id,
+                    event: 'Publish Attempt',
+                    properties: {
+                        amzn_id: amzn_id,
+                        skill_id: id
+                    }
+                })
+
                 try{
                     if(amzn_id){
                         try{
@@ -878,6 +889,16 @@ exports.buildSkill = async (req,res) => {
                                                     getSkillStatus(depth + 1)
                                                 }else{
                                                     incrementTimesPublishedSuccessfulIntercom(req.user.id);
+
+                                                    analytics.track({
+                                                        userId: req.user.id,
+                                                        event: 'Publish Success',
+                                                        properties: {
+                                                            amzn_id: amzn_id,
+                                                            skill_id: id
+                                                        }
+                                                    })
+
                                                     res.send(amzn_id)
                                                 }
                                             })
@@ -974,6 +995,14 @@ exports.certifySkill = (req, res) => {
                                         console.log(err);
                                         res.sendStatus(500);
                                     }else{
+                                        analytics.track({
+                                            userId: req.user.id,
+                                            event: 'Submitted for Certification',
+                                            properties: {
+                                                amzn_id: req.params.amzn_id,
+                                                skill_id: id
+                                            }
+                                        })
                                         res.sendStatus(200);
                                     }
                                 }
@@ -1277,6 +1306,17 @@ exports.copySkill = async (req, res, cb=false, copying_default_template=false) =
                     let new_skill_id = data.rows[0].skill_id
                     retrieveDiagram(root_diagram_id, new_skill_id)
                     data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
+
+                    if(copying_default_template){
+                        analytics.track({
+                            userId: req.user.id,
+                            event: 'Created New Project',
+                            properties: {
+                                skill_id: new_skill_id,
+                                template: id
+                            }
+                        })
+                    }
 
                     // Default name of cb when no callback provided is 'next'
                     if(cb && cb.name !== 'next'){

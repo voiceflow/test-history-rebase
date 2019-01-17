@@ -29,6 +29,7 @@
     "@sendgrid/client": "^6.3.0",
     "@sendgrid/mail": "^6.3.1",
     "amazon-mws-node": "^1.1.0",
+    "analytics-node": "^3.3.0",
     "aws-sdk": "^2.339.0",
     "axios": "^0.18.0",
     "bcrypt": "^3.0.2",

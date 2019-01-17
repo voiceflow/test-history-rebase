@@ -53,9 +53,11 @@ class VoiceCards extends Component {
                       <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onDelete(this.props.id, this.props.name)}}>
                         {this.props.deleteLabel}
                       </DropdownItem>
-                      <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onCopy(this.props.id)}}>
-                        {this.props.copyLabel}
-                      </DropdownItem>
+                      {this.props.copyLabel &&
+                        <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onCopy(this.props.id)}}>
+                          {this.props.copyLabel}
+                        </DropdownItem>
+                      }
                     </DropdownMenu>
                   </Dropdown>
                 </div>
@@ -67,9 +69,9 @@ class VoiceCards extends Component {
             </div>
             <CardBody>
               <div className="product-body">
-                <p className="product-title">{this.props.name}</p>
+                <p className="product-title mb-1">{this.props.name}</p>
                 {!!this.props.desc && <p className="product-desc">
-                  {_.upperFirst(_.toLower(this.props.desc))}
+                  {this.props.desc}
                   &nbsp;
                   <span className="product-price">
                     {this.props.secondaryDesc}

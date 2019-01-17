@@ -13,9 +13,11 @@ const generateID = () => {
 
 const getTemplate = new Promise((resolve, reject) => {
   pool.query(`SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1`, (err, res)=>{
-    if(err || res.rows.length === 0){
+    if(err){
       reject(err)
-    }else{
+    } else if (res.rows.length === 0) {
+      resolve(null)
+    } else{
       resolve(res.rows[0].module_id)
     }
   })

@@ -467,32 +467,33 @@ class Canvas extends Component {
     // copy individual node
     copyNode() {
         let selected = this.state.engine.getSuperSelect()
-        let engine = this.state.engine
-        engine.stopMove()
-
-        var node = new BlockNodeModel(selected.name + ' copy')
-        node.extras = cloneDeep(selected.extras)
-
-        let ports = selected.getPorts()
-
-        for (var name in ports) {
-            let port = ports[name]
-            port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+        if(selected.extras.type !== 'story'){
+            let engine = this.state.engine
+            engine.stopMove()
+    
+            var node = new BlockNodeModel(selected.name + ' copy')
+            node.extras = cloneDeep(selected.extras)
+    
+            let ports = selected.getPorts()
+    
+            for (var name in ports) {
+                let port = ports[name]
+                port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+            }
+    
+            node.x = selected.x + 30
+            node.y = selected.y + 30
+    
+            engine.getDiagramModel().clearSelection()
+            node.setSelected()
+            engine.setSuperSelect(node)
+            engine.getDiagramModel().addNode(node)
+            this.addRemoveListener(node)
+    
+            this.setState({
+                engine: engine
+            })
         }
-
-        node.x = selected.x + 30
-        node.y = selected.y + 30
-
-        engine.getDiagramModel().clearSelection()
-        node.setSelected()
-        engine.setSuperSelect(node)
-        engine.getDiagramModel().addNode(node)
-        this.addRemoveListener(node)
-
-        this.setState({
-            engine: engine
-        })
-
     }
 
     clickDiagram(e){

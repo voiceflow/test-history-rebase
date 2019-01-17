@@ -2,11 +2,6 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 
 class Page404 extends Component {
-
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return <div className="h-100 w-100 super-center">
             <div className="text-center">

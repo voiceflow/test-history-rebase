@@ -52,7 +52,7 @@ describe('Skill', () => {
           locales: ['en-US']
         })
         .set('cookie', 'auth='+token)
-        .expect(200)
+        .expect(500)
         .expect(res => {
           if (!('id' in res.body)) throw new Error('missing id')
         })

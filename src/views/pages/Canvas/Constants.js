@@ -1665,7 +1665,9 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'flow',
   'comment',
   'card',
-  'mail'
+  'mail',
+  'story',
+  'exit'
 ]
 
 exports.VOICES = VOICES

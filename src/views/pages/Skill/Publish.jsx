@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import PublishAmazon from './PublishAmazon'
 import PublishMarket from '../PublishMarket/PublishMarket'
+import PublishGoogle from './PublishGoogle'
 import cloneDeep from 'lodash/cloneDeep';
 
 const updateLink = (link, skill_id) => {
@@ -18,7 +19,7 @@ const tabs = [
     {
         display: <React.Fragment><i className="fab fa-google mr-2"></i> Google<small> &nbsp; soon</small></React.Fragment>,
         match: ['google'],
-        link: '/publish/:skill_id'
+        link: '/publish/:skill_id/google'
     }
 ]
 
@@ -44,6 +45,8 @@ class Publish extends Component {
         let page;
         if(this.props.page === 'market'){
             page = <PublishMarket {...this.props}/>
+        } else if (this.props.page === 'google') {
+            page = <PublishGoogle {...this.props}/>
         } else {
             page = <PublishAmazon {...this.props}/>
         }

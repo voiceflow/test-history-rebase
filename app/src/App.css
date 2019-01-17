@@ -47,7 +47,7 @@ body {
     padding-top: 85px;
 }
 .subheader-page-container>div{
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100%;
     width: 100%;
     padding-bottom: 120px;
@@ -1181,7 +1181,7 @@ body.modal-open {
   font-size: 15px;
 }
 #publish-status {
-    top: 180px;
+    top: 185px;
     width: 200px;
 }
 

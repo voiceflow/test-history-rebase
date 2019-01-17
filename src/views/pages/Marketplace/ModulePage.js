@@ -3,7 +3,7 @@ import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import './Marketplace.css';
 
-import categories from './../../../services/Categories';
+import { AMAZON_CATEGORIES } from './../../../services/Categories';
 import types from './../../../services/Types';
 
 class ModulePage extends Component{
@@ -28,9 +28,9 @@ class ModulePage extends Component{
 		axios.get(`/marketplace/${this.props.computedMatch.params.module_id}`)
         .then(res => {
         	if(res.data.category){
-    			for(var i=0;i<categories.length;i++){
-    				if(categories[i].value === res.data.category){
-    					res.data.category = categories[i].label;
+    			for(var i=0;i<AMAZON_CATEGORIES.length;i++){
+    				if(AMAZON_CATEGORIES[i].value === res.data.category){
+    					res.data.category = AMAZON_CATEGORIES[i].label;
     				}
     			}
     		}

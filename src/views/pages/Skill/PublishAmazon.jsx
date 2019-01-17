@@ -21,7 +21,7 @@ import {Link} from 'react-router-dom'
 import AuthenticationService from '../../../services/Authentication'
 import LOCALE_MAP from '../../../services/LocaleMap'
 
-import categories from '../../../services/Categories'
+import { AMAZON_CATEGORIES } from '../../../services/Categories'
 const _ = require('lodash');
 
 const stage_title = {
@@ -80,6 +80,7 @@ class Skill extends Component {
     }
 
     componentDidMount() {
+        console.log("state initial", this.state)
         AuthenticationService.AmazonAccessToken(token => {
             this.setState({
                 stage: token ? 2 : 0
@@ -89,7 +90,7 @@ class Skill extends Component {
         axios.get('/skill/' + this.state.skill_id + '?verbose=1')
         .then(res => {
             if(res.data.category){
-                for(let option of categories){
+                for(let option of AMAZON_CATEGORIES){
                     if(option.value === res.data.category){
                         res.data.category = option;
                         break;
@@ -291,6 +292,7 @@ class Skill extends Component {
 
     save(publish=false, cb){
         const s = this.state;
+        console.log("state", s)
         const category = (s.category && s.category.value ? s.category.value : null)
         let split_keywords = s.keywords.split(',')
 
@@ -877,7 +879,7 @@ class Skill extends Component {
                                         isDisabled={disabled_stages.has(this.state.stage)}
                                         value={this.state.category}
                                         onChange={this.handleSelection}
-                                        options={categories}
+                                        options={AMAZON_CATEGORIES}
                                     />
                                 </div>
                             </div>

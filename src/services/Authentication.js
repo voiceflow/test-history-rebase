@@ -188,11 +188,21 @@ export default {
 	googleAccessToken: () => new Promise((resolve, reject) => {
 		axios.get('/session/google/access_token')
 		.then(res => {
-			resolve(true);
+			resolve(!!(res.data && res.data.token))
 		})
-		.catch(err => {
-			// console.error(err);
-			reject(err);
+		.catch(() => {
+			reject('Error with checking access token');
+		});
+	}),
+	verifyGoogleToken: (token) => new Promise((resolve, reject) => {
+		axios.post('/session/google/verify_token', {
+			token: token
+		})
+		.then(res => {
+			resolve(res)
+		})
+		.catch(() => {
+			reject('Error with verifying access token');
 		});
 	})
 }

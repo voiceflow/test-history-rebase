@@ -97,7 +97,7 @@ class Account extends Component {
     }, (error) => {
       if(error){
         this.setState({
-          login_error: error.response.data
+          login_error: error && error.response && error.response.data
         });
         if(this.login_timeout){
           clearTimeout(this.login_timeout);
@@ -107,17 +107,6 @@ class Account extends Component {
         }.bind(this), 5000)
       }else{
         this.props.history.push('/')
-        // axios.get('/onboard')
-        // .then(res => {
-        //   if(res.data){
-        //     this.props.history.push('/');
-        //   } else {
-        //     this.props.history.push('/onboarding');
-        //   }
-        // })
-        // .catch(err => {
-        //   console.log(err);
-        // });
       }
     });
     return false;
@@ -221,7 +210,6 @@ class Account extends Component {
                       className="social-button class-ggl mb-2"
                       buttonText="Login with Google"
                       onSuccess={this.googleLogin}
-                      onFailure={this.googleLoginError}
                     />
                     <FacebookLogin
                       appId={fbId}

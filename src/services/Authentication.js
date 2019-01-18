@@ -63,7 +63,18 @@ const login = () => new Promise((resolve, reject) => {
 	    	});
 	    }
   	})
-});
+})
+
+const initalizeLogin = (response, cb) => {
+	cookies.set('auth', response.data.token, {path: '/'});
+	cookies.remove('last_session');
+	window.user_detail = response.data.user;
+	window.CreatorSocket.emit('handshake', {
+		auth: response.data.token,
+		device: getDevice()
+	}, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+	cb(null, response.data.user)
+}
 
 export default {
 	amazon_load: load,
@@ -134,71 +145,28 @@ export default {
 	},
 	signup: (user, cb) => {
 	    axios.put('/user', user)
-	    .then(response => {
-	    	cookies.set('auth', response.data.token, {path: '/'});
-			window.user_detail = response.data.user;
-			if(window.CreatorSocket){
-				window.CreatorSocket.emit('handshake', {
-					auth: response.data.token,
-					device: getDevice()
-				})
-			}
-	    	cb(null);
-	    })
+	    .then(response => initalizeLogin(response, cb))
 	    .catch(err => {
 	    	cb(err);
 	    });
 	},
 	login: (user, cb) => {
 	    axios.put('/session', user)
-	    .then(response => {
-	    	cookies.set('auth', response.data.token, {path: '/'});
-	    	cookies.remove('last_session');
-			window.user_detail = response.data.user;
-			if(window.CreatorSocket){
-				window.CreatorSocket.emit('handshake', {
-					auth: response.data.token,
-					device: getDevice()
-				})
-			}
-	    	cb(null);
-	    })
+	    .then(response => initalizeLogin(response, cb))
 	    .catch(err => {
 	    	cb(err);
 	    });
 	},
 	googleLogin: (user, cb) => {
 		axios.put('/googleLogin', user)
-		.then(response => {
-			cookies.set('auth', response.data.token, {path: '/'});
-			cookies.remove('last_session');
-			window.user_detail = response.data.user;
-			if(window.CreatorSocket){
-				window.CreatorSocket.emit('handshake', {
-					auth: response.data.token,
-					device: getDevice()
-				})
-			}
-			cb(null, response.data.user)
-		})
+		.then(response => initalizeLogin(response, cb))
 		.catch(err => {
 			cb(err);
 		})
 	},
 	fbLogin: (user, cb) => {
 		axios.put('/fbLogin', user)
-		.then(response => {
-			cookies.set('auth', response.data.token, {path: '/'});
-			cookies.remove('last_session');
-			window.user_detail = response.data.user;
-			if(window.CreatorSocket){
-				window.CreatorSocket.emit('handshake', {
-					auth: response.data.token,
-					device: getDevice()
-				})
-			}
-			cb(null, response.data.user)
-		})
+		.then(response => initalizeLogin(response, cb))
 		.catch(err => {
 			cb(err);
 		})

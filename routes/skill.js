@@ -1,9 +1,11 @@
 const axios = require('axios')
+const _ = require('lodash')
 const {
   docClient,
   pool,
   hashids,
-  intercom
+  intercom,
+  jwt
 } = require('./../services')
 const {
   AccessToken
@@ -12,6 +14,8 @@ const JSONs = require('./../config/amazon_json')
 const {
   getEnvVariable
 } = require('../util')
+const Analytics = require('analytics-node')
+const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -380,20 +384,19 @@ exports.setProduct = async (req, res) => {
     return res.sendStatus(500)
   }
 
-  product.last_save = Date.now();
+  product.last_save = Date.now()
+  if (!product.name) {
+    product.name = 'New Product'
+  }
   try {
     if (req.query.new) {
-      console.log(product);
-      if (!product.name) {
-        product.name = 'New Product';
-      }
       pool.query('INSERT INTO products (name, skill_id, data) VALUES ($1, $2, $3) RETURNING id', [product.name, product.skill, product.data], (err, results) => {
         res.status(200).send({
           id: results.rows[0].id
         });
       });
     } else {
-      pool.query('UPDATE products SET data = $1 WHERE id = $2', [product.data, product.id], (err, results) => {
+      pool.query('UPDATE products SET data = $1, name = $2 WHERE id = $3', [product.data, product.name, product.id], (err, results) => {
         res.sendStatus(200);
       });
     }
@@ -409,7 +412,7 @@ exports.deleteProduct = async (req, res) => {
     return;
   }
 
-  let sid = hashids.decode(req.params.sid)[0];
+  let sid = hashids.decode(req.params.id)[0];
   let pid = req.params.pid;
 
   try {
@@ -587,9 +590,10 @@ exports.patchSkill = (req, res) => {
             SET
             intents = $3,
             slots = $4,
-            fulfillment = $5
+            fulfillment = $5,
+            account_linking = $6
             WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.intents, b.slots, b.fulfillment], (err) => {
+      [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking], (err) => {
         if (err) {
           console.log(err);
           res.sendStatus(500);
@@ -872,15 +876,24 @@ exports.buildSkill = async (req, res) => {
             }
           }
 
-          let vendor_request = await axios.request({
-            url: 'https://api.amazonalexa.com/v1/vendors',
-            method: 'GET',
-            headers: {
-              Authorization: token
-            }
-          });
+          let vendor_request
 
-          let vendors = vendor_request.data.vendors;
+          try {
+            vendor_request = await axios.request({
+              url: 'https://api.amazonalexa.com/v1/vendors',
+              method: 'GET',
+              headers: {
+                Authorization: token
+              }
+            })
+          } catch (err) {
+            throw ({
+              type: "VendorIdError",
+              data: JSON.stringify(err && err.response && err.response.data)
+            })
+          }
+
+          let vendors = vendor_request ? vendor_request.data.vendors : null
           let vendorId = null
           if (Array.isArray(vendors) && vendors.length !== 0) {
             vendorId = vendors[0].id;
@@ -888,7 +901,7 @@ exports.buildSkill = async (req, res) => {
             throw ({
               type: "VendorIdError",
               data: JSON.stringify(vendor_request.data)
-            });
+            })
           }
 
           if (!amzn_id) {
@@ -909,7 +922,7 @@ exports.buildSkill = async (req, res) => {
             await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
           } else {
 
-            let request = await axios.request({
+            await axios.request({
               url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
               method: 'PUT',
               headers: {
@@ -919,15 +932,39 @@ exports.buildSkill = async (req, res) => {
             });
           }
 
-          let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+          let account_linking = r.account_linking;
 
-          if (Array.isArray(products.rows) && products.rows.length !== 0) {
-            products.rows.forEach(row => {
-              let product = row.data;
-              let productId = row.amzn_prod_id;
+          if (!_.isNull(accountLinking)) {
+            account_linking.domains = _.flattenDeep(account_linking.domains)
+            account_linking.scopes = _.flattenDeep(account_linking.scopes)
+            account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
+            axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/accountLinkingClient`,
+                method: 'PUT',
+                headers: {
+                  Authorization: token
+                },
+                data: {
+                  accountLinkingRequest: account_linking
+                }
+              })
+              .catch(err => {
+                res.status(500).send(err.response.data)
+              });
+          }
 
-              if (productId) {
-                axios.request({
+          if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
+            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+
+            if (Array.isArray(products.rows) && products.rows.length !== 0) {
+              for (row of products.rows) {
+                let product = row.data;
+                let productId = row.amzn_prod_id;
+
+                try {
+                  // Try to update the product if it exists
+                  if (!productId) throw null
+                  await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
                     method: 'PUT',
                     headers: {
@@ -938,11 +975,9 @@ exports.buildSkill = async (req, res) => {
                       inSkillProductDefinition: product
                     }
                   })
-                  .catch(err => {
-                    res.status(500).send(err.response.data)
-                  });
-              } else {
-                axios.request({
+                } catch (err) {
+                  // Create new product and update the database
+                  let product_response = await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts`,
                     method: 'POST',
                     headers: {
@@ -953,24 +988,21 @@ exports.buildSkill = async (req, res) => {
                       inSkillProductDefinition: product
                     }
                   })
-                  .then(response => {
-                    pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [response.data.productId, r.skill_id]);
-                    axios.request({
-                        url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
-                        method: 'PUT',
-                        headers: {
-                          Authorization: token
-                        }
-                      })
-                      .catch(err => {
-                        res.status(500).send(err.response.data)
-                      });
+
+                  productId = product_response.data.productId
+
+                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [productId, r.skill_id])
+
+                  await axios.request({
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
+                    method: 'PUT',
+                    headers: {
+                      Authorization: token
+                    }
                   })
-                  .catch(err => {
-                    res.status(500).send(err.response.data)
-                  });
+                }
               }
-            })
+            }
           }
 
           let model = JSONs.interactionModel(r)
@@ -1015,12 +1047,21 @@ exports.buildSkill = async (req, res) => {
                             } else {
                               incrementTimesPublishedSuccessfulIntercom(req.user.id);
 
+                              analytics.track({
+                                userId: req.user.id,
+                                event: 'Publish Success',
+                                properties: {
+                                  amzn_id: amzn_id,
+                                  skill_id: id
+                                }
+                              })
+
                               // Update canonical skill id's amzn id
                               pool.query(`
-                                UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`, 
+                                UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
                                 [amzn_id, id],
                                 (err) => {
-                                  if(err){
+                                  if (err) {
                                     console.log(err)
                                     res.sendStatus(500)
                                   } else {
@@ -1261,7 +1302,7 @@ copyAllDisplays = (id, new_skill_id) => {
   })
 }
 
-exports.copySkill = async (req, res, append_copy_str=true, copying_default_template=false, complete_copy=false, user_copy=true, cb=false) => {
+exports.copySkill = async (req, res, append_copy_str = true, copying_default_template = false, complete_copy = false, user_copy = true, cb = false) => {
   let id = hashids.decode(req.params.id)[0]
   let new_creator_id = req.params.target_creator
   let diagram_mapping = {}
@@ -1499,7 +1540,7 @@ exports.restoreSkillVersion = (req, res) => {
               `INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
               [canonical_skill_id, canonical_skill_id],
               (err) => {
-                if(err){
+                if (err) {
                   console.log(err)
                   res.sendStatus(500)
                 }

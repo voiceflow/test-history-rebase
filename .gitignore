@@ -19,8 +19,8 @@ yarn.lock
 restart.sh
 
 # dotenv environment variables files
-.env*
-!.env.example
+/.env*
+/!.env.example
 
 # Local DynamoDB
 shared-local-instance.db

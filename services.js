@@ -119,6 +119,37 @@ const logging_pool = new pg.Pool({
     port: 5432
 })
 
+const verify = (auth, cb) => {
+    if(typeof auth !== 'string'){
+        cb()
+    }else {
+        let userHash = auth.substring(0,16)
+        let token = auth.substring(16)
+        if (!token || !userHash) {
+            cb();
+        } else {
+            redisClient.get(userHash, function(err, secret) {
+                if (err || !secret) {
+                    cb();
+                } else {
+                    redisClient.expire(userHash, config.expire_time);
+                    jwt.verify(token, secret, (err, decoded) => {
+                        if (err) {
+                            cb();
+                        } else {
+                            cb({
+                                user: decoded,
+                                secret: secret,
+                                userHash: userHash
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    }
+}
+
 module.exports = {
     intercom: intercom_client,
     upload: upload,
@@ -131,6 +162,7 @@ module.exports = {
     uploadResize: uploadResize,
     hashids: hashids,
     validateEmail: validateEmail,
-    logging_pool: logging_pool
+    logging_pool: logging_pool,
+    verify: verify
 }
 

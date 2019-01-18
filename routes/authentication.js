@@ -8,6 +8,8 @@ const {jwt, docClient, pool, redisClient, config, hashids} = require('./../servi
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
+const Analytics = require('analytics-node')
+const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 
@@ -71,11 +73,21 @@ function createLogin(data, cb) {
             admin: data.admin,
             first_login: data.first_login,
             verified: data.verified,
-      	}
+				}
+				
+				analytics.identify({
+					userId: data.id,
+					traits: {
+						'email': data.email,
+						'name': data.name,
+						'admin': data.admin,
+						'type': 'VF'
+					}
+				})
+
         // cache the token
         const token = jwt.sign(user, secret);
-        redisClient.set([userHash, secret], function (err, response) {
-        	redisClient.expire(userHash, config.expire_time);
+        redisClient.set(userHash, secret, 'EX', config.expire_time, (err) => {
 	        if (err) {
 	            cb(null);
 	        } else {
@@ -95,7 +107,7 @@ async function googleAuth(token, cb) {
     audience: getEnvVariable('GOOGLE_ID'),
   });
   const payload = ticket.getPayload();
-  const userid = payload['sub'];
+	const userid = payload['sub'];
   cb({payload: payload, userid: userid});
 }
 // googleAuth().catch(console.error);
@@ -250,7 +262,8 @@ const deleteSession = (req, res) => {
 		let userHash = req.cookies.auth.substring(0, 16);
     	redisClient.del(userHash);
 	}
-    res.sendStatus(200);
+	redisClient.del(`s_${req.user.id}`)
+  res.sendStatus(200);
 };
 
 const googleLogin = async(req, res) => {
@@ -277,7 +290,18 @@ const googleLogin = async(req, res) => {
                   console.log(err);
                   res.status(500).send('Something went wrong with existing email');
                 } else {
-                  let row = data.rows[0];
+									let row = data.rows[0];
+									
+									analytics.identify({
+										userId: row.creator_id,
+										traits: {
+											admin: row.admin,
+											name: row.name,
+											email: row.email,
+											type: 'Google'
+										}
+									})
+
                   createLogin({
                     id: row.creator_id,
                     email: row.email,
@@ -351,7 +375,18 @@ const fbLogin = async(req, res) => {
                   console.log(err);
                   res.status(500).send('Something went wrong with existing email');
                 } else {
-                  let row = data.rows[0]
+									let row = data.rows[0]
+									
+									analytics.identify({
+										userId: row.creator_id,
+										traits: {
+											admin: row.admin,
+											name: row.name,
+											email: row.email,
+											type: 'Facebook'
+										}
+									})
+
 									createLogin({
 										id: row.creator_id,
 										email: row.email,

@@ -136,17 +136,53 @@ class Skill extends Component {
     renderPage(){
         switch(this.props.page){
             case 'canvas':
-                return <Canvas {...this.props} skill={this.state.skill} diagram_id={this.state.diagram_id} onError={this.onError} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Canvas
+                  {...this.props}
+                  skill={this.state.skill}
+                  diagram_id={this.state.diagram_id}
+                  onError={this.onError}
+                  onConfirm={this.onConfirm}
+                  updateSkill={(skill) => {this.setState({skill: skill})}}
+                />
             case 'business':
-                return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
+                return <Business
+                  {...this.props}
+                  skill_id={this.state.skill.skill_id}
+                  page={this.props.secondaryPage}
+                  onError={this.onError}
+                  onConfirm={this.onConfirm}
+                  updateSkill={(skill) => {this.setState({skill: skill})}}
+                />
             case 'settings':
-                return <Settings {...this.props} skill={this.state.skill} onError={this.onError} page={this.props.secondaryPage} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                return <Settings
+                  {...this.props}
+                  skill={this.state.skill}
+                  onError={this.onError}
+                  page={this.props.secondaryPage}
+                  onConfirm={this.onConfirm}
+                  updateSkill={(skill) => {this.setState({skill: skill})}}
+                />
             case 'publish':
-                return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
+                return <Publish
+                  {...this.props}
+                  skill={this.state.skill}
+                  page={this.props.secondaryPage}
+                  onError={this.onError}
+                  onConfirm={this.onConfirm}
+                />
             case 'logs':
-                return <Logs {...this.props} skill={this.state.skill}/>
+                return <Logs
+                  {...this.props}
+                  skill={this.state.skill}
+                />
             case 'visuals':
-                return <Visuals {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
+                return <Visuals
+                  {...this.props}
+                  skill={this.state.skill}
+                  page={this.props.secondaryPage}
+                  onError={this.onError}
+                  onConfirm={this.onConfirm}
+                />
             default:
                 return null
         }

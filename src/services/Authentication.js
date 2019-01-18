@@ -4,7 +4,7 @@ import axios from 'axios'
 const cookies = new Cookies()
 cookies.remove('last_session')
 
-declare var user_detail;
+const {getDevice} = require('./../util')
 
 window.user_detail = {
 	email: null,
@@ -63,20 +63,34 @@ const login = () => new Promise((resolve, reject) => {
 	    	});
 	    }
   	})
-});
+})
+
+const initalizeLogin = (response, cb) => {
+	cookies.set('auth', response.data.token, {path: '/'});
+	cookies.remove('last_session');
+	window.user_detail = response.data.user;
+	window.CreatorSocket.emit('handshake', {
+		auth: response.data.token,
+		device: getDevice()
+	}, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+	cb(null, response.data.user)
+}
 
 export default {
 	amazon_load: load,
 	amazon_login: login,
 	accountType: () => {
-		return user_detail.admin;
+		return window.user_detail.admin;
 	},
 	getUser: () => {
 		return window.user_detail;
 	},
 	isAuth: () => {
-		return !!cookies.get('auth', {path: '/'});
+		return !!cookies.get('auth', {path: '/'})
 		// return window.user_detail.id !== null;
+	},
+	getAuth: () => {
+		return cookies.get('auth', {path: '/'})
 	},
 	AmazonAccessToken: cb => {
 		axios.get('/session/amazon/access_token')
@@ -103,7 +117,7 @@ export default {
 				id: null,
 				admin: 0
 			}
-	    	cookies.remove('auth', {path: '/'});
+			cookies.remove('auth', {path: '/'});
 	      	cb(err, null);
 	    });
 	},
@@ -131,47 +145,28 @@ export default {
 	},
 	signup: (user, cb) => {
 	    axios.put('/user', user)
-	    .then(response => {
-	    	cookies.set('auth', response.data.token, {path: '/'});
-	    	window.user_detail = response.data.user;
-	    	cb(null);
-	    })
+	    .then(response => initalizeLogin(response, cb))
 	    .catch(err => {
 	    	cb(err);
 	    });
 	},
 	login: (user, cb) => {
 	    axios.put('/session', user)
-	    .then(response => {
-	    	cookies.set('auth', response.data.token, {path: '/'});
-	    	cookies.remove('last_session');
-	    	window.user_detail = response.data.user;
-	    	cb(null);
-	    })
+	    .then(response => initalizeLogin(response, cb))
 	    .catch(err => {
 	    	cb(err);
 	    });
 	},
 	googleLogin: (user, cb) => {
 		axios.put('/googleLogin', user)
-		.then(response => {
-			cookies.set('auth', response.data.token, {path: '/'});
-			cookies.remove('last_sesion');
-			window.user_detail = response.data.user;
-			cb(null, response.data.user)
-		})
+		.then(response => initalizeLogin(response, cb))
 		.catch(err => {
 			cb(err);
 		})
 	},
 	fbLogin: (user, cb) => {
 		axios.put('/fbLogin', user)
-		.then(response => {
-			cookies.set('auth', response.data.token, {path: '/'});
-			cookies.remove('last_sesion');
-			window.user_detail = response.data.user;
-			cb(null, response.data.user)
-		})
+		.then(response => initalizeLogin(response, cb))
 		.catch(err => {
 			cb(err);
 		})

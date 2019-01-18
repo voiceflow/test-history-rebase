@@ -735,7 +735,7 @@ background-color: rgb(245, 249, 255) !important;
     margin-bottom: 5px;
     padding-top: 5px;
     border-radius: 5px;
-    
+
 }
 
 .section-title i{
@@ -861,7 +861,7 @@ background-color: rgb(245, 249, 255) !important;
 .toggle-group-settings{
   width: 400px;
   margin-left: auto;
-  margin-right: auto; 
+  margin-right: auto;
 }
 .toggle-group .btn.btn-secondary{
     flex: 1;
@@ -1388,10 +1388,20 @@ label {
     border-color: #2fd0c1 !important;
 
 }
+.srd-default-node.link_account{
+  background-color: #fff;
+  border-top: 6px solid 	#006400;
+  border-color: #2fd0c1 !important;
+}
 .srd-default-node.permissions{
     background-color: #fff;
     border-top: 6px solid #2fd0c1;
     border-color: #2fd0c1 !important;
+}
+.srd-default-node.link_account{
+    background-color: #fff;
+    border-top: 6px solid green;
+    border-color: green !important;
 }
 
 .srd-default-node.module{
@@ -2425,4 +2435,3 @@ button.close:hover{
     color: #fff;
     border-radius: 10px;
 }
-

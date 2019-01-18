@@ -140,7 +140,7 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
           SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
+              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment
           FROM
               skills
           WHERE
@@ -809,6 +809,16 @@ exports.buildSkill = async (req, res) => {
         let amzn_id = r.amzn_id
         r.permissions = permissions
         let manifest = JSONs.manifest(r, original_id, req.user.name)
+
+        analytics.track({
+          userId: req.user.id,
+          event: 'Publish Attempt',
+          properties: {
+              amzn_id: amzn_id,
+              skill_id: id
+          }
+        })
+
         try {
           if (amzn_id) {
             try {
@@ -1122,6 +1132,14 @@ exports.certifySkill = (req, res) => {
                         console.log(err);
                         res.sendStatus(500);
                       } else {
+                        analytics.track({
+                          userId: req.user.id,
+                          event: 'Submitted for Certification',
+                          properties: {
+                              amzn_id: req.params.amzn_id,
+                              skill_id: id
+                          }
+                        })
                         res.sendStatus(200);
                       }
                     }

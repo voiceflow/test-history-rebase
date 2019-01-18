@@ -798,7 +798,7 @@ exports.buildSkill = async (req,res) => {
                     }
                     let account_linking = r.account_linking;
 
-                    if (!_.isNull(accountLinking)) {
+                    if (!_.isNull(account_linking)) {
                         account_linking.domains=_.flattenDeep(account_linking.domains)
                         account_linking.scopes = _.flattenDeep(account_linking.scopes)
                         account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));

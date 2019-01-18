@@ -327,6 +327,7 @@ audio {
 .alert-danger{
     color: #ff3562 !important;
     background-color: #ff7c8824 !important;
+    border-color: transparent;
 }
 .text-dark {
     color: #132144 !important;

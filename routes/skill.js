@@ -468,7 +468,7 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
             }
           })
           .then(res => {
-            console.log(res)
+            // Sugoi!
           })
           .catch(err => {
             console.log(err)
@@ -1509,7 +1509,6 @@ exports.restoreSkillVersion = (req, res) => {
         [canonical_skill_id, new_skill_id],
         (err, data) => {
           if (err) {
-            console.log(canonical_skill_id, new_skill_id)
             console.log(err)
             res.sendStatus(500)
           } else {

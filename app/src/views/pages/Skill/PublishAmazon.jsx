@@ -62,8 +62,7 @@ class Skill extends Component {
             id_collapse: false,
             amzn_id: null,
             stage_error: null,
-            displayingConfirmWithdraw: false,
-            error: null,
+            displayingConfirmWithdraw: false
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -322,7 +321,6 @@ class Skill extends Component {
     save(publish=false, cb){
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
-        let split_keywords = s.keywords.split(',')
 
         if (_.isNull(this.state.error)) {
           let store;

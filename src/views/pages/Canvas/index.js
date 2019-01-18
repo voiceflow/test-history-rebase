@@ -606,8 +606,6 @@ class Canvas extends Component {
             let permissions = new Set()
             let used_intent_names = new Set()
             let used_intents = []
-            let account_linking = this.state.account_linking;
-            let access_token_variable = this.state.access_token_variable;
 
             serialize.nodes.forEach(node => {
                 if(node.extras.diagram_id){

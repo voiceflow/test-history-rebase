@@ -60,8 +60,8 @@ class Blocks extends PureComponent {
             block_content =
                 this.state.sections.map((section, i) => {
                     return <div key={i} className="section no-select">
-                        <div 
-                            className="section-title" 
+                        <div
+                            className="section-title"
                             onClick={() => {this.toggleBlockSection(section.title)}}>
                                 <span>
                                 <i className={"fas fa-caret-down mr-1 rotate" + (this.state.show[section.title] ? "" : " fa-rotate--90")}/>
@@ -80,14 +80,14 @@ class Blocks extends PureComponent {
             })
         } else {
             if(this.props.user_modules.length > 0){
-                block_content = 
+                block_content =
                 <div>
                 {this.props.user_modules.map((user_module, i) => {
                     return <ModuleItem module={user_module} key={i} />;
                 })}
                 </div>
-            }else{ 
-                block_content = <div className="mt-2 text-center text-muted"><img className="image-editor mt-4 mb-3" src="/empty.png" alt="empty"/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div> 
+            }else{
+                block_content = <div className="mt-2 text-center text-muted"><img className="image-editor mt-4 mb-3" src="/empty.png" alt="empty"/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div>
             }
         }
 
@@ -96,9 +96,9 @@ class Blocks extends PureComponent {
                 {TABS.map(tab => {
                     return <Button
                         key={tab}
-                        onClick={() => this.switchTab(tab)} 
+                        onClick={() => this.switchTab(tab)}
                         outline={this.state.tab !== tab}
-                        disabled={this.state.tab === tab}> 
+                        disabled={this.state.tab === tab}>
                         {tab}
                     </Button>
                 })}

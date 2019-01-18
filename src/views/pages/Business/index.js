@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import './Business.css'
+import AccountLinkTemplate from './AccountLinkTemplate'
 import Email from './Email'
 import Emails from './Emails'
 import Home from './Home'
@@ -29,6 +30,11 @@ const tabs = [
         display: <React.Fragment><i className="far fa-cube mr-2"/> Products</React.Fragment>,
         match: ['products'],
         link: '/business/:skill_id/products'
+    },
+    {
+      display: <React.Fragment><i className="far fa-link mr-2"/> Link Account</React.Fragment>,
+      match: ['link_account', 'link_template'],
+      link: '/business/:skill_id/link_account/templates'
     }
 ]
 
@@ -37,8 +43,10 @@ class Business extends Component {
     render() {
         let page
         if(window.user_detail.admin > 0){
-            console.log(this.props.page)
             switch(this.props.page){
+                case 'link_account':
+                     page = <AccountLinkTemplate {...this.props}/>
+                     break;
                 case 'emails':
                     page = <Emails {...this.props}/>
                     break

@@ -1,6 +1,6 @@
 const { hashids } = require('./../services')
-const Analytics = require('analytics-node')
-const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY_DEVELOPMENT)
+const { getEnvVariable } = require('./../util')
+const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 
 exports.trackOnboarding = (req, res) => {
     analytics.track({

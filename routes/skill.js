@@ -98,41 +98,6 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
-// exports.getSkills = (req, res) => {
-//   if (!req.user) {
-//     res.sendStatus(401);
-//     return;
-//   }
-//   if (req.query.user && req.user.admin < 100) {
-//     res.sendStatus(401);
-//     return;
-//   }
-//   let userId = req.query.user ? req.query.user : req.user.id;
-//   pool.query(`
-//     SELECT * 
-//     FROM skills
-//     INNER JOIN skill_versions
-//     ON skills.skill_id = skill_versions.skill_id
-//     WHERE (canonical_skill_id, version) IN (
-//       SELECT canonical_skill_id, max(version)
-//       FROM skills
-//       INNER JOIN skill_versions
-//       ON skills.skill_id = skill_versions.skill_id
-//       WHERE creator_id = $1
-//       GROUP BY canonical_skill_id)`,
-//     [userId], (err, data) => {
-//       if (err) {
-//         console.error(err);
-//         res.sendStatus(500);
-//       } else {
-//         res.send(data.rows.map(skill => {
-//           skill.skill_id = hashids.encode(skill.skill_id);
-//           return skill;
-//         }));
-//       }
-//     })
-// }
-
 exports.getSkills = (req, res) => {
   if (!req.user) {
     res.sendStatus(401);
@@ -513,8 +478,8 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
               Authorization: token
             }
           })
-          .then(response => {
-            // Successfully deleted
+          .then(res => {
+            console.log(res)
           })
           .catch(err => {
             console.log(err)

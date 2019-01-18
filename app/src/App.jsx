@@ -66,6 +66,11 @@ const getEndpoint = () => {
 }
 
 window.CreatorSocket = socket(getEndpoint())
+window.addEventListener('beforeunload', function () {
+  if(window.CreatorSocket.disconnect){
+    window.CreatorSocket.disconnect()
+  }
+})
 
 const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (

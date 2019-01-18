@@ -15,7 +15,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {upload, uploadResize, redisClient, jwt, config} = require('./services');
+const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
 const { getEnvVariable } = require('./util')
 const policy = require('./policy');
 const AWS = require('aws-sdk')
@@ -32,6 +32,7 @@ const Diagram = require('./routes/diagram.js');
 const Customer = require('./routes/customer.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
+const LinkAccount = require('./routes/linkaccount.js')
 const Audio = require('./routes/audio.js');
 const Test = require('./routes/test.js');
 const Authentication = require('./routes/authentication');
@@ -76,36 +77,15 @@ app.use(express.static(path.join(__dirname, 'app', 'build')))
 
 // Middleware for Authentication
 app.use((req, res, next) => {
-    if(!req.cookies.auth){
-        next();
-    }else {
-        let userHash = req.cookies.auth.substring(0,16);
-        let token = req.cookies.auth.substring(16);
-        if (!token || !userHash) {
-            next();
-        } else {
-            redisClient.get(userHash, function(err, secret) {
-                if (err) {
-                    next();
-                } else if (!secret) {
-                    next();
-                } else {
-                    redisClient.expire(userHash, config.expire_time);
-                    jwt.verify(token, secret, (err, decoded) => {
-                        if (err) {
-                            next();
-                        } else {
-                            req.user = decoded;
-                            req.secret = secret;
-                            req.userHash = userHash;
-                            next();
-                        }
-                    });
-                }
-            });
+    verify(req.cookies.auth, data => {
+        if(data){
+            req.user = data.user
+            req.secret = data.secret
+            req.userHash = data.userHash
         }
-    }
-});
+        next()
+    })
+})
 
 const ensureLoggedIn = () => {
     return (req, res, next) => {
@@ -154,6 +134,9 @@ app.get('/business/*', ensurePlan(1));
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
+app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
+app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
+
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
@@ -199,7 +182,7 @@ app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishT
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
-/* 
+/*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
 // app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)

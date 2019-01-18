@@ -24,9 +24,13 @@ import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import Templates from './views/pages/Templates'
 import Page404 from 'views/pages/404'
-// import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
+import ErrorScreen from './Error'
+
+import socket from 'socket.io-client'
+
+const {getDevice} = require('./util')
 
 // SECRET
 var STRIPE_KEY
@@ -51,6 +55,23 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   )}/>
 }
 
+const getEndpoint = () => {
+  let port = ''
+  let protocol = 'https'
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    port = ':8080'
+    protocol = 'http'
+  }
+  return `${protocol}://${window.location.hostname}${port}`
+}
+
+window.CreatorSocket = socket(getEndpoint())
+window.addEventListener('beforeunload', function () {
+  if(window.CreatorSocket && window.CreatorSocket.disconnect){
+    window.CreatorSocket.disconnect()
+  }
+})
+
 const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (
     AuthenticationService.isAuth() ? (
@@ -64,12 +85,13 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
-ReactGA.initialize('UA-124745244-3');
-const history = createBrowserHistory();
+ReactGA.initialize('UA-124745244-3')
+const history = createBrowserHistory()
+
 history.listen((location, action) => {
   ReactGA.set({ page: location.pathname })
   ReactGA.pageview(location.pathname)
-});
+})
 
 class App extends Component {
 
@@ -79,34 +101,85 @@ class App extends Component {
     this.state = {
       loading: AuthenticationService.isAuth(),
       session: false,
-      stripe: null
+      stripe: null,
+      error: null
     }
 
+    this.socketFail = this.socketFail.bind(this)
+
     if(AuthenticationService.isAuth()){
-        AuthenticationService.check((err, res) => {
-            if (err) {
-                this.setState({
-                  loading: false
-                });
-                history.push('/login');
-            } else {
-                this.setState({
-                  loading: false,
-                  session: true
-                });
-            }
-        });
-    }else{
-        // if(history.location.pathname !== '/login'){
-        //   history.push('/signup');
-        // }
+      AuthenticationService.check((err, res) => {
+        if (err) {
+          console.log(err)
+          this.setState({
+            loading: false
+          });
+          history.push('/login');
+        }else{
+          window.CreatorSocket.emit('handshake', {
+            auth: AuthenticationService.getAuth(),
+            device: getDevice()
+          }, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+          this.setState({session: true})
+        }
+      })
     }
 
     history.listen((location, action) => {
       this.setState({
         session: AuthenticationService.isAuth()
-      });
-    });
+      })
+    })
+
+    // verified after a handshake
+    window.CreatorSocket.on('verified', () => {window.CreatorSocket.status = 'VERIFIED'; this.setState({loading: false})})
+    // catch error events
+    window.CreatorSocket.on('fail', this.socketFail)
+    window.CreatorSocket.on('error', this.socketFail)
+    // to catch if the server is offline
+    window.CreatorSocket.on('connect_error', this.socketFail)
+    // catch failed connection attempts
+    window.CreatorSocket.on('connect_failed', this.socketFail)
+    // to catch connection events
+    window.CreatorSocket.on('connect', () => {
+      // attempt to verify again if previously failed already
+      if(window.CreatorSocket.status === 'FAIL' && AuthenticationService.isAuth()){
+        window.CreatorSocket.emit('handshake', {
+          auth: AuthenticationService.getAuth(),
+          device: getDevice()
+        }, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+      }
+    })
+
+    window.CreatorSocket.on('in_use', (data) => {
+      window.error = true
+      this.setState({
+        error: {
+          type: 'socket-used',
+          override: true,
+          data: data
+        },
+        loading: false,
+        session: true
+      })
+    })
+  }
+
+  socketFail(){
+    if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
+      window.error = true
+      window.CreatorSocket.status = 'FAIL'
+      this.setState({
+        error: {
+          type: 'socket-fail',
+          action: () => {
+            window.error = false
+            this.setState({loading: false, error: null})
+          },
+        },
+        loading: false
+      })
+    }
   }
 
   componentDidMount() {
@@ -123,6 +196,7 @@ class App extends Component {
   }
 
   render() {
+
     if(this.state.loading){
       return <div id="loading-diagram">
           <div className="text-center">
@@ -132,10 +206,17 @@ class App extends Component {
       </div>
     }
 
+    if(this.state.error && this.state.error.override){
+      return <div id="loading-diagram">
+        <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> 
+      </div>
+    }
+
     return (
       <StripeProvider stripe={this.state.stripe}>
         <Router history={history}>
           <div id="body">
+            { this.state.error && <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> }
             { (this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
                   return <NavBar {...props}/>
             }} /> }
@@ -152,6 +233,7 @@ class App extends Component {
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
                 <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
                 {/* Business routes */}
+                <PrivateRoute path="/business/:skill_id/link_account/templates" component={Skill} page='business' secondaryPage="link_account"/>
                 <PrivateRoute path="/business/:skill_id/email/:id" component={Skill} page='business' secondaryPage="email"/>
                 <PrivateRoute path="/business/:skill_id/emails" component={Skill} page='business' secondaryPage="emails"/>
                 <PrivateRoute path="/business/:skill_id/product/:id" component={Skill} page="business" secondaryPage="product"/>
@@ -184,6 +266,7 @@ class App extends Component {
                     <Redirect to="/signup"/>
                   )
                 )}/>
+                {/* Warning Routes */}
                 <Route component={Page404}/>
               </Switch>
           </div>

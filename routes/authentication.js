@@ -87,8 +87,7 @@ function createLogin(data, cb) {
 
         // cache the token
         const token = jwt.sign(user, secret);
-        redisClient.set([userHash, secret], function (err, response) {
-        	redisClient.expire(userHash, config.expire_time);
+        redisClient.set(userHash, secret, 'EX', config.expire_time, (err) => {
 	        if (err) {
 	            cb(null);
 	        } else {
@@ -263,7 +262,8 @@ const deleteSession = (req, res) => {
 		let userHash = req.cookies.auth.substring(0, 16);
     	redisClient.del(userHash);
 	}
-    res.sendStatus(200);
+	redisClient.del(`s_${req.user.id}`)
+  res.sendStatus(200);
 };
 
 const googleLogin = async(req, res) => {

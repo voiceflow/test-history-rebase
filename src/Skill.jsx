@@ -165,9 +165,7 @@ class Skill extends Component {
 
     addVersion(new_skill_row){
         let versions = this.state.versions.slice()
-        versions.unshift(new_skill_row)
-        console.log(new_skill_row)
-        console.log(this.state.versions)
+        versions.unshift(new_skill_row.new_skill)
         this.setState({
             versions: versions
         })

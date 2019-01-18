@@ -534,7 +534,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                                     if(result < 300){
                                         story.commands.push({
                                             intent: intent,
-                                            mappings: node.extras.mappings,
+                                            mappings: mappings,
                                             diagram_id: node.extras.diagram_id,
                                             end: !!node.extras.end
                                         })
@@ -543,7 +543,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                             }else if(nextId){
                                 story.commands.push({
                                     intent: intent,
-                                    mappings: node.extras.mappings,
+                                    mappings: mappings,
                                     next: nextId
                                 })
                             }

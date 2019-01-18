@@ -150,7 +150,6 @@ class ActionGroup extends PureComponent {
             this.setState({stage: 11}, () => {
                 axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                 .then(res => {
-                    let skill = new_version_data.new_skill;
                     skill.amzn_id = res.data;
                     this.props.updateSkill(skill)
                     this.checkInteractionModel()

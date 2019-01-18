@@ -48,7 +48,6 @@ class IntentInputs extends Component {
                 if(i !== -1){
                     this.props.intents.splice(i, 1)
                     this.props.update()
-                    this.props.onConfirm(null)
                 }
             }
         })
@@ -66,7 +65,7 @@ class IntentInputs extends Component {
             slot_keys.add(key)
           }
       } while (m);
-      
+
       return slot_keys
     }
 
@@ -102,7 +101,7 @@ class IntentInputs extends Component {
                 let intent = this.props.intents[i]
 
                 if (intent.name.indexOf(this.state.search_value) !== -1) {
-                    reverse.push(<IntentInput 
+                    reverse.push(<IntentInput
                         key={intent.key}
                         slots={this.props.slots}
                         intent={intent}

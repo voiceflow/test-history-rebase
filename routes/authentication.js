@@ -1,18 +1,25 @@
 const bcrypt = require('bcrypt');
 const randomstring = require("randomstring");
 const crypto = require('crypto');
-const uuidv1 = require('uuid/v1');
+const uuid = require('uuid/v4');
 const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
 const {jwt, docClient, pool, redisClient, config, hashids} = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
-const exec = require('child_process').execFile;
+const exec = require('child_process').execFile
+const spawn = require('child_process').spawn
+
 const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
+const mkdirp = require('mkdirp');
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 const _ = require('lodash')
+
+const fs = require('fs');
+
+const GACTIONS_CLI_ROOT = './gactions_cli'
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -402,17 +409,67 @@ const getGoogleAccessToken = (creatorId, res) => {
 	})
 }
 
-const verifyGoogleToken = (req, res) => {
+const verifyGoogleToken = async (req, res) => {
 	const token = req.body.token
 
-	var fun = () => {
-		console.log("fun() start");
-		exec('HelloJithin.exe', function(err, data) {  
-			console.log(err)
-			console.log(data.toString());                       
-		});  
+	let random_id = uuid()
+	let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+	while (fs.existsSync(dir)){
+		random_id = uuid()
+		dir = `${GACTIONS_CLI_ROOT}/${random_id}`
 	}
-	fun();
+	
+	try {
+		await new Promise ((resolve, reject) => {
+			mkdirp(dir, function (err) {
+				if (err) reject(err)
+				else resolve()
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
+				if (err) reject(err)
+				resolve()
+			})
+		})
+
+		// const gactions_res = await new Promise ((resolve, reject) => {
+		// 	exec(, function(err, data) {  
+		// 		if (err) reject(err)
+		// 		resolve(data.toString());                       
+		// 	});
+		// })
+
+		const gactions = spawn('./gactions', ['list', '--project='], {cwd: dir});
+
+		gactions.stdout.on('data', (data) => {
+			console.log(`stdout: ${data}`);
+			if (/Enter authorization code/.test(data)) {
+				gactions.stdin.write(token);
+			}
+		});
+
+		gactions.stderr.on('data', (data) => {
+			console.log(`stderr: ${data}`);
+		});
+
+		gactions.on('close', (code) => {
+			console.log(`child process exited with code ${code}`);
+		});
+
+		gactions.stdin.setEncoding('utf-8');		
+		
+		// child.stdin.end();
+		// destination.txt will be created or overwritten by default.
+
+
+	} catch (e) {
+		console.error('Error verifying google token', e)
+		res.status(500).send('Unable to verify google token')
+	}
+
+
 }
 
 const fbLogin = async(req, res) => {

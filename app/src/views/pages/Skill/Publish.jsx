@@ -12,7 +12,7 @@ const updateLink = (link, skill_id) => {
 
 const tabs = [
     {
-        display: <React.Fragment><i className="fab fa-amazon mr-2"/> Alexa</React.Fragment>,
+        display: <React.Fragment><i className="fab fa-amazon mr-2" /> Alexa</React.Fragment>,
         match: ['alexa'],
         link: '/publish/:skill_id'
     },
@@ -24,13 +24,13 @@ const tabs = [
 ]
 
 class Publish extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         let TABS = cloneDeep(tabs)
-        if(window.user_detail.admin >= 100){
+        if (window.user_detail.admin >= 100) {
             TABS.push({
-                display: <React.Fragment><i className="far fa-store-alt mr-2"/> Marketplace</React.Fragment>,
+                display: <React.Fragment><i className="far fa-store-alt mr-2" /> Marketplace</React.Fragment>,
                 match: ['market'],
                 link: '/publish/:skill_id/market'
             })
@@ -43,26 +43,29 @@ class Publish extends Component {
 
     render() {
         let page;
-        if(this.props.page === 'market'){
-            page = <PublishMarket {...this.props}/>
+        if (this.props.page === 'market') {
+            page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            page = <PublishGoogle {...this.props}/>
+            page = <PublishGoogle {...this.props} />
         } else {
-            page = <PublishAmazon {...this.props}/>
+            page = <PublishAmazon {...this.props} />
         }
 
         return (
             <div id="business">
                 <div md="3" className="sidebar-nav">
                     {this.state.tabs.map((tab, i) => {
-                        if(tab.match.includes(this.props.page)){
-                            return <div key={i} className="nav-item active">
+                        let res
+                        if (tab.match.includes(this.props.page)) {
+                            res = <div key={i} className="nav-item active">
                                 {tab.display}
                             </div>
+                        } else {
+                            res = <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
+                                {tab.display}
+                            </Link>
                         }
-                        return <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
-                            {tab.display}
-                        </Link>
+                        return res
                     })}
                 </div>
                 <div md="9" className="business-page">

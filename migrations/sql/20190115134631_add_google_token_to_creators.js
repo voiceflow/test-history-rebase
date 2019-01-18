@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
       t.string('gactions_token')
   }).then(() => {
     return knex.schema.table('skills', function(t) {
-      t.json('google_publish_info')
+      t.json('google_publish_info').defaultTo('{}')
     })
   })
 };

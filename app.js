@@ -157,6 +157,7 @@ app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDi
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
+app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)

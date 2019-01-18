@@ -1,7 +1,7 @@
 const axios = require('axios')
 const _ = require('lodash')
 const {docClient, pool, hashids, intercom, jwt} = require('./../services')
-const {AccessToken, Acce } = require('./authentication')
+const {AccessToken, getGoogleAccessToken } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const { getEnvVariable } = require('../util')
 const Analytics = require('analytics-node')
@@ -136,7 +136,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment, created
             FROM
                 skills
             WHERE
@@ -525,7 +525,7 @@ exports.patchSkill = (req, res) => {
             SET
             google_publish_info = $3
             WHERE skill_id = $1 AND creator_id = $2`,
-            [id, req.user.id, b], (err) => {
+            [id, req.user.id, JSON.stringify(b)], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500)
@@ -1384,3 +1384,64 @@ exports.buildGoogleSkill = async (res, req) => {
         console.log("GOOGLE TOKEN", token)
     })
 }
+
+exports.getGoogleSkill = (req, res) => {
+    if (!req.params.id) {
+        res.sendStatus(401);
+        return;
+    }
+
+    let id = hashids.decode(req.params.id)[0];
+    let sql;
+    let params;
+
+    // TODO: winstonc add google token/id to select query
+    sql = `
+        SELECT
+            created, google_publish_info
+        FROM
+            skills
+        WHERE
+            skill_id = $1 AND
+            creator_id = $2 LIMIT 1`;
+    params = [id, req.user.id];
+
+    pool.query( sql, params, (err, data) => {
+        if(err){
+            console.trace(err);
+            res.sendStatus(500);
+        }else if(data.rows.length === 0){
+            res.sendStatus(404);
+        }else{
+            let publish_info = data.rows[0].google_publish_info
+            let google_id = data.rows[0].google_id
+            let created = data.rows[0].created
+
+            // Rehash the skill id
+            if(!google_id){
+                res.send({
+                    publish_info,
+                    created
+                })
+            }else{
+                // Sync up with google
+                // Check Current google Status
+                getGoogleAccessToken(req.user.id, async (token) => {
+                    console.log("G ACCESS", token)
+                    if(token === null){
+                        return res.send(publish_info);
+                    }
+
+                    try {
+                        // Check status, in review/live/etc
+                        // Using gactions CLI
+                        res.sendStatus(200)
+                    }catch(err){
+                        console.log(err);
+                        res.send(publish_info);
+                    }
+                });
+            }
+        }
+    });
+};

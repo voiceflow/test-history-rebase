@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import { Card, Alert } from 'reactstrap';
+import VoiceCards from 'views/components/Cards/VoiceCards'
+import EmptyCard from 'views/components/Cards/EmptyCard'
+import Masonry from 'react-masonry-component';
 
 import './Display.css'
 
@@ -62,47 +63,63 @@ class Multimodal extends Component {
     }
 
     render() {
-
-        return (
-            <div className="business-page-inner">
-                { this.state.loading ? 
-                    <div className="super-center h-100 w-100">Loading...</div> :
-                    <div className="content">
-                        <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline">
-                            <MUIButton varient="contained" className="purple-btn"><i className="far fa-plus mr-2"/> New Display</MUIButton>
-                        </Link>
-                        <hr/>
-                        {this.state.displays.length === 0 ? 
-                            <h5 className="text-muted">No Multimodal Displays</h5> :
-                            <React.Fragment>
-                                {this.state.displays.map(display => 
-                                    <Card key={display.id} className="display-card">
-                                        <CardActionArea className="display-card-action"
-                                            onClick={()=>this.props.history.push(`/visuals/${this.props.skill.skill_id}/display/${display.id}`)}>
-                                            <div>
-                                                <h5>{display.title}</h5>
-                                                <small className="text-muted"><b>ID:</b> {display.id}</small><br/>
-                                                <small className="text-muted"><b>Description:</b> {display.description ? display.description : <span className="empty-badge">EMPTY</span>}</small>
-                                            </div>
-                                        </CardActionArea>
-                                        <div className="display-card-delete" onClick={()=>{
-                                            this.props.onConfirm({
-                                                warning: true,
-                                                text: <Alert color="danger" className="mb-0">Are you sure you want to delete this display? Any Skill using this display will fail to send multimodals</Alert>,
-                                                confirm: ()=> this.deleteDisplay(display.id)
-                                            })
-                                        }}>
-                                            Delete <br/>
-                                            <i className="fas fa-trash"/>
-                                        </div>
-                                    </Card>
-                                )}
-                            </React.Fragment>
-                        }
-                    </div>
-                }
+        if(this.state.loading){
+            return <div id="loading-diagram">
+                <div className="text-center">
+                    <h5 className="text-muted mb-2">Loading Products</h5>
+                    <span className="loader"/>
+                </div>
             </div>
-        )
+        }
+        return(
+            <div className="h-100 w-100">
+                <React.Fragment>
+                    {this.state.displays.length === 0 ?
+                        <div className="super-center w-100 h-100">
+                        <div className="empty-container">
+                            <img src='/images/OpenSafe.svg' alt="open safe"/>
+                            <p className="empty">No Visual Templates Exist</p>
+                            <p className="empty-desc">Create Visuals with Alexa Presentation Language</p>
+                            <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline">
+                                <MUIButton varient="contained" className="purple-btn">New Display</MUIButton>
+                            </Link>
+                        </div>
+                        </div>
+                        :
+                        <div className="px-4 mx-3 mb-5 pt-3">
+                        <div className="products-container position-relative">
+                        <div className="space-between w-100 px-3">
+                            <h3 className="text-muted">Visuals</h3>
+                            <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline btn purple-btn">
+                                New Display
+                            </Link>
+                        </div>
+                        <Masonry elementType='div' imagesLoadedOptions={{columnWidth: '200', itemSelector: ".grid-item"}}>
+                            {this.state.displays.map(display => {
+                                let name = display.title.match(/\b(\w)/g)
+                                if(name) { name = name.join('') }
+                                else { name = display.title }
+                                name = name.substring(0,3)
+
+                                return(
+                                    <VoiceCards
+                                        key={display.id}
+                                        id={display.id}
+                                        name={display.title}
+                                        placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
+                                        onDelete={this.deleteProduct}
+                                        deleteLabel="Delete Visual"
+                                        onClick={()=>this.props.history.push(`/visuals/${this.props.skill.skill_id}/display/${display.id}`)}
+                                        buttonLabel="Edit Visual"
+                                    />
+                            )})}
+                            <EmptyCard onClick={() => this.props.history.push(`/visuals/${this.props.skill_id}/display/new`)}/>
+                        </Masonry>
+                        </div>
+                        </div>
+                    }
+                </React.Fragment>
+            </div>)
     }
 }
 

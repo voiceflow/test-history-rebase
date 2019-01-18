@@ -4,7 +4,7 @@ import axios from 'axios'
 const cookies = new Cookies()
 cookies.remove('last_session')
 
-declare var user_detail;
+const {getDevice} = require('./../util')
 
 window.user_detail = {
 	email: null,
@@ -69,14 +69,17 @@ export default {
 	amazon_load: load,
 	amazon_login: login,
 	accountType: () => {
-		return user_detail.admin;
+		return window.user_detail.admin;
 	},
 	getUser: () => {
 		return window.user_detail;
 	},
 	isAuth: () => {
-		return !!cookies.get('auth', {path: '/'});
+		return !!cookies.get('auth', {path: '/'})
 		// return window.user_detail.id !== null;
+	},
+	getAuth: () => {
+		return cookies.get('auth', {path: '/'})
 	},
 	AmazonAccessToken: cb => {
 		axios.get('/session/amazon/access_token')
@@ -103,7 +106,7 @@ export default {
 				id: null,
 				admin: 0
 			}
-	    	cookies.remove('auth', {path: '/'});
+			cookies.remove('auth', {path: '/'});
 	      	cb(err, null);
 	    });
 	},
@@ -133,7 +136,13 @@ export default {
 	    axios.put('/user', user)
 	    .then(response => {
 	    	cookies.set('auth', response.data.token, {path: '/'});
-	    	window.user_detail = response.data.user;
+			window.user_detail = response.data.user;
+			if(window.CreatorSocket){
+				window.CreatorSocket.emit('handshake', {
+					auth: response.data.token,
+					device: getDevice()
+				})
+			}
 	    	cb(null);
 	    })
 	    .catch(err => {
@@ -145,7 +154,13 @@ export default {
 	    .then(response => {
 	    	cookies.set('auth', response.data.token, {path: '/'});
 	    	cookies.remove('last_session');
-	    	window.user_detail = response.data.user;
+			window.user_detail = response.data.user;
+			if(window.CreatorSocket){
+				window.CreatorSocket.emit('handshake', {
+					auth: response.data.token,
+					device: getDevice()
+				})
+			}
 	    	cb(null);
 	    })
 	    .catch(err => {
@@ -156,8 +171,14 @@ export default {
 		axios.put('/googleLogin', user)
 		.then(response => {
 			cookies.set('auth', response.data.token, {path: '/'});
-			cookies.remove('last_sesion');
+			cookies.remove('last_session');
 			window.user_detail = response.data.user;
+			if(window.CreatorSocket){
+				window.CreatorSocket.emit('handshake', {
+					auth: response.data.token,
+					device: getDevice()
+				})
+			}
 			cb(null, response.data.user)
 		})
 		.catch(err => {
@@ -168,8 +189,14 @@ export default {
 		axios.put('/fbLogin', user)
 		.then(response => {
 			cookies.set('auth', response.data.token, {path: '/'});
-			cookies.remove('last_sesion');
+			cookies.remove('last_session');
 			window.user_detail = response.data.user;
+			if(window.CreatorSocket){
+				window.CreatorSocket.emit('handshake', {
+					auth: response.data.token,
+					device: getDevice()
+				})
+			}
 			cb(null, response.data.user)
 		})
 		.catch(err => {

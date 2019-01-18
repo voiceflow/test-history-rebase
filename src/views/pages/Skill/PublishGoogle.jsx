@@ -57,6 +57,7 @@ class GooglePublish extends Component {
     this.togglePublish = this.togglePublish.bind(this)
     this.googleAuthTokenContent = this.googleAuthTokenContent.bind(this)
     this.verifyGoogleToken = this.verifyGoogleToken.bind(this)
+    this.save = this.save.bind(this)
   }
 
   togglePublish() {
@@ -112,6 +113,78 @@ class GooglePublish extends Component {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  componentWillUnmount() {
+    if (this.state.loaded) {
+      this.save(true)
+    }
+  }
+
+  save(publish = false, cb) {
+    const s = this.state;
+    const category = (s.category && s.category.value ? s.category.value : null)
+    let split_keywords = s.keywords.split(',')
+
+    if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
+      this.setState({
+        error: 'Privacy policy must be a url'
+      })
+    } else if (s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)) {
+      this.setState({
+        error: 'Terms and conditions must be a url'
+      })
+    } else if (split_keywords.length > 30) {
+      this.setState({
+        error: 'Limited to 30 keywords'
+      })
+    } else if (s.keywords.length - split_keywords.length + 1 > 500) {
+      this.setState({
+        error: 'The total length of all keywords must be less than or equal to 150'
+      })
+    } else {
+      let store;
+
+      if (publish === true) {
+        store = {
+          purchase: s.purchase,
+          personal: s.personal,
+          copa: s.copa,
+          ads: s.ads,
+          export: s.export,
+          instructions: s.instructions
+        }
+      }
+      axios.patch(`/skill/${this.state.skill_id}?google=true${publish === true ? '&publish=true' : ''}`, {
+        name: s.name,
+        inv_name: s.inv_name,
+        summary: s.summary,
+        description: s.description,
+        keywords: s.keywords,
+        invocations: s.invocations,
+        small_icon: s.small_icon,
+        large_icon: s.large_icon,
+        category: category,
+        locales: JSON.stringify(s.locales),
+        privacy_policy: !_.isEmpty(s.privacy_policy) ?
+          s.privacy_policy :
+          window.location.protocol + '//' + window.location.host + '/creator/privacy_policy',
+        terms_and_cond: s.terms_and_cond,
+        ...store
+      })
+        .then(res => {
+          this.setState({
+            saved: true
+          });
+          if (typeof (cb) === 'function') cb();
+        })
+        .catch(err => {
+          console.log(err);
+          this.setState({
+            error: 'Save Error, updates not saved'
+          });
+        });
+    }
   }
 
   handleChange(event) {

@@ -104,7 +104,7 @@ class Mail extends Component {
         if(this.props.templates.length === 0){
             return <div>
                 <span className="text-muted">You currently have no Email Templates</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill.skill_id}/email/templates`}>Add Templates</Link> 
+                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill.skill_id}/emails`}>Add Templates</Link> 
             </div>
         }
 

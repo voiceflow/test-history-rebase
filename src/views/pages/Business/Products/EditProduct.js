@@ -2,7 +2,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import axios from 'axios';
-import ErrorModal from './../../components/Modals/ErrorModal'
 import ProductDescriptionForm from './ProductDescriptionForm.js';
 import PhrasesForm from './PhrasesForm.js';
 import PricingForm from './PricingForm.js';
@@ -84,7 +83,7 @@ class EditProduct extends React.Component {
       prompt: "",
       policy: "",
       testInstruct: "",
-      loading: false
+      loading: id !== 'new'
     };
 
     this.updateStage = this.updateStage.bind(this);
@@ -104,7 +103,7 @@ class EditProduct extends React.Component {
                   data: res.data[0] ? res.data[0] : {},
                   name: data.publishingInformation ? data.publishingInformation.locales["en-US"].name :"",
                   summary: data.publishingInformation ? data.publishingInformation.locales["en-US"].summary :"",
-                  purchaseType: data.publishingInformation ? data.type :"ENTITLEMENT" ,
+                  purchaseType: data.type ? data.type :"ENTITLEMENT" ,
                   subType: data.subscriptionInformation ? data.subscriptionInformation.subscriptionPaymentFrequency :"Monthly",
                   trial: data.subscriptionInformation ? data.subscriptionInformation.subscriptionTrialPeriodDays :0,
                   unit: data.publishingInformation ? data.publishingInformation.locales["en-US"].name :"",
@@ -132,12 +131,8 @@ class EditProduct extends React.Component {
                   doc.body.innerHTML = res.data.content;
               }
           }).catch(err => {
-              console.error(err);
-              this.setState({
-                  error: {
-                      message: 'Unable to Retrieve Template',
-                  }
-              });
+              console.error(err)
+              this.props.onError('Unable to Retrieve Template')
           })
       }else{
           this.setState({
@@ -191,25 +186,20 @@ class EditProduct extends React.Component {
 
   submit() {
     let template;
-    if (_.isEmpty(this.state.data)) {
-      switch(this.state.purchaseType) {
-        case 'ENTITLEMENT':
-          template = entitlementSchema;
-          break;
-        case 'SUBSCRIPTION':
-          template = subSchema;
-          template.subscriptionInformation.subscriptionPaymentFrequency = this.state.subType;
-          template.subscriptionInformation.subscriptionTrialPeriod = this.state.trial;
-          break;
-        case 'CONSUMABLE':
-        default:
-          template = consumableSchema;
-      }
-    } else {
-      template = this.state.data.data;
+    switch(this.state.purchaseType) {
+      case 'ENTITLEMENT':
+        template = entitlementSchema;
+        break;
+      case 'SUBSCRIPTION':
+        template = subSchema;
+        template.subscriptionInformation.subscriptionPaymentFrequency = this.state.subType.toUpperCase();
+        template.subscriptionInformation.subscriptionTrialPeriodDays = this.state.trial;
+        break;
+      case 'CONSUMABLE':
+      default:
+        template = consumableSchema;
     }
-    template = this.populateData(template);
-    console.log(template);
+    template = this.populateData(template)
     if (_.isEmpty(this.state.data)){
       this.updateProduct(template, null, true);
     } else {
@@ -220,33 +210,30 @@ class EditProduct extends React.Component {
   updateProduct(data, node, newProduct = true) {
       if (newProduct){
         let product = {};
-        product.data = data;
+        product.data = data
         product.skill = this.props.skill_id;
         product.name = data.publishingInformation.locales["en-US"].name
         axios.post('/skill/product?new=1', product)
         .then(res => {
-            this.props.history.push(`/products/${this.props.skill_id}`)
+            this.props.history.push(`/business/${this.props.skill_id}/products`)
         })
         .catch(err => {
             console.log(err.response)
-            this.setState({
-                saving: false,
-                error: 'Unable to create new Product'
-            })
+            this.setState({saving: false})
+            this.props.onError('Unable to create new Product')
         })
       } else {
         let curr = this.state.data;
-        curr.data = data;
+        curr.data = data
+        curr.name = data.publishingInformation.locales["en-US"].name
         axios.post('/skill/product', curr)
         .then(res => {
-            this.props.history.push(`/products/${this.props.skill_id}`)
+            this.props.history.push(`/business/${this.props.skill_id}/products`)
         })
         .catch(err => {
             console.log(err.response)
-            this.setState({
-                saving: false,
-                error: 'Unable to update Product'
-            })
+            this.setState({saving: false})
+            this.props.onError('Unable to update Product')
         })
       }
   }
@@ -261,7 +248,7 @@ class EditProduct extends React.Component {
     locales["largeIconUri"] = this.state.large_icon;
     locales["summary"] = this.state.summary;
     locales["description"] = this.state.description;
-    locales["examplePhrases"] = !_.isNull(this.state.phrases.name) ? this.state.phrases: [];
+    locales["examplePhrases"] = !_.isNull(this.state.phrases.name) ? this.state.phrases.filter(phrase => phrase.trim()) : [];
     locales["keywords"] = this.state.keywords ? this.state.keywords.split(',') : [];
     info.pricing["amazon.com"].defaultPriceListing.price = this.state.price;
     info.pricing["amazon.com"].releaseDate = moment().format("YYYY-MM-DD");
@@ -273,17 +260,15 @@ class EditProduct extends React.Component {
     privacy.locales["en-US"].privacyPolicyUrl = this.state.policy;
     data.testingInstructions = this.state.testInstruct;
     info.locales["en-US"] = locales;
-    data.referenceName = this.state.name.replace(/ /g, "_");
+    data.referenceName = this.state.name.replace(/ /g, "_").toLowerCase();
 
-    return data;
+    return data
   }
 
   invalidSubmit(event, errors, values) {
     console.log(values);
     console.log(errors);
-    this.setState({
-      error:true,
-    })
+    this.props.onError('Invalid Product - ' + JSON.stringify(errors))
   }
   renderForm(){
     switch(this.state.stage) {
@@ -347,18 +332,24 @@ class EditProduct extends React.Component {
     }
   }
   render() {
+    if(this.state.loading){
+      return <div id="loading-diagram">
+          <div className="text-center">
+              <h5 className="text-muted mb-2">Loading Products</h5>
+              <span className="loader"/>
+          </div>
+      </div>
+    }
+
     return (
       <MuiThemeProvider theme={stepperTheme}>
       <div className="h-100 w-100">
-          <ErrorModal error={this.state.error} dismiss={()=>{
-              this.setState({error: null});
-          }}/>
-            <button className="goback-btn position-absolute" onClick={()=>{
-                this.props.history.push(`/products/${this.props.skill_id}`)
-            }} style={{top: 20, left: 30}}>
+            <button className="goback-btn position-fixed" onClick={()=>{
+                this.props.history.push(`/business/${this.props.skill_id}/products`)
+            }} style={{top: 135, left: 210}}>
             </button>
           <div>
-              <div className="product-editor">
+              <div className="product-editor pt-2">
                   <div className="stepper">
                     <Stepper className="stepper" activeStep={this.state.stage} alternativeLabel>
                       {

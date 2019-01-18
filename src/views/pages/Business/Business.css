@@ -23,7 +23,7 @@
 .business-page {
 	height: 100%;
 	position: relative;
-	overflow-x: scroll;
+	overflow: auto;
 	flex: 1;
 }
 #business .business-page-inner {
@@ -58,6 +58,7 @@
     height: auto;
     margin-left: auto;
 	margin-right: auto;
+	margin-bottom: 60px;
 	background-color: #fff;
 	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
 	border: 1px solid rgba(141, 162, 181, .28);

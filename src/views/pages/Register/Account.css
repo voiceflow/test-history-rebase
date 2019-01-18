@@ -219,7 +219,7 @@ label{
     color: white; 
 }
 
-@media (max-width: 991px), (max-height: 640px) {
+@media (max-width: 991px), (max-height: 800px) {
     #main {
         height: auto;
     }
@@ -234,7 +234,7 @@ label{
     }
     #side-form{
         width: 100%;
-        height: 620px;
+        height: 800px;
         overflow: visible;
     }
     #login-form, #signup-form {

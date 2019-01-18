@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
-    <title>Ok Circle Filled Icon</title>
+    <title>saved-2</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
             <stop stop-color="#2FD0C1" stop-opacity="0.85" offset="0%"></stop>
             <stop stop-color="#2FD0C1" offset="100%"></stop>
         </linearGradient>
-        <path d="M10,20 C15.5228475,20 20,15.5228475 20,10 C20,4.4771525 15.5228475,0 10,0 C4.4771525,0 0,4.4771525 0,10 C0,15.5228475 4.4771525,20 10,20 L10,20 L10,20 L10,20 L10,20 Z M8.63542419,10.7538308 L13.860197,6.17136793 C14.144739,5.9218062 14.5557504,5.94750673 14.8124051,6.23090949 C15.0625316,6.50710365 15.0625316,6.95198074 14.8124051,7.2281749 L9.06526366,13.5742715 C8.55483161,14.1378997 7.72307806,14.1424688 7.20749012,13.5844769 C7.17490357,13.5492103 7.14402851,13.5121027 7.11499171,13.4733065 L5.1611336,10.8627495 C4.93009903,10.5540634 4.94957435,10.104502 5.20626011,9.82106495 C5.46500773,9.53535118 5.87698944,9.50234572 6.17107589,9.74376979 L7.42723461,10.7749868 C7.78711492,11.0704229 8.28438419,11.0617155 8.63542419,10.7538308 Z" id="path-2"></path>
     </defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icon/Header-buttons/Sync-success" transform="translate(2.000000, 2.000000)">
-            <g id="Group-9" transform="translate(-2.000000, -2.000000)">
-                <g id="Ok-Circle-Filled-Icon">
-                    <use fill="#FFFFFF" xlink:href="#path-2"></use>
-                    <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="saved-2">
+            <g id="path-2-link">
+                <circle id="Oval" stroke="#45D5C8" stroke-width="1.5" fill="#45D5C8" cx="11" cy="11" r="10.25"></circle>
+                <g id="checked-symbol" transform="translate(5.000000, 7.000000)" fill="#B2FFF8">
+                    <path d="M11.4766296,0.607738982 L11.1372602,0.274922613 C10.7647046,-0.0916408709 10.1543139,-0.0916408709 9.78057303,0.274922613 L4.01880067,5.93280089 L1.97428805,3.92620523 C1.60173242,3.56002964 0.990946622,3.56002964 0.61839099,3.92659313 L0.279416724,4.2590216 C-0.093138908,4.62519718 -0.093138908,5.22449939 0.279416724,5.59067497 L3.33887676,8.59765923 C3.71182747,8.96344692 4.32221819,8.96344692 4.6951689,8.59765923 L11.4766296,1.93939236 C11.8487901,1.57321677 11.8487901,0.973914568 11.4766296,0.607738982 Z" id="Path"></path>
                 </g>
             </g>
         </g>

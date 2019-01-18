@@ -33,7 +33,7 @@ import { getIntentSlots } from '../../../util'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-const defaultVariables = ['sessions', 'user_id', 'timestamp', 'platform']
+const defaultVariables = ['sessions', 'user_id', 'timestamp', 'platform', 'locale']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -108,6 +108,7 @@ class Canvas extends Component {
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
+        this.setAccessTokenVariable = this.setAccessTokenVariable.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.onSave = this.onSave.bind(this)
         this.onTest = this.onTest.bind(this)
@@ -122,7 +123,6 @@ class Canvas extends Component {
         this.copyNode = this.copyNode.bind(this)
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
-        this.loadProducts = this.loadProducts.bind(this)
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
@@ -140,7 +140,7 @@ class Canvas extends Component {
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
-        this.preview = !!this.props.preview
+        // this.preview = !!this.props.preview
 
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
@@ -197,16 +197,16 @@ class Canvas extends Component {
             user_templates: [],
             email_templates: [],
             display_templates: [],
-            fulfillment: {},
             diagram_level_intents: new Set(),
             confirm_info: null,
             default_templates: [],
             spotlight: false,
-            google: false
+            google: false,
+            access_token_variable: props.skill.access_token_variable,
         }
 
         // SKILL IS LOADED HERE
-        if(!this.preview){
+        if(!this.props.preview){
             // this.loadProducts()
             // this.loadUserModules()
             this.onLoadTemplates()
@@ -216,8 +216,15 @@ class Canvas extends Component {
 
     componentWillMount() {
         // If not preview mode
-        if(!this.preview){
+        if(!this.props.preview){
             document.addEventListener('keydown', this.hotKeys)
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.hotKeys)
+        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+            this.onSave(null, false, false)
         }
     }
 
@@ -291,6 +298,20 @@ class Canvas extends Component {
         } catch(err) {
             console.error(err)
             // this.props.onError('Unable to Retrieve Visual Templates')
+        }
+
+        // LOAD PRODUCTS
+        if(this.state.skill.locales.includes('en-US')){
+            try{
+                const res = await axios.get('/skill/'+this.state.skill.skill_id+'/products')
+                if(Array.isArray(res.data)){
+                    this.setState({
+                        products: res.data
+                    })
+                }
+            }catch(err){
+                console.error(err)
+            }
         }
     }
 
@@ -370,7 +391,7 @@ class Canvas extends Component {
     }
 
     createFlowFromTemplate(module_id){
-        if(this.preview) return
+        if(this.props.preview) return
 
         var engine = this.state.engine
         var type = 'flow'
@@ -457,43 +478,49 @@ class Canvas extends Component {
     // copy individual node
     copyNode() {
         let selected = this.state.engine.getSuperSelect()
-        let engine = this.state.engine
-        engine.stopMove()
+        if(selected.extras.type !== 'story'){
+            let engine = this.state.engine
+            engine.stopMove()
 
-        var node = new BlockNodeModel(selected.name + ' copy')
-        node.extras = cloneDeep(selected.extras)
+            var node = new BlockNodeModel(selected.name + ' copy')
+            node.extras = cloneDeep(selected.extras)
 
-        let ports = selected.getPorts()
+            let ports = selected.getPorts()
 
-        for (var name in ports) {
-            let port = ports[name]
-            port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+            for (var name in ports) {
+                let port = ports[name]
+                port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+            }
+
+            node.x = selected.x + 30
+            node.y = selected.y + 30
+
+            engine.getDiagramModel().clearSelection()
+            node.setSelected()
+            engine.setSuperSelect(node)
+            engine.getDiagramModel().addNode(node)
+            this.addRemoveListener(node)
+
+            this.setState({
+                engine: engine
+            })
         }
-
-        node.x = selected.x + 30
-        node.y = selected.y + 30
-
-        engine.getDiagramModel().clearSelection()
-        node.setSelected()
-        engine.setSuperSelect(node)
-        engine.getDiagramModel().addNode(node)
-        this.addRemoveListener(node)
-
-        this.setState({
-            engine: engine
-        })
-
     }
 
     clickDiagram(e){
+        this.diagram_focus=true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
-        if (selected.length === 1 && selected[0].extras.type !== 'comment') {
-            engine.setSuperSelect(selected[0])
-            this.setState({
-                engine: engine,
-                open: true
-            })
+        if (selected.length === 1) {
+            if(selected[0].extras.type === 'comment'){
+                this.diagram_focus=false
+            }else{
+                engine.setSuperSelect(selected[0])
+                this.setState({
+                    engine: engine,
+                    open: true
+                })
+            }
         } else if (selected.length === 0) {
             let model = engine.getDiagramModel()
             let nodes = model.getNodes()
@@ -503,13 +530,6 @@ class Canvas extends Component {
                     this.forceUpdate()
                 }
             }
-        }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.hotKeys)
-        if(this.state.skill && this.state.skill.skill_id && this.props.diagram_id){
-            this.onSave(null, false, false)
         }
     }
 
@@ -536,19 +556,6 @@ class Canvas extends Component {
                 event.stopPropagation()
             }
         }
-    }
-
-    loadProducts(){
-        axios.get('/skill/'+this.state.skill.skill_id+'/products')
-        .then(res => {
-            this.setState({
-                products: res.data
-            })
-        })
-        .catch(err => {
-            console.log(err.response)
-            this.props.onError('Error retrieving products')
-        })
     }
 
     loadUserModules(){
@@ -601,6 +608,8 @@ class Canvas extends Component {
             let permissions = new Set()
             let used_intent_names = new Set()
             let used_intents = []
+            let account_linking = this.state.account_linking;
+            let access_token_variable = this.state.access_token_variable;
 
             serialize.nodes.forEach(node => {
                 if(node.extras.diagram_id){
@@ -661,7 +670,8 @@ class Canvas extends Component {
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
                 used_intents: used_intents,
-                global: this.state.global_variables
+                global: this.state.global_variables,
+                access_token_variable: this.state.access_token_variable
             }
 
             const s = this.state.skill;
@@ -669,7 +679,8 @@ class Canvas extends Component {
                 axios.patch('/skill/' + s.skill_id + '?intents=true', {
                     intents: JSON.stringify(s.intents),
                     slots: JSON.stringify(s.slots),
-                    fulfillment: JSON.stringify(s.fulfillment)
+                    fulfillment: JSON.stringify(s.fulfillment),
+                    account_linking: JSON.stringify(s.account_linking)
                 })
                 .then(res => {
                     resolve()
@@ -838,7 +849,7 @@ class Canvas extends Component {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
             this.loadDiagram(res.data)
-            if(!this.preview){
+            if(!this.props.preview){
                 localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
             }
             if(this.buildDiagrams !== null){
@@ -887,6 +898,12 @@ class Canvas extends Component {
         this.setState({
             global_variables: variables,
             saved: false
+        })
+    }
+
+    setAccessTokenVariable(variable) {
+        this.setState({
+            access_token_variable: variable
         })
     }
 
@@ -976,7 +993,7 @@ class Canvas extends Component {
         this.state.engine.getDiagramModel().clearSelection()
         this.toggleTestModal()
 
-        if(this.preview){
+        if(this.props.preview){
             this.runTest()
         } else {
             this.onSave(diagram_id => {
@@ -1186,10 +1203,10 @@ class Canvas extends Component {
     }
 
     onDrop(event) {
-        if(this.preview) return
+        if(this.props.preview) return
 
         var engine = this.state.engine
-        var type
+        var type, name
         if(typeof event === 'string'){
             type = event
             event = {
@@ -1202,12 +1219,16 @@ class Canvas extends Component {
         }else{
             try {
                 type = event.dataTransfer.getData('node')
+                name = event.dataTransfer.getData('name')
             } catch (e) {
                 return
             }
         }
 
-        var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
+        if(!name){
+            name = type.charAt(0).toUpperCase() + type.substr(1)
+        }
+        var node = new BlockNodeModel(name)
 
         if(type){
             if (type === 'choice') {
@@ -1343,13 +1364,18 @@ class Canvas extends Component {
                 node.extras = {
                     product_id: null
                 }
-            } else if (type === 'cancel_payment') {
+            } else if (type === 'cancel') {
+                let data = event.dataTransfer.getData('data')
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.addOutPort('fail').setMaximumLinks(1)
                 node.extras = {
-                    product_id: null
+                    product_id: data ? (data*1) : null
                 }
+            } else if (type === 'link_account') {
+                node.name = 'Link Account'
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
             } else if (type === 'capture') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1388,6 +1414,9 @@ class Canvas extends Component {
                 node.extras = {
                     permissions: []
                 }
+            } else if (type === 'link_account') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
             } else if (type === 'module'){
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1485,7 +1514,7 @@ class Canvas extends Component {
                 { !this.props.preview ? <ActionGroup
                         lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
                         skill={this.state.skill}
-                        preview={this.preview}
+                        preview={this.props.preview}
                         title={this.state.diagram_name}
                         onSave={this.onSave}
                         saving={this.state.saving}
@@ -1553,7 +1582,7 @@ class Canvas extends Component {
                             <span className="loader"/>
                         </div>
                     </div>}
-                    
+
                     <Editor
                         skill={this.state.skill}
                         unfocus={this.onDiagramUnfocus}
@@ -1585,14 +1614,16 @@ class Canvas extends Component {
                         setCanFulfill={this.setCanFulfill}
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
+                        products={this.state.products}
+                        access_token_variable={this.state.access_token_variable}
+                        setAccessTokenVariable={this.setAccessTokenVariable}
                     />
                     <div
                         key={this.props.diagram_id}
                         id="diagram"
-                        className={this.preview ? " no-padding" : ""}
+                        className={this.props.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
-                        onMouseOver={()=>this.diagram_focus=true}
                         onMouseLeave={()=>this.diagram_focus=false}
                         onClick={this.clickDiagram}
                     >

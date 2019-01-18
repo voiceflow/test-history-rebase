@@ -67,7 +67,7 @@ const getEndpoint = () => {
 
 window.CreatorSocket = socket(getEndpoint())
 window.addEventListener('beforeunload', function () {
-  if(window.CreatorSocket.disconnect){
+  if(window.CreatorSocket && window.CreatorSocket.disconnect){
     window.CreatorSocket.disconnect()
   }
 })
@@ -85,12 +85,13 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   )}/>
 )
 
-ReactGA.initialize('UA-124745244-3');
-const history = createBrowserHistory();
+ReactGA.initialize('UA-124745244-3')
+const history = createBrowserHistory()
+
 history.listen((location, action) => {
   ReactGA.set({ page: location.pathname })
   ReactGA.pageview(location.pathname)
-});
+})
 
 class App extends Component {
 
@@ -104,6 +105,8 @@ class App extends Component {
       error: null
     }
 
+    this.socketFail = this.socketFail.bind(this)
+
     if(AuthenticationService.isAuth()){
       AuthenticationService.check((err, res) => {
         if (err) {
@@ -116,7 +119,8 @@ class App extends Component {
           window.CreatorSocket.emit('handshake', {
             auth: AuthenticationService.getAuth(),
             device: getDevice()
-          })
+          }, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+          this.setState({session: true})
         }
       })
     }
@@ -127,31 +131,24 @@ class App extends Component {
       })
     })
 
-    window.CreatorSocket.on('verified', () => {
-      this.setState({
-        loading: false,
-        session: true
-      })
-    })
-
-    window.CreatorSocket.on('error', () => {
-      window.error = true
-      this.setState({
-        error: {
-          type: 'socket-fail',
-          override: true
-        }
-      })
-    })
-
-    window.CreatorSocket.on('error', () => {
-      window.error = true
-      this.setState({
-        error: {
-          type: 'socket-fail',
-          override: true
-        }
-      })
+    // verified after a handshake
+    window.CreatorSocket.on('verified', () => {window.CreatorSocket.status = 'VERIFIED'; this.setState({loading: false})})
+    // catch error events
+    window.CreatorSocket.on('fail', this.socketFail)
+    window.CreatorSocket.on('error', this.socketFail)
+    // to catch if the server is offline
+    window.CreatorSocket.on('connect_error', this.socketFail)
+    // catch failed connection attempts
+    window.CreatorSocket.on('connect_failed', this.socketFail)
+    // to catch connection events
+    window.CreatorSocket.on('connect', () => {
+      // attempt to verify again if previously failed already
+      if(window.CreatorSocket.status === 'FAIL' && AuthenticationService.isAuth()){
+        window.CreatorSocket.emit('handshake', {
+          auth: AuthenticationService.getAuth(),
+          device: getDevice()
+        }, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+      }
     })
 
     window.CreatorSocket.on('in_use', (data) => {
@@ -166,6 +163,23 @@ class App extends Component {
         session: true
       })
     })
+  }
+
+  socketFail(){
+    if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
+      window.error = true
+      window.CreatorSocket.status = 'FAIL'
+      this.setState({
+        error: {
+          type: 'socket-fail',
+          action: () => {
+            window.error = false
+            this.setState({loading: false, error: null})
+          },
+        },
+        loading: false
+      })
+    }
   }
 
   componentDidMount() {

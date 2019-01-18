@@ -44,6 +44,7 @@ const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
+const Mail = require('./routes/mail.js');
 
 app.use(cors())
 app.use(helmet())
@@ -136,6 +137,8 @@ app.post('/test/api', ensureLoggedIn(), Test.api)
 
 app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
 app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
+
+app.post('/requestPDF', ensureLoggedIn(), Mail.sendRequestPDFEmail);
 
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);

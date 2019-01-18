@@ -68,7 +68,7 @@ body {
 }
 .grid-col-3{
     justify-content: center;
-    align-content: center;  
+    align-content: center;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
@@ -546,6 +546,17 @@ border-radius: 0px 5px 5px 0px !important;
 .form-control-white{
     background-color: #E9EEF1 !important;
 }
+.content .form-control-border{
+    background-color: #fff !important;
+  /*  min-height: 45px !important;*/
+  /*  padding: 10px 12px !important;*/
+  /*  border-radius: 0px 5px 5px 0px !important;*/
+    border: 1px solid #E2E9EC !important;
+    box-shadow: none !important;
+
+    -webkit-transition: box-shadow 150ms ease !important;
+    transition: box-shadow 150ms ease !important;
+}
 .form-control-border{
   background-color: #f0f5f8 !important;
 /*  min-height: 45px !important;*/
@@ -564,7 +575,7 @@ border-radius: 0px 5px 5px 0px !important;
   /*  border-radius: 0px 5px 5px 0px !important;*/
     border: 1px solid #E2E9EC !important;
     box-shadow: none !important;
-  
+
     -webkit-transition: box-shadow 150ms ease !important;
     transition: box-shadow 150ms ease !important;
 }
@@ -597,7 +608,7 @@ border-radius: 0px 5px 5px 0px !important;
     border: none !important;
     box-shadow: 0 0 4px 0 rgba(17,49,96,.08), 0 4px 8px 0 rgba(17,49,96,.16) !important;
     transition: all 0.2s ease !important;
-    font-weight: 500 !important; 
+    font-weight: 500 !important;
     letter-spacing: 0.2px !important;
 }
 .purple-btn:hover{
@@ -1017,7 +1028,7 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     font-size: 1.2rem;
     align-items: center;
     display: flex;
-    color: #132144; 
+    color: #132144;
 }
 
 .subheader-right {
@@ -1238,7 +1249,7 @@ body.modal-open {
     height: 1em;
     line-height: 1;
 }
-.btn-successful{ 
+.btn-successful{
     width: 42px;
     height: 42px;
     color: rgba(110,132,154,.8);
@@ -1351,7 +1362,7 @@ body.modal-open {
     border-radius: 50%;
     transition: all 0.2s linear !important;
     cursor: pointer;
-    
+
 }
 .nav-btn:hover{
     box-shadow: 0 0 0 1px #fff, 0 2px 4px 1px rgba(17,49,96,.16);
@@ -1359,7 +1370,7 @@ body.modal-open {
     background-color: #5D9DF515;
 }
 #icon-share{
-    background-image: url("/share-gray.svg"); 
+    background-image: url("/share-gray.svg");
 }
 #icon-save{
     background-image: url("/save-gray.svg");

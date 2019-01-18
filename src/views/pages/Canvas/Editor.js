@@ -25,6 +25,7 @@ import Mail from './Editors/Mail';
 import Display from './Editors/Display'
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
+import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
 import {
     Alert,
@@ -58,6 +59,7 @@ class Editor extends Component {
             templates: [],
             displays: [],
             permission_options: [],
+            account_linking: {},
             modal: false,
             expanded: false,
             error: null,
@@ -219,8 +221,8 @@ class Editor extends Component {
                     return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
                 }
             case 'card':
-                return <Card node={this.state.node} 
-                            onUpdate={this.props.onUpdate} 
+                return <Card node={this.state.node}
+                            onUpdate={this.props.onUpdate}
                             variables={variables}
                         />
             case 'capture':
@@ -253,6 +255,16 @@ class Editor extends Component {
                     products={this.props.products}
                     onError={this.showErrorPopup}
                     skill_id={this.props.skill.skill_id}
+                />
+            case 'link_account':
+                return <LinkAccount
+                    history={this.props.history}
+                    node={this.state.node}
+                    onUpdate={this.props.onUpdate}
+                    skill={this.props.skill}
+                    map_token={this.props.access_token_variable}
+                    variables={variables}
+                    setAccessTokenVariable={this.props.setAccessTokenVariable}
                 />
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
@@ -326,7 +338,7 @@ class Editor extends Component {
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
                                 <div className="d-flex">
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
-                                        {type} block <i className="fas fa-question-circle mr-1"/>
+                                        {this.state.node.name} Block <i className="fas fa-question-circle mr-1"/>
                                     </div>
                                     <div className="d-flex pl-2">
                                         <div

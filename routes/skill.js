@@ -15,7 +15,7 @@ const {
   getEnvVariable
 } = require('../util')
 const Analytics = require('analytics-node')
-const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
+const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY_DEVELOPMENT)
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {

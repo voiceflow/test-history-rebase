@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import ErrorModal from './../../components/Modals/ErrorModal'
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import { Input, Col, Row, FormGroup } from 'reactstrap';
@@ -21,7 +20,6 @@ class Template extends Component {
 
         this.state = {
             loading: !is_new,
-            error: null,
             template_id: id,
             content: is_new ? 'Write/Paste Email HTML Content Here' : '',
             title: '',
@@ -73,12 +71,8 @@ class Template extends Component {
                     doc.body.innerHTML = res.data.content;
                 }
             }).catch(err => {
-                console.error(err);
-                this.setState({
-                    error: {
-                        message: 'Unable to Retrieve Template',
-                    }
-                });
+                console.error(err)
+                this.props.onError('Unable to Retrieve Template',)
             })
         }else{
             this.setState({
@@ -95,11 +89,7 @@ class Template extends Component {
     save() {
         if(this.state.saved) return;
         if(!this.state.title){
-            this.setState({
-                error: {
-                    message: 'Empty Template Title'
-                }
-            })
+            this.props.onError('Empty Template Title')
             return
         }
 
@@ -118,7 +108,7 @@ class Template extends Component {
             axios.post(`/email/template?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
                 // get template id back
-                this.props.history.push(`/business/${this.props.skill_id}/email/template/${res.data}`);
+                this.props.history.push(`/business/${this.props.skill_id}/email/${res.data}`);
                 this.setState({
                     template_id: res.data,
                     saved: true,
@@ -128,12 +118,10 @@ class Template extends Component {
             .catch(err=>{
                 console.error(err);
                 this.setState({
-                    error: {
-                        message: 'Unable to save new template'
-                    },
                     saving: false
-                });
-            });
+                })
+                this.props.onError('Unable to save new template')
+            })
         }else{
             axios.patch(`/email/template/${this.state.template_id}?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
@@ -145,11 +133,9 @@ class Template extends Component {
             .catch(err=>{
                 console.error(err);
                 this.setState({
-                    error: {
-                        message: 'Unable to save template'
-                    },
                     saving: false
-                });
+                })
+                this.props.onError('Unable to save template')
             });
         }
     }
@@ -157,15 +143,12 @@ class Template extends Component {
     render() {
         return (
             <div className="business-page-inner">
-                <ErrorModal error={this.state.error} dismiss={()=>{
-                    this.setState({error: null});
-                }}/>
                 <div className="content">
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Email Template</h5>
                         <div className="subheader-right">
                             <MUIButton varient="contained" className="primary-btn mr-2" onClick={()=>{
-                                this.props.history.push(`/business/${this.props.skill_id}/email/templates`);
+                                this.props.history.push(`/business/${this.props.skill_id}/emails`);
                             }}>
                                 <i className="fas fa-arrow-left mr-2"/>{' '}Back
                             </MUIButton>

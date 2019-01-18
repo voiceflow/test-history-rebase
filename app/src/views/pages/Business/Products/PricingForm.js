@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { InputGroup, InputGroupAddon, Button, InputGroupButtonDropdown,
+import { InputGroup, InputGroupAddon, Button, ButtonDropdown,
   ButtonGroup, Input, DropdownMenu, DropdownItem, DropdownToggle, Dropdown
 } from 'reactstrap';
 import { TAX_CATEGORY } from './Constants.js';
@@ -23,9 +23,8 @@ class PricingForm extends React.Component {
     return(
       <div>
         <label>Bill Customer</label>
-        <div>
-        <InputGroup>
-          <InputGroupButtonDropdown value={this.props.subType} isOpen={this.state.subdropOpen} toggle={() => this.toggle('subdropOpen')}>
+        <div className="d-flex position-relative flex-wrap align-items-center">
+          <ButtonDropdown value={this.props.subType} isOpen={this.state.subdropOpen} toggle={() => this.toggle('subdropOpen')}>
             <DropdownToggle caret className="mr-2 form-bg mb-3">
               {this.props.subType}
             </DropdownToggle>
@@ -40,9 +39,9 @@ class PricingForm extends React.Component {
                 </DropdownItem>
               ))}
             </DropdownMenu>
-          </InputGroupButtonDropdown>
+          </ButtonDropdown>
           <label style={{color:'#8da2b5', marginTop:'-5px'}}>with a trial period of</label>
-          <Input className="form-control form-bg ml-2 mr-2 mb-3"
+          <Input className="form-control form-bg ml-2 mr-2 mb-3 inline-form-control"
             name="trial"
             placeholder="0"
             type="number"
@@ -52,7 +51,6 @@ class PricingForm extends React.Component {
             onChange={this.props.handleChange('trial')}
           />
           <label style={{color:'#8da2b5', marginTop:'-5px'}}>days.</label>
-        </InputGroup>
         </div>
       </div>
     );
@@ -73,12 +71,11 @@ class PricingForm extends React.Component {
             onChange={this.props.handleChange('unit')}
             required
           />
-          <AvFeedback>Unit is required</AvFeedback>
           <label style={{color:'#8da2b5'}}>per purchase.</label>
         </InputGroupAddon>
         </InputGroup>
       </div>
-    );
+    )
   }
   toggle(dropdown) {
     this.setState(prevState => ({
@@ -128,21 +125,22 @@ class PricingForm extends React.Component {
           this.getSubscription():
           null
         }
-        <label>Price, $0.99 minimum</label>
+        <label>Price, $0.99 min / $99 max</label>
           <AvInput
-            className='dollar-input form-control form-bg mb-3 w-25'
+            className='dollar-input form-control form-bg w-25'
             name="price"
             placeholder="0.99"
             pattern="^[0-9]"
-            min={0}
+            min={0.99}
+            max={99}
             type="number"
             value={this.props.price}
             onChange={this.props.handleChange('price')}
             required
           />
-          <AvFeedback>Price is required</AvFeedback>
-        <label>Distribution Countries</label>
-        <Dropdown disabled={true} isOpen={false} toggle={_.noop()}>
+          <AvFeedback>Please enter a valid price</AvFeedback>
+        <label className="mt-3">Distribution Countries</label>
+        <Dropdown disabled={true} isOpen={false} toggle={()=>{}}>
           <DropdownToggle caret className='disabled-form form-bg mb-3'>
             United states
           </DropdownToggle>

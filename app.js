@@ -15,7 +15,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {upload, uploadResize, redisClient, jwt, config} = require('./services');
+const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
 const { getEnvVariable } = require('./util')
 const policy = require('./policy');
 const AWS = require('aws-sdk')
@@ -32,6 +32,7 @@ const Diagram = require('./routes/diagram.js');
 const Customer = require('./routes/customer.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
+const LinkAccount = require('./routes/linkaccount.js')
 const Audio = require('./routes/audio.js');
 const Test = require('./routes/test.js');
 const Authentication = require('./routes/authentication');
@@ -42,6 +43,7 @@ const Email = require('./routes/email.js');
 const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
+const Analytics = require('./routes/analytics.js')
 
 app.use(cors())
 app.use(helmet())
@@ -75,36 +77,15 @@ app.use(express.static(path.join(__dirname, 'app', 'build')))
 
 // Middleware for Authentication
 app.use((req, res, next) => {
-    if(!req.cookies.auth){
-        next();
-    }else {
-        let userHash = req.cookies.auth.substring(0,16);
-        let token = req.cookies.auth.substring(16);
-        if (!token || !userHash) {
-            next();
-        } else {
-            redisClient.get(userHash, function(err, secret) {
-                if (err) {
-                    next();
-                } else if (!secret) {
-                    next();
-                } else {
-                    redisClient.expire(userHash, config.expire_time);
-                    jwt.verify(token, secret, (err, decoded) => {
-                        if (err) {
-                            next();
-                        } else {
-                            req.user = decoded;
-                            req.secret = secret;
-                            req.userHash = userHash;
-                            next();
-                        }
-                    });
-                }
-            });
+    verify(req.cookies.auth, data => {
+        if(data){
+            req.user = data.user
+            req.secret = data.secret
+            req.userHash = data.userHash
         }
-    }
-});
+        next()
+    })
+})
 
 const ensureLoggedIn = () => {
     return (req, res, next) => {
@@ -134,7 +115,6 @@ app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
 app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
 app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleToken);
-// app.delete('/session/google', ensureLoggedIn(), Authentication.deleteGoogle);
 app.put('/googlePublishLogin', Authentication.googlePublishLogin);
 
 app.get('/session', Authentication.getSession);
@@ -159,6 +139,9 @@ app.get('/business/*', ensurePlan(1));
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
+app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
+app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
+
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
@@ -179,11 +162,16 @@ app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInter
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
+app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
+app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
+app.get('/skill/:sid/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
+app.post('/skill/:id/publishgoogle', ensureLoggedIn(), Skill.buildGoogleSkill);
 app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
+app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 // STRIPE PAYMENT ENDPOINTS
@@ -200,7 +188,7 @@ app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishT
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
-/* 
+/*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
 // app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
@@ -238,6 +226,9 @@ app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.rem
 app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
+
+app.post('/analytics/track_onboarding', ensureLoggedIn(), Analytics.trackOnboarding)
+app.post('/analytics/track_canvas_time', ensureLoggedIn(), Analytics.trackCanvasTime)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

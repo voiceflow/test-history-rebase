@@ -1,21 +1,10 @@
 const axios = require('axios')
 const _ = require('lodash')
-const {
-  docClient,
-  pool,
-  hashids,
-  intercom,
-  jwt
-} = require('./../services')
-const {
-  AccessToken
-} = require('./authentication')
+const { docClient, pool, hashids, intercom, jwt } = require('./../services')
+const { AccessToken } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
-const {
-  getEnvVariable
-} = require('../util')
-const Analytics = require('analytics-node')
-const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY_DEVELOPMENT)
+const { getEnvVariable } = require('../util')
+const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {

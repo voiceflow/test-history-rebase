@@ -1,8 +1,17 @@
 const axios = require('axios')
-const { docClient, pool, hashids, intercom } = require('./../services')
-const { AccessToken } = require('./authentication')
+const {
+  docClient,
+  pool,
+  hashids,
+  intercom
+} = require('./../services')
+const {
+  AccessToken
+} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
-const { getEnvVariable } = require('../util')
+const {
+  getEnvVariable
+} = require('../util')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -22,7 +31,9 @@ const latestSkillToIntercom = (id, name) => {
 }
 
 const incrementSkillsCreatedIntercom = (id) => {
-  intercom.users.find({ user_id: id }, async (res) => {
+  intercom.users.find({
+    user_id: id
+  }, async (res) => {
     if (!res.body) {
       return
     }
@@ -48,12 +59,14 @@ exports.latestSkillToIntercom = latestSkillToIntercom
 exports.incrementSkillsCreatedIntercom = incrementSkillsCreatedIntercom
 
 const incrementTimesPublishedIntercom = (id) => {
-  intercom.users.find({ user_id: id }, async (res) => {
+  intercom.users.find({
+    user_id: id
+  }, async (res) => {
     if (!res.body) {
       return
     }
-    let n = res.body.custom_attributes.times_published
-      ? res.body.custom_attributes.times_published : 0
+    let n = res.body.custom_attributes.times_published ?
+      res.body.custom_attributes.times_published : 0
     intercom.users.create({
       user_id: id,
       custom_attributes: {
@@ -64,12 +77,14 @@ const incrementTimesPublishedIntercom = (id) => {
 }
 
 const incrementTimesPublishedSuccessfulIntercom = (id) => {
-  intercom.users.find({ user_id: id }, async (res) => {
+  intercom.users.find({
+    user_id: id
+  }, async (res) => {
     if (!res.body) {
       return
     }
-    let n = res.body.custom_attributes.times_published_successful
-      ? res.body.custom_attributes.times_published_successful : 0
+    let n = res.body.custom_attributes.times_published_successful ?
+      res.body.custom_attributes.times_published_successful : 0
     intercom.users.create({
       user_id: id,
       custom_attributes: {
@@ -373,7 +388,9 @@ exports.setProduct = async (req, res) => {
         product.name = 'New Product';
       }
       pool.query('INSERT INTO products (name, skill_id, data) VALUES ($1, $2, $3) RETURNING id', [product.name, product.skill, product.data], (err, results) => {
-        res.status(200).send({ id: results.rows[0].id });
+        res.status(200).send({
+          id: results.rows[0].id
+        });
       });
     } else {
       pool.query('UPDATE products SET data = $1 WHERE id = $2', [product.data, product.id], (err, results) => {
@@ -422,7 +439,7 @@ exports.deleteProduct = async (req, res) => {
   }
 }
 
-exports.deleteSkill = (req, res, delete_all_versions=true, cb=false) => {
+exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
   if (!req.user || !req.params.id) {
     res.sendStatus(401);
     return;
@@ -446,7 +463,9 @@ exports.deleteSkill = (req, res, delete_all_versions=true, cb=false) => {
       // Delete diagram from dynamo
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Key: { 'id': diagram_id }
+        Key: {
+          'id': diagram_id
+        }
       }
 
       docClient.delete(params, async (err) => {
@@ -466,7 +485,7 @@ exports.deleteSkill = (req, res, delete_all_versions=true, cb=false) => {
 
   let id = hashids.decode(req.params.id)[0];
   let select_query
-  if(delete_all_versions){
+  if (delete_all_versions) {
     select_query = `
     SELECT * FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
     WHERE creator_id = $1 AND skill_versions.canonical_skill_id = 
@@ -477,58 +496,58 @@ exports.deleteSkill = (req, res, delete_all_versions=true, cb=false) => {
   }
 
   pool.query(select_query, [req.user.id, id], (err, results) => {
-      // Delete skill off Amazon
-      if (results.rows[0].amzn_id) {
-        AccessToken(req.user.id, token => {
-          if (token === null) {
-            return;
-          }
+    // Delete skill off Amazon
+    if (results.rows[0].amzn_id) {
+      AccessToken(req.user.id, token => {
+        if (token === null) {
+          return;
+        }
 
-          axios.request({
+        axios.request({
             url: `https://api.amazonalexa.com/v1/skills/${results.rows[0].amzn_id}`,
             method: 'DELETE',
             headers: {
               Authorization: token
             }
           })
-            .then(response => {
-              // Successfully deleted
-            })
-            .catch(err => {
-              console.log(err)
-            })
-        })
-      }
+          .then(response => {
+            // Successfully deleted
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      })
+    }
 
-      // Delete skill off our servers
-      let delete_query
-      if(delete_all_versions){
-        delete_query = `
+    // Delete skill off our servers
+    let delete_query
+    if (delete_all_versions) {
+      delete_query = `
         DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
         (SELECT skill_id FROM skill_versions WHERE canonical_skill_id = 
           (SELECT min(canonical_skill_id) FROM skill_versions WHERE skill_versions.skill_id = $2))`
-      } else {
-        delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
-      }
-      pool.query(delete_query, [req.user.id, id],
-        (err) => {
-          if (err) {
-            res.sendStatus(500)
+    } else {
+      delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
+    }
+    pool.query(delete_query, [req.user.id, id],
+      (err) => {
+        if (err) {
+          res.sendStatus(500)
+        } else {
+          // Default name of cb when no callback provided is 'next'
+          if (cb && cb.name !== 'next') {
+            cb()
           } else {
-            // Default name of cb when no callback provided is 'next'
-            if (cb && cb.name !== 'next') {
-              cb()
-            } else {
-              res.sendStatus(200)
-            }
+            res.sendStatus(200)
           }
-        })
+        }
+      })
 
-      // Delete diagrams recursively and asyncly
-      for (let i = 0; i < results.rows.length; i++) {
-        deleteDiagrams(results.rows[i].diagram)
-      }
-    });
+    // Delete diagrams recursively and asyncly
+    for (let i = 0; i < results.rows.length; i++) {
+      deleteDiagrams(results.rows[i].diagram)
+    }
+  });
 }
 
 exports.patchSkill = (req, res) => {
@@ -602,17 +621,21 @@ exports.patchSkill = (req, res) => {
             terms_and_cond = $19
             WHERE skill_id = $1 AND creator_id = $20`,
       [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
-        { value: b.invocations }, b.small_icon, b.large_icon, b.category,
+        {
+          value: b.invocations
+        },
+        b.small_icon, b.large_icon, b.category,
         b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales,
-        b.privacy_policy, b.terms_and_cond, req.user.id], (err) => {
-          if (err) {
-            console.log(err);
-            res.sendStatus(500)
-          } else {
-            latestSkillToIntercom(req.user.id, b.name)
-            res.sendStatus(200)
-          }
-        })
+        b.privacy_policy, b.terms_and_cond, req.user.id
+      ], (err) => {
+        if (err) {
+          console.log(err);
+          res.sendStatus(500)
+        } else {
+          latestSkillToIntercom(req.user.id, b.name)
+          res.sendStatus(200)
+        }
+      })
   } else if (req.query.preview) {
     pool.query(`
         UPDATE
@@ -647,16 +670,20 @@ exports.patchSkill = (req, res) => {
             terms_and_cond = $13
             WHERE skill_id = $1 AND creator_id = $14`,
       [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
-        { value: b.invocations }, b.small_icon, b.large_icon, b.category, b.locales,
-        b.privacy_policy, b.terms_and_cond, req.user.id], (err) => {
-          if (err) {
-            console.log(err);
-            res.sendStatus(500);
-          } else {
-            latestSkillToIntercom(req.user.id, b.name)
-            res.sendStatus(200);
-          }
-        })
+        {
+          value: b.invocations
+        },
+        b.small_icon, b.large_icon, b.category, b.locales,
+        b.privacy_policy, b.terms_and_cond, req.user.id
+      ], (err) => {
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+        } else {
+          latestSkillToIntercom(req.user.id, b.name)
+          res.sendStatus(200);
+        }
+      })
   }
 }
 
@@ -683,14 +710,14 @@ exports.checkInterationModel = async (req, res) => {
     }
 
     axios.request({
-      url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/status?resource=interactionModel`,
-      method: 'GET',
-      headers: {
-        Authorization: token
-      }
-    }).then(result => {
-      res.send(result.data)
-    })
+        url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/status?resource=interactionModel`,
+        method: 'GET',
+        headers: {
+          Authorization: token
+        }
+      }).then(result => {
+        res.send(result.data)
+      })
       .catch(err => {
         console.trace(err)
         res.sendStatus(500)
@@ -708,14 +735,14 @@ exports.enableSkill = async (req, res) => {
     }
 
     axios.request({
-      url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/stages/development/enablement`,
-      method: 'PUT',
-      headers: {
-        Authorization: token
-      }
-    }).then(result => {
-      res.sendStatus(200)
-    })
+        url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/stages/development/enablement`,
+        method: 'PUT',
+        headers: {
+          Authorization: token
+        }
+      }).then(result => {
+        res.sendStatus(200)
+      })
       .catch(err => {
         res.status(500).send(err && err.response && err.response.data)
       })
@@ -734,7 +761,7 @@ const checkVersions = (req, id, token) => {
       } else {
         // Check whether user has more versions than they should
         if ((req.user.admin >= 100 && data.rows.length > 50) || data.rows.length > 5) {
-          try{
+          try {
             // If so, we wanna know what version the live skill is pointing to rn
             let request = await axios.request({
               // url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/development/manifest`
@@ -744,19 +771,19 @@ const checkVersions = (req, id, token) => {
                 Authorization: token
               }
             })
-            
+
             // Delete the oldest version that isn't live
             let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
             let live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
             let i = 0
 
-            while(data.rows[i].skill_id === live_id && i < data.rows.length){
+            while (data.rows[i].skill_id === live_id && i < data.rows.length) {
               i += 1
             }
 
-            if(i < data.rows.length){
+            if (i < data.rows.length) {
               pool.query('DELETE FROM skills WHERE skill_id = $1', [data.rows[i].skill_id], (err) => {
-                if(err){
+                if (err) {
                   console.log(err)
                 }
               })
@@ -791,7 +818,11 @@ exports.buildSkill = async (req, res) => {
     }))
   })
 
-  permissions = Array.from(permissions).map(perm => { return { name: perm } })
+  permissions = Array.from(permissions).map(perm => {
+    return {
+      name: perm
+    }
+  })
 
   AccessToken(req.user.id, token => {
     if (token === null) {
@@ -897,40 +928,40 @@ exports.buildSkill = async (req, res) => {
 
               if (productId) {
                 axios.request({
-                  url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
-                  method: 'PUT',
-                  headers: {
-                    Authorization: token
-                  },
-                  data: {
-                    vendorId: vendorId,
-                    inSkillProductDefinition: product
-                  }
-                })
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
+                    method: 'PUT',
+                    headers: {
+                      Authorization: token
+                    },
+                    data: {
+                      vendorId: vendorId,
+                      inSkillProductDefinition: product
+                    }
+                  })
                   .catch(err => {
                     res.status(500).send(err.response.data)
                   });
               } else {
                 axios.request({
-                  url: `https://api.amazonalexa.com/v1/inSkillProducts`,
-                  method: 'POST',
-                  headers: {
-                    Authorization: token
-                  },
-                  data: {
-                    vendorId: vendorId,
-                    inSkillProductDefinition: product
-                  }
-                })
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts`,
+                    method: 'POST',
+                    headers: {
+                      Authorization: token
+                    },
+                    data: {
+                      vendorId: vendorId,
+                      inSkillProductDefinition: product
+                    }
+                  })
                   .then(response => {
                     pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [response.data.productId, r.skill_id]);
                     axios.request({
-                      url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
-                      method: 'PUT',
-                      headers: {
-                        Authorization: token
-                      }
-                    })
+                        url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
+                        method: 'PUT',
+                        headers: {
+                          Authorization: token
+                        }
+                      })
                       .catch(err => {
                         res.status(500).send(err.response.data)
                       });
@@ -972,12 +1003,12 @@ exports.buildSkill = async (req, res) => {
                     const getSkillStatus = (depth) => {
                       setTimeout(() => {
                         axios.request({
-                          url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
-                          method: 'GET',
-                          headers: {
-                            Authorization: token
-                          }
-                        })
+                            url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
+                            method: 'GET',
+                            headers: {
+                              Authorization: token
+                            }
+                          })
                           .then(response => {
                             if (response.hasOwnProperty('violations')) {
                               getSkillStatus(depth + 1)
@@ -1050,23 +1081,23 @@ exports.certifySkill = (req, res) => {
     const getSkillStatus = (depth) => {
       setTimeout(() => {
         axios.request({
-          url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/stages/development/manifest`,
-          method: 'GET',
-          headers: {
-            Authorization: token
-          }
-        })
+            url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/stages/development/manifest`,
+            method: 'GET',
+            headers: {
+              Authorization: token
+            }
+          })
           .then(response => {
             if (response.hasOwnProperty('violations')) {
               Status(depth + 1);
             } else {
               axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
-                method: 'POST',
-                headers: {
-                  Authorization: token
-                }
-              })
+                  url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
+                  method: 'POST',
+                  headers: {
+                    Authorization: token
+                  }
+                })
                 .then(response => {
                   pool.query(`
                                 UPDATE skills
@@ -1114,16 +1145,16 @@ exports.withdrawSkill = (req, res) => {
     }
 
     axios.request({
-      url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/withdraw`,
-      method: 'POST',
-      headers: {
-        Authorization: token,
-      },
-      data: {
-        //TODO: make this custom, not hardcoded
-        reason: 'MORE_FEATURES'
-      }
-    })
+        url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/withdraw`,
+        method: 'POST',
+        headers: {
+          Authorization: token,
+        },
+        data: {
+          //TODO: make this custom, not hardcoded
+          reason: 'MORE_FEATURES'
+        }
+      })
       .then(response => {
         pool.query(`
                 UPDATE skills
@@ -1191,7 +1222,7 @@ copyAllProducts = (id, new_skill_id) => {
 }
 
 // Async call to copy all templates
-copyAllTemplates = async (id, new_skill_id) => {
+copyAllTemplates = (id, new_skill_id) => {
   let copy_query = `
     INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
     SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
@@ -1205,7 +1236,7 @@ copyAllTemplates = async (id, new_skill_id) => {
 }
 
 // Async call to
-copyAllDisplays = async (id, new_skill_id) => {
+copyAllDisplays = (id, new_skill_id) => {
   let copy_query = `
     INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
     SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
@@ -1218,109 +1249,97 @@ copyAllDisplays = async (id, new_skill_id) => {
   })
 }
 
-exports.copySkill = async (req, res, append_copy_str = true, copying_default_template = false, complete_copy = false, user_copy = true, cb = false) => {
+exports.copySkill = async (req, res, append_copy_str=true, copying_default_template=false, complete_copy=false, user_copy=true, cb=false) => {
   let id = hashids.decode(req.params.id)[0]
   let new_creator_id = req.params.target_creator
   let diagram_mapping = {}
   let diagram_names = {}
-  let sub_diagrams = {}
+  let root_diagram_id = generateID()
 
   if (new_creator_id === 'me') {
     new_creator_id = req.user.id
   }
 
-  const remapDiagramIds = (diagram, new_skill_id) => {
-    diagram.id = diagram_mapping[diagram.id]
-    diagram.skill = new_skill_id
-    sub_diagrams[diagram.id] = []
+  const retrieveDiagram = (diagram_id, new_skill_id) => {
 
-    let JSON_diagram_data = JSON.parse(diagram.data)
-    let nodes = JSON_diagram_data.nodes
-    if (!!nodes) {
-      for (let i = 0; i < nodes.length; i++) {
-        let node = nodes[i]
-        if (node.extras.diagram_id && node.extras.diagram_id !== null) {
-          // If this diagram id hasn't been seen yet, create a new mapping for it and recursively call remapping
-          if (!diagram_mapping[node.extras.diagram_id]) {
-            diagram_mapping[node.extras.diagram_id] = generateID()
-            retrieveDiagram(node.extras.diagram_id, new_skill_id)
-          }
-          node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
-          sub_diagrams[diagram.id].push(node.extras.diagram_id)
-        }
-      }
-    }
-    diagram.data = JSON.stringify(JSON_diagram_data)
-    return diagram
-  }
-
-  const uploadNewDiagram = (remapped_diagram, old_diagram_id, new_skill_id) => {
-    let params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-      Item: {
-        id: remapped_diagram.id,
-        variables: remapped_diagram.variables,
-        data: remapped_diagram.data,
-        skill: remapped_diagram.skill,
-        creator: new_creator_id
-      }
-    }
-
-    // Called if SQL insert fails
-    const cleanUpDynamo = (new_diagram_id) => {
-      let clean_up_params = {
+    const uploadNewDiagram = async (data, resolve) => {
+      let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Key: { 'id': new_diagram_id }
-      };
-      docClient.delete(clean_up_params, err => {
-        if (err) {
-          console.log(err)
-          res.sendStatus(err.statusCode)
+        Item: {
+          id: data.diagram.id,
+          variables: data.diagram.variables,
+          data: data.diagram.data,
+          skill: data.diagram.skill,
+          creator: new_creator_id
         }
-      });
-    }
+      }
 
-    const insertDiagramRow = (new_diagram_id, old_diagram_id) => {
-      let diagram_name = diagram_names[old_diagram_id]
-
-      pool.query(
-        `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents)
-                (SELECT $1, $2, $3, $4, permissions, used_intents FROM diagrams WHERE id = $5)`,
-        [new_diagram_id, diagram_name, new_skill_id, JSON.stringify(sub_diagrams[new_diagram_id]), old_diagram_id],
-        (err) => {
+      try {
+        await pool.query(
+          `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents) (SELECT $1, $2, $3, $4, permissions, used_intents FROM diagrams WHERE id = $5)`,
+          [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
+        docClient.put(params, async (err) => {
           if (err) {
             console.log(err)
-            cleanUpDynamo(new_diagram_id)
-            res.sendStatus(500)
+            return err
+          } else {
+            return
+          }
+        })
+      } catch (err) {
+        return err
+      }
+    }
+
+    const remapDiagramIds = (diagram) => {
+      let sub_diagrams = []
+      let old_diagram_id = diagram.id
+      diagram.id = diagram_mapping[diagram.id]
+      diagram.skill = new_skill_id
+      let JSON_diagram_data = JSON.parse(diagram.data)
+      let nodes = JSON_diagram_data.nodes
+
+      if (!!nodes) {
+        for (let i = 0; i < nodes.length; i++) {
+          let node = nodes[i]
+          if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+            node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
+            sub_diagrams.push(node.extras.diagram_id)
           }
         }
-      )
+      }
+
+      diagram.data = JSON.stringify(JSON_diagram_data)
+      let result = uploadNewDiagram({
+        diagram: diagram,
+        sub_diagrams: sub_diagrams,
+        old_diagram_id: old_diagram_id
+      })
+      return result
     }
 
-    docClient.put(params, async (err) => {
-      if (err) {
-        console.log(err)
-        res.sendStatus(err.statusCode)
-      } else {
-        insertDiagramRow(remapped_diagram.id, old_diagram_id)
+    // retrieveDiagramIds returns this promise
+    return new Promise((resolve, reject) => {
+      let get_params = {
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        Key: {
+          'id': diagram_id
+        }
       }
-    });
-  }
 
-  const retrieveDiagram = (diagram_id, new_skill_id) => {
-    let get_params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-      Key: { 'id': diagram_id }
-    }
-
-    docClient.get(get_params, (err, data) => {
-      if (err) {
-        console.log(err)
-        res.sendStatus(err.statusCode)
-      } else if (data.Item) {
-        let remapped_diagram = remapDiagramIds(data.Item, new_skill_id)
-        uploadNewDiagram(remapped_diagram, diagram_id, new_skill_id)
-      }
+      docClient.get(get_params, (err, data) => {
+        if (err) {
+          console.log(err)
+          reject(err)
+        } else if (data.Item) {
+          let result = remapDiagramIds(data.Item)
+          if (typeof result === 'Error') {
+            reject(result)
+          } else {
+            resolve(result)
+          }
+        }
+      })
     })
   }
 
@@ -1339,85 +1358,85 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
     }
   }
 
-  pool.query('SELECT * FROM diagrams WHERE skill_id = $1', [id], (err, data) => {
-    let root_diagram_id
-    for (let i = 0; i < data.rows.length; i++) {
-      diagram_names[data.rows[i].id] = data.rows[i].name
-
-      if (data.rows[i].name === 'ROOT') {
-        root_diagram_id = data.rows[i].id
-        diagram_mapping[root_diagram_id] = generateID()
-      }
-    }
-
-    // Create copy of the skill (monkeyBananas code incoming ;)
-    let copy_str = (append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
-    let copy_query
-    if (complete_copy) {
-      copy_query = `
-            INSERT INTO skills (
-              name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+  let copy_str = (append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
+  let copy_query
+  if (complete_copy) {
+    copy_query = `
+          INSERT INTO skills (
+            name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+            purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
+            privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
+            account_linking, access_token_variable, fulfillment
+          )
+          SELECT ` +
+      copy_str + `
+              $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
               account_linking, access_token_variable, fulfillment
-            )
-            SELECT `
-        + copy_str + `
-                $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-                purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
-                privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-                account_linking, access_token_variable, fulfillment
-            FROM skills WHERE skill_id = $3 RETURNING *`
-    } else {
-      copy_query = `
-            INSERT INTO skills (
-              name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
-              personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-              intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, access_token_variable, fulfillment
-            )
-            SELECT `
-        + copy_str + `
-              $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
-              personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-              intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, access_token_variable, fulfillment
-            FROM skills WHERE skill_id = $3 RETURNING *`
-    }
+          FROM skills WHERE skill_id = $3 RETURNING *`
+  } else {
+    copy_query = `
+          INSERT INTO skills (
+            name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
+            personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, access_token_variable, fulfillment
+          )
+          SELECT ` +
+      copy_str + `
+            $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
+            personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, access_token_variable, fulfillment
+          FROM skills WHERE skill_id = $3 RETURNING *`
+  }
 
-    pool.query(
-      copy_query, [diagram_mapping[root_diagram_id], new_creator_id, id],
-      (err, data) => {
-        if (err) {
-          res.sendStatus(500)
-        } else {
-          let new_skill_id = data.rows[0].skill_id
-          retrieveDiagram(root_diagram_id, new_skill_id)
-          data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
-
-          // Add working version to table
-          if (copying_default_template || user_copy) {
-            pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [new_skill_id, new_skill_id], (err) => {
-              if (err) {
-                console.log(err)
-                res.sendStatus(500)
-              }
-            })
-          }
-
-          // Async copy rows depending on the skill 
-          copyAllDisplays(id, new_skill_id)
-          copyAllProducts(id, new_skill_id)
-          copyAllTemplates(id, new_skill_id)
-
-          // Default name of cb when no callback provided is 'next'
-          if (cb && cb.name !== 'next') {
-            cb(data.rows[0])
-          } else {
-            res.send(data.rows[0])
-          }
-        }
+  try {
+    let copy_data = await pool.query(copy_query, [root_diagram_id, new_creator_id, id])
+    let new_skill_id = copy_data.rows[0].skill_id
+    let diagram_data = await pool.query('SELECT id, name FROM diagrams WHERE skill_id = $1', [id])
+    let retrieve_promises = []
+    for (let i = 0; i < diagram_data.rows.length; i++) {
+      diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
+      if (diagram_data.rows[i].name === 'ROOT') {
+        diagram_mapping[diagram_data.rows[i].id] = root_diagram_id
+      } else {
+        diagram_mapping[diagram_data.rows[i].id] = generateID()
       }
-    )
-  })
+      retrieve_promises.push(retrieveDiagram(diagram_data.rows[i].id, new_skill_id))
+    }
+    Promise.all(retrieve_promises)
+      .then(() => {
+        // Add working version to table
+        if (copying_default_template || user_copy) {
+          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_data.rows[0].skill_id, copy_data.rows[0].skill_id], (err) => {
+            if (err) {
+              console.log(err)
+              res.sendStatus(500)
+            }
+          })
+        }
+
+        // Async copy rows depending on the skill, doesn't need to be synced
+        copyAllDisplays(id, new_skill_id)
+        copyAllProducts(id, new_skill_id)
+        copyAllTemplates(id, new_skill_id)
+
+        // Default name of cb when no callback provided is 'next'
+        copy_data.rows[0].skill_id = hashids.encode(copy_data.rows[0].skill_id)
+        if (cb && cb.name !== 'next') {
+          cb(copy_data.rows[0])
+        } else {
+          res.send(copy_data.rows[0])
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        res.sendStatus(500)
+      })
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(500)
+  }
 }
 
 exports.getSkillVersions = (req, res) => {
@@ -1477,15 +1496,25 @@ exports.restoreSkillVersion = (req, res) => {
     exports.deleteSkill(req, res, false, () => {
       let new_skill_id = hashids.decode(row.skill_id)[0]
       pool.query(
-        `UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, 
+        `UPDATE skills SET skill_id = $1 WHERE skill_id = $2`,
         [canonical_skill_id, new_skill_id],
         (err, data) => {
-          if(err){
+          if (err) {
             console.log(canonical_skill_id, new_skill_id)
             console.log(err)
             res.sendStatus(500)
           } else {
-            res.sendStatus(200)
+            pool.query(
+              `INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
+              [canonical_skill_id, canonical_skill_id],
+              (err) => {
+                if(err){
+                  console.log(err)
+                  res.sendStatus(500)
+                } 
+                res.send(row)
+              }
+            )
           }
         })
     })

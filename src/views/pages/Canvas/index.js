@@ -108,6 +108,7 @@ class Canvas extends Component {
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
+        this.setAccessTokenVariable = this.setAccessTokenVariable.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.onSave = this.onSave.bind(this)
         this.onTest = this.onTest.bind(this)
@@ -138,7 +139,7 @@ class Canvas extends Component {
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
-        this.preview = !!this.props.preview
+        // this.preview = !!this.props.preview
 
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
@@ -198,11 +199,12 @@ class Canvas extends Component {
             diagram_level_intents: new Set(),
             confirm_info: null,
             default_templates: [],
+            access_token_variable: props.skill.access_token_variable,
             spotlight: false
         }
 
         // SKILL IS LOADED HERE
-        if(!this.preview){
+        if(!this.props.preview){
             // this.loadProducts()
             // this.loadUserModules()
             this.onLoadTemplates()
@@ -212,8 +214,15 @@ class Canvas extends Component {
 
     componentWillMount() {
         // If not preview mode
-        if(!this.preview){
+        if(!this.props.preview){
             document.addEventListener('keydown', this.hotKeys)
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.hotKeys)
+        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+            this.onSave(null, false, false)
         }
     }
 
@@ -380,7 +389,7 @@ class Canvas extends Component {
     }
 
     createFlowFromTemplate(module_id){
-        if(this.preview) return
+        if(this.props.preview) return
 
         var engine = this.state.engine
         var type = 'flow'
@@ -470,26 +479,26 @@ class Canvas extends Component {
         if(selected.extras.type !== 'story'){
             let engine = this.state.engine
             engine.stopMove()
-    
+
             var node = new BlockNodeModel(selected.name + ' copy')
             node.extras = cloneDeep(selected.extras)
-    
+
             let ports = selected.getPorts()
-    
+
             for (var name in ports) {
                 let port = ports[name]
                 port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
             }
-    
+
             node.x = selected.x + 30
             node.y = selected.y + 30
-    
+
             engine.getDiagramModel().clearSelection()
             node.setSelected()
             engine.setSuperSelect(node)
             engine.getDiagramModel().addNode(node)
             this.addRemoveListener(node)
-    
+
             this.setState({
                 engine: engine
             })
@@ -519,13 +528,6 @@ class Canvas extends Component {
                     this.forceUpdate()
                 }
             }
-        }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.hotKeys)
-        if(this.state.skill && this.state.skill.skill_id && this.props.diagram_id){
-            this.onSave(null, false, false)
         }
     }
 
@@ -664,7 +666,8 @@ class Canvas extends Component {
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
                 used_intents: used_intents,
-                global: this.state.global_variables
+                global: this.state.global_variables,
+                access_token_variable: this.state.access_token_variable
             }
 
             const s = this.state.skill;
@@ -672,7 +675,8 @@ class Canvas extends Component {
                 axios.patch('/skill/' + s.skill_id + '?intents=true', {
                     intents: JSON.stringify(s.intents),
                     slots: JSON.stringify(s.slots),
-                    fulfillment: JSON.stringify(s.fulfillment)
+                    fulfillment: JSON.stringify(s.fulfillment),
+                    account_linking: JSON.stringify(s.account_linking)
                 })
                 .then(res => {
                     resolve()
@@ -819,7 +823,7 @@ class Canvas extends Component {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
             this.loadDiagram(res.data)
-            if(!this.preview){
+            if(!this.props.preview){
                 localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
             }
             if(this.buildDiagrams !== null){
@@ -868,6 +872,12 @@ class Canvas extends Component {
         this.setState({
             global_variables: variables,
             saved: false
+        })
+    }
+
+    setAccessTokenVariable(variable) {
+        this.setState({
+            access_token_variable: variable
         })
     }
 
@@ -957,7 +967,7 @@ class Canvas extends Component {
         this.state.engine.getDiagramModel().clearSelection()
         this.toggleTestModal()
 
-        if(this.preview){
+        if(this.props.preview){
             this.runTest()
         } else {
             this.onSave(diagram_id => {
@@ -1167,10 +1177,10 @@ class Canvas extends Component {
     }
 
     onDrop(event) {
-        if(this.preview) return
+        if(this.props.preview) return
 
         var engine = this.state.engine
-        var type
+        var type, name
         if(typeof event === 'string'){
             type = event
             event = {
@@ -1183,12 +1193,12 @@ class Canvas extends Component {
         }else{
             try {
                 type = event.dataTransfer.getData('node')
+                name = event.dataTransfer.getData('name')
             } catch (e) {
                 return
             }
         }
 
-        let name = event.dataTransfer.getData('name')
         if(!name){
             name = type.charAt(0).toUpperCase() + type.substr(1)
         }
@@ -1336,6 +1346,10 @@ class Canvas extends Component {
                 node.extras = {
                     product_id: data ? (data*1) : null
                 }
+            } else if (type === 'link_account') {
+                node.name = 'Link Account'
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
             } else if (type === 'capture') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1374,6 +1388,9 @@ class Canvas extends Component {
                 node.extras = {
                     permissions: []
                 }
+            } else if (type === 'link_account') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
             } else if (type === 'module'){
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1464,7 +1481,7 @@ class Canvas extends Component {
                 { !this.props.preview ? <ActionGroup
                         lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
                         skill={this.state.skill}
-                        preview={this.preview}
+                        preview={this.props.preview}
                         title={this.state.diagram_name}
                         onSave={this.onSave}
                         saving={this.state.saving}
@@ -1530,7 +1547,7 @@ class Canvas extends Component {
                             <span className="loader"/>
                         </div>
                     </div>}
-                    
+
                     <Editor
                         skill={this.state.skill}
                         unfocus={this.onDiagramUnfocus}
@@ -1563,11 +1580,13 @@ class Canvas extends Component {
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
                         products={this.state.products}
+                        access_token_variable={this.state.access_token_variable}
+                        setAccessTokenVariable={this.setAccessTokenVariable}
                     />
                     <div
                         key={this.props.diagram_id}
                         id="diagram"
-                        className={this.preview ? " no-padding" : ""}
+                        className={this.props.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
                         onMouseLeave={()=>this.diagram_focus=false}

@@ -15,7 +15,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const {upload, uploadResize, redisClient, jwt, config} = require('./services');
+const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
 const { getEnvVariable } = require('./util')
 const policy = require('./policy');
 const AWS = require('aws-sdk')
@@ -76,36 +76,15 @@ app.use(express.static(path.join(__dirname, 'app', 'build')))
 
 // Middleware for Authentication
 app.use((req, res, next) => {
-    if(!req.cookies.auth){
-        next();
-    }else {
-        let userHash = req.cookies.auth.substring(0,16);
-        let token = req.cookies.auth.substring(16);
-        if (!token || !userHash) {
-            next();
-        } else {
-            redisClient.get(userHash, function(err, secret) {
-                if (err) {
-                    next();
-                } else if (!secret) {
-                    next();
-                } else {
-                    redisClient.expire(userHash, config.expire_time);
-                    jwt.verify(token, secret, (err, decoded) => {
-                        if (err) {
-                            next();
-                        } else {
-                            req.user = decoded;
-                            req.secret = secret;
-                            req.userHash = userHash;
-                            next();
-                        }
-                    });
-                }
-            });
+    verify(req.cookies.auth, data => {
+        if(data){
+            req.user = data.user
+            req.secret = data.secret
+            req.userHash = data.userHash
         }
-    }
-});
+        next()
+    })
+})
 
 const ensureLoggedIn = () => {
     return (req, res, next) => {

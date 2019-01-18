@@ -225,7 +225,7 @@ class IntentInput extends Component {
                         html={this.state.text_error}
                     >
                         <MentionsInput
-                            className="mentions-input" 
+                            className="mentions-input"
                             markup='{{[__display__].__id__}}'
                             displayTransform={(id, display) => { return '[' + display + ']'}}
                             value={this.state.text}

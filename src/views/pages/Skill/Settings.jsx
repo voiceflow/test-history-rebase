@@ -50,10 +50,10 @@ class Settings extends Component {
         this.handleUpdate = this.handleUpdate.bind(this)
         this.saveSettings = this.saveSettings.bind(this)
         this.confirmDelete = this.confirmDelete.bind(this)
+        this.requestPDF = this.requestPDF.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
         this.onDelete = this.onDelete.bind(this)
         this.confirmRestore = this.confirmRestore.bind(this)
-        this.onError = this.onError.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
         this.previewBackup = this.previewBackup.bind(this)
     }
@@ -157,6 +157,25 @@ class Settings extends Component {
         }
     }
 
+    requestPDF(){
+        if (_.isNull(localStorage.getItem('requestPDF'))){
+          axios.post(`/requestPDF`, {
+            user: this.props.user,
+            skill: this.props.skill,
+          })
+          .then(() => {
+            this.onError('PDF will be sent to your email within 12 hours')
+            localStorage.setItem('requestPDF', true);
+          })
+          .catch(err => {
+            this.props.onError('Failed to send')
+          })
+
+        } else {
+          this.props.onError('Request already sent')
+        }
+    }
+
     previewBackup(version){
         this.setState({
             preview: true,
@@ -186,12 +205,6 @@ class Settings extends Component {
         })
     }
 
-    onError(error_message) {
-        this.setState({
-            error: error_message
-        })
-    }
-
     modalContent(fullfillment_intent_key) {
         if (!this.state.skill) {
             return null
@@ -217,7 +230,7 @@ class Settings extends Component {
                                 selected_intent={fulfillment_intent}
                                 history={this.props.history}
                                 skill_id={this.props.skill.skill_id}
-                                onError={this.onError}
+                                onError={this.props.onError}
                                 onUpdate={this.onUpdate}
                             />}
                     </FormGroup>
@@ -376,6 +389,16 @@ class Settings extends Component {
             <div className="settings-content clearfix">
                 {this.modalContent(fullfillment_intent_key)}
                 <hr />
+                {this.props.user.admin >= 30 &&
+                    <Button className="previous-btn"
+                      variant="contained"
+                      onClick={this.requestPDF}
+                    >
+                    Request for PDF
+                    &nbsp;
+                    <i className="far fa-file-pdf" />
+                  </Button>
+                }
                 {this.props.page !== 'backups' &&
                     <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
                         {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}

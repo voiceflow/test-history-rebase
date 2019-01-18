@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 
-const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish'] 
+const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
 class SecondaryNavBar extends Component {
     constructor(props){
@@ -38,7 +38,7 @@ class SecondaryNavBar extends Component {
             <div>
                 {!!(this.props.skill && this.props.skill.amzn_id) &&
                     <React.Fragment>
-                        {this.props.page === 'logs' ? 
+                        {this.props.page === 'logs' ?
                             <div className="nav-item-2 active mr-4">
                                 <img src={'/logs.svg'} alt="logs" width="18"/>
                             </div> :

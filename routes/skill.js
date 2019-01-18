@@ -1468,27 +1468,6 @@ exports.getSkillVersions = (req, res) => {
 
 exports.restoreSkillVersion = (req, res) => {
   let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
-
-  // req.params.id = req.params.canonical_skill_id
-  // exports.deleteSkill(req, res, false, () => {
-  //   req.params.id = req.params.restore_id
-  //   exports.copySkill(req, res, false, false, true, false, (row) => {
-  //     let new_skill_id = hashids.decode(row.skill_id)[0]
-  //     pool.query(
-  //       `UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, 
-  //       [canonical_skill_id, new_skill_id],
-  //       (err, data) => {
-  //         if(err){
-  //           console.log(canonical_skill_id, new_skill_id)
-  //           console.log(err)
-  //           res.sendStatus(500)
-  //         } else {
-  //           res.sendStatus(200)
-  //         }
-  //       })
-  //   })
-  // })
-
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
   exports.copySkill(req, res, false, false, true, false, (row) => {
@@ -1511,7 +1490,8 @@ exports.restoreSkillVersion = (req, res) => {
                 if(err){
                   console.log(err)
                   res.sendStatus(500)
-                } 
+                }
+                row.skill_id = req.params.canonical_skill_id
                 res.send(row)
               }
             )
@@ -1519,37 +1499,4 @@ exports.restoreSkillVersion = (req, res) => {
         })
     })
   })
-
-
-
-  // pool.query(
-  //   `SELECT skill_id FROM skill_versions WHERE canonical_skill_id = $1 AND version IS NULL`, [canonical_skill_id], (err, data) => {
-  //     if (err) {
-  //       console.log(err)
-  //       res.sendStatus(500)
-  //     } else {
-  //       // Delete existing null skill
-  //       req.params.id = hashids.encode(data.rows[0].skill_id)
-  //       exports.deleteSkill(req, res, false, () => {
-  //         req.params.id = hashids.encode(restore_id)
-  //         req.params.target_creator = req.user.id
-  //         exports.copySkill(req, res, false, false, true, false, (row) => {
-  //           let new_skill_id = hashids.decode(row.skill_id)[0]
-  //           pool.query(`
-  //         INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
-  //             [canonical_skill_id, new_skill_id],
-  //             (err) => {
-  //               if (err) {
-  //                 console.log(err)
-  //                 res.sendStatus(500)
-  //               } else {
-  //                 res.send(row)
-  //               }
-  //             }
-  //           )
-  //         })
-  //       })
-  //     }
-  //   }
-  // )
 }

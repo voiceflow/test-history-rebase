@@ -9,7 +9,7 @@ const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
 const Analytics = require('analytics-node')
-const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
+const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY_DEVELOPMENT)
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 

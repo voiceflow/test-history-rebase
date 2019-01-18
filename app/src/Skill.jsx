@@ -31,6 +31,8 @@ class Skill extends Component {
         this.onError = this.onError.bind(this)
         this.onConfirm = this.onConfirm.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
+        this.onSwapVersions = this.onSwapVersions.bind(this)
+        this.addVersion = this.addVersion.bind(this)
     }
 
     static getDerivedStateFromProps(props, state){
@@ -98,7 +100,11 @@ class Skill extends Component {
     onConfirm(confirm){
         this.setState({confirm: {...confirm, confirm: () => {
             this.setState({confirm: null})
-            confirm.confirm()
+            if(confirm.params){
+                confirm.confirm(...confirm.params)   
+            } else {
+                confirm.confirm()
+            }
         }}})
     }
 
@@ -128,22 +134,62 @@ class Skill extends Component {
             // TODO ERROR MESSAGE
             console.error(err.response)
             this.setState({
-                error: 'Unable to Load Project'
+                error: 'Unable to load project'
             })
+        })
+
+        axios.get(`/skill/${skill_id}/versions`)
+        .then(res => {
+            this.setState({
+                versions: res.data
+            })
+        })
+        .catch(err => {
+            console.error(err.response)
+            this.setState({
+                error: 'Unable to load versions'
+            })
+        })
+    }
+
+    onSwapVersions(skill_id, canonical_skill_id, skill){
+        axios.post(`/skill/${skill_id}/${canonical_skill_id}/restore`)
+        .then(res => {
+            skill.skill_id = res.data.skill_id
+            skill.diagram = res.data.diagram
+            this.setState({
+                skill: skill,
+                diagram_id: skill.diagram
+            })
+            this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+        })
+        .catch(err => {
+            console.error(err.response)
+            this.setState({
+                error: 'Unable to restore version'
+            })
+        })
+    }
+
+    addVersion(new_skill_row){
+        let versions = this.state.versions.slice()
+        versions.unshift(new_skill_row.new_skill)
+        this.setState({
+            versions: versions
         })
     }
 
     renderPage(){
         switch(this.props.page){
             case 'canvas':
-                return <Canvas
-                  {...this.props}
-                  skill={this.state.skill}
-                  diagram_id={this.state.diagram_id}
-                  onError={this.onError}
-                  onConfirm={this.onConfirm}
-                  updateSkill={(skill) => {this.setState({skill: skill})}}
-                />
+                return <Canvas 
+                    {...this.props} 
+                    skill={this.state.skill} 
+                    diagram_id={this.state.diagram_id} 
+                    addVersion={this.addVersion} 
+                    onError={this.onError} 
+                    onConfirm={this.onConfirm} 
+                    updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'business':
                 return <Business
                   {...this.props}
@@ -154,22 +200,23 @@ class Skill extends Component {
                   updateSkill={(skill) => {this.setState({skill: skill})}}
                 />
             case 'settings':
-                return <Settings
-                  {...this.props}
-                  skill={this.state.skill}
-                  onError={this.onError}
-                  page={this.props.secondaryPage}
-                  onConfirm={this.onConfirm}
-                  updateSkill={(skill) => {this.setState({skill: skill})}}
-                />
+                return <Settings 
+                    {...this.props} 
+                    skill={this.state.skill} 
+                    onError={this.onError} 
+                    page={this.props.secondaryPage} 
+                    versions={this.state.versions} 
+                    onSwapVersions={this.onSwapVersions} 
+                    onConfirm={this.onConfirm} 
+                    updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
-                return <Publish
-                  {...this.props}
-                  skill={this.state.skill}
-                  page={this.props.secondaryPage}
-                  onError={this.onError}
-                  onConfirm={this.onConfirm}
-                />
+                return <Publish 
+                    {...this.props} 
+                    skill={this.state.skill} 
+                    page={this.props.secondaryPage} 
+                    addVersion={this.addVersion} 
+                    onError={this.onError} 
+                    onConfirm={this.onConfirm}/>
             case 'logs':
                 return <Logs
                   {...this.props}

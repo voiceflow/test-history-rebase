@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import validUrl from 'valid-url'
 
-import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert, Collapse } from 'reactstrap'
+import { Button, ButtonGroup, Form,
+  FormGroup, Label, Input, Modal,
+  ModalBody, Alert, Collapse
+} from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import MUFormGroup from '@material-ui/core/FormGroup'
@@ -60,6 +63,7 @@ class Skill extends Component {
             amzn_id: null,
             stage_error: null,
             displayingConfirmWithdraw: false,
+            error: null,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -289,69 +293,79 @@ class Skill extends Component {
         this.save(true)
     }
 
+    validateForm() {
+      const s = this.state;
+      let split_keywords = s.keywords.split(',')
+      if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
+          this.setState({
+              error: 'Privacy policy must be a url'
+          })
+      } else if(s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)){
+          this.setState({
+              error: 'Terms and conditions must be a url'
+          })
+      } else if(split_keywords.length > 30) {
+          this.setState({
+              error: 'Limited to 30 keywords'
+          })
+      } else if(s.keywords.length - split_keywords.length + 1> 500) {
+          this.setState({
+              error: 'The total length of all keywords must be less than or equal to 150'
+          })
+      } else {
+        this.setState({
+          publish: true,
+          error: null
+        })
+      }
+    }
     save(publish=false, cb){
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
         let split_keywords = s.keywords.split(',')
 
-        if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
-            this.setState({
-                error: 'Privacy policy must be a url'
-            })
-        } else if(s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)){
-            this.setState({
-                error: 'Terms and conditions must be a url'
-            })
-        } else if(split_keywords.length > 30) {
-            this.setState({
-                error: 'Limited to 30 keywords'
-            })
-        } else if(s.keywords.length - split_keywords.length + 1> 500) {
-            this.setState({
-                error: 'The total length of all keywords must be less than or equal to 150'
-            })
-        } else {
-            let store;
+        if (_.isNull(this.state.error)) {
+          let store;
 
-            if(publish === true){
-                store = {
-                    purchase: s.purchase,
-                    personal: s.personal,
-                    copa: s.copa,
-                    ads: s.ads,
-                    export: s.export,
-                    instructions: s.instructions
-                }
-            }
-            axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
-                name: s.name,
-                inv_name: s.inv_name,
-                summary: s.summary,
-                description: s.description,
-                keywords: s.keywords,
-                invocations: s.invocations,
-                small_icon: s.small_icon,
-                large_icon: s.large_icon,
-                category: category,
-                locales: JSON.stringify(s.locales),
-                privacy_policy: !_.isEmpty(s.privacy_policy) ?
-                  s.privacy_policy :
-                  window.location.protocol + '//' + window.location.host+'/creator/privacy_policy',
-                terms_and_cond: s.terms_and_cond,
-                ...store
-            })
-            .then(res => {
-                this.setState({
-                    saved: true
-                });
-                if(typeof(cb) === 'function') cb();
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    error: 'Save Error, updates not saved'
-                });
-            });
+          if(publish === true){
+              store = {
+                  purchase: s.purchase,
+                  personal: s.personal,
+                  copa: s.copa,
+                  ads: s.ads,
+                  export: s.export,
+                  instructions: s.instructions
+              }
+          }
+          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
+              name: s.name,
+              inv_name: s.inv_name,
+              summary: s.summary,
+              description: s.description,
+              keywords: s.keywords,
+              invocations: s.invocations,
+              small_icon: s.small_icon,
+              large_icon: s.large_icon,
+              category: category,
+              locales: JSON.stringify(s.locales),
+              privacy_policy: !_.isEmpty(s.privacy_policy) ?
+                s.privacy_policy :
+                window.location.protocol + '//' + window.location.host+'/creator/privacy_policy',
+              terms_and_cond: s.terms_and_cond,
+              ...store
+          })
+          .then(res => {
+              this.setState({
+                  saved: true
+              });
+              if(typeof(cb) === 'function') cb();
+          })
+          .catch(err => {
+              console.log(err);
+              this.setState({
+                  error: 'Save Error, updates not saved'
+              });
+          });
         }
     }
 
@@ -587,7 +601,16 @@ class Skill extends Component {
                         {disabled_stages.has(this.state.stage)?
                             null:
                             <div className="subheader-right">
-                                <button variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></button>
+                                <button
+                                  variant="contained"
+                                  className="purple-btn"
+                                  onClick={() => {
+                                    this.validateForm()
+                                  }}
+                                >
+                                  Publish Skill
+                                  <i className="fab fa-amazon ml-2"/>
+                                </button>
                             </div>
                         }
                     </div>

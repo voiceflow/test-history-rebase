@@ -1014,7 +1014,19 @@ exports.buildSkill = async (req, res) => {
                               getSkillStatus(depth + 1)
                             } else {
                               incrementTimesPublishedSuccessfulIntercom(req.user.id);
-                              res.send(amzn_id)
+
+                              // Update canonical skill id's amzn id
+                              pool.query(`
+                                UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`, 
+                                [amzn_id, id],
+                                (err) => {
+                                  if(err){
+                                    console.log(err)
+                                    res.sendStatus(500)
+                                  } else {
+                                    res.send(amzn_id)
+                                  }
+                                })
                             }
                           })
                           .catch(err => {

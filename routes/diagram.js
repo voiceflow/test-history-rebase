@@ -1173,6 +1173,7 @@ const publish = (req, res) => {
           console.log(err)
           res.sendStatus(500)
         } else {
+          new_skill_row.canonical_skill_id = hashids.encode(data.rows[0].canonical_skill_id)
           res.send({
             new_skill: new_skill_row
           })

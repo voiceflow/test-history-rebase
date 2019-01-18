@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Image from './../../components/Uploads/Image'
+import Image from 'views/components/Uploads/Image'
 import {Button} from 'reactstrap'
 
 
@@ -7,7 +7,7 @@ class IconsForm extends Component {
     render() {
       return(
         <div>
-          <div className="col-9 d-flex">
+          <div className="justify-content-center d-flex">
               <div>
                   <label className="mt-0"><b>Small icon</b> *</label>
                   <Image

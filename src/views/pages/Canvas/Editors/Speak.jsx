@@ -141,11 +141,11 @@ class Speak extends Component {
                     <React.Fragment>
                         <div className="d-flex my-3">
                             <button className="btn btn-clear btn-vertical mr-3" onClick={() => this.handleAddBlock(false)}>
-                                <img src={'/comment.svg'} alt="comment" width='30px'/>
+                                <img src={'/comment.svg'} alt="comment" className="mr-2" width='20px'/>
                                 Add Speech
                             </button>
                             <button className="btn-clear btn-vertical" onClick={() => this.handleAddBlock(true)}>
-                            <img src={'/volume.svg'} alt="volume" width='30px'/>
+                            <img src={'/volume.svg'} alt="volume" className="mr-2" width='20px'/>
                                 Add Audio
                             </button>
                         </div>

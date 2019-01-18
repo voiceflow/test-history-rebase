@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import './Business.css'
-import Template from './Template'
-import Templates from './Templates'
+import AccountLinkTemplate from './AccountLinkTemplate'
+import Email from './Email'
+import Emails from './Emails'
 import Home from './Home'
+import Products from './Products/Products';
+import EditProduct from './Products/EditProduct.js';
 
 const PAID_FEATURES = ['In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases']
 
@@ -20,8 +23,18 @@ const tabs = [
     },
     {
         display: <React.Fragment><i className="far fa-envelope mr-2"/> Email</React.Fragment>,
-        match: ['emails', 'template'],
-        link: '/business/:skill_id/email/templates'
+        match: ['emails'],
+        link: '/business/:skill_id/emails'
+    },
+    {
+        display: <React.Fragment><i className="far fa-cube mr-2"/> Products</React.Fragment>,
+        match: ['products'],
+        link: '/business/:skill_id/products'
+    },
+    {
+      display: <React.Fragment><i className="far fa-link mr-2"/> Link Account</React.Fragment>,
+      match: ['link_account', 'link_template'],
+      link: '/business/:skill_id/link_account/templates'
     }
 ]
 
@@ -31,11 +44,20 @@ class Business extends Component {
         let page
         if(window.user_detail.admin > 0){
             switch(this.props.page){
+                case 'link_account':
+                     page = <AccountLinkTemplate {...this.props}/>
+                     break;
                 case 'emails':
-                    page = <Templates {...this.props}/>
+                    page = <Emails {...this.props}/>
                     break
-                case 'template':
-                    page = <Template {...this.props}/>
+                case 'email':
+                    page = <Email {...this.props}/>
+                    break
+                case 'products':
+                    page = <Products {...this.props}/>
+                    break
+                case 'product':
+                    page = <EditProduct {...this.props}/>
                     break
                 default:
                     page = <Home user={this.props.user}/>
@@ -46,7 +68,7 @@ class Business extends Component {
                     <div className="card" id="upgrade">
                         <h2>Upgrade to access business features</h2>
                         <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
-                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/check.svg" width={20} className="mr-3" alt="check"/>{feature}</p>)}
+                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
                         <div className="mt-2">
                             <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan</Link>
                         </div>

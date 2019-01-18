@@ -3,7 +3,6 @@ import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
 import Settings from './views/pages/Skill/Settings'
-import Products from './views/pages/Products/Products';
 import Publish from './views/pages/Skill/Publish'
 import Logs from './views/pages/Logs'
 import axios from 'axios'
@@ -24,7 +23,8 @@ class Skill extends Component {
             error: null,
             confirm: null,
             mounted: true,
-            error_screen: null
+            error_screen: null,
+            time_mounted: null
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -70,7 +70,10 @@ class Skill extends Component {
     }
 
     componentDidMount(){
-        this.setState({mounted: true})
+        this.setState({
+            mounted: true,
+            time_mounted: new Date()
+        })
         window.addEventListener('beforeunload', this.componentGracefulUnmount)
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
             this.onLoadSkill(this.props.computedMatch.params.skill_id)
@@ -82,6 +85,11 @@ class Skill extends Component {
     }
 
     componentWillUnmount(){
+        let time_unmounted = new Date()
+        axios.post('/analytics/track_canvas_time', {
+            duration: time_unmounted - this.state.time_mounted,
+            skill_id: this.state.skill.skill_id
+        }).then(()=>{}).catch(()=>{})
         this.componentGracefulUnmount()
     }
 
@@ -178,15 +186,31 @@ class Skill extends Component {
             case 'products':
                 return <Products {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'business':
-                return <Business {...this.props} skill_id={this.state.skill.skill_id} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
+                return <Business
+                  {...this.props}
+                  skill_id={this.state.skill.skill_id}
+                  page={this.props.secondaryPage}
+                  onError={this.onError}
+                  onConfirm={this.onConfirm}
+                  updateSkill={(skill) => {this.setState({skill: skill})}}
+                />
             case 'settings':
                 return <Settings {...this.props} skill={this.state.skill} onError={this.onError} page={this.props.secondaryPage} versions={this.state.versions} onSwapVersions={this.onSwapVersions} onConfirm={this.onConfirm} updateSkill={(skill) => {this.setState({skill: skill})}}/>
             case 'publish':
                 return <Publish {...this.props} skill={this.state.skill} page={this.props.secondaryPage} addVersion={this.addVersion} onError={this.onError} onConfirm={this.onConfirm}/>
             case 'logs':
-                return <Logs {...this.props} skill={this.state.skill}/>
+                return <Logs
+                  {...this.props}
+                  skill={this.state.skill}
+                />
             case 'visuals':
-                return <Visuals {...this.props} skill={this.state.skill} page={this.props.secondaryPage} onError={this.onError} onConfirm={this.onConfirm}/>
+                return <Visuals
+                  {...this.props}
+                  skill={this.state.skill}
+                  page={this.props.secondaryPage}
+                  onError={this.onError}
+                  onConfirm={this.onConfirm}
+                />
             default:
                 return null
         }

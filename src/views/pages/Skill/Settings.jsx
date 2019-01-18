@@ -220,7 +220,10 @@ class Settings extends Component {
                         <Label>CanFulfill Intent</Label>
                         <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
                         <hr />
-                        {!fullfillment_intent_key && <div className="selected-intent-label">{Object.keys(this.state.skill.fulfillment).length !== 0 ? 'Select an Intent Below to Customize Slot Fulfillment' : 'To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle'}</div>
+                        {!fullfillment_intent_key && (
+                            Object.keys(this.state.skill.fulfillment).length !== 0 ? 
+                                <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div> : <Alert className="text-center">To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle</Alert>
+                            )
                         }
                         {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
                         {fullfillment_intent_key &&

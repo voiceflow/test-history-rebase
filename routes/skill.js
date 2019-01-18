@@ -804,7 +804,12 @@ exports.buildSkill = async (req, res) => {
   if (!req.params.id) {
     res.sendStatus(401)
   }
-  incrementTimesPublishedIntercom(req.user.id);
+  try{
+    incrementTimesPublishedIntercom(req.user.id);
+  } catch (err) {
+    console.log(err)
+  }
+  
 
   let id = hashids.decode(req.params.id)[0];
   let original_id = req.params.id
@@ -934,7 +939,7 @@ exports.buildSkill = async (req, res) => {
 
           let account_linking = r.account_linking;
 
-          if (!_.isNull(accountLinking)) {
+          if (!_.isNull(account_linking)) {
             account_linking.domains = _.flattenDeep(account_linking.domains)
             account_linking.scopes = _.flattenDeep(account_linking.scopes)
             account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));

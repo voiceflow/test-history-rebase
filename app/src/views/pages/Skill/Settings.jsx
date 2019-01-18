@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Alert, ButtonGroup, Button, FormGroup, Label, Table } from 'reactstrap'
+import { Input, Alert, ButtonGroup, Button, FormGroup, Label, Table, Modal } from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
@@ -9,6 +9,7 @@ import CanFulfill from './Canfulfill'
 import { clone } from 'lodash'
 import _ from 'lodash'
 import ErrorModal from '../../../views/components/Modals/ErrorModal'
+import LightCanvas from './../Canvas/LightCanvas'
 
 import { intentHasSlots } from '../../../util'
 
@@ -36,7 +37,12 @@ class Settings extends Component {
             skill: null,
             saving: false,
             hide_resume: true,
-            add_intent: null
+            add_intent: null,
+            preview: false,
+            curr_preview: {
+                created: new Date(),
+
+            }
         }
 
         this.modalContent = this.modalContent.bind(this)
@@ -49,6 +55,7 @@ class Settings extends Component {
         this.confirmRestore = this.confirmRestore.bind(this)
         this.onError = this.onError.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
+        this.previewBackup = this.previewBackup.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -150,6 +157,13 @@ class Settings extends Component {
         }
     }
 
+    previewBackup(version){
+        this.setState({
+            preview: true,
+            curr_preview: version,
+        })
+    }
+
     confirmRestore(skill_id, canonical_skill_id, skill) {
         this.props.onConfirm({
             warning: true,
@@ -241,7 +255,6 @@ class Settings extends Component {
                             <thead>
                                 <tr>
                                     <th>Saved</th>
-                                    <th>Blocks</th>
                                     <th>Preview</th>
                                     <th>Restore</th>
                                 </tr>
@@ -250,10 +263,10 @@ class Settings extends Component {
                                 {this.props.versions.map((version, i) => {
                                     return <tr key={i}>
                                         <td>{moment(version.created).fromNow()}</td>
-                                        <td>199</td>
-                                        <td>{version.skill_id}</td>
                                         <td>
-                                            {/* <Button className='purple-btn' onClick={() => {this.props.onSwapVersions(version.skill_id, version.canonical_skill_id)}}>Restore</Button> */}
+                                            <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
+                                        </td>
+                                        <td>
                                             <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</Button>
                                         </td>
                                     </tr>
@@ -347,6 +360,18 @@ class Settings extends Component {
                     })}
                 </ButtonGroup>
             </div>
+
+            {/* Modal for previewing backups */}
+            <Modal isOpen={this.state.preview} size="xl" toggle={()=>this.setState({preview: false})} className="light-canvas-modal">
+                <div id="light-canvas-wrap">
+                    <div className="no-select" id="PreviewBar">
+                        <h3 className="font-weight-light">{moment(this.state.curr_preview.created).fromNow()}</h3>
+                    </div>
+                    <LightCanvas diagram_id={this.state.curr_preview.diagram}/>
+                </div>
+                <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+            </Modal>
+
             <ErrorModal error={this.state.error} dismiss={() => this.setState({ error: null })} />
             <div className="settings-content clearfix">
                 {this.modalContent(fullfillment_intent_key)}

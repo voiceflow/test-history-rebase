@@ -68,7 +68,7 @@ class Products extends Component {
         })
         .catch(err=>{
             console.error(err)
-            this.props.onError('Error copying product')
+            this.props.onError('Error Deleting Product')
         });
     }
 

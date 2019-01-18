@@ -32,6 +32,7 @@ const Diagram = require('./routes/diagram.js');
 const Customer = require('./routes/customer.js');
 const Skill = require('./routes/skill.js');
 const Problem = require('./routes/error.js');
+const LinkAccount = require('./routes/linkaccount.js')
 const Audio = require('./routes/audio.js');
 const Test = require('./routes/test.js');
 const Authentication = require('./routes/authentication');
@@ -133,6 +134,9 @@ app.get('/business/*', ensurePlan(1));
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
+app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
+app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
+
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
@@ -178,7 +182,7 @@ app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishT
 app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
-/* 
+/*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
 // app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)

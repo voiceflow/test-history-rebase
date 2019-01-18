@@ -1,5 +1,6 @@
 const axios = require('axios')
-const {docClient, pool, hashids, intercom} = require('./../services')
+const _ = require('lodash')
+const {docClient, pool, hashids, intercom, jwt} = require('./../services')
 const {AccessToken} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const { getEnvVariable } = require('../util')
@@ -135,7 +136,7 @@ exports.getSkill = (req, res) => {
     }else if(req.query.simple){
         sql = `
             SELECT
-                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
+                name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment
             FROM
                 skills
             WHERE
@@ -165,7 +166,6 @@ exports.getSkill = (req, res) => {
 
             // Rehash the skill id
             skill.skill_id = req.params.id;
-
             if(req.query.preview || !skill.amzn_id){
                 res.send(skill)
             }else{
@@ -507,9 +507,10 @@ exports.patchSkill = (req, res) => {
             SET
             intents = $3,
             slots = $4,
-            fulfillment = $5
+            fulfillment = $5,
+            account_linking = $6
             WHERE skill_id = $1 AND creator_id = $2`,
-            [id, req.user.id, b.intents, b.slots, b.fulfillment], (err) => {
+            [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);
@@ -741,7 +742,7 @@ exports.buildSkill = async (req,res) => {
                     }
 
                     let vendor_request
-                    
+
                     try{
                         vendor_request = await axios.request({
                             url: 'https://api.amazonalexa.com/v1/vendors',
@@ -795,7 +796,26 @@ exports.buildSkill = async (req,res) => {
                             data: manifest
                         });
                     }
+                    let account_linking = r.account_linking;
+                    account_linking.domains=_.flattenDeep(account_linking.domains)
+                    account_linking.scopes = _.flattenDeep(account_linking.scopes)
+                    account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
 
+                    if (account_linking) {
+                        axios.request({
+                            url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/accountLinkingClient`,
+                            method: 'PUT',
+                            headers: {
+                                Authorization: token
+                            },
+                            data: {
+                                accountLinkingRequest: account_linking
+                            }
+                        })
+                        .catch(err => {
+                            res.status(500).send(err.response.data)
+                        });
+                    }
                     if(Array.isArray(r.locales) && r.locales.includes('en-US')){
                         let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
 
@@ -803,7 +823,7 @@ exports.buildSkill = async (req,res) => {
                             for(row of products.rows){
                                 let product = row.data;
                                 let productId = row.amzn_prod_id;
-                                
+
                                 try{
                                     // Try to update the product if it exists
                                     if (!productId) throw null
@@ -1075,7 +1095,7 @@ exports.withdrawSkill = (req, res) => {
 exports.copyProduct = async (req, res) => {
     let id = hashids.decode(req.params.id)[0]
     let pid = req.params.pid
-  
+
      let copy_query = `
       INSERT INTO products(
         skill_id,
@@ -1097,7 +1117,7 @@ exports.copyProduct = async (req, res) => {
         data.rows[0].skill_id = hashids.encode(data.rows[0].skill_id)
         res.send(data.rows[0])
       }
-    })  
+    })
 }
 
 exports.copySkill = async (req, res, cb=false, copying_default_template=false) => {

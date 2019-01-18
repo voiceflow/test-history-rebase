@@ -1494,6 +1494,7 @@ class Canvas extends Component {
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         updateSkill={this.updateSkill}
+                        addVersion={this.props.addVersion}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>

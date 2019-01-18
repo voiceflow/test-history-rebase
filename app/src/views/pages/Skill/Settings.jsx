@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Input, Alert, ButtonGroup, Button, FormGroup, Label } from 'reactstrap'
+import { Input, Alert, ButtonGroup, Button, FormGroup, Label, Table, Modal } from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import axios from 'axios'
 import update from 'immutability-helper'
 import Prompt from './Prompt'
+import moment from 'moment'
 import CanFulfill from './Canfulfill'
 import { clone } from 'lodash'
 import _ from 'lodash'
 import ErrorModal from '../../../views/components/Modals/ErrorModal'
+import LightCanvas from './../Canvas/LightCanvas'
 
 import { intentHasSlots } from '../../../util'
 
@@ -25,7 +27,7 @@ const BUILT_INS = BUILT_IN_INTENTS.map(intent => {
     }
 })
 
-const TABS = ['basic', 'advanced', 'discovery']
+const TABS = ['basic', 'advanced', 'discovery', 'backups']
 
 class Settings extends Component {
     constructor(props) {
@@ -35,7 +37,12 @@ class Settings extends Component {
             skill: null,
             saving: false,
             hide_resume: true,
-            add_intent: null
+            add_intent: null,
+            preview: false,
+            curr_preview: {
+                created: new Date(),
+
+            }
         }
 
         this.modalContent = this.modalContent.bind(this)
@@ -45,8 +52,10 @@ class Settings extends Component {
         this.confirmDelete = this.confirmDelete.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
         this.onDelete = this.onDelete.bind(this)
+        this.confirmRestore = this.confirmRestore.bind(this)
         this.onError = this.onError.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
+        this.previewBackup = this.previewBackup.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -148,6 +157,22 @@ class Settings extends Component {
         }
     }
 
+    previewBackup(version){
+        this.setState({
+            preview: true,
+            curr_preview: version,
+        })
+    }
+
+    confirmRestore(skill_id, canonical_skill_id, skill) {
+        this.props.onConfirm({
+            warning: true,
+            text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
+            confirm: this.props.onSwapVersions,
+            params: [skill_id, canonical_skill_id, skill]
+        })
+    }
+
     fulfillmentButtons(intents_sorted) {
         return intents_sorted.map((intent, i) => {
             if (this.state.skill.fulfillment[intent.key]) {
@@ -220,6 +245,40 @@ class Settings extends Component {
                         </Alert>
                     </FormGroup>
                 </React.Fragment>
+            case 'backups':
+            return <React.Fragment>
+                <FormGroup>
+                    <Label>Backups</Label>
+                    <div className="helper-text mb-2">Restore your skill to previous versions, saved when you upload your skill to Alexa.</div>
+                    {window.user_detail.admin > 10?
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>Saved</th>
+                                    <th>Preview</th>
+                                    <th>Restore</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.props.versions.map((version, i) => {
+                                    return <tr key={i}>
+                                        <td>{moment(version.created).fromNow()}</td>
+                                        <td>
+                                            <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
+                                        </td>
+                                        <td>
+                                            <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</Button>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
+
+                        </Table>
+                        :
+                        <div>Don't @ me poor guy</div>
+                    }
+                </FormGroup>
+            </React.Fragment>
             default:
                 return <React.Fragment>
                     <FormGroup>
@@ -301,13 +360,27 @@ class Settings extends Component {
                     })}
                 </ButtonGroup>
             </div>
+
+            {/* Modal for previewing backups */}
+            <Modal isOpen={this.state.preview} size="xl" toggle={()=>this.setState({preview: false})} className="light-canvas-modal">
+                <div id="light-canvas-wrap">
+                    <div className="no-select" id="PreviewBar">
+                        <h3 className="font-weight-light">{moment(this.state.curr_preview.created).fromNow()}</h3>
+                    </div>
+                    <LightCanvas diagram_id={this.state.curr_preview.diagram}/>
+                </div>
+                <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+            </Modal>
+
             <ErrorModal error={this.state.error} dismiss={() => this.setState({ error: null })} />
             <div className="settings-content clearfix">
                 {this.modalContent(fullfillment_intent_key)}
                 <hr />
-                <Button className='purple-btn save-btn' style={{ minWidth: 150 }} onClick={this.saveSettings}>
-                    {this.state.saving ? <span className="loader" /> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
-                </Button>
+                {this.props.page !== 'backups' &&
+                    <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : null}>
+                        {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
+                    </Button>
+                }
                 {fullfillment_intent_key && <Button className='purple-btn back-btn save-btn mr-2' style={{ minWidth: 150 }} onClick={() => {
                     this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)
                 }}><React.Fragment> Back</React.Fragment>

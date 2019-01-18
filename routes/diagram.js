@@ -502,86 +502,86 @@ const renderDiagram = (user, diagram_id, skill_id, depth=0, rendered_set=(new Se
                   story.lines[node.id] = {
                       end: true
                   }
-              } else if (node.extras.type === 'command' || node.extras.type === 'jump' || (node.extras.type === 'intent' && node.extras.intent)) {
+              }  else if (node.extras.type === 'command' || node.extras.type === 'jump' || (node.extras.type === 'intent' && node.extras.intent)) {
 
-                  let nextLink = null;
-                  for (var j = 0; j < node.ports.length; j++) {
-                      if (!node.ports[j].in) {
-                          [nextLink] = node.ports[j].links;
-                      }
-                  }
+                let nextLink = null;
+                for (var j = 0; j < node.ports.length; j++) {
+                    if (!node.ports[j].in) {
+                        [nextLink] = node.ports[j].links;
+                    }
+                }
 
-                  let nextId = getLink(nextLink)
-                  if(node.extras.intent){
-                      let intent = node.extras.intent
-                      // Log that this intent has been used
-                      if (used_intents) {
-                          used_intents.add(intent.key)
-                      }
+                let nextId = getLink(nextLink)
+                if(node.extras.intent){
+                    let intent = node.extras.intent
+                    // Log that this intent has been used
+                    if (used_intents) {
+                        used_intents.add(intent.key)
+                    }
 
-                      let mappings = []
-                      if(Array.isArray(node.extras.mappings)){
-                          node.extras.mappings.forEach(mapping => {
-                              if(!mapping.slot){
-                                  return
-                              }
-                              if(intent.built_in){
-                                  mappings.push({
-                                      variable: mapping.variable,
-                                      slot: mapping.slot.label
-                                  })
-                              }else if(mapping.slot.key in slots){
-                                  mappings.push({
-                                      variable: mapping.variable,
-                                      slot: slots[mapping.slot.key]
-                                  })
-                              }
-                          })
-                      }
-                      
-                      if(intent.built_in){
-                          intent = intent.label
-                      }else if(intent.key in intents){
-                          intent = intents[intent.key]
-                      }
-                      if(intent){
-                          if(node.extras.resume){
-                              if(node.extras.diagram_id){
-                                  let result
-                                  try{
-                                      result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options, used_intents, used_choices, intents, slots)
-                                  }catch(err){
-                                      result = 500
-                                  }
-                                  if(result < 300){
-                                      story.commands.push({
-                                          intent: intent,
-                                          mappings: node.extras.mappings,
-                                          diagram_id: node.extras.diagram_id,
-                                          end: !!node.extras.end
-                                      })
-                                  }
-                              }
-                          }else if(nextId){
-                              story.commands.push({
-                                  intent: intent,
-                                  mappings: node.extras.mappings,
-                                  next: nextId
-                              })
-                          }
-                      }
-                  }else if(node.extras.commands){
-                      // DEPRECATE OLD COMMANDS
-                      let commands = node.extras.commands.split('\n').filter(i => { return !!i })
+                    let mappings = []
+                    if(Array.isArray(node.extras.mappings)){
+                        node.extras.mappings.forEach(mapping => {
+                            if(!mapping.slot){
+                                return
+                            }
+                            if(intent.built_in){
+                                mappings.push({
+                                    variable: mapping.variable,
+                                    slot: mapping.slot.label
+                                })
+                            }else if(mapping.slot.key in slots){
+                                mappings.push({
+                                    variable: mapping.variable,
+                                    slot: slots[mapping.slot.key]
+                                })
+                            }
+                        })
+                    }
+                    
+                    if(intent.built_in){
+                        intent = intent.label
+                    }else if(intent.key in intents){
+                        intent = intents[intent.key]
+                    }
+                    if(intent){
+                        if(node.extras.resume){
+                            if(node.extras.diagram_id){
+                                let result
+                                try{
+                                    result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth+1, rendered_set, type, options, used_intents, used_choices, intents, slots)
+                                }catch(err){
+                                    result = 500
+                                }
+                                if(result < 300){
+                                    story.commands.push({
+                                        intent: intent,
+                                        mappings: mappings,
+                                        diagram_id: node.extras.diagram_id,
+                                        end: !!node.extras.end
+                                    })
+                                }
+                            }
+                        }else if(nextId){
+                            story.commands.push({
+                                intent: intent,
+                                mappings: mappings,
+                                next: nextId
+                            })
+                        }
+                    }
+                }else if(node.extras.commands){
+                    // DEPRECATE OLD COMMANDS
+                    let commands = node.extras.commands.split('\n').filter(i => { return !!i })
 
-                      commands.forEach(command => {
-                          story.commands.push({
-                              string: command,
-                              value: nextId
-                          })
-                      })
-                  }
-              } else if (node.extras.type === 'random') {
+                    commands.forEach(command => {
+                        story.commands.push({
+                            string: command,
+                            value: nextId
+                        })
+                    })
+                }
+            } else if (node.extras.type === 'random') {
                   let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => getLink(port.links[0]))
                   story.lines[node.id] = {
                       random: node.extras.smart ? 2 : 1,

@@ -24,9 +24,13 @@ import Marketplace from './views/pages/Marketplace/Marketplace';
 import ModulePage from './views/pages/Marketplace/ModulePage';
 import Templates from './views/pages/Templates'
 import Page404 from 'views/pages/404'
-// import PublishMarket from './views/pages/PublishMarket/PublishMarket.js';
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
+import ErrorScreen from './Error'
+
+import socket from 'socket.io-client'
+
+const {getDevice} = require('./util')
 
 // SECRET
 var STRIPE_KEY
@@ -50,6 +54,18 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     )
   )}/>
 }
+
+const getEndpoint = () => {
+  let port = ''
+  let protocol = 'https'
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    port = ':8080'
+    protocol = 'http'
+  }
+  return `${protocol}://${window.location.hostname}${port}`
+}
+
+window.CreatorSocket = socket(getEndpoint())
 
 const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
   <Route {...rest} render={props => (
@@ -79,34 +95,72 @@ class App extends Component {
     this.state = {
       loading: AuthenticationService.isAuth(),
       session: false,
-      stripe: null
+      stripe: null,
+      error: null
     }
 
     if(AuthenticationService.isAuth()){
-        AuthenticationService.check((err, res) => {
-            if (err) {
-                this.setState({
-                  loading: false
-                });
-                history.push('/login');
-            } else {
-                this.setState({
-                  loading: false,
-                  session: true
-                });
-            }
-        });
-    }else{
-        // if(history.location.pathname !== '/login'){
-        //   history.push('/signup');
-        // }
+      AuthenticationService.check((err, res) => {
+        if (err) {
+          console.log(err)
+          this.setState({
+            loading: false
+          });
+          history.push('/login');
+        }else{
+          window.CreatorSocket.emit('handshake', {
+            auth: AuthenticationService.getAuth(),
+            device: getDevice()
+          })
+        }
+      })
     }
 
     history.listen((location, action) => {
       this.setState({
         session: AuthenticationService.isAuth()
-      });
-    });
+      })
+    })
+
+    window.CreatorSocket.on('verified', () => {
+      this.setState({
+        loading: false,
+        session: true
+      })
+    })
+
+    window.CreatorSocket.on('error', () => {
+      window.error = true
+      this.setState({
+        error: {
+          type: 'socket-fail',
+          override: true
+        }
+      })
+    })
+
+    window.CreatorSocket.on('error', () => {
+      window.error = true
+      this.setState({
+        error: {
+          type: 'socket-fail',
+          override: true
+        }
+      })
+    })
+
+    window.CreatorSocket.on('in_use', (data) => {
+      window.error = true
+      this.setState({
+        error: {
+          type: 'socket-used',
+          override: true,
+          data: data
+        },
+        loading: false,
+        session: true
+      })
+    })
   }
 
   componentDidMount() {
@@ -123,6 +177,7 @@ class App extends Component {
   }
 
   render() {
+
     if(this.state.loading){
       return <div id="loading-diagram">
           <div className="text-center">
@@ -132,10 +187,17 @@ class App extends Component {
       </div>
     }
 
+    if(this.state.error && this.state.error.override){
+      return <div id="loading-diagram">
+        <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> 
+      </div>
+    }
+
     return (
       <StripeProvider stripe={this.state.stripe}>
         <Router history={history}>
           <div id="body">
+            { this.state.error && <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> }
             { (this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
                   return <NavBar {...props}/>
             }} /> }
@@ -184,6 +246,7 @@ class App extends Component {
                     <Redirect to="/signup"/>
                   )
                 )}/>
+                {/* Warning Routes */}
                 <Route component={Page404}/>
               </Switch>
           </div>

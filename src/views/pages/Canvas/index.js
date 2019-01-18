@@ -138,7 +138,7 @@ class Canvas extends Component {
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
-        this.preview = !!this.props.preview
+        // this.preview = !!this.props.preview
 
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
@@ -202,7 +202,7 @@ class Canvas extends Component {
         }
 
         // SKILL IS LOADED HERE
-        if(!this.preview){
+        if(!this.props.preview){
             // this.loadProducts()
             // this.loadUserModules()
             this.onLoadTemplates()
@@ -212,8 +212,15 @@ class Canvas extends Component {
 
     componentWillMount() {
         // If not preview mode
-        if(!this.preview){
+        if(!this.props.preview){
             document.addEventListener('keydown', this.hotKeys)
+        }
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.hotKeys)
+        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+            this.onSave(null, false, false)
         }
     }
 
@@ -380,7 +387,7 @@ class Canvas extends Component {
     }
 
     createFlowFromTemplate(module_id){
-        if(this.preview) return
+        if(this.props.preview) return
 
         var engine = this.state.engine
         var type = 'flow'
@@ -519,13 +526,6 @@ class Canvas extends Component {
                     this.forceUpdate()
                 }
             }
-        }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.hotKeys)
-        if(this.state.skill && this.state.skill.skill_id && this.props.diagram_id){
-            this.onSave(null, false, false)
         }
     }
 
@@ -819,7 +819,7 @@ class Canvas extends Component {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
             this.loadDiagram(res.data)
-            if(!this.preview){
+            if(!this.props.preview){
                 localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
             }
             if(this.buildDiagrams !== null){
@@ -957,7 +957,7 @@ class Canvas extends Component {
         this.state.engine.getDiagramModel().clearSelection()
         this.toggleTestModal()
 
-        if(this.preview){
+        if(this.props.preview){
             this.runTest()
         } else {
             this.onSave(diagram_id => {
@@ -1167,7 +1167,7 @@ class Canvas extends Component {
     }
 
     onDrop(event) {
-        if(this.preview) return
+        if(this.props.preview) return
 
         var engine = this.state.engine
         var type, name
@@ -1464,7 +1464,7 @@ class Canvas extends Component {
                 { !this.props.preview ? <ActionGroup
                         lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
                         skill={this.state.skill}
-                        preview={this.preview}
+                        preview={this.props.preview}
                         title={this.state.diagram_name}
                         onSave={this.onSave}
                         saving={this.state.saving}
@@ -1567,7 +1567,7 @@ class Canvas extends Component {
                     <div
                         key={this.props.diagram_id}
                         id="diagram"
-                        className={this.preview ? " no-padding" : ""}
+                        className={this.props.preview ? " no-padding" : ""}
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
                         onMouseLeave={()=>this.diagram_focus=false}

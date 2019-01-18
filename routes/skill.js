@@ -354,7 +354,7 @@ exports.setProduct = async (req, res) => {
 }
 
 exports.deleteProduct = async (req, res) => {
-    if (!req.params.sid || !req.params.pid) {
+    if (!req.params.id || !req.params.pid) {
         res.sendStatus(401);
         return;
     }

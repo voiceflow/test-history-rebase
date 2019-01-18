@@ -726,7 +726,7 @@ const checkVersions = (req, id, token) => {
   pool.query(`
     SELECT * FROM skill_versions INNER JOIN skills ON skill_versions.skill_id = skills.skill_id 
     WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-      AND version IS NOT NULL AND version != 0 ORDER BY version ASC`,
+      AND version IS NOT NULL ORDER BY version ASC`,
     [id],
     async (err, data) => {
       if (err) {
@@ -983,25 +983,7 @@ exports.buildSkill = async (req, res) => {
                               getSkillStatus(depth + 1)
                             } else {
                               incrementTimesPublishedSuccessfulIntercom(req.user.id);
-
-                              // Make a working copy of skill at this point if it was published for the first time
-                              if (req.params.canonical_skill_id != -1) {
-                                req.params.target_creator = req.user.id
-                                exports.copySkill(req, res, false, false, true, false, (new_skill_row) => {
-                                  pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES 
-                                                        (${hashids.decode(req.params.canonical_skill_id)[0]}, ${hashids.decode(new_skill_row.skill_id)[0]})`,
-                                    [], (err) => {
-                                      if (err) {
-                                        console.log(err)
-                                        res.sendStatus(500)
-                                      } else {
-                                        res.send(amzn_id)
-                                      }
-                                    })
-                                })
-                              } else {
-                                res.send(amzn_id)
-                              }
+                              res.send(amzn_id)
                             }
                           })
                           .catch(err => {
@@ -1447,7 +1429,7 @@ exports.getSkillVersions = (req, res) => {
         ON skills.skill_id = skill_versions.skill_id 
         WHERE skill_versions.canonical_skill_id = 
             (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)
-            AND version IS NOT NULL AND version != 0
+            AND version IS NOT NULL
         ORDER BY version DESC`,
     [id],
     (err, data) => {
@@ -1466,37 +1448,79 @@ exports.getSkillVersions = (req, res) => {
 }
 
 exports.restoreSkillVersion = (req, res) => {
-  let restore_id = hashids.decode(req.params.restore_id)[0]
   let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
 
-  pool.query(
-    `SELECT skill_id FROM skill_versions WHERE canonical_skill_id = $1 AND version IS NULL`, [canonical_skill_id], (err, data) => {
-      if (err) {
-        console.log(err)
-        res.sendStatus(500)
-      } else {
-        // Delete existing null skill
-        req.params.id = hashids.encode(data.rows[0].skill_id)
-        exports.deleteSkill(req, res, false, () => {
-          req.params.id = hashids.encode(restore_id)
-          req.params.target_creator = req.user.id
-          exports.copySkill(req, res, false, false, true, false, (row) => {
-            let new_skill_id = hashids.decode(row.skill_id)[0]
-            pool.query(`
-          INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
-              [canonical_skill_id, new_skill_id],
-              (err) => {
-                if (err) {
-                  console.log(err)
-                  res.sendStatus(500)
-                } else {
-                  res.send(row)
-                }
-              }
-            )
-          })
+  // req.params.id = req.params.canonical_skill_id
+  // exports.deleteSkill(req, res, false, () => {
+  //   req.params.id = req.params.restore_id
+  //   exports.copySkill(req, res, false, false, true, false, (row) => {
+  //     let new_skill_id = hashids.decode(row.skill_id)[0]
+  //     pool.query(
+  //       `UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, 
+  //       [canonical_skill_id, new_skill_id],
+  //       (err, data) => {
+  //         if(err){
+  //           console.log(canonical_skill_id, new_skill_id)
+  //           console.log(err)
+  //           res.sendStatus(500)
+  //         } else {
+  //           res.sendStatus(200)
+  //         }
+  //       })
+  //   })
+  // })
+
+  req.params.id = req.params.restore_id
+  req.params.target_creator = req.user.id
+  exports.copySkill(req, res, false, false, true, false, (row) => {
+    req.params.id = req.params.canonical_skill_id
+    exports.deleteSkill(req, res, false, () => {
+      let new_skill_id = hashids.decode(row.skill_id)[0]
+      pool.query(
+        `UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, 
+        [canonical_skill_id, new_skill_id],
+        (err, data) => {
+          if(err){
+            console.log(canonical_skill_id, new_skill_id)
+            console.log(err)
+            res.sendStatus(500)
+          } else {
+            res.sendStatus(200)
+          }
         })
-      }
-    }
-  )
+    })
+  })
+
+
+
+  // pool.query(
+  //   `SELECT skill_id FROM skill_versions WHERE canonical_skill_id = $1 AND version IS NULL`, [canonical_skill_id], (err, data) => {
+  //     if (err) {
+  //       console.log(err)
+  //       res.sendStatus(500)
+  //     } else {
+  //       // Delete existing null skill
+  //       req.params.id = hashids.encode(data.rows[0].skill_id)
+  //       exports.deleteSkill(req, res, false, () => {
+  //         req.params.id = hashids.encode(restore_id)
+  //         req.params.target_creator = req.user.id
+  //         exports.copySkill(req, res, false, false, true, false, (row) => {
+  //           let new_skill_id = hashids.decode(row.skill_id)[0]
+  //           pool.query(`
+  //         INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
+  //             [canonical_skill_id, new_skill_id],
+  //             (err) => {
+  //               if (err) {
+  //                 console.log(err)
+  //                 res.sendStatus(500)
+  //               } else {
+  //                 res.send(row)
+  //               }
+  //             }
+  //           )
+  //         })
+  //       })
+  //     }
+  //   }
+  // )
 }

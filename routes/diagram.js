@@ -1,11 +1,20 @@
 const Util = require('./../config/util');
 const draftToMarkdown = require('./../config/drafttomarkdown');
 const isVarName = require('is-var-name');
-const { docClient, pool, hashids, validateEmail } = require('./../services');
+const {
+  docClient,
+  pool,
+  hashids,
+  validateEmail
+} = require('./../services');
 const validUrl = require('valid-url');
 const _ = require('lodash');
-const { getEnvVariable } = require('../util')
-const { copySkill } = require('./skill.js')
+const {
+  getEnvVariable
+} = require('../util')
+const {
+  copySkill
+} = require('./skill.js')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -83,7 +92,9 @@ const expressionfy = (expression, depth = 0) => {
 const getVariables = (req, res) => {
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    Key: { 'id': req.params.id },
+    Key: {
+      'id': req.params.id
+    },
     ProjectionExpression: 'variables'
   }
 
@@ -111,7 +122,9 @@ const getDiagrams = (req, res) => {
 
   if (req.user.admin < 100) {
     params.FilterExpression = 'creator = :creator'
-    params.ExpressionAttributeValues = { ':creator': req.user.id }
+    params.ExpressionAttributeValues = {
+      ':creator': req.user.id
+    }
   }
 
   let items = []
@@ -154,7 +167,9 @@ const getDiagram = (req, res) => {
 
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    Key: { 'id': req.params.id }
+    Key: {
+      'id': req.params.id
+    }
   };
   docClient.get(params, (err, data) => {
     if (err) {
@@ -292,7 +307,9 @@ const deleteDiagram = (req, res) => {
       if (response.rowCount !== 0) {
         let params = {
           TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-          Key: { 'id': req.params.id }
+          Key: {
+            'id': req.params.id
+          }
         }
 
         docClient.delete(params, err => {
@@ -312,14 +329,18 @@ const copyDiagram = (req, res) => {
   let old_diagram_id = req.params.diagram_id
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    Key: { 'id': old_diagram_id }
+    Key: {
+      'id': old_diagram_id
+    }
   };
 
   // In case the insert row fails, delete on Dynamo
   const cleanUpDynamo = (new_diagram_id) => {
     let params = {
       TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-      Key: { 'id': new_diagram_id }
+      Key: {
+        'id': new_diagram_id
+      }
     };
     docClient.delete(params, err => {
       if (err) {
@@ -402,7 +423,9 @@ const copyDiagram = (req, res) => {
 const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (new Set()), type = undefined, options = {}, used_intents, used_choices, intents, slots) => new Promise((resolve) => {
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    Key: { 'id': diagram_id }
+    Key: {
+      'id': diagram_id
+    }
   };
 
   if (depth > 10) {
@@ -549,7 +572,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
             }
           } else if (node.extras.commands) {
             // DEPRECATE OLD COMMANDS
-            let commands = node.extras.commands.split('\n').filter(i => { return !!i })
+            let commands = node.extras.commands.split('\n').filter(i => {
+              return !!i
+            })
 
             commands.forEach(command => {
               story.commands.push({
@@ -567,7 +592,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
           };
         } else if (node.extras.type === 'choicenew' || node.extras.type === 'choice') {
 
-          const inputs = node.extras.inputs.map(input => input.split('\n').filter(i => { return !!i }))
+          const inputs = node.extras.inputs.map(input => input.split('\n').filter(i => {
+            return !!i
+          }))
 
           story.lines[node.id] = {
             prompt: node.extras.prompt ? node.extras.prompt : true,
@@ -595,7 +622,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
 
           let interactions = []
           node.extras.choices.forEach(choice => {
-            let new_choice = { mappings: [] }
+            let new_choice = {
+              mappings: []
+            }
             if (choice.intent) {
 
               // Log that this intent has been used
@@ -813,7 +842,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
               if (d.audio) {
                 add(`<audio src="${d.audio}"/>`)
               } else if (d.rawContent) {
-                temp = draftToMarkdown(d.rawContent, { alexa: true });
+                temp = draftToMarkdown(d.rawContent, {
+                  alexa: true
+                });
                 if (d.voice === 'Alexa' || !d.voice) {
                   add(temp)
                 } else {
@@ -830,7 +861,9 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
               raw = node.extras.raw;
             }
             if (raw) {
-              markdownstring = draftToMarkdown(raw, { alexa: true });
+              markdownstring = draftToMarkdown(raw, {
+                alexa: true
+              });
             }
           }
 
@@ -860,11 +893,16 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
 
           let card = {
             type: node.extras.cardtype,
-            title: draftToMarkdown(node.extras.title, { alexa: false })
+            title: draftToMarkdown(node.extras.title, {
+              alexa: false
+            })
           }
 
           if (card.type === 'Standard') {
-            card.text = draftToMarkdown(node.extras.content, { alexa: false, newline: true })
+            card.text = draftToMarkdown(node.extras.content, {
+              alexa: false,
+              newline: true
+            })
             if (node.extras.large_img) {
               card.image = {}
               card.image.largeImageUrl = node.extras.large_img
@@ -874,7 +912,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
               }
             }
           } else if (card.type === 'Simple') {
-            card.content = draftToMarkdown(node.extras.content, { alexa: false, newline: true })
+            card.content = draftToMarkdown(node.extras.content, {
+              alexa: false,
+              newline: true
+            })
           } else {
             card = undefined
           }
@@ -1117,10 +1158,10 @@ const publish = (req, res) => {
 
   // Copy the skill, making sure it points to the same canonical skill point
   const createNewVersion = (status) => {
-    const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row, was_first_publish) => {
+    const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row) => {
       let version_query = `
             INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
-            SELECT canonical_skill_id, COALESCE(max(version) + 1, 0), ${new_skill_id_decoded}
+            SELECT canonical_skill_id, COALESCE(max(version) + 1, 1), ${new_skill_id_decoded}
             FROM skill_versions
             WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
             GROUP BY canonical_skill_id
@@ -1132,11 +1173,9 @@ const publish = (req, res) => {
           console.log(err)
           res.sendStatus(500)
         } else {
-          if (was_first_publish) {
-            res.send({ new_skill: new_skill_row, canonical_skill_id: hashids.encode(data.rows[0].canonical_skill_id) })
-          } else {
-            res.send({ new_skill: new_skill_row, canonical_skill_id: -1 })
-          }
+          res.send({
+            new_skill: new_skill_row
+          })
         }
       })
     }
@@ -1145,20 +1184,8 @@ const publish = (req, res) => {
     req.params.id = hashids.encode(skill_id)
     req.params.target_creator = req.user.id
     copySkill(req, res, false, false, true, false, (new_skill_row) => {
-      // Set the canonical_skill_id to the current working version  
-      pool.query(
-        `UPDATE skill_versions SET version = 0 WHERE skill_id = $1 AND version IS NULL and skill_id = canonical_skill_id RETURNING *`,
-        [skill_id],
-        (err, data) => {
-          if (err) {
-            console.log(err)
-            res.sendStatus(500)
-          }
-
-          let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
-          updateVersion(new_skill_id_decoded, skill_id, new_skill_row, data.rows.length > 0)
-        }
-      )
+      let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
+      updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
     })
   }
 

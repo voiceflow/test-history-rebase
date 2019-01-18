@@ -117,7 +117,7 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 200px;
+  min-height: 120px;
 }
 
 .stage_modal .modal-info>h1 {
@@ -521,4 +521,22 @@ textarea::placeholder {
 .google-link {
   color: #3691b0;
   text-decoration: underline;
+}
+
+.google-verification-info {
+  font-size: .85em;
+}
+
+.google-verify-btn {
+  float: bottom;
+}
+
+.vertical-space {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.google-form-group {
+  margin-bottom: 0px !important;
 }

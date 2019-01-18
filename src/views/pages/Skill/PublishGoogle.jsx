@@ -48,7 +48,8 @@ class GooglePublish extends Component {
       skill_id: this.props.skill.skill_id,
       stage: 1,
       loaded: false,
-      publish_modal_open: false
+      publish_modal_open: false,
+      google_token: ''
     }
 
     this.googleLogin = this.googleLogin.bind(this)
@@ -58,11 +59,18 @@ class GooglePublish extends Component {
     this.googleAuthTokenContent = this.googleAuthTokenContent.bind(this)
     this.verifyGoogleToken = this.verifyGoogleToken.bind(this)
     this.save = this.save.bind(this)
+    this.handleSelection = this.handleSelection.bind(this)
   }
 
   togglePublish() {
     this.setState({
       publish_modal_open: !this.state.publish_modal_open
+    });
+  }
+
+  handleSelection(value) {
+    this.setState({
+      category: value
     });
   }
 
@@ -77,37 +85,53 @@ class GooglePublish extends Component {
       console.error('Error checking google access token', e)
     }
 
-    axios.get('/skill/' + this.state.skill_id + '?verbose=1')
+    axios.get(`/skill/google/${this.state.skill_id}`)
       .then(res => {
-        if (res.data.category) {
+        if (!_.isObject(res.data.publish_info)) {
+          const s = this.props.skill
+          res.data.publish_info = {
+            name: s.name,
+            inv_name: s.inv_name,
+            category: '',
+            invocations: [''],
+            summary: '',
+            description: ''
+          }
+        }
+
+        const publish_info = res.data.publish_info
+
+        if (publish_info.category) {
           for (let option of GOOGLE_CATEGORIES) {
-            if (option.value === res.data.category) {
-              res.data.category = option;
+            if (option.value === publish_info.category) {
+              publish_info.category = option;
               break;
             }
           };
         }
 
-        if (res.data.invocations && res.data.invocations.value) {
-          res.data.invocations = res.data.invocations.value;
+        if (publish_info.invocations && publish_info.invocations.value) {
+          publish_info.invocations = publish_info.invocations.value;
         }
 
-        if (!Array.isArray(res.data.invocations) || res.data.invocations.length === 0) {
-          res.data.invocations = ['']
+        if (!Array.isArray(publish_info.invocations) || publish_info.invocations.length === 0) {
+          publish_info.invocations = ['']
         }
 
-
-        if (res.data.review) {
-          res.data.stage = 11;
+        if (publish_info.review) {
+          publish_info.stage = 11;
         } else {
-          delete res.data.stage;
+          delete publish_info.stage;
         }
-        res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ?
-          res.data.privacy_policy :
+        publish_info.privacy_policy = !_.isEmpty(publish_info.privacy_policy) ?
+          publish_info.privacy_policy :
           window.location.protocol + '//' + window.location.host + '/creator/privacy_policy'
+
+        // TODO: Antipattern, fix this when we do redux
         this.setState({
           loaded: true,
-          ...res.data
+          ...publish_info,
+          created: res.data.created
         });
       })
       .catch(err => {
@@ -123,8 +147,8 @@ class GooglePublish extends Component {
 
   save(publish = false, cb) {
     const s = this.state;
-    const category = (s.category && s.category.value ? s.category.value : null)
-    let split_keywords = s.keywords.split(',')
+    const category = (s.category && s.category.value ? s.category.value : '')
+    let split_keywords = s.keywords ? s.keywords.split(',') : []
 
     if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
       this.setState({
@@ -138,7 +162,7 @@ class GooglePublish extends Component {
       this.setState({
         error: 'Limited to 30 keywords'
       })
-    } else if (s.keywords.length - split_keywords.length + 1 > 500) {
+    } else if (s.keywords && s.keywords.length - split_keywords.length + 1 > 500) {
       this.setState({
         error: 'The total length of all keywords must be less than or equal to 150'
       })
@@ -165,7 +189,7 @@ class GooglePublish extends Component {
         small_icon: s.small_icon,
         large_icon: s.large_icon,
         category: category,
-        locales: JSON.stringify(s.locales),
+        locales: s.locales,
         privacy_policy: !_.isEmpty(s.privacy_policy) ?
           s.privacy_policy :
           window.location.protocol + '//' + window.location.host + '/creator/privacy_policy',
@@ -173,6 +197,7 @@ class GooglePublish extends Component {
         ...store
       })
         .then(res => {
+          // TODO: Antipattern, fix this when we do redux
           this.setState({
             saved: true
           });
@@ -196,8 +221,17 @@ class GooglePublish extends Component {
     }
   }
 
-  verifyGoogleToken() {
-    console.log("ye")
+  async verifyGoogleToken() {
+    this.setState({
+      stage: 1
+    })
+    try {
+      const res = await AuthenticationService.verifyGoogleToken(this.state.google_token)
+    } catch (e) {
+      this.setState({
+        auth_error: e
+      })
+    }
   }
 
   async googleLogin(googleResp) {
@@ -226,15 +260,15 @@ class GooglePublish extends Component {
     } else {
       return (
         <div>
-          <FormGroup>
+          <FormGroup className="google-form-group">
             <div className="row">
-              <div className="col-3 publish-info">
+              <div className="col-3 google-verification-info">
                 <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" className="google-link">logging in</a> and pasting your authentication token here.</p>
               </div>
-              <div className="col-9">
-                <Input className="form-bg" type="text" name="google_token_form" placeholder="Paste your Google Authentication Token here" value={this.state.google_token_form} onChange={this.handleChange} />
+              <div className="col-9 vertical-space">
+                <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange}/>
                 <div className="subheader-right">
-                  <button variant="contained" className="purple-btn" onClick={this.verifyGoogleToken}>Verify Token <i className="fab fa-amazon ml-2" /></button>
+                  <button variant="contained" className="purple-btn google-verify-btn" onClick={this.verifyGoogleToken}>Verify Token <i className="fab fa-google ml-2" /></button>
                 </div>
               </div>
             </div>
@@ -280,7 +314,7 @@ class GooglePublish extends Component {
               <small> / created {moment(this.state.created).fromNow()}</small>
             </span>
             <div className="subheader-right">
-              <button variant="contained" className="purple-btn" onClick={() => this.setState({ publish_modal_open: true })}>Publish Skill <i className="fab fa-amazon ml-2" /></button>
+              <button variant="contained" className="purple-btn" onClick={() => this.setState({ publish_modal_open: true })}>Publish Skill <i className="fab fa-google ml-2" /></button>
             </div>
           </div>
         </div>
@@ -450,7 +484,7 @@ class GooglePublish extends Component {
                   </div>
                   <div className="row">
                     <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
+                      <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on Google Assistant</p>
                     </div>
                     <div className="col-9">
                       <Input className="form-bg" type="text" name="name" placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
@@ -477,7 +511,7 @@ class GooglePublish extends Component {
 
                 <div className="d-flex row">
                   <div className="col-3 publish-info">
-                    <p className="text-secondary mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
+                    <p className="text-secondary mt-5"><b>Icons</b> are what will be displayed for your Skill in the Google Assistant Store.</p>
                   </div>
                   <div className="col-9 d-flex">
                     <div>
@@ -580,7 +614,7 @@ class GooglePublish extends Component {
                   </div>
                   <div className="row">
                     <div className="col-3 mt-3 publish-info">
-                      <p className="text-secondary"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
+                      <p className="text-secondary"><b>Invocations</b> are the various phrases that Google will detect to run your Skill.</p>
                     </div>
                     <div className="col-9">
                       <Multiple

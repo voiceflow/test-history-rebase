@@ -114,6 +114,8 @@ class Skill extends Component {
             res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ?
               res.data.privacy_policy :
               window.location.protocol + '//' + window.location.host+'/creator/privacy_policy'
+
+            // TODO: Antipattern, fix this when we do redux
             this.setState({
                 loaded: true,
                 ...res.data
@@ -343,6 +345,7 @@ class Skill extends Component {
                 ...store
             })
             .then(res => {
+                // TODO: Antipattern, fix this when we do redux
                 this.setState({
                     saved: true
                 });

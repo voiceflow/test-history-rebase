@@ -95,3 +95,31 @@ exports.sendVerificationEmail = async (name, user_id, random, email) => {
 
   await sgMail.send(data)
 }
+
+exports.sendRequestPDFEmail = async(req, res) => {
+  if (typeof req.body.user.name !== 'string') {
+    req.body.user.name = null
+  }
+
+  let data = {
+    'template_id': 'd-f8bf0dfa762c4eb3b7aa504211c9c6de',
+    'from': {
+      'email': req.body.user.email,
+      'name': req.body.user.name,
+    },
+    'personalizations': [
+      {
+        'to': [
+          {
+            'email': 'braden@getvoiceflow.com'
+          }
+        ],
+        'dynamic_template_data': {
+          skill: req.body.skill.name,
+        }
+      }
+    ]
+  }
+  await sgMail.send(data);
+  res.sendStatus(200)
+}

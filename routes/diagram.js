@@ -247,7 +247,7 @@ const setDiagram = async (req, res) => {
       }
   }
 
-  let permissions_string, global_string, access_token_variable
+  let permissions_string, global_string
   // Make sure that the JSON validly parses
   try {
       permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]'
@@ -265,8 +265,6 @@ const setDiagram = async (req, res) => {
   } catch(err) {
       used_intents_string = '[]'
   }
-
-  access_token_variable = JSON.stringify(diagram.access_token_variable)
 
   docClient.put(params, async(err) => {
       if (err) {

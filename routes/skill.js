@@ -141,7 +141,7 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
           SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment
+              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment
           FROM
               skills
           WHERE
@@ -1402,27 +1402,27 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
             name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, access_token_variable, fulfillment
+            account_linking, fulfillment
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, access_token_variable, fulfillment
+              account_linking, fulfillment
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
           INSERT INTO skills (
             name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, access_token_variable, fulfillment
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment
           )
           SELECT ` +
       copy_str + `
             $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, access_token_variable, fulfillment
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
 

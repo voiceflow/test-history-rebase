@@ -5,6 +5,7 @@ const { AccessToken } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const { renderDiagram } = require('./render_diagram')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -250,7 +251,7 @@ exports.getSkill = (req, res) => {
             }
 
           } catch (err) {
-            console.log(err);
+            console.trace(err);
             res.send(skill);
           }
         });
@@ -383,7 +384,7 @@ exports.deleteProduct = async (req, res) => {
   try {
     pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
       if (err) {
-        console.log(err);
+        console.trace(err);
         res.sendStatus(500);
       } else {
         res.sendStatus(200);
@@ -427,12 +428,12 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
 
       docClient.delete(params, async (err) => {
         if (err) {
-          console.log(err)
+          console.trace(err)
         } else {
           // Delete diagram from our tables
           pool.query('DELETE FROM diagrams WHERE id = $1', [diagram_id], (err) => {
             if (err) {
-              console.log(err)
+              console.trace(err)
             }
           })
         }
@@ -471,7 +472,7 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
             // Sugoi!
           })
           .catch(err => {
-            console.log(err)
+            console.trace(err)
           })
       })
     }
@@ -549,7 +550,7 @@ exports.patchSkill = (req, res) => {
             WHERE skill_id = $1 AND creator_id = $2`,
       [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking], (err) => {
         if (err) {
-          console.log(err);
+          console.trace(err);
           res.sendStatus(500);
         } else {
           res.sendStatus(200);
@@ -587,7 +588,7 @@ exports.patchSkill = (req, res) => {
         b.privacy_policy, b.terms_and_cond, req.user.id
       ], (err) => {
         if (err) {
-          console.log(err);
+          console.trace(err);
           res.sendStatus(500)
         } else {
           latestSkillToIntercom(req.user.id, b.name)
@@ -635,7 +636,7 @@ exports.patchSkill = (req, res) => {
         b.privacy_policy, b.terms_and_cond, req.user.id
       ], (err) => {
         if (err) {
-          console.log(err);
+          console.trace(err);
           res.sendStatus(500);
         } else {
           latestSkillToIntercom(req.user.id, b.name)
@@ -715,7 +716,7 @@ const checkVersions = (req, id, token) => {
     [id],
     async (err, data) => {
       if (err) {
-        console.log(err)
+        console.trace(err)
       } else {
         // Check whether user has more versions than they should
         if ((req.user.admin >= 100 && data.rows.length > 50) || data.rows.length > 5) {
@@ -742,12 +743,12 @@ const checkVersions = (req, id, token) => {
             if (i < data.rows.length) {
               pool.query('DELETE FROM skills WHERE skill_id = $1', [data.rows[i].skill_id], (err) => {
                 if (err) {
-                  console.log(err)
+                  console.trace(err)
                 }
               })
             }
           } catch (err) {
-            console.log(err)
+            console.trace(err)
           }
         }
       }
@@ -761,7 +762,7 @@ exports.buildSkill = async (req, res) => {
   try{
     incrementTimesPublishedIntercom(req.user.id);
   } catch (err) {
-    console.log(err)
+    console.trace(err)
   }
   
 
@@ -1031,7 +1032,7 @@ exports.buildSkill = async (req, res) => {
                                 [amzn_id, id],
                                 (err) => {
                                   if (err) {
-                                    console.log(err)
+                                    console.trace(err)
                                     res.sendStatus(500)
                                   } else {
                                     res.send(amzn_id)
@@ -1057,7 +1058,7 @@ exports.buildSkill = async (req, res) => {
                         res.status(500).send(err.response.data)
                       }
                     } else {
-                      console.log(err)
+                      console.trace(err)
                       res.sendStatus(500)
                     }
                   })
@@ -1129,7 +1130,7 @@ exports.certifySkill = (req, res) => {
                     [req.params.amzn_id],
                     (err) => {
                       if (err) {
-                        console.log(err);
+                        console.trace(err);
                         res.sendStatus(500);
                       } else {
                         analytics.track({
@@ -1146,7 +1147,7 @@ exports.certifySkill = (req, res) => {
                   );
                 })
                 .catch(err => {
-                  console.log(err);
+                  console.trace(err);
                   res.sendStatus(500);
                 });
             }
@@ -1194,7 +1195,7 @@ exports.withdrawSkill = (req, res) => {
           [req.params.amzn_id],
           (err) => {
             if (err) {
-              console.log(err);
+              console.trace(err);
               res.sendStatus(500);
             } else {
               res.sendStatus(200);
@@ -1227,7 +1228,7 @@ exports.copyProduct = async (req, res) => {
     `
   pool.query(copy_query, [id, pid], (err, data) => {
     if (err) {
-      console.log(err);
+      console.trace(err);
       res.sendStatus(500)
     } else {
       // let new_product_id = data.rows[0].id
@@ -1246,7 +1247,7 @@ copyAllProducts = (id, new_skill_id) => {
 
   pool.query(copy_query, [new_skill_id, id], (err) => {
     if (err) {
-      console.log(err)
+      console.trace(err)
     }
   })
 }
@@ -1260,7 +1261,7 @@ copyAllTemplates = (id, new_skill_id) => {
 
   pool.query(copy_query, [new_skill_id, id], (err) => {
     if (err) {
-      console.log(err)
+      console.trace(err)
     }
   })
 }
@@ -1274,7 +1275,7 @@ copyAllDisplays = (id, new_skill_id) => {
 
   pool.query(copy_query, [new_skill_id, id], (err) => {
     if (err) {
-      console.log(err)
+      console.trace(err)
     }
   })
 }
@@ -1290,7 +1291,7 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
     new_creator_id = req.user.id
   }
 
-  const retrieveDiagram = (diagram_id, new_skill_id) => {
+  const retrieveDiagram = (diagram_id, new_skill_id, used_intents, used_choices, intents, slots) => {
 
     const uploadNewDiagram = async (data, resolve) => {
       let params = {
@@ -1310,10 +1311,15 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
           [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
         docClient.put(params, async (err) => {
           if (err) {
-            console.log(err)
+            console.trace(err)
             return err
           } else {
-            return
+            try{
+              let status = await renderDiagram(new_creator_id, data.diagram.id, new_skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots, data.diagram)
+              return status
+            } catch (err) {
+              return err
+            }
           }
         })
       } catch (err) {
@@ -1359,7 +1365,7 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
 
       docClient.get(get_params, (err, data) => {
         if (err) {
-          console.log(err)
+          console.trace(err)
           reject(err)
         } else if (data.Item) {
           let result = remapDiagramIds(data.Item)
@@ -1423,7 +1429,7 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
   try {
     let copy_data = await pool.query(copy_query, [root_diagram_id, new_creator_id, id])
     let new_skill_id = copy_data.rows[0].skill_id
-    let diagram_data = await pool.query('SELECT id, name FROM diagrams WHERE skill_id = $1', [id])
+    let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
     let retrieve_promises = []
     for (let i = 0; i < diagram_data.rows.length; i++) {
       diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
@@ -1432,7 +1438,11 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
       } else {
         diagram_mapping[diagram_data.rows[i].id] = generateID()
       }
-      retrieve_promises.push(retrieveDiagram(diagram_data.rows[i].id, new_skill_id))
+      let used_intents = new Set()
+      let used_choices = new Set()
+      retrieve_promises.push(
+        retrieveDiagram(diagram_data.rows[i].id, new_skill_id, used_intents, used_choices, diagram_data.rows[i].intents, diagram_data.rows[i].slots)
+      )
     }
     Promise.all(retrieve_promises)
       .then(() => {
@@ -1440,7 +1450,7 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
         if (copying_default_template || user_copy) {
           pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_data.rows[0].skill_id, copy_data.rows[0].skill_id], (err) => {
             if (err) {
-              console.log(err)
+              console.trace(err)
               res.sendStatus(500)
             }
           })
@@ -1460,11 +1470,11 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.trace(err)
         res.sendStatus(500)
       })
   } catch (err) {
-    console.log(err)
+    console.trace(err)
     res.sendStatus(500)
   }
 }
@@ -1483,7 +1493,7 @@ exports.getSkillVersions = (req, res) => {
     [id],
     (err, data) => {
       if (err) {
-        console.log(err)
+        console.trace(err)
         res.sendStatus(500)
       } else {
         for (let i = 0; i < data.rows.length; i++) {
@@ -1509,7 +1519,7 @@ exports.restoreSkillVersion = (req, res) => {
         [canonical_skill_id, new_skill_id],
         (err, data) => {
           if (err) {
-            console.log(err)
+            console.trace(err)
             res.sendStatus(500)
           } else {
             pool.query(
@@ -1517,7 +1527,7 @@ exports.restoreSkillVersion = (req, res) => {
               [canonical_skill_id, canonical_skill_id],
               (err) => {
                 if (err) {
-                  console.log(err)
+                  console.trace(err)
                   res.sendStatus(500)
                 }
                 row.skill_id = req.params.canonical_skill_id

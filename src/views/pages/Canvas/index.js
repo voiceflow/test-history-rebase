@@ -33,7 +33,7 @@ import { getIntentSlots } from '../../../util'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-const defaultVariables = ['sessions', 'user_id', 'timestamp', 'locale']
+var defaultVariables = ['sessions', 'user_id', 'timestamp', 'locale']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -108,7 +108,6 @@ class Canvas extends Component {
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
-        this.setAccessTokenVariable = this.setAccessTokenVariable.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.onSave = this.onSave.bind(this)
         this.onTest = this.onTest.bind(this)
@@ -158,6 +157,9 @@ class Canvas extends Component {
 
         // make sure that there are no duplicate variables and that the defaults are included
         let global_variables = defaultVariables.slice(0)
+        if(window.user_detail.admin > 0){
+            global_variables.push('access_token')
+        }
         if (Array.isArray(globals)) {
             globals.forEach(v => {
                 if(!global_variables.includes(v)){
@@ -199,7 +201,6 @@ class Canvas extends Component {
             diagram_level_intents: new Set(),
             confirm_info: null,
             default_templates: [],
-            access_token_variable: props.skill.access_token_variable,
             spotlight: false
         }
 
@@ -666,8 +667,7 @@ class Canvas extends Component {
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
                 used_intents: used_intents,
-                global: this.state.global_variables,
-                access_token_variable: this.state.access_token_variable
+                global: this.state.global_variables
             }
 
             const s = this.state.skill;
@@ -872,12 +872,6 @@ class Canvas extends Component {
         this.setState({
             global_variables: variables,
             saved: false
-        })
-    }
-
-    setAccessTokenVariable(variable) {
-        this.setState({
-            access_token_variable: variable
         })
     }
 
@@ -1202,6 +1196,7 @@ class Canvas extends Component {
         if(!name){
             name = type.charAt(0).toUpperCase() + type.substr(1)
         }
+
         var node = new BlockNodeModel(name)
 
         if(type){
@@ -1580,8 +1575,6 @@ class Canvas extends Component {
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
                         products={this.state.products}
-                        access_token_variable={this.state.access_token_variable}
-                        setAccessTokenVariable={this.setAccessTokenVariable}
                     />
                     <div
                         key={this.props.diagram_id}

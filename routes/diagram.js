@@ -231,7 +231,7 @@ const setDiagram = async (req, res) => {
         }
     }
 
-    let permissions_string, global_string, access_token_variable
+    let permissions_string, global_string
     // Make sure that the JSON validly parses
     try {
         permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]'
@@ -250,8 +250,6 @@ const setDiagram = async (req, res) => {
         used_intents_string = '[]'
     }
 
-    access_token_variable = JSON.stringify(diagram.access_token_variable)
-
     docClient.put(params, async(err) => {
         if (err) {
             console.log(err);
@@ -267,7 +265,7 @@ const setDiagram = async (req, res) => {
                 }else{
                     // otherwise update
                     await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2, used_intents = $3 WHERE id = $4', [diagram.sub_diagrams, permissions_string, used_intents_string, diagram.id]);
-                    await pool.query('UPDATE skills SET global=$1, access_token_variable=$2 WHERE skill_id=$3', [global_string, access_token_variable, diagram.skill]);
+                    await pool.query('UPDATE skills SET global=$1, WHERE skill_id=$2', [global_string, diagram.skill]);
                 }
                 res.sendStatus(200);
             }catch(e){

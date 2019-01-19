@@ -236,6 +236,7 @@ class Menu extends PureComponent {
                     global_variables={this.props.global_variables}
                     onGlobalVariable={this.props.onGlobalVariable}
                     onVariable={this.props.onVariable}
+                    onError={this.props.onError}
                 />
             case 'project':
                 return <Project

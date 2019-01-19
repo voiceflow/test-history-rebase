@@ -78,7 +78,7 @@ class Variables extends PureComponent {
                 new_global: ""
             })
         }else{
-            alert('Invalid Variable: Variables can\'t have the same name and must start with a character and can not contain spaces or special characters');
+            this.props.onError('Invalid Variable: Variables can\'t have the same name and must start with a character and can not contain spaces or special characters');
         }
         return false
     }

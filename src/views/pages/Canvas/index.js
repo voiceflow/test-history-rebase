@@ -33,7 +33,6 @@ import { getIntentSlots } from '../../../util'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-var defaultVariables = ['sessions', 'user_id', 'timestamp', 'locale']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -153,21 +152,6 @@ class Canvas extends Component {
         this.onboarding = localStorage.getItem('onboarding')
         this.loaded = false
 
-        let globals = props.skill.global
-
-        // make sure that there are no duplicate variables and that the defaults are included
-        let global_variables = defaultVariables.slice(0)
-        if(window.user_detail.admin > 0){
-            global_variables.push('access_token')
-        }
-        if (Array.isArray(globals)) {
-            globals.forEach(v => {
-                if(!global_variables.includes(v)){
-                    global_variables.push(v)
-                }
-            })
-        }
-
         // Intent Variables All Skills Must Have
         let skill = {
             intents: [],
@@ -190,7 +174,6 @@ class Canvas extends Component {
             testing_modal: false,
             testing_info: false,
             variables: [],
-            global_variables: global_variables,
             help: null,
             helpOpen: false,
             currentProduct: null,
@@ -655,7 +638,7 @@ class Canvas extends Component {
 
             // UPDATE SKILL GLOBALS HOTFIX
             let skill = this.state.skill;
-            skill.global = this.state.global_variables
+            skill.global = this.state.skill.global
             this.props.updateSkill(skill)
 
             var diagram = {
@@ -667,7 +650,7 @@ class Canvas extends Component {
                 sub_diagrams: JSON.stringify(sub_diagrams),
                 permissions: permissions,
                 used_intents: used_intents,
-                global: this.state.global_variables
+                global: this.state.skill.global
             }
 
             const s = this.state.skill;
@@ -769,7 +752,7 @@ class Canvas extends Component {
             let variables = []
             if (Array.isArray(diagram.variables)) {
                 diagram.variables.forEach(v => {
-                    if(!variables.includes(v) && !this.state.global_variables.includes(v)){
+                    if(!variables.includes(v) && !this.state.skill.global.includes(v)){
                         variables.push(v)
                     }
                 })
@@ -869,10 +852,13 @@ class Canvas extends Component {
     }
 
     setGlobalVariables(variables) {
+        let skill = this.state.skill
+        skill.global = variables
         this.setState({
-            global_variables: variables,
+            skill: skill,
             saved: false
         })
+        this.props.updateSkill(skill)
     }
 
     toggleTestModal() {
@@ -1502,7 +1488,7 @@ class Canvas extends Component {
                         testing_info={this.state.testing_info}
                         diagrams={this.state.diagrams}
                         slots={this.state.skill.slots}
-                        globals={this.state.global_variables}
+                        globals={this.state.skill.global}
                         unfocus={this.onDiagramUnfocus}
                     />
                 : null}
@@ -1515,7 +1501,7 @@ class Canvas extends Component {
                         current={this.props.diagram_id}
                         enterFlow={this.enterFlow}
                         variables={this.state.variables}
-                        global_variables={this.state.global_variables}
+                        global_variables={this.state.skill.global}
                         onGlobalVariable={this.setGlobalVariables}
                         onVariable={this.setVariables}
                         build={fn => this.buildDiagrams = fn}
@@ -1529,6 +1515,7 @@ class Canvas extends Component {
                         saving={this.state.saving}
                         preview={this.props.preview}
                         onSave={this.onSave}
+                        onError={this.props.onError}
                     />
                     <TitleBar
                         onTest={this.onTest}
@@ -1552,7 +1539,7 @@ class Canvas extends Component {
                         close={e => this.setState({ open: false })}
                         repaint={this.repaint}
                         variables={this.state.variables}
-                        global_variables={this.state.global_variables}
+                        global_variables={this.state.skill.global}
                         setHelp={(help) => this.setState({help: help, helpOpen: true})}
                         diagrams={this.state.diagrams}
                         createDiagram={this.createDiagram}

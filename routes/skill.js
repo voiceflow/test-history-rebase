@@ -140,7 +140,7 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
           SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment
+              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment
           FROM
               skills
           WHERE

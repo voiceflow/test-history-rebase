@@ -283,7 +283,7 @@ const setDiagram = async (req, res) => {
               }else{
                   // otherwise update
                   await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2, used_intents = $3 WHERE id = $4', [diagram.sub_diagrams, permissions_string, used_intents_string, diagram.id]);
-                  await pool.query('UPDATE skills SET global=$1, access_token_variable=$2 WHERE skill_id=$3', [global_string, access_token_variable, diagram.skill]);
+                  await pool.query('UPDATE skills SET global=$1 WHERE skill_id=$2', [global_string, diagram.skill]);
               }
               res.sendStatus(200);
           }catch(e){

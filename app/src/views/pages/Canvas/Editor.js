@@ -262,9 +262,7 @@ class Editor extends Component {
                     node={this.state.node}
                     onUpdate={this.props.onUpdate}
                     skill={this.props.skill}
-                    map_token={this.props.access_token_variable}
                     variables={variables}
-                    setAccessTokenVariable={this.props.setAccessTokenVariable}
                 />
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>

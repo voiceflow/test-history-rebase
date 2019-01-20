@@ -898,7 +898,6 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .pointer {
     cursor: pointer;
 }
-
 .prompt b, .prompt-text {
     color: #95A6BD;
     font-size: 1rem;

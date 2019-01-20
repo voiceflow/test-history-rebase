@@ -29,8 +29,7 @@ import ModuleAdminPage from './views/pages/ModuleAdminPage';
 import ErrorScreen from './Error'
 
 import socket from 'socket.io-client'
-
-const {getDevice} = require('./util')
+import {getDevice} from 'Helper'
 
 // SECRET
 var STRIPE_KEY

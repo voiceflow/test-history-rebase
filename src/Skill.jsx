@@ -24,7 +24,8 @@ class Skill extends Component {
             confirm: null,
             mounted: true,
             error_screen: null,
-            time_mounted: null
+            time_mounted: null,
+            versions: []
         }
 
         this.renderPage = this.renderPage.bind(this)

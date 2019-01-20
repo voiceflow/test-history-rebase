@@ -33,6 +33,7 @@ const options = [
     features: [
       "Intercom Support",
       "Voiceflow Emails",
+      "Project Backups (5)",
       "In Skill Purchases (Coming Soon)",
       "Basic Analytics (Coming Soon)",
       "30,000 utterances/mo"
@@ -44,6 +45,7 @@ const options = [
     features: [
       "Priority Business Support",
       "Voiceflow Emails",
+      "Project Backups (50)",
       "In Skill Purchases (Coming Soon)",
       "Account Linking (Coming Soon)",
       "User Analytics (Coming Soon)",

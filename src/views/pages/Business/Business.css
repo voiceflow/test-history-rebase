@@ -3,8 +3,9 @@
 	display: flex;
 }
 #settings{
-	height: 70%;
+	height: 100%;
 	display: block;
+	overflow-y: scroll;
 }
 #upgrade{
 	padding: 40px;

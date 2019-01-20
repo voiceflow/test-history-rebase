@@ -26,7 +26,7 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
 import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL } from './Constants'
 
-import { getIntentSlots } from '../../../util'
+import { getIntentSlots } from 'Helper'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'

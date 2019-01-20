@@ -214,7 +214,7 @@ const setDiagram = async (req, res) => {
           }
       }
   })
-};
+}
 
 const deleteDiagram = (req, res) => {
 

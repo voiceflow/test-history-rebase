@@ -587,20 +587,13 @@ class Canvas extends Component {
             var data = JSON.stringify(serialize)
 
             let sub_diagrams = []
-            let permissions = new Set()
             let used_intent_names = new Set()
             let used_intents = []
 
             serialize.nodes.forEach(node => {
                 if(node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id)
-                }
-                else if (node.extras.type === 'permissions') {
-                    node.extras.permissions.forEach(permission => {
-                        permissions.add(permission.selected.value)
-                    })
-                }
-                else if (node.extras.type === 'interaction') {
+                }else if (node.extras.type === 'interaction') {
                     node.extras.choices.forEach(choice => {
                         if (choice.intent && !used_intent_names.has(choice.intent.value)) {
                             if (choice.intent.built_in) {
@@ -619,8 +612,6 @@ class Canvas extends Component {
                     })
                 }
             })
-
-            permissions = [...permissions]
 
             for (var i = 0; i < this.state.diagrams.length; i++) {
                 let diagrams = this.state.diagrams
@@ -648,7 +639,6 @@ class Canvas extends Component {
                 data: data,
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
-                permissions: permissions,
                 used_intents: used_intents,
                 global: this.state.skill.global
             }
@@ -1236,6 +1226,13 @@ class Canvas extends Component {
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     cardtype: 'Simple'
+                }
+            } else if (type === 'reminder') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.extras = {
+                    reminder: null
                 }
             } else if (type === 'flow') {
                 node.addInPort(' ')

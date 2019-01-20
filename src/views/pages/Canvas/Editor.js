@@ -27,6 +27,7 @@ import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
 import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
+import Reminder from './Editors/Reminder'
 import {
     Alert,
     Modal, ModalBody, ModalHeader,
@@ -276,6 +277,8 @@ class Editor extends Component {
                 return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
+            case 'reminder':
+                return <Reminder node={this.state.node} onUpdate={this.props.onUpdate}/>
             default:
               return null
         }

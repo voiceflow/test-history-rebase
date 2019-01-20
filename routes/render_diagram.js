@@ -1,6 +1,6 @@
 const isVarName = require('is-var-name');
 const { getEnvVariable } = require('../util')
-const { docClient, pool } = require('./../services')
+const { docClient, pool, hashids } = require('./../services')
 const draftToMarkdown = require('./../config/drafttomarkdown')
 const validUrl = require('valid-url');
 const _ = require('lodash');

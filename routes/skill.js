@@ -7,6 +7,14 @@ const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 const { renderDiagram } = require('./render_diagram')
 
+const logAxiosError = (err, context='') => {
+  if(err && err.response){
+    console.log(context, err.response.data && err.response.data.message, 'STATUS', err.response.status)    
+  }else{
+    console.log(context, err)
+  }
+}
+
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0
@@ -510,12 +518,12 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
 
 exports.patchSkill = (req, res) => {
   if (!req.user || !req.params.id || !req.body) {
-    res.sendStatus(401);
-    return;
+    res.sendStatus(401)
+    return
   }
 
-  let id = hashids.decode(req.params.id)[0];
-  let b = req.body;
+  let id = hashids.decode(req.params.id)[0]
+  let b = req.body
 
   if (!b.locales) {
     b.locales = '["en-US"]';
@@ -527,9 +535,11 @@ exports.patchSkill = (req, res) => {
     b.fulfillment = '{}'
   }
 
-  if (req.query.settings) {
-    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, fulfillment = $7 WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.fulfillment], (err) => {
+  if (req.query.fulfillment){
+    pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
+  }else if (req.query.settings) {
+    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6  WHERE skill_id = $1 AND creator_id = $2`,
+      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
         if (err) {
           console.trace(err)
           res.sendStatus(500)
@@ -537,8 +547,7 @@ exports.patchSkill = (req, res) => {
           latestSkillToIntercom(req.user.id, b.name)
           res.sendStatus(200)
         }
-      })
-    return
+    })
   } else if (req.query.intents) {
     pool.query(`
             UPDATE skills
@@ -919,6 +928,7 @@ exports.buildSkill = async (req, res) => {
                 }
               })
               .catch(err => {
+                logAxiosError(err, 'ACCOUNT LINKING')
                 res.status(500).send(err.response.data)
               });
           }
@@ -1041,7 +1051,7 @@ exports.buildSkill = async (req, res) => {
                             }
                           })
                           .catch(err => {
-                            console.log(err.response.status)
+                            logAxiosError(err, 'GETTING SKILL MANIFEST')
                             res.status(500).send(err.response.data)
                           });
                       }, 10000)
@@ -1049,16 +1059,14 @@ exports.buildSkill = async (req, res) => {
                     getSkillStatus(0)
                   })
                   .catch(err => {
-                    console.log(err.response)
+                    logAxiosError(err, 'INTERACTION MODEL UPLOAD')
                     if (err.response) {
                       if (err.response.status === 404) {
                         iterate(depth + 1)
                       } else {
-                        console.error(err.response.data)
                         res.status(500).send(err.response.data)
                       }
                     } else {
-                      console.trace(err)
                       res.sendStatus(500)
                     }
                   })
@@ -1069,16 +1077,14 @@ exports.buildSkill = async (req, res) => {
           iterate(0);
 
         } catch (err) {
+          logAxiosError(err, err.url)
           if (err.type === "VendorIdError") {
             // console.trace(err);
             res.sendStatus(403);
           } else {
             if (err.response) {
-              // console.error(err.response.status);
-              console.error(JSON.stringify(err.response.data));
               res.status(500).send(err.response.data);
             } else {
-              console.trace(err);
               res.sendStatus(500);
             }
           }

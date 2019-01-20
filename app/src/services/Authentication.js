@@ -1,10 +1,9 @@
 import Cookies from 'universal-cookie'
 import axios from 'axios'
+import {getDevice} from 'Helper'
 
 const cookies = new Cookies()
 cookies.remove('last_session')
-
-const {getDevice} = require('./../util')
 
 window.user_detail = {
 	email: null,

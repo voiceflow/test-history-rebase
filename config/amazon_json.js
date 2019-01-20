@@ -201,18 +201,7 @@ const manifest = (r, encoded_id, name) => {
 		"keywords": r.keywords,
 		"smallIconUri": r.small_icon,
 		"largeIconUri": r.large_icon
-	};
-	// optional fields
-	// if(r.keywords.length !== 0){
-	// 	localeObj.keywords = r.keywords;
-	// }
-	// if(r.small_icon){
-	// 	localeObj.smallIconUri = r.small_icon;
-	// }
-	// if(r.large_icon){
-	// 	localeObj.largeIconUri = r.large_icon;
-	// }
-
+	}
 
 	const locales = {}
 	r.locales.forEach(locale => {
@@ -239,18 +228,6 @@ const manifest = (r, encoded_id, name) => {
 		})
 	}
 
-	const interfaces = [{
-		"type": "AUDIO_PLAYER"
-	}, {
-		"type": "ALEXA_PRESENTATION_APL"
-	}]
-	const fulfillment = r.fulfillment
-	if (fulfillment && Object.keys(fulfillment).length > 0) {
-		interfaces.push({
-			"type": "CAN_FULFILL_INTENT_REQUEST"
-		})
-	}
-
 	let ret = {
 		"manifest": {
 			"publishingInformation": {
@@ -263,8 +240,7 @@ const manifest = (r, encoded_id, name) => {
 					"endpoint": {
 						"uri": `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
 						"sslCertificateType": "Wildcard"
-					},
-					"interfaces": interfaces
+					}
 				}
 			},
 			"manifestVersion": "1.0",
@@ -283,11 +259,25 @@ const manifest = (r, encoded_id, name) => {
 	if (privacyLocales) {
 		ret.manifest.privacyAndCompliance.locales = privacyLocales
 	}
-	if (Array.isArray(r.permissions) && r.permissions.length !== 0) {
-		ret.manifest.permissions = r.permissions;
+	if (Array.isArray(r.alexa_permissions) && r.alexa_permissions.length !== 0) {
+		ret.manifest.permissions = r.alexa_permissions.map(permission => ({"name": permission}))
 	}
 
-	return ret;
+	// Add all project appropriate interfaces
+	let interfaces = []
+	if (r.fulfillment && Object.keys(r.fulfillment).length > 0) {
+		interfaces.push({
+			"type": "CAN_FULFILL_INTENT_REQUEST"
+		})
+	}
+	if (Array.isArray(r.alexa_interfaces) && r.alexa_interfaces.length !== 0) {
+		interfaces.push(...(r.alexa_interfaces.map(interface => ({"type": interface}))))
+	}
+	if(interfaces.length !== 0){
+		ret.manifest.apis.custom.interfaces = interfaces
+	}
+
+	return ret
 }
 
 

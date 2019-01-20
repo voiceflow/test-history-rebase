@@ -655,19 +655,6 @@ exports.patchSkill = (req, res) => {
   }
 }
 
-// Helper Function
-const getSkillPermissions = (skill_id) => new Promise((resolve, reject) => {
-  let sql = `SELECT d.permissions FROM diagrams d WHERE d.skill_id = $1`
-  pool.query(sql, [skill_id], (err, data) => {
-    if (err) {
-      console.trace(err);
-      reject(new Error(err))
-    } else {
-      resolve(data.rows);
-    }
-  });
-})
-
 exports.checkInterationModel = async (req, res) => {
   AccessToken(req.user.id, token => {
     if (token === null) {
@@ -757,7 +744,9 @@ const checkVersions = (req, id, token) => {
               })
             }
           } catch (err) {
-            console.trace(err)
+            if(!(err && err.response && err.response.status === 404)){
+              console.trace(err)
+            }
           }
         }
       }
@@ -777,25 +766,6 @@ exports.buildSkill = async (req, res) => {
 
   let id = hashids.decode(req.params.id)[0];
   let original_id = req.params.id
-
-  // Get permissions
-  const permissions_arr = await getSkillPermissions(id)
-  let permissions = new Set()
-
-  permissions_arr.forEach(r => {
-    r.permissions.forEach((perm => {
-      if (perm !== 'payments:autopay_consent') {
-        // lmao amazon engineering
-        permissions.add(perm)
-      }
-    }))
-  })
-
-  permissions = Array.from(permissions).map(perm => {
-    return {
-      name: perm
-    }
-  })
 
   AccessToken(req.user.id, token => {
     if (token === null) {
@@ -817,7 +787,6 @@ exports.buildSkill = async (req, res) => {
         let r = data.rows[0]
 
         let amzn_id = r.amzn_id
-        r.permissions = permissions
         let manifest = JSONs.manifest(r, original_id, req.user.name)
 
         analytics.track({
@@ -1286,7 +1255,8 @@ copyAllDisplays = (id, new_skill_id) => {
   })
 }
 
-exports.copySkill = async (req, res, append_copy_str = true, copying_default_template = false, complete_copy = false, user_copy = true, cb = false) => {
+exports.copySkill = async (req, res, options, cb = false) => {
+
   let id = hashids.decode(req.params.id)[0]
   let new_creator_id = req.params.target_creator
   let diagram_mapping = {}
@@ -1297,43 +1267,33 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
     new_creator_id = req.user.id
   }
 
-  const retrieveDiagram = (diagram_id, new_skill_id, used_intents, used_choices, intents, slots) => {
+  const retrieveDiagram = (diagram_id, new_skill_id) => {
 
-    const uploadNewDiagram = async (data, resolve) => {
+    const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Item: {
           id: data.diagram.id,
           variables: data.diagram.variables,
           data: data.diagram.data,
-          skill: data.diagram.skill,
+          skill: new_skill_id,
           creator: new_creator_id
         }
       }
 
       try {
         await pool.query(
-          `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, permissions, used_intents) (SELECT $1, $2, $3, $4, permissions, used_intents FROM diagrams WHERE id = $5)`,
+          `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5)`,
           [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
-        docClient.put(params, async (err) => {
-          if (err) {
-            console.trace(err)
-            return err
-          } else {
-            try{
-              let status = await renderDiagram(new_creator_id, data.diagram.id, new_skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots, data.diagram)
-              return status
-            } catch (err) {
-              return err
-            }
-          }
-        })
+        await docClient.put(params).promise()
+        resolve()
       } catch (err) {
-        return err
+        console.trace(err)
+        reject()
       }
-    }
+    })
 
-    const remapDiagramIds = (diagram) => {
+    const remapDiagramIds = async (diagram) => {
       let sub_diagrams = []
       let old_diagram_id = diagram.id
       diagram.id = diagram_mapping[diagram.id]
@@ -1352,7 +1312,7 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
       }
 
       diagram.data = JSON.stringify(JSON_diagram_data)
-      let result = uploadNewDiagram({
+      let result = await uploadNewDiagram({
         diagram: diagram,
         sub_diagrams: sub_diagrams,
         old_diagram_id: old_diagram_id
@@ -1369,12 +1329,12 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
         }
       }
 
-      docClient.get(get_params, (err, data) => {
+      docClient.get(get_params, async (err, data) => {
         if (err) {
           console.trace(err)
           reject(err)
         } else if (data.Item) {
-          let result = remapDiagramIds(data.Item)
+          let result = await remapDiagramIds(data.Item)
           if (typeof result === 'Error') {
             reject(result)
           } else {
@@ -1385,8 +1345,33 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
     })
   }
 
+  const renderSkill = async (skill, skill_id) => {
+    let intents = {}
+    let slots = {}
+    // CONVERT ARRAY TO OBJECTS
+    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    if (Array.isArray(skill.intents)) {
+      skill.intents.forEach(intent => {
+        if (intent.key) intents[intent.key] = intent.name
+      })
+    }
+    if (Array.isArray(skill.slots)) {
+      skill.slots.forEach(slot => {
+        if (slot.key) slots[slot.key] = slot.name
+      })
+    }
+    try{
+      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
+      // UPDATE SKILL 
+      await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
+      [skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
+    }catch(err){
+      console.trace(err)
+    }
+  }
+
   // Starts here: verify that the skill is under the current creator
-  if (!copying_default_template) {
+  if (!options.copying_default_template) {
     if (req.user.admin < 100) {
       try {
         let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
@@ -1400,22 +1385,22 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
     }
   }
 
-  let copy_str = (append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
+  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
   let copy_query
-  if (complete_copy) {
+  if (options.complete_copy || options.renderDiagram) {
     copy_query = `
           INSERT INTO skills (
             name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
@@ -1433,8 +1418,7 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
   }
 
   try {
-    let copy_data = await pool.query(copy_query, [root_diagram_id, new_creator_id, id])
-    let new_skill_id = copy_data.rows[0].skill_id
+    let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
     let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
     let retrieve_promises = []
     for (let i = 0; i < diagram_data.rows.length; i++) {
@@ -1444,17 +1428,15 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
       } else {
         diagram_mapping[diagram_data.rows[i].id] = generateID()
       }
-      let used_intents = new Set()
-      let used_choices = new Set()
       retrieve_promises.push(
-        retrieveDiagram(diagram_data.rows[i].id, new_skill_id, used_intents, used_choices, diagram_data.rows[i].intents, diagram_data.rows[i].slots)
+        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id)
       )
     }
     Promise.all(retrieve_promises)
-      .then(() => {
+      .then(async () => {
         // Add working version to table
-        if (copying_default_template || user_copy) {
-          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_data.rows[0].skill_id, copy_data.rows[0].skill_id], (err) => {
+        if (options.copying_default_template || options.user_copy) {
+          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
             if (err) {
               console.trace(err)
               res.sendStatus(500)
@@ -1463,16 +1445,20 @@ exports.copySkill = async (req, res, append_copy_str = true, copying_default_tem
         }
 
         // Async copy rows depending on the skill, doesn't need to be synced
-        copyAllDisplays(id, new_skill_id)
-        copyAllProducts(id, new_skill_id)
-        copyAllTemplates(id, new_skill_id)
+        copyAllDisplays(id, copy_skill.skill_id)
+        copyAllProducts(id, copy_skill.skill_id)
+        copyAllTemplates(id, copy_skill.skill_id)
+
+        if(options.renderDiagram){
+          await renderSkill(copy_skill, new_creator_id)
+        }
 
         // Default name of cb when no callback provided is 'next'
-        copy_data.rows[0].skill_id = hashids.encode(copy_data.rows[0].skill_id)
+        copy_skill.skill_id = hashids.encode(copy_skill.skill_id)
         if (cb && cb.name !== 'next') {
-          cb(copy_data.rows[0])
+          cb(copy_skill)
         } else {
-          res.send(copy_data.rows[0])
+          res.send(copy_skill)
         }
       })
       .catch((err) => {
@@ -1495,8 +1481,7 @@ exports.getSkillVersions = (req, res) => {
         WHERE skill_versions.canonical_skill_id = 
             (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)
             AND version IS NOT NULL
-        ORDER BY version DESC`,
-    [id],
+        ORDER BY version DESC`, [id],
     (err, data) => {
       if (err) {
         console.trace(err)
@@ -1516,7 +1501,7 @@ exports.restoreSkillVersion = (req, res) => {
   let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
-  exports.copySkill(req, res, false, false, true, false, (row) => {
+  exports.copySkill(req, res, {complete_copy: true}, (row) => {
     req.params.id = req.params.canonical_skill_id
     exports.deleteSkill(req, res, false, () => {
       let new_skill_id = hashids.decode(row.skill_id)[0]

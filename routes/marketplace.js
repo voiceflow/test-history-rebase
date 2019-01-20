@@ -160,7 +160,7 @@ const giveCertification = (req, res) => {
 					
 
 					if(data.rows[0].type === 'FLOW') {
-						let status = await renderDiagram(req.user, diagram_id, skill_id, undefined, undefined, 'market', {version: version_id});
+						let status = await renderDiagram(req.user, diagram_id, skill_id, {version: version_id, type: 'MARKET'});
 						if(status === 200){
 							updateVersionTable(market_id, module_id);
 						}else{
@@ -172,7 +172,7 @@ const giveCertification = (req, res) => {
 						req.params.id = hashids.encode(skill_id)
 						req.params.target_creator = ADMIN_MARKETPLACE_ACC
 						req.user.id = data.rows[0].creator_id
-						copySkill(req, res, false, true, false, false, (row) => {
+						copySkill(req, res, {copying_default_template: true}, (row) => {
 							let new_skill_id = hashids.decode(row.skill_id)[0]
 							updateVersionTable(row.diagram, module_id, new_skill_id)
 						})
@@ -618,7 +618,7 @@ const copyDefaultTemplate = (req, res) => {
 					req.params.id = template_skill_id
 					req.params.target_creator = req.user.id
 					req.user.id = ADMIN_MARKETPLACE_ACC
-					copySkill(req, res, false, true, false, false, updateSkill)
+					copySkill(req, res, {copying_default_template: true}, updateSkill)
 				} else {
 					res.sendStatus(500)
 				}

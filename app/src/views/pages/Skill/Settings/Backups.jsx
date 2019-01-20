@@ -59,11 +59,12 @@ class BackupSettings extends Component{
                     <Label>Backups</Label>
                     <Alert>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</Alert>
                     <div id="backup">
-                        <div id="backup-overlay" className="super-center">
+                        {window.user_detail.admin === 0 &&
+                        <div id="backup-overlay" className="d-flex justify-content-center">
                             <div className="text-center">
                                 <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan To Restore</Link>
                             </div>
-                        </div>
+                        </div>}
                         <Table>
                             <thead>
                                 <tr>

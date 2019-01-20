@@ -170,13 +170,8 @@ const setDiagram = async (req, res) => {
       }
   }
 
-  let permissions_string, global_string
+  let global_string, used_intents_string
   // Make sure that the JSON validly parses
-  try {
-      permissions_string = diagram.permissions ? JSON.stringify(diagram.permissions) : '[]'
-  } catch(err) {
-      permissions_string = '[]'
-  }
   try {
       global_string = diagram.global ? JSON.stringify(diagram.global) : '[]'
   } catch(err) {
@@ -203,13 +198,12 @@ const setDiagram = async (req, res) => {
                   await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
               }else{
                   // otherwise update
-                  await pool.query('UPDATE diagrams SET sub_diagrams = $1, permissions = $2, used_intents = $3 WHERE id = $4', [diagram.sub_diagrams, permissions_string, used_intents_string, diagram.id]);
+                  await pool.query('UPDATE diagrams SET sub_diagrams = $1, used_intents = $2 WHERE id = $3', [diagram.sub_diagrams, used_intents_string, diagram.id]);
                   await pool.query('UPDATE skills SET global=$1 WHERE skill_id=$2', [global_string, diagram.skill]);
               }
               res.sendStatus(200);
           }catch(e){
-              console.error(e);
-              console.trace();
+              console.trace(e)
               res.sendStatus(500);
           }
       }
@@ -277,8 +271,8 @@ const copyDiagram = (req, res) => {
 
   const insertDiagramRow = (new_diagram_id, old_diagram_id, diagram_name) => {
     pool.query(
-      `INSERT INTO diagrams (id, name, skill_id, permissions, used_intents) 
-            (SELECT $1, $2, skill_id, permissions, used_intents FROM diagrams WHERE id = $3)`,
+      `INSERT INTO diagrams (id, name, skill_id, used_intents) 
+            (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`,
       [new_diagram_id, diagram_name, old_diagram_id],
       (err, data) => {
         if (err) {
@@ -351,76 +345,35 @@ const publish = (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
 
   // Copy the skill, making sure it points to the same canonical skill point
-  const createNewVersion = (status) => {
-    const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row) => {
-      let version_query = `
-            INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
-            SELECT canonical_skill_id, COALESCE(max(version) + 1, 1), ${new_skill_id_decoded}
-            FROM skill_versions
-            WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
-            GROUP BY canonical_skill_id
-            RETURNING *
-            `
+  const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row) => {
+    let version_query = `
+          INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
+          SELECT canonical_skill_id, COALESCE(max(version) + 1, 1), ${new_skill_id_decoded}
+          FROM skill_versions
+          WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
+          GROUP BY canonical_skill_id
+          RETURNING *
+          `
 
-      pool.query(version_query, [], (err, data) => {
-        if (err) {
-          console.log(err)
-          res.sendStatus(500)
-        } else {
-          new_skill_row.canonical_skill_id = hashids.encode(data.rows[0].canonical_skill_id)
-          res.send({
-            new_skill: new_skill_row
-          })
-        }
-      })
-    }
-
-    // Spoof the request cause we don't use it anymore
-    req.params.id = hashids.encode(skill_id)
-    req.params.target_creator = req.user.id
-    copySkill(req, res, false, false, true, false, (new_skill_row) => {
-      let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
-      updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
+    pool.query(version_query, [], (err, data) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(500)
+      } else {
+        new_skill_row.canonical_skill_id = hashids.encode(data.rows[0].canonical_skill_id)
+        res.send({
+          new_skill: new_skill_row
+        })
+      }
     })
   }
 
-  pool.query('SELECT creator_id, slots, intents FROM skills WHERE skill_id = $1 LIMIT 1', [skill_id], async (err, result) => {
-    if (err || result.rows.length === 0) {
-      return res.sendStatus(500)
-    } else if (result.rows[0].creator_id !== req.user.id) {
-      return res.sendStatus(401)
-    }
-    let intents = {}
-    let slots = {}
-    if (Array.isArray(result.rows[0].intents)) {
-      result.rows[0].intents.forEach(intent => {
-        if (intent.key) {
-          intents[intent.key] = intent.name
-        }
-      })
-    }
-    if (Array.isArray(result.rows[0].slots)) {
-      result.rows[0].slots.forEach(slot => {
-        if (slot.key) {
-          slots[slot.key] = slot.name
-        }
-      })
-    }
-
-    let used_intents = new Set()
-    let used_choices = new Set()
-    let status = await renderDiagram(req.user, req.params.diagram_id, skill_id, undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots)
-
-    used_intents = [...used_intents]
-    used_choices = [...used_choices]
-
-    pool.query('UPDATE skills set used_intents = $2, used_choices = $3 WHERE skill_id = $1', [skill_id, JSON.stringify(used_intents), JSON.stringify(used_choices)], async (err) => {
-      if (err) {
-        return res.sendStatus(500)
-      }
-      createNewVersion(status)
-    })
-
+  // Spoof the request cause we don't use it anymore
+  req.params.id = hashids.encode(skill_id)
+  req.params.target_creator = req.user.id
+  copySkill(req, res, {renderDiagram: true}, (new_skill_row) => {
+    let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
+    updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
   })
 }
 
@@ -449,7 +402,7 @@ const publishTest = async (req, res) => {
 
   let used_intents = new Set()
   let used_choices = new Set()
-  let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', undefined, undefined, undefined, undefined, used_intents, used_choices, intents, slots)
+  let status = await renderDiagram(req.user, req.params.diagram_id, {used_intents, used_choices, intents, slots, type: 'TEST'})
 
   res.sendStatus(status)
 }

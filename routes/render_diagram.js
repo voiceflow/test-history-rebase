@@ -94,7 +94,25 @@ const addStory = (story, cb) => {
   })
 }
 
-const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (new Set()), type = undefined, options = {}, used_intents, used_choices, intents, slots, provided_diagram_data) => new Promise((resolve) => {
+/* 
+options object properties {
+  type: type needed to be rendered eg. TEST/MARKET
+  rendered_set: Set of all visited diagrams (no cycles)
+  used_intents: Set of all intents that are used
+  used_choices: Set of all choices that are used
+  permissions: Set of all permissions required by the skill
+  interfaces: Set of all interfaces required by the skill
+  intents: Object of all the intents used in the skill
+  slots: Object of all the slots used in the skill
+}
+*/
+const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new Promise((resolve) => {
+  if(!options.rendered_set) options.rendered_set = new Set()
+  if(!options.used_intents) options.used_intents = new Set()
+  if(!options.used_choices) options.used_choices = new Set()
+  if(!options.permissions) options.permissions = new Set()
+  if(!options.interfaces) options.interfaces = new Set()
+
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
     Key: {
@@ -107,18 +125,13 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
   }
 
   let testing = (skill_id === "TEST");
-
   docClient.get(params, async (err, data) => {
-    if (err && !provided_diagram_data) {
+    if (err) {
       console.error(err)
       resolve(500)
-    } else if (data.Item && (data.Item.skill === skill_id || testing) || provided_diagram_data) {
-      if (provided_diagram_data) {
-        data.Item = provided_diagram_data
-      }
-
+    } else if (data.Item && (data.Item.skill === skill_id || testing)) {
       // Add to set of rendered diagrams to prevent looping
-      rendered_set.add(diagram_id)
+      options.rendered_set.add(diagram_id)
       if (data.Item.creator !== user.id && user.admin < 100) {
         resolve(403);
         return;
@@ -138,7 +151,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
 
       // If publishing to market, insert version before. If subflow, don't prepend $ so story.js doesn't confuse itself for global scope
       let key = diagram_id
-      if (type === 'market' && !options.is_module_subflow) {
+      if (options.type === 'market' && !options.is_module_subflow) {
         key = "$" + options.version + '_' + key;
       } else if (options.is_module_subflow) {
         key = options.version + '_' + key;
@@ -192,9 +205,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
           if (node.extras.intent) {
             let intent = node.extras.intent
             // Log that this intent has been used
-            if (used_intents) {
-              used_intents.add(intent.key)
-            }
+            options.used_intents.add(intent.key)
 
             let mappings = []
             if (Array.isArray(node.extras.mappings)) {
@@ -207,10 +218,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
                     variable: mapping.variable,
                     slot: mapping.slot.label
                   })
-                } else if (mapping.slot.key in slots) {
+                } else if (mapping.slot.key in options.slots) {
                   mappings.push({
                     variable: mapping.variable,
-                    slot: slots[mapping.slot.key]
+                    slot: options.slots[mapping.slot.key]
                   })
                 }
               })
@@ -218,15 +229,15 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
 
             if (intent.built_in) {
               intent = intent.label
-            } else if (intent.key in intents) {
-              intent = intents[intent.key]
+            } else if (intent.key in options.intents) {
+              intent = options.intents[intent.key]
             }
             if (intent) {
               if (node.extras.resume) {
                 if (node.extras.diagram_id) {
                   let result
                   try {
-                    result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth + 1, rendered_set, type, options, used_intents, used_choices, intents, slots)
+                    result = await renderDiagram(user, node.extras.diagram_id, skill_id, options, depth + 1)
                   } catch (err) {
                     result = 500
                   }
@@ -285,11 +296,11 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
             })
           };
 
-          if (inputs && used_choices) {
+          if (inputs) {
             node.extras.inputs.forEach(input => {
               if (input.trim() !== '') {
                 input.split('\n').forEach(c => {
-                  used_choices.add(c.toLowerCase())
+                  options.used_choices.add(c.toLowerCase())
                 })
               }
             })
@@ -305,14 +316,12 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
             if (choice.intent) {
 
               // Log that this intent has been used
-              if (used_intents) {
-                used_intents.add(choice.intent.key)
-              }
+              options.used_intents.add(choice.intent.key)
 
               if (choice.intent.built_in) {
                 new_choice.intent = choice.intent.label
-              } else if (choice.intent.key in intents) {
-                new_choice.intent = intents[choice.intent.key]
+              } else if (choice.intent.key in options.intents) {
+                new_choice.intent = options.intents[choice.intent.key]
               }
               choice.mappings.forEach(mapping => {
                 if (choice.intent.built_in) {
@@ -320,10 +329,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
                     variable: mapping.variable,
                     slot: mapping.slot.label
                   })
-                } else if (mapping.slot.key in slots) {
+                } else if (mapping.slot.key in options.slots) {
                   new_choice.mappings.push({
                     variable: mapping.variable,
-                    slot: slots[mapping.slot.key]
+                    slot: options.slots[mapping.slot.key]
                   })
                 }
               })
@@ -342,6 +351,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
             })
           }
         } else if (node.extras.type === 'stream') {
+          options.interfaces.add('AUDIO_PLAYER')
           let stop = getLink(node.ports.filter(a => a.label === 'stop/pause')[0].links[0]);
 
           if (node.extras.player) {
@@ -429,7 +439,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
           }
 
           // Check if this diagram has been rendered already
-          if (!rendered_set.has(node.extras.diagram_id)) {
+          if (!options.rendered_set.has(node.extras.diagram_id)) {
             let result
             try {
               // console.log('going in', node.extras.diagram_id);
@@ -440,7 +450,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
               //     new_options = JSON.parse(JSON.stringify(options))
               //     new_options['is_module_subflow'] = true
               // }
-              result = await renderDiagram(user, node.extras.diagram_id, skill_id, depth + 1, rendered_set, type, options, used_intents, used_choices, intents, slots);
+              result = await renderDiagram(user, node.extras.diagram_id, skill_id, options, depth + 1);
             } catch (err) {
               return resolve(500)
             }
@@ -705,6 +715,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
             }
           }
         } else if (node.extras.type === 'display') {
+          options.interfaces.add('ALEXA_PRESENTATION_APL')
           let id = hashids.decode(node.extras.display_id)
 
           story.lines[node.id] = {
@@ -713,9 +724,22 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
             update_on_change: node.extras.update_on_change,
             nextId: getLink(node.ports.filter(a => a.in === false)[0].links[0])
           }
-        } else if (node.extras.type === 'permissions') {
+        } else if(node.extras.type === 'reminder') {
+          options.permissions.add('alexa::alerts:reminders:skill:readwrite')
 
-          const permissions = node.extras.permissions ? node.extras.permissions : [];
+          story.lines[node.id] = {
+            reminder: node.extras.reminder,
+            success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
+            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+          }
+        } else if (node.extras.type === 'permissions') {
+          const permissions = node.extras.permissions ? node.extras.permissions : []
+          permissions.forEach(permission => {
+            if(permission && permission.selected && permission.selected.value){
+              options.permissions.add(permission.selected.value)
+            }
+          })
+
           story.lines[node.id] = {
             permissions: permissions,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
@@ -772,10 +796,10 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
         }
       }
       let render_type
-      if (!type) {
+      if (!options.type) {
         render_type = testing ? 'testing' : 'live'
       } else {
-        render_type = type
+        render_type = options.type
       }
       let params = {
         TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.${render_type}`,
@@ -785,7 +809,7 @@ const renderDiagram = (user, diagram_id, skill_id, depth = 0, rendered_set = (ne
         if (err) {
           console.log(err)
           res.sendStatus(err.statusCode)
-        } else if (testing || type === 'market') {
+        } else if (testing || options.type === 'market') {
           resolve(200)
         } else {
           // Add the story to SQL as well

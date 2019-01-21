@@ -104,7 +104,7 @@ exports.sendRequestPDFEmail = async(req, res) => {
   let data = {
     'template_id': 'd-f8bf0dfa762c4eb3b7aa504211c9c6de',
     'from': {
-      'email': req.body.user.email,
+      'email': 'braden@getvoiceflow.com',
       'name': req.body.user.name,
     },
     'personalizations': [
@@ -115,6 +115,8 @@ exports.sendRequestPDFEmail = async(req, res) => {
           }
         ],
         'dynamic_template_data': {
+            email: req.bdoy.user.email,
+            name: req.body.user.name,
           skill: req.body.skill.name,
         }
       }

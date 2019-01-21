@@ -4,11 +4,10 @@ const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
-const {jwt, docClient, pool, redisClient, config, hashids} = require('./../services');
-const Codes = require('./../config/codes');
+const {jwt, pool, redisClient, config, hashids} = require('./../services');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
-const exec = require('child_process').execFile
+const del = require('del');
 const spawn = require('child_process').spawn
 
 const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
@@ -18,7 +17,6 @@ const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 const _ = require('lodash')
 
 const fs = require('fs');
-
 const GACTIONS_CLI_ROOT = './gactions_cli'
 
 // recursive loop to keep looking for user hash if there are duplicates
@@ -359,31 +357,8 @@ const googleLogin = async(req, res) => {
     }
 }
 
-const googlePublishLogin = async(req, res) => {
-	const creatorId = req.body.creator_id
-	const access_token = req.body.access_token
-
-	if (!access_token || !creatorId) {
-		res.status(400).send("Unable to Authenticate Through Google");
-	} else {
-		try {
-				pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creatorId, access_token], (err, data) => {
-					if(err){
-						console.trace(err)
-						res.status(500).send("Unable to Access Database");
-					} else{
-						// TODO: check if token is valid
-						res.status(200).send()
-					}
-				})
-		} catch (e) {
-			console.error('error fetching token', e)
-		}
-	}
-}
-
 const hasGoogleAccessToken = (req, res) => {
-	const creatorId = req.body.creatorId
+	const creatorId = req.user.id
 	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
 		if(err){
 			console.trace(err)
@@ -396,21 +371,32 @@ const hasGoogleAccessToken = (req, res) => {
 	})
 }
 
-const getGoogleAccessToken = (creatorId, res) => {
+const getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
 	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
 		if(err){
 			console.trace(err)
-			res.status(500).send("Unable to Access Database");
+			reject("Unable to Access Database");
 		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
-			res.status(200).send({token: data.rows[0].gactions_token})
+			resolve({token: data.rows[0].gactions_token})
 		} else {
-			res.status(500).send('Google Auth Token not Found')
+			reject('Google Auth Token not Found')
 		}
 	})
-}
+})
 
 const verifyGoogleToken = async (req, res) => {
-	const token = req.body.token
+	let token = req.body.token
+	const creator_id = req.user.id
+	if (!token || !creator_id) {
+		res.status(400).send('Bad Request: Parameters missing')
+		return
+	}
+
+	token = token.trim()
+	if (!/^[\S]{40,80}$/.test(token)) {
+		res.status(400).send('Bad request: Malformed Token')
+		return
+	}
 
 	let random_id = uuid()
 	let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
@@ -434,42 +420,44 @@ const verifyGoogleToken = async (req, res) => {
 			})
 		})
 
-		// const gactions_res = await new Promise ((resolve, reject) => {
-		// 	exec(, function(err, data) {  
-		// 		if (err) reject(err)
-		// 		resolve(data.toString());                       
-		// 	});
-		// })
-
-		const gactions = spawn('./gactions', ['list', '--project='], {cwd: dir});
-
-		gactions.stdout.on('data', (data) => {
-			console.log(`stdout: ${data}`);
-			if (/Enter authorization code/.test(data)) {
-				gactions.stdin.write(token);
-			}
-		});
-
-		gactions.stderr.on('data', (data) => {
-			console.log(`stderr: ${data}`);
-		});
-
-		gactions.on('close', (code) => {
-			console.log(`child process exited with code ${code}`);
-		});
-
-		gactions.stdin.setEncoding('utf-8');		
+		await new Promise ((resolve, reject) => {
+			const gactions = spawn('./gactions', ['list', '--project='], {cwd: dir})
+			gactions.stdin.setEncoding('utf-8');		
 		
-		// child.stdin.end();
-		// destination.txt will be created or overwritten by default.
-
-
+			gactions.stdout.on('data', (data) => {
+				if (/Enter authorization code/.test(data)) {
+					gactions.stdin.write(`${token}\n`)
+				}
+			});
+	
+			gactions.stderr.on('data', (data) => {
+				if (/400 Bad Request/.test(data)) {
+					reject(data)
+				} else {
+					fs.readFile(`${dir}/creds.data`, {encoding: 'utf8'}, (err, data) => {
+						if (err){
+							reject (err)
+						} else {
+							pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creator_id, data], (err) => {
+								if(err){
+									console.trace(err)
+									reject()
+								} else {
+									resolve()
+								}
+							})
+						}
+					})
+				}
+			})
+		})
+		res.status(200).send('Token Verified')
 	} catch (e) {
-		console.error('Error verifying google token', e)
 		res.status(500).send('Unable to verify google token')
 	}
-
-
+	await new Promise ((resolve, reject) => {
+		del([dir]).then(resolve()).catch(e => reject(e))
+	})
 }
 
 const fbLogin = async(req, res) => {
@@ -762,7 +750,6 @@ module.exports = {
 	checkReset: (req, res) => reset(req, res),
 	resetPassword: (req, res) => reset(req, res, true),
 	verifyUser: verifyUser,
-	googlePublishLogin: googlePublishLogin,
 	hasGoogleAccessToken: hasGoogleAccessToken,
 	verifyGoogleToken: verifyGoogleToken,
 	getGoogleAccessToken: getGoogleAccessToken

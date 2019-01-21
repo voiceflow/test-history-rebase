@@ -115,7 +115,6 @@ app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
 app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
 app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleToken);
-app.put('/googlePublishLogin', Authentication.googlePublishLogin);
 
 app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);

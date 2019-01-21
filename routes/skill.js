@@ -3,9 +3,18 @@ const _ = require('lodash')
 const {docClient, pool, hashids, intercom, jwt} = require('./../services')
 const {AccessToken, getGoogleAccessToken } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
+const { generateGactionsPackage } = require('./../config/gactions_package')
 const { getEnvVariable } = require('../util')
 const Analytics = require('analytics-node')
 const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
+const uuid = require('uuid/v4');
+
+const del = require('del');
+const spawn = require('child_process').spawn
+const mkdirp = require('mkdirp');
+const fs = require('fs');
+
+const GACTIONS_CLI_ROOT = './gactions_cli'
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -1367,25 +1376,124 @@ exports.copySkill = async (req, res, cb=false, copying_default_template=false) =
     })
 }
 
-exports.buildGoogleSkill = async (res, req) => {
+exports.buildGoogleSkill = async (req, res) => {
     if (!req.params.id) {
         res.sendStatus(401)
     }
     let id = hashids.decode(req.params.id)[0];
     let original_id = req.params.id
 
-    getGoogleAccessToken(req.user.id, token => {
-        if(token === null){
-            res.status(401).send({
-                message: "Invalid Google Auth Token"
-            });
-            return;
+    let token = await getGoogleAccessToken(req.user.id)
+    if(_.isNil(token) || _.isNil(token.token)){
+        res.status(401).send({
+            message: "Invalid Google Auth Token"
+        });
+        return;
+    }
+    token = token.token
+    try {
+        const skill_info = await new Promise ((resolve, reject) => {
+            pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
+                if(err){
+                    console.trace(err)
+                    reject()
+                } else {
+                    let r = data.rows[0]
+                    resolve(r)
+                }
+            })
+    
+        })
+
+        const project_id = skill_info.google_publish_info ? skill_info.google_publish_info.project_id : null
+
+        if (_.isNil(project_id)) {
+            throw('Project ID not found')
         }
-        console.log("GOOGLE TOKEN", token)
-    })
+
+        const package = generateGactionsPackage(skill_info)
+        await updateGActionsPackage(token, project_id, package)
+        res.status(200).send({
+            project_id: project_id
+        })
+    } catch (e) {
+        console.trace(e)
+        res.status(400).send(`Error while building skill: ${e}`)
+    }
 }
 
-exports.getGoogleSkill = (req, res) => {
+const updateGActionsPackage = (creds, project_id, package) => new Promise(async (resolve, reject) => {
+	let random_id = uuid()
+	let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+	while (fs.existsSync(dir)){
+		random_id = uuid()
+		dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+	}
+	
+	try {
+		await new Promise ((resolve, reject) => {
+			mkdirp(dir, function (err) {
+				if (err) reject(err)
+				else resolve()
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
+				if (err) reject(err)
+				resolve()
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			fs.writeFile(`${dir}/action.json`, package, 'utf8', (err) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve()
+				}
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve()
+				}
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			const gactions = spawn('./gactions', ['test', `--project=${project_id}`, '--action_package=action.json'], {cwd: dir})
+			gactions.stdin.setEncoding('utf-8');		
+		
+			gactions.stdout.on('data', (data) => {
+                if (/ready for testing/.test(data.toString())) {
+                    resolve()
+                }
+			});
+	
+			gactions.stderr.on('data', (data) => {
+                if (/Server did not return HTTP 200/.test(data.toString())) {
+                    reject('Bad request to gactions API. Double-check your Project ID')
+                }
+			})
+		})
+	} catch (e) {
+        await new Promise ((resolve, reject) => {
+            del([dir]).then(resolve()).catch(e => reject(e))
+        })
+        reject(`Unable to update google actions package: ${e}`)
+	}
+	await new Promise ((resolve, reject) => {
+		del([dir]).then(resolve()).catch(e => reject(e))
+    })
+    resolve()
+})
+
+exports.getGoogleSkill = async (req, res) => {
     if (!req.params.id) {
         res.sendStatus(401);
         return;
@@ -1398,7 +1506,7 @@ exports.getGoogleSkill = (req, res) => {
     // TODO: winstonc add google token/id to select query
     sql = `
         SELECT
-            created, google_publish_info
+            created, diagram, google_publish_info
         FROM
             skills
         WHERE
@@ -1406,7 +1514,7 @@ exports.getGoogleSkill = (req, res) => {
             creator_id = $2 LIMIT 1`;
     params = [id, req.user.id];
 
-    pool.query( sql, params, (err, data) => {
+    pool.query( sql, params, async (err, data) => {
         if(err){
             console.trace(err);
             res.sendStatus(500);
@@ -1416,31 +1524,34 @@ exports.getGoogleSkill = (req, res) => {
             let publish_info = data.rows[0].google_publish_info
             let google_id = data.rows[0].google_id
             let created = data.rows[0].created
+            let diagram = data.rows[0].diagram
+
+            const skillResp = {
+                publish_info,
+                created,
+                diagram
+            }
 
             // Rehash the skill id
             if(!google_id){
-                res.send({
-                    publish_info,
-                    created
-                })
+                res.send(skillResp)
             }else{
                 // Sync up with google
                 // Check Current google Status
-                getGoogleAccessToken(req.user.id, async (token) => {
-                    console.log("G ACCESS", token)
-                    if(token === null){
-                        return res.send(publish_info);
-                    }
+                const token = await getGoogleAccessToken(req.user.id)
+                if(token === null){
+                    return res.send(skillResp);
+                }
 
-                    try {
-                        // Check status, in review/live/etc
-                        // Using gactions CLI
-                        res.sendStatus(200)
-                    }catch(err){
-                        console.log(err);
-                        res.send(publish_info);
-                    }
-                });
+                try {
+                    // TODO Check status, in review/live/etc
+                    // Using gactions CLI
+                    skillResp.google_id = google_id
+                    res.send(skillResp)
+                }catch(err){
+                    console.log(err);
+                    res.send(skillResp);
+                }
             }
         }
     });

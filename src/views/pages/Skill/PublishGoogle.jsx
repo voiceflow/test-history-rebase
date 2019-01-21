@@ -6,7 +6,7 @@ import AuthenticationService from '../../../services/Authentication'
 import axios from 'axios'
 import validUrl from 'valid-url'
 
-import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Collapse } from 'reactstrap'
+import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Alert } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import Textarea from 'react-textarea-autosize'
 import moment from 'moment'
@@ -23,17 +23,10 @@ const GOOGLE_PUBLISH_STAGES = {
   "-1": "Login Failed",
   "0": "Authenticate with Google",
   "1": "Verifying Google Auth Token",
-  "2": "Privacy & Compliance",
-  "3": "Rendering",
-  "4": "Publishing",
-  "5": "Developer Account",
-  "6": "Checking Vendor",
-  "7": "Submit For Review",
-  "8": "Building and Submitting",
-  "9": "Privacy & Compliance Ext.",
-  "10": "Submitted for Review",
-  "11": "Awaiting Review",
-  "12": "Confirming Withdraw"
+  "2": "Rendering",
+  "3": "Publishing",
+  "4": "Published",
+  "5": "Review"
 }
 
 const DISALLOW_CHANGES_STAGES = new Set([11, 12])
@@ -49,22 +42,73 @@ class GooglePublish extends Component {
       stage: 1,
       loaded: false,
       publish_modal_open: false,
-      google_token: ''
+      google_token: '',
+      project_id: '',
+      name: this.props.skill.name
     }
 
-    this.googleLogin = this.googleLogin.bind(this)
-    this.googleLoginError = this.googleLoginError.bind(this)
+    this.privacyTop = React.createRef();
+
     this.handleChange = this.handleChange.bind(this)
     this.togglePublish = this.togglePublish.bind(this)
     this.googleAuthTokenContent = this.googleAuthTokenContent.bind(this)
     this.verifyGoogleToken = this.verifyGoogleToken.bind(this)
     this.save = this.save.bind(this)
     this.handleSelection = this.handleSelection.bind(this)
+    this.onPublish = this.onPublish.bind(this)
+    this.onPublishClicked = this.onPublishClicked.bind(this)
+    this.publishedContent = this.publishedContent.bind(this)
   }
 
   togglePublish() {
     this.setState({
       publish_modal_open: !this.state.publish_modal_open
+    });
+  }
+
+  scrollToTop() {
+    this.privacyTop.current.scrollIntoView(true);
+  }
+
+  onPublish() {
+    this.save(true, () => {
+
+      let s = this.state;
+
+      if (!s.project_id) {
+        this.setState({
+          publish_modal_open: false
+        })
+        this.props.onError('Please fill all required fields before publishing')
+        this.scrollToTop();
+        return;
+      }
+
+      this.setState({ stage: 2 });
+
+      axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
+        .then(res => {
+          this.setState({ stage: 3 });
+
+          axios.post(`/skill/${this.state.skill_id}/publishgoogle`)
+            .then(res => {
+              this.setState({
+                stage: 4,
+                project_id: res.data.project_id || this.state.project_id
+              });
+            })
+            .catch(err => {
+              this.setState({
+                stage: 2,
+                publish_modal_open: false
+              })
+              const error_msg = err.response && err.response.data ? err.response.data : err
+              this.props.onError(error_msg)
+            })
+        })
+        .catch(err => {
+          this.props.onError(err)
+        })
     });
   }
 
@@ -90,48 +134,24 @@ class GooglePublish extends Component {
         if (!_.isObject(res.data.publish_info)) {
           const s = this.props.skill
           res.data.publish_info = {
-            name: s.name,
-            inv_name: s.inv_name,
-            category: '',
-            invocations: [''],
-            summary: '',
-            description: ''
+            project_id: ''
           }
         }
 
         const publish_info = res.data.publish_info
 
-        if (publish_info.category) {
-          for (let option of GOOGLE_CATEGORIES) {
-            if (option.value === publish_info.category) {
-              publish_info.category = option;
-              break;
-            }
-          };
-        }
-
-        if (publish_info.invocations && publish_info.invocations.value) {
-          publish_info.invocations = publish_info.invocations.value;
-        }
-
-        if (!Array.isArray(publish_info.invocations) || publish_info.invocations.length === 0) {
-          publish_info.invocations = ['']
-        }
-
         if (publish_info.review) {
-          publish_info.stage = 11;
+          publish_info.stage = 5;
         } else {
           delete publish_info.stage;
         }
-        publish_info.privacy_policy = !_.isEmpty(publish_info.privacy_policy) ?
-          publish_info.privacy_policy :
-          window.location.protocol + '//' + window.location.host + '/creator/privacy_policy'
 
         // TODO: Antipattern, fix this when we do redux
         this.setState({
           loaded: true,
           ...publish_info,
-          created: res.data.created
+          created: res.data.created,
+          diagram: res.data.diagram
         });
       })
       .catch(err => {
@@ -147,69 +167,25 @@ class GooglePublish extends Component {
 
   save(publish = false, cb) {
     const s = this.state;
-    const category = (s.category && s.category.value ? s.category.value : '')
-    let split_keywords = s.keywords ? s.keywords.split(',') : []
 
-    if (s.privacy_policy && !validUrl.isUri(s.privacy_policy)) {
-      this.setState({
-        error: 'Privacy policy must be a url'
-      })
-    } else if (s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)) {
-      this.setState({
-        error: 'Terms and conditions must be a url'
-      })
-    } else if (split_keywords.length > 30) {
-      this.setState({
-        error: 'Limited to 30 keywords'
-      })
-    } else if (s.keywords && s.keywords.length - split_keywords.length + 1 > 500) {
-      this.setState({
-        error: 'The total length of all keywords must be less than or equal to 150'
-      })
-    } else {
-      let store;
+    let store;
 
-      if (publish === true) {
-        store = {
-          purchase: s.purchase,
-          personal: s.personal,
-          copa: s.copa,
-          ads: s.ads,
-          export: s.export,
-          instructions: s.instructions
-        }
-      }
-      axios.patch(`/skill/${this.state.skill_id}?google=true${publish === true ? '&publish=true' : ''}`, {
-        name: s.name,
-        inv_name: s.inv_name,
-        summary: s.summary,
-        description: s.description,
-        keywords: s.keywords,
-        invocations: s.invocations,
-        small_icon: s.small_icon,
-        large_icon: s.large_icon,
-        category: category,
-        locales: s.locales,
-        privacy_policy: !_.isEmpty(s.privacy_policy) ?
-          s.privacy_policy :
-          window.location.protocol + '//' + window.location.host + '/creator/privacy_policy',
-        terms_and_cond: s.terms_and_cond,
-        ...store
-      })
-        .then(res => {
-          // TODO: Antipattern, fix this when we do redux
-          this.setState({
-            saved: true
-          });
-          if (typeof (cb) === 'function') cb();
-        })
-        .catch(err => {
-          console.log(err);
-          this.setState({
-            error: 'Save Error, updates not saved'
-          });
+    axios.patch(`/skill/${this.state.skill_id}?google=true${publish === true ? '&publish=true' : ''}`, {
+      project_id: s.project_id
+    })
+      .then(res => {
+        // TODO: Antipattern, fix this when we do redux
+        this.setState({
+          saved: true
         });
-    }
+        if (typeof (cb) === 'function') cb();
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          error: 'Save Error, updates not saved'
+        });
+      });
   }
 
   handleChange(event) {
@@ -226,32 +202,23 @@ class GooglePublish extends Component {
       stage: 1
     })
     try {
-      const res = await AuthenticationService.verifyGoogleToken(this.state.google_token)
+      await AuthenticationService.verifyGoogleToken(this.state.google_token)
+      this.onPublish()
     } catch (e) {
       this.setState({
-        auth_error: e
+        stage: 0
       })
+      this.props.onError(e)
     }
   }
 
-  async googleLogin(googleResp) {
-    try {
-      await AuthenticationService.googlePublishLogin({
-        code: googleResp.code,
-        creator_id: window.user_detail.id
-      })
-    } catch (e) {
-      this.setState({
-        auth_error: e.response.data
-      })
-    }
-    return false;
-  }
-
-  googleLoginError(error) {
+  onPublishClicked() {
     this.setState({
-      auth_error: error
+      publish_modal_open: true
     })
+    if (this.state.stage === 2) {
+      this.onPublish()
+    }
   }
 
   googleAuthTokenContent() {
@@ -266,7 +233,7 @@ class GooglePublish extends Component {
                 <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" className="google-link">logging in</a> and pasting your authentication token here.</p>
               </div>
               <div className="col-9 vertical-space">
-                <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange}/>
+                <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
                 <div className="subheader-right">
                   <button variant="contained" className="purple-btn google-verify-btn" onClick={this.verifyGoogleToken}>Verify Token <i className="fab fa-google ml-2" /></button>
                 </div>
@@ -278,13 +245,36 @@ class GooglePublish extends Component {
     }
   }
 
+  publishedContent() {
+    if (this.state.stage !== 4) {
+      return null
+    } else {
+      return (
+        <div>
+          <img src="/images/preview.svg" alt="Success" height="160" />
+          <br />
+          You Skill Has been uploaded to Google Actions!
+        <span className="text-muted text-center">
+            You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
+        </span>
+          <div className="my-3">
+            <a href={`https://console.actions.google.com/project/${this.state.project_id}/simulator`}
+              className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+              Test on Google Actions Simulator
+            </a>
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     let modal_content = null
 
     if (
       this.state.stage === 1 ||
+      this.state.stage === 2 ||
       this.state.stage === 3 ||
-      this.state.stage === 4 ||
       this.state.stage === 6 ||
       this.state.stage === 7
     ) {
@@ -294,6 +284,8 @@ class GooglePublish extends Component {
       </div>
     } else if (this.state.stage === 0) {
       modal_content = this.googleAuthTokenContent()
+    } else if (this.state.stage === 4) {
+      modal_content = this.publishedContent()
     }
 
     let googleConsoleUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${this.state.amzn_id}/development/en_US/dashboard`;
@@ -314,7 +306,7 @@ class GooglePublish extends Component {
               <small> / created {moment(this.state.created).fromNow()}</small>
             </span>
             <div className="subheader-right">
-              <button variant="contained" className="purple-btn" onClick={() => this.setState({ publish_modal_open: true })}>Publish Skill <i className="fab fa-google ml-2" /></button>
+              <button variant="contained" className="purple-btn" onClick={this.onPublishClicked}>Publish Skill <i className="fab fa-google ml-2" /></button>
             </div>
           </div>
         </div>
@@ -348,92 +340,14 @@ class GooglePublish extends Component {
           <hr className="mt-0"></hr>
           <div className="row">
             <div className="col-2">
-              {this.state.name ?
+              {this.state.project_id ?
                 <i className="fal fa-check-circle text-success"></i>
                 :
                 <i className="fal fa-times-circle text-danger"></i>
               }
             </div>
             <div className="col-10">
-              <p>Display Name</p>
-            </div>
-          </div>
-          <hr className="mt-0"></hr>
-          <div className="row">
-            <div className="col-2">
-              {this.state.inv_name ?
-                <i className="fal fa-check-circle text-success"></i>
-                :
-                <i className="fal fa-times-circle text-danger"></i>
-              }
-            </div>
-            <div className="col-10">
-              <p>Invocation Name</p>
-            </div>
-          </div>
-          <hr className="mt-0"></hr>
-          <div className="row">
-            <div className="col-2">
-              {this.state.small_icon && this.state.large_icon ?
-                <i className="fal fa-check-circle text-success"></i>
-                :
-                <i className="fal fa-times-circle text-danger"></i>
-              }
-            </div>
-            <div className="col-10">
-              <p>Icons</p>
-            </div>
-          </div>
-          <hr className="mt-0"></hr>
-          <div className="row">
-            <div className="col-2">
-              {this.state.summary ?
-                <i className="fal fa-check-circle text-success"></i>
-                :
-                <i className="fal fa-times-circle text-danger"></i>
-              }
-            </div>
-            <div className="col-10">
-              <p>Summary</p>
-            </div>
-          </div>
-          <hr className="mt-0"></hr>
-          <div className="row">
-            <div className="col-2">
-              {this.state.description ?
-                <i className="fal fa-check-circle text-success"></i>
-                :
-                <i className="fal fa-times-circle text-danger"></i>
-              }
-            </div>
-            <div className="col-10">
-              <p>Description</p>
-            </div>
-          </div>
-          <hr className="mt-0"></hr>
-          <div className="row">
-            <div className="col-2">
-              {this.state.category ?
-                <i className="fal fa-check-circle text-success"></i>
-                :
-                <i className="fal fa-times-circle text-danger"></i>
-              }
-            </div>
-            <div className="col-10">
-              <p>Category</p>
-            </div>
-          </div>
-          <hr className="mt-0"></hr>
-          <div className="row">
-            <div className="col-2">
-              {this.state.invocations[0] ?
-                <i className="fal fa-check-circle text-success"></i>
-                :
-                <i className="fal fa-times-circle text-danger"></i>
-              }
-            </div>
-            <div className="col-10">
-              <p>Invocations</p>
+              <p>Project ID</p>
             </div>
           </div>
         </span>
@@ -448,7 +362,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              {this.state.google_id ?
+              {this.state.published ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on the Google Actions Console</span>
@@ -479,153 +393,15 @@ class GooglePublish extends Component {
                   <div className="row">
                     <div className="col-3 publish-info"></div>
                     <div className="col-9">
-                      <Label>Display Name *</Label>
+                      <Label>Google Project ID *</Label>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on Google Assistant</p>
+                      <p className="mb-0 text-secondary">Your <b>Google Project ID</b> for publishing. Instructions can be found <a href="#" className="google-link">here</a></p>
                     </div>
                     <div className="col-9">
-                      <Input className="form-bg" type="text" name="name" placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
-                    </div>
-                  </div>
-                </FormGroup>
-
-                <FormGroup>
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Invocation Name *</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
-                    </div>
-                    <div className="col-9">
-                      <Input className="form-bg" type="text" name="inv_name" placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
-                    </div>
-                  </div>
-                </FormGroup>
-
-                <div className="d-flex row">
-                  <div className="col-3 publish-info">
-                    <p className="text-secondary mt-5"><b>Icons</b> are what will be displayed for your Skill in the Google Assistant Store.</p>
-                  </div>
-                  <div className="col-9 d-flex">
-                    <div>
-                      <label className="mt-0">Small icon *</label>
-                      <Image
-                        className='icon-image small-icon'
-                        path='/small_icon'
-                        image={this.state.small_icon}
-                        update={(url) => this.setState({ small_icon: url })} />
-                    </div>
-                    <div className="pl-3">
-                      <label className="mt-0">Large icon *</label>
-                      <Image
-                        className='icon-image large-icon'
-                        path='/large_icon'
-                        image={this.state.large_icon}
-                        update={(url) => this.setState({ large_icon: url })} />
-                    </div>
-                  </div>
-                </div>
-
-                <FormGroup className="mt-0">
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Summary *</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        <b>Summary</b> is a one sentence description of your amazing Skill.
-                          </p>
-                    </div>
-                    <div className="col-9">
-                      <Input className="form-bg" type="text" name="summary" placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
-                    </div>
-                  </div>
-                </FormGroup>
-
-                <FormGroup>
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Description *</Label>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        <b>Description</b> is where you can provide a more detailed explanation of your Skill.
-                          </p>
-                    </div>
-                    <div className="col-9">
-                      <Textarea
-                        name="description"
-                        className="form-control"
-                        value={this.state.description}
-                        onChange={this.handleChange}
-                        minRows={3}
-                        placeholder="Skill Description"
-                      />
-                    </div>
-                  </div>
-                </FormGroup>
-
-                <FormGroup>
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Category *</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
-                          </p>
-                    </div>
-                    <div className="col-9">
-                      <Select
-                        className="input-select"
-                        name="category"
-                        value={this.state.category}
-                        onChange={this.handleSelection}
-                        options={GOOGLE_CATEGORIES}
-                      />
-                    </div>
-                  </div>
-                </FormGroup>
-
-
-                <FormGroup className="mt-0">
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Invocations *</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 mt-3 publish-info">
-                      <p className="text-secondary"><b>Invocations</b> are the various phrases that Google will detect to run your Skill.</p>
-                    </div>
-                    <div className="col-9">
-                      <Multiple
-                        className="mt-0 input-group-text"
-                        list={this.state.invocations}
-                        max={3}
-                        prepend="Alexa,"
-                        update={(list) => this.setState({ invocations: list, saved: false })}
-                        placeholder={"open/start/launch " + this.state.name}
-                        add={<span><i className="fas fa-plus" /> Add Invocation</span>}
-                      />
+                      <Input className="form-bg" type="text" name="project_id" placeholder="Sample-Project-abc123" value={this.state.project_id} onChange={this.handleChange} />
                     </div>
                   </div>
                 </FormGroup>

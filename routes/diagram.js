@@ -402,7 +402,7 @@ const publishTest = async (req, res) => {
 
   let used_intents = new Set()
   let used_choices = new Set()
-  let status = await renderDiagram(req.user, req.params.diagram_id, {used_intents, used_choices, intents, slots, type: 'TEST'})
+  let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {used_intents, used_choices, intents, slots})
 
   res.sendStatus(status)
 }

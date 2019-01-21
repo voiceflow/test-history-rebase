@@ -51,7 +51,7 @@ class FulfillInput extends PureComponent {
         text: ''
       })
     }
-    this.props.onUpdate()
+    this.props.onInputUpdate()
   }
 
 
@@ -74,7 +74,7 @@ class FulfillInput extends PureComponent {
     const slot_config = this.props.slot_config
     slot_config.splice(i, 1)
     this.forceUpdate()
-    this.props.onUpdate()
+    this.props.onInputUpdate()
   }
 
   render() {

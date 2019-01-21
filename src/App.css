@@ -327,6 +327,7 @@ audio {
 .alert-danger{
     color: #ff3562 !important;
     background-color: #ff7c8824 !important;
+    border-color: transparent;
 }
 .text-dark {
     color: #132144 !important;
@@ -766,8 +767,8 @@ label {
     box-shadow: 0 0 1px 1px rgba(43, 57, 80, 0.04) !important;
     border: 1px solid rgba(141, 162, 181, 0.4) !important;
     font-size: 15px !important;
-    height: 45px !important;
-/*    min-height: 45px;*/
+    /* height: 45px !important; */
+    min-height: 45px !important;
 }
 .disabled-form{
     color: #8da2b590 !important;
@@ -897,7 +898,6 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .pointer {
     cursor: pointer;
 }
-
 .prompt b, .prompt-text {
     color: #95A6BD;
     font-size: 1rem;
@@ -1260,10 +1260,11 @@ body.modal-open {
     border-color: #fff;
     position: relative;
     z-index: 1;
+    background-position-y: -12px;
     background-image: url("/saved.svg"), linear-gradient(-180deg,rgba(47,208,193,.12),rgba(47,208,193,.15) 98%) !important;
 }
 .btn-successful:hover{
-    background-image: url("/saved.svg"), linear-gradient(-180deg,rgba(47,208,193,.15),rgba(47,208,193,.22) 98%) !important;
+    background-image: url("/saved-2.svg"), linear-gradient(-180deg,rgba(47,208,193,.15),rgba(47,208,193,.22) 98%) !important;
 }
 .tippy-tooltip {
     /*background-color: #42A5FF !important;*/

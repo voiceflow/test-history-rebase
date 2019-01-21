@@ -11,21 +11,26 @@ class ErrorScreen extends PureComponent {
         switch(this.props.error.type){
             case 'socket-fail':
                 return <div className="text-center">
-                    <h5 className="text-muted mb-5">Unable to connect to Voiceflow</h5>
-                    <Alert>
-                        Try Refreshing or Contact Us
+                    <img className="login-logo mb-5" src="/logo.svg" alt="logo"/>
+                    <h5 className="text-muted mb-4">Lost Connection to Voiceflow Sessions</h5>
+                    <Alert className="mb-4">
+                        We won't be able to verify if there are other sessions logged on to this account - This may cause save issues if different sessions save over each other
                     </Alert>
+                    <button onClick={this.props.error.action} className="btn purple-btn">Continue Anyway</button>
                 </div>
             case 'socket-used':
                 return <div className="text-center">
-                    <img className="login-logo mb-5" src="/logo.svg" alt="logo"/>
+                    <img className="login-logo mb-4" src="/logo.svg" alt="logo"/>
                     <h5 className="text-muted">This Account is currently in use in another session</h5>
-                    <p className="d-block mb-5">(You may have another Browser Tab open)</p>
+                    <p className="d-block mb-4">(You may have another Browser Tab open)</p>
                     <Alert className="text-left">
                         <u>Open Session Details</u><br/>
                         <b>IP:</b> {this.props.error.data.ip} <br/>
                         <b>Browser:</b> {this.props.error.data.device.browser} <br/>
                         <b>OS:</b> {this.props.error.data.device.os} <br/>
+                    </Alert>
+                    <Alert color="danger">
+                        This may cause project save issues if different sessions save over each other
                     </Alert>
                 </div>
             default:

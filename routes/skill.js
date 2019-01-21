@@ -674,7 +674,7 @@ exports.checkInterationModel = async (req, res) => {
         res.send(result.data)
       })
       .catch(err => {
-        console.trace(err)
+        logAxiosError(err, 'CHECK INTERACTION MODEL')
         res.sendStatus(500)
       })
   })
@@ -1345,7 +1345,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     })
   }
 
-  const renderSkill = async (skill, skill_id) => {
+  const renderSkill = async (skill) => {
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS
@@ -1363,8 +1363,9 @@ exports.copySkill = async (req, res, options, cb = false) => {
     try{
       await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
       // UPDATE SKILL 
+      console.log('coming out', permissions)
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
-      [skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
+      [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
     }catch(err){
       console.trace(err)
     }
@@ -1450,7 +1451,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         copyAllTemplates(id, copy_skill.skill_id)
 
         if(options.renderDiagram){
-          await renderSkill(copy_skill, new_creator_id)
+          await renderSkill(copy_skill)
         }
 
         // Default name of cb when no callback provided is 'next'

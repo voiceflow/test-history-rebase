@@ -223,13 +223,13 @@ export default {
 	}),
 	verifyGoogleToken: (token) => new Promise((resolve, reject) => {
 		axios.post('/session/google/verify_token', {
-			token: token
+			token: token,
 		})
 		.then(res => {
 			resolve(res)
 		})
 		.catch(() => {
-			reject('Error with verifying access token');
+			reject('Invalid access token, please try again');
 		});
 	})
 }

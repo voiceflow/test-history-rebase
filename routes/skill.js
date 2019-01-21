@@ -1363,7 +1363,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
     try{
       await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
       // UPDATE SKILL 
-      console.log('coming out', permissions)
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
       [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
     }catch(err){

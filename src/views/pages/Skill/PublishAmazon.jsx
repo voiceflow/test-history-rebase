@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import validUrl from 'valid-url'
 
-import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Alert, Collapse } from 'reactstrap'
+import { Button, ButtonGroup, Form,
+  FormGroup, Label, Input, Modal,
+  ModalBody, Alert, Collapse
+} from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import MUFormGroup from '@material-ui/core/FormGroup'
@@ -59,7 +62,7 @@ class Skill extends Component {
             id_collapse: false,
             amzn_id: null,
             stage_error: null,
-            displayingConfirmWithdraw: false,
+            displayingConfirmWithdraw: false
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -249,8 +252,9 @@ class Skill extends Component {
             axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
             .then(res => {
                 this.setState({stage: 4});
-
-                axios.post(`/skill/${this.state.skill_id}/publish`)
+                let new_version_data = res.data
+                this.props.addVersion(new_version_data)
+                axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                 .then(res => {
                     this.setState({
                         stage: 8,
@@ -293,6 +297,32 @@ class Skill extends Component {
         }
     }
 
+    validateForm() {
+      const s = this.state;
+      let split_keywords = s.keywords.split(',')
+      if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
+          this.setState({
+              error: 'Privacy policy must be a url'
+          })
+      } else if(s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)){
+          this.setState({
+              error: 'Terms and conditions must be a url'
+          })
+      } else if(split_keywords.length > 30) {
+          this.setState({
+              error: 'Limited to 30 keywords'
+          })
+      } else if(s.keywords.length - split_keywords.length + 1> 500) {
+          this.setState({
+              error: 'The total length of all keywords must be less than or equal to 150'
+          })
+      } else {
+        this.setState({
+          publish: true,
+          error: null
+        })
+      }
+    }
     save(publish=false, cb){
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
@@ -592,7 +622,16 @@ class Skill extends Component {
                         {disabled_stages.has(this.state.stage)?
                             null:
                             <div className="subheader-right">
-                                <button variant="contained" className="purple-btn" onClick={() => this.setState({publish: true})}>Publish Skill <i className="fab fa-amazon ml-2"/></button>
+                                <button
+                                  variant="contained"
+                                  className="purple-btn"
+                                  onClick={() => {
+                                    this.validateForm()
+                                  }}
+                                >
+                                  Publish Skill
+                                  <i className="fab fa-amazon ml-2"/>
+                                </button>
                             </div>
                         }
                     </div>

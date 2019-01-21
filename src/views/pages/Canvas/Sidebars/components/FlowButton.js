@@ -62,7 +62,7 @@ class FlowButton extends Component {
                 <ButtonGroup className="diagram-block">
                     <Button disabled={active} 
                         onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)} block>
-                        <span className="diagram-text">{this.props.flow.name}</span>
+                        <span className="diagram-text">{this.props.flow.name === 'ROOT' ? 'HOME' : this.props.flow.name}</span>
                     </Button>
                     { this.props.flow.name !== 'ROOT' && 
                         <UncontrolledDropdown inNavbar>

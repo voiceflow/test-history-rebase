@@ -44,6 +44,7 @@ const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
+const Mail = require('./routes/mail.js');
 
 app.use(cors())
 app.use(helmet())
@@ -141,6 +142,8 @@ app.post('/test/api', ensureLoggedIn(), Test.api)
 app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
 app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
 
+app.post('/requestPDF', ensureLoggedIn(), Mail.sendRequestPDFEmail);
+
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
@@ -158,10 +161,12 @@ app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
+app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
+app.post('/skill/:restore_id/:canonical_skill_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
-app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), Skill.copySkill)
+app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), (req, res) => Skill.copySkill(req, res, {append_copy_str: true, user_copy: true}))
 app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:sid/product/:pid', ensureLoggedIn(), Skill.getProduct);

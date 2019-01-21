@@ -16,7 +16,9 @@ const { getEnvVariable } = require('../util')
 			}else if(result.rows.length === 0){
 				res.sendStatus(404);
 			}else{
-        result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+				if(result.rows[0].account_linking){
+					result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+				}
 				result.rows[0].skill_id = hashids.encode(result.rows[0].skill_id);
 				res.send(result.rows[0]);
 			}
@@ -31,8 +33,9 @@ const { getEnvVariable } = require('../util')
  	if(isNaN(skill_id)){
 		return res.sendStatus(400)
 	}
-  let account_linking = req.body
-  account_linking.clientSecret = jwt.sign(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
+	if(req.body){
+		let account_linking = req.body
+		account_linking.clientSecret = jwt.sign(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
  		pool.query(
 			'UPDATE skills SET account_linking = $2 WHERE (creator_id = $1 AND skill_id = $3) RETURNING *',
 			[req.user.id, account_linking, skill_id], (err, skill) => {
@@ -45,6 +48,7 @@ const { getEnvVariable } = require('../util')
 					res.send(skill.rows[0]);
 				}
 		})
+	}
 }
 
  // exports.deleteTemplate = (req, res) => {

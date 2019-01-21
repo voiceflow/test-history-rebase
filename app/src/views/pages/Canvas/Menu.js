@@ -14,8 +14,9 @@ const tabs = {
         {tab: "variables", icon: <i className="fas fa-code"/>, tip: 'Variables'},
     ],
     bottom: [
-        {link: "https://university.getvoiceflow.com/", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials & help through Voiceflow University'},
-        {link: "https://www.facebook.com/groups/199476704186240/", icon: <i className="fab fa-facebook-f"/>, tip: 'Join the Voiceflow Community for help & updates'}
+        {link: "https://forum.getvoiceflow.com", icon: <i className="fas fa-question-square"/>, tip: 'Join the Voiceflow Forum for help & updates'},
+        {link: "https://university.getvoiceflow.com/", icon: <i className="fas fa-graduation-cap"/>, tip: 'Access tutorials through Voiceflow University'},
+        {link: "https://www.facebook.com/groups/199476704186240/", icon: <i className="fab fa-facebook-f"/>, tip: 'Join the Voiceflow Facebook Community'}
     ]
 }
 
@@ -236,6 +237,7 @@ class Menu extends PureComponent {
                     global_variables={this.props.global_variables}
                     onGlobalVariable={this.props.onGlobalVariable}
                     onVariable={this.props.onVariable}
+                    onError={this.props.onError}
                 />
             case 'project':
                 return <Project

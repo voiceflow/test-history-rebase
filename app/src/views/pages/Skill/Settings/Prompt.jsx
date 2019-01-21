@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import { VOICES } from './../Canvas/Constants'
-import AudioDrop from '../../components/Uploads/AudioDrop'
+import { VOICES } from './../../Canvas/Constants'
+import AudioDrop from 'views/components/Uploads/AudioDrop'
 import Textarea from 'react-textarea-autosize'
 import Select from 'react-select'
 import {Button, ButtonGroup} from 'reactstrap'

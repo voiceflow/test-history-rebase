@@ -241,11 +241,11 @@ class DashBoard extends Component {
                                 placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
                                 onDelete={this.deleteSkill}
                                 onCopy={this.copySkill}
-                                deleteLabel="Delete Skill"
-                                copyLabel="Copy Skill"
+                                deleteLabel="Delete Project"
+                                copyLabel="Copy Project"
                                 onClick={this.openSkill}
                                 extension={skill.diagram}
-                                buttonLabel="Edit Skill"
+                                buttonLabel="Edit Project"
                             />
                         )
                     })}
@@ -266,7 +266,7 @@ class DashBoard extends Component {
                                 <small><i className="far fa-user mr-1"></i></small>{' '}
                                 {this.props.user.name}{' '}
                                 <small><i className="far fa-chevron-right"/></small>{' '}
-                                <span className="text-secondary">Skills</span>
+                                <span className="text-secondary">Projects</span>
                             </div>
                         </span>
                         <div className="subheader-right">

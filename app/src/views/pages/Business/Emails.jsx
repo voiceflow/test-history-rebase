@@ -78,7 +78,7 @@ class Emails extends Component {
                     {this.state.templates.length === 0 ?
                         <div className="super-center w-100 h-100">
                             <div className="empty-container">
-                                <img src='/images/OpenSafe.svg' alt="open safe"/>
+                                <img src='/images/email_2.svg' alt="open safe"/>
                                 <p className="empty">No Email Templates Exist</p>
                                 <p className="empty-desc">Add Email Templates to engage your users</p>
                                 <Link to={`/business/${this.props.skill_id}/email/new`} className="no-underline">

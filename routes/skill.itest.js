@@ -1,7 +1,7 @@
 const app = require('../app')
 const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
-const {pool} = require('./../services')
+const { pool, hashids } = require('./../services')
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -13,9 +13,11 @@ const generateID = () => {
 
 const getTemplate = new Promise((resolve, reject) => {
   pool.query(`SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1`, (err, res)=>{
-    if(err || res.rows.length === 0){
+    if(err){
       reject(err)
-    }else{
+    } else if (res.rows.length === 0) {
+      resolve(null)
+    } else{
       resolve(res.rows[0].module_id)
     }
   })
@@ -42,11 +44,20 @@ describe('Skill', () => {
     })
   })
 
-  describe('Creation', async () => {
-    let module_id = await getTemplate
+  describe('Creation', () => {
+    let module_id
+
+    beforeAll(async () => {
+      try{
+        module_id = await getTemplate
+      } catch (e) {
+        module_id = null
+      }
+    })
+
     it('creates skill', done => {
       request(app)
-        .post(`/marketplace/template/${module_id}/copy`)
+        .post(`/marketplace/template/${hashids.encode(module_id)}/copy`)
         .send({
           name: 'Test',
           locales: ['en-US']
@@ -54,11 +65,11 @@ describe('Skill', () => {
         .set('cookie', 'auth='+token)
         .expect(200)
         .expect(res => {
-          if (!('id' in res.body)) throw new Error('missing id')
+          if (!('skill_id' in res.body)) throw new Error('missing id')
         })
         .end((err, res) => {
           if (err) throw err
-          skill_id = res.body.id
+          skill_id = res.body.skill_id
           done()
         })
     })
@@ -130,7 +141,6 @@ describe('Skill', () => {
           if (res.body.skill_id !== skill_id) throw new Error('incorrect result')
           if (!('name' in res.body)) throw new Error('missing name')
           if (!('preview' in res.body)) throw new Error('missing preview')
-          if ('diagram' in res.body) throw new Error('additional data')
         })
         .end((err, res) => {
           if (err) throw err

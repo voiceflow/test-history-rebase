@@ -9,7 +9,10 @@ const { getEnvVariable } = require('./util')
 
 // eslint-disable-next-line no-console
 if (process.env.NODE_ENV !== 'test') {
-    const io = require('socket.io')(app.listen(port, () => console.log(`${name} | PORT ${port}`)))
+    const io = require('socket.io')(app.listen(port, () => console.log(`${name} | PORT ${port}`)), {
+        pingInterval: 25000,
+        pingTimeout: 60000
+    })
     const redisAdapter = require('socket.io-redis')
     io.adapter(redisAdapter({ host: getEnvVariable('REDIS_CLUSTER_HOST'), port: getEnvVariable('REDIS_CLUSTER_PORT') }))
     require('./sockets')(io)

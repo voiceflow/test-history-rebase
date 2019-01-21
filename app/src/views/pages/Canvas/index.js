@@ -26,7 +26,7 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
 import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL, ALLOWED_GOOGLE_BLOCKS } from './Constants'
 
-import { getIntentSlots } from '../../../util'
+import { getIntentSlots } from 'Helper'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
@@ -108,7 +108,6 @@ class Canvas extends Component {
         this.loadDiagram = this.loadDiagram.bind(this)
         this.setVariables = this.setVariables.bind(this)
         this.setGlobalVariables = this.setGlobalVariables.bind(this)
-        this.setAccessTokenVariable = this.setAccessTokenVariable.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.onSave = this.onSave.bind(this)
         this.onTest = this.onTest.bind(this)
@@ -155,18 +154,6 @@ class Canvas extends Component {
         this.onboarding = localStorage.getItem('onboarding')
         this.loaded = false
 
-        let globals = props.skill.global
-
-        // make sure that there are no duplicate variables and that the defaults are included
-        let global_variables = defaultVariables.slice(0)
-        if (Array.isArray(globals)) {
-            globals.forEach(v => {
-                if(!global_variables.includes(v)){
-                    global_variables.push(v)
-                }
-            })
-        }
-
         // Intent Variables All Skills Must Have
         let skill = {
             intents: [],
@@ -189,7 +176,6 @@ class Canvas extends Component {
             testing_modal: false,
             testing_info: false,
             variables: [],
-            global_variables: global_variables,
             help: null,
             helpOpen: false,
             currentProduct: null,
@@ -605,22 +591,13 @@ class Canvas extends Component {
             var data = JSON.stringify(serialize)
 
             let sub_diagrams = []
-            let permissions = new Set()
             let used_intent_names = new Set()
             let used_intents = []
-            let account_linking = this.state.account_linking;
-            let access_token_variable = this.state.access_token_variable;
 
             serialize.nodes.forEach(node => {
                 if(node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id)
-                }
-                else if (node.extras.type === 'permissions') {
-                    node.extras.permissions.forEach(permission => {
-                        permissions.add(permission.selected.value)
-                    })
-                }
-                else if (node.extras.type === 'interaction') {
+                }else if (node.extras.type === 'interaction') {
                     node.extras.choices.forEach(choice => {
                         if (choice.intent && !used_intent_names.has(choice.intent.value)) {
                             if (choice.intent.built_in) {
@@ -640,8 +617,6 @@ class Canvas extends Component {
                 }
             })
 
-            permissions = [...permissions]
-
             for (var i = 0; i < this.state.diagrams.length; i++) {
                 let diagrams = this.state.diagrams
                 if(diagrams[i].id === this.props.diagram_id){
@@ -658,7 +633,7 @@ class Canvas extends Component {
 
             // UPDATE SKILL GLOBALS HOTFIX
             let skill = this.state.skill;
-            skill.global = this.state.global_variables
+            skill.global = this.state.skill.global
             this.props.updateSkill(skill)
 
             var diagram = {
@@ -668,10 +643,8 @@ class Canvas extends Component {
                 data: data,
                 skill: this.state.skill.skill_id,
                 sub_diagrams: JSON.stringify(sub_diagrams),
-                permissions: permissions,
                 used_intents: used_intents,
-                global: this.state.global_variables,
-                access_token_variable: this.state.access_token_variable
+                global: this.state.skill.global
             }
 
             const s = this.state.skill;
@@ -773,7 +746,7 @@ class Canvas extends Component {
             let variables = []
             if (Array.isArray(diagram.variables)) {
                 diagram.variables.forEach(v => {
-                    if(!variables.includes(v) && !this.state.global_variables.includes(v)){
+                    if(!variables.includes(v) && !this.state.skill.global.includes(v)){
                         variables.push(v)
                     }
                 })
@@ -895,16 +868,13 @@ class Canvas extends Component {
     }
 
     setGlobalVariables(variables) {
+        let skill = this.state.skill
+        skill.global = variables
         this.setState({
-            global_variables: variables,
+            skill: skill,
             saved: false
         })
-    }
-
-    setAccessTokenVariable(variable) {
-        this.setState({
-            access_token_variable: variable
-        })
+        this.props.updateSkill(skill)
     }
 
     toggleTestModal() {
@@ -1228,6 +1198,7 @@ class Canvas extends Component {
         if(!name){
             name = type.charAt(0).toUpperCase() + type.substr(1)
         }
+
         var node = new BlockNodeModel(name)
 
         if(type){
@@ -1281,6 +1252,13 @@ class Canvas extends Component {
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
                     cardtype: 'Simple'
+                }
+            } else if (type === 'reminder') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.extras = {
+                    reminder: null
                 }
             } else if (type === 'flow') {
                 node.addInPort(' ')
@@ -1529,6 +1507,7 @@ class Canvas extends Component {
                         toggleGoogle={this.toggleGoogle}
                         isGoogle={this.state.google}
                         updateSkill={this.updateSkill}
+                        addVersion={this.props.addVersion}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -1542,7 +1521,7 @@ class Canvas extends Component {
                         testing_info={this.state.testing_info}
                         diagrams={this.state.diagrams}
                         slots={this.state.skill.slots}
-                        globals={this.state.global_variables}
+                        globals={this.state.skill.global}
                         unfocus={this.onDiagramUnfocus}
                     />
                 : null}
@@ -1555,7 +1534,7 @@ class Canvas extends Component {
                         current={this.props.diagram_id}
                         enterFlow={this.enterFlow}
                         variables={this.state.variables}
-                        global_variables={this.state.global_variables}
+                        global_variables={this.state.skill.global}
                         onGlobalVariable={this.setGlobalVariables}
                         onVariable={this.setVariables}
                         build={fn => this.buildDiagrams = fn}
@@ -1569,6 +1548,7 @@ class Canvas extends Component {
                         saving={this.state.saving}
                         preview={this.props.preview}
                         onSave={this.onSave}
+                        onError={this.props.onError}
                     />
                     <TitleBar
                         onTest={this.onTest}
@@ -1592,7 +1572,7 @@ class Canvas extends Component {
                         close={e => this.setState({ open: false })}
                         repaint={this.repaint}
                         variables={this.state.variables}
-                        global_variables={this.state.global_variables}
+                        global_variables={this.state.skill.global}
                         setHelp={(help) => this.setState({help: help, helpOpen: true})}
                         diagrams={this.state.diagrams}
                         createDiagram={this.createDiagram}
@@ -1615,8 +1595,6 @@ class Canvas extends Component {
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
                         products={this.state.products}
-                        access_token_variable={this.state.access_token_variable}
-                        setAccessTokenVariable={this.setAccessTokenVariable}
                     />
                     <div
                         key={this.props.diagram_id}

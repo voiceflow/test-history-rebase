@@ -14,7 +14,7 @@ class ReminderBlock extends Component {
 
     render() {
         return (<div>
-            <textarea placeholder="JSON Value here" onChange={this.change} value={this.props.node.extras.reminder}/>
+            <textarea placeholder="JSON Value here" onChange={this.updateReminder} value={this.props.node.extras.reminder}/>
         </div>)
     }
 }

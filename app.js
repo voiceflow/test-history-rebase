@@ -167,7 +167,7 @@ app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:sid/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
-app.post('/amazon/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
+app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);

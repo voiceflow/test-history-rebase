@@ -1145,7 +1145,7 @@ background-color: rgb(245, 249, 255) !important;
 
 #Editor label {
     display: inline-block;
-    font-weight: 400;
+    font-weight: 500 !important;
     vertical-align: middle;
     margin-bottom: 10px;
 /*    background-color: #42A5FF !important;*/
@@ -1390,7 +1390,7 @@ label {
 }
 .srd-default-node.link_account{
   background-color: #fff;
-  border-top: 6px solid 	#006400;
+  border-top: 6px solid 	#2fd0c1;
   border-color: #2fd0c1 !important;
 }
 .srd-default-node.permissions{
@@ -1400,8 +1400,8 @@ label {
 }
 .srd-default-node.link_account{
     background-color: #fff;
-    border-top: 6px solid green;
-    border-color: green !important;
+    border-top: 6px solid #2fd0c1;
+    border-color: #2fd0c1 !important;
 }
 
 .srd-default-node.module{

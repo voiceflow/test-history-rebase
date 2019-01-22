@@ -5,7 +5,10 @@ import update from 'immutability-helper'
 import {Alert, FormGroup, Label, Button, Input} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import Prompt from './Prompt'
+import AceEditor from 'react-ace';
 
+import 'brace/mode/json';
+import 'brace/ext/language_tools';
 class BasicAdvancedSettings extends Component{
 
     constructor(props){
@@ -49,7 +52,8 @@ class BasicAdvancedSettings extends Component{
                     error_prompt: props.skill.error_prompt,
                     resume_prompt: props.skill.resume_prompt,
                     intents: props.skill.intents,
-                    slots: props.skill.slots
+                    slots: props.skill.slots,
+                    alexa_events: props.skill.alexa_events ? props.skill.alexa_events : ''
                 },
                 hide_resume: hidden
             }
@@ -120,6 +124,12 @@ class BasicAdvancedSettings extends Component{
         if (!this.state.skill.error_prompt.content) {
             skill.error_prompt = null
         }
+        try{
+            JSON.parse(skill.alexa_events)
+        }catch(err){
+            this.props.onError('Invalid JSON For Skill Events: '+ err.message)
+            return
+        }
 
         this.setState({ saving: true })
         axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, skill)
@@ -151,6 +161,36 @@ class BasicAdvancedSettings extends Component{
                                 })
                             })}
                         />
+                        <hr/>
+                        {window.user_detail.admin > 60 && <div className="mt-4">
+                            <Label>Skill Events (events: {'{object}'})</Label>
+                            <AceEditor
+                                name="datasource_editor"
+                                className="datasource_editor"
+                                mode="json"
+                                onChange={(value) => {
+                                    let skill = this.state.skill
+                                    skill.alexa_events = value
+                                    this.setState({
+                                        skill: skill
+                                    })
+                                }}
+                                fontSize={14}
+                                showPrintMargin={false}
+                                showGutter={true}
+                                highlightActiveLine={true}
+                                value={this.state.skill.alexa_events}
+                                editorProps={{$blockScrolling: true}}
+                                setOptions={{
+                                    enableBasicAutocompletion: true,
+                                    enableLiveAutocompletion: false,
+                                    enableSnippets: false,
+                                    showLineNumbers: true,
+                                    tabSize: 2,
+                                    useWorker: false
+                                }}
+                            />
+                        </div>}
                         <hr />
                         <Label>Delete Project</Label>
                         <Alert color="danger between">

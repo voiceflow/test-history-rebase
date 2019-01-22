@@ -1113,7 +1113,7 @@ exports.certifySkill = (req, res) => {
                           event: 'Submitted for Certification',
                           properties: {
                               amzn_id: req.params.amzn_id,
-                              skill_id: id
+                              skill_id: hashids.decode(req.params.id)[0]
                           }
                         })
                         res.sendStatus(200);

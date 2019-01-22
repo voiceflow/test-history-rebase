@@ -16,7 +16,16 @@ class ConfirmModal extends React.Component {
         </ModalBody>
         <ModalFooter className="justify-content-center">
           <Button color="clear" onClick={this.props.toggle}>Cancel</Button>
-          <Button color={this.props.confirm.warning ? "warning" : "primary"} onClick={this.props.confirm.confirm}>Confirm</Button>{' '}
+          <Button color={this.props.confirm.warning ? "warning" : "primary"} 
+            onClick={() => {
+              if(this.props.confirm.params){
+                this.props.confirm.confirm(...this.props.confirm.params)
+              } else {
+                this.props.confirm.confirm()
+              }
+            }}>
+            Confirm
+          </Button>{' '}
         </ModalFooter>
       </Modal>
     );

@@ -8,8 +8,7 @@ const {jwt, docClient, pool, redisClient, config, hashids} = require('./../servi
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
-const Analytics = require('analytics-node')
-const analytics = new Analytics(process.env.SEGMENT_WRITE_KEY)
+const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 

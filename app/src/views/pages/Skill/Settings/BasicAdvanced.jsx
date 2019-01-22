@@ -1,52 +1,29 @@
-import React, { Component } from 'react'
-import { Input, Alert, ButtonGroup, Button, FormGroup, Label } from 'reactstrap'
-import Switch from '@material-ui/core/Switch'
+import React, {Component} from 'react'
+import _ from 'lodash'
 import axios from 'axios'
 import update from 'immutability-helper'
+import {Alert, FormGroup, Label, Button, Input} from 'reactstrap'
+import Switch from '@material-ui/core/Switch'
 import Prompt from './Prompt'
-import CanFulfill from './Canfulfill'
-import { clone } from 'lodash'
-import _ from 'lodash'
-import ErrorModal from '../../../views/components/Modals/ErrorModal'
 
-import { intentHasSlots } from '../../../util'
+class BasicAdvancedSettings extends Component{
 
-import { BUILT_IN_INTENTS } from '../Canvas/Constants'
-
-const BUILT_INS = BUILT_IN_INTENTS.map(intent => {
-    return {
-        built_in: true,
-        name: intent.name,
-        key: intent.name,
-        inputs: [{
-            text: '',
-            slots: intent.slots
-        }]
-    }
-})
-
-const TABS = ['basic', 'advanced', 'discovery']
-
-class Settings extends Component {
-    constructor(props) {
+    constructor(props){
         super(props)
 
         this.state = {
             skill: null,
             saving: false,
-            hide_resume: true,
-            add_intent: null
+            hide_resume: true
         }
 
-        this.modalContent = this.modalContent.bind(this)
-        this.switchTab = this.switchTab.bind(this)
-        this.handleUpdate = this.handleUpdate.bind(this)
-        this.saveSettings = this.saveSettings.bind(this)
+        this.requestPDF = this.requestPDF.bind(this)
         this.confirmDelete = this.confirmDelete.bind(this)
-        this.toggleSwitch = this.toggleSwitch.bind(this)
         this.onDelete = this.onDelete.bind(this)
-        this.onError = this.onError.bind(this)
-        this.onUpdate = this.onUpdate.bind(this)
+        this.toggleSwitch = this.toggleSwitch.bind(this)
+        this.saveSettings = this.saveSettings.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
+        this.renderSettings = this.renderSettings.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -72,8 +49,7 @@ class Settings extends Component {
                     error_prompt: props.skill.error_prompt,
                     resume_prompt: props.skill.resume_prompt,
                     intents: props.skill.intents,
-                    slots: props.skill.slots,
-                    fulfillment: _.cloneDeep(props.skill.fulfillment)
+                    slots: props.skill.slots
                 },
                 hide_resume: hidden
             }
@@ -82,10 +58,10 @@ class Settings extends Component {
         }
     }
 
-    toggleSwitch(e) {
+    handleUpdate(e) {
         this.setState({
             skill: update(this.state.skill, {
-                [e.target.name]: { $set: !this.state.skill[e.target.name] }
+                [e.target.name]: { $set: e.target.value }
             })
         })
     }
@@ -108,9 +84,36 @@ class Settings extends Component {
                 this.props.onError('Error Deleting Skill')
             })
     }
+    
+    toggleSwitch(e) {
+        this.setState({
+            skill: update(this.state.skill, {
+                [e.target.name]: { $set: !this.state.skill[e.target.name] }
+            })
+        })
+    }
+
+    requestPDF(){
+        if (_.isNull(localStorage.getItem('requestPDF'))){
+          axios.post(`/requestPDF`, {
+            user: this.props.user,
+            skill: this.props.skill,
+          })
+          .then(() => {
+            this.onError('PDF will be sent to your email within 12 hours')
+            localStorage.setItem('requestPDF', true);
+          })
+          .catch(err => {
+            this.props.onError('Failed to send')
+          })
+
+        } else {
+          this.props.onError('Request already sent')
+        }
+    }
 
     saveSettings() {
-        let skill = clone(this.state.skill)
+        let skill = _.clone(this.state.skill)
         if (this.state.hide_resume || !this.state.skill.resume_prompt.content) {
             skill.resume_prompt = null
         }
@@ -120,84 +123,20 @@ class Settings extends Component {
 
         this.setState({ saving: true })
         axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, skill)
-            .then(() => {
-                this.props.updateSkill({ ...this.props.skill, ...skill })
-                this.setState({ saving: false, skill: null })
-            })
-            .catch(err => {
-                this.setState({ saving: false })
-                this.props.onError('Settings Save Error')
-            })
-    }
-
-    handleUpdate(e) {
-        this.setState({
-            skill: update(this.state.skill, {
-                [e.target.name]: { $set: e.target.value }
-            })
+        .then(() => {
+            this.props.updateSkill({ ...this.props.skill, ...skill })
+            this.setState({ saving: false, skill: null })
+        })
+        .catch(err => {
+            this.setState({ saving: false })
+            this.props.onError('Settings Save Error')
         })
     }
 
-    onUpdate() {
-        this.forceUpdate()
-    }
-
-    switchTab(tab) {
-        if (tab !== this.props.page) {
-            this.props.history.push(`/settings/${this.props.skill.skill_id}/${tab}`)
-        }
-    }
-
-    fulfillmentButtons(intents_sorted) {
-        return intents_sorted.map((intent, i) => {
-            if (this.state.skill.fulfillment[intent.key]) {
-                return <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between" key={i} onClick={() => {
-                    this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${intent.key}`)
-                }} disabled={!intentHasSlots(intent)}>
-                    <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i>{intent.name}</span>
-                </button>
-            }
-            return null
-        })
-    }
-
-    onError(error_message) {
-        this.setState({
-            error: error_message
-        })
-    }
-
-    modalContent(fullfillment_intent_key) {
-        if (!this.state.skill) {
-            return null
-        }
-
-        const intents_sorted = _.orderBy(this.state.skill.intents.concat(BUILT_INS), ['name'], ['asc'])
-        const fulfillment_intent = _.find(intents_sorted, { key: fullfillment_intent_key })
-
-        switch (this.props.page) {
-            case 'discovery':
-                return <React.Fragment>
-                    <FormGroup>
-                        <Label>CanFulfill Intent</Label>
-                        <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
-                        <hr />
-                        {!fullfillment_intent_key && <div className="selected-intent-label">{Object.keys(this.state.skill.fulfillment).length !== 0 ? 'Select an Intent Below to Customize Slot Fulfillment' : 'To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle'}</div>
-                        }
-                        {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
-                        {fullfillment_intent_key &&
-                            <CanFulfill
-                                slots={this.state.skill.slots}
-                                fulfillment={this.state.skill.fulfillment}
-                                selected_intent={fulfillment_intent}
-                                history={this.props.history}
-                                skill_id={this.props.skill.skill_id}
-                                onError={this.onError}
-                                onUpdate={this.onUpdate}
-                            />}
-                    </FormGroup>
-                </React.Fragment>
+    renderSettings(){
+        switch(this.props.page){
             case 'advanced':
+                // ADVANCED SETTINGS
                 return <React.Fragment>
                     <FormGroup>
                         <Label>Error Prompt</Label>
@@ -221,6 +160,7 @@ class Settings extends Component {
                     </FormGroup>
                 </React.Fragment>
             default:
+                // BASIC SETTINGS
                 return <React.Fragment>
                     <FormGroup>
                         <Label>Project Name</Label>
@@ -268,14 +208,23 @@ class Settings extends Component {
                             />}
                         </React.Fragment>
                         }
+                        {this.props.user.admin >= 30 &&
+                            <FormGroup className="mt-4">
+                                <Label>Generate PDF</Label>
+                                <Button color='clear' onClick={this.requestPDF}>
+                                    Request for PDF
+                                    &nbsp;
+                                    <i className="far fa-file-pdf" />
+                                </Button>
+                            </FormGroup>
+                        }
                     </FormGroup>
                 </React.Fragment>
         }
     }
 
-    render() {
-        let different = false
-        let fullfillment_intent_key
+    render(){
+        let different
         // check to make sure there are actual differences before making a server call
         if (this.state.skill) {
             for (var key in this.state.skill) {
@@ -284,37 +233,19 @@ class Settings extends Component {
                 }
             }
         }
-
-        fullfillment_intent_key = this.props.computedMatch.params ? this.props.computedMatch.params.id : null;
-
-        return <div id="settings">
-            <div className="nav-bar-top">
-                <ButtonGroup className="toggle-group mb-2 toggle-group-settings mt-5">
-                    {TABS.map(tab => {
-                        return <Button
-                            key={tab}
-                            onClick={() => this.switchTab(tab)}
-                            outline={this.props.page !== tab}
-                            disabled={this.props.page === tab}>
-                            {tab}
-                        </Button>
-                    })}
-                </ButtonGroup>
+        
+        return <React.Fragment>
+            {this.renderSettings()}
+            <hr/>
+            <div className="super-center">
+                {this.props.page !== 'backups' &&
+                    <button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : _.noop()}>
+                        {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
+                    </button>
+                }
             </div>
-            <ErrorModal error={this.state.error} dismiss={() => this.setState({ error: null })} />
-            <div className="settings-content clearfix">
-                {this.modalContent(fullfillment_intent_key)}
-                <hr />
-                <Button className='purple-btn save-btn' style={{ minWidth: 150 }} onClick={this.saveSettings}>
-                    {this.state.saving ? <span className="loader" /> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
-                </Button>
-                {fullfillment_intent_key && <Button className='previous-btn save-btn mr-2' style={{ minWidth: 100 }} onClick={() => {
-                    this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)
-                }}><React.Fragment> Back</React.Fragment>
-                </Button>}
-            </div>
-        </div>
+        </React.Fragment>
     }
 }
 
-export default Settings
+export default BasicAdvancedSettings

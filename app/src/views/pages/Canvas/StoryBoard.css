@@ -1308,8 +1308,7 @@ label {
     /*border-bottom: 5px solid;*/
     border-color: #E2E9EC;
     min-width: 90px;
-    transform: translateY(-4px);
-    transform: scale(1.02);
+    transform: translateY(-2px);
 }
 .srd-port:hover, .srd-port--selected {
     background: #aec5e0 !important;
@@ -1320,8 +1319,8 @@ label {
     border: 2px solid !important;
     border-top: 6px solid !important;
     outline: 0;
-    transform: scale(1.04);
     border-color: #2b3950 !important;
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
 /*    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25)*/
 }
 
@@ -1332,6 +1331,12 @@ label {
 .srd-default-node.flow {
     border-top: 6px solid #7abcdb;
     border-color: #7abcdb !important;
+    border-radius: 200px !important;
+    border: none !important;
+    width: 150px !important;
+    height: 150px !important;
+    padding: 40px 0 10px 0 !important;
+    border: 1px solid #8da2b530 !important;
 }
 .srd-default-node.choice, .srd-default-node.choicenew{
     border-top: 6px solid #42A5FF !important;
@@ -1534,8 +1539,8 @@ label {
 }
 .srd-port {
     background: #dce3eb;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     margin-bottom: 4px;
 }
 .srd-default-port--in > .srd-port {
@@ -1555,7 +1560,7 @@ label {
 .srd-default-node__name {
     padding: 0 40px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .srd-default-node__title {

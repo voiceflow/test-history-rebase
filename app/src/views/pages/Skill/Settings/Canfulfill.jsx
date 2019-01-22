@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Collapse } from 'reactstrap';
+import { Collapse, Alert } from 'reactstrap';
 // import Select from 'react-select'
 import { Tooltip } from 'react-tippy'
-import { getIntentSlots } from '../../../util'
+import { getIntentSlots } from 'Helper'
 import _ from 'lodash'
 import FulfillInput from './FulfillInput'
 
@@ -46,6 +46,10 @@ class Canfulfill extends PureComponent {
   }
 
   render() {
+    if(!this.props.fulfillment[this.state.selected_intent.key]){
+      return <Alert color="danger">Slot Fulfillment not found - Check Canvas</Alert>
+    }
+
     const inputs = this.state.intent_slots.map((slot, i) => {
       let slot_config = this.props.fulfillment[this.state.selected_intent.key].slot_config[slot.key]
       if (!slot_config) {
@@ -68,7 +72,7 @@ class Canfulfill extends PureComponent {
 
             </button>
             <Collapse className="slot-collapse" isOpen={this.state.open[i]}>
-              <FulfillInput onUpdate={() => {this.forceUpdate(); this.props.onUpdate()}} onError={this.props.onError} slot={slot} slot_config={slot_config} />
+              <FulfillInput onInputUpdate={() => {this.forceUpdate(); this.props.save()}} onError={this.props.onError} slot={slot} slot_config={slot_config} />
             </Collapse>
           </div>
         </div>
@@ -76,7 +80,7 @@ class Canfulfill extends PureComponent {
     })
 
     return (<div>
-      <div className="selected-intent-label">{`Setting Slot Fulfillment For Intent "${this.state.selected_intent.name}"`}</div>
+      <Alert>Setting Slot Fulfillment For Intent <b>{this.state.selected_intent.name}</b></Alert>
       {inputs}
     </div>)
   }

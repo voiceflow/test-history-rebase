@@ -89,8 +89,9 @@ class GooglePublish extends Component {
       axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
         .then(res => {
           this.setState({ stage: 3 });
-
-          axios.post(`/skill/${this.state.skill_id}/publishgoogle`)
+          let new_version_data = res.data
+          this.props.addVersion(new_version_data)
+          axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
             .then(res => {
               this.setState({
                 stage: 4,
@@ -398,7 +399,7 @@ class GooglePublish extends Component {
                   </div>
                   <div className="row">
                     <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary">Your <b>Google Project ID</b> for publishing. Instructions can be found <a href="#" className="google-link">here</a></p>
+                      <p className="mb-0 text-secondary">Your <b>Google Project ID</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link">here</a></p>
                     </div>
                     <div className="col-9">
                       <Input className="form-bg" type="text" name="project_id" placeholder="Sample-Project-abc123" value={this.state.project_id} onChange={this.handleChange} />

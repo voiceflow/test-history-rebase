@@ -7,15 +7,11 @@ const { OAuth2Client } = require('google-auth-library');
 const {jwt, pool, redisClient, config, hashids} = require('./../services');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
-<<<<<<< HEAD
 const del = require('del');
 const spawn = require('child_process').spawn
 
-const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
-const mkdirp = require('mkdirp');
-=======
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
->>>>>>> origin/master
+const mkdirp = require('mkdirp');
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 const _ = require('lodash')

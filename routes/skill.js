@@ -1087,7 +1087,7 @@ exports.certifySkill = (req, res) => {
           })
           .then(response => {
             if (response.hasOwnProperty('violations')) {
-              Status(depth + 1);
+              getSkillStatus(depth + 1);
             } else {
               axios.request({
                   url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,

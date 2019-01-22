@@ -236,14 +236,3 @@ exports.AMAZON_CATEGORIES = [
         label: "Zip Code Look up"
     }
 ]
-
-exports.GOOGLE_CATEGORIES = [
-    {
-        value: "GOOGLE_TEST_CATEGORY",
-        label: "Google Test Category"
-    },
-    {
-        value: "DOGS", 
-        label: "Dogs"
-    }
-]

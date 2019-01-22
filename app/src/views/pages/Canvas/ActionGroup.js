@@ -355,6 +355,10 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    renderGoogleBody() {
+        
+    }
+
     render() {
 
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`

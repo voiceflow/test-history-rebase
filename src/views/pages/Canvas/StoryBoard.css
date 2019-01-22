@@ -1394,20 +1394,10 @@ label {
     border-color: #2fd0c1 !important;
 
 }
-.srd-default-node.link_account{
-  background-color: #fff;
-  border-top: 6px solid 	#006400;
-  border-color: #2fd0c1 !important;
-}
-.srd-default-node.permissions{
+.srd-default-node.permissions, .srd-default-node.permission, .srd-default-node.reminder, .srd-default-node.link_account{
     background-color: #fff;
     border-top: 6px solid #2fd0c1;
     border-color: #2fd0c1 !important;
-}
-.srd-default-node.link_account{
-    background-color: #fff;
-    border-top: 6px solid green;
-    border-color: green !important;
 }
 
 .srd-default-node.module{
@@ -1736,7 +1726,7 @@ button.close:hover{
     font-size: 15px;
 }
 
-.block.permissions {
+.block.permissions, .block.permission {
    border: 1px solid #2fd0c150;
     background-color: #2fd0c136;
     color: #2fd0c1;

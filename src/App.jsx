@@ -10,7 +10,6 @@ import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
 import './App.css';
-import 'react-day-picker/lib/style.css';
 
 // Pages
 import Skill from './Skill'

@@ -16,12 +16,12 @@ class LinkAccount extends Component {
                   <label>Accounts</label>
                   <div>{this.props.skill.account_linking?
                     <React.Fragment>Current authorization is <b>{this.props.skill.account_linking.authorizationUrl}</b></React.Fragment>:
-                    <Alert color='warning'>No Account Link found</Alert>
+                    `No Account Link found`
                   }</div>
                   <Button
                     color="clear"
                     onClick={() => this.props.history.push(`/business/${this.props.skill.skill_id}/link_account/templates`)}
-                    block
+                    size="sm" block
                   >
                   Edit Account Linking
                   </Button>

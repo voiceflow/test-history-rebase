@@ -65,13 +65,13 @@ class Templates extends Component {
     }
 
     createSkill(module_id){
-        this.setState({loading: true})
         axios.post(`/marketplace/template/${module_id}/copy`, {
             name: this.state.name,
             locales: this.state.locales
         })
         .then(res => {
             if(res.data.skill_id && res.data.diagram){
+                this.setState({loading: true})
                 setTimeout(()=>{
                     this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
                 }, 3000)

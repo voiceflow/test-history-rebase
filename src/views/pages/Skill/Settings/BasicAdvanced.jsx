@@ -162,7 +162,7 @@ class BasicAdvancedSettings extends Component{
                             })}
                         />
                         <hr/>
-                        {window.user_detail.admin > 60 && <div className="mt-4">
+                        {window.user_detail.admin >= 60 && <div className="mt-4">
                             <Label>Skill Events (events: {'{object}'})</Label>
                             <AceEditor
                                 name="datasource_editor"

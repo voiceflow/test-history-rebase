@@ -1358,14 +1358,11 @@ class Canvas extends Component {
                     audio: '',
                     player: false
                 }
-            } else if (type === 'permission') {
-                node.addInPort(' ')
-                node.addOutPort(' ').setMaximumLinks(1)
             } else if (type === 'permissions') {
-                node.name = 'User Info'
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.addOutPort('fail').setMaximumLinks(1)
+                node.addOutPort('declined').setMaximumLinks(1)
                 node.extras = {
                     permissions: []
                 }

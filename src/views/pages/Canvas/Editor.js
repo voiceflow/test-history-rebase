@@ -28,7 +28,6 @@ import Permissions from './Editors/Permissions';
 import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
-import {getBlocks} from './Blocks'
 import {
     Alert,
     Modal, ModalBody, ModalHeader,
@@ -60,6 +59,7 @@ class Editor extends Component {
             node: this.props.node,
             templates: [],
             displays: [],
+            permission_options: [],
             account_linking: {},
             modal: false,
             expanded: false,
@@ -71,6 +71,21 @@ class Editor extends Component {
         this.getSlotTypes = this.getSlotTypes.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
+    }
+
+    async componentDidMount() {
+        // Hard-code for now, but eventually should retrieve from
+        // AMZN website if possible
+
+        this.setState({
+            permission_options: [
+                { name: 'User Email', value: 'alexa::profile:email:read' },
+                { name: 'User Name', value: 'alexa::profile:name:read' },
+                { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
+                // { name: 'Amazon Pay', value: 'payments:autopay_consent' }
+                // Removed for now, amazon pay permissions broken
+            ]
+        })
     }
 
     componentWillReceiveProps(props) {
@@ -259,20 +274,11 @@ class Editor extends Component {
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} permission_options={this.state.permission_options}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
-                return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
-            case 'permission':
-                return <React.Fragment>
-                    <Alert>Sends permission request to the user's phone/device</Alert>
-                    <div className="px-5 mt-4">
-                        <div className="smartphone">
-                            <img src='/images/permissions.png' className="w-100" alt="sample permission"/>
-                        </div>
-                    </div>
-                </React.Fragment>
+                return <Reminder node={this.state.node} onUpdate={this.props.onUpdate}/>
             default:
               return null
         }
@@ -316,13 +322,6 @@ class Editor extends Component {
 
     render() {
         let type = this.state.node ? this.state.node.extras.type : null
-        let name = ''
-        if(type){
-            let find = getBlocks().find(block => block.type === type)
-            if(find){
-                name = find.text
-            }
-        }        
 
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
@@ -340,7 +339,7 @@ class Editor extends Component {
                                 <div id="close-editor" className="close" onClick={this.props.close}>&times;</div>
                                 <div className="d-flex">
                                     <div className={"block " + type} onClick={() => this.props.setHelp({type: this.state.node.extras.type})}>
-                                        {name} Block <i className="fas fa-question-circle mr-1"/>
+                                        {this.state.node.name} Block <i className="fas fa-question-circle mr-1"/>
                                     </div>
                                     <div className="d-flex pl-2">
                                         <div

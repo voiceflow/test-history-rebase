@@ -56,6 +56,9 @@ const getSections = () => {
             ]
         })
     }
+    if(window.user_detail.admin >= 60){
+        sections[sections.length-1].items.push({ text: 'Reminder', type: 'reminder', icon: <i className="fas fa-bell"/>, tip: 'Send a remind to the user in a set amount of time'})
+    }
 
     return sections
 }

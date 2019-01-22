@@ -11,6 +11,15 @@ import Switch from '@material-ui/core/Switch'
 import AuthenticationService from './../../../services/Authentication'
 // import { timingSafeEqual } from 'crypto';
 
+const loading = (message) => {
+    return <div className="super-center mb-4">
+        <div className='text-center'>
+            <h1><span className="loader"/></h1>
+            <p className="loading">{message}</p>
+        </div>
+    </div>
+}
+
 class ActionGroup extends PureComponent {
     constructor(props) {
         super(props);
@@ -68,8 +77,7 @@ class ActionGroup extends PureComponent {
         this.setState({
             amzn_error: false,
             stage: this.token ? 0 : 5
-        });
-        //
+        })
     }
 
     openUpdate() {
@@ -145,9 +153,11 @@ class ActionGroup extends PureComponent {
     updateAlexa() {
         this.setState({stage: 1});
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
-        .then(() => {
+        .then(res => {
+            let new_version_data = res.data
+            this.props.addVersion(new_version_data)
             this.setState({stage: 11}, () => {
-                axios.post(`/skill/${this.props.skill.skill_id}/publish`)
+                axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                 .then(res => {
                     let skill = this.props.skill;
                     skill.amzn_id = res.data;
@@ -236,12 +246,7 @@ class ActionGroup extends PureComponent {
 
         switch(this.state.stage){
             case 1:
-                return <div className="super-center mb-4">
-                    <div className='text-center'>
-                        <h1><span className="loader"/></h1>
-                        <p className="loading">Rendering</p>
-                    </div>
-                </div>
+                return loading('Rendering Flows')
             case 2:
                 if(this.SucceedLocale){
                     return <React.Fragment>
@@ -315,47 +320,23 @@ class ActionGroup extends PureComponent {
                     </div>
                 </React.Fragment>
             case 7:
-                return <div className="super-center mb-4">
-                    <div className='text-center'>
-                        <h1><span className="loader"/></h1>
-                        <p className="loading">Checking Vendor</p>
-                    </div>
-                </div>
+            return loading('Checking Vendor')
             case 8:
-                return <div className="super-center mb-4">
-                    <div className='text-center'>
-                        <h1><span className="loader"/></h1>
-                        <p className="loading">Verifying Login</p>
-                    </div>
-                </div>
+                return loading('Verifying Login')
             case 9:
                 return <div className="w-100">
-                    Error Uploading to Alexa
+                    <h5 className="text-muted">Amazon Error Response</h5>
                     <Alert color="danger" className="mt-1">
                         {this.state.upload_error}
                     </Alert>
+                    <Alert>Amazon responded with an error, Visit our <u><a href="https://forum.getvoiceflow.com">community</a></u> or contact us for help</Alert>
                 </div>
             case 11:
-                return <div className="super-center mb-4">
-                    <div className='text-center'>
-                        <h1><span className="loader"/></h1>
-                        <p className="loading">Uploading to Alexa</p>
-                    </div>
-                </div>
+                return loading('Uploading to Alexa')
             case 12:
-                return <div className="super-center mb-4">
-                    <div className='text-center'>
-                        <h1><span className="loader"/></h1>
-                        <p className="loading">Building Interaction Model</p>
-                    </div>
-                </div>
+                return loading('Building Interaction Model')
             case 13:
-                return <div className="super-center mb-4">
-                    <div className='text-center'>
-                        <h1><span className="loader"/></h1>
-                        <p className="loading">Enabling Skill</p>
-                    </div>
-                </div>
+                return loading('Enabling Skill')
             default:
                 return <div>
                     <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>

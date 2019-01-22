@@ -308,7 +308,7 @@ class Settings extends Component {
                 <Button className='purple-btn save-btn' style={{ minWidth: 150 }} onClick={this.saveSettings}>
                     {this.state.saving ? <span className="loader" /> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
                 </Button>
-                {fullfillment_intent_key && <Button className='purple-btn back-btn save-btn mr-2' style={{ minWidth: 150 }} onClick={() => {
+                {fullfillment_intent_key && <Button className='previous-btn save-btn mr-2' style={{ minWidth: 100 }} onClick={() => {
                     this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)
                 }}><React.Fragment> Back</React.Fragment>
                 </Button>}

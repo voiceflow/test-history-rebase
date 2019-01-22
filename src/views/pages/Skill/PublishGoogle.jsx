@@ -4,18 +4,13 @@ import './Skill.css'
 import AuthenticationService from '../../../services/Authentication'
 
 import axios from 'axios'
-import validUrl from 'valid-url'
 
-import { Button, ButtonGroup, Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Alert } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
-import Textarea from 'react-textarea-autosize'
 import moment from 'moment'
-import Image from '../../components/Uploads/Image'
-import Multiple from '../../components/Forms/Multiple'
 import ErrorModal from '../../components/Modals/ErrorModal'
 import ConfirmModal from '../../components/Modals/ConfirmModal'
-import Select from 'react-select'
-import { GOOGLE_CATEGORIES } from '../../../services/Categories'
+
 
 const _ = require('lodash');
 

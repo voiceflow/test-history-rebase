@@ -149,7 +149,7 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
           SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment
+              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment, alexa_events
           FROM
               skills
           WHERE
@@ -538,8 +538,8 @@ exports.patchSkill = (req, res) => {
   if (req.query.fulfillment){
     pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
   }else if (req.query.settings) {
-    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6  WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
+    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7  WHERE skill_id = $1 AND creator_id = $2`,
+      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events], (err) => {
         if (err) {
           console.trace(err)
           res.sendStatus(500)

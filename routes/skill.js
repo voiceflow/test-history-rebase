@@ -269,7 +269,7 @@ exports.getSkill = (req, res) => {
             }
 
           } catch (err) {
-            console.trace(err);
+            logAxiosError(err, 'GET SKILL')
             res.send(skill);
           }
         });

@@ -726,13 +726,36 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           }
         } else if(node.extras.type === 'reminder') {
           options.permissions.add('alexa::alerts:reminders:skill:readwrite')
+          node_reminder = node.extras.reminder
+          let reminder = {}
+          reminder.text = draftToMarkdown(node_reminder.text)
+          reminder.type = node_reminder.reminder_type
+          reminder.time = node_reminder.time
+          if(reminder.type === 'SCHEDULED_ABSOLUTE'){
+            reminder.timezone = node_reminder.timezone
+            reminder.date = node_reminder.date
+          }
 
           story.lines[node.id] = {
-            reminder: node.extras.reminder,
+            reminder: reminder,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
+        } else if (node.extras.type === 'permission') {
+          let nextLink = null
+          for (var j = 0; j < node.ports.length; j++) {
+            if (!node.ports[j].in) {
+              [nextLink] = node.ports[j].links;
+            }
+          }
+
+          // Permission Card
+          story.lines[node.id] = {
+            permission_card: true,
+            nextId: getLink(nextLink)
+          }
         } else if (node.extras.type === 'permissions') {
+          // Email/Name/Phone Permission Requests
           const permissions = node.extras.permissions ? node.extras.permissions : []
           permissions.forEach(permission => {
             if(permission && permission.selected && permission.selected.value){
@@ -743,9 +766,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           story.lines[node.id] = {
             permissions: permissions,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
-            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]),
-            declined_id: getLink(node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]),
-            nextId: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0])
+            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
         } else if (node.extras.type === 'link_account') {
           story.lines[node.id] = {

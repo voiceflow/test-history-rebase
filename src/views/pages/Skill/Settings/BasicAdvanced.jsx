@@ -104,8 +104,8 @@ class BasicAdvancedSettings extends Component{
             skill: this.props.skill,
           })
           .then(() => {
-            this.onError('PDF will be sent to your email within 12 hours')
             localStorage.setItem('requestPDF', true);
+            this.props.onError('PDF will be sent to your email within 12 hours')
           })
           .catch(err => {
             this.props.onError('Failed to send')

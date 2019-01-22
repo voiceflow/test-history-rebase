@@ -259,7 +259,7 @@ exports.getSkill = (req, res) => {
             }
 
           } catch (err) {
-            logAxiosError(err, 'GET SKILL')
+            console.trace(err);
             res.send(skill);
           }
         });
@@ -1087,7 +1087,7 @@ exports.certifySkill = (req, res) => {
           })
           .then(response => {
             if (response.hasOwnProperty('violations')) {
-              getSkillStatus(depth + 1);
+              Status(depth + 1);
             } else {
               axios.request({
                   url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
@@ -1113,7 +1113,7 @@ exports.certifySkill = (req, res) => {
                           event: 'Submitted for Certification',
                           properties: {
                               amzn_id: req.params.amzn_id,
-                              skill_id: hashids.decode(req.params.id)[0]
+                              skill_id: id
                           }
                         })
                         res.sendStatus(200);

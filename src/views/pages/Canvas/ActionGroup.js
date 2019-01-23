@@ -155,7 +155,7 @@ class ActionGroup extends PureComponent {
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(res => {
             let new_version_data = res.data
-            this.props.addVersion(new_version_data)
+            // this.props.addVersion(new_version_data)
             this.setState({stage: 11}, () => {
                 axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                 .then(res => {
@@ -194,6 +194,7 @@ class ActionGroup extends PureComponent {
             });
         })
         .catch(err => {
+            console.error(err)
             this.setState({stage: 4});
         })
     }

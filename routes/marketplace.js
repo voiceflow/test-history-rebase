@@ -1,13 +1,14 @@
 const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram')
+const { copySkill } = require('./skill_util')
+const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
+const { getEnvVariable } = require('../util')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 19
 }else{
 	ADMIN_MARKETPLACE_ACC = 2125
 }
-const { copySkill, latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
-const { getEnvVariable } = require('../util')
 
 const module_limit = 10;
 const hashIds = (rows) => {

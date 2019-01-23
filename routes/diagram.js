@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const { docClient, pool, hashids, validateEmail } = require('./../services');
 const { getEnvVariable } = require('../util')
-const { copySkill } = require('./skill.js')
+const { copySkill } = require('./skill_util')
 const { renderDiagram } = require('./render_diagram.js')
 
 const generateID = () => {

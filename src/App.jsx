@@ -137,7 +137,7 @@ class App extends Component {
     window.CreatorSocket.on('fail', this.socketFail)
     window.CreatorSocket.on('error', this.socketFail)
     // to catch if the server is offline
-    // window.CreatorSocket.on('connect_error', this.socketFail)
+    window.CreatorSocket.on('connect_error', this.socketFail)
     // catch failed connection attempts
     window.CreatorSocket.on('connect_failed', this.socketFail)
     // to catch connection events
@@ -166,20 +166,21 @@ class App extends Component {
   }
 
   socketFail(){
-    if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
-      window.error = true
-      window.CreatorSocket.status = 'FAIL'
-      this.setState({
-        error: {
-          type: 'socket-fail',
-          action: () => {
-            window.error = false
-            this.setState({loading: false, error: null})
-          },
-        },
-        loading: false
-      })
-    }
+    window.CreatorSocket.status = 'FAIL'
+    // if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
+    //   window.error = true
+    //   window.CreatorSocket.status = 'FAIL'
+    //   this.setState({
+    //     error: {
+    //       type: 'socket-fail',
+    //       action: () => {
+    //         window.error = false
+    //         this.setState({loading: false, error: null})
+    //       },
+    //     },
+    //     loading: false
+    //   })
+    // }
   }
 
   componentDidMount() {

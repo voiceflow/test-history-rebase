@@ -252,7 +252,7 @@ class Menu extends PureComponent {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules}/>
+                return <Blocks user_modules={this.props.user_modules} google={this.props.google}/>
         }
     }
 

@@ -20,6 +20,15 @@ const loading = (message) => {
     </div>
 }
 
+const GOOGLE_STAGES = {
+    "0": "No Google Token Found",
+    "1": "No Project ID Found",
+    "2": "Confirm Publish",
+    "3": "Rendering",
+    "4": "Publishing",
+    "5": "Published",
+}
+
 class ActionGroup extends PureComponent {
     constructor(props) {
         super(props);
@@ -34,6 +43,7 @@ class ActionGroup extends PureComponent {
             platform: 'amazon',
             updateModal: false,
             stage: 0,
+            google_stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
             skill: null,
@@ -50,6 +60,9 @@ class ActionGroup extends PureComponent {
         this.openUpdate = this.openUpdate.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
         this.reset = this.reset.bind(this)
+        this.renderGoogleBody = this.renderGoogleBody.bind(this)
+        this.updateGoogle = this.updateGoogle.bind(this)
+
         this.token = null
     }
 
@@ -71,6 +84,11 @@ class ActionGroup extends PureComponent {
             this.token = token;
             this.reset();
         });
+        AuthenticationService.googleAccessToken().then(token => {
+            this.setState({
+              google_stage: token ? 2 : 0
+            });
+          });
     }
 
     reset() {
@@ -197,6 +215,46 @@ class ActionGroup extends PureComponent {
             this.setState({stage: 4});
         })
     }
+
+    updateGoogle() {
+        const s = this.state
+        const p = this.props
+
+        console.log("GOOGLE", p.skill.google_publish_info)
+
+        if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
+            p.history.push(`/publish/${p.skill.skill_id}/google`)
+            p.onError('Please fill in the required fields first, and click "Publish"')
+            return
+        }
+
+        this.setState({ google_stage: 3 });
+
+        axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`)
+        .then(res => {
+            this.setState({ google_stage: 4 });
+            let new_version_data = res.data
+            p.addVersion(new_version_data)
+            axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
+            .then(res => {
+                this.setState({
+                    google_stage: 5,
+                    project_id: res.data.project_id || this.state.project_id
+                });
+            })
+            .catch(err => {
+                this.setState({
+                    google_stage: 2,
+                    updateModal: false
+                })
+                const error_msg = err.response && err.response.data ? err.response.data : err
+                p.onError(error_msg)
+            })
+        })
+        .catch(err => {
+            p.onError(err)
+        })
+      }
 
     toggleUpdate() {
         if(![1,7,11].includes(this.state.stage)){
@@ -356,7 +414,49 @@ class ActionGroup extends PureComponent {
     }
 
     renderGoogleBody() {
-        
+        let modal_content = null
+        if (
+            this.state.google_stage === 3 ||
+            this.state.google_stage === 4
+        ) {
+            modal_content = <div className="super-center mb-4">
+                <div className='text-center'>
+                    <h1><span className="loader" /></h1>
+                    <p className="loading">{GOOGLE_STAGES[this.state.google_stage]}</p>
+                </div>
+            </div>
+        } else if (this.state.google_stage === 2) {
+            modal_content = <div>
+                <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
+                <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
+                {(this.props.skill.live || this.props.skill.review) && <hr/>}
+                <div>
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
+                </div>
+
+                <div className="super-center mb-3 mt-3">
+                    <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
+                </div>
+            </div>
+        } else if (this.state.google_stage === 5) {
+            modal_content = <React.Fragment>
+            <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
+            <br />
+            <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Google Actions </span>
+            <span className="modal-txt text-center">
+                You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
+            </span>
+                <div className="my-3">
+                <a href={`https://console.actions.google.com/project/${this.state.project_id}/simulator`}
+                    className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                    Test on Google Actions Simulator
+                </a>
+                </div>
+            </React.Fragment>
+        }
+        return modal_content
     }
 
     render() {
@@ -369,7 +469,7 @@ class ActionGroup extends PureComponent {
                 <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
                 <ModalBody className="modal-info">
                     <div>
-                        {this.render_body()}
+                        {this.props.isGoogle ? this.renderGoogleBody() : this.render_body()}
                     </div>
                 </ModalBody>
             </Modal>
@@ -434,12 +534,12 @@ class ActionGroup extends PureComponent {
                     </button>
                 </Tooltip>
                 <Tooltip
-                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
+                    html={<div style={{ width: 155 }}>{this.props.isGoogle ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
                     position="bottom"
                     distance={16}
                 >
                     <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
-                        Upload to Alexa <div className="launch">
+                        {this.props.isGoogle ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
                             <div className="first">
                             <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
                             </div>

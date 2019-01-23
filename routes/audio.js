@@ -98,7 +98,11 @@ const uploadConcatPreviews = (dir, files, env) => {
 
 exports.upload = (req, res) => {
     let filename = req.file.key;
-    convert(filename);
+    try{
+        convert(filename)
+    }catch(err){
+        console.trace(err)
+    }
     res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+filename);
 };
 

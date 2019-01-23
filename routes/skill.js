@@ -159,7 +159,7 @@ exports.getSkill = (req, res) => {
   }else if(req.query.simple){
       sql = `
           SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, access_token_variable, resume_prompt, error_prompt, fulfillment, created
+              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment, created, is_google_view_active, google_publish_info
           FROM
               skills
           WHERE
@@ -565,9 +565,10 @@ exports.patchSkill = (req, res) => {
             intents = $3,
             slots = $4,
             fulfillment = $5,
-            account_linking = $6
+            account_linking = $6,
+            is_google_view_active = $7
             WHERE skill_id = $1 AND creator_id = $2`,
-            [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking], (err) => {
+            [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking, b.is_google_view_active], (err) => {
             if(err){
                 console.log(err);
                 res.sendStatus(500);

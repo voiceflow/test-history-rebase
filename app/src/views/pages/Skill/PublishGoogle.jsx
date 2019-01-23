@@ -128,7 +128,6 @@ class GooglePublish extends Component {
     axios.get(`/skill/google/${this.state.skill_id}`)
       .then(res => {
         if (!_.isObject(res.data.publish_info)) {
-          const s = this.props.skill
           res.data.publish_info = {
             project_id: ''
           }
@@ -163,8 +162,6 @@ class GooglePublish extends Component {
 
   save(publish = false, cb) {
     const s = this.state;
-
-    let store;
 
     axios.patch(`/skill/${this.state.skill_id}?google=true${publish === true ? '&publish=true' : ''}`, {
       project_id: s.project_id
@@ -226,7 +223,7 @@ class GooglePublish extends Component {
           <FormGroup className="google-form-group">
             <div className="row">
               <div className="col-3 google-verification-info">
-                <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" className="google-link">logging in</a> and pasting your authentication token here.</p>
+                <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" rel="noopener noreferrer" className="google-link">logging in</a> and pasting your authentication token here.</p>
               </div>
               <div className="col-9 vertical-space">
                 <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
@@ -249,7 +246,7 @@ class GooglePublish extends Component {
         <div>
           <img src="/images/preview.svg" alt="Success" height="160" />
           <br />
-          You Skill Has been uploaded to Google Actions!
+          Your Skill Has been uploaded to Google Actions!
         <span className="text-muted text-center">
             You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
         </span>
@@ -394,7 +391,7 @@ class GooglePublish extends Component {
                   </div>
                   <div className="row">
                     <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary">Your <b>Google Project ID</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link">here</a></p>
+                      <p className="mb-0 text-secondary">Your <b>Google Project ID</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
                     </div>
                     <div className="col-9">
                       <Input className="form-bg" type="text" name="project_id" placeholder="Sample-Project-abc123" value={this.state.project_id} onChange={this.handleChange} />

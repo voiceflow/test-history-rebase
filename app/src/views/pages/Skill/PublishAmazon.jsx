@@ -588,7 +588,7 @@ class Skill extends Component {
             content = <div>
                 <img src="/images/preview.svg" alt="Success" height="160"/>
                 <br/>
-                You Skill Has been uploaded to Alexa Development!
+                Your Skill Has been uploaded to Alexa Development!
                 <span className="text-muted text-center">
                     You may test on the Alexa Simulator or Submit your Skill for review
                 </span>

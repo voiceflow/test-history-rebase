@@ -33,7 +33,6 @@ import { getIntentSlots } from 'Helper'
 
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
-const defaultVariables = ['sessions', 'user_id', 'timestamp', 'platform', 'locale']
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
@@ -187,8 +186,7 @@ class Canvas extends Component {
             confirm_info: null,
             default_templates: [],
             spotlight: false,
-            google: false,
-            access_token_variable: props.skill.access_token_variable,
+            google: props.skill.google_view_active
         }
 
         // SKILL IS LOADED HERE
@@ -653,7 +651,8 @@ class Canvas extends Component {
                     intents: JSON.stringify(s.intents),
                     slots: JSON.stringify(s.slots),
                     fulfillment: JSON.stringify(s.fulfillment),
-                    account_linking: JSON.stringify(s.account_linking)
+                    account_linking: JSON.stringify(s.account_linking),
+                    is_google_view_active: JSON.stringify(s.is_google_view_active)
                 })
                 .then(res => {
                     resolve()
@@ -723,6 +722,7 @@ class Canvas extends Component {
             const diagram_level_intents = new Set()
 
             var nodes = model.getNodes()
+            const google = this.state.google
             for (let key in nodes) {
                 const node = nodes[key]
                 const type = node.extras.type
@@ -731,6 +731,9 @@ class Canvas extends Component {
                     if (node.extras.intent) {
                         diagram_level_intents.add(node.extras.intent.key)
                     }
+                }
+                if (!ALLOWED_GOOGLE_BLOCKS.includes(type)) {
+                    nodes[key].fade = google
                 }
             }
 
@@ -772,8 +775,10 @@ class Canvas extends Component {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
+        const skill = this.state.skill
         let google = this.state.google
         google = !google
+        skill.is_google_view_active = google
 
         for (let key in nodes) {
             const node = nodes[key]
@@ -786,7 +791,8 @@ class Canvas extends Component {
 
         this.setState({
             google: google,
-            engine: engine
+            engine: engine,
+            skill: skill
         })
     }
 
@@ -1552,6 +1558,7 @@ class Canvas extends Component {
                         preview={this.props.preview}
                         onSave={this.onSave}
                         onError={this.props.onError}
+                        google={this.state.google}
                     />
                     <TitleBar
                         onTest={this.onTest}

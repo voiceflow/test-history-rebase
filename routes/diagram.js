@@ -198,8 +198,9 @@ const setDiagram = async (req, res) => {
                   await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
               }else{
                   // otherwise update
-                  await pool.query('UPDATE diagrams SET sub_diagrams = $1, used_intents = $2 WHERE id = $3', [diagram.sub_diagrams, used_intents_string, diagram.id]);
-                  await pool.query('UPDATE skills SET global=$1 WHERE skill_id=$2', [global_string, diagram.skill]);
+                  await pool.query(`UPDATE diagrams SET sub_diagrams = $1, used_intents = $2, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, used_intents_string, diagram.id]);
+                  await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
+                  await pool.query(`UPDATE skill_versions SET last_save = NOW() WHERE skill_id=$1 AND canonical_skill_id = $1`, [diagram.skill]) 
               }
               res.sendStatus(200);
           }catch(e){

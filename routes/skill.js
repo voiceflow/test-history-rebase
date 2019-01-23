@@ -148,13 +148,33 @@ exports.getSkill = (req, res) => {
     params = [id];
   } else if (req.query.simple) {
     sql = `
-          SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment, alexa_events
-          FROM
-              skills
-          WHERE
-              skill_id = $1 AND
-              creator_id = $2 LIMIT 1`;
+      SELECT
+        sv.last_save,
+        name,
+        amzn_id,
+        review,
+        live,
+        diagram,
+        locales,
+        restart,
+        global,
+        intents,
+        slots,
+        inv_name,
+        preview,
+        account_linking,
+        resume_prompt,
+        error_prompt,
+        fulfillment,
+        alexa_events
+    FROM
+        skills s
+        INNER JOIN skill_versions sv ON s.skill_id = sv.canonical_skill_id
+            AND s.skill_id = sv.skill_id
+        WHERE
+            s.skill_id = $1
+            AND s.creator_id = $2
+        LIMIT 1`;
     params = [id, req.user.id];
   } else {
     sql = `
@@ -179,7 +199,6 @@ exports.getSkill = (req, res) => {
 
       // Rehash the skill id
       skill.skill_id = req.params.id;
-
       if (req.query.preview || !skill.amzn_id) {
         res.send(skill)
       } else {
@@ -250,7 +269,6 @@ exports.getSkill = (req, res) => {
                 if (update) {
                   pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
                 }
-
                 res.send(skill);
 
               } else {

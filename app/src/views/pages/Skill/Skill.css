@@ -528,3 +528,18 @@ textarea::placeholder {
   font-size: 14px;
   margin: 0px;
 }
+
+.shortcut {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: rgb(28, 28, 28);
+  padding: 10px 0px;
+  display: flex;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+}
+.shortcut-desc {
+  font-weight: bold
+}

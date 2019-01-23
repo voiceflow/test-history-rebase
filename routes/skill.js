@@ -1411,6 +1411,15 @@ exports.copySkill = async (req, res, options, cb = false) => {
               res.sendStatus(500)
             }
           })
+
+          analytics.track({
+            userId: req.user.id,
+            event: 'Project Created',
+            properties: {
+              skill_id: copy_skill.skill_id,
+              original_skill_id: id
+            }
+          })
         }
 
         // Async copy rows depending on the skill, doesn't need to be synced

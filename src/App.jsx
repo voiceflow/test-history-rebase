@@ -137,7 +137,7 @@ class App extends Component {
     window.CreatorSocket.on('fail', this.socketFail)
     window.CreatorSocket.on('error', this.socketFail)
     // to catch if the server is offline
-    window.CreatorSocket.on('connect_error', this.socketFail)
+    // window.CreatorSocket.on('connect_error', this.socketFail)
     // catch failed connection attempts
     window.CreatorSocket.on('connect_failed', this.socketFail)
     // to catch connection events

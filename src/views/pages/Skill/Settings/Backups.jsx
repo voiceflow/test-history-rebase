@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import LightCanvas from '../../Canvas/LightCanvas'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
 // import _ from 'lodash'
 
 import {Modal, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
@@ -14,11 +15,26 @@ class BackupSettings extends Component{
             preview: false,
             curr_preview: {
                 created: new Date(),
-            }
+            },
+            versions: []
         }
 
         this.confirmRestore = this.confirmRestore.bind(this)
         this.previewBackup = this.previewBackup.bind(this)
+    }
+
+    componentDidMount(){
+        axios.get(`/skill/${this.props.skill.skill_id}/versions`)
+        .then(res => {
+            this.setState({
+                versions: res.data
+            })
+        })
+        .catch(err => {
+            this.setState({
+                error: 'Unable to load versions'
+            })
+        })
     }
 
     previewBackup(version){
@@ -38,7 +54,7 @@ class BackupSettings extends Component{
     }
 
     render(){
-        if(!Array.isArray(this.props.versions) || this.props.versions.length === 0){
+        if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
             return <Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert>
         }
 
@@ -74,7 +90,7 @@ class BackupSettings extends Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.props.versions.map((version, i) => {
+                                {this.state.versions.map((version, i) => {
                                     return <tr key={i}>
                                         <td>{moment(version.created).fromNow()}</td>
                                         <td>

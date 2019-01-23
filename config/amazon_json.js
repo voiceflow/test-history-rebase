@@ -281,7 +281,6 @@ const manifest = (r, encoded_id, name) => {
 	if(interfaces.length !== 0){
 		ret.manifest.apis.custom.interfaces = interfaces
 	}
-	console.log(JSON.stringify(ret))
 
 	return ret
 }

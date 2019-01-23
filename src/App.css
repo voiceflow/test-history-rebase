@@ -387,7 +387,7 @@ hr{
     border: 1px solid #E8F4FF;
 }
 .alert-success hr{
-    border-color: #42A5FF40
+    border-color: #42A5FF50 !important;
 }
 .between {
     display: flex;

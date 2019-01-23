@@ -341,13 +341,7 @@ class ActionGroup extends PureComponent {
                 return <div>
                     <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
                     <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
-                    <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console.</div>
-                    {(this.props.skill.live || this.props.skill.review) && <hr/>}
-                    <div>
-                        {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
-                        {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
-                    </div>
-
+                    <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                     <div className="super-center mb-3 mt-3">
                         <button className="purple-btn" onClick={this.updateAlexa}>Confirm Upload</button>
                     </div>

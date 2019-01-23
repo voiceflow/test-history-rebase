@@ -2382,8 +2382,11 @@ button.close:hover{
     #TitleBar{
         /*height: 105px;*/
         display: block;
-        padding-left: 289px;
+        padding-left: 290px;
         padding-right: 0px;
+    }
+    #TitleBar .skill-name{
+        padding-left: 20px;
     }
 }
 

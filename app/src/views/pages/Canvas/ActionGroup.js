@@ -143,7 +143,7 @@ class ActionGroup extends PureComponent {
                             stage: 2
                         })
                     })
-                }, 1000)
+                }, 3000)
             }
         }
 

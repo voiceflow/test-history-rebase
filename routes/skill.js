@@ -7,12 +7,13 @@ const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 const { renderDiagram } = require('./render_diagram')
 
-const logAxiosError = (err, context='') => {
+const logAxiosError = (err, context='', data=null) => {
   if(err && err.response){
     console.log(context, err.response.data && err.response.data.message, 'STATUS', err.response.status)    
   }else{
     console.log(context, err)
   }
+  if(data) console.log('ERROR DATA', data)
 }
 
 const generateID = () => {
@@ -534,7 +535,7 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
   });
 }
 
-exports.patchSkill = (req, res) => {
+exports.patchSkill = async (req, res) => {
   if (!req.user || !req.params.id || !req.body) {
     res.sendStatus(401)
     return
@@ -549,42 +550,27 @@ exports.patchSkill = (req, res) => {
     b.locales = JSON.stringify(b.locales)
   }
 
-  if (!b.fulfillment) {
-    b.fulfillment = '{}'
-  }
+  if (!b.fulfillment) b.fulfillment = '{}'
+  if (!b.name) b.name = 'UNTITLED PROJECT'
 
-  if (req.query.fulfillment){
-    pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
-  }else if (req.query.settings) {
-    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7  WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events], (err) => {
-        if (err) {
-          console.trace(err)
-          res.sendStatus(500)
-        } else {
-          latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200)
-        }
-    })
-  } else if (req.query.intents) {
-    pool.query(`
-            UPDATE skills
-            SET
-            intents = $3,
-            slots = $4,
-            fulfillment = $5,
-            account_linking = $6
-            WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500);
-        } else {
-          res.sendStatus(200);
-        }
-      })
-  } else if (req.query.publish) {
-    pool.query(`
+  try{
+    if (req.query.fulfillment){
+      // UPDATE FULFILLMENT COLUMN
+      await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
+    }else if (req.query.settings) {
+      // UPDATE COLUMNS RELATED TO SETTINGS
+      await pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7  WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events])
+    } else if (req.query.intents) {
+      // UPDATE INTENTS COLUMN
+      await pool.query(`UPDATE skills SET intents = $3, slots = $4, fulfillment = $5, account_linking = $6 WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking])
+    } else if (req.query.preview) {
+      // UPDATE PREVIEW COLUMN
+      await pool.query(`UPDATE skills SET preview = $2 WHERE skill_id = $1 AND creator_id = $3`, [id, b.isPreview, req.user.id])
+    } else if (req.query.publish) {
+      // UPDATE EVERYTHING RELATED TO PUBLISHING THE SKILL
+      await pool.query(`
             UPDATE skills
             SET
             name = $2,
@@ -606,70 +592,35 @@ exports.patchSkill = (req, res) => {
             privacy_policy = $18,
             terms_and_cond = $19
             WHERE skill_id = $1 AND creator_id = $20`,
-      [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
-        {
-          value: b.invocations
-        },
-        b.small_icon, b.large_icon, b.category,
-        b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales,
-        b.privacy_policy, b.terms_and_cond, req.user.id
-      ], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500)
-        } else {
+          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations}, b.small_icon, b.large_icon, b.category,
+          b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id])
           latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200)
-        }
-      })
-  } else if (req.query.preview) {
-    pool.query(`
-        UPDATE
-          skills
-        SET
-          preview = $2
-        WHERE
-          skill_id = $1 AND creator_id = $3`,
-      [id, b.isPreview, req.user.id], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500)
-        } else {
-          res.sendStatus(200)
-        }
-      })
-  } else {
-    pool.query(`
-            UPDATE skills
-            SET
-            name = $2,
-            inv_name = $3,
-            summary = $4,
-            description = $5,
-            keywords = $6,
-            invocations = $7,
-            small_icon = $8,
-            large_icon = $9,
-            category = $10,
-            locales = $11,
-            privacy_policy = $12,
-            terms_and_cond = $13
-            WHERE skill_id = $1 AND creator_id = $14`,
-      [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
-        {
-          value: b.invocations
-        },
-        b.small_icon, b.large_icon, b.category, b.locales,
-        b.privacy_policy, b.terms_and_cond, req.user.id
-      ], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500);
-        } else {
-          latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200);
-        }
-      })
+    } else {
+      // UPDATE GENERAL SKILL SETTINGS
+      await pool.query(`
+              UPDATE skills
+              SET
+              name = $2,
+              inv_name = $3,
+              summary = $4,
+              description = $5,
+              keywords = $6,
+              invocations = $7,
+              small_icon = $8,
+              large_icon = $9,
+              category = $10,
+              locales = $11,
+              privacy_policy = $12,
+              terms_and_cond = $13
+              WHERE skill_id = $1 AND creator_id = $14`,
+        [id, b.name, b.inv_name, b.summary, b.description, b.keywords,{value: b.invocations},
+          b.small_icon, b.large_icon, b.category, b.locales,b.privacy_policy, b.terms_and_cond, req.user.id])
+        latestSkillToIntercom(req.user.id, b.name)
+    }
+    res.sendStatus(200)
+  }catch(err){
+    console.trace(err)
+    res.sendStatus(500)
   }
 }
 
@@ -1046,7 +997,7 @@ exports.buildSkill = async (req, res) => {
                     getSkillStatus(0)
                   })
                   .catch(err => {
-                    logAxiosError(err, 'INTERACTION MODEL UPLOAD')
+                    logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(model))
                     if (err.response) {
                       if (err.response.status === 404) {
                         iterate(depth + 1)

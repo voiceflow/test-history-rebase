@@ -692,7 +692,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
         } else if (node.extras.type === 'mail') {
 
           let id = hashids.decode(node.extras.template_id);
-          if (id && id[0] && (node.extras.to === '_USER' || validateEmail(node.extras.to))) {
+          if (id && id[0] && (node.extras.to)) {
             let mapping;
             if (Array.isArray(node.extras.mapping)) {
               mapping = node.extras.mapping.filter(m => {

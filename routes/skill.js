@@ -155,19 +155,42 @@ exports.getSkill = (req, res) => {
               skills
           WHERE
               skill_id = $1 LIMIT 1`;
-      params = [id];
-  }else if(req.query.simple){
-      sql = `
-          SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment, created, is_google_view_active, google_publish_info
-          FROM
-              skills
-          WHERE
-              skill_id = $1 AND
-              creator_id = $2 LIMIT 1`;
-      params = [id, req.user.id];
-  }else{
-      sql = `
+    params = [id];
+  } else if (req.query.simple) {
+    sql = `
+      SELECT
+        sv.last_save,
+        name,
+        amzn_id,
+        review,
+        live,
+        diagram,
+        locales,
+        restart,
+        global,
+        intents,
+        slots,
+        inv_name,
+        preview,
+        account_linking,
+        resume_prompt,
+        error_prompt,
+        fulfillment,
+        alexa_events,
+        created,
+        is_google_view_active,
+        google_publish_info
+    FROM
+        skills s
+        INNER JOIN skill_versions sv ON s.skill_id = sv.canonical_skill_id
+            AND s.skill_id = sv.skill_id
+        WHERE
+            s.skill_id = $1
+            AND s.creator_id = $2
+        LIMIT 1`;
+    params = [id, req.user.id];
+  } else {
+    sql = `
           SELECT
               *
           FROM
@@ -189,7 +212,6 @@ exports.getSkill = (req, res) => {
 
       // Rehash the skill id
       skill.skill_id = req.params.id;
-
       if (req.query.preview || !skill.amzn_id) {
         res.send(skill)
       } else {
@@ -260,7 +282,6 @@ exports.getSkill = (req, res) => {
                 if (update) {
                   pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
                 }
-
                 res.send(skill);
 
               } else {
@@ -548,8 +569,8 @@ exports.patchSkill = (req, res) => {
   if (req.query.fulfillment){
     pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
   }else if (req.query.settings) {
-    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6  WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
+    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7  WHERE skill_id = $1 AND creator_id = $2`,
+      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events], (err) => {
         if (err) {
           console.trace(err)
           res.sendStatus(500)
@@ -1111,7 +1132,7 @@ exports.certifySkill = (req, res) => {
           })
           .then(response => {
             if (response.hasOwnProperty('violations')) {
-              Status(depth + 1);
+              getSkillStatus(depth + 1);
             } else {
               axios.request({
                   url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
@@ -1137,7 +1158,7 @@ exports.certifySkill = (req, res) => {
                           event: 'Submitted for Certification',
                           properties: {
                               amzn_id: req.params.amzn_id,
-                              skill_id: id
+                              skill_id: hashids.decode(req.params.id)[0]
                           }
                         })
                         res.sendStatus(200);
@@ -1417,14 +1438,14 @@ exports.copySkill = async (req, res, options, cb = false) => {
             name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, google_publish_info
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, google_publish_info
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, google_publish_info
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, google_publish_info
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `

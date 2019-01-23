@@ -193,7 +193,7 @@ class Skill extends Component {
         this.setState({
             stage: 7
         });
-        axios.post(`/amazon/${this.state.amzn_id}/certify`)
+        axios.post(`/amazon/${this.state.skill_id}/${this.state.amzn_id}/certify`)
         .then(() => {
             this.setState({
                 stage: 11,

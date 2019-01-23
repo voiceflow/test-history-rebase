@@ -329,7 +329,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
                     variable: mapping.variable,
                     slot: mapping.slot.label
                   })
-                } else if (mapping.slot.key in options.slots) {
+                } else if (mapping.slot && mapping.slot.key in options.slots) {
                   new_choice.mappings.push({
                     variable: mapping.variable,
                     slot: options.slots[mapping.slot.key]

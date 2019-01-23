@@ -18,6 +18,9 @@ import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import {convertDiagram} from './util'
 import Spotlight from './Spotlight'
+import DefaultModal from 'views/components/Modals/DefaultModal'
+import ShortCuts from 'views/components/ShortCuts'
+import Mousetrap from 'mousetrap'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -135,6 +138,7 @@ class Canvas extends Component {
         this.deleteNodeManually = this.deleteNodeManually.bind(this)
         this.mouseMove = this.mouseMove.bind(this)
         this.centerDiagram = this.centerDiagram.bind(this)
+        this.toggleShortcuts = this.toggleShortcuts.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -171,7 +175,7 @@ class Canvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: false,
+            last_save: props.skill.last_save,
             testing_modal: false,
             testing_info: false,
             variables: [],
@@ -186,7 +190,8 @@ class Canvas extends Component {
             confirm_info: null,
             default_templates: [],
             spotlight: false,
-            google: props.skill.google_view_active
+            google: props.skill.google_view_active,
+            keyboard_help: false
         }
 
         // SKILL IS LOADED HERE
@@ -199,14 +204,26 @@ class Canvas extends Component {
     }
 
     componentWillMount() {
-        // If not preview mode
-        if(!this.props.preview){
-            document.addEventListener('keydown', this.hotKeys)
-        }
+        Mousetrap.bind(['shift+/'], this.toggleShortcuts)
+        Mousetrap.bind(['command+s'], (e)=>{
+            e.preventDefault()
+            if (!this.state.saved) {
+                this.onSave()
+            }
+        })
+        Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({spotlight: false})))
+        Mousetrap.bind('space', (e) => {
+            if(this.diagram_focus){
+                this.onDiagramUnfocus()
+                this.setState({spotlight: true})
+                e.preventDefault()
+                e.stopPropagation()
+            }
+        })
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.hotKeys)
+        Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.onSave(null, false, false)
         }
@@ -228,6 +245,8 @@ class Canvas extends Component {
             })
         }
     }
+
+    toggleShortcuts(){this.setState({keyboard_help: !this.state.keyboard_help})}
 
     async onLoadTemplates(){
         if(window.user_detail && window.user_detail.admin > 0 && this.state.skill){
@@ -517,31 +536,6 @@ class Canvas extends Component {
         }
     }
 
-    hotKeys(event){
-        // CTRL/CMD + S to save
-        if ((event.ctrlKey || event.metaKey) && event.which === 83) {
-            event.preventDefault()
-            // Save Function
-            if (!this.state.saved) {
-                this.onSave()
-            }
-
-            return false
-        } else if(event.keyCode === 27) {
-            if(this.state.spotlight){
-                this.setState({spotlight: false})
-            }
-        } else if (this.diagram_focus) {
-            if((event.keyCode === 0 || event.keyCode === 32)) {
-                // SPACE KEY
-                this.onDiagramUnfocus()
-                this.setState({spotlight: true})
-                event.preventDefault()
-                event.stopPropagation()
-            }
-        }
-    }
-
     loadUserModules(){
         axios.get('/marketplace/user_module')
         .then(res => {
@@ -671,7 +665,7 @@ class Canvas extends Component {
                     reject(err)
                 })
             })
-
+            
             Promise.all([save_skill_intents, save_diagram]).then(res => {
                 state && this.setState({
                     saving: false,
@@ -759,7 +753,7 @@ class Canvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: diagram.last_save,
+                last_save: this.props.skill.last_save,
                 loading_diagram: false,
                 variables: variables,
                 diagram_level_intents: diagram_level_intents
@@ -1492,6 +1486,12 @@ class Canvas extends Component {
     render() {
         return (
             <React.Fragment>
+                <DefaultModal
+                    open={this.state.keyboard_help}
+                    header="Keyboard Shortcuts"
+                    toggle={this.toggleShortcuts}
+                    content={<ShortCuts/>}
+                />
                 <HelpModal
                     open={this.state.helpOpen}
                     help={this.state.help}
@@ -1516,7 +1516,6 @@ class Canvas extends Component {
                         toggleGoogle={this.toggleGoogle}
                         isGoogle={this.state.google}
                         updateSkill={this.updateSkill}
-                        addVersion={this.props.addVersion}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>

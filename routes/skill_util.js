@@ -65,6 +65,9 @@ exports.deleteSkillPromise = (creator_id, skill_id, delete_all_versions) => {
     try{
       let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
         // Only if deleting the whole project
+        if(skill_data_rows.length === 0){
+          throw new Error(`SELECT DELETE SKILL Not Found ${creator_id} | ${skill_id}`)
+        }
         if(skill_data_rows[0].amzn_id && delete_all_versions){
           AccessToken(creator_id, token => {
             if (token === null) {

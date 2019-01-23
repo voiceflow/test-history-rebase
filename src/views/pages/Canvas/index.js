@@ -170,7 +170,7 @@ class Canvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: false,
+            last_save: props.skill.last_save,
             testing_modal: false,
             testing_info: false,
             variables: [],
@@ -668,7 +668,7 @@ class Canvas extends Component {
                     reject(err)
                 })
             })
-
+            
             Promise.all([save_skill_intents, save_diagram]).then(res => {
                 state && this.setState({
                     saving: false,
@@ -752,7 +752,7 @@ class Canvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: diagram.last_save,
+                last_save: this.props.skill.last_save,
                 loading_diagram: false,
                 variables: variables,
                 diagram_level_intents: diagram_level_intents

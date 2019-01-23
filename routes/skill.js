@@ -495,11 +495,8 @@ exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
               Authorization: token
             }
           })
-          .then(res => {
-            // Sugoi!
-          })
           .catch(err => {
-            console.trace(err)
+            logAxiosError(err, 'DELETE SKILL ON ADC')
           })
       })
     }

@@ -10,7 +10,7 @@ export class BlockLinkModel extends LinkModel<DefaultLinkModelListener> {
 		super(type);
 		this.color = "#555D6D";
 		this.width = 1;
-		this.curvyness = 120;
+		this.curvyness = 175;
 		this.setSelected = this.setSelected.bind(this);
 	}
 

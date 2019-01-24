@@ -49,7 +49,7 @@ class Project extends PureComponent {
                             enterFlow={this.props.enterFlow}
                             renameFlow={this.props.renameFlow}
                             copyFlow={()=>this.props.copyFlow(diagram.id)}
-                            deleteFlow={()=>this.props.deleteFlow(diagram.id)}
+                            deleteFlow={()=>this.props.deleteFlow(diagram.id, this.props.updateTree)}
                         />
                     )
                 }

@@ -28,6 +28,7 @@ import Permissions from './Editors/Permissions';
 import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
+import PermissionCard from './Editors/PermissionCard'
 import {getBlocks} from './Blocks'
 import {
     Alert,
@@ -265,14 +266,7 @@ class Editor extends Component {
             case 'reminder':
                 return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'permission':
-                return <React.Fragment>
-                    <Alert>Sends permission request to the user's phone/device</Alert>
-                    <div className="px-5 mt-4">
-                        <div className="smartphone">
-                            <img src='/images/permissions.png' className="w-100" alt="sample permission"/>
-                        </div>
-                    </div>
-                </React.Fragment>
+                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate}/>
             default:
               return null
         }

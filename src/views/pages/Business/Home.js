@@ -192,22 +192,26 @@ class Home extends Component {
     return (
       <div className="business-page-inner">
         <div className="container">
-          <div className="row">
-            <TimeInterval handleFilterTypeChange={this.handleFilterTypeChange} />
+          <div className="alert alert-light">
+            <div className="row">
+              <TimeInterval handleFilterTypeChange={this.handleFilterTypeChange} />
+            </div>
+            <hr />
+            <div className="row">
+              <LineBar dau={this.state.dau} dates={this.state.dates}/>
+            </div>
           </div>
           <hr />
-          <div className="row">
-            <LineBar dau={this.state.dau} dates={this.state.dates}/>
-          </div>
-          <hr />
-          <div className="row justify-content-center">
-            <h5>Users</h5>
-          </div>
-          <div className="row justify-content-center">
-            <ReactTable
-              data={this.state.users_data}
-              columns={columns}
-            />
+          <div className="alert alert-light">
+            <div className="row justify-content-center">
+              <h5>Users</h5>
+            </div>
+            <div className="row justify-content-center">
+              <ReactTable
+                data={this.state.users_data}
+                columns={columns}
+              />
+            </div>
           </div>
         </div>
       </div>

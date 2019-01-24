@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {Alert} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
-const _ = require('lodash')
 
 const PERMISSIONS = [
     {name: 'Reminders', code: 'alexa::alerts:reminders:skill:readwrite'},

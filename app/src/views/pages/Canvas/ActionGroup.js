@@ -365,6 +365,16 @@ class ActionGroup extends PureComponent {
             </Modal>
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
+                <Tooltip
+                    distance={16}
+                    title="Save"
+                    position="bottom"
+                    className="mr-4"
+                >
+                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                        {this.props.saving && <span className="save-loader"/>}
+                    </button>
+                </Tooltip>
                 <div className="title-group-sub">
                     <Tooltip
                         title="Share"
@@ -404,12 +414,11 @@ class ActionGroup extends PureComponent {
                 </div>
                 <Tooltip
                     distance={16}
-                    title="Save"
+                    title="Test"
                     position="bottom"
+                    className="ml-4 mr-4"
                 >
-                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''} mr-4 ml-4`} onClick={this.props.onSave}>
-                        {this.props.saving && <span className="save-loader"/>}
-                    </button>
+                    <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play"/></button>
                 </Tooltip>
                 <Tooltip
                     html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}

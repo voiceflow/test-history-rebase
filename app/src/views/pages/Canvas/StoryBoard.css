@@ -2349,7 +2349,63 @@ button.close:hover{
     display: flex;
     vertical-align: middle;
 }
+#home-button {
+    position: absolute;
+    z-index: 5;
+    top: 10px;
+    left: 302px;
+}
+#flow-bar{
+    position: fixed;
+    bottom: 0px;
+    width: 430px;
+    height: 50px;
+    left: 50%;
+    margin-left: -215px;
+    z-index: 5;
+    align-items: center;
+    display: flex;
+    vertical-align: middle;
+    text-align: center;
+    background: url('/images/flowmenu.svg') no-repeat;
+    background-position: center center;
+}
+.flow-chevron{
+    transform:translateX(0px);
+    transition: all .25s ease;
+    width: 20px;
+    margin-right: 7px;
+}
+.flow-chevron:hover{
+    transform: translateX(-3px);
+    cursor: pointer;
+}
+.flow-navbar{
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.grey-icon{
+    color: #8da2b5 !important;
+    min-width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    transition: all .25s ease;
+    transform: translateX(0px) translateY(0px);
+    border-radius: 30px !important;
+    border: none;
+}
 
+.grey-icon:hover{
+    transform: translateY(-2px);
+    background-color: #fff !important;
+    box-shadow: 0 0 1px 1px rgba(17, 49, 96, .06),
+    0 2px 4px 0 rgba(17, 49, 96, .12);
+}
 .white-circ{
     background-color: #fff !important;
     color: #8da2b5 !important;

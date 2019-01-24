@@ -18,7 +18,7 @@ class FlowButton extends Component {
 
         this.state = {
             edit: false,
-            name: ''
+            name: props.flow ? props.flow.name : ''
         }
 
         this.close = this.close.bind(this);
@@ -34,7 +34,7 @@ class FlowButton extends Component {
     close() {
         this.props.renameFlow(this.props.flow.id, this.state.name)
         this.setState({
-            edit: false
+            edit: false,
         });
     }
 
@@ -62,14 +62,14 @@ class FlowButton extends Component {
                 <ButtonGroup className="diagram-block">
                     <Button disabled={active} 
                         onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)} block>
-                        <span className="diagram-text">{this.props.flow.name === 'ROOT' ? 'HOME' : this.props.flow.name}</span>
+                        <span className="diagram-text">{this.props.flow.name === 'ROOT' ? 'HOME' : this.state.name}</span>
                     </Button>
                     { this.props.flow.name !== 'ROOT' && 
                         <UncontrolledDropdown inNavbar>
                             <DropdownToggle className="diagram-edit append">
                                 <i className="fas fa-cog"/>
                             </DropdownToggle>
-                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-10px', marginTop: '4px'}}>
+                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-2px', marginTop: '4px'}}>
                                 <DropdownItem header>
                                     Flow Options
                                 </DropdownItem>

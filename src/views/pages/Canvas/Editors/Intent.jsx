@@ -36,7 +36,10 @@ class Intent extends Component {
     }
 
     updateCommand(selected) {
-        if (Array.isArray(selected) || (this.props.node.extras.intent && selected.key === this.props.node.extras.intent.key)) {
+        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const intent = extras.intent
+
+        if (Array.isArray(selected) || (intent && selected.key === intent.key)) {
             return
         }
 
@@ -44,20 +47,18 @@ class Intent extends Component {
             this.props.onError(`The ${selected.label} intent is already being handled by another Intent Block within this flow!`)
             this.intentSelectRef.current.blur();
         } else {
-            const current_intent = this.props.node.extras.intent
-            if (current_intent) this.props.diagram_level_intents.delete(current_intent.key)
-
-            this.props.node.extras.intent = selected
-            this.props.diagram_level_intents.add(selected.key)
-            if (!Array.isArray(this.props.node.extras.mappings)) {
-                this.props.node.extras.mappings = []
+            if (intent) this.props.diagram_level_intents.delete(intent.key)
+            extras.intent = selected
+            if (!Array.isArray(extras.mappings)) {
+                extras.mappings = []
             }
-            this.props.node.extras.mappings = this.props.node.extras.mappings.map(m => {
+            extras.mappings = extras.mappings.map(m => {
                 return {
                     variable: m.variable,
                     slot: null
                 }
             })
+            this.props.diagram_level_intents.add(selected.key)
             this.update()
         }
     }
@@ -69,26 +70,33 @@ class Intent extends Component {
 
     static getDerivedStateFromProps(props) {
         let node = props.node
+        const extras = props.isGoogle ? props.node.extras.google : props.node.extras.alexa
 
-        if (!node.extras) {
-            node.extras = {
-                intent: null,
-                mappings: []
+        if (!extras) {
+            if (props.isGoogle) {
+                props.node.extras.google = {
+                    intent: null,
+                    mappings: []
+                }
+            } else {
+                props.node.extras.alexa = {
+                    intent: null,
+                    mappings: []
+                }
             }
-        } else if (node.extras.intent) {
-            let command = node.extras
-            let intent = _.find(props.intents, { key: command.intent.key })
+        } else if (extras.intent) {
+            let intent = _.find(props.intents, { key: extras.intent.key })
             if (intent) {
-                command.intent = {
+                extras.intent = {
                     label: intent.name,
                     value: intent.key,
                     key: intent.key,
                     inputs: intent.inputs
                 }
             }
-            if (Array.isArray(command.mappings)) {
+            if (Array.isArray(extras.mappings)) {
                 // update labels TODO make this whole thing more efficient
-                command.mappings.forEach(mapping => {
+                extras.mappings.forEach(mapping => {
                     if (mapping.slot && mapping.slot.key) {
                         let slot = _.find(props.slots, { key: mapping.slot.key })
                         if (slot) {
@@ -104,7 +112,8 @@ class Intent extends Component {
     }
 
     toggleCanFulfill() {
-        const intent = this.state.node.extras.intent
+        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const intent = extras.intent
         if (!intent) return
         const fulfilled = this.isFulfill()
         const intent_key = intent.key
@@ -129,7 +138,8 @@ class Intent extends Component {
     }
 
     isFulfill() {
-        const intent = this.state.node.extras.intent
+        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const intent = extras.intent
         if (intent) {
             const fulfillments = this.props.skill.fulfillment
             return !!fulfillments[intent.key]
@@ -148,12 +158,12 @@ class Intent extends Component {
     }
 
     command() {
-        let command = this.state.node.extras
-        if (!command) return null
+        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const intent = extras.intent
 
         let slots
-        if (command.intent && command.intent.inputs) {
-            slots = command.intent.inputs.map(e => e.slots)
+        if (intent && intent.inputs) {
+            slots = intent.inputs.map(e => e.slots)
 
             // TODO: PLEASE MAKE THIS MORE EFFICIENT - CHECK IF THIS INTENT HAS NO SLOTS
             let has_slots = false
@@ -178,7 +188,7 @@ class Intent extends Component {
                     placeholder="Select Intent"
                     className="select-box mb-1"
                     classNamePrefix="select-box"
-                    value={command.intent}
+                    value={intent}
                     onChange={this.updateCommand}
                     options={this.props.intents.concat(this.props.built_ins).map(intent => {
                         return { label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in }
@@ -193,7 +203,7 @@ class Intent extends Component {
                         variables={this.props.variables}
                         slot_options={slots}
                         slots={this.props.slots}
-                        arguments={command.mappings}
+                        arguments={extras.google_mappings}
                         update={this.update}
                     />
                 </React.Fragment>
@@ -241,6 +251,8 @@ class Intent extends Component {
     render() {
 
         const checked = this.isFulfill()
+        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const intent = extras.intent
 
         return <React.Fragment>
             <ButtonGroup className="toggle-group mb-2">
@@ -249,8 +261,8 @@ class Intent extends Component {
                 <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
             </ButtonGroup>
             {this.renderTab()}
-            {this.state.isRoot && this.state.node.extras.intent && <hr />}
-            {this.state.isRoot && this.state.node.extras.intent &&
+            {!this.props.isGoogle && this.state.isRoot && intent && <hr />}
+            {!this.props.isGoogle && this.state.isRoot && intent &&
                 <div>
                     <div className="mb-2 d-flex">
                         <Switch
@@ -272,8 +284,8 @@ class Intent extends Component {
                         </Tooltip></div>
 
                     </div>
-                    {checked && this.state.node.extras.intent && this.hasSlots(this.state.node.extras.intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
-                        this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
+                    {checked && intent && this.hasSlots(intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
+                        this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${intent ? intent.key : ''}`)
                     }}>
                         <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
                     </button>}

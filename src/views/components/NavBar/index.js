@@ -92,7 +92,6 @@ class NavBar extends Component {
   logout(e) {
     e.preventDefault();
     AuthenticationService.logout(() => {
-      console.log("logout");
       this.props.history.push('/login');
     });
     return false;

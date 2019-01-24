@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
 import CanFulfill from './Canfulfill'
-import { BUILT_IN_INTENTS } from '../../Canvas/Constants'
+import { BUILT_IN_INTENTS_ALEXA } from '../../Canvas/Constants'
 // import { Discovery } from 'aws-sdk';
 import { intentHasSlots } from 'Helper'
 import { FormGroup, Label, Alert } from 'reactstrap'
 import axios from 'axios'
 
-const BUILT_INS = BUILT_IN_INTENTS.map(intent => {
+const BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
     return {
         built_in: true,
         name: intent.name,

@@ -114,9 +114,7 @@ class Skill extends Component {
             }else{
                 delete res.data.stage;
             }
-            res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ?
-              res.data.privacy_policy :
-              window.location.protocol + '//' + window.location.host+'/creator/privacy_policy'
+            res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ? res.data.privacy_policy : ''
             this.setState({
                 loaded: true,
                 ...res.data
@@ -346,9 +344,7 @@ class Skill extends Component {
               large_icon: s.large_icon,
               category: category,
               locales: JSON.stringify(s.locales),
-              privacy_policy: !_.isEmpty(s.privacy_policy) ?
-                s.privacy_policy :
-                window.location.protocol + '//' + window.location.host+'/creator/privacy_policy',
+              privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
               terms_and_cond: s.terms_and_cond,
               ...store
           })

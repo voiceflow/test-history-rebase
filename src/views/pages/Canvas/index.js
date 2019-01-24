@@ -1354,6 +1354,7 @@ class Canvas extends Component {
             } else if (type === 'permission') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
+                node.extras = {}
             } else if (type === 'permissions') {
                 node.name = 'User Info'
                 node.addInPort(' ')

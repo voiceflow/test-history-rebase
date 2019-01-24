@@ -150,7 +150,8 @@ exports.getSkill = (req, res) => {
         resume_prompt,
         error_prompt,
         fulfillment,
-        alexa_events
+        alexa_events,
+        repeat
     FROM
         skills s
         INNER JOIN skill_versions sv ON s.skill_id = sv.canonical_skill_id
@@ -446,9 +447,12 @@ exports.patchSkill = async (req, res) => {
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
     }else if (req.query.settings) {
+      if(typeof b.repeat !== 'number'){
+        b.repeat = 100
+      }
       // UPDATE COLUMNS RELATED TO SETTINGS
-      await pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7  WHERE skill_id = $1 AND creator_id = $2`,
-        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events])
+      await pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7, repeat = $8  WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
     } else if (req.query.intents) {
       // UPDATE INTENTS COLUMN
       await pool.query(`UPDATE skills SET intents = $3, slots = $4, fulfillment = $5, account_linking = $6 WHERE skill_id = $1 AND creator_id = $2`,

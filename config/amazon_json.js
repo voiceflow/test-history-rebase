@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
+const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT} = require('./Constants')
 const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {
@@ -125,6 +125,14 @@ const interactionModel = (req) => {
 		}
 	})
 
+	// Add in the repeat intent if it is needed
+	if(typeof req.repeat === 'number' && req.repeat > 0){
+		if (!entered_intents.has('AMAZON.RepeatIntent')) {
+			entered_intents.add('AMAZON.RepeatIntent')
+			intents_for_amazon.push({name: 'AMAZON.RepeatIntent'})
+		}
+	}
+
 	const content_slot_values = []
 
 
@@ -141,14 +149,20 @@ const interactionModel = (req) => {
 	})
 
 	// Add random catchall values
-	CATCHALL_SLOT_VALUES.forEach(val => {
-		content_slot_values.push(val)
-	})
+	// CATCHALL_SLOT_VALUES.forEach(val => {
+	// 	content_slot_values.push(val)
+	// })
 
-	const slot_types = [{
-		"name": "Content",
-		"values": content_slot_values
-	}]
+	const slot_types = []
+
+	// ACCOMADATE CATCHALL SYSTEM
+	if(content_slot_values.length !== 0){
+		intents_for_amazon.push(STORYFLOW_INTENT)
+		slot_types.push({
+			"name": "Content",
+			"values": content_slot_values
+		})
+	}
 
 	slots.forEach(slot => {
 		if (slot.type.value === 'CUSTOM' || !slot.type.value) {
@@ -174,15 +188,20 @@ const interactionModel = (req) => {
 		}
 	})
 
-	return {
+	const interaction_model = {
 		"interactionModel": {
 			"languageModel": {
 				"invocationName": invocation.toLowerCase(),
 				"intents": intents_for_amazon,
-				"types": slot_types
 			}
 		}
 	}
+
+	if(slot_types.length !== 0 ){
+		interaction_model.interactionModel.languageModel.types = slot_types
+	}
+
+	return interaction_model
 }
 
 const manifest = (r, encoded_id, name) => {
@@ -223,7 +242,8 @@ const manifest = (r, encoded_id, name) => {
 			if (r.privacy_policy) {
 				privacyLocales[locale].privacyPolicyUrl = r.privacy_policy
 			} else {
-				privacyLocales[locale].privacyPolicyUrl = `https://creator.getvoiceflow.com/creator/privacy_policy?name=${name}&skill=${r.name}`
+				// privacyLocales[locale].privacyPolicyUrl = `https://creator.getvoiceflow.com/creator/privacy_policy?name=${name}&skill=${r.name}`
+				privacyLocales[locale].privacyPolicyUrl = ""
 			}
 		})
 	}

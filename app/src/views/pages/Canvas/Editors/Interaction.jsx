@@ -29,7 +29,8 @@ class Interaction extends Component {
 
     handleChoicesChange(choices) {
         const node = this.state.node
-        node.extras.choices = choices
+        const extras = this.props.isGoogle ? node.extras.google : node.extras.alexa
+        extras.choices = choices
 
         this.setState({
             node: node
@@ -39,11 +40,18 @@ class Interaction extends Component {
 
     handleAddChoice() {
         const node = this.state.node
-        const choices = node.extras.choices
+        const g_extras = node.extras.google
+        const a_extras = node.extras.alexa
 
-        choices.push({intent: null, mappings: [], key: randomstring.generate(12), open: true})
+        const g_choices = g_extras.choices
+        const a_choices = a_extras.choices
 
-        let test = node.addOutPort(node.extras.choices.length);
+        const key = randomstring.generate(12)
+
+        g_choices.push({intent: null, mappings: [], key: key, open: true})
+        a_choices.push({intent: null, mappings: [], key: key, open: true})
+
+        let test = node.addOutPort(a_choices.length);
         test.setMaximumLinks(1);
 
         this.setState({
@@ -54,19 +62,24 @@ class Interaction extends Component {
     }
 
     handleRemoveChoice(i) {
-        const node = this.state.node;
-        const choices = node.extras.choices
+        const node = this.state.node
+        const g_extras = node.extras.google
+        const a_extras = node.extras.alexa
+
+        const g_choices = g_extras.choices
+        const a_choices = a_extras.choices
 
         for (var name in node.getPorts()) {
             var port = node.getPort(name)
 
-            if (port.label === node.extras.choices.length) {
+            if (port.label === a_choices.length) {
                 node.removePort(port)
                 break
             }
         }
 
-        choices.splice(i, 1)
+        a_choices.splice(i, 1)
+        g_choices.splice(i, 1)
 
         this.setState({
             node: node,
@@ -76,6 +89,10 @@ class Interaction extends Component {
     }
 
     renderTab(){
+
+        const node = this.state.node
+        const extras = this.props.isGoogle ? node.extras.google : node.extras.alexa
+
         switch(this.state.tab){
             case 'choices':
                 return <React.Fragment>
@@ -83,7 +100,7 @@ class Interaction extends Component {
                         Choices
                     </label>
                     <ChoiceDropdownInputs
-                        choices={this.state.node.extras.choices}
+                        choices={extras.choices}
                         onAdd={this.handleAddChoice}
                         onRemove={this.handleRemoveChoice}
                         onChange={this.handleChoicesChange}
@@ -93,6 +110,7 @@ class Interaction extends Component {
                         built_ins={this.props.built_ins}
                         onError={this.props.onError}
                         update={this.update}
+                        isGoogle={this.props.isGoogle}
                     />
                 </React.Fragment>
             case 'intents':
@@ -108,6 +126,7 @@ class Interaction extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
+                        isGoogle={this.props.isGoogle}
                     />
                 </React.Fragment>
             case 'slots':
@@ -121,6 +140,7 @@ class Interaction extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
+                        isGoogle={this.props.isGoogle}
                     />
                 </React.Fragment>
             default:

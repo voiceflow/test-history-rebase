@@ -16,7 +16,7 @@ import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
-import {convertDiagram} from './util'
+import {convertDiagram, getSlotsForKeys} from './util'
 import Spotlight from './Spotlight'
 import DefaultModal from 'views/components/Modals/DefaultModal'
 import ShortCuts from 'views/components/ShortCuts'
@@ -27,7 +27,7 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
-import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL, ALLOWED_GOOGLE_BLOCKS } from './Constants'
+import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from './Constants'
 
 import { getIntentSlots } from 'Helper'
 
@@ -79,28 +79,6 @@ const _getUtterancesWithSlotNames = (utterances, slots) => {
 	return new_utterances
 }
 
-const _getSlotsForKeys = (keys, slots) => {
-	let key_set = new Set()
-
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
-
-	key_set = [...key_set]
-
-	return key_set.map(key => {
-        const slot = _.find(slots, {key: key})
-        let type = slot.type.value !== 'CUSTOM' ? slot.type.value : slot.name
-
-		return {
-			name: slot.name,
-			type: type
-		}
-	})
-}
-
 class Canvas extends Component {
     constructor(props) {
         super(props)
@@ -131,7 +109,6 @@ class Canvas extends Component {
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
-        this.hotKeys=this.hotKeys.bind(this)
         this.toggleGoogle = this.toggleGoogle.bind(this)
         this.setCanFulfill = this.setCanFulfill.bind(this)
         this.updateFulfillmentOnDeletion = this.updateFulfillmentOnDeletion.bind(this)
@@ -139,6 +116,8 @@ class Canvas extends Component {
         this.mouseMove = this.mouseMove.bind(this)
         this.centerDiagram = this.centerDiagram.bind(this)
         this.toggleShortcuts = this.toggleShortcuts.bind(this)
+        this.onIntentUpdate = this.onIntentUpdate.bind(this)
+
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -190,7 +169,7 @@ class Canvas extends Component {
             confirm_info: null,
             default_templates: [],
             spotlight: false,
-            google: props.skill.google_view_active,
+            google: props.skill.is_google_view_active,
             keyboard_help: false
         }
 
@@ -590,17 +569,38 @@ class Canvas extends Component {
                 if(node.extras.diagram_id){
                     sub_diagrams.push(node.extras.diagram_id)
                 }else if (node.extras.type === 'interaction') {
-                    node.extras.choices.forEach(choice => {
+                    node.extras.alexa.choices.forEach(choice => {
                         if (choice.intent && !used_intent_names.has(choice.intent.value)) {
                             if (choice.intent.built_in) {
                                 used_intents.push({
                                     intent: choice.intent.value,
-                                    built_in: true
+                                    built_in: true,
+                                    platform: 'alexa'
                                 })
                             } else {
                                 used_intents.push({
                                     intent: choice.intent.value,
-                                    built_in: false
+                                    built_in: false,
+                                    platform: 'alexa'
+                                })
+                            }
+                            used_intent_names.add(choice.intent.value)
+                        }
+                    })
+
+                    node.extras.google.choices.forEach(choice => {
+                        if (choice.intent && !used_intent_names.has(choice.intent.value)) {
+                            if (choice.intent.built_in) {
+                                used_intents.push({
+                                    intent: choice.intent.value,
+                                    built_in: true,
+                                    platform: 'google'
+                                })
+                            } else {
+                                used_intents.push({
+                                    intent: choice.intent.value,
+                                    built_in: false,
+                                    platform: 'google'
                                 })
                             }
                             used_intent_names.add(choice.intent.value)
@@ -646,7 +646,7 @@ class Canvas extends Component {
                     slots: JSON.stringify(s.slots),
                     fulfillment: JSON.stringify(s.fulfillment),
                     account_linking: JSON.stringify(s.account_linking),
-                    is_google_view_active: JSON.stringify(s.is_google_view_active)
+                    is_google_view_active: s.is_google_view_active
                 })
                 .then(res => {
                     resolve()
@@ -728,6 +728,18 @@ class Canvas extends Component {
                 }
                 if (!ALLOWED_GOOGLE_BLOCKS.includes(type)) {
                     nodes[key].fade = google
+                }
+
+                if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
+                    if (!node.extras.google && !node.extras.alexa) {
+                        if (node.extras.choices) {
+                            node.extras.alexa = _.cloneDeep(_.pick(node.extras)['choices', 'choices_open'])
+                            node.extras.google = _.cloneDeep(_.pick(node.extras)['choices', 'choices_open'])
+                        } else {
+                            node.extras.alexa = _.cloneDeep(_.pick(node.extras)['intent', 'mappings', 'resume'])
+                            node.extras.google = _.cloneDeep(_.pick(node.extras)['intent', 'mappings', 'resume'])
+                        }
+                    }
                 }
             }
 
@@ -904,14 +916,13 @@ class Canvas extends Component {
         if (!nlc) {
             nlc = new NLC()
 
-            let amazon_slots = []
+            let built_in_slots = []
 
-            _.values(SLOT_TYPES_MAP).forEach(a => {
-                amazon_slots = amazon_slots.concat(a)
+            SLOT_TYPES.forEach(s => {
+                if (s.intent.alexa) built_in_slots.push(s.intent.alexa)
+                if (s.intent.google) built_in_slots.push(s.intent.google)
             })
-            amazon_slots = amazon_slots.concat(SLOT_TYPES_UNIVERSAL)
-            amazon_slots = _.uniq(amazon_slots)
-            amazon_slots.forEach(s => {
+            built_in_slots.forEach(s => {
                 const matcher = /[\s\S]*/
                 nlc.addSlotType({
                     type: s,
@@ -935,7 +946,7 @@ class Canvas extends Component {
                 if (!intent.built_in) {
                     samples = _getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
                 }
-                const _slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
+                const _slots = getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
 
                 nlc.registerIntent({
                     intent: intent.name,
@@ -1221,9 +1232,15 @@ class Canvas extends Component {
                 node.addInPort(' ');
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
-                    choices: [],
-                    choices_open: []
-                };
+                    alexa: {
+                        choices: [],
+                        choices_open: []
+                    },
+                    google: {
+                        choices: [],
+                        choices_open: []
+                    }
+                }
             } else if (type === 'combine') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1271,15 +1288,29 @@ class Canvas extends Component {
             } else if (type === 'intent'){
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.extras = {
-                    intent: null,
-                    mappings: [],
-                    resume: false
+                    alexa: {
+                        intent: null,
+                        mappings: [],
+                        resume: false
+                    },
+                    google: {
+                        intent: null,
+                        mappings: [],
+                        resume: false
+                    }
                 }
             } else if (type === 'command') {
                 node.extras = {
-                    intent: null,
-                    mappings: [],
-                    resume: true
+                    alexa: {
+                        intent: null,
+                        mappings: [],
+                        resume: true
+                    },
+                    google: {
+                        intent: null,
+                        mappings: [],
+                        resume: true
+                    }
                 }
             } else if (type === 'comment') {
                 node.name = 'New Comment'
@@ -1466,6 +1497,37 @@ class Canvas extends Component {
         this.props.updateSkill(skill)
     }
 
+    onIntentUpdate() {
+        const intents = this.state.skill.intents
+        const slots = this.state.skill.slots
+
+        intents.forEach((intent, i) => {
+            let is_google = false
+            let is_alexa = false
+
+            let intent_slots = getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
+            intent_slots.forEach(intent_slot => {
+                const slot_type = intent_slot.type
+                if (slot_type !== 'CUSTOM') {
+                    if (/AMAZON/.test(slot_type)) is_alexa = true
+                    if (/\$org\.schema\.type/.test(slot_type)) is_google = true
+                }
+            })
+            let platform = null
+            if (is_google && !is_alexa) platform = 'google'
+            if (is_alexa && !is_google) platform = 'alexa'
+            intents[i]._platform = platform
+        })
+
+        const skill = this.state.skill
+        skill.intents = intents
+
+        this.setState({
+            skill: skill,
+            saved: false
+        })
+    }
+
     centerDiagram(){
         // RECENTERS THE DIAGRAM ON THE START BLOCK
         let model = this.state.engine.getDiagramModel()
@@ -1531,6 +1593,7 @@ class Canvas extends Component {
                         slots={this.state.skill.slots}
                         globals={this.state.skill.global}
                         unfocus={this.onDiagramUnfocus}
+                        isGoogle={this.state.google}
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
@@ -1604,6 +1667,8 @@ class Canvas extends Component {
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
                         products={this.state.products}
+                        isGoogle={this.state.google}
+                        onIntentUpdate={this.onIntentUpdate}
                     />
                     <div
                         key={this.props.diagram_id}

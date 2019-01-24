@@ -187,8 +187,13 @@ class IntentInput extends Component {
     }
 
     render() {
+        let disabled = false
+        if ((this.props.intent._platform === 'google' && !this.props.isGoogle) || (this.props.intent._platform === 'alexa' && this.props.isGoogle)) {
+            disabled = true
+        }
+
         return (
-            <div className="interaction-block">
+            <div className={`interaction-block ${disabled ? 'faded' : ''}`}>
                 <div className="intent-title">
                     <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.intent.open ? " fa-rotate-90" : "")}></i></span>
                     <Tooltip
@@ -211,7 +216,7 @@ class IntentInput extends Component {
                     </Tooltip>
                     <button className="close" onClick={()=>this.props.removeIntent(this.props.intent.key)}>&times;</button>
                 </div>
-                <Collapse isOpen={this.props.intent.open}>
+                <Collapse isOpen={this.props.intent.open} className={disabled ? 'disabled' : ''}>
                     <div>
                         {this.renderUtterances(this.props.intent.inputs)}
                     </div>

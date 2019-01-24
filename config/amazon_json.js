@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
+const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES} = require('./Constants')
 const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {
@@ -43,7 +43,7 @@ const _getUtterancesWithSlotNames = (utterances, slots) => {
 	return new_utterances
 }
 
-const _getSlotsForKeys = (keys, slots) => {
+const _getSlotsForKeysAndFormat = (keys, slots) => {
 	let key_set = new Set()
 
 	keys.forEach(key_arr => {
@@ -81,7 +81,7 @@ const interactionModel = (req) => {
 
 		let intent
 		if (intent_key.startsWith('AMAZON.')) {
-			intent = _.find(BUILT_IN_INTENTS, {
+			intent = _.find(BUILT_IN_INTENTS_ALEXA, {
 				name: intent_key
 			})
 			intent.built_in = true
@@ -108,7 +108,7 @@ const interactionModel = (req) => {
 
 			if (!intent.built_in) {
 				formatted_intent.samples = _getUtterancesWithSlotNames(intent.inputs, slots)
-				formatted_intent.slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
+				formatted_intent.slots = _getSlotsForKeysAndFormat(intent.inputs.map(input => input.slots), slots)
 			} else {
 				formatted_intent.samples = []
 			}
@@ -290,5 +290,5 @@ module.exports = {
 	interactionModel: interactionModel,
 	manifest: manifest,
 	_getUtterancesWithSlotNames: _getUtterancesWithSlotNames,
-	_getSlotsForKeys: _getSlotsForKeys
+	_getSlotsForKeysAndFormat: _getSlotsForKeysAndFormat
 }

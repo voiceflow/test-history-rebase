@@ -220,11 +220,9 @@ class ActionGroup extends PureComponent {
         const s = this.state
         const p = this.props
 
-        console.log("GOOGLE", p.skill.google_publish_info)
-
         if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
             p.history.push(`/publish/${p.skill.skill_id}/google`)
-            p.onError('Please fill in the required fields first, and click "Publish"')
+            p.onError('Project ID or Authentication Token not found. Please fill in the required fields, and click "Publish"')
             return
         }
 
@@ -425,21 +423,6 @@ class ActionGroup extends PureComponent {
                     <p className="loading">{GOOGLE_STAGES[this.state.google_stage]}</p>
                 </div>
             </div>
-        } else if (this.state.google_stage === 2) {
-            modal_content = <div>
-                <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
-                <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
-                <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
-                {(this.props.skill.live || this.props.skill.review) && <hr/>}
-                <div>
-                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
-                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
-                </div>
-
-                <div className="super-center mb-3 mt-3">
-                    <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
-                </div>
-            </div>
         } else if (this.state.google_stage === 5) {
             modal_content = <React.Fragment>
             <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
@@ -455,6 +438,21 @@ class ActionGroup extends PureComponent {
                 </a>
                 </div>
             </React.Fragment>
+        } else {
+            modal_content = <div>
+                <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
+                <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
+                {(this.props.skill.live || this.props.skill.review) && <hr/>}
+                <div>
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
+                </div>
+
+                <div className="super-center mb-3 mt-3">
+                    <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
+                </div>
+            </div>
         }
         return modal_content
     }

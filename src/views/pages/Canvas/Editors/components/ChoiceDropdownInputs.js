@@ -52,14 +52,6 @@ class ChoiceDropdownInputs extends Component {
             }
         })
 
-        // if (props.choices.length !== current_state.choices.length) {
-        //     return {
-        //         choices: new_choices,
-        //         open: props.open,
-        //         intents: _.cloneDeep(props.intents)
-        //     }
-        // }
-
         return {
             choices: new_choices,
             intents: _.cloneDeep(props.intents)
@@ -99,6 +91,17 @@ class ChoiceDropdownInputs extends Component {
     }
 
     render() {
+
+        const options = this.props.intents.concat(this.props.built_ins).filter(intent => {
+            if ((intent._platform === 'google' && !this.props.isGoogle) || (intent._platform === 'alexa' && this.props.isGoogle)) {
+                return null
+            } else {
+                return intent
+            }
+        }).map(intent => {
+            return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
+        })
+
         return (
             <div className="w-100">
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
@@ -135,9 +138,7 @@ class ChoiceDropdownInputs extends Component {
                                     classNamePrefix="select-box"
                                     value={choice.intent}
                                     onChange={(e) => this.updateChoice(e, i)}
-                                    options={this.props.intents.concat(this.props.built_ins).map(intent => {
-                                        return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
-                                    })}
+                                    options={options}
                                 />
                             </div>
                             {!!slots && 

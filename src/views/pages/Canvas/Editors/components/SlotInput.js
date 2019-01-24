@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import {Tooltip} from 'react-tippy'
 
 class SlotInput extends Component {
@@ -129,9 +129,30 @@ class SlotInput extends Component {
     }
 
     render() {
+
+        const SlotOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /\$org\.schema\.type/.test(props.data.value)
+            const is_global = !is_alexa && !is_google
+
+            return (
+                <div>
+                    <components.Option {...props} className="d-flex">
+                        <span className="mr-2">{props.data.label}</span>
+                        <span className="slot-platform align-self-center">{(is_alexa || is_global) && <i className="fab fa-amazon"/>}</span>
+                        <span className="slot-platform align-self-center">{(is_google || is_global) && <i className="fab fa-google"/>}</span>
+                    </components.Option>
+                </div>
+            )
+        };
+
+        let disabled = false
+        const slot_type = this.props.slot.type.value
+        if ((/AMAZON/.test(slot_type) && this.props.isGoogle) || (/\$org\.schema\.type/.test(slot_type) && !this.props.isGoogle)) disabled = true
+
         return (
-            <div className="interaction-block mb-2">
-                <div className="intent-title">
+            <div className={`interaction-block mb-2`}>
+                <div className={`intent-title ${ disabled ? 'faded' : ''}`}>
                     <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.slot.open ? " fa-rotate-90" : "")}></i></span>
                     <Tooltip
                         className="flex-hard"
@@ -154,32 +175,49 @@ class SlotInput extends Component {
                     <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
-                    <div className="super-center flex-hard choice-select">
-                        <Select
-                            placeholder="Select Slot Type"
-                            classNamePrefix="select-box"
-                            className='select-box mb-2'
-                            value={this.props.slot.type}
-                            onChange={this.updateSlotType}
-                            options={this.props.slot_types.map(type => {
-                                return {label: type, value: type}
-                            })}
+                    {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Slot Type is Unavailable on the {this.props.isGoogle ? 'Google Assistant' : 'Alexa'} platform</div>}
+                    <div className={disabled ? 'disabled faded' : ''}>
+                        <div className="super-center flex-hard choice-select">
+                            <Select
+                                placeholder="Select Slot Type"
+                                classNamePrefix="select-box"
+                                className='select-box mb-2'
+                                value={this.props.slot.type}
+                                onChange={this.updateSlotType}
+                                options={this.props.slot_types.map(type => {
+
+                                    let platform
+                                    let value
+                                    if ((type.intent.alexa && type.intent.google) || (!type.intent.alexa && !type.intent.google)) {
+                                        value = type.label
+                                    } 
+                                    else if (type.intent.alexa && !type.intent.google) {
+                                        value = type.intent.alexa
+                                    }
+                                    else if (!type.intent.alexa && type.intent.google) {
+                                        value = type.intent.google
+                                    }
+
+                                    return {label: type.label, value: value}
+                                })}
+                                components={{ Option: SlotOption }}
+                            />
+                        </div>
+                        <hr className="mt-1 mb-2"/>
+                        <div>
+                            {this.renderUtterances(this.props.slot.inputs)}
+                        </div>
+                        <Textarea 
+                            className="slot-input"
+                            name="inputs"
+                            value={this.state.text} 
+                            onKeyPress={this.handleKeyPress}
+                            onChange={this.onTextChange}
+                            placeholder="Enter Slot Content Example" 
                         />
-                    </div>
-                    <hr className="mt-1 mb-2"/>
-                    <div>
-                        {this.renderUtterances(this.props.slot.inputs)}
-                    </div>
-                    <Textarea 
-                        className="slot-input"
-                        name="inputs"
-                        value={this.state.text} 
-                        onKeyPress={this.handleKeyPress}
-                        onChange={this.onTextChange}
-                        placeholder="Enter Slot Content Example" 
-                    />
-                    <div className="text-center mt-2">
-                        <span className="key-bubble forward pointer" onClick={this.addValue}><i className="far fa-long-arrow-right"/></span>
+                        <div className="text-center mt-2">
+                            <span className="key-bubble forward pointer" onClick={this.addValue}><i className="far fa-long-arrow-right"/></span>
+                        </div>
                     </div>
                 </Collapse>
             </div> 

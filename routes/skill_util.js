@@ -15,22 +15,22 @@ const generateID = () => {
 
 exports.deleteDynamoDiagramPromise = (diagram_id) => {
   return new Promise(async (resolve, reject) => {
-    let diagrams_params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-      Key: {
-        'id': diagram_id
-      }
-    }
-    let delete_diagrams_promise = docClient.delete(diagrams_params).promise()
-    let skills_params = {
-      TableName: getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME') + '.live',
-      Key: {
-        'id': diagram_id
-      }
-    }
-    let delete_skills_promise = docClient.delete(skills_params).promise()
-
     try{
+      let diagrams_params = {
+        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        Key: {
+          'id': diagram_id
+        }
+      }
+      let delete_diagrams_promise = docClient.delete(diagrams_params).promise()
+      let skills_params = {
+        TableName: getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME') + '.live',
+        Key: {
+          'id': diagram_id
+        }
+      }
+      let delete_skills_promise = docClient.delete(skills_params).promise()
+    
       await delete_diagrams_promise
       await delete_skills_promise
       resolve()
@@ -64,43 +64,47 @@ exports.deleteSkillPromise = (creator_id, skill_id, delete_all_versions) => {
 
     try{
       let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
-        // Only if deleting the whole project
-        if(skill_data_rows.length === 0){
-          throw new Error(`SELECT DELETE SKILL Not Found ${creator_id} | ${skill_id}`)
-        }
-        if(skill_data_rows[0].amzn_id && delete_all_versions){
-          AccessToken(creator_id, token => {
-            if (token === null) {
-              return;
-            }
-    
-            axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${skill_data_rows[0].amzn_id}`,
-                method: 'DELETE',
-                headers: {
-                  Authorization: token
-                }
-              })
-              .catch(err => {
-                logAxiosError(err, 'DELETE SKILL')
-              })
-          })
-        }
 
-        await pool.query(delete_query, [creator_id, skill_id])
-        let diagram_delete_promises = []
-        for(let i=0;i < skill_data_rows.length;i++){
-          diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))
-        }
+      if(skill_data_rows.length === 0){
+        console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
+        resolve()
+      }
 
-        Promise.all(diagram_delete_promises)
-        .then(() => {
-          resolve()
+      // Only if deleting the whole project
+      if(skill_data_rows[0].amzn_id && delete_all_versions){
+        AccessToken(creator_id, token => {
+          if (token === null) {
+            return;
+          }
+  
+          axios.request({
+              url: `https://api.amazonalexa.com/v1/skills/${skill_data_rows[0].amzn_id}`,
+              method: 'DELETE',
+              headers: {
+                Authorization: token
+              }
+            })
+            .catch(err => {
+              logAxiosError(err, 'DELETE SKILL')
+            })
         })
-        .catch((err) => {
-          console.trace(err)
-          reject()
-        })
+      }
+
+      await pool.query(delete_query, [creator_id, skill_id])
+      let diagram_delete_promises = []
+      for(let i=0;i < skill_data_rows.length;i++){
+        // To0 f4st for 4mzn
+        setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
+      }
+
+      Promise.all(diagram_delete_promises)
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        console.trace(err)
+        reject()
+      })
 
 
     } catch (err) {

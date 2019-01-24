@@ -749,9 +749,20 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             }
           }
 
+          let permission_card = true
+          if(node.extras.custom){
+            if(Array.isArray(node.extras.permissions) && node.extras.permissions.length !== 0){
+              permission_card = []
+              node.extras.permissions.forEach(permission => {
+                options.permissions.add(permission),
+                permission_card.push(permission)
+              })
+            }
+          }
+
           // Permission Card
           story.lines[node.id] = {
-            permission_card: true,
+            permission_card: permission_card,
             nextId: getLink(nextLink)
           }
         } else if (node.extras.type === 'permissions') {

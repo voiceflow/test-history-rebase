@@ -17,7 +17,8 @@ class LineBar extends Component{
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(96, 146, 255,0.4)',
           hoverBorderColor: 'rgba(96, 146, 255, 1)',
-          data: this.props.dau
+          data: this.props.dau,
+          cubicInterpolationMode: 'monotone'
         }
       ]
     }

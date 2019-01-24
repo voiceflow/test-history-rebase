@@ -33,6 +33,7 @@
     "react": "^16.5.2",
     "react-ace": "^6.2.0",
     "react-autosize-textarea": "^5.0.0",
+    "react-chartjs-2": "^2.7.4",
     "react-chartkick": "^0.3.0",
     "react-countup": "^4.0.0-alpha.6",
     "react-datepicker": "^1.7.0",

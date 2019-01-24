@@ -1,26 +1,96 @@
-const { hashids } = require('./../services')
-const { getEnvVariable } = require('./../util')
-const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const { pool, logging_pool, hashids } = require('../services')
 
-exports.trackOnboarding = (req, res) => {
-    analytics.track({
-        userId: req.user.id,
-        event: 'Onboarding Survey',
-        properties: {
-            state: req.body.state
-        }
-    })
-    res.sendStatus(200)
+const checkUserOwnsSkill = (req, res, cb) => {
+    let skill_id = hashids.decode(req.params.skill_id)[0]
+
+    if(req.user.admin >= 100){
+        cb()
+    } else {
+        pool.query(
+            `
+            SELECT * FROM skills WHERE skill_id = $1
+            `,
+            [skill_id],
+            (err, data) => {
+                if(err){
+                    console.log(err)
+                    res.sendStatus(500)
+                } 
+                if(data.rows.length > 0 && data.rows[0].creator_id === req.user.id){
+                    cb()
+                } else {
+                    res.sendStatus(403)
+                }
+            }
+        )
+    }
 }
 
-exports.trackCanvasTime = (req, res) => {
-    analytics.track({
-        userId: req.user.id,
-        event: 'Canvas Session',
-        properties: {
-            skill_id: hashids.decode(req.body.skill_id)[0],
-            duration: req.body.duration / 1000
-        }
+exports.getUsersData = (req, res) => {
+    checkUserOwnsSkill(req, res, () => {
+        let skill_id = hashids.decode(req.params.skill_id)[0]
+
+        logging_pool.query(
+            `
+            SELECT user_id, count(DISTINCT utterances.session_id) AS sessions, count(*) AS utterances, max(session_end) AS last_interaction, min(session_begin) AS first_interaction 
+            FROM sessions INNER JOIN utterances ON sessions.session_id = utterances.session_id 
+            WHERE skill_id = $1 
+            GROUP BY user_id
+            `,
+            [skill_id],
+            (err, data) => {
+                if(err){
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    res.send(data.rows)
+                }
+            }
+        )
     })
-    res.sendStatus(200)
+}
+
+exports.getDAU = (req, res) => {
+    checkUserOwnsSkill(req, res, () => {
+        let skill_id = hashids.decode(req.params.skill_id)[0]
+        let from = req.params.from
+        let to = req.params.to
+        let dau_query
+
+        // If period less than 3days, group by hr
+        if(to - from <= 259200){
+            dau_query = `
+                SELECT count(DISTINCT user_id) AS user_count, date_trunc('hour', to_timestamp(session_begin / 1000)) AS dau_date
+                FROM sessions 
+                WHERE 
+                skill_id = $1 
+                AND to_timestamp(session_begin / 1000) >= to_timestamp($2)
+                AND to_timestamp(session_end / 1000) <= to_timestamp($3)
+                GROUP BY date_trunc('hour', to_timestamp(session_begin / 1000))
+                ORDER BY dau_date ASC`
+        } else {
+            dau_query = `
+                SELECT count(DISTINCT user_id) AS user_count, to_timestamp(session_begin / 1000)::date AS dau_date
+                FROM sessions 
+                WHERE 
+                    skill_id = $1 
+                    AND to_timestamp(session_begin / 1000) >= to_timestamp($2)
+                    AND to_timestamp(session_end / 1000) <= to_timestamp($3)
+                GROUP BY to_timestamp(session_begin / 1000)::date
+                ORDER BY dau_date ASC`
+        }
+        // Convert session_begin and session_end to s from ms
+        logging_pool.query(
+            dau_query,
+            [skill_id, from, to],
+            (err, data) => {
+                if(err){
+                    console.log(err)
+                    res.sendStatus(500)
+                } else {
+                    res.send(data.rows)
+                }
+            }
+        )
+    })
 }

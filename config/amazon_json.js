@@ -263,8 +263,6 @@ const manifest = (r, encoded_id, name) => {
 		ret.manifest.permissions = r.alexa_permissions.map(permission => ({"name": permission}))
 	}
 	if(r.alexa_events){
-		ret.manifest.permissions = ret.manifest.permissions ? ret.manifest.permissions : []
-		ret.manifest.permissions.push({name: "alexa::devices:all:notifications:write"})
 		ret.manifest.events = JSON.parse(r.alexa_events)
 	}
 

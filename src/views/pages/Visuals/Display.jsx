@@ -233,12 +233,12 @@ class Display extends Component {
                             <div className="space-between">
                                 <div className="text-muted"><h5 className="mb-0">APL Template</h5> <small><i className="far fa-link"/> ( <a href="https://developer.amazon.com/alexa/console/ask/displays" target="_blank" rel="noopener noreferrer">Authoring Tool</a> )</small></div>
                                 <div className="subheader-right">
-                                    <MUIButton varient="contained" className="purple-btn mr-2" onClick={()=>{
+                                    <MUIButton varient="contained" className="previous-btn mr-2" onClick={()=>{
                                         this.props.history.push(`/visuals/${this.props.skill.skill_id}`);
                                     }}>
                                         <i className="fas fa-arrow-left mr-2"/>{' '}Back
                                     </MUIButton>
-                                    <MUIButton varient="contained" className="white-btn" onClick={this.save} style={{width: 100}}>
+                                    <MUIButton varient="contained" className="purple-btn" onClick={this.save} style={{width: 100}}>
                                         {this.state.saving ? 
                                             <span className="loader"/> : 
                                             <React.Fragment>

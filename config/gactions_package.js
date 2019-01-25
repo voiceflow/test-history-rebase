@@ -2,9 +2,10 @@ const generateGactionsPackage = (params) => {
 
   const intents = params.intents
   const slots = params.slots
-  const locales = params.locales
   const title = params.title || 'Test Skill'
   const skill_id = params.skill_id || 'P2WdNnRdM0'
+
+  console.log("GENERATE PACKAGE", params)
 
   const base = {
     "actions": [{

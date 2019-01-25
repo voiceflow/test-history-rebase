@@ -856,8 +856,6 @@ exports.buildSkill = async (req, res) => {
           let model = JSONs.interactionModel(r)
           // console.log(JSON.stringify(model))
 
-          console.log("interaction", JSON.stringify(model))
-
           const iterate = (depth) => {
             if (depth === 3) {
               res.status(500).send({

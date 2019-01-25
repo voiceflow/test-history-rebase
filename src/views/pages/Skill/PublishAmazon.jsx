@@ -108,6 +108,9 @@ class Skill extends Component {
                 res.data.invocations = ['']
             }
 
+            if (!res.data.keywords) {
+                res.data.keywords = ''
+            }
 
             if(res.data.review){
                 res.data.stage = 11;
@@ -323,7 +326,6 @@ class Skill extends Component {
     save(publish=false, cb){
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
-        let split_keywords = s.keywords.split(',')
 
         if (_.isNull(this.state.error)) {
           let store;

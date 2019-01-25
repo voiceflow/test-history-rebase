@@ -148,10 +148,10 @@ const interactionModel = (req) => {
 		}
 	})
 
-	// Add random catchall values
-	// CATCHALL_SLOT_VALUES.forEach(val => {
-	// 	content_slot_values.push(val)
-	// })
+	// Add random catchall values comment out to remove default catchall
+	CATCHALL_SLOT_VALUES.forEach(val => {
+		content_slot_values.push(val)
+	})
 
 	const slot_types = []
 
@@ -242,7 +242,6 @@ const manifest = (r, encoded_id, name) => {
 			if (r.privacy_policy) {
 				privacyLocales[locale].privacyPolicyUrl = r.privacy_policy
 			} else {
-				// privacyLocales[locale].privacyPolicyUrl = `https://creator.getvoiceflow.com/creator/privacy_policy?name=${name}&skill=${r.name}`
 				privacyLocales[locale].privacyPolicyUrl = ""
 			}
 		})

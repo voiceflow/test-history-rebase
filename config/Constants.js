@@ -1191,62 +1191,7 @@ exports.BUILT_IN_INTENTS = [
 exports.CATCHALL_SLOT_VALUES = [
   {
     "name": {
-      "value": "hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey hey hey hey"
+      "value": "Quick zephyrs blow, vexing daft Jim"
     }
   },
   {

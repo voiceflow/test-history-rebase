@@ -168,6 +168,7 @@ module.exports = {
     jwt: jwt,
     config: config,
     s3: s3,
+    s3Stream: s3Stream,
     uploadResize: uploadResize,
     hashids: hashids,
     validateEmail: validateEmail,

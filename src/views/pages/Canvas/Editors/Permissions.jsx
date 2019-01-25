@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import Permission from './components/Permission'
+import {Alert} from 'reactstrap'
 const _ = require('lodash')
+
+const permission_options = [
+    { name: 'User Email', value: 'alexa::profile:email:read' },
+    { name: 'User Name', value: 'alexa::profile:name:read' },
+    { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
+    // { name: 'Amazon Pay', value: 'payments:autopay_consent' }
+    // Removed for now, amazon pay permissions broken
+]
 
 class Permissions extends Component {
     constructor(props) {
@@ -8,7 +17,7 @@ class Permissions extends Component {
 
         this.state = {
             node: props.node,
-            permission_options: props.permission_options
+            permission_options: permission_options
         };
 
         this.onUpdate = this.onUpdate.bind(this);
@@ -123,6 +132,7 @@ class Permissions extends Component {
                         <i className="far fa-plus"></i> Add Permission Request
                     </button> : null
                 }
+                <Alert className="mt-3">If failing, try prompting the user with the <b>Permission</b> block and a message</Alert>
             </div>
         );
     }

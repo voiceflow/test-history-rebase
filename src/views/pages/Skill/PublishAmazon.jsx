@@ -114,9 +114,7 @@ class Skill extends Component {
             }else{
                 delete res.data.stage;
             }
-            res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ?
-              res.data.privacy_policy :
-              window.location.protocol + '//' + window.location.host+'/creator/privacy_policy'
+            res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ? res.data.privacy_policy : ''
             this.setState({
                 loaded: true,
                 ...res.data
@@ -191,7 +189,7 @@ class Skill extends Component {
         this.setState({
             stage: 7
         });
-        axios.post(`/amazon/${this.state.amzn_id}/certify`)
+        axios.post(`/amazon/${this.state.skill_id}/${this.state.amzn_id}/certify`)
         .then(() => {
             this.setState({
                 stage: 11,
@@ -251,7 +249,6 @@ class Skill extends Component {
             .then(res => {
                 this.setState({stage: 4});
                 let new_version_data = res.data
-                this.props.addVersion(new_version_data)
                 axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                 .then(res => {
                     this.setState({
@@ -347,9 +344,7 @@ class Skill extends Component {
               large_icon: s.large_icon,
               category: category,
               locales: JSON.stringify(s.locales),
-              privacy_policy: !_.isEmpty(s.privacy_policy) ?
-                s.privacy_policy :
-                window.location.protocol + '//' + window.location.host+'/creator/privacy_policy',
+              privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
               terms_and_cond: s.terms_and_cond,
               ...store
           })
@@ -544,7 +539,7 @@ class Skill extends Component {
                         placeholder="Any Particular Testing Instructions for Amazon Approval Process"
                     />
                 </Paper>
-                <button className="purple-btn btn" onClick={this.onPublish} block>Submit to Alexa</button>
+                <button className="purple-btn btn" onClick={this.onPublish}>Submit to Alexa</button>
             </div>
         }else if(this.state.stage === 5 || this.state.stage === 6){
             content = <div>

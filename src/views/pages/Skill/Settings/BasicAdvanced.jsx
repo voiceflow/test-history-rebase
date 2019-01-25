@@ -4,7 +4,7 @@ import axios from 'axios'
 import update from 'immutability-helper'
 import {Alert, FormGroup, Label, Button, Input} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
-import Prompt from './Prompt'
+import Prompt from 'views/components/Uploads/Prompt'
 import AceEditor from 'react-ace';
 
 import 'brace/mode/json';

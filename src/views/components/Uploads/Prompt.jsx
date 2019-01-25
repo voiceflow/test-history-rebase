@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { VOICES } from './../../Canvas/Constants'
+import { VOICES } from 'views/pages/Canvas/Constants'
+import VariableText from 'views/pages/Canvas/Editors/components/VariableText'
 import AudioDrop from 'views/components/Uploads/AudioDrop'
 import Textarea from 'react-textarea-autosize'
 import Select from 'react-select'
@@ -82,13 +83,22 @@ class Prompt extends PureComponent {
                         />
                     </div>
                 </div>
-                <Textarea
-                    minRows={3}
-                    placeholder={this.props.placeholder}
-                    className="form-control"
-                    value={this.props.content}
-                    onChange={(e)=>this.updateContent(e.target.value)}
-                />
+                {this.props.variables ? 
+                    <VariableText
+                        className="editor form-control auto-height"
+                        raw={this.props.content}
+                        placeholder={this.props.placeholder}
+                        variables={this.props.variables}
+                        updateRaw={this.updateContent}
+                    /> : 
+                    <Textarea
+                        minRows={3}
+                        placeholder={this.props.placeholder}
+                        className="form-control"
+                        value={this.props.content}
+                        onChange={(e)=>this.updateContent(e.target.value)}
+                    />
+                }
             </div>
         }
     }

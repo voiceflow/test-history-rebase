@@ -10,6 +10,7 @@ import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/fontawesome/css/all.min.css';
 import './App.css';
+import 'react-day-picker/lib/style.css';
 
 // Pages
 import Skill from './Skill'
@@ -165,20 +166,21 @@ class App extends Component {
   }
 
   socketFail(){
-    if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
-      window.error = true
-      window.CreatorSocket.status = 'FAIL'
-      this.setState({
-        error: {
-          type: 'socket-fail',
-          action: () => {
-            window.error = false
-            this.setState({loading: false, error: null})
-          },
-        },
-        loading: false
-      })
-    }
+    window.CreatorSocket.status = 'FAIL'
+    // if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
+    //   window.error = true
+    //   window.CreatorSocket.status = 'FAIL'
+    //   this.setState({
+    //     error: {
+    //       type: 'socket-fail',
+    //       action: () => {
+    //         window.error = false
+    //         this.setState({loading: false, error: null})
+    //       },
+    //     },
+    //     loading: false
+    //   })
+    // }
   }
 
   componentDidMount() {

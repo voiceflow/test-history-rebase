@@ -143,7 +143,7 @@ class ActionGroup extends PureComponent {
                             stage: 2
                         })
                     })
-                }, 1000)
+                }, 3000)
             }
         }
 
@@ -155,7 +155,6 @@ class ActionGroup extends PureComponent {
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(res => {
             let new_version_data = res.data
-            this.props.addVersion(new_version_data)
             this.setState({stage: 11}, () => {
                 axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                 .then(res => {
@@ -194,6 +193,7 @@ class ActionGroup extends PureComponent {
             });
         })
         .catch(err => {
+            console.error(err)
             this.setState({stage: 4});
         })
     }
@@ -341,13 +341,7 @@ class ActionGroup extends PureComponent {
                 return <div>
                     <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
                     <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
-                    <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console.</div>
-                    {(this.props.skill.live || this.props.skill.review) && <hr/>}
-                    <div>
-                        {this.props.skill.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
-                        {this.props.skill.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
-                    </div>
-
+                    <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                     <div className="super-center mb-3 mt-3">
                         <button className="purple-btn" onClick={this.updateAlexa}>Confirm Upload</button>
                     </div>
@@ -371,6 +365,16 @@ class ActionGroup extends PureComponent {
             </Modal>
             <div className="title-group no-select">
                 <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
+                <Tooltip
+                    distance={16}
+                    title="Save"
+                    position="bottom"
+                    className="mr-4"
+                >
+                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                        {this.props.saving && <span className="save-loader"/>}
+                    </button>
+                </Tooltip>
                 <div className="title-group-sub">
                     <Tooltip
                         title="Share"
@@ -410,12 +414,11 @@ class ActionGroup extends PureComponent {
                 </div>
                 <Tooltip
                     distance={16}
-                    title="Save"
+                    title="Test"
                     position="bottom"
+                    className="ml-4 mr-4"
                 >
-                    <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''} mr-4 ml-4`} onClick={this.props.onSave}>
-                        {this.props.saving && <span className="save-loader"/>}
-                    </button>
+                    <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play"/></button>
                 </Tooltip>
                 <Tooltip
                     html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}

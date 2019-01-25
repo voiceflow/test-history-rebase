@@ -4,20 +4,24 @@ import Menu from './Menu'
 import Editor from './Editor'
 import moment from 'moment'
 import axios from 'axios'
+import update from 'immutability-helper';
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css'
 import './StoryBoard.css'
-import TitleBar from './TitleBar'
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
-import { ButtonGroup } from 'reactstrap'
+import { ButtonGroup, Alert } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import {convertDiagram} from './util'
 import Spotlight from './Spotlight'
+import FlowBar from './FlowBar'
+import DefaultModal from 'views/components/Modals/DefaultModal'
+import ShortCuts from 'views/components/ShortCuts'
+import Mousetrap from 'mousetrap'
 
 import { BlockNodeModel } from './SRD/models/BlockNodeModel'
 import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
@@ -119,6 +123,9 @@ class Canvas extends Component {
         this.removeNode = this.removeNode.bind(this)
         this.addRemoveListener = this.addRemoveListener.bind(this)
         this.copyNode = this.copyNode.bind(this)
+        this.copyFlow = this.copyFlow.bind(this)
+        this.deleteFlow = this.deleteFlow.bind(this);
+        this.renameFlow = this.renameFlow.bind(this);
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
@@ -128,12 +135,12 @@ class Canvas extends Component {
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
-        this.hotKeys=this.hotKeys.bind(this)
         this.setCanFulfill = this.setCanFulfill.bind(this)
         this.updateFulfillmentOnDeletion = this.updateFulfillmentOnDeletion.bind(this)
         this.deleteNodeManually = this.deleteNodeManually.bind(this)
         this.mouseMove = this.mouseMove.bind(this)
         this.centerDiagram = this.centerDiagram.bind(this)
+        this.toggleShortcuts = this.toggleShortcuts.bind(this)
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -170,7 +177,7 @@ class Canvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: false,
+            last_save: props.skill.last_save,
             testing_modal: false,
             testing_info: false,
             variables: [],
@@ -184,7 +191,8 @@ class Canvas extends Component {
             diagram_level_intents: new Set(),
             confirm_info: null,
             default_templates: [],
-            spotlight: false
+            spotlight: false,
+            keyboard_help: false
         }
 
         // SKILL IS LOADED HERE
@@ -197,14 +205,26 @@ class Canvas extends Component {
     }
 
     componentWillMount() {
-        // If not preview mode
-        if(!this.props.preview){
-            document.addEventListener('keydown', this.hotKeys)
-        }
+        Mousetrap.bind(['shift+/'], this.toggleShortcuts)
+        Mousetrap.bind(['command+s'], (e)=>{
+            e.preventDefault()
+            if (!this.state.saved) {
+                this.onSave()
+            }
+        })
+        Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({spotlight: false})))
+        Mousetrap.bind('space', (e) => {
+            if(this.diagram_focus){
+                this.onDiagramUnfocus()
+                this.setState({spotlight: true})
+                e.preventDefault()
+                e.stopPropagation()
+            }
+        })
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.hotKeys)
+        Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.onSave(null, false, false)
         }
@@ -226,6 +246,8 @@ class Canvas extends Component {
             })
         }
     }
+
+    toggleShortcuts(){this.setState({keyboard_help: !this.state.keyboard_help})}
 
     async onLoadTemplates(){
         if(window.user_detail && window.user_detail.admin > 0 && this.state.skill){
@@ -489,6 +511,139 @@ class Canvas extends Component {
         }
     }
 
+    copyFlow(flow_id) {
+        let flow = this.state.diagrams.find(d => d.id === flow_id)
+        if (!flow) {
+            return
+        }
+
+        this.setState({
+            loading_diagram: true
+        })
+        const copy = (save = true) => {
+
+            let new_flow_name = flow.name + ' (COPY)'
+            let index = 1
+            const exists = (name) => this.state.diagrams.find(d => d.name === name)
+            while (exists(new_flow_name)) {
+                new_flow_name = `${flow.name} (COPY ${index})`
+                index++
+            }
+
+            axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(new_flow_name)}`)
+                .then((res) => {
+                    let diagrams = this.state.diagrams
+                    diagrams.push({
+                        id: res.data,
+                        name: new_flow_name
+                    })
+                    this.setState({
+                        diagrams: diagrams
+                    }, this.enterFlow(res.data, save))
+                })
+                .catch((err) => {
+                    this.setState({
+                        loading_diagram: false,
+                        text: < Alert color = "danger" > Unable to Copy Flow </Alert>,
+                        confirm: {
+                            confirm: this.setState({
+                                confirm: null
+                            })
+                        }
+                    })
+                })
+        }
+
+        if (flow_id === this.props.diagram_id) {
+            this.onSave(() => {
+                copy(false)
+            })
+        } else {
+            copy(true)
+        }
+    }
+    
+    deleteFlow(flow_id) {
+        this.setState({
+            confirm: {
+                warning: true,
+                text: <Alert color = "danger"
+                className = "mb-0" >
+                <i className = "fas fa-exclamation-triangle fa-2x" />
+                < br />
+                Deleting this flow permanently deletes everything inside and can not be recovered
+                <br />
+                <br />
+                Are you sure ?
+                </Alert>,
+                confirm : () => {
+                    this.setState({
+                        confirm: null
+                    })
+                    axios.delete('/diagram/' + flow_id)
+                        .then(() => {
+                            let index = this.state.diagrams.findIndex(d => d.id === flow_id)
+                            if (index !== -1) {
+                                let diagrams = this.state.diagrams;
+                                diagrams.splice(index, 1)
+                                this.setState({
+                                    diagrams: diagrams
+                                })
+                            }
+                            // If they are deleting the flow they are currently on, go back to ROOT
+                            if (flow_id === this.props.diagram_id) {
+                                this.enterFlow(_.find(this.state.diagrams, d => d.name === 'ROOT').id, false)
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert('failed to delete diagram')
+                        })
+                }
+            }
+        })
+    }
+
+    renameFlow(flow_id, name){
+        name = name.trim()
+        let index = this.state.diagrams.findIndex(d => d.id === flow_id)
+        if (index !== -1) {
+            let flow = this.state.diagrams[index]
+            if (flow.name !== name) {
+                // Make sure that names are unique
+                let find = this.state.diagrams.find(d => d.name === name)
+                if (find) {
+                    return this.setState({
+                        confirm: {
+                            text: 'Flow names must be unique',
+                            confirm: () => this.setState({
+                                confirm: null
+                            })
+                        }
+                    })
+                }
+
+                let old_name = flow.name
+                this.setState({diagrams: update(this.state.diagrams, {
+                    [index]: {name : {$set: name}}
+                })})
+
+                axios.post(`/diagram/${flow.id}/name`, {
+                        name: name
+                    })
+                    .then(() => {
+                        this.onFlowRenamed(flow.id)
+                    })
+                    .catch(err => {
+                        alert('Error - Name not Updated')
+                        this.setState({diagrams: update(this.state.diagrams, {
+                            [index]: {name : {$set: old_name}}
+                        })})
+                    })
+            }
+        }
+    }
+
     clickDiagram(e){
         this.diagram_focus=true
         let engine = this.state.engine
@@ -511,31 +666,6 @@ class Canvas extends Component {
                     model.removeNode(nodes[key].getID())
                     this.forceUpdate()
                 }
-            }
-        }
-    }
-
-    hotKeys(event){
-        // CTRL/CMD + S to save
-        if ((event.ctrlKey || event.metaKey) && event.which === 83) {
-            event.preventDefault()
-            // Save Function
-            if (!this.state.saved) {
-                this.onSave()
-            }
-
-            return false
-        } else if(event.keyCode === 27) {
-            if(this.state.spotlight){
-                this.setState({spotlight: false})
-            }
-        } else if (this.diagram_focus) {
-            if((event.keyCode === 0 || event.keyCode === 32)) {
-                // SPACE KEY
-                this.onDiagramUnfocus()
-                this.setState({spotlight: true})
-                event.preventDefault()
-                event.stopPropagation()
             }
         }
     }
@@ -668,7 +798,7 @@ class Canvas extends Component {
                     reject(err)
                 })
             })
-
+            
             Promise.all([save_skill_intents, save_diagram]).then(res => {
                 state && this.setState({
                     saving: false,
@@ -752,7 +882,7 @@ class Canvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: diagram.last_save,
+                last_save: this.props.skill.last_save,
                 loading_diagram: false,
                 variables: variables,
                 diagram_level_intents: diagram_level_intents
@@ -1358,11 +1488,15 @@ class Canvas extends Component {
                     audio: '',
                     player: false
                 }
+            } else if (type === 'permission') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.extras = {}
             } else if (type === 'permissions') {
+                node.name = 'User Info'
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
                 node.addOutPort('fail').setMaximumLinks(1)
-                node.addOutPort('declined').setMaximumLinks(1)
                 node.extras = {
                     permissions: []
                 }
@@ -1450,6 +1584,12 @@ class Canvas extends Component {
     render() {
         return (
             <React.Fragment>
+                <DefaultModal
+                    open={this.state.keyboard_help}
+                    header="Keyboard Shortcuts"
+                    toggle={this.toggleShortcuts}
+                    content={<ShortCuts/>}
+                />
                 <HelpModal
                     open={this.state.helpOpen}
                     help={this.state.help}
@@ -1472,7 +1612,7 @@ class Canvas extends Component {
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         updateSkill={this.updateSkill}
-                        addVersion={this.props.addVersion}
+                        onTest={this.onTest}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -1509,18 +1649,23 @@ class Canvas extends Component {
                         onFlowRenamed={this.onFlowRenamed}
                         history={this.props.history}
                         loading_diagram={this.state.loading_diagram}
-                        changeLoading={(state) => this.setState({loading_diagram: state})}
+                        text={this.state.text}
+                        confirm={this.state.confirm}
+                        copyFlow={this.copyFlow}
+                        deleteFlow={this.deleteFlow}
+                        renameFlow={this.renameFlow}
+                        updateConfirm={(confirm) => this.setState({confirm: confirm})}
                         saving={this.state.saving}
                         preview={this.props.preview}
                         onSave={this.onSave}
                         onError={this.props.onError}
                     />
-                    <TitleBar
+                    {/* <TitleBar
                         onTest={this.onTest}
                         preview={this.props.preview}
                         diagram={this.props.diagram_id}
                         diagrams={this.state.diagrams}
-                    />
+                    /> */}
                     {this.state.loading_diagram && <div id="loading-diagram">
                         <div className="text-center">
                             <h5 className="text-muted mb-2">Loading Flow</h5>
@@ -1577,6 +1722,15 @@ class Canvas extends Component {
                             </ButtonGroup>
                             <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
                         </div>
+                        { this.state.skill.diagram !== this.props.diagram_id && <FlowBar
+                                skill={this.state.skill}
+                                deleteFlow={this.deleteFlow}
+                                copyFlow={this.copyFlow}
+                                renameFlow={this.renameFlow}
+                                enterFlow={this.enterFlow}
+                                diagram = {_.find(this.state.diagrams, d => d.id === this.props.diagram_id)}
+                            />
+                        }
                         <SRD.DiagramWidget
                             diagramEngine={this.state.engine}
                             allowLooseLinks={false}

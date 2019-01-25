@@ -23,14 +23,16 @@ class ErrorScreen extends PureComponent {
                     <img className="login-logo mb-4" src="/logo.svg" alt="logo"/>
                     <h5 className="text-muted">This Account is currently in use in another session</h5>
                     <p className="d-block mb-4">(You may have another Browser Tab open)</p>
-                    <Alert className="text-left">
+                    <Alert color="danger">
+                        This may cause project save issues if different sessions save over each other
+                    </Alert>
+                    <Alert className="text-left pb-3">
                         <u>Open Session Details</u><br/>
                         <b>IP:</b> {this.props.error.data.ip} <br/>
                         <b>Browser:</b> {this.props.error.data.device.browser} <br/>
-                        <b>OS:</b> {this.props.error.data.device.os} <br/>
-                    </Alert>
-                    <Alert color="danger">
-                        This may cause project save issues if different sessions save over each other
+                        <b>OS:</b> {this.props.error.data.device.os}
+                        <hr/>
+                        <b>> If all other sessions are closed wait briefly and refresh this page</b>
                     </Alert>
                 </div>
             default:

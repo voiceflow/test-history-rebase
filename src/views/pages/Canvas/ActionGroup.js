@@ -467,7 +467,7 @@ class ActionGroup extends PureComponent {
                 <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
                 <ModalBody className="modal-info">
                     <div>
-                        {this.props.isGoogle ? this.renderGoogleBody() : this.render_body()}
+                        {(this.props.platform === 'google') ? this.renderGoogleBody() : this.render_body()}
                     </div>
                 </ModalBody>
             </Modal>
@@ -476,13 +476,13 @@ class ActionGroup extends PureComponent {
                 <div className="title-group-sub">
                     <Tooltip
                         distance={16}
-                        title={this.props.isGoogle ? "Switch to Amazon View" : "Switch to Google View"}
+                        title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
                         position="bottom"
                     >
                         <MUIButton variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
                             <React.Fragment>
-                                {this.props.isGoogle && <i className="fab fa-amazon"/>}
-                                {!this.props.isGoogle && <i className="fab fa-google"/>}
+                                {(this.props.platform === 'google') && <i className="fab fa-amazon"/>}
+                                {(this.props.platform === 'alexa') && <i className="fab fa-google"/>}
                             </React.Fragment>
                         </MUIButton>
                     </Tooltip>
@@ -532,12 +532,12 @@ class ActionGroup extends PureComponent {
                     </button>
                 </Tooltip>
                 <Tooltip
-                    html={<div style={{ width: 155 }}>{this.props.isGoogle ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                    html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
                     position="bottom"
                     distance={16}
                 >
                     <MUIButton variant="contained" className="publish-btn" onClick={this.openUpdate}>
-                        {this.props.isGoogle ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
+                        {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
                             <div className="first">
                             <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
                             </div>

@@ -3,8 +3,9 @@ import { BlockPortModel } from './BlockPortModel';
 
 export class BlockNodeModel extends DefaultNodeModel {
 	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)", fade: boolean = false) {
-		super(name, color);
+		super(name, color)
 		this.fade = fade
+		this.linter = []
 	}
 
 	addInPort(label: string): BlockPortModel {

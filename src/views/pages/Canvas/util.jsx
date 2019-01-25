@@ -13,7 +13,7 @@ const convertDiagram = (diagram, diagrams) => {
                 if(find){
                     node.name = find.name
                 }
-            }else if(node.extras.type === 'command' && (typeof node.extras.commands !== 'string')){
+            }else if(node.extras.type === 'command' && (typeof node.extras.commands !== 'string') && !(node.extras.google || node.extras.alexa)){
                 if(!node.extras.resume){
                     node.extras.type = 'jump'
                     if(node.name.toLowerCase() === 'command'){

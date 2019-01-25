@@ -30,6 +30,7 @@ import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from './Constants'
 
 import { getIntentSlots } from 'Helper'
+import Linter from './linter'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
@@ -117,6 +118,8 @@ class Canvas extends Component {
         this.centerDiagram = this.centerDiagram.bind(this)
         this.toggleShortcuts = this.toggleShortcuts.bind(this)
         this.onIntentUpdate = this.onIntentUpdate.bind(this)
+        this.updateLinter = this.updateLinter.bind(this)
+        this.onUpdate = this.onUpdate.bind(this)
 
         // build diagram tree function from child
         this.buildDiagrams = null
@@ -165,11 +168,13 @@ class Canvas extends Component {
             user_templates: [],
             email_templates: [],
             display_templates: [],
-            diagram_level_intents: new Set(),
+            diagram_level_intents: {
+                alexa: new Set(),
+                google: new Set()
+            },
             confirm_info: null,
             default_templates: [],
             spotlight: false,
-            google: props.skill.is_google_view_active,
             keyboard_help: false
         }
 
@@ -646,7 +651,7 @@ class Canvas extends Component {
                     slots: JSON.stringify(s.slots),
                     fulfillment: JSON.stringify(s.fulfillment),
                     account_linking: JSON.stringify(s.account_linking),
-                    is_google_view_active: s.is_google_view_active
+                    platform: s.platform
                 })
                 .then(res => {
                     resolve()
@@ -713,7 +718,10 @@ class Canvas extends Component {
             model.addListener({ linksUpdated: this.unsave })
             model.addListener({ nodesUpdated: this.unsave })
 
-            const diagram_level_intents = new Set()
+            const diagram_level_intents = {
+                alexa: new Set(),
+                google: new Set()
+            }
 
             var nodes = model.getNodes()
             const google = this.state.google
@@ -721,11 +729,6 @@ class Canvas extends Component {
                 const node = nodes[key]
                 const type = node.extras.type
                 this.addRemoveListener(node)
-                if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
-                    if (node.extras.intent) {
-                        diagram_level_intents.add(node.extras.intent.key)
-                    }
-                }
                 if (!ALLOWED_GOOGLE_BLOCKS.includes(type)) {
                     nodes[key].fade = google
                 }
@@ -734,10 +737,28 @@ class Canvas extends Component {
                     if (!node.extras.google && !node.extras.alexa) {
                         if (node.extras.choices) {
                             node.extras.alexa = _.cloneDeep(_.pick(node.extras)['choices', 'choices_open'])
-                            node.extras.google = _.cloneDeep(_.pick(node.extras)['choices', 'choices_open'])
-                        } else {
+                            node.extras.google = {
+                                choices: [],
+                                choices_open: []
+                            }
+                        } else if (node.extras.intent) {
                             node.extras.alexa = _.cloneDeep(_.pick(node.extras)['intent', 'mappings', 'resume'])
-                            node.extras.google = _.cloneDeep(_.pick(node.extras)['intent', 'mappings', 'resume'])
+                            node.extras.google = {
+                                intent: null,
+                                mappings: [],
+                                resume: node.extras.resume
+                            }
+                        }
+                    }
+                    if (node.extras.alexa && node.extras.google) {
+                        const has_intents = (node.extras.alexa.intent !== undefined) || (node.extras.google.intent !== undefined)
+                        if ((type === 'intent' && has_intents) || (type === 'jump' && has_intents)) {
+                            if (node.extras.google.intent) {
+                                diagram_level_intents.google.add(node.extras.google.intent.key)
+                            }
+                            if (node.extras.alexa.intent) {
+                                diagram_level_intents.alexa.add(node.extras.alexa.intent.key)
+                            }
                         }
                     }
                 }
@@ -772,6 +793,7 @@ class Canvas extends Component {
             })
 
             this.setState({ saved: true })
+            this.updateLinter()
         } else {
             this.props.onError('Could Not Open Project - Corrupted File')
         }
@@ -782,24 +804,48 @@ class Canvas extends Component {
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
         const skill = this.state.skill
-        let google = this.state.google
-        google = !google
-        skill.is_google_view_active = google
+        let platform = skill.platform === 'google' ? 'alexa' : 'google'
+        skill.platform = platform
 
         for (let key in nodes) {
             const node = nodes[key]
             if (!ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)) {
-                nodes[key].fade = google
+                nodes[key].fade = platform === 'google'
             }
         }
         
         engine.repaintCanvas()
 
         this.setState({
-            google: google,
             engine: engine,
             skill: skill
         })
+        this.updateLinter()
+    }
+
+    updateLinter() {
+        const engine = this.state.engine
+        const model = engine.getDiagramModel()
+        const nodes = model.getNodes()
+        const skill = this.state.skill
+
+        let update = false
+        for (let key in nodes) {
+            const node = nodes[key]
+            const type = node.extras.type
+            if (Linter[type]) {
+                const res = Linter[type](node, this.state.skill.platform)
+                if (res) update = true
+            }
+        }
+        
+        if (update) {
+            engine.repaintCanvas()
+
+            this.setState({
+                engine: engine,
+            })
+        }
     }
 
     onLoadDiagrams(){
@@ -985,7 +1031,8 @@ class Canvas extends Component {
                 }else{
                     axios.post(`/diagram/${diagram_id}/test/publish`,{
                         intents: this.state.skill.intents,
-                        slots: this.state.skill.slots
+                        slots: this.state.skill.slots,
+                        platform: this.state.skill.platform
                     })
                     .then(this.runTest)
                     .catch(err => {
@@ -1150,7 +1197,7 @@ class Canvas extends Component {
             const key = deleted_node.extras.intent.key
             const new_value = false
             this.setCanFulfill(key, new_value)
-            this.state.diagram_level_intents.delete(key)
+            this.state.google ? this.state.diagram_level_intents.google.delete(key) : this.state.diagram_level_intents.alexa.delete(key)
         }
         this.deleteNodeManually(id)
     }
@@ -1489,6 +1536,7 @@ class Canvas extends Component {
                 engine: engine,
                 open: type !== 'comment'
             })
+            this.updateLinter()
         }
     }
 
@@ -1526,6 +1574,7 @@ class Canvas extends Component {
             skill: skill,
             saved: false
         })
+        this.updateLinter()
     }
 
     centerDiagram(){
@@ -1543,6 +1592,11 @@ class Canvas extends Component {
                 return
             }
         }
+    }
+
+    onUpdate() {
+        this.updateLinter()
+        this.unsave()
     }
 
     render() {
@@ -1576,7 +1630,7 @@ class Canvas extends Component {
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         toggleGoogle={this.toggleGoogle}
-                        isGoogle={this.state.google}
+                        platform={this.state.skill.platform}
                         updateSkill={this.updateSkill}
                     /> :
                     <div className="title-group no-select">
@@ -1593,7 +1647,7 @@ class Canvas extends Component {
                         slots={this.state.skill.slots}
                         globals={this.state.skill.global}
                         unfocus={this.onDiagramUnfocus}
-                        isGoogle={this.state.google}
+                        platform={this.state.skill.platform}
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
@@ -1640,7 +1694,7 @@ class Canvas extends Component {
                         unfocus={this.onDiagramUnfocus}
                         open={this.state.open}
                         node={this.state.engine.getSuperSelect()}
-                        onUpdate={this.unsave}
+                        onUpdate={this.onUpdate}
                         close={e => this.setState({ open: false })}
                         repaint={this.repaint}
                         variables={this.state.variables}
@@ -1667,7 +1721,7 @@ class Canvas extends Component {
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
                         products={this.state.products}
-                        isGoogle={this.state.google}
+                        platform={this.state.skill.platform}
                         onIntentUpdate={this.onIntentUpdate}
                     />
                     <div

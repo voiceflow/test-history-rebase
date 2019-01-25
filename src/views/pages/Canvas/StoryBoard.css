@@ -1288,7 +1288,6 @@ label {
     border: 0px solid;
     border-top: 6px solid #E2E9EC;
     /*border-color: #c5c6c9 #bfc0c4 #b0b1b5 !important;*/
-    overflow: hidden;
     padding: 10px 0 10px 0;
     font-family: inherit;
     color: #8da2b5;
@@ -1298,6 +1297,7 @@ label {
     transition: all .15s ease-in-out;
     /*display: flex;*/
     /*flex-direction: row;*/
+    will-change: transform, box-shadow;
 }
 .srd-default-node:hover{
 /*    min-width: 180px;
@@ -1306,7 +1306,6 @@ label {
     box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
     border: 0px solid;
     /*border-color: #c5c6c9 #bfc0c4 #b0b1b5 !important;*/
-    overflow: hidden;
     padding: 10px 0 10px 0;
     font-family: inherit;
     color: #545D6D;
@@ -1314,8 +1313,7 @@ label {
     /*border-bottom: 5px solid;*/
     border-color: #E2E9EC;
     min-width: 90px;
-    transform: translateY(-4px);
-    transform: scale(1.02);
+    transform: scale(1.02) translateY(-4px);
 }
 .srd-port:hover, .srd-port--selected {
     background: #aec5e0 !important;
@@ -2439,4 +2437,44 @@ button.close:hover{
 .google-btn {
     margin-top: 0px !important;
     margin-right: 1em !important;
+}
+
+.linter-badge {
+    position: absolute;
+    right: -0.5em;
+    top: -0.8em;
+    color: #ff9f8d;
+    font-size: 45px;
+}
+
+.linter-badge:hover {
+    transform: scale(1.1)
+}
+
+.linter-element {
+    border-radius: 3px;
+    border-width: 2px;
+    background:#93CBFF;
+    max-width: 15em;
+}
+
+.linter-number {
+    border-radius: 3px;
+    border-width: 2px;
+    background:#42a5ff;
+    padding: 0 5px 0 5px;
+}
+
+.linter-title {
+    border-radius: 3px;
+    border-width: 2px;
+    background:#93CBFF;
+    padding: 0 5px 0 5px;
+    margin-bottom: 5px;
+}
+
+.linter-text {
+    margin: 2px;
+    padding: 0 5px 0 5px;
+    text-align: left;
 }

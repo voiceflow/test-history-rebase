@@ -94,3 +94,24 @@ exports.getDAU = (req, res) => {
         )
     })
 }
+
+exports.getStats = async (req, res) => {
+    try{
+        let skill_id = hashids.decode(req.params.skill_id)[0]
+        let users = (await logging_pool.query('SELECT count(DISTINCT user_id) AS count FROM sessions WHERE skill_id = $1', [skill_id])).rows[0]
+        let sessions = (await logging_pool.query('SELECT COUNT(DISTINCT session_id) AS count FROM sessions WHERE skill_id = $1', [skill_id])).rows[0]
+        let interactions = (await logging_pool.query(`
+            SELECT COUNT(*) AS count FROM utterances INNER JOIN 
+                (SELECT DISTINCT session_id AS sid FROM sessions WHERE sessions.skill_id = $1) 
+            AS sq ON utterances.session_id = sq.sid`, [skill_id])).rows[0]
+        
+        res.send({
+            users: users.count,
+            sessions: sessions.count,
+            interactions: interactions.count
+        })
+    } catch (err) {
+        console.trace(err)
+        res.sendStatus(500)
+    }
+}

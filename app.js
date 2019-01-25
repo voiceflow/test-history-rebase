@@ -233,6 +233,7 @@ app.post('/analytics/track_canvas_time', ensureLoggedIn(), Track.trackCanvasTime
 
 app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
 app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:skill_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

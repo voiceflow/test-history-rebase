@@ -112,18 +112,16 @@ class TimeInterval extends Component {
     const { from, to } = this.state
     const modifiers = { start: from, end: to }
     return (
-      <div className="container">
-        <div className="col-md">
-          <Select
-            placeholder="Filter"
-            className="select-box mb-1"
-            classNamePrefix="select-box"
-            value={this.state.active}
-            onChange={this.updateFilter}
-            options={options}
-            id="date-chooser"
-          />
-        </div>
+      <div class="time-interval">
+        <Select
+          placeholder="Filter"
+          className="select-box mb-1"
+          classNamePrefix="select-box"
+          value={this.state.active}
+          onChange={this.updateFilter}
+          options={options}
+          id="date-chooser"
+        />
         <Popover placement="bottom" isOpen={this.state.show_calendar} target="date-chooser" toggle={this.toggleCalendar}>
           <PopoverBody>
             <DayPicker

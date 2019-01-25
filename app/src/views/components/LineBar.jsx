@@ -25,19 +25,30 @@ class LineBar extends Component{
           cubicInterpolationMode: 'monotone',
           defaultFontColor: '#8da2b5',
           defaultFontSize: '20px',
-          lineTension: '120',
+          lineTension: '120'
         }
       ]
     }
 
     const options={
       legend: {
-      labels: {
-          // This more specific font property overrides the global property
-          fontColor: '#8da2b5',
+        labels: {
+            // This more specific font property overrides the global property
+            fontColor: '#8da2b5',
+        },
+      },
+      scales: {
+        xAxes: [{
+          gridLines: {
+            display: false
+          }
+        }],
+        yAxes: [{
+          gridLines: {
+            display: false
+          }
+        }]
       }
-  }
-
     }
 
     return(

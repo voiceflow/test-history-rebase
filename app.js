@@ -45,6 +45,7 @@ const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
 const Mail = require('./routes/mail.js');
+const {copySkill} = require('./routes/skill_util')
 
 app.use(cors())
 app.use(helmet())
@@ -166,7 +167,7 @@ app.post('/skill/:restore_id/:canonical_skill_id/restore', ensurePlan(1), Skill.
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
-app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), (req, res) => Skill.copySkill(req, res, {append_copy_str: true, user_copy: true}))
+app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), (req, res) => copySkill(req, res, {append_copy_str: true, user_copy: true}))
 app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:sid/product/:pid', ensureLoggedIn(), Skill.getProduct);
@@ -247,9 +248,9 @@ app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
 
-app.get('/voices', ensureLoggedIn(), Audio.getVoices);
+app.get('/voices', ensureLoggedIn(), Audio.getVoices)
 // app.post('/generate', ensureLoggedIn(), Audio.generate);
-app.post('/audio', ensureLoggedIn(), upload.single('audio'), Audio.upload);
+app.post('/audio', ensureLoggedIn(), upload.single('audio'), Audio.upload)
 
 app.post('/raw_audio', ensureLoggedIn(), upload.single('audio'), (req, res) => {
     res.send(`https://s3.amazonaws.com/com.getstoryflow.audio.production/${req.file.key}`);

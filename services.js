@@ -150,6 +150,15 @@ const verify = (auth, cb) => {
     }
 }
 
+const logAxiosError = (err, context='', data=null) => {
+    if(err && err.response){
+      console.log(context, err.response.data && err.response.data.message, 'STATUS', err.response.status)    
+    }else{
+      console.log(context, err)
+    }
+    if(data) console.log('ERROR DATA', data)
+}
+
 module.exports = {
     intercom: intercom_client,
     upload: upload,
@@ -163,6 +172,7 @@ module.exports = {
     hashids: hashids,
     validateEmail: validateEmail,
     logging_pool: logging_pool,
-    verify: verify
+    verify: verify,
+    logAxiosError: logAxiosError
 }
 

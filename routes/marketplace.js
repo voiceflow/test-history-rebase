@@ -1,13 +1,14 @@
 const { pool, hashids, docClient } = require('./../services');
 const { renderDiagram } = require('./diagram')
+const { copySkill } = require('./skill_util')
+const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
+const { getEnvVariable } = require('../util')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 19
 }else{
 	ADMIN_MARKETPLACE_ACC = 2125
 }
-const { copySkill, latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
-const { getEnvVariable } = require('../util')
 
 const module_limit = 10;
 const hashIds = (rows) => {
@@ -592,8 +593,11 @@ const copyDefaultTemplate = (req, res) => {
 				locales = req.body.locales
 			}
 		
-			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6 WHERE skill_id = $7`,
-					[name, sum, desc, invs, name, JSON.stringify(locales), hashids.decode(skill.skill_id)[0]], (err) => {
+			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8 WHERE skill_id = $9`,
+					[name, sum, desc, invs, name, JSON.stringify(locales), 
+						`https://creator.getvoiceflow.com/creator/privacy_policy?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
+						`https://creator.getvoiceflow.com/creator/terms?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
+			hashids.decode(skill.skill_id)[0]], (err) => {
 				if(err){
 					console.error(err)
 					res.sendStatus(500)

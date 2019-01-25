@@ -698,7 +698,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         } else if (node.extras.type === 'mail') {
 
           let id = hashids.decode(node.extras.template_id);
-          if (id && id[0] && (node.extras.to === '_USER' || validateEmail(node.extras.to))) {
+          if (id && id[0] && (node.extras.to)) {
             let mapping;
             if (Array.isArray(node.extras.mapping)) {
               mapping = node.extras.mapping.filter(m => {
@@ -755,9 +755,20 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             }
           }
 
+          let permission_card = true
+          if(node.extras.custom){
+            if(Array.isArray(node.extras.permissions) && node.extras.permissions.length !== 0){
+              permission_card = []
+              node.extras.permissions.forEach(permission => {
+                options.permissions.add(permission),
+                permission_card.push(permission)
+              })
+            }
+          }
+
           // Permission Card
           story.lines[node.id] = {
-            permission_card: true,
+            permission_card: permission_card,
             nextId: getLink(nextLink)
           }
         } else if (node.extras.type === 'permissions') {
@@ -820,6 +831,18 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               nextId: getLink(nextLink)
             }
           }
+        }
+
+        if(node.extras && node.extras.reprompt){
+            let REPROMPT
+            if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {
+              REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+            } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
+              REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
+            } else {
+              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</>`
+            }
+            if(REPROMPT) story.lines[node.id].reprompt = REPROMPT
         }
       }
       let render_type

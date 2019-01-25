@@ -39,7 +39,7 @@ body {
 }
 .form-control:focus{
     border: 1px solid #42a5ff !important;
-    box-shadow: rgba(50, 50, 93, 0.05) 0px 4px 6px, rgba(0, 0, 0, 0.05) 0px 1px 3px !important;
+    box-shadow: rgba(50, 50, 93, 0.03) 0px 4px 6px, rgba(0, 0, 0, 0.03) 0px 1px 3px !important;
 }
 .subheader-page-container{
     height: 100%;
@@ -654,14 +654,15 @@ border-radius: 0px 5px 5px 0px !important;
     cursor: pointer;
     font-weight: 400 !important;
     font-size: 15px !important;
+    height: 48px;
 }
 .publish-btn .launch{
-    right: 5px;
-    top: 4px;
+    right: 6px;
+    top: 6px;
     position: absolute;
     height: 100%;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     /* margin-left: 5px; */
     background-color: #ffffff40;
     color: #fff;
@@ -1538,7 +1539,7 @@ kbd {
     cursor: pointer;
 }
 .btn-darken:hover {
-    background-color: #f0f5f8;
+    background-color: #F7F9FB;
 }
 .btn-darken:active{
     background-color: #e0e5e8;

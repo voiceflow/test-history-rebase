@@ -294,27 +294,27 @@ exports.copySkill = async (req, res, options, cb = false) => {
             name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
           INSERT INTO skills (
             name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat
           )
           SELECT ` +
       copy_str + `
             $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
 

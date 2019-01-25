@@ -97,15 +97,15 @@ exports.sendVerificationEmail = async (name, user_id, random, email) => {
 }
 
 exports.sendRequestPDFEmail = async(req, res) => {
-  if (typeof req.body.user.name !== 'string') {
-    req.body.user.name = null
+  if (typeof req.user.name !== 'string') {
+    req.user.name = ''
   }
 
   let data = {
     'template_id': 'd-f8bf0dfa762c4eb3b7aa504211c9c6de',
     'from': {
       'email': 'braden@getvoiceflow.com',
-      'name': req.body.user.name,
+      'name': req.user.name,
     },
     'personalizations': [
       {
@@ -115,9 +115,9 @@ exports.sendRequestPDFEmail = async(req, res) => {
           }
         ],
         'dynamic_template_data': {
-            email: req.bdoy.user.email,
-            name: req.body.user.name,
-          skill: req.body.skill.name,
+            email: req.user.email,
+            name: req.user.name,
+            skill: req.body.skill.skill_id,
         }
       }
     ]

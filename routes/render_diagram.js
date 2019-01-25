@@ -826,6 +826,18 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             }
           }
         }
+
+        if(node.extras && node.extras.reprompt){
+            let REPROMPT
+            if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {
+              REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+            } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
+              REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
+            } else {
+              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</>`
+            }
+            if(REPROMPT) story.lines[node.id].reprompt = REPROMPT
+        }
       }
       let render_type
       if (!options.type) {

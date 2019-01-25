@@ -125,6 +125,7 @@ class BasicAdvancedSettings extends Component{
             skill.error_prompt = null
         }
         try{
+            console.log("skill", skill)
             JSON.parse(skill.alexa_events)
         }catch(err){
             this.props.onError('Invalid JSON For Skill Events: '+ err.message)

@@ -188,13 +188,13 @@ class IntentInput extends Component {
 
     render() {
         let disabled = false
-        if ((this.props.intent._platform === 'google' && !this.props.isGoogle) || (this.props.intent._platform === 'alexa' && this.props.isGoogle)) {
+        if ((this.props.intent._platform === 'google' && !(this.props.platform === 'google')) || (this.props.intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
             disabled = true
         }
 
         return (
-            <div className={`interaction-block ${disabled ? 'faded' : ''}`}>
-                <div className="intent-title">
+            <div className={"interaction-block"}>
+                <div className={`intent-title ${disabled ? 'faded' : ''}`}>
                     <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.intent.open ? " fa-rotate-90" : "")}></i></span>
                     <Tooltip
                         className="flex-hard"
@@ -216,7 +216,9 @@ class IntentInput extends Component {
                     </Tooltip>
                     <button className="close" onClick={()=>this.props.removeIntent(this.props.intent.key)}>&times;</button>
                 </div>
-                <Collapse isOpen={this.props.intent.open} className={disabled ? 'disabled' : ''}>
+                <Collapse isOpen={this.props.intent.open}>
+                {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Intent is Unavailable on {(this.props.platform === 'google')? 'Google Assistant' : 'Alexa'}</div>}
+                <div className={disabled ? 'disabled faded' : ''}>
                     <div>
                         {this.renderUtterances(this.props.intent.inputs)}
                     </div>
@@ -244,9 +246,10 @@ class IntentInput extends Component {
                                 style={{backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF'}}
                             />
                         </MentionsInput>
-                    </Tooltip>
-                    <div className="text-center mt-2">
-                        <span className="key-bubble forward pointer" onClick={this.addUtterance}><i className="far fa-long-arrow-right"/></span>
+                        </Tooltip>
+                        <div className="text-center mt-2">
+                            <span className="key-bubble forward pointer" onClick={this.addUtterance}><i className="far fa-long-arrow-right"/></span>
+                        </div>
                     </div>
                 </Collapse>
             </div>

@@ -132,23 +132,47 @@ class SlotInput extends Component {
 
         const SlotOption = (props) => {
             const is_alexa = /AMAZON/.test(props.data.value)
-            const is_google = /\$org\.schema\.type/.test(props.data.value)
+            const is_google = /^\$org\.schema\.type/.test(props.data.value)
             const is_global = !is_alexa && !is_google
 
+            const is_custom = props.data.label === 'Custom'
+
             return (
-                <div>
-                    <components.Option {...props} className="d-flex">
-                        <span className="mr-2">{props.data.label}</span>
-                        <span className="slot-platform align-self-center">{(is_alexa || is_global) && <i className="fab fa-amazon"/>}</span>
-                        <span className="slot-platform align-self-center">{(is_google || is_global) && <i className="fab fa-google"/>}</span>
+                    <components.Option {...props}>
+                        <div className="d-flex slot-label justify-content-between">
+                            <span className="mr-2">{props.data.label}</span>
+                            <span className="d-flex">
+                                {!is_custom && (is_alexa || is_global) && <i className="fab fa-amazon align-self-center"/>}
+                                {!is_custom && (is_google || is_global) && <i className="fab fa-google align-self-center"/>}
+                            </span>
+                        </div>
                     </components.Option>
-                </div>
             )
-        };
+        }
+
+        const SingleValueOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^\$org\.schema\.type/.test(props.data.value)
+            const is_global = !is_alexa && !is_google
+
+            const is_custom = props.data.label === 'Custom'
+
+            return (
+                <components.SingleValue {...props}>
+                    <div className="d-flex slot-label justify-content-between">
+                        <span className="mr-2">{props.data.label}</span>
+                        <span className="d-flex">
+                            {!is_custom && (is_alexa || is_global) && <i className="fab fa-amazon align-self-center"/>}
+                            {!is_custom && (is_google || is_global) && <i className="fab fa-google align-self-center"/>}
+                        </span>
+                    </div>
+                </components.SingleValue>
+            )
+        }
 
         let disabled = false
         const slot_type = this.props.slot.type.value
-        if ((/AMAZON/.test(slot_type) && this.props.isGoogle) || (/\$org\.schema\.type/.test(slot_type) && !this.props.isGoogle)) disabled = true
+        if ((/AMAZON/.test(slot_type) && !(this.props.platform === 'alexa')) || (/\$org\.schema\.type/.test(slot_type) && !(this.props.platform === 'gooogle'))) disabled = true
 
         return (
             <div className={`interaction-block mb-2`}>
@@ -175,7 +199,7 @@ class SlotInput extends Component {
                     <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
-                    {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Slot Type is Unavailable on the {this.props.isGoogle ? 'Google Assistant' : 'Alexa'} platform</div>}
+                    {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Slot Type is Unavailable on {(this.props.platform === 'google') ? 'Google Assistant' : 'Alexa'}</div>}
                     <div className={disabled ? 'disabled faded' : ''}>
                         <div className="super-center flex-hard choice-select">
                             <Select
@@ -185,8 +209,6 @@ class SlotInput extends Component {
                                 value={this.props.slot.type}
                                 onChange={this.updateSlotType}
                                 options={this.props.slot_types.map(type => {
-
-                                    let platform
                                     let value
                                     if ((type.intent.alexa && type.intent.google) || (!type.intent.alexa && !type.intent.google)) {
                                         value = type.label
@@ -200,8 +222,10 @@ class SlotInput extends Component {
 
                                     return {label: type.label, value: value}
                                 })}
-                                components={{ Option: SlotOption }}
-                            />
+                                components={{ Option: SlotOption, SingleValue: SingleValueOption }}
+                                styles={{
+                                    singleValue: (base) => ({ ...base, width: '100%' }),
+                                }}/>
                         </div>
                         <hr className="mt-1 mb-2"/>
                         <div>

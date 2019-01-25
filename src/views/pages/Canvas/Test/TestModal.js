@@ -146,7 +146,7 @@ class TestModal extends React.Component {
     // stick in global variables
     this.story_state.globals[0].sessions = 1
     this.story_state.globals[0].user_id = 'TEST_USER'
-    this.story_state.globals[0].platform = this.props.isGoogle ? 'google' : 'alexa'
+    this.story_state.globals[0].platform = this.props.platform
   }
 
   componentWillUnmount() {

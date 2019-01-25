@@ -29,7 +29,7 @@ class Interaction extends Component {
 
     handleChoicesChange(choices) {
         const node = this.state.node
-        const extras = this.props.isGoogle ? node.extras.google : node.extras.alexa
+        const extras = node.extras[this.props.platform]
         extras.choices = choices
 
         this.setState({
@@ -91,7 +91,7 @@ class Interaction extends Component {
     renderTab(){
 
         const node = this.state.node
-        const extras = this.props.isGoogle ? node.extras.google : node.extras.alexa
+        const extras = node.extras[this.props.platform]
 
         switch(this.state.tab){
             case 'choices':
@@ -110,7 +110,7 @@ class Interaction extends Component {
                         built_ins={this.props.built_ins}
                         onError={this.props.onError}
                         update={this.update}
-                        isGoogle={this.props.isGoogle}
+                        platform={this.props.platform}
                     />
                 </React.Fragment>
             case 'intents':
@@ -126,7 +126,7 @@ class Interaction extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
-                        isGoogle={this.props.isGoogle}
+                        platform={this.props.platform}
                     />
                 </React.Fragment>
             case 'slots':
@@ -140,7 +140,7 @@ class Interaction extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
-                        isGoogle={this.props.isGoogle}
+                        platform={this.props.platform}
                     />
                 </React.Fragment>
             default:

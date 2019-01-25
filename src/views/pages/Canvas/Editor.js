@@ -43,7 +43,7 @@ import { SLOT_TYPES, BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } from './C
 const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
     return {
         built_in: true,
-        isGoogle: false,
+        platform: 'alexa',
         name: intent.name,
         key: intent.name,
         inputs: [{
@@ -56,7 +56,7 @@ const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
 const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE.map(intent => {
     return {
         built_in: true,
-        isGoogle: true,
+        platform: 'google',
         name: intent.name,
         key: intent.name,
         inputs: [{
@@ -112,8 +112,8 @@ class Editor extends Component {
         let slots = [SLOT_TYPES[0]] //Custom Slot
         for (let i in SLOT_TYPES) {
             const slot = SLOT_TYPES[i]
-            if (slot.intent.google && this.props.isGoogle || slot.intent.alexa && !this.props.isGoogle) {
-                const slot_locales = this.props.isGoogle ? slot.locales.google : slot.locales.alexa
+            if ((slot.intent.google && this.props.platform === 'google') || (slot.intent.alexa && this.props.platform === 'alexa')) {
+                const slot_locales = slot.locales[this.props.platform]
                 if (!slot_locales || _.intersection(slot_locales, locales).length > 0) {
                     slots.push(slot)
                 }
@@ -153,7 +153,7 @@ class Editor extends Component {
                         slots={this.props.slots}
                         variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
-                        built_ins={this.props.isGoogle ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+                        built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         skill={this.props.skill}
@@ -162,8 +162,8 @@ class Editor extends Component {
                         diagram_id={this.props.diagram_id}
                         setCanFulfill={this.props.setCanFulfill}
                         diagram_level_intents={this.props.diagram_level_intents}
-                        isGoogle={this.props.isGoogle}
-                    />
+                        platform={this.props.platform}
+                        />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
                 if(typeof this.state.node.extras.commands === 'string'){
@@ -176,7 +176,7 @@ class Editor extends Component {
                         slots={this.props.slots}
                         variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
-                        built_ins={this.props.isGoogle ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+                        built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         repaint={this.props.repaint}
                         createDiagram={this.props.createDiagram}
@@ -184,7 +184,8 @@ class Editor extends Component {
                         diagrams={this.props.diagrams}
                         enterFlow={this.props.enterFlow}
                         onConfirm={this.props.onConfirm}
-                        isGoogle={this.props.isGoogle}
+                        platform={this.props.platform}
+                        diagram_level_intents={this.props.diagram_level_intents}
                     />
                 }
             case 'interaction':
@@ -198,10 +199,10 @@ class Editor extends Component {
                     onIntent={this.props.onIntent}
                     variables={variables}
                     slot_types={this.getSlotTypes(this.props.locales)}
-                    built_ins={this.props.isGoogle ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+                    built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
-                    isGoogle={this.props.isGoogle}
+                    platform={this.props.platform}
                     />
             case 'combine':
             case 'line':

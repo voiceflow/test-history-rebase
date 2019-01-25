@@ -4,6 +4,7 @@ import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";
 import { DiagramEngine, BaseWidget, BaseWidgetProps } from "storm-react-diagrams";
 import Textarea from 'react-textarea-autosize';
+import { Tooltip } from 'react-tippy'
 
 export interface BlockNodeProps extends BaseWidgetProps {
 	node: BlockNodeModel;
@@ -29,7 +30,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 	render() {
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={"srd-default-node " + this.props.node.extras.type}>
-              	<Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
+				<Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
 			</div>
 		}
 
@@ -37,9 +38,37 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 
 		return (
 			<div className={"srd-default-node " + this.props.node.extras.type + fade} onMouseDown={() => window.getSelection ? window.getSelection().empty() : document.selection.empty()}>
+				{this.props.node.linter && this.props.node.linter.length > 0 &&
+					<Tooltip
+						target="tooltip"
+						className="linter-badge"
+						position="right"
+						onShow={this.updateHeight}
+						html={<div className="linter-tooltip">
+							<div className="linter-title">
+								Block Errors
+							</div>
+							{this.props.node.linter.map((s, i) => {
+								return (
+									<div className="linter-element d-flex justify-content-start" key={i}>
+									<div className="my-1 mx-1">
+										<span className="linter-number">
+											{i + 1}
+										</span>
+									</div>
+									<span className="linter-text">
+										{s}
+									</span>
+									</div>
+								)
+							})}
+						</div>}>
+						<i className="fas fa-exclamation-circle"></i>
+					</Tooltip>
+				}
 				<div className={this.bem("__title") + ' no-select'}>
 					<div className={this.bem("__name")}>
-            			{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
+									{this.props.node.name ? this.props.node.name : this.props.node.extras.type.charAt(0).toUpperCase() + this.props.node.extras.type.substr(1)}
 					</div>
 				</div>
 				<div className={this.bem("__ports")}>

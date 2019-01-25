@@ -36,18 +36,19 @@ class Intent extends Component {
     }
 
     updateCommand(selected) {
-        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
+        const diagram_intents = this.props.diagram_level_intents[this.props.platform]
 
         if (Array.isArray(selected) || (intent && selected.key === intent.key)) {
             return
         }
 
-        if (this.props.diagram_level_intents.has(selected.key)) {
-            this.props.onError(`The ${selected.label} intent is already being handled by another Intent Block within this flow!`)
+        if (diagram_intents.has(selected.key)) {
+            this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
             this.intentSelectRef.current.blur();
         } else {
-            if (intent) this.props.diagram_level_intents.delete(intent.key)
+            if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
             if (!Array.isArray(extras.mappings)) {
                 extras.mappings = []
@@ -58,7 +59,7 @@ class Intent extends Component {
                     slot: null
                 }
             })
-            this.props.diagram_level_intents.add(selected.key)
+            diagram_intents.add(selected.key)
             this.update()
         }
     }
@@ -70,19 +71,12 @@ class Intent extends Component {
 
     static getDerivedStateFromProps(props) {
         let node = props.node
-        const extras = props.isGoogle ? props.node.extras.google : props.node.extras.alexa
+        const extras = props.node.extras[props.platform]
 
         if (!extras) {
-            if (props.isGoogle) {
-                props.node.extras.google = {
-                    intent: null,
-                    mappings: []
-                }
-            } else {
-                props.node.extras.alexa = {
-                    intent: null,
-                    mappings: []
-                }
+            props.node.extras[props.platform] = {
+                intent: null,
+                mappings: []
             }
         } else if (extras.intent) {
             let intent = _.find(props.intents, { key: extras.intent.key })
@@ -112,7 +106,7 @@ class Intent extends Component {
     }
 
     toggleCanFulfill() {
-        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
         if (!intent) return
         const fulfilled = this.isFulfill()
@@ -138,7 +132,7 @@ class Intent extends Component {
     }
 
     isFulfill() {
-        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
         if (intent) {
             const fulfillments = this.props.skill.fulfillment
@@ -158,7 +152,7 @@ class Intent extends Component {
     }
 
     command() {
-        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
 
         let slots
@@ -203,7 +197,7 @@ class Intent extends Component {
                         variables={this.props.variables}
                         slot_options={slots}
                         slots={this.props.slots}
-                        arguments={extras.google_mappings}
+                        arguments={extras.mappings}
                         update={this.update}
                     />
                 </React.Fragment>
@@ -251,7 +245,7 @@ class Intent extends Component {
     render() {
 
         const checked = this.isFulfill()
-        const extras = this.props.isGoogle ? this.props.node.extras.google : this.props.node.extras.alexa
+        const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
 
         return <React.Fragment>
@@ -261,8 +255,8 @@ class Intent extends Component {
                 <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
             </ButtonGroup>
             {this.renderTab()}
-            {!this.props.isGoogle && this.state.isRoot && intent && <hr />}
-            {!this.props.isGoogle && this.state.isRoot && intent &&
+            {!(this.props.platform === 'google') && this.state.isRoot && intent && <hr />}
+            {!(this.props.platform === 'google') && this.state.isRoot && intent &&
                 <div>
                     <div className="mb-2 d-flex">
                         <Switch

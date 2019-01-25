@@ -24,7 +24,8 @@ class Skill extends Component {
             confirm: null,
             mounted: true,
             error_screen: null,
-            time_mounted: null
+            time_mounted: null,
+            linter: []
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -183,7 +184,8 @@ class Skill extends Component {
                     addVersion={this.addVersion} 
                     onError={this.onError} 
                     onConfirm={this.onConfirm} 
-                    updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                    updateSkill={(skill) => {this.setState({skill: skill})}}
+                    linter={this.state.linter}/>
             case 'business':
                 return <Business
                   {...this.props}

@@ -91,7 +91,7 @@ class SlotInputs extends Component {
                         update={this.props.update}
                         onError={this.props.onError}
                         removeSlot={this.handleRemoveSlot}
-                        isGoogle={this.props.isGoogle}
+                        platform={this.props.platform}
                     />)
                 }
             }

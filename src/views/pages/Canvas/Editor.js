@@ -28,7 +28,10 @@ import Permissions from './Editors/Permissions';
 import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
+import PermissionCard from './Editors/PermissionCard'
 import {getBlocks} from './Blocks'
+import Prompt from 'views/components/Uploads/Prompt'
+
 import {
     Alert,
     Modal, ModalBody, ModalHeader,
@@ -85,6 +88,8 @@ class Editor extends Component {
         this.getSlotTypes = this.getSlotTypes.bind(this)
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
+        this.toggleReprompt = this.toggleReprompt.bind(this)
+        this.EditorRender = this.EditorRender.bind(this)
     }
 
     componentWillReceiveProps(props) {
@@ -294,14 +299,7 @@ class Editor extends Component {
             case 'reminder':
                 return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'permission':
-                return <React.Fragment>
-                    <Alert>Sends permission request to the user's phone/device</Alert>
-                    <div className="px-5 mt-4">
-                        <div className="smartphone">
-                            <img src='/images/permissions.png' className="w-100" alt="sample permission"/>
-                        </div>
-                    </div>
-                </React.Fragment>
+                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate}/>
             default:
               return null
         }
@@ -343,6 +341,46 @@ class Editor extends Component {
         }
     }
 
+    toggleReprompt () {
+        let node = this.state.node
+        if(node.extras.reprompt){
+            node.extras.reprompt = null
+            delete node.extras.reprompt
+        }else{
+            node.extras.reprompt = {
+                voice: 'Alexa',
+                content: ''
+            }
+        }
+        this.setState({node: node})
+    }
+
+    EditorRender(){
+        return <React.Fragment>
+            {this.BlockViewer()}
+            {this.state.node.extras.reprompt && <React.Fragment>
+                <hr/>
+                <div className="space-between">
+                    <label>Custom Reprompt</label>
+                    <button class="close" onClick={this.toggleReprompt}>×</button>
+                </div>
+                <Prompt
+                    placeholder="Sorry I didn't get that! Do you like this or that?"
+                    voice={this.state.node.extras.reprompt.voice}
+                    content={this.state.node.extras.reprompt.content}
+                    updatePrompt={(prompt) => {
+                        let node = this.state.node
+                        if(node.extras.reprompt){
+                            node.extras.reprompt = {...node.extras.reprompt, ...prompt}
+                            this.setState({node: node})
+                        }
+                    }}
+                    variables={this.props.variables}
+                />
+            </React.Fragment>}
+        </React.Fragment>
+    }
+
     render() {
         let type = this.state.node ? this.state.node.extras.type : null
         let name = ''
@@ -351,7 +389,7 @@ class Editor extends Component {
             if(find){
                 name = find.text
             }
-        }        
+        }
 
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
@@ -385,12 +423,14 @@ class Editor extends Component {
                                             <DropdownToggle className="delete-block" nav tag="div">
                                                 <i className="fas fa-cog"/>
                                             </DropdownToggle>
-                                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-3px', marginTop: '5px'}}>
+                                            <DropdownMenu right className="arrow arrow-right no-select" style={{right: '-12px', marginTop: '5px'}}>
                                                 <DropdownItem header>
                                                     Block Options
                                                 </DropdownItem>
-                                                {/*this.state.node.extras.type === 'flow' &&
-                                                    <DropdownItem onClick={this.copyFlow}>Copy Flow</DropdownItem>*/
+                                                {['interaction','choice', 'capture'].includes(this.state.node.extras.type) && !this.state.node.extras.reprompt &&
+                                                    <DropdownItem onClick={this.toggleReprompt}>
+                                                        <i className="fas fa-redo text-muted"/> Reprompt
+                                                    </DropdownItem>
                                                 }
                                                 <DropdownItem onClick={this.props.copyNode} className="pointer">
                                                     <i className="fas fa-copy text-muted"/> Copy
@@ -406,7 +446,7 @@ class Editor extends Component {
                         </div>
                         <div id="editor-section">
                             {this.renderTitle()}
-                            {!this.state.expanded ? this.BlockViewer() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
+                            {!this.state.expanded ? this.EditorRender() : <div className="text-center mt-5"><span className="loader text-lg"></span></div>}
                             {this.state.expanded &&
                                 <React.Fragment>
                                     <Modal
@@ -417,7 +457,7 @@ class Editor extends Component {
                                     >
                                         <ModalHeader toggle={()=>this.setState({modal: false})}>{this.state.node.name} Settings</ModalHeader>
                                         <ModalBody className="pb-4 px-4">
-                                            {this.BlockViewer()}
+                                            {this.EditorRender()}
                                         </ModalBody>
                                     </Modal>
                                 </React.Fragment>

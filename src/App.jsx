@@ -166,20 +166,21 @@ class App extends Component {
   }
 
   socketFail(){
-    if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
-      window.error = true
-      window.CreatorSocket.status = 'FAIL'
-      this.setState({
-        error: {
-          type: 'socket-fail',
-          action: () => {
-            window.error = false
-            this.setState({loading: false, error: null})
-          },
-        },
-        loading: false
-      })
-    }
+    window.CreatorSocket.status = 'FAIL'
+    // if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
+    //   window.error = true
+    //   window.CreatorSocket.status = 'FAIL'
+    //   this.setState({
+    //     error: {
+    //       type: 'socket-fail',
+    //       action: () => {
+    //         window.error = false
+    //         this.setState({loading: false, error: null})
+    //       },
+    //     },
+    //     loading: false
+    //   })
+    // }
   }
 
   componentDidMount() {

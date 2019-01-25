@@ -4,7 +4,7 @@ import axios from 'axios'
 import update from 'immutability-helper'
 import {Alert, FormGroup, Label, Button, Input} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
-import Prompt from './Prompt'
+import Prompt from 'views/components/Uploads/Prompt'
 import AceEditor from 'react-ace';
 
 import 'brace/mode/json';
@@ -27,6 +27,7 @@ class BasicAdvancedSettings extends Component{
         this.saveSettings = this.saveSettings.bind(this)
         this.handleUpdate = this.handleUpdate.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
+        this.toggleRepeat = this.toggleRepeat.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -45,21 +46,34 @@ class BasicAdvancedSettings extends Component{
                     content: ''
                 }
             }
+            let skill = {
+                name: props.skill.name,
+                restart: props.skill.restart,
+                error_prompt: props.skill.error_prompt,
+                resume_prompt: props.skill.resume_prompt,
+                intents: props.skill.intents,
+                slots: props.skill.slots,
+                repeat: props.skill.repeat ? props.skill.repeat : 0,
+                alexa_events: props.skill.alexa_events ? props.skill.alexa_events : ''
+            }
             return {
-                skill: {
-                    name: props.skill.name,
-                    restart: props.skill.restart,
-                    error_prompt: props.skill.error_prompt,
-                    resume_prompt: props.skill.resume_prompt,
-                    intents: props.skill.intents,
-                    slots: props.skill.slots,
-                    alexa_events: props.skill.alexa_events ? props.skill.alexa_events : ''
-                },
+                skill: skill,
+                baseline: _.clone(skill),
                 hide_resume: hidden
             }
         } else {
             return null
         }
+    }
+
+    toggleRepeat(low, high) {
+        let skill = this.state.skill
+        if(skill.repeat > low){
+            skill.repeat = low
+        }else{
+            skill.repeat = high
+        }
+        this.setState({skill: skill})
     }
 
     handleUpdate(e) {
@@ -100,7 +114,6 @@ class BasicAdvancedSettings extends Component{
     requestPDF(){
         if (_.isNull(localStorage.getItem('requestPDF'))){
           axios.post(`/requestPDF`, {
-            user: this.props.user,
             skill: this.props.skill,
           })
           .then(() => {
@@ -124,12 +137,15 @@ class BasicAdvancedSettings extends Component{
         if (!this.state.skill.error_prompt.content) {
             skill.error_prompt = null
         }
-        try{
-            console.log("skill", skill)
-            JSON.parse(skill.alexa_events)
-        }catch(err){
-            this.props.onError('Invalid JSON For Skill Events: '+ err.message)
-            return
+        if(skill.alexa_events.trim()){
+            try{
+                JSON.parse(skill.alexa_events)
+            }catch(err){
+                this.props.onError('Invalid JSON For Skill Events: '+ err.message)
+                return
+            }
+        }else{
+            skill.alexa_events = null
         }
 
         this.setState({ saving: true })
@@ -209,6 +225,31 @@ class BasicAdvancedSettings extends Component{
                     </FormGroup>
 
                     <FormGroup>
+                        <Label>Repeat</Label>
+                        <div className="helper-text">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div>
+                        <Switch
+                            checked={this.state.skill.repeat > 0}
+                            onChange={()=>this.toggleRepeat(0,100)}
+                            color="primary"
+                        />
+                        <b>{this.state.skill.repeat > 0 ? 'ON' : 'OFF'}</b>
+                        {this.state.skill.repeat>0 && <div>
+                            <Switch
+                                checked={this.state.skill.repeat > 1}
+                                onChange={()=>this.toggleRepeat(1,100)}
+                                color="primary"
+                            />
+                            <b>Complete Repeat</b>
+                            <div className="helper-text">{
+                                this.state.skill.repeat > 1 ?
+                                    'When the user asks to repeat, everything after the last choice/interaction block will repeat' :
+                                    'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'
+                            }</div>
+                            <hr/>
+                        </div>}
+                    </FormGroup>
+
+                    <FormGroup>
                         <Label className="mb-0">Restart Every Session</Label>
                         <div className="helper-text">{
                             this.state.skill.restart ?
@@ -267,9 +308,9 @@ class BasicAdvancedSettings extends Component{
     render(){
         let different
         // check to make sure there are actual differences before making a server call
-        if (this.state.skill) {
+        if (this.state.skill && this.state.baseline) {
             for (var key in this.state.skill) {
-                if (!_.isEqual(this.state.skill[key], this.props.skill[key])) {
+                if (this.state.skill[key] !== this.state.baseline[key]) {
                     different = true
                 }
             }
@@ -280,9 +321,9 @@ class BasicAdvancedSettings extends Component{
             <hr/>
             <div className="super-center">
                 {this.props.page !== 'backups' &&
-                    <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : _.noop()}>
+                    <button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : _.noop()}>
                         {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
-                    </Button>
+                    </button>
                 }
             </div>
         </React.Fragment>

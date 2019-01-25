@@ -181,7 +181,6 @@ class Skill extends Component {
                     {...this.props} 
                     skill={this.state.skill} 
                     diagram_id={this.state.diagram_id} 
-                    addVersion={this.addVersion} 
                     onError={this.onError} 
                     onConfirm={this.onConfirm} 
                     updateSkill={(skill) => {this.setState({skill: skill})}}
@@ -208,8 +207,7 @@ class Skill extends Component {
                 return <Publish 
                     {...this.props} 
                     skill={this.state.skill} 
-                    page={this.props.secondaryPage} 
-                    addVersion={this.addVersion} 
+                    page={this.props.secondaryPage}
                     onError={this.onError} 
                     onConfirm={this.onConfirm}/>
             case 'logs':

@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { Line } from 'react-chartjs-2'
+import color from '@material-ui/core/colors/lightBlue';
+import { Line, Chart } from 'react-chartjs-2'
+
+Chart.defaults.global.defaultFontColor = '#8da2b5'
+
 
 class LineBar extends Component{
   constructor(props){
@@ -18,12 +22,26 @@ class LineBar extends Component{
           hoverBackgroundColor: 'rgba(96, 146, 255,0.4)',
           hoverBorderColor: 'rgba(96, 146, 255, 1)',
           data: this.props.dau,
-          cubicInterpolationMode: 'monotone'
+          cubicInterpolationMode: 'monotone',
+          defaultFontColor: '#8da2b5',
+          defaultFontSize: '20px',
+          lineTension: '120',
         }
       ]
     }
+
+    const options={
+      legend: {
+      labels: {
+          // This more specific font property overrides the global property
+          fontColor: '#8da2b5',
+      }
+  }
+
+    }
+
     return(
-      <Line data={data}/>
+      <Line data={data} options={options}/>
     )
   }
 }

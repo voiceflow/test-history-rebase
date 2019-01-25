@@ -654,14 +654,15 @@ border-radius: 0px 5px 5px 0px !important;
     cursor: pointer;
     font-weight: 400 !important;
     font-size: 15px !important;
+    height: 48px;
 }
 .publish-btn .launch{
-    right: 5px;
-    top: 4px;
+    right: 7px;
+    top: 7px;
     position: absolute;
     height: 100%;
-    width: 32px;
-    height: 32px;
+    width: 33px;
+    height: 33px;
     /* margin-left: 5px; */
     background-color: #ffffff40;
     color: #fff;

@@ -36,20 +36,21 @@ exports.DEFAULT_INTENTS = [
   },
   {
     "name": "AMAZON.PauseIntent",
-  },
-  {
-    "name": "StoryFlowIntent",
-    "slots": [
-      {
-        "name": "content",
-        "type": "Content"
-      }
-    ],
-    "samples": [
-      "{content}"
-    ]
   }
 ]
+
+exports.STORYFLOW_INTENT = {
+  "name": "StoryFlowIntent",
+  "slots": [
+    {
+      "name": "content",
+      "type": "Content"
+    }
+  ],
+  "samples": [
+    "{content}"
+  ]
+}
 
 exports.BUILT_IN_INTENTS = [
     { name: "AMAZON.AddAction<object@Book,targetCollection@ReadingList>",
@@ -1190,62 +1191,7 @@ exports.BUILT_IN_INTENTS = [
 exports.CATCHALL_SLOT_VALUES = [
   {
     "name": {
-      "value": "hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey hey hey"
-    }
-  },
-  {
-    "name": {
-      "value": "hey hey hey hey hey hey hey hey hey hey hey hey hey"
+      "value": "Quick zephyrs blow, vexing daft Jim"
     }
   },
   {

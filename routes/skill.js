@@ -1,27 +1,11 @@
 const axios = require('axios')
 const _ = require('lodash')
-const { docClient, pool, hashids, intercom, jwt } = require('./../services')
+const { pool, hashids, intercom, jwt, logAxiosError } = require('./../services')
 const { AccessToken } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
-const { renderDiagram } = require('./render_diagram')
-
-const logAxiosError = (err, context='') => {
-  if(err && err.response){
-    console.log(context, err.response.data && err.response.data.message, 'STATUS', err.response.status)    
-  }else{
-    console.log(context, err)
-  }
-}
-
-const generateID = () => {
-  return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0
-    const v = c === "x" ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
+const { deleteSkillPromise, copySkill } = require('./skill_util')
 
 const latestSkillToIntercom = (id, name) => {
   intercom.users.create({
@@ -148,13 +132,34 @@ exports.getSkill = (req, res) => {
     params = [id];
   } else if (req.query.simple) {
     sql = `
-          SELECT
-              name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, account_linking, resume_prompt, error_prompt, fulfillment
-          FROM
-              skills
-          WHERE
-              skill_id = $1 AND
-              creator_id = $2 LIMIT 1`;
+      SELECT
+        sv.last_save,
+        name,
+        amzn_id,
+        review,
+        live,
+        diagram,
+        locales,
+        restart,
+        global,
+        intents,
+        slots,
+        inv_name,
+        preview,
+        account_linking,
+        resume_prompt,
+        error_prompt,
+        fulfillment,
+        alexa_events,
+        repeat
+    FROM
+        skills s
+        INNER JOIN skill_versions sv ON s.skill_id = sv.canonical_skill_id
+            AND s.skill_id = sv.skill_id
+        WHERE
+            s.skill_id = $1
+            AND s.creator_id = $2
+        LIMIT 1`;
     params = [id, req.user.id];
   } else {
     sql = `
@@ -179,7 +184,6 @@ exports.getSkill = (req, res) => {
 
       // Rehash the skill id
       skill.skill_id = req.params.id;
-
       if (req.query.preview || !skill.amzn_id) {
         res.send(skill)
       } else {
@@ -250,7 +254,6 @@ exports.getSkill = (req, res) => {
                 if (update) {
                   pool.query('UPDATE skills SET review=$1, live=$2 WHERE skill_id=$3 AND creator_id=$4', [skill.review, skill.live, id, req.user.id]);
                 }
-
                 res.send(skill);
 
               } else {
@@ -259,7 +262,7 @@ exports.getSkill = (req, res) => {
             }
 
           } catch (err) {
-            console.trace(err);
+            logAxiosError(err, 'GET SKILL')
             res.send(skill);
           }
         });
@@ -405,118 +408,23 @@ exports.deleteProduct = async (req, res) => {
   }
 }
 
-exports.deleteSkill = (req, res, delete_all_versions = true, cb = false) => {
+exports.deleteSkill = async (req, res) => {
   if (!req.user || !req.params.id) {
-    res.sendStatus(401);
-    return;
+    res.sendStatus(401)
+    return
   }
+  let id = hashids.decode(req.params.id)[0]
 
-  const deleteDiagrams = (diagram_id) => {
-    pool.query('SELECT * FROM diagrams WHERE id = $1', [diagram_id], (err, results) => {
-      let sub_diagrams;
-      try {
-        sub_diagrams = JSON.parse(results.rows[0].sub_diagrams)
-      } catch (err) {
-        sub_diagrams = []
-      }
-
-      if (sub_diagrams.length > 0) {
-        for (let i = 0; i < sub_diagrams.length; i++) {
-          deleteDiagrams(sub_diagrams[i])
-        }
-      }
-
-      // Delete diagram from dynamo
-      let params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Key: {
-          'id': diagram_id
-        }
-      }
-
-      docClient.delete(params, async (err) => {
-        if (err) {
-          console.trace(err)
-        } else {
-          // Delete diagram from our tables
-          pool.query('DELETE FROM diagrams WHERE id = $1', [diagram_id], (err) => {
-            if (err) {
-              console.trace(err)
-            }
-          })
-        }
-      })
-    })
+  try{
+    await deleteSkillPromise(req.user.id, id, true)
+    res.sendStatus(200)
+  } catch (err) {
+    console.trace(err)
+    res.sendStatus(500)
   }
-
-  let id = hashids.decode(req.params.id)[0];
-  let select_query
-  if (delete_all_versions) {
-    select_query = `
-    SELECT * FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
-    WHERE creator_id = $1 AND skill_versions.canonical_skill_id = 
-      (SELECT min(canonical_skill_id) FROM skill_versions WHERE skill_versions.skill_id = $2)
-    `
-  } else {
-    select_query = `SELECT * FROM skills WHERE creator_id = $1 AND skill_id = $2`
-  }
-
-  pool.query(select_query, [req.user.id, id], (err, results) => {
-    // Delete skill off Amazon
-    if (results.rows[0].amzn_id) {
-      AccessToken(req.user.id, token => {
-        if (token === null) {
-          return;
-        }
-
-        axios.request({
-            url: `https://api.amazonalexa.com/v1/skills/${results.rows[0].amzn_id}`,
-            method: 'DELETE',
-            headers: {
-              Authorization: token
-            }
-          })
-          .then(res => {
-            // Sugoi!
-          })
-          .catch(err => {
-            console.trace(err)
-          })
-      })
-    }
-
-    // Delete skill off our servers
-    let delete_query
-    if (delete_all_versions) {
-      delete_query = `
-        DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT skill_id FROM skill_versions WHERE canonical_skill_id = 
-          (SELECT min(canonical_skill_id) FROM skill_versions WHERE skill_versions.skill_id = $2))`
-    } else {
-      delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
-    }
-    pool.query(delete_query, [req.user.id, id],
-      (err) => {
-        if (err) {
-          res.sendStatus(500)
-        } else {
-          // Default name of cb when no callback provided is 'next'
-          if (cb && cb.name !== 'next') {
-            cb()
-          } else {
-            res.sendStatus(200)
-          }
-        }
-      })
-
-    // Delete diagrams recursively and asyncly
-    for (let i = 0; i < results.rows.length; i++) {
-      deleteDiagrams(results.rows[i].diagram)
-    }
-  });
 }
 
-exports.patchSkill = (req, res) => {
+exports.patchSkill = async (req, res) => {
   if (!req.user || !req.params.id || !req.body) {
     res.sendStatus(401)
     return
@@ -531,42 +439,30 @@ exports.patchSkill = (req, res) => {
     b.locales = JSON.stringify(b.locales)
   }
 
-  if (!b.fulfillment) {
-    b.fulfillment = '{}'
-  }
+  if (!b.fulfillment) b.fulfillment = '{}'
+  if (!b.name) b.name = 'UNTITLED PROJECT'
 
-  if (req.query.fulfillment){
-    pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
-  }else if (req.query.settings) {
-    pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6  WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt], (err) => {
-        if (err) {
-          console.trace(err)
-          res.sendStatus(500)
-        } else {
-          latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200)
-        }
-    })
-  } else if (req.query.intents) {
-    pool.query(`
-            UPDATE skills
-            SET
-            intents = $3,
-            slots = $4,
-            fulfillment = $5,
-            account_linking = $6
-            WHERE skill_id = $1 AND creator_id = $2`,
-      [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500);
-        } else {
-          res.sendStatus(200);
-        }
-      })
-  } else if (req.query.publish) {
-    pool.query(`
+  try{
+    if (req.query.fulfillment){
+      // UPDATE FULFILLMENT COLUMN
+      await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
+    }else if (req.query.settings) {
+      if(typeof b.repeat !== 'number'){
+        b.repeat = 100
+      }
+      // UPDATE COLUMNS RELATED TO SETTINGS
+      await pool.query(`UPDATE skills SET name = $3, restart = $4, resume_prompt = $5, error_prompt = $6, alexa_events = $7, repeat = $8  WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
+    } else if (req.query.intents) {
+      // UPDATE INTENTS COLUMN
+      await pool.query(`UPDATE skills SET intents = $3, slots = $4, fulfillment = $5, account_linking = $6 WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking])
+    } else if (req.query.preview) {
+      // UPDATE PREVIEW COLUMN
+      await pool.query(`UPDATE skills SET preview = $2 WHERE skill_id = $1 AND creator_id = $3`, [id, b.isPreview, req.user.id])
+    } else if (req.query.publish) {
+      // UPDATE EVERYTHING RELATED TO PUBLISHING THE SKILL
+      await pool.query(`
             UPDATE skills
             SET
             name = $2,
@@ -588,70 +484,35 @@ exports.patchSkill = (req, res) => {
             privacy_policy = $18,
             terms_and_cond = $19
             WHERE skill_id = $1 AND creator_id = $20`,
-      [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
-        {
-          value: b.invocations
-        },
-        b.small_icon, b.large_icon, b.category,
-        b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales,
-        b.privacy_policy, b.terms_and_cond, req.user.id
-      ], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500)
-        } else {
+          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations}, b.small_icon, b.large_icon, b.category,
+          b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id])
           latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200)
-        }
-      })
-  } else if (req.query.preview) {
-    pool.query(`
-        UPDATE
-          skills
-        SET
-          preview = $2
-        WHERE
-          skill_id = $1 AND creator_id = $3`,
-      [id, b.isPreview, req.user.id], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500)
-        } else {
-          res.sendStatus(200)
-        }
-      })
-  } else {
-    pool.query(`
-            UPDATE skills
-            SET
-            name = $2,
-            inv_name = $3,
-            summary = $4,
-            description = $5,
-            keywords = $6,
-            invocations = $7,
-            small_icon = $8,
-            large_icon = $9,
-            category = $10,
-            locales = $11,
-            privacy_policy = $12,
-            terms_and_cond = $13
-            WHERE skill_id = $1 AND creator_id = $14`,
-      [id, b.name, b.inv_name, b.summary, b.description, b.keywords,
-        {
-          value: b.invocations
-        },
-        b.small_icon, b.large_icon, b.category, b.locales,
-        b.privacy_policy, b.terms_and_cond, req.user.id
-      ], (err) => {
-        if (err) {
-          console.trace(err);
-          res.sendStatus(500);
-        } else {
-          latestSkillToIntercom(req.user.id, b.name)
-          res.sendStatus(200);
-        }
-      })
+    } else {
+      // UPDATE GENERAL SKILL SETTINGS
+      await pool.query(`
+              UPDATE skills
+              SET
+              name = $2,
+              inv_name = $3,
+              summary = $4,
+              description = $5,
+              keywords = $6,
+              invocations = $7,
+              small_icon = $8,
+              large_icon = $9,
+              category = $10,
+              locales = $11,
+              privacy_policy = $12,
+              terms_and_cond = $13
+              WHERE skill_id = $1 AND creator_id = $14`,
+        [id, b.name, b.inv_name, b.summary, b.description, b.keywords,{value: b.invocations},
+          b.small_icon, b.large_icon, b.category, b.locales,b.privacy_policy, b.terms_and_cond, req.user.id])
+        latestSkillToIntercom(req.user.id, b.name)
+    }
+    res.sendStatus(200)
+  }catch(err){
+    console.trace(err)
+    res.sendStatus(500)
   }
 }
 
@@ -715,7 +576,8 @@ const checkVersions = (req, id, token) => {
         console.trace(err)
       } else {
         // Check whether user has more versions than they should
-        if ((req.user.admin >= 100 && data.rows.length > 50) || data.rows.length > 5) {
+        if ((req.user.admin >= 100 && data.rows.length > 3) || data.rows.length > 5) {
+          let live_id
           try {
             // If so, we wanna know what version the live skill is pointing to rn
             let request = await axios.request({
@@ -726,28 +588,35 @@ const checkVersions = (req, id, token) => {
                 Authorization: token
               }
             })
-
             // Delete the oldest version that isn't live
             let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-            let live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-            let i = 0
-
-            while (data.rows[i].skill_id === live_id && i < data.rows.length) {
-              i += 1
-            }
-
-            if (i < data.rows.length) {
-              pool.query('DELETE FROM skills WHERE skill_id = $1', [data.rows[i].skill_id], (err) => {
-                if (err) {
-                  console.trace(err)
-                }
-              })
-            }
+            live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
           } catch (err) {
-            if(!(err && err.response && err.response.status === 404)){
-              console.trace(err)
-            }
+            live_id = null
           }
+          
+          let i = 0
+          let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 3 : data.rows.length - 5
+          let deletion_promises = []
+          if(live_id){
+            num_versions_to_delete -= 1
+          }
+
+          while (i < data.rows.length && num_versions_to_delete > 0) {
+            if(data.rows[i].skill_id != live_id){
+              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, false))
+              num_versions_to_delete -= 1
+            }
+            i += 1
+          }
+
+          Promise.all(deletion_promises)
+          .then(() => {
+            // SUGOI
+          })
+          .catch((err) => {
+            console.trace(err)
+          })
         }
       }
     })
@@ -1028,7 +897,7 @@ exports.buildSkill = async (req, res) => {
                     getSkillStatus(0)
                   })
                   .catch(err => {
-                    logAxiosError(err, 'INTERACTION MODEL UPLOAD')
+                    logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(model))
                     if (err.response) {
                       if (err.response.status === 404) {
                         iterate(depth + 1)
@@ -1087,7 +956,7 @@ exports.certifySkill = (req, res) => {
           })
           .then(response => {
             if (response.hasOwnProperty('violations')) {
-              Status(depth + 1);
+              getSkillStatus(depth + 1);
             } else {
               axios.request({
                   url: `https://api.amazonalexa.com/v1/skills/${req.params.amzn_id}/submit`,
@@ -1113,7 +982,7 @@ exports.certifySkill = (req, res) => {
                           event: 'Submitted for Certification',
                           properties: {
                               amzn_id: req.params.amzn_id,
-                              skill_id: id
+                              skill_id: hashids.decode(req.params.id)[0]
                           }
                         })
                         res.sendStatus(200);
@@ -1213,264 +1082,6 @@ exports.copyProduct = async (req, res) => {
   })
 }
 
-// Async call to copy all products
-copyAllProducts = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO products (skill_id, name, data, amzn_prod_id)
-    SELECT $1, name, data, amzn_prod_id FROM products WHERE id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to copy all templates
-copyAllTemplates = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
-    SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to
-copyAllDisplays = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
-    SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-exports.copySkill = async (req, res, options, cb = false) => {
-
-  let id = hashids.decode(req.params.id)[0]
-  let new_creator_id = req.params.target_creator
-  let diagram_mapping = {}
-  let diagram_names = {}
-  let root_diagram_id = generateID()
-
-  if (new_creator_id === 'me') {
-    new_creator_id = req.user.id
-  }
-
-  const retrieveDiagram = (diagram_id, new_skill_id) => {
-
-    const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
-      let params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Item: {
-          id: data.diagram.id,
-          variables: data.diagram.variables,
-          data: data.diagram.data,
-          skill: new_skill_id,
-          creator: new_creator_id
-        }
-      }
-
-      try {
-        await pool.query(
-          `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5)`,
-          [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
-        await docClient.put(params).promise()
-        resolve()
-      } catch (err) {
-        console.trace(err)
-        reject()
-      }
-    })
-
-    const remapDiagramIds = async (diagram) => {
-      let sub_diagrams = []
-      let old_diagram_id = diagram.id
-      diagram.id = diagram_mapping[diagram.id]
-      diagram.skill = new_skill_id
-      let JSON_diagram_data = JSON.parse(diagram.data)
-      let nodes = JSON_diagram_data.nodes
-
-      if (!!nodes) {
-        for (let i = 0; i < nodes.length; i++) {
-          let node = nodes[i]
-          if (node.extras.diagram_id && node.extras.diagram_id !== null) {
-            node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
-            sub_diagrams.push(node.extras.diagram_id)
-          }
-        }
-      }
-
-      diagram.data = JSON.stringify(JSON_diagram_data)
-      let result = await uploadNewDiagram({
-        diagram: diagram,
-        sub_diagrams: sub_diagrams,
-        old_diagram_id: old_diagram_id
-      })
-      return result
-    }
-
-    // retrieveDiagramIds returns this promise
-    return new Promise((resolve, reject) => {
-      let get_params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Key: {
-          'id': diagram_id
-        }
-      }
-
-      docClient.get(get_params, async (err, data) => {
-        if (err) {
-          console.trace(err)
-          reject(err)
-        } else if (data.Item) {
-          let result = await remapDiagramIds(data.Item)
-          if (typeof result === 'Error') {
-            reject(result)
-          } else {
-            resolve(result)
-          }
-        }
-      })
-    })
-  }
-
-  const renderSkill = async (skill) => {
-    let intents = {}
-    let slots = {}
-    // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
-    if (Array.isArray(skill.intents)) {
-      skill.intents.forEach(intent => {
-        if (intent.key) intents[intent.key] = intent.name
-      })
-    }
-    if (Array.isArray(skill.slots)) {
-      skill.slots.forEach(slot => {
-        if (slot.key) slots[slot.key] = slot.name
-      })
-    }
-    try{
-      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
-      // UPDATE SKILL 
-      await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
-      [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
-    }catch(err){
-      console.trace(err)
-    }
-  }
-
-  // Starts here: verify that the skill is under the current creator
-  if (!options.copying_default_template) {
-    if (req.user.admin < 100) {
-      try {
-        let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
-        if (data.rows.length === 0 || data.rows[0].creator_id !== req.user.id) {
-          throw new Error('Not your skill')
-        }
-      } catch (err) {
-        // forbidden
-        return res.sendStatus(401)
-      }
-    }
-  }
-
-  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
-  let copy_query
-  if (options.complete_copy || options.renderDiagram) {
-    copy_query = `
-          INSERT INTO skills (
-            name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-            purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
-            privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces
-          )
-          SELECT ` +
-      copy_str + `
-              $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-              purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
-              privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces
-          FROM skills WHERE skill_id = $3 RETURNING *`
-  } else {
-    copy_query = `
-          INSERT INTO skills (
-            name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
-            personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment
-          )
-          SELECT ` +
-      copy_str + `
-            $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
-            personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment
-          FROM skills WHERE skill_id = $3 RETURNING *`
-  }
-
-  try {
-    let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
-    let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
-    let retrieve_promises = []
-    for (let i = 0; i < diagram_data.rows.length; i++) {
-      diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
-      if (diagram_data.rows[i].name === 'ROOT') {
-        diagram_mapping[diagram_data.rows[i].id] = root_diagram_id
-      } else {
-        diagram_mapping[diagram_data.rows[i].id] = generateID()
-      }
-      retrieve_promises.push(
-        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id)
-      )
-    }
-    Promise.all(retrieve_promises)
-      .then(async () => {
-        // Add working version to table
-        if (options.copying_default_template || options.user_copy) {
-          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
-            if (err) {
-              console.trace(err)
-              res.sendStatus(500)
-            }
-          })
-        }
-
-        // Async copy rows depending on the skill, doesn't need to be synced
-        copyAllDisplays(id, copy_skill.skill_id)
-        copyAllProducts(id, copy_skill.skill_id)
-        copyAllTemplates(id, copy_skill.skill_id)
-
-        if(options.renderDiagram){
-          await renderSkill(copy_skill)
-        }
-
-        // Default name of cb when no callback provided is 'next'
-        copy_skill.skill_id = hashids.encode(copy_skill.skill_id)
-        if (cb && cb.name !== 'next') {
-          cb(copy_skill)
-        } else {
-          res.send(copy_skill)
-        }
-      })
-      .catch((err) => {
-        console.trace(err)
-        res.sendStatus(500)
-      })
-  } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
-  }
-}
-
 exports.getSkillVersions = (req, res) => {
   let id = hashids.decode(req.params.id)[0]
   pool.query(`
@@ -1501,32 +1112,20 @@ exports.restoreSkillVersion = (req, res) => {
   let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
-  exports.copySkill(req, res, {complete_copy: true}, (row) => {
+  copySkill(req, res, {complete_copy: true}, async (row) => {
     req.params.id = req.params.canonical_skill_id
-    exports.deleteSkill(req, res, false, () => {
+    try{
+      await deleteSkillPromise(req.user.id, canonical_skill_id, false)
       let new_skill_id = hashids.decode(row.skill_id)[0]
-      pool.query(
-        `UPDATE skills SET skill_id = $1 WHERE skill_id = $2`,
-        [canonical_skill_id, new_skill_id],
-        (err, data) => {
-          if (err) {
-            console.trace(err)
-            res.sendStatus(500)
-          } else {
-            pool.query(
-              `INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`,
-              [canonical_skill_id, canonical_skill_id],
-              (err) => {
-                if (err) {
-                  console.trace(err)
-                  res.sendStatus(500)
-                }
-                row.skill_id = req.params.canonical_skill_id
-                res.send(row)
-              }
-            )
-          }
-        })
-    })
+      await pool.query(`UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, [canonical_skill_id, new_skill_id])
+      await pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [canonical_skill_id, canonical_skill_id])
+      row.skill_id = req.params.canonical_skill_id
+      res.send(row)
+    } catch (err) {
+      console.trace(err)
+      res.sendStatus(500)
+    }
+
+
   })
 }

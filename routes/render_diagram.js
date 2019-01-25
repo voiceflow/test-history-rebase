@@ -329,7 +329,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
                     variable: mapping.variable,
                     slot: mapping.slot.label
                   })
-                } else if (mapping.slot.key in options.slots) {
+                } else if (mapping.slot && mapping.slot.key in options.slots) {
                   new_choice.mappings.push({
                     variable: mapping.variable,
                     slot: options.slots[mapping.slot.key]
@@ -692,7 +692,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
         } else if (node.extras.type === 'mail') {
 
           let id = hashids.decode(node.extras.template_id);
-          if (id && id[0] && (node.extras.to === '_USER' || validateEmail(node.extras.to))) {
+          if (id && id[0] && (node.extras.to)) {
             let mapping;
             if (Array.isArray(node.extras.mapping)) {
               mapping = node.extras.mapping.filter(m => {
@@ -726,13 +726,47 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           }
         } else if(node.extras.type === 'reminder') {
           options.permissions.add('alexa::alerts:reminders:skill:readwrite')
+          node_reminder = node.extras.reminder
+          let reminder = {}
+          reminder.text = draftToMarkdown(node_reminder.text)
+          reminder.type = node_reminder.reminder_type
+          reminder.time = node_reminder.time
+          if(reminder.type === 'SCHEDULED_ABSOLUTE'){
+            reminder.timezone = node_reminder.timezone
+            reminder.date = node_reminder.date
+          }
 
           story.lines[node.id] = {
-            reminder: node.extras.reminder,
+            reminder: reminder,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail')[0].links[0]),
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
+        } else if (node.extras.type === 'permission') {
+          let nextLink = null
+          for (var j = 0; j < node.ports.length; j++) {
+            if (!node.ports[j].in) {
+              [nextLink] = node.ports[j].links;
+            }
+          }
+
+          let permission_card = true
+          if(node.extras.custom){
+            if(Array.isArray(node.extras.permissions) && node.extras.permissions.length !== 0){
+              permission_card = []
+              node.extras.permissions.forEach(permission => {
+                options.permissions.add(permission),
+                permission_card.push(permission)
+              })
+            }
+          }
+
+          // Permission Card
+          story.lines[node.id] = {
+            permission_card: permission_card,
+            nextId: getLink(nextLink)
+          }
         } else if (node.extras.type === 'permissions') {
+          // Email/Name/Phone Permission Requests
           const permissions = node.extras.permissions ? node.extras.permissions : []
           permissions.forEach(permission => {
             if(permission && permission.selected && permission.selected.value){
@@ -743,9 +777,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           story.lines[node.id] = {
             permissions: permissions,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
-            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0]),
-            declined_id: getLink(node.ports.filter(a => a.in === false && a.label === 'declined')[0].links[0]),
-            nextId: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0])
+            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
         } else if (node.extras.type === 'link_account') {
           story.lines[node.id] = {
@@ -793,6 +825,18 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
               nextId: getLink(nextLink)
             }
           }
+        }
+
+        if(node.extras && node.extras.reprompt){
+            let REPROMPT
+            if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {
+              REPROMPT = draftToMarkdown(node.extras.reprompt.content)
+            } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
+              REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
+            } else {
+              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</>`
+            }
+            if(REPROMPT) story.lines[node.id].reprompt = REPROMPT
         }
       }
       let render_type

@@ -4,7 +4,7 @@
 body {
     /*font-family: 'Lato', sans-serif;*/
     font-family: 'Open Sans', sans-serif !important;
-    background: #f0f5f8 !important;
+    background: #F7F9FB !important;
     color: #132144;
     width: 100%;
 }
@@ -575,7 +575,7 @@ border-radius: 0px 5px 5px 0px !important;
     transition: box-shadow 150ms ease !important;
 }
 .form-control-border{
-  background-color: #f0f5f8 !important;
+  background-color: #F7F9FB !important;
 /*  min-height: 45px !important;*/
 /*  padding: 10px 12px !important;*/
 /*  border-radius: 0px 5px 5px 0px !important;*/

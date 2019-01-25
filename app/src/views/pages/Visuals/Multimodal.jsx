@@ -77,9 +77,9 @@ class Multimodal extends Component {
                     {this.state.displays.length === 0 ?
                         <div className="super-center w-100 h-100">
                         <div className="empty-container">
-                            <img src={'/images/desktop.svg'} alt="open safe"/>
+                            <img src={'/images/desktop.svg'} alt="open safe" width ="100"/>
                             <p className="empty">No Visual Templates Exist</p>
-                            <p className="empty-desc">Create Visuals with Alexa Presentation Language</p>
+                            <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
                             <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline">
                                 <MUIButton varient="contained" className="purple-btn">New Display</MUIButton>
                             </Link>

@@ -4,7 +4,8 @@ import axios from 'axios'
 import LineBar from '../../components/LineBar'
 import moment from 'moment'
 import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+import './react-table.css'
+import { Table } from 'reactstrap'
 
 Date.prototype.addDays = function(days) {
   var date = new Date(this.valueOf())
@@ -40,7 +41,10 @@ class Home extends Component {
     this.state = {
       users_data: [],
       dau: [],
-      dates: []
+      dates: [],
+      users: 0,
+      sessions: 0,
+      interactions: 0
     }
 
     this.handleFilterTypeChange = this.handleFilterTypeChange.bind(this)
@@ -93,9 +97,9 @@ class Home extends Component {
           }
 
           if(to - from <= 259200){
-            dates.push(moment(date_range[i]).format('YYYY-MM-DD HH:00'))
+            dates.push(moment(date_range[i]).format('MM-DD:HH'))
           } else {
-            dates.push(date_range[i].toISOString().slice(0,10))
+            dates.push(date_range[i].toISOString().slice(5,10))
           }
         }
 
@@ -127,6 +131,18 @@ class Home extends Component {
         console.log(err) //TODO: error modal
       })
 
+    axios.get(`/analytics/${this.props.skill_id}`)
+      .then(res => {
+        this.setState({
+          users: res.data.users,
+          sessions: res.data.sessions,
+          interactions: res.data.interactions
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
     // Retrieve todays DAUs by default
     this.getDAUs('td')
   }
@@ -136,12 +152,11 @@ class Home extends Component {
   }
 
   render() {
-    
       const columns = [{
           id: 'user',
           Header: 'User',
           accessor: d => d.user_id.slice(18, 29),
-          width: 200
+          width: 150
         }, {
           Header: 'Sessions',
           accessor: 'sessions',
@@ -166,7 +181,7 @@ class Home extends Component {
           id: 'last_seen',
           Header: 'Last Seen',
           accessor: d => moment.unix(d.last_interaction / 1000).format('lll'),
-          width: 200,
+          width: this.state.width >= 1350 ? 300 : 200,
           sortMethod: (a, b) => {
             if(new Date(a).getTime() > new Date(b).getTime()){
               return 1
@@ -178,7 +193,7 @@ class Home extends Component {
           id: 'first_seen',
           Header: 'Joined',
           accessor: d => moment.unix(d.first_interaction / 1000).format('lll'),
-          width: 200,
+          width: this.state.width >= 1350 ? 300 : 200,
           sortMethod: (a, b) => {
             if(new Date(a).getTime() > new Date(b).getTime()){
               return 1
@@ -193,22 +208,45 @@ class Home extends Component {
       <div className="business-page-inner">
         <div className="container">
           <div className="graph-form mt-5">
-            <div className="row">
-              <TimeInterval handleFilterTypeChange={this.handleFilterTypeChange} />
+            <div className="row justify-content-between">
+              <div id="basic-stats-div">
+                <Table borderless size="sm">
+                  <tbody>
+                    <tr>
+                      <td><label>Users</label></td>
+                      <td><label>Sessions</label></td>
+                      <td><label>Interactions</label></td>
+                    </tr>
+                    <tr>
+                      <td>{this.state.users}</td>
+                      <td>{this.state.sessions}</td>
+                      <td>{this.state.interactions}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
+              <div id="interval-div" className="d-flex">
+                <label>Daily active users</label> <TimeInterval handleFilterTypeChange={this.handleFilterTypeChange} />
+              </div>
             </div>
-            <hr />
             <div className="row">
               <LineBar dau={this.state.dau} dates={this.state.dates}/>
             </div>
           </div>
           <div className="graph-form mt-5">
             <div className="row justify-content-center">
-              <h5>Users</h5>
+              <h5>User Statistics</h5>
             </div>
             <div className="row justify-content-center">
               <ReactTable
                 data={this.state.users_data}
                 columns={columns}
+                defaultSorted={
+                  [{
+                    id: 'last_seen',
+                    desc: false
+                  }]
+                }
               />
             </div>
           </div>

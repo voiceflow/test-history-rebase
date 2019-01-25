@@ -1,21 +1,15 @@
 import React, { Component } from 'react'
-import color from '@material-ui/core/colors/lightBlue';
 import { Line, Chart } from 'react-chartjs-2'
 
 Chart.defaults.global.defaultFontColor = '#8da2b5'
 
 
 class LineBar extends Component{
-  constructor(props){
-    super(props)
-  }
-
   render(){
     const data={
       labels: this.props.dates,
       datasets: [
         {
-          label: 'Daily Active Users',
           backgroundColor: 'rgba(96, 146, 255,0.2)',
           borderColor: 'rgba(96, 146, 255, 1)',
           borderWidth: 1,
@@ -32,20 +26,24 @@ class LineBar extends Component{
 
     const options={
       legend: {
-        labels: {
-            // This more specific font property overrides the global property
-            fontColor: '#8da2b5',
-        },
+        display: false
       },
       scales: {
         xAxes: [{
           gridLines: {
-            display: false
+            display: false,
+            color: '#8da2b530',
+            zeroLineColor: '#8da2b530'
           }
         }],
         yAxes: [{
           gridLines: {
-            display: false
+            display: true,
+            color: '#8da2b530',
+            zeroLineColor: '#8da2b530'
+          },
+          ticks: {
+            min: 0
           }
         }]
       }

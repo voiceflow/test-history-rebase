@@ -110,7 +110,7 @@ class IntentInputs extends Component {
                         nameExists={this.checkName}
                         removeIntent={this.handleRemoveIntent}
                         update={this.props.update}
-                        isGoogle={this.props.isGoogle}
+                        platform={this.props.platform}
                     />)
                 }
             }

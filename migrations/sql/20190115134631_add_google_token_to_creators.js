@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
   }).then(() => {
     return knex.schema.table('skills', function(t) {
       t.json('google_publish_info').defaultTo('{}')
-      t.boolean('is_google_view_active').defaultTo(false)
+      t.string('platform').defaultTo('alexa').notNullable()
     })
   })
 };

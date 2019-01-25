@@ -192,7 +192,7 @@ class Home extends Component {
     return (
       <div className="business-page-inner">
         <div className="container">
-          <div className="alert alert-light">
+          <div className="graph-form mt-5">
             <div className="row">
               <TimeInterval handleFilterTypeChange={this.handleFilterTypeChange} />
             </div>
@@ -201,8 +201,7 @@ class Home extends Component {
               <LineBar dau={this.state.dau} dates={this.state.dates}/>
             </div>
           </div>
-          <hr />
-          <div className="alert alert-light">
+          <div className="graph-form mt-5">
             <div className="row justify-content-center">
               <h5>Users</h5>
             </div>

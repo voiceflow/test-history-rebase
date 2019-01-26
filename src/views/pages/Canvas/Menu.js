@@ -30,7 +30,8 @@ class Menu extends Component {
             open: true,
             tab: tab,
             tree: null,
-            confirm: null
+            confirm: null,
+            depth: 0,
         }
 
         this.openTab = this.openTab.bind(this)
@@ -38,6 +39,12 @@ class Menu extends Component {
         this.updateTree = this.updateTree.bind(this)
         this.renderSideBar = this.renderSideBar.bind(this)
         this.visited = new Set();
+    }
+
+    componentWillReceiveProps(nextProps){
+        if (nextProps.diagrams.length !== this.state.depth){
+            this.updateTree(nextProps.current)
+        }
     }
 
     componentDidMount() {
@@ -68,7 +75,6 @@ class Menu extends Component {
                     return null
                 })
             }
-
             return (<React.Fragment>
                 <FlowButton
                     flow={node}
@@ -91,7 +97,8 @@ class Menu extends Component {
             if(diagram.name === 'ROOT'){
                 this.visited = new Set()
                 this.setState({
-                    tree: this.buildTree(diagram, current_id)
+                    tree: this.buildTree(diagram, current_id),
+                    depth: this.props.diagrams.length,
                 })
             }
         }

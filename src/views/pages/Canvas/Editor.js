@@ -28,6 +28,7 @@ import Permissions from './Editors/Permissions';
 import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
+import Code from './Editors/Code'
 import PermissionCard from './Editors/PermissionCard'
 import {getBlocks} from './Blocks'
 import Prompt from 'views/components/Uploads/Prompt'
@@ -112,8 +113,7 @@ class Editor extends Component {
         return SLOT_TYPES
     }
 
-    BlockViewer() {
-        let variables = this.props.global_variables.concat(this.props.variables)
+    BlockViewer(variables) {
 
         switch(this.state.node.extras.type) {
             case 'story':
@@ -271,6 +271,8 @@ class Editor extends Component {
                 return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'permission':
                 return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate}/>
+            case 'code':
+                return <Code node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             default:
               return null
         }
@@ -327,8 +329,9 @@ class Editor extends Component {
     }
 
     EditorRender(){
+        let variables = this.props.global_variables.concat(this.props.variables)
         return <React.Fragment>
-            {this.BlockViewer()}
+            {this.BlockViewer(variables)}
             {this.state.node.extras.reprompt && <React.Fragment>
                 <hr/>
                 <div className="space-between">
@@ -346,7 +349,7 @@ class Editor extends Component {
                             this.setState({node: node})
                         }
                     }}
-                    variables={this.props.variables}
+                    variables={variables}
                 />
             </React.Fragment>}
         </React.Fragment>

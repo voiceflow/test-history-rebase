@@ -29,7 +29,8 @@ export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
 	}
 
 	getClassName() {
-		return "port " + super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.isUnlinked() ? "unlinked" : ""));
+		return `port ${this.props.node.extras.type} ${this.props.port.in? 'in' : 'out'} `
+		+ super.getClassName() + (this.state.selected ? this.bem("--selected") : "" + (this.isUnlinked() ? "unlinked" : ""));
 	}
 
 	setLinks(isSelected = false){

@@ -111,9 +111,9 @@ class Products extends Component {
                     {this.state.products.length === 0 ?
                         <div className="super-center w-100 h-100">
                         <div className="empty-container">
-                            <img src='/images/OpenSafe.svg' alt="open safe"/>
-                            <p className="empty">No Products exists</p>
-                            <p className="empty-desc">Create and Distribute In Skill Products to monetize your Skill</p>
+                            <img src='/images/OpenSafe.svg' alt="open safe" width="100px"/>
+                            <p className="empty">No products exists</p>
+                            <p className="empty-desc">Monetize your project with in skill purchases such as consumables and subscriptions.</p>
                             <Link to={`/business/${this.props.skill_id}/product/new`} className="no-underline">
                                 <MUIButton varient="contained" className="purple-btn">Create a product</MUIButton>
                             </Link>

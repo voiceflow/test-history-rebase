@@ -321,9 +321,9 @@ class BasicAdvancedSettings extends Component{
             <hr/>
             <div className="super-center">
                 {this.props.page !== 'backups' &&
-                    <Button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : _.noop()}>
+                    <button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : _.noop()}>
                         {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
-                    </Button>
+                    </button>
                 }
             </div>
         </React.Fragment>

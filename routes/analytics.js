@@ -5,9 +5,9 @@ const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_
 exports.trackOnboarding = (req, res) => {
     analytics.track({
         userId: req.user.id,
-        event: 'Onboarding Survey',
+        event: 'Onboarding Page',
         properties: {
-            state: req.body.state
+            page: req.body.page
         }
     })
     res.sendStatus(200)

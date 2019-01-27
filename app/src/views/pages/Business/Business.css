@@ -173,3 +173,50 @@ transform: scale(1.03);
 	background-color: #ffc107;
 	color: #fff;
 }
+
+.Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+    background-color: #cce6ff !important;
+    color: #4a90e2;
+}
+
+.Selectable .DayPicker-Day {
+    border-radius: 0 !important;
+}
+
+.Selectable .DayPicker-Day--start {
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+}
+
+.Selectable .DayPicker-Day--end {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+}
+
+#interval-div {
+	width: 30%;
+}
+
+.time-interval {
+	width: 50%;
+	margin-top: 3px;
+	margin-left: 8px;
+}
+
+#basic-stats-div {
+	width: 25%
+}
+
+#basic-stats-div td {
+	margin: 0px;
+	padding: 0px;
+	font-weight: 900;
+}
+
+#basic-stats-div label {
+	margin: 0px 15px 0px 0px;
+}
+
+#disclaimer-label {
+	margin-left: -20px;
+}

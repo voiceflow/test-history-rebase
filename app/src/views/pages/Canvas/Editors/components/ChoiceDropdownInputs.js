@@ -112,7 +112,6 @@ class ChoiceDropdownInputs extends Component {
             const is_alexa = /AMAZON/.test(props.data.value)
             const is_google = /^actions\.intent/.test(props.data.value)
 
-
             return (
                 <components.SingleValue {...props}>
                     <div className="d-flex slot-label justify-content-between">

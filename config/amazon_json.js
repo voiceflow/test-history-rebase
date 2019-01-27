@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT} = require('./Constants')
+const { SLOT_TYPES } = require('../app/src/views/pages/Canvas/Constants')
 const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {

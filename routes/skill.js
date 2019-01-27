@@ -476,20 +476,12 @@ exports.patchSkill = async (req, res) => {
     } else if (req.query.publish) {
       // UPDATE EVERYTHING RELATED TO PUBLISHING THE SKILL
       if (req.query.platform === 'google') {
-        pool.query(`
+        await pool.query(`
           UPDATE skills
           SET
           google_publish_info = $3
           WHERE skill_id = $1 AND creator_id = $2`,
-          [id, req.user.id, JSON.stringify(b)], (err) => {
-          if(err){
-              console.log(err);
-              res.sendStatus(500)
-          }else{
-              latestSkillToIntercom(req.user.id, b.name)
-              res.sendStatus(200)
-          }
-        })
+          [id, req.user.id, JSON.stringify(b.google_publish_info)])
       } else {
         await pool.query(`
               UPDATE skills
@@ -515,8 +507,8 @@ exports.patchSkill = async (req, res) => {
               WHERE skill_id = $1 AND creator_id = $20`,
             [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations}, b.small_icon, b.large_icon, b.category,
             b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id])
-            latestSkillToIntercom(req.user.id, b.name)
       }
+      latestSkillToIntercom(req.user.id, b.name)
     } else {
       // UPDATE GENERAL SKILL SETTINGS
       await pool.query(`
@@ -1453,6 +1445,8 @@ exports.buildGoogleSkill = async (req, res) => {
             throw('Project ID not found')
         }
 
+        skill_info.skill_id = original_id
+
         const package = generateGactionsPackage(skill_info)
         await updateGActionsPackage(token, project_id, package)
         res.status(200).send({
@@ -1545,7 +1539,6 @@ exports.getGoogleSkill = async (req, res) => {
     let sql;
     let params;
 
-    // TODO: winstonc add google token/id to select query
     sql = `
         SELECT
             created, diagram, google_publish_info

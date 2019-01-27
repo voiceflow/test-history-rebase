@@ -40,45 +40,6 @@ const tabs = [
 
 class Business extends Component {
     render() {
-        let tabs 
-        if(this.props.page === 'home' || this.props.page === 'sessions' || this.props.page === 'utterances'){
-            tabs = [
-                {
-                    display: <React.Fragment><i className="fal fa-home mr-2"/> Dashboard</React.Fragment>,
-                    match: ['home'],
-                    link: '/business/:skill_id'
-                },
-                // {
-                //     display: <React.Fragment><i className="fal fa-envelope invisible mr-2"/> Sessions</React.Fragment>,
-                //     match: ['sessions'],
-                //     link: '/business/:skill_id/sessions'
-                // },
-                // {
-                //     display: <React.Fragment><i className="fal fa-envelope invisible mr-2"/> Utterances</React.Fragment>,
-                //     match: ['utterances'],
-                //     link: '/business/:skill_id/utterances'
-                // },
-                {
-                    display: <React.Fragment><i className="fal fa-envelope mr-2"/> Email</React.Fragment>,
-                    match: ['emails', 'template'],
-                    link: '/business/:skill_id/email/templates'
-                }
-            ]
-        } else {
-            tabs = [
-                {
-                    display: <React.Fragment><i className="fal fa-home mr-2"/> Home</React.Fragment>,
-                    match: ['home'],
-                    link: '/business/:skill_id'
-                },
-                {
-                    display: <React.Fragment><i className="fal fa-envelope mr-2"/> Email</React.Fragment>,
-                    match: ['emails', 'template'],
-                    link: '/business/:skill_id/email/templates'
-                }
-            ]
-        }
-
         let page
         if(window.user_detail.admin > 0){
             switch(this.props.page){

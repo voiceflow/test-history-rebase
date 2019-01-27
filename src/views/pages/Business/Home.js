@@ -7,27 +7,25 @@ import ReactTable from 'react-table'
 import './react-table.css'
 import { Table } from 'reactstrap'
 
-Date.prototype.addDays = function(days) {
-  var date = new Date(this.valueOf())
+const addDays = function(date, days) {
   date.setDate(date.getDate() + days)
   return date
 }
 
-Date.prototype.addHours = function(hours) {
-  var date = new Date(this.valueOf())
+const addHours = function(date, hours) {
   date.setHours(date.getHours() + hours)
   return date
 }
 
 function getDates(start_date, stop_date, is_hour) {
-  var date_array = new Array()
+  var date_array = []
   var current_date = start_date;
   while (current_date <= stop_date) {
     date_array.push(new Date (current_date))
     if(is_hour){
-      current_date = current_date.addHours(1)
+      current_date = addHours(current_date, 1)
     } else {
-      current_date = current_date.addDays(1)
+      current_date = addDays(current_date, 1)
     }
   }
   return date_array
@@ -239,6 +237,7 @@ class Home extends Component {
             </div>
             <div className="row justify-content-center">
               <ReactTable
+                className="w-100"
                 data={this.state.users_data}
                 columns={columns}
                 defaultSorted={

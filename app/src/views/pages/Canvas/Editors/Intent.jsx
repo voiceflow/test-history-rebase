@@ -3,7 +3,7 @@ import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
 import { Tooltip } from 'react-tippy'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import './Intent.css'
 import Switch from '@material-ui/core/Switch'
@@ -151,7 +151,41 @@ class Intent extends Component {
         return false
     }
 
-    command() {
+    command(intent_options) {
+        const SlotOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^actions\.intent/.test(props.data.value)
+
+            return (
+                    <components.Option {...props}>
+                        <div className="d-flex slot-label justify-content-between">
+                            <span className="mr-2">{props.data.label}</span>
+                            <span className="d-flex">
+                                {is_alexa && <i className="fab fa-amazon align-self-center"/>}
+                                {is_google && <i className="fab fa-google align-self-center"/>}
+                            </span>
+                        </div>
+                    </components.Option>
+            )
+        }
+
+        const SingleValueOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^actions\.intent/.test(props.data.value)
+
+            return (
+                <components.SingleValue {...props}>
+                    <div className="d-flex slot-label justify-content-between">
+                        <span className="mr-2">{props.data.label}</span>
+                        <span className="d-flex">
+                            {is_alexa && <i className="fab fa-amazon align-self-center"/>}
+                            {is_google && <i className="fab fa-google align-self-center"/>}
+                        </span>
+                    </div>
+                </components.SingleValue>
+            )
+        }
+
         const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
 
@@ -184,9 +218,11 @@ class Intent extends Component {
                     classNamePrefix="select-box"
                     value={intent}
                     onChange={this.updateCommand}
-                    options={this.props.intents.concat(this.props.built_ins).map(intent => {
-                        return { label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in }
-                    })}
+                    options={intent_options}
+                    components={{ Option: SlotOption, SingleValue: SingleValueOption }}
+                    styles={{
+                        singleValue: (base) => ({ ...base, width: '100%' }),
+                    }}
                 />
             </div>
             {!!slots &&
@@ -206,9 +242,22 @@ class Intent extends Component {
     }
 
     renderTab() {
+        const options = this.props.intents.concat(this.props.built_ins).filter(intent => {
+            if ((intent._platform === 'google' && !(this.props.platform === 'google')) || (intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
+                return null
+            } else {
+                return intent
+            }
+        }).map(intent => {
+            let split = intent.name.split('.')
+            let label = split[split.length - 1]
+
+            return {label: label, value: intent.name, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
+        })
+
         switch (this.state.tab) {
             case 'Select':
-                return this.command()
+                return this.command(options)
             case 'intents':
                 return <React.Fragment>
                     <label>

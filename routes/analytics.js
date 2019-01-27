@@ -50,6 +50,7 @@ exports.getUsersData = (req, res) => {
     })
 }
 
+
 exports.getDAU = (req, res) => {
     checkUserOwnsSkill(req, res, () => {
         let skill_id = hashids.decode(req.params.skill_id)[0]

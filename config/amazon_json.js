@@ -206,7 +206,7 @@ const interactionModel = (req) => {
 
 const manifest = (r, encoded_id, name) => {
 	if(r.invocations && Array.isArray(r.invocations.value)){
-		r.invocations = r.invocations.value.map(item => ('Alexa, ' + item.toLowerCase()))
+		r.invocations = r.invocations.value.map(item => ('Alexa, ' + item))
 	}else{
 		r.invocations = [`Alexa, open ${r.inv_name}`]
 	}

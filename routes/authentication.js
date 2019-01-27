@@ -9,6 +9,7 @@ const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const { getDevice } = require('./../app/src/Helper')
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
 
@@ -25,6 +26,39 @@ function generateUserHash(callback) {
         callback(userHash);
       }
 	});
+}
+
+const trackUser = async (data, analytics_data) => {
+	let country = null
+	let city = null
+	let id = data.id
+
+	if(!id){
+		id = data.creator_id
+	}
+
+	// Get location
+	try{
+		let res = await axios.get('http://ip-api.com/json')
+		country = res.data.countryCode
+		city = res.data.city
+	} catch (err) {
+		console.trace(err)
+	}
+
+	analytics.identify({
+		userId: id,
+		traits: {
+			'email': data.email,
+			'name': data.name,
+			'admin': data.admin,
+			'type': analytics_data.platform,
+			'city': city,
+			'country': country,
+			'os': analytics_data.device.os,
+			'browser': analytics_data.device.browser
+		}
+	})
 }
 
 function generateUserEmailLink(user_id, name, body, mailFunction, prefix, max_retry, res) {
@@ -61,7 +95,7 @@ function generateUserEmailLink(user_id, name, body, mailFunction, prefix, max_re
   })
 }
 
-function createLogin(data, cb) {
+function createLogin(data, analytics_data, cb) {
 	generateUserHash(function(userHash){
         let secret = crypto.randomBytes(256).toString('hex');
 
@@ -73,16 +107,8 @@ function createLogin(data, cb) {
             first_login: data.first_login,
             verified: data.verified,
 				}
-				
-				analytics.identify({
-					userId: data.id,
-					traits: {
-						'email': data.email,
-						'name': data.name,
-						'admin': data.admin,
-						'type': 'VF'
-					}
-				})
+
+				trackUser(data, analytics_data)
 
         // cache the token
         const token = jwt.sign(user, secret);
@@ -220,11 +246,11 @@ const getSession = (req, res) => {
 };
 
 const putSession = (req, res) => {
-	if(!req.body.email || !req.body.password){
+	if(!req.body.user.email || !req.body.user.password){
 		res.status(400).send("Invalid Form");
 	}else{
-	    let email = req.body.email.trim().toLowerCase();
-	    let password = req.body.password;
+	    let email = req.body.user.email.trim().toLowerCase();
+	    let password = req.body.user.password;
 	    pool.query('SELECT * FROM creators WHERE email = $1 LIMIT 1', [email], (err, data) => {
 	        if (err) {
 	            res.status(500).send("Something Went Wrong");
@@ -239,7 +265,7 @@ const putSession = (req, res) => {
 	                		admin: row.admin,
                       first_login: false,
                       verified: row.verified,
-	                	}, (credentials) => {
+	                	}, {platform: 'VF', device: req.body.device}, (credentials) => {
 	                		res.status(200).send({
                         		token: credentials.userHash + credentials.token,
                         		user: credentials.user
@@ -266,10 +292,10 @@ const deleteSession = (req, res) => {
 };
 
 const googleLogin = async(req, res) => {
-    let name = req.body.name;
-    let email = req.body.email;
-    let gid = req.body.googleId;
-    let token = req.body.token;
+    let name = req.body.user.name;
+    let email = req.body.user.email;
+    let gid = req.body.user.googleId;
+    let token = req.body.user.token;
 
     if (!name || !email || !gid || !token) {
       res.status(400).send("Unable to Authenticate Through Google");
@@ -290,17 +316,6 @@ const googleLogin = async(req, res) => {
                   res.status(500).send('Something went wrong with existing email');
                 } else {
 									let row = data.rows[0];
-									
-									analytics.identify({
-										userId: row.creator_id,
-										traits: {
-											admin: row.admin,
-											name: row.name,
-											email: row.email,
-											type: 'Google'
-										}
-									})
-
                   createLogin({
                     id: row.creator_id,
                     email: row.email,
@@ -308,7 +323,7 @@ const googleLogin = async(req, res) => {
                     admin: row.admin,
                     first_login: false,
                     verified: row.verified,
-                  },(credentials) => {
+                  }, {platform: 'Google', device: req.body.device} ,(credentials) => {
 										res.status(200).send({
 											token: credentials.userHash + credentials.token,
                     	user: credentials.user
@@ -334,7 +349,7 @@ const googleLogin = async(req, res) => {
 											admin: 0,
 											first_login: true,
 											verified: insert_result.rows[0].verified,
-										}, async (credentials) => {
+										}, {platform: 'Google', device: req.body.device}, async (credentials) => {
 											res.status(200).send({
 												token: credentials.userHash + credentials.token,
 												user: credentials.user
@@ -351,11 +366,11 @@ const googleLogin = async(req, res) => {
 }
 
 const fbLogin = async(req, res) => {
-    let name = req.body.name;
-    let email = req.body.email;
-    let fid = req.body.fbId;
-    let uri = req.body.uri;
-    let code = req.body.code;
+    let name = req.body.user.name;
+    let email = req.body.user.email;
+    let fid = req.body.user.fbId;
+    let uri = req.body.user.uri;
+    let code = req.body.user.code;
 
     if (!name || !email || !fid || !uri) {
       res.status(400).send("Unable to Authenticate with Facebook");
@@ -375,17 +390,6 @@ const fbLogin = async(req, res) => {
                   res.status(500).send('Something went wrong with existing email');
                 } else {
 									let row = data.rows[0]
-									
-									analytics.identify({
-										userId: row.creator_id,
-										traits: {
-											admin: row.admin,
-											name: row.name,
-											email: row.email,
-											type: 'Facebook'
-										}
-									})
-
 									createLogin({
 										id: row.creator_id,
 										email: row.email,
@@ -393,7 +397,7 @@ const fbLogin = async(req, res) => {
 										admin: row.admin,
 										first_login: false,
 										verified: row.verified,
-									},(credentials) => {
+									},{platform: 'Facebook', device: req.body.device}, (credentials) => {
 										res.status(200).send({
 											token: credentials.userHash + credentials.token,
 											user: credentials.user
@@ -419,7 +423,7 @@ const fbLogin = async(req, res) => {
                         admin: 0,
                         first_login: true,
                         verified: true,
-                      }, async (credentials) => {
+                      }, {platform: 'Facebook', device: req.body.device}, async (credentials) => {
 												res.status(200).send({
 													token: credentials.userHash + credentials.token,
                         	user: credentials.user
@@ -436,9 +440,9 @@ const fbLogin = async(req, res) => {
 }
 
 const putUser = async (req, res) => {
-	let name = req.body.name
-	let email = req.body.email
-	let password = req.body.password
+	let name = req.body.user.name
+	let email = req.body.user.email
+	let password = req.body.user.password
 
 	if (!name || !email || !password) {
 		res.status(400).send("Form not filled")
@@ -470,7 +474,7 @@ const putUser = async (req, res) => {
 											admin: 0,
 											first_login: true,
 											verified: insert_result.rows[0].verified,
-										}, async (credentials) => {
+										}, {platform: 'VF', device: req.body.device}, async (credentials) => {
 											res.status(200).send({
 											token: credentials.userHash + credentials.token,
 											user: credentials.user

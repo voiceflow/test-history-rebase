@@ -35,12 +35,7 @@ class Onboarding extends Component{
 		this.submitOnboardingSurvey = this.submitOnboardingSurvey.bind(this);
 		this.handleSizeSelection = this.handleSizeSelection.bind(this);
 		this.handleIndustrySelection = this.handleIndustrySelection.bind(this);
-	}
-
-    componentWillUnmount(){
-		axios.post(`/analytics/track_onboarding`, {
-			state: this.state
-		})
+		this.trackOnboardingPage = this.trackOnboardingPage.bind(this)
 	}
 
 	handleChange(event){
@@ -70,6 +65,7 @@ class Onboarding extends Component{
 				localStorage.setItem('onboarding', PROG_XP(prog_xp))
 				this.props.history.push('/')
 			})
+			this.trackOnboardingPage('Finished')
     	}
 
     	if(s.usage_type === "WORK"){
@@ -107,10 +103,22 @@ class Onboarding extends Component{
         });
 	}
 
+	componentDidMount() {
+		this.trackOnboardingPage('Initial Page')
+	}
+
+	trackOnboardingPage(page) {
+		axios.post('/analytics/track_onboarding', {page: page})
+		.catch((err) => {
+
+		})
+	}
+
 	render(){
 		var content;
 
 		if(this.state.programming){
+			this.trackOnboardingPage('Programming Page')
 			content = <React.Fragment>
 				<p className="modal-bg-txt text-center mb-2">Do you have programming experience?</p>
 				<p className='modal-txt text-center mb-4'>Voiceflow is great for any level, this helps us get started. </p>
@@ -132,6 +140,7 @@ class Onboarding extends Component{
 		      	</div>
 			</React.Fragment>
 		} else if(this.state.usage_type === "WORK"){
+			this.trackOnboardingPage('Work Page')
 			content =
 			<React.Fragment>
 				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest</p>
@@ -172,6 +181,7 @@ class Onboarding extends Component{
                 </div>
 			</React.Fragment>
 		} else if(this.state.usage_type === "EDUCATION"){
+			this.trackOnboardingPage('Education Page')
 			content =
 			<React.Fragment>
 				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>

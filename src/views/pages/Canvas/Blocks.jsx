@@ -24,6 +24,7 @@ const SECTIONS = [{
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
+        { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},
    ]
 },{
     title: 'functional',

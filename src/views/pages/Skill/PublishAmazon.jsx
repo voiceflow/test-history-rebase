@@ -340,7 +340,7 @@ class Skill extends Component {
                   instructions: s.instructions
               }
           }
-          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
+          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '') + '&platform=alexa'), {
               name: s.name,
               inv_name: s.inv_name,
               summary: s.summary,

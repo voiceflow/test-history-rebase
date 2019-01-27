@@ -232,7 +232,6 @@ class ActionGroup extends PureComponent {
         .then(res => {
             this.setState({ google_stage: 4 });
             let new_version_data = res.data
-            p.addVersion(new_version_data)
             axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
             .then(res => {
                 this.setState({

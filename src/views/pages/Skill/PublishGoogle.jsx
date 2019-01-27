@@ -85,7 +85,6 @@ class GooglePublish extends Component {
         .then(res => {
           this.setState({ stage: 3 });
           let new_version_data = res.data
-          this.props.addVersion(new_version_data)
           axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
             .then(res => {
               this.setState({
@@ -163,8 +162,10 @@ class GooglePublish extends Component {
   save(publish = false, cb) {
     const s = this.state;
 
-    axios.patch(`/skill/${this.state.skill_id}?google=true${publish === true ? '&publish=true' : ''}`, {
-      project_id: s.project_id
+    axios.patch(`/skill/${this.state.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, {
+      google_publish_info: {
+        project_id: s.project_id
+      }
     })
       .then(res => {
         // TODO: Antipattern, fix this when we do redux

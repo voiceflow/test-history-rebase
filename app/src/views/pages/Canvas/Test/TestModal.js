@@ -575,9 +575,9 @@ class TestModal extends React.Component {
                                 <div className="message border rounded p-2 align-self-start debug">
                                   <div className="mb-0 px-1 text-left">
                                     <small>{chat.debug}</small>
-                                    <p>
+                                    <pre className="mb-2">
                                       {chat.text}
-                                    </p>
+                                    </pre>
                                   </div>
                                 </div>
                               </div>

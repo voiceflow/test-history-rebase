@@ -861,30 +861,39 @@ class Canvas extends Component {
             }
 
             var nodes = model.getNodes()
-            const google = this.state.google
             for (let key in nodes) {
                 const node = nodes[key]
                 const type = node.extras.type
                 this.addRemoveListener(node)
-                if (!ALLOWED_GOOGLE_BLOCKS.includes(type)) {
-                    nodes[key].fade = google
+                if (this.state.skill.platform === 'google') {
+                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                } else {
+                    nodes[key].fade = false
                 }
 
                 if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
                     if (!node.extras.google && !node.extras.alexa) {
                         if (node.extras.choices) {
-                            node.extras.alexa = _.cloneDeep(_.pick(node.extras)['choices', 'choices_open'])
+                            node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['choices']))
+
+                            const g_choices =  _.cloneDeep(node.extras.alexa)
+                            _.fill(g_choices, {intent: null, mappings: [], key: key, open: true})
+
                             node.extras.google = {
-                                choices: [],
-                                choices_open: []
+                                choices: g_choices,
                             }
+                            delete node.extras.choices
+                            delete node.extras.choices_open
                         } else if (node.extras.intent) {
-                            node.extras.alexa = _.cloneDeep(_.pick(node.extras)['intent', 'mappings', 'resume'])
+                            node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['intent', 'mappings', 'resume']))
                             node.extras.google = {
                                 intent: null,
                                 mappings: [],
                                 resume: node.extras.resume
                             }
+                            delete node.extras.intent
+                            delete node.extras.mappings
+                            delete node.extras.resume
                         }
                     }
                     if (node.extras.alexa && node.extras.google) {
@@ -1334,7 +1343,7 @@ class Canvas extends Component {
             const key = deleted_node.extras.intent.key
             const new_value = false
             this.setCanFulfill(key, new_value)
-            this.state.google ? this.state.diagram_level_intents.google.delete(key) : this.state.diagram_level_intents.alexa.delete(key)
+            this.state.diagram_level_intents[this.state.skill.platform].delete(key)
         }
         this.deleteNodeManually(id)
     }
@@ -1417,12 +1426,10 @@ class Canvas extends Component {
                 node.addOutPort('else').setMaximumLinks(1);
                 node.extras = {
                     alexa: {
-                        choices: [],
-                        choices_open: []
+                        choices: []
                     },
                     google: {
-                        choices: [],
-                        choices_open: []
+                        choices: []
                     }
                 }
             } else if (type === 'combine') {
@@ -1654,10 +1661,10 @@ class Canvas extends Component {
             engine.stopMove()
             node.extras.type = type
 
-            let google = this.state.google
-
-            if (!ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)) {
-                node.fade = google
+            if (this.state.skill.platform === 'google') {
+                node.fade = !ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)
+            } else {
+                node.fade = false
             }
 
             var points = engine.getRelativeMousePoint(event)
@@ -1818,7 +1825,7 @@ class Canvas extends Component {
                         preview={this.props.preview}
                         onSave={this.onSave}
                         onError={this.props.onError}
-                        google={this.state.google}
+                        platform={this.state.skill.platform}
                     />
                     {/* <TitleBar
                         onTest={this.onTest}

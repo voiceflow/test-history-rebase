@@ -131,7 +131,7 @@ class Menu extends Component {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules} google={this.props.google}/>
+                return <Blocks user_modules={this.props.user_modules} platform={this.props.platform}/>
         }
     }
 

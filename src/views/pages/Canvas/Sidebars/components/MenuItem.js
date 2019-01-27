@@ -6,7 +6,7 @@ class MenuItem extends Component {
     render() {
 
         let className = `MenuItem ${this.props.item.type}`
-        if (this.props.google && !ALLOWED_GOOGLE_BLOCKS.includes(this.props.item.type)) {
+        if (this.props.platform === 'google' && !ALLOWED_GOOGLE_BLOCKS.includes(this.props.item.type)) {
             className = `${className} faded-node`
         }
 

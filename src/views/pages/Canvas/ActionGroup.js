@@ -424,6 +424,7 @@ class ActionGroup extends PureComponent {
             <span className="modal-txt text-center">
                 You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
             </span>
+                <Alert className="w-75 mb-1 mt-3 text-center"><b>Open,</b> open {this.props.skill.inv_name}</Alert>
                 <div className="my-3">
                 <a href={`https://console.actions.google.com/project/${this.state.project_id}/simulator`}
                     className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">

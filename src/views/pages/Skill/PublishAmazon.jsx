@@ -197,7 +197,18 @@ class Skill extends Component {
             });
         })
         .catch(err => {
-            this.handleError(err, 'Certifcation Error');
+            console.dir(err)
+            let error_message = 'Certification Error \n'
+            if(err.response && err.response.data && err.response.data.message){
+                error_message += err.response.data.message
+
+                if (err.response.data.violations) {
+                    for (let i = 0; i < err.response.data.violations.length; i++){
+                        error_message += '\n' + err.response.data.violations[i].message
+                    }
+                }
+            }
+            this.handleError(err, error_message);
         });
     }
 
@@ -352,40 +363,27 @@ class Skill extends Component {
                   instructions: s.instructions
               }
           }
-          let pubObject = {
 
-          }
-          let newSkill = this.props.skill
-          let toUpdate = ['name', 'inv_name', 'summary', 'description', 'keywords', 'invocations', 'small_icon', 'large_icon', 'category', 'locales', 'privacy_policy', 'terms_and_cond'];
-          _.forEach(toUpdate, tu => {
-              let newUpdate = s[tu]
-              if (tu === 'cateogry'){
-                  newUpdate = category
-              } else if (tu === 'locales'){
-                  newUpdate = JSON.stringify(s.locales)
-              } else if (tu === 'privacy_policy'){
-                    newUpdate = !_.isEmpty(s.privacy_policy) ?
-                      s.privacy_policy :
-                      window.location.protocol + '//' + window.location.host + '/creator/privacy_policy'
-              }
-            newSkill[tu] = newUpdate
-          })
-          this.props.updateSkill(newSkill)
-          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {
-              name: s.name,
-              inv_name: s.inv_name,
-              summary: s.summary,
-              description: s.description,
-              keywords: s.keywords,
-              invocations: s.invocations,
-              small_icon: s.small_icon,
-              large_icon: s.large_icon,
-              category: category,
-              locales: JSON.stringify(s.locales),
-              privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
-              terms_and_cond: s.terms_and_cond,
-              ...store
-          })
+            let properties = {
+                name: s.name,
+                inv_name: s.inv_name,
+                summary: s.summary,
+                description: s.description,
+                keywords: s.keywords,
+                invocations: s.invocations,
+                small_icon: s.small_icon,
+                large_icon: s.large_icon,
+                category: category,
+                locales: s.locales,
+                privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
+                terms_and_cond: s.terms_and_cond,
+                ...store
+            }
+            this.props.updateSkill({...this.props.skill, ...properties})
+
+            properties.locales = JSON.stringify(properties.locales)
+
+          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), properties)
           .then(res => {
               this.setState({
                   saved: true

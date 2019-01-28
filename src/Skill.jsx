@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import update from 'immutability-helper'
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'

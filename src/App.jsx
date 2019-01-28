@@ -167,6 +167,9 @@ class App extends Component {
 
   socketFail(){
     window.CreatorSocket.status = 'FAIL'
+
+    console.log("failed")
+    if (/development/.test(process.env.NODE_ENV)) this.setState({loading:false})
     // if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
     //   window.error = true
     //   window.CreatorSocket.status = 'FAIL'

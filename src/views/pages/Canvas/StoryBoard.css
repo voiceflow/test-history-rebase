@@ -2550,17 +2550,3 @@ button.close:hover{
     color: #fff;
     border-radius: 10px;
 }
-
-.premium-block{
-    position: absolute;
-    width: 90%;
-    height: 250px;
-    z-index: 5;
-    font-weight: bold;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-}

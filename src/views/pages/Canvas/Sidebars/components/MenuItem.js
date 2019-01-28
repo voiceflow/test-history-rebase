@@ -7,7 +7,7 @@ class MenuItem extends Component {
             <div className="wrap">
                 <div
                     className={'MenuItem ' + this.props.item.type}
-                    draggable={this.props.draggable}
+                    draggable={true}
                     onDragStart={event => {
                         event.dataTransfer.setData('node', this.props.item.type);
                         if(this.props.data){

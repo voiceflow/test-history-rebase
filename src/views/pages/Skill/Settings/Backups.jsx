@@ -55,7 +55,7 @@ class BackupSettings extends Component{
 
     render(){
         if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
-            return <Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert>
+            return <div className="settings-content clearfix"><Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
         }
 
         return <React.Fragment>
@@ -71,40 +71,42 @@ class BackupSettings extends Component{
             </Modal>
 
             <React.Fragment>
-                <FormGroup>
-                    <Label>Backups</Label>
-                    <Alert>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</Alert>
-                    <div id="backup">
-                        {window.user_detail.admin === 0 &&
-                        <div id="backup-overlay" className="d-flex justify-content-center">
-                            <div className="text-center">
-                                <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan To Restore</Link>
-                            </div>
-                        </div>}
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th>Saved</th>
-                                    <th>Preview</th>
-                                    <th>Restore</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.versions.map((version, i) => {
-                                    return <tr key={i}>
-                                        <td>{moment(version.created).fromNow()}</td>
-                                        <td>
-                                            <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
-                                        </td>
-                                        <td>
-                                            <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</Button>
-                                        </td>
+                <div className="settings-content clearfix">
+                    <FormGroup>
+                        <Label>Backups</Label>
+                        <Alert>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</Alert>
+                        <div id="backup">
+                            {window.user_detail.admin === 0 &&
+                            <div id="backup-overlay" className="d-flex justify-content-center">
+                                <div className="text-center">
+                                    <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan To Restore</Link>
+                                </div>
+                            </div>}
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>Saved</th>
+                                        <th>Preview</th>
+                                        <th>Restore</th>
                                     </tr>
-                                })}
-                            </tbody>
-                        </Table>
-                    </div>
-                </FormGroup>
+                                </thead>
+                                <tbody>
+                                    {this.state.versions.map((version, i) => {
+                                        return <tr key={i}>
+                                            <td>{moment(version.created).fromNow()}</td>
+                                            <td>
+                                                <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
+                                            </td>
+                                            <td>
+                                                <Button className='purple-btn' onClick={() => this.confirmRestore(version.skill_id, version.canonical_skill_id, version)}>Restore</Button>
+                                            </td>
+                                        </tr>
+                                    })}
+                                </tbody>
+                            </Table>
+                        </div>
+                    </FormGroup>
+                </div>
             </React.Fragment>
         </React.Fragment>
     }

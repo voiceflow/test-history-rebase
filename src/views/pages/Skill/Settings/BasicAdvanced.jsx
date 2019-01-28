@@ -27,6 +27,8 @@ class BasicAdvancedSettings extends Component{
         this.saveSettings = this.saveSettings.bind(this)
         this.handleUpdate = this.handleUpdate.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
+        this.isDifferent = this.isDifferent.bind(this)
+        this.getSaveButton = this.getSaveButton.bind(this)
         this.toggleRepeat = this.toggleRepeat.bind(this)
     }
 
@@ -160,152 +162,32 @@ class BasicAdvancedSettings extends Component{
         })
     }
 
-    renderSettings(){
-        switch(this.props.page){
-            case 'advanced':
-                // ADVANCED SETTINGS
-                return <React.Fragment>
-                    <FormGroup>
-                        <Label>Error Prompt</Label>
-                        <div className="helper-text mb-2">What to say if the skill encounters an unexpected error</div>
-                        <Prompt
-                            placeholder="Sorry, this skill has encountered an error"
-                            voice={this.state.skill.error_prompt.voice}
-                            content={this.state.skill.error_prompt.content}
-                            updatePrompt={(prompt) => this.setState({
-                                skill: update(this.state.skill, {
-                                    error_prompt: { $merge: prompt }
-                                })
-                            })}
-                        />
-                        <hr/>
-                        {window.user_detail.admin >= 60 && <div className="mt-4">
-                            <Label>Skill Events (events: {'{object}'})</Label>
-                            <AceEditor
-                                name="datasource_editor"
-                                className="datasource_editor"
-                                mode="json"
-                                onChange={(value) => {
-                                    let skill = this.state.skill
-                                    skill.alexa_events = value
-                                    this.setState({
-                                        skill: skill
-                                    })
-                                }}
-                                fontSize={14}
-                                showPrintMargin={false}
-                                showGutter={true}
-                                highlightActiveLine={true}
-                                value={this.state.skill.alexa_events}
-                                editorProps={{$blockScrolling: true}}
-                                setOptions={{
-                                    enableBasicAutocompletion: true,
-                                    enableLiveAutocompletion: false,
-                                    enableSnippets: false,
-                                    showLineNumbers: true,
-                                    tabSize: 2,
-                                    useWorker: false
-                                }}
-                            />
-                        </div>}
-                        <hr />
-                        <Label>Delete Project</Label>
-                        <Alert color="danger between">
-                            <span>WARNING: This action can not be undone</span><br />
-                            <Button color="danger" onClick={this.confirmDelete}>Delete Skill</Button>
-                        </Alert>
-                    </FormGroup>
-                </React.Fragment>
-            default:
-                // BASIC SETTINGS
-                return <React.Fragment>
-                    <FormGroup>
-                        <Label>Project Name</Label>
-                        <Input className="form-bg" name="name" value={this.state.skill.name} onChange={this.handleUpdate}/>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Label>Repeat</Label>
-                        <div className="helper-text">Users will be able to say repeat at any choice/interaction and the dialog will repeat</div>
-                        <Switch
-                            checked={this.state.skill.repeat > 0}
-                            onChange={()=>this.toggleRepeat(0,100)}
-                            color="primary"
-                        />
-                        <b>{this.state.skill.repeat > 0 ? 'ON' : 'OFF'}</b>
-                        {this.state.skill.repeat>0 && <div>
-                            <Switch
-                                checked={this.state.skill.repeat > 1}
-                                onChange={()=>this.toggleRepeat(1,100)}
-                                color="primary"
-                            />
-                            <b>Complete Repeat</b>
-                            <div className="helper-text">{
-                                this.state.skill.repeat > 1 ?
-                                    'When the user asks to repeat, everything after the last choice/interaction block will repeat' :
-                                    'When the user asks to repeat, only the last speak block before the choice/interaction will be repeated'
-                            }</div>
-                            <hr/>
-                        </div>}
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Label className="mb-0">Restart Every Session</Label>
-                        <div className="helper-text">{
-                            this.state.skill.restart ?
-                                'The project will restart from the beginning every time the user starts a session' :
-                                'The project will resume from the last block the user was on before quitting'
-                        }</div>
-                        <div className="mb-2">
-                            <Switch
-                                name="restart"
-                                checked={this.state.skill.restart}
-                                onChange={this.toggleSwitch}
-                                color="primary"
-                            />
-                            <b>{this.state.skill.restart ? 'ON' : 'OFF'}</b>
-                        </div>
-                        {!this.state.skill.restart && <React.Fragment>
-                            <Label>Resume Prompt
-                                </Label>
-                            <div className="helper-text mb-2">Give the user a YES/NO prompt whether to resume</div>
-                            <div className="mb-2">
-                                <Switch
-                                    name="restart"
-                                    checked={!this.state.hide_resume}
-                                    onChange={() => this.setState({ hide_resume: !this.state.hide_resume })}
-                                    color="primary"
-                                />
-                                <b>{this.state.hide_resume ? 'OFF' : 'ON'}</b>
-                            </div>
-                            {!this.state.hide_resume && <Prompt
-                                placeholder="Would you like to resume your current story, yes or no?"
-                                voice={this.state.skill.resume_prompt.voice}
-                                content={this.state.skill.resume_prompt.content}
-                                updatePrompt={(prompt) => this.setState({
-                                    skill: update(this.state.skill, {
-                                        resume_prompt: { $merge: prompt }
-                                    })
-                                })}
-                            />}
-                        </React.Fragment>
-                        }
-                        {this.props.user.admin >= 30 &&
-                            <FormGroup className="mt-4">
-                                <Label>Generate PDF</Label>
-                                <Button color='clear' onClick={this.requestPDF}>
-                                    Request for PDF
-                                    &nbsp;
-                                    <i className="far fa-file-pdf" />
-                                </Button>
-                            </FormGroup>
-                        }
-                    </FormGroup>
-                </React.Fragment>
+    isDifferent(keys){
+        let different = false;
+        if (this.state.skill && this.state.baseline) {
+          _.forEach(keys, key => {
+            if (this.state.skill[key] !== this.state.baseline[key]) {
+              different = true;
+            }
+          })
         }
+        return different;
     }
 
-    render(){
+    getSaveButton(keys=_.keys(this.state.skill)){
+        return <React.Fragment>
+            {(this.props.page !== "backups" && this.isDifferent(keys)) && <div className="super-center">
+                <hr />
+                <button className="purple-btn" style={{ minWidth: 150 }} onClick={this.saveSettings}>
+                    {this.state.saving ? <span className="loader" /> : <React.Fragment>
+                        Save Settings
+                                    </React.Fragment>}
+                </button>
+            </div>}
+        </React.Fragment>
+    }
+
+    renderSettings(){
         let different
         // check to make sure there are actual differences before making a server call
         if (this.state.skill && this.state.baseline) {
@@ -315,17 +197,166 @@ class BasicAdvancedSettings extends Component{
                 }
             }
         }
-        
+        switch(this.props.page){
+            case 'advanced':
+                // ADVANCED SETTINGS
+                return <React.Fragment>
+                    <div className="settings-content clearfix mt-4">
+                      <FormGroup>
+                        <Label>Error Prompt</Label>
+                        <div className="helper-text mb-2">
+                          What to say if the skill encounters an
+                          unexpected error
+                        </div>
+                        <Prompt placeholder="Sorry, this skill has encountered an error" voice={this.state.skill.error_prompt.voice} content={this.state.skill.error_prompt.content} updatePrompt={prompt => this.setState(
+                              {
+                                skill: update(
+                                  this.state.skill,
+                                  {
+                                    error_prompt: {
+                                      $merge: prompt
+                                    }
+                                  }
+                                )
+                              }
+                            )} />
+                      </FormGroup>
+                      {this.getSaveButton(["error_prompt"])}
+                    </div>
+                    <div className="settings-content clearfix">
+                      <FormGroup>
+                        {window.user_detail.admin >= 60 && <div className="mt-4">
+                            <Label>
+                              Skill Events (events: {"{object}"}
+                              )
+                            </Label>
+                            <AceEditor name="datasource_editor" className="datasource_editor" mode="json" onChange={value => {
+                                let skill = this.state.skill;
+                                skill.alexa_events = value;
+                                this.setState({ skill: skill });
+                              }} fontSize={14} showPrintMargin={false} showGutter={true} highlightActiveLine={true} value={this.state.skill.alexa_events} editorProps={{ $blockScrolling: true }} setOptions={{ enableBasicAutocompletion: true, enableLiveAutocompletion: false, enableSnippets: false, showLineNumbers: true, tabSize: 2, useWorker: false }} />
+                          </div>}
+                      </FormGroup>
+                      {this.getSaveButton(["alexa_events"])}
+                    </div>
+                    <div className="settings-content clearfix">
+                      <FormGroup>
+                        <Label>Delete Project</Label>
+                        <Alert color="danger between">
+                          <span>
+                            This action can not be
+                            undone
+                          </span>
+                          <br />
+                          <Button color="danger" onClick={this.confirmDelete}>
+                            Delete Skill
+                          </Button>
+                        </Alert>
+                        <hr />
+                      </FormGroup>
+                    </div>
+                  </React.Fragment>;
+            default:
+                // BASIC SETTINGS
+                return <React.Fragment>
+                    <div className="settings-content clearfix mt-4">
+                      <FormGroup>
+                        <Label>Project Name</Label>
+                        <Input className="form-bg" name="name" value={this.state.skill.name} onChange={this.handleUpdate} />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Label>Repeat</Label>
+                        <div className="helper-text">
+                          Users will be able to say repeat at
+                          any choice/interaction and the dialog
+                          will repeat
+                        </div>
+                        <Switch checked={this.state.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} color="primary" />
+                        <b>
+                          {this.state.skill.repeat > 0
+                            ? "ON"
+                            : "OFF"}
+                        </b>
+                        {this.state.skill.repeat > 0 && <div>
+                            <Switch checked={this.state.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} color="primary" />
+                            <b>Complete Repeat</b>
+                            <div className="helper-text">
+                              {this.state.skill.repeat > 1
+                                ? "When the user asks to repeat, everything after the last choice/interaction block will repeat"
+                                : "When the user asks to repeat, only the last speak block before the choice/interaction will be repeated"}
+                            </div>
+                          </div>}
+                      </FormGroup>
+                      {this.getSaveButton(['name', 'repeat'])}
+                    </div>
+                    <div className="settings-content clearfix">
+                      <FormGroup>
+                        <Label className="mb-0">
+                          Restart Every Session
+                        </Label>
+                        <div className="helper-text">
+                          {this.state.skill.restart
+                            ? "The project will restart from the beginning every time the user starts a session"
+                            : "The project will resume from the last block the user was on before quitting"}
+                        </div>
+                        <div className="mb-2">
+                          <Switch name="restart" checked={this.state.skill.restart} onChange={this.toggleSwitch} color="primary" />
+                          <b>
+                            {this.state.skill.restart
+                              ? "ON"
+                              : "OFF"}
+                          </b>
+                        </div>
+                        {!this.state.skill.restart && <React.Fragment>
+                            <Label>Resume Prompt</Label>
+                            <div className="helper-text mb-2">
+                              Give the user a YES/NO prompt
+                              whether to resume
+                            </div>
+                            <div className="mb-2">
+                              <Switch name="restart" checked={!this.state.hide_resume} onChange={() => this.setState(
+                                    {
+                                      hide_resume: !this.state
+                                        .hide_resume
+                                    }
+                                  )} color="primary" />
+                              <b>
+                                {this.state.hide_resume
+                                  ? "OFF"
+                                  : "ON"}
+                              </b>
+                            </div>
+                            {!this.state.hide_resume && <Prompt placeholder="Would you like to resume your current story, yes or no?" voice={this.state.skill.resume_prompt.voice} content={this.state.skill.resume_prompt.content} updatePrompt={prompt => this.setState(
+                                    {
+                                      skill: update(
+                                        this.state.skill,
+                                        {
+                                          resume_prompt: {
+                                            $merge: prompt
+                                          }
+                                        }
+                                      )
+                                    }
+                                  )} />}
+                          </React.Fragment>}
+                        {this.props.user.admin >= 30 && <FormGroup className="mt-4">
+                            <Label>Generate PDF</Label>
+                            <Button color="clear" onClick={this.requestPDF}>
+                              Request for PDF &nbsp;
+                              <i className="far fa-file-pdf" />
+                            </Button>
+                          </FormGroup>}
+                      </FormGroup>
+                        {this.getSaveButton(['restart', 'hide_resume', 'resume_prompt'])}
+                    </div>
+                  </React.Fragment>;
+        }
+    }
+
+    render(){
         return <React.Fragment>
             {this.renderSettings()}
-            <hr/>
-            <div className="super-center">
-                {this.props.page !== 'backups' &&
-                    <button className='purple-btn' style={{minWidth: 150}} onClick={different ? this.saveSettings : _.noop()}>
-                        {this.state.saving ? <span className="loader"/> : <React.Fragment>{different && '*'} Save Settings</React.Fragment>}
-                    </button>
-                }
-            </div>
         </React.Fragment>
     }
 }

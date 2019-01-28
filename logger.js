@@ -42,7 +42,6 @@ const try_transfer = (old_file_path, tries) => {
 }
 
 access_log_stream.on('rotated', (file_name) => {
-  console.log('rotated', file_name)
   let transfer_status = try_transfer(file_name, 0)
   if (transfer_status === 0){
     fs.unlink(file_name, (err) => {

@@ -965,12 +965,12 @@ exports.certifySkill = (req, res) => {
                     Authorization: token
                   }
                 })
-                .then(response => {
+                .then(() => {
                   pool.query(`
-                                UPDATE skills
-                                SET
-                                review = TRUE
-                                WHERE amzn_id = $1`,
+                    UPDATE skills
+                    SET
+                    review = TRUE
+                    WHERE amzn_id = $1`,
                     [req.params.amzn_id],
                     (err) => {
                       if (err) {
@@ -992,7 +992,7 @@ exports.certifySkill = (req, res) => {
                 })
                 .catch(err => {
                   console.trace(err);
-                  res.sendStatus(500);
+                  res.status(500).send(err && err.response && err.response.data);
                 });
             }
           })

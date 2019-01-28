@@ -197,7 +197,18 @@ class Skill extends Component {
             });
         })
         .catch(err => {
-            this.handleError(err, 'Certifcation Error');
+            console.dir(err)
+            let error_message = 'Certification Error \n'
+            if(err.response && err.response.data && err.response.data.message){
+                error_message += err.response.data.message
+
+                if (err.response.data.violations) {
+                    for (let i = 0; i < err.response.data.violations.length; i++){
+                        error_message += '\n' + err.response.data.violations[i].message
+                    }
+                }
+            }
+            this.handleError(err, error_message);
         });
     }
 
@@ -351,9 +362,6 @@ class Skill extends Component {
                   export: s.export,
                   instructions: s.instructions
               }
-          }
-          let pubObject = {
-
           }
           let newSkill = this.props.skill
           let toUpdate = ['name', 'inv_name', 'summary', 'description', 'keywords', 'invocations', 'small_icon', 'large_icon', 'category', 'locales', 'privacy_policy', 'terms_and_cond'];

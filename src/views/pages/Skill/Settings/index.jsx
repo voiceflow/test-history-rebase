@@ -54,10 +54,7 @@ class Settings extends Component {
                     })}
                 </ButtonGroup>
             </div>
-
-            <div className="settings-content clearfix">
-                {this.modalContent()}
-            </div>
+            {this.modalContent()}
         </div>
     }
 }

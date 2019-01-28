@@ -176,27 +176,19 @@ class BasicAdvancedSettings extends Component{
 
     getSaveButton(keys=_.keys(this.state.skill)){
         return <React.Fragment>
-            {(this.props.page !== "backups" && this.isDifferent(keys)) && <div className="super-center">
+            {(this.props.page !== "backups" && this.isDifferent(keys)) && <div className="text-center">
                 <hr />
                 <button className="purple-btn" style={{ minWidth: 150 }} onClick={this.saveSettings}>
                     {this.state.saving ? <span className="loader" /> : <React.Fragment>
                         Save Settings
-                                    </React.Fragment>}
+                    </React.Fragment>}
                 </button>
             </div>}
         </React.Fragment>
     }
 
     renderSettings(){
-        let different
         // check to make sure there are actual differences before making a server call
-        if (this.state.skill && this.state.baseline) {
-            for (var key in this.state.skill) {
-                if (this.state.skill[key] !== this.state.baseline[key]) {
-                    different = true
-                }
-            }
-        }
         switch(this.props.page){
             case 'advanced':
                 // ADVANCED SETTINGS
@@ -252,7 +244,6 @@ class BasicAdvancedSettings extends Component{
                             Delete Skill
                           </Button>
                         </Alert>
-                        <hr />
                       </FormGroup>
                     </div>
                   </React.Fragment>;

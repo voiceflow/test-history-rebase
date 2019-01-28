@@ -157,6 +157,7 @@ const logAxiosError = (err, context='', data=null) => {
       console.log(context, err)
     }
     if(data) console.log('ERROR DATA', data)
+    console.log('---------------------------')
 }
 
 module.exports = {
@@ -168,6 +169,7 @@ module.exports = {
     jwt: jwt,
     config: config,
     s3: s3,
+    s3Stream: s3Stream,
     uploadResize: uploadResize,
     hashids: hashids,
     validateEmail: validateEmail,

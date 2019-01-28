@@ -123,7 +123,7 @@ textarea::placeholder {
   }
 }
 
-.stage_modal .modal-info>div {
+.stage_modal .modal-info .loading-modal {
   display: flex;
   align-items: center;
   justify-content: center;

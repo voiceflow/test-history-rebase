@@ -8,15 +8,48 @@ import {Tooltip} from 'react-tippy'
 import Switch from '@material-ui/core/Switch'
 
 import AuthenticationService from './../../../services/Authentication'
+import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
 const loading = (message) => {
-    return <div className="super-center mb-4">
+    return <div className="super-center mb-4 loading-modal">
         <div className='text-center'>
             <h1><span className="loader"/></h1>
             <p className="loading">{message}</p>
         </div>
     </div>
+}
+
+const ENDING_STAGES = [2,4,9]
+const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable']
+const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App']
+
+const invNameError = (name, locales) => {
+    if(!name.trim()){
+        return 'Invocation name required for Alexa'
+    }
+    let characters = InvRegex.validLatinChars
+    let inv_name_error = `[${locales.filter(l => l !== 'jp-JP').join(",")}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`
+    if(locales.length === 1 && locales[0] === 'jp-JP'){
+        characters = InvRegex.validSpokenCharacters
+        inv_name_error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces'
+    }else if(locales.some(l => l.includes('en'))){
+        // If an English Skill No Accents Allowed
+        inv_name_error = `[${locales.filter(l => l.includes('en')).join(",")}] Invocation name may only contain alphabetic characters, apostrophes, periods and spaces`
+        characters = InvRegex.validCharacters
+    }
+
+    let validRegex = `[^${characters}.' ]+`
+    let match = name.match(validRegex)
+    if(match){
+        return inv_name_error + ` - Invalid Characters: "${match.join()}"`
+    }else if(WAKE_WORDS.some(l => name.toLowerCase().includes(l.toLowerCase()))){
+        return 'Invocation name can not contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
+    }else if(LAUNCH_PHRASES.some(l => name.toLowerCase().includes(l.toLowerCase()))){
+        return 'Invocation name can not contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
+    }else{
+        return null
+    }
 }
 
 class ActionGroup extends PureComponent {
@@ -37,7 +70,10 @@ class ActionGroup extends PureComponent {
             upload_error: 'No Error',
             skill: null,
             settings_tab_state: 'basic',
-            displayingConfirmDelete: false
+            displayingConfirmDelete: false,
+            inv_name: null,
+            inv_name_error: '',
+            flash: false
         }
 
         this.toggle = this.toggle.bind(this)
@@ -49,6 +85,7 @@ class ActionGroup extends PureComponent {
         this.openUpdate = this.openUpdate.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
         this.reset = this.reset.bind(this)
+        this.shouldReset = this.shouldReset.bind(this)
         this.token = null
     }
 
@@ -70,6 +107,12 @@ class ActionGroup extends PureComponent {
             this.token = token;
             this.reset();
         });
+    }
+
+    shouldReset() {
+        if(ENDING_STAGES.includes(this.state.stage)){
+            this.reset()
+        }
     }
 
     reset() {
@@ -149,8 +192,27 @@ class ActionGroup extends PureComponent {
         iterate(0)
     }
 
-    updateAlexa() {
-        this.setState({stage: 1});
+    async updateAlexa() {
+        let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
+        let error = invNameError(inv_name, this.props.skill.locales)
+        if(error){
+            this.setState({inv_name: inv_name, inv_name_error: error, stage: 14}, ()=>{
+                this.setState({flash: true}, ()=>setTimeout(()=>this.setState({flash: false}), 1500))
+            })
+            return
+        }
+        this.setState({stage: 1})
+        if(this.state.stage === 14){
+            this.setState({stage: 1})
+            try{
+                await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, {inv_name: this.state.inv_name})
+                let skill = this.props.skill
+                skill.inv_name = this.state.inv_name
+                this.props.updateSkill(skill)
+            }catch(err){
+                this.setState({stage: 6})
+            }
+        }
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
         .then(res => {
             let new_version_data = res.data
@@ -198,7 +260,7 @@ class ActionGroup extends PureComponent {
     }
 
     toggleUpdate() {
-        if(![1,7,11].includes(this.state.stage)){
+        if(![1,7,11,12,13].includes(this.state.stage)){
             this.setState({
                 updateModal: false
             })
@@ -336,13 +398,30 @@ class ActionGroup extends PureComponent {
                 return loading('Building Interaction Model')
             case 13:
                 return loading('Enabling Skill')
+            case 14:
+                return <div className="w-100">
+                    <div className="space-between text-muted">
+                        <label>Invocation Name</label>
+                        <Tooltip
+                            html={(<React.Fragment>Alexa listens for the Invocation Name<br/> to launch your skill<br/> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
+                            position="bottom"
+                        >
+                            <i className="fal fa-question-circle"/>
+                        </Tooltip>
+                    </div>
+                    <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e)=>this.setState({inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales)})}/>
+                    <small className={"text-blue" + (this.state.flash ? ' blink' : '')}>{this.state.inv_name_error}</small>
+                    <div className="super-center mt-4-5 mb-3">
+                        <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
+                    </div>
+                </div>
             default:
                 return <div>
                     <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
                     <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
                     <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                     <div className="super-center mb-3 mt-3">
-                        <button className="purple-btn" onClick={this.updateAlexa}>Confirm Upload</button>
+                        <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
                     </div>
                 </div>
         }
@@ -432,10 +511,10 @@ class ActionGroup extends PureComponent {
                     <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
                         Upload to Alexa <div className="launch">
                             <div className="first">
-                            <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
+                                <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
                             </div>
                             <div className="second">
-                            <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
+                                <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
                             </div>
                         </div>
                     </Button>

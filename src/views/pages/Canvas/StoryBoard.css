@@ -7,7 +7,7 @@
 #spotlight {
     position: fixed;
     z-index: 1050;
-    top: 200px;
+    top: 150px;
     width: 36%;
     left: 50%;
     margin-left: -18%;
@@ -2455,6 +2455,7 @@ button.close:hover{
     transform: translateX(0px) translateY(0px);
     border-radius: 30px !important;
     border: none;
+    cursor: pointer;
 }
 
 .grey-icon:hover{
@@ -2467,16 +2468,17 @@ button.close:hover{
     background-color: #fff !important;
     color: #8da2b5 !important;
     border-radius: 30px !important;
-    width: 35px;
-    height: 35px;
-    padding-top: 4px;
+    width: 28px;
+    height: 28px;
     border: none !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     cursor: pointer !important;
     transition: all .25s ease-in-out;
+    font-size: 13px;
+    padding-top: 2px;
 }
 .btn-group .white-circ {
-    width: 50px;
+    width: 40px;
 }
 .round-left {
     border-radius: 30px 0px 0px 30px !important;

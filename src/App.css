@@ -159,8 +159,17 @@ body {
 button:focus{
     outline: none;
 }
+.blink {
+    animation: blinker 0.5s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 .text-blue {
-    color: #93CBFF;
+    color: #42A5FF;
 }
 .text-secondary{
     color: #8da2b5 !important;
@@ -1503,6 +1512,10 @@ kbd {
 }
 .DayPickerInput-Overlay {
     z-index: 1000 !important;
+}
+
+.mt-4-5{
+    margin-top: 2rem !important;
 }
 
 .smartphone {

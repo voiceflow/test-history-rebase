@@ -223,6 +223,13 @@ class Canvas extends Component {
         })
     }
 
+    static getDerivedStateFromProps(props, state){
+        if (props.skill !== state.skill){
+            return {
+                skill: props.skill
+            }
+        }
+    }
     componentWillUnmount() {
         Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){

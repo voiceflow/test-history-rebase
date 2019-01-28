@@ -19,6 +19,7 @@ const {upload, uploadResize, redisClient, jwt, config, verify} = require('./serv
 const { getEnvVariable } = require('./util')
 const policy = require('./policy');
 const AWS = require('aws-sdk')
+const { request_logger } = require('./logger.js')
 
 AWS.config = new AWS.Config({
     accessKeyId: getEnvVariable('AWS_ACCESS_KEY_ID'),
@@ -50,6 +51,7 @@ const Track = require('./routes/track.js')
 
 app.use(cors())
 app.use(helmet())
+app.use(request_logger)
 
 const rawBodyPaths = ['/customer/webhook']
 const getRawBody = () => {

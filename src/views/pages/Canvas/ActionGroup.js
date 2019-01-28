@@ -562,12 +562,12 @@ class ActionGroup extends PureComponent {
                         title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
                         position="bottom"
                     >
-                        <MUIButton variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
+                        <Button variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
                             <React.Fragment>
                                 {(this.props.platform === 'google') && <i className="fab fa-amazon"/>}
                                 {(this.props.platform === 'alexa') && <i className="fab fa-google"/>}
                             </React.Fragment>
-                        </MUIButton>
+                        </Button>
                     </Tooltip>
                     <Tooltip
                         className="top-nav-icon"

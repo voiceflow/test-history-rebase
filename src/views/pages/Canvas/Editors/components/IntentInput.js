@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Collapse } from 'reactstrap'
 import { MentionsInput, Mention } from 'react-mentions'
 import { Tooltip } from 'react-tippy'
-import { sampleUtteranceRegex } from './../../../../../services/Regex'
+import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../../util'
 
 const _ = require('lodash')

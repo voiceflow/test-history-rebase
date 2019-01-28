@@ -39,7 +39,6 @@ const tabs = [
 ]
 
 class Business extends Component {
-
     render() {
         let page
         if(window.user_detail.admin > 0){
@@ -60,7 +59,7 @@ class Business extends Component {
                     page = <EditProduct {...this.props}/>
                     break
                 default:
-                    page = <Home user={this.props.user}/>
+                    page = <Home {...this.props}/>
             }
         }else{
             page = <div className="w-100 h-100">

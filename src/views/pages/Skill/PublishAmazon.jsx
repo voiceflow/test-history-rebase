@@ -202,7 +202,18 @@ class Skill extends Component {
             });
         })
         .catch(err => {
-            this.handleError(err, 'Certifcation Error');
+            console.dir(err)
+            let error_message = 'Certification Error \n'
+            if(err.response && err.response.data && err.response.data.message){
+                error_message += err.response.data.message
+
+                if (err.response.data.violations) {
+                    for (let i = 0; i < err.response.data.violations.length; i++){
+                        error_message += '\n' + err.response.data.violations[i].message
+                    }
+                }
+            }
+            this.handleError(err, error_message);
         });
     }
 
@@ -210,24 +221,44 @@ class Skill extends Component {
         this.privacyTop.current.scrollIntoView(true);
     }
 
-    onPublish(){
-        this.save(true, ()=>{
+    onPublish() {
+        this.save(true, () => {
 
             let s = this.state;
             let category = (s.category && s.category.value ? s.category.value : null);
+            // let fields = ['name', 'inv_name', 'summary', 'description', 'invocations', 'small_icon', 'large_icon', 'category']
+            let fields = {
+                name: 'Name',
+                inv_name: 'Invocation Name',
+                summary: 'Summary',
+                description: 'Description',
+                invocations: 'Invocations',
+                small_icon: 'Small Icon',
+                large_icon: 'Large Icon',
+                category: 'Category'
+            }
+            let invalid_fields = Object.keys(fields).filter((field) => {
+                if (field === 'invocations') {
+                    return !s.invocations[0]
+                } else if (field === 'category') {
+                    return !category
+                } else {
+                    return !s[field]
+                }
+            })
+            invalid_fields = _.values(invalid_fields)
 
-            if(!(s.name && s.summary && s.description && s.invocations[0] &&
-                s.small_icon && s.large_icon && category)){
+            if (invalid_fields.length > 0) {
                 this.setState({
                     stage_error: {
                         stage: 2,
-                        message: 'Please fill all required fields before publishing'
+                        message: `Please fill all required fields before publishing. Missing fields: ${invalid_fields.join(', ')}`
                     }
                 });
                 this.scrollToTop();
                 return;
             }
-            if(!s.export){
+            if (!s.export) {
                 this.setState({
                     stage_error: {
                         stage: 2,
@@ -237,7 +268,7 @@ class Skill extends Component {
                 this.scrollToTop();
                 return;
             }
-            if(!s.instructions){
+            if (!s.instructions) {
                 this.setState({
                     stage_error: {
                         stage: 2,
@@ -247,35 +278,34 @@ class Skill extends Component {
                 this.scrollToTop();
                 return;
             }
+        })
+        this.setState({ stage: 3 });
 
-            this.setState({stage: 3});
-
-            axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
+        axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
             .then(res => {
-                this.setState({stage: 4});
+                this.setState({ stage: 4 });
                 let new_version_data = res.data
                 axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
-                .then(res => {
-                    this.setState({
-                        stage: 8,
-                        amzn_id: res.data
-                    });
-                })
-                .catch(err => {
-                    if(err.status === 403 || err.response.status === 403){
-                        // No Vendor ID/Amazon Developer Account
+                    .then(res => {
                         this.setState({
-                            stage: 5
+                            stage: 8,
+                            amzn_id: res.data
                         });
-                    }else{
-                        this.handleError(err, 'Publishing Error');
-                    }
-                })
+                    })
+                    .catch(err => {
+                        if (err.status === 403 || err.response.status === 403) {
+                            // No Vendor ID/Amazon Developer Account	
+                            this.setState({
+                                stage: 5
+                            });
+                        } else {
+                            this.handleError(err, 'Publishing Error');
+                        }
+                    })
             })
             .catch(err => {
                 this.handleError(err, 'Rendering Error');
             })
-        });
     }
 
     checkVendor(){
@@ -340,21 +370,26 @@ class Skill extends Component {
                   instructions: s.instructions
               }
           }
-          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '') + '&platform=alexa'), {
-              name: s.name,
-              inv_name: s.inv_name,
-              summary: s.summary,
-              description: s.description,
-              keywords: s.keywords,
-              invocations: s.invocations,
-              small_icon: s.small_icon,
-              large_icon: s.large_icon,
-              category: category,
-              locales: JSON.stringify(s.locales),
-              privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
-              terms_and_cond: s.terms_and_cond,
-              ...store
-          })
+            let properties = {
+                name: s.name,
+                inv_name: s.inv_name,
+                summary: s.summary,
+                description: s.description,
+                keywords: s.keywords,
+                invocations: s.invocations,
+                small_icon: s.small_icon,
+                large_icon: s.large_icon,
+                category: category,
+                locales: s.locales,
+                privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
+                terms_and_cond: s.terms_and_cond,
+                ...store
+            }
+            this.props.updateSkill({...this.props.skill, ...properties})
+
+            properties.locales = JSON.stringify(properties.locales)
+
+          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '') + '&platform=alexa'), properties)
           .then(res => {
               this.setState({
                   saved: true

@@ -12,8 +12,8 @@ class FlowBar extends Component{
     }
     render(){
         return <React.Fragment>
-            <button id="home-button" className="btn btn-clear exit pl-3" onClick={()=>this.props.enterFlow(this.props.skill.diagram)}>
-                <i className="fas fa-chevron-left mr-1"/> <span>Home</span>
+            <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.skill.diagram)}>
+                <span>Home</span>
             </button>
             <div id="flow-bar">
                 <div className="super-center px-5 w-100 no-select">

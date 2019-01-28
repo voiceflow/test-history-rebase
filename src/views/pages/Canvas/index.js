@@ -183,6 +183,13 @@ class Canvas extends Component {
         })
     }
 
+    static getDerivedStateFromProps(props, state){
+        if (props.skill !== state.skill){
+            return {
+                skill: props.skill
+            }
+        }
+    }
     componentWillUnmount() {
         Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
@@ -1564,6 +1571,13 @@ class Canvas extends Component {
                     mapping: [],
                     to: ''
                 }
+            } else if (type === 'code') {
+                node.addInPort(' ')
+                node.addOutPort(' ').setMaximumLinks(1)
+                node.addOutPort('fail').setMaximumLinks(1)
+                node.extras = {
+                    code: ''
+                }
             } else if (type === 'display') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -1761,10 +1775,9 @@ class Canvas extends Component {
                     <TestModal
                         open={this.state.testing_modal}
                         toggle={this.toggleTestModal}
+                        skill={this.state.skill}
                         testing_info={this.state.testing_info}
                         diagrams={this.state.diagrams}
-                        slots={this.state.skill.slots}
-                        globals={this.state.skill.global}
                         unfocus={this.onDiagramUnfocus}
                         platform={this.state.skill.platform}
                     />
@@ -1787,6 +1800,7 @@ class Canvas extends Component {
                         onTemplateIntent={this.handleTemplateIntent}
                         onFlowRenamed={this.onFlowRenamed}
                         history={this.props.history}
+                        user={this.props.user}
                         loading_diagram={this.state.loading_diagram}
                         text={this.state.text}
                         confirm={this.state.confirm}
@@ -1800,12 +1814,6 @@ class Canvas extends Component {
                         onError={this.props.onError}
                         platform={this.state.skill.platform}
                     />
-                    {/* <TitleBar
-                        onTest={this.onTest}
-                        preview={this.props.preview}
-                        diagram={this.props.diagram_id}
-                        diagrams={this.state.diagrams}
-                    /> */}
                     {this.state.loading_diagram && <div id="loading-diagram">
                         <div className="text-center">
                             <h5 className="text-muted mb-2">Loading Flow</h5>

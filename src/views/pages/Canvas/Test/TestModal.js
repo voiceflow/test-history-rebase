@@ -133,12 +133,13 @@ class TestModal extends React.Component {
       line: null,
       testing: true,
       skill_id: 'TEST_SKILL',
-      globals: [{}]
+      globals: [{}],
+      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100
     };
 
     // Inject New Globals in if updated
-    if(Array.isArray(this.props.globals)){
-        this.props.globals.forEach(variable => {
+    if(Array.isArray(this.props.skill.global)){
+        this.props.skill.global.forEach(variable => {
             this.story_state.globals[0][variable] = 0
         })
     }
@@ -280,7 +281,7 @@ class TestModal extends React.Component {
     let data = this.story_state
     
     if (!data.slots) {
-      data.slots = this.props.slots
+      data.slots = this.props.skill.slots
     }
 
     const nlc = this.props.testing_info.nlc
@@ -575,9 +576,9 @@ class TestModal extends React.Component {
                                 <div className="message border rounded p-2 align-self-start debug">
                                   <div className="mb-0 px-1 text-left">
                                     <small>{chat.debug}</small>
-                                    <p>
+                                    <pre className="mb-2">
                                       {chat.text}
-                                    </p>
+                                    </pre>
                                   </div>
                                 </div>
                               </div>

@@ -217,7 +217,7 @@ class API extends Component {
                 const markdownToObject = nodes => {
                     let object = {}
                     _.forEach(nodes, node => {
-                        let value = object[draftToMarkdown(node.key).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))]
+                        let value = draftToMarkdown(node.key).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                         if(value){
                             object[value] = draftToMarkdown(node.val).replace(/\{([^{}]*)\}/g, (match, inner) => replacer(match, inner, this.state.innerVariables))
                         }
@@ -231,7 +231,6 @@ class API extends Component {
                     url: new_url,
                     params: markdownToObject(params)
                 }
-
                 userHeader = markdownToObject(headers)
                 if(!_.isEmpty(userHeader)){
                     request_obj.headers = userHeader

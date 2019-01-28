@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import axios from 'axios'
 import moment from 'moment'
 import ReactJson from 'react-json-view'
@@ -14,14 +14,14 @@ import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
-var socket_endpoint;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    // dev code
-    socket_endpoint = 'http://localhost:4000'
-} else {
-    // production code
-    socket_endpoint = 'https://app.getvoiceflow.com'
-}
+// var socket_endpoint;
+// if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+//     // dev code
+//     socket_endpoint = 'http://localhost:4000'
+// } else {
+//     // production code
+//     socket_endpoint = 'https://app.getvoiceflow.com'
+// }
 
 const actionsStyles = theme => ({
     root: {
@@ -108,7 +108,7 @@ class Logs extends Component {
 
         this.state = {
             skill_id: this.props.computedMatch.params.skill_id,
-            endpoint: socket_endpoint,
+            // endpoint: socket_endpoint,
             response: '',
             logs: [],
             name: '',
@@ -145,19 +145,19 @@ class Logs extends Component {
 
     componentDidMount() {
         this.onLoad()
-        const socket = io(this.state.endpoint)
+        // const socket = io(this.state.endpoint)
 
-        socket.on('connect', () => {
-            socket.emit('join', `${window.user_detail.id}:${this.state.skill_id}`)
-        })
+        // socket.on('connect', () => {
+        //     socket.emit('join', `${window.user_detail.id}:${this.state.skill_id}`)
+        // })
 
-        socket.on('log', data => {
-            let logs = this.state.logs
-            logs.unshift(data)
-            this.setState({
-                logs: logs
-            })
-        })
+        // socket.on('log', data => {
+        //     let logs = this.state.logs
+        //     logs.unshift(data)
+        //     this.setState({
+        //         logs: logs
+        //     })
+        // })
     }
 
     parseRequest(request) {

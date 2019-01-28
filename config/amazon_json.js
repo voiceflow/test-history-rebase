@@ -210,7 +210,7 @@ const manifest = (r, encoded_id, name) => {
 	}else{
 		r.invocations = [`Alexa, open ${r.inv_name}`]
 	}
-	r.keywords = r.keywords.split(",").map(item => item.trim()).filter(word => !!word);
+	r.keywords = r.keywords ? r.keywords.split(",").map(item => item.trim()).filter(word => !!word) : '';
 
 	const localeObj = {
 		"summary": r.summary,

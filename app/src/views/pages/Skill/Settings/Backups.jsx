@@ -13,6 +13,7 @@ class BackupSettings extends Component{
 
         this.state = {
             preview: false,
+            loading: true,
             curr_preview: {
                 created: new Date(),
             },
@@ -27,11 +28,13 @@ class BackupSettings extends Component{
         axios.get(`/skill/${this.props.skill.skill_id}/versions`)
         .then(res => {
             this.setState({
+                loading: false,
                 versions: res.data
             })
         })
         .catch(err => {
             this.setState({
+                loading: false,
                 error: 'Unable to load versions'
             })
         })
@@ -54,6 +57,13 @@ class BackupSettings extends Component{
     }
 
     render(){
+        if(this.state.loading){
+            return <div className="text-center mt-5">
+                <span className="loader text-lg"/>
+                <h5 className="text-muted mt-2">Loading Backups</h5>
+            </div>
+        }
+
         if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
             return <div className="settings-content clearfix"><Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
         }

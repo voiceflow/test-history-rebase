@@ -157,6 +157,7 @@ const logAxiosError = (err, context='', data=null) => {
       console.log(context, err)
     }
     if(data) console.log('ERROR DATA', data)
+    console.log('---------------------------')
 }
 
 module.exports = {

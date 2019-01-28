@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import ModuleItem from './components/ModuleItem';
-import UpgradeModal from './../../../components/Modals/UpgradeModal.jsx'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections} from './../Blocks'
@@ -30,14 +29,11 @@ class Blocks extends PureComponent {
 
         this.state = {
             tab: tab,
-            upgrade_modal: false,
-            selected_plan: 1,
             show: show,
             sections: getSections()
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
-        this.toggleUpgrade = this.toggleUpgrade.bind(this)
         this.switchTab = this.switchTab.bind(this)
     }
 
@@ -56,11 +52,7 @@ class Blocks extends PureComponent {
         this.setState(s)
         this.forceUpdate()
     }
-    toggleUpgrade() {
-        this.setState({
-            upgrade_modal: !this.state.upgrade_modal
-        });
-    }
+
     render() {
         let block_content;
 
@@ -78,19 +70,9 @@ class Blocks extends PureComponent {
                                 <span className={"title-dot " + section.title}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
-                            {(section.title === 'business' && window.user_detail.admin === 0) ?
-                                <div className="premium-block">
-                                    <div>
-                                        <span>Upgrade to access these premium features</span>
-                                        <Button className="purple-btn mt-3" onClick={this.toggleUpgrade}>
-                                            Upgrade
-                                        </Button>
-                                    </div>
-                                </div>
-                            : null}
-                            <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
+                            <div className="mb-3 section-blocks">
                                 {section.items.map((item, i) => {
-                                    return <MenuItem item={item} key={i} data-tip={item.tip} draggable={(section.title === 'business' && window.user_detail.admin > 0) ? true : false} />
+                                    return <MenuItem item={item} key={i} data-tip={item.tip}/>
                                 })}
                             </div>
                         </Collapse>
@@ -110,14 +92,6 @@ class Blocks extends PureComponent {
         }
 
         return <React.Fragment>
-            <UpgradeModal
-                upgrade_modal={this.state.upgrade_modal}
-                toggle={this.toggleUpgrade}
-                selected_plan={this.state.selected_plan}
-                switchPlan={(plan) => this.setState({selected_plan: plan})}
-                user={this.props.user}
-                logout={this.logout}
-            />
             {/* <ButtonGroup className="toggle-group mb-2">
                 {TABS.map(tab => {
                     return <Button

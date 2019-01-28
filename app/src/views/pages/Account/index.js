@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import AuthenticationService from './../../../services/Authentication'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
-import UpgradeModal from './../../components/Modals/UpgradeModal'
 import {Button, Modal, ModalHeader, ModalBody, Row, Col, Alert} from 'reactstrap'
 import {Elements} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm'
@@ -27,6 +26,34 @@ const GET_STATUS = (status) => {
   }
 }
 
+const options = [
+  {
+    plan: 1,
+    name: "Plus",
+    features: [
+      "Intercom Support",
+      "Voiceflow Emails",
+      "Project Backups (5)",
+      "In Skill Purchases (Coming Soon)",
+      "Basic Analytics (Coming Soon)",
+      "30,000 utterances/mo"
+    ]
+  },
+  {
+    plan: 30,
+    name: "Business",
+    features: [
+      "Priority Business Support",
+      "Voiceflow Emails",
+      "Project Backups (50)",
+      "In Skill Purchases (Coming Soon)",
+      "Account Linking (Coming Soon)",
+      "User Analytics (Coming Soon)",
+      "Staging Environment (Coming Soon)"
+    ]
+  }
+]
+
 class Account extends Component {
 
   constructor(props) {
@@ -42,6 +69,7 @@ class Account extends Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.toggle = this.toggle.bind(this)
+    this.renderDescription = this.renderDescription.bind(this)
     this.resetAmazon = this.resetAmazon.bind(this)
     this.logout = this.logout.bind(this)
   }
@@ -97,6 +125,16 @@ class Account extends Component {
     });
   }
 
+  renderDescription(){
+    let option = options.find(o => o.plan === this.state.selected_plan)
+    if(option){
+      return <div>
+        {option.features.map((feature, i) => <div className="feature-item" key={i}><i className="fas fa-check-circle"/>{feature}</div>)}
+      </div>
+    }
+    return null
+  }
+
   renderButton(stage, action){
     switch(stage){
       case LOADING:
@@ -130,14 +168,40 @@ class Account extends Component {
                       </span>
                   </div>
               </div>
-              <UpgradeModal
-                upgrade_modal={this.state.upgrade_modal}
-                toggle={this.toggle}
-                selected_plan={this.state.selected_plan}
-                switchPlan={(plan) => this.setState({selected_plan: plan})}
-                user={this.props.user}
-                logout={this.logout}
-              />
+              <Modal isOpen={this.state.upgrade_modal} toggle={this.toggle} size="xl">
+                <ModalHeader toggle={this.toggle}>Upgrade Account</ModalHeader>
+                <ModalBody>
+                  <Row className="py-md-4">
+                    <Col sm="3">
+                      <span className="text-muted">Plan</span>
+                      {options.map((option, i) => {
+                        return <Button key={i}
+                            disabled={this.state.selected_plan === option.plan}
+                            color={this.state.selected_plan === option.plan ? undefined : "clear"}
+                            onClick={()=>{
+                              if(this.state.selected_plan !== option.plan ){
+                                this.setState({selected_plan: option.plan})
+                              }
+                            }}
+                            block
+                            className="mt-2">
+                          {option.name}
+                          </Button>
+                      })}
+                    </Col>
+                    <Col sm="4" className="border-left">
+                      <span className="text-muted">Description</span>
+                      {this.renderDescription()}
+                    </Col>
+                    <Col sm="5" className="border-left">
+                      <div className="text-muted">Payment</div>
+                      <Elements>
+                        <CheckoutForm user={this.props.user} plan={GET_STATUS(this.state.selected_plan)} selected={this.state.selected_plan} logout={this.logout}/>
+                      </Elements>
+                    </Col>
+                  </Row>
+                </ModalBody>
+              </Modal>
               <div className="container my-5 pt-4">
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">

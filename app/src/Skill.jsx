@@ -121,14 +121,10 @@ class Skill extends Component {
             // TODO: this function is horrible and needs to die
             let globals = Array.isArray(skill.global) ? skill.global : []
             // make sure that there are no duplicate variables and that the defaults are included
-<<<<<<< HEAD
             let global_variables = ['sessions', 'user_id', 'timestamp', 'platform', 'locale']
             if(window.user_detail.admin > 0){
                 global_variables.push('access_token')
             }
-=======
-            let global_variables = ['sessions', 'user_id', 'timestamp', 'locale']
->>>>>>> origin/master
             if (Array.isArray(globals)) {
                 globals.forEach(v => {
                     if(!global_variables.includes(v)){

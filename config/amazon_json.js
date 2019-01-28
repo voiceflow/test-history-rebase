@@ -247,6 +247,7 @@ const manifest = (r, encoded_id, name) => {
 		})
 	}
 
+	let SKILL_ENDPOINT = `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`
 	let ret = {
 		"manifest": {
 			"publishingInformation": {
@@ -257,7 +258,7 @@ const manifest = (r, encoded_id, name) => {
 			"apis": {
 				"custom": {
 					"endpoint": {
-						"uri": `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`,
+						"uri": SKILL_ENDPOINT,
 						"sslCertificateType": "Wildcard"
 					}
 				}
@@ -278,11 +279,31 @@ const manifest = (r, encoded_id, name) => {
 	if (privacyLocales) {
 		ret.manifest.privacyAndCompliance.locales = privacyLocales
 	}
+
+	if(r.alexa_events){
+		try{
+			ret.manifest.events = JSON.parse(r.alexa_events)
+			delete ret.manifest.events.regions
+		}catch(err){
+			console.log("INVALID JSON")
+		}
+	}
+
 	if (Array.isArray(r.alexa_permissions) && r.alexa_permissions.length !== 0) {
 		ret.manifest.permissions = r.alexa_permissions.map(permission => ({"name": permission}))
-	}
-	if(r.alexa_events){
-		ret.manifest.events = JSON.parse(r.alexa_events)
+
+		// TODO: FIX THIS JANK ASS SHIT - THE MOST INSANE BANDAID FIX YOUVE EVER SEEN
+		if(!(typeof ret.manifest.events === 'object')) ret.manifest.events = {}
+		ret.manifest.events.endpoint = {uri: SKILL_ENDPOINT}
+		if(!Array.isArray(ret.manifest.events.subscriptions)) ret.manifest.events.subscriptions = []
+		const events = ['SKILL_PERMISSION_ACCEPTED', 'SKILL_PERMISSION_CHANGED']
+		events.forEach(permission => {
+			if(!ret.manifest.events.subscriptions.find(sub => sub.eventName === permission)){
+				ret.manifest.events.subscriptions.push({
+					eventName: permission
+				})
+			}
+		})
 	}
 
 	// Add all project appropriate interfaces

@@ -723,35 +723,37 @@ exports.buildSkill = async (req, res) => {
             })
           }
 
-          if (!amzn_id) {
+          try{
+            if (!amzn_id) {
 
-            manifest.vendorId = vendorId;
+              manifest.vendorId = vendorId;
 
-            let request = await axios.request({
-              url: 'https://api.amazonalexa.com/v1/skills',
-              method: 'POST',
-              headers: {
-                Authorization: token
-              },
-              data: manifest
-            });
-
-            amzn_id = request.data.skillId;
-
-            await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
-          } else {
-            try{
-              await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
-                method: 'PUT',
+              let request = await axios.request({
+                url: 'https://api.amazonalexa.com/v1/skills',
+                method: 'POST',
                 headers: {
                   Authorization: token
                 },
                 data: manifest
-              })
-            }catch(err){
-              logAxiosError(err, 'PUT MANIFEST', JSON.stringify(manifest))
+              });
+
+              amzn_id = request.data.skillId;
+
+              await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
+            } else {
+              
+                await axios.request({
+                  url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                  method: 'PUT',
+                  headers: {
+                    Authorization: token
+                  },
+                  data: manifest
+                })
             }
+          }catch(err){
+            logAxiosError(err, 'PUT MANIFEST', JSON.stringify(manifest))
+            throw err
           }
 
           let account_linking = r.account_linking;

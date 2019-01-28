@@ -785,6 +785,12 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
+        } else if (node.extras.type === 'code') {
+          story.lines[node.id] = {
+            code: node.extras.code,
+            success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
+            fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
+          }
         } else if (node.extras.type === 'link_account') {
           story.lines[node.id] = {
             link_account: true,

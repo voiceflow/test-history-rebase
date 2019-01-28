@@ -152,11 +152,12 @@ const verify = (auth, cb) => {
 
 const logAxiosError = (err, context='', data=null) => {
     if(err && err.response){
-      console.log(context, err.response.data && err.response.data.message, 'STATUS', err.response.status)    
+      console.log(context, err.response.data, 'STATUS', err.response.status)    
     }else{
       console.log(context, err)
     }
     if(data) console.log('ERROR DATA', data)
+    console.log('---------------------------')
 }
 
 module.exports = {
@@ -168,6 +169,7 @@ module.exports = {
     jwt: jwt,
     config: config,
     s3: s3,
+    s3Stream: s3Stream,
     uploadResize: uploadResize,
     hashids: hashids,
     validateEmail: validateEmail,

@@ -86,6 +86,8 @@ const validSampleCharacters = validSampleCharactersWithoutCurlyBracesOrSpaces + 
 //         }
 //     };
 // }
-
 // TYLER: lmao I decompiled the ADC front end source code so these regexes are good as it gets 👌
 exports.sampleUtteranceRegex = '[^' + validSampleCharacters + '|]'
+exports.validCharacters = validCharacters
+exports.validLatinChars = validLatinChars
+exports.validSpokenCharacters = validSpokenCharacters

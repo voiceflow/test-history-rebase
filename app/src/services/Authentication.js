@@ -143,28 +143,28 @@ export default {
 		})
 	},
 	signup: (user, cb) => {
-	    axios.put('/user', user)
+	    axios.put('/user', {user: user, device: getDevice()})
 	    .then(response => initalizeLogin(response, cb))
 	    .catch(err => {
 	    	cb(err);
 	    });
 	},
 	login: (user, cb) => {
-	    axios.put('/session', user)
+	    axios.put('/session', {user: user, device: getDevice()})
 	    .then(response => initalizeLogin(response, cb))
 	    .catch(err => {
 	    	cb(err);
 	    });
 	},
 	googleLogin: (user, cb) => {
-		axios.put('/googleLogin', user)
+		axios.put('/googleLogin', {user: user, device: getDevice()})
 		.then(response => initalizeLogin(response, cb))
 		.catch(err => {
 			cb(err);
 		})
 	},
 	fbLogin: (user, cb) => {
-		axios.put('/fbLogin', user)
+		axios.put('/fbLogin', {user: user, device: getDevice()})
 		.then(response => initalizeLogin(response, cb))
 		.catch(err => {
 			cb(err);

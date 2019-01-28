@@ -243,99 +243,79 @@ const deleteDiagram = (req, res) => {
   )
 }
 
-const copyDiagram = (req, res) => {
-  let old_diagram_id = req.params.diagram_id
-  let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    Key: {
-      'id': old_diagram_id
+const purgeSubflows = (diagram) => {
+  diagram.nodes.forEach(node => {
+    if (node.extras.diagram_id && node.extras.diagram_id !== null) {
+      node.extras.diagram_id = null;
+      if (node.extras.type === 'flow') {
+        node.name = 'Flow'
+      }
     }
-  };
+  })
+  return diagram
+}
 
-  // In case the insert row fails, delete on Dynamo
-  const cleanUpDynamo = (new_diagram_id) => {
-    let params = {
+const copyDiagram = async (req, res) => {
+  try{
+    let old_diagram_id = req.params.diagram_id
+    let get_params = {
       TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
       Key: {
-        'id': new_diagram_id
+        'id': old_diagram_id
       }
-    };
-    docClient.delete(params, err => {
-      if (err) {
-        console.log(err)
-        res.sendStatus(err.statusCode)
-      } else {
-        res.sendStatus(200)
-      }
-    });
-  }
+    }
+    let get_diagram_promise = docClient.get(get_params).promise()
+    let data = await get_diagram_promise
 
-  const insertDiagramRow = (new_diagram_id, old_diagram_id, diagram_name) => {
-    pool.query(
-      `INSERT INTO diagrams (id, name, skill_id, used_intents) 
-            (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`,
-      [new_diagram_id, diagram_name, old_diagram_id],
-      (err, data) => {
-        if (err) {
-          console.log(err)
-          cleanUpDynamo(new_diagram_id)
-          res.sendStatus(500)
-        } else {
-          res.send(new_diagram_id)
-        }
-      }
-    )
-  }
-
-  // TODO: There might be no need to modify the flow blocks, i dunno
-  const purgeSubflows = (diagram) => {
-    diagram.nodes.forEach(node => {
-      if (node.extras.diagram_id && node.extras.diagram_id !== null) {
-        node.extras.diagram_id = null;
-        if (node.extras.type === 'flow') {
-          node.name = 'Flow'
-        }
-      }
-    })
-    return diagram
-  }
-
-  // Copy on Dynamo
-  docClient.get(params, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(err.statusCode);
-    } else if (data.Item) {
+    if(data.Item){
       let purged_diagram = purgeSubflows(JSON.parse(data.Item.data))
       let new_diagram_id = generateID()
       let diagram_name = 'Diagram Copy'
-      if (req.query && req.query.name && req.query.name.length < 80) {
+      if(req.query && req.query.name && req.query.name.length < 80) {
         diagram_name = req.query.name
       }
 
-      let params = {
+      let put_params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Item: {
           id: new_diagram_id,
-          variables: data.variables,
+          variables: data.Item.variables,
           data: JSON.stringify(purged_diagram),
-          skill: data.skill,
-          creator: data.creator
+          skill: data.Item.skill,
+          creator: data.Item.creator
         }
-      };
+      }
 
-      docClient.put(params, async (err) => {
-        if (err) {
-          console.log(err)
-          res.sendStatus(err.statusCode)
-        } else {
-          insertDiagramRow(new_diagram_id, old_diagram_id, diagram_name)
+      let put_diagram_promise = docClient.put(put_params).promise()
+      await put_diagram_promise
+      
+      try{
+        await pool.query(`INSERT INTO diagrams (id, name, skill_id, used_intents) 
+          (SELECT $1, $2, skill_id, used_intents FROM diagrams WHERE id = $3)`, [new_diagram_id, diagram_name, old_diagram_id])
+        res.send(new_diagram_id)
+      } catch (err) {
+        // SQL insert failed so delete the diagram from dynamo
+        let delete_params = {
+          TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+          Key: {
+            'id': new_diagram_id
+          }
         }
-      });
+
+        try{
+          await docClient.delete(delete_params).promise()
+          res.sendStatus(500)
+        } catch (err) {
+          console.trace(err)
+          res.sendStatus(500)
+        }
+      }
     } else {
       res.sendStatus(404)
     }
-  });
+  } catch (err) {
+    console.trace(err)
+  }
 }
 
 const publish = (req, res) => {

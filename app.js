@@ -19,6 +19,7 @@ const {upload, uploadResize, redisClient, jwt, config, verify} = require('./serv
 const { getEnvVariable } = require('./util')
 const policy = require('./policy');
 const AWS = require('aws-sdk')
+const { request_logger } = require('./logger.js')
 
 AWS.config = new AWS.Config({
     accessKeyId: getEnvVariable('AWS_ACCESS_KEY_ID'),
@@ -46,11 +47,13 @@ const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
 const Mail = require('./routes/mail.js');
 const {copySkill} = require('./routes/skill_util')
+const Track = require('./routes/track.js')
 
 const googleProxy = require('./proxies/googleProxy')
 
 app.use(cors())
 app.use(helmet())
+app.use(request_logger)
 
 const rawBodyPaths = ['/customer/webhook']
 const getRawBody = () => {
@@ -238,8 +241,12 @@ app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveT
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
 app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
-app.post('/analytics/track_onboarding', ensureLoggedIn(), Analytics.trackOnboarding)
-app.post('/analytics/track_canvas_time', ensureLoggedIn(), Analytics.trackCanvasTime)
+app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
+app.post('/analytics/track_canvas_time', ensureLoggedIn(), Track.trackCanvasTime)
+
+app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
+app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:skill_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

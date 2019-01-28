@@ -1661,6 +1661,7 @@ class Canvas extends Component {
                         onTemplateIntent={this.handleTemplateIntent}
                         onFlowRenamed={this.onFlowRenamed}
                         history={this.props.history}
+                        user={this.props.user}
                         loading_diagram={this.state.loading_diagram}
                         text={this.state.text}
                         confirm={this.state.confirm}

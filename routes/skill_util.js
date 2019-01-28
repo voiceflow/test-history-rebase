@@ -33,7 +33,21 @@ exports.deleteDynamoDiagramPromise = (diagram_id) => {
     
       await delete_diagrams_promise
       await delete_skills_promise
-      resolve()
+
+      // don't care whether it's there or not
+      try{
+        let tests_params = {
+          TableName: getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME') + '.test',
+          Key: {
+            'id': diagram_id
+          }
+        }
+        let delete_tests_promise = docClient.delete(tests_params).promise()
+        await delete_tests_promise
+        resolve()
+      } catch (err) {
+        resolve()
+      }
     } catch (err) {
       reject(err)
     }

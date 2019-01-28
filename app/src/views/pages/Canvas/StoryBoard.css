@@ -275,14 +275,23 @@
     font-size: 0.875rem !important;
 }
 
+.top-nav-icon{
+    height: 42px;
+}
+.align-icon{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    
+}
 .title-group .title-group-sub {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     border-right: 1px solid #E2E9EC;
     border-left: 1px solid #E2E9EC;
     height: 100%;
-    padding-top: 12px;
-    padding-left: 23px;
-    padding-right: 23px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 .back-btn{
     background: transparent !important;
@@ -2542,4 +2551,18 @@ button.close:hover{
     /*color: #2325E2;*/
     color: #fff;
     border-radius: 10px;
+}
+
+.premium-block{
+    position: absolute;
+    width: 90%;
+    height: 250px;
+    z-index: 5;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
 }

@@ -73,32 +73,34 @@ class DiscoverySettings extends Component{
         const fulfillment_intent = _.find(intents_sorted, { key: fullfillment_intent_key })
 
         return <React.Fragment>
-            <FormGroup>
-                <Label>CanFulfill Intent</Label>
-                <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
-                <hr />
-                {!fullfillment_intent_key && (
-                    Object.keys(this.state.fulfillment).length !== 0 ? 
-                        <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div> : <Alert className="text-center">To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle</Alert>
-                    )
-                }
-                {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
-                {fullfillment_intent_key &&
-                    <CanFulfill
-                        slots={this.props.skill.slots}
-                        fulfillment={this.state.fulfillment}
-                        selected_intent={fulfillment_intent}
-                        history={this.props.history}
-                        skill_id={this.props.skill.skill_id}
-                        onError={this.props.onError}
-                        save={this.save}
-                    />}
-            </FormGroup>
-            <div className="super-center">
-                {fullfillment_intent_key && <button className="btn btn-clear exit btn-thicc" onClick={() => {
-                    this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)
-                }}><i className="far fa-chevron-left"/> Back
-                </button>}
+            <div className="settings-content clearfix">
+                <FormGroup>
+                    <Label>CanFulfill Intent</Label>
+                    <div className="helper-text mb-2">Set the slot fulfillment values that your skill is able to understand</div>
+                    <hr />
+                    {!fullfillment_intent_key && (
+                        Object.keys(this.state.fulfillment).length !== 0 ? 
+                            <div className="selected-intent-label">Select an Intent Below to Customize Slot Fulfillment</div> : <Alert className="text-center">To add a CanFulfillIntent Handle, add an Intent Block in your Root Flow and enable the "CanFulfillIntent" toggle</Alert>
+                        )
+                    }
+                    {!fullfillment_intent_key && this.fulfillmentButtons(intents_sorted)}
+                    {fullfillment_intent_key &&
+                        <CanFulfill
+                            slots={this.props.skill.slots}
+                            fulfillment={this.state.fulfillment}
+                            selected_intent={fulfillment_intent}
+                            history={this.props.history}
+                            skill_id={this.props.skill.skill_id}
+                            onError={this.props.onError}
+                            save={this.save}
+                        />}
+                </FormGroup>
+                <div className="super-center">
+                    {fullfillment_intent_key && <button className="btn btn-clear exit btn-thicc" onClick={() => {
+                        this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery`)
+                    }}><i className="far fa-chevron-left"/> Back
+                    </button>}
+                </div>
             </div>
         </React.Fragment>
     }

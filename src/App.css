@@ -641,6 +641,9 @@ border-radius: 0px 5px 5px 0px !important;
 }
 .publish-btn{
     font-family: 'Open Sans', sans-serif !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px 58px 12px 22px!important;
     color: #fff !important;
     font-weight: normal !important;
@@ -654,29 +657,29 @@ border-radius: 0px 5px 5px 0px !important;
     cursor: pointer;
     font-weight: 400 !important;
     font-size: 15px !important;
-    height: 48px;
+    height: 42px;
 }
 .publish-btn .launch{
     right: 6px;
-    top: 6px;
+    margin: auto;
     position: absolute;
     height: 100%;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     /* margin-left: 5px; */
     background-color: #ffffff40;
     color: #fff;
     overflow: hidden;
     text-align: center;
     border-radius: 100%;
-    display: inline-block;
+    display: flex;
     background-position: center;
     transition: all 0.2s;
 }
 .publish-btn .launch>div{
     position: absolute;
     transition: transform 0.1s ease;
-    margin-top: 5px;
+    margin-top: 3px;
     width: 100%;
 }
 .publish-btn .launch .first{
@@ -1245,6 +1248,8 @@ body.modal-open {
 .loader {
     display: inline-flex;
     -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    -ms-animation: spin 1s linear infinite;
     animation: spin 1s linear infinite;
     background-image: url("/loader-2.svg");
     background-position: center;
@@ -1257,6 +1262,8 @@ body.modal-open {
 .save-loader {
     display: inline-flex;
     -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    -ms-animation: spin 1s linear infinite;
     animation: spin 1s linear infinite;
     background-image: url("/loader.svg");
     background-position: center;

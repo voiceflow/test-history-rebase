@@ -399,7 +399,6 @@ class GooglePublish extends Component {
                     </div>
                   </div>
                 </FormGroup>
-                <div><iframe style={{width:'100%', height:'70vh'}} src={`/gproxy`}></iframe></div>
               </Form>
             </div>
           </div>

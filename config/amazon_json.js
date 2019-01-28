@@ -2,47 +2,7 @@ const _ = require('lodash')
 const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT} = require('./Constants')
 const { SLOT_TYPES } = require('../app/src/views/pages/Canvas/Constants')
 const { getEnvVariable } = require('./../util')
-
-const _formatName = (name) => {
-	let formatted_name = name.replace(' ', '_')
-	Array.from(Array(10).keys()).forEach(i => {
-		formatted_name = formatted_name.replace(i.toString(), String.fromCharCode(i + 65))
-	})
-	return formatted_name
-}
-
-const _getUtterancesWithSlotNames = (utterances, slots) => {
-
-	const re = /(\{\{\[[^\}\{\[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
-	let m;
-
-	const utterance_text = utterances.map(e => e.text)
-
-	const new_utterances = utterance_text.map(input => {
-		let new_input = input
-		do {
-			m = re.exec(input)
-			if (m) {
-				const replace = m[1]
-				const key = m[2]
-				const slot = _.find(slots, {
-					key: key
-				})
-				if (slot) {
-					let slot_name = _.find(slots, {
-						key: key
-					}).name
-					slot_name = _formatName(slot_name)
-					new_input = new_input.replace(replace, `{${slot_name}}`)
-				} else {
-					return new_input
-				}
-			}
-		} while (m);
-		return new_input
-	})
-	return new_utterances
-}
+const { getUtterancesWithSlotNames, formatName } = require('../app/src/util')
 
 const _getSlotsForKeysAndFormat = (keys, slots) => {
 	let key_set = new Set()
@@ -60,8 +20,8 @@ const _getSlotsForKeysAndFormat = (keys, slots) => {
 			key: key
 		})
 		return {
-			name: _formatName(slot.name),
-			type: slot.type.value !== 'CUSTOM' ? slot.type.value : _formatName(slot.name)
+			name: formatName(slot.name),
+			type: slot.type.value !== 'CUSTOM' ? slot.type.value : formatName(slot.name)
 		}
 	})
 }
@@ -97,7 +57,7 @@ const interactionModel = (req) => {
 			// throw(`Intent Key ${intent_key} not found!`)
 		}
 
-		const name = _formatName(intent.name)
+		const name = formatName(intent.name)
 
 		if (!entered_intents.has(name)) {
 
@@ -108,7 +68,7 @@ const interactionModel = (req) => {
 			}
 
 			if (!intent.built_in) {
-				formatted_intent.samples = _getUtterancesWithSlotNames(intent.inputs, slots)
+				formatted_intent.samples = getUtterancesWithSlotNames(intent.inputs, slots, false, true)
 				formatted_intent.slots = _getSlotsForKeysAndFormat(intent.inputs.map(input => input.slots), slots)
 			} else {
 				formatted_intent.samples = []
@@ -167,7 +127,7 @@ const interactionModel = (req) => {
 
 	slots.forEach(slot => {
 		if (slot.type.value === 'CUSTOM' || !slot.type.value) {
-			const slot_name = _formatName(slot.name)
+			const slot_name = formatName(slot.name)
 			const values = slot.inputs.map(input => {
 				return {
 					name: {
@@ -307,6 +267,5 @@ const manifest = (r, encoded_id, name) => {
 module.exports = {
 	interactionModel: interactionModel,
 	manifest: manifest,
-	_getUtterancesWithSlotNames: _getUtterancesWithSlotNames,
 	_getSlotsForKeysAndFormat: _getSlotsForKeysAndFormat
 }

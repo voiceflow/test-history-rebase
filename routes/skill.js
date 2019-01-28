@@ -1,10 +1,23 @@
 const axios = require('axios')
 const _ = require('lodash')
-const { pool, hashids, intercom, jwt, logAxiosError } = require('./../services')
-const { AccessToken, getGoogleAccessToken } = require('./authentication')
+const {
+  pool,
+  hashids,
+  intercom,
+  jwt,
+  logAxiosError
+} = require('./../services')
+const {
+  AccessToken,
+  getGoogleAccessToken
+} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
-const { generateGactionsPackage } = require('./../config/gactions_package')
-const { getEnvVariable } = require('../util')
+const {
+  generateGactionsPackage
+} = require('./../config/gactions_package')
+const {
+  getEnvVariable
+} = require('../util')
 
 const uuid = require('uuid/v4');
 
@@ -14,8 +27,11 @@ const mkdirp = require('mkdirp');
 const fs = require('fs');
 
 const GACTIONS_CLI_ROOT = './gactions_cli'
-const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
-const { deleteSkillPromise, copySkill } = require('./skill_util')
+const analytics = new(require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const {
+  deleteSkillPromise,
+  copySkill
+} = require('./skill_util')
 
 const latestSkillToIntercom = (id, name) => {
   intercom.users.create({
@@ -128,9 +144,9 @@ exports.getSkill = (req, res) => {
   let id = hashids.decode(req.params.id)[0];
   let sql;
   let params;
-  if(req.query.preview){
-      // expose as little information as possible if previewing
-      sql = `
+  if (req.query.preview) {
+    // expose as little information as possible if previewing
+    sql = `
           SELECT
               name,
               preview,
@@ -183,7 +199,7 @@ exports.getSkill = (req, res) => {
           WHERE
               skill_id = $1 AND
               creator_id = $2 LIMIT 1`;
-      params = [id, req.user.id];
+    params = [id, req.user.id];
   }
 
   pool.query(sql, params, (err, data) => {
@@ -428,7 +444,7 @@ exports.deleteSkill = async (req, res) => {
   }
   let id = hashids.decode(req.params.id)[0]
 
-  try{
+  try {
     await deleteSkillPromise(req.user.id, id, true)
     res.sendStatus(200)
   } catch (err) {
@@ -454,13 +470,13 @@ exports.patchSkill = async (req, res) => {
 
   if (!b.fulfillment) b.fulfillment = '{}'
   if (!b.name) b.name = 'UNTITLED PROJECT'
-  
-  try{
-    if (req.query.fulfillment){
+
+  try {
+    if (req.query.fulfillment) {
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
-    }else if (req.query.settings) {
-      if(typeof b.repeat !== 'number'){
+    } else if (req.query.settings) {
+      if (typeof b.repeat !== 'number') {
         b.repeat = 100
       }
       // UPDATE COLUMNS RELATED TO SETTINGS
@@ -505,8 +521,11 @@ exports.patchSkill = async (req, res) => {
               privacy_policy = $18,
               terms_and_cond = $19
               WHERE skill_id = $1 AND creator_id = $20`,
-            [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations}, b.small_icon, b.large_icon, b.category,
-            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id])
+          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {
+              value: b.invocations
+            }, b.small_icon, b.large_icon, b.category,
+            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id
+          ])
       }
       latestSkillToIntercom(req.user.id, b.name)
     } else {
@@ -527,12 +546,15 @@ exports.patchSkill = async (req, res) => {
               privacy_policy = $12,
               terms_and_cond = $13
               WHERE skill_id = $1 AND creator_id = $14`,
-        [id, b.name, b.inv_name, b.summary, b.description, b.keywords,{value: b.invocations},
-          b.small_icon, b.large_icon, b.category, b.locales,b.privacy_policy, b.terms_and_cond, req.user.id])
-        latestSkillToIntercom(req.user.id, b.name)
+        [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {
+            value: b.invocations
+          },
+          b.small_icon, b.large_icon, b.category, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id
+        ])
+      latestSkillToIntercom(req.user.id, b.name)
     }
     res.sendStatus(200)
-  }catch(err){
+  } catch (err) {
     console.trace(err)
     res.sendStatus(500)
   }
@@ -616,16 +638,16 @@ const checkVersions = (req, id, token) => {
           } catch (err) {
             live_id = null
           }
-          
+
           let i = 0
           let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 3 : data.rows.length - 5
           let deletion_promises = []
-          if(live_id){
+          if (live_id) {
             num_versions_to_delete -= 1
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if(data.rows[i].skill_id != live_id){
+            if (data.rows[i].skill_id != live_id) {
               deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, false))
               num_versions_to_delete -= 1
             }
@@ -633,12 +655,12 @@ const checkVersions = (req, id, token) => {
           }
 
           Promise.all(deletion_promises)
-          .then(() => {
-            // SUGOI
-          })
-          .catch((err) => {
-            console.trace(err)
-          })
+            .then(() => {
+              // SUGOI
+            })
+            .catch((err) => {
+              console.trace(err)
+            })
         }
       }
     })
@@ -648,12 +670,12 @@ exports.buildSkill = async (req, res) => {
   if (!req.params.id) {
     res.sendStatus(401)
   }
-  try{
+  try {
     incrementTimesPublishedIntercom(req.user.id);
   } catch (err) {
     console.trace(err)
   }
-  
+
 
   let id = hashids.decode(req.params.id)[0];
   let original_id = req.params.id
@@ -684,8 +706,8 @@ exports.buildSkill = async (req, res) => {
           userId: req.user.id,
           event: 'Publish Attempt',
           properties: {
-              amzn_id: amzn_id,
-              skill_id: id
+            amzn_id: amzn_id,
+            skill_id: id
           }
         })
 
@@ -1003,8 +1025,8 @@ exports.certifySkill = (req, res) => {
                           userId: req.user.id,
                           event: 'Submitted for Certification',
                           properties: {
-                              amzn_id: req.params.amzn_id,
-                              skill_id: hashids.decode(req.params.id)[0]
+                            amzn_id: req.params.amzn_id,
+                            skill_id: hashids.decode(req.params.id)[0]
                           }
                         })
                         res.sendStatus(200);
@@ -1160,7 +1182,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
   const retrieveDiagram = (diagram_id, new_skill_id) => {
 
-    const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
+    const uploadNewDiagram = (data) => new Promise(async (resolve, reject) => {
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
         Item: {
@@ -1240,7 +1262,10 @@ exports.copySkill = async (req, res, options, cb = false) => {
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    let used_intents = new Set(),
+      used_choices = new Set(),
+      permissions = new Set(),
+      interfaces = new Set()
     if (Array.isArray(skill.intents)) {
       skill.intents.forEach(intent => {
         if (intent.key) intents[intent.key] = intent.name
@@ -1251,12 +1276,19 @@ exports.copySkill = async (req, res, options, cb = false) => {
         if (slot.key) slots[slot.key] = slot.name
       })
     }
-    try{
-      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
+    try {
+      await renderDiagram(req.user, skill.diagram, skill.skill_id, {
+        permissions,
+        interfaces,
+        used_intents,
+        used_choices,
+        intents,
+        slots
+      }, undefined, skill.platform)
       // UPDATE SKILL 
-      await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
-      [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
-    }catch(err){
+      await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1',
+        [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
+    } catch (err) {
       console.trace(err)
     }
   }
@@ -1340,7 +1372,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         copyAllProducts(id, copy_skill.skill_id)
         copyAllTemplates(id, copy_skill.skill_id)
 
-        if(options.renderDiagram){
+        if (options.renderDiagram) {
           await renderSkill(copy_skill)
         }
 
@@ -1392,9 +1424,11 @@ exports.restoreSkillVersion = (req, res) => {
   let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
-  copySkill(req, res, {complete_copy: true}, async (row) => {
+  copySkill(req, res, {
+    complete_copy: true
+  }, async (row) => {
     req.params.id = req.params.canonical_skill_id
-    try{
+    try {
       await deleteSkillPromise(req.user.id, canonical_skill_id, false)
       let new_skill_id = hashids.decode(row.skill_id)[0]
       await pool.query(`UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, [canonical_skill_id, new_skill_id])
@@ -1411,135 +1445,156 @@ exports.restoreSkillVersion = (req, res) => {
 }
 
 exports.buildGoogleSkill = async (req, res) => {
-    if (!req.params.id) {
-        res.sendStatus(401)
-    }
-    let id = hashids.decode(req.params.id)[0];
-    let original_id = req.params.id
+  if (!req.params.id) {
+    res.sendStatus(401)
+  }
+  let id = hashids.decode(req.params.id)[0];
+  let original_id = req.params.id
 
-    let token = await getGoogleAccessToken(req.user.id)
-    if(_.isNil(token) || _.isNil(token.token)){
-        res.status(401).send({
-            message: "Invalid Google Auth Token"
-        });
-        return;
-    }
-    token = token.token
-    try {
-        const skill_info = await new Promise ((resolve, reject) => {
-            pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
-                if(err){
-                    console.trace(err)
-                    reject()
-                } else {
-                    let r = data.rows[0]
-                    resolve(r)
-                }
-            })
-    
-        })
-
-        const project_id = skill_info.google_publish_info ? skill_info.google_publish_info.project_id : null
-
-        if (_.isNil(project_id)) {
-            throw('Project ID not found')
+  let token = await getGoogleAccessToken(req.user.id)
+  if (_.isNil(token) || _.isNil(token.token)) {
+    res.status(401).send({
+      message: "Invalid Google Auth Token"
+    });
+    return;
+  }
+  token = token.token
+  try {
+    const skill_info = await new Promise((resolve, reject) => {
+      pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
+        if (err) {
+          console.trace(err)
+          reject()
+        } else {
+          let r = data.rows[0]
+          resolve(r)
         }
+      })
 
-        skill_info.skill_id = original_id
+    })
 
-        const package = generateGactionsPackage(skill_info)
-        await updateGActionsPackage(token, project_id, package)
-        res.status(200).send({
-            project_id: project_id
-        })
-    } catch (e) {
-        console.trace(e)
-        res.status(400).send(`Error while building skill: ${e}`)
+    const project_id = skill_info.google_publish_info ? skill_info.google_publish_info.project_id : null
+
+    if (_.isNil(project_id)) {
+      throw ('Project ID not found')
     }
+
+    skill_info.skill_id = original_id
+
+    const package = generateGactionsPackage(skill_info)
+    await updateGActionsPackage(token, project_id, package)
+    res.status(200).send({
+      project_id: project_id
+    })
+  } catch (e) {
+    console.trace(e)
+    res.status(400).send(`Error while building skill: ${e}`)
+  }
 }
 
 const updateGActionsPackage = (creds, project_id, package) => new Promise(async (resolve, reject) => {
-	let random_id = uuid()
-	let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-	while (fs.existsSync(dir)){
-		random_id = uuid()
-		dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-	}
-	
-	try {
-		await new Promise ((resolve, reject) => {
-			mkdirp(dir, function (err) {
-				if (err) reject(err)
-				else resolve()
-			})
-		})
+  let random_id = uuid()
+  let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+  while (fs.existsSync(dir)) {
+    random_id = uuid()
+    dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+  }
 
-		await new Promise ((resolve, reject) => {
-			fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
-				if (err) reject(err)
-				resolve()
-			})
-		})
-
-		await new Promise ((resolve, reject) => {
-			fs.writeFile(`${dir}/action.json`, package, 'utf8', (err) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve()
-				}
-			})
-		})
-
-		await new Promise ((resolve, reject) => {
-			fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve()
-				}
-			})
-		})
-
-		await new Promise ((resolve, reject) => {
-			const gactions = spawn('./gactions', ['test', `--project=${project_id}`, '--action_package=action.json'], {cwd: dir})
-			gactions.stdin.setEncoding('utf-8');		
-		
-			gactions.stdout.on('data', (data) => {
-                if (/ready for testing/.test(data.toString())) {
-                    resolve()
-                }
-			});
-	
-			gactions.stderr.on('data', (data) => {
-                if (/Server did not return HTTP 200/.test(data.toString())) {
-                    reject('Bad request to gactions API. Double-check your Project ID')
-                }
-			})
-		})
-	} catch (e) {
-        await new Promise ((resolve, reject) => {
-            del([dir]).then(resolve()).catch(e => reject(e))
-        })
-        reject(`Unable to update google actions package: ${e}`)
-	}
-	await new Promise ((resolve, reject) => {
-		del([dir]).then(resolve()).catch(e => reject(e))
+  try {
+    await new Promise((resolve, reject) => {
+      mkdirp(dir, function (err) {
+        if (err) reject(err)
+        else resolve()
+      })
     })
-    resolve()
+
+    await new Promise((resolve, reject) => {
+      fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
+        if (err) reject(err)
+        resolve()
+      })
+    })
+
+    await new Promise((resolve, reject) => {
+      fs.writeFile(`${dir}/action.json`, package, 'utf8', (err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+
+    await new Promise((resolve, reject) => {
+      fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+
+    await new Promise((resolve, reject) => {
+      const gactions = spawn('./gactions', ['update', `--project=${project_id}`, '--action_package=action.json'], {
+        cwd: dir
+      })
+      gactions.stdin.setEncoding('utf-8');
+
+      gactions.stdout.on('data', (data) => {
+        if (/was successfully updated with/.test(data.toString())) {
+          resolve()
+        }
+      });
+
+      gactions.stderr.on('data', (data) => {
+        if (/Server did not return HTTP 200/.test(data.toString())) {
+          reject('Bad request to gactions API. Double-check your Project ID')
+        }
+      })
+    })
+
+    await new Promise((resolve, reject) => {
+      const gactions = spawn('./gactions', ['test', `--project=${project_id}`, '--action_package=action.json'], {
+        cwd: dir
+      })
+      gactions.stdin.setEncoding('utf-8');
+
+      gactions.stdout.on('data', (data) => {
+        if (/ready for testing/.test(data.toString())) {
+          resolve()
+        }
+      });
+
+      gactions.stderr.on('data', (data) => {
+        if (/Server did not return HTTP 200/.test(data.toString())) {
+          reject('Bad request to gactions API. Double-check your Project ID')
+        }
+      })
+    })
+  } catch (e) {
+    await new Promise((resolve, reject) => {
+      del([dir]).then(resolve()).catch(e => reject(e))
+    })
+    reject(`Unable to update google actions package: ${e}`)
+  }
+  await new Promise((resolve, reject) => {
+    del([dir]).then(resolve()).catch(e => reject(e))
+  })
+  resolve()
 })
 
 exports.getGoogleSkill = async (req, res) => {
-    if (!req.params.id) {
-        res.sendStatus(401);
-        return;
-    }
+  if (!req.params.id) {
+    res.sendStatus(401);
+    return;
+  }
 
-    let id = hashids.decode(req.params.id)[0];
-    let sql;
-    let params;
+  let id = hashids.decode(req.params.id)[0];
+  let sql;
+  let params;
 
-    sql = `
+  sql = `
         SELECT
             created, diagram, google_publish_info
         FROM
@@ -1547,47 +1602,47 @@ exports.getGoogleSkill = async (req, res) => {
         WHERE
             skill_id = $1 AND
             creator_id = $2 LIMIT 1`;
-    params = [id, req.user.id];
+  params = [id, req.user.id];
 
-    pool.query( sql, params, async (err, data) => {
-        if(err){
-            console.trace(err);
-            res.sendStatus(500);
-        }else if(data.rows.length === 0){
-            res.sendStatus(404);
-        }else{
-            let publish_info = data.rows[0].google_publish_info
-            let google_id = data.rows[0].google_id
-            let created = data.rows[0].created
-            let diagram = data.rows[0].diagram
+  pool.query(sql, params, async (err, data) => {
+    if (err) {
+      console.trace(err);
+      res.sendStatus(500);
+    } else if (data.rows.length === 0) {
+      res.sendStatus(404);
+    } else {
+      let publish_info = data.rows[0].google_publish_info
+      let google_id = data.rows[0].google_id
+      let created = data.rows[0].created
+      let diagram = data.rows[0].diagram
 
-            const skillResp = {
-                publish_info,
-                created,
-                diagram
-            }
+      const skillResp = {
+        publish_info,
+        created,
+        diagram
+      }
 
-            // Rehash the skill id
-            if(!google_id){
-                res.send(skillResp)
-            }else{
-                // Sync up with google
-                // Check Current google Status
-                const token = await getGoogleAccessToken(req.user.id)
-                if(token === null){
-                    return res.send(skillResp);
-                }
-
-                try {
-                    // TODO Check status, in review/live/etc
-                    // Using gactions CLI
-                    skillResp.google_id = google_id
-                    res.send(skillResp)
-                }catch(err){
-                    console.log(err);
-                    res.send(skillResp);
-                }
-            }
+      // Rehash the skill id
+      if (!google_id) {
+        res.send(skillResp)
+      } else {
+        // Sync up with google
+        // Check Current google Status
+        const token = await getGoogleAccessToken(req.user.id)
+        if (token === null) {
+          return res.send(skillResp);
         }
-    });
+
+        try {
+          // TODO Check status, in review/live/etc
+          // Using gactions CLI
+          skillResp.google_id = google_id
+          res.send(skillResp)
+        } catch (err) {
+          console.log(err);
+          res.send(skillResp);
+        }
+      }
+    }
+  });
 };

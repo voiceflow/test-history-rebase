@@ -446,6 +446,8 @@ exports.patchSkill = async (req, res) => {
     if (req.query.fulfillment){
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
+    }else if(req.query.inv_name){
+      await pool.query(`UPDATE skills SET inv_name = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.inv_name])
     }else if (req.query.settings) {
       if(typeof b.repeat !== 'number'){
         b.repeat = 100
@@ -738,15 +740,18 @@ exports.buildSkill = async (req, res) => {
 
             await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
           } else {
-
-            await axios.request({
-              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
-              method: 'PUT',
-              headers: {
-                Authorization: token
-              },
-              data: manifest
-            });
+            try{
+              await axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                method: 'PUT',
+                headers: {
+                  Authorization: token
+                },
+                data: manifest
+              })
+            }catch(err){
+              logAxiosError(err, 'PUT MANIFEST', JSON.stringify(manifest))
+            }
           }
 
           let account_linking = r.account_linking;

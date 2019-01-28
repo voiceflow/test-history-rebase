@@ -350,53 +350,51 @@ class Skill extends Component {
         const s = this.state;
         const category = (s.category && s.category.value ? s.category.value : null)
 
-        if (_.isNull(this.state.error)) {
-          let store;
+        let store;
 
-          if(publish === true){
-              store = {
-                  purchase: s.purchase,
-                  personal: s.personal,
-                  copa: s.copa,
-                  ads: s.ads,
-                  export: s.export,
-                  instructions: s.instructions
-              }
-          }
-
-            let properties = {
-                name: s.name,
-                inv_name: s.inv_name,
-                summary: s.summary,
-                description: s.description,
-                keywords: s.keywords,
-                invocations: s.invocations,
-                small_icon: s.small_icon,
-                large_icon: s.large_icon,
-                category: category,
-                locales: s.locales,
-                privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
-                terms_and_cond: s.terms_and_cond,
-                ...store
+        if(publish === true){
+            store = {
+                purchase: s.purchase,
+                personal: s.personal,
+                copa: s.copa,
+                ads: s.ads,
+                export: s.export,
+                instructions: s.instructions
             }
-            this.props.updateSkill({...this.props.skill, ...properties})
-
-            properties.locales = JSON.stringify(properties.locales)
-
-          axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), properties)
-          .then(res => {
-              this.setState({
-                  saved: true
-              });
-              if(typeof(cb) === 'function') cb();
-          })
-          .catch(err => {
-              console.log(err);
-              this.setState({
-                  error: 'Save Error, updates not saved'
-              });
-          });
         }
+
+        let properties = {
+            name: s.name,
+            inv_name: s.inv_name,
+            summary: s.summary,
+            description: s.description,
+            keywords: s.keywords,
+            invocations: s.invocations,
+            small_icon: s.small_icon,
+            large_icon: s.large_icon,
+            category: category,
+            locales: s.locales,
+            privacy_policy: !_.isEmpty(s.privacy_policy) ? s.privacy_policy : '',
+            terms_and_cond: s.terms_and_cond,
+            ...store
+        }
+        this.props.updateSkill({...this.props.skill, ...properties})
+
+        properties.locales = JSON.stringify(properties.locales)
+
+        axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), properties)
+        .then(res => {
+            this.setState({
+                saved: true
+            });
+            if(typeof(cb) === 'function') cb();
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                error: 'Save Error, updates not saved'
+            });
+        })
     }
 
     handleChange(event){

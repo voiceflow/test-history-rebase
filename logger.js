@@ -59,12 +59,20 @@ var log_format = (tokens, req, res) => {
     params: req.params,
     body: req.body
   }
+  let log = ''
+  
+  try {
+    log = ['Timestamp', new Date().getTime() / 1000,
+    'Method:', tokens.method(req, res), 
+    'URL:', tokens.url(req, res), 
+    'Status:', tokens.status(req, res), 
+    'Response Time:', tokens['response-time'](req, res),
+    'Request:', JSON.stringify(request)].join(' ')
+  } catch (err) {
+    console.trace(err)
+  }
 
-  return ['Method:', tokens.method(req, res), 
-          'URL:', tokens.url(req, res), 
-          'Status:', tokens.status(req, res), 
-          'Response Time:', tokens['response-time'](req, res),
-          'Request:', JSON.stringify(request)]
+  return log
 }
 
 exports.request_logger = morgan(log_format, { stream: access_log_stream })

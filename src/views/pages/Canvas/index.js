@@ -223,6 +223,13 @@ class Canvas extends Component {
         })
     }
 
+    static getDerivedStateFromProps(props, state){
+        if (props.skill !== state.skill){
+            return {
+                skill: props.skill
+            }
+        }
+    }
     componentWillUnmount() {
         Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
@@ -1654,6 +1661,7 @@ class Canvas extends Component {
                         onTemplateIntent={this.handleTemplateIntent}
                         onFlowRenamed={this.onFlowRenamed}
                         history={this.props.history}
+                        user={this.props.user}
                         loading_diagram={this.state.loading_diagram}
                         text={this.state.text}
                         confirm={this.state.confirm}

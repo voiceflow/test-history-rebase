@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import update from 'immutability-helper'
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'
 import Business from './views/pages/Business'
@@ -204,7 +205,9 @@ class Skill extends Component {
                     skill={this.state.skill} 
                     page={this.props.secondaryPage}
                     onError={this.onError} 
-                    onConfirm={this.onConfirm}/>
+                    onConfirm={this.onConfirm}
+                    updateSkill={(skill) => {this.setState({skill: skill})}}
+                    />
             case 'logs':
                 return <Logs
                   {...this.props}

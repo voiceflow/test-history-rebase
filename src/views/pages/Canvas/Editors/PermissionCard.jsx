@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import {Alert} from 'reactstrap'
+import {Alert, Button, ButtonGroup} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
+import {Link} from 'react-router-dom'
 
 const PERMISSIONS = [
     {name: 'Reminders', code: 'alexa::alerts:reminders:skill:readwrite'},
@@ -74,14 +75,42 @@ class PermissionCard extends Component {
         }
         return (
             <React.Fragment>
-                <Alert>Sends permission request to the user's phone/device</Alert>
-                <div className="px-5 mt-4">
-                    <div className="smartphone">
-                        <img src='/images/permissions.png' className="w-100" alt="sample permission"/>
+                <ButtonGroup className="toggle-group mb-2">
+                    <Button outline={this.state.node.extras.a_l} onClick={()=> (this.state.node.extras.a_l && this.toggle('a_l'))} disabled={!this.state.node.extras.a_l}> Permissions </Button>
+                    <Button outline={!this.state.node.extras.a_l} onClick={()=> (!this.state.node.extras.a_l && this.toggle('a_l'))} disabled={this.state.node.extras.a_l}> Account Linking </Button>
+                </ButtonGroup>
+                <div className="text-center">
+                {this.state.node.extras.a_l ? <React.Fragment>
+                    {this.props.skill.account_linking?
+                        <label><b>{this.props.skill.account_linking.authorizationUrl}</b></label>:
+                        <Alert color='warning' className="mt-3"><i className="far fa-exclamation-triangle mr-1"/> No Account Link found</Alert>
+                    }
+                    <Link
+                        className="btn btn-clear btn-block"
+                        to={`/business/${this.props.skill.skill_id}/link_account/templates`}
+                    >Edit Account Linking</Link>
+                    <hr/>
+                    <div className="px-4">
+                        <label>Send an Account Linking Card to the user's phone/device</label>
                     </div>
-                </div>
-                <div className="text-center mt-4">
-                    <button className="btn btn-clear" onClick={()=>this.toggle('settings')}>Settings</button>
+                    <div className="px-5 mt-4">
+                        <div className="smartphone">
+                            <img src='/images/account_linking.png' className="w-100" alt="sample account linking"/>
+                        </div>
+                    </div>
+                </React.Fragment> : <React.Fragment>
+                    <div className="px-4">
+                        <label>Send a Permission Request Card to the user's phone/device</label>
+                    </div>
+                    <div className="px-5 mt-4">
+                        <div className="smartphone">
+                            <img src='/images/permissions.png' className="w-100" alt="sample permission"/>
+                        </div>
+                    </div>
+                    <div className="mt-4">
+                        <button className="btn btn-clear" onClick={()=>this.toggle('settings')}>Settings</button>
+                    </div>
+                </React.Fragment>}
                 </div>
             </React.Fragment>
         );

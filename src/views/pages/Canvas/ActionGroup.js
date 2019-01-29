@@ -12,7 +12,7 @@ import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
 const loading = (message) => {
-    return <div className="super-center mb-4 loading-modal">
+    return <div className="super-center mb-4">
         <div className='text-center'>
             <h1><span className="loader"/></h1>
             <p className="loading">{message}</p>

@@ -7,7 +7,9 @@ const permission_options = [
     { name: 'User Email', value: 'alexa::profile:email:read' },
     { name: 'User Name', value: 'alexa::profile:name:read' },
     { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
-    // { name: 'Amazon Pay', value: 'payments:autopay_consent' }
+    { name: 'Reminders', value: 'alexa::alerts:reminders:skill:readwrite' },
+    { name: 'Notifications', value: 'alexa::devices:all:notifications:write'},
+    { name: 'Account Linking', value: '' }
     // Removed for now, amazon pay permissions broken
 ]
 

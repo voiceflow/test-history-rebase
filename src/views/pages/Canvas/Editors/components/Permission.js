@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 const _ = require('lodash')
 
-const PERMISSIONS_WITH_VARIABLE_MAPS = ['User Phone Number', 'User Email', 'User Name']
+const PERMISSIONS_WITH_VARIABLE_MAPS = ['User Phone Number', 'User Email', 'User Name', 'Account Linking']
 
 class Permission extends Component {
     constructor(props) {
@@ -14,9 +14,10 @@ class Permission extends Component {
     }
 
     render() {
-        let VariableLabel =  (props) => {
-            if (props.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(props.selected.label)) {
-                const selected = props.selected.label
+        let variable_map = this.props.selected && PERMISSIONS_WITH_VARIABLE_MAPS.includes(this.props.selected.label)
+        let VariableLabel =  () => {
+            if (variable_map) {
+                const selected = this.props.selected.label
                 let label;
                 if (selected === 'User Phone Number') {
                     label = 'Map User Phone Number To'
@@ -24,6 +25,8 @@ class Permission extends Component {
                     label = 'Map User Email To'
                 } else if (selected === 'User Name') {
                     label = 'Map User Name To'
+                } else if (selected === 'Account Linking'){
+                    label = 'Map Access Token To'
                 }
                 return (
                     <React.Fragment>
@@ -46,7 +49,7 @@ class Permission extends Component {
         return (
             <div className="solid-border set-block">
                 <div className="close" onClick={this.props.onRemove}>&times;</div>
-                <label>Request User Permissions</label>
+                <label className="mt-0">{variable_map ? 'Request User Information' : 'Check Permission Enabled' }</label>
                 <Select
                     classNamePrefix="select-box"
                     value={this.props.selected}
@@ -65,7 +68,7 @@ class Permission extends Component {
                         return false
                     }}
                 />
-                <VariableLabel selected={this.props.selected}/>
+                <VariableLabel/>
             </div>
         );
     }

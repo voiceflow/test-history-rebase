@@ -302,6 +302,7 @@ class Command extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
+                        platform={this.props.platform}
                     />
                 </React.Fragment>
             case 'slots':
@@ -315,6 +316,7 @@ class Command extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
+                        platform={this.props.platform}
                     />
                 </React.Fragment>
             default:

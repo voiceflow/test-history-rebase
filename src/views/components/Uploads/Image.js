@@ -94,6 +94,7 @@ class Image extends Component {
                 accept="image/jpeg, image/png"
                 onDrop={this.onDropImage}
             >
+                <label className="drop-title">{this.props.title}</label>
                 <div className="w-100">
                     <div className="drop-child">
                         Drag-n-Drop Image<br/>

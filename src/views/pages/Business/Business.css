@@ -2,7 +2,7 @@
 	height: 100%;
 	display: flex;
 }
-#settings{
+.settings{
 	height: 100%;
 	display: block;
 	overflow-y: scroll;

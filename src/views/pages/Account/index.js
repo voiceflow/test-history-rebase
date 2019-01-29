@@ -98,11 +98,11 @@ class Account extends Component {
   renderButton(stage, action){
     switch(stage){
       case LOADING:
-        return <Button color="clear"><span className="loader"/></Button>
+        return <Button color="clear" className="purple-btn"><span className="loader"/></Button>
       case UNLINKED:
-        return <Button color="clear" disabled>Unlinked</Button>
+        return <Button color="clear" className="purple-btn" disabled>Unlinked</Button>
       default:
-        return <Button onClick={action}>Reset</Button>
+        return <Button onClick={action} className="purple-btn">Reset</Button>
     }
   }
 
@@ -144,7 +144,7 @@ class Account extends Component {
                     <div className="super-center">
                       {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
                       {this.props.user.admin > 0 ? <React.Fragment>{this.state.expiry ? <div className="btn btn-clear disabled">Renews {this.state.expiry}</div> : null}</React.Fragment> : 
-                      <Button onClick={this.toggle}>Upgrade</Button>}
+                      <Button onClick={this.toggle} className="purple-btn">Upgrade</Button>}
                     </div>
                   </div>
                 </div>

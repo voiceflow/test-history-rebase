@@ -183,7 +183,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
   }
 
   const retrieveDiagram = (diagram_id, new_skill_id) => {
-
     const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),

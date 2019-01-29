@@ -1673,6 +1673,7 @@ class Canvas extends Component {
                         preview={this.props.preview}
                         onSave={this.onSave}
                         onError={this.props.onError}
+                        toggleUpgrade={this.props.toggleUpgrade}
                     />
                     {this.state.loading_diagram && <div id="loading-diagram">
                         <div className="text-center">

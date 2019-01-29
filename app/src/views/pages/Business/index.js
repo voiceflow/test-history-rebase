@@ -69,7 +69,7 @@ class Business extends Component {
                         <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
                         {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
                         <div className="mt-2">
-                            <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan</Link>
+                            <Link to="/account" className="purple-btn" style={{ textDecoration: 'none' }}>Upgrade Plan</Link>
                         </div>
                     </div>
                 </div>

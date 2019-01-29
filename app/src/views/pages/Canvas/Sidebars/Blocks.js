@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import ModuleItem from './components/ModuleItem';
-import UpgradeModal from './../../../components/Modals/UpgradeModal.jsx'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections} from './../Blocks'
@@ -30,14 +29,11 @@ class Blocks extends PureComponent {
 
         this.state = {
             tab: tab,
-            upgrade_modal: false,
-            selected_plan: 1,
             show: show,
             sections: getSections()
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
-        this.toggleUpgrade = this.toggleUpgrade.bind(this)
         this.switchTab = this.switchTab.bind(this)
     }
 
@@ -56,11 +52,7 @@ class Blocks extends PureComponent {
         this.setState(s)
         this.forceUpdate()
     }
-    toggleUpgrade() {
-        this.setState({
-            upgrade_modal: !this.state.upgrade_modal
-        });
-    }
+    
     render() {
         let block_content;
 
@@ -82,7 +74,7 @@ class Blocks extends PureComponent {
                                 <div className="premium-block">
                                     <div>
                                         <span>Upgrade to access these premium features</span>
-                                        <Button className="purple-btn mt-3" onClick={this.toggleUpgrade}>
+                                        <Button className="purple-btn mt-3" onClick={this.props.toggleUpgrade}>
                                             Upgrade
                                         </Button>
                                     </div>
@@ -108,16 +100,7 @@ class Blocks extends PureComponent {
                 block_content = <div className="mt-2 text-center text-muted"><img className="image-editor mt-4 mb-3" src="/empty.png" alt="empty"/>You have no flows, visit the marketplace to get some! <Button color="primary mt-3" onClick={() => {this.props.history.push('/market')}}>Marketplace</Button></div>
             }
         }
-
         return <React.Fragment>
-            <UpgradeModal
-                upgrade_modal={this.state.upgrade_modal}
-                toggle={this.toggleUpgrade}
-                selected_plan={this.state.selected_plan}
-                switchPlan={(plan) => this.setState({selected_plan: plan})}
-                user={this.props.user}
-                logout={this.logout}
-            />
             {/* <ButtonGroup className="toggle-group mb-2">
                 {TABS.map(tab => {
                     return <Button

@@ -742,34 +742,38 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
         } else if (node.extras.type === 'permission') {
+
           let nextLink = null
           for (var j = 0; j < node.ports.length; j++) {
             if (!node.ports[j].in) {
               [nextLink] = node.ports[j].links;
             }
           }
-
-          let permission_card = true
-          if(node.extras.custom){
-            if(Array.isArray(node.extras.permissions) && node.extras.permissions.length !== 0){
-              permission_card = []
-              node.extras.permissions.forEach(permission => {
-                options.permissions.add(permission),
-                permission_card.push(permission)
-              })
-            }
-          }
-
+          
           // Permission Card
-          story.lines[node.id] = {
-            permission_card: permission_card,
-            nextId: getLink(nextLink)
+          story.lines[node.id] = {nextId: getLink(nextLink)}
+
+          if(node.extras.a_l){
+            story.lines[node.id] = {link_account: true}
+          }else{
+            let permission_card = true
+            if(node.extras.custom && Array.isArray(node.extras.permissions)){
+              let permissions_array = node.extras.permissions.filter(p => !!p.trim())
+              if(permissions_array.length !== 0){
+                permission_card = []
+                permissions_array.forEach(permission => {
+                  options.permissions.add(permission),
+                  permission_card.push(permission)
+                })
+              }
+            }
+            story.lines[node.id] = {permission_card: permission_card}
           }
         } else if (node.extras.type === 'permissions') {
           // Email/Name/Phone Permission Requests
           const permissions = node.extras.permissions ? node.extras.permissions : []
           permissions.forEach(permission => {
-            if(permission && permission.selected && permission.selected.value){
+            if(permission && permission.selected.trim() && permission.selected.value.trim()){
               options.permissions.add(permission.selected.value)
             }
           })
@@ -784,11 +788,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             code: node.extras.code,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
-          }
-        } else if (node.extras.type === 'link_account') {
-          story.lines[node.id] = {
-            link_account: true,
-            nextId: getLink(node.ports.filter(a => a.in === false)[0].links[0])
           }
         } else if (node.extras.type === 'module') {
 

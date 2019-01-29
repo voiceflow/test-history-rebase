@@ -2555,7 +2555,7 @@ button.close:hover{
 
 .premium-block{
     position: absolute;
-    width: 90%;
+    width: 210px;
     height: 250px;
     z-index: 5;
     font-weight: bold;

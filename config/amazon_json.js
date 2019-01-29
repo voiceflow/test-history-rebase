@@ -171,7 +171,7 @@ const manifest = (r, encoded_id, name) => {
 	}else{
 		r.invocations = [`Alexa, open ${r.inv_name}`]
 	}
-	r.keywords = r.keywords ? r.keywords.split(",").map(item => item.trim()).filter(word => !!word) : '';
+	r.keywords = r.keywords ? r.keywords.split(",").map(item => item.trim()).filter(word => !!word) : [];
 
 	const localeObj = {
 		"summary": r.summary,
@@ -179,8 +179,8 @@ const manifest = (r, encoded_id, name) => {
 		"name": r.name,
 		"description": r.description,
 		"keywords": r.keywords,
-		"smallIconUri": r.small_icon,
-		"largeIconUri": r.large_icon
+		"smallIconUri": r.small_icon ? r.small_icon : '',
+		"largeIconUri": r.large_icon ? r.large_icon : ''
 	}
 
 	const locales = {}
@@ -214,7 +214,7 @@ const manifest = (r, encoded_id, name) => {
 			"publishingInformation": {
 				"locales": locales,
 				"isAvailableWorldwide": true,
-				"testingInstructions": r.instructions
+				"testingInstructions": r.instructions ? r.instructions : ''
 			},
 			"apis": {
 				"custom": {
@@ -226,11 +226,11 @@ const manifest = (r, encoded_id, name) => {
 			},
 			"manifestVersion": "1.0",
 			"privacyAndCompliance": {
-				"allowsPurchases": r.purchase,
-				"isExportCompliant": r.export,
-				"isChildDirected": r.copa,
-				"usesPersonalInfo": r.personal,
-				"containsAds": r.ads
+				"allowsPurchases": !!r.purchase,
+				"isExportCompliant": !!r.export,
+				"isChildDirected": !!r.copa,
+				"usesPersonalInfo": !!r.personal,
+				"containsAds": !!r.ads
 			}
 		}
 	}

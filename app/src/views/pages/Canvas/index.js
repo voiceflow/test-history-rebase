@@ -164,7 +164,7 @@ class Canvas extends Component {
         this.onLoadDiagrams()
     }
 
-    componentWillMount() {
+    componentDidMount() {
         Mousetrap.bind(['shift+/'], this.toggleShortcuts)
         Mousetrap.bind(['command+s'], (e)=>{
             e.preventDefault()

@@ -57,7 +57,7 @@ class UpgradeModal extends Component {
         let option = options.find(o => o.plan === this.props.selected_plan)
         if (option) {
             return <div>
-                {option.features.map((feature, i) => <div className="feature-item" key={i}><i className="fas fa-check-circle" />{feature}</div>)}
+                {option.features.map((feature, i) => <div className="feature-item" key={i}><img src="/icon/checkmark.svg" width={25} className="mr-3" alt="check"/>{feature}</div>)}
             </div>
         }
         return null

@@ -841,22 +841,27 @@ class Skill extends Component {
                             </div>
                             <div className="col-9 d-flex">
                                 <div>
-                                    <label className="mt-0">Small icon *</label>
-                                    <Image
-                                        className='icon-image small-icon'
-                                        isDisabled={disabled_stages.has(this.state.stage)}
-                                        path='/small_icon'
-                                        image={this.state.small_icon}
-                                        update={(url) => this.setState({small_icon: url})}/>
-                                </div>
-                                <div className="pl-3">
-                                    <label className="mt-0">Large icon *</label>
                                     <Image
                                         className='icon-image large-icon'
                                         isDisabled={disabled_stages.has(this.state.stage)}
                                         path='/large_icon'
                                         image={this.state.large_icon}
-                                        update={(url) => this.setState({large_icon: url})}/>
+                                        update={(url) => this.setState({large_icon: url})}
+                                        title='Large Icon *'/>
+                                </div>
+
+                                <Button className="transfer-btn">
+                                    <i className="fas fa-arrow-right"></i>
+                                </Button>
+
+                                <div className="pl-3">
+                                    <Image
+                                        className='icon-image small-icon'
+                                        isDisabled={disabled_stages.has(this.state.stage)}
+                                        path='/small_icon'
+                                        image={this.state.small_icon}
+                                        update={(url) => this.setState({small_icon: url})}
+                                        title='Small Icon *'/>
                                 </div>
                             </div>
                         </div>

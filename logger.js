@@ -10,7 +10,7 @@ const pad = (num) => {
 }
 
 const log_name_generator = (time, index) => {
-  let time = new Date
+  time = new Date()
   return [time.getFullYear(), pad(time.getMonth() + 1), pad(time.getHours())].join('_') + '.log'
 }
 

@@ -830,9 +830,6 @@ exports.buildSkill = async (req, res) => {
             }
           }
 
-          let model = JSONs.interactionModel(r)
-          // console.log(JSON.stringify(model))
-
           const iterate = (depth) => {
             if (depth === 3) {
               res.status(500).send({
@@ -850,7 +847,7 @@ exports.buildSkill = async (req, res) => {
                     headers: {
                       Authorization: token
                     },
-                    data: model
+                    data: JSONs.interactionModel(r, locale)
                   }))
                 })
 

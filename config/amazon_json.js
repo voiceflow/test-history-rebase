@@ -65,7 +65,7 @@ const _getSlotsForKeys = (keys, slots) => {
 	})
 }
 
-const interactionModel = (req) => {
+const interactionModel = (req, locale) => {
 
 	const invocation = req.inv_name
 	const intents = req.intents
@@ -130,6 +130,13 @@ const interactionModel = (req) => {
 		if (!entered_intents.has('AMAZON.RepeatIntent')) {
 			entered_intents.add('AMAZON.RepeatIntent')
 			intents_for_amazon.push({name: 'AMAZON.RepeatIntent'})
+		}
+	}
+
+	if(locale.includes('en')){
+		if (!entered_intents.has('AMAZON.FallbackIntent')) {
+			entered_intents.add('AMAZON.FallbackIntent')
+			intents_for_amazon.push({name: 'AMAZON.FallbackIntent'})
 		}
 	}
 

@@ -36,9 +36,6 @@ exports.DEFAULT_INTENTS = [
   },
   {
     "name": "AMAZON.PauseIntent",
-  },
-  {
-    "name": "AMAZON.FallbackIntent"
   }
 ]
 

@@ -231,7 +231,7 @@ class Account extends Component {
                   <FormGroup>
                     <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
                   </FormGroup>
-                  <Button block className="login-btn" type="submit">Login</Button>
+                  <Button block className="purple-btn login-btn" type="submit">Login</Button>
                   <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}}to='/reset'>Forgot your password?</Link></div>
                   <hr/>
                   <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Sign Up</a></div>
@@ -279,7 +279,7 @@ class Account extends Component {
                     <Label for="password">Password</Label>
                     <Input className="form-bg" type="password" name="r_password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.r_password}/>
                   </FormGroup>
-                  <Button block className="login-btn" type="submit">Create Account</Button>
+                  <Button block className="purple-btn login-btn" type="submit">Create Account</Button>
                   <hr/>
                   <div className="text-center">Already have an account? <a href="/login" onClick={this.openLogin}>Login</a></div>
                 </div>

@@ -18,7 +18,7 @@ const updateLink = (link, skill_id) => {
 
 const tabs = [
     {
-        display: <React.Fragment><i className="far fa-home mr-2"/> Home</React.Fragment>,
+        display: <React.Fragment><i className="far fa-tachometer-alt mr-2"/> Dashboard</React.Fragment>,
         match: ['home'],
         link: '/business/:skill_id'
     },

@@ -294,7 +294,7 @@ const manifest = (r, encoded_id, name) => {
 
 		// TODO: FIX THIS JANK ASS SHIT - THE MOST INSANE BANDAID FIX YOUVE EVER SEEN
 		if(!(typeof ret.manifest.events === 'object')) ret.manifest.events = {}
-		ret.manifest.events.endpoint = {uri: SKILL_ENDPOINT}
+		ret.manifest.events.endpoint = {uri: SKILL_ENDPOINT, sslCertificateType: "Wildcard"}
 		if(!Array.isArray(ret.manifest.events.subscriptions)) ret.manifest.events.subscriptions = []
 		const events = ['SKILL_PERMISSION_ACCEPTED', 'SKILL_PERMISSION_CHANGED']
 		events.forEach(permission => {

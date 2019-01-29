@@ -134,8 +134,6 @@ app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
 app.get('/creator/privacy_policy', policy);
-app.get('/business', ensurePlan(1));
-app.get('/business/*', ensurePlan(1));
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 

@@ -8,6 +8,7 @@ import Emails from './Emails'
 import Home from './Home'
 import Products from './Products/Products';
 import EditProduct from './Products/EditProduct.js';
+import { Button } from 'reactstrap'
 
 const PAID_FEATURES = ['In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']
 
@@ -69,7 +70,9 @@ class Business extends Component {
                         <p className="text-muted">To gain access to business features such as analytics, In-skill purchasing and Email automation upgrade your Voiceflow account to a paid tier</p>
                         {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/checkmark.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
                         <div className="mt-2">
-                            <Link to="/account" className="purple-btn" style={{ textDecoration: 'none' }}>Upgrade Plan</Link>
+                            <Button className="purple-btn" onClick={this.props.toggleUpgrade}>
+                                Upgrade Plan
+                            </Button>
                         </div>
                     </div>
                 </div>

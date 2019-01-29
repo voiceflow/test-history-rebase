@@ -149,9 +149,9 @@ const interactionModel = (req) => {
 	})
 
 	// Add random catchall values comment out to remove default catchall
-	CATCHALL_SLOT_VALUES.forEach(val => {
-		content_slot_values.push(val)
-	})
+	// CATCHALL_SLOT_VALUES.forEach(val => {
+	// 	content_slot_values.push(val)
+	// })
 
 	const slot_types = []
 

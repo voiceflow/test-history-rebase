@@ -756,13 +756,13 @@ exports.buildSkill = async (req, res) => {
             throw err
           }
 
-          let account_linking = r.account_linking;
-
-          if (!_.isNull(account_linking)) {
+          if (!_.isNull(r.account_linking)) {
+            let account_linking = r.account_linking
             account_linking.domains = _.flattenDeep(account_linking.domains)
             account_linking.scopes = _.flattenDeep(account_linking.scopes)
-            account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
-            axios.request({
+            account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+            try{
+              await axios.request({
                 url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/accountLinkingClient`,
                 method: 'PUT',
                 headers: {
@@ -772,10 +772,10 @@ exports.buildSkill = async (req, res) => {
                   accountLinkingRequest: account_linking
                 }
               })
-              .catch(err => {
-                logAxiosError(err, 'ACCOUNT LINKING')
-                res.status(500).send(err.response.data)
-              });
+            }catch(err){
+              logAxiosError(err, 'ACCOUNT LINKING')
+              return res.status(500).send(err.response.data)
+            }
           }
 
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
@@ -837,70 +837,19 @@ exports.buildSkill = async (req, res) => {
               });
               return;
             } else {
-              setTimeout(() => {
-
-                const interactionModels = []
-                r.locales.forEach(locale => {
-                  interactionModels.push(axios.request({
-                    url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
-                    method: 'PUT',
-                    headers: {
-                      Authorization: token
-                    },
-                    data: JSONs.interactionModel(r, locale)
-                  }))
-                })
-
-                Promise.all(interactionModels)
-                  .then((promise_res) => {
-                    // Check whether building before certifying
-                    const getSkillStatus = (depth) => {
-                      setTimeout(() => {
-                        axios.request({
-                            url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
-                            method: 'GET',
-                            headers: {
-                              Authorization: token
-                            }
-                          })
-                          .then(response => {
-                            if (response.hasOwnProperty('violations')) {
-                              getSkillStatus(depth + 1)
-                            } else {
-                              incrementTimesPublishedSuccessfulIntercom(req.user.id);
-
-                              analytics.track({
-                                userId: req.user.id,
-                                event: 'Publish Success',
-                                properties: {
-                                  amzn_id: amzn_id,
-                                  skill_id: id
-                                }
-                              })
-
-                              // Update canonical skill id's amzn id
-                              pool.query(`
-                                UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
-                                [amzn_id, id],
-                                (err) => {
-                                  if (err) {
-                                    console.trace(err)
-                                    res.sendStatus(500)
-                                  } else {
-                                    res.send(amzn_id)
-                                  }
-                                })
-                            }
-                          })
-                          .catch(err => {
-                            logAxiosError(err, 'GETTING SKILL MANIFEST')
-                            res.status(500).send(err.response.data)
-                          });
-                      }, 10000)
-                    }
-                    getSkillStatus(0)
-                  })
-                  .catch(err => {
+              setTimeout(async () => {
+                for(locale of r.locales){
+                  let model = JSONs.interactionModel(r, locale)
+                  try{
+                    await axios.request({
+                      url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
+                      method: 'PUT',
+                      headers: {
+                        Authorization: token
+                      },
+                      data: model
+                    })
+                  }catch(err){
                     logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(model))
                     if (err.response) {
                       if (err.response.status === 404) {
@@ -911,7 +860,55 @@ exports.buildSkill = async (req, res) => {
                     } else {
                       res.sendStatus(500)
                     }
-                  })
+                    return
+                  }
+                }
+                // Check whether building before certifying
+                const getSkillStatus = (depth) => {
+                  setTimeout(() => {
+                    axios.request({
+                        url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
+                        method: 'GET',
+                        headers: {
+                          Authorization: token
+                        }
+                      })
+                      .then(response => {
+                        if (response.hasOwnProperty('violations')) {
+                          getSkillStatus(depth + 1)
+                        } else {
+                          incrementTimesPublishedSuccessfulIntercom(req.user.id);
+
+                          analytics.track({
+                            userId: req.user.id,
+                            event: 'Publish Success',
+                            properties: {
+                              amzn_id: amzn_id,
+                              skill_id: id
+                            }
+                          })
+
+                          // Update canonical skill id's amzn id
+                          pool.query(`
+                            UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
+                            [amzn_id, id],
+                            (err) => {
+                              if (err) {
+                                console.trace(err)
+                                res.sendStatus(500)
+                              } else {
+                                res.send(amzn_id)
+                              }
+                            })
+                        }
+                      })
+                      .catch(err => {
+                        logAxiosError(err, 'GETTING SKILL MANIFEST')
+                        res.status(500).send(err.response.data)
+                      });
+                  }, 10000)
+                }
+                getSkillStatus(0)
               }, 5000)
             }
           }

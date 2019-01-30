@@ -133,7 +133,7 @@ const interactionModel = (req, locale) => {
 		}
 	}
 
-	if(locale.includes('en')){
+	if(locale && locale.includes('en')){
 		if (!entered_intents.has('AMAZON.FallbackIntent')) {
 			entered_intents.add('AMAZON.FallbackIntent')
 			intents_for_amazon.push({name: 'AMAZON.FallbackIntent'})

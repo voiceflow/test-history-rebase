@@ -754,7 +754,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           story.lines[node.id] = {nextId: getLink(nextLink)}
 
           if(node.extras.a_l){
-            story.lines[node.id] = {link_account: true}
+            story.lines[node.id].link_account = true
           }else{
             let permission_card = true
             if(node.extras.custom && Array.isArray(node.extras.permissions)){
@@ -762,19 +762,24 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
               if(permissions_array.length !== 0){
                 permission_card = []
                 permissions_array.forEach(permission => {
-                  options.permissions.add(permission),
+                  if(!permission.startsWith('UNOFFICIAL')){
+                    options.permissions.add(permission)
+                  }
                   permission_card.push(permission)
                 })
               }
             }
-            story.lines[node.id] = {permission_card: permission_card}
+            story.lines[node.id].permission_card = permission_card
           }
         } else if (node.extras.type === 'permissions') {
+          // THIS IS THE USER INFO BLOCK
           // Email/Name/Phone Permission Requests
           const permissions = node.extras.permissions ? node.extras.permissions : []
           permissions.forEach(permission => {
-            if(permission && permission.selected.trim() && permission.selected.value.trim()){
-              options.permissions.add(permission.selected.value)
+            if(permission && permission.selected && permission.selected.value.trim()){
+              if(!permission.selected.value.startsWith('UNOFFICIAL')){
+                options.permissions.add(permission.selected.value)
+              }
             }
           })
 

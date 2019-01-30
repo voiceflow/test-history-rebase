@@ -84,25 +84,20 @@ class Image extends Component {
                 </div>
             </div>
         }else{
-            render = <Dropzone
-                className="dropzone"
-                activeClassName="active"
-                rejectClassName="reject"
-                multiple={false}
-                disableClick={false}
-                maxSize={this.props.max_size ? this.props.max_size : MAX_SIZE}
-                accept="image/jpeg, image/png"
-                onDrop={this.onDropImage}
-            >
-                <label className="drop-title">{this.props.title}</label>
-                <div className="w-100">
-                    <div className="drop-child">
-                        Drag-n-Drop Image<br/>
-                        <small>OR</small><br/>
-                        <div className="space-between">
-                            <div className="upload-btn btn btn-primary-small">
-                                Add File
-                            </div>
+            render = <React.Fragment>
+                <Dropzone
+                    className="dropzone"
+                    activeClassName="active"
+                    rejectClassName="reject"
+                    multiple={false}
+                    disableClick={false}
+                    maxSize={this.props.max_size ? this.props.max_size : MAX_SIZE}
+                    accept="image/jpeg, image/png"
+                    onDrop={this.onDropImage}
+                >
+                    <div className="w-100">
+                        <div className="drop-child">
+                            Drag-n-Drop Image OR <a href="#" onclick={() => {return false}}>Browse</a><br/>
                             {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()
@@ -110,15 +105,16 @@ class Image extends Component {
                                 return false
                             }}>URL</button>}
                         </div>
+                        <div className="rejected-file text-danger">
+                            <b>File not Accepted</b>
+                        </div>
                     </div>
-                    <div className="rejected-file text-danger">
-                        <b>File not Accepted</b>
-                    </div>
-                </div>
-            </Dropzone>
+                </Dropzone>
+            </React.Fragment>
         }
 
         return <div className={(this.props.className ? this.props.className : 'image-standard' ) + (this.props.isDisabled ? ' disabled-image' : '')}>
+            <label>{this.props.title}</label>
             {render}
         </div>
 	}

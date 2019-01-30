@@ -756,28 +756,6 @@ exports.buildSkill = async (req, res) => {
             throw err
           }
 
-          if (!_.isNull(r.account_linking)) {
-            let account_linking = r.account_linking
-            account_linking.domains = _.flattenDeep(account_linking.domains)
-            account_linking.scopes = _.flattenDeep(account_linking.scopes)
-            account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
-            try{
-              await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/accountLinkingClient`,
-                method: 'PUT',
-                headers: {
-                  Authorization: token
-                },
-                data: {
-                  accountLinkingRequest: account_linking
-                }
-              })
-            }catch(err){
-              logAxiosError(err, 'ACCOUNT LINKING')
-              // return res.status(500).send(err.response.data)
-            }
-          }
-
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
             let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
 
@@ -863,6 +841,29 @@ exports.buildSkill = async (req, res) => {
                     return
                   }
                 }
+
+                if (!_.isNull(r.account_linking)) {
+                  let account_linking = r.account_linking
+                  account_linking.domains = _.flattenDeep(account_linking.domains)
+                  account_linking.scopes = _.flattenDeep(account_linking.scopes)
+                  account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+                  try{
+                    await axios.request({
+                      url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/accountLinkingClient`,
+                      method: 'PUT',
+                      headers: {
+                        Authorization: token
+                      },
+                      data: {
+                        accountLinkingRequest: account_linking
+                      }
+                    })
+                  }catch(err){
+                    logAxiosError(err, 'ACCOUNT LINKING')
+                    // return res.status(500).send(err.response.data)
+                  }
+                }
+
                 // Check whether building before certifying
                 const getSkillStatus = (depth) => {
                   setTimeout(() => {

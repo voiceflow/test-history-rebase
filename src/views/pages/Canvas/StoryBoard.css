@@ -697,6 +697,9 @@
 .goback-btn:active{
 background-color: rgb(245, 249, 255) !important;
 }
+.goforward-btn{
+    transform: scaleX(-1)
+}
 .Menu #sidebar {
     position: absolute;
     left: 40px;
@@ -2563,4 +2566,18 @@ button.close:hover{
     margin: auto;
     display: flex;
     flex-wrap: wrap;
+}
+
+.big-settings-content{
+    min-width: 500px;
+    padding: 24px 32px;
+    border-radius: 10px;
+    height: auto;
+    margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+	background-color: #fff;
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+	border: 1px solid rgba(141, 162, 181, .28);
+	max-width: 80%;
 }

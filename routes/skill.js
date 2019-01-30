@@ -774,7 +774,7 @@ exports.buildSkill = async (req, res) => {
               })
             }catch(err){
               logAxiosError(err, 'ACCOUNT LINKING')
-              return res.status(500).send(err.response.data)
+              // return res.status(500).send(err.response.data)
             }
           }
 

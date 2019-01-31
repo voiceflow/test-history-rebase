@@ -109,7 +109,9 @@ class Skill extends Component {
     }
 
     onLoadSkill(skill_id){
-        axios.get(`/skill/${skill_id}?${this.props.preview ? 'preview=1' : 'simple=1'}`)
+        axios.get(`/skill/${skill_id}?${this.props.preview ? 'preview=1' : 'simple=1'}`, {
+            headers: { Pragma: 'no-cache' }
+        })
         .then(res => {
             let skill = res.data
             if(this.props.preview && !skill.preview){

@@ -189,6 +189,7 @@ class Canvas extends Component {
                 skill: props.skill
             }
         }
+        return null;
     }
     componentWillUnmount() {
         Mousetrap.reset()

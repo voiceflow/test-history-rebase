@@ -419,11 +419,7 @@ exports.deleteProduct = async (req, res) => {
             Authorization: token
           }
         })
-      }catch(err){
-        if(err && err.response && err.response.status === 403){
-          return res.sendStatus(403)
-        }
-      }
+      }catch(err){}
       deleteProductSQL(pid, res)
     })
   }else{

@@ -21,22 +21,24 @@ class FlowBar extends Component{
                         <i className="fas fa-clone mr-1"/> {this.state.name}
                     </div>
                 </div>
-                <UncontrolledDropdown direction='up'>
-                    <DropdownToggle className="grey-icon position-absolute right mr-4" tag="button">
-                        <i className="far fa-ellipsis-h"/>
-                    </DropdownToggle>
-                    <DropdownMenu className="no-select">
-                        <DropdownItem header>
-                            Flow Options
-                        </DropdownItem>
-                        <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram.id)} className="pointer">
-                            <i className="fas fa-clone text-muted"/> Copy
-                        </DropdownItem>
-                        <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram.id)} className="pointer">
-                            <i className="fas fa-times-square text-muted"/> Delete
-                        </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledDropdown>
+                {!this.props.preview &&
+                    <UncontrolledDropdown direction='up'>
+                        <DropdownToggle className="grey-icon position-absolute right mr-4" tag="button">
+                            <i className="far fa-ellipsis-h"/>
+                        </DropdownToggle>
+                        <DropdownMenu className="no-select">
+                            <DropdownItem header>
+                                Flow Options
+                            </DropdownItem>
+                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram.id)} className="pointer">
+                                <i className="fas fa-clone text-muted"/> Copy
+                            </DropdownItem>
+                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram.id)} className="pointer">
+                                <i className="fas fa-times-square text-muted"/> Delete
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                }
             </div>
         </React.Fragment>
     }

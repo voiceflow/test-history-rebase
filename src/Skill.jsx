@@ -247,21 +247,25 @@ class Skill extends Component {
         }
 
         return <React.Fragment>
-            {this.state.secondary && <SecondaryNavBar skill={this.state.skill} page={this.props.page}/>}
+            {this.state.secondary && <SecondaryNavBar skill={this.state.skill} page={this.props.page} />}
 
             <div className="skill-name-top-left fixed-top">
-                <Link to="/" className="mx-2">
-                <img src={"/back.svg"} alt="back" className='mr-3'/>
-                </Link>
-                {this.state.skill ? this.state.skill.name : 'New Skill'}
+            <Link to="/" className="mx-2">
+                <img src={"/back.svg"} alt="back" className="mr-3" />
+            </Link>
+            {this.state.skill ? this.state.skill.name : "New Skill"}
             </div>
-            <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-            <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
+            <ErrorModal error={this.state.error} dismiss={() => this.setState(
+                { error: null }
+                )} />
+            <ConfirmModal confirm={this.state.confirm} toggle={() => this.setState(
+                { confirm: null }
+                )} />
 
             <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
-                {this.renderPage()}
+            {this.renderPage()}
             </div>
-        </React.Fragment>
+          </React.Fragment>;
     }
 }
 

@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 // import 'react-table/react-table.css'
 import { Link } from 'react-router-dom'
 import Masonry from 'react-masonry-component'
+import {Tooltip} from 'react-tippy'
 import './DashBoard.css'
 import axios from 'axios'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
@@ -197,9 +198,9 @@ class DashBoard extends Component {
         }else{
             skills = <React.Fragment>
                     <div className="search-header">
-                    <div className="searchBar w-25">
+                    {/* <div className="searchBar w-25">
                         <Input className='form-control-white mb-2 mt-3 search-input form-control' placeholder="Search" onChange={(e) => this.onFilter("name", e.target)}/>
-                    </div>
+                    </div> */}
                     {/* <div className="Button-select">
                       <ButtonGroup className="toggle-group mb-2 toggle-group-2">
                           {FILTER_OPTIONS.map(tab => {
@@ -258,18 +259,31 @@ class DashBoard extends Component {
 
         return (
             <div id="app">
-                <div className="subheader">
-                    <div className="container space-between">
-                        <span className="subheader-title">
-                            Dashboard
-                            <div className="hr-label">
-                                <small><i className="far fa-user mr-1"></i></small>{' '}
-                                {this.props.user.name}{' '}
-                                <small><i className="far fa-chevron-right"/></small>{' '}
-                                <span className="text-secondary">Projects</span>
+                <div className="subheader fixed-top">
+                    <div className="space-between w-100">
+                        <div className="w-50 d-flex ml-5" style={{alignItems: 'center'}}>
+                            <Link to="/dashboard" className="mr-5 mt-1">
+                                <img src={'/favicon.png'} alt='logo' 
+                                    height="30" width="40"
+                                />
+                            </Link>
+                            <div className="searchBar w-50">
+                                <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>
                             </div>
-                        </span>
-                        <div className="subheader-right">
+                        </div>
+                        <div className="subheader-right mr-5">
+                            <div className="align-icon">
+                                <Tooltip
+                                    distance={16}
+                                    title="Join the Voiceflow forum for help and updates"
+                                    position="bottom"
+                                    className="ml-4 mr-4"
+                                >
+                                <form action="https://forum.getvoiceflow.com">
+                                    <button className="nav-btn" type="sunbmit"><i className="fas fa-info-circle"/></button>
+                                </form>
+                                </Tooltip>
+                            </div>
                             <Link to="/templates" className="no-underline">
                                 <button varient="contained" className="btn purple-btn">New Project</button>
                             </Link>

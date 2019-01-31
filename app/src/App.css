@@ -28,6 +28,25 @@ body {
     transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear;
     transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
 }
+.form-control-2 {
+    font-size: 18px !important;
+    display: block;
+    width: 100%;
+    font: normal 15px/1.4666666667 Open Sans,Arial,sans-serif;
+    color: #132144;
+    background-color: #fff;
+    background-image: none;
+    background-clip: padding-box;
+    border: 1px solid #fff;
+    margin-bottom: 0;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px 5px #fff !important;
+    -webkit-transition: background-color .12s linear,color .12s linear,border-color .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
+    transition: background-color .12s linear,color .12s linear,border-color .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
+    -o-transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear;
+    transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear;
+    transition: background-color .12s linear,color .12s linear,border-color .12s linear,box-shadow .12s linear,padding .12s linear,max-height .12s linear,-webkit-box-shadow .12s linear;
+}
 .inline-form-control{
     position: relative;
     flex: 1 1 auto;
@@ -52,13 +71,21 @@ body {
     width: 100%;
     padding-bottom: 120px;
 }
-#app, #app>#canvas {
+#app>#canvas {
     position: absolute;
     top: 60px;
     right: 0;
     left: 0;
     bottom: 0;
     overflow-x: hidden;
+}
+#app {
+   position: absolute;
+   top: 0;
+   right: 0;
+   left: 0;
+   bottom: 0;
+   overflow-x: hidden;
 }
 #app.secondary-padding, #app.secondary-padding>#canvas {
     top: 111px;
@@ -130,7 +157,7 @@ body {
     background-size: auto 40% !important;
     background-repeat: no-repeat !important;
     background-position: 10px center !important;
-    padding-left: 33px !important;
+    padding-left: 40px !important;
 }
 .dollar-input{
     background-image: url('/dollar.svg') !important;

@@ -132,7 +132,7 @@ class SlotInput extends Component {
 
         const SlotOption = (props) => {
             const is_alexa = /AMAZON/.test(props.data.value)
-            const is_google = /^\$org\.schema\.type/.test(props.data.value)
+            const is_google = /^@sys\./.test(props.data.value)
             const is_global = !is_alexa && !is_google
 
             const is_custom = props.data.label === 'Custom'
@@ -152,7 +152,7 @@ class SlotInput extends Component {
 
         const SingleValueOption = (props) => {
             const is_alexa = /AMAZON/.test(props.data.value)
-            const is_google = /^\$org\.schema\.type/.test(props.data.value)
+            const is_google = /^@sys\./.test(props.data.value)
             const is_global = !is_alexa && !is_google
 
             const is_custom = props.data.label === 'Custom'
@@ -172,7 +172,7 @@ class SlotInput extends Component {
 
         let disabled = false
         const slot_type = this.props.slot.type.value
-        if ((/AMAZON/.test(slot_type) && !(this.props.platform === 'alexa')) || (/\$org\.schema\.type/.test(slot_type) && !(this.props.platform === 'gooogle'))) disabled = true
+        if ((/AMAZON/.test(slot_type) && !(this.props.platform === 'alexa')) || (/^@sys\./.test(slot_type) && !(this.props.platform === 'google'))) disabled = true
 
         return (
             <div className={`interaction-block mb-2`}>

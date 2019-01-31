@@ -1052,17 +1052,17 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 }
 
 .subheader {
-    position: absolute;
+    /* position: absolute; */
     top: 0px;
     background-color: #fff;
     left: 0px;
     right: 0px;
-    height: 90px;
+    min-height: 65px;
     /*padding: 10px;*/
     display: flex;
     align-items: center;
     /*height: 50px;*/
-    padding: 20px 0;
+    /* padding: 20px 0; */
 /*    -webkit-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 16px rgba(0,0,0,.1);
     box-shadow: 0 1px 16px rgba(0,0,0,.1);*/
@@ -1403,8 +1403,8 @@ body.modal-open {
     background-color: #F7F9FB;
 }
 .nav-btn{
-    width: 42px !important;
-    height: 42px !important;
+    width: 45px !important;
+    height: 45px !important;
     color: rgba(110,132,154,.8);
     background-color: #fff;
     line-height: 1;

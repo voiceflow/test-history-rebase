@@ -794,41 +794,20 @@ exports.buildSkill = async (req, res) => {
             throw err
           }
 
-          let account_linking = r.account_linking;
-
-          if (!_.isNull(account_linking)) {
-            account_linking.domains = _.flattenDeep(account_linking.domains)
-            account_linking.scopes = _.flattenDeep(account_linking.scopes)
-            account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
-            axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/accountLinkingClient`,
-                method: 'PUT',
-                headers: {
-                  Authorization: token
-                },
-                data: {
-                  accountLinkingRequest: account_linking
-                }
-              })
-              .catch(err => {
-                logAxiosError(err, 'ACCOUNT LINKING')
-                res.status(500).send(err.response.data)
-              });
-          }
-
+          // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
-            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+            let products = await pool.query("SELECT * FROM products WHERE skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)", [r.skill_id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
               for (row of products.rows) {
-                let product = row.data;
-                let productId = row.amzn_prod_id;
-
+                let product = row.data
+                let productId = row.id
+                let AmazonProductId = row.amzn_prod_id
                 try {
                   // Try to update the product if it exists
-                  if (!productId) throw null
+                  if (!AmazonProductId) throw null
                   await axios.request({
-                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/stages/development`,
                     method: 'PUT',
                     headers: {
                       Authorization: token
@@ -839,6 +818,7 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
                 } catch (err) {
+                  if(err) logAxiosError(err, 'PRODUCT', JSON.stringify(product))
                   // Create new product and update the database
                   let product_response = await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts`,
@@ -852,12 +832,11 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
 
-                  productId = product_response.data.productId
-
-                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [productId, r.skill_id])
+                  AmazonProductId = product_response.data.productId
+                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE id = $2", [AmazonProductId, productId])
 
                   await axios.request({
-                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/skills/${amzn_id}`,
                     method: 'PUT',
                     headers: {
                       Authorization: token
@@ -868,9 +847,6 @@ exports.buildSkill = async (req, res) => {
             }
           }
 
-          let model = JSONs.interactionModel(r)
-          // console.log(JSON.stringify(model))
-
           const iterate = (depth) => {
             if (depth === 3) {
               res.status(500).send({
@@ -878,70 +854,19 @@ exports.buildSkill = async (req, res) => {
               });
               return;
             } else {
-              setTimeout(() => {
-
-                const interactionModels = []
-                r.locales.forEach(locale => {
-                  interactionModels.push(axios.request({
-                    url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
-                    method: 'PUT',
-                    headers: {
-                      Authorization: token
-                    },
-                    data: model
-                  }))
-                })
-
-                Promise.all(interactionModels)
-                  .then((promise_res) => {
-                    // Check whether building before certifying
-                    const getSkillStatus = (depth) => {
-                      setTimeout(() => {
-                        axios.request({
-                            url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
-                            method: 'GET',
-                            headers: {
-                              Authorization: token
-                            }
-                          })
-                          .then(response => {
-                            if (response.hasOwnProperty('violations')) {
-                              getSkillStatus(depth + 1)
-                            } else {
-                              incrementTimesPublishedSuccessfulIntercom(req.user.id);
-
-                              analytics.track({
-                                userId: req.user.id,
-                                event: 'Publish Success',
-                                properties: {
-                                  amzn_id: amzn_id,
-                                  skill_id: id
-                                }
-                              })
-
-                              // Update canonical skill id's amzn id
-                              pool.query(`
-                                UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
-                                [amzn_id, id],
-                                (err) => {
-                                  if (err) {
-                                    console.trace(err)
-                                    res.sendStatus(500)
-                                  } else {
-                                    res.send(amzn_id)
-                                  }
-                                })
-                            }
-                          })
-                          .catch(err => {
-                            logAxiosError(err, 'GETTING SKILL MANIFEST')
-                            res.status(500).send(err.response.data)
-                          });
-                      }, 10000)
-                    }
-                    getSkillStatus(0)
-                  })
-                  .catch(err => {
+              setTimeout(async () => {
+                for(locale of r.locales){
+                  let model = JSONs.interactionModel(r, locale)
+                  try{
+                    await axios.request({
+                      url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
+                      method: 'PUT',
+                      headers: {
+                        Authorization: token
+                      },
+                      data: model
+                    })
+                  }catch(err){
                     logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(model))
                     if (err.response) {
                       if (err.response.status === 404) {
@@ -952,7 +877,78 @@ exports.buildSkill = async (req, res) => {
                     } else {
                       res.sendStatus(500)
                     }
-                  })
+                    return
+                  }
+                }
+
+                if (!_.isNull(r.account_linking)) {
+                  let account_linking = r.account_linking
+                  account_linking.domains = _.flattenDeep(account_linking.domains)
+                  account_linking.scopes = _.flattenDeep(account_linking.scopes)
+                  account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+                  try{
+                    await axios.request({
+                      url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/accountLinkingClient`,
+                      method: 'PUT',
+                      headers: {
+                        Authorization: token
+                      },
+                      data: {
+                        accountLinkingRequest: account_linking
+                      }
+                    })
+                  }catch(err){
+                    logAxiosError(err, 'ACCOUNT LINKING')
+                    // return res.status(500).send(err.response.data)
+                  }
+                }
+
+                // Check whether building before certifying
+                const getSkillStatus = (depth) => {
+                  setTimeout(() => {
+                    axios.request({
+                        url: `https://api.amazonalexa.com/v1/skills/${amzn_id}/stages/development/manifest`,
+                        method: 'GET',
+                        headers: {
+                          Authorization: token
+                        }
+                      })
+                      .then(response => {
+                        if (response.hasOwnProperty('violations')) {
+                          getSkillStatus(depth + 1)
+                        } else {
+                          incrementTimesPublishedSuccessfulIntercom(req.user.id);
+
+                          analytics.track({
+                            userId: req.user.id,
+                            event: 'Publish Success',
+                            properties: {
+                              amzn_id: amzn_id,
+                              skill_id: id
+                            }
+                          })
+
+                          // Update canonical skill id's amzn id
+                          pool.query(`
+                            UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
+                            [amzn_id, id],
+                            (err) => {
+                              if (err) {
+                                console.trace(err)
+                                res.sendStatus(500)
+                              } else {
+                                res.send(amzn_id)
+                              }
+                            })
+                        }
+                      })
+                      .catch(err => {
+                        logAxiosError(err, 'GETTING SKILL MANIFEST')
+                        res.status(500).send(err.response.data)
+                      });
+                  }, 10000)
+                }
+                getSkillStatus(0)
               }, 5000)
             }
           }

@@ -195,7 +195,9 @@ class LightCanvas extends Component {
     }
 
     onLoadDiagrams(){
-        axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
+        axios.get('/skill/'+this.state.skill.skill_id+'/diagrams', {
+            headers: { Pragma: 'no-cache' }
+        })
         .then(res => {
             this.setState({
                 diagrams: res.data.map(flow => {
@@ -223,7 +225,9 @@ class LightCanvas extends Component {
     }
 
     onLoadId(diagram_id) {
-        axios.get('/diagram/'+ diagram_id)
+        axios.get('/diagram/'+ diagram_id, {
+            headers: { Pragma: 'no-cache' }
+        })
         .then(res => {
             this.loadDiagram(res.data)
             if(this.buildDiagrams !== null){

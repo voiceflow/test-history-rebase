@@ -1739,6 +1739,7 @@ class Canvas extends Component {
                                 copyFlow={this.copyFlow}
                                 renameFlow={this.renameFlow}
                                 enterFlow={this.enterFlow}
+                                preview={this.props.preview}
                                 diagram = {_.find(this.state.diagrams, d => d.id === this.props.diagram_id)}
                             />
                         }

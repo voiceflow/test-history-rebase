@@ -352,24 +352,18 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           }
         } else if (node.extras.type === 'stream') {
           options.interfaces.add('AUDIO_PLAYER')
-          let stop = getLink(node.ports.filter(a => a.label === 'stop/pause')[0].links[0]);
 
-          if (node.extras.player) {
-            story.lines[node.id] = {
-              loop: node.extras.loop,
-              play: node.extras.audio,
-              nextId: stop,
-              PAUSE_ID: node.id,
-              NEXT: getLink(node.ports.filter(a => a.label === 'next')[0].links[0]),
-              PREVIOUS: getLink(node.ports.filter(a => a.label === 'previous')[0].links[0]),
-              // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
-            };
-          } else {
-            story.lines[node.id] = {
-              loop: node.extras.loop,
-              play: node.extras.audio,
-              nextId: stop
-            };
+          let NEXT = node.ports.find(a => a.label === 'next')
+          let PREVIOUS = node.ports.find(a => a.label === 'previous')
+          let PAUSE = node.extras.custom_pause && node.ports.find(a => (a.label === 'stop/pause' || a.label === 'pause'))
+
+          story.lines[node.id] = {
+            loop: node.extras.loop,
+            play: node.extras.audio,
+            nextId: PAUSE ? getLink(PAUSE.links[0]) : null,
+            PAUSE_ID: node.id,
+            NEXT: NEXT ? getLink(NEXT.links[0]) : null,
+            PREVIOUS: PREVIOUS ? getLink(PREVIOUS.links[0]) : null
           }
         } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio' || node.extras.type === 'combine') {
           let nextLink;

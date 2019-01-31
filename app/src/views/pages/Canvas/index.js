@@ -1499,10 +1499,10 @@ class Canvas extends Component {
                 }
             } else if (type === 'stream') {
                 node.addInPort(' ')
-                node.addOutPort('stop/pause').setMaximumLinks(1)
+                node.addOutPort('next').setMaximumLinks(1)
+                node.addOutPort('previous').setMaximumLinks(1)
                 node.extras = {
-                    audio: '',
-                    player: false
+                    audio: ''
                 }
             } else if (type === 'permission') {
                 node.addInPort(' ')

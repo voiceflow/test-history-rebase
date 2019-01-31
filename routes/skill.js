@@ -756,19 +756,20 @@ exports.buildSkill = async (req, res) => {
             throw err
           }
 
+          // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
-            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
+            let products = await pool.query("SELECT * FROM products WHERE skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)", [r.skill_id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
               for (row of products.rows) {
-                let product = row.data;
-                let productId = row.amzn_prod_id;
-
+                let product = row.data
+                let productId = row.id
+                let AmazonProductId = row.amzn_prod_id
                 try {
                   // Try to update the product if it exists
-                  if (!productId) throw null
+                  if (!AmazonProductId) throw null
                   await axios.request({
-                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/stages/development`,
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/stages/development`,
                     method: 'PUT',
                     headers: {
                       Authorization: token
@@ -779,6 +780,7 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
                 } catch (err) {
+                  if(err) logAxiosError(err, 'PRODUCT', JSON.stringify(product))
                   // Create new product and update the database
                   let product_response = await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts`,
@@ -792,12 +794,11 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
 
-                  productId = product_response.data.productId
-
-                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE skill_id = $2", [productId, r.skill_id])
+                  AmazonProductId = product_response.data.productId
+                  await pool.query("UPDATE products SET amzn_prod_id = $1 WHERE id = $2", [AmazonProductId, productId])
 
                   await axios.request({
-                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${productId}/skills/${amzn_id}`,
+                    url: `https://api.amazonalexa.com/v1/inSkillProducts/${AmazonProductId}/skills/${amzn_id}`,
                     method: 'PUT',
                     headers: {
                       Authorization: token

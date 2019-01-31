@@ -120,7 +120,9 @@ class Editor extends Component {
             const slot = SLOT_TYPES[i]
             if ((slot.intent.google && this.props.platform === 'google') || (slot.intent.alexa && this.props.platform === 'alexa')) {
                 const slot_locales = slot.locales[this.props.platform]
-                if (!slot_locales || _.intersection(slot_locales, locales).length > 0) {
+                if (this.props.platform === 'google') {
+                    slots.push(slot)
+                } else if (!slot_locales || _.intersection(slot_locales, locales).length > 0) {
                     slots.push(slot)
                 }
             }

@@ -10,7 +10,9 @@ import MUIButton from '@material-ui/core/Button'
 import moment from 'moment'
 import ErrorModal from '../../components/Modals/ErrorModal'
 import ConfirmModal from '../../components/Modals/ConfirmModal'
+import Dropzone from 'react-dropzone'
 
+const MAX_SIZE = 10 * 1024 * 1024
 
 const _ = require('lodash');
 
@@ -39,7 +41,8 @@ class GooglePublish extends Component {
       publish_modal_open: false,
       google_token: '',
       project_id: '',
-      name: this.props.skill.name
+      name: this.props.skill.name,
+      credentials: false
     }
 
     this.privacyTop = React.createRef();
@@ -53,6 +56,7 @@ class GooglePublish extends Component {
     this.onPublish = this.onPublish.bind(this)
     this.onPublishClicked = this.onPublishClicked.bind(this)
     this.publishedContent = this.publishedContent.bind(this)
+    this.onDrop = this.onDrop.bind(this)
   }
 
   togglePublish() {
@@ -115,9 +119,10 @@ class GooglePublish extends Component {
 
   componentDidMount() {
     try {
-      AuthenticationService.googleAccessToken().then(token => {
+      AuthenticationService.googleAccessToken(this.state.skill_id).then(token => {
         this.setState({
-          stage: token ? 2 : 0
+          stage: token ? 2 : 0,
+          credentials: token ? true : false
         });
       });
     } catch (e) {
@@ -127,9 +132,7 @@ class GooglePublish extends Component {
     axios.get(`/skill/google/${this.state.skill_id}`)
       .then(res => {
         if (!_.isObject(res.data.publish_info)) {
-          res.data.publish_info = {
-            project_id: ''
-          }
+          res.data.publish_info = {}
         }
 
         const publish_info = res.data.publish_info
@@ -144,6 +147,7 @@ class GooglePublish extends Component {
         this.setState({
           loaded: true,
           ...publish_info,
+          project_id: res.data.project_id,
           created: res.data.created,
           diagram: res.data.diagram
         });
@@ -203,6 +207,35 @@ class GooglePublish extends Component {
         stage: 0
       })
       this.props.onError(e)
+    }
+  }
+
+  async onDrop(files) {
+    if (files.length === 1) {
+      this.setState({ loading_creds: true })
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const text = event.target.result
+        try {
+          const res = await axios.post('/session/google/verify_token', {
+            token: text,
+            skill_id: this.state.skill_id
+          }
+          )
+          this.setState({
+            credentials: true,
+            loading_creds: false,
+            project_id: res.project_id
+          })
+        } catch (e) {
+          this.props.onError(e.response.data || e)
+          this.setState({
+            loading_creds: false
+          })
+        }
+      }
+      reader.readAsText(files[0], "UTF-8");
     }
   }
 
@@ -334,14 +367,14 @@ class GooglePublish extends Component {
           <hr className="mt-0"></hr>
           <div className="row">
             <div className="col-2">
-              {this.state.project_id ?
+              {this.state.credentials ?
                 <i className="fal fa-check-circle text-success"></i>
                 :
                 <i className="fal fa-times-circle text-danger"></i>
               }
             </div>
             <div className="col-10">
-              <p>Project ID</p>
+              <p>Credentials File</p>
             </div>
           </div>
         </span>
@@ -356,7 +389,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              {this.state.published ?
+              {this.state.project_id ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on the Google Actions Console</span>
@@ -364,9 +397,9 @@ class GooglePublish extends Component {
                   </div>
                   <Collapse isOpen={this.state.id_collapse}>
                     <hr />
-                    <span>Skill ID | </span>
-                    <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.state.amzn_id}/development/${this.state.locales[0].replace('-', '_')}/`} target="_blank" rel="noopener noreferrer">
-                      <b>{this.state.amzn_id}</b>
+                    <span>Project ID | </span>
+                    <a href={`https://console.actions.google.com/u/0/project/${this.state.project_id}/simulator`} target="_blank" rel="noopener noreferrer">
+                      <b>{this.state.project_id}</b>
                     </a>
                   </Collapse>
                 </div>
@@ -382,23 +415,67 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              <Form>
+              <Form className={this.state.credentials ? 'disabled faded' : ''}>
                 <FormGroup>
-                  <div className="row">
+                  <div className="row d-flex">
                     <div className="col-3 publish-info"></div>
                     <div className="col-9">
-                      <Label>Google Project ID *</Label>
+                      <Label>Google Assistant Credentials File *</Label>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary">Your <b>Google Project ID</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
+                      <p className="mb-0 text-secondary">Your <b>Google Assistant (Dialogflow) Credentials File</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
                     </div>
-                    <div className="col-9">
-                      <Input className="form-bg" type="text" name="project_id" placeholder="Sample-Project-abc123" value={this.state.project_id} onChange={this.handleChange} />
-                    </div>
+                    {!this.state.credentials && !this.state.loading_creds && <div className="col-9">
+                      <Dropzone
+                        className="dropzone google-upload"
+                        activeClassName="active"
+                        rejectClassName="reject"
+                        multiple={false}
+                        disableClick={false}
+                        maxSize={MAX_SIZE}
+                        accept={".json"}
+                        onDrop={this.onDrop}
+                      >
+                        <div>
+                          <div className="drop-child">
+                            Drag and Drop your file here<br />
+                            <small>OR</small><br />
+                            <div className="space-between">
+                              <div className="upload-btn btn btn-primary-small">
+                                Add File
+                          </div>
+                            </div>
+                          </div>
+                          <div className="rejected-file text-danger">
+                            <b>File not Accepted</b>
+                          </div>
+                        </div>
+                      </Dropzone>
+                    </div>}
+                    {this.state.loading_creds && <div className="d-flex"><span className="loader align-self-center" /></div>}
+                    {this.state.credentials && <div className="align-self-center mx-2 d-flex"><i className="fal fa-check-circle text-success align-self-center mx-2"></i><span><Label>File uploaded</Label></span></div>}
                   </div>
                 </FormGroup>
+                {this.state.credentials && <FormGroup>
+                  <div className="row">
+                    <div className="col-3 publish-info"></div>
+                    <div className="col-9">
+                      <Label>Google Project ID</Label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3 publish-info">
+                      <p className="text-secondary">
+                        <b>Google Project ID</b> is the ID of your project in the Google Actions Console.
+                      </p>
+                    </div>
+                    <div className="col-9">
+                      <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={this.state.project_id} readOnly />
+                    </div>
+                  </div>
+                </FormGroup>}
               </Form>
             </div>
           </div>

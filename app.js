@@ -123,7 +123,7 @@ app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAcce
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
-app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
+app.get('/session/google/access_token/:skill_id', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
 app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleToken);
 
 app.get('/session', Authentication.getSession);

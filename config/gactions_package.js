@@ -20,23 +20,22 @@ const _getSlotsForKeysAndFormat = (keys, slots) => {
 		})
 		return {
 			name: formatName(slot.name),
-			type: slot.type.value !== 'CUSTOM' ? slot.type.value : formatName(slot.name)
+      type: slot.type.value.toLowerCase() !== 'custom' ? slot.type.value : formatName(slot.name),
+      samples: slot.inputs
 		}
 	})
 }
 
-const generateGactionsPackage = (params) => {
+const generateDialogflowPackage = (params) => {
 
   const intents = params.intents
   const slots = params.slots
   const used_intents = params.used_intents
-  const title = params.inv_name || 'Test Skill'
-  const skill_id = params.skill_id || 'P2WdNnRdM0'
-
-  console.log("used_intents", params, used_intents, BUILT_IN_INTENTS_GOOGLE)
 
   const intents_for_google = []
-	const entered_intents = new Set()
+  const slots_for_google = []
+  const entered_intents = new Set()
+  const used_slots = new Set()
 
 	used_intents.forEach(intent_key => {
 		if (typeof intent_key !== 'string') return
@@ -68,61 +67,40 @@ const generateGactionsPackage = (params) => {
 			}
 
 			if (!intent.built_in) {
+        const slot_keys = intent.inputs.map(input => input.slots)
+
 				formatted_intent.samples = getUtterancesWithSlotNames(intent.inputs, slots, false, true)
-				formatted_intent.slots = _getSlotsForKeysAndFormat(intent.inputs.map(input => input.slots), slots)
+        formatted_intent.slots = _getSlotsForKeysAndFormat(slot_keys, slots)
+
+        slot_keys.forEach(key_arr => {
+          key_arr.forEach(key => used_slots.add(key))
+        })
 			}
 			intents_for_google.push(formatted_intent)
 		}
-	})
+  })
 
-  const base = {
-    "actions": [{
-      "description": "Default Welcome Intent",
-      "name": "MAIN",
-      "fulfillment": {
-        "conversationName": "Voiceflow"
-      },
-      "intent": {
-        "name": "actions.intent.MAIN",
-        "trigger": {
-          "queryPatterns": [
-            `talk to ${title}`
-          ]
-        }
-      }
-    },
-    {
-      "name": "BUY",
-      "intent": {
-        "name": "com.voiceflow.BUY",
-        "parameters": [
-          {
-            "name": "color",
-            "type": "org.schema.type.Color"
+  used_slots.forEach(slot_key => {
+    const slot = _.find(slots, {key:slot_key})
+    if (!/^actions\.intent/.test(slot.name)) {
+      slots_for_google.push({
+        name: null,
+        displayName: slot.name,
+        kind: null,
+        entities: slot.inputs.map(input => {
+          return {
+            value: input,
+            synonyms: [input]
           }
-        ],
-        "trigger": {
-          "queryPatterns": [
-            "find some $org.schema.type.Color:color sneakers",
-            "buy some blue suede shoes",
-            "get running shoes"
-          ]
-        }
-      },
-      "fulfillment": {
-        "conversationName": "Voiceflow"
-      }
-    }],
-    "conversations": {
-      "Voiceflow": {
-        "name": "Voiceflow",
-        "url": `${getEnvVariable('SKILL_ENDPOINT')}/state/skill/gactions/${skill_id}`
-        // "url": "https://app.getstoryflow.com/gactions/state/skill/P2WdNnRdM0"
-      }
-    },
-    "locale": "en"
+        })
+      })
+    }
+  })
+
+  return {
+    intents: intents_for_google,
+    slots: slots_for_google
   }
-  return JSON.stringify(base)
 }
 
-module.exports.generateGactionsPackage = generateGactionsPackage
+module.exports.generateDialogflowPackage = generateDialogflowPackage

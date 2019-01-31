@@ -373,8 +373,16 @@ const googleLogin = async(req, res) => {
 }
 
 const hasGoogleAccessToken = (req, res) => {
-	const creatorId = req.user.id
-	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+	let skill_id = req.params.skill_id
+
+	if (!skill_id) {
+		res.status(400).send('Missing skill ID')
+		return
+	}
+
+	skill_id = hashids.decode(skill_id)[0]
+
+	pool.query('SELECT gactions_token FROM skills WHERE skill_id = $1', [skill_id], (err, data) => {
 		if(err){
 			console.trace(err)
 			res.status(500).send("Unable to Access Database");
@@ -386,8 +394,8 @@ const hasGoogleAccessToken = (req, res) => {
 	})
 }
 
-const getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
-	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+const getGoogleAccessToken = (skillId) => new Promise((resolve, reject) => {
+	pool.query('SELECT gactions_token FROM skills WHERE skill_id = $1', [skillId], (err, data) => {
 		if(err){
 			console.trace(err)
 			reject("Unable to Access Database");
@@ -401,78 +409,42 @@ const getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
 
 const verifyGoogleToken = async (req, res) => {
 	let token = req.body.token
-	const creator_id = req.user.id
-	if (!token || !creator_id) {
-		res.status(400).send('Bad Request: Parameters missing')
-		return
-	}
+	let skill_id = req.body.skill_id
 
-	token = token.trim()
-	if (!/^[\S]{40,80}$/.test(token)) {
-		res.status(400).send('Bad request: Malformed Token')
-		return
-	}
-
-	let random_id = uuid()
-	let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-	while (fs.existsSync(dir)){
-		random_id = uuid()
-		dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-	}
-	
 	try {
-		await new Promise ((resolve, reject) => {
-			mkdirp(dir, function (err) {
-				if (err) reject(err)
-				else resolve()
-			})
-		})
+		if (!token || !skill_id) {
+			res.status(400).send('Bad Request: Parameters missing')
+			return
+		}
 
-		await new Promise ((resolve, reject) => {
-			fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
-				if (err) reject(err)
-				resolve()
-			})
-		})
+		skill_id = hashids.decode(skill_id)[0]
 
-		await new Promise ((resolve, reject) => {
-			const gactions = spawn('./gactions', ['list', '--project='], {cwd: dir})
-			gactions.stdin.setEncoding('utf-8');		
-		
-			gactions.stdout.on('data', (data) => {
-				if (/Enter authorization code/.test(data)) {
-					gactions.stdin.write(`${token}\n`)
-				}
-			});
-	
-			gactions.stderr.on('data', (data) => {
-				if (/400 Bad Request/.test(data)) {
-					reject(data)
+		const parsed = JSON.parse(token)
+		if (!(parsed.type === 'service_account')) {
+			throw('Invalid credential type, should be type "service_account"')
+		}
+		if (!parsed.project_id) {
+			throw('Missing project ID in credentials')
+		}
+		if (!parsed.private_key) {
+			throw('Missing private key in credentials')
+		}
+		if (!parsed.client_email === 'service_account') {
+			throw('Missing client email in credentials')
+		}
+		await new Promise((resolve, reject) => {
+			pool.query('UPDATE skills SET gactions_token = $2 WHERE skill_id = $1 RETURNING *', [skill_id, token], (err) => {
+				if (err) {
+					reject(err)
 				} else {
-					fs.readFile(`${dir}/creds.data`, {encoding: 'utf8'}, (err, data) => {
-						if (err){
-							reject (err)
-						} else {
-							pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creator_id, data], (err) => {
-								if(err){
-									console.trace(err)
-									reject()
-								} else {
-									resolve()
-								}
-							})
-						}
-					})
+					resolve()
 				}
 			})
 		})
-		res.status(200).send('Token Verified')
+		res.status(200).send({project_id: parsed.project_id})
 	} catch (e) {
-		res.status(500).send('Unable to verify google token')
+		res.status(400).send(e)
 	}
-	await new Promise ((resolve, reject) => {
-		del([dir]).then(resolve()).catch(e => reject(e))
-	})
 }
 
 const fbLogin = async(req, res) => {

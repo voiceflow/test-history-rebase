@@ -13,25 +13,19 @@ const {
 } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const {
-  generateGactionsPackage
+  generateDialogflowPackage
 } = require('./../config/gactions_package')
 const {
   getEnvVariable
 } = require('../util')
 
-const uuid = require('uuid/v4');
-
-const del = require('del');
-const spawn = require('child_process').spawn
-const mkdirp = require('mkdirp');
-const fs = require('fs');
-
-const GACTIONS_CLI_ROOT = './gactions_cli'
 const analytics = new(require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 const {
   deleteSkillPromise,
   copySkill
 } = require('./skill_util')
+
+const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
 const latestSkillToIntercom = (id, name) => {
   intercom.users.create({
@@ -1175,232 +1169,6 @@ copyAllDisplays = (id, new_skill_id) => {
   })
 }
 
-exports.copySkill = async (req, res, options, cb = false) => {
-
-  let id = hashids.decode(req.params.id)[0]
-  let new_creator_id = req.params.target_creator
-  let diagram_mapping = {}
-  let diagram_names = {}
-  let root_diagram_id = generateID()
-
-  if (new_creator_id === 'me') {
-    new_creator_id = req.user.id
-  }
-
-  const retrieveDiagram = (diagram_id, new_skill_id) => {
-
-    const uploadNewDiagram = (data) => new Promise(async (resolve, reject) => {
-      let params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Item: {
-          id: data.diagram.id,
-          variables: data.diagram.variables,
-          data: data.diagram.data,
-          skill: new_skill_id,
-          creator: new_creator_id
-        }
-      }
-
-      try {
-        await pool.query(
-          `INSERT INTO diagrams (id, name, skill_id, sub_diagrams, used_intents) (SELECT $1, $2, $3, $4, used_intents FROM diagrams WHERE id = $5)`,
-          [data.diagram.id, diagram_names[data.old_diagram_id], new_skill_id, JSON.stringify(data.sub_diagrams), data.old_diagram_id])
-        await docClient.put(params).promise()
-        resolve()
-      } catch (err) {
-        console.trace(err)
-        reject()
-      }
-    })
-
-    const remapDiagramIds = async (diagram) => {
-      let sub_diagrams = []
-      let old_diagram_id = diagram.id
-      diagram.id = diagram_mapping[diagram.id]
-      diagram.skill = new_skill_id
-      let JSON_diagram_data = JSON.parse(diagram.data)
-      let nodes = JSON_diagram_data.nodes
-
-      if (!!nodes) {
-        for (let i = 0; i < nodes.length; i++) {
-          let node = nodes[i]
-          if (node.extras.diagram_id && node.extras.diagram_id !== null) {
-            node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
-            sub_diagrams.push(node.extras.diagram_id)
-          }
-        }
-      }
-
-      diagram.data = JSON.stringify(JSON_diagram_data)
-      let result = await uploadNewDiagram({
-        diagram: diagram,
-        sub_diagrams: sub_diagrams,
-        old_diagram_id: old_diagram_id
-      })
-      return result
-    }
-
-    // retrieveDiagramIds returns this promise
-    return new Promise((resolve, reject) => {
-      let get_params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-        Key: {
-          'id': diagram_id
-        }
-      }
-
-      docClient.get(get_params, async (err, data) => {
-        if (err) {
-          console.trace(err)
-          reject(err)
-        } else if (data.Item) {
-          let result = await remapDiagramIds(data.Item)
-          if (typeof result === 'Error') {
-            reject(result)
-          } else {
-            resolve(result)
-          }
-        }
-      })
-    })
-  }
-
-  const renderSkill = async (skill) => {
-    let intents = {}
-    let slots = {}
-    // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(),
-      used_choices = new Set(),
-      permissions = new Set(),
-      interfaces = new Set()
-    if (Array.isArray(skill.intents)) {
-      skill.intents.forEach(intent => {
-        if (intent.key) intents[intent.key] = intent.name
-      })
-    }
-    if (Array.isArray(skill.slots)) {
-      skill.slots.forEach(slot => {
-        if (slot.key) slots[slot.key] = slot.name
-      })
-    }
-    try {
-      await renderDiagram(req.user, skill.diagram, skill.skill_id, {
-        permissions,
-        interfaces,
-        used_intents,
-        used_choices,
-        intents,
-        slots
-      }, undefined, skill.platform)
-      // UPDATE SKILL 
-      await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1',
-        [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
-    } catch (err) {
-      console.trace(err)
-    }
-  }
-
-  // Starts here: verify that the skill is under the current creator
-  if (!options.copying_default_template) {
-    if (req.user.admin < 100) {
-      try {
-        let data = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1', [id])
-        if (data.rows.length === 0 || data.rows[0].creator_id !== req.user.id) {
-          throw new Error('Not your skill')
-        }
-      } catch (err) {
-        // forbidden
-        return res.sendStatus(401)
-      }
-    }
-  }
-
-  let copy_str = (options.append_copy_str ? `coalesce(name, '') || ' Copy' AS name, ` : 'name, ')
-  let copy_query
-  if (options.complete_copy || options.renderDiagram) {
-    copy_query = `
-          INSERT INTO skills (
-            name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-            purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
-            privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, google_publish_info, platform
-          )
-          SELECT ` +
-      copy_str + `
-              $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-              purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
-              privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, google_publish_info, platform
-          FROM skills WHERE skill_id = $3 RETURNING *`
-  } else {
-    copy_query = `
-          INSERT INTO skills (
-            name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
-            personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, google_publish_info, platform
-          )
-          SELECT ` +
-      copy_str + `
-            $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
-            personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, google_publish_info, platform
-          FROM skills WHERE skill_id = $3 RETURNING *`
-  }
-
-  try {
-    let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
-    let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
-    let retrieve_promises = []
-    for (let i = 0; i < diagram_data.rows.length; i++) {
-      diagram_names[diagram_data.rows[i].id] = diagram_data.rows[i].name
-      if (diagram_data.rows[i].name === 'ROOT') {
-        diagram_mapping[diagram_data.rows[i].id] = root_diagram_id
-      } else {
-        diagram_mapping[diagram_data.rows[i].id] = generateID()
-      }
-      retrieve_promises.push(
-        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id)
-      )
-    }
-    Promise.all(retrieve_promises)
-      .then(async () => {
-        // Add working version to table
-        if (options.copying_default_template || options.user_copy) {
-          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
-            if (err) {
-              console.trace(err)
-              res.sendStatus(500)
-            }
-          })
-        }
-
-        // Async copy rows depending on the skill, doesn't need to be synced
-        copyAllDisplays(id, copy_skill.skill_id)
-        copyAllProducts(id, copy_skill.skill_id)
-        copyAllTemplates(id, copy_skill.skill_id)
-
-        if (options.renderDiagram) {
-          await renderSkill(copy_skill)
-        }
-
-        // Default name of cb when no callback provided is 'next'
-        copy_skill.skill_id = hashids.encode(copy_skill.skill_id)
-        if (cb && cb.name !== 'next') {
-          cb(copy_skill)
-        } else {
-          res.send(copy_skill)
-        }
-      })
-      .catch((err) => {
-        console.trace(err)
-        res.sendStatus(500)
-      })
-  } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
-  }
-}
-
 exports.getSkillVersions = (req, res) => {
   let id = hashids.decode(req.params.id)[0]
   pool.query(`
@@ -1458,14 +1226,6 @@ exports.buildGoogleSkill = async (req, res) => {
   let id = hashids.decode(req.params.id)[0];
   let original_id = req.params.id
 
-  let token = await getGoogleAccessToken(req.user.id)
-  if (_.isNil(token) || _.isNil(token.token)) {
-    res.status(401).send({
-      message: "Invalid Google Auth Token"
-    });
-    return;
-  }
-  token = token.token
   try {
     const skill_info = await new Promise((resolve, reject) => {
       pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
@@ -1488,8 +1248,15 @@ exports.buildGoogleSkill = async (req, res) => {
 
     skill_info.skill_id = original_id
 
-    const package = generateGactionsPackage(skill_info)
-    await updateGActionsPackage(token, project_id, package)
+    let gactions_creds
+    try {
+      gactions_creds = JSON.parse(skill_info.gactions_token)
+    } catch (e) {
+      throw('Credentials not found')
+    }
+
+    const package = generateDialogflowPackage(skill_info)
+    await updateDialogflowPackage(gactions_creds, project_id, package, skill_info)
     res.status(200).send({
       project_id: project_id
     })
@@ -1499,96 +1266,17 @@ exports.buildGoogleSkill = async (req, res) => {
   }
 }
 
-const updateGActionsPackage = (creds, project_id, package) => new Promise(async (resolve, reject) => {
-  let random_id = uuid()
-  let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-  while (fs.existsSync(dir)) {
-    random_id = uuid()
-    dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-  }
-
+const updateDialogflowPackage = ({private_key, client_email}, project_id, { intents, slots }, {skill_id}) => new Promise(async (resolve, reject) => {
   try {
-    await new Promise((resolve, reject) => {
-      mkdirp(dir, function (err) {
-        if (err) reject(err)
-        else resolve()
-      })
-    })
-
-    await new Promise((resolve, reject) => {
-      fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
-        if (err) reject(err)
-        resolve()
-      })
-    })
-
-    await new Promise((resolve, reject) => {
-      fs.writeFile(`${dir}/action.json`, package, 'utf8', (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    })
-
-    await new Promise((resolve, reject) => {
-      fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    })
-
-    await new Promise((resolve, reject) => {
-      const gactions = spawn('./gactions', ['update', `--project=${project_id}`, '--action_package=action.json'], {
-        cwd: dir
-      })
-      gactions.stdin.setEncoding('utf-8');
-
-      gactions.stdout.on('data', (data) => {
-        if (/was successfully updated with/.test(data.toString())) {
-          resolve()
-        }
-      });
-
-      gactions.stderr.on('data', (data) => {
-        if (/Server did not return HTTP 200/.test(data.toString())) {
-          reject('Bad request to gactions API. Double-check your Project ID')
-        }
-      })
-    })
-
-    await new Promise((resolve, reject) => {
-      const gactions = spawn('./gactions', ['test', `--project=${project_id}`, '--action_package=action.json'], {
-        cwd: dir
-      })
-      gactions.stdin.setEncoding('utf-8');
-
-      gactions.stdout.on('data', (data) => {
-        if (/ready for testing/.test(data.toString())) {
-          resolve()
-        }
-      });
-
-      gactions.stderr.on('data', (data) => {
-        if (/Server did not return HTTP 200/.test(data.toString())) {
-          reject('Bad request to gactions API. Double-check your Project ID')
-        }
-      })
-    })
+    const client = new DialogflowClient(project_id, private_key, client_email)  
+    await client.updateEntities(slots)
+    await client.updateIntents(intents)
+    await client.updateAgentFulfillment(skill_id)
+    await client.trainAgent()
+    resolve()
   } catch (e) {
-    await new Promise((resolve, reject) => {
-      del([dir]).then(resolve()).catch(e => reject(e))
-    })
-    reject(`Unable to update google actions package: ${e}`)
+    reject(e)
   }
-  await new Promise((resolve, reject) => {
-    del([dir]).then(resolve()).catch(e => reject(e))
-  })
-  resolve()
 })
 
 exports.getGoogleSkill = async (req, res) => {
@@ -1603,7 +1291,7 @@ exports.getGoogleSkill = async (req, res) => {
 
   sql = `
         SELECT
-            created, diagram, google_publish_info
+            created, diagram, google_publish_info, gactions_token
         FROM
             skills
         WHERE
@@ -1619,6 +1307,29 @@ exports.getGoogleSkill = async (req, res) => {
       res.sendStatus(404);
     } else {
       let publish_info = data.rows[0].google_publish_info
+      let project_id
+      let private_key
+      let client_email
+
+      let defaultLanguageCode, supportedLanguageCodes
+      if (data.rows[0].gactions_token) {
+        try {
+          let gactions_token = JSON.parse(data.rows[0].gactions_token)
+          project_id = gactions_token.project_id
+          private_key = gactions_token.private_key
+          client_email = gactions_token.client_email
+
+        } catch (e) {
+          // JSON parse failed
+          console.trace('Parsing gactions_token failed', e)
+        }
+
+        const client = new DialogflowClient(project_id, private_key, client_email)
+        const agents = await client.getAgent();
+  
+        ({ defaultLanguageCode, supportedLanguageCodes } = agents[0])
+      }
+
       let google_id = data.rows[0].google_id
       let created = data.rows[0].created
       let diagram = data.rows[0].diagram
@@ -1626,7 +1337,10 @@ exports.getGoogleSkill = async (req, res) => {
       const skillResp = {
         publish_info,
         created,
-        diagram
+        diagram,
+        project_id,
+        defaultLanguageCode,
+        supportedLanguageCodes
       }
 
       // Rehash the skill id

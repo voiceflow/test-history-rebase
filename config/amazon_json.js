@@ -21,7 +21,7 @@ const _getSlotsForKeysAndFormat = (keys, slots) => {
 		})
 		return {
 			name: formatName(slot.name),
-			type: slot.type.value !== 'CUSTOM' ? slot.type.value : formatName(slot.name)
+			type: slot.type.value.toLowerCase() !== 'custom' ? slot.type.value : formatName(slot.name)
 		}
 	})
 }
@@ -126,7 +126,7 @@ const interactionModel = (req) => {
 	}
 
 	slots.forEach(slot => {
-		if (slot.type.value === 'CUSTOM' || !slot.type.value) {
+		if (slot.type.value.toLowerCase() === 'custom' || !slot.type.value) {
 			const slot_name = formatName(slot.name)
 			const values = slot.inputs.map(input => {
 				return {

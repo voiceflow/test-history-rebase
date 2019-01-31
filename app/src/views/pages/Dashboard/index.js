@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 // import moment from 'moment'
 // import 'react-table/react-table.css'
+import AuthenticationService from './../../../services/Authentication';
 import { Link } from 'react-router-dom'
 import Masonry from 'react-masonry-component'
 import {Tooltip} from 'react-tippy'
@@ -11,7 +12,7 @@ import ConfirmModal from './../../components/Modals/ConfirmModal'
 import WarningModal from './../../components/Modals/WarningModal'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
-import {Alert, Input} from 'reactstrap'
+import {Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
@@ -37,6 +38,7 @@ class DashBoard extends Component {
         this.deleteSkill = this.deleteSkill.bind(this)
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
+        this.logout = this.logout.bind(this);
     }
 
     deleteSkill(skill_id, skill_name){
@@ -100,7 +102,14 @@ class DashBoard extends Component {
             })
         }
     }
-
+    logout(e) {
+        e.preventDefault();
+        AuthenticationService.logout(() => {
+            console.log("logout");
+            this.props.history.push('/login');
+        });
+        return false;
+    }
     onLoadSkills() {
         axios.get('/skills')
         .then(res => {
@@ -271,7 +280,7 @@ class DashBoard extends Component {
                                 <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>
                             </div>
                         </div>
-                        <div className="subheader-right mr-5">
+                        <div className="subheader-right mr-1">
                             <div className="align-icon">
                                 <Tooltip
                                     distance={16}
@@ -284,9 +293,31 @@ class DashBoard extends Component {
                                 </form>
                                 </Tooltip>
                             </div>
-                            <Link to="/templates" className="no-underline">
+                            <Link to="/templates" className="no-underline ml-1">
                                 <button varient="contained" className="btn purple-btn">New Project</button>
                             </Link>
+                            <UncontrolledDropdown nav inNavbar className="account-dropdown ml-3">
+                                <DropdownToggle className="account mr-1" nav tag="div">
+                                    <img src={'/user.svg'} alt="user" width="23"/>
+                                </DropdownToggle>
+                                <DropdownMenu right className="arrow arrow-right no-select">
+                                    <DropdownItem header>
+                                    {window.user_detail.email}
+                                    </DropdownItem>
+                                    <DropdownItem divider />
+                                    <Link className="dropdown-item" to="/account">
+                                    Settings
+                                    </Link>
+                                    { window.user_detail.admin >= 100 &&
+                                        <Link className="dropdown-item" to="/admin">
+                                        Admin
+                                        </Link>
+                                    }
+                                    <DropdownItem onClick={this.logout} tag="a" href="#">
+                                    Logout
+                                    </DropdownItem>
+                                </DropdownMenu>
+                                </UncontrolledDropdown>
                         </div>
                     </div>
                 </div>

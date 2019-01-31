@@ -9,6 +9,7 @@ import update from 'immutability-helper';
 import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css'
 import './StoryBoard.css'
+
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
 import HelpModal from './HelpModal'
@@ -1595,7 +1596,7 @@ class Canvas extends Component {
             }
         }
     }
-
+    
     render() {
         return (
             <React.Fragment>

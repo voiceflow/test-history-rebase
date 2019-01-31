@@ -554,6 +554,11 @@ textarea::placeholder {
   text-decoration: underline;
 }
 
+.google-upload {
+  height: auto;
+  padding: 1em;
+}
+
 .google-verification-info {
   font-size: .85em;
 }
@@ -585,4 +590,11 @@ textarea::placeholder {
 }
 .shortcut-desc {
   font-weight: bold
+}
+
+.disabled {
+  pointer-events: none;
+}
+.faded {
+  opacity: 0.55;
 }

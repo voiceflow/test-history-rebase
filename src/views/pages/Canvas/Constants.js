@@ -15,7 +15,34 @@ const LOCALES = {
   MX: "es-MX",
 }
 
+const GOOGLE_LOCALES = {
+  HK: "zh-HK",
+  CN: "zh-CN",
+  TW: "zh-TW",
+  DA: "da",
+  NL: "nl",
+  EN: "en",
+  FR: "fr",
+  DE: "de",
+  HI: "hi",
+  ID: "id",
+  IT: "it",
+  JA: "ja",
+  KO: "ko",
+  NO: "no",
+  PL: "pl",
+  PT: "pt",
+  BR: "pt-BR",
+  RU: "ru",
+  ES: "es",
+  SV: "sv",
+  TH: "th",
+  TR: "tr",
+  UK: "uk",
+}
+
 const L = LOCALES
+const GL = GOOGLE_LOCALES
 
 const SLOT_TYPES = [{
     label: 'Custom',
@@ -32,40 +59,40 @@ const SLOT_TYPES = [{
     label: 'Date',
     intent: {
       alexa: 'AMAZON.DATE',
-      google: '$org.schema.type.Date'
+      google: '@sys.date'
     },
     locales: {
       alexa: null,
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
     }
   },
   {
     label: 'Number',
     intent: {
       alexa: 'AMAZON.NUMBER',
-      google: '$org.schema.type.Number'
+      google: '@sys.number'
     },
     locales: {
       alexa: null,
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
     }
   },
   {
     label: 'Time',
     intent: {
       alexa: 'AMAZON.TIME',
-      google: '$org.schema.type.Time'
+      google: '@sys.time'
     },
     locales: {
       alexa: null,
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
     }
   },
   {
     label: 'DayOfWeek',
     intent: {
       alexa: 'AMAZON.DayOfWeek',
-      google: '$org.schema.type.DayOfWeek'
+      google: null
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
@@ -76,18 +103,18 @@ const SLOT_TYPES = [{
     label: 'Color',
     intent: {
       alexa: 'AMAZON.Color',
-      google: '$org.schema.type.Color'
+      google: '@sys.color'
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
     }
   },
   {
     label: 'Organization',
     intent: {
       alexa: 'AMAZON.Organization',
-      google: '$org.schema.type.Organization'
+      google: null
     },
     locales: {
       alexa: [L.US],
@@ -98,7 +125,7 @@ const SLOT_TYPES = [{
     label: 'Person',
     intent: {
       alexa: 'AMAZON.Person',
-      google: '$org.schema.type.Person'
+      google: null
     },
     locales: {
       alexa: [L.US],
@@ -109,7 +136,7 @@ const SLOT_TYPES = [{
     label: 'Book',
     intent: {
       alexa: 'AMAZON.Book',
-      google: '$org.schema.type.Book'
+      google: null
     },
     locales: {
       alexa: [L.US, L.AU, L.GB],
@@ -120,7 +147,7 @@ const SLOT_TYPES = [{
     label: 'Movie',
     intent: {
       alexa: 'AMAZON.Movie',
-      google: '$org.schema.type.Movie'
+      google: null
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.GB, L.FR, L.DE],
@@ -131,7 +158,7 @@ const SLOT_TYPES = [{
     label: 'TVSeries',
     intent: {
       alexa: 'AMAZON.TVSeries',
-      google: '$org.schema.type.TVSeries'
+      google: null
     },
     locales: {
       alexa: [L.US],
@@ -142,7 +169,7 @@ const SLOT_TYPES = [{
     label: 'MusicAlbum',
     intent: {
       alexa: 'AMAZON.MusicAlbum',
-      google: '$org.schema.type.MusicAlbum'
+      google: null
     },
     locales: {
       alexa: [L.US],
@@ -153,7 +180,7 @@ const SLOT_TYPES = [{
     label: 'MusicRecording',
     intent: {
       alexa: 'AMAZON.MusicRecording',
-      google: '$org.schema.type.MusicRecording'
+      google: null
     },
     locales: {
       alexa: [L.US],
@@ -164,132 +191,22 @@ const SLOT_TYPES = [{
     label: 'PhoneNumber',
     intent: {
       alexa: 'AMAZON.PhoneNumber',
-      google: '$org.schema.type.PhoneNumber'
+      google: '@sys.phone-number'
     },
     locales: {
       alexa: [L.US, L.JP],
-      google: null
-    }
-  },
-  {
-    label: 'Distance',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.Distance'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Temperature',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.Temperature'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Place',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.Place'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Product',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.Product'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'YesNo',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.YesNo'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'URL',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.URL'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Email',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.Email'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Text',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.Text'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Currency',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.priceCurrency'
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
-    label: 'Cuisine',
-    intent: {
-      alexa: null,
-      google: '$org.schema.type.servesCuisine'
-    },
-    locales: {
-      alexa: null,
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
     }
   },
   {
     label: 'Duration',
     intent: {
       alexa: 'AMAZON.DURATION',
-      google: null
+      google: '@sys.duration'
     },
     locales: {
       alexa: null,
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.RU, GL.ES]
     }
   },
   {
@@ -315,25 +232,14 @@ const SLOT_TYPES = [{
     }
   },
   {
-    label: 'SearchQuery',
-    intent: {
-      alexa: 'AMAZON.SearchQuery',
-      google: null
-    },
-    locales: {
-      alexa: null,
-      google: null
-    }
-  },
-  {
     label: 'Ordinal',
     intent: {
       alexa: 'AMAZON.Ordinal',
-      google: null
+      google: '@sys.ordinal'
     },
     locales: {
       alexa: [L.US, L.JP],
-      google: null
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
     }
   },
   {
@@ -395,11 +301,11 @@ const SLOT_TYPES = [{
     label: 'Airport',
     intent: {
       alexa: 'AMAZON.Airport',
-      google: null
+      google: '@sys.airport'
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
+      google: [GL.EN]
     }
   },
   {
@@ -428,11 +334,11 @@ const SLOT_TYPES = [{
     label: 'Artist',
     intent: {
       alexa: 'AMAZON.Artist',
-      google: null
+      google: '@sys.music-artist'
     },
     locales: {
       alexa: [L.US, L.IN, L.FR, L.DE],
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
     }
   },
   {
@@ -538,11 +444,11 @@ const SLOT_TYPES = [{
     label: 'Country',
     intent: {
       alexa: 'AMAZON.Country',
-      google: null
+      google: '@sys.geo-country'
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
     }
   },
   {
@@ -802,11 +708,11 @@ const SLOT_TYPES = [{
     label: 'Language',
     intent: {
       alexa: 'AMAZON.Language',
-      google: null
+      google: '@sys.language'
     },
     locales: {
       alexa: [L.US, L.AU, L.CA, L.IN, L.GB, L.CA_fr, L.FR, L.DE, L.IT, L.ES, L.MX],
-      google: null
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
     }
   },
   {
@@ -1280,6 +1186,435 @@ const SLOT_TYPES = [{
     locales: {
       alexa: [L.CA],
       google: null
+    }
+  },
+  {
+    label: "Date Time",
+    intent: {
+      alexa: null,
+      google: "@sys.date-time"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
+    }
+  }, {
+
+    label: "Date Period",
+    intent: {
+      alexa: null,
+      google: "@sys.date-period"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
+    }
+  }, {
+
+    label: "Time Period",
+    intent: {
+      alexa: null,
+      google: "@sys.time-period"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
+    }
+  }, {
+
+    label: "Flight Number",
+    intent: {
+      alexa: null,
+      google: "@sys.flight-number"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.KO, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
+    }
+  }, {
+
+    label: "Unit Currency",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-currency"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Percentage",
+    intent: {
+      alexa: null,
+      google: "@sys.percentage"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.RU, GL.ES]
+    }
+  }, {
+
+    label: "Age",
+    intent: {
+      alexa: null,
+      google: "@sys.age"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.IT]
+    }
+  }, {
+
+    label: "Currency Name",
+    intent: {
+      alexa: null,
+      google: "@sys.currency-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Zip Code",
+    intent: {
+      alexa: null,
+      google: "@sys.zip-code"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Geo Capital",
+    intent: {
+      alexa: null,
+      google: "@sys.geo-capital"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Geo City",
+    intent: {
+      alexa: null,
+      google: "@sys.geo-city"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Location",
+    intent: {
+      alexa: null,
+      google: "@sys.location"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES]
+    }
+  }, {
+
+    label: "Email",
+    intent: {
+      alexa: null,
+      google: "@sys.email"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
+    }
+  }, {
+
+    label: "Given Name",
+    intent: {
+      alexa: null,
+      google: "@sys.given-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Last Name",
+    intent: {
+      alexa: null,
+      google: "@sys.last-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Any",
+    intent: {
+      alexa: null,
+      google: "@sys.any"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.DA, GL.NL, GL.EN, GL.FR, GL.DE, GL.HI, GL.ID, GL.IT, GL.JA, GL.KO, GL.NO, GL.PL, GL.PT, GL.BR, GL.RU, GL.ES, GL.SV, GL.TH, GL.TR, GL.UK]
+    }
+  }, {
+
+    label: "Url",
+    intent: {
+      alexa: null,
+      google: "@sys.url"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.HK, GL.CN, GL.TW, GL.NL, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.KO, GL.PT, GL.BR, GL.RU, GL.ES, GL.UK]
+    }
+  }, {
+
+    label: "Address",
+    intent: {
+      alexa: null,
+      google: "@sys.address"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.CN, GL.EN, GL.FR, GL.DE, GL.IT, GL.JA, GL.RU, GL.ES]
+    }
+  }, {
+
+    label: "Cardinal",
+    intent: {
+      alexa: null,
+      google: "@sys.cardinal"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Number Integer",
+    intent: {
+      alexa: null,
+      google: "@sys.number-integer"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Area",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-area"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Length",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-length"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.FR, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Speed",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-speed"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Volume",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-volume"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.DE, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Weight",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-weight"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.DE, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Information",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-information"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Temperature",
+    intent: {
+      alexa: null,
+      google: "@sys.temperature"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Area Name",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-area-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Length Name",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-length-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Speed Name",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-speed-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Volume Name",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-volume-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Weight Name",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-weight-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Unit Information Name",
+    intent: {
+      alexa: null,
+      google: "@sys.unit-information-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Geo State",
+    intent: {
+      alexa: null,
+      google: "@sys.geo-state"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.FR, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Music Genre",
+    intent: {
+      alexa: null,
+      google: "@sys.music-genre"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.DA, GL.NL, GL.EN, GL.HI, GL.ID, GL.KO, GL.NO, GL.PL, GL.BR, GL.ES, GL.SV, GL.TH, GL.TR]
+    }
+  }, {
+
+    label: "Number Sequence",
+    intent: {
+      alexa: null,
+      google: "@sys.number-sequence"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.EN]
+    }
+  }, {
+
+    label: "Geo Country Code",
+    intent: {
+      alexa: null,
+      google: "@sys.geo-country-code"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.EN]
+    }
+  }, {
+
+    label: "Place Attraction",
+    intent: {
+      alexa: null,
+      google: "@sys.place-attraction"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.EN, GL.FR, GL.JA]
+    }
+  }, {
+
+    label: "Patronymic Name",
+    intent: {
+      alexa: null,
+      google: "@sys.patronymic-name"
+    },
+    locales: {
+      alexa: null,
+      google: [GL.RU]
     }
   }
 ]
@@ -2622,66 +2957,55 @@ const ALLOWED_GOOGLE_BLOCKS = [
 ]
 
 const BUILT_IN_INTENTS_GOOGLE = [{
-    name: 'actions.intent.GET_FORTUNE',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_HOROSCOPE',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_JOKE',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_QUOTATION',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_CREDIT_SCORE',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_CRYPTOCURRENCY_PRICE',
-    slots: []
-  },
-  {
-    name: 'actions.intent.PLAY_GAME',
-    slots: []
-  },
-  {
-    name: 'actions.intent.CHECK_WATERSPORTS_CONDITIONS',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_SPORTS_SCHEDULE',
-    slots: []
-  },
-  {
-    name: 'actions.intent.GET_SPORTS_HIGHLIGHTS',
-    slots: []
-  },
-  {
-    name: 'actions.intent.CHECK_SPORTS_SCORES',
-    slots: []
-  },
-  {
-    name: 'actions.intent.CHECK_SPORTS_STATS',
-    slots: []
-  },
-  {
-    name: 'actions.intent.CHECK_AIR_QUALITY',
-    slots: []
-  },
-  {
-    name: 'actions.intent.CHECK_WATER_CONDITIONS',
-    slots: []
-  },
-  {
-    name: 'actions.intent.START_CALMING_ACTIVITY',
-    slots: []
-  }
-]
+  name: 'actions.intent.PLAY_GAME',
+  slots: []
+}, {
+  name: 'actions.intent.RESERVE_TAXI',
+  slots: []
+}, {
+  name: 'actions.intent.HEAR_JOKE',
+  slots: []
+}, {
+  name: 'actions.intent.HEAR_QUOTE',
+  slots: []
+}, {
+  name: 'actions.intent.HEAR_FACT',
+  slots: []
+}, {
+  name: 'actions.intent.TAKE_QUIZ',
+  slots: []
+}, {
+  name: 'actions.intent.GET_FORTUNE',
+  slots: []
+}, {
+  name: 'actions.intent.GET_HOROSCOPE',
+  slots: []
+}, {
+  name: 'actions.intent.GET_JOKE',
+  slots: []
+}, {
+  name: 'actions.intent.GET_QUOTATION',
+  slots: []
+}, {
+  name: 'actions.intent.GET_CREDIT_SCORE',
+  slots: []
+}, {
+  name: 'actions.intent.GET_CRYPTOCURRENCY_PRICE',
+  slots: []
+}, {
+  name: 'actions.intent.CHECK_WATERSPORTS_CONDITIONS',
+  slots: []
+}, {
+  name: 'actions.intent.CHECK_AIR_QUALITY',
+  slots: []
+}, {
+  name: 'actions.intent.CHECK_WATER_CONDITIONS',
+  slots: []
+}, {
+  name: 'actions.intent.START_CALMING_ACTIVITY',
+  slots: []
+}]
+
 
 exports.VOICES = VOICES
 exports.BUILT_IN_INTENTS_ALEXA = BUILT_IN_INTENTS_ALEXA;

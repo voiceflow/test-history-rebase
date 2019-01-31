@@ -58,7 +58,7 @@ const getSlotsForKeys = (keys, slots) => {
 
 	return key_set.map(key => {
         const slot = find(slots, {key: key})
-        let type = slot.type.value !== 'CUSTOM' ? slot.type.value : slot.name
+        let type = slot.type.value.toLowerCase() !== 'custom' ? slot.type.value : slot.name
 
 		return {
 			name: slot.name,

@@ -1105,7 +1105,7 @@ class Canvas extends Component {
             slot_mappings = {}
             this.state.skill.slots.forEach(slot => {
 
-                if (slot.type.value && slot.type.value === 'CUSTOM') {
+                if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
                     nlc.addSlotType({
                         type: slot.name,
                         matcher: slot.inputs
@@ -1688,9 +1688,9 @@ class Canvas extends Component {
             let intent_slots = getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
             intent_slots.forEach(intent_slot => {
                 const slot_type = intent_slot.type
-                if (slot_type !== 'CUSTOM') {
+                if (slot_type && slot_type.toLowerCase() !== 'custom') {
                     if (/AMAZON/.test(slot_type)) is_alexa = true
-                    if (/\$org\.schema\.type/.test(slot_type)) is_google = true
+                    if (/^@sys\./.test(slot_type)) is_google = true
                 }
             })
             let platform = null

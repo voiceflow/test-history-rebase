@@ -82,6 +82,7 @@ class Menu extends Component {
                     enterFlow={this.props.enterFlow}
                     renameFlow={this.props.renameFlow}
                     copyFlow={()=>this.props.copyFlow(node.id)}
+                    preview={this.props.preview}
                     deleteFlow={()=>this.props.deleteFlow(node.id)}
                 />
                 {tree}

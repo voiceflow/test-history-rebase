@@ -513,13 +513,14 @@ class TestModal extends React.Component {
             })
         }
       }
+      
       return (<React.Fragment>
         <span className="text-muted">Local Variables</span>
         <Table className="var-table">
         <tbody>
           {v_array.map(v => <tr key={v.name}>
             <td className="v"><span>{`{${v.name}}`}</span></td>
-            <td>{v.value}</td>
+            <td>{`{${v.value}}`}</td>
           </tr>)}
         </tbody>
         </Table>
@@ -528,7 +529,7 @@ class TestModal extends React.Component {
         <tbody>
           {g_array.map(v => <tr key={v.name}>
             <td className="v"><span>{`{${v.name}}`}</span></td>
-            <td>{v.value}</td>
+            <td>{`{${v.value}}`}</td>
           </tr>)}
         </tbody>
       </Table>
@@ -571,17 +572,18 @@ class TestModal extends React.Component {
                             }else if(chat.debug){
                               if (!this.state.debug) {
                                 return null
-                              }
-                              return <div className="mt-2 text-left" key={i}>
-                                <div className="message border rounded p-2 align-self-start debug">
-                                  <div className="mb-0 px-1 text-left">
-                                    <small>{chat.debug}</small>
-                                    <pre className="mb-2">
-                                      {chat.text}
-                                    </pre>
+                              } else {
+                                return <div className="mt-2 text-left" key={i}>
+                                  <div className="message border rounded p-2 align-self-start debug">
+                                    <div className="mb-0 px-1 text-left">
+                                      <small>{chat.debug}</small>
+                                      <pre className="mb-2">
+                                        {chat.text}
+                                      </pre>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
+                              }
                             }else if(chat.text){
                               return <div className="mt-2 text-left" key={i}>
                                 <div className="message border rounded p-2 align-self-start">
@@ -650,7 +652,9 @@ class TestModal extends React.Component {
                       Debug Mode
                       <Switch
                         checked={this.state.debug}
-                        onChange={() => this.setState({debug: !this.state.debug})}
+                        onChange={() => {
+                          this.setState(prev_state => ({debug: !prev_state.debug}))
+                        }}
                         value={this.state.debug}
                       />
                   </div>

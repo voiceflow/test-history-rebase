@@ -815,7 +815,7 @@ class Skill extends Component {
                                                 title='Large Icon *'/>
                                         </div>
 
-                                        <Button className="goback-btn goforward-btn mt-100 ml-4 mr-4" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
+                                        <Button className="goback-btn goforward-btn mt-100 ml-5 mr-5" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
 
                                         <div>
                                             <Image

@@ -33,7 +33,9 @@ class DiagramBlock extends Component {
 
         if(diagram_id){
             if(diagram_id){
-                axios.get(`/diagram/${diagram_id}/variables`)
+                axios.get(`/diagram/${diagram_id}/variables`, {
+                    headers: { Pragma: 'no-cache' }
+                })
                 .then(res => {
                     if(Array.isArray(res.data)){
                         this.setState({

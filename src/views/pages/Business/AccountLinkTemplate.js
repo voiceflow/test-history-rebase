@@ -175,7 +175,7 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
                               URL Authorization
                           </label>
                             <Input
-                              name="form-control-border top-left form-control right mb-3"
+                              name="form-control-border form-control mb-3"
                               value={this.state.accountLinkingRequest.authorizationUrl || ''}
                               placeholder="URL Authorization"
                               onChange={(e) => {
@@ -190,7 +190,7 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
                                 Access Token URL
                             </label>
                             <Input
-                              className="form-control-border top-left form-control right mb-3"
+                              className="form-control-border form-control mb-3"
                               value={this.state.accountLinkingRequest.accessTokenUrl || ''}
                               placeholder="Access Token URL"
                               onChange={(e) => {
@@ -224,9 +224,9 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
                                     Client ID
                                 </label>
                                 <Input
-                                  className="form-control-border top-left form-control right mb-3"
+                                  className="form-control-border form-control mb-3"
                                   value={this.state.accountLinkingRequest.clientId || ''}
-                                  placeholder="Access Token URL"
+                                  placeholder="Client ID"
                                   onChange={(e) => {
                                     let accountLinkingRequest = this.state.accountLinkingRequest;
                                     accountLinkingRequest.clientId = e.target.value;
@@ -239,10 +239,10 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
                                     Client Secret
                                 </label>
                                 <Input
-                                  className="form-control-border top-left form-control right mb-3"
+                                  className="form-control-border form-control mb-3"
                                   type="password"
                                   value={this.state.accountLinkingRequest.clientSecret || ''}
-                                  placeholder="Access Token URL"
+                                  placeholder="Client Secret"
                                   onChange={(e) => {
                                     let accountLinkingRequest = this.state.accountLinkingRequest;
                                     accountLinkingRequest.clientSecret = e.target.value;
@@ -282,7 +282,7 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
                               </label>
                               <Input
                                 type="number"
-                                className="form-control-border top-left form-control right mb-3"
+                                className="form-control-border form-control right mb-3"
                                 value={this.state.accountLinkingRequest.defaultTokenExpirationInSeconds || ''}
                                 placeholder="Access Token URL"
                                 onChange={(e) => {

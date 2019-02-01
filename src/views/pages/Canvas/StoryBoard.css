@@ -7,7 +7,7 @@
 #spotlight {
     position: fixed;
     z-index: 1050;
-    top: 200px;
+    top: 150px;
     width: 36%;
     left: 50%;
     margin-left: -18%;
@@ -1353,15 +1353,15 @@ label {
     outline: 0;
     border-color: #2b3950 !important;
     box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
-/*    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25)*/
+    box-shadow: 0 0 0 0.1rem rgba(0,123,255,.25)
 }
-/* .port.flow{
+    .port.flow{
     height: 50px;
     width: 30px;
     transition: all 0.2s ease;
     border: transparent;
 }
-.port.flow:hover{
+    .port.flow:hover{
     transform: scale(1.25);
     height: 50px;
     width: 36px;
@@ -1370,12 +1370,12 @@ label {
     border: 2px solid #fff;
     box-shadow: 0 1px 8px 0 rgba(14,30,37,.08);
     
-} */
+}
 .srd-default-node.exit{
     border-top: 6px solid #ff9f8d;
     border-color: #ff9f8d !important;
 }
-/* .srd-default-node.flow {
+.srd-default-node.flow {
     border-top: 6px solid #7abcdb;
     border-color: #7abcdb !important;
     border-radius: 200px !important;
@@ -1384,8 +1384,8 @@ label {
     height: 140px !important;
     padding: 20px 0 10px 0 !important;
     border: 1px solid #8da2b530 !important;
-} */
-/* .port.flow.in{
+}
+.port.flow.in{
     border-top-right-radius: 50px !important;
     border-bottom-right-radius: 50px !important;
 }
@@ -1433,7 +1433,7 @@ label {
     border-color: #7dbee2 !important;
 }
 
-.srd-default-node.api, .srd-default-node.code, .srd-default-node.flow{
+.srd-default-node.api, .srd-default-node.code{
     border-top: 6px solid #7dbee2;
     border-color: #7dbee2 !important;
 }
@@ -2473,6 +2473,7 @@ button.close:hover{
     transform: translateX(0px) translateY(0px);
     border-radius: 30px !important;
     border: none;
+    cursor: pointer;
 }
 
 .grey-icon:hover{
@@ -2485,16 +2486,17 @@ button.close:hover{
     background-color: #fff !important;
     color: #8da2b5 !important;
     border-radius: 30px !important;
-    width: 35px;
-    height: 35px;
-    padding-top: 4px;
+    width: 28px;
+    height: 28px;
     border: none !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     cursor: pointer !important;
     transition: all .25s ease-in-out;
+    font-size: 13px;
+    padding-top: 2px;
 }
 .btn-group .white-circ {
-    width: 50px;
+    width: 40px;
 }
 .round-left {
     border-radius: 30px 0px 0px 30px !important;

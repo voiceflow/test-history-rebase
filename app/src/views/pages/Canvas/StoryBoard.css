@@ -680,7 +680,7 @@
     border-radius: 100%;
     background-color:#fff !important;
     border: none;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06) !important;
     background-image: url(/back.svg) !important;
     display: inline-block;
     background-size: 30%;
@@ -692,10 +692,17 @@
 }
 .goback-btn:hover{
     background-position: 45% center;
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 }
 .goback-btn:active{
-background-color: rgb(245, 249, 255) !important;
+background-color: #f9f9f9 !important;
+box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
+}
+.goback-btn:focus{
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
+}
+.goforward-btn{
+    transform: scaleX(-1)
 }
 .Menu #sidebar {
     position: absolute;
@@ -1540,7 +1547,9 @@ button.close:hover{
     display: flex;
     justify-content: space-between;
 }
-
+.mt-100{
+    margin-top: 100px;
+}
 .response-box {
     overflow: scroll;
     max-height: 550px;
@@ -2460,4 +2469,22 @@ button.close:hover{
     margin: auto;
     display: flex;
     flex-wrap: wrap;
+}
+
+.big-settings-content{
+    padding: 30px 40px;
+    border-radius: 8px;
+	background-color: #fff;
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+	border: 1px solid rgba(141, 162, 181, .28);
+}
+
+.big-settings-alignment-div{
+    min-width: 500px;
+    border-radius: 10px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 60px;
+    max-width: 80%;
 }

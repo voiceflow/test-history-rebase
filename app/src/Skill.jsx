@@ -11,6 +11,8 @@ import ErrorModal from './views/components/Modals/ErrorModal'
 import ConfirmModal from './views/components/Modals/ConfirmModal'
 import { Link } from 'react-router-dom';
 import {Alert} from 'reactstrap'
+import UpgradeModal from './views/components/Modals/UpgradeModal'
+import AuthenticationService from './services/Authentication'
 
 class Skill extends Component {
     constructor(props){
@@ -24,7 +26,9 @@ class Skill extends Component {
             confirm: null,
             mounted: true,
             error_screen: null,
-            time_mounted: null
+            time_mounted: null,
+            upgrade_modal: false,
+            selected_plan: 1
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -32,6 +36,8 @@ class Skill extends Component {
         this.onConfirm = this.onConfirm.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
         this.onSwapVersions = this.onSwapVersions.bind(this)
+        this.toggleUpgrade = this.toggleUpgrade.bind(this)
+        this.logout = this.logout.bind(this)
     }
 
     static getDerivedStateFromProps(props, state){
@@ -172,6 +178,21 @@ class Skill extends Component {
         })
     }
 
+    toggleUpgrade() {
+        this.setState({
+            upgrade_modal: !this.state.upgrade_modal
+        });
+    }
+
+    logout(e) {
+        e.preventDefault();
+        AuthenticationService.logout(() => {
+          console.log("logout");
+          this.props.history.push('/login');
+        });
+        return false;
+    }
+
     renderPage(){
         switch(this.props.page){
             case 'canvas':
@@ -181,7 +202,8 @@ class Skill extends Component {
                     diagram_id={this.state.diagram_id} 
                     onError={this.onError} 
                     onConfirm={this.onConfirm} 
-                    updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                    updateSkill={(skill) => {this.setState({skill: skill})}}
+                    toggleUpgrade={this.toggleUpgrade}/>
             case 'business':
                 return <Business
                   {...this.props}
@@ -190,6 +212,7 @@ class Skill extends Component {
                   onError={this.onError}
                   onConfirm={this.onConfirm}
                   updateSkill={(skill) => {this.setState({skill: skill})}}
+                  toggleUpgrade={this.toggleUpgrade}
                 />
             case 'settings':
                 return <Settings 
@@ -199,7 +222,8 @@ class Skill extends Component {
                     page={this.props.secondaryPage}
                     onSwapVersions={this.onSwapVersions} 
                     onConfirm={this.onConfirm} 
-                    updateSkill={(skill) => {this.setState({skill: skill})}}/>
+                    updateSkill={(skill) => {this.setState({skill: skill})}}
+                    toggleUpgrade={this.toggleUpgrade}/>
             case 'publish':
                 return <Publish 
                     {...this.props} 
@@ -228,7 +252,6 @@ class Skill extends Component {
     }
 
     render(){
-
         if(!this.state.mounted) return null
 
         if(this.state.error_screen){
@@ -255,12 +278,16 @@ class Skill extends Component {
             </Link>
             {this.state.skill ? this.state.skill.name : "New Skill"}
             </div>
-            <ErrorModal error={this.state.error} dismiss={() => this.setState(
-                { error: null }
-                )} />
-            <ConfirmModal confirm={this.state.confirm} toggle={() => this.setState(
-                { confirm: null }
-                )} />
+            <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
+            <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
+            <UpgradeModal
+                upgrade_modal={this.state.upgrade_modal}
+                toggle={this.toggleUpgrade}
+                selected_plan={this.state.selected_plan}
+                switchPlan={(plan) => this.setState({selected_plan: plan})}
+                user={this.props.user}
+                logout={this.logout}
+            />
 
             <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
             {this.renderPage()}

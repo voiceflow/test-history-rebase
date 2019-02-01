@@ -210,14 +210,14 @@ class SlotInput extends Component {
                                 onChange={this.updateSlotType}
                                 options={this.props.slot_types.map(type => {
                                     let value
-                                    if ((type.intent.alexa && type.intent.google) || (!type.intent.alexa && !type.intent.google)) {
+                                    if ((type.type.alexa && type.type.google) || (!type.type.alexa && !type.type.google)) {
                                         value = type.label
                                     } 
-                                    else if (type.intent.alexa && !type.intent.google) {
-                                        value = type.intent.alexa
+                                    else if (type.type.alexa && !type.type.google) {
+                                        value = type.type.alexa
                                     }
-                                    else if (!type.intent.alexa && type.intent.google) {
-                                        value = type.intent.google
+                                    else if (!type.type.alexa && type.type.google) {
+                                        value = type.type.google
                                     }
 
                                     return {label: type.label, value: value}

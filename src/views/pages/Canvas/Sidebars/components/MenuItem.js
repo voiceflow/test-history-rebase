@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Tooltip} from 'react-tippy';
-import { ALLOWED_GOOGLE_BLOCKS } from '../../Constants'
+import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
 class MenuItem extends Component {
     render() {

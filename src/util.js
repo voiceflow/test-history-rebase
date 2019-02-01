@@ -1,5 +1,6 @@
 
-const _ = require('lodash')
+const  { find } = require('lodash')
+const { SLOT_TYPES } = require('./Constants')
 
 const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false) => {
 
@@ -15,7 +16,7 @@ const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, fo
 			if (m) {
 				const replace = m[1]
 				const key = m[2]
-				const slot = _.find(slots, {
+				const slot = find(slots, {
 					key: key
 				})
 				if (slot) {
@@ -44,7 +45,37 @@ const formatName = (name) => {
 	return formatted_name
 }
 
-module.exports = {
-  getUtterancesWithSlotNames,
-  formatName
+const getSlotsForKeysAndFormat = (keys, slots, platform) => {
+	let key_set = new Set()
+
+	keys.forEach(key_arr => {
+		key_arr.forEach(key => {
+			key_set.add(key)
+		})
+	})
+
+	// key_set = [...key_set]
+	key_set = Array.from(key_set)
+
+	return key_set.map(key => {
+		const slot = find(slots, {
+			key: key
+		})
+
+		let type = formatName(slot.name)
+		if (slot.type.value.toLowerCase() !== 'custom') {
+			let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
+			if (!default_slot) throw(`Default slot not found for label ${slot.name}`)
+			type = default_slot.type[platform]
+		}
+
+		return {
+			name: formatName(slot.name),
+			type: type
+		}
+	})
 }
+
+exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
+exports.formatName = formatName
+exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat

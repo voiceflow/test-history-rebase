@@ -134,7 +134,8 @@ class TestModal extends React.Component {
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
-      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100
+      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100,
+      platform: this.props.platform
     };
 
     // Inject New Globals in if updated

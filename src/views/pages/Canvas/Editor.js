@@ -41,7 +41,7 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-import { SLOT_TYPES, BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } from './Constants'
+import { SLOT_TYPES, BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } from 'Constants'
 
 const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
     return {
@@ -117,7 +117,7 @@ class Editor extends Component {
         let slots = [SLOT_TYPES[0]] //Custom Slot
         for (let i in SLOT_TYPES) {
             const slot = SLOT_TYPES[i]
-            if ((slot.intent.google && this.props.platform === 'google') || (slot.intent.alexa && this.props.platform === 'alexa')) {
+            if ((slot.type.google && this.props.platform === 'google') || (slot.type.alexa && this.props.platform === 'alexa')) {
                 const slot_locales = slot.locales[this.props.platform]
                 if (this.props.platform === 'google') {
                     slots.push(slot)
@@ -128,9 +128,9 @@ class Editor extends Component {
         }
 
         slots = slots.slice(0, 1).concat(slots.slice(1).sort((a, b) => {
-            if (a.intent.google && a.intent.alexa && !(b.intent.google && b.intent.alexa)) {
+            if (a.type.google && a.type.alexa && !(b.type.google && b.type.alexa)) {
                 return -1
-            } else if (b.intent.google && b.intent.alexa && !(a.intent.google && a.intent.alexa)) {
+            } else if (b.type.google && b.type.alexa && !(a.type.google && a.type.alexa)) {
                 return 1
             } else {
                 return a.label.localeCompare(b.label)

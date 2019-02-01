@@ -46,7 +46,7 @@ const GL = GOOGLE_LOCALES
 
 const SLOT_TYPES = [{
     label: 'Custom',
-    intent: {
+    type: {
       alexa: null,
       google: null
     },
@@ -57,7 +57,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Date',
-    intent: {
+    type: {
       alexa: 'AMAZON.DATE',
       google: '@sys.date'
     },
@@ -68,7 +68,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Number',
-    intent: {
+    type: {
       alexa: 'AMAZON.NUMBER',
       google: '@sys.number'
     },
@@ -79,7 +79,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Time',
-    intent: {
+    type: {
       alexa: 'AMAZON.TIME',
       google: '@sys.time'
     },
@@ -90,7 +90,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'DayOfWeek',
-    intent: {
+    type: {
       alexa: 'AMAZON.DayOfWeek',
       google: null
     },
@@ -101,7 +101,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Color',
-    intent: {
+    type: {
       alexa: 'AMAZON.Color',
       google: '@sys.color'
     },
@@ -112,7 +112,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Organization',
-    intent: {
+    type: {
       alexa: 'AMAZON.Organization',
       google: null
     },
@@ -123,7 +123,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Person',
-    intent: {
+    type: {
       alexa: 'AMAZON.Person',
       google: null
     },
@@ -134,7 +134,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Book',
-    intent: {
+    type: {
       alexa: 'AMAZON.Book',
       google: null
     },
@@ -145,7 +145,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Movie',
-    intent: {
+    type: {
       alexa: 'AMAZON.Movie',
       google: null
     },
@@ -156,7 +156,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'TVSeries',
-    intent: {
+    type: {
       alexa: 'AMAZON.TVSeries',
       google: null
     },
@@ -167,7 +167,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicAlbum',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicAlbum',
       google: null
     },
@@ -178,7 +178,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicRecording',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicRecording',
       google: null
     },
@@ -189,7 +189,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'PhoneNumber',
-    intent: {
+    type: {
       alexa: 'AMAZON.PhoneNumber',
       google: '@sys.phone-number'
     },
@@ -200,7 +200,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Duration',
-    intent: {
+    type: {
       alexa: 'AMAZON.DURATION',
       google: '@sys.duration'
     },
@@ -211,7 +211,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'FourDigitNumber',
-    intent: {
+    type: {
       alexa: 'AMAZON.FOUR_DIGIT_NUMBER',
       google: null
     },
@@ -222,7 +222,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'SearchQuery',
-    intent: {
+    type: {
       alexa: 'AMAZON.SearchQuery',
       google: null
     },
@@ -233,7 +233,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Ordinal',
-    intent: {
+    type: {
       alexa: 'AMAZON.Ordinal',
       google: '@sys.ordinal'
     },
@@ -244,7 +244,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'US_CITY',
-    intent: {
+    type: {
       alexa: 'AMAZON.US_CITY',
       google: null
     },
@@ -255,7 +255,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Actor',
-    intent: {
+    type: {
       alexa: 'AMAZON.Actor',
       google: null
     },
@@ -266,7 +266,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'AdministrativeArea',
-    intent: {
+    type: {
       alexa: 'AMAZON.AdministrativeArea',
       google: null
     },
@@ -277,7 +277,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'AggregateRating',
-    intent: {
+    type: {
       alexa: 'AMAZON.AggregateRating',
       google: null
     },
@@ -288,7 +288,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Airline',
-    intent: {
+    type: {
       alexa: 'AMAZON.Airline',
       google: null
     },
@@ -299,7 +299,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Airport',
-    intent: {
+    type: {
       alexa: 'AMAZON.Airport',
       google: '@sys.airport'
     },
@@ -310,7 +310,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Anaphor',
-    intent: {
+    type: {
       alexa: 'AMAZON.Anaphor',
       google: null
     },
@@ -321,7 +321,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Animal',
-    intent: {
+    type: {
       alexa: 'AMAZON.Animal',
       google: null
     },
@@ -332,7 +332,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Artist',
-    intent: {
+    type: {
       alexa: 'AMAZON.Artist',
       google: '@sys.music-artist'
     },
@@ -343,7 +343,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'AT_CITY',
-    intent: {
+    type: {
       alexa: 'AMAZON.AT_CITY',
       google: null
     },
@@ -354,7 +354,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'AT_REGION',
-    intent: {
+    type: {
       alexa: 'AMAZON.AT_REGION',
       google: null
     },
@@ -365,7 +365,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Athlete',
-    intent: {
+    type: {
       alexa: 'AMAZON.Athlete',
       google: null
     },
@@ -376,7 +376,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Author',
-    intent: {
+    type: {
       alexa: 'AMAZON.Author',
       google: null
     },
@@ -387,7 +387,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'BookSeries',
-    intent: {
+    type: {
       alexa: 'AMAZON.BookSeries',
       google: null
     },
@@ -398,7 +398,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'BroadcastChannel',
-    intent: {
+    type: {
       alexa: 'AMAZON.BroadcastChannel',
       google: null
     },
@@ -409,7 +409,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'CivicStructure',
-    intent: {
+    type: {
       alexa: 'AMAZON.CivicStructure',
       google: null
     },
@@ -420,7 +420,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Comic',
-    intent: {
+    type: {
       alexa: 'AMAZON.Comic',
       google: null
     },
@@ -431,7 +431,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Corporation',
-    intent: {
+    type: {
       alexa: 'AMAZON.Corporation',
       google: null
     },
@@ -442,7 +442,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Country',
-    intent: {
+    type: {
       alexa: 'AMAZON.Country',
       google: '@sys.geo-country'
     },
@@ -453,7 +453,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'CreativeWorkType',
-    intent: {
+    type: {
       alexa: 'AMAZON.CreativeWorkType',
       google: null
     },
@@ -464,7 +464,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'DE_CITY',
-    intent: {
+    type: {
       alexa: 'AMAZON.DE_CITY',
       google: null
     },
@@ -475,7 +475,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'DE_FIRST_NAME',
-    intent: {
+    type: {
       alexa: 'AMAZON.DE_FIRST_NAME',
       google: null
     },
@@ -486,7 +486,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'DE_REGION',
-    intent: {
+    type: {
       alexa: 'AMAZON.DE_REGION',
       google: null
     },
@@ -497,7 +497,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Dessert',
-    intent: {
+    type: {
       alexa: 'AMAZON.Dessert',
       google: null
     },
@@ -508,7 +508,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'DeviceType',
-    intent: {
+    type: {
       alexa: 'AMAZON.DeviceType',
       google: null
     },
@@ -519,7 +519,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Director',
-    intent: {
+    type: {
       alexa: 'AMAZON.Director',
       google: null
     },
@@ -530,7 +530,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Drink',
-    intent: {
+    type: {
       alexa: 'AMAZON.Drink',
       google: null
     },
@@ -541,7 +541,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'EducationalOrganization',
-    intent: {
+    type: {
       alexa: 'AMAZON.EducationalOrganization',
       google: null
     },
@@ -552,7 +552,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'EUROPE_CITY',
-    intent: {
+    type: {
       alexa: 'AMAZON.EUROPE_CITY',
       google: null
     },
@@ -563,7 +563,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'EventType',
-    intent: {
+    type: {
       alexa: 'AMAZON.EventType',
       google: null
     },
@@ -574,7 +574,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Festival',
-    intent: {
+    type: {
       alexa: 'AMAZON.Festival',
       google: null
     },
@@ -585,7 +585,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'FictionalCharacter',
-    intent: {
+    type: {
       alexa: 'AMAZON.FictionalCharacter',
       google: null
     },
@@ -596,7 +596,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'FinancialService',
-    intent: {
+    type: {
       alexa: 'AMAZON.FinancialService',
       google: null
     },
@@ -607,7 +607,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Food',
-    intent: {
+    type: {
       alexa: 'AMAZON.Food',
       google: null
     },
@@ -618,7 +618,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'FoodEstablishment',
-    intent: {
+    type: {
       alexa: 'AMAZON.FoodEstablishment',
       google: null
     },
@@ -629,7 +629,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Game',
-    intent: {
+    type: {
       alexa: 'AMAZON.Game',
       google: null
     },
@@ -640,7 +640,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'GB_CITY',
-    intent: {
+    type: {
       alexa: 'AMAZON.GB_CITY',
       google: null
     },
@@ -651,7 +651,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'GB_FIRST_NAME',
-    intent: {
+    type: {
       alexa: 'AMAZON.GB_FIRST_NAME',
       google: null
     },
@@ -662,7 +662,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'GB_REGION',
-    intent: {
+    type: {
       alexa: 'AMAZON.GB_REGION',
       google: null
     },
@@ -673,7 +673,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Genre',
-    intent: {
+    type: {
       alexa: 'AMAZON.Genre',
       google: null
     },
@@ -684,7 +684,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Landform',
-    intent: {
+    type: {
       alexa: 'AMAZON.Landform',
       google: null
     },
@@ -695,7 +695,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'LandmarksOrHistoricalBuildings',
-    intent: {
+    type: {
       alexa: 'AMAZON.LandmarksOrHistoricalBuildings',
       google: null
     },
@@ -706,7 +706,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Language',
-    intent: {
+    type: {
       alexa: 'AMAZON.Language',
       google: '@sys.language'
     },
@@ -717,7 +717,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'LocalBusiness',
-    intent: {
+    type: {
       alexa: 'AMAZON.LocalBusiness',
       google: null
     },
@@ -728,7 +728,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'LocalBusinessType',
-    intent: {
+    type: {
       alexa: 'AMAZON.LocalBusinessType',
       google: null
     },
@@ -739,7 +739,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MedicalOrganization',
-    intent: {
+    type: {
       alexa: 'AMAZON.MedicalOrganization',
       google: null
     },
@@ -750,7 +750,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Month',
-    intent: {
+    type: {
       alexa: 'AMAZON.Month',
       google: null
     },
@@ -761,7 +761,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MovieSeries',
-    intent: {
+    type: {
       alexa: 'AMAZON.MovieSeries',
       google: null
     },
@@ -772,7 +772,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MovieTheater',
-    intent: {
+    type: {
       alexa: 'AMAZON.MovieTheater',
       google: null
     },
@@ -783,7 +783,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicCreativeWorkType',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicCreativeWorkType',
       google: null
     },
@@ -794,7 +794,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicEvent',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicEvent',
       google: null
     },
@@ -805,7 +805,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicGroup',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicGroup',
       google: null
     },
@@ -816,7 +816,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Musician',
-    intent: {
+    type: {
       alexa: 'AMAZON.Musician',
       google: null
     },
@@ -827,7 +827,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicPlaylist',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicPlaylist',
       google: null
     },
@@ -838,7 +838,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicVenue',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicVenue',
       google: null
     },
@@ -849,7 +849,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'MusicVideo',
-    intent: {
+    type: {
       alexa: 'AMAZON.MusicVideo',
       google: null
     },
@@ -860,7 +860,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'PostalAddress',
-    intent: {
+    type: {
       alexa: 'AMAZON.PostalAddress',
       google: null
     },
@@ -871,7 +871,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Professional',
-    intent: {
+    type: {
       alexa: 'AMAZON.Professional',
       google: null
     },
@@ -882,7 +882,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'ProfessionalType',
-    intent: {
+    type: {
       alexa: 'AMAZON.ProfessionalType',
       google: null
     },
@@ -893,7 +893,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'RadioChannel',
-    intent: {
+    type: {
       alexa: 'AMAZON.RadioChannel',
       google: null
     },
@@ -904,7 +904,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'RelativePosition',
-    intent: {
+    type: {
       alexa: 'AMAZON.RelativePosition',
       google: null
     },
@@ -915,7 +915,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Residence',
-    intent: {
+    type: {
       alexa: 'AMAZON.Residence',
       google: null
     },
@@ -926,7 +926,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Room',
-    intent: {
+    type: {
       alexa: 'AMAZON.Room',
       google: null
     },
@@ -937,7 +937,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'ScreeningEvent',
-    intent: {
+    type: {
       alexa: 'AMAZON.ScreeningEvent',
       google: null
     },
@@ -948,7 +948,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Service',
-    intent: {
+    type: {
       alexa: 'AMAZON.Service',
       google: null
     },
@@ -959,7 +959,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'SocialMediaPlatform',
-    intent: {
+    type: {
       alexa: 'AMAZON.SocialMediaPlatform',
       google: null
     },
@@ -970,7 +970,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'SoftwareApplication',
-    intent: {
+    type: {
       alexa: 'AMAZON.SoftwareApplication',
       google: null
     },
@@ -981,7 +981,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'SoftwareGame',
-    intent: {
+    type: {
       alexa: 'AMAZON.SoftwareGame',
       google: null
     },
@@ -992,7 +992,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Sport',
-    intent: {
+    type: {
       alexa: 'AMAZON.Sport',
       google: null
     },
@@ -1003,7 +1003,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'SportsEvent',
-    intent: {
+    type: {
       alexa: 'AMAZON.SportsEvent',
       google: null
     },
@@ -1014,7 +1014,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'SportsTeam',
-    intent: {
+    type: {
       alexa: 'AMAZON.SportsTeam',
       google: null
     },
@@ -1025,7 +1025,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'StreetAddress',
-    intent: {
+    type: {
       alexa: 'AMAZON.StreetAddress',
       google: null
     },
@@ -1036,7 +1036,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'StreetName',
-    intent: {
+    type: {
       alexa: 'AMAZON.StreetName',
       google: null
     },
@@ -1047,7 +1047,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'TelevisionChannel',
-    intent: {
+    type: {
       alexa: 'AMAZON.TelevisionChannel',
       google: null
     },
@@ -1058,7 +1058,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'TVEpisode',
-    intent: {
+    type: {
       alexa: 'AMAZON.TVEpisode',
       google: null
     },
@@ -1069,7 +1069,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'TVSeason',
-    intent: {
+    type: {
       alexa: 'AMAZON.TVSeason',
       google: null
     },
@@ -1080,7 +1080,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'US_FIRST_NAME',
-    intent: {
+    type: {
       alexa: 'AMAZON.US_FIRST_NAME',
       google: null
     },
@@ -1091,7 +1091,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'US_STATE',
-    intent: {
+    type: {
       alexa: 'AMAZON.US_STATE',
       google: null
     },
@@ -1102,7 +1102,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'VideoGame',
-    intent: {
+    type: {
       alexa: 'AMAZON.VideoGame',
       google: null
     },
@@ -1113,7 +1113,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'VisualModeTrigger',
-    intent: {
+    type: {
       alexa: 'AMAZON.VisualModeTrigger',
       google: null
     },
@@ -1124,7 +1124,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'WeatherCondition',
-    intent: {
+    type: {
       alexa: 'AMAZON.WeatherCondition',
       google: null
     },
@@ -1135,7 +1135,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'WrittenCreativeWorkType',
-    intent: {
+    type: {
       alexa: 'AMAZON.WrittenCreativeWorkType',
       google: null
     },
@@ -1146,7 +1146,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'City',
-    intent: {
+    type: {
       alexa: 'AMAZON.City',
       google: null
     },
@@ -1157,7 +1157,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'FirstName',
-    intent: {
+    type: {
       alexa: 'AMAZON.FirstName',
       google: null
     },
@@ -1168,7 +1168,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'Region',
-    intent: {
+    type: {
       alexa: 'AMAZON.Region',
       google: null
     },
@@ -1179,7 +1179,7 @@ const SLOT_TYPES = [{
   },
   {
     label: 'DE_FIST_NAME',
-    intent: {
+    type: {
       alexa: 'AMAZON.DE_FIST_NAME',
       google: null
     },
@@ -1190,7 +1190,7 @@ const SLOT_TYPES = [{
   },
   {
     label: "Date Time",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.date-time"
     },
@@ -1201,7 +1201,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Date Period",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.date-period"
     },
@@ -1212,7 +1212,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Time Period",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.time-period"
     },
@@ -1223,7 +1223,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Flight Number",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.flight-number"
     },
@@ -1234,7 +1234,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Currency",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-currency"
     },
@@ -1245,7 +1245,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Percentage",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.percentage"
     },
@@ -1256,7 +1256,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Age",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.age"
     },
@@ -1267,7 +1267,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Currency Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.currency-name"
     },
@@ -1278,7 +1278,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Zip Code",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.zip-code"
     },
@@ -1289,7 +1289,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Geo Capital",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.geo-capital"
     },
@@ -1300,7 +1300,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Geo City",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.geo-city"
     },
@@ -1311,7 +1311,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Location",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.location"
     },
@@ -1322,7 +1322,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Email",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.email"
     },
@@ -1333,7 +1333,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Given Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.given-name"
     },
@@ -1344,7 +1344,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Last Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.last-name"
     },
@@ -1355,7 +1355,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Any",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.any"
     },
@@ -1366,7 +1366,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Url",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.url"
     },
@@ -1377,7 +1377,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Address",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.address"
     },
@@ -1388,7 +1388,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Cardinal",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.cardinal"
     },
@@ -1399,7 +1399,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Number Integer",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.number-integer"
     },
@@ -1410,7 +1410,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Area",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-area"
     },
@@ -1421,7 +1421,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Length",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-length"
     },
@@ -1432,7 +1432,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Speed",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-speed"
     },
@@ -1443,7 +1443,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Volume",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-volume"
     },
@@ -1454,7 +1454,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Weight",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-weight"
     },
@@ -1465,7 +1465,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Information",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-information"
     },
@@ -1476,7 +1476,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Temperature",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.temperature"
     },
@@ -1487,7 +1487,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Area Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-area-name"
     },
@@ -1498,7 +1498,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Length Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-length-name"
     },
@@ -1509,7 +1509,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Speed Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-speed-name"
     },
@@ -1520,7 +1520,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Volume Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-volume-name"
     },
@@ -1531,7 +1531,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Weight Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-weight-name"
     },
@@ -1542,7 +1542,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Unit Information Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.unit-information-name"
     },
@@ -1553,7 +1553,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Geo State",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.geo-state"
     },
@@ -1564,7 +1564,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Music Genre",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.music-genre"
     },
@@ -1575,7 +1575,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Number Sequence",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.number-sequence"
     },
@@ -1586,7 +1586,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Geo Country Code",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.geo-country-code"
     },
@@ -1597,7 +1597,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Place Attraction",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.place-attraction"
     },
@@ -1608,7 +1608,7 @@ const SLOT_TYPES = [{
   }, {
 
     label: "Patronymic Name",
-    intent: {
+    type: {
       alexa: null,
       google: "@sys.patronymic-name"
     },
@@ -2956,58 +2956,59 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'command'
 ]
 
-const BUILT_IN_INTENTS_GOOGLE = [{
-  name: 'actions.intent.PLAY_GAME',
-  slots: []
-}, {
-  name: 'actions.intent.RESERVE_TAXI',
-  slots: []
-}, {
-  name: 'actions.intent.HEAR_JOKE',
-  slots: []
-}, {
-  name: 'actions.intent.HEAR_QUOTE',
-  slots: []
-}, {
-  name: 'actions.intent.HEAR_FACT',
-  slots: []
-}, {
-  name: 'actions.intent.TAKE_QUIZ',
-  slots: []
-}, {
-  name: 'actions.intent.GET_FORTUNE',
-  slots: []
-}, {
-  name: 'actions.intent.GET_HOROSCOPE',
-  slots: []
-}, {
-  name: 'actions.intent.GET_JOKE',
-  slots: []
-}, {
-  name: 'actions.intent.GET_QUOTATION',
-  slots: []
-}, {
-  name: 'actions.intent.GET_CREDIT_SCORE',
-  slots: []
-}, {
-  name: 'actions.intent.GET_CRYPTOCURRENCY_PRICE',
-  slots: []
-}, {
-  name: 'actions.intent.CHECK_WATERSPORTS_CONDITIONS',
-  slots: []
-}, {
-  name: 'actions.intent.CHECK_AIR_QUALITY',
-  slots: []
-}, {
-  name: 'actions.intent.CHECK_WATER_CONDITIONS',
-  slots: []
-}, {
-  name: 'actions.intent.START_CALMING_ACTIVITY',
-  slots: []
-}]
-
+// const BUILT_IN_INTENTS_GOOGLE = [{
+//   name: 'actions.intent.PLAY_GAME',
+//   slots: []
+// }, {
+//   name: 'actions.intent.RESERVE_TAXI',
+//   slots: []
+// }, {
+//   name: 'actions.intent.HEAR_JOKE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.HEAR_QUOTE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.HEAR_FACT',
+//   slots: []
+// }, {
+//   name: 'actions.intent.TAKE_QUIZ',
+//   slots: []
+// }, {
+//   name: 'actions.intent.GET_FORTUNE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.GET_HOROSCOPE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.GET_JOKE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.GET_QUOTATION',
+//   slots: []
+// }, {
+//   name: 'actions.intent.GET_CREDIT_SCORE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.GET_CRYPTOCURRENCY_PRICE',
+//   slots: []
+// }, {
+//   name: 'actions.intent.CHECK_WATERSPORTS_CONDITIONS',
+//   slots: []
+// }, {
+//   name: 'actions.intent.CHECK_AIR_QUALITY',
+//   slots: []
+// }, {
+//   name: 'actions.intent.CHECK_WATER_CONDITIONS',
+//   slots: []
+// }, {
+//   name: 'actions.intent.START_CALMING_ACTIVITY',
+//   slots: []
+// }]
+const BUILT_IN_INTENTS_GOOGLE = []
 
 exports.VOICES = VOICES
 exports.BUILT_IN_INTENTS_ALEXA = BUILT_IN_INTENTS_ALEXA;
 exports.BUILT_IN_INTENTS_GOOGLE = BUILT_IN_INTENTS_GOOGLE;
 exports.ALLOWED_GOOGLE_BLOCKS = ALLOWED_GOOGLE_BLOCKS;
+exports.GOOGLE_LOCALES = GOOGLE_LOCALES

@@ -9,7 +9,8 @@ const permission_options = [
     { name: 'User Phone Number', value: 'alexa::profile:mobile_number:read' },
     { name: 'Reminders', value: 'alexa::alerts:reminders:skill:readwrite' },
     { name: 'Notifications', value: 'alexa::devices:all:notifications:write'},
-    { name: 'Account Linking', value: 'UNOFFICIAL::account_linking' }
+    { name: 'Account Linking', value: 'UNOFFICIAL::account_linking' },
+    { name: 'Product', value: 'UNOFFICIAL::product' }
     // Removed for now, amazon pay permissions broken
 ]
 
@@ -27,17 +28,6 @@ class Permissions extends Component {
         this.handleRemoveBlock = this.handleRemoveBlock.bind(this);
         this.handleSelectPermission = this.handleSelectPermission.bind(this);
         this.handleSelectVariableToMap = this.handleSelectVariableToMap.bind(this);
-    }
-
-    selectVariableToMap(selected) {
-
-        let node = this.state.node;
-        node.extras.map_to = selected.value
-
-        this.setState({
-            map_to: selected,
-            node: node
-        });
     }
 
     onUpdate(){
@@ -110,6 +100,18 @@ class Permissions extends Component {
         }
     }
 
+    handleSelectProductToMap(i, selected) {
+        let node = this.state.node;
+
+        if(node.extras.permissions[i].product !== selected){
+            node.extras.permissions[i].product = selected
+
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        }
+    }
+
     render() {
         return (
             <div>
@@ -119,13 +121,16 @@ class Permissions extends Component {
                             key={i}
                             selected={perm.selected}
                             map_to={perm.map_to}
+                            product={perm.product}
                             onRemove={() => this.handleRemoveBlock(i)}
                             selectPermission={(selected) => this.handleSelectPermission(i, selected)}
                             selectVariableToMap={(selected) => this.handleSelectVariableToMap(i, selected)}
+                            selectProductToMap={(selected) => this.handleSelectProductToMap(i, selected)}
                             permissions={this.state.permission_options}
                             disabled_perms={this.state.node.extras.permissions}
                             onUpdate={this.onUpdate}
                             variables={this.props.variables}
+                            products={this.props.products}
                         />
                     )
                 })}

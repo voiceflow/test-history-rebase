@@ -119,12 +119,11 @@ class ActionGroup extends PureComponent {
             this.token = token;
             this.reset();
         });
-        AuthenticationService.googleAccessToken().then(token => {
-            this.setState({
-              google_stage: token ? 2 : 0
-            });
-          });
-    }
+        AuthenticationService.googleAccessToken(this.props.skill.skill_id).then(token => {
+            this.google_token = token;
+            this.reset()
+        });
+}
 
     shouldReset() {
         if(ENDING_STAGES.includes(this.state.stage)){
@@ -135,7 +134,8 @@ class ActionGroup extends PureComponent {
     reset() {
         this.setState({
             amzn_error: false,
-            stage: this.token ? 0 : 5
+            stage: this.token ? 0 : 5,
+            google_stage: this.google_token ? 2 : 0
         })
     }
 

@@ -5,14 +5,44 @@ import AuthenticationService from '../../../services/Authentication'
 
 import axios from 'axios'
 
-import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import moment from 'moment'
 import ErrorModal from '../../components/Modals/ErrorModal'
 import ConfirmModal from '../../components/Modals/ConfirmModal'
 import Dropzone from 'react-dropzone'
+import { GOOGLE_LOCALES } from 'Constants'
 
 const MAX_SIZE = 10 * 1024 * 1024
+
+const L = GOOGLE_LOCALES
+const LOCALE_DISPLAY_NAMES = {
+  [L.HK]: "Chinese-Cantonese (zh-HK)",
+  [L.CN]: "Chinese-Simplified (zh-CN)",
+  [L.TW]: "Chinese-Traditional (zh-TW)",
+  [L.DA]: "Danish (da)",
+  [L.NL]: "Dutch (nl)",
+  [L.EN]: "English (en)",
+  [L.FR]: "French (fr)",
+  [L.DE]: "German (de)",
+  [L.HI]: "Hindi (hi)",
+  [L.ID]: "Indonesian (id)",
+  [L.IT]: "Italian (it)",
+  [L.JA]: "Japanese (ja)",
+  [L.KO]: "Korean (ko)",
+  [L.NO]: "Norwegian (no)",
+  [L.PL]: "Polish (pl)",
+  [L.PT]: "Portuguese (pt)",
+  [L.BR]: "Portuguese-Brazilian (pt-BR)",
+  [L.RU]: "Russian (ru)",
+  [L.ES]: "Spanish (es)",
+  [L.SV]: "Swedish (sv)",
+  [L.TH]: "Thai (th)",
+  [L.TR]: "Turkish (tr)",
+  [L.UK]: "Ukranian (uk)",
+}
+
+const FORMATTED_LOCALES = Object.keys(GOOGLE_LOCALES).map(key => { return { value: GOOGLE_LOCALES[key], name: LOCALE_DISPLAY_NAMES[GOOGLE_LOCALES[key]] } })
 
 const _ = require('lodash');
 
@@ -42,7 +72,10 @@ class GooglePublish extends Component {
       google_token: '',
       project_id: '',
       name: this.props.skill.name,
-      credentials: false
+      credentials: false,
+      locales: [],
+      main_locale: null,
+      uploaded: false
     }
 
     this.privacyTop = React.createRef();
@@ -93,7 +126,8 @@ class GooglePublish extends Component {
             .then(res => {
               this.setState({
                 stage: 4,
-                project_id: res.data.project_id || this.state.project_id
+                project_id: res.data.project_id || this.state.project_id,
+                uploaded: true
               });
             })
             .catch(err => {
@@ -143,6 +177,13 @@ class GooglePublish extends Component {
           delete publish_info.stage;
         }
 
+        if (!publish_info.locales) {
+          publish_info.locales = ['en']
+        }
+        if (!publish_info.main_locale) {
+          publish_info.main_locale = 'en'
+        }
+
         // TODO: Antipattern, fix this when we do redux
         this.setState({
           loaded: true,
@@ -168,7 +209,10 @@ class GooglePublish extends Component {
 
     axios.patch(`/skill/${this.state.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, {
       google_publish_info: {
-        project_id: s.project_id
+        project_id: s.project_id,
+        locales: s.locales,
+        main_locale: s.main_locale,
+        uploaded: s.uploaded
       }
     })
       .then(res => {
@@ -210,6 +254,26 @@ class GooglePublish extends Component {
     }
   }
 
+  onLocaleBtnClick(locale) {
+    let locales = this.state.locales;
+    if (locales.includes(locale)) {
+      _.remove(locales, (v) => { return v === locale })
+    } else {
+      locales.push(locale)
+    }
+    this.setState({
+      saved: false,
+      locales: locales
+    })
+  }
+
+  onMainLocaleBtnClick(locale) {
+    this.setState({
+      saved: false,
+      main_locale: locale
+    })
+  }
+
   async onDrop(files) {
     if (files.length === 1) {
       this.setState({ loading_creds: true })
@@ -221,12 +285,11 @@ class GooglePublish extends Component {
           const res = await axios.post('/session/google/verify_token', {
             token: text,
             skill_id: this.state.skill_id
-          }
-          )
+          })
           this.setState({
             credentials: true,
             loading_creds: false,
-            project_id: res.project_id
+            project_id: res.data.project_id
           })
         } catch (e) {
           this.props.onError(e.response.data || e)
@@ -377,6 +440,18 @@ class GooglePublish extends Component {
               <p>Credentials File</p>
             </div>
           </div>
+          <div className="row">
+            <div className="col-2">
+              {this.state.main_locale ?
+                <i className="fal fa-check-circle text-success"></i>
+                :
+                <i className="fal fa-times-circle text-danger"></i>
+              }
+            </div>
+            <div className="col-10">
+              <p>Main Language</p>
+            </div>
+          </div>
         </span>
 
         <div className='subheader-page-container'>
@@ -389,7 +464,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              {this.state.project_id ?
+              {this.state.uploaded ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on the Google Actions Console</span>
@@ -415,7 +490,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              <Form className={this.state.credentials ? 'disabled faded' : ''}>
+              <Form>
                 <FormGroup>
                   <div className="row d-flex">
                     <div className="col-3 publish-info"></div>
@@ -468,11 +543,58 @@ class GooglePublish extends Component {
                   <div className="row">
                     <div className="col-3 publish-info">
                       <p className="text-secondary">
-                        <b>Google Project ID</b> is the ID of your project in the Google Actions Console.
+                        <b>Google Project ID</b> is the ID of your project in the Google Actions Console (read-only).
                       </p>
                     </div>
                     <div className="col-9">
                       <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={this.state.project_id} readOnly />
+                    </div>
+                  </div>
+                </FormGroup>}
+                {this.state.credentials && <FormGroup className="mt-0">
+                  <div className="row">
+                    <div className="col-3 publish-info"></div>
+                    <div className="col-9">
+                      <Label>Main Language *</Label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3 publish-info">
+                      <p className="text-secondary">
+                        <b>Language</b> determines your skill's main language and availability. Your skill will be available in regions which speak your selected language.
+                                    </p>
+                    </div>
+                    <div className="col-9">
+                      <ButtonGroup className="locale-button-group">
+                        {FORMATTED_LOCALES.map((locale, i) => {
+                          const active = this.state.main_locale === locale.value ? "active" : "";
+                          return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onMainLocaleBtnClick(locale.value) }}>{locale.name}</Button>
+                        })}
+                      </ButtonGroup>
+                    </div>
+                  </div>
+                </FormGroup>}
+                {this.state.credentials && <FormGroup className="mt-0">
+                  <div className="row">
+                    <div className="col-3 publish-info"></div>
+                    <div className="col-9">
+                      <Label>Additional Languages</Label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3 publish-info">
+                      <p className="text-secondary">
+                        <b>Additional languages</b> allow your skill to be adapted to support additional languages beyond your main language.
+                                    </p>
+                    </div>
+                    <div className="col-9">
+                      <ButtonGroup className="locale-button-group">
+                        {FORMATTED_LOCALES.map((locale, i) => {
+                          const disabled = this.state.main_locale === locale.value
+                          const active = this.state.locales.includes(locale.value) && !disabled ? "active" : "";
+                          return <Button outline color="primary" className={`locale-button ${active} ${disabled ? 'disabled' : ''}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
+                        })}
+                      </ButtonGroup>
                     </div>
                   </div>
                 </FormGroup>}

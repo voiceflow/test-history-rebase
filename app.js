@@ -178,6 +178,7 @@ app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 // STRIPE PAYMENT ENDPOINTS
 app.post('/customer/subscription', ensureLoggedIn(), Customer.create);
 app.post('/customer/webhook', Customer.webhook);
+app.get('/customer/promo/:code', ensureLoggedIn(), Customer.codes)
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);

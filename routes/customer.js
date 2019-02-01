@@ -9,8 +9,29 @@ const stripe = require('stripe')(SECRET_KEY)
 const PLANS = [
 	{id: 0, name: 'COMMUNITY'},
 	{id: 1, name: 'BASIC'},
-	{id: 30, name: 'BUSINESS'}
+	{id: 30, name: 'BUSINESS'},
+	{id: 30, name: 'BUSINESS_1188_ANNUAL'}
 ]
+
+const CODES = [
+	{
+		code: 'P3UO7RAB0MBL',
+		plan: 31,
+		real_plan: 30,
+		price: 1188,
+		period: 'yr',
+		name: 'BUSINESS_1188_ANNUAL'
+	}
+]
+
+exports.codes = (req, res) => {
+	let find = CODES.find(c => c.code === req.params.code)
+	if(find){
+		res.send(find)
+	}else{
+		res.sendStatus(404)
+	}
+}
 
 exports.create = async (req, res) => {
 	if(!(req.body.source && req.body.source.id && req.body.plan)){
@@ -42,18 +63,30 @@ exports.create = async (req, res) => {
 			customer_id = customer.id
 		}
 		// Add the customer to the subscription
-		let plan = PLANS.find(p => p.id === req.body.plan)
+		let plan
+		if(req.body.promo){
+			let find = CODES.find(c => c.code === req.body.promo)
+			if(find){
+				plan = find.name
+			}else{
+				return res.status(400).send({message: 'Invalid Promotional Code'})
+			}
+		}else{
+			plan = PLANS.find(p => p.id === req.body.plan)
+			plan = plan && plan.name
+		}
+
 		if(plan && req.user.admin < req.body.plan && req.user.admin !== req.body.plan){
 			// check if he is on an existing plan
 			if(subscription_id){
 				await stripe.subscriptions.update(
 					subscription_id,
-					{items: [{plan: plan.name}]}
+					{items: [{plan: plan}]}
 				)
 			}else{
 				let subscription = await stripe.subscriptions.create({
 				  customer: customer_id,
-				  items: [{plan: plan.name}]
+				  items: [{plan: plan}]
 				})
 				await pool.query('UPDATE creators SET subscription = $1 WHERE creator_id = $2', [subscription.id, req.user.id])
 			}

@@ -892,7 +892,7 @@ class Skill extends Component {
                                                 isDisabled={disabled_stages.has(this.state.stage)}
                                                 value={this.state.category}
                                                 onChange={this.handleSelection}
-                                                options={categories}
+                                                options={AMAZON_CATEGORIES}
                                             />
                                         </div>
                                     </div>

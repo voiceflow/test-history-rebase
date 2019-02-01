@@ -1,3 +1,6 @@
+// Convert older deprecated blocks to newer ones
+import { find } from 'lodash'
+
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -5,9 +8,6 @@ const generateID = () => {
         return v.toString(16)
     })
 }
-
-// Convert older deprecated blocks to newer ones
-import { find } from 'lodash'
 
 const convertDiagram = (diagram, diagrams) => {
 

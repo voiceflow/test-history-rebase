@@ -207,7 +207,7 @@ class Skill extends Component {
                     onError={this.onError} 
                     onConfirm={this.onConfirm} 
                     updateSkill={(skill) => {this.setState({skill: skill})}}
-                    linter={this.state.linter}/>
+                    linter={this.state.linter}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'business':
                 return <Business

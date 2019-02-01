@@ -82,6 +82,7 @@ class Menu extends Component {
                     enterFlow={this.props.enterFlow}
                     renameFlow={this.props.renameFlow}
                     copyFlow={()=>this.props.copyFlow(node.id)}
+                    preview={this.props.preview}
                     deleteFlow={()=>this.props.deleteFlow(node.id)}
                 />
                 {tree}
@@ -138,7 +139,7 @@ class Menu extends Component {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules} user={this.props.user} platform={this.props.platform}/>
+                return <Blocks user_modules={this.props.user_modules} user={this.props.user} platform={this.props.platform} toggleUpgrade={this.props.toggleUpgrade}/>
         }
     }
 

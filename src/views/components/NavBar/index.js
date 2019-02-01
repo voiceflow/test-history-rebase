@@ -110,8 +110,8 @@ class NavBar extends Component {
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
             <Link to="/dashboard" className="mx-2 navbar-brand">
-              <img className='voiceflow-logo' src={process.env.PUBLIC_URL+'/wordmark.svg'} alt='logo' 
-                height="30" width="120"
+              <img className='voiceflow-logo' src={'/favicon.png'} alt='logo' 
+                height="30" width="40"
               />
             </Link>
             <NavbarToggler onClick={this.toggle} />

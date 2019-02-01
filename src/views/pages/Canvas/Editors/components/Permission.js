@@ -43,6 +43,41 @@ class Permission extends Component {
                         />
                     </React.Fragment>
                 )
+            }else if(this.props.selected.label === "Product"){
+                let consumable
+                if(this.props.product){
+                    let product = this.props.products.find(p => p.id === this.props.product.value)
+                    if(product && product.data && product.data.type === 'CONSUMABLE'){
+                        consumable = true
+                    }
+                }
+
+                return <React.Fragment>
+                    <label>Check if Product Purchased</label>
+                    <Select
+                        classNamePrefix="select-box"
+                        className="map-box"
+                        value={this.props.product}
+                        onChange={this.props.selectProductToMap}
+                        placeholder={this.props.products.length > 0 ? "Select Product" : "No Products Exist"}
+                        options={Array.isArray(this.props.products) ? this.props.products.map(p => {
+                            return {label: p.name, value: p.id}
+                        }) : null}
+                    />
+                    {consumable && <React.Fragment>
+                        <label>Map Purchase Quantity To</label>
+                        <Select
+                            classNamePrefix="variable-box"
+                            className="map-box"
+                            value={this.props.map_to}
+                            onChange={this.props.selectVariableToMap}
+                            placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
+                            options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
+                                return {label: '{' + variable + '}', value: variable}
+                            }) : null}
+                        />
+                    </React.Fragment>}
+                </React.Fragment>
             }
             return null
         }
@@ -63,7 +98,7 @@ class Permission extends Component {
                     })}
                     isOptionDisabled={(option) => {
                         if (_.find(this.props.disabled_perms, { selected: option})) {
-                            return true
+                            if(option.label !== 'Product') return true
                         }
                         return false
                     }}

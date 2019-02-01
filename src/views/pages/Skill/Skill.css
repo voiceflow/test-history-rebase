@@ -16,12 +16,14 @@
 
 .icon-image>.dropzone {
   height: 100%;
+  border-radius: 50%;
 }
 
 .icon-image>.image-box {
   height: 100%;
   width: 100%;
   display: block;
+  border-radius: 50%;
 }
 
 .icon-image.small-icon>.image-box {
@@ -38,7 +40,7 @@
   background-position: center center;
   background-size: cover;
   border-radius: 100px;
-  border: 1px solid #AAA;
+  border: 1px solid #c5d6e450;
 }
 
 .disabled-image>.image-box {

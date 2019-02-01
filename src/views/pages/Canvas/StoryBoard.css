@@ -1648,7 +1648,9 @@ button.close:hover{
     display: flex;
     justify-content: space-between;
 }
-
+.mt-100{
+    margin-top: 100px;
+}
 .response-box {
     overflow: scroll;
     max-height: 550px;

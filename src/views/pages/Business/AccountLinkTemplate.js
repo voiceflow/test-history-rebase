@@ -152,7 +152,7 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Account Linking Template</h5>
                         <div className="subheader-right">
-                            <MUIButton varient="contained" className="white-btn" onClick={this.save} style={{width: 100}}>
+                            <MUIButton varient="contained" className="purple-btn" onClick={this.save} style={{width: 100}}>
                                 {this.state.saving ?
                                     <span className="loader"/> :
                                     <React.Fragment>

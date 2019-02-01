@@ -1,3 +1,11 @@
+const generateID = () => {
+    return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = (Math.random() * 16) | 0
+        const v = c === "x" ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+    })
+}
+
 // Convert older deprecated blocks to newer ones
 import { find } from 'lodash'
 
@@ -30,6 +38,36 @@ const convertDiagram = (diagram, diagrams) => {
                 node.name = 'Interaction'
             } else if(node.extras.type === 'story' && node.name === 'Start Block'){
                 node.name = 'Start'
+            } else if(node.extras.type === 'stream') {
+                node.ports.forEach(port => (port.label === 'stop/pause' && (port.label = 'pause')))
+
+                if(node.extras.player !== undefined){
+                    if(node.extras.player === false){
+                        if(node.ports.length === 2){
+                            const outputs = ['previous', 'next']
+                            outputs.forEach(out => {
+                                let ID = generateID()
+                                node.ports.push({
+                                    "id": ID,
+                                    "type":"default",
+                                    "selected":false,
+                                    "name": ID,
+                                    "parentNode": node.id,
+                                    "links":[],
+                                    "maximumLinks":1,
+                                    "in":false,
+                                    "label": out
+                                })
+                            })
+                        }
+                        node.ports = node.ports.reverse()
+                    }else if(node.extras.player === true){
+                        node.ports = [node.ports[0], node.ports[2], node.ports[3], node.ports[1]]
+                    }
+
+                    node.extras.custom_pause = true
+                    delete node.extras.player
+                }
             }
         }
         if(Array.isArray(node.ports)){

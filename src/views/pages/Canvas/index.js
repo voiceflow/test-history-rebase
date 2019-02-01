@@ -9,6 +9,7 @@ import update from 'immutability-helper';
 import 'draft-js/dist/Draft.css'
 import 'storm-react-diagrams/dist/style.min.css'
 import './StoryBoard.css'
+
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
 import HelpModal from './HelpModal'
@@ -168,7 +169,7 @@ class Canvas extends Component {
         Mousetrap.bind(['shift+/'], this.toggleShortcuts)
         Mousetrap.bind(['command+s'], (e)=>{
             e.preventDefault()
-            if (!this.state.saved) {
+            if (!this.state.saved && !this.props.preview) {
                 this.onSave()
             }
         })
@@ -522,7 +523,7 @@ class Canvas extends Component {
                 })
         }
 
-        if (flow_id === this.props.diagram_id) {
+        if (flow_id === this.props.diagram_id && !this.props.preview) {
             this.onSave(() => {
                 copy(false)
             })
@@ -677,132 +678,133 @@ class Canvas extends Component {
     onSave(cb, is_new=false, state=true) {
 
         try {
-            state && this.setState({ saving: true })
-            var engine = this.state.engine
-            var model = engine.getDiagramModel()
-            let serialize = model.serializeDiagram()
-            serialize.id = this.props.diagram_id
-            var data = JSON.stringify(serialize)
+            if (!this.props.preview){
+                state && this.setState({ saving: true })
+                var engine = this.state.engine
+                var model = engine.getDiagramModel()
+                let serialize = model.serializeDiagram()
+                serialize.id = this.props.diagram_id
+                var data = JSON.stringify(serialize)
 
-            let sub_diagrams = []
-            let used_intent_names = new Set()
-            let used_intents = []
+                let sub_diagrams = []
+                let used_intent_names = new Set()
+                let used_intents = []
 
-            serialize.nodes.forEach(node => {
-                if(node.extras.diagram_id){
-                    sub_diagrams.push(node.extras.diagram_id)
-                }else if (node.extras.type === 'interaction') {
-                    node.extras.alexa.choices.forEach(choice => {
-                        if (choice.intent && !used_intent_names.has(choice.intent.value)) {
-                            if (choice.intent.built_in) {
-                                used_intents.push({
-                                    intent: choice.intent.value,
-                                    built_in: true,
-                                    platform: 'alexa'
-                                })
-                            } else {
-                                used_intents.push({
-                                    intent: choice.intent.value,
-                                    built_in: false,
-                                    platform: 'alexa'
-                                })
+                serialize.nodes.forEach(node => {
+                    if(node.extras.diagram_id){
+                        sub_diagrams.push(node.extras.diagram_id)
+                    }else if (node.extras.type === 'interaction') {
+                        node.extras.alexa.choices.forEach(choice => {
+                            if (choice.intent && !used_intent_names.has(choice.intent.value)) {
+                                if (choice.intent.built_in) {
+                                    used_intents.push({
+                                        intent: choice.intent.value,
+                                        built_in: true,
+                                        platform: 'alexa'
+                                    })
+                                } else {
+                                    used_intents.push({
+                                        intent: choice.intent.value,
+                                        built_in: false,
+                                        platform: 'alexa'
+                                    })
+                                }
+                                used_intent_names.add(choice.intent.value)
+                            }
+                        })
+    
+                        node.extras.google.choices.forEach(choice => {
+                            if (choice.intent && !used_intent_names.has(choice.intent.value)) {
+                                if (choice.intent.built_in) {
+                                    used_intents.push({
+                                        intent: choice.intent.value,
+                                        built_in: true,
+                                        platform: 'google'
+                                    })
+                                } else {
+                                    used_intents.push({
+                                        intent: choice.intent.value,
+                                        built_in: false,
+                                        platform: 'google'
+                                    })
+                                }
                             }
                             used_intent_names.add(choice.intent.value)
-                        }
-                    })
-
-                    node.extras.google.choices.forEach(choice => {
-                        if (choice.intent && !used_intent_names.has(choice.intent.value)) {
-                            if (choice.intent.built_in) {
-                                used_intents.push({
-                                    intent: choice.intent.value,
-                                    built_in: true,
-                                    platform: 'google'
-                                })
-                            } else {
-                                used_intents.push({
-                                    intent: choice.intent.value,
-                                    built_in: false,
-                                    platform: 'google'
-                                })
-                            }
-                            used_intent_names.add(choice.intent.value)
-                        }
-                    })
-                }
-            })
-
-            for (var i = 0; i < this.state.diagrams.length; i++) {
-                let diagrams = this.state.diagrams
-                if(diagrams[i].id === this.props.diagram_id){
-                    diagrams[i].sub_diagrams = sub_diagrams
-                }
-                state && this.setState({
-                    diagrams: diagrams
-                }, () => {
-                    if(this.buildDiagrams !== null){
-                        this.buildDiagrams(this.props.diagram_id)
+                        })
                     }
                 })
+
+                for (var i = 0; i < this.state.diagrams.length; i++) {
+                    let diagrams = this.state.diagrams
+                    if(diagrams[i].id === this.props.diagram_id){
+                        diagrams[i].sub_diagrams = sub_diagrams
+                    }
+                    state && this.setState({
+                        diagrams: diagrams
+                    }, () => {
+                        if(this.buildDiagrams !== null){
+                            this.buildDiagrams(this.props.diagram_id)
+                        }
+                    })
+                }
+
+                // UPDATE SKILL GLOBALS HOTFIX
+                let skill = this.state.skill;
+                skill.global = this.state.skill.global
+                this.props.updateSkill(skill)
+
+                var diagram = {
+                    id: this.props.diagram_id,
+                    title: this.state.diagram_name,
+                    variables: this.state.variables,
+                    data: data,
+                    skill: this.state.skill.skill_id,
+                    sub_diagrams: JSON.stringify(sub_diagrams),
+                    used_intents: used_intents,
+                    global: this.state.skill.global
+                }
+                const s = this.state.skill;
+                const save_skill_intents = new Promise((resolve, reject) => {
+                    axios.patch('/skill/' + s.skill_id + '?intents=true', {
+                        intents: JSON.stringify(s.intents),
+                        slots: JSON.stringify(s.slots),
+                        fulfillment: JSON.stringify(s.fulfillment),
+                        account_linking: JSON.stringify(s.account_linking),
+                        platform: s.platform
+                    })
+                    .then(res => {
+                        resolve()
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+                })
+
+                const save_diagram = new Promise ((resolve, reject) => {
+                    axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
+                    .then(() => {
+                        resolve()
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+                })
+                
+                Promise.all([save_skill_intents, save_diagram]).then(res => {
+                    state && this.setState({
+                        saving: false,
+                        saved: true,
+                        last_save: Date.now()
+                    });
+                    if(typeof cb === "function") cb(this.props.diagram_id)
+                }, rej_err => {
+                    console.log(rej_err)
+                    state && this.setState({
+                        saving: false
+                    }) && this.props.onError('Error Saving Project')
+                    if(typeof cb === "function") cb(null)
+                })
             }
-
-            // UPDATE SKILL GLOBALS HOTFIX
-            let skill = this.state.skill;
-            skill.global = this.state.skill.global
-            this.props.updateSkill(skill)
-
-            var diagram = {
-                id: this.props.diagram_id,
-                title: this.state.diagram_name,
-                variables: this.state.variables,
-                data: data,
-                skill: this.state.skill.skill_id,
-                sub_diagrams: JSON.stringify(sub_diagrams),
-                used_intents: used_intents,
-                global: this.state.skill.global
-            }
-
-            const s = this.state.skill;
-            const save_skill_intents = new Promise((resolve, reject) => {
-                axios.patch('/skill/' + s.skill_id + '?intents=true', {
-                    intents: JSON.stringify(s.intents),
-                    slots: JSON.stringify(s.slots),
-                    fulfillment: JSON.stringify(s.fulfillment),
-                    account_linking: JSON.stringify(s.account_linking),
-                    platform: s.platform
-                })
-                .then(res => {
-                    resolve()
-                })
-                .catch(err => {
-                    reject(err)
-                })
-            })
-
-            const save_diagram = new Promise ((resolve, reject) => {
-                axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
-                .then(() => {
-                    resolve()
-                })
-                .catch(err => {
-                    reject(err)
-                })
-            })
-            
-            Promise.all([save_skill_intents, save_diagram]).then(res => {
-                state && this.setState({
-                    saving: false,
-                    saved: true,
-                    last_save: Date.now()
-                });
-                if(typeof cb === "function") cb(this.props.diagram_id)
-            }, rej_err => {
-                console.log(rej_err)
-                state && this.setState({
-                    saving: false
-                }) && this.props.onError('Error Saving Project')
-                if(typeof cb === "function") cb(null)
-            })
         } catch (e) {
             console.log(e)
             state && this.props.onError('Error Saving - Project Structure (Check Logs)')
@@ -1589,10 +1591,10 @@ class Canvas extends Component {
                 }
             } else if (type === 'stream') {
                 node.addInPort(' ')
-                node.addOutPort('stop/pause').setMaximumLinks(1)
+                node.addOutPort('next').setMaximumLinks(1)
+                node.addOutPort('previous').setMaximumLinks(1)
                 node.extras = {
-                    audio: '',
-                    player: false
+                    audio: ''
                 }
             } else if (type === 'permission') {
                 node.addInPort(' ')
@@ -1814,6 +1816,7 @@ class Canvas extends Component {
                         onSave={this.onSave}
                         onError={this.props.onError}
                         platform={this.state.skill.platform}
+                        toggleUpgrade={this.props.toggleUpgrade}
                     />
                     {this.state.loading_diagram && <div id="loading-diagram">
                         <div className="text-center">
@@ -1879,6 +1882,7 @@ class Canvas extends Component {
                                 copyFlow={this.copyFlow}
                                 renameFlow={this.renameFlow}
                                 enterFlow={this.enterFlow}
+                                preview={this.props.preview}
                                 diagram = {_.find(this.state.diagrams, d => d.id === this.props.diagram_id)}
                             />
                         }

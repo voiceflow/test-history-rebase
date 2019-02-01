@@ -16,12 +16,14 @@
 
 .icon-image>.dropzone {
   height: 100%;
+  border-radius: 50%;
 }
 
 .icon-image>.image-box {
   height: 100%;
   width: 100%;
   display: block;
+  border-radius: 50%;
 }
 
 .icon-image.small-icon>.image-box {
@@ -38,7 +40,7 @@
   background-position: center center;
   background-size: cover;
   border-radius: 100px;
-  border: 1px solid #AAA;
+  border: 1px solid #c5d6e450;
 }
 
 .disabled-image>.image-box {
@@ -402,7 +404,7 @@ textarea::placeholder {
   align-items: center;
   width: 580px;
   border-top: 1px solid #fff;
-  background: #eff5f8;
+  background: #eff2f8;
   color: #eff5f8;
   border: 1px solid rgba(141, 162, 181, .28);
   margin-top: 15px;
@@ -597,4 +599,8 @@ textarea::placeholder {
 }
 .faded {
   opacity: 0.55;
+}
+
+.publish-label {
+  margin-top: -2px;
 }

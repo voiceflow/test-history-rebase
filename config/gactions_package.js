@@ -1,36 +1,14 @@
 const { getEnvVariable } = require('../util')
-const { SLOT_TYPES, BUILT_IN_INTENTS_GOOGLE } = require('../app/src/views/pages/Canvas/Constants')
+const { BUILT_IN_INTENTS_GOOGLE } = require('../app/src/Constants')
 const _ = require('lodash')
-const { getUtterancesWithSlotNames, formatName } = require('../app/src/util')
-
-const _getSlotsForKeysAndFormat = (keys, slots) => {
-	let key_set = new Set()
-
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
-
-	key_set = [...key_set]
-
-	return key_set.map(key => {
-		const slot = _.find(slots, {
-			key: key
-		})
-		return {
-			name: formatName(slot.name),
-      type: slot.type.value.toLowerCase() !== 'custom' ? slot.type.value : formatName(slot.name),
-      samples: slot.inputs
-		}
-	})
-}
+const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat } = require('../app/src/util')
 
 const generateDialogflowPackage = (params) => {
 
   const intents = params.intents
   const slots = params.slots
-  const used_intents = params.used_intents
+	const used_intents = params.used_intents
+	const platform = 'google'
 
   const intents_for_google = []
   const slots_for_google = []
@@ -70,7 +48,7 @@ const generateDialogflowPackage = (params) => {
         const slot_keys = intent.inputs.map(input => input.slots)
 
 				formatted_intent.samples = getUtterancesWithSlotNames(intent.inputs, slots, false, true)
-        formatted_intent.slots = _getSlotsForKeysAndFormat(slot_keys, slots)
+        formatted_intent.slots = getSlotsForKeysAndFormat(slot_keys, slots, platform)
 
         slot_keys.forEach(key_arr => {
           key_arr.forEach(key => used_slots.add(key))
@@ -82,7 +60,7 @@ const generateDialogflowPackage = (params) => {
 
   used_slots.forEach(slot_key => {
     const slot = _.find(slots, {key:slot_key})
-    if (!/^actions\.intent/.test(slot.name)) {
+    if (slot.type.value.toLowerCase() === 'custom') {
       slots_for_google.push({
         name: null,
         displayName: slot.name,

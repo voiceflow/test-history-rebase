@@ -231,7 +231,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               }
   
               if (intent.built_in) {
-                intent = intent.label
+                intent = intent.value
               } else if (intent.key in options.intents) {
                 intent = options.intents[intent.key]
               }
@@ -325,7 +325,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               options.used_intents.add(choice.intent.key)
 
               if (choice.intent.built_in) {
-                new_choice.intent = choice.intent.label
+                new_choice.intent = choice.intent.value
               } else if (choice.intent.key in options.intents) {
                 new_choice.intent = options.intents[choice.intent.key]
               }

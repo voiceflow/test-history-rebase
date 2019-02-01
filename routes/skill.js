@@ -605,12 +605,12 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (req, id, token) => {
+const checkVersions = (req, id, token, platform) => {
   pool.query(`
     SELECT * FROM skill_versions INNER JOIN skills ON skill_versions.skill_id = skills.skill_id 
     WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-      AND version IS NOT NULL ORDER BY version ASC`,
-    [id],
+      AND version IS NOT NULL AND published_platform = $2 ORDER BY version ASC`,
+    [id, platform],
     async (err, data) => {
       if (err) {
         console.trace(err)
@@ -685,7 +685,7 @@ exports.buildSkill = async (req, res) => {
     }
 
     // Asynchronously check version logic, doesn't affect publishing
-    checkVersions(req, id, token)
+    checkVersions(req, id, token, 'alexa')
 
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
@@ -1236,7 +1236,18 @@ exports.buildGoogleSkill = async (req, res) => {
 
     })
 
-    const project_id = skill_info.google_publish_info ? skill_info.google_publish_info.project_id : null
+    const publish_info = skill_info.google_publish_info
+    if (!publish_info) {
+      throw('No publish info found')
+    }
+
+    const project_id = publish_info.project_id
+
+    let { locales, main_locale, uploaded } = publish_info
+
+    if (!locales) {
+      locales = []
+    }
 
     if (_.isNil(project_id)) {
       throw ('Project ID not found')
@@ -1251,8 +1262,41 @@ exports.buildGoogleSkill = async (req, res) => {
       throw('Credentials not found')
     }
 
+    const main_client = new DialogflowClient(project_id, gactions_creds.private_key, gactions_creds.client_email)
+
+    let agent = await main_client.getAgent()
+    if (agent && agent.length > 0) {
+      agent = agent[0]
+    }
+
+    // Have to update the agent. TODO: Use canonical skill id in endpoint so this doesn't have to happen every time
+    await main_client.updateAgentFulfillment(original_id, main_locale, locales)
+
+    const updates = []
     const package = generateDialogflowPackage(skill_info)
-    await updateDialogflowPackage(gactions_creds, project_id, package, skill_info)
+
+    if (!locales.includes(main_locale)) {
+      locales.push(main_locale)
+    }
+
+    locales.forEach(locale => {
+      updates.push(updateDialogflowPackage(gactions_creds, project_id, package, skill_info, locale))
+    })
+    await Promise.all(updates)
+    
+    publish_info.uploaded = true
+
+    await new Promise((resolve, reject) => {
+      pool.query('UPDATE skills set google_publish_info = $2 WHERE skills.skill_id = $1', [id, publish_info], async (err) => {
+        if (err) {
+          console.trace(err)
+          reject()
+        } else {
+          resolve()
+        }
+      })
+    })
+
     res.status(200).send({
       project_id: project_id
     })
@@ -1262,12 +1306,12 @@ exports.buildGoogleSkill = async (req, res) => {
   }
 }
 
-const updateDialogflowPackage = ({private_key, client_email}, project_id, { intents, slots }, {skill_id}) => new Promise(async (resolve, reject) => {
+const updateDialogflowPackage = ({private_key, client_email}, project_id, { intents, slots }, {skill_id}, locale) => new Promise(async (resolve, reject) => {
   try {
     const client = new DialogflowClient(project_id, private_key, client_email)  
+    client.setLocale(locale)
     await client.updateEntities(slots)
     await client.updateIntents(intents)
-    await client.updateAgentFulfillment(skill_id)
     await client.trainAgent()
     resolve()
   } catch (e) {
@@ -1303,6 +1347,7 @@ exports.getGoogleSkill = async (req, res) => {
       res.sendStatus(404);
     } else {
       let publish_info = data.rows[0].google_publish_info
+
       let project_id
       let private_key
       let client_email

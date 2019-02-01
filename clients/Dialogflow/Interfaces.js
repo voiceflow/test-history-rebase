@@ -78,28 +78,17 @@ module.exports.IntentEntry = () => {
   }
 }
 
-module.exports.Intent = (name) => {
+module.exports.Intent = (id, name) => {
   return {
-    "id": name,
+    "id": id,
     "name": name,
     "auto": true,
     "contexts": [],
     "responses": [{
       "resetContexts": false,
       "affectedContexts": [],
-      "parameters": [{
-        "id": "795fab68-70e4-400d-b728-2cc65d915ffa",
-        "dataType": "@Animal",
-        "name": "fav_animal",
-        "value": "$fav_animal",
-        "isList": false
-      }],
-      "messages": [{
-        "type": "simple_response",
-        "platform": "google",
-        "lang": "en",
-        "textToSpeech": "you want a dog"
-      }],
+      "parameters": [],
+      "messages": [],
       "defaultResponsePlatforms": {},
       "speech": []
     }],

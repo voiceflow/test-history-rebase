@@ -441,7 +441,15 @@ const verifyGoogleToken = async (req, res) => {
 				}
 			})
 		})
-		res.status(200).send({project_id: parsed.project_id})
+		
+		let { project_id, private_key, client_email } = parsed
+
+		const client = new DialogflowClient(project_id, private_key, client_email)
+		const agents = await client.getAgent();
+
+		let { defaultLanguageCode, supportedLanguageCodes } = agents[0]
+
+		res.status(200).send({ project_id, defaultLanguageCode, supportedLanguageCodes })
 	} catch (e) {
 		res.status(400).send(e)
 	}

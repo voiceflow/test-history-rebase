@@ -28,11 +28,11 @@ import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
 
-import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from './Constants'
+import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
 import { getIntentSlots } from 'Helper'
 import Linter from './linter'
-import { getUtterancesWithSlotNames } from '../../../util'
+import { getUtterancesWithSlotNames } from 'util'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
@@ -1092,8 +1092,8 @@ class Canvas extends Component {
             let built_in_slots = []
 
             SLOT_TYPES.forEach(s => {
-                if (s.intent.alexa) built_in_slots.push(s.intent.alexa)
-                if (s.intent.google) built_in_slots.push(s.intent.google)
+                if (s.type.alexa) built_in_slots.push(s.type.alexa)
+                if (s.type.google) built_in_slots.push(s.type.google)
             })
             built_in_slots.forEach(s => {
                 const matcher = /[\s\S]*/

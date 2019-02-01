@@ -369,21 +369,21 @@ const publishTest = async (req, res) => {
   if (Array.isArray(req.body.intents)) {
     req.body.intents.forEach(intent => {
       if (intent.key && intent.inputs && intent.inputs.length !== 0) {
-        intents[intent.key] = intent.name
+        intents[intent.key] = intent.value
       }
     })
   }
   if (Array.isArray(req.body.slots)) {
     req.body.slots.forEach(slot => {
       if (slot.key) {
-        slots[slot.key] = slot.name
+        slots[slot.key] = slot.value
       }
     })
   }
 
   let used_intents = new Set()
   let used_choices = new Set()
-  let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {used_intents, used_choices, intents, slots}, undefined, req.params.platform)
+  let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {used_intents, used_choices, intents, slots}, undefined, req.body.platform)
 
   res.sendStatus(status)
 }

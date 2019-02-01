@@ -1,30 +1,7 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT} = require('./Constants')
-const { SLOT_TYPES } = require('../app/src/views/pages/Canvas/Constants')
 const { getEnvVariable } = require('./../util')
-const { getUtterancesWithSlotNames, formatName } = require('../app/src/util')
-
-const _getSlotsForKeysAndFormat = (keys, slots) => {
-	let key_set = new Set()
-
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
-
-	key_set = [...key_set]
-
-	return key_set.map(key => {
-		const slot = _.find(slots, {
-			key: key
-		})
-		return {
-			name: formatName(slot.name),
-			type: slot.type.value.toLowerCase() !== 'custom' ? slot.type.value : formatName(slot.name)
-		}
-	})
-}
+const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat } = require('../app/src/util')
 
 const interactionModel = (req, locale) => {
 
@@ -33,6 +10,7 @@ const interactionModel = (req, locale) => {
 	const slots = req.slots
 	const used_choices = req.used_choices
 	const used_intents = req.used_intents
+	const platform = 'alexa'
 
 	const intents_for_amazon = []
 	const entered_intents = new Set()
@@ -69,7 +47,7 @@ const interactionModel = (req, locale) => {
 
 			if (!intent.built_in) {
 				formatted_intent.samples = getUtterancesWithSlotNames(intent.inputs, slots, false, true)
-				formatted_intent.slots = _getSlotsForKeysAndFormat(intent.inputs.map(input => input.slots), slots)
+				formatted_intent.slots = getSlotsForKeysAndFormat(intent.inputs.map(input => input.slots), slots, platform)
 			} else {
 				formatted_intent.samples = []
 			}
@@ -294,6 +272,5 @@ const manifest = (r, encoded_id, name) => {
 
 module.exports = {
 	interactionModel: interactionModel,
-	manifest: manifest,
-	_getSlotsForKeysAndFormat: _getSlotsForKeysAndFormat
+	manifest: manifest
 }

@@ -2,12 +2,21 @@ const AdmZip = require('adm-zip');
 const _ = require('lodash')
 const dialogflow = require('dialogflow');
 const uuid = require('uuid/v4')
-const { getEnvVariable } = require('../../util')
-const { Package, Agent, Intent, IntentEntry} = require('./Interfaces')
-
-const BUILT_IN_EXAMPLES = {
-  '@sys.date': 'october 17 2019'
-}
+const {
+  getEnvVariable
+} = require('../../util')
+const {
+  Package,
+  Agent,
+  Intent,
+  IntentEntry
+} = require('./Interfaces')
+const {
+  BUILT_IN_EXAMPLES,
+  WelcomeIntent,
+  WelcomeIntentEntries,
+  FallbackIntent
+} = require('./Constants')
 
 class DialogFlow {
   constructor(projectId, privateKey, clientEmail) {
@@ -26,6 +35,10 @@ class DialogFlow {
     this.entitiesClient = new dialogflow.EntityTypesClient(config)
   }
 
+  setLocale(locale) {
+    this.locale = locale
+  }
+
   async listAgents() {
     const search = await this.agentClient.searchAgents({
       parent: `projects/-`
@@ -42,49 +55,6 @@ class DialogFlow {
     return res
   }
 
-  async exportAgent() {
-    const resp = await this.agentClient.exportAgent({
-      parent: `projects/${this.projectId}`
-    })
-  }
-
-  async deleteAllIntents() {
-    let all_intents = []
-    let {
-      intents,
-      next_page_token
-    } = await this.intentsClient.listIntents({
-      parent: `projects/${this.projectId}`,
-      page_size: 1000
-    })
-
-    all_intents = all_intents.concat(intents)
-    while (next_page_token) {
-      ({
-        intents,
-        next_page_token
-      } = await this.intentsClient.listIntents({
-        parent: `projects/${this.projectId}`,
-        page_size: 1000,
-        page_token: next_page_token
-      }))
-      all_intents = all_intents.concat(intents)
-    }
-
-    const delete_resp = await this.intentsClient.batchDeleteIntent({
-      parent: `projects/${this.projectId}`,
-      intents: all_intents
-    })
-
-    let operation = restore_resp[0]
-    try {
-      await operation.promise()
-    } catch (e) {
-      console.error('Error uploading to dialogflow', e)
-      throw ('Error uploading to dialogflow')
-    }
-  }
-
   async updateIntents(new_intents) {
     let intents_to_delete = []
     let display_name_map = {}
@@ -92,7 +62,8 @@ class DialogFlow {
     try {
       let all_intents = await this.intentsClient.listIntents({
         parent: `projects/${this.projectId}/agent`,
-        page_size: 1000
+        pageSize: 1000,
+        languageCode: this.locale
       })
 
       if (all_intents[0]) {
@@ -115,7 +86,8 @@ class DialogFlow {
         parent: `projects/${this.projectId}/agent`,
         intentBatchInline: {
           intents: inline_batch_intents
-        }
+        },
+        languageCode: this.locale
       })
 
       let operation = updateResp[0];
@@ -125,7 +97,8 @@ class DialogFlow {
         parent: `projects/${this.projectId}/agent`,
         intentBatchInline: {
           intents: intents_to_delete
-        }
+        },
+        languageCode: this.locale
       })
 
       operation = deleteResp[0];
@@ -152,7 +125,7 @@ class DialogFlow {
           displayName: slot.name,
           entityTypeDisplayName: slot.type.startsWith('@') ? slot.type : `@${slot.type}`,
           isList: false,
-          value: `$${slot.type.startsWith('@') ? slot.type.subString(1) : slot.type}.original`
+          value: `$${slot.name}.original`
         })
       })
     }
@@ -166,15 +139,18 @@ class DialogFlow {
           if (/\{[^\{\}]+\}/.test(part)) {
 
             const slot_name = part.match(/\{([^\{\}]+)\}/)[1]
-            const slot = _.find(intent.slots, {name:slot_name})
+            const slot = _.find(intent.slots, {
+              name: slot_name
+            })
+
             const slot_type = slot.type
             const samples = slot.samples
 
             return {
               user_defined: true,
-              text: BUILT_IN_EXAMPLES[slot_type] || (samples.length > 0 && samples[0] ) || 'example',
+              text: BUILT_IN_EXAMPLES[this.locale][slot_type] || (samples && samples.length > 0 && samples[0]) || 'example',
               alias: slot_name,
-              entityType: slot_type.toLowerCase() === 'custom' ? `@${slot_name}` : `@${slot_type}`
+              entityType: slot_type.startsWith('@') ? slot_type : `@${slot_name}`
             }
           } else {
             return {
@@ -212,7 +188,8 @@ class DialogFlow {
     try {
       let all_slots = await this.entitiesClient.listEntityTypes({
         parent: `projects/${this.projectId}/agent`,
-        page_size: 1000
+        page_size: 1000,
+        languageCode: this.locale
       })
 
       if (all_slots[0]) {
@@ -223,7 +200,7 @@ class DialogFlow {
         if (!_.find(new_slots, {
             name: slot.displayName
           })) {
-            slots_to_delete.push(slot)
+          slots_to_delete.push(slot)
         }
         display_name_map[slot.displayName] = slot.name
       })
@@ -235,7 +212,8 @@ class DialogFlow {
         parent: `projects/${this.projectId}/agent`,
         entityTypeBatchInline: {
           entityTypes: inline_batch_slot
-        }
+        },
+        languageCode: this.locale
       })
 
       let operation = updateResp[0];
@@ -245,7 +223,8 @@ class DialogFlow {
         parent: `projects/${this.projectId}/agent`,
         entityTypeBatchInline: {
           entityTypes: slots_to_delete
-        }
+        },
+        languageCode: this.locale
       })
 
       operation = deleteResp[0];
@@ -264,7 +243,7 @@ class DialogFlow {
     return slot
   }
 
-  async updateAgentFulfillment(encoded_id) {
+  async updateAgentFulfillment(encoded_id, main_locale, supported_locales) {
     const url = `${getEnvVariable('SKILL_ENDPOINT')}/state/skill/gactions/${encoded_id}`
 
     let agent = Agent()
@@ -276,7 +255,8 @@ class DialogFlow {
       "cloudFunctionsInitialized": false
     }
 
-    const dummy = Intent('dummy_intent_vf')
+    if (main_locale) agent.language = main_locale
+    if (supported_locales) agent.supportedLanguages = supported_locales
 
     let zip = new AdmZip()
     zip.addFile('agent.json', Buffer.from(JSON.stringify(agent)))
@@ -284,13 +264,13 @@ class DialogFlow {
     zip.addFile('entities/', Buffer.from(''))
     zip.addFile('intents/', Buffer.from(''))
 
-    zip.addFile('intents/dummy_intent_vf.json', Buffer.from(JSON.stringify(dummy)))
-    zip.addFile('intents/dummy_intent_vf_usersays_en.json', Buffer.from(JSON.stringify(IntentEntry())))
+    zip.addFile('intents/Default Welcome Intent.json', Buffer.from(JSON.stringify(WelcomeIntent)))
+    zip.addFile('intents/Default Fallback Intent.json', Buffer.from(JSON.stringify(FallbackIntent)))
 
     const buf = zip.toBuffer()
     const b64s = buf.toString('base64')
 
-    const import_resp = await this.agentClient.importAgent({
+    const import_resp = await this.agentClient.restoreAgent({
       parent: `projects/${this.projectId}`,
       agentContent: b64s
     })
@@ -298,9 +278,25 @@ class DialogFlow {
     let operation = import_resp[0]
     try {
       await operation.promise()
+
+      let all_intents = await this.intentsClient.listIntents({
+        parent: `projects/${this.projectId}/agent`,
+        pageSize: 1000,
+        languageCode: this.locale
+      })
+      if (all_intents && all_intents.length > 0) {
+        all_intents = all_intents[0]
+      }
+
+      const dummy_intent = _.find(all_intents, {displayName: 'dummy_intent_vf_voiceflow'})
+      if (dummy_intent) {
+        await this.intentsClient.deleteIntent({
+          name: dummy_intent.name
+        })
+      }
     } catch (e) {
       console.error('Error uploading to dialogflow', e)
-      throw ('Error uploading to dialogflow')
+      throw (`Error uploading to dialogflow: ${e}`)
     }
     return
   }
@@ -316,43 +312,6 @@ class DialogFlow {
     } catch (e) {
       console.error('Error training agent', e)
       throw ('Error training agent')
-    }
-    return
-  }
-
-  async restoreAgent({
-    intents,
-    slots,
-    skill_id
-  }) {
-    console.log("RESTOREAGENT", intents, slots, skill_id)
-
-    let zip = new AdmZip()
-    zip.addFile('agent.json', Buffer.from(JSON.stringify(agent)))
-    zip.addFile('package.json', Buffer.from(JSON.stringify(p_json)))
-    zip.addFile('entities/', Buffer.from(''))
-    zip.addFile('intents/', Buffer.from(''))
-
-    zip.addFile('entities/Animal_entries_en.json', Buffer.from(JSON.stringify(animal_entries)))
-    zip.addFile('entities/Animal.json', Buffer.from(JSON.stringify(animal)))
-
-    zip.addFile('intents/i would like a dog_usersays_en.json', Buffer.from(JSON.stringify(dog_usersays)))
-    zip.addFile('intents/i would like a dog.json', Buffer.from(JSON.stringify(dog)))
-
-    const buf = zip.toBuffer()
-    const b64s = buf.toString('base64')
-
-    const restore_resp = await this.agentClient.restoreAgent({
-      parent: `projects/${this.projectId}`,
-      agentContent: b64s
-    })
-
-    let operation = restore_resp[0]
-    try {
-      await operation.promise()
-    } catch (e) {
-      console.error('Error uploading to dialogflow', e)
-      throw ('Error uploading to dialogflow')
     }
     return
   }

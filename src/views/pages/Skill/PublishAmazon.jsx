@@ -810,7 +810,7 @@ class Skill extends Component {
                     
                     <Form>
                         <div className="big-settings-alignment-div">
-                            <h5 className="mb-1">Basic Skill Info</h5>
+                            <div className="mb-4 mt-5"><b>Basic Skill Info</b></div>
                             <div className="big-settings-content">
                                 <FormGroup>
                                     <div className="row">
@@ -856,7 +856,7 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <h5 className="mb-1">Skill Description</h5>
+                            <div className="mb-4"><b>Skill Description</b></div>
                             <div className="big-settings-content">
                                 <FormGroup className="mt-0">
                                     <div className="row">
@@ -932,12 +932,12 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <h5 className="mb-1">Skill Invocation</h5>
+                            <div className="mb-4"><b>Skill Invocation</b></div>
                             <div className="big-settings-content">
                                 <FormGroup>
                                     <div className="row">
                                         <div className="col-3 publish-info">
-                                            <p className="mb-0 helper-text"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
+                                            <p className="mb-0 helper-text"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Tiny Tales</i>".</p>
                                         </div>
                                         <div className="col-9">
                                             <Label className="publish-label">Invocation Name *</Label>
@@ -970,7 +970,7 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <h5 className="mb-1">Locales</h5>
+                            <div className="mb-4"><b>Locales</b></div>
                             <div className="big-settings-content">
                                 
                                 <FormGroup className="mt-0">
@@ -995,7 +995,7 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-alignment-div">
-                            <h5 className="mb-1">Legal Information</h5>
+                            <div className="mb-4"><b>Legal Information</b></div>
                             <div className="big-settings-content">
                                 <FormGroup>
                                     <div className="row">

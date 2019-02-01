@@ -9,7 +9,7 @@ class IconsForm extends Component {
         <div>
           <div className="justify-content-center d-flex">
               <div>
-                  <label className="mt-0"><b>Small icon</b> *</label>
+                  <label className="mt-0 text-center"><b>Small icon</b> *</label>
                   <Image
                       className='icon-image small-icon'
                       path='/small_icon'
@@ -18,7 +18,7 @@ class IconsForm extends Component {
                     />
               </div>
               <div className="pl-3">
-                  <label className="mt-0"><b>Large icon</b> *</label>
+                  <label className="mt-0 text-center"><b>Large icon</b> *</label>
                   <Image
                       className='icon-image large-icon'
                       path='/large_icon'

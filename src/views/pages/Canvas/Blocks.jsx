@@ -43,9 +43,8 @@ const SECTIONS = [{
     title: 'business',
     items: [
         { text: 'Permission', type: 'permission', icon: <i className="fas fa-lock"></i>, tip: 'Ask users to enable permissions (User Info, Reminders, etc.)' },
-        { text: 'User Info', type: 'permissions', icon: <i className="fas fa-user"></i>, tip: 'Get user info (Email, Phone, Location)' },
+        { text: 'User Info', type: 'permissions', icon: <i className="fas fa-user"></i>, tip: 'Get User Information and check Permissions' },
         { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' },
-        { text: 'Link Account', type: 'link_account', icon: <i className="far fa-link" />, tip: 'Retrieve access token from external account' },
         { text: 'Payment', type: 'payment', icon: <i className="fas fa-dollar-sign" />, tip: 'Request payment from user' },
         { text: 'Cancel Payment', type: 'cancel', icon: <i className="fas fa-user-minus" />, tip: 'Refund a purchase or cancel an user\'s subscription' },
         { text: 'Reminder', type: 'reminder', icon: <i className="fas fa-bell" />, tip: 'Send a remind to the user in a set amount of time' }

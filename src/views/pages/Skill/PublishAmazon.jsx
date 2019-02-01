@@ -820,7 +820,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="mb-0 text-secondary"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
+                                        <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
                                     </div>
                                     <div className="col-9">
                                         <Input className="form-bg" type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
@@ -830,12 +830,12 @@ class Skill extends Component {
 
                             <div className="d-flex row mb-5">
                                 <div className="col-3 publish-info">
-                                    <p className="text-secondary mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
+                                    <p className="helper-text mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
                                 </div>
                                 <div className="col-9 d-flex">
                                     <div>
                                         <Image
-                                            className='icon-image large-icon'
+                                            className='icon-image large-icon text-center'
                                             isDisabled={disabled_stages.has(this.state.stage)}
                                             path='/large_icon'
                                             image={this.state.large_icon}
@@ -843,11 +843,11 @@ class Skill extends Component {
                                             title='Large Icon *'/>
                                     </div>
 
-                                    <Button className="goback-btn goforward-btn ml-4 mr-4" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
+                                    <Button className="goback-btn goforward-btn mt-100 ml-4 mr-4" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
 
                                     <div>
                                         <Image
-                                            className='icon-image small-icon'
+                                            className='icon-image small-icon text-center'
                                             isDisabled={disabled_stages.has(this.state.stage)}
                                             path='/small_icon'
                                             image={this.state.small_icon}
@@ -869,7 +869,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             <b>Summary</b> is a one sentence description of your amazing Skill.
                                         </p>
                                     </div>
@@ -889,7 +889,7 @@ class Skill extends Component {
 
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             <b>Description</b> is where you can provide a more detailed explanation of your Skill.
                                         </p>
                                     </div>
@@ -916,7 +916,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
                                         </p>
                                     </div>
@@ -942,7 +942,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             <b>Keywords</b> are words that will help your Skill be found when users are searching. There is a limit of 30 keywords and their total length must be less than or equal to 150.
                                         </p>
                                     </div>
@@ -964,7 +964,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="mb-0 text-secondary"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
+                                        <p className="mb-0 helper-text"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
                                     </div>
                                     <div className="col-9">
                                         <Input className="form-bg" type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
@@ -981,7 +981,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 mt-3 publish-info">
-                                        <p className="text-secondary"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
+                                        <p className="helper-text"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
                                     </div>
                                     <div className="col-9">
                                         <Multiple
@@ -1010,7 +1010,7 @@ class Skill extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             <b>Locale</b> determines your skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
                                         </p>
                                     </div>
@@ -1027,7 +1027,7 @@ class Skill extends Component {
                         </div>
 
                         <div className="big-settings-content">
-                            <h5>Legal Information</h5>
+                            <h5 className="mb-4">Legal Information</h5>
                             <FormGroup>
                                 <div className="row">
                                     <div className="col-3 publish-info"></div>
@@ -1038,7 +1038,7 @@ class Skill extends Component {
 
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
                                         </p>
                                     </div>
@@ -1058,7 +1058,7 @@ class Skill extends Component {
 
                                 <div className="row">
                                     <div className="col-3 publish-info">
-                                        <p className="text-secondary">
+                                        <p className="helper-text">
                                             The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
                                         </p>
                                     </div>

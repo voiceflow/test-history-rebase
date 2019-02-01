@@ -97,7 +97,7 @@ class Image extends Component {
                 >
                     <div className="w-100">
                         <div className="drop-child">
-                            Drag-n-Drop Image OR <a href="#" onclick={() => {return false}}>Browse</a><br/>
+                            Drag-n-Drop Image or <a href="#" onclick={() => {return false}}>browse</a><br/>
                             {this.props.url && <button className="upload-btn btn btn-default" onClick={(e)=>{
                                 e.preventDefault()
                                 e.stopPropagation()

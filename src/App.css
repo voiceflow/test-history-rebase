@@ -271,7 +271,7 @@ audio {
 }
 .btn-primary-small{
     border: 1px solid #2295FA !important;
-    color: #fff;
+    color: #fff !important;
     font-weight: normal;
     background: linear-gradient(#2295FA, #1B86F9);
     text-transform: none !important;
@@ -888,8 +888,7 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .dropzone .drop-child{
     text-align: center;
     color: #8da2b5 !important;
-    font-weight: 100;
-    font-size: 90%;
+    font-size: 13px;
 }
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;
@@ -973,6 +972,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     border-radius: 0;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: #8da2b5 !important;
 }
 .audio-box>div, .combined-box>div{
     margin-bottom: 10px;
@@ -1009,7 +1011,7 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     margin: 2px 0;
 }*/
 .upload-btn{
-    font-size: 14px;
+    font-size: 13px;
     flex: 1;
     margin: 4px;
 }

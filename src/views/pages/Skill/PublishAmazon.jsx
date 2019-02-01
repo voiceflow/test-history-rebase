@@ -627,30 +627,6 @@ class Skill extends Component {
 
         return (
             <React.Fragment>
-                <div className="subheader">
-                    <div className="container space-between">
-                        <span className="text-muted">
-                            <span className="text-secondary">{this.state.name}</span>{' '}
-                            <small> / created {moment(this.state.created).fromNow()}</small>
-                        </span>
-                        {disabled_stages.has(this.state.stage)?
-                            null:
-                            <div className="subheader-right">
-                                <button
-                                  variant="contained"
-                                  className="purple-btn"
-                                  onClick={() => {
-                                    this.validateForm()
-                                  }}
-                                >
-                                  Publish Skill
-                                  <i className="fab fa-amazon ml-2"/>
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </div>
-
                 <Modal
                     isOpen={this.state.publish}
                     toggle={this.togglePublish}
@@ -772,7 +748,9 @@ class Skill extends Component {
 
                 <div className='subheader-page-container'>
                 <div>
-                    <div className='container pt-3'>
+                    <div className='container pt-5'>
+                    <h5 className="text-muted">Publish to Alexa</h5>
+                    <hr/>
                     {this.state.live ?
                         <div className="alert alert-success mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">
@@ -1027,6 +1005,26 @@ class Skill extends Component {
                             </div>
                         </div>
                       </Form>
+                      <hr/>
+                      <div className="space-between">
+                            <span className="text-muted">
+                                <span className="text-secondary">{this.state.name}</span>{' '}
+                                <small> / created {moment(this.state.created).fromNow()}</small>
+                            </span>
+                            {disabled_stages.has(this.state.stage)?
+                                null:
+                                    <button
+                                    variant="contained"
+                                    className="purple-btn"
+                                    onClick={() => {
+                                        this.validateForm()
+                                    }}
+                                    >
+                                    Publish Skill
+                                    <i className="fab fa-amazon ml-2"/>
+                                    </button>
+                            }
+                        </div>
                 </div>
                 </div>
                 </div>

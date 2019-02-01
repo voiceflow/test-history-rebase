@@ -89,7 +89,7 @@ class Multimodal extends Component {
                         <div className="px-4 mx-3 mb-5 pt-3">
                         <div className="products-container position-relative">
                         <div className="space-between w-100 px-3">
-                            <h3 className="text-muted">Visuals</h3>
+                            <h5 className="mb-0 text-muted">Visuals</h5>
                             <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline btn purple-btn">
                                 New Display
                             </Link>

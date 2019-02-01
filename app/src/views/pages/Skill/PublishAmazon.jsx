@@ -809,264 +809,222 @@ class Skill extends Component {
 
                     
                     <Form>
-                        <div className="big-settings-content">
-                            <h5>Basic Skill Info</h5>
-                            <FormGroup>
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Display Name *</Label>
+                        <div className="big-settings-alignment-div">
+                            <h5 className="mb-1">Basic Skill Info</h5>
+                            <div className="big-settings-content">
+                                <FormGroup>
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Display Name *</Label>
+                                            <Input className="form-bg" type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row">
+                                </FormGroup>
+
+                                <div className="d-flex row mb-5">
                                     <div className="col-3 publish-info">
-                                        <p className="mb-0 helper-text"><b>Display Name</b> is what we display for your skill on VoiceFlow/Amazon</p>
+                                        <p className="helper-text mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
                                     </div>
-                                    <div className="col-9">
-                                        <Input className="form-bg" type="text" name="name" disabled={disabled_stages.has(this.state.stage)} placeholder="Storyflow - Interactive Story Adventures" value={this.state.name} onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                    <div className="col-9 d-flex">
+                                        <div>
+                                            <Image
+                                                className='icon-image large-icon text-center'
+                                                isDisabled={disabled_stages.has(this.state.stage)}
+                                                path='/large_icon'
+                                                image={this.state.large_icon}
+                                                update={(url) => this.setState({large_icon: url})}
+                                                title='Large Icon *'/>
+                                        </div>
 
-                            <div className="d-flex row mb-5">
-                                <div className="col-3 publish-info">
-                                    <p className="helper-text mt-5"><b>Icons</b> are what will be displayed for your Skill in the Amazon web store.</p>
-                                </div>
-                                <div className="col-9 d-flex">
-                                    <div>
-                                        <Image
-                                            className='icon-image large-icon text-center'
-                                            isDisabled={disabled_stages.has(this.state.stage)}
-                                            path='/large_icon'
-                                            image={this.state.large_icon}
-                                            update={(url) => this.setState({large_icon: url})}
-                                            title='Large Icon *'/>
-                                    </div>
+                                        <Button className="goback-btn goforward-btn mt-100 ml-4 mr-4" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
 
-                                    <Button className="goback-btn goforward-btn mt-100 ml-4 mr-4" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
-
-                                    <div>
-                                        <Image
-                                            className='icon-image small-icon text-center'
-                                            isDisabled={disabled_stages.has(this.state.stage)}
-                                            path='/small_icon'
-                                            image={this.state.small_icon}
-                                            update={(url) => this.setState({small_icon: url})}
-                                            title='Small Icon *'/>
+                                        <div>
+                                            <Image
+                                                className='icon-image small-icon text-center'
+                                                isDisabled={disabled_stages.has(this.state.stage)}
+                                                path='/small_icon'
+                                                image={this.state.small_icon}
+                                                update={(url) => this.setState({small_icon: url})}
+                                                title='Small Icon *'/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="big-settings-content">
-                            <h5>Skill Description</h5>
-                            <FormGroup className="mt-0">
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Summary *</Label>
+                        <div className="big-settings-alignment-div">
+                            <h5 className="mb-1">Skill Description</h5>
+                            <div className="big-settings-content">
+                                <FormGroup className="mt-0">
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                <b>Summary</b> is a one sentence description of your amazing Skill.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Summary *</Label>
+                                            <Input className="form-bg" type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            <b>Summary</b> is a one sentence description of your amazing Skill.
-                                        </p>
-                                    </div>
-                                    <div className="col-9">
-                                        <Input className="form-bg" type="text" name="summary" disabled={disabled_stages.has(this.state.stage)} placeholder="One Sentence Skill Summary" value={this.state.summary} onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
 
-                            <FormGroup>
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Description *</Label>
+                                <FormGroup>
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                <b>Description</b> is where you can provide a more detailed explanation of your Skill.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Description *</Label>
+                                            <Textarea
+                                                name="description"
+                                                className="form-control"
+                                                disabled={disabled_stages.has(this.state.stage)}
+                                                value={this.state.description}
+                                                onChange={this.handleChange}
+                                                minRows={3}
+                                                placeholder="Skill Description"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
+                                </FormGroup>
 
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            <b>Description</b> is where you can provide a more detailed explanation of your Skill.
-                                        </p>
+                                <FormGroup>
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Category *</Label>
+                                            <Select
+                                                className="input-select"
+                                                name="category"
+                                                isDisabled={disabled_stages.has(this.state.stage)}
+                                                value={this.state.category}
+                                                onChange={this.handleSelection}
+                                                options={categories}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="col-9">
-                                        <Textarea
-                                            name="description"
-                                            className="form-control"
-                                            disabled={disabled_stages.has(this.state.stage)}
-                                            value={this.state.description}
-                                            onChange={this.handleChange}
-                                            minRows={3}
-                                            placeholder="Skill Description"
-                                        />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
 
-                            <FormGroup>
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Category *</Label>
+                                <FormGroup className="mt-0">
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                <b>Keywords</b> are words that will help your Skill be found when users are searching. There is a limit of 30 keywords and their total length must be less than or equal to 150.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Keywords (Search Tags) <small>optional</small></Label>
+                                            <Input className="form-bg" type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            <b>Category</b> is the type of your Skill. This helps users find your Skill more easily so choose the category that best applies to you.
-                                        </p>
-                                    </div>
-                                    <div className="col-9">
-                                        <Select
-                                            className="input-select"
-                                            name="category"
-                                            isDisabled={disabled_stages.has(this.state.stage)}
-                                            value={this.state.category}
-                                            onChange={this.handleSelection}
-                                            options={categories}
-                                        />
-                                    </div>
-                                </div>
-                            </FormGroup>
-
-                            <FormGroup className="mt-0">
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Keywords (Search Tags) <small>optional</small></Label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            <b>Keywords</b> are words that will help your Skill be found when users are searching. There is a limit of 30 keywords and their total length must be less than or equal to 150.
-                                        </p>
-                                    </div>
-                                    <div className="col-9">
-                                        <Input className="form-bg" type="text" name="keywords" disabled={disabled_stages.has(this.state.stage)} placeholder="Keywords (Separated By Commas) e.g. Game, Space, Adventure" value={this.state.keywords} onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
+                            </div>
                         </div>
 
-                        <div className="big-settings-content">
-                            <h5>Skill Invocation</h5>
-                            <FormGroup>
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Invocation Name *</Label>
+                        <div className="big-settings-alignment-div">
+                            <h5 className="mb-1">Skill Invocation</h5>
+                            <div className="big-settings-content">
+                                <FormGroup>
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="mb-0 helper-text"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Invocation Name *</Label>
+                                            <Input className="form-bg" type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="mb-0 helper-text"><b>Invocation Name</b> is what users will use to open your Skill. For example, "<i>Duck Tales</i>".</p>
-                                    </div>
-                                    <div className="col-9">
-                                        <Input className="form-bg" type="text" name="inv_name" disabled={disabled_stages.has(this.state.stage)} placeholder="Enter an invocation name that begins an interaction with your skill" value={this.state.inv_name} onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
 
-                            <FormGroup className="mt-0">
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Invocations *</Label>
+                                <FormGroup className="mt-0">
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Invocations *</Label>
+                                            <Multiple
+                                                className="mt-0 input-group-text"
+                                                list={this.state.invocations}
+                                                max={3}
+                                                prepend="Alexa,"
+                                                update={(list) => this.setState({invocations: list, saved: false})}
+                                                isDisabled={disabled_stages.has(this.state.stage)}
+                                                placeholder={"open/start/launch " + this.state.name}
+                                                add={<span><i className="fas fa-plus"/> Add Invocation</span>}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3 mt-3 publish-info">
-                                        <p className="helper-text"><b>Invocations</b> are the various phrases that Amazon Alexa will detect to run your Skill.</p>
-                                    </div>
-                                    <div className="col-9">
-                                        <Multiple
-                                            className="mt-0 input-group-text"
-                                            list={this.state.invocations}
-                                            max={3}
-                                            prepend="Alexa,"
-                                            update={(list) => this.setState({invocations: list, saved: false})}
-                                            isDisabled={disabled_stages.has(this.state.stage)}
-                                            placeholder={"open/start/launch " + this.state.name}
-                                            add={<span><i className="fas fa-plus"/> Add Invocation</span>}
-                                        />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
+                            </div>
                         </div>
 
-                        <div className="big-settings-content">
-                            <h5>Locales</h5>
-                            <FormGroup className="mt-0">
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Location(s)</Label>
+                        <div className="big-settings-alignment-div">
+                            <h5 className="mb-1">Locales</h5>
+                            <div className="big-settings-content">
+                                
+                                <FormGroup className="mt-0">
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                <b>Locale</b> determines your skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Location(s)</Label>
+                                            <ButtonGroup className="locale-button-group">
+                                                {LOCALE_MAP.map((locale, i) => {
+                                                    const active = this.state.locales.includes(locale.value) ? "active" : "";
+                                                    return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>{locale.name}</Button>
+                                                })}
+                                            </ButtonGroup>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            <b>Locale</b> determines your skill's availability. Your skill will be available in regions which have your selected locale(s) as the primary language.
-                                        </p>
-                                    </div>
-                                    <div className="col-9">
-                                    <ButtonGroup className="locale-button-group">
-                                        {LOCALE_MAP.map((locale, i) => {
-                                            const active = this.state.locales.includes(locale.value) ? "active" : "";
-                                            return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>{locale.name}</Button>
-                                        })}
-                                    </ButtonGroup>
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
+                            </div>
                         </div>
 
-                        <div className="big-settings-content">
-                            <h5 className="mb-4">Legal Information</h5>
-                            <FormGroup>
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Privacy Policy URL</Label>
+                        <div className="big-settings-alignment-div">
+                            <h5 className="mb-1">Legal Information</h5>
+                            <div className="big-settings-content">
+                                <FormGroup>
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Privacy Policy URL</Label>
+                                            <Input className="form-bg" type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
+                                        </div>
                                     </div>
-                                </div>
+                                </FormGroup>
 
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill.
-                                        </p>
+                                <FormGroup>
+                                    <div className="row">
+                                        <div className="col-3 publish-info">
+                                            <p className="helper-text">
+                                                The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
+                                            </p>
+                                        </div>
+                                        <div className="col-9">
+                                            <Label className="publish-label">Terms and Conditions URL</Label>
+                                            <Input className="form-bg" type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
+                                        </div>
                                     </div>
-                                    <div className="col-9">
-                                        <Input className="form-bg" type="text" name="privacy_policy" disabled={disabled_stages.has(this.state.stage)} placeholder="Privacy Policy" value={this.state.privacy_policy} onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </FormGroup>
-
-                            <FormGroup>
-                                <div className="row">
-                                    <div className="col-3 publish-info"></div>
-                                    <div className="col-9">
-                                        <Label>Terms and Conditions URL</Label>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-3 publish-info">
-                                        <p className="helper-text">
-                                            The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill.
-                                        </p>
-                                    </div>
-                                    <div className="col-9">
-                                        <Input className="form-bg" type="text" name="terms_and_cond" disabled={disabled_stages.has(this.state.stage)} placeholder="Terms and Conditions" value={this.state.terms_and_cond} onChange={this.handleChange} />
-                                    </div>
-                                </div>
-                            </FormGroup>
+                                </FormGroup>
+                            </div>
                         </div>
                       </Form>
                 </div>

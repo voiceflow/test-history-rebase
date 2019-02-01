@@ -128,48 +128,6 @@ exports.deleteSkillPromise = (creator_id, skill_id, delete_all_versions) => {
   })
 }
 
-// Async call to copy all products
-copyAllProducts = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO products (skill_id, name, data, amzn_prod_id)
-    SELECT $1, name, data, amzn_prod_id FROM products WHERE id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to copy all templates
-copyAllTemplates = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
-    SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
-// Async call to
-copyAllDisplays = (id, new_skill_id) => {
-  let copy_query = `
-    INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
-    SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
-  `
-
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) {
-      console.trace(err)
-    }
-  })
-}
-
 exports.copySkill = async (req, res, options, cb = false) => {
 
   let id = hashids.decode(req.params.id)[0]
@@ -322,13 +280,13 @@ exports.copySkill = async (req, res, options, cb = false) => {
           INSERT INTO skills (
             name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events
           )
           SELECT ` +
       copy_str + `
             $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
 
@@ -367,11 +325,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
             }
           })
         }
-
-        // Async copy rows depending on the skill, doesn't need to be synced
-        copyAllDisplays(id, copy_skill.skill_id)
-        copyAllProducts(id, copy_skill.skill_id)
-        copyAllTemplates(id, copy_skill.skill_id)
 
         if(options.renderDiagram){
           await renderSkill(copy_skill)

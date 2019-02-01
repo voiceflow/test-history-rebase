@@ -153,8 +153,10 @@ const verify = (auth, cb) => {
 const logAxiosError = (err, context='', data=null) => {
     if(err && err.response){
       console.log(context, err.response.data, 'STATUS', err.response.status)    
-    }else{
+    }else if(context){
       console.log(context, err)
+    }else{
+      console.trace(err)
     }
     if(data) console.log('ERROR DATA', data)
     console.log('---------------------------')

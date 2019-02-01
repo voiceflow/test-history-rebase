@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
-import { Input, InputGroup } from 'reactstrap';
-import AudioDrop from '../../../components/Uploads/AudioDrop';
-
-const outputs = ['next', 'previous'];
+import React, { Component } from 'react'
+import AudioDrop from '../../../components/Uploads/AudioDrop'
+import Switch from '@material-ui/core/Switch'
 
 class Stream extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             node: props.node
-        };
-        // this.state.node.extras.audio = "https://s3.amazonaws.com/com.getstoryflow.audio.production/1542483841536-all-star---smash-mouth-lyrics.mp3";
+        }
 
-        this.togglePlayer = this.togglePlayer.bind(this);
-        this.toggleLoop = this.toggleLoop.bind(this);
+        this.togglePause = this.togglePause.bind(this)
+        this.toggleLoop = this.toggleLoop.bind(this)
     }
 
     onUpdate(){
@@ -25,35 +22,30 @@ class Stream extends Component {
     toggleLoop(){
         let node = this.state.node;
         node.extras.loop = !node.extras.loop;
-
-        this.onUpdate();
+        this.onUpdate()
     }
 
-    togglePlayer(){
+    togglePause(){
         let node = this.state.node;
         let ports = node.getPorts();
 
-        if(this.state.node.extras.player === true){
+        if(this.state.node.extras.custom_pause){
             for (let name in ports) {
                 let port = node.getPort(name);
-                if(port.in) continue;
+                if(port.in) continue
 
-                if (outputs.includes(port.label)) {
-                    node.removePort(port);
+                if (port.label === 'pause') {
+                    node.removePort(port)
                 }
             }
         }else{
-            if(Object.keys(ports).length === 2){
-                outputs.forEach(out => {
-                    node.addOutPort(out).setMaximumLinks(1);
-                });
-            }
+            this.state.node.addOutPort('pause').setMaximumLinks(1)
         }
 
-        node.extras.player = !node.extras.player;
+        node.extras.custom_pause = !node.extras.custom_pause
 
-        this.props.repaint();
-        this.onUpdate();
+        this.props.repaint()
+        this.onUpdate()
     }
 
     render() {
@@ -69,26 +61,24 @@ class Stream extends Component {
                     }}
                     stream
                 />
-                <InputGroup className="mt-3">
-                    <label className="input-group-text w-100 m-0 text-left">
-                        <Input addon type="checkbox" checked={!!this.state.node.extras.loop} onChange={this.toggleLoop}/>
-                        <span className="ml-2">Loop Audio {this.state.node.extras.player ? ' By Default' : ''}</span>
-                    </label>
-                </InputGroup>
-                <InputGroup className="mb-1 mt-2">
-                    <label className="input-group-text w-100 m-0 text-left">
-                        <Input addon type="checkbox" checked={!!this.state.node.extras.player} onChange={this.togglePlayer}/>
-                        <span className="ml-2">Audio Player Functions</span>
-                    </label>
-                </InputGroup>
-                {this.state.node.extras.player ? 
-                    <span className="text-muted">
-                        Users will be able to say playlist commands such as 'Next', 'Previous', 'Start Over', and toggle 'Loop' 
-                    </span> :
-                    <span className="text-muted">
-                        User Commands such as 'Next', 'Previous' will be routed to stop/pause
-                    </span> 
-                }
+                <div className="space-between mt-3">
+                    <label>Custom Pause</label>
+                    <Switch
+                        checked={!!this.state.node.extras.custom_pause}
+                        onChange={this.togglePause}
+                        color="primary"
+                        className="fulfill-switch"
+                    />
+                </div>
+                <div className="space-between">
+                    <label>Loop Audio</label>
+                    <Switch
+                        checked={!!this.state.node.extras.loop}
+                        onChange={this.toggleLoop}
+                        color="primary"
+                        className="fulfill-switch"
+                    />
+                </div>
             </div>
         );
     }

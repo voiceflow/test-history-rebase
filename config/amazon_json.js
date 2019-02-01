@@ -65,7 +65,7 @@ const _getSlotsForKeys = (keys, slots) => {
 	})
 }
 
-const interactionModel = (req) => {
+const interactionModel = (req, locale) => {
 
 	const invocation = req.inv_name
 	const intents = req.intents
@@ -133,6 +133,13 @@ const interactionModel = (req) => {
 		}
 	}
 
+	if(locale && locale.includes('en')){
+		if (!entered_intents.has('AMAZON.FallbackIntent')) {
+			entered_intents.add('AMAZON.FallbackIntent')
+			intents_for_amazon.push({name: 'AMAZON.FallbackIntent'})
+		}
+	}
+
 	const content_slot_values = []
 
 
@@ -149,9 +156,9 @@ const interactionModel = (req) => {
 	})
 
 	// Add random catchall values comment out to remove default catchall
-	CATCHALL_SLOT_VALUES.forEach(val => {
-		content_slot_values.push(val)
-	})
+	// CATCHALL_SLOT_VALUES.forEach(val => {
+	// 	content_slot_values.push(val)
+	// })
 
 	const slot_types = []
 
@@ -294,7 +301,7 @@ const manifest = (r, encoded_id, name) => {
 
 		// TODO: FIX THIS JANK ASS SHIT - THE MOST INSANE BANDAID FIX YOUVE EVER SEEN
 		if(!(typeof ret.manifest.events === 'object')) ret.manifest.events = {}
-		ret.manifest.events.endpoint = {uri: SKILL_ENDPOINT}
+		ret.manifest.events.endpoint = {uri: SKILL_ENDPOINT, sslCertificateType: "Wildcard"}
 		if(!Array.isArray(ret.manifest.events.subscriptions)) ret.manifest.events.subscriptions = []
 		const events = ['SKILL_PERMISSION_ACCEPTED', 'SKILL_PERMISSION_CHANGED']
 		events.forEach(permission => {

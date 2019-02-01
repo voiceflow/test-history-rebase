@@ -9,15 +9,18 @@ const pad = (num) => {
   return (num > 9 ? "" : "0") + num
 }
 
-const log_name_generator = () => {
-  let time = new Date
+const log_name_generator = (time, index) => {
+  time = new Date()
   return [time.getFullYear(), pad(time.getMonth() + 1), pad(time.getHours())].join('_') + '.log'
 }
 
 var access_log_stream = rfs(log_name_generator, {
   interval: '1h',
-  path: path.join(__dirname, 'log')
+  path: path.join(__dirname, 'log'),
+  immutable: true
 })
+access_log_stream.on('error', console.trace)
+access_log_stream.on('warning', console.trace)
 
 const try_transfer = (old_file_path, tries) => {
   if(tries > 5){
@@ -42,14 +45,18 @@ const try_transfer = (old_file_path, tries) => {
 }
 
 access_log_stream.on('rotated', (file_name) => {
-  let transfer_status = try_transfer(file_name, 0)
-  if (transfer_status === 0){
-    fs.unlink(file_name, (err) => {
-        if(err){
-            console.trace(err)
-        }
-    })
-}
+  try{
+    let transfer_status = try_transfer(file_name, 0)
+      if (transfer_status === 0){
+        fs.unlink(file_name, (err) => {
+            if(err){
+                console.trace(err)
+            }
+        })
+    }
+  } catch (err) {
+    console.trace(err)
+  }
 })
 
 var log_format = (tokens, req, res) => {

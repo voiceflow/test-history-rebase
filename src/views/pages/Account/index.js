@@ -32,7 +32,6 @@ class Account extends Component {
 
     this.state = {
       upgrade_modal: false,
-      selected_plan: 1,
       amzn: LOADING,
       expiry: null,
       confirm: null
@@ -132,7 +131,6 @@ class Account extends Component {
                 upgrade_modal={this.state.upgrade_modal}
                 toggle={this.toggle}
                 selected_plan={this.state.selected_plan}
-                switchPlan={(plan) => this.setState({selected_plan: plan})}
                 user={this.props.user}
                 logout={this.logout}
               />

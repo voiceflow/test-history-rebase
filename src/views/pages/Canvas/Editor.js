@@ -25,7 +25,6 @@ import Mail from './Editors/Mail';
 import Display from './Editors/Display'
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
-import LinkAccount from './Editors/LinkAccount';
 import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
 import Code from './Editors/Code'
@@ -247,14 +246,6 @@ class Editor extends Component {
                     onError={this.showErrorPopup}
                     skill_id={this.props.skill.skill_id}
                 />
-            case 'link_account':
-                return <LinkAccount
-                    history={this.props.history}
-                    node={this.state.node}
-                    onUpdate={this.props.onUpdate}
-                    skill={this.props.skill}
-                    variables={variables}
-                />
             case 'module':
                 return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
             case 'mail':
@@ -270,7 +261,7 @@ class Editor extends Component {
             case 'reminder':
                 return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'permission':
-                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate}/>
+                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate} skill={this.props.skill}/>
             case 'code':
                 return <Code node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             default:

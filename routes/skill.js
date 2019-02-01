@@ -336,17 +336,17 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getProduct = (req, res) => {
-  if (!req.params.sid || !req.params.pid) {
+  if (!req.params.id || !req.params.pid) {
     res.sendStatus(401);
     return;
   }
 
   let sql = `SELECT id, name, data FROM products WHERE skill_id = $1 AND id = $2`;
 
-  let sid = hashids.decode(req.params.sid)[0];
+  let id = hashids.decode(req.params.id)[0];
   let pid = req.params.pid;
 
-  pool.query(sql, [sid, pid], (err, data) => {
+  pool.query(sql, [id, pid], (err, data) => {
     if (err) {
       console.trace(err);
       res.sendStatus(500);
@@ -395,39 +395,58 @@ exports.setProduct = async (req, res) => {
   }
 }
 
+const deleteProductSQL = async (pid, res) => {
+  pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
+    if (err) {
+      console.trace(err)
+      res.sendStatus(500)
+    }else{
+      res.sendStatus(200)
+    }
+  })
+}
+
 exports.deleteProduct = async (req, res) => {
-  if (!req.params.sid || !req.params.pid) {
+  if (!req.params.id || !req.params.pid) {
     res.sendStatus(401);
     return;
   }
 
-  let sid = hashids.decode(req.params.id)[0];
   let pid = req.params.pid;
-
+  let result
   try {
-    let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [sid])
+    result = await pool.query('SELECT p.amzn_prod_id FROM products p INNER JOIN skills s ON s.skill_id = p.skill_id WHERE s.creator_id = $1 AND p.id = $2 LIMIT 1', [req.user.id, pid])
 
-    if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin !== 10) {
-      return res.sendStatus(403)
+    if (result.rows.length === 0 ) {
+      return res.sendStatus(412)
+    }else{
+      result = result.rows[0]
     }
   } catch (err) {
     console.trace(err);
     return res.sendStatus(500)
   }
 
-  try {
-    pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
-      if (err) {
-        console.trace(err);
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
+  if(result.amzn_prod_id){
+    AccessToken(req.user.id, async (token) => {
+      if (token === null) {
+        return res.status(401).send({
+          message: "Invalid Amazon Login Token"
+        })
       }
+      try{
+        await axios.request({
+          url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod_id}/stages/development`,
+          method: 'DELETE',
+          headers: {
+            Authorization: token
+          }
+        })
+      }catch(err){}
+      deleteProductSQL(pid, res)
     })
-  } catch (e) {
-    console.error(e);
-    console.trace();
-    res.sendStatus(500);
+  }else{
+    deleteProductSQL(pid, res)
   }
 }
 

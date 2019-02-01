@@ -27,8 +27,8 @@ import Templates from './views/pages/Templates'
 import Page404 from 'views/pages/404'
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
-import ErrorScreen from './Error'
-
+import ErrorScreen from './Error';
+import ErrorBoundary from './ErrorBoundary';
 import socket from 'socket.io-client'
 import {getDevice} from 'Helper'
 
@@ -49,7 +49,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       }}/>
     ) : (
       <React.Fragment>
-        <Component {...props} {...rest} user={AuthenticationService.getUser()}/>
+        <ErrorBoundary>
+          <Component {...props} {...rest} user={AuthenticationService.getUser()}/>
+        </ErrorBoundary>
       </React.Fragment>
     )
   )}/>
@@ -221,7 +223,7 @@ class App extends Component {
         <Router history={history}>
           <div id="body">
             { this.state.error && <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> }
-            { (this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
+            {(this.state.session && history.location.pathname !== '/onboarding' && history.location.pathname !== '/dashboard') && <Route render={(props) => {
                   return <NavBar {...props}/>
             }} /> }
               <Switch>

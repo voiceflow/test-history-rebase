@@ -128,42 +128,6 @@ exports.deleteSkillPromise = (creator_id, skill_id, delete_all_versions) => {
   })
 }
 
-// Async call to copy all products
-// const copyAllProducts = (id, new_skill_id) => new Promise((resolve) => {
-//   let copy_query = `
-//     INSERT INTO products (skill_id, name, data, amzn_prod_id)
-//     SELECT $1, name, data, amzn_prod_id FROM products WHERE skill_id = $2
-//   `
-//   pool.query(copy_query, [new_skill_id, id], (err) => {
-//     if (err) console.trace(err)
-//     resolve()
-//   })
-// })
-
-// Async call to copy all templates
-const copyAllTemplates = (id, new_skill_id) => new Promise((resolve) => {
-  let copy_query = `
-    INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
-    SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
-  `
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) console.trace(err)
-    resolve()
-  })
-})
-
-// Async call to
-copyAllDisplays = (id, new_skill_id) => new Promise((resolve) => {
-  let copy_query = `
-    INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
-    SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
-  `
-  pool.query(copy_query, [new_skill_id, id], (err) => {
-    if (err) console.trace(err)
-    resolve()
-  })
-})
-
 exports.copySkill = async (req, res, options, cb = false) => {
 
   let id = hashids.decode(req.params.id)[0]
@@ -177,7 +141,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
   }
 
   const retrieveDiagram = (diagram_id, new_skill_id) => {
-
     const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
@@ -361,11 +324,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
             }
           })
         }
-
-        // Async copy rows depending on the skill, doesn't need to be synced
-        // copyAllDisplays(id, copy_skill.skill_id)
-        // copyAllProducts(id, copy_skill.skill_id)
-        // copyAllTemplates(id, copy_skill.skill_id)
 
         if(options.renderDiagram){
           await renderSkill(copy_skill)

@@ -176,7 +176,7 @@ app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyPro
 app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), (req, res) => copySkill(req, res, {append_copy_str: true, user_copy: true}))
 app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
-app.get('/skill/:sid/product/:pid', ensureLoggedIn(), Skill.getProduct);
+app.get('/skill/:id/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
 app.post('/skill/:id/publishgoogle', ensureLoggedIn(), Skill.buildGoogleSkill);
@@ -257,6 +257,7 @@ app.get('/admin/*', ensureAdmin());
 app.get('/codes/:num', ensureAdmin(), Code.endpoint);
 
 app.get('/errors/:env', ensureLoggedIn(), Problem.getErrors);
+app.post('/errors', Problem.sendError);
 
 app.get('/voices', ensureLoggedIn(), Audio.getVoices)
 // app.post('/generate', ensureLoggedIn(), Audio.generate);

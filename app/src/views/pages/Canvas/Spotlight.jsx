@@ -28,7 +28,7 @@ class Spotlight extends Component {
                 value={null}
                 placeholder="Add Block"
                 filterOption={(value, input) => {
-                    return value.value.toLowerCase().startsWith(input.toLowerCase().trim())
+                    return value.label.toLowerCase().startsWith(input.toLowerCase().trim())
                 }}
             />
         </div>

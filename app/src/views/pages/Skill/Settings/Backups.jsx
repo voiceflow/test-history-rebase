@@ -3,6 +3,7 @@ import LightCanvas from '../../Canvas/LightCanvas'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import {Tooltip} from 'react-tippy'
 // import _ from 'lodash'
 
 import {Modal, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
@@ -83,13 +84,23 @@ class BackupSettings extends Component{
             <React.Fragment>
                 <div className="settings-content clearfix">
                     <FormGroup>
-                        <Label>Backups</Label>
-                        <Alert>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</Alert>
+                        
+                        <Label>
+                            Backups
+                            <Tooltip
+                            html={<div style={{ width: 155 }}>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</div>}
+                            position="bottom"
+                            >
+                                <i className="fas fa-question-circle ml-1"></i>
+                            </Tooltip>
+                        </Label>
                         <div id="backup">
                             {window.user_detail.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
                                 <div className="text-center">
-                                    <Link to="/account" className="btn btn-success btn-thicc">Upgrade Plan To Restore</Link>
+                                    <Button className="purple-btn" onClick={this.props.toggleUpgrade}>
+                                        Upgrade Plan to Restore
+                                    </Button>
                                 </div>
                             </div>}
                             <Table>

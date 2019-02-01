@@ -255,7 +255,7 @@ class Editor extends Component {
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} products={this.props.products}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':

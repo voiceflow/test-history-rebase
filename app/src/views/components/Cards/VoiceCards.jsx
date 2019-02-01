@@ -50,14 +50,14 @@ class VoiceCards extends Component {
                       <i className="far fa-ellipsis-h" />
                     </DropdownToggle>
                     <DropdownMenu right>
-                      <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onDelete(this.props.id, this.props.name)}}>
-                        {this.props.deleteLabel}
-                      </DropdownItem>
                       {this.props.copyLabel &&
                         <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onCopy(this.props.id)}}>
                           {this.props.copyLabel}
                         </DropdownItem>
                       }
+                      <DropdownItem onClick={(e) => { e.stopPropagation(); this.props.onDelete(this.props.id, this.props.name) }}>
+                        {this.props.deleteLabel}
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </div>

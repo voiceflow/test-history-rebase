@@ -352,24 +352,18 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           }
         } else if (node.extras.type === 'stream') {
           options.interfaces.add('AUDIO_PLAYER')
-          let stop = getLink(node.ports.filter(a => a.label === 'stop/pause')[0].links[0]);
 
-          if (node.extras.player) {
-            story.lines[node.id] = {
-              loop: node.extras.loop,
-              play: node.extras.audio,
-              nextId: stop,
-              PAUSE_ID: node.id,
-              NEXT: getLink(node.ports.filter(a => a.label === 'next')[0].links[0]),
-              PREVIOUS: getLink(node.ports.filter(a => a.label === 'previous')[0].links[0]),
-              // SHUFFLE: links[node.ports.filter(a => a.label === 'shuffle')[0].links[0]]
-            };
-          } else {
-            story.lines[node.id] = {
-              loop: node.extras.loop,
-              play: node.extras.audio,
-              nextId: stop
-            };
+          let NEXT = node.ports.find(a => a.label === 'next')
+          let PREVIOUS = node.ports.find(a => a.label === 'previous')
+          let PAUSE = node.extras.custom_pause && node.ports.find(a => (a.label === 'stop/pause' || a.label === 'pause'))
+
+          story.lines[node.id] = {
+            loop: node.extras.loop,
+            play: node.extras.audio,
+            nextId: PAUSE ? getLink(PAUSE.links[0]) : null,
+            PAUSE_ID: node.id,
+            NEXT: NEXT ? getLink(NEXT.links[0]) : null,
+            PREVIOUS: PREVIOUS ? getLink(PREVIOUS.links[0]) : null
           }
         } else if (node.extras.type === 'multiline' || node.extras.type === 'line' || node.extras.type === 'audio' || node.extras.type === 'combine') {
           let nextLink;
@@ -742,35 +736,44 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
           }
         } else if (node.extras.type === 'permission') {
+
           let nextLink = null
           for (var j = 0; j < node.ports.length; j++) {
             if (!node.ports[j].in) {
               [nextLink] = node.ports[j].links;
             }
           }
-
-          let permission_card = true
-          if(node.extras.custom){
-            if(Array.isArray(node.extras.permissions) && node.extras.permissions.length !== 0){
-              permission_card = []
-              node.extras.permissions.forEach(permission => {
-                options.permissions.add(permission),
-                permission_card.push(permission)
-              })
-            }
-          }
-
+          
           // Permission Card
-          story.lines[node.id] = {
-            permission_card: permission_card,
-            nextId: getLink(nextLink)
+          story.lines[node.id] = {nextId: getLink(nextLink)}
+
+          if(node.extras.a_l){
+            story.lines[node.id].link_account = true
+          }else{
+            let permission_card = true
+            if(node.extras.custom && Array.isArray(node.extras.permissions)){
+              let permissions_array = node.extras.permissions.filter(p => !!p.trim())
+              if(permissions_array.length !== 0){
+                permission_card = []
+                permissions_array.forEach(permission => {
+                  if(!permission.startsWith('UNOFFICIAL')){
+                    options.permissions.add(permission)
+                  }
+                  permission_card.push(permission)
+                })
+              }
+            }
+            story.lines[node.id].permission_card = permission_card
           }
         } else if (node.extras.type === 'permissions') {
+          // THIS IS THE USER INFO BLOCK
           // Email/Name/Phone Permission Requests
           const permissions = node.extras.permissions ? node.extras.permissions : []
           permissions.forEach(permission => {
-            if(permission && permission.selected && permission.selected.value){
-              options.permissions.add(permission.selected.value)
+            if(permission && permission.selected && permission.selected.value.trim()){
+              if(!permission.selected.value.startsWith('UNOFFICIAL')){
+                options.permissions.add(permission.selected.value)
+              }
             }
           })
 
@@ -784,11 +787,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             code: node.extras.code,
             success_id: getLink(node.ports.filter(a => a.in === false && a.label !== 'fail' && a.label !== 'declined')[0].links[0]),
             fail_id: getLink(node.ports.filter(a => a.in === false && a.label === 'fail')[0].links[0])
-          }
-        } else if (node.extras.type === 'link_account') {
-          story.lines[node.id] = {
-            link_account: true,
-            nextId: getLink(node.ports.filter(a => a.in === false)[0].links[0])
           }
         } else if (node.extras.type === 'module') {
 

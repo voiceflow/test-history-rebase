@@ -123,7 +123,7 @@ class Products extends Component {
                         <div className="px-4 mx-3 mb-5 pt-3">
                         <div className="products-container position-relative">
                         <div className="space-between w-100 px-3">
-                            <h3 className="text-muted">Products</h3>
+                            <h5 className="text-muted mb-0">Products</h5>
                             <Link to={`/business/${this.props.skill_id}/product/new`} className="no-underline btn purple-btn">
                                 New Product
                             </Link>

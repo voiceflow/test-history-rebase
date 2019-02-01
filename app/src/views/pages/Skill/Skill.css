@@ -565,3 +565,7 @@ textarea::placeholder {
 .shortcut-desc {
   font-weight: bold
 }
+
+.publish-label {
+  margin-top: -2px;
+}

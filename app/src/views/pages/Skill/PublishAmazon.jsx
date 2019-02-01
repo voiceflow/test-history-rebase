@@ -748,9 +748,7 @@ class Skill extends Component {
 
                 <div className='subheader-page-container'>
                 <div>
-                    <div className='container pt-5'>
-                    <h5 className="text-muted">Publish to Alexa</h5>
-                    <hr/>
+                    <div className='container pt-3'>
                     {this.state.live ?
                         <div className="alert alert-success mb-4" role="alert">
                             <div className="d-flex justify-content-between align-items-center">
@@ -1005,12 +1003,7 @@ class Skill extends Component {
                             </div>
                         </div>
                       </Form>
-                      <hr/>
-                      <div className="space-between">
-                            <span className="text-muted">
-                                <span className="text-secondary">{this.state.name}</span>{' '}
-                                <small> / created {moment(this.state.created).fromNow()}</small>
-                            </span>
+                      <div className="text-center">
                             {disabled_stages.has(this.state.stage)?
                                 null:
                                     <button

@@ -63,7 +63,6 @@ body {
 .subheader-page-container{
     height: 100%;
     width: 100%;
-    padding-top: 85px;
 }
 .subheader-page-container>div{
     overflow-y: scroll;

@@ -266,12 +266,15 @@ class CheckoutForm extends React.Component {
       state: '',
       zip: '',
       stage: 0,
-      error: null
+      error: null,
+      promo: window.user_detail.id === 2995 ? '' : null,
+      promo_invalid: 0
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.renderStage = this.renderStage.bind(this)
+    this.promoChange = this.promoChange.bind(this)
   }
 
   handleChange = event => {
@@ -298,10 +301,14 @@ class CheckoutForm extends React.Component {
       }
     }}).then(({source}) => {
       this.setState({stage: 2})
-      axios.post('/customer/subscription', {
+      let body = {
         plan: this.props.selected,
         source: source,
-      })
+      }
+      if(typeof this.state.promo === 'string' && this.state.promo.length === 12 && !this.promo_invalid){
+        body.promo = this.state.promo
+      }
+      axios.post('/customer/subscription', body)
       .then(res => {
         this.setState({stage: 3})
         let pollCount = 0
@@ -324,7 +331,7 @@ class CheckoutForm extends React.Component {
                 error: 'Payment is deferred - You will receieve an email and will be updated when the charge comes through'
               })
             }
-          });
+          })
         }
         pollForSourceStatus()
       })
@@ -379,13 +386,44 @@ class CheckoutForm extends React.Component {
           return null
       }
 
-      return <div className="super-center h-100">
+      return <div className="super-center" style={{minHeight: 'inherit'}}>
         <div className="text-center">
           <h5 className="pb-3">{status}</h5>
           <h1><span className="loader"/></h1>
         </div>
       </div>
     }
+  }
+
+  promoChange(e){
+    let invalid = 1
+    let value = e.target.value
+    if(value.length === 12){
+      invalid = 2
+      axios.get(`/customer/promo/${value}`)
+      .then(success => {
+        let data = success.data
+        this.props.switchPlan(data.real_plan)
+        this.setState({
+          price: data.price,
+          period: data.period,
+          promo_invalid: 0
+        })
+      })
+      .catch(err => {
+        this.setState({
+          promo_invalid: 1,
+          price: undefined,
+          period: undefined
+        })
+      })
+    }
+    this.setState({
+      promo: value,
+      promo_invalid: invalid,
+      price: undefined,
+      period: undefined
+    })
   }
 
   render() {
@@ -405,10 +443,17 @@ class CheckoutForm extends React.Component {
         <form onSubmit={this.handleSubmit} className={this.state.stage === 0 ? '' : 'd-none'}>
             <div className="price">
                 <span className="text-pricing">
-                  ${this.props.plan.price}
-                </span>/mo
+                  ${this.state.price || this.props.plan.price}
+                </span>/{this.state.period || 'mo'}
               </div>
             <div>
+              {this.state.promo !== null && <React.Fragment>
+                <label>
+                  Promotional Code
+                </label>
+                <Input name="promo" onChange={this.promoChange} value={this.state.promo} placeholder="XXXXXXXXXXXX" maxLength={12} className={this.state.promo_invalid ? 'is-invalid' : ''}/>
+                {!!this.state.promo_invalid && <div className="invalid-feedback">{this.state.promo_invalid===2 ? 'Checking Promo Code...' : 'Invalid Promotional Code'}</div>}
+              </React.Fragment>}
               <label>
                 Billing Information
               </label>

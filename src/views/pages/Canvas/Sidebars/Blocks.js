@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
 import ModuleItem from './components/ModuleItem';
+import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections} from './../Blocks'
@@ -52,7 +53,7 @@ class Blocks extends PureComponent {
         this.setState(s)
         this.forceUpdate()
     }
-    
+
     render() {
         let block_content;
 
@@ -74,9 +75,9 @@ class Blocks extends PureComponent {
                                 <div className="premium-block">
                                     <div>
                                         <span>Upgrade to access these premium features</span>
-                                        <Button className="purple-btn mt-3" onClick={this.props.toggleUpgrade}>
+                                        <Link className="purple-btn mt-3 d-block" to='/account'>
                                             Upgrade
-                                        </Button>
+                                        </Link>
                                     </div>
                                 </div>
                             : null}

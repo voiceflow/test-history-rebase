@@ -50,11 +50,21 @@ const options = [
 class UpgradeModal extends Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            selected_plan: 1
+        }
+
+        this.switchPlan = this.switchPlan.bind(this)
         this.renderDescription = this.renderDescription.bind(this)
     }
 
+    switchPlan(plan) {
+        if(this.state.selected_plan !== plan) this.setState({selected_plan: plan})
+    }
+
     renderDescription() {
-        let option = options.find(o => o.plan === this.props.selected_plan)
+        let option = options.find(o => o.plan === this.state.selected_plan)
         if (option) {
             return <div>
                 {option.features.map((feature, i) => <div className="feature-item" key={i}><img src="/icon/checkmark.svg" width={25} className="mr-3" alt="check"/>{feature}</div>)}
@@ -63,41 +73,37 @@ class UpgradeModal extends Component {
         return null
     }
 
-  render() {
-    return <Modal isOpen={this.props.upgrade_modal} toggle={this.props.toggle} size="xl">
-        <ModalHeader toggle={this.props.toggle}>Upgrade Account</ModalHeader>
-        <ModalBody>
-            <Row className="py-md-4">
-            <Col sm="3">
-                <span className="text-muted">Plan</span>
-                {options.map((option, i) => {
-                return <Button key={i}
-                    disabled={this.props.selected_plan === option.plan}
-                    color={this.props.selected_plan === option.plan ? undefined : "clear"}
-                    onClick={()=>{
-                        if(this.props.selected_plan !== option.plan ){
-                        this.props.switchPlan(option.plan)
-                        }
-                    }}
-                    block
-                    className="mt-2">
-                    {option.name}
-                    </Button>
-                })}
-            </Col>
-            <Col sm="4" className="border-left">
-                <span className="text-muted">Description</span>
-                {this.renderDescription()}
-            </Col>
-            <Col sm="5" className="border-left">
-                <div className="text-muted">Payment</div>
-                <Elements>
-                <CheckoutForm user={this.props.user} plan={GET_STATUS(this.props.selected_plan)} selected={this.props.selected_plan} logout={this.props.logout}/>
-                </Elements>
-            </Col>
-            </Row>
-        </ModalBody>
-    </Modal>
+    render() {
+        return <Modal isOpen={this.props.upgrade_modal} toggle={this.props.toggle} size="xl">
+            <ModalHeader toggle={this.props.toggle}>Upgrade Account</ModalHeader>
+            <ModalBody>
+                <Row className="py-md-4">
+                <Col sm="3">
+                    <span className="text-muted">Plan</span>
+                    {options.map((option, i) => {
+                    return <Button key={i}
+                        disabled={this.state.selected_plan === option.plan}
+                        color={this.state.selected_plan === option.plan ? undefined : "clear"}
+                        onClick={()=>{this.switchPlan(option.plan)}}
+                        block
+                        className="mt-2">
+                        {option.name}
+                        </Button>
+                    })}
+                </Col>
+                <Col sm="4" className="border-left">
+                    <span className="text-muted">Description</span>
+                    {this.renderDescription()}
+                </Col>
+                <Col sm="5" className="border-left">
+                    <div className="text-muted">Payment</div>
+                    <Elements>
+                    <CheckoutForm user={this.props.user} plan={GET_STATUS(this.state.selected_plan)} selected={this.state.selected_plan} logout={this.props.logout} switchPlan={this.switchPlan}/>
+                    </Elements>
+                </Col>
+                </Row>
+            </ModalBody>
+        </Modal>
   }
 }
 

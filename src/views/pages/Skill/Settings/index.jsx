@@ -40,8 +40,8 @@ class Settings extends Component {
     }
 
     render() {
-        return <div class="settings" className="pt-4">
-            <div className="nav-bar-top">
+        return <div className="settings pt-4">
+            <div className="nav-bar-top mb-4">
                 <ButtonGroup className="toggle-group mb-2 toggle-group-settings">
                     {TABS.map(tab => {
                         return <Button

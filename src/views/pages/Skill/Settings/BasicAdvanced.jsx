@@ -193,7 +193,7 @@ class BasicAdvancedSettings extends Component{
             case 'advanced':
                 // ADVANCED SETTINGS
                 return <React.Fragment>
-                    <div className="settings-content clearfix mt-4">
+                    <div className="settings-content clearfix">
                       <FormGroup>
                         <Label>Error Prompt</Label>
                         <div className="helper-text mb-2">

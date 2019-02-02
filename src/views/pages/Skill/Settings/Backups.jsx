@@ -98,9 +98,9 @@ class BackupSettings extends Component{
                             {window.user_detail.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
                                 <div className="text-center">
-                                    <Button className="purple-btn" onClick={this.props.toggleUpgrade}>
+                                    <Link className="purple-btn" to='/account'>
                                         Upgrade Plan to Restore
-                                    </Button>
+                                    </Link>
                                 </div>
                             </div>}
                             <Table>

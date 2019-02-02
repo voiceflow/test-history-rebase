@@ -27,7 +27,10 @@
 }
 
 .icon-image.small-icon>.image-box {
-  padding: 50px;
+  padding: 10px;
+  height: 150px;
+  width: 150px;
+  margin-left: 20px;
 }
 
 .icon-image.large-icon>.image-box {

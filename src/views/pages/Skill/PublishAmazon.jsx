@@ -12,7 +12,6 @@ import MUFormGroup from '@material-ui/core/FormGroup'
 import Paper from '@material-ui/core/Paper'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Textarea from 'react-textarea-autosize'
-import moment from 'moment'
 import Image from '../../components/Uploads/Image'
 import Multiple from '../../components/Forms/Multiple'
 import ErrorModal from '../../components/Modals/ErrorModal'
@@ -78,7 +77,7 @@ class Skill extends Component {
         this.checkVendor = this.checkVendor.bind(this);
         this.onCertify = this.onCertify.bind(this);
         this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this);
-        this.transferIcon = this.transferIcon.bind(this)
+        // this.transferIcon = this.transferIcon.bind(this)
         this.privacyTop = React.createRef();
     }
 
@@ -465,13 +464,13 @@ class Skill extends Component {
         })
     }
 
-    transferIcon(){
-        if(this.state.large_icon){
-            this.setState({
-                small_icon: this.state.large_icon
-            })
-        }
-    }
+    // transferIcon(){
+    //     if(this.state.large_icon){
+    //         this.setState({
+    //             small_icon: this.state.large_icon
+    //         })
+    //     }
+    // }
 
     render() {
         // Success Screen
@@ -807,16 +806,13 @@ class Skill extends Component {
                                     <div className="col-9 d-flex">
                                         <div>
                                             <Image
-                                                className='icon-image large-icon text-center'
+                                                className='icon-image large-icon text-center mr-xl-5 mr-4'
                                                 isDisabled={disabled_stages.has(this.state.stage)}
                                                 path='/large_icon'
                                                 image={this.state.large_icon}
                                                 update={(url) => this.setState({large_icon: url})}
                                                 title='Large Icon *'/>
                                         </div>
-
-                                        <Button className="goback-btn goforward-btn mt-100 ml-4 mr-4" onClick={this.transferIcon} disabled={!this.state.large_icon}/>
-
                                         <div>
                                             <Image
                                                 className='icon-image small-icon text-center'

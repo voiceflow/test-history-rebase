@@ -17,7 +17,7 @@ class IconsForm extends Component {
                       update={this.props.handleChange('small_icon')}
                     />
               </div>
-              <div className="pl-3">
+              <div className="pl-4">
                   <label className="mt-0 text-center"><b>Large icon</b> *</label>
                   <Image
                       className='icon-image large-icon'

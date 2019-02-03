@@ -7,7 +7,7 @@ import Email from './Email'
 import Emails from './Emails'
 import Home from './Home'
 import Products from './Products/Products';
-import EditProduct from './Products/EditProduct.js';
+import EditProduct from './Products/EditProduct';
 import { Button } from 'reactstrap'
 
 const PAID_FEATURES = ['In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']

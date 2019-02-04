@@ -12,7 +12,7 @@ import ConfirmModal from './../../components/Modals/ConfirmModal'
 import WarningModal from './../../components/Modals/WarningModal'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
-import {Alert, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {Alert, Input} from 'reactstrap'
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
@@ -268,57 +268,26 @@ class DashBoard extends Component {
 
         return (
             <div id="app">
-                <div className="subheader fixed-top">
-                    <div className="space-between w-100">
-                        <div className="w-50 d-flex ml-5" style={{alignItems: 'center'}}>
-                            <Link to="/dashboard" className="mr-5 mt-1">
-                                <img src={'/favicon.png'} alt='logo' 
-                                    height="30" width="40"
-                                />
-                            </Link>
-                            <div className="searchBar w-50">
-                                <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>
-                            </div>
-                        </div>
-                        <div className="subheader-right mr-1">
-                            <div className="align-icon">
-                                <Tooltip
-                                    distance={16}
-                                    title="Join the Voiceflow forum for help and updates"
-                                    position="bottom"
-                                    className="ml-4 mr-4"
-                                >
-                                <form action="https://forum.getvoiceflow.com">
-                                    <button className="nav-btn" type="sunbmit"><i className="fas fa-info-circle"/></button>
-                                </form>
-                                </Tooltip>
-                            </div>
-                            <Link to="/templates" className="no-underline ml-1">
-                                <button varient="contained" className="btn purple-btn">New Project</button>
-                            </Link>
-                            <UncontrolledDropdown nav inNavbar className="account-dropdown ml-3">
-                                <DropdownToggle className="account mr-1" nav tag="div">
-                                    <img src={'/user.svg'} alt="user" width="23"/>
-                                </DropdownToggle>
-                                <DropdownMenu right className="arrow arrow-right no-select">
-                                    <DropdownItem header>
-                                    {window.user_detail.email}
-                                    </DropdownItem>
-                                    <DropdownItem divider />
-                                    <Link className="dropdown-item" to="/account">
-                                    Settings
-                                    </Link>
-                                    { window.user_detail.admin >= 100 &&
-                                        <Link className="dropdown-item" to="/admin">
-                                        Admin
-                                        </Link>
-                                    }
-                                    <DropdownItem onClick={this.logout} tag="a" href="#">
-                                    Logout
-                                    </DropdownItem>
-                                </DropdownMenu>
-                                </UncontrolledDropdown>
-                        </div>
+                <div id="navbar-top-left">
+                    <div className="searchBar ml-4">
+                        <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>
+                    </div>
+                </div>
+                <div className="title-group no-select pr-2">
+                    <div className="subheader-right">
+                        <Tooltip
+                            distance={16}
+                            title="Join the Voiceflow forum for help and updates"
+                            position="bottom"
+                            className="ml-4 mr-4"
+                        >
+                        <form action="https://forum.getvoiceflow.com">
+                            <button className="nav-btn" type="submit"><i className="fas fa-info-circle"/></button>
+                        </form>
+                        </Tooltip>
+                        <Link to="/templates" className="no-underline ml-1">
+                            <button varient="contained" className="btn purple-btn">New Project</button>
+                        </Link>
                     </div>
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>

@@ -324,14 +324,16 @@ const publish = (req, res) => {
   }
 
   let skill_id = hashids.decode(req.params.skill_id)[0]
+  let platform = req.body.platform || 'alexa'
 
   // Copy the skill, making sure it points to the same canonical skill point
   const updateVersion = (new_skill_id_decoded, skill_id, new_skill_row) => {
     let version_query = `
-          INSERT INTO skill_versions (canonical_skill_id, version, skill_id)
-          SELECT canonical_skill_id, COALESCE(max(version) + 1, 1), ${new_skill_id_decoded}
+          INSERT INTO skill_versions (canonical_skill_id, version, skill_id, published_platform)
+          SELECT canonical_skill_id, COALESCE(max(version) + 1, 1), ${new_skill_id_decoded}, '${platform}'
           FROM skill_versions
           WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
+          AND published_platform = '${platform}'
           GROUP BY canonical_skill_id
           RETURNING *
           `

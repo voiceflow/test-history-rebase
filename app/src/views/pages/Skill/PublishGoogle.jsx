@@ -118,7 +118,7 @@ class GooglePublish extends Component {
 
       this.setState({ stage: 2 });
 
-      axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
+      axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`, { platform: 'google' })
         .then(res => {
           this.setState({ stage: 3 });
           let new_version_data = res.data

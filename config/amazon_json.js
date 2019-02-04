@@ -111,7 +111,7 @@ const interactionModel = (req, locale) => {
 	}
 
 	slots.forEach(slot => {
-		if (slot.type.value.toLowerCase() === 'custom' || !slot.type.value) {
+		if (!slot.type.value || slot.type.value.toLowerCase() === 'custom') {
 			const slot_name = formatName(slot.name)
 			const values = slot.inputs.map(input => {
 				return {

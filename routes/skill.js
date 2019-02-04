@@ -639,17 +639,21 @@ const checkVersions = (req, id, token, platform) => {
           let live_id
           try {
             // If so, we wanna know what version the live skill is pointing to rn
-            let request = await axios.request({
-              // url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/development/manifest`
-              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
-              method: 'GET',
-              headers: {
-                Authorization: token
-              }
-            })
-            // Delete the oldest version that isn't live
-            let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-            live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+            if (platform === 'alexa') {
+              let request = await axios.request({
+                // url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/development/manifest`
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
+                method: 'GET',
+                headers: {
+                  Authorization: token
+                }
+              })
+              // Delete the oldest version that isn't live
+              let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
+              live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+            } else if (platform === 'google') {
+
+            }
           } catch (err) {
             live_id = null
           }

@@ -78,7 +78,7 @@ div.nav-item{
 }
 
 #navbar  {
-	padding: 0rem 1rem;
+	padding: 0rem 25px;
 	-webkit-transition : background-color 800ms ease;
 	-moz-transition : background-color 800ms ease;
 	-o-transition : background-color 800ms ease;

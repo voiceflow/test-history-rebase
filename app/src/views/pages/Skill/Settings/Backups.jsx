@@ -66,7 +66,7 @@ class BackupSettings extends Component{
         }
 
         if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
-            return <div className="settings-content clearfix"><Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
+            return <div className="settings-content clearfix"><Alert color="warning" className="mb-0">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
         }
 
         return <React.Fragment>
@@ -98,7 +98,7 @@ class BackupSettings extends Component{
                             {window.user_detail.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
                                 <div className="text-center">
-                                    <Link className="purple-btn" to='/account'>
+                                    <Link className="purple-btn" to='/account/upgrade'>
                                         Upgrade Plan to Restore
                                     </Link>
                                 </div>

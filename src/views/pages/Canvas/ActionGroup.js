@@ -230,7 +230,7 @@ class ActionGroup extends PureComponent {
                 this.setState({stage: 6})
             }
         }
-        axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
+        axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
         .then(res => {
             let new_version_data = res.data
             this.setState({stage: 11}, () => {
@@ -288,7 +288,7 @@ class ActionGroup extends PureComponent {
 
         this.setState({ google_stage: 3 });
 
-        axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`)
+        axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`, { platform: 'google' })
         .then(res => {
             this.setState({ google_stage: 4 });
             let new_version_data = res.data
@@ -501,7 +501,6 @@ class ActionGroup extends PureComponent {
             <span className="modal-txt text-center">
                 You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
             </span>
-                <Alert className="w-75 mb-1 mt-3 text-center"><b>Open,</b> open {this.props.skill.inv_name}</Alert>
                 <div className="my-3">
                 <a href={`https://console.actions.google.com/project/${this.state.project_id}/simulator`}
                     className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">

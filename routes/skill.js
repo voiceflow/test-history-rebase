@@ -1191,7 +1191,7 @@ copyAllDisplays = (id, new_skill_id) => {
 exports.getSkillVersions = (req, res) => {
   let id = hashids.decode(req.params.id)[0]
   pool.query(`
-        SELECT skills.skill_id, created, version, diagram, canonical_skill_id, name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
+        SELECT skills.skill_id, created, version, published_platform, platform, diagram, canonical_skill_id, name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
         FROM skills 
         INNER JOIN skill_versions 
         ON skills.skill_id = skill_versions.skill_id 
@@ -1278,14 +1278,14 @@ exports.buildGoogleSkill = async (req, res) => {
 
     skill_info.skill_id = original_id
 
-    let gactions_creds
+    let dialogflow_creds
     try {
-      gactions_creds = JSON.parse(skill_info.gactions_token)
+      dialogflow_creds = JSON.parse(skill_info.dialogflow_token)
     } catch (e) {
       throw('Credentials not found')
     }
 
-    const main_client = new DialogflowClient(project_id, gactions_creds.private_key, gactions_creds.client_email)
+    const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 
     let agent = await main_client.getAgent()
     if (agent && agent.length > 0) {
@@ -1303,7 +1303,7 @@ exports.buildGoogleSkill = async (req, res) => {
     }
 
     locales.forEach(locale => {
-      updates.push(updateDialogflowPackage(gactions_creds, project_id, package, skill_info, locale))
+      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, package, skill_info, locale))
     })
     await Promise.all(updates)
     
@@ -1354,7 +1354,7 @@ exports.getGoogleSkill = async (req, res) => {
 
   sql = `
         SELECT
-            created, diagram, google_publish_info, gactions_token
+            created, diagram, google_publish_info, dialogflow_token
         FROM
             skills
         WHERE
@@ -1376,16 +1376,16 @@ exports.getGoogleSkill = async (req, res) => {
       let client_email
 
       let defaultLanguageCode, supportedLanguageCodes
-      if (data.rows[0].gactions_token) {
+      if (data.rows[0].dialogflow_token) {
         try {
-          let gactions_token = JSON.parse(data.rows[0].gactions_token)
-          project_id = gactions_token.project_id
-          private_key = gactions_token.private_key
-          client_email = gactions_token.client_email
+          let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
+          project_id = dialogflow_token.project_id
+          private_key = dialogflow_token.private_key
+          client_email = dialogflow_token.client_email
 
         } catch (e) {
           // JSON parse failed
-          console.trace('Parsing gactions_token failed', e)
+          console.trace('Parsing dialogflow_token failed', e)
         }
 
         const client = new DialogflowClient(project_id, private_key, client_email)

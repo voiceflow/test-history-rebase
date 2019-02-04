@@ -66,7 +66,7 @@ class BackupSettings extends Component{
         }
 
         if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
-            return <div className="settings-content clearfix"><Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
+            return <div className="settings-content clearfix"><Alert color="warning">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill</Alert></div>
         }
 
         return <React.Fragment>
@@ -88,7 +88,7 @@ class BackupSettings extends Component{
                         <Label>
                             Backups
                             <Tooltip
-                            html={<div style={{ width: 155 }}>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</div>}
+                            html={<div style={{ width: 155 }}>Restore your skill to previous versions<br/>Saved every time when you upload your skill</div>}
                             position="bottom"
                             >
                                 <i className="fas fa-question-circle ml-1"></i>
@@ -107,6 +107,7 @@ class BackupSettings extends Component{
                                 <thead>
                                     <tr>
                                         <th>Saved</th>
+                                        <th>Platform</th>
                                         <th>Preview</th>
                                         <th>Restore</th>
                                     </tr>
@@ -114,7 +115,8 @@ class BackupSettings extends Component{
                                 <tbody>
                                     {this.state.versions.map((version, i) => {
                                         return <tr key={i}>
-                                            <td>{moment(version.created).fromNow()}</td>
+                                            <td >{moment(version.created).fromNow()}</td>
+                                            <td className="text-center">{version.published_platform === 'google' ? <i className="fab fa-google"/> :  <i className="fab fa-amazon"/>}</td>
                                             <td>
                                                 <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
                                             </td>

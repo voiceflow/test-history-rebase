@@ -123,8 +123,10 @@ app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAcce
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
 
-app.get('/session/google/access_token/:skill_id', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
-app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleToken);
+app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
+app.get('/session/google/dialogflow_access_token/:skill_id', ensureLoggedIn(), Authentication.hasDialogflowToken);
+app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleAccessToken);
+app.post('/session/google/verify_dialogflow_token', ensureLoggedIn(), Authentication.verifyDialogflowToken);
 
 app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);

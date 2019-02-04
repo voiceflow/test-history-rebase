@@ -153,10 +153,14 @@ class GooglePublish extends Component {
 
   componentDidMount() {
     try {
-      AuthenticationService.googleAccessToken(this.state.skill_id).then(token => {
+      AuthenticationService.googleAccessToken().then(token => {
         this.setState({
           stage: token ? 2 : 0,
-          credentials: token ? true : false
+        });
+      });
+      AuthenticationService.dialogflowToken(this.state.skill_id).then(token => {
+        this.setState({
+          credentials: token ? true : false,
         });
       });
     } catch (e) {
@@ -282,7 +286,7 @@ class GooglePublish extends Component {
       reader.onload = async (event) => {
         const text = event.target.result
         try {
-          const res = await axios.post('/session/google/verify_token', {
+          const res = await axios.post('/session/google/verify_dialogflow_token', {
             token: text,
             skill_id: this.state.skill_id
           })
@@ -464,7 +468,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              {this.state.uploaded ?
+              {this.state.project_id ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on the Google Actions Console</span>

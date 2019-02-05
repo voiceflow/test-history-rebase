@@ -53,7 +53,7 @@ class BackupSettings extends Component{
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
             confirm: this.props.onSwapVersions,
-            params: [skill_id, canonical_skill_id, skill]
+            params: [skill_id, skill]
         })
     }
 

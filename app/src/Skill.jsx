@@ -155,8 +155,8 @@ class Skill extends Component {
         })
     }
 
-    onSwapVersions(skill_id, canonical_skill_id, skill){
-        axios.post(`/skill/${skill_id}/${canonical_skill_id}/restore`)
+    onSwapVersions(skill_id, skill){
+        axios.post(`/skill/${skill_id}/restore`)
         .then(res => {
             skill.skill_id = res.data.skill_id
             skill.diagram = res.data.diagram

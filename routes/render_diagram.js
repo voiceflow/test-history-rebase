@@ -319,6 +319,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             let new_choice = {
               mappings: []
             }
+
             if (choice.intent) {
 
               // Log that this intent has been used

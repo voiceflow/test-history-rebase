@@ -7,14 +7,11 @@ const {
 } = require('../../util')
 const {
   Package,
-  Agent,
-  Intent,
-  IntentEntry
+  Agent
 } = require('./Interfaces')
 const {
   BUILT_IN_EXAMPLES,
   WelcomeIntent,
-  WelcomeIntentEntries,
   FallbackIntent
 } = require('./Constants')
 
@@ -81,29 +78,32 @@ class DialogFlow {
 
       const inline_batch_intents = new_intents.map(intent => this._formatIntentForUpdate(intent, display_name_map[intent.name]))
 
-      // Handle the operation using the promise pattern.
-      const updateResp = await this.intentsClient.batchUpdateIntents({
-        parent: `projects/${this.projectId}/agent`,
-        intentBatchInline: {
-          intents: inline_batch_intents
-        },
-        languageCode: this.locale
-      })
+      if (inline_batch_intents && inline_batch_intents.length > 0) {
+        // Handle the operation using the promise pattern.
+        const updateResp = await this.intentsClient.batchUpdateIntents({
+          parent: `projects/${this.projectId}/agent`,
+          intentBatchInline: {
+            intents: inline_batch_intents
+          },
+          languageCode: this.locale
+        })
 
-      let operation = updateResp[0];
-      await operation.promise()
+        const operation = updateResp[0];
+        await operation.promise()
+      }
 
-      const deleteResp = await this.intentsClient.batchDeleteIntents({
-        parent: `projects/${this.projectId}/agent`,
-        intentBatchInline: {
-          intents: intents_to_delete
-        },
-        languageCode: this.locale
-      })
+      if (intents_to_delete && intents_to_delete.length > 0) {
+        const deleteResp = await this.intentsClient.batchDeleteIntents({
+          parent: `projects/${this.projectId}/agent`,
+          intentBatchInline: {
+            intents: intents_to_delete
+          },
+          languageCode: this.locale
+        })
 
-      operation = deleteResp[0];
-      await operation.promise()
-
+        const operation = deleteResp[0];
+        await operation.promise()
+      }
       return
     } catch (e) {
       console.error('Error uploading to dialogflow', e)
@@ -207,29 +207,32 @@ class DialogFlow {
 
       const inline_batch_slot = new_slots.map(slot => this._formatSlotForUpdate(slot, display_name_map[slot.displayName]))
 
-      // Handle the operation using the promise pattern.
-      const updateResp = await this.entitiesClient.batchUpdateEntityTypes({
-        parent: `projects/${this.projectId}/agent`,
-        entityTypeBatchInline: {
-          entityTypes: inline_batch_slot
-        },
-        languageCode: this.locale
-      })
+      if (inline_batch_slot && inline_batch_slot.length > 0) {
+        // Handle the operation using the promise pattern.
+        const updateResp = await this.entitiesClient.batchUpdateEntityTypes({
+          parent: `projects/${this.projectId}/agent`,
+          entityTypeBatchInline: {
+            entityTypes: inline_batch_slot
+          },
+          languageCode: this.locale
+        })
 
-      let operation = updateResp[0];
-      await operation.promise()
+        const operation = updateResp[0];
+        await operation.promise()
+      }
 
-      const deleteResp = await this.entitiesClient.batchDeleteEntityTypes({
-        parent: `projects/${this.projectId}/agent`,
-        entityTypeBatchInline: {
-          entityTypes: slots_to_delete
-        },
-        languageCode: this.locale
-      })
+      if (slots_to_delete && slots_to_delete.length > 0) {
+        const deleteResp = await this.entitiesClient.batchDeleteEntityTypes({
+          parent: `projects/${this.projectId}/agent`,
+          entityTypeBatchInline: {
+            entityTypes: slots_to_delete
+          },
+          languageCode: this.locale
+        })
 
-      operation = deleteResp[0];
-      await operation.promise()
-
+        const operation = deleteResp[0];
+        await operation.promise()
+      }
       return
     } catch (e) {
       console.error('Error uploading to dialogflow', e)
@@ -278,22 +281,6 @@ class DialogFlow {
     let operation = import_resp[0]
     try {
       await operation.promise()
-
-      let all_intents = await this.intentsClient.listIntents({
-        parent: `projects/${this.projectId}/agent`,
-        pageSize: 1000,
-        languageCode: this.locale
-      })
-      if (all_intents && all_intents.length > 0) {
-        all_intents = all_intents[0]
-      }
-
-      const dummy_intent = _.find(all_intents, {displayName: 'dummy_intent_vf_voiceflow'})
-      if (dummy_intent) {
-        await this.intentsClient.deleteIntent({
-          name: dummy_intent.name
-        })
-      }
     } catch (e) {
       console.error('Error uploading to dialogflow', e)
       throw (`Error uploading to dialogflow: ${e}`)

@@ -416,19 +416,6 @@ const hasDialogflowToken = (req, res) => {
 	})
 }
 
-const getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
-	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
-		if(err){
-			console.trace(err)
-			reject("Unable to Access Database");
-		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
-			resolve({token: data.rows[0].gactions_token})
-		} else {
-			reject('Google Auth Token not Found')
-		}
-	})
-})
-
 const verifyDialogflowToken = async (req, res) => {
 	let token = req.body.token
 	let skill_id = req.body.skill_id
@@ -817,6 +804,19 @@ const verifyGoogleAccessToken = async (req, res) => {
 	})
 }
 
+const _getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
+	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+		if(err){
+			console.trace(err)
+			reject("Unable to Access Database");
+		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
+			resolve(data.rows[0].gactions_token)
+		} else {
+			reject('Google Auth Token not Found')
+		}
+	})
+})
+
 module.exports = {
 	AccessToken: AccessToken,
 	hasAccessToken: hasAccessToken,
@@ -836,7 +836,7 @@ module.exports = {
 	verifyUser: verifyUser,
 	verifyGoogleAccessToken: verifyGoogleAccessToken,
 	hasGoogleAccessToken: hasGoogleAccessToken,
-	getGoogleAccessToken: getGoogleAccessToken,
 	hasDialogflowToken: hasDialogflowToken,
 	verifyDialogflowToken: verifyDialogflowToken,
+	_getGoogleAccessToken: _getGoogleAccessToken
 }

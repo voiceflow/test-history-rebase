@@ -9,7 +9,7 @@ const {
 } = require('./../services')
 const {
   AccessToken,
-  getGoogleAccessToken
+  _getGoogleAccessToken
 } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const {
@@ -1306,7 +1306,6 @@ exports.buildGoogleSkill = async (req, res) => {
       updates.push(updateDialogflowPackage(dialogflow_creds, project_id, package, skill_info, locale))
     })
     await Promise.all(updates)
-    
     publish_info.uploaded = true
 
     await new Promise((resolve, reject) => {
@@ -1413,7 +1412,7 @@ exports.getGoogleSkill = async (req, res) => {
       } else {
         // Sync up with google
         // Check Current google Status
-        const token = await getGoogleAccessToken(req.user.id)
+        const token = await _getGoogleAccessToken(req.user.id)
         if (token === null) {
           return res.send(skillResp);
         }

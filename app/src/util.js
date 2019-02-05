@@ -54,7 +54,6 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 		})
 	})
 
-	// key_set = [...key_set]
 	key_set = Array.from(key_set)
 
 	return key_set.map(key => {
@@ -76,6 +75,38 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 	})
 }
 
+const getSlotsForKeys = (keys, slots, platform='alexa') => {
+	let key_set = new Set()
+
+	keys.forEach(key_arr => {
+		key_arr.forEach(key => {
+			key_set.add(key)
+		})
+	})
+
+	key_set = Array.from(key_set)
+
+	return key_set.map(key => {
+		const slot = find(slots, {key: key})
+		let slot_type = slot.type.value
+		let formatted_type = slot.name
+
+		if (slot_type.toLowerCase() !== 'custom') {
+			formatted_type = slot.type.value
+			const built_in_slot = find(SLOT_TYPES, { label: slot_type })
+			if (built_in_slot && built_in_slot.type[platform]) {
+				formatted_type = built_in_slot.type[platform]
+			}
+		}
+
+		return {
+			name: slot.name,
+			type: formatted_type
+		}
+	})
+}
+
 exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
 exports.formatName = formatName
 exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat
+exports.getSlotsForKeys = getSlotsForKeys

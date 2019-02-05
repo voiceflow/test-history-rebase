@@ -514,7 +514,6 @@ class GooglePublish extends Component {
                         multiple={false}
                         disableClick={false}
                         maxSize={MAX_SIZE}
-                        accept={".json"}
                         onDrop={this.onDrop}
                       >
                         <div>

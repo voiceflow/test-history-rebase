@@ -422,14 +422,19 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
     const data = await pool.query('SELECT google_versions FROM skill_versions WHERE skill_id = $1', [skill_id])
 
     let existing_google_versions = data.rows[0].google_versions
-    let highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
-      const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
-      const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
+    let highest_existing_version = 0
 
-      return aVersion - bVersion
-    })
-
-    highest_existing_version = +highest_existing_version[highest_existing_version.length - 1].match(/.-\[([^\[\]]+)\]\S+/)[1]
+    if (existing_google_versions) {
+      highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
+        const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
+        const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
+  
+        return aVersion - bVersion
+      })
+      highest_existing_version = +highest_existing_version[highest_existing_version.length - 1].match(/.-\[([^\[\]]+)\]\S+/)[1]
+    } else {
+      existing_google_versions = {}
+    }
   
     Object.keys(all_google_versions).forEach(version => {
       const version_number = +version.match(/.-\[([^\[\]]+)\]\S+/)[1]

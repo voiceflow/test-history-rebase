@@ -17,7 +17,7 @@ import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup, Alert } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
-import {convertDiagram, getSlotsForKeys} from './util'
+import {convertDiagram} from './util'
 import Spotlight from './Spotlight'
 import FlowBar from './FlowBar'
 import DefaultModal from 'views/components/Modals/DefaultModal'
@@ -33,7 +33,7 @@ import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
 import { getIntentSlots } from 'Helper'
 import Linter from './linter'
-import { getUtterancesWithSlotNames } from 'util'
+import { getUtterancesWithSlotNames, getSlotsForKeys } from '../../../util'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
@@ -1121,7 +1121,7 @@ class Canvas extends Component {
                 if (!intent.built_in) {
                     samples = getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
                 }
-                const _slots = getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots)
+                const _slots = getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots, this.state.skill.platform)
 
                 nlc.registerIntent({
                     intent: intent.name,

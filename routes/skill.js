@@ -1013,19 +1013,19 @@ exports.certifySkill = (req, res) => {
                   );
                 })
                 .catch(err => {
-                  console.trace(err);
+                  logAxiosError(err, 'CERTIFY SKILL')
                   res.status(500).send(err && err.response && err.response.data);
                 });
             }
           })
           .catch(err => {
-            console.log(err.response.status);
+            logAxiosError(err, 'CERTIFY SKILL MANIFEST')
             res.status(500).send(err.response.data);
           });
       }, 10000);
     }
     getSkillStatus(0);
-  });
+  })
 }
 
 exports.withdrawSkill = (req, res) => {
@@ -1070,7 +1070,7 @@ exports.withdrawSkill = (req, res) => {
         );
       })
       .catch(err => {
-        console.log(err.response.status);
+        logAxiosError(err, 'WITHDRAW SKILL')
         res.status(500).send(err.response.data);
       });
   });

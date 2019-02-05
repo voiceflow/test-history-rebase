@@ -114,7 +114,7 @@ exports.raw_upload = (req, res) => {
     }
 }
 
-exports.concat = (req, res) => {
+exports.concat = async (req, res) => {
     if(!Array.isArray(req.body.lines)){
         res.sendStatus(400);
         return;
@@ -126,35 +126,29 @@ exports.concat = (req, res) => {
     let files = [];
     let count = 0;
 
-    let lines = req.body.lines;
-    lines.forEach(line => {
+    let lines = req.body.lines
+    for(line of lines){
         let key = path.basename(line);
         let file = fs.createWriteStream(path.join(dir, key));
         files.push(path.join(dir, key));
         let params = {
             Bucket: 'com.getstoryflow.audio.production',
             Key: key
-        };
-        s3.getObject(params, (err, data) => {
-            if (err) {
-                console.log(err);
-                res.sendStatus(500);
-                count++;
-                if (count === lines.length) {
-                    uploadConcatLines(dir, files, res);
-                }
-                return;
-            }else{
-                file.write(data.Body);
-                file.end();
-                count++;
-                if (count === lines.length) {
-                    uploadConcatLines(dir, files, res);
-                }
+        }
+        try{
+            let data = await s3.getObject(params).promise()
+            file.write(data.Body);
+            file.end();
+            count++;
+            if (count === lines.length) {
+                uploadConcatLines(dir, files, res);
             }
-        });
-    });
-};
+        }catch(err){
+            console.error(err)
+            return res.sendStatus(500)
+        }
+    }
+}
 
 const uploadConcatLines = (dir, files, res) => {
     let command = ffmpeg();

@@ -314,7 +314,6 @@ class TestModal extends React.Component {
             })
           }
         }
-
         data.detected_intents = detected_intents
       } catch (err) {
         // NLC No Match

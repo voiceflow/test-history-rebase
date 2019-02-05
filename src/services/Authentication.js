@@ -198,5 +198,5 @@ export default {
 		.catch(() => {
 			reject('Invalid access token, please try again');
 		});
-	})	
+	})
 }

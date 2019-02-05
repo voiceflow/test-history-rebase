@@ -83,29 +83,6 @@ const convertDiagram = (diagram, diagrams) => {
     return diagram
 }
 
-const getSlotsForKeys = (keys, slots) => {
-	let key_set = new Set()
-
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
-
-	key_set = [...key_set]
-
-	return key_set.map(key => {
-        const slot = find(slots, {key: key})
-        let type = slot.type.value.toLowerCase() !== 'custom' ? slot.type.value : slot.name
-
-		return {
-			name: slot.name,
-			type: type
-		}
-	})
-}
-
 export {
-    convertDiagram,
-    getSlotsForKeys
+    convertDiagram
 }

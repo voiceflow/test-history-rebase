@@ -27,7 +27,10 @@
 }
 
 .icon-image.small-icon>.image-box {
-  padding: 50px;
+  padding: 10px;
+  height: 150px;
+  width: 150px;
+  margin-left: 20px;
 }
 
 .icon-image.large-icon>.image-box {
@@ -603,4 +606,11 @@ textarea::placeholder {
 
 .publish-label {
   margin-top: -2px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .icon-image{
+    height: 160px;
+    width: 160px
+  }
 }

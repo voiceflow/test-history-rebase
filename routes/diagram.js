@@ -444,16 +444,16 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       existing_google_versions[version] = all_google_versions[version]
     })
 
-    let highest_new_version = Object.keys(google_versions_to_update).sort((a, b) => {
-      const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
-      const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
+    // let highest_new_version = Object.keys(google_versions_to_update).sort((a, b) => {
+    //   const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
+    //   const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
 
-      return aVersion - bVersion
-    })
+    //   return aVersion - bVersion
+    // })
 
-    highest_new_version = highest_new_version[highest_new_version.length - 1]
+    // highest_new_version = highest_new_version[highest_new_version.length - 1]
 
-    if (highest_new_version) await pool.query('UPDATE skill_versions SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
+    if (existing_google_versions) await pool.query('UPDATE skill_versions SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
   } catch (e) {
     await new Promise((resolve, reject) => {
       del([dir]).then(resolve()).catch(e => reject(e))

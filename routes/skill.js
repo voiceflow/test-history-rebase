@@ -628,7 +628,7 @@ const checkVersions = (req, id, token, platform) => {
   pool.query(`
     SELECT * FROM skill_versions INNER JOIN skills ON skill_versions.skill_id = skills.skill_id 
     WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-      AND version IS NOT NULL AND published_platform = $2 ORDER BY version ASC`,
+    AND (published_platform = $2 OR version is NULL) ORDER BY version ASC`,
     [id, platform],
     async (err, data) => {
       if (err) {
@@ -636,12 +636,11 @@ const checkVersions = (req, id, token, platform) => {
       } else {
         // Check whether user has more versions than they should
         if ((req.user.admin >= 100 && data.rows.length > 3) || data.rows.length > 5) {
-          let live_id
+          let live_ids = []
           try {
             // If so, we wanna know what version the live skill is pointing to rn
             if (platform === 'alexa') {
               let request = await axios.request({
-                // url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/development/manifest`
                 url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
                 method: 'GET',
                 headers: {
@@ -650,25 +649,42 @@ const checkVersions = (req, id, token, platform) => {
               })
               // Delete the oldest version that isn't live
               let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-              live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
+              live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
             } else if (platform === 'google') {
               // Get the latest list of versions from skill_versions table
               // Compare with each skill's attached versions
               // If no matches, then it is ok to delete
+              let current_skill
+              for (const row of data.rows) {
+                if (!row.version) {
+                  current_skill = row
+                  break
+                }
+              }
+              const all_google_versions = current_skill.google_versions
+              for (const row of data.rows) {
+                if (row.version && row.google_versions) {
+                  const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
+                  if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
+                    live_ids.push(row.skill_id)
+                  }
+                }
+              }
             }
           } catch (err) {
-            live_id = null
+            console.error(err)
+            live_ids = []
           }
 
           let i = 0
-          let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 3 : data.rows.length - 5
+          let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 4 : data.rows.length - 6
           let deletion_promises = []
-          if (live_id) {
-            num_versions_to_delete -= 1
+          if (live_ids) {
+            num_versions_to_delete -= live_ids.length
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (data.rows[i].skill_id != live_id) {
+            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].version) {
               deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, false))
               num_versions_to_delete -= 1
             }
@@ -1258,7 +1274,6 @@ exports.buildGoogleSkill = async (req, res) => {
           resolve(r)
         }
       })
-
     })
 
     const publish_info = skill_info.google_publish_info
@@ -1286,6 +1301,8 @@ exports.buildGoogleSkill = async (req, res) => {
     } catch (e) {
       throw('Credentials not found')
     }
+
+    checkVersions(req, id, '', 'google')
 
     const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 

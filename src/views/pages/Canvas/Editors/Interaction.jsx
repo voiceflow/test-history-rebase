@@ -93,6 +93,8 @@ class Interaction extends Component {
         const node = this.state.node
         const extras = node.extras[this.props.platform]
 
+        console.log("CHOICES", node.extras, this.props.platform)
+
         switch(this.state.tab){
             case 'choices':
                 return <React.Fragment>

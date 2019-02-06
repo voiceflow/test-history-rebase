@@ -551,10 +551,10 @@ class ActionGroup extends PureComponent {
                         position="bottom"
                     >
                     <div className="switch switch-blue mr-4">
-                        <input onClick={() => {if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} name="view2" value="week2" id="week2" />
-                        <label className="switch-label switch-label-off mt-2">Google</label>
-                        <input onClick={() => {if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} name="view2" value="month2" id="month2"/>
-                        <label className="switch-label switch-label-on mt-2">Alexa</label>
+                        <input onClick={() => {if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle"/>
+                        <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
+                        <input onClick={() => {if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle"/>
+                        <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
                         <span className="switch-selection"></span>
                     </div>
                     </Tooltip>

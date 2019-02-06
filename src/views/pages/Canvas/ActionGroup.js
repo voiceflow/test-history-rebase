@@ -543,14 +543,14 @@ class ActionGroup extends PureComponent {
                     </div>
                 </ModalBody>
             </Modal>
-            <div className="title-group no-select w-100">
-                <div className="d-flex justify-content-center flex-fill toggle-div">
+            <div className="title-group no-select">
+                <div className="d-flex justify-content-center flex-fill">
                     <Tooltip
                         distance={16}
                         title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
                         position="bottom"
                     >
-                    <div className="switch switch-blue ">
+                    <div className="switch switch-blue mr-4">
                         <input onClick={() => {if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} name="view2" value="week2" id="week2" />
                         <label for="week2" className="switch-label switch-label-off">Google</label>
                         <input onClick={() => {if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} name="view2" value="month2" id="month2"/>
@@ -559,11 +559,10 @@ class ActionGroup extends PureComponent {
                     </div>
                     </Tooltip>
                 </div>
-                <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="align-icon">
                     <Tooltip
                         distance={16}
-                        title="Save"
+                        title={this.props.lastSave}
                         position="bottom"
                         className="mr-4"
                     >

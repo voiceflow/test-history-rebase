@@ -1750,7 +1750,7 @@ class Canvas extends Component {
                     setHelp={(help) => this.setState({help: help})}
                 />
                 { !this.props.preview ? <ActionGroup
-                        lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
+                        lastSave={(this.state.last_save ? "Last saved " + moment(this.state.last_save).fromNow() : "Save")}
                         skill={this.state.skill}
                         preview={this.props.preview}
                         title={this.state.diagram_name}

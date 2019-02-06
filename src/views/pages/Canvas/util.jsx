@@ -1,5 +1,4 @@
 // Convert older deprecated blocks to newer ones
-import { find } from 'lodash'
 
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {

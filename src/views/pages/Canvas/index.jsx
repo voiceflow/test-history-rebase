@@ -956,7 +956,6 @@ class Canvas extends Component {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
-        const skill = this.state.skill
 
         let update = false
         for (let key in nodes) {

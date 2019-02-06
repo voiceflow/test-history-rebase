@@ -109,7 +109,7 @@ class NavBar extends Component {
     return (
         <div>
           <Navbar dark expand="md" className={"fixed-top " + page_name} id="navbar">
-            <Link to="/dashboard" className="mx-2 navbar-brand">
+            <Link to="/dashboard" className="mx-2">
               <img className='voiceflow-logo' src={'/favicon.png'} alt='logo' 
                 height="30" width="40"
               />
@@ -147,7 +147,7 @@ class NavBar extends Component {
                     </DropdownItem>
                     <DropdownItem divider />
                     <Link className="dropdown-item" to="/account">
-                      Settings
+                      Account
                     </Link>
                     { window.user_detail.admin >= 100 &&
                         <Link className="dropdown-item" to="/admin">

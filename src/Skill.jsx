@@ -11,7 +11,6 @@ import ErrorModal from './views/components/Modals/ErrorModal'
 import ConfirmModal from './views/components/Modals/ConfirmModal'
 import { Link } from 'react-router-dom';
 import {Alert} from 'reactstrap'
-import UpgradeModal from './views/components/Modals/UpgradeModal'
 import AuthenticationService from './services/Authentication'
 
 class Skill extends Component {
@@ -29,7 +28,8 @@ class Skill extends Component {
             time_mounted: null,
             linter: [],
             upgrade_modal: false,
-            selected_plan: 1
+            selected_plan: 1,
+            time_mounted: null
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -37,7 +37,6 @@ class Skill extends Component {
         this.onConfirm = this.onConfirm.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
         this.onSwapVersions = this.onSwapVersions.bind(this)
-        this.toggleUpgrade = this.toggleUpgrade.bind(this)
         this.logout = this.logout.bind(this)
     }
 
@@ -163,8 +162,8 @@ class Skill extends Component {
         })
     }
 
-    onSwapVersions(skill_id, canonical_skill_id, skill){
-        axios.post(`/skill/${skill_id}/${canonical_skill_id}/restore`)
+    onSwapVersions(skill_id, skill){
+        axios.post(`/skill/${skill_id}/restore`)
         .then(res => {
             skill.skill_id = res.data.skill_id
             skill.diagram = res.data.diagram
@@ -180,12 +179,6 @@ class Skill extends Component {
                 error: 'Unable to restore version'
             })
         })
-    }
-
-    toggleUpgrade() {
-        this.setState({
-            upgrade_modal: !this.state.upgrade_modal
-        });
     }
 
     logout(e) {
@@ -285,15 +278,6 @@ class Skill extends Component {
             </div>
             <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
             <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
-            <UpgradeModal
-                upgrade_modal={this.state.upgrade_modal}
-                toggle={this.toggleUpgrade}
-                selected_plan={this.state.selected_plan}
-                switchPlan={(plan) => this.setState({selected_plan: plan})}
-                user={this.props.user}
-                logout={this.logout}
-            />
-
             <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
             {this.renderPage()}
             </div>

@@ -223,7 +223,7 @@ class App extends Component {
         <Router history={history}>
           <div id="body">
             { this.state.error && <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> }
-            {(this.state.session && history.location.pathname !== '/onboarding' && history.location.pathname !== '/dashboard') && <Route render={(props) => {
+            {(this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
                   return <NavBar {...props}/>
             }} /> }
               <Switch>
@@ -265,7 +265,8 @@ class App extends Component {
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
-                <PrivateRoute path="/account" name="Account" component={Account} />
+                <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>
+                <PrivateRoute path="/account" name="Account" component={Account} />\
                 <PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (

@@ -141,7 +141,7 @@ class Command extends Component {
                     classNamePrefix="select-box"
                     value={command.intent}
                     onChange={this.updateCommand}
-                    options={this.props.intents.concat(this.props.built_ins).map(intent => {
+                    options={this.props.intents && this.props.intents.concat(this.props.built_ins).map(intent => {
                         return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
                     })}
                 />

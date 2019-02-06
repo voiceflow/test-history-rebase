@@ -34,6 +34,7 @@ import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 import { getIntentSlots } from 'Helper'
 import Linter from './linter'
 import { getUtterancesWithSlotNames, getSlotsForKeys } from '../../../util'
+import randomstring from 'randomstring'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
@@ -856,11 +857,12 @@ class Canvas extends Component {
 
                 if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
                     if (!node.extras.google && !node.extras.alexa) {
+
                         if (node.extras.choices) {
                             node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['choices']))
 
-                            const g_choices =  _.cloneDeep(node.extras.alexa)
-                            _.fill(g_choices, {intent: null, mappings: [], key: key, open: true})
+                            let g_choices =  _.cloneDeep(node.extras.alexa.choices)
+                            g_choices = g_choices.map((e) => {return {intent: null, mappings: [], key: randomstring.generate(12), open: true}})
 
                             node.extras.google = {
                                 choices: g_choices,

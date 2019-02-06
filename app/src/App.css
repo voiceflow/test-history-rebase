@@ -1488,7 +1488,6 @@ body.modal-open {
     background-color: #fff;
     padding-left: 7px;
     padding-top: 20px;
-    z-index: 1040;
 }
 .skill-name-top-left i{
     color: #BCC3D1;

@@ -49,8 +49,6 @@ const Mail = require('./routes/mail.js');
 const {copySkill} = require('./routes/skill_util')
 const Track = require('./routes/track.js')
 
-const googleProxy = require('./proxies/googleProxy')
-
 app.use(cors())
 app.use(helmet())
 app.use(request_logger)
@@ -115,9 +113,6 @@ const ensureLoggedOut = () => {
         else next();
     }
 }
-
-app.all('/gproxy', ensureLoggedIn(), googleProxy.proxyRequest)
-app.all('/gproxy/:path', ensureLoggedIn(), googleProxy.proxyRequest)
 
 app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);

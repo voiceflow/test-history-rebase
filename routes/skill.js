@@ -652,7 +652,9 @@ const checkVersions = (req, id, token, platform) => {
               let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
               live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
             } else if (platform === 'google') {
-
+              // Get the latest list of versions from skill_versions table
+              // Compare with each skill's attached versions
+              // If no matches, then it is ok to delete
             }
           } catch (err) {
             live_id = null

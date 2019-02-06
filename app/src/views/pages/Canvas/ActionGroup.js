@@ -11,6 +11,8 @@ import AuthenticationService from './../../../services/Authentication'
 import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
+import './ActionGroup.css'
+
 const loading = (message) => {
     return <div className="super-center mb-4">
         <div className='text-center'>
@@ -561,12 +563,13 @@ class ActionGroup extends PureComponent {
                         title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
                         position="bottom"
                     >
-                        <Button variant="contained" className="white-btn google-btn" onClick={this.props.toggleGoogle}>
-                            <React.Fragment>
-                                {(this.props.platform === 'google') && <i className="fab fa-amazon"/>}
-                                {(this.props.platform === 'alexa') && <i className="fab fa-google"/>}
-                            </React.Fragment>
-                        </Button>
+                    <div className="switch switch-blue">
+                        <input onClick={() => {if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} name="view2" value="week2" id="week2" />
+                        <label for="week2" className="switch-label switch-label-off">Google</label>
+                        <input onClick={() => {if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} name="view2" value="month2" id="month2"/>
+                        <label for="month2" className="switch-label switch-label-on">Alexa</label>
+                        <span className="switch-selection"></span>
+                    </div>
                     </Tooltip>
                     <Tooltip
                         className="top-nav-icon"

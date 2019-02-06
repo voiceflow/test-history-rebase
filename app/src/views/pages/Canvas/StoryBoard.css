@@ -329,7 +329,7 @@
 }
 .title-group {
     position: fixed;
-    right: 63px;
+    right: 75px;
     top: 0px;
     z-index: 1040;
     display: flex;

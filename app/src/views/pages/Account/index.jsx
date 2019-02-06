@@ -31,8 +31,6 @@ class Account extends Component {
     super(props)
 
     this.state = {
-      upgrade_modal: false,
-      selected_plan: 1,
       amzn: LOADING,
       expiry: null,
       confirm: null
@@ -90,9 +88,11 @@ class Account extends Component {
   }
 
   toggle() {
-    this.setState({
-      upgrade_modal: !this.state.upgrade_modal
-    });
+    if(this.props.upgrade){
+      this.props.history.push('/account')
+    }else{
+      this.props.history.push('/account/upgrade')
+    }
   }
 
   renderButton(stage, action){
@@ -129,10 +129,9 @@ class Account extends Component {
                   </div>
               </div>
               <UpgradeModal
-                upgrade_modal={this.state.upgrade_modal}
+                upgrade_modal={this.props.upgrade}
                 toggle={this.toggle}
                 selected_plan={this.state.selected_plan}
-                switchPlan={(plan) => this.setState({selected_plan: plan})}
                 user={this.props.user}
                 logout={this.logout}
               />
@@ -143,7 +142,14 @@ class Account extends Component {
                     <h4 className="mb-0 text-muted">{GET_STATUS(this.props.user.admin).name}</h4>
                     <div className="super-center">
                       {this.props.user.admin < 1 && <h4 className="text-muted mr-3 mb-0">$0.00/mo</h4>}
-                      {this.props.user.admin > 0 ? <React.Fragment>{this.state.expiry ? <div className="btn btn-clear disabled">Renews {this.state.expiry}</div> : null}</React.Fragment> : 
+                      {this.props.user.admin > 0 ? 
+                        <React.Fragment>
+                          {this.state.expiry ? 
+                            <React.Fragment>
+                              <div className="btn btn-clear disabled">Renews {this.state.expiry}</div>
+                              <div className="btn btn-clear ml-2" onClick={this.toggle}><i className="fas fa-cog"/> Upgrade</div>
+                            </React.Fragment> : null}
+                        </React.Fragment> : 
                       <Button onClick={this.toggle} className="purple-btn">Upgrade</Button>}
                     </div>
                   </div>

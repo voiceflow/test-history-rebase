@@ -46,7 +46,7 @@
 }
 
 .payment-form {
-  height: 480px;
+  min-height: 480px;
 }
 
 .payment-form label {

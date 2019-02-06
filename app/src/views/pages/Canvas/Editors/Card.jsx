@@ -74,7 +74,7 @@ class Card extends Component {
                                     {this.state.node.extras.small_img === undefined ? <Tooltip position="bottom" html={<div style={{ width: 165 }}>Small screens use the normal image by default</div>}>
                                         <i className="fal fa-plus"/> Small Screen Image
                                     </Tooltip> : <React.Fragment>
-                                    <i className="fal fa-minus"/> Remove Small Image
+                                    Remove Small Image
                                     </React.Fragment>}
                                 </Button>
                         </div>

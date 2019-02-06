@@ -60,6 +60,15 @@ body {
     border: 1px solid #42a5ff !important;
     box-shadow: rgba(50, 50, 93, 0.03) 0px 4px 6px, rgba(0, 0, 0, 0.03) 0px 1px 3px !important;
 }
+#navbar-top-left{
+    position: fixed;
+    top: 0;
+    left: 80px;
+    height: 65px;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+}
 .subheader-page-container{
     height: 100%;
     width: 100%;
@@ -1231,7 +1240,7 @@ body.modal-open {
   border-bottom: 1px solid #8da2b545;
   margin-top: 15px;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .or {

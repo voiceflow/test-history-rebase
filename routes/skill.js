@@ -22,7 +22,8 @@ const {
 const analytics = new(require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 const {
   deleteSkillPromise,
-  copySkill
+  copySkill,
+  deleteSkillDiagramsPromise
 } = require('./skill_util')
 
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
@@ -457,8 +458,8 @@ exports.deleteSkill = async (req, res) => {
   }
   let id = hashids.decode(req.params.id)[0]
 
-  try {
-    await deleteSkillPromise(req.user.id, id, true)
+  try{
+    await deleteSkillPromise(req.user.id, id, {delete_all_versions: true, diagram_updated: false})
     res.sendStatus(200)
   } catch (err) {
     console.trace(err)
@@ -685,7 +686,7 @@ const checkVersions = (req, id, token, platform) => {
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
             if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].version) {
-              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, false))
+              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {delete_all_versions: false, diagram_updated: false}))
               num_versions_to_delete -= 1
             }
             i += 1
@@ -1073,19 +1074,19 @@ exports.certifySkill = (req, res) => {
                   );
                 })
                 .catch(err => {
-                  console.trace(err);
+                  logAxiosError(err, 'CERTIFY SKILL')
                   res.status(500).send(err && err.response && err.response.data);
                 });
             }
           })
           .catch(err => {
-            console.log(err.response.status);
+            logAxiosError(err, 'CERTIFY SKILL MANIFEST')
             res.status(500).send(err.response.data);
           });
       }, 10000);
     }
     getSkillStatus(0);
-  });
+  })
 }
 
 exports.withdrawSkill = (req, res) => {
@@ -1130,7 +1131,7 @@ exports.withdrawSkill = (req, res) => {
         );
       })
       .catch(err => {
-        console.log(err.response.status);
+        logAxiosError(err, 'WITHDRAW SKILL')
         res.status(500).send(err.response.data);
       });
   });
@@ -1232,27 +1233,55 @@ exports.getSkillVersions = (req, res) => {
   )
 }
 
-exports.restoreSkillVersion = (req, res) => {
-  let canonical_skill_id = hashids.decode(req.params.canonical_skill_id)[0]
+exports.restoreSkillVersion = async (req, res) => {
+  // Get canonical skill id
+  let canonical_skill_id
+  try {
+    canonical_skill_id = (await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1`, [hashids.decode(req.params.restore_id)[0]])).rows[0].canonical_skill_id
+  } catch(err) {
+    console.trace(err)
+    res.sendStatus(500)
+  }
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
-  copySkill(req, res, {
-    complete_copy: true
-  }, async (row) => {
-    req.params.id = req.params.canonical_skill_id
+  // Make a copy of the verision
+  copySkill(req, res, {complete_copy: true}, async (row) => {
     try {
-      await deleteSkillPromise(req.user.id, canonical_skill_id, false)
+      // Delete the canonical skill's old diagrams
+      await deleteSkillDiagramsPromise(canonical_skill_id)
       let new_skill_id = hashids.decode(row.skill_id)[0]
-      await pool.query(`UPDATE skills SET skill_id = $1 WHERE skill_id = $2`, [canonical_skill_id, new_skill_id])
-      await pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [canonical_skill_id, canonical_skill_id])
-      row.skill_id = req.params.canonical_skill_id
+      // Set canonical's field to new version
+      await pool.query(`
+        UPDATE skills
+        SET name=sq.name, diagram=sq.diagram, creator_id=sq.creator_id, amzn_id=sq.amzn_id, summary=sq.summary, description=sq.description, keywords=sq.keywords,
+            invocations=sq.invocations, small_icon=sq.small_icon, large_icon=sq.large_icon, category=sq.category, purchase=sq.purchase, personal=sq.personal,
+            copa=sq.copa, ads=sq.ads, export=sq.export, instructions=sq.instructions, inv_name=sq.inv_name, stage=sq.stage, review=sq.review, 
+            locales=sq.locales, restart=sq.restart, global=sq.global, privacy_policy=sq.privacy_policy, terms_and_cond=sq.terms_and_cond, intents=sq.intents,
+            slots=sq.slots, used_intents=sq.used_intents, used_choices=sq.used_choices, preview=sq.preview, resume_prompt=sq.resume_prompt, error_prompt=sq.error_prompt,
+            account_linking=sq.account_linking, fulfillment=sq.fulfillment, alexa_permissions=sq.alexa_permissions, alexa_interfaces=sq.alexa_interfaces, alexa_events=sq.alexa_events,
+            repeat=sq.repeat
+        FROM (SELECT name, diagram, creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+              purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
+              privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
+              FROM skills WHERE skill_id = $1) AS sq
+        WHERE skills.skill_id = $2
+      `, [new_skill_id, canonical_skill_id])
+
+      // Update diagram to point to new skill
+      await pool.query(`
+        UPDATE diagrams
+        SET skill_id = $1
+        WHERE skill_id = $2
+      `, [canonical_skill_id, new_skill_id])
+      // Delete the new copy's skill row
+      await deleteSkillPromise(req.user.id, new_skill_id, {delete_all_versions: false, diagram_updated: true})
+      row.skill_id = hashids.encode(canonical_skill_id)
       res.send(row)
     } catch (err) {
       console.trace(err)
       res.sendStatus(500)
     }
-
-
   })
 }
 

@@ -54,12 +54,52 @@ exports.deleteDynamoDiagramPromise = (diagram_id) => {
   })
 }
 
-exports.deleteSkillPromise = (creator_id, skill_id, delete_all_versions) => {
+exports.deleteSkillDiagramsPromise = (skill_id) => {
+  return new Promise(async (resolve, reject) => {
+    try{
+      let diagram_data_rows = (await pool.query(`SELECT id FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
+      let diagram_delete_promises = []
+
+      // Creating a set of ids for delete query, ex. (1,44545, 65564)
+      let parsed_array = "("
+      for(let i=0;i < diagram_data_rows.length;i++){
+        // To0 f4st for 4mzn
+        setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(diagram_data_rows[i].id))}, 20)
+
+        if(i < diagram_data_rows.length - 1){
+          parsed_array += "'" + diagram_data_rows[i].id + "',"
+        } else {
+          parsed_array += "'" + diagram_data_rows[i].id + "'"
+        }
+      }
+      parsed_array += ")"
+      // Delete the diagram rows since the skill they depend on won't be deleted
+      await pool.query(`DELETE FROM diagrams WHERE id IN ${parsed_array}`)
+
+      Promise.all(diagram_delete_promises)
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    } catch (err){
+      console.trace(err)
+      reject(err)
+    }
+  })
+}
+
+/**
+ * delete_all_versions: bool
+ * diagram_updated: bool (when the diagram's skill_id was changed)
+ */
+exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
   return new Promise(async (resolve, reject) => {
     let select_query
     let delete_query
 
-    if (delete_all_versions) {
+    if (opts.delete_all_versions) {
       select_query = `
       SELECT * FROM skills 
         INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
@@ -77,50 +117,53 @@ exports.deleteSkillPromise = (creator_id, skill_id, delete_all_versions) => {
     }
 
     try{
-      let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
+      if(!opts.diagram_updated){
+        let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
 
-      if(skill_data_rows.length === 0){
-        console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
-        resolve()
-      }
+        if(skill_data_rows.length === 0){
+          console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
+          resolve()
+        }
 
-      // Only if deleting the whole project
-      if(skill_data_rows[0].amzn_id && delete_all_versions){
-        AccessToken(creator_id, token => {
-          if (token === null) {
-            return;
-          }
-  
-          axios.request({
-              url: `https://api.amazonalexa.com/v1/skills/${skill_data_rows[0].amzn_id}`,
-              method: 'DELETE',
-              headers: {
-                Authorization: token
-              }
-            })
-            .catch(err => {
-              logAxiosError(err, 'DELETE SKILL')
-            })
+        // Only if deleting the whole project
+        if(skill_data_rows[0].amzn_id && opts.delete_all_versions){
+          AccessToken(creator_id, token => {
+            if (token === null) {
+              return;
+            }
+    
+            axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${skill_data_rows[0].amzn_id}`,
+                method: 'DELETE',
+                headers: {
+                  Authorization: token
+                }
+              })
+              .catch(err => {
+                logAxiosError(err, 'DELETE SKILL')
+              })
+          })
+        }
+
+        await pool.query(delete_query, [creator_id, skill_id])
+        let diagram_delete_promises = []
+        for(let i=0;i < skill_data_rows.length;i++){
+          // To0 f4st for 4mzn
+          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
+        }
+
+        Promise.all(diagram_delete_promises)
+        .then(() => {
+          resolve()
         })
-      }
-
-      await pool.query(delete_query, [creator_id, skill_id])
-      let diagram_delete_promises = []
-      for(let i=0;i < skill_data_rows.length;i++){
-        // To0 f4st for 4mzn
-        setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
-      }
-
-      Promise.all(diagram_delete_promises)
-      .then(() => {
+        .catch((err) => {
+          console.trace(err)
+          reject(err)
+        })
+      } else {
+        await pool.query(delete_query, [creator_id, skill_id])
         resolve()
-      })
-      .catch((err) => {
-        console.trace(err)
-        reject()
-      })
-
-
+      }
     } catch (err) {
       console.trace(err)
       reject(err)
@@ -262,15 +305,15 @@ exports.copySkill = async (req, res, options, cb = false) => {
   if (options.complete_copy || options.renderDiagram) {
     copy_query = `
           INSERT INTO skills (
-            name, diagram, creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-            purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
+            name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
+            purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
             account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
-              purchase, personal, copa, ads, export, instructions, inv_name, stage, review, live, locales, restart, global,
+              purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
               account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
           FROM skills WHERE skill_id = $3 RETURNING *`

@@ -171,7 +171,7 @@ app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
-app.post('/skill/:restore_id/:canonical_skill_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
+app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
@@ -189,8 +189,10 @@ app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 // STRIPE PAYMENT ENDPOINTS
-app.post('/customer/subscription', ensureLoggedIn(), Customer.create);
-app.post('/customer/webhook', Customer.webhook);
+app.get('/customer', ensurePlan(1), Customer.checkStatus)
+app.post('/customer/subscription', ensureLoggedIn(), Customer.create)
+app.post('/customer/webhook', Customer.webhook)
+app.get('/customer/promo/:code', ensureLoggedIn(), Customer.codes)
 
 app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);

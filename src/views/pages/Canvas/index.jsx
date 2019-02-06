@@ -728,8 +728,8 @@ class Canvas extends Component {
                                         platform: 'google'
                                     })
                                 }
+                                used_intent_names.add(choice.intent.value)
                             }
-                            used_intent_names.add(choice.intent.value)
                         })
                     }
                 })

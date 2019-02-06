@@ -28,8 +28,7 @@ class Skill extends Component {
             time_mounted: null,
             linter: [],
             upgrade_modal: false,
-            selected_plan: 1,
-            time_mounted: null
+            selected_plan: 1
         }
 
         this.renderPage = this.renderPage.bind(this)

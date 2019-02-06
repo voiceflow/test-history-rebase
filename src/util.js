@@ -4,7 +4,7 @@ const { SLOT_TYPES } = require('./Constants')
 
 const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false) => {
 
-	const re = /(\{\{\[[^\}\{\[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
+	const re = /(\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
 	let m;
 
 	const utterance_text = utterances.map(e => e.text)
@@ -64,7 +64,7 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 		let type = formatName(slot.name)
 		if (slot.type.value.toLowerCase() !== 'custom') {
 			let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
-			if (!default_slot) throw(`Default slot not found for label ${slot.name}`)
+			if (!default_slot) throw(Error(`Default slot not found for label ${slot.name}`))
 			type = default_slot.type[platform]
 		}
 

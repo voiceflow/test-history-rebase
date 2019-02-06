@@ -5,8 +5,6 @@ import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../../util'
 
-const _ = require('lodash')
-
 class IntentInput extends Component {
     constructor(props) {
         super(props)

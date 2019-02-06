@@ -760,9 +760,7 @@ class CheckoutForm extends React.Component {
             zip: '',
             stage: admin,
             error: null,
-            promo: window.user_detail.id === 2995
-                ? ''
-                : null,
+            promo: '',
             promo_invalid: 0,
             admin: admin
         }

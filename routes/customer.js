@@ -9,6 +9,7 @@ const stripe = require('stripe')(SECRET_KEY)
 const PLANS = [
 	{id: 0, name: 'COMMUNITY'},
 	{id: 1, name: 'BASIC'},
+	{id: 1, name: 'PLUS_348_ANNUAL'},
 	{id: 30, name: 'BUSINESS'},
 	{id: 30, name: 'BUSINESS_1188_ANNUAL'}
 ]
@@ -21,6 +22,14 @@ const CODES = [
 		price: 1188,
 		period: 'yr',
 		name: 'BUSINESS_1188_ANNUAL'
+	},
+	{
+		code: 'C8RTXGMV7XQ2',
+		plan: 2,
+		real_plan: 1,
+		price: 348,
+		period: 'yr',
+		name: 'PLUS_348_ANNUAL'
 	}
 ]
 

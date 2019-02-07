@@ -63,7 +63,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 								)
 							})}
 						</div>}>
-						<i className="fas fa-exclamation-circle"></i>
+						<img className="warning-logo" src="/warning.svg" alt="logo"/>
 					</Tooltip>
 				}
 				<div className={this.bem("__title") + ' no-select'}>

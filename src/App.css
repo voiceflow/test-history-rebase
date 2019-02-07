@@ -1420,8 +1420,8 @@ body.modal-open {
 .nav-btn-border{
     border: 1px solid #fff;
     padding: 0;
-    width: 42px !important;
-    height: 42px !important;
+    width: 44px !important;
+    height: 44px !important;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.25s ease;

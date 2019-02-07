@@ -145,6 +145,8 @@ class Skill extends Component {
                 skill.fulfillment = {}
             }
 
+            skill.platform = skill.platform === 'google' ? 'google' : 'alexa'
+
             // TODO SKILL PREVIEW NOT ENABLED
             this.setState({
                 load_skill: false,

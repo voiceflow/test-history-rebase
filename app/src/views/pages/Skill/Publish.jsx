@@ -57,15 +57,19 @@ class Publish extends Component {
                     {this.state.tabs.map((tab, i) => {
                         let res
                         if (tab.match.includes(this.props.page)) {
-                            res = <div key={i} className="nav-item active">
+                            res = <div className="nav-item active">
                                 {tab.display}
                             </div>
                         } else {
-                            res = <Link key={i} to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
+                            res = <Link to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
                                 {tab.display}
                             </Link>
                         }
-                        return res
+                        return (
+                            <React.Fragment key={i}>
+                                {res}
+                            </React.Fragment>
+                        )
                     })}
                 </div>
                 <div md="9" className="business-page">

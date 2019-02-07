@@ -424,7 +424,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
     let existing_google_versions = data.rows[0].google_versions
     let highest_existing_version = 0
 
-    if (existing_google_versions) {
+    if (existing_google_versions && Object.keys(existing_google_versions).length > 0) {
       highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
         const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
         const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
@@ -444,21 +444,13 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       existing_google_versions[version] = all_google_versions[version]
     })
 
-    // let highest_new_version = Object.keys(google_versions_to_update).sort((a, b) => {
-    //   const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
-    //   const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
-
-    //   return aVersion - bVersion
-    // })
-
-    // highest_new_version = highest_new_version[highest_new_version.length - 1]
-
     if (existing_google_versions) await pool.query('UPDATE skill_versions SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
   } catch (e) {
     await new Promise((resolve, reject) => {
       del([dir]).then(resolve()).catch(e => reject(e))
     })
-    reject(`Unable to check google actions version: ${e}`)
+    console.error(e)
+    reject(`Unable to check Google Actions version! Does the project ${project_id} belong to the same google account that you used for authentication?`)
   }
   await new Promise((resolve, reject) => {
     del([dir]).then(resolve()).catch(e => reject(e))
@@ -485,26 +477,39 @@ const publish = (req, res) => {
 
     let google_versions_to_update
     if (platform === 'google') {
-      const token = await _getGoogleAccessToken(req.user.id)
-      google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
-      if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
+      try {
+        const token = await _getGoogleAccessToken(req.user.id)
+        google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
+        if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
+
+        const versions = await pool.query('SELECT skill_id from skill_versions where canonical_skill_id = (SELECT COALESCE(canonical_skill_id, $2) FROM skill_versions WHERE skill_id = $1) AND published_platform = $3 AND version = (SELECT MAX(version) from skill_versions where canonical_skill_id = (SELECT COALESCE(canonical_skill_id, $2) FROM skill_versions WHERE skill_id = $1) AND published_platform = $3)', [skill_id, new_skill_id_decoded, platform])
+
+
+        if (versions.rows && versions.rows.length > 0) {
+          let latest_version_skill_id = versions.rows[0].skill_id
+          await pool.query('UPDATE skill_versions SET google_versions = $2 where skill_id = $1', [latest_version_skill_id, google_versions_to_update])
+        }
+      } catch (e) {
+        console.error(e)
+        return res.status(400).send(e)
+      }
     }
 
     let version_query = `
-          INSERT INTO skill_versions (canonical_skill_id, version, skill_id, published_platform, google_versions)
+          INSERT INTO skill_versions (canonical_skill_id, version, skill_id, published_platform)
           SELECT canonical_skill_id, COALESCE(
             (
               SELECT MAX(version) from skill_versions
               WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
               AND published_platform = '${platform}'
-            ) + 1, 1), ${new_skill_id_decoded}, '${platform}', $1 
+            ) + 1, 1), ${new_skill_id_decoded}, '${platform}'
           FROM skill_versions
           WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
           GROUP BY canonical_skill_id
           RETURNING *
           `
 
-    pool.query(version_query, [google_versions_to_update], async (err, data) => {
+    pool.query(version_query, [], async (err, data) => {
       if (err) {
         console.log(err)
         res.sendStatus(500)

@@ -140,7 +140,11 @@ class GooglePublish extends Component {
             })
         })
         .catch(err => {
-          this.props.onError(err)
+          this.setState({
+            publish_modal_open: false
+          })
+          const error_msg = err.response && err.response.data ? err.response.data : err
+          this.props.onError(error_msg)
         })
     });
   }
@@ -252,7 +256,8 @@ class GooglePublish extends Component {
       this.onPublish()
     } catch (e) {
       this.setState({
-        stage: 0
+        stage: 0,
+        publish_modal_open: false
       })
       this.props.onError(e)
     }
@@ -298,7 +303,8 @@ class GooglePublish extends Component {
         } catch (e) {
           this.props.onError(e.response.data || e)
           this.setState({
-            loading_creds: false
+            loading_creds: false,
+            publish_modal_open: false
           })
         }
       }

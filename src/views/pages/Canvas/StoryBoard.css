@@ -327,6 +327,18 @@
 .previous-btn:active{
     background-color: #2b39501c !important;
 }
+#middle-group {
+    position: fixed;
+    z-index: 1040;
+    display: flex;
+    top: 0px;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    height: 65px;
+    align-items: center;
+    justify-content: center;
+}
 .title-group {
     position: fixed;
     right: 75px;

@@ -17,7 +17,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
 const { getEnvVariable } = require('./util')
-const policy = require('./policy');
+const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
 
@@ -133,7 +133,8 @@ app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
-app.get('/creator/privacy_policy', policy);
+app.get('/creator/privacy_policy', policy)
+app.get('/creator/terms', terms)
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 

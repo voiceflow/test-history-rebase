@@ -192,13 +192,17 @@ class GooglePublish extends Component {
           publish_info.main_locale = 'en'
         }
 
+        let { project_id, created, diagram, privacy_policy, terms_and_cond } = res.data
+
         // TODO: Antipattern, fix this when we do redux
         this.setState({
           loaded: true,
           ...publish_info,
-          project_id: res.data.project_id,
-          created: res.data.created,
-          diagram: res.data.diagram
+          project_id,
+          created,
+          diagram,
+          privacy_policy,
+          terms_and_cond
         });
       })
       .catch(err => {
@@ -604,6 +608,42 @@ class GooglePublish extends Component {
                           return <Button outline color="primary" className={`locale-button ${active} ${disabled ? 'disabled' : ''}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
                         })}
                       </ButtonGroup>
+                    </div>
+                  </div>
+                </FormGroup>}
+                {this.state.credentials && <FormGroup>
+                  <div className="row">
+                    <div className="col-3 publish-info"></div>
+                    <div className="col-9">
+                      <Label>Privacy Policy URL</Label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3 publish-info">
+                      <p className="text-secondary">
+                        The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill (for reference only).
+                      </p>
+                    </div>
+                    <div className="col-9">
+                      <Input className="form-bg" type="text" name="privacy_policy" readOnly placeholder="Privacy Policy" value={this.state.privacy_policy} />
+                    </div>
+                  </div>
+                </FormGroup>}
+                {this.state.credentials && <FormGroup>
+                  <div className="row">
+                    <div className="col-3 publish-info"></div>
+                    <div className="col-9">
+                      <Label>Terms and Conditions URL</Label>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3 publish-info">
+                      <p className="text-secondary">
+                      The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill (for reference only).
+                      </p>
+                    </div>
+                    <div className="col-9">
+                    <Input className="form-bg" type="text" name="terms_and_cond" readOnly placeholder="Terms and Conditions" value={this.state.terms_and_cond} />
                     </div>
                   </div>
                 </FormGroup>}

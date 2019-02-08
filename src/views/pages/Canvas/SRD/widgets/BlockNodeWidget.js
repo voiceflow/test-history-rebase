@@ -42,7 +42,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 					<Tooltip
 						target="tooltip"
 						className="linter-badge"
-						position="right"
+						position="left"
 						onShow={this.updateHeight}
 						html={<div className="linter-tooltip">
 							<div className="linter-title">

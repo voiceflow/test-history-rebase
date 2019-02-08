@@ -838,7 +838,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
               REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
             } else {
-              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</>`
+              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</voice>`
             }
             if(REPROMPT) story.lines[node.id].reprompt = REPROMPT
         }

@@ -98,7 +98,7 @@ class BackupSettings extends Component{
                             {window.user_detail.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
                                 <div className="text-center">
-                                    <Link className="purple-btn" to='/account/upgrade'>
+                                    <Link className="purple-btn no-underline" to='/account/upgrade'>
                                         Upgrade Plan to Restore
                                     </Link>
                                 </div>

@@ -13,15 +13,29 @@ class Prompt extends PureComponent {
     constructor(props){
         super(props)
 
-        this.state={
-            tab: this.props.voice === 'audio' ? 'audio' : 'text'
-        }
+        this.voice = this.props.voice_id ? this.props.voice_id : 'voice'
+        this.content = this.props.content_id ? this.props.content_id : 'content'
 
         this.selectVoice = this.selectVoice.bind(this)
         this.updateContent = this.updateContent.bind(this)
         this.renderTab = this.renderTab.bind(this)
         this.switchTab = this.switchTab.bind(this)
         this.local_save = null
+
+        if(!props.voice){
+            props.updatePrompt({
+                [this.voice]: 'Alexa',
+                [this.content]: ''
+            })
+
+            this.state={
+                tab: 'text'
+            }
+        }else{
+            this.state={
+                tab: props.voice === 'audio' ? 'audio' : 'text'
+            }
+        }
     }
 
     switchTab(tab){
@@ -32,16 +46,16 @@ class Prompt extends PureComponent {
 
             let copy = clone(this.local_save)
             this.local_save = {
-                voice: this.props.voice,
-                content: this.props.content
+                [this.voice]: this.props.voice,
+                [this.content]: this.props.content
             }
 
             if(copy){
                 this.props.updatePrompt(copy)
             }else{
                 this.props.updatePrompt({
-                    voice: tab === 'audio' ? 'audio' : 'Alexa',
-                    content: ''
+                    [this.voice]: tab === 'audio' ? 'audio' : 'Alexa',
+                    [this.content]: ''
                 })
             }
         }
@@ -49,13 +63,13 @@ class Prompt extends PureComponent {
 
     updateContent(content){
         this.props.updatePrompt({
-            content: content
+            [this.content]: content
         })
     }
 
     selectVoice(selected){
         this.props.updatePrompt({
-            voice: selected.value
+            [this.voice]: selected.value
         })
     }
 

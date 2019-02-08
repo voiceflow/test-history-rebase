@@ -80,7 +80,7 @@ class AudioDrop extends Component {
                     </button>
                 </div>
             </div>
-        } else if(this.props.audio){
+        } else if(this.props.audio && typeof this.props.audio === 'string'){
             return <div className="audio-box">
                 <button className="btn btn-danger" onClick={this.onClear}>&times;</button>
                 <div>{this.props.audio.split('/').pop().split('-').pop()}</div>

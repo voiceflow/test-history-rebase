@@ -2,13 +2,13 @@ import React, {Component} from 'react'
 import _ from 'lodash'
 import axios from 'axios'
 import update from 'immutability-helper'
-import {Alert, FormGroup, Label, Button, Input} from 'reactstrap'
+import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import Prompt from 'views/components/Uploads/Prompt'
-import AceEditor from 'react-ace';
+import AceEditor from 'react-ace'
 
 import 'brace/mode/json';
-import 'brace/ext/language_tools';
+import 'brace/ext/language_tools'
 class BasicAdvancedSettings extends Component{
 
     constructor(props){
@@ -59,6 +59,7 @@ class BasicAdvancedSettings extends Component{
                 alexa_events: props.skill.alexa_events ? props.skill.alexa_events : ''
             }
             return {
+                resume_collapse: !!props.skill.resume_prompt.follow_content,
                 skill: skill,
                 baseline: _.clone(skill),
                 hide_resume: hidden
@@ -135,7 +136,11 @@ class BasicAdvancedSettings extends Component{
         let skill = _.clone(this.state.skill)
         if (this.state.hide_resume || !this.state.skill.resume_prompt.content) {
             skill.resume_prompt = null
+        }else if(!this.state.resume_collapse){
+            delete skill.resume_prompt.follow_content
+            delete skill.resume_prompt.follow_voice
         }
+
         if (!this.state.skill.error_prompt.content) {
             skill.error_prompt = null
         }
@@ -171,6 +176,7 @@ class BasicAdvancedSettings extends Component{
             }
           })
         }
+        if(!this.state.resume_collapse && this.state.skill.resume_prompt && this.state.skill.resume_prompt.follow_content) different = true
         return different;
     }
 
@@ -281,7 +287,7 @@ class BasicAdvancedSettings extends Component{
                       </FormGroup>
                       {this.getSaveButton(['name', 'repeat'])}
                     </div>
-                    <div className="settings-content clearfix">
+                    <div className="settings-content clearfix mb-5">
                       <FormGroup>
                         <Label className="mb-0">
                           Restart Every Session
@@ -306,20 +312,19 @@ class BasicAdvancedSettings extends Component{
                               whether to resume
                             </div>
                             <div className="mb-2">
-                              <Switch name="restart" checked={!this.state.hide_resume} onChange={() => this.setState(
-                                    {
-                                      hide_resume: !this.state
-                                        .hide_resume
-                                    }
-                                  )} color="primary" />
+                              <Switch name="restart" checked={!this.state.hide_resume} onChange={() => this.setState({
+                                    hide_resume: !this.state.hide_resume
+                                })} color="primary" />
                               <b>
-                                {this.state.hide_resume
-                                  ? "OFF"
-                                  : "ON"}
+                                {this.state.hide_resume ? "OFF" : "ON"}
                               </b>
                             </div>
-                            {!this.state.hide_resume && <Prompt placeholder="Would you like to resume your current story, yes or no?" voice={this.state.skill.resume_prompt.voice} content={this.state.skill.resume_prompt.content} updatePrompt={prompt => this.setState(
-                                    {
+                            {!this.state.hide_resume && <React.Fragment>
+                                <Prompt 
+                                    placeholder="Would you like to resume your current story, yes or no?"
+                                    voice={this.state.skill.resume_prompt.voice} 
+                                    content={this.state.skill.resume_prompt.content} 
+                                    updatePrompt={prompt => this.setState({
                                       skill: update(
                                         this.state.skill,
                                         {
@@ -328,10 +333,31 @@ class BasicAdvancedSettings extends Component{
                                           }
                                         }
                                       )
-                                    }
-                                  )} />}
+                                    })} 
+                                />
+                                <Button color='clear' className="mt-3" onClick={()=>this.setState({resume_collapse: !this.state.resume_collapse})}>
+                                    Resume Follow Up 
+                                </Button>
+                                <Collapse isOpen={this.state.resume_collapse} className="pt-3">
+                                    <div className="helper-text mb-2">Add a response when the user wants to resume</div>
+                                    <Prompt 
+                                        placeholder="Would you like to resume your current story, yes or no?"
+                                        voice_id="follow_voice"
+                                        content_id="follow_content"
+                                        voice={this.state.skill.resume_prompt.follow_voice} 
+                                        content={this.state.skill.resume_prompt.follow_content} 
+                                        updatePrompt={prompt => this.setState({
+                                        skill: update(this.state.skill, {
+                                            resume_prompt: {
+                                                $merge: prompt
+                                            }})}
+                                        )}
+                                    />
+                                </Collapse>
+                            </React.Fragment>}
                           </React.Fragment>}
                         {this.props.user.admin >= 30 && <FormGroup className="mt-4">
+                            <hr/>
                             <Label>Generate PDF</Label>
                             <Button color="clear" onClick={this.requestPDF}>
                               Request for PDF &nbsp;
@@ -341,7 +367,7 @@ class BasicAdvancedSettings extends Component{
                       </FormGroup>
                         {this.getSaveButton(['restart', 'hide_resume', 'resume_prompt'])}
                     </div>
-                  </React.Fragment>;
+                  </React.Fragment>
         }
     }
 

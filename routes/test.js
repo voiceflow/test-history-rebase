@@ -3,7 +3,7 @@ const safeJsonStringify = require('safe-json-stringify')
 
 module.exports.api = (req, res) => {
     if(typeof req.body.api === 'object' && req.body.api.method && req.body.api.url){
-        if(req.body.api.method === 'POST'){
+        if(req.body.api.method !== 'POST'){
             req.body.api.data = req.body.api.body
             delete req.body.api.body
         }

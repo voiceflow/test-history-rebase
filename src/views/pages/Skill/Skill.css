@@ -614,3 +614,8 @@ textarea::placeholder {
     width: 160px
   }
 }
+
+.publish-loader > .loader {
+  height: 2.5em;
+  width: 2.5em;
+}

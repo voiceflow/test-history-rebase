@@ -403,18 +403,6 @@ class GooglePublish extends Component {
 
     return (
       <React.Fragment>
-        <div className="subheader">
-          <div className="container space-between">
-            <span className="text-muted">
-              <span className="text-secondary">{this.state.name}</span>{' '}
-              <small> / created {moment(this.state.created).fromNow()}</small>
-            </span>
-            <div className="subheader-right">
-              <button variant="contained" className="purple-btn" onClick={this.onPublishClicked}>Publish Skill <i className="fab fa-google ml-2" /></button>
-            </div>
-          </div>
-        </div>
-
         <Modal
           isOpen={this.state.publish_modal_open}
           toggle={this.togglePublish}
@@ -505,149 +493,153 @@ class GooglePublish extends Component {
                 </div>
                 : null}
               <Form>
-                <FormGroup>
-                  <div className="row d-flex">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Google Assistant Credentials File *</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="mb-0 text-secondary">Your <b>Google Assistant (Dialogflow) Credentials File</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
-                    </div>
-                    {!this.state.credentials && !this.state.loading_creds && <div className="col-9">
-                      <Dropzone
-                        className="dropzone google-upload"
-                        activeClassName="active"
-                        rejectClassName="reject"
-                        multiple={false}
-                        disableClick={false}
-                        maxSize={MAX_SIZE}
-                        onDrop={this.onDrop}
-                      >
-                        <div>
-                          <div className="drop-child">
-                            Drag and Drop your file here<br />
-                            <small>OR</small><br />
-                            <div className="space-between">
-                              <div className="upload-btn btn btn-primary-small">
-                                Add File
-                          </div>
-                            </div>
-                          </div>
-                          <div className="rejected-file text-danger">
-                            <b>File not Accepted</b>
+                <div className="big-settings-alignment-div">
+                  <div className="mb-4"><b>Credentials</b></div>
+                  <div className="big-settings-content">
+                    <FormGroup>
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            Your <b>Google Assistant (Dialogflow) Credentials File</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
+                        </div>
+                        <div className="col-9">
+                          <Label className="publish-label">Google Assistant Credentials File *</Label>
+                          <div>
+                            <Dropzone
+                              className={`dropzone google-upload ${this.state.credentials ? 'disabled' : ''}`}
+                              activeClassName="active"
+                              rejectClassName="reject"
+                              multiple={false}
+                              disableClick={false}
+                              maxSize={MAX_SIZE}
+                              onDrop={this.onDrop}
+                              disabled={this.state.credentials}
+                            >
+                              <div>
+                                {!this.state.credentials && !this.state.loading_creds && <div className="drop-child">
+                                  Drag and Drop your file here<br />
+                                  <small>OR</small><br />
+                                  <div className="space-between">
+                                    <div className="upload-btn btn btn-primary-small">
+                                      Add File
+                                    </div>
+                                  </div>
+                                </div>}
+                                {this.state.loading_creds && <div className="d-flex publish-loader"><span className="loader align-self-center" /></div>}
+                                {this.state.credentials && <div className="align-self-center mx-2 d-flex"><i className="fal fa-check-circle text-success align-self-center mx-2"></i><span><Label>File uploaded</Label></span></div>}
+                                <div className="rejected-file text-danger">
+                                  <b>File not Accepted</b>
+                                </div>
+                              </div>
+                            </Dropzone>
                           </div>
                         </div>
-                      </Dropzone>
-                    </div>}
-                    {this.state.loading_creds && <div className="d-flex"><span className="loader align-self-center" /></div>}
-                    {this.state.credentials && <div className="align-self-center mx-2 d-flex"><i className="fal fa-check-circle text-success align-self-center mx-2"></i><span><Label>File uploaded</Label></span></div>}
-                  </div>
-                </FormGroup>
-                {this.state.credentials && <FormGroup>
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Google Project ID</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        <b>Google Project ID</b> is the ID of your project in the Google Actions Console (read-only).
+                      </div>
+                    </FormGroup>
+                    {this.state.credentials && <FormGroup>
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            <b>Google Project ID</b> is the ID of your project in the Google Actions Console (read-only).
                       </p>
-                    </div>
-                    <div className="col-9">
-                      <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={this.state.project_id} readOnly />
-                    </div>
+                        </div>
+                        <div className="col-9">
+                          <Label className="publish-label">Google Project ID</Label>
+                          <Input className="form-bg" type="text" name="project_id" placeholder="No Project ID Found" value={this.state.project_id} readOnly />
+                        </div>
+                      </div>
+                    </FormGroup>}
                   </div>
-                </FormGroup>}
-                {this.state.credentials && <FormGroup className="mt-0">
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Main Language *</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        <b>Language</b> determines your skill's main language and availability. Your skill will be available in regions which speak your selected language.
+                </div>
+                {this.state.credentials && <div className="big-settings-alignment-div">
+                  <div className="mb-4"><b>Languages</b></div>
+                  <div className="big-settings-content">
+
+                    <FormGroup>
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            Your skill's <b>Main Language</b> determines its availability. Your skill will be available in regions which speak your selected language.
                                     </p>
-                    </div>
-                    <div className="col-9">
-                      <ButtonGroup className="locale-button-group">
-                        {FORMATTED_LOCALES.map((locale, i) => {
-                          const active = this.state.main_locale === locale.value ? "active" : "";
-                          return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onMainLocaleBtnClick(locale.value) }}>{locale.name}</Button>
-                        })}
-                      </ButtonGroup>
-                    </div>
-                  </div>
-                </FormGroup>}
-                {this.state.credentials && <FormGroup className="mt-0">
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Additional Languages</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        <b>Additional languages</b> allow your skill to be adapted to support additional languages beyond your main language.
+                        </div>
+                        <div className="col-9">
+                          <Label className="publish-label">Main Language *</Label>
+                          <ButtonGroup className="locale-button-group">
+                            {FORMATTED_LOCALES.map((locale, i) => {
+                              const active = this.state.main_locale === locale.value ? "active" : "";
+                              return <Button outline color="primary" className={`locale-button ${active}`} key={i} onClick={() => { this.onMainLocaleBtnClick(locale.value) }}>{locale.name}</Button>
+                            })}
+                          </ButtonGroup>
+                        </div>
+                      </div>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            <b>Additional languages</b> allow your skill to be adapted to support additional languages beyond your main language.
                                     </p>
-                    </div>
-                    <div className="col-9">
-                      <ButtonGroup className="locale-button-group">
-                        {FORMATTED_LOCALES.map((locale, i) => {
-                          const disabled = this.state.main_locale === locale.value
-                          const active = this.state.locales.includes(locale.value) && !disabled ? "active" : "";
-                          return <Button outline color="primary" className={`locale-button ${active} ${disabled ? 'disabled' : ''}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
-                        })}
-                      </ButtonGroup>
-                    </div>
+                        </div>
+                        <div className="col-9">
+                          <Label className="publish-label">Additional Languages</Label>
+                          <ButtonGroup className="locale-button-group">
+                            {FORMATTED_LOCALES.map((locale, i) => {
+                              const disabled = this.state.main_locale === locale.value
+                              const active = this.state.locales.includes(locale.value) && !disabled ? "active" : "";
+                              return <Button outline color="primary" className={`locale-button ${active} ${disabled ? 'disabled' : ''}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>{locale.name}</Button>
+                            })}
+                          </ButtonGroup>
+                        </div>
+                      </div>
+                    </FormGroup>
                   </div>
-                </FormGroup>}
-                {this.state.credentials && <FormGroup>
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Privacy Policy URL</Label>
-                    </div>
+                </div>}
+
+                {this.state.credentials && <div className="big-settings-alignment-div">
+                  <div className="mb-4"><b>Legal</b></div>
+                  <div className="big-settings-content">
+                    <FormGroup>
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill (this field is for reference only).
+                                            </p>
+                        </div>
+                        <div className="col-9">
+                          <Label className="publish-label">Privacy Policy URL</Label>
+                          <Input className="form-bg" type="text" name="privacy_policy" readOnly placeholder="Privacy Policy" value={this.state.privacy_policy} />
+                        </div>
+                      </div>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill (this field is for reference only).
+                                            </p>
+                        </div>
+                        <div className="col-9">
+                          <Label className="publish-label">Terms and Conditions URL</Label>
+                          <Input className="form-bg" type="text" name="terms_and_cond" readOnly placeholder="Terms and Conditions" value={this.state.terms_and_cond} />
+                        </div>
+                      </div>
+                    </FormGroup>
                   </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                        The <b>privacy policy url</b> is a link to the privacy policy your users will agree to when using your Skill (for reference only).
-                      </p>
-                    </div>
-                    <div className="col-9">
-                      <Input className="form-bg" type="text" name="privacy_policy" readOnly placeholder="Privacy Policy" value={this.state.privacy_policy} />
-                    </div>
-                  </div>
-                </FormGroup>}
-                {this.state.credentials && <FormGroup>
-                  <div className="row">
-                    <div className="col-3 publish-info"></div>
-                    <div className="col-9">
-                      <Label>Terms and Conditions URL</Label>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3 publish-info">
-                      <p className="text-secondary">
-                      The <b>terms and conditions url</b> is a link to the terms and conditions your users will agree to when using your Skill (for reference only).
-                      </p>
-                    </div>
-                    <div className="col-9">
-                    <Input className="form-bg" type="text" name="terms_and_cond" readOnly placeholder="Terms and Conditions" value={this.state.terms_and_cond} />
-                    </div>
-                  </div>
-                </FormGroup>}
+                </div>}
               </Form>
+              <div className="text-center">
+                <button
+                  variant="contained"
+                  className="purple-btn"
+                  onClick={this.onPublishClicked}
+                >
+                  Publish Skill
+                  <i className="fab fa-google ml-2" />
+                </button>
+              </div>
+
             </div>
           </div>
         </div>

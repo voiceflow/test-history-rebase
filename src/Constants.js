@@ -2953,7 +2953,8 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'exit',
   'interaction',
   'intent',
-  'command'
+  'command',
+  'code'
 ]
 
 // const BUILT_IN_INTENTS_GOOGLE = [{

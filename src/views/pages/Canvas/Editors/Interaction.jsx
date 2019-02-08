@@ -4,16 +4,17 @@ import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
+import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 
 class Interaction extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             node: this.props.node,
             tab: 'choices'
         }
-        
+
         this.handleChoicesChange = this.handleChoicesChange.bind(this)
         this.handleAddChoice = this.handleAddChoice.bind(this)
         this.handleRemoveChoice = this.handleRemoveChoice.bind(this)
@@ -22,7 +23,7 @@ class Interaction extends Component {
         this.update = this.update.bind(this)
     }
 
-    update(){
+    update() {
         this.forceUpdate()
         this.props.onUpdate()
     }
@@ -48,8 +49,8 @@ class Interaction extends Component {
 
         const key = randomstring.generate(12)
 
-        g_choices.push({intent: null, mappings: [], key: key, open: true})
-        a_choices.push({intent: null, mappings: [], key: key, open: true})
+        g_choices.push({ intent: null, mappings: [], key: key, open: true })
+        a_choices.push({ intent: null, mappings: [], key: key, open: true })
 
         let test = node.addOutPort(a_choices.length);
         test.setMaximumLinks(1);
@@ -88,17 +89,20 @@ class Interaction extends Component {
         this.props.repaint()
     }
 
-    renderTab(){
+    renderTab() {
 
         const node = this.state.node
         const extras = node.extras[this.props.platform]
 
-        switch(this.state.tab){
+        switch (this.state.tab) {
             case 'choices':
                 return <React.Fragment>
-                    <label>
-                        Choices
-                    </label>
+                    <div className="d-flex justify-content-between">
+                        <label>
+                            Choices
+                        </label>
+                        <PlatformTooltip platform={this.props.platform} field={'Interaction choices'}/>
+                    </div>
                     <ChoiceDropdownInputs
                         choices={extras.choices}
                         onAdd={this.handleAddChoice}
@@ -106,7 +110,7 @@ class Interaction extends Component {
                         onChange={this.handleChoicesChange}
                         intents={this.props.intents}
                         variables={this.props.variables}
-                        slots = {this.props.slots}
+                        slots={this.props.slots}
                         built_ins={this.props.built_ins}
                         onError={this.props.onError}
                         update={this.update}
@@ -152,9 +156,9 @@ class Interaction extends Component {
         return (
             <React.Fragment>
                 <ButtonGroup className="toggle-group mb-2">
-                    <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
-                    <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>
-                    <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'})}} disabled={this.state.tab === 'slots'}> Slots </Button>
+                    <Button outline={this.state.tab !== 'choices'} onClick={() => { this.setState({ tab: 'choices' }) }} disabled={this.state.tab === 'choices'}> Choices </Button>
+                    <Button outline={this.state.tab !== 'intents'} onClick={() => { this.setState({ tab: 'intents' }) }} disabled={this.state.tab === 'intents'}> Intents </Button>
+                    <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
                 </ButtonGroup>
                 {this.renderTab()}
             </React.Fragment>

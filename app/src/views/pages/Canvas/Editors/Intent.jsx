@@ -7,6 +7,7 @@ import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import './Intent.css'
 import Switch from '@material-ui/core/Switch'
+import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 
 const _ = require('lodash')
 
@@ -207,9 +208,12 @@ class Intent extends Component {
         }
 
         return <React.Fragment>
-            <label>
-                Select Intent
-            </label>
+            <div className="d-flex justify-content-between">
+                <label>
+                    Select Intent
+                </label>
+            <PlatformTooltip platform={this.props.platform} field={'Intent handlers'} />
+            </div>
             <div className="super-center flex-hard">
                 <Select
                     ref={this.intentSelectRef}

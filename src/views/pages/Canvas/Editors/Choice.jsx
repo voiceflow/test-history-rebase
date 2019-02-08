@@ -9,7 +9,7 @@ class Choice extends Component {
             node: this.props.node,
             voices: Array.isArray(this.props.voices) ? this.props.voices : []
         };
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleAddChoice = this.handleAddChoice.bind(this);
         this.handleRemoveChoice = this.handleRemoveChoice.bind(this);
@@ -68,9 +68,11 @@ class Choice extends Component {
     render() {
         return (
             <div>
-                <label>
-                    Choices
-                </label>
+                <div className="d-flex justify-content-between">
+                    <label>
+                        Choices
+                    </label>
+                </div>
                 <ChoiceInputs
                     choices={this.state.node.extras.choices}
                     inputs={this.state.node.extras.inputs}

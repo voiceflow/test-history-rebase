@@ -1401,7 +1401,7 @@ exports.getGoogleSkill = async (req, res) => {
 
   sql = `
         SELECT
-            created, diagram, google_publish_info, dialogflow_token
+            created, diagram, google_publish_info, dialogflow_token, privacy_policy, terms_and_cond
         FROM
             skills
         WHERE
@@ -1441,9 +1441,7 @@ exports.getGoogleSkill = async (req, res) => {
         ({ defaultLanguageCode, supportedLanguageCodes } = agents[0])
       }
 
-      let google_id = data.rows[0].google_id
-      let created = data.rows[0].created
-      let diagram = data.rows[0].diagram
+      let { google_id, created, diagram, privacy_policy, terms_and_cond } = data.rows[0]
 
       const skillResp = {
         publish_info,
@@ -1451,7 +1449,9 @@ exports.getGoogleSkill = async (req, res) => {
         diagram,
         project_id,
         defaultLanguageCode,
-        supportedLanguageCodes
+        supportedLanguageCodes,
+        privacy_policy,
+        terms_and_cond
       }
 
       // Rehash the skill id

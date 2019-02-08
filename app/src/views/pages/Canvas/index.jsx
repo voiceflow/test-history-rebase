@@ -924,7 +924,7 @@ class Canvas extends Component {
             })
 
             this.setState({ saved: true })
-            this.updateLinter()
+            this.updateLinter(true)
         } else {
             this.props.onError('Could Not Open Project - Corrupted File')
         }
@@ -954,7 +954,7 @@ class Canvas extends Component {
         this.updateLinter()
     }
 
-    updateLinter() {
+    updateLinter(force=false) {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
@@ -969,12 +969,11 @@ class Canvas extends Component {
             }
         }
         
-        if (update) {
-            engine.repaintCanvas()
-
+        if (force || update) {
             this.setState({
                 engine: engine,
             })
+            engine.repaintCanvas()
         }
     }
 

@@ -95,17 +95,14 @@ class DiagramBlock extends Component {
     }
 
     render() {
-        let options;
-        if(!this.state.node.extras.diagram_id){
-            options = this.props.diagrams
-            .filter(diagram => diagram.name !== 'ROOT')
+        let options = this.props.diagrams
+            .filter(diagram => diagram.name !== 'ROOT' && (!this.state.node.extras.diagram_id || this.state.node.extras.diagram_id !== diagram.id))
             .map(diagram => {
                 return {
                     value: diagram.id,
                     label: diagram.name
                 }
-            });
-        }
+            })
 
         // let block
         // if(this.state.node.extras.diagram_id){
@@ -146,6 +143,16 @@ class DiagramBlock extends Component {
                     : 
                     <React.Fragment>
                         <Button className="btn-primary btn-block btn-lg btn btn-secondary mb-3" block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
+                        <Select
+                            classNamePrefix="select-box"
+                            onChange={(selected) => {
+                                let node = this.state.node;
+                                node.extras.diagram_id = selected.value;
+                                this.props.enterFlow(selected.value);
+                            }}
+                            options={options}
+                            placeholder="Change subflow"
+                        />
                         <label>Input Variables</label>
                         <DiagramVariables
                             arg1_options={this.props.variables}

@@ -9,6 +9,11 @@
   background-color: #ffffffDF;
 }
 
+#backup-upgrade-btn{
+  position: absolute;
+  top: 50%;
+}
+
 .icon-image {
   width: 200px;
   height: 200px;

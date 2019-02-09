@@ -131,6 +131,8 @@ class Canvas extends Component {
         this.renameFlow = this.renameFlow.bind(this);
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
+        this.copy = this.copy.bind(this);
+        this.paste = this.paste.bind(this);
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
@@ -186,6 +188,7 @@ class Canvas extends Component {
             variables: [],
             help: null,
             helpOpen: false,
+            copy: null,
             currentProduct: null,
             user_modules: null,
             user_templates: [],
@@ -209,7 +212,9 @@ class Canvas extends Component {
 
     componentDidMount() {
         Mousetrap.bind(['shift+/'], this.toggleShortcuts)
-        Mousetrap.bind(['command+s'], (e)=>{
+        Mousetrap.bind(['ctrl+c', 'command+c'], this.copy)
+        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
+        Mousetrap.bind(['ctrl+s', 'command+s'], (e)=>{
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
                 this.onSave()
@@ -333,6 +338,21 @@ class Canvas extends Component {
     mouseMove({clientX, clientY}){
         this.mouseX = clientX
         this.mouseY = clientY
+    }
+
+    copy(){
+        this.setState({
+            copy: this.state.engine.getSuperSelect()
+        })
+    }
+
+    paste() {
+        let event = {
+            clientX: this.mouseX,
+            clientY: this.mouseY
+        }
+        var point = this.state.engine.getRelativeMousePoint(event);
+        this.copyNode(this.state.copy, { x: point.x - (this.state.copy.name.length * 4.5 + 40), y: point.y -30})
     }
 
     zoom(delta){
@@ -491,8 +511,8 @@ class Canvas extends Component {
     }
 
     // copy individual node
-    copyNode() {
-        let selected = this.state.engine.getSuperSelect()
+    copyNode(newNode = null, pos = null) {
+        let selected = newNode ? newNode : this.state.engine.getSuperSelect()
         if(selected.extras.type !== 'story'){
             let engine = this.state.engine
             engine.stopMove()
@@ -507,8 +527,8 @@ class Canvas extends Component {
                 port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
             }
 
-            node.x = selected.x + 30
-            node.y = selected.y + 30
+            node.x = pos ? pos.x : selected.x + 30
+            node.y = pos ? pos.y : selected.y + 30
 
             engine.getDiagramModel().clearSelection()
             node.setSelected()
@@ -1278,7 +1298,6 @@ class Canvas extends Component {
 
     onDrop(event) {
         if(this.props.preview) return
-
         var engine = this.state.engine
         var type, name
         if(typeof event === 'string'){

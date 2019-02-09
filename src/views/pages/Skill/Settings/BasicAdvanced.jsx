@@ -158,7 +158,7 @@ class BasicAdvancedSettings extends Component{
         this.setState({ saving: true })
         axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, skill)
         .then(() => {
-            this.props.updateSkill({ ...this.props.skill, ...skill })
+            this.props.updateSkill({...skill})
             this.setState({ saving: false, skill: null })
         })
         .catch(err => {

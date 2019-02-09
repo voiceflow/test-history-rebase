@@ -6,7 +6,7 @@ import axios from 'axios'
 import {Tooltip} from 'react-tippy'
 // import _ from 'lodash'
 
-import {Modal, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
+import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{
     constructor(props){
@@ -79,6 +79,10 @@ class BackupSettings extends Component{
                     <LightCanvas diagram_id={this.state.curr_preview.diagram}/>
                 </div>
                 <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+                
+                <ModalFooter>
+                    <button className="purple-btn ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id, this.state.curr_preview.canonical_skill_id, this.state.curr_preview)}>Restore</button>
+                </ModalFooter>
             </Modal>
 
             <React.Fragment>
@@ -87,19 +91,14 @@ class BackupSettings extends Component{
                         
                         <Label>
                             Backups
-                            <Tooltip
-                            html={<div style={{ width: 155 }}>Restore your skill to previous versions<br/>Saved every time when you upload your skill to Alexa</div>}
-                            position="bottom"
-                            >
-                                <i className="fas fa-question-circle ml-1"></i>
-                            </Tooltip>
                         </Label>
+                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa{window.user_detail.admin > 0 ? "" : ". Upgrade to access this premium feature"}</div>
                         <div id="backup">
                             {window.user_detail.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
-                                <div className="text-center">
-                                    <Link className="purple-btn no-underline" to='/account/upgrade'>
-                                        Upgrade Plan to Restore
+                                <div id="backup-upgrade-btn" className="text-center">
+                                    <Link className="purple-btn" to='/account/upgrade'>
+                                        Upgrade
                                     </Link>
                                 </div>
                             </div>}

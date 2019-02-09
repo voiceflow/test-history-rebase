@@ -18,9 +18,9 @@ const SECTIONS = [{
 },{
     title: 'advanced',
     items: [
+        { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
         { text: 'Intent', type: 'intent', icon: <i className="fas fa-step-forward"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)'},
         { text: 'Command', type: 'command', icon: <i className="fas fa-exclamation"/>, tip: 'Give users info about their current state'},
-        { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
         { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
         { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},

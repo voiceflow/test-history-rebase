@@ -3,7 +3,6 @@ import LightCanvas from '../../Canvas/LightCanvas'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import {Tooltip} from 'react-tippy'
 // import _ from 'lodash'
 
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'

@@ -34,6 +34,7 @@ class Skill extends Component {
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
         this.onSwapVersions = this.onSwapVersions.bind(this)
         this.logout = this.logout.bind(this)
+        this.updateSkill = this.updateSkill.bind(this)
     }
 
     static getDerivedStateFromProps(props, state){
@@ -183,6 +184,15 @@ class Skill extends Component {
         return false;
     }
 
+    updateSkill(skill){
+        this.setState({
+            skill: {
+                ...this.state.skill,
+                ...skill
+            }
+        })
+    }
+
     renderPage(){
         switch(this.props.page){
             case 'canvas':
@@ -192,7 +202,7 @@ class Skill extends Component {
                     diagram_id={this.state.diagram_id} 
                     onError={this.onError} 
                     onConfirm={this.onConfirm} 
-                    updateSkill={(skill) => {this.setState({skill: skill})}}
+                    updateSkill={this.updateSkill}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'business':
                 return <Business
@@ -201,7 +211,7 @@ class Skill extends Component {
                   page={this.props.secondaryPage}
                   onError={this.onError}
                   onConfirm={this.onConfirm}
-                  updateSkill={(skill) => {this.setState({skill: skill})}}
+                  updateSkill={this.updateSkill}
                   toggleUpgrade={this.toggleUpgrade}
                 />
             case 'settings':
@@ -212,7 +222,7 @@ class Skill extends Component {
                     page={this.props.secondaryPage}
                     onSwapVersions={this.onSwapVersions} 
                     onConfirm={this.onConfirm} 
-                    updateSkill={(skill) => {this.setState({skill: skill})}}
+                    updateSkill={this.updateSkill}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'publish':
                 return <Publish 
@@ -221,8 +231,8 @@ class Skill extends Component {
                     page={this.props.secondaryPage}
                     onError={this.onError} 
                     onConfirm={this.onConfirm}
-                    updateSkill={(skill) => {this.setState({skill: skill})}}
-                    />
+                    updateSkill={this.updateSkill}
+                />
             case 'logs':
                 return <Logs
                   {...this.props}

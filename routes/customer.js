@@ -1,4 +1,4 @@
-const {docClient, pool} = require('./../services')
+const {docClient, pool, writeToLogs } = require('./../services')
 const { getEnvVariable } = require('../util')
 
 // SECRET TODO:
@@ -165,7 +165,7 @@ exports.webhook = async (req, res) => {
 	try {
     	stripe.webhooks.constructEvent(req.rawBody, req.headers["stripe-signature"], endpointSecret);
   	}catch (err) {
-  		console.log(err)
+  		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		return res.status(400).end()
 	}
 
@@ -201,7 +201,7 @@ exports.webhook = async (req, res) => {
 			}
 			return res.sendStatus(200)
 		}catch(err){
-			console.log(err)
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			return res.status(500).send(err)
 		}
 	}

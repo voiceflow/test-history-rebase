@@ -1,5 +1,5 @@
 const Util = require('./../config/util');
-const { docClient, pool, hashids, validateEmail } = require('./../services');
+const { docClient, pool, hashids, validateEmail, writeToLogs } = require('./../services');
 const { getEnvVariable } = require('../util')
 const { copySkill } = require('./skill_util')
 const { renderDiagram } = require('./render_diagram.js')
@@ -23,7 +23,7 @@ const getVariables = (req, res) => {
 
   docClient.get(params, (err, data) => {
     if (err) {
-      console.error(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
       res.send(data.Item.variables);
@@ -96,7 +96,7 @@ const getDiagram = (req, res) => {
   };
   docClient.get(params, (err, data) => {
     if (err) {
-      console.log(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
       let diagram = data.Item
@@ -154,7 +154,7 @@ const setDiagram = async (req, res) => {
           diagram.creator = req.user.id
       }
   }catch(err){
-      console.error(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       return res.sendStatus(500)
   }
 
@@ -186,7 +186,7 @@ const setDiagram = async (req, res) => {
 
   docClient.put(params, async(err) => {
       if (err) {
-          console.log(err);
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
           res.sendStatus(err.statusCode);
       } else {
           try{
@@ -204,7 +204,7 @@ const setDiagram = async (req, res) => {
               }
               res.sendStatus(200);
           }catch(e){
-              console.trace(e)
+              writeToLogs('CREATOR_BACKEND_ERRORS', {err: e})
               res.sendStatus(500);
           }
       }
@@ -219,7 +219,7 @@ const deleteDiagram = (req, res) => {
         `,
     [req.params.id, req.user.id], (err, response) => {
       if (err) {
-        console.log(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         return res.sendStatus(500)
       }
       if (response.rowCount !== 0) {
@@ -232,7 +232,7 @@ const deleteDiagram = (req, res) => {
 
         docClient.delete(params, err => {
           if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(err.statusCode);
           } else {
             res.sendStatus(200);
@@ -306,7 +306,7 @@ const copyDiagram = async (req, res) => {
           await docClient.delete(delete_params).promise()
           res.sendStatus(500)
         } catch (err) {
-          console.trace(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           res.sendStatus(500)
         }
       }
@@ -314,7 +314,7 @@ const copyDiagram = async (req, res) => {
       res.sendStatus(404)
     }
   } catch (err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
   }
 }
 
@@ -338,7 +338,7 @@ const publish = (req, res) => {
 
     pool.query(version_query, [], (err, data) => {
       if (err) {
-        console.log(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)
       } else {
         new_skill_row.canonical_skill_id = hashids.encode(data.rows[0].canonical_skill_id)

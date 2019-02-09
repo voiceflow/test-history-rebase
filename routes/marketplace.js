@@ -1,4 +1,4 @@
-const { pool, hashids, docClient } = require('./../services');
+const { pool, hashids, docClient, writeToLogs } = require('./../services');
 const { renderDiagram } = require('./diagram')
 const { copySkill } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
@@ -50,7 +50,7 @@ const cancelCertification = (req, res) => {
 		[decoded_skill_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				res.sendStatus(200);
@@ -68,7 +68,7 @@ const saveCertification = (req, res) => {
 			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					res.sendStatus(200);
@@ -83,7 +83,7 @@ const saveCertification = (req, res) => {
 			[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global, module_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					res.sendStatus(200);
@@ -96,7 +96,7 @@ const saveCertification = (req, res) => {
 		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					if(data.rows.length > 0){
@@ -113,7 +113,7 @@ const saveCertification = (req, res) => {
 	pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [decoded_skill_id],
 	 	(err, data) => {
 			if(err){
-				console.log(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			}else{
 				if(data.rows.length > 0){
@@ -137,7 +137,7 @@ const giveCertification = (req, res) => {
 			[market_id, template_skill_id, module_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					res.sendStatus(200);
@@ -149,7 +149,7 @@ const giveCertification = (req, res) => {
 	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		async (err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
@@ -198,7 +198,7 @@ const requestCertification = (req, res) => {
 			[skill_id],
 			(err, data) => {
 				if(err){
-					console.log(err)
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 					res.sendStatus(500)
 				}else{
 					let version_id
@@ -217,7 +217,7 @@ const requestCertification = (req, res) => {
 						[module_id, diagram_id, version_id, input_array, output_array, global],
 						(err, data) => {
 							if(err){
-								console.log(err)
+								writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 								res.sendStatus(500)
 							}else{
 								res.sendStatus(200)
@@ -233,7 +233,7 @@ const requestCertification = (req, res) => {
 		pool.query(`SELECT * FROM modules WHERE modules.skill_id = $1`, [skill_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					if(data.rows.length > 0){
@@ -248,7 +248,7 @@ const requestCertification = (req, res) => {
 		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					if(data.rows.length > 0){
@@ -268,7 +268,7 @@ const requestCertification = (req, res) => {
 		pool.query(`SELECT diagram FROM skills WHERE skill_id = $1`, [skill_id],
 			(err, data) => {
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					checkVersions(skill_id, data.rows[0].diagram);
@@ -286,7 +286,7 @@ const certStatus = (req, res) => {
 	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
@@ -307,7 +307,7 @@ const removeAccess = (req, res) => {
 		[user_id, module_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				res.sendStatus(200);
@@ -325,7 +325,7 @@ const hasAccess = (req, res) => {
 		[user_id, module_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
@@ -347,7 +347,7 @@ const giveAccess = (req, res) => {
 		[module_id, creator_id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				if(data.rows.length > 0){
@@ -358,7 +358,7 @@ const giveAccess = (req, res) => {
 						[creator_id, module_id],
 						(err, data) => {
 							if(err){
-								console.log(err);
+								writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 								res.sendStatus(500);
 							}else{
 								res.sendStatus(200);
@@ -376,7 +376,7 @@ const getModule = (req, res) => {
 
 	pool.query(`SELECT * FROM modules, creators WHERE module_id = $1 AND modules.creator_id = creators.creator_id`, [module_id], (err, data) => {
 		if(err){
-			console.log(err);
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 			res.sendStatus(500);
 		}else{
 			if(data.rows.length > 0){
@@ -397,7 +397,7 @@ const getCertModule = (req, res) => {
 			[skill_id],
 			(err, data) =>{
 				if(err){
-					console.log(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					res.sendStatus(500);
 				}else{
 					if(data.rows.length > 0){
@@ -407,7 +407,7 @@ const getCertModule = (req, res) => {
 					    };
 					    docClient.get(params, (err, data) => {
 					        if (err) {
-					            console.log(err);
+					            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					            res.sendStatus(err.statusCode);
 					        } else if (data.Item) {
 					            let diagram = data.Item;
@@ -428,7 +428,7 @@ const getCertModule = (req, res) => {
 
 	pool.query(`SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
 		if(err){
-			console.log(err);
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 			res.sendStatus(500);
 		}else{
 			if(data.rows.length > 0){
@@ -460,7 +460,7 @@ const getUserModules = (req, res) => {
 		[user_id],
 		(err, data) => {
 			if(err){
-				console.trace(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			}else{
 				hashIds(data.rows);
@@ -480,7 +480,7 @@ const retrieveTemplate = (req, res) => {
 		[module_id],
 		(err, data) => {
 			if(err){
-				console.log(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
@@ -492,7 +492,7 @@ const retrieveTemplate = (req, res) => {
 					}
 					docClient.get(params, (err, data) => {
 						if (err) {
-							console.log(err)
+							writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 							res.sendStatus(err.statusCode)
 						} else if (data.Item) {
 							res.send(data.Item)
@@ -517,7 +517,7 @@ const getPendingModules = (req, res) => {
 		[],
 		(err, data) => {
 			if(err){
-				console.log(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			} else {
 				hashIds(data.rows)
@@ -543,7 +543,7 @@ const getDefaultTemplates = (req, res) => {
 		[],
 		(err, data) => {
 			if(err){
-				console.error(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			} else {
 				hashIds(data.rows)
@@ -566,7 +566,7 @@ const copyDefaultTemplate = (req, res) => {
 
 		docClient.get(params, (err, data) => {
 			if (err) {
-				console.log(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(err.statusCode)
 			} else if (data.Item) {
 				res.send({
@@ -599,7 +599,7 @@ const copyDefaultTemplate = (req, res) => {
 						`https://creator.getvoiceflow.com/creator/terms?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
 			hashids.decode(skill.skill_id)[0]], (err) => {
 				if(err){
-					console.error(err)
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 					res.sendStatus(500)
 				} else {
 					incrementSkillsCreatedIntercom(req.user.id)
@@ -614,7 +614,7 @@ const copyDefaultTemplate = (req, res) => {
 		[module_id],
 		(err, data) => {
 			if(err){
-				console.log(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){

@@ -1,6 +1,6 @@
 const axios = require('axios')
 const _ = require('lodash')
-const { pool, hashids, intercom, jwt, logAxiosError } = require('./../services')
+const { pool, hashids, intercom, jwt, logAxiosError, writeToLogs } = require('./../services')
 const { AccessToken } = require('./authentication')
 const JSONs = require('./../config/amazon_json')
 const { getEnvVariable } = require('../util')
@@ -98,7 +98,7 @@ exports.getSkills = (req, res) => {
     WHERE version IS NULL AND creator_id = $1`,
     [userId], (err, data) => {
       if (err) {
-        console.error(err);
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
         res.sendStatus(500);
       } else {
         res.send(data.rows.map(skill => {
@@ -175,7 +175,7 @@ exports.getSkill = (req, res) => {
 
   pool.query(sql, params, (err, data) => {
     if (err) {
-      console.trace(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
       res.sendStatus(500);
     } else if (data.rows.length === 0) {
       res.sendStatus(404);
@@ -284,7 +284,7 @@ exports.getDiagrams = (req, res) => {
 
   pool.query(sql, [id], (err, data) => {
     if (err) {
-      console.trace(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -304,7 +304,7 @@ exports.getProducts = (req, res) => {
 
   pool.query(sql, [id], (err, data) => {
     if (err) {
-      console.trace(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -325,7 +325,7 @@ exports.getProduct = (req, res) => {
 
   pool.query(sql, [id, pid], (err, data) => {
     if (err) {
-      console.trace(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -346,7 +346,7 @@ exports.setProduct = async (req, res) => {
       product.creator = req.user.id
     }
   } catch (err) {
-    console.trace(err);
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     return res.sendStatus(500)
   }
 
@@ -367,7 +367,7 @@ exports.setProduct = async (req, res) => {
       });
     }
   } catch (err) {
-    console.trace(err);
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     res.sendStatus(500);
   }
 }
@@ -375,7 +375,7 @@ exports.setProduct = async (req, res) => {
 const deleteProductSQL = async (pid, res) => {
   pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
     if (err) {
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       res.sendStatus(500)
     }else{
       res.sendStatus(200)
@@ -400,7 +400,7 @@ exports.deleteProduct = async (req, res) => {
       result = result.rows[0]
     }
   } catch (err) {
-    console.trace(err);
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     return res.sendStatus(500)
   }
 
@@ -438,7 +438,7 @@ exports.deleteSkill = async (req, res) => {
     await deleteSkillPromise(req.user.id, id, {delete_all_versions: true, diagram_updated: false})
     res.sendStatus(200)
   } catch (err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     res.sendStatus(500)
   }
 }
@@ -532,7 +532,7 @@ exports.patchSkill = async (req, res) => {
     }
     res.sendStatus(200)
   }catch(err){
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     res.sendStatus(500)
   }
 }
@@ -594,7 +594,7 @@ const checkVersions = (req, id, token) => {
     [id],
     async (err, data) => {
       if (err) {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       } else {
         // Check whether user has more versions than they should
         if ((req.user.admin >= 100 && data.rows.length > 3) || data.rows.length > 5) {
@@ -636,7 +636,7 @@ const checkVersions = (req, id, token) => {
             // SUGOI
           })
           .catch((err) => {
-            console.trace(err)
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           })
         }
       }
@@ -650,7 +650,7 @@ exports.buildSkill = async (req, res) => {
   try{
     incrementTimesPublishedIntercom(req.user.id);
   } catch (err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
   }
   
 
@@ -670,7 +670,7 @@ exports.buildSkill = async (req, res) => {
 
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)
       } else {
 
@@ -918,7 +918,7 @@ exports.buildSkill = async (req, res) => {
                             [amzn_id, id],
                             (err) => {
                               if (err) {
-                                console.trace(err)
+                                writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
                                 res.sendStatus(500)
                               } else {
                                 res.send(amzn_id)
@@ -942,7 +942,7 @@ exports.buildSkill = async (req, res) => {
         } catch (err) {
           logAxiosError(err, err.url)
           if (err.type === "VendorIdError") {
-            // console.trace(err);
+            // writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(403);
           } else {
             if (err.response) {
@@ -999,7 +999,7 @@ exports.certifySkill = (req, res) => {
                     [req.params.amzn_id],
                     (err) => {
                       if (err) {
-                        console.trace(err);
+                        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                         res.sendStatus(500);
                       } else {
                         analytics.track({
@@ -1064,7 +1064,7 @@ exports.withdrawSkill = (req, res) => {
           [req.params.amzn_id],
           (err) => {
             if (err) {
-              console.trace(err);
+              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
               res.sendStatus(500);
             } else {
               res.sendStatus(200);
@@ -1097,7 +1097,7 @@ exports.copyProduct = async (req, res) => {
     `
   pool.query(copy_query, [id, pid], (err, data) => {
     if (err) {
-      console.trace(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
       res.sendStatus(500)
     } else {
       // let new_product_id = data.rows[0].id
@@ -1120,7 +1120,7 @@ exports.getSkillVersions = (req, res) => {
         ORDER BY version DESC`, [id],
     (err, data) => {
       if (err) {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)
       } else {
         for (let i = 0; i < data.rows.length; i++) {
@@ -1139,7 +1139,7 @@ exports.restoreSkillVersion = async (req, res) => {
   try {
     canonical_skill_id = (await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1`, [hashids.decode(req.params.restore_id)[0]])).rows[0].canonical_skill_id
   } catch(err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     res.sendStatus(500)
   }
   req.params.id = req.params.restore_id
@@ -1179,7 +1179,7 @@ exports.restoreSkillVersion = async (req, res) => {
       row.skill_id = hashids.encode(canonical_skill_id)
       res.send(row)
     } catch (err) {
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       res.sendStatus(500)
     }
   })

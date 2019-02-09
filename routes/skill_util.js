@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { docClient, pool, hashids, logAxiosError } = require('./../services')
+const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../services')
 const { AccessToken } = require('./authentication')
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
@@ -84,7 +84,7 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
         reject(err)
       })
     } catch (err){
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       reject(err)
     }
   })
@@ -157,7 +157,7 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
           resolve()
         })
         .catch((err) => {
-          console.trace(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           reject(err)
         })
       } else {
@@ -165,7 +165,7 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
         resolve()
       }
     } catch (err) {
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       reject(err)
     }
   })
@@ -203,7 +203,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         await docClient.put(params).promise()
         resolve()
       } catch (err) {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         reject()
       }
     })
@@ -246,7 +246,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
       docClient.get(get_params, async (err, data) => {
         if (err) {
-          console.trace(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           reject(err)
         } else if (data.Item) {
           let result = await remapDiagramIds(data.Item)
@@ -281,7 +281,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
       [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
     }catch(err){
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     }
   }
 
@@ -353,7 +353,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         if (options.copying_default_template || options.user_copy) {
           pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
             if (err) {
-              console.trace(err)
+              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               res.sendStatus(500)
             }
           })
@@ -381,11 +381,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
         }
       })
       .catch((err) => {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)
       })
   } catch (err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     res.sendStatus(500)
   }
 }

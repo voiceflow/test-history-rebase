@@ -1,4 +1,5 @@
 const { getEnvVariable } = require('../util')
+const { writeToLogs } = require('./../services')
 
 module.exports = (docClient) => {
 
@@ -47,12 +48,12 @@ const getReview = (req, res) => {
 
                         docClient.update(params, function(err, data) {
                             if (err) {
-                                console.log(err);
+                                writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                             }
                         });
                     }
                 }else{
-                    console.log(err);
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                 }
             });
         } else {
@@ -73,7 +74,7 @@ const setReview = (req, res) => {
 
     docClient.get(params, (err, data) => {
         if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
             delete data.Item.last_save;
@@ -162,7 +163,7 @@ const getReviews = (req, res) => {
                                 review.email = author.email;
                                 review.name = author.name;
                             }else{
-                                console.log(err);
+                                writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                             }
                             items.push(review);
                             if(items.length == length){
@@ -190,13 +191,13 @@ const deleteReview = (req, res) => {
 
     docClient.get(params, (err, data) => {
         if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
             if(data.Item.status != "under_review" || req.user.admin >= 100){
                 docClient.delete(params, err => {
                     if (err) {
-                        console.log(err);
+                        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                         res.sendStatus(err.statusCode);
                     } else {
                         res.sendStatus(200);
@@ -231,7 +232,7 @@ const updateReview = (req, res) => {
 
     docClient.update(params, function(err, data) {
         if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(500);
         } else {
             res.sendStatus(200);
@@ -259,7 +260,7 @@ const saveReview = (req, res) => {
 
     docClient.update(params, function(err, data) {
         if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(500);
         } else {
             res.sendStatus(200);

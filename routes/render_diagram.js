@@ -1,6 +1,6 @@
 const isVarName = require('is-var-name');
 const { getEnvVariable } = require('../util')
-const { docClient, pool, hashids } = require('./../services')
+const { docClient, pool, hashids, writeToLogs } = require('./../services')
 const draftToMarkdown = require('./../config/drafttomarkdown')
 const validUrl = require('valid-url');
 const _ = require('lodash');
@@ -127,7 +127,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
   let testing = (skill_id === "TEST");
   docClient.get(params, async (err, data) => {
     if (err) {
-      console.error(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       resolve(500)
     } else if (data.Item && (data.Item.skill === skill_id || testing)) {
       // Add to set of rendered diagrams to prevent looping
@@ -855,7 +855,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
       }
       docClient.put(params, err => {
         if (err) {
-          console.log(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           res.sendStatus(err.statusCode)
         } else if (testing || options.type === 'market') {
           resolve(200)
@@ -863,7 +863,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           // Add the story to SQL as well
           addStory(story, (err) => {
             if (err) {
-              console.error(err)
+              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               resolve(500)
               return
             } else {

@@ -1,7 +1,6 @@
 const AWS = require('aws-sdk');
 const { getEnvVariable } = require('../util')
-const moment = require('moment')
-const _ = require('lodash');
+const { writeToLogs } = require('./../services')
 
 AWS.config = new AWS.Config({
     accessKeyId: getEnvVariable('AWS_ACCESS_KEY_ID'),
@@ -10,14 +9,8 @@ AWS.config = new AWS.Config({
     endpoint: getEnvVariable('AWS_ENDPOINT')
 });
 
-let cloudWatchLogs = new AWS.CloudWatchLogs();
-
 const sendError = async (req, res) => {
-    let time = moment().format('MMM Do YY')
-    let group = process.env.NODE_ENV === 'production' ? 'PROD_creator_errors' : 'DEV_creator_errors';
-    let streamExist = false
     let error = {
-        timestamp: Date.now(),
         name: req.body.name,
         message: req.body.message,
         error: req.body.error,
@@ -25,52 +18,9 @@ const sendError = async (req, res) => {
         user_detail: req.body.user_detail,
         browser: req.body.browser,
     }
-    let stream = {
-        logGroupName: group,
-        logStreamName: `${time}`
-    }
-    let getStream= {
-        logGroupName: group,
-        logStreamNamePrefix: `${time}`
-    }
-    let params = {
-        logGroupName: group,
-        logStreamName: `${time}`,
-        logEvents: [
-            {
-                message: JSON.stringify(error),
-                timestamp: Date.now()
-            }
-        ]
-    }
-    try {
-        let data =  await cloudWatchLogs.describeLogStreams(getStream).promise()
-        if (!_.isEmpty(data.logStreams)) {
-            streamExist = true;
-            params.sequenceToken = _.head(data.logStreams).uploadSequenceToken;
-        }
-    } catch (err) {
-        console.log(err);
-        res.sendStatus(400);
-        return;
-    }
-    if (!streamExist){
-        try {
-            await cloudWatchLogs.createLogStream(stream).promise()
-        } catch (err) {
-            console.log(err);
-            res.sendStatus(400);
-            return;
-        }
-    }
-    cloudWatchLogs.putLogEvents(params, (err) => {
-        if (err) {
-            console.log(err);
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(200);
-        }
-    })
+    // Fire and forget ;)
+    writeToLogs('CREATOR_FRONTEND_ERRORS', {err: error})
+    res.sendStatus(200)
 }
 
 const getErrors = (req, res) => {
@@ -81,7 +31,7 @@ const getErrors = (req, res) => {
     };
     cloudWatchLogs.filterLogEvents(params, function(err, data) {
         if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(400);
         } else {
             res.send(data.events

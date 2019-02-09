@@ -33,6 +33,8 @@ import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL } from './Constants'
 
 import { getIntentSlots } from 'Helper'
 
+import { Prompt } from 'react-router'
+
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
 
@@ -716,7 +718,8 @@ class Canvas extends Component {
     }
 
     onSave(cb, is_new=false, state=true) {
-
+        if(this.saving) return
+        this.saving = true
         try {
             if (!this.props.preview){
                 state && this.setState({ saving: true })
@@ -783,39 +786,25 @@ class Canvas extends Component {
                     global: this.state.skill.global
                 }
                 const s = this.state.skill;
-                const save_skill_intents = new Promise((resolve, reject) => {
-                    axios.patch('/skill/' + s.skill_id + '?intents=true', {
-                        intents: JSON.stringify(s.intents),
-                        slots: JSON.stringify(s.slots),
-                        fulfillment: JSON.stringify(s.fulfillment),
-                        account_linking: JSON.stringify(s.account_linking)
-                    })
-                    .then(res => {
-                        resolve()
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
+                const save_skill_intents = axios.patch('/skill/' + s.skill_id + '?intents=true', {
+                    intents: JSON.stringify(s.intents),
+                    slots: JSON.stringify(s.slots),
+                    fulfillment: JSON.stringify(s.fulfillment),
+                    account_linking: JSON.stringify(s.account_linking)
                 })
 
-                const save_diagram = new Promise ((resolve, reject) => {
-                    axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
-                    .then(() => {
-                        resolve()
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
-                })
+                const save_diagram = axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
                 
                 Promise.all([save_skill_intents, save_diagram]).then(res => {
+                    this.saving = false
                     state && this.setState({
                         saving: false,
                         saved: true,
                         last_save: Date.now()
                     });
                     if(typeof cb === "function") cb(this.props.diagram_id)
-                }, rej_err => {
+                }).catch(rej_err => {
+                    this.saving = false
                     console.log(rej_err)
                     state && this.setState({
                         saving: false
@@ -824,6 +813,7 @@ class Canvas extends Component {
                 })
             }
         } catch (e) {
+            this.saving = false
             console.log(e)
             state && this.props.onError('Error Saving - Project Structure (Check Logs)')
             if(typeof cb === "function") cb(null)
@@ -1601,6 +1591,10 @@ class Canvas extends Component {
     render() {
         return (
             <React.Fragment>
+                {/* <Prompt
+                    when={!this.state.saved}
+                    message="Are you sure you want to leave before saving?"
+                /> */}
                 <DefaultModal
                     open={this.state.keyboard_help}
                     header="Keyboard Shortcuts"

@@ -335,10 +335,8 @@ class BasicAdvancedSettings extends Component{
                                       )
                                     })} 
                                 />
-                                <Button color='clear' className="mt-3" onClick={()=>this.setState({resume_collapse: !this.state.resume_collapse})}>
-                                    Resume Follow Up 
-                                </Button>
                                 <Collapse isOpen={this.state.resume_collapse} className="pt-3">
+                                    <Label>Resume Follow Up</Label>
                                     <div className="helper-text mb-2">Add a response when the user wants to resume</div>
                                     <Prompt 
                                         placeholder="Would you like to resume your current story, yes or no?"
@@ -354,6 +352,9 @@ class BasicAdvancedSettings extends Component{
                                         )}
                                     />
                                 </Collapse>
+                                <Button color='clear' className="mt-3" onClick={()=>this.setState({resume_collapse: !this.state.resume_collapse})}>
+                                    {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
+                                </Button>
                             </React.Fragment>}
                           </React.Fragment>}
                         {this.props.user.admin >= 30 && <FormGroup className="mt-4">

@@ -9,6 +9,9 @@ const sharp = require('sharp');
 const Hashids = require('hashids');
 const Intercom = require('intercom-client');
 const { getEnvVariable } = require('./util')
+const moment = require('moment')
+const _ = require('lodash')
+const StackTrace = require('stacktrace-js')
 
 const hashids = new Hashids(getEnvVariable('CONFIG_ID_HASH'), 10);
 const MB = 1024*1024
@@ -150,16 +153,98 @@ const verify = (auth, cb) => {
     }
 }
 
-const logAxiosError = (err, context='', data=null) => {
-    if(err && err.response){
-      console.log(context, err.response.data, 'STATUS', err.response.status)    
-    }else if(context){
-      console.log(context, err)
-    }else{
-      console.trace(err)
+const cloudWatchLogs = new AWS.CloudWatchLogs();
+const writeToLogs = async (log_group, msg_details) => {
+    try {
+        let time = moment().format('MMM Do YY')
+        let group = getEnvVariable(log_group);
+        let stack_trace
+
+        try {
+            stack_trace = await StackTrace.get()
+        } catch (err) {
+            stack_trace = "Unable to retrieve stack trace"
+        }
+
+        if(!group){
+            group = 'DEV_server_errors'
+        }
+
+        if(msg_details.err && msg_details.err instanceof Error) {
+            msg_details.err = msg_details.err.toString()
+        }
+
+        let streamExist = false
+        let msg = {
+            timestamp: Date.now(),
+            stack_trace: stack_trace,
+            ...msg_details
+        }
+        let stream = {
+            logGroupName: group,
+            logStreamName: `${time}`
+        }
+        let getStream= {
+            logGroupName: group,
+            logStreamNamePrefix: `${time}`
+        }
+        let params = {
+            logGroupName: group,
+            logStreamName: `${time}`,
+            logEvents: [
+                {
+                    message: JSON.stringify(msg),
+                    timestamp: Date.now()
+                }
+            ]
+        }
+        try {
+            let data =  await cloudWatchLogs.describeLogStreams(getStream).promise()
+            if (!_.isEmpty(data.logStreams)) {
+                streamExist = true;
+                params.sequenceToken = _.head(data.logStreams).uploadSequenceToken;
+            }
+        } catch (err) {
+            console.trace(err);
+        }
+        if (!streamExist){
+            try {
+                await cloudWatchLogs.createLogStream(stream).promise()
+            } catch (err) {
+                console.trace(err);
+            }
+        }
+        cloudWatchLogs.putLogEvents(params, (err) => {
+            if (err) {
+                console.trace(err);
+            } 
+        })
+    } catch (err) {
+        // Do nothing, if logs fail it shouldn't affect runtime
+        console.trace(err)
     }
-    if(data) console.log('ERROR DATA', data)
-    console.log('---------------------------')
+}
+
+const logAxiosError = (err, context='', data=null) => {
+    let msg = {}
+    if(err && err.response){   
+      msg = {
+          context: context,
+          err_response_data: err.response.data,
+          err_response_status: err.response.status
+      }
+    }else if(context){
+      msg = {
+          context: context,
+          err: err
+      }
+    }else{
+      msg = {
+          err: err
+      }
+    }
+    if(data) msg.data = data
+    writeToLogs('CREATOR_BACKEND_ERRORS', msg)
 }
 
 module.exports = {
@@ -177,6 +262,7 @@ module.exports = {
     validateEmail: validateEmail,
     logging_pool: logging_pool,
     verify: verify,
-    logAxiosError: logAxiosError
+    logAxiosError: logAxiosError,
+    writeToLogs: writeToLogs
 }
 

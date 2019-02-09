@@ -1,11 +1,11 @@
-const { pool, logging_pool, hashids } = require('./../services')
+const { pool, logging_pool, hashids, writeToLogs } = require('./../services')
 
 exports.getLogs = (req, res) => {
     let skill_id = hashids.decode(req.params.skill_id)[0]
     
     pool.query(`SELECT amzn_id FROM skills WHERE skill_id = $1`, [skill_id], (err, data) => {
         if(err){
-            console.trace(err)
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
             res.sendStatus(500)
         } else {
             if (data.rows.length > 0){
@@ -14,7 +14,7 @@ exports.getLogs = (req, res) => {
                     [req.user.id, data.rows[0].amzn_id],
                     (err, data) => {
                         if (err) {
-                            console.trace(err)
+                            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
                             res.sendStatus(500)
                         } else {
                             // React doesn't let you use js objects 

@@ -1,10 +1,10 @@
-const { pool, intercom } = require('./../services');
+const { pool, intercom, writeToLogs } = require('./../services');
 
 const checkIfOnboarded = (req, res) => {
 	pool.query("SELECT * FROM user_info WHERE creator_id = $1", [req.user.id],
 		(err, data) => {
 			if(err){
-				console.log(err);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 				res.sendStatus(500);
 			} else {
 				if(data.rows.length > 0){
@@ -38,7 +38,7 @@ const submitOnboardSurvey = (req, res) => {
 		[req.user.id, req.body.usage_type, req.body.company_name, req.body.role, req.body.company_size, req.body.industry, req.body.programming],
 		(err, data) => {
 			if(err){
-				console.log(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			} else {
 				res.sendStatus(200)

@@ -3,6 +3,7 @@ const fs = require('fs');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 const randomstring = require("randomstring");
+const { writeToLogs } = require('./../services')
 
 const { getEnvVariable } = require('../util')
 
@@ -45,7 +46,7 @@ const convert = (key, env = 'production') => {
     upload.maxPartSize(20971520);
     upload.concurrentParts(5);
     upload.on('error', err => {
-        console.log(err);
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     });
 
     ffmpeg()
@@ -64,12 +65,12 @@ const uploadConcatPreviews = (dir, files, env) => {
         command.input(files[i]);
     }
     command.on('error', err => {
-        console.log(err);
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     });
     command.on('end', () => {
         fs.readFile(path.join(dir, '_titles.mp3'), (err, data) => {
             if (err) {
-                console.log(err);
+                writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 
                 return;
             } else if (!data) {
@@ -83,7 +84,7 @@ const uploadConcatPreviews = (dir, files, env) => {
             };
             s3.upload(uploadParams, (err, data) => {
                 if (err) {
-                    console.log(err);
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                 }
                 rimraf(dir);
             });
@@ -101,7 +102,7 @@ exports.upload = (req, res) => {
     try{
         convert(filename)
     }catch(err){
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     }
     res.send('https://s3.amazonaws.com/com.getstoryflow.audio.production/'+filename);
 };
@@ -144,7 +145,7 @@ exports.concat = async (req, res) => {
                 uploadConcatLines(dir, files, res);
             }
         }catch(err){
-            console.error(err)
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
             return res.sendStatus(500)
         }
     }
@@ -158,13 +159,13 @@ const uploadConcatLines = (dir, files, res) => {
         command.input(files[i]);
     }
     command.on('error', err => {
-        console.log(err);
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
         res.sendStatus(500);
     });
     command.on('end', () => {
         fs.readFile(path.join(dir, filename), (err, data) => {
             if (err) {
-                console.log(err);
+                writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                 return;
             } else if (!data) {
                 return;
@@ -177,7 +178,7 @@ const uploadConcatLines = (dir, files, res) => {
             };
             s3.upload(uploadParams, (err, data) => {
                 if (err) {
-                    console.log(err);
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                     return;
                 }
                 res.send(data.Location);
@@ -197,7 +198,7 @@ const uploadConcatLines = (dir, files, res) => {
 exports.getVoices = (req, res) => {
     polly.describeVoices((err, data) => {
         if (err) {
-            console.log(err);
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(err.statusCode);
         } else {
             res.send(data.Voices);

@@ -1,4 +1,4 @@
-const { pool, logging_pool, hashids } = require('../services')
+const { pool, logging_pool, hashids, writeToLogs } = require('../services')
 
 const checkUserOwnsSkill = (req, res, cb) => {
     let skill_id = hashids.decode(req.params.skill_id)[0]
@@ -13,7 +13,7 @@ const checkUserOwnsSkill = (req, res, cb) => {
             [skill_id],
             (err, data) => {
                 if(err){
-                    console.log(err)
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
                     res.sendStatus(500)
                 } 
                 if(data.rows.length > 0 && data.rows[0].creator_id === req.user.id){
@@ -40,7 +40,7 @@ exports.getUsersData = (req, res) => {
             [skill_id],
             (err, data) => {
                 if(err){
-                    console.log(err)
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
                     res.sendStatus(500)
                 } else {
                     res.send(data.rows)
@@ -86,7 +86,7 @@ exports.getDAU = (req, res) => {
             [skill_id, from, to],
             (err, data) => {
                 if(err){
-                    console.log(err)
+                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
                     res.sendStatus(500)
                 } else {
                     res.send(data.rows)
@@ -112,7 +112,7 @@ exports.getStats = async (req, res) => {
             interactions: interactions.count
         })
     } catch (err) {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)
     }
 }

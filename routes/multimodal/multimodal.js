@@ -15,8 +15,7 @@ exports.getDisplay = (req, res) => {
 			[id, req.user.id], (err, result) =>{
 			if(err){
 				res.sendStatus(500);
-				console.error(err)
-				console.trace();
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			}else if(result.rows.length === 0){
 				res.sendStatus(404);
 			}else{
@@ -35,8 +34,7 @@ exports.getDisplays = (req, res) => {
 		pool.query('SELECT * FROM displays WHERE creator_id = $1 AND (skill_id = $2 OR skill_id IS NULL)', [req.user.id, skill_id], (err, result)=>{
 			if(err){
 				res.sendStatus(500)
-				console.error(err)
-				console.trace()
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			}else{
 				res.send(result.rows.map(row => {
 					row.id = hashids.encode(row.id);
@@ -61,8 +59,7 @@ exports.setDisplay = (req, res) => {
 		[req.user.id, id, req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err) => {
 			if(err){
 				res.sendStatus(500);
-				console.error(err)
-				console.trace();
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			}else{
 				res.sendStatus(200);
 			}
@@ -73,8 +70,7 @@ exports.setDisplay = (req, res) => {
 		[req.user.id, req.body.title, req.body.description, req.body.document, req.body.datasource, skill_id], (err, result) => {
 			if(err){
 				res.sendStatus(500);
-				console.error(err)
-				console.trace();
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			}else{
 				res.send(hashids.encode(result.rows[0].id));
 			}
@@ -90,8 +86,7 @@ exports.deleteDisplay = (req, res) => {
 		pool.query('DELETE FROM displays WHERE id=$1 AND creator_id=$2', [id, req.user.id], err =>{
 			if(err){
 				res.sendStatus(500);
-				console.error(err)
-				console.trace();
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			}else{
 				res.sendStatus(200);
 			}

@@ -50,7 +50,6 @@ class LightCanvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: false,
             testing_modal: false,
             testing_info: false,
             variables: [],
@@ -183,7 +182,6 @@ class LightCanvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: diagram.last_save,
                 loading_diagram: false,
                 variables: variables
             })

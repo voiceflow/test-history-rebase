@@ -115,19 +115,20 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    openUpdate() {
+        this.props.setCB(() => {
+            this.setState({
+                updateModal: true
+            })
+        })
+        this.props.onSave()
+    }
+
     reset() {
         this.setState({
             amzn_error: false,
             stage: this.token ? 0 : 5
         })
-    }
-
-    openUpdate() {
-        this.props.onSave(() => {
-            this.setState({
-                updateModal: true
-            })
-        });
     }
 
     checkVendor(){

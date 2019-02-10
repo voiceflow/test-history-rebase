@@ -1679,6 +1679,7 @@ class Canvas extends Component {
                     setHelp={(help) => this.setState({help: help})}
                 />
                 { !this.props.preview ? <ActionGroup
+                        setCB={(cb)=>{this.saveCB=cb}}
                         skill={this.state.skill}
                         preview={this.props.preview}
                         title={this.state.diagram_name}

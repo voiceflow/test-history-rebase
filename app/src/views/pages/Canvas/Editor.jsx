@@ -397,7 +397,7 @@ class Editor extends Component {
                                                         <i className="fas fa-redo text-muted"/> Reprompt
                                                     </DropdownItem>
                                                 }
-                                                <DropdownItem onClick={this.props.copyNode} className="pointer">
+                                                <DropdownItem onClick={()=>this.props.copyNode()} className="pointer">
                                                     <i className="fas fa-copy text-muted"/> Copy
                                                 </DropdownItem>
                                                 <DropdownItem onClick={this.props.removeNode} className="pointer">

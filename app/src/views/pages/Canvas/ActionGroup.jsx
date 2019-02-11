@@ -284,7 +284,6 @@ class ActionGroup extends PureComponent {
 
         if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
             p.history.push(`/publish/${p.skill.skill_id}/google`)
-            p.onError('Project ID or Authentication Token not found. Please fill in the required fields, and click "Publish"')
             return
         }
 

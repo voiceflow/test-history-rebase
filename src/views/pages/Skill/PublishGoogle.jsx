@@ -95,11 +95,9 @@ class GooglePublish extends Component {
   }
 
   togglePublish() {
-    if (this.state.stage !== 0) {
-      this.setState({
-        publish_modal_open: !this.state.publish_modal_open
-      });
-    }
+    this.setState({
+      publish_modal_open: !this.state.publish_modal_open
+    });
   }
 
   scrollToTop() {
@@ -218,7 +216,7 @@ class GooglePublish extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.loaded) {
+    if (this.state.loaded && this.state.credentials) {
       this.save(true)
     }
   }
@@ -262,13 +260,17 @@ class GooglePublish extends Component {
       await AuthenticationService.verifyGoogleToken(this.state.google_token)
       this.setState({
         stage: 2,
-        publish_modal_open: false
+        publish_modal_open: this.state.publish_clicked
       })
-      this.props.onConfirm({
-        warning: false,
-        text: <Alert color="success" className="mb-0">Success! Your project is now ready for upload.</Alert>,
-        confirm: () => { this.props.history.push(`/canvas/${this.props.skill.skill_id}/${this.props.skill.diagram}`) }
-      })
+      if (this.state.publish_clicked) {
+        this.onPublish()
+      } else {
+        this.props.onConfirm({
+          warning: false,
+          text: <Alert color="success" className="mb-0">Success! Your project is now ready for upload.</Alert>,
+          confirm: () => {}
+        })
+      }
     } catch (e) {
       this.setState({
         stage: 0
@@ -301,6 +303,10 @@ class GooglePublish extends Component {
       this.setState({
         credentials: false,
         project_id: null,
+        locales: [],
+        main_locale: null,
+        uploaded: false,
+        google_link_user: 0
       })
     } catch (e) {
       this.props.onError(e)
@@ -362,7 +368,8 @@ class GooglePublish extends Component {
 
   onPublishClicked() {
     this.setState({
-      publish_modal_open: true
+      publish_modal_open: true,
+      publish_clicked: true
     })
     if (this.state.stage === 2) {
       this.onPublish()
@@ -710,7 +717,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>}
               </Form>
-              <div className="text-center">
+              {this.state.credentials && <div className="text-center">
                 <button
                   variant="contained"
                   className="purple-btn"
@@ -719,7 +726,7 @@ class GooglePublish extends Component {
                   Publish Skill
                   <i className="fab fa-google ml-2" />
                 </button>
-              </div>
+              </div>}
 
             </div>
           </div>

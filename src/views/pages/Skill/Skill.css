@@ -619,3 +619,25 @@ textarea::placeholder {
   height: 2.5em;
   width: 2.5em;
 }
+
+.tooltip-link {
+  cursor: pointer;
+  font-size: 0.8em;
+  color: #8da2b5;
+}
+
+.tooltip-link:hover {
+  color: #42a5ff;
+}
+
+.google-link-input {
+  height: 1.6em;
+  width: 1.5em;
+  display: inline;
+  padding: 0.1em;
+  text-align: center;
+}
+
+.google-link-publish {
+  font-size: 0.8em;
+}

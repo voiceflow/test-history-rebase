@@ -5,13 +5,13 @@ import AuthenticationService from '../../../services/Authentication'
 
 import axios from 'axios'
 
-import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
-import moment from 'moment'
 import ErrorModal from '../../components/Modals/ErrorModal'
 import ConfirmModal from '../../components/Modals/ConfirmModal'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
+import { Tooltip } from 'react-tippy';
 
 const MAX_SIZE = 10 * 1024 * 1024
 
@@ -48,7 +48,7 @@ const _ = require('lodash');
 
 const GOOGLE_PUBLISH_STAGES = {
   "-1": "Login Failed",
-  "0": "Authenticate with Google",
+  "0": "Just one more step: Authenticate with Google Actions",
   "1": "Verifying Google Auth Token",
   "2": "Rendering",
   "3": "Publishing",
@@ -90,12 +90,16 @@ class GooglePublish extends Component {
     this.onPublishClicked = this.onPublishClicked.bind(this)
     this.publishedContent = this.publishedContent.bind(this)
     this.onDrop = this.onDrop.bind(this)
+    this.unlinkGoogle = this.unlinkGoogle.bind(this)
+    this.onUnlinkClick = this.onUnlinkClick.bind(this)
   }
 
   togglePublish() {
-    this.setState({
-      publish_modal_open: !this.state.publish_modal_open
-    });
+    if (this.state.stage !== 0) {
+      this.setState({
+        publish_modal_open: !this.state.publish_modal_open
+      });
+    }
   }
 
   scrollToTop() {
@@ -157,14 +161,13 @@ class GooglePublish extends Component {
 
   componentDidMount() {
     try {
-      AuthenticationService.googleAccessToken().then(token => {
-        this.setState({
-          stage: token ? 2 : 0,
-        });
-      });
-      AuthenticationService.dialogflowToken(this.state.skill_id).then(token => {
-        this.setState({
-          credentials: token ? true : false,
+      AuthenticationService.googleAccessToken().then(g_token => {
+        AuthenticationService.dialogflowToken(this.state.skill_id).then(d_token => {
+          this.setState({
+            credentials: d_token ? true : false,
+            publish_modal_open: d_token && !g_token,
+            stage: g_token ? 2 : 0,
+          });
         });
       });
     } catch (e) {
@@ -190,6 +193,10 @@ class GooglePublish extends Component {
         }
         if (!publish_info.main_locale) {
           publish_info.main_locale = 'en'
+        }
+
+        if (!publish_info.google_link_user) {
+          publish_info.google_link_user = '0'
         }
 
         let { project_id, created, diagram, privacy_policy, terms_and_cond } = res.data
@@ -224,14 +231,11 @@ class GooglePublish extends Component {
         project_id: s.project_id,
         locales: s.locales,
         main_locale: s.main_locale,
-        uploaded: s.uploaded
+        uploaded: s.uploaded,
+        google_link_user: s.google_link_user
       }
     })
-      .then(res => {
-        // TODO: Antipattern, fix this when we do redux
-        this.setState({
-          saved: true
-        });
+      .then(() => {
         if (typeof (cb) === 'function') cb();
       })
       .catch(err => {
@@ -245,7 +249,6 @@ class GooglePublish extends Component {
   handleChange(event) {
     if (this.state.stage !== 11) {
       this.setState({
-        saved: false,
         [event.target.name]: event.target.value
       });
     }
@@ -257,14 +260,55 @@ class GooglePublish extends Component {
     })
     try {
       await AuthenticationService.verifyGoogleToken(this.state.google_token)
-      this.onPublish()
+      this.setState({
+        stage: 2,
+        publish_modal_open: false
+      })
+      this.props.onConfirm({
+        warning: false,
+        text: <Alert color="success" className="mb-0">Success! Your project is now ready for upload.</Alert>,
+        confirm: () => { this.props.history.push(`/canvas/${this.props.skill.skill_id}/${this.props.skill.diagram}`) }
+      })
     } catch (e) {
       this.setState({
-        stage: 0,
-        publish_modal_open: false
+        stage: 0
       })
       this.props.onError(e)
     }
+  }
+
+  onUnlinkClick() {
+    this.props.onConfirm({
+      warning: true,
+      text: <Alert color="warning" className="mb-0">Are you sure you want to unlink the google project {this.state.project_id}? You will be able to link a new google project afterwards.</Alert>,
+      confirm: () => {
+        this.unlinkGoogle()
+      }
+    })
+  }
+
+  async unlinkGoogle() {
+    this.setState({
+      unlink_loading: true
+    })
+
+    try {
+      await axios.delete('/session/google/dialogflow_access_token', { 
+        data: {
+          skill_id: this.state.skill_id
+        }
+      })
+      this.setState({
+        credentials: false,
+        project_id: null,
+      })
+    } catch (e) {
+      this.props.onError(e)
+    }
+
+    this.setState({
+      unlink_loading: false
+    })
   }
 
   onLocaleBtnClick(locale) {
@@ -275,14 +319,12 @@ class GooglePublish extends Component {
       locales.push(locale)
     }
     this.setState({
-      saved: false,
       locales: locales
     })
   }
 
   onMainLocaleBtnClick(locale) {
     this.setState({
-      saved: false,
       main_locale: locale
     })
   }
@@ -299,10 +341,12 @@ class GooglePublish extends Component {
             token: text,
             skill_id: this.state.skill_id
           })
+
           this.setState({
             credentials: true,
             loading_creds: false,
-            project_id: res.data.project_id
+            project_id: res.data.project_id,
+            publish_modal_open: this.state.stage === 0
           })
         } catch (e) {
           this.props.onError(e.response.data || e)
@@ -339,7 +383,7 @@ class GooglePublish extends Component {
               <div className="col-9 vertical-space">
                 <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
                 <div className="subheader-right">
-                  <button variant="contained" className="purple-btn google-verify-btn" onClick={this.verifyGoogleToken}>Verify Token <i className="fab fa-google ml-2" /></button>
+                  <button variant="contained" className="purple-btn google-verify-btn" onClick={() => this.verifyGoogleToken()}>Verify Token <i className="fab fa-google ml-2" /></button>
                 </div>
               </div>
             </div>
@@ -362,9 +406,13 @@ class GooglePublish extends Component {
             You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
         </span>
           <div className="my-3">
-            <a href={`https://console.actions.google.com/project/${this.state.project_id}/simulator`}
-              className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+            <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+              className="btn btn-primary mr-4" target="_blank" rel="noopener noreferrer">
               Test on Google Actions Simulator
+            </a>
+            <a href={`http://university.getvoiceflow.com/voiceflow-tutorials/google-assistant/deploying-your-google-assistant-project-to-production`}
+              className="btn btn-default" target="_blank" rel="noopener noreferrer">
+              Submit for Review
             </a>
           </div>
         </div>
@@ -392,7 +440,7 @@ class GooglePublish extends Component {
       modal_content = this.publishedContent()
     }
 
-    let googleConsoleUrl = `https://developer.amazon.com/alexa/console/ask/build/custom/${this.state.amzn_id}/development/en_US/dashboard`;
+    let googleConsoleUrl = `https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/overview`;
 
     if (!this.state.loaded) return <div className="super-center h-100 w-100">
       <div className='text-center'>
@@ -466,7 +514,7 @@ class GooglePublish extends Component {
                   </div>
                 </div>
                 : null}
-              {this.state.project_id ?
+              {this.state.project_id && this.state.uploaded ?
                 <div className="alert alert-success mb-4" role="alert">
                   <div className="d-flex justify-content-between align-items-center">
                     <span>This skill is linked on the Google Actions Console</span>
@@ -475,9 +523,30 @@ class GooglePublish extends Component {
                   <Collapse isOpen={this.state.id_collapse}>
                     <hr />
                     <span>Project ID | </span>
-                    <a href={`https://console.actions.google.com/u/0/project/${this.state.project_id}/simulator`} target="_blank" rel="noopener noreferrer">
-                      <b>{this.state.project_id}</b>
+                    <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/simulator`} target="_blank" rel="noopener noreferrer">
+                      <b>{this.state.project_id} </b>
                     </a>
+
+                    {!this.state.modify_url && <span onClick={() => { this.setState({ modify_url: true }) }} className='tooltip-link ml-2'>
+                      Link not working? Modify your google user ID
+                    </span>}
+
+                    {this.state.modify_url && <span className='ml-2 google-link-publish'>
+                      <a href={`https://console.actions.google.com/u/${this.state.google_link_user || '0'}/project/${this.state.project_id}/simulator`} target="_blank" rel="noopener noreferrer">
+                        {`https://console.actions.google.com/u/`}
+                        <span><Input className="google-link-input" name='google_link_user' value={this.state.google_link_user} onChange={this.handleChange} onClick={e => e.preventDefault()}></Input></span>
+                        {`/project/${this.state.project_id}/simulator`}
+                      </a>
+                      <Tooltip
+                        target="tooltip"
+                        className="menu-tip"
+                        theme="menu"
+                        position="bottom"
+                        title="This changes the Google Account that your link points to. A value of '0' will use your default Google Account, '1' will use the second Google Account you are logged into, and so on."
+                      >
+                        <i className="fas fa-question"></i>
+                      </Tooltip>
+                    </span>}
                   </Collapse>
                 </div>
                 : null}
@@ -500,10 +569,10 @@ class GooglePublish extends Component {
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
-                            Your <b>Google Assistant (Dialogflow) Credentials File</b> for publishing. Instructions can be found <a href="https://console.actions.google.com/u/0/" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
+                            Your <b>Dialogflow Credentials File</b> for publishing. Instructions can be found <a href="http://university.getvoiceflow.com/voiceflow-tutorials/google-assistant/uploading-your-project-to-google-assistant" target="_blank" className="google-link" rel="noopener noreferrer">here</a></p>
                         </div>
                         <div className="col-9">
-                          <Label className="publish-label">Google Assistant Credentials File *</Label>
+                          <Label className="publish-label">Dialogflow Credentials File *</Label>
                           <div>
                             <Dropzone
                               className={`dropzone google-upload ${this.state.credentials ? 'disabled' : ''}`}
@@ -549,6 +618,17 @@ class GooglePublish extends Component {
                         </div>
                       </div>
                     </FormGroup>}
+                    {this.state.credentials &&
+                      <div className="row">
+                        <div className="col-3 publish-info">
+                          <p className="helper-text">
+                            <b>Unlink</b> the current Google Actions project.
+                      </p>
+                        </div>
+                        <div className="col-9">
+                          <Button className="w-100" color="danger" onClick={this.onUnlinkClick}>{this.state.unlink_loading ? <span className="loader"></span> : 'Unlink Google Project'}</Button>
+                        </div>
+                      </div>}
                   </div>
                 </div>
                 {this.state.credentials && <div className="big-settings-alignment-div">
@@ -574,7 +654,8 @@ class GooglePublish extends Component {
                       </div>
                     </FormGroup>
 
-                    <FormGroup>
+                    {/* Disabled for now, because Dialogflow listEntityTypes(...) is not working as expected */}
+                    {/* <FormGroup>
                       <div className="row">
                         <div className="col-3 publish-info">
                           <p className="helper-text">
@@ -592,7 +673,7 @@ class GooglePublish extends Component {
                           </ButtonGroup>
                         </div>
                       </div>
-                    </FormGroup>
+                    </FormGroup> */}
                   </div>
                 </div>}
 

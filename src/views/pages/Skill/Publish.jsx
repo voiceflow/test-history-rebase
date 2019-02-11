@@ -6,18 +6,20 @@ import PublishMarket from '../PublishMarket/PublishMarket'
 import PublishGoogle from './PublishGoogle'
 import cloneDeep from 'lodash/cloneDeep';
 
+import uuid from 'uuid/v4'
+
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
 }
 
 const tabs = [
     {
-        display: <React.Fragment><i className="fab fa-amazon mr-2" /> Alexa</React.Fragment>,
+        display: (key) => <React.Fragment key={key}><i className="fab fa-amazon mr-2" /> Alexa</React.Fragment>,
         match: ['alexa'],
         link: '/publish/:skill_id'
     },
     {
-        display: <React.Fragment><i className="fab fa-google mr-2"></i> Google<small> &nbsp; soon</small></React.Fragment>,
+        display: (key) => <React.Fragment key={key}><i className="fab fa-google mr-2"></i> Google<small> &nbsp; soon</small></React.Fragment>,
         match: ['google'],
         link: '/publish/:skill_id/google'
     }
@@ -58,11 +60,11 @@ class Publish extends Component {
                         let res
                         if (tab.match.includes(this.props.page)) {
                             res = <div className="nav-item active">
-                                {tab.display}
+                                {tab.display(i)}
                             </div>
                         } else {
                             res = <Link to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
-                                {tab.display}
+                                {tab.display(i)}
                             </Link>
                         }
                         return (

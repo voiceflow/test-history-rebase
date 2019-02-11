@@ -182,7 +182,6 @@ app.post('/customer/subscription', ensureLoggedIn(), Customer.create)
 app.post('/customer/webhook', Customer.webhook)
 app.get('/customer/promo/:code', ensureLoggedIn(), Customer.codes)
 
-app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.get('/diagram/:id/variables', ensureLoggedIn(), Diagram.getVariables);
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);

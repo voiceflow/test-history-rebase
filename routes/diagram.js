@@ -33,54 +33,6 @@ const getVariables = (req, res) => {
   })
 }
 
-const getDiagrams = (req, res) => {
-  if (!req.user) {
-    res.sendStatus(401);
-    return;
-  }
-  let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
-  }
-
-  if (req.user.admin < 100) {
-    params.FilterExpression = 'creator = :creator'
-    params.ExpressionAttributeValues = {
-      ':creator': req.user.id
-    }
-  }
-
-  let items = []
-
-  docClient.scan(params, onScan);
-
-  function onScan(err, data) {
-    if (err) {
-      console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
-    } else {
-      data.Items.forEach(function (item) {
-        items.push(item)
-      });
-
-      // continue scanning if we have more items
-      if (typeof data.LastEvaluatedKey != "undefined") {
-        params.ExclusiveStartKey = data.LastEvaluatedKey;
-        docClient.scan(params, onScan);
-      } else {
-        items.sort((a, b) => {
-          let keyA = a.title,
-            keyB = b.title;
-          // Compare the 2 dates
-          if (keyA < keyB) return -1;
-          if (keyA > keyB) return 1;
-          return 0;
-        });
-        res.send(items);
-      }
-    }
-  }
-};
-
 const getDiagram = (req, res) => {
   if (!req.user) {
     res.sendStatus(401);
@@ -158,7 +110,6 @@ const setDiagram = async (req, res) => {
       return res.sendStatus(500)
   }
 
-  diagram.last_save = Date.now();
   let params = {
       TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
       Item: {
@@ -200,7 +151,6 @@ const setDiagram = async (req, res) => {
                   // otherwise update
                   await pool.query(`UPDATE diagrams SET sub_diagrams = $1, used_intents = $2, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, used_intents_string, diagram.id]);
                   await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
-                  await pool.query(`UPDATE skill_versions SET last_save = NOW() WHERE skill_id=$1 AND canonical_skill_id = $1`, [diagram.skill]) 
               }
               res.sendStatus(200);
           }catch(e){
@@ -391,7 +341,6 @@ const publishTest = async (req, res) => {
 module.exports = {
   updateName: updateName,
   getVariables: getVariables,
-  getDiagrams: getDiagrams,
   getDiagram: getDiagram,
   deleteDiagram: deleteDiagram,
   setDiagram: setDiagram,

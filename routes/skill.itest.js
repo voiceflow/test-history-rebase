@@ -175,30 +175,6 @@ describe('Skill', () => {
         })
     })
 
-    it('gets diagrams', done => {
-      request(app)
-        .get('/diagrams')
-        .set('cookie', 'auth='+token)
-        .expect(200)
-        .expect(res => {
-          if (res.body.length === 0) throw new error('incorrect result')
-        })
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
-
-    it('doesn\'t get diagrams if not authenticated', done => {
-      request(app)
-        .get('/diagrams')
-        .expect(401)
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
-
     it('gets created diagram', done => {
       request(app)
         .get('/diagram/'+diagram_id)

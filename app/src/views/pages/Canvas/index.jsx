@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import * as SRD from 'storm-react-diagrams'
 import Menu from './Menu'
 import Editor from './Editor'
-import moment from 'moment'
 import axios from 'axios'
 import update from 'immutability-helper';
 // import Loader from './Loader'
@@ -146,6 +145,8 @@ class Canvas extends Component {
         this.mouseMove = this.mouseMove.bind(this)
         this.centerDiagram = this.centerDiagram.bind(this)
         this.toggleShortcuts = this.toggleShortcuts.bind(this)
+        this.canSave = this.canSave.bind(this)
+        this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -182,7 +183,6 @@ class Canvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: props.skill.last_save,
             testing_modal: false,
             testing_info: false,
             variables: [],
@@ -229,6 +229,26 @@ class Canvas extends Component {
                 e.stopPropagation()
             }
         })
+
+        // AUTOSAVE EVERY 5 SECONDS
+        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+            this.interval = setInterval(()=>{
+                if(this.lastModel){
+                    const currentModel = JSON.stringify(this.state.engine.getDiagramModel().serializeDiagram())
+                    if(currentModel !== this.lastModel){
+                        if(this.canSave()){
+                            this.tooBig = false
+                            this.onSave()
+                        }else{
+                            if(!this.tooBig){
+                                this.tooBig = true
+                                this.props.onError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size')
+                            }
+                        }
+                    }
+                }
+            }, 5000)
+        }
     }
 
     static getDerivedStateFromProps(props, state){
@@ -239,10 +259,14 @@ class Canvas extends Component {
         }
         return null;
     }
+
     componentWillUnmount() {
         Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
-            this.onSave(null, false, false)
+            this.onSave(false)
+        }
+        if(this.interval){
+            clearInterval(this.interval)
         }
     }
 
@@ -261,6 +285,13 @@ class Canvas extends Component {
               this.onLoadId(this.props.diagram_id)
             })
         }
+    }
+
+    canSave(){
+        // Get the size of the diagram in bytes
+        const size = (new TextEncoder('utf-8').encode(JSON.stringify(this.state.engine.getDiagramModel().serializeDiagram()))).length
+        // If the size is too large warn the user
+        return size < 399000
     }
 
     toggleShortcuts(){this.setState({keyboard_help: !this.state.keyboard_help})}
@@ -586,9 +617,10 @@ class Canvas extends Component {
         }
 
         if (flow_id === this.props.diagram_id && !this.props.preview) {
-            this.onSave(() => {
+            this.saveCB = () => {
                 copy(false)
-            })
+            }
+            this.onSave()
         } else {
             copy(true)
         }
@@ -737,7 +769,7 @@ class Canvas extends Component {
         this.state.engine.repaintCanvas()
     }
 
-    onSave(cb, is_new=false, state=true) {
+    onSave(state=true) {
         if(this.saving) return
         this.saving = true
         try {
@@ -776,10 +808,18 @@ class Canvas extends Component {
                     }
                 })
 
-                for (var i = 0; i < this.state.diagrams.length; i++) {
+                if(state){
+                    // UPDATE SKILL GLOBALS HOTFIX
+                    let skill = this.state.skill;
+                    skill.global = this.state.skill.global
+                    this.props.updateSkill(skill)
+
+                    // UPDATE DIAGRAM STRUCTURE
                     let diagrams = this.state.diagrams
-                    if(diagrams[i].id === this.props.diagram_id){
-                        diagrams[i].sub_diagrams = sub_diagrams
+                    for (var i = 0; i < diagrams.length; i++) {
+                        if(diagrams[i].id === this.props.diagram_id){
+                            diagrams[i].sub_diagrams = sub_diagrams
+                        }
                     }
                     state && this.setState({
                         diagrams: diagrams
@@ -789,11 +829,6 @@ class Canvas extends Component {
                         }
                     })
                 }
-
-                // UPDATE SKILL GLOBALS HOTFIX
-                let skill = this.state.skill;
-                skill.global = this.state.skill.global
-                this.props.updateSkill(skill)
 
                 var diagram = {
                     id: this.props.diagram_id,
@@ -813,30 +848,39 @@ class Canvas extends Component {
                     account_linking: JSON.stringify(s.account_linking)
                 })
 
-                const save_diagram = axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
+                const save_diagram = axios.post(`/diagram`, diagram)
                 
                 Promise.all([save_skill_intents, save_diagram]).then(res => {
                     this.saving = false
+                    this.lastModel = data
                     state && this.setState({
                         saving: false,
-                        saved: true,
-                        last_save: Date.now()
-                    });
-                    if(typeof cb === "function") cb(this.props.diagram_id)
+                        saved: true
+                    })
+                    if(typeof this.saveCB === "function"){
+                        this.saveCB(this.props.diagram_id)
+                        this.saveCB = null
+                    }
                 }).catch(rej_err => {
                     this.saving = false
                     console.log(rej_err)
                     state && this.setState({
                         saving: false
                     }) && this.props.onError('Error Saving Project')
-                    if(typeof cb === "function") cb(null)
+                    if(typeof this.saveCB === "function"){
+                        this.saveCB(null)
+                        this.saveCB = null
+                    }
                 })
             }
         } catch (e) {
             this.saving = false
             console.log(e)
             state && this.props.onError('Error Saving - Project Structure (Check Logs)')
-            if(typeof cb === "function") cb(null)
+            if(typeof this.saveCB === "function"){
+                this.saveCB(null)
+                this.saveCB = null
+            }
         }
     }
 
@@ -856,6 +900,7 @@ class Canvas extends Component {
         if (diagram_json) {
             // CONVERT DEPRECATED BLOCKS
             diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+            this.lastModel = JSON.stringify(diagram_json)
 
             // This should not happen
             if(diagram_json.nodes.length === 0){
@@ -902,7 +947,6 @@ class Canvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: this.props.skill.last_save,
                 loading_diagram: false,
                 variables: variables,
                 diagram_level_intents: diagram_level_intents
@@ -1090,7 +1134,7 @@ class Canvas extends Component {
         if(this.props.preview){
             this.runTest()
         } else {
-            this.onSave(diagram_id => {
+            this.saveCB = (diagram_id) => {
                 if(diagram_id === null){
                     this.setState({
                         testing_modal: false
@@ -1109,7 +1153,8 @@ class Canvas extends Component {
                         this.props.onError("Could Not Render Your Project")
                     })
                 }
-            })
+            }
+            this.onSave()
         }
     }
 
@@ -1123,7 +1168,8 @@ class Canvas extends Component {
         node.extras.diagram_id = id
 
         // save the current diagram
-        this.onSave(() => {
+        this.saveCB = () => {
+            this.saveCB = null
             // Generate a new diagram, save it, and go to it
             let curr_template
             if(!template){
@@ -1168,7 +1214,8 @@ class Canvas extends Component {
                 })
                 this.props.onError('Unable to create new Flow')
             })
-        })
+        }
+        this.onSave()
     }
 
     addRemoveListener(node){
@@ -1222,9 +1269,10 @@ class Canvas extends Component {
         if(new_diagram_id !== this.props.diagram_id){
             this.setState({loading_diagram: true})
             if(save && !this.props.preview){
-                this.onSave(() => {
+                this.saveCB = () => {
                     this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
-                })
+                }
+                this.onSave()
             }else if (this.props.preview){
                 this.props.history.push(`/preview/${this.state.skill.skill_id}/${new_diagram_id}`)
             }else{
@@ -1610,10 +1658,14 @@ class Canvas extends Component {
     render() {
         return (
             <React.Fragment>
-                {/* <Prompt
-                    when={!this.state.saved}
-                    message="Are you sure you want to leave before saving?"
-                /> */}
+                <Prompt
+                    message={()=>{
+                        if(!this.canSave()){
+                            return "This flow is too large to be saved, please remove blocks to reduce size - are you sure you would like to leave without saving?"
+                        }
+                        return true
+                    }}
+                />
                 <DefaultModal
                     open={this.state.keyboard_help}
                     header="Keyboard Shortcuts"
@@ -1627,7 +1679,7 @@ class Canvas extends Component {
                     setHelp={(help) => this.setState({help: help})}
                 />
                 { !this.props.preview ? <ActionGroup
-                        lastSave={(this.state.last_save ? "last saved " + moment(this.state.last_save).fromNow() : "last saved")}
+                        setCB={(cb)=>{this.saveCB=cb}}
                         skill={this.state.skill}
                         preview={this.props.preview}
                         title={this.state.diagram_name}
@@ -1687,7 +1739,6 @@ class Canvas extends Component {
                         updateConfirm={(confirm) => this.setState({confirm: confirm})}
                         saving={this.state.saving}
                         preview={this.props.preview}
-                        onSave={this.onSave}
                         onError={this.props.onError}
                         toggleUpgrade={this.props.toggleUpgrade}
                     />

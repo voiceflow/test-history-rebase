@@ -77,7 +77,6 @@ const setReview = (req, res) => {
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
             res.sendStatus(err.statusCode);
         } else if (data.Item) {
-            delete data.Item.last_save;
             data.Item.submitted = Date.now();
             data.Item.status = "submitted";
             let exists = {

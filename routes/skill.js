@@ -124,7 +124,9 @@ exports.getSkill = (req, res) => {
           SELECT
               name,
               preview,
-              diagram
+              diagram,
+              intents,
+              slots
           FROM
               skills
           WHERE
@@ -133,7 +135,6 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
       SELECT
-        sv.last_save,
         name,
         amzn_id,
         review,
@@ -154,12 +155,10 @@ exports.getSkill = (req, res) => {
         repeat
     FROM
         skills s
-        INNER JOIN skill_versions sv ON s.skill_id = sv.canonical_skill_id
-            AND s.skill_id = sv.skill_id
-        WHERE
-            s.skill_id = $1
-            AND s.creator_id = $2
-        LIMIT 1`;
+    WHERE
+        s.skill_id = $1
+        AND s.creator_id = $2
+    LIMIT 1`;
     params = [id, req.user.id];
   } else {
     sql = `
@@ -304,7 +303,7 @@ exports.getProducts = (req, res) => {
 
   pool.query(sql, [id], (err, data) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -350,7 +349,6 @@ exports.setProduct = async (req, res) => {
     return res.sendStatus(500)
   }
 
-  product.last_save = Date.now()
   if (!product.name) {
     product.name = 'New Product'
   }

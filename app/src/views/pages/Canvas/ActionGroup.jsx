@@ -115,19 +115,20 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    openUpdate() {
+        this.props.setCB(() => {
+            this.setState({
+                updateModal: true
+            })
+        })
+        this.props.onSave()
+    }
+
     reset() {
         this.setState({
             amzn_error: false,
             stage: this.token ? 0 : 5
         })
-    }
-
-    openUpdate() {
-        this.props.onSave(() => {
-            this.setState({
-                updateModal: true
-            })
-        });
     }
 
     checkVendor(){
@@ -442,7 +443,6 @@ class ActionGroup extends PureComponent {
                 </ModalBody>
             </Modal>
             <div className="title-group no-select">
-                <div className="last-save">{!this.props.saved && <span className="dot"/>}{this.props.lastSave}</div>
                 <div className="align-icon">
                     <Tooltip
                         distance={16}

@@ -53,7 +53,6 @@ class Skill extends Component {
         this.state = {
             loaded: false,
             dropdown: false,
-            saved: true,
             skill_id: this.props.skill.skill_id,
             error: null,
             stage: 1,
@@ -131,8 +130,7 @@ class Skill extends Component {
 
     onRadio(type, value) {
         this.setState({
-            [type]: value,
-            saved: false
+            [type]: value
         })
     }
 
@@ -389,10 +387,7 @@ class Skill extends Component {
         properties.locales = JSON.stringify(properties.locales)
 
         axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), properties)
-        .then(res => {
-            this.setState({
-                saved: true
-            });
+        .then(() => {
             if(typeof(cb) === 'function') cb();
         })
         .catch(err => {
@@ -406,7 +401,6 @@ class Skill extends Component {
     handleChange(event){
         if(this.state.stage !== 11){
             this.setState({
-                saved: false,
                 [event.target.name]: event.target.value
             });
         }
@@ -414,7 +408,6 @@ class Skill extends Component {
 
     handleSelection(value){
         this.setState({
-            saved: false,
             category: value
         });
     }
@@ -466,7 +459,6 @@ class Skill extends Component {
             locales.push(locale)
         }
         this.setState({
-            saved: false,
             locales : locales
         })
     }
@@ -937,7 +929,7 @@ class Skill extends Component {
                                                 list={this.state.invocations}
                                                 max={3}
                                                 prepend="Alexa,"
-                                                update={(list) => this.setState({invocations: list, saved: false})}
+                                                update={(list) => this.setState({invocations: list})}
                                                 isDisabled={disabled_stages.has(this.state.stage)}
                                                 placeholder={"open/start/launch " + this.state.name}
                                                 add={<span><i className="fas fa-plus"/> Add Invocation</span>}

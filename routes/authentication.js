@@ -817,6 +817,38 @@ const _getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
 	})
 })
 
+const deleteGoogleAccessToken = async (req, res) => {
+	const creator_id = req.user.id
+	if (!creator_id) {
+		res.status(400).send('Bad Request: Creator ID Missing')
+		return
+	}
+
+	try {
+		await pool.query('UPDATE creators SET gactions_token = NULL WHERE creator_id = $1', [creator_id])
+		res.sendStatus(200)
+	} catch (e) {
+		res.status(500).send(e)
+	}
+}
+
+const deleteDialogflowToken = async (req, res) => {
+	let skill_id = req.body.skill_id
+	if (!skill_id) {
+		res.status(400).send('Bad Request: Skill ID Missing')
+		return
+	}
+
+	skill_id = hashids.decode(skill_id)[0]
+
+	try {
+		await pool.query('UPDATE skills SET dialogflow_token = NULL WHERE skill_id = $1', [skill_id])
+		res.sendStatus(200)
+	} catch (e) {
+		res.status(500).send(e)
+	}
+}
+
 module.exports = {
 	AccessToken: AccessToken,
 	hasAccessToken: hasAccessToken,
@@ -838,5 +870,7 @@ module.exports = {
 	hasGoogleAccessToken: hasGoogleAccessToken,
 	hasDialogflowToken: hasDialogflowToken,
 	verifyDialogflowToken: verifyDialogflowToken,
-	_getGoogleAccessToken: _getGoogleAccessToken
+	_getGoogleAccessToken: _getGoogleAccessToken,
+	deleteGoogleAccessToken: deleteGoogleAccessToken,
+	deleteDialogflowToken: deleteDialogflowToken
 }

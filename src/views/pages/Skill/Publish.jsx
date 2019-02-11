@@ -6,7 +6,7 @@ import PublishMarket from '../PublishMarket/PublishMarket'
 import PublishGoogle from './PublishGoogle'
 import cloneDeep from 'lodash/cloneDeep';
 
-import uuid from 'uuid/v4'
+import { Badge } from 'reactstrap';
 
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
@@ -19,7 +19,7 @@ const tabs = [
         link: '/publish/:skill_id'
     },
     {
-        display: (key) => <React.Fragment key={key}><i className="fab fa-google mr-2"></i> Google<small> &nbsp; soon</small></React.Fragment>,
+        display: (key) => <React.Fragment key={key}><i className="fab fa-google mr-2"></i> Google <Badge color="primary" className="ml-2">Beta</Badge></React.Fragment>,
         match: ['google'],
         link: '/publish/:skill_id/google'
     }

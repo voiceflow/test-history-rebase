@@ -563,7 +563,7 @@ class GooglePublish extends Component {
                 : null}
               <Form>
                 <div className="big-settings-alignment-div">
-                  <div className="mb-4"><b>Credentials</b></div>
+                  <div className="mb-4 mt-5"><b>Credentials</b></div>
                   <div className="big-settings-content">
                     <FormGroup>
                       <div className="row">

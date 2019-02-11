@@ -44,7 +44,6 @@
     "react-ga": "^2.5.3",
     "react-google-login": "^4.0.1",
     "react-intercom": "^1.0.14",
-    "react-joyride": "^2.0.0-15",
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-masonry-component": "^6.2.1",
     "react-mentions": "^2.4.1",
@@ -75,10 +74,10 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "patch-package": "^5.1.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
+    "patch-package": "^5.1.1",
     "regenerator-runtime": "^0.13.1"
   },
   "browserslist": [

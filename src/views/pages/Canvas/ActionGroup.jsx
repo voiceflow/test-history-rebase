@@ -125,7 +125,7 @@ class ActionGroup extends PureComponent {
             this.google_token = token;
             this.reset()
         });
-}
+    }
 
     shouldReset() {
         if(ENDING_STAGES.includes(this.state.stage)){
@@ -504,7 +504,7 @@ class ActionGroup extends PureComponent {
                 You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
             </span>
                 <div className="my-3">
-                <a href={`https://console.actions.google.com/project/${this.state.project_id}/simulator`}
+                <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0' }/project/${this.state.project_id}/simulator`}
                     className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                     Test on Google Actions Simulator
                 </a>

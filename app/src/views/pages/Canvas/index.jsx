@@ -250,9 +250,23 @@ class Canvas extends Component {
                         if (!_.isEmpty(node.combines)) {
                             node.extras.nextID = node.combines[0].id
                         }
+                        if (!_.isEmpty(node.combines)) {
+                            node.extras.nextID = node.combines[0].id
+                        }
                         node.combines = _.map(node.combines, (combine, idx) => {
-                            if (combine.parentCombine){
-                                delete combine.parentCombine 
+                            if (combine.parentCombine) {
+                                delete combine.parentCombine
+                            }
+                            if (idx !== node.combines.length - 1 && combine.extras) {
+                                combine.extras.nextID = node.combines[idx + 1].id
+                            } else {
+                                _.forEach(combine.ports, cp => {
+                                    if (!cp.in) {
+                                        if (_.find(node.ports, np => np.id === cp.id)) {
+                                            cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                        }
+                                    }
+                                })
                             }
                             return combine.serialize ? combine.serialize() : combine
                         })
@@ -1390,7 +1404,6 @@ class Canvas extends Component {
                                     if (_.find(node.ports, np => np.id === cp.id)){
                                         cp.links = _.find(node.ports, np => np.id === cp.id).links;
                                     }
-                                    //   delete combine.ports[cp.id]
                                 }
                             })
                         }

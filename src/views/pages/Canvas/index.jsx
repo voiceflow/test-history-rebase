@@ -965,7 +965,7 @@ class Canvas extends Component {
                  current.x = parent.x + 10;
                  firstNode = new BlockNodeModel().deSerialize(firstNode, this.state.engine);
                  lastNode = new BlockNodeModel().deSerialize(lastNode, this.state.engine);
-                 if ((tempIdx <= parent.combines.length - 1 && current.parentCombine) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
+                 if ((tempIdx <= parent.combines.length&& current.parentCombine) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
                     for (name in parentPorts){
                         let parentPort = parentPorts[name]
                         if (parentPort.in){
@@ -980,7 +980,7 @@ class Canvas extends Component {
                             parent.removePort(parent.ports[name])
                         }
                     }
-                     if (tempIdx <= parent.combines.length - 1 && current.parentCombine){
+                     if (tempIdx <= parent.combines.length && current.parentCombine){
                         _.forEach(lastNode.ports, cp => {
                             if (!cp.in){
                                 cp.parent = parent

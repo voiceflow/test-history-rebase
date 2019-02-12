@@ -342,7 +342,7 @@ export class DiagramWidget extends BaseWidget {
 									if (nodeIdx !== target_node.combines.length-1){
 										let nextNode = target_node.combines[nodeIdx + 1];
 										if ((current.y > nextNode.y) && (nextNode!== 'temp')
-										&& (nextNode.extras.type !== 'choice' && nextNode.extras.type !== 'exit' && nextNode.extras.type !== 'stream' && current.extras.type !== 'random' && nextNode.extras.type !== 'interaction' && current.extras.type !== 'if')) {
+											&& (nextNode.extras.type !== 'choice' && nextNode.extras.type !== 'exit' && nextNode.extras.type !== 'stream' && nextNode.extras.type !== 'random' && nextNode.extras.type !== 'interaction' && nextNode.extras.type !== 'if')) {
 											nextNode.y = nextNode.y - current.height / amountZoom;
 											target_node.combines = reorder(target_node.combines, nodeIdx + 1, 'temp');
 											this.props.diagramEngine.enableRepaintEntities([target_node]);

@@ -559,6 +559,33 @@ textarea::placeholder {
   margin: 0px;
 }
 
+.combine-node{
+  display: block;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 10px !important;
+}
+.combinie-node .srd-default-node .srd-default-node__title .srd-default-node__name{
+  font-size: 10px !important;
+}
+
+.srd-default-node.moving{
+ width: 230px !important;
+ height: 40px !important;
+ border-radius: 8px !important;
+ transform: rotate(-3deg) !important;
+}
+
+.combine-node-title {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .shortcut {
   font-size: 14px;
   font-weight: 400;

@@ -1,0 +1,38 @@
+import React from "react";
+import { DiagramEngine, DefaultLinkWidget, LinkModel } from "./../main.js";
+import { Toolkit } from './../Toolkit';
+import { BlockLinkModel } from './../models/BlockLinkModel'
+
+const toolkit = new Toolkit()
+export class BlockLinkFactory extends LinkModel{
+	constructor(color='#E3E9EE', width=2.5) {
+		super("default");
+		this.color = color;
+		this.width = width;
+	}
+
+	generateReactWidget(diagramEngine: DiagramEngine, link: BlockLinkModel): JSX.Element {
+		return React.createElement(DefaultLinkWidget, {
+			link: link,
+			diagramEngine: diagramEngine
+		});
+	}
+
+	getNewInstance(initialConfig?: any): BlockLinkModel {
+		return new BlockLinkModel("default", toolkit.UID());
+	}
+
+	getType(){
+		return this.type;
+	}
+	generateLinkSegment(model: BlockLinkModel, widget: DefaultLinkWidget, selected: boolean, path: string) {
+		return (
+			<path
+				className={selected ? widget.bem("--path-selected") : ""}
+				strokeWidth={this.width}
+				stroke={this.color}
+				d={path}
+			/>
+		);
+	}
+}

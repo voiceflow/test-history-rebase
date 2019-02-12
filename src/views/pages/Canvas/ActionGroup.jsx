@@ -30,7 +30,7 @@ const invNameError = (name, locales) => {
     }
     let characters = InvRegex.validLatinChars
     let inv_name_error = `[${locales.filter(l => l !== 'jp-JP').join(",")}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`
-    if(locales.length === 1 && locales[0] === 'jp-JP'){
+    if(locales.length === 1 && locales[0] === 'ja-JP'){
         characters = InvRegex.validSpokenCharacters
         inv_name_error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces'
     }else if(locales.some(l => l.includes('en'))){

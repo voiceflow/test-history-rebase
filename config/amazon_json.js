@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT} = require('./Constants')
+const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT, INTERFACE_INTENTS} = require('./Constants')
 const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {
@@ -116,6 +116,15 @@ const interactionModel = (req, locale) => {
 			intents_for_amazon.push(formatted_intent)
 		}
 	})
+
+	// INTERFACE REQUIRED INTENTS
+	if(Array.isArray(req.alexa_interfaces)){
+		for(interface of req.alexa_interfaces){
+			if(INTERFACE_INTENTS[interface]){
+				INTERFACE_INTENTS[interface].forEach(i => intents_for_amazon.push(i))
+			}
+		}
+	}
 
 	// Write in default intents if they haven't been declared already
 	DEFAULT_INTENTS.forEach(intent => {

@@ -17,7 +17,8 @@ class BackupSettings extends Component{
             curr_preview: {
                 created: new Date(),
             },
-            versions: []
+            versions: [],
+            live_version: null
         }
 
         this.confirmRestore = this.confirmRestore.bind(this)
@@ -25,11 +26,31 @@ class BackupSettings extends Component{
     }
 
     componentDidMount(){
-        axios.get(`/skill/${this.props.skill.skill_id}/versions`)
+        axios.get(`/skill/${this.props.skill.skill_id}/live_version`)
         .then(res => {
-            this.setState({
-                loading: false,
-                versions: res.data
+            let live_version = res.data.live_version
+            axios.get(`/skill/${this.props.skill.skill_id}/versions`)
+            .then(res => {
+                let versions = []
+                for(let i=0;i<res.data.length;i++){
+                    if(res.data[i].skill_id !== live_version){
+                        versions.push(res.data[i])
+                    } else {
+                        live_version = res.data[i]
+                    }
+                }
+
+                this.setState({
+                    loading: false,
+                    versions: versions,
+                    live_version: live_version
+                })
+            })
+            .catch(err => {
+                this.setState({
+                    loading: false,
+                    error: 'Unable to load versions'
+                })
             })
         })
         .catch(err => {
@@ -64,7 +85,7 @@ class BackupSettings extends Component{
             </div>
         }
 
-        if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
+        if((!Array.isArray(this.state.versions) || this.state.versions.length === 0) && !this.state.live_version){
             return <div className="settings-content clearfix"><Alert color="warning" className="mb-0">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
         }
 
@@ -110,6 +131,20 @@ class BackupSettings extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {
+                                        this.state.live_version ? 
+                                        <tr className="table-primary">
+                                            <td>{moment(this.state.live_version.created).fromNow()} <br/> (Current live version) </td>
+                                            <td>
+                                                <Button className='purple-btn' onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
+                                            </td>
+                                            <td>
+                                                <Button className='purple-btn' onClick={() => this.confirmRestore(this.state.live_version.skill_id, this.state.live_version.canonical_skill_id, this.state.live_version)}>Restore</Button>
+                                            </td>
+                                        </tr>
+                                        :
+                                        null
+                                    }
                                     {this.state.versions.map((version, i) => {
                                         return <tr key={i}>
                                             <td>{moment(version.created).fromNow()}</td>

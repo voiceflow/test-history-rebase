@@ -1312,10 +1312,14 @@ exports.buildGoogleSkill = async (req, res) => {
 
     const project_id = publish_info.project_id
 
-    let { locales, main_locale, uploaded } = publish_info
+    let { locales, main_locale } = publish_info
 
     if (!locales) {
       locales = []
+    }
+
+    if (!main_locale) {
+      main_locale = 'en'
     }
 
     if (_.isNil(project_id)) {
@@ -1378,7 +1382,7 @@ exports.buildGoogleSkill = async (req, res) => {
 
 const updateDialogflowPackage = ({private_key, client_email}, project_id, { intents, slots }, {skill_id}, locale) => new Promise(async (resolve, reject) => {
   try {
-    const client = new DialogflowClient(project_id, private_key, client_email)  
+    const client = new DialogflowClient(project_id, private_key, client_email)
     client.setLocale(locale)
     await client.updateEntities(slots)
     await client.updateIntents(intents)

@@ -925,6 +925,7 @@ class Canvas extends Component {
 
             this.setState({ saved: true })
             this.updateLinter(true)
+            this.onIntentUpdate()
         } else {
             this.props.onError('Could Not Open Project - Corrupted File')
         }

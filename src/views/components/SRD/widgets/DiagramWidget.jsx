@@ -270,7 +270,6 @@ export class DiagramWidget extends BaseWidget {
 							let overlapX = (current.x >= target_node.x && current.x <= (target_node.x+target_node.width/amountZoom)) || (current.x+220 >= target_node.x && current.x+220 <= target_node.x+(target_node.width/amountZoom));
 		         			let overlapY = (current.y >= target_node.y && current.y <= target_node.y+target_node.height/amountZoom) || (current.y+35 >= target_node.y && current.y+35 <= target_node.y+target_node.height/amountZoom);
 							if (!overlapX || !overlapY){
-								this.props.diagramEngine.getDiagramModel().clearSelection()
 								current.isMoveInside = false;
 								if (target_node.combines.length <= 2) {
 									let nodeCount = 0;
@@ -325,6 +324,7 @@ export class DiagramWidget extends BaseWidget {
 								}
 								current.parentCombine = null;
 								current.extras.nextID = null;
+								this.props.diagramEngine.getDiagramModel().clearSelection()
 								this.props.diagramEngine.setSuperSelect(current)
 								this.props.forceRepaint()
 							} else {

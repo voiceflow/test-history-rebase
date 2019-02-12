@@ -120,6 +120,7 @@ class Interaction extends Component {
                         built_ins={this.props.built_ins}
                         onError={this.props.onError}
                         update={this.update}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'intents':
@@ -135,6 +136,7 @@ class Interaction extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'slots':
@@ -148,6 +150,7 @@ class Interaction extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             default:
@@ -157,14 +160,16 @@ class Interaction extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <ButtonGroup className="toggle-group mb-2">
-                    <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
-                    <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>
-                    <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'})}} disabled={this.state.tab === 'slots'}> Slots </Button>
-                </ButtonGroup>
+        <React.Fragment>
+            <ButtonGroup className="toggle-group mb-2">
+                <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
+                <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>
+                <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'})}} disabled={this.state.tab === 'slots'}> Slots </Button>
+            </ButtonGroup>
+            <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
                 {this.renderTab()}
-            </React.Fragment>
+            </div>
+        </React.Fragment>
         );
     }
 }

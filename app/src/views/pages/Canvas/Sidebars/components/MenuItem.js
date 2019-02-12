@@ -4,7 +4,7 @@ import {Tooltip} from 'react-tippy';
 class MenuItem extends Component {
     render() {
         return (
-            <div className="wrap">
+            <div className="wrap" style={(!this.props.draggable) ? {opacity: 0.3} : null}>
                 <div
                     className={'MenuItem ' + this.props.item.type}
                     draggable={this.props.draggable}
@@ -22,15 +22,19 @@ class MenuItem extends Component {
                         {this.props.item.icon}
                     </div>
                     <div className="MenuText">
-                        <span>{this.props.item.text}</span>
-                        <Tooltip 
-                            html={this.props.item.tip}
-                            className="menu-tip"
-                            theme="menu"
-                            position="bottom"
-                        >
-                            ?
-                        </Tooltip>
+                        <span>{this.props.item.text}</span> 
+                        {this.props.draggable ?
+                            <Tooltip 
+                                html={this.props.item.tip}
+                                className="menu-tip"
+                                theme="menu"
+                                position="bottom"
+                            >
+                                ?
+                            </Tooltip>
+                            : 
+                            null
+                        }
                     </div>
                 </div>
             </div>

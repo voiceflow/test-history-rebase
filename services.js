@@ -180,6 +180,11 @@ const writeToLogs = async (log_group, msg_details) => {
             stack_trace: stack_trace,
             ...msg_details
         }
+
+        if(process.env.NODE_ENV === 'development'){
+            console.log(`WRITING TO LOGS ${group}`, msg)
+        }
+
         let stream = {
             logGroupName: group,
             logStreamName: `${time}`

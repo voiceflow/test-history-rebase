@@ -251,6 +251,9 @@ class Canvas extends Component {
                             node.extras.nextID = node.combines[0].id
                         }
                         node.combines = _.map(node.combines, (combine, idx) => {
+                            if (combine.parentCombine){
+                                delete combine.parentCombine 
+                            }
                             if (idx !== node.combines.length - 1 && combine.extras) {
                                 combine.extras.nextID = node.combines[idx + 1].id
                             } else {

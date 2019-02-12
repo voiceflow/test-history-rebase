@@ -254,18 +254,6 @@ class Canvas extends Component {
                             if (combine.parentCombine){
                                 delete combine.parentCombine 
                             }
-                            if (idx !== node.combines.length - 1 && combine.extras) {
-                                combine.extras.nextID = node.combines[idx + 1].id
-                            } else {
-                                _.forEach(combine.ports, cp => {
-                                    if (!cp.in) {
-                                        if (_.find(node.ports, np => np.id === cp.id)){
-                                            cp.links = !_.isEmpty(_.find(node.ports, np => np.id === cp.id).links) ? _.find(node.ports, np => np.id === cp.id).links : [];
-                                        }
-                                        //   delete combine.ports[cp.id]
-                                    }
-                                })
-                            }
                             return combine.serialize ? combine.serialize() : combine
                         })
                     })
@@ -1398,7 +1386,7 @@ class Canvas extends Component {
                             _.forEach(combine.ports, cp => {
                                 if (!cp.in) {
                                     if (_.find(node.ports, np => np.id === cp.id)){
-                                        cp.links = !_.isEmpty(_.find(node.ports, np => np.id === cp.id).links) ? _.find(node.ports, np => np.id === cp.id).links : [];
+                                        cp.links = _.find(node.ports, np => np.id === cp.id).links;
                                     }
                                     //   delete combine.ports[cp.id]
                                 }

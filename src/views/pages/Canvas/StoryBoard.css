@@ -366,7 +366,12 @@
     margin-left: auto;
     margin-right: auto;
     width: 60%;
-
+}
+.modal-img-small{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 13%;
 }
 
 .modal-txt {

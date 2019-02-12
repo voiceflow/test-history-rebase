@@ -48,7 +48,7 @@ class Settings extends Component {
                             key={tab}
                             onClick={() => this.switchTab(tab)}
                             outline={this.props.page !== tab}
-                            disabled={this.props.page === tab}>
+                            disabled={this.props.page === tab || (this.props.live_mode && tab === 'backups')}>
                             {tab}
                         </Button>
                     })}

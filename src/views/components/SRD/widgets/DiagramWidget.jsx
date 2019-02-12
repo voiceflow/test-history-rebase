@@ -13,6 +13,7 @@ import { PointModel } from "../models/PointModel";
 import { PortModel } from "../models/PortModel";
 import { LinkModel } from "../models/LinkModel";
 import { BaseWidget } from "./BaseWidget";
+import { checkBlockDisabledLive } from "./../../../pages/Canvas/Blocks"
 
 const toolkit = new Toolkit();
 
@@ -39,6 +40,7 @@ export class DiagramWidget extends BaseWidget {
 			document: null
 		};
 		this.repaint = false;
+		this.onDeleteConfirm = this.onDeleteConfirm.bind(this)
 	}
 
 	componentWillUnmount() {
@@ -391,6 +393,25 @@ export class DiagramWidget extends BaseWidget {
 		}
 	}
 
+	onDeleteConfirm = (selectedItems) => {
+		_.forEach(selectedItems, element => {
+			if (!this.props.diagramEngine.isModelLocked(element) && !element.locked ){
+				let elements_to_not_delete = []
+				// let inPorts = _.filter(element.ports, p => !p.in)
+				// Filter which elements to not delete and deserialize
+				for(let i in element.combines){
+					let new_node = new BlockNodeModel().deSerialize(element.combines[i], this.props.diagramEngine)
+					// new_node.getInPorts().links = inPorts.links
+					if(checkBlockDisabledLive(!this.props.live_mode, new_node.extras.type)){
+						elements_to_not_delete.push(new_node)
+					}
+				}
+				_.forEach(elements_to_not_delete, good_element => this.props.diagramEngine.getDiagramModel().addNode(good_element))
+				element.remove()
+			}
+		})
+	}
+
 	onKeyUp(event) {
 		//delete all selected
 		let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
@@ -456,15 +477,16 @@ export class DiagramWidget extends BaseWidget {
                  if (
                    !this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
                  ) {
-					if (element.extras && element.extras.type === 'god'){
-						this.props.onConfirm({
-							warning: true,
-							text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
-							confirm: () => _.forEach(selectedItems, element => !this.props.diagramEngine.isModelLocked(element) && !element.isLocked() ? element.remove() : _.noop())
-						})
-					} else {
-						element.remove();
-					}
+									if (element.extras && element.extras.type === 'god'){
+										this.props.onConfirm({
+											warning: true,
+											text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
+											confirm: this.onDeleteConfirm,
+											params: [selectedItems, element]
+										})
+									} else if (element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
+										element.remove();
+									}
                  }
 			   });
 			}

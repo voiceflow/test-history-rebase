@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AudioDrop from '../../../components/Uploads/AudioDrop'
-import Switch from '@material-ui/core/Switch'
+import Toggle from 'react-toggle'
 import _ from 'lodash'
 
 class Stream extends Component {
@@ -97,19 +97,19 @@ class Stream extends Component {
                 />
                 <div className="space-between mt-3">
                     <label>Custom Pause</label>
-                    <Switch
+                    <Toggle
+                        icons={false}
                         checked={!!this.state.node.extras.custom_pause}
                         onChange={this.togglePause}
-                        color="primary"
                         className="fulfill-switch"
                     />
                 </div>
                 <div className="space-between">
                     <label>Loop Audio</label>
-                    <Switch
+                    <Toggle
+                        icons={false}
                         checked={!!this.state.node.extras.loop}
                         onChange={this.toggleLoop}
-                        color="primary"
                         className="fulfill-switch"
                     />
                 </div>

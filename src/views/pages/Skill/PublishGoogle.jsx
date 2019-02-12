@@ -224,15 +224,19 @@ class GooglePublish extends Component {
   save(publish = false, cb) {
     const s = this.state;
 
-    axios.patch(`/skill/${this.state.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, {
-      google_publish_info: {
+    const publish_info = {
+        google_publish_info : {
         project_id: s.project_id,
         locales: s.locales,
         main_locale: s.main_locale,
         uploaded: s.uploaded,
         google_link_user: s.google_link_user
       }
-    })
+    }
+
+    this.props.updateSkill({...this.props.skill, ...publish_info})
+
+    axios.patch(`/skill/${this.state.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, publish_info)
       .then(() => {
         if (typeof (cb) === 'function') cb();
       })

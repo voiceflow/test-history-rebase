@@ -126,6 +126,7 @@ class Editor extends Component {
                         onUpdate={this.props.onUpdate}
                         diagramEngine={this.props.diagramEngine}
                         repaint={this.props.repaint}
+                        live_mode={this.props.live_mode}
                     />
             case 'intent':
                 return <Intent
@@ -145,6 +146,7 @@ class Editor extends Component {
                         diagram_id={this.props.diagram_id}
                         setCanFulfill={this.props.setCanFulfill}
                         diagram_level_intents={this.props.diagram_level_intents}
+                        live_mode={this.props.live_mode}
                     />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
@@ -166,6 +168,7 @@ class Editor extends Component {
                         diagrams={this.props.diagrams}
                         enterFlow={this.props.enterFlow}
                         onConfirm={this.props.onConfirm}
+                        live_mode={this.props.live_mode}
                     />
                 }
             case 'interaction':
@@ -183,6 +186,7 @@ class Editor extends Component {
                     built_ins={BUILT_INS}
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
+                    live_mode={this.props.live_mode}
                     />
             case 'combine':
             case 'line':
@@ -260,13 +264,13 @@ class Editor extends Component {
             case 'stream':
                 return <Stream node={this.state.node} onUpdate={this.props.onUpdate} diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} products={this.props.products}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} products={this.props.products} live_mode={this.props.live_mode}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
                 return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'permission':
-                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate} skill={this.props.skill}/>
+                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate} skill={this.props.skill} live_mode={this.props.live_mode}/>
             case 'code':
                 return <Code node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             default:

@@ -160,6 +160,8 @@ app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
+app.get('/skill/:id/live_version', ensureLoggedIn(), Skill.getLiveVersion)
+app.get('/skill/:id/dev_version', ensureLoggedIn(), Skill.getDevVersion)
 app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
@@ -184,6 +186,7 @@ app.get('/customer/promo/:code', ensureLoggedIn(), Customer.codes)
 
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.get('/diagram/:id/variables', ensureLoggedIn(), Diagram.getVariables);
+app.post('/diagram/:diagram_id/:skill_id/rerender', ensureLoggedIn(), Diagram.rerenderDiagram)
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);

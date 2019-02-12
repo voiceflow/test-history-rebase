@@ -102,13 +102,16 @@ class Choice extends Component {
                 <label>
                     Choices
                 </label>
-                <ChoiceInputs
-                    choices={this.state.node.extras.choices}
-                    inputs={this.state.node.extras.inputs}
-                    onAdd={this.handleAddChoice}
-                    onRemove={this.handleRemoveChoice}
-                    onChange={this.handleChange}
-                />
+                <div className={this.props.live_mode ? 'disabled-overlay' : null}>
+                    <ChoiceInputs
+                        choices={this.state.node.extras.choices}
+                        inputs={this.state.node.extras.inputs}
+                        onAdd={this.handleAddChoice}
+                        onRemove={this.handleRemoveChoice}
+                        onChange={this.handleChange}
+                        live_mode={this.props.live_mode}
+                    />
+                </div>
             </div>
         );
     }

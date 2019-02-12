@@ -1,7 +1,7 @@
 const Util = require('./../config/util');
 const { docClient, pool, hashids, validateEmail, writeToLogs } = require('./../services');
 const { getEnvVariable } = require('../util')
-const { copySkill } = require('./skill_util')
+const { copySkill, deleteDynamoDiagramPromise } = require('./skill_util')
 const { renderDiagram } = require('./render_diagram.js')
 
 const generateID = () => {
@@ -167,27 +167,19 @@ const deleteDiagram = (req, res) => {
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
         `,
-    [req.params.id, req.user.id], (err, response) => {
+    [req.params.id, req.user.id], async (err, response) => {
       if (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         return res.sendStatus(500)
       }
       if (response.rowCount !== 0) {
-        let params = {
-          TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-          Key: {
-            'id': req.params.id
-          }
+        try{
+          await deleteDynamoDiagramPromise(req.params.id)
+          return res.sendStatus(200)
+        } catch (err) {
+          console.trace(err)
+          return res.sendStatus(500)
         }
-
-        docClient.delete(params, err => {
-          if (err) {
-            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-            res.sendStatus(err.statusCode);
-          } else {
-            res.sendStatus(200);
-          }
-        })
       }
     }
   )
@@ -338,6 +330,19 @@ const publishTest = async (req, res) => {
   res.sendStatus(status)
 }
 
+const rerenderDiagram = async (req, res) => {
+  let skill_id = hashids.decode(req.params.skill_id)[0]
+  let diagram_id = req.params.diagram_id
+
+  try{
+    await renderDiagram(req.user, diagram_id, skill_id);
+    res.sendStatus(200)
+  } catch(err){
+    console.trace(err)
+    res.sendStatus(500)
+  }
+}
+
 module.exports = {
   updateName: updateName,
   getVariables: getVariables,
@@ -346,5 +351,6 @@ module.exports = {
   setDiagram: setDiagram,
   publish: publish,
   publishTest: publishTest,
-  copyDiagram: copyDiagram
+  copyDiagram: copyDiagram,
+  rerenderDiagram: rerenderDiagram
 }

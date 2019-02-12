@@ -59,7 +59,7 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
     try{
       let diagram_data_rows = (await pool.query(`SELECT id FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
       let diagram_delete_promises = []
-
+      
       // Creating a set of ids for delete query, ex. (1,44545, 65564)
       let parsed_array = "("
       for(let i=0;i < diagram_data_rows.length;i++){

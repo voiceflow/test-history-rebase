@@ -144,6 +144,7 @@ class Command extends Component {
                     options={this.props.intents && this.props.intents.concat(this.props.built_ins).map(intent => {
                         return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
                     })}
+                    isDisabled={this.props.live_mode}
                 />
             </div>
             {!!slots && 
@@ -238,6 +239,7 @@ class Command extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'slots':
@@ -251,6 +253,7 @@ class Command extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             default:
@@ -259,14 +262,18 @@ class Command extends Component {
     }
 
     render(){
-        return <React.Fragment>
+        return (
+        <React.Fragment>
             <ButtonGroup className="toggle-group mb-2">
                 <Button outline={this.state.tab !== 'command'} onClick={() => {this.setState({tab: 'command'})}} disabled={this.state.tab === 'command'}> Command </Button>
                 <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>
                 <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'})}} disabled={this.state.tab === 'slots'}> Slots </Button>
             </ButtonGroup>
-            {this.renderTab()}
+            <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
+                {this.renderTab()}
+            </div>
         </React.Fragment>
+        )
     }
 }
 

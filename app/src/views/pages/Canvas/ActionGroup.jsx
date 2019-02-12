@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
 import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
-         ModalHeader, ModalBody, Button, Label } from 'reactstrap'
+         ModalHeader, ModalBody, Button } from 'reactstrap'
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
 import {Tooltip} from 'react-tippy'
-import Switch from '@material-ui/core/Switch'
+import Toggle from 'react-toggle'
 
 import AuthenticationService from './../../../services/Authentication'
 import InvRegex from 'services/Regex'
@@ -65,6 +65,7 @@ class ActionGroup extends PureComponent {
             allowPreview: false,
             platform: 'amazon',
             updateModal: false,
+            updateLiveModal: false,
             stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
@@ -73,7 +74,8 @@ class ActionGroup extends PureComponent {
             displayingConfirmDelete: false,
             inv_name: null,
             inv_name_error: '',
-            flash: false
+            flash: false,
+            live_update_stage: 0
         }
 
         this.toggle = this.toggle.bind(this)
@@ -81,12 +83,15 @@ class ActionGroup extends PureComponent {
         this.togglePreview = this.togglePreview.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.toggleUpdate = this.toggleUpdate.bind(this)
+        this.toggleUpdateLive = this.toggleUpdateLive.bind(this)
         this.updateAlexa = this.updateAlexa.bind(this)
         this.openUpdate = this.openUpdate.bind(this)
+        this.openUpdateLive = this.openUpdateLive.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
         this.reset = this.reset.bind(this)
         this.shouldReset = this.shouldReset.bind(this)
         this.token = null
+        this.updateLiveVersion = this.updateLiveVersion.bind(this)
     }
 
     componentWillReceiveProps(props){
@@ -129,6 +134,15 @@ class ActionGroup extends PureComponent {
             amzn_error: false,
             stage: this.token ? 0 : 5
         })
+    }
+
+    openUpdateLive() {
+        this.props.setCB(() => {
+            this.setState({
+                updateLiveModal: true
+            })
+        })
+        this.props.onSave()
     }
 
     checkVendor(){
@@ -268,6 +282,12 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    toggleUpdateLive() {
+        this.setState(prev_state => ({
+            updateLiveModal: !prev_state.updateLiveModal
+        }))
+    }
+
     handleChange(e) {
         let node = this.state.story;
         let name = e.target.getAttribute('name');
@@ -283,21 +303,69 @@ class ActionGroup extends PureComponent {
     }
 
     togglePreview() {
-      axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
-          isPreview: !this.state.allowPreview,
-      })
-      .then(() => {
-          this.setState({ allowPreview: !this.state.allowPreview});
-      })
-      .catch(err => {
-          console.log(err);
-      })
+        if(this.state.togglingPreview) return
+
+        this.setState({ 
+            allowPreview: !this.state.allowPreview,
+            togglingPreview: true
+        }, () => {
+            axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
+                isPreview: !!this.state.allowPreview,
+            })
+            .then(() => {
+                this.setState({togglingPreview: false})
+            })
+            .catch(err => {
+                this.setState({
+                    allowPreview: !this.state.allowPreview,
+                    togglingPreview: false
+                })
+                this.props.onError('Unable to toggle preview')
+            })
+        })
     }
 
     toggleShare() {
       this.setState({
           share: !this.state.share
       });
+    }
+
+    updateLiveVersion() {
+        this.setState({live_update_stage: 1})
+        axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
+        .then(() => {
+            this.setState({
+                live_update_stage: 2
+            })
+        })
+        .catch(err => {
+            this.props.onError('Error updating live version')
+        })
+    }
+
+    renderLiveStage() {
+        if(this.state.live_update_stage === 2){
+            // return <React.Fragment>
+            //     Congrats we did it
+            //     Do you want to overwrite your development version with your current live version?
+            //     <button className="purple-btn" onClick={() => { this.props.onSwapVersions(this.props.skill.skill_id, this.props.skill) }}>Overwrite</button>
+            // </React.Fragment>
+            return <React.Fragment>
+                <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live-success.svg" alt="Upload"/>
+                <div className="modal-bg-txt text-center mt-2"> Live Version Updated</div>
+                <div className="modal-txt text-center mt-2 mb-3">This may take a few minutes to be reflected on your device.</div>
+            </React.Fragment>
+        } else if(this.state.live_update_stage === 1) {
+            return loading('Rendering Flows')
+        } else {
+            return <React.Fragment>
+                <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload"/>
+                <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
+                    <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
+                <button className="purple-btn mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
+            </React.Fragment>
+        }
     }
 
     render_body() {
@@ -442,6 +510,16 @@ class ActionGroup extends PureComponent {
                     </div>
                 </ModalBody>
             </Modal>
+
+            <Modal isOpen={this.state.updateLiveModal} toggle={this.toggleUpdateLive} onClosed={()=>{this.setState({live_update_stage: 0})}}className="stage_modal">
+                <ModalHeader toggle={this.toggleUpdateLive}>Update Live Version</ModalHeader>
+                <ModalBody className="modal-info">
+                    <div>
+                        {this.renderLiveStage()}
+                    </div>
+                </ModalBody>
+            </Modal>
+
             <div className="title-group no-select">
                 <div className="align-icon">
                     <Tooltip
@@ -468,11 +546,12 @@ class ActionGroup extends PureComponent {
                         <PopoverHeader>Share Link</PopoverHeader>
                         <PopoverBody style={{minWidth: '260px'}}>
                             <div className="space-between">
-                                <Label>Allow preview sharing</Label>
-                                <Switch
+                                <label>Allow preview sharing</label>
+                                <Toggle
                                     checked={this.state.allowPreview}
+                                    disabled={this.state.togglingPreview}
+                                    icons={false}
                                     onChange={this.togglePreview}
-                                    color="primary"
                                 />
                             </div>
                             {this.state.allowPreview &&
@@ -503,22 +582,42 @@ class ActionGroup extends PureComponent {
                         <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play"/></button>
                     </Tooltip>
                 </div>
-                <Tooltip
-                    html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
-                    position="bottom"
-                    distance={16}
-                >
-                    <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
-                        Upload to Alexa <div className="launch">
-                            <div className="first">
-                                <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
+
+                {this.props.live_mode ? 
+                    <Tooltip
+                        html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
+                        position="bottom"
+                        distance={16}
+                    >
+                        <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
+                            Update Live Version <div className="launch">
+                                <div className="first">
+                                    <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
+                                </div>
+                                <div className="second">
+                                    <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
+                                </div>
                             </div>
-                            <div className="second">
-                                <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
+                        </Button>
+                    </Tooltip>
+                    :
+                    <Tooltip
+                        html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
+                        position="bottom"
+                        distance={16}
+                    >
+                        <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                            Upload to Alexa <div className="launch">
+                                <div className="first">
+                                    <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
+                                </div>
+                                <div className="second">
+                                    <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
+                                </div>
                             </div>
-                        </div>
-                    </Button>
-                </Tooltip>
+                        </Button>
+                    </Tooltip>
+                }
             </div>
             </React.Fragment>
         );

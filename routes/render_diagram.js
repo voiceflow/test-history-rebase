@@ -138,7 +138,13 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
       }
 
       let diagram = JSON.parse(data.Item.data);
-
+      let combine_nodes = []
+      _.forEach(diagram.nodes, node => {
+        if (!_.isEmpty(node.combines)) {
+          combine_nodes = combine_nodes.concat(node.combines);
+        }
+      })
+      diagram.nodes = diagram.nodes.concat(combine_nodes);
 
       let links = {};
 
@@ -165,17 +171,14 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
         variables: data.Item.variables,
         commands: []
       }
-
       // Iterate through every block in the diagram
       for (var i = 0; i < diagram.nodes.length; i++) {
-
         let node = diagram.nodes[i];
         let getLink = (link_id) => {
           if (link_id in links) {
             return links[link_id].target === node.id ? links[link_id].source : links[link_id].target
           }
         }
-
         if (node.extras.type === 'story') {
           story.startId = node.id;
           story.prompt = node.extras.prompt;
@@ -306,6 +309,15 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             })
           }
 
+        } else if (node.extras.type === 'god') {
+          _.forEach(node.combines, nc => {
+            if (!nc.in){
+              nc.links = [];
+            }
+          })
+          story.lines[node.id] = {
+            nextId: node.extras.nextID
+          }
         } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && node.extras.choices)) {
 
           let interactions = []
@@ -830,7 +842,9 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
             }
           }
         }
-
+        if (node.extras.nextID) {
+          story.lines[node.id].nextId = node.extras.nextID
+        }
         if(node.extras && node.extras.reprompt){
             let REPROMPT
             if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {

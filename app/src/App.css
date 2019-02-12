@@ -643,6 +643,9 @@ border-radius: 0px 5px 5px 0px !important;
     -webkit-transition: box-shadow 150ms ease !important;
     transition: box-shadow 150ms ease !important;
 }
+.list-group-item:hover{
+    background-color: #F7F9FB;
+}
 .form-control-border{
   background-color: #F7F9FB !important;
 /*  min-height: 45px !important;*/
@@ -792,7 +795,7 @@ border-radius: 0px 5px 5px 0px !important;
     box-shadow: 0 2px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 }
 .card {
-/*    border: 1px solid #fff;*/
+   /* border: 1px solid #fff; */
     border-radius: 6px;
     box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
     border-radius: 10px;

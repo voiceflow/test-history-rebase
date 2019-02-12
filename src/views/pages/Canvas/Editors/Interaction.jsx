@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
@@ -37,31 +38,52 @@ class Interaction extends Component {
         this.props.onUpdate()
     }
 
-    handleAddChoice() {
-        const node = this.state.node
+    handleAddChoice(e) {
+        var node = this.state.node
         const choices = node.extras.choices
 
         choices.push({intent: null, mappings: [], key: randomstring.generate(12), open: true})
 
         let test = node.addOutPort(node.extras.choices.length);
         test.setMaximumLinks(1);
+        if (node.parentCombine) {
+            let isLast = _.last(node.parentCombine.combines).id === node.id
+            let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
+            if (isLast) {
+                node.parentCombine.ports[newPort[0].name] = newPort[0]
+                node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
+            }
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
+
+        }
 
         this.setState({
             node: node
-        })
-        this.props.onUpdate()
-        this.props.repaint()
+        }, this.props.onUpdate);
+        // this.props.diagramEngine.setSuperSelect(node.parentCombine);
+        this.props.repaint();
+        e.preventDefault()
     }
 
     handleRemoveChoice(i) {
         const node = this.state.node;
         const choices = node.extras.choices
-
+        let bestNode;
+        if (node.parentCombine){
+            bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
+        }
         for (var name in node.getPorts()) {
             var port = node.getPort(name)
 
             if (port.label === node.extras.choices.length) {
                 node.removePort(port)
+                if (node.parentCombine && bestNode >= 0) {
+                    node.parentCombine.removePort(port);
+                    // eslint-disable-next-line
+                    node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
+                    node.parentCombine.combines[bestNode].extras.choices.splice(i,1);
+                }
                 break
             }
         }

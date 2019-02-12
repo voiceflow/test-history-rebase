@@ -337,8 +337,7 @@ export class BlockNodeWidget extends BaseWidget {
 				// node.ports = {}
 				let selected_ports = selected.getPorts()
 				let target_ports = targetNode.getPorts()
-				var name
-				for (name in selected_ports) {
+				for (var name in selected_ports) {
 					let port = selected_ports[name]
 					// port.parent=null
 					if (!port.in) {
@@ -346,12 +345,12 @@ export class BlockNodeWidget extends BaseWidget {
 						node.ports[name] = _.clone(port);
 					}
 				}
-				for (name in target_ports) {
-					let port = target_ports[name]
+				for (var name2 in target_ports) {
+					let port = target_ports[name2]
 					// port.parent = null
 					if (port.in) {
 						port.parent = node
-						node.ports[name] = _.clone(port)
+						node.ports[name2] = _.clone(port)
 					}
 				}
 				targetNode.parentCombine = node;
@@ -362,13 +361,12 @@ export class BlockNodeWidget extends BaseWidget {
 				targetNode.y = targetNode.y + 40
 				selected.x = targetNode.x
 				selected.y = targetNode.y + 40
-				node.combines = [targetNode]
-				node.combines.push(selected);
+				node.combines = [targetNode.serialize()]
+				node.combines.push(selected.serialize());
 				if (selected && targetNode) {
 					selected.remove()
 					targetNode.remove()
 				}
-				node.combines = _.map(node.combines, nc => nc.serialize())
 				node.setSelected()
 				engine.getDiagramModel().clearSelection()
 				engine.setSuperSelect(node)

@@ -949,6 +949,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     text-align: center;
     color: #8da2b5 !important;
     font-size: 13px;
+    min-width: 170px;
+}
+.icon-image .drop-child{
+    min-width: auto !important;
 }
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;

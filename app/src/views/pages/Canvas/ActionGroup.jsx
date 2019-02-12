@@ -74,7 +74,6 @@ class ActionGroup extends PureComponent {
             diagrams: [],
             share: false,
             allowPreview: false,
-            platform: 'amazon',
             updateModal: false,
             stage: 0,
             google_stage: 0,

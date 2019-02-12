@@ -1691,6 +1691,7 @@ class Canvas extends Component {
             let intent_slots = getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
             intent_slots.forEach(intent_slot => {
                 const slot_type = intent_slot.type
+
                 if (slot_type && slot_type.toLowerCase() !== 'custom') {
                     if (/AMAZON/.test(slot_type)) is_alexa = true
                     if (/^@sys\./.test(slot_type)) is_google = true

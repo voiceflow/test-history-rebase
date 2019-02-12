@@ -78,7 +78,7 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 	})
 }
 
-const getSlotsForKeys = (keys, slots, platform='alexa') => {
+const getSlotsForKeys = (keys, slots, platform) => {
 	let key_set = new Set()
 
 	keys.forEach(key_arr => {
@@ -97,7 +97,7 @@ const getSlotsForKeys = (keys, slots, platform='alexa') => {
 		if (slot_type.toLowerCase() !== 'custom') {
 			formatted_type = slot.type.value
 			const built_in_slot = find(SLOT_TYPES, { label: slot_type })
-			if (built_in_slot && built_in_slot.type[platform]) {
+			if (built_in_slot && platform && built_in_slot.type[platform]) {
 				formatted_type = built_in_slot.type[platform]
 			}
 		}

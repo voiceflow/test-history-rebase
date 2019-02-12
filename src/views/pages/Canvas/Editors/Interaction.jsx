@@ -31,11 +31,16 @@ class Interaction extends Component {
     handleChoicesChange(choices) {
         const node = this.state.node
         node.extras.choices = choices
-
         this.setState({
             node: node
         })
+        if (node.parentCombine) {
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
+
+        }
         this.props.onUpdate()
+        this.props.repaint();
     }
 
     handleAddChoice(e) {
@@ -62,6 +67,7 @@ class Interaction extends Component {
             node: node
         }, this.props.onUpdate);
         // this.props.diagramEngine.setSuperSelect(node.parentCombine);
+        this.props.onUpdate()
         this.props.repaint();
         e.preventDefault()
     }

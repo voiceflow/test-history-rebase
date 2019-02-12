@@ -316,7 +316,7 @@ export class DiagramWidget extends BaseWidget {
 										if (!_.isEmpty(port.links) && port instanceof PortModel){
 											let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
 											let point = _.first(_.values(port.links)).points[pointIdx]
-											if (point instanceof PointModel) {
+											if (point instanceof PointModel && current.parentCombine.ports[port.name]) {
 												current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({x: point.x, y: point.y - 40});
 											}
 										}

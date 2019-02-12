@@ -37,7 +37,6 @@ class Interaction extends Component {
         if (node.parentCombine) {
             let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
             node.parentCombine.combines[bestNode] = node.serialize()
-
         }
         this.props.onUpdate()
         this.props.repaint();

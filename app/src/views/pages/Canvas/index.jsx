@@ -417,8 +417,10 @@ class Canvas extends Component {
             clientX: this.mouseX,
             clientY: this.mouseY
         }
-        var point = this.state.engine.getRelativeMousePoint(event);
-        this.copyNode(this.state.copy, { x: point.x - (this.state.copy.name.length * 4.5 + 40), y: point.y -30})
+        var point = this.state.engine.getRelativeMousePoint(event)
+        if(this.state.copy){
+            this.copyNode(this.state.copy, { x: point.x - (this.state.copy.name.length * 4.5 + 40), y: point.y -30})
+        }
     }
 
     zoom(delta){

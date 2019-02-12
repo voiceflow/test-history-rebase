@@ -246,7 +246,7 @@ export class DiagramWidget extends BaseWidget {
 				) {
 					model.model.x = diagramModel.getGridPosition(model.initialX + amountX / amountZoom);
 					model.model.y = diagramModel.getGridPosition(model.initialY + amountY / amountZoom);
-					this.props.diagramEngine.getDiagramModel().clearSelection();
+					// this.props.diagramEngine.getDiagramModel().clearSelection();
 					model.model.setSelected(true);
 					// update port coordinates as well
 					if (model.model instanceof NodeModel) {

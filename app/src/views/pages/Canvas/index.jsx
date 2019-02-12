@@ -260,7 +260,7 @@ class Canvas extends Component {
                                 _.forEach(combine.ports, cp => {
                                     if (!cp.in) {
                                         if (_.find(node.ports, np => np.id === cp.id)){
-                                            cp.links = _.find(node.ports, np => np.id === cp.id).links
+                                            cp.links = !_.isEmpty(_.find(node.ports, np => np.id === cp.id).links) ? _.find(node.ports, np => np.id === cp.id).links : [];
                                         }
                                         //   delete combine.ports[cp.id]
                                     }
@@ -970,7 +970,13 @@ class Canvas extends Component {
                  current.x = parent.x + 10;
                  firstNode = new BlockNodeModel().deSerialize(firstNode, this.state.engine);
                  lastNode = new BlockNodeModel().deSerialize(lastNode, this.state.engine);
-                 if ((tempIdx <= parent.combines.length&& current.parentCombine) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
+                 let isValid = current;
+                 if (tempIdx <= parent.combines.length && current.parentCombine) {
+                     if (_.last(current.parentCombine.combines) !== 'temp') {
+                         isValid = _.last(current.parentCombine.combines)
+                     }
+                 }
+                 if ((tempIdx <= parent.combines.length && current.parentCombine && this.combineAppendValidation(isValid)) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
                     for (name in parentPorts){
                         let parentPort = parentPorts[name]
                         if (parentPort.in){
@@ -1394,7 +1400,7 @@ class Canvas extends Component {
                             _.forEach(combine.ports, cp => {
                                 if (!cp.in) {
                                     if (_.find(node.ports, np => np.id === cp.id)){
-                                        cp.links = _.find(node.ports, np => np.id === cp.id).links
+                                        cp.links = !_.isEmpty(_.find(node.ports, np => np.id === cp.id).links) ? _.find(node.ports, np => np.id === cp.id).links : [];
                                     }
                                     //   delete combine.ports[cp.id]
                                 }

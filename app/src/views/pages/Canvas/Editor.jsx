@@ -340,7 +340,7 @@ class Editor extends Component {
                     content={this.state.node.extras.reprompt.content}
                     updatePrompt={(prompt) => {
                         let node = this.state.node
-                        if(node.extras.reprompt){
+                        if(node && node.extras && node.extras.reprompt){
                             node.extras.reprompt = {...node.extras.reprompt, ...prompt}
                             this.setState({node: node})
                         }

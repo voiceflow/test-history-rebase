@@ -393,7 +393,7 @@ export class BlockNodeWidget extends BaseWidget {
 
 	render() {
 		if(this.props.node.extras.type === 'comment'){
-			return <div className={"srd-default-node "}>
+			return <div className={`srd-default-node ${this.props.node.extras.type}`}>
               	<Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
 			</div>
 		}

@@ -26,7 +26,7 @@
 }
 #secondary-nav .nav-item{
 	color: #8DA2B5;
-	padding: 12px 25px 9px;
+	padding: 12px 29px 9px;
 	text-align: center;
 	text-transform: capitalize;
 	text-decoration: none;
@@ -254,3 +254,14 @@ div.nav-item{
         
 	}
 }
+
+.live-mode-text {
+	display: inline-block;
+	color: #88a2b7;
+	margin-right: 15px;
+	font-size: 12px;
+	text-transform: capitalize;
+	letter-spacing: 0.3px;
+	padding-bottom: 1px;
+}
+

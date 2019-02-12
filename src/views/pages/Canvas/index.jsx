@@ -33,12 +33,12 @@ import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFact
 import { SLOT_TYPES_MAP, SLOT_TYPES_UNIVERSAL } from './Constants'
 
 import { getIntentSlots } from 'Helper'
+import { checkBlockDisabledLive } from './Blocks'
 
 import { Prompt } from 'react-router'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
-
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
 const line_color = '#D1D8E2'
@@ -319,7 +319,7 @@ class Canvas extends Component {
               let nodes = _.values(this.state.engine.diagramModel.nodes)
               this.state.engine.enableRepaintEntities(nodes)
               this.state.engine.repaintCanvas(false)
-              this.onLoadId(this.props.diagram_id)
+              this.onLoadDiagrams(this.props.diagram_id)
             })
         }
     }
@@ -571,18 +571,22 @@ class Canvas extends Component {
             this.props.onError('Error retrieving template')
         })
     }
-
+            
     removeNode(selectedNode = null){
         let selected = selectedNode ? selectedNode : this.state.engine.getSuperSelect()
-        this.state.engine.stopMove()
-        if (selected.extras && selected.extras.type === 'god'){
-            this.props.onConfirm({
-							warning: true,
-							text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
-							confirm: () => selected.remove()
-						})
-        } else if(selected){
-            selected.remove()
+        if(!checkBlockDisabledLive(this.props.live_mode, selected.extras.type)){
+            this.state.engine.stopMove()
+            if (selected.extras && selected.extras.type === 'god'){
+                this.props.onConfirm({
+                                warning: true,
+                                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
+                                confirm: () => selected.remove()
+                            })
+            } else if(selected){
+                selected.remove()
+            }
+        } else {
+            this.props.onError('Cannot delete blocks that would alter the interaction model in live version editing')
         }
     }
     // copy individual node
@@ -2372,6 +2376,10 @@ class Canvas extends Component {
                         onConfirm={this.props.onConfirm}
                         updateSkill={this.updateSkill}
                         onTest={this.onTest}
+                        has_live={this.props.has_live}
+                        toggleLiveMode={this.props.toggleLiveMode}
+                        live_mode={this.props.live_mode}
+                        onSwapVersions={this.props.onSwapVersions}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -2420,6 +2428,7 @@ class Canvas extends Component {
                         saving={this.state.saving}
                         preview={this.props.preview}
                         onError={this.props.onError}
+                        live_mode={this.props.live_mode}
                         toggleUpgrade={this.props.toggleUpgrade}
                     />
                     {this.state.loading_diagram && <div id="loading-diagram">
@@ -2464,6 +2473,7 @@ class Canvas extends Component {
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
                         products={this.state.products}
+                        live_mode={this.props.live_mode}
                     />
                     <div
                         key={this.props.diagram_id}
@@ -2501,6 +2511,7 @@ class Canvas extends Component {
                             copyNode={!this.props.preview ? this.copyNode : _.noop()}
                             removeNode={!this.props.preview ? this.removeNode : _.noop()}
                             forceRepaint={this.forceRepaint}
+                            live_mode={this.props.live_mode}
                         />
                     </div>
                 </div>

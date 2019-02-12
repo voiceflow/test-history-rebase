@@ -68,7 +68,12 @@ const getBlocks = () => {
     return blocks
 }
 
+const checkBlockDisabledLive = (live_mode, block_type) => {
+    return live_mode === true && (block_type === 'choice' || block_type === 'intent' || block_type === 'command' || block_type === 'interaction' || block_type === 'permission' || block_type === 'permissions')
+}
+
 export {
     getSections,
-    getBlocks
+    getBlocks,
+    checkBlockDisabledLive
 }

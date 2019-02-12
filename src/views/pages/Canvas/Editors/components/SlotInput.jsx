@@ -151,7 +151,7 @@ class SlotInput extends Component {
                             className="interaction-name-input"
                         />
                     </Tooltip>                                
-                    <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)}>&times;</button>
+                    <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)} disabled={this.props.live_mode}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
                     <div className="super-center flex-hard choice-select">
@@ -164,6 +164,7 @@ class SlotInput extends Component {
                             options={this.props.slot_types.map(type => {
                                 return {label: type, value: type}
                             })}
+                            isDisabled={this.props.live_mode}
                         />
                     </div>
                     <hr className="mt-1 mb-2"/>
@@ -177,6 +178,7 @@ class SlotInput extends Component {
                         onKeyPress={this.handleKeyPress}
                         onChange={this.onTextChange}
                         placeholder="Enter Slot Content Example" 
+                        disabled={this.props.live_mode}
                     />
                     <div className="text-center mt-2">
                         <span className="key-bubble forward pointer" onClick={this.addValue}><i className="far fa-long-arrow-right"/></span>

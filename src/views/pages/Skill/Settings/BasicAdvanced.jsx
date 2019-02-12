@@ -3,9 +3,10 @@ import _ from 'lodash'
 import axios from 'axios'
 import update from 'immutability-helper'
 import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
-import Switch from '@material-ui/core/Switch'
 import Prompt from 'views/components/Uploads/Prompt'
-import AceEditor from 'react-ace'
+import AceEditor from 'react-ace';
+import DefaultModal from './../../../components/Modals/DefaultModal'
+import Toggle from 'react-toggle'
 
 import 'brace/mode/json';
 import 'brace/ext/language_tools'
@@ -17,7 +18,8 @@ class BasicAdvancedSettings extends Component{
         this.state = {
             skill: null,
             saving: false,
-            hide_resume: true
+            hide_resume: true,
+            show_overwrite_modal: false
         }
 
         this.requestPDF = this.requestPDF.bind(this)
@@ -30,6 +32,8 @@ class BasicAdvancedSettings extends Component{
         this.isDifferent = this.isDifferent.bind(this)
         this.getSaveButton = this.getSaveButton.bind(this)
         this.toggleRepeat = this.toggleRepeat.bind(this)
+        this.overwriteSuccessModal = this.overwriteSuccessModal.bind(this)
+        this.confirmOverwrite = this.confirmOverwrite.bind(this)
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -193,13 +197,41 @@ class BasicAdvancedSettings extends Component{
         </React.Fragment>
     }
 
+    overwriteSuccessModal(result){
+        let msg
+        if(result) {
+            msg = "Devlopment version successfully overwritten"
+        } else {
+            msg = "Overwrite failed."
+        }
+        this.setState({
+            show_overwrite_modal: true,
+            overwrite_status: msg
+        })
+    }
+
+    confirmOverwrite() {
+        this.props.onConfirm({
+            warning: true,
+            text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone and will replace your development version completely with your live version. </Alert>,
+            confirm: this.props.onSwapVersions,
+            params: [this.props.skill.skill_id, this.props.skill, true, this.overwriteSuccessModal]
+        })
+    }
+
     renderSettings(){
         // check to make sure there are actual differences before making a server call
         switch(this.props.page){
             case 'advanced':
                 // ADVANCED SETTINGS
                 return <React.Fragment>
-                    <div className="settings-content clearfix">
+                    <DefaultModal
+                        open={this.state.show_overwrite_modal} 
+                        toggle={()=>{this.setState({show_overwrite_modal: false})}} 
+                        content={this.state.overwrite_status} 
+                        header="Overwrite Status"
+                    />
+                    <div className="settings-content clearfix mt-4">
                       <FormGroup>
                         <Label>Error Prompt</Label>
                         <div className="helper-text mb-2">
@@ -237,12 +269,29 @@ class BasicAdvancedSettings extends Component{
                       </FormGroup>
                       {this.getSaveButton(["alexa_events"])}
                     </div>
+                    { this.props.live_mode && 
+                    <div className="settings-content clearfix">
+                      <FormGroup>
+                        <Label>Overwrite Development Version with Live Version</Label>
+                        <Alert color="danger between">
+                          <span>
+                          
+                            This action cannot be undone.
+                          </span>
+                          <br />
+                          <Button color="danger" onClick={this.confirmOverwrite}>
+                            Overwrite
+                          </Button>
+                        </Alert>
+                      </FormGroup>
+                    </div>
+                    }
                     <div className="settings-content clearfix">
                       <FormGroup>
                         <Label>Delete Project</Label>
                         <Alert color="danger between">
                           <span>
-                            This action can not be
+                            This action cannot be
                             undone
                           </span>
                           <br />
@@ -259,65 +308,80 @@ class BasicAdvancedSettings extends Component{
                     <div className="settings-content clearfix mt-4">
                       <FormGroup>
                         <Label>Project Name</Label>
-                        <Input className="form-bg" name="name" value={this.state.skill.name} onChange={this.handleUpdate} />
+                        <Input className="form-bg mb-4" name="name" value={this.state.skill.name} onChange={this.handleUpdate} />
                       </FormGroup>
-
+                    <hr/>
                       <FormGroup>
-                        <Label>Repeat</Label>
-                        <div className="helper-text">
-                          Users will be able to say repeat at
+                        <Label className="mb-1">Repeat</Label>
+                        <div className="helper-text mb-3">
+                          {/* <p id="react-toggle-info">Users will be able to say repeat at
                           any choice/interaction and the dialog
-                          will repeat
+                          will repeat</p>
+                          <div id="repeat-toggle-div">
+                            <Toggle icons={false} checked={this.state.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)}/>
+                            <b>
+                            {this.state.skill.repeat > 0
+                                ? "On"
+                                : "Off"}
+                            </b>
+                          </div> */}
+
+                          <div className="row mb-3">
+                                <div className="helper-text col-10">
+                                    Users will be able to say repeat at any choice/interaction and the dialog will repeat
+                                </div>
+                                <div className="col-2">
+                                    <Toggle icons={false} checked={this.state.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)}/>
+                                </div>
+                          </div>
                         </div>
-                        <Switch checked={this.state.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)} color="primary" />
-                        <b>
-                          {this.state.skill.repeat > 0
-                            ? "ON"
-                            : "OFF"}
-                        </b>
-                        {this.state.skill.repeat > 0 && <div>
-                            <Switch checked={this.state.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)} color="primary" />
-                            <b>Complete Repeat</b>
-                            <div className="helper-text">
-                              {this.state.skill.repeat > 1
-                                ? "When the user asks to repeat, everything after the last choice/interaction block will repeat"
-                                : "When the user asks to repeat, only the last speak block before the choice/interaction will be repeated"}
+                        
+                        {this.state.skill.repeat > 0 && <React.Fragment>
+                            <Label className="mb-1">Complete Repeat</Label>
+                            <div className="row">    
+                                <div className="helper-text col-10">
+                                {this.state.skill.repeat > 1
+                                    ? "When the user asks to repeat, everything after the last choice/interaction block will repeat"
+                                    : "When the user asks to repeat, only the last speak block before the choice/interaction will be repeated"}
+                                </div>
+                                <div className="col-2">
+                                    <Toggle icons={false} checked={this.state.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)}T/>
+                                </div>
                             </div>
-                          </div>}
+                        </React.Fragment>}
                       </FormGroup>
                       {this.getSaveButton(['name', 'repeat'])}
                     </div>
                     <div className="settings-content clearfix mb-5">
                       <FormGroup>
-                        <Label className="mb-0">
+                        <Label className="mb-1">
                           Restart Every Session
                         </Label>
-                        <div className="helper-text">
-                          {this.state.skill.restart
-                            ? "The project will restart from the beginning every time the user starts a session"
-                            : "The project will resume from the last block the user was on before quitting"}
-                        </div>
-                        <div className="mb-2">
-                          <Switch name="restart" checked={this.state.skill.restart} onChange={this.toggleSwitch} color="primary" />
-                          <b>
+                        <div className="row">
+                            <div className="helper-text mb-2 col-10">
                             {this.state.skill.restart
-                              ? "ON"
-                              : "OFF"}
-                          </b>
+                                ? "The project will restart from the beginning every time the user starts a session"
+                                : "The project will resume from the last block the user was on before quitting"}
+                            </div>
+                            <div className="col-2">
+                            <Toggle icons={false} name="restart" checked={this.state.skill.restart} onChange={this.toggleSwitch}/>
+                            </div>
                         </div>
                         {!this.state.skill.restart && <React.Fragment>
-                            <Label>Resume Prompt</Label>
-                            <div className="helper-text mb-2">
-                              Give the user a YES/NO prompt
-                              whether to resume
-                            </div>
-                            <div className="mb-2">
-                              <Switch name="restart" checked={!this.state.hide_resume} onChange={() => this.setState({
-                                    hide_resume: !this.state.hide_resume
-                                })} color="primary" />
-                              <b>
-                                {this.state.hide_resume ? "OFF" : "ON"}
-                              </b>
+                            <Label className="mb-1">Resume Prompt</Label>
+                            <div className="row">
+                                <div className="helper-text mb-2 col-10">
+                                Give the user a YES/NO prompt
+                                whether to resume
+                                </div>
+                                <div className="col-2">
+                                    <Toggle name="restart" checked={!this.state.hide_resume} onChange={() => this.setState(
+                                        {
+                                        hide_resume: !this.state
+                                            .hide_resume
+                                        }
+                                    )} icons={false} />
+                                </div>
                             </div>
                             {!this.state.hide_resume && <React.Fragment>
                                 <Prompt 

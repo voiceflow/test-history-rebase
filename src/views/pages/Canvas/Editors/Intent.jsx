@@ -6,7 +6,7 @@ import { Tooltip } from 'react-tippy'
 import Select from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import './Intent.css'
-import Switch from '@material-ui/core/Switch'
+import Toggle from 'react-toggle'
 
 const _ = require('lodash')
 
@@ -183,6 +183,7 @@ class Intent extends Component {
                     options={this.props.intents.concat(this.props.built_ins).map(intent => {
                         return { label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in }
                     })}
+                    isDisabled={this.props.live_mode}
                 />
             </div>
             {!!slots &&
@@ -218,6 +219,7 @@ class Intent extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'slots':
@@ -231,6 +233,7 @@ class Intent extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             default:
@@ -239,48 +242,51 @@ class Intent extends Component {
     }
 
     render() {
-
         const checked = this.isFulfill()
 
-        return <React.Fragment>
+        return (
+        <React.Fragment>
             <ButtonGroup className="toggle-group mb-2">
                 <Button outline={this.state.tab !== 'Select'} onClick={() => { this.setState({ tab: 'Select' }) }} disabled={this.state.tab === 'Select'}> Select </Button>
                 <Button outline={this.state.tab !== 'intents'} onClick={() => { this.setState({ tab: 'intents' }) }} disabled={this.state.tab === 'intents'}> Intents </Button>
                 <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
             </ButtonGroup>
-            {this.renderTab()}
-            {this.state.isRoot && this.state.node.extras.intent && <hr />}
-            {this.state.isRoot && this.state.node.extras.intent &&
-                <div>
-                    <div className="mb-2 d-flex">
-                        <Switch
-                            name="fulfill_toggle"
-                            checked={checked}
-                            onChange={this.toggleCanFulfill}
-                            color="primary"
-                            className="fulfill-switch"
-                        />
-                        <div className="ml-2 w-100 fulfill-label va">Can Fulfill Intent</div>
-                        <div className="va">
-                            <Tooltip
-                                className="menu-tip"
-                                title='Handle CanFulfillIntent Requests with this block. If your intent has slots, use Slot Fulfillment" to specify which slots your skill is able to handle'
-                                position="bottom"
-                                theme="block"
-                            >
-                                ?
-                        </Tooltip></div>
+            <div className={this.props.live_mode ? 'disabled-overlay' : null}>
+                {this.renderTab()}
+                {this.state.isRoot && this.state.node.extras.intent && <hr />}
+                {this.state.isRoot && this.state.node.extras.intent &&
+                    <div>
+                        <div className="mb-2 d-flex">
+                            <Toggle
+                                icons={false}
+                                name="fulfill_toggle"
+                                checked={checked}
+                                onChange={this.toggleCanFulfill}
+                                color="primary"
+                                className="fulfill-switch"
+                            />
+                            <div className="ml-2 w-100 fulfill-label va">Can Fulfill Intent</div>
+                            <div className="va">
+                                <Tooltip
+                                    className="menu-tip"
+                                    title='Handle CanFulfillIntent Requests with this block. If your intent has slots, use Slot Fulfillment" to specify which slots your skill is able to handle'
+                                    position="bottom"
+                                    theme="block"
+                                >
+                                    ?
+                            </Tooltip></div>
 
+                        </div>
+                        {checked && this.state.node.extras.intent && this.hasSlots(this.state.node.extras.intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
+                            this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
+                        }}>
+                            <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
+                        </button>}
                     </div>
-                    {checked && this.state.node.extras.intent && this.hasSlots(this.state.node.extras.intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
-                        this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
-                    }}>
-                        <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
-                    </button>}
-                </div>
-            }
-
+                }
+            </div>
         </React.Fragment>
+        )
     }
 }
 

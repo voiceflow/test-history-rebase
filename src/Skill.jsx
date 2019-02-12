@@ -9,9 +9,16 @@ import axios from 'axios'
 import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
 import ErrorModal from './views/components/Modals/ErrorModal'
 import ConfirmModal from './views/components/Modals/ConfirmModal'
+import DefaultModal from './views/components/Modals/DefaultModal'
 import { Link } from 'react-router-dom';
 import {Alert} from 'reactstrap'
 import AuthenticationService from './services/Authentication'
+
+const live_modal_content = <div>
+    <img className="modal-img-small mb-4 mt-3 mx-auto" src="/warning.svg" alt="Upload"/>
+    <div className="modal-bg-txt text-center mt-2"> Entering Live Editing</div>
+    <div className="modal-txt text-center mt-2 mb-3"> Updating your skill in live mode will not effect the live version of the skill until you hit the upload button.</div>
+</div>
 
 class Skill extends Component {
     constructor(props){
@@ -25,7 +32,10 @@ class Skill extends Component {
             confirm: null,
             mounted: true,
             error_screen: null,
-            time_mounted: null
+            time_mounted: null,
+            live_mode: false,
+            live_version: null,
+            show_live_mode_modal: false
         }
 
         this.renderPage = this.renderPage.bind(this)
@@ -33,7 +43,10 @@ class Skill extends Component {
         this.onConfirm = this.onConfirm.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
         this.onSwapVersions = this.onSwapVersions.bind(this)
+        this.toggleLiveMode = this.toggleLiveMode.bind(this)
         this.logout = this.logout.bind(this)
+
+        this.child_canvas = React.createRef()
         this.updateSkill = this.updateSkill.bind(this)
     }
 
@@ -144,35 +157,133 @@ class Skill extends Component {
             this.setState({
                 load_skill: false,
                 diagram_id: this.state.diagram_id ? this.state.diagram_id : skill.diagram,
-                skill: skill,
+                skill: skill
+            })
+
+            axios.get(`/skill/${skill_id}/live_version`)
+            .then(res => {
+                this.setState({
+                    live_version: res.data.live_version,
+                    live_mode: skill_id === res.data.live_version,
+                    show_live_mode_modal: skill_id === res.data.live_version
+                })
+
+                // Retrieve the dev skill, triggered if user refreshes page when live
+                if(!this.state.dev_skill && skill_id === res.data.live_version){
+                    axios.get(`/skill/${skill_id}/dev_version`)
+                    .then(res => {
+                        this.setState({
+                            dev_skill: res.data
+                        })
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
+                } else if(skill_id !== res.data.live_version) {
+                    this.setState({
+                        dev_skill: skill
+                    })
+                }
+            })
+            .catch(err => {
+                console.error(err)
             })
         })
         .catch(err => {
-            // TODO ERROR MESSAGE
-            console.error(err.response)
             this.setState({
                 error: 'Unable to load project'
             })
         })
     }
 
-    onSwapVersions(skill_id, skill){
+    onSwapVersions(skill_id, skill, is_overwrite, cb){
         axios.post(`/skill/${skill_id}/restore`)
         .then(res => {
-            skill.skill_id = res.data.skill_id
-            skill.diagram = res.data.diagram
-            this.setState({
-                skill: skill,
-                diagram_id: skill.diagram
-            })
-            this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+            if(!is_overwrite){
+                skill.skill_id = res.data.skill_id
+                skill.diagram = res.data.diagram
+                this.setState({
+                    skill: skill,
+                    diagram_id: skill.diagram,
+                    dev_skill: res.data
+                })
+            } else {
+                this.setState({
+                    dev_skill: res.data
+                })
+            }
+
+            if(!cb){
+                this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+            } else {
+                cb(true)
+            }
         })
         .catch(err => {
             console.error(err.response)
             this.setState({
                 error: 'Unable to restore version'
             })
+
+            if(cb){
+                cb(false)
+            }
         })
+    }
+
+    toggleLiveMode(disableCb){
+        if(this.state.live_mode){
+            this.child_canvas.current.saveCB = () => {
+                let s = this.state
+                this.setState({
+                    skill: s.dev_skill,
+                    diagram_id: s.dev_skill.diagram,
+                    live_version: s.skill.skill_id,
+                    live_mode: false
+                })
+                this.props.history.push(`/canvas/${s.dev_skill.skill_id}/${s.dev_skill.diagram}`)
+                setTimeout(
+                    () => {disableCb()},
+                    1000
+                )
+            }
+            this.child_canvas.current.onSave()
+        } else {
+            axios.get(`/skill/${this.state.live_version}`)
+            .then((res) => {
+                this.child_canvas.current.saveCB = () => {
+                    this.setState({
+                        skill: res.data,
+                        diagram_id: res.data.diagram,
+                        live_mode: true
+                    })
+                    this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                    setTimeout(
+                        () => {
+                            this.setState({show_live_mode_modal: true})
+                            disableCb()
+                        },
+                        1000
+                    )
+                }
+                this.child_canvas.current.onSave()
+            })
+            .catch((err) => {
+                console.log(err)
+                this.setState({
+                    error: 'Unable to load live version',
+                    live_mode: false,
+                    skill: this.state.dev_skill,
+                    diagram_id: this.state.dev_skill.diagram
+                })
+                console.log(this.state)
+                setTimeout(
+                    () => {disableCb()},
+                    1000
+                )
+            })
+        }
+        
     }
 
     logout(e) {
@@ -200,8 +311,11 @@ class Skill extends Component {
                     {...this.props} 
                     skill={this.state.skill} 
                     diagram_id={this.state.diagram_id} 
+                    live_mode={this.state.live_mode}
                     onError={this.onError} 
                     onConfirm={this.onConfirm} 
+                    ref={this.child_canvas}
+                    onSwapVersions={this.onSwapVersions}
                     updateSkill={this.updateSkill}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'business':
@@ -221,7 +335,8 @@ class Skill extends Component {
                     onError={this.onError} 
                     page={this.props.secondaryPage}
                     onSwapVersions={this.onSwapVersions} 
-                    onConfirm={this.onConfirm} 
+                    onConfirm={this.onConfirm}
+                    live_mode={this.state.live_mode}
                     updateSkill={this.updateSkill}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'publish':
@@ -270,7 +385,7 @@ class Skill extends Component {
         }
 
         return <React.Fragment>
-            {this.state.secondary && <SecondaryNavBar skill={this.state.skill} page={this.props.page} />}
+            {this.state.secondary && <SecondaryNavBar skill={this.state.skill} page={this.props.page} live_mode={this.state.live_mode} has_live={this.state.live_version} toggleLiveMode={this.toggleLiveMode}/>}
 
             <div className="skill-name-top-left fixed-top">
             <Link to="/" className="mx-2">
@@ -280,6 +395,8 @@ class Skill extends Component {
             </div>
             <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
             <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
+            <DefaultModal open={this.state.show_live_mode_modal} toggle={()=>{this.setState({show_live_mode_modal: false})}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
+
             <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
             {this.renderPage()}
             </div>

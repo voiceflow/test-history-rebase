@@ -80,10 +80,15 @@ class RandomBlock extends Component {
     handleInputChange(event) {
         let node = this.state.node;
         node.extras.smart = event.target.checked;
+        if (node.parentCombine) {
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
 
+        }
         this.setState({
           node: node
         }, this.props.onUpdate);
+        this.props.repaint()
     }
 
     render() {

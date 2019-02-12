@@ -27,9 +27,17 @@ class Choice extends Component {
         } else {
             node.extras[name] = value;
         }
+        if (node.parentCombine) {
+          let bestNode = _.findIndex(
+            node.parentCombine.combines,
+            npc => npc.id === node.id
+          );
+          node.parentCombine.combines[bestNode] = node.serialize();
+        }
         this.setState({
             node: node
         }, this.props.onUpdate);
+        this.props.repaint();
     }
 
     handleAddChoice(e) {

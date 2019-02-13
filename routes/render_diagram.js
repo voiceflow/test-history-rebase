@@ -102,8 +102,8 @@ options object properties {
   used_choices: Set of all choices that are used
   permissions: Set of all permissions required by the skill
   interfaces: Set of all interfaces required by the skill
-  intents: Object of all the intents used in the skill
-  slots: Object of all the slots used in the skill
+  intents: Object of all the intents used in the skill (required)
+  slots: Object of all the slots used in the skill (required)
 }
 */
 const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new Promise((resolve) => {

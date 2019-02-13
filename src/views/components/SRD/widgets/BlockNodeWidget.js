@@ -440,7 +440,7 @@ export class BlockNodeWidget extends BaseWidget {
 				}}
 				key={this.props.node.id}
 			>
-				{/* {this.props.node.linter && this.props.node.linter.length > 0 &&
+				{this.props.node.linter && this.props.node.linter.length > 0 &&
 					<Tooltip
 						target="tooltip"
 						className="linter-badge"
@@ -467,7 +467,7 @@ export class BlockNodeWidget extends BaseWidget {
 						</div>}>
 						<img className="warning-logo" src="/warning.svg" alt="logo"/>
 					</Tooltip>
-				} */}
+				}
 				{this.props.node.extras && this.props.node.extras.type === 'god' ? <div className='w-100'
 					style={{height: 12}}
 					onMouseEnter = {

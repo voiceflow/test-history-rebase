@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS, DEFAULT_INTENTS, CATCHALL_SLOT_VALUES, VALID_UTTERANCES, STORYFLOW_INTENT, INTERFACE_INTENTS} = require('./Constants')
+const {BUILT_IN_INTENTS, DEFAULT_INTENTS, VALID_UTTERANCES, STORYFLOW_INTENT, INTERFACE_INTENTS} = require('./Constants')
 const { getEnvVariable } = require('./../util')
 
 const _formatName = (name) => {
@@ -171,14 +171,20 @@ const interactionModel = (req, locale) => {
 
 	const slot_types = []
 
-	// ACCOMADATE CATCHALL SYSTEM
-	if(content_slot_values.length !== 0){
-		intents_for_amazon.push(STORYFLOW_INTENT)
-		slot_types.push({
-			"name": "Content",
-			"values": content_slot_values
+	if (content_slot_values.length === 0) {
+		content_slot_values.push({
+			name: {
+				value: 'example'
+			}
 		})
 	}
+
+	// ACCOMADATE CATCHALL SYSTEM
+	intents_for_amazon.push(STORYFLOW_INTENT)
+	slot_types.push({
+		"name": "Content",
+		"values": content_slot_values
+	})
 
 	slots.forEach(slot => {
 		if (slot.type.value === 'CUSTOM' || !slot.type.value) {

@@ -97,6 +97,9 @@ const setDiagram = async (req, res) => {
       return res.status(500).send('Empty Project')
   }
 
+  let DIAGRAM_ID = diagram.id ? diagram_id : data.id
+  if(!DIAGRAM_ID) return res.status(500).send('Empty Project')
+
   try{
       let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
 
@@ -113,7 +116,7 @@ const setDiagram = async (req, res) => {
   let params = {
       TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
       Item: {
-          id: diagram.id,
+          id: DIAGRAM_ID,
           variables: diagram.variables,
           data: diagram.data,
           skill: diagram.skill,
@@ -146,10 +149,10 @@ const setDiagram = async (req, res) => {
                       diagram.title = "New Flow";
                   }
                   // If it is a new diagram insert (assume it has no blocks)
-                  await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
+                  await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [DIAGRAM_ID, diagram.title, diagram.skill]);
               }else{
                   // otherwise update
-                  await pool.query(`UPDATE diagrams SET sub_diagrams = $1, used_intents = $2, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, used_intents_string, diagram.id]);
+                  await pool.query(`UPDATE diagrams SET sub_diagrams = $1, used_intents = $2, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, used_intents_string, DIAGRAM_ID]);
                   await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
               }
               res.sendStatus(200);

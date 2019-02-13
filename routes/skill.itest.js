@@ -11,16 +11,17 @@ const generateID = () => {
     })
 }
 
-const getTemplate = new Promise((resolve, reject) => {
-  pool.query(`SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1`, (err, res)=>{
-    if(err){
-      reject(err)
-    } else if (res.rows.length === 0) {
+const getTemplate = new Promise(async (resolve, reject) => {
+  try{
+    let rows = (await pool.query(`SELECT module_id FROM modules WHERE type = 'TEMPLATES' ORDER BY template_index DESC LIMIT 1`)).rows
+    if(rows.length === 0){
       resolve(null)
-    } else{
-      resolve(res.rows[0].module_id)
+    } else {
+      resolve(rows[0].module_id)
     }
-  })
+  } catch (err) {
+    reject(err)
+  }
 })
 
 describe('Skill', () => {
@@ -53,6 +54,7 @@ describe('Skill', () => {
       } catch (e) {
         module_id = null
       }
+      console.log('fuck',module_id)
     })
 
     it('creates skill', done => {

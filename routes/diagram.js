@@ -336,9 +336,27 @@ const publishTest = async (req, res) => {
 const rerenderDiagram = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
   let diagram_id = req.params.diagram_id
-
+  
   try{
-    await renderDiagram(req.user, diagram_id, skill_id);
+    let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
+    let skill = skill_data[0]
+
+    let intents = {}
+    let slots = {}
+    // CONVERT ARRAY TO OBJECTS
+    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    if (Array.isArray(skill.intents)) {
+      skill.intents.forEach(intent => {
+        if (intent.key) intents[intent.key] = intent.name
+      })
+    }
+    if (Array.isArray(skill.slots)) {
+      skill.slots.forEach(slot => {
+        if (slot.key) slots[slot.key] = slot.name
+      })
+    }
+
+    await renderDiagram(req.user, diagram_id, skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
     res.sendStatus(200)
   } catch(err){
     console.trace(err)

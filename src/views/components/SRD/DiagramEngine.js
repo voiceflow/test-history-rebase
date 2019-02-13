@@ -222,29 +222,29 @@ export class DiagramEngine extends BaseEntity {
 	}
 
 	getPortFactory(type: string) {
-		if (this.portFactories[type]) {
-			return this.portFactories[type];
+		if (this.portFactories["default"]) {
+			return this.portFactories["default"];
 		}
 		throw new Error(`cannot find factory for port of type: [${type}]`);
 	}
 
 	getNodeFactory(type: string) {
-		if (this.nodeFactories[type]) {
-			return this.nodeFactories[type];
+		if (this.nodeFactories["default"]) {
+			return this.nodeFactories["default"];
 		}
 		throw new Error(`cannot find factory for node of type: [${type}]`);
 	}
 
 	getLinkFactory(type: string){
-		if (this.linkFactories[type]) {
-			return this.linkFactories[type];
+		if (this.linkFactories["default"]) {
+			return this.linkFactories["default"];
 		}
 		throw new Error(`cannot find factory for link of type: [${type}]`);
 	}
 
 	getLabelFactory(type: string) {
-		if (this.labelFactories[type]) {
-			return this.labelFactories[type];
+		if (this.labelFactories["default"]) {
+			return this.labelFactories["default"];
 		}
 		throw new Error(`cannot find factory for label of type: [${type}]`);
 	}

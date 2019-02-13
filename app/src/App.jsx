@@ -187,6 +187,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    if (window.chmln){
+      window.chmln.identify(window.user_detail.id, {
+        email: window.user_detail.email,
+        name: window.user_detail.name
+      })
+    }
     if (window.Stripe) {
       this.setState({stripe: window.Stripe(STRIPE_KEY)});
     } else {

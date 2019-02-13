@@ -18,7 +18,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 
 	deSerialize(object, engine: DiagramEngine, parentCombine=null) {
 			super.deSerialize(object, engine);
-			this.combines = object.combines;
+			this.combines = object.combines ? object.combines : [];
 			this.parentCombine = parentCombine;
 			return this;
 	}
@@ -34,9 +34,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 	
 	serialize() {
 		return _.merge(super.serialize(), {
-			name: this.name,
-			color: this.color,
-			combines: this.combines,
+			combines: !_.isEmpty(this.combines) ? this.combines : null,
 		});
 	}
 	setSelected(selected) {

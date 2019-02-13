@@ -1,12 +1,16 @@
 import { BlockPortModel } from "./../models/BlockPortModel";
-import { AbstractPortFactory } from "storm-react-diagrams";
 
-export class BlockPortFactory extends AbstractPortFactory<BlockPortModel> {
+export class BlockPortFactory {
 	constructor() {
-		super("default")
+		// super("default")
+		this.type = "default"
 	}
 
 	getNewInstance(initialConfig?: any): BlockPortModel {
 		return new BlockPortModel(true, "unknown");
+	}
+
+	getType(){
+		return this.type;
 	}
 }

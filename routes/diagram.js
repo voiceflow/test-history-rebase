@@ -3,20 +3,24 @@ const {
   docClient,
   pool,
   hashids,
-  validateEmail
+  validateEmail,
+  writeToLogs
 } = require('./../services');
 const {
   getEnvVariable,
   delay
 } = require('../util')
 const {
-  copySkill
+  copySkill,
+  deleteDynamoDiagramPromise
 } = require('./skill_util')
 const {
   renderDiagram
 } = require('./render_diagram.js')
 
-const { _getGoogleAccessToken } = require('../routes/authentication')
+const {
+  _getGoogleAccessToken
+} = require('../routes/authentication')
 
 const del = require('del');
 const spawn = require('child_process').spawn
@@ -48,7 +52,9 @@ const getVariables = (req, res) => {
 
   docClient.get(params, (err, data) => {
     if (err) {
-      console.error(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      })
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
       res.send(data.Item.variables);
@@ -57,54 +63,6 @@ const getVariables = (req, res) => {
     }
   })
 }
-
-const getDiagrams = (req, res) => {
-  if (!req.user) {
-    res.sendStatus(401);
-    return;
-  }
-  let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    ProjectionExpression: req.query.verbose ? 'id, title, last_save' : 'id, title'
-  }
-
-  if (req.user.admin < 100) {
-    params.FilterExpression = 'creator = :creator'
-    params.ExpressionAttributeValues = {
-      ':creator': req.user.id
-    }
-  }
-
-  let items = []
-
-  docClient.scan(params, onScan);
-
-  function onScan(err, data) {
-    if (err) {
-      console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
-    } else {
-      data.Items.forEach(function (item) {
-        items.push(item)
-      });
-
-      // continue scanning if we have more items
-      if (typeof data.LastEvaluatedKey != "undefined") {
-        params.ExclusiveStartKey = data.LastEvaluatedKey;
-        docClient.scan(params, onScan);
-      } else {
-        items.sort((a, b) => {
-          let keyA = a.title,
-            keyB = b.title;
-          // Compare the 2 dates
-          if (keyA < keyB) return -1;
-          if (keyA > keyB) return 1;
-          return 0;
-        });
-        res.send(items);
-      }
-    }
-  }
-};
 
 const getDiagram = (req, res) => {
   if (!req.user) {
@@ -121,7 +79,9 @@ const getDiagram = (req, res) => {
   };
   docClient.get(params, (err, data) => {
     if (err) {
-      console.log(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      })
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
       let diagram = data.Item
@@ -179,11 +139,12 @@ const setDiagram = async (req, res) => {
       diagram.creator = req.user.id
     }
   } catch (err) {
-    console.error(err);
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
     return res.sendStatus(500)
   }
 
-  diagram.last_save = Date.now();
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
     Item: {
@@ -211,7 +172,9 @@ const setDiagram = async (req, res) => {
 
   docClient.put(params, async (err) => {
     if (err) {
-      console.log(err);
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      });
       res.sendStatus(err.statusCode);
     } else {
       try {
@@ -225,11 +188,12 @@ const setDiagram = async (req, res) => {
           // otherwise update
           await pool.query(`UPDATE diagrams SET sub_diagrams = $1, used_intents = $2, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, used_intents_string, diagram.id]);
           await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
-          await pool.query(`UPDATE skill_versions SET last_save = NOW() WHERE skill_id=$1 AND canonical_skill_id = $1`, [diagram.skill])
         }
         res.sendStatus(200);
       } catch (e) {
-        console.trace(e)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: e
+        })
         res.sendStatus(500);
       }
     }
@@ -242,27 +206,21 @@ const deleteDiagram = (req, res) => {
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
         `,
-    [req.params.id, req.user.id], (err, response) => {
+    [req.params.id, req.user.id], async (err, response) => {
       if (err) {
-        console.log(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
         return res.sendStatus(500)
       }
       if (response.rowCount !== 0) {
-        let params = {
-          TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-          Key: {
-            'id': req.params.id
-          }
+        try {
+          await deleteDynamoDiagramPromise(req.params.id)
+          return res.sendStatus(200)
+        } catch (err) {
+          console.trace(err)
+          return res.sendStatus(500)
         }
-
-        docClient.delete(params, err => {
-          if (err) {
-            console.log(err);
-            res.sendStatus(err.statusCode);
-          } else {
-            res.sendStatus(200);
-          }
-        })
       }
     }
   )
@@ -331,7 +289,9 @@ const copyDiagram = async (req, res) => {
           await docClient.delete(delete_params).promise()
           res.sendStatus(500)
         } catch (err) {
-          console.trace(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {
+            err: err
+          })
           res.sendStatus(500)
         }
       }
@@ -339,7 +299,9 @@ const copyDiagram = async (req, res) => {
       res.sendStatus(404)
     }
   } catch (err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
   }
 }
 
@@ -391,7 +353,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       });
 
       gactions.stderr.on('data', (data) => {
-          reject(data.toString())
+        reject(data.toString())
       })
 
       await delay(4000)
@@ -428,14 +390,14 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
         const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
         const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
-  
+
         return aVersion - bVersion
       })
       highest_existing_version = +highest_existing_version[highest_existing_version.length - 1].match(/.-\[([^\[\]]+)\]\S+/)[1]
     } else {
       existing_google_versions = {}
     }
-  
+
     Object.keys(all_google_versions).forEach(version => {
       const version_number = +version.match(/.-\[([^\[\]]+)\]\S+/)[1]
       if (version_number > highest_existing_version) {
@@ -511,7 +473,9 @@ const publish = (req, res) => {
 
     pool.query(version_query, [], async (err, data) => {
       if (err) {
-        console.log(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
         res.sendStatus(500)
       } else {
         new_skill_row.canonical_skill_id = hashids.encode(data.rows[0].canonical_skill_id)
@@ -568,14 +532,27 @@ const publishTest = async (req, res) => {
   res.sendStatus(status)
 }
 
+const rerenderDiagram = async (req, res) => {
+  let skill_id = hashids.decode(req.params.skill_id)[0]
+  let diagram_id = req.params.diagram_id
+
+  try {
+    await renderDiagram(req.user, diagram_id, skill_id);
+    res.sendStatus(200)
+  } catch (err) {
+    console.trace(err)
+    res.sendStatus(500)
+  }
+}
+
 module.exports = {
   updateName: updateName,
   getVariables: getVariables,
-  getDiagrams: getDiagrams,
   getDiagram: getDiagram,
   deleteDiagram: deleteDiagram,
   setDiagram: setDiagram,
   publish: publish,
   publishTest: publishTest,
-  copyDiagram: copyDiagram
+  copyDiagram: copyDiagram,
+  rerenderDiagram: rerenderDiagram
 }

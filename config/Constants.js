@@ -30,14 +30,19 @@ exports.DEFAULT_INTENTS = [
     "samples": [
       "no"
     ]
-  },
-  {
-    "name": "AMAZON.ResumeIntent",
-  },
-  {
-    "name": "AMAZON.PauseIntent",
   }
 ]
+
+exports.INTERFACE_INTENTS = {
+  "AUDIO_PLAYER": [
+    {
+      "name": "AMAZON.ResumeIntent",
+    },
+    {
+      "name": "AMAZON.PauseIntent",
+    }
+  ]
+}
 
 exports.STORYFLOW_INTENT = {
   "name": "StoryFlowIntent",

@@ -17,7 +17,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
 const { getEnvVariable } = require('./util')
-const policy = require('./policy');
+const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
 
@@ -141,7 +141,8 @@ app.post('/user/reset/password', Authentication.resetPassword);
 app.get('/decode/:id', ensureAdmin(),Decode.decodeId);
 app.get('/encode/:id', ensureAdmin(),Decode.encodeId);
 
-app.get('/creator/privacy_policy', policy);
+app.get('/creator/privacy_policy', policy)
+app.get('/creator/terms', terms)
 
 app.post('/test/api', ensureLoggedIn(), Test.api)
 
@@ -168,6 +169,8 @@ app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
+app.get('/skill/:id/live_version', ensureLoggedIn(), Skill.getLiveVersion)
+app.get('/skill/:id/dev_version', ensureLoggedIn(), Skill.getDevVersion)
 app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
@@ -191,9 +194,9 @@ app.post('/customer/subscription', ensureLoggedIn(), Customer.create)
 app.post('/customer/webhook', Customer.webhook)
 app.get('/customer/promo/:code', ensureLoggedIn(), Customer.codes)
 
-app.get('/diagrams', ensureLoggedIn(), Diagram.getDiagrams);
 app.get('/diagram/:id', ensureLoggedIn(), Diagram.getDiagram);
 app.get('/diagram/:id/variables', ensureLoggedIn(), Diagram.getVariables);
+app.post('/diagram/:diagram_id/:skill_id/rerender', ensureLoggedIn(), Diagram.rerenderDiagram)
 app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);

@@ -40,7 +40,7 @@ class Settings extends Component {
     }
 
     render() {
-        return <div className="settings pt-4">
+        return <div className="settings pt-4 pb-5">
             <div className="nav-bar-top mb-4">
                 <ButtonGroup className="toggle-group mb-2 toggle-group-settings">
                     {TABS.map(tab => {
@@ -48,7 +48,7 @@ class Settings extends Component {
                             key={tab}
                             onClick={() => this.switchTab(tab)}
                             outline={this.props.page !== tab}
-                            disabled={this.props.page === tab}>
+                            disabled={this.props.page === tab || (this.props.live_mode && tab === 'backups')}>
                             {tab}
                         </Button>
                     })}

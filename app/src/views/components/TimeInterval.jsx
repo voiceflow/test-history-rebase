@@ -112,7 +112,7 @@ class TimeInterval extends Component {
     const { from, to } = this.state
     const modifiers = { start: from, end: to }
     return (
-      <div class="time-interval">
+      <div className="time-interval">
         <Select
           placeholder="Filter"
           className="select-box mb-1"

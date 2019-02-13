@@ -1,4 +1,4 @@
-const { pool, hashids, jwt } = require('./../services');
+const { pool, hashids, jwt, writeToLogs } = require('./../services');
 const isVarName = require('is-var-name');
 const { getEnvVariable } = require('../util')
 
@@ -11,7 +11,7 @@ const { getEnvVariable } = require('../util')
 			[id, req.user.id], (err, result) =>{
 			if(err){
 				res.sendStatus(500);
-				console.error(err)
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				console.trace();
 			}else if(result.rows.length === 0){
 				res.sendStatus(404);
@@ -41,7 +41,7 @@ const { getEnvVariable } = require('../util')
 			[req.user.id, account_linking, skill_id], (err, skill) => {
 				if(err){
 					res.sendStatus(500)
-					console.error(err)
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 					console.trace()
 				}else{
 					skill.rows[0].skill_id = hashids.encode(skill.rows[0].skill_id);
@@ -59,7 +59,7 @@ const { getEnvVariable } = require('../util')
 // 		pool.query('DELETE FROM skills WHERE template_id=$1 AND creator_id=$2', [id, req.user.id], err =>{
 // 			if(err){
 // 				res.sendStatus(500);
-// 				console.error(err)
+// 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 // 				console.trace();
 // 			}else{
 // 				res.sendStatus(200);

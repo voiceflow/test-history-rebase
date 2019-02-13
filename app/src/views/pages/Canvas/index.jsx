@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import * as SRD from 'storm-react-diagrams'
+import * as SRD from './../../components/SRD/main.js'
 import Menu from './Menu'
 import Editor from './Editor'
-import moment from 'moment'
 import axios from 'axios'
 import update from 'immutability-helper';
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
-import 'storm-react-diagrams/dist/style.min.css'
+import './../../components/SRD/sass/main.css';
 import './StoryBoard.css'
 
 import ActionGroup from './ActionGroup'
@@ -15,19 +14,21 @@ import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
-import { ButtonGroup, Alert } from 'reactstrap'
+import { ButtonGroup, Alert, ListGroup, ListGroupItem } from 'reactstrap'
 import cloneDeep from 'lodash/cloneDeep'
 import {convertDiagram} from './util'
 import Spotlight from './Spotlight'
+import { Toolkit } from './../../components/SRD/Toolkit'
 import FlowBar from './FlowBar'
 import DefaultModal from 'views/components/Modals/DefaultModal'
 import ShortCuts from 'views/components/ShortCuts'
 import Mousetrap from 'mousetrap'
 
-import { BlockNodeModel } from './SRD/models/BlockNodeModel'
-import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
-import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
-import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
+import { BlockNodeModel } from './../../components/SRD/models/BlockNodeModel'
+import { PointModel } from './../../components/SRD/models/PointModel'
+import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
+import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'
+import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFactory'
 
 import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
@@ -35,14 +36,18 @@ import { getIntentSlots } from 'Helper'
 import Linter from './linter'
 import { getUtterancesWithSlotNames, getSlotsForKeys } from '../../../util'
 import randomstring from 'randomstring'
+import { checkBlockDisabledLive } from './Blocks'
+
+import { Prompt } from 'react-router'
+import moment from 'moment'
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
-
 const NLC = require('natural-language-commander')
 const _ = require('lodash')
 const line_color = '#D1D8E2'
 const line_width = 2.5
+const toolkit = new Toolkit()
 
 const commandHasIntent = (node, intent) => {
     return (node.extras.type === 'command' && node.extras.intent && node.extras.intent.value === intent)
@@ -82,9 +87,14 @@ class Canvas extends Component {
         this.renameFlow = this.renameFlow.bind(this);
         this.zoom = this.zoom.bind(this)
         this.loadUserModules = this.loadUserModules.bind(this)
+        this.copy = this.copy.bind(this);
+        this.paste = this.paste.bind(this);
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
         this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
+        this.combineValidation = this.combineValidation.bind(this)
+        this.combineAppendValidation = this.combineAppendValidation.bind(this)
+        this.combineNode = this.combineNode.bind(this)
         this.createWithTemplate = this.createWithTemplate.bind(this)
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
@@ -100,6 +110,12 @@ class Canvas extends Component {
         this.updateLinter = this.updateLinter.bind(this)
         this.onUpdate = this.onUpdate.bind(this)
 
+        this.forceRepaint = this.forceRepaint.bind(this)
+        this.generateBlockMenu = this.generateBlockMenu.bind(this)
+        this.appendCombineNode = this.appendCombineNode.bind(this);
+        this.removeCombineNode = this.removeCombineNode.bind(this);
+        this.canSave = this.canSave.bind(this)
+        this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
         // preview mode
@@ -136,12 +152,12 @@ class Canvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: props.skill.last_save,
             testing_modal: false,
             testing_info: false,
             variables: [],
             help: null,
             helpOpen: false,
+            copy: null,
             currentProduct: null,
             user_modules: null,
             user_templates: [],
@@ -168,7 +184,9 @@ class Canvas extends Component {
 
     componentDidMount() {
         Mousetrap.bind(['shift+/'], this.toggleShortcuts)
-        Mousetrap.bind(['command+s'], (e)=>{
+        Mousetrap.bind(['ctrl+c', 'command+c'], this.copy)
+        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
+        Mousetrap.bind(['ctrl+s', 'command+s'], (e)=>{
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
                 this.onSave()
@@ -183,6 +201,53 @@ class Canvas extends Component {
                 e.stopPropagation()
             }
         })
+
+        // AUTOSAVE EVERY 5 SECONDS
+        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+            this.interval = setInterval(()=>{
+                if(this.lastModel){
+                    var serialize = this.state.engine.getDiagramModel().serializeDiagram()
+                    serialize.id = this.props.diagram_id
+                    _.map(serialize.nodes, node => {
+                        if (!_.isEmpty(node.combines)) {
+                            node.extras.nextID = node.combines[0].id
+                        }
+                        if (!_.isEmpty(node.combines)) {
+                            node.extras.nextID = node.combines[0].id
+                        }
+                        node.combines = _.map(node.combines, (combine, idx) => {
+                            if (combine.parentCombine) {
+                                delete combine.parentCombine
+                            }
+                            if (idx !== node.combines.length - 1 && combine.extras) {
+                                combine.extras.nextID = node.combines[idx + 1].id
+                            } else {
+                                _.forEach(combine.ports, cp => {
+                                    if (!cp.in) {
+                                        if (_.find(node.ports, np => np.id === cp.id)) {
+                                            cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                        }
+                                    }
+                                })
+                            }
+                            return combine.serialize ? combine.serialize() : combine
+                        })
+                    })
+                var currentModel = JSON.stringify(serialize)
+                    if(currentModel !== this.lastModel){
+                        if(this.canSave(currentModel)){
+                            this.tooBig = false
+                            this.onSave()
+                        }else{
+                            if(!this.tooBig){
+                                this.tooBig = true
+                                this.props.onError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size')
+                            }
+                        }
+                    }
+                }
+            }, 5000)
+        }
     }
 
     static getDerivedStateFromProps(props, state){
@@ -193,10 +258,14 @@ class Canvas extends Component {
         }
         return null;
     }
+
     componentWillUnmount() {
         Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
-            this.onSave(null, false, false)
+            this.onSave(false)
+        }
+        if(this.interval){
+            clearInterval(this.interval)
         }
     }
 
@@ -212,9 +281,16 @@ class Canvas extends Component {
               let nodes = _.values(this.state.engine.diagramModel.nodes)
               this.state.engine.enableRepaintEntities(nodes)
               this.state.engine.repaintCanvas(false)
-              this.onLoadId(this.props.diagram_id)
+              this.onLoadDiagrams(this.props.diagram_id)
             })
         }
+    }
+
+    canSave(currentModel){
+        // Get the size of the diagram in bytes
+        const size = (new TextEncoder('utf-8').encode(currentModel)).length
+        // If the size is too large warn the user
+        return size < 399000
     }
 
     toggleShortcuts(){this.setState({keyboard_help: !this.state.keyboard_help})}
@@ -292,6 +368,23 @@ class Canvas extends Component {
     mouseMove({clientX, clientY}){
         this.mouseX = clientX
         this.mouseY = clientY
+    }
+
+    copy(){
+        this.setState({
+            copy: this.state.engine.getSuperSelect()
+        })
+    }
+
+    paste() {
+        if(this.state.copy){
+            let event = {
+                clientX: this.mouseX,
+                clientY: this.mouseY
+            }
+            var point = this.state.engine.getRelativeMousePoint(event)
+            this.copyNode(this.state.copy, { x: point.x - (this.state.copy.name.length * 4.5 + 40), y: point.y -30})
+        }
     }
 
     zoom(delta){
@@ -374,7 +467,7 @@ class Canvas extends Component {
             diagram_id: this.props.diagram_id
         })
         .then(res => {
-            var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1))
+            var node = new BlockNodeModel(type.charAt(0).toUpperCase() + type.substr(1), null, toolkit.UID())
             node.addInPort(' ')
             node.addOutPort(' ').setMaximumLinks(1)
             node.extras = {
@@ -440,47 +533,615 @@ class Canvas extends Component {
             this.props.onError('Error retrieving template')
         })
     }
-
-    removeNode(){
-        let selected = this.state.engine.getSuperSelect()
-        this.state.engine.stopMove()
-        if(selected){
-            selected.remove()
+            
+    removeNode(selectedNode = null){
+        let selected = selectedNode ? selectedNode : this.state.engine.getSuperSelect()
+        if(!checkBlockDisabledLive(this.props.live_mode, selected.extras.type)){
+            this.state.engine.stopMove()
+            if (selected.extras && selected.extras.type === 'god'){
+                this.props.onConfirm({
+                                warning: true,
+                                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
+                                confirm: () => selected.remove()
+                            })
+            } else if(selected){
+                selected.remove()
+            }
+        } else {
+            this.props.onError('Cannot delete blocks that would alter the interaction model in live version editing')
         }
     }
-
     // copy individual node
-    copyNode() {
-        let selected = this.state.engine.getSuperSelect()
+    copyNode(newNode = null, pos = null) {
+        let selected = newNode ? newNode : this.state.engine.getSuperSelect()
+        let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100;
         if(selected.extras.type !== 'story'){
             let engine = this.state.engine
             engine.stopMove()
 
-            var node = new BlockNodeModel(selected.name + ' copy')
-            node.extras = cloneDeep(selected.extras)
+        var node = new BlockNodeModel(selected.name + ' copy', null, toolkit.UID())
+        node.extras = cloneDeep(selected.extras)
+        if (selected.extras.type === 'god') {
+            let newCombines = []
+            let lastPorts;
+            let inPorts;
+            _.map(selected.combines, (combineNode, idx) => {
+                let newCombineNode = new BlockNodeModel(combineNode.name, null, toolkit.UID())
+                newCombineNode.extras = cloneDeep(combineNode.extras);
+                newCombineNode.x = combineNode.x + 30;
+                newCombineNode.y = combineNode.y + 30;
+                let ports = combineNode.ports
 
+                for (var name in ports) {
+                    let port = ports[name]
+                    port.in ? newCombineNode.addInPort(port.label): newCombineNode.addOutPort(port.label).setMaximumLinks(1)
+                }
+                _.map(newCombineNode.ports, p => p.parent = node);
+                lastPorts = newCombineNode.getOutPorts()
+                newCombines.push(newCombineNode)
+                newCombines[idx].parentCombine = node;
+                if (idx === 0) {
+                    inPorts = newCombineNode.getInPorts()
+                }
+            })
+            node.combines = newCombines
+            _.last(node.combines).isLast = true
+            node.ports = _.concat(lastPorts, inPorts);
+        }
             let ports = selected.getPorts()
-
-            for (var name in ports) {
-                let port = ports[name]
-                port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+            if (node.extras.type !== 'god'){
+                for (var name in ports) {
+                    let port = ports[name]
+                    port.in ? node.addInPort(port.label) : node.addOutPort(port.label).setMaximumLinks(1)
+                }
             }
 
-            node.x = selected.x + 30
-            node.y = selected.y + 30
-
+            node.x = pos ? pos.x : selected.x + 30
+            node.y = pos ? pos.y : selected.y + 30
+            if (!_.isEmpty(node.combines)){
+              let totalHeight = 40;
+				_.forEach(node.combines, (c, idx) => {
+					if (!(c instanceof String) && c.id !== node.id) {
+						c.x = node.x + 10;
+						c.y = node.y + totalHeight;
+						if (c.height) {
+							totalHeight = totalHeight + c.height /amountZoom
+						} else {
+							totalHeight = totalHeight + 40
+						}
+					}
+				});
+            }
             engine.getDiagramModel().clearSelection()
             node.setSelected()
             engine.setSuperSelect(node)
             engine.getDiagramModel().addNode(node)
             this.addRemoveListener(node)
-
             this.setState({
                 engine: engine
             })
         }
     }
 
+    appendCombineNode(node){
+        let idx = _.findIndex(node.parentCombine.combines, c => c.id === node.id);
+        let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100;
+        let engine = this.state.engine;
+        if (idx !== -1 && this.combineAppendValidation(node)){
+            engine.stopMove()
+
+            var newNode = new BlockNodeModel(node.name + ' copy', null, toolkit.UID())
+            newNode.extras = cloneDeep(node.extras)
+            var name
+            let ports = node.ports;
+            for (name in ports) {
+                let port = ports[name]
+                port.in ? newNode.addInPort(port.label) : newNode.addOutPort(port.label).setMaximumLinks(1)
+            }
+            _.map(newNode.ports, p => p.parent = newNode);
+            node.parentCombine.combines.splice(idx + 1, 0, newNode.serialize())
+            if (idx === node.parentCombine.combines.length){
+                let parentPorts = node.parentCombine.getOutPorts()
+                for (name in parentPorts) {
+                    let parentPort = parentPorts[name]
+                    if (!parentPort.in) {
+                        node.parentCombine.removePort(node.parentCombine.ports[name])
+                    }
+                }
+                let lastPorts = newNode.getOutPorts();
+                node.parentCombine.ports.push(lastPorts);
+            } else {
+                _.forEach(node.parentCombine.getOutPorts(), port => {
+                    if (!port.in && !_.isEmpty(port.links)) {
+                        let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+                        let point = _.first(_.values(port.links)).points[pointIdx]
+                        if (point instanceof PointModel) {
+                            _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y + 40 });
+                            this.repaint()
+                        }
+
+                    }
+                })
+            }
+            let totalHeight = 40;
+            _.forEach(node.parentCombine.combines, (c, idx) => {
+                if (!(c instanceof String) && c.id !== node.parentCombine.id) {
+                    c.x = node.parentCombine.x + 25;
+                    c.y = node.parentCombine.y + totalHeight;
+                    if (c.height) {
+                        totalHeight = totalHeight + c.height / amountZoom
+                    } else {
+                        totalHeight = totalHeight + 40
+                    }
+                }
+            });
+            engine.setSuperSelect(node);
+            this.forceRepaint()
+        }
+    }
+
+    removeCombineNode(node){
+        let nodeIdx;
+        let diagramEngine = this.state.engine
+        let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
+        _.remove(node.parentCombine.combines, (c, idx) => {
+            if (c.id === node.id) {
+                nodeIdx = idx;
+                return true;
+            }
+        })
+        let combineBlock = node.parentCombine
+        let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
+        if (nodeIdx === combineBlock.combines.length) {
+            _.forEach(combineBlock.ports, p => {
+                if (!p.in) {
+                    combineBlock.removePort(p);
+                }
+            })
+            _.forEach(lastNode.ports, p => {
+                if (!p.in) {
+                    combineBlock.ports[p.name] = p
+                }
+            })
+        } else {
+            _.forEach(node.parentCombine.getOutPorts(), port => {
+                if (!port.in && !_.isEmpty(port.links)) {
+                    let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+                    let point = _.first(_.values(port.links)).points[pointIdx]
+                    if (point instanceof PointModel) {
+                        _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
+                        this.repaint()
+                    }
+
+                }
+            })
+        }
+        if (combineBlock.combines.length === 1) {
+            let removed = new BlockNodeModel().deSerialize(lastNode, diagramEngine);
+            diagramEngine.getDiagramModel().addNode(removed)
+            removed.parentCombine = null;
+            removed.extras.nextID = null;
+            combineBlock.remove();
+        }
+        let totalHeight = 40;
+        _.forEach(node.parentCombine.combines, (c, idx) => {
+            if (!(c instanceof String) && c.id !== node.parentCombine.id) {
+                c.x = node.parentCombine.x + 25;
+                c.y = node.parentCombine.y + totalHeight;
+                if (c.height) {
+                    totalHeight = totalHeight + c.height / amountZoom
+                } else {
+                    totalHeight = totalHeight + 40
+                }
+            }
+        });
+        diagramEngine.setSuperSelect(null)
+        this.forceRepaint()
+    }
+
+    combineValidation(current, target){
+        if (current.parentCombine || target.parentCombine) {
+            return false;
+        }
+        if (current.extras.type === 'god' && target.extras.type === 'god'){
+            return false;
+        }
+        if (!_.isEmpty(target.combines)){
+            switch(_.last(target.combines).extras.type){
+                case 'exit':
+                    switch(current.extras.type){
+                        case 'exit':
+                            return false;
+                        case 'choice':
+                            return false;
+                        case 'stream':
+                            return false;
+                        case 'interaction':
+                            return false;
+                        case 'if':
+                            return false;
+                        case 'random':
+                            return false;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'choice':
+                    switch(current.extras.type){
+                        case 'choice':
+                            return false;
+                        case 'exit':
+                            return false;
+                        case 'stream':
+                            return false;
+                        case 'interaction':
+                            return false
+                        case 'if':
+                            return false;
+                        case 'random':
+                            return false;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'stream':
+                    switch(current.extras.type){
+                        case 'stream':
+                            return false;
+                        case 'exit':
+                            return false;
+                        case 'choice':
+                            return false;
+                        case 'interaction':
+                            return false;
+                        case 'if':
+                            return false;
+                        case 'random':
+                            return false;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'interaction':
+                    switch(current.extras.type){
+                        case 'interaction':
+                            return false;
+                        case 'exit':
+                            return false;
+                        case 'choice':
+                            return false;
+                        case 'stream':
+                            return false;
+                        case 'if':
+                            return false;
+                        case 'random':
+                            return false;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'if':
+                    switch(current.extras.type){
+                        case 'if':
+                            return false;
+                        case 'exit':
+                            return false;
+                        case 'choice':
+                            return false;
+                        case 'stream':
+                            return false;
+                        case 'interaction':
+                            return false;
+                        case 'random':
+                            return false;
+                        default:
+                            break;
+                    }
+                break;
+                case 'random':
+                    switch(current.extras.type){
+                        case 'if':
+                            return false;
+                        case 'exit':
+                            return false;
+                        case 'choice':
+                            return false;
+                        case 'stream':
+                            return false;
+                        case 'interaction':
+                            return false;
+                        case 'random':
+                            return false;
+                        default:
+                            break;
+                    }
+                break;
+            default:
+                break;
+            }
+        }
+        switch(target.extras.type){
+            case 'story':
+                return false;
+            case 'flow':
+                return false;
+            case 'intent':
+                return false;
+            case 'comment':
+                return false;
+            case 'command':
+                return false;
+            default:
+                break;
+        }
+        switch(current.extras.type){
+            case 'god':
+                return false;
+            case 'story':
+                return false;
+            case 'flow':
+                return false;
+            case 'intent':
+                return false;
+            case 'comment':
+                return false;
+            case 'command':
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    combineAppendValidation(current){
+        switch(current.extras.type){
+            case 'exit':
+                return false;
+            case 'interaction':
+                return false;
+            case 'choice':
+                return false;
+            case 'if':
+                return false;
+            case 'stream':
+                return false;
+            case 'random':
+                return false;
+            default:
+                return true;
+        }
+    }
+    combineNode(e = null) {
+      let current = this.state.engine.getSuperSelect();
+       let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100
+        var nodeElement = e ? toolkit.closest(e.target, ".node[data-nodeid]") : null;
+        let element = nodeElement ? this.state.engine.getDiagramModel().getNode(nodeElement.getAttribute("data-nodeid")) : null;
+        var name
+      _.map(_.values(this.state.engine.getDiagramModel().getNodes()), (target_node, idx) => {
+        if (current && target_node){
+          if (target_node.id === current.id){
+              return;
+          }
+          if(current.parentCombine || (element && element.extras && element.extras.type === 'god')) {
+              let parent = current.parentCombine ? current.parentCombine : element
+             let tempIdx = _.findIndex(parent.combines, c =>{
+                 return c === 'temp'
+              })
+             if (tempIdx >=0){
+                 let parentPorts = parent.ports
+                 let firstNode = _.head(_.filter(parent.combines, c => c !== 'temp'));
+                 let lastNode = _.last(_.filter(parent.combines, c => c !== 'temp'));
+                 if (tempIdx === 0){
+                     firstNode = current;
+                 } else if (tempIdx === parent.combines.length-1){
+                     lastNode = current;
+                 }
+                 current.x = parent.x + 10;
+                 firstNode = new BlockNodeModel().deSerialize(firstNode, this.state.engine);
+                 lastNode = new BlockNodeModel().deSerialize(lastNode, this.state.engine);
+                 let isValid = current;
+                 if (tempIdx <= parent.combines.length && current.parentCombine) {
+                     if (_.last(current.parentCombine.combines) !== 'temp') {
+                         isValid = _.last(current.parentCombine.combines)
+                     }
+                 }
+                 if ((tempIdx <= parent.combines.length && current.parentCombine && this.combineAppendValidation(isValid)) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
+                    for (name in parentPorts){
+                        let parentPort = parentPorts[name]
+                        if (parentPort.in){
+                            if (_.find(firstNode.ports, cp => cp.in)){
+                                let portIdx = _.find(firstNode.ports, cp => cp.in)
+                                portIdx.parent = parent
+                                parentPort = portIdx;
+                            } else {
+                                parent.removePort(parent.ports[name])
+                            }
+                        } else {
+                            parent.removePort(parent.ports[name])
+                        }
+                    }
+                     if (tempIdx <= parent.combines.length && current.parentCombine){
+                        _.forEach(lastNode.ports, cp => {
+                            if (!cp.in){
+                                cp.parent = parent
+                                parent.ports[cp.name] = cp;
+                            }
+                        })
+                    } else {
+                        _.forEach(current.getOutPorts(), cp => {
+                            if (!cp.in) {
+                                cp.parent = parent
+                                parent.ports[cp.name] = cp;
+                            }
+                        }) 
+                    }
+                 } else {
+                     _.forEach(parent.getOutPorts(), port => {
+                         if (!port.in && !_.isEmpty(port.links) && !current.parentCombine) {
+                             let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+                             let point = _.first(_.values(port.links)).points[pointIdx]
+                             if (point instanceof PointModel) {
+                                 _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y + 40 });
+                                 this.repaint()
+                             }
+
+                         }
+                     })
+                 }
+                let parentIn = _.find(parent.ports, cp => cp.in);
+                let firstNodeIn = _.find(firstNode.ports, cp => cp.in);
+                if (!parentIn && firstNodeIn){
+                    parent.ports[firstNodeIn.name] = firstNodeIn
+                }
+                parent.combines[tempIdx] = current.serialize();
+                let totalHeight = 40;
+                _.forEach(parent.combines, (c, idx) => {
+                    if (!(c instanceof String) && c.id !== parent.id) {
+                        c.x = parent.x + 25;
+                        c.y = parent.y + totalHeight;
+                        if (c.height) {
+                            totalHeight = totalHeight + c.height
+                        } else {
+                            totalHeight = totalHeight + 40
+                        }
+                    }
+                });
+                current.remove();
+                this.state.engine.getDiagramModel().clearSelection()
+                this.state.engine.setSuperSelect(parent)
+                this.state.engine.enableRepaintEntities([parent]);
+                this.state.engine.repaintCanvas(false);
+                return;
+             }
+          }
+          target_node.updateDimensions(this.state.engine.getNodeDimensions(target_node));
+          if (_.includes(this.state.engine.diagramModel.nodes, c => c.id === current.id)) {
+            current.updateDimensions(this.state.engine.getNodeDimensions(current));
+          }
+          let overlapX = (current.x >= target_node.x && current.x <= target_node.x+target_node.width) || (current.x+current.width >= target_node.x && current.x+current.width <= target_node.x+target_node.width);
+          let overlapY = (current.y >= target_node.y && current.y <= target_node.y+target_node.height/amountZoom) || (current.y+current.height >= target_node.y && current.y+current.height <= target_node.y+target_node.height/amountZoom)
+          if (overlapX && overlapY && this.combineValidation(current, target_node) && !e) {
+            let selected = this.state.engine.getSuperSelect()
+            let engine = this.state.engine
+            let targetNode = target_node
+            var node;
+            if (targetNode.extras && targetNode.extras.type === 'god'){
+            if (!_.some(targetNode.combines, c => c.id === current.id) && (this.combineAppendValidation(current) || this.combineAppendValidation(_.last(targetNode.combines)))){	
+                selected.parentCombine = _.clone(target_node)		
+                let selected_ports = selected.getPorts()	
+                let target_ports = targetNode.getPorts()
+                // var name	
+                for (name in target_ports) {	
+                    let port = target_ports[name]	
+
+                     if (port.in) {	
+                        port.parent = target_node	
+                    target_node.ports[name] = port	
+                    } else if (this.combineAppendValidation(_.last(targetNode.combines))) {	
+                        target_node.removePort(target_node.ports[name])	
+                    }	
+                    if (!port.in && !_.isEmpty(port.links)){	
+                        let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)	
+                        let point = _.first(_.values(port.links)).points[pointIdx]	
+                        if (point instanceof PointModel){	
+                            _.first(_.values(port.links)).points[pointIdx].updateLocation({x: point.x, y: point.y + 40});	
+                            this.repaint()	
+                        }	
+
+                     }	
+                }	
+                for (name in selected_ports) {	
+                    let port = selected_ports[name]	
+                    if (!port.in && this.combineAppendValidation(_.last(targetNode.combines))) {	
+                        port.parent = target_node	
+                        target_node.ports[name] = port	
+                    }	
+                }	
+                if (_.isNull(selected.parentCombine)){	
+                    selected.remove();	
+                }	
+                if (!this.combineAppendValidation(_.last(targetNode.combines))) {	
+                    target_node.combines.splice(target_node.combines.length - 1, 0, selected.serialize())	
+                } else {	
+                    target_node.combines.push(selected.serialize());	
+                }
+                let totalHeight = 40;
+                _.forEach(current.parentCombine.combines, (c, idx) => {	
+                    if (!(c instanceof String) && c.id !== current.parentCombine.id) {	
+                        c.x = current.parentCombine.x + 25;	
+                        c.y = current.parentCombine.y + totalHeight;	
+                        if (c.height) {	
+                            totalHeight = totalHeight + c.height / amountZoom	
+                        } else {	
+                            totalHeight = totalHeight + 40
+                        }	
+                    }	
+                });	
+                targetNode.height = targetNode.height + 40;	
+                selected.remove()	
+                engine.getDiagramModel().clearSelection()	
+                engine.setSuperSelect(targetNode)	
+                this.state.engine.repaintCanvas(false)	
+                }	
+            } else {
+              node = new BlockNodeModel('Combine Block', null, toolkit.UID())
+              node.extras.type = "god"
+              if (!this.combineAppendValidation(targetNode)) {
+                  let temp = selected;
+                  selected = targetNode;
+                  targetNode = temp
+              }
+              // node.ports = {}
+              let selected_ports = selected.getPorts()
+              let target_ports = targetNode.getPorts()
+
+              for (name in selected_ports) {
+                let port = selected_ports[name]
+                // port.parent=null
+                if (!port.in) {
+                    port.parent = node
+                  node.ports[name] = _.clone(port);
+                }
+              }
+              for (name in target_ports) {
+                let port = target_ports[name]
+                // port.parent = null
+                if (port.in) {
+                  port.parent = node
+                  node.ports[name] = _.clone(port)
+                }
+              }
+              targetNode.parentCombine = node;
+              selected.parentCombine = node;
+              node.x = targetNode.x
+              node.y = targetNode.y
+              targetNode.x = targetNode.x + 25
+              targetNode.y = targetNode.y + 40
+              selected.x = targetNode.x
+              selected.y = targetNode.y + 40
+              node.combines = [targetNode]
+              node.combines.push(selected);
+              if(selected && targetNode){
+                  selected.remove()
+                  targetNode.remove()
+              }
+              node.combines = _.map(node.combines, nc => nc.serialize())
+              node.setSelected()
+              engine.getDiagramModel().clearSelection()
+              engine.setSuperSelect(node)
+              engine.getDiagramModel().addNode(node)
+              this.state.engine.enableRepaintEntities([node]);
+              this.state.engine.repaintCanvas(false);
+            }
+            this.state.engine.enableRepaintEntities([current]);
+            this.state.engine.repaintCanvas(false);
+            this.setState({
+                engine: engine
+            })
+          }
+        }
+      })
+    }
+    
     copyFlow(flow_id) {
         let flow = this.state.diagrams.find(d => d.id === flow_id)
         if (!flow) {
@@ -525,9 +1186,10 @@ class Canvas extends Component {
         }
 
         if (flow_id === this.props.diagram_id && !this.props.preview) {
-            this.onSave(() => {
+            this.saveCB = () => {
                 copy(false)
-            })
+            }
+            this.onSave()
         } else {
             copy(true)
         }
@@ -622,13 +1284,15 @@ class Canvas extends Component {
             if(selected[0].extras.type === 'comment'){
                 this.diagram_focus=false
             }else{
-                engine.setSuperSelect(selected[0])
                 this.setState({
-                    engine: engine,
                     open: true
                 })
+                if (_.first(selected).extras.type !== 'god'){
+                    engine.setSuperSelect(selected[0])
+                }
             }
         } else if (selected.length === 0) {
+            engine.setSuperSelect(null)
             let model = engine.getDiagramModel()
             let nodes = model.getNodes()
             for (let key in nodes) {
@@ -638,6 +1302,9 @@ class Canvas extends Component {
                 }
             }
         }
+        this.setState({
+            blockMenu: null
+        })
     }
 
     loadUserModules(){
@@ -676,8 +1343,13 @@ class Canvas extends Component {
         this.state.engine.repaintCanvas()
     }
 
-    onSave(cb, is_new=false, state=true) {
+    forceRepaint(){
+        this.forceUpdate()
+    }
 
+    onSave(cb, is_new=false, state=true) {
+        if (this.saving) return
+        this.saving = true
         try {
             if (!this.props.preview){
                 state && this.setState({ saving: true })
@@ -685,6 +1357,25 @@ class Canvas extends Component {
                 var model = engine.getDiagramModel()
                 let serialize = model.serializeDiagram()
                 serialize.id = this.props.diagram_id
+                _.map(serialize.nodes, node => {
+                    if (!_.isEmpty(node.combines)) {
+                        node.extras.nextID = node.combines[0].id
+                    }
+                    node.combines = _.map(node.combines, (combine, idx) => {
+                        if (idx !== node.combines.length - 1 && combine.extras) {
+                            combine.extras.nextID = node.combines[idx + 1].id
+                        } else {
+                            _.forEach(combine.ports, cp => {
+                                if (!cp.in) {
+                                    if (_.find(node.ports, np => np.id === cp.id)){
+                                        cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                    }
+                                }
+                            })
+                        }
+                        return combine.serialize ? combine.serialize() : combine
+                    })
+                })
                 var data = JSON.stringify(serialize)
 
                 let sub_diagrams = []
@@ -735,10 +1426,18 @@ class Canvas extends Component {
                     }
                 })
 
-                for (var i = 0; i < this.state.diagrams.length; i++) {
+                if(state){
+                    // UPDATE SKILL GLOBALS HOTFIX
+                    let skill = this.state.skill;
+                    skill.global = this.state.skill.global
+                    this.props.updateSkill(skill)
+
+                    // UPDATE DIAGRAM STRUCTURE
                     let diagrams = this.state.diagrams
-                    if(diagrams[i].id === this.props.diagram_id){
-                        diagrams[i].sub_diagrams = sub_diagrams
+                    for (var i = 0; i < diagrams.length; i++) {
+                        if(diagrams[i].id === this.props.diagram_id){
+                            diagrams[i].sub_diagrams = sub_diagrams
+                        }
                     }
                     state && this.setState({
                         diagrams: diagrams
@@ -748,11 +1447,6 @@ class Canvas extends Component {
                         }
                     })
                 }
-
-                // UPDATE SKILL GLOBALS HOTFIX
-                let skill = this.state.skill;
-                skill.global = this.state.skill.global
-                this.props.updateSkill(skill)
 
                 var diagram = {
                     id: this.props.diagram_id,
@@ -781,35 +1475,39 @@ class Canvas extends Component {
                     })
                 })
 
-                const save_diagram = new Promise ((resolve, reject) => {
-                    axios.post(`/diagram${is_new ? '?new=1' : ''}`, diagram)
-                    .then(() => {
-                        resolve()
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
-                })
+                const save_diagram = axios.post(`/diagram`, diagram)
                 
                 Promise.all([save_skill_intents, save_diagram]).then(res => {
+                    this.saving = false
+                    this.lastModel = data
                     state && this.setState({
                         saving: false,
-                        saved: true,
-                        last_save: Date.now()
-                    });
-                    if(typeof cb === "function") cb(this.props.diagram_id)
-                }, rej_err => {
+                        saved: true
+                    })
+                    if(typeof this.saveCB === "function"){
+                        this.saveCB(this.props.diagram_id)
+                        this.saveCB = null
+                    }
+                }).catch(rej_err => {
+                    this.saving = false
                     console.log(rej_err)
                     state && this.setState({
                         saving: false
                     }) && this.props.onError('Error Saving Project')
-                    if(typeof cb === "function") cb(null)
+                    if(typeof this.saveCB === "function"){
+                        this.saveCB(null)
+                        this.saveCB = null
+                    }
                 })
             }
         } catch (e) {
+            this.saving = false
             console.log(e)
             state && this.props.onError('Error Saving - Project Structure (Check Logs)')
-            if(typeof cb === "function") cb(null)
+            if(typeof this.saveCB === "function"){
+                this.saveCB(null)
+                this.saveCB = null
+            }
         }
     }
 
@@ -829,6 +1527,7 @@ class Canvas extends Component {
         if (diagram_json) {
             // CONVERT DEPRECATED BLOCKS
             diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+            this.lastModel = JSON.stringify(diagram_json)
 
             // This should not happen
             if(diagram_json.nodes.length === 0){
@@ -917,7 +1616,6 @@ class Canvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: this.props.skill.last_save,
                 loading_diagram: false,
                 variables: variables,
                 diagram_level_intents: diagram_level_intents
@@ -932,6 +1630,12 @@ class Canvas extends Component {
     }
 
     toggleGoogle() {
+
+        if (window.user_detail.admin === 0) {
+            // Popup
+            return
+        }
+
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
@@ -964,7 +1668,7 @@ class Canvas extends Component {
         for (let key in nodes) {
             const node = nodes[key]
             const type = node.extras.type
-            if (Linter[type]) {
+            if (Linter[type] && node.linter) {
                 const res = Linter[type](node, this.state.skill.platform)
                 if (res) update = true
             }
@@ -1018,7 +1722,7 @@ class Canvas extends Component {
             }
         })
         .catch(err => {
-            console.log(err)
+            console.error(err)
             this.props.onError('Could Not Retrieve Project')
         })
     }
@@ -1153,7 +1857,7 @@ class Canvas extends Component {
         if(this.props.preview){
             this.runTest()
         } else {
-            this.onSave(diagram_id => {
+            this.saveCB = (diagram_id) => {
                 if(diagram_id === null){
                     this.setState({
                         testing_modal: false
@@ -1173,10 +1877,55 @@ class Canvas extends Component {
                         this.props.onError("Could Not Render Your Project")
                     })
                 }
+            }
+            this.onSave()
+        }
+    }
+    
+    generateBlockMenu(e){
+        var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]")
+        if (nodeElement && !this.props.preview){
+            e.preventDefault()
+            let engine = this.state.engine
+            let node = this.state.engine.getDiagramModel()
+                .getNode(nodeElement.getAttribute("data-nodeid"))
+            engine.getDiagramModel().clearSelection();
+            engine.setSuperSelect(node)
+            this.setState({
+                blockMenu: <React.Fragment>
+                    <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
+                        <ListGroup>
+                            <ListGroupItem onClick={(e) => {
+                                // e.stopPropagation();
+                                node.setLocked(true);
+                                node.selected = true;
+                                node.edit = true;
+                                this.setState({
+                                    blockMenu: null
+                                })
+                            }}>Rename</ListGroupItem>
+                            <ListGroupItem onClick={() => {
+                                this.copyNode(node)
+                                this.setState({
+                                  blockMenu: null
+                                });
+                            }}>Copy Block</ListGroupItem>
+                            <ListGroupItem onClick={() => {
+                                this.removeNode(node)
+                                this.setState({
+                                  blockMenu: null
+                                });
+                                }}>Delete Block</ListGroupItem>
+                        </ListGroup>
+                    </div>
+                </React.Fragment>
+            })
+        } else {
+            this.setState({
+                blockMenu: null,
             })
         }
     }
-
     // Create a new diagram from the flow block
     createDiagram(node, base_flow_name='New Flow', template=null){
         this.setState({
@@ -1187,7 +1936,8 @@ class Canvas extends Component {
         node.extras.diagram_id = id
 
         // save the current diagram
-        this.onSave(() => {
+        this.saveCB = () => {
+            this.saveCB = null
             // Generate a new diagram, save it, and go to it
             let curr_template
             if(!template){
@@ -1232,7 +1982,8 @@ class Canvas extends Component {
                 })
                 this.props.onError('Unable to create new Flow')
             })
-        })
+        }
+        this.onSave()
     }
 
     addRemoveListener(node){
@@ -1286,9 +2037,10 @@ class Canvas extends Component {
         if(new_diagram_id !== this.props.diagram_id){
             this.setState({loading_diagram: true})
             if(save && !this.props.preview){
-                this.onSave(() => {
+                this.saveCB = () => {
                     this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
-                })
+                }
+                this.onSave()
             }else if (this.props.preview){
                 this.props.history.push(`/preview/${this.state.skill.skill_id}/${new_diagram_id}`)
             }else{
@@ -1362,7 +2114,6 @@ class Canvas extends Component {
 
     onDrop(event) {
         if(this.props.preview) return
-
         var engine = this.state.engine
         var type, name
         if(typeof event === 'string'){
@@ -1387,7 +2138,7 @@ class Canvas extends Component {
             name = type.charAt(0).toUpperCase() + type.substr(1)
         }
 
-        var node = new BlockNodeModel(name)
+        var node = new BlockNodeModel(name, null, toolkit.UID())
 
         if(type){
             if (type === 'choice') {
@@ -1668,6 +2419,8 @@ class Canvas extends Component {
 
             engine.setSuperSelect(node)
             this.addRemoveListener(node)
+            // node.updateDimensions(this.state.engine.getNodeDimensions(node))
+            this.combineNode()
             this.setState({
                 engine: engine,
                 open: type !== 'comment'
@@ -1739,6 +2492,14 @@ class Canvas extends Component {
     render() {
         return (
             <React.Fragment>
+                <Prompt
+                    message={()=>{
+                        if(!this.canSave()){
+                            return "This flow is too large to be saved, please remove blocks to reduce size - are you sure you would like to leave without saving?"
+                        }
+                        return true
+                    }}
+                />
                 <DefaultModal
                     open={this.state.keyboard_help}
                     header="Keyboard Shortcuts"
@@ -1753,6 +2514,7 @@ class Canvas extends Component {
                 />
                 { !this.props.preview ? <ActionGroup
                         lastSave={(this.state.last_save ? "Last saved " + moment(this.state.last_save).fromNow() : "Save")}
+                        setCB={(cb)=>{this.saveCB=cb}}
                         skill={this.state.skill}
                         preview={this.props.preview}
                         title={this.state.diagram_name}
@@ -1770,6 +2532,10 @@ class Canvas extends Component {
                         platform={this.state.skill.platform}
                         updateSkill={this.updateSkill}
                         onTest={this.onTest}
+                        has_live={this.props.has_live}
+                        toggleLiveMode={this.props.toggleLiveMode}
+                        live_mode={this.props.live_mode}
+                        onSwapVersions={this.props.onSwapVersions}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -1788,7 +2554,10 @@ class Canvas extends Component {
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
-                <div id="canvas" onMouseMove={this.mouseMove}>
+                <div id="canvas"
+                  onMouseMove={this.mouseMove}
+                  onMouseUp={this.combineNode}
+                >
                     <Menu
                         unfocus={this.onDiagramUnfocus}
                         helpModal={() => this.setState({help: true, helpOpen: true})}
@@ -1815,9 +2584,9 @@ class Canvas extends Component {
                         updateConfirm={(confirm) => this.setState({confirm: confirm})}
                         saving={this.state.saving}
                         preview={this.props.preview}
-                        onSave={this.onSave}
                         onError={this.props.onError}
                         platform={this.state.skill.platform}
+                        live_mode={this.props.live_mode}
                         toggleUpgrade={this.props.toggleUpgrade}
                     />
                     {this.state.loading_diagram && <div id="loading-diagram">
@@ -1831,6 +2600,7 @@ class Canvas extends Component {
                         skill={this.state.skill}
                         unfocus={this.onDiagramUnfocus}
                         open={this.state.open}
+                        diagramEngine={this.state.engine}
                         node={this.state.engine.getSuperSelect()}
                         onUpdate={this.onUpdate}
                         close={e => this.setState({ open: false })}
@@ -1844,6 +2614,8 @@ class Canvas extends Component {
                         removeNode={!this.props.preview ? this.removeNode : _.noop()}
                         user_modules={this.state.user_modules}
                         copyNode={!this.props.preview ? this.copyNode : _.noop()}
+                        appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
+                        removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
                         intents={this.state.skill.intents}
                         slots={this.state.skill.slots}
                         locales={this.state.skill.locales}
@@ -1861,6 +2633,7 @@ class Canvas extends Component {
                         products={this.state.products}
                         platform={this.state.skill.platform}
                         onIntentUpdate={this.onIntentUpdate}
+                        live_mode={this.props.live_mode}
                     />
                     <div
                         key={this.props.diagram_id}
@@ -1869,7 +2642,8 @@ class Canvas extends Component {
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
                         onMouseLeave={()=>this.diagram_focus=false}
-                        onClick={this.clickDiagram}
+                        onClick={e => this.clickDiagram(e)}
+                        onContextMenu={this.generateBlockMenu}
                     >
                         <div id="widget-bar">
                             <ButtonGroup>
@@ -1888,10 +2662,16 @@ class Canvas extends Component {
                                 diagram = {_.find(this.state.diagrams, d => d.id === this.props.diagram_id)}
                             />
                         }
+                        {this.state.blockMenu}
                         <SRD.DiagramWidget
                             diagramEngine={this.state.engine}
                             allowLooseLinks={false}
                             locked={this.props.preview}
+                            onConfirm={this.props.onConfirm}
+                            copyNode={!this.props.preview ? this.copyNode : _.noop()}
+                            removeNode={!this.props.preview ? this.removeNode : _.noop()}
+                            forceRepaint={this.forceRepaint}
+                            live_mode={this.props.live_mode}
                         />
                     </div>
                 </div>

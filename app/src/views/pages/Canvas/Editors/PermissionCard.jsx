@@ -79,7 +79,7 @@ class PermissionCard extends Component {
                     <Button outline={this.state.node.extras.a_l} onClick={()=> (this.state.node.extras.a_l && this.toggle('a_l'))} disabled={!this.state.node.extras.a_l}> Permissions </Button>
                     <Button outline={!this.state.node.extras.a_l} onClick={()=> (!this.state.node.extras.a_l && this.toggle('a_l'))} disabled={this.state.node.extras.a_l}> Account Linking </Button>
                 </ButtonGroup>
-                <div className="text-center">
+                <div className={this.props.live_mode ? "text-center disabled-overlay" : "text-center"}>
                 {this.state.node.extras.a_l ? <React.Fragment>
                     {this.props.skill.account_linking?
                         <label><b>{this.props.skill.account_linking.authorizationUrl}</b></label>:

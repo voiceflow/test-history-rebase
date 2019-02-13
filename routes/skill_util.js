@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { docClient, pool, hashids, logAxiosError } = require('./../services')
+const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../services')
 const { AccessToken } = require('./authentication')
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
@@ -59,7 +59,7 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
     try{
       let diagram_data_rows = (await pool.query(`SELECT id FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
       let diagram_delete_promises = []
-
+      
       // Creating a set of ids for delete query, ex. (1,44545, 65564)
       let parsed_array = "("
       for(let i=0;i < diagram_data_rows.length;i++){
@@ -84,7 +84,7 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
         reject(err)
       })
     } catch (err){
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       reject(err)
     }
   })
@@ -157,7 +157,7 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
           resolve()
         })
         .catch((err) => {
-          console.trace(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           reject(err)
         })
       } else {
@@ -165,17 +165,104 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
         resolve()
       }
     } catch (err) {
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       reject(err)
     }
   })
 }
+
+copyProducts = (old_skill_id, new_skill_id) => new Promise(async (resolve, reject) => {
+  let select_query = `
+    SELECT * FROM products WHERE skill_id = $1 ORDER BY id
+  `
+  let copy_query = `
+    INSERT INTO products (skill_id, name, data)
+    (SELECT $1, name, data FROM products WHERE skill_id = $2 ORDER BY id)
+    RETURNING *
+  `
+  try {
+    let select_data = (await pool.query(select_query, [old_skill_id])).rows
+    let insert_data = (await pool.query(copy_query, [new_skill_id, old_skill_id])).rows
+    let product_remapping = {}
+
+    if(select_data.length != insert_data.length){
+      reject("Select and Insert had different lengths (copyProducts)")
+    } 
+
+    for(let i in select_data){
+      product_remapping[hashids.encode(select_data[i].id)] = hashids.encode(insert_data[i].id)
+    }
+    resolve(product_remapping)
+  } catch (err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, params: {old_skill_id: old_skill_id, new_skill_id: new_skill_id}})
+    reject(err)
+  }
+})
+
+copyEmailTemplates = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async (resolve, reject) => {
+  let select_query = `
+    SELECT * FROM email_templates WHERE skill_id = $1 ORDER BY template_id
+  `
+  let copy_query = `
+    INSERT INTO email_templates (creator_id, title, content, sender, variables, subject, skill_id)
+    (SELECT $1, title, content, sender, variables, subject, $2 FROM email_templates WHERE skill_id = $3 ORDER BY template_id)
+    RETURNING *
+  `
+  try {
+    let select_data = (await pool.query(select_query, [old_skill_id])).rows
+    let insert_data = (await pool.query(copy_query, [new_creator_id, new_skill_id, old_skill_id])).rows
+    let email_templates_remapping = {}
+
+    if(select_data.length != insert_data.length){
+      reject("Select and Insert had different lengths (copyEmailTemplates)")
+    } 
+
+    for(let i in select_data){
+      email_templates_remapping[hashids.encode(select_data[i].template_id)] = hashids.encode(insert_data[i].template_id)
+    }
+    resolve(email_templates_remapping)
+  } catch (err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, params: {old_skill_id: old_skill_id, new_skill_id: new_skill_id, new_creator_id: new_creator_id}})
+    reject(err)
+  }
+})
+
+copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async (resolve, reject) => {
+  let select_query = `
+    SELECT * FROM displays WHERE skill_id = $1 ORDER BY id
+  `
+  let copy_query = `
+    INSERT INTO displays (document, compatibility, creator_id, title, description, skill_id, datasource)
+    (SELECT document, compatibility, $1, title, description, $2, datasource FROM displays WHERE skill_id = $3 ORDER BY id)
+    RETURNING *
+  `
+  try {
+    let select_data = (await pool.query(select_query, [old_skill_id])).rows
+    let insert_data = (await pool.query(copy_query, [new_creator_id, new_skill_id, old_skill_id])).rows
+    let displays_remapping = {}
+
+    if(select_data.length != insert_data.length){
+      reject("Select and Insert had different lengths (copyDisplays)")
+    } 
+
+    for(let i in select_data){
+      displays_remapping[hashids.encode(select_data[i].id)] = hashids.encode(insert_data[i].id)
+    }
+    resolve(displays_remapping)
+  } catch (err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, params: {old_skill_id: old_skill_id, new_skill_id: new_skill_id, new_creator_id: new_creator_id}})
+    reject(err)
+  }
+})
 
 exports.copySkill = async (req, res, options, cb = false) => {
 
   let id = hashids.decode(req.params.id)[0]
   let new_creator_id = req.params.target_creator
   let diagram_mapping = {}
+  let remapped_products = {}
+  let remapped_emails = {}
+  let remapped_displays = {}
   let diagram_names = {}
   let root_diagram_id = generateID()
 
@@ -203,7 +290,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         await docClient.put(params).promise()
         resolve()
       } catch (err) {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         reject()
       }
     })
@@ -215,15 +302,20 @@ exports.copySkill = async (req, res, options, cb = false) => {
       diagram.skill = new_skill_id
       let JSON_diagram_data = JSON.parse(diagram.data)
       let nodes = JSON_diagram_data.nodes
-
       if (!!nodes) {
         for (let i = 0; i < nodes.length; i++) {
           let node = nodes[i]
           if (node.extras.diagram_id && node.extras.diagram_id !== null) {
             node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
             sub_diagrams.push(node.extras.diagram_id)
+          } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
+            node.extras.display_id = remapped_displays[node.extras.display_id]
+          } else if (node.extras.template_id && node.extras.template_id !== null && remapped_emails[node.extras.template_id]){
+            node.extras.template_id = remapped_emails[node.extras.template_id]
+          } else if (node.extras.product_id && node.extras.product_id !== null && remapped_products[node.extras.product_id]){
+            node.extras.product_id = remapped_products[node.extras.product_id]
           }
-        }
+        } 
       }
 
       diagram.data = JSON.stringify(JSON_diagram_data)
@@ -246,7 +338,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
       docClient.get(get_params, async (err, data) => {
         if (err) {
-          console.trace(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           reject(err)
         } else if (data.Item) {
           let result = await remapDiagramIds(data.Item)
@@ -281,7 +373,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
       [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
     }catch(err){
-      console.trace(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     }
   }
 
@@ -334,6 +426,19 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
   try {
     let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
+
+    // Copy products, displays, and email templates on sql and store new ids for remapping
+    if(options.user_copy) {
+      try{
+        remapped_products = await copyProducts(id, copy_skill.skill_id)
+        remapped_emails = await copyEmailTemplates(id, copy_skill.skill_id, new_creator_id)
+        remapped_displays = await copyDisplays(id, copy_skill.skill_id, new_creator_id)
+      } catch (err) {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+        res.sendStatus(500)
+      }
+    }
+
     let diagram_data = await pool.query('SELECT id, diagrams.name, intents, slots FROM diagrams INNER JOIN skills ON diagrams.skill_id = skills.skill_id WHERE skills.skill_id = $1', [id])
     let retrieve_promises = []
     for (let i = 0; i < diagram_data.rows.length; i++) {
@@ -353,7 +458,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         if (options.copying_default_template || options.user_copy) {
           pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
             if (err) {
-              console.trace(err)
+              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               res.sendStatus(500)
             }
           })
@@ -381,11 +486,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
         }
       })
       .catch((err) => {
-        console.trace(err)
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)
       })
   } catch (err) {
-    console.trace(err)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     res.sendStatus(500)
   }
 }

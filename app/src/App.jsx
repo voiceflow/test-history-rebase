@@ -154,6 +154,7 @@ class App extends Component {
     })
 
     window.CreatorSocket.on('in_use', (data) => {
+      window.CreatorSocket.disconnect()
       window.error = true
       this.setState({
         error: {

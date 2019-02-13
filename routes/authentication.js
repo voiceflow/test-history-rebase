@@ -4,7 +4,8 @@ const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
-const {jwt, pool, redisClient, config, hashids} = require('./../services');
+const {jwt, docClient, pool, redisClient, config, hashids, writeToLogs } = require('./../services');
+const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
 const del = require('del');
@@ -52,7 +53,7 @@ const trackUser = async (data, analytics_data) => {
 		country = res.data.countryCode
 		city = res.data.city
 	} catch (err) {
-		console.trace(err)
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 	}
 
 	analytics.identify({
@@ -152,7 +153,7 @@ async function fbAuth(data, cb) {
     cb(res);
   })
   .catch(err => {
-    console.log(err);
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     cb(err);
   })
 }
@@ -161,7 +162,7 @@ async function fbAuth(data, cb) {
 const AccessToken = (user_id, cb) => {
 	redisClient.get(`t_${user_id}`, function(err, token) {
 		if(err){
-			console.error(err);
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 			cb(null);
 		}else if(token === null){
 			cb(null);
@@ -182,7 +183,7 @@ const AccessToken = (user_id, cb) => {
 		    		}
 		    		redisClient.set(`t_${user_id}`, JSON.stringify(data), (err) => {
 		    			if(err){
-		    				console.error(err);
+		    				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 		    				cb(null);
 		    			}else{
 		    				cb(data.access_token);
@@ -190,7 +191,7 @@ const AccessToken = (user_id, cb) => {
 		    		});
 				})
 				.catch(err => {
-					console.error(err);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 					cb(null);
 				});
 			}else{
@@ -226,14 +227,14 @@ const getAmazonCode = (req, res) => {
     		}
     		redisClient.set(`t_${req.user.id}`, JSON.stringify(data), (err) => {
     			if(err){
-    				console.error(err);
+    				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     			}else{
     				res.sendStatus(200);
     			}
     		});
     	})
     	.catch(err => {
-    		console.error(err);
+    		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
     		res.sendStatus(500);
     	})
     }else{
@@ -316,12 +317,12 @@ const googleLogin = async(req, res) => {
           email = email.trim().toLowerCase();
           pool.query('SELECT 1 FROM creators WHERE email = $1 OR gid = $2 LIMIT 1', [email, gid], (err, result) => {
             if(err){
-							console.trace(err)
+							writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               res.status(500).send("Unable to Access Database");
             }else if(result.rows.length !== 0){
               pool.query('UPDATE creators SET gid = $2 WHERE email = $1 RETURNING *', [email, gid], (err, data) => {
                 if (err) {
-                  console.log(err);
+                  writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                   res.status(500).send('Something went wrong with existing email');
                 } else {
 									let row = data.rows[0];
@@ -346,7 +347,7 @@ const googleLogin = async(req, res) => {
               pool.query('INSERT INTO creators (name, email, gid) VALUES ($1, $2, $3) RETURNING creator_id',
                 [name, email, gid], (err, insert_result) => {
 									if (err) {
-											console.log(err);
+											writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 											res.status(500).send('Something Went Wrong');
 									} else {
 
@@ -486,7 +487,7 @@ const fbLogin = async(req, res) => {
             }else if(result.rows.length !== 0){
               pool.query('UPDATE creators SET fid = $2 WHERE email = $1 RETURNING *', [email, fid], (err, data) => {
                 if (err) {
-                  console.log(err);
+                  writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                   res.status(500).send('Something went wrong with existing email');
                 } else {
 									let row = data.rows[0]
@@ -511,7 +512,7 @@ const fbLogin = async(req, res) => {
               pool.query('INSERT INTO creators (name, email, fid) VALUES ($1, $2, $3) RETURNING creator_id',
                 [name, email, fid], (err, insert_result) => {
                     if (err) {
-                        console.log(err);
+                        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                         res.status(500).send('Something Went Wrong');
                     } else {
 
@@ -556,13 +557,13 @@ const putUser = async (req, res) => {
 			}else{
 				bcrypt.hash(password, 10, (err, hash) => {
 					if (err) {
-						console.log(err)
+						writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 						res.status(500).send('Password Error')
 					} else {
 						pool.query('INSERT INTO creators (name, email, password) VALUES ($1, $2, $3) RETURNING creator_id',
 							[name, email, hash], (err, insert_result) => {
 								if (err) {
-									console.log(err);
+									writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
 									res.status(500).send('Something Went Wrong')
 								} else {
 
@@ -659,7 +660,7 @@ const verifyUser = (req, res) => {
 		}else{
       pool.query('UPDATE creators SET verified = $1 WHERE creator_id = $2', [true, decode_id], (err) => {
         if(err){
-          console.error(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           return res.status(500).send(err)
         }else{
           redisClient.del(`v_${user_id}`);
@@ -695,12 +696,12 @@ const reset = (req, res, reset=false) => {
 				// actually reset the password
 				bcrypt.hash(req.body.password, 10, (err, hash) => {
 	                if (err) {
-	                    console.error(err)
+	                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 	                    res.status(500).send('Password Error')
 	                } else {
 	                	pool.query('UPDATE creators SET password = $1 WHERE creator_id = $2', [hash, decode_id], (err) => {
 	                		if(err){
-	                			console.error(err)
+	                			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 								res.status(500).send(err)
 							}else{
 								redisClient.del(`r_${user_id}`);

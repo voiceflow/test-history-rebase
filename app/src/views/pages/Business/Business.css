@@ -2,11 +2,6 @@
 	height: 100%;
 	display: flex;
 }
-.settings{
-	height: 100%;
-	display: block;
-	overflow-y: scroll;
-}
 #upgrade{
 	padding: 40px;
 	padding-right: 100px;

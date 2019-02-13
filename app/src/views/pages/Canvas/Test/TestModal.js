@@ -7,7 +7,7 @@ import moment from 'moment'
 import Select from 'react-select'
 import './TestModal.css'
 import {parse} from 'html-parse-stringify'
-import Switch from '@material-ui/core/Switch'
+import Toggle from 'react-toggle'
 // const _ = require('lodash');
 
 var test_endpoint;
@@ -515,7 +515,7 @@ class TestModal extends React.Component {
       }
       
       return (<React.Fragment>
-        <span className="text-muted">Local Variables</span>
+        <label>Local Variables</label>
         <Table className="var-table">
         <tbody>
           {v_array.map(v => <tr key={v.name}>
@@ -524,7 +524,7 @@ class TestModal extends React.Component {
           </tr>)}
         </tbody>
         </Table>
-        <span className="text-muted">Global Variables</span>
+        <label>Global Variables</label>
         <Table className="var-table">
         <tbody>
           {g_array.map(v => <tr key={v.name}>
@@ -647,10 +647,11 @@ class TestModal extends React.Component {
                   }
                 </div>
                 <div className="col-sm-4 text-left test-sidebar">
-                  <h4>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</h4>
-                  <div className="debug-switch">
-                      Debug Mode
-                      <Switch
+                  <b>{this.state.started && this.state.debug ? 'Variable State' : 'Test Tool'}</b>
+                  <div className="debug-switch space-between mt-2">
+                      <label>Debug Mode</label>
+                      <Toggle
+                        icons={false}
                         checked={this.state.debug}
                         onChange={() => {
                           this.setState(prev_state => ({debug: !prev_state.debug}))

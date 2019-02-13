@@ -139,7 +139,7 @@ class Expression extends Component {
         let type = this.state.expression.type;
 
         let dropdown = this.state.expression.depth < 8 ? 
-        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown} className="input-group-append">
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown}>
             <DropdownToggle className="type-button">
                 <i className="fas fa-code"/>
             </DropdownToggle>      

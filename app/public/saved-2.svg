@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="23px" viewBox="0 0 22 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
-    <title>Icon/System/Checkmark</title>
+    <title>Artboard</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="#2FD0C1" stop-opacity="0.85" offset="0%"></stop>
-            <stop stop-color="#2FD0C1" offset="100%"></stop>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="97.6833454%" id="linearGradient-1">
+            <stop stop-color="#3ECF8E" offset="0%"></stop>
+            <stop stop-color="#3ECF8E" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="50%" y1="43.1857557%" x2="50%" y2="213.138199%" id="linearGradient-2">
+        <linearGradient x1="50%" y1="1.7837789%" x2="50%" y2="96.3263186%" id="linearGradient-2">
             <stop stop-color="#FFFFFF" stop-opacity="0.85" offset="0%"></stop>
-            <stop stop-color="#2FD0C1" offset="100%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
         </linearGradient>
     </defs>
-    <g id="Icon/System/Checkmark" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group-17" transform="translate(0.000000, 1.000000)">
-            <rect id="Rectangle-6" x="6" y="5" width="14" height="14"></rect>
-            <path d="M11,0 C4.92451081,0 0,4.92539004 0,10.9994336 C0,17.07461 4.92451081,22 11,22 C17.0754892,22 22,17.07461 22,10.9994336 C22,4.92539004 17.0754892,0 11,0 L11,0 Z" id="checkocircle" fill="url(#linearGradient-1)"></path>
-            <g id="done-tick" transform="translate(6.000000, 7.000000)" fill="url(#linearGradient-2)">
-                <path d="M10.5866109,0.513488495 L10.2920716,0.272792669 C9.80316151,-0.126845179 9.06847301,-0.0822987437 8.63682446,0.373000815 L3.70954891,5.56974359 L2.22222862,4.35128764 C1.73383437,3.95120177 0.999033731,3.99485216 0.566869305,4.44966102 L0.306444708,4.72376667 C0.0952520451,4.94592282 -0.0144039584,5.23897351 0.00152072202,5.53831787 C0.0176024063,5.83749156 0.157919027,6.11836025 0.391832396,6.31916056 L3.11816011,8.69392506 C3.35420425,8.90477392 3.67054466,9.01473193 3.99388296,8.99841104 C4.31722126,8.98213281 4.61952103,8.84083442 4.83073613,8.60737099 L10.7126626,2.10653559 C10.9181583,1.8794085 11.020323,1.58396835 10.9966378,1.28524269 C10.9729751,0.986303678 10.825526,0.708741836 10.5866109,0.513488495 Z" id="Path"></path>
-            </g>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="checked-(2)" transform="translate(1.000000, 1.000000)">
+            <circle id="Oval" stroke="url(#linearGradient-1)" stroke-width="1.5" fill="#3ECF8E" cx="9.5" cy="9.5" r="9.5"></circle>
+            <path d="M13.4752589,6.21359205 L8.13038942,10.9884313 L6.18783326,9.71412849 C5.9151938,9.42933908 5.47783466,9.42933908 5.2051952,9.70819537 C4.93255574,9.98705167 4.93255574,10.4498344 5.19951521,10.7346239 L7.6362304,13.2977285 C7.77255013,13.4401232 7.94862978,13.5113205 8.13038942,13.5113205 C8.30646907,13.5113205 8.48254873,13.4401232 8.61886846,13.2977285 L14.4522169,7.24002053 C14.7248564,6.95523113 14.7248564,6.49838146 14.4578969,6.21359205 C14.1852575,5.92880265 13.7478983,5.92880265 13.4752589,6.21359205 Z" id="Path" fill="url(#linearGradient-2)"></path>
         </g>
     </g>
 </svg>

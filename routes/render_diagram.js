@@ -1,6 +1,6 @@
 const isVarName = require('is-var-name');
 const { getEnvVariable } = require('../util')
-const { docClient, pool, hashids } = require('./../services')
+const { docClient, pool, hashids, writeToLogs } = require('./../services')
 const draftToMarkdown = require('./../config/drafttomarkdown')
 const validUrl = require('valid-url');
 const _ = require('lodash');
@@ -127,7 +127,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   let testing = (skill_id === "TEST");
   docClient.get(params, async (err, data) => {
     if (err) {
-      console.error(err)
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       resolve(500)
     } else if (data.Item && (data.Item.skill === skill_id || testing)) {
       // Add to set of rendered diagrams to prevent looping
@@ -138,7 +138,13 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
       }
 
       let diagram = JSON.parse(data.Item.data);
-
+      let combine_nodes = []
+      _.forEach(diagram.nodes, node => {
+        if (!_.isEmpty(node.combines)) {
+          combine_nodes = combine_nodes.concat(node.combines);
+        }
+      })
+      diagram.nodes = diagram.nodes.concat(combine_nodes);
 
       let links = {};
 
@@ -165,17 +171,14 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         variables: data.Item.variables,
         commands: []
       }
-
       // Iterate through every block in the diagram
       for (var i = 0; i < diagram.nodes.length; i++) {
-
         let node = diagram.nodes[i];
         let getLink = (link_id) => {
           if (link_id in links) {
             return links[link_id].target === node.id ? links[link_id].source : links[link_id].target
           }
         }
-
         if (node.extras.type === 'story') {
           story.startId = node.id;
           story.prompt = node.extras.prompt;
@@ -309,7 +312,15 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               }
             })
           }
-
+        } else if (node.extras.type === 'god') {
+          _.forEach(node.combines, nc => {
+            if (!nc.in){
+              nc.links = [];
+            }
+          })
+          story.lines[node.id] = {
+            nextId: node.extras.nextID
+          }
         } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && (node.extras.alexa && node.extras.alexa.choices))) {
 
           let interactions = []
@@ -837,7 +848,9 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             }
           }
         }
-
+        if (node.extras.nextID) {
+          story.lines[node.id].nextId = node.extras.nextID
+        }
         if(node.extras && node.extras.reprompt){
             let REPROMPT
             if(!node.extras.reprompt.voice || node.extras.reprompt.voice === 'Alexa') {
@@ -845,7 +858,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             } else if (node.extras.reprompt.voice === 'audio' && typeof node.extras.reprompt.content === 'string') {
               REPROMPT = `<audio src="${node.extras.reprompt.content}"/>`
             } else {
-              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</>`
+              REPROMPT = `<voice name="${node.extras.reprompt.voice}">${draftToMarkdown(node.extras.reprompt.content)}</voice>`
             }
             if(REPROMPT) story.lines[node.id].reprompt = REPROMPT
         }
@@ -862,7 +875,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
       }
       docClient.put(params, err => {
         if (err) {
-          console.log(err)
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
           res.sendStatus(err.statusCode)
         } else if (testing || options.type === 'market') {
           resolve(200)
@@ -870,7 +883,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           // Add the story to SQL as well
           addStory(story, (err) => {
             if (err) {
-              console.error(err)
+              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               resolve(500)
               return
             } else {

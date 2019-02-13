@@ -57,7 +57,7 @@ td {
 .var-table td, .var-table th{
     font-size: 0.8rem;
     vertical-align: middle;
-    padding: 4px 0px;
+    padding: 8px 0px;
     word-wrap: break-word;         /* All browsers since IE 5.5+ */
     overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
 }
@@ -99,7 +99,7 @@ td {
 .debug-switch {
     border-bottom: 1px solid #e9ecef;
     color: #2b3950;
-    /*margin-bottom: 10px;*/
+    padding-bottom: 10px;
 }
 
 .sidebar-scroll {
@@ -107,7 +107,7 @@ td {
 }
 
 .debug {
-    background-color: #FF91A4;
+    background-color: #f3f3f3;
     color: #000000;
     padding: 2px 8px !important;
 }

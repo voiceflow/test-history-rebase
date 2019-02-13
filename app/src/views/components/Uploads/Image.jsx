@@ -72,7 +72,7 @@ class Image extends Component {
         }else if(this.props.image){
             render = <div className="image-box">
                 <div className="image" style={{backgroundImage: `url(${this.props.image})`}}></div>
-                <button className="btn btn-danger" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
+                <button className="p-0" disabled={this.props.isDisabled} onClick={() => this.props.update(null)}>&times;</button>
             </div>
         }else if(this.state.url_open){
             render = <div className="dropzone enter-url">

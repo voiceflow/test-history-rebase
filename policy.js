@@ -1,6 +1,6 @@
-module.exports = (req, res) => {
+exports.policy = (req, res) => {
   let developer_name = req.query.name ? req.query.name : 'John Doe'
-  let skill_name = req.query.skill ? req.query.skill : 'Dope Skill'
+  let skill_name = req.query.skill ? req.query.skill : 'Skill'
   res.send(`
     <p>
         ${developer_name} Privacy Policy
@@ -192,3 +192,5 @@ module.exports = (req, res) => {
         Policy on the website.
     </p>`)
 }
+
+exports.terms = exports.policy

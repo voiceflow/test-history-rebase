@@ -91,11 +91,10 @@ class Editor extends Component {
         this.toggleReprompt = this.toggleReprompt.bind(this)
         this.EditorRender = this.EditorRender.bind(this)
     }
-
-    componentWillReceiveProps(props) {
-        this.setState({
+    static getDerivedStateFromProps(props){
+        return {
             node: props.node
-        })
+        }
     }
 
     handleChange(e, key = undefined) {
@@ -103,6 +102,10 @@ class Editor extends Component {
         var name = e.target.getAttribute('name')
         var value = e.target.value
         node[name] = value
+        if (node.parentCombine){
+            _.find(node.parentCombine.combines, n => n.id === node.id).name=value;
+
+        }
         this.setState({
             node: node
         }, () => {
@@ -140,7 +143,6 @@ class Editor extends Component {
     }
 
     BlockViewer(variables) {
-
         switch(this.state.node.extras.type) {
             case 'story':
                 return <Story/>;
@@ -149,7 +151,9 @@ class Editor extends Component {
                 return <Choice
                         node={this.state.node}
                         onUpdate={this.props.onUpdate}
+                        diagramEngine={this.props.diagramEngine}
                         repaint={this.props.repaint}
+                        live_mode={this.props.live_mode}
                     />
             case 'intent':
                 return <Intent
@@ -157,6 +161,7 @@ class Editor extends Component {
                         onUpdate={this.props.onIntentUpdate}
                         intents={this.props.intents}
                         slots={this.props.slots}
+                        diagramEngine={this.props.diagramEngine}
                         variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
@@ -169,6 +174,7 @@ class Editor extends Component {
                         setCanFulfill={this.props.setCanFulfill}
                         diagram_level_intents={this.props.diagram_level_intents}
                         platform={this.props.platform}
+                        live_mode={this.props.live_mode}
                         />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
@@ -192,6 +198,7 @@ class Editor extends Component {
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         diagram_level_intents={this.props.diagram_level_intents}
+                        live_mode={this.props.live_mode}
                     />
                 }
             case 'interaction':
@@ -203,12 +210,14 @@ class Editor extends Component {
                     slots={this.props.slots}
                     onSlot={this.props.onSlot}
                     onIntent={this.props.onIntent}
+                    diagramEngine={this.props.diagramEngine}
                     variables={variables}
                     slot_types={this.getSlotTypes(this.props.locales)}
                     built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
                     platform={this.props.platform}
+                    live_mode={this.props.live_mode}
                     />
             case 'combine':
             case 'line':
@@ -228,12 +237,12 @@ class Editor extends Component {
             case 'if':
                 // DEPRECATE OLD IF BLOCK
                 if(this.state.node.extras.expressions){
-                    return <IfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <IfBlock node={this.state.node} diagramEngine={this.props.diagramEngine} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }else{
                     return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
                 }
             case 'random':
-                return <Random node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                return <Random node={this.state.node} diagramEngine={this.props.diagramEngine} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
@@ -284,15 +293,15 @@ class Editor extends Component {
             case 'display':
                 return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays} skill={this.props.skill}/>
             case 'stream':
-                return <Stream node={this.state.node} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                return <Stream node={this.state.node} onUpdate={this.props.onUpdate} diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} products={this.props.products}/>
+                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} products={this.props.products} live_mode={this.props.live_mode}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
                 return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             case 'permission':
-                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate} skill={this.props.skill}/>
+                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate} skill={this.props.skill} live_mode={this.props.live_mode}/>
             case 'code':
                 return <Code node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
             default:
@@ -358,7 +367,7 @@ class Editor extends Component {
                 <hr/>
                 <div className="space-between">
                     <label>Custom Reprompt</label>
-                    <button class="close" onClick={this.toggleReprompt}>×</button>
+                    <button className="close" onClick={this.toggleReprompt}>×</button>
                 </div>
                 <Prompt
                     placeholder="Sorry I didn't get that! Do you like this or that?"
@@ -366,7 +375,7 @@ class Editor extends Component {
                     content={this.state.node.extras.reprompt.content}
                     updatePrompt={(prompt) => {
                         let node = this.state.node
-                        if(node.extras.reprompt){
+                        if(node && node.extras && node.extras.reprompt){
                             node.extras.reprompt = {...node.extras.reprompt, ...prompt}
                             this.setState({node: node})
                         }
@@ -385,8 +394,10 @@ class Editor extends Component {
             if(find){
                 name = find.text
             }
+        }        
+        if (type === 'god') {
+            return null;
         }
-
         return (
             <div id="Editor" className={(this.props.open && type && !this.state.modal ? 'open':'')}
                 onFocus={this.props.unfocus}
@@ -428,10 +439,10 @@ class Editor extends Component {
                                                         <i className="fas fa-redo text-muted"/> Reprompt
                                                     </DropdownItem>
                                                 }
-                                                <DropdownItem onClick={this.props.copyNode} className="pointer">
+                                                <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.appendCombineNode(this.state.node) : this.props.copyNode()} className="pointer">
                                                     <i className="fas fa-copy text-muted"/> Copy
                                                 </DropdownItem>
-                                                <DropdownItem onClick={this.props.removeNode} className="pointer">
+                                                <DropdownItem onClick={() => this.props.node.parentCombine ? this.props.removeCombineNode(this.state.node) : this.props.removeNode()} className="pointer">
                                                     <i className="fas fa-file-times text-muted"/> Delete
                                                 </DropdownItem>
                                             </DropdownMenu>

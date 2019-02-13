@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="112px" height="111px" viewBox="0 0 112 111" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.1 (67048) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-252.000000, -166.000000)" fill="#8DA2B5" fill-rule="nonzero">
+            <g id="video" transform="translate(252.000000, 166.000000)">
+                <path d="M101.484375,70.984375 L26.15625,108.648438 C14.527344,114.464844 0.847656,106.007812 0.847656,93.003906 L0.847656,17.675781 C0.847656,4.675781 14.527344,-3.78125 26.15625,2.03125 L101.484375,39.695312 C114.375,46.140625 114.375,64.539062 101.484375,70.984375 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

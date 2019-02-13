@@ -24,7 +24,7 @@ export class DefaultLinkFactory{
 			<path
 				className={selected ? widget.bem("--path-selected") : ""}
 				strokeWidth={model.width}
-				stroke={model.color}
+				stroke={"#8DA2B5"}
 				d={path}
 			/>
 		);

@@ -51,10 +51,10 @@ export class Toolkit {
 		}
 		let width = Math.max(firstPoint.parent.sourcePort.parent.width, lastPoint.parent.sourcePort.parent.width);
 		if (lastPoint.x >= firstPoint.x-width/2){
-			curvyX = 150;
+			curvyX = 200;
 			curvyY = 0
 		}
-		if (Math.abs(lastPoint.y - firstPoint.y) < 40){
+		if (Math.abs(lastPoint.y - firstPoint.y) < 20){
 			curvyX = 0
 			curvyY = 0;
 		}

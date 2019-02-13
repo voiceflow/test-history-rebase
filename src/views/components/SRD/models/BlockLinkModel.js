@@ -2,8 +2,8 @@ import { LinkModel, DefaultLinkModelListener, BaseEvent, DiagramEngine, DefaultL
 export class BlockLinkModel extends LinkModel {
 	constructor(type: string = "default", id) {
 		super(type, id);
-		this.color = "#555D6D";
-		this.width = 2.5;
+		this.color = "8DA2B5";
+		this.width = 1;
 		this.curvyness = 175;
 		this.setSelected = this.setSelected.bind(this);
 	}

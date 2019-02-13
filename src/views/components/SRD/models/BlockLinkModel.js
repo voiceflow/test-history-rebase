@@ -1,28 +1,19 @@
 import { LinkModel, DefaultLinkModelListener, BaseEvent, DiagramEngine, DefaultLabelModel, LabelModel } from './../main.js';
-import * as _ from "lodash";
-
 export class BlockLinkModel extends LinkModel {
 	constructor(type: string = "default", id) {
 		super(type, id);
 		this.color = "#555D6D";
-		this.width = 1;
+		this.width = 2.5;
 		this.curvyness = 175;
 		this.setSelected = this.setSelected.bind(this);
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
-			width: this.width,
-			color: this.color,
-			curvyness: this.curvyness
-		});
+		return super.serialize()
 	}
-
+	
 	deSerialize(ob, engine: DiagramEngine) {
 		super.deSerialize(ob, engine);
-		this.color = ob.color;
-		this.width = ob.width;
-		this.curvyness = ob.curvyness;
 	}
 
 	addLabel(label: LabelModel | string) {

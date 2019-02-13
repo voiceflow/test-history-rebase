@@ -1,20 +1,19 @@
-import { PortModel, DiagramEngine, LinkModel } from 'storm-react-diagrams'
+import { PortModel } from './../main.js'
+import { Toolkit } from './../Toolkit'
 import { BlockLinkModel } from './BlockLinkModel'
 
-import * as _ from "lodash"
+import _ from "lodash"
+
+const toolkit = new Toolkit()
 
 export class BlockPortModel extends PortModel {
-	in: boolean
-	label: string
-	links: { [id: string]: BlockLinkModel }
-
-	constructor(isInput: boolean, name: string, label: string = null, id?: string) {
+	constructor(isInput, name, label = null, id) {
 		super(name, "default", id)
 		this.in = isInput
 		this.label = label || name
 	}
 
-	deSerialize(object, engine: DiagramEngine) {
+	deSerialize(object, engine) {
 		super.deSerialize(object, engine)
 		this.in = object.in
 		this.label = object.label
@@ -31,30 +30,34 @@ export class BlockPortModel extends PortModel {
 		this.label = label
 	}
 
-	link(port: PortModel): LinkModel {
+	link(port) {
 		let link = this.createLinkModel()
 		link.setSourcePort(this)
 		link.setTargetPort(port)
 		return link
 	}
 
-	setSelected(selected: boolean) {
+	addLink(link) {
+		this.links[link.getID()] = link;
+	}
+
+	setSelected(selected) {
 		this.selected = selected
 	}
 
-	canLinkToPort(port: PortModel): boolean {
+	canLinkToPort(port) {
 		if (port instanceof BlockPortModel) {
 			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks))
 		}
 		return false
 	}
 
-	removeLink(link: LinkModel) {
+	removeLink(link) {
 		this.setSelected(false)
 		delete this.links[link.getID()]
 	}
 
-	createLinkModel(): LinkModel {
+	createLinkModel() {
 		let link;
 		let numberOfLinks = _.size(this.links)
 
@@ -63,7 +66,7 @@ export class BlockPortModel extends PortModel {
 		}
 		this.setSelected(true)
 
-		if(!link) link = new BlockLinkModel()
+		if(!link) link = new BlockLinkModel("default", toolkit.UID())
 
 		return link
 	}

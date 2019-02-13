@@ -3,10 +3,9 @@ import LightCanvas from '../../Canvas/LightCanvas'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import {Tooltip} from 'react-tippy'
 // import _ from 'lodash'
 
-import {Modal, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
+import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{
     constructor(props){
@@ -18,7 +17,8 @@ class BackupSettings extends Component{
             curr_preview: {
                 created: new Date(),
             },
-            versions: []
+            versions: [],
+            live_version: null
         }
 
         this.confirmRestore = this.confirmRestore.bind(this)
@@ -26,11 +26,31 @@ class BackupSettings extends Component{
     }
 
     componentDidMount(){
-        axios.get(`/skill/${this.props.skill.skill_id}/versions`)
+        axios.get(`/skill/${this.props.skill.skill_id}/live_version`)
         .then(res => {
-            this.setState({
-                loading: false,
-                versions: res.data
+            let live_version = res.data.live_version
+            axios.get(`/skill/${this.props.skill.skill_id}/versions`)
+            .then(res => {
+                let versions = []
+                for(let i=0;i<res.data.length;i++){
+                    if(res.data[i].skill_id !== live_version){
+                        versions.push(res.data[i])
+                    } else {
+                        live_version = res.data[i]
+                    }
+                }
+
+                this.setState({
+                    loading: false,
+                    versions: versions,
+                    live_version: live_version
+                })
+            })
+            .catch(err => {
+                this.setState({
+                    loading: false,
+                    error: 'Unable to load versions'
+                })
             })
         })
         .catch(err => {
@@ -65,7 +85,7 @@ class BackupSettings extends Component{
             </div>
         }
 
-        if(!Array.isArray(this.state.versions) || this.state.versions.length === 0){
+        if((!Array.isArray(this.state.versions) || this.state.versions.length === 0) && !this.state.live_version){
             return <div className="settings-content clearfix"><Alert color="warning" className="mb-0">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill</Alert></div>
         }
 
@@ -79,6 +99,10 @@ class BackupSettings extends Component{
                     <LightCanvas diagram_id={this.state.curr_preview.diagram}/>
                 </div>
                 <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
+                
+                <ModalFooter>
+                    <button className="purple-btn ml-auto mr-auto" onClick={() => this.confirmRestore(this.state.curr_preview.skill_id, this.state.curr_preview.canonical_skill_id, this.state.curr_preview)}>Restore</button>
+                </ModalFooter>
             </Modal>
 
             <React.Fragment>
@@ -87,19 +111,14 @@ class BackupSettings extends Component{
                         
                         <Label>
                             Backups
-                            <Tooltip
-                            html={<div style={{ width: 155 }}>Restore your skill to previous versions<br/>Saved every time when you upload your skill</div>}
-                            position="bottom"
-                            >
-                                <i className="fas fa-question-circle ml-1"></i>
-                            </Tooltip>
                         </Label>
+                        <div className="helper-text mb-2">Restore your skill to previous versions. A version is saved every time you upload your skill to Alexa{window.user_detail.admin > 0 ? "" : ". Upgrade to access this premium feature"}</div>
                         <div id="backup">
                             {window.user_detail.admin === 0 &&
                             <div id="backup-overlay" className="d-flex justify-content-center">
-                                <div className="text-center">
+                                <div id="backup-upgrade-btn" className="text-center">
                                     <Link className="purple-btn" to='/account/upgrade'>
-                                        Upgrade Plan to Restore
+                                        Upgrade
                                     </Link>
                                 </div>
                             </div>}
@@ -113,6 +132,20 @@ class BackupSettings extends Component{
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {
+                                        this.state.live_version ? 
+                                        <tr className="table-primary">
+                                            <td>{moment(this.state.live_version.created).fromNow()} <br/> (Current live version) </td>
+                                            <td>
+                                                <Button className='purple-btn' onClick={() => this.previewBackup(this.state.live_version)}>Preview</Button>
+                                            </td>
+                                            <td>
+                                                <Button className='purple-btn' onClick={() => this.confirmRestore(this.state.live_version.skill_id, this.state.live_version.canonical_skill_id, this.state.live_version)}>Restore</Button>
+                                            </td>
+                                        </tr>
+                                        :
+                                        null
+                                    }
                                     {this.state.versions.map((version, i) => {
                                         return <tr key={i}>
                                             <td >{moment(version.created).fromNow()}</td>

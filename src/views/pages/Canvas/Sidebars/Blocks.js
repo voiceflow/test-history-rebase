@@ -4,7 +4,7 @@ import ModuleItem from './components/ModuleItem';
 import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
-import {getSections} from './../Blocks'
+import {getSections, checkBlockDisabledLive} from './../Blocks'
 // const TABS = ['blocks', 'modules']
 
 class Blocks extends PureComponent {
@@ -75,7 +75,7 @@ class Blocks extends PureComponent {
                                 <div className="premium-block">
                                     <div>
                                         <span>Upgrade to access these premium features</span>
-                                        <Link className="purple-btn mt-3 d-block" to='/account/upgrade'>
+                                        <Link className="purple-btn mt-3 d-block no-underline" to='/account/upgrade'>
                                             Upgrade
                                         </Link>
                                     </div>
@@ -83,7 +83,12 @@ class Blocks extends PureComponent {
                             : null}
                             <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
                                 {section.items.map((item, i) => {
-                                    return <MenuItem item={item} key={i} data-tip={item.tip} draggable={(section.title === 'business' && window.user_detail.admin === 0) ? false : true } platform={this.props.platform}/>
+                                    return <MenuItem 
+                                        item={item} 
+                                        key={i} 
+                                        data-tip={item.tip} 
+                                        draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}
+                                        platform={this.props.platform}/>
                                 })}
                             </div>
                         </Collapse>

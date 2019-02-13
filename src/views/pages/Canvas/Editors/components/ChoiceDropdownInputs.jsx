@@ -163,7 +163,7 @@ class ChoiceDropdownInputs extends Component {
                         <div className="interaction-block mb-3" key={choice.key}>
                             <div className="interaction-title">
                                 <span onClick={() => {this.toggleCollapse(i)}}>{choice.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>}   {i+1}</span>
-                                <button className="close" onClick={() => this.props.onRemove(i)}>&times;</button>
+                                <button className="close" onClick={() => this.props.onRemove(i)} disabled={this.props.live_mode}>&times;</button>
                             </div>
                             {!!choice.invalid && <Alert color="danger" className="mt-2 mb-1 py-1 text-center"><i className="fas fa-exclamation-square"/> This intent doesn't exist</Alert>}
                             <Collapse isOpen={choice.open}>
@@ -179,6 +179,7 @@ class ChoiceDropdownInputs extends Component {
                                     styles={{
                                         singleValue: (base) => ({ ...base, width: '100%' }),
                                     }}
+                                    isDisabled={this.props.live_mode}
                                 />
                             </div>
                             {!!slots && 
@@ -196,7 +197,7 @@ class ChoiceDropdownInputs extends Component {
                             </Collapse>
                         </div> )
                 }) : null}
-                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" onClick={this.props.onAdd}><i className="far fa-plus"></i> Add Choice</button></div>
+                <div><button className="btn btn-clear btn-shadow btn-lg btn-block" onClick={this.props.onAdd} disabled={this.props.live_mode}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>
         );
     }

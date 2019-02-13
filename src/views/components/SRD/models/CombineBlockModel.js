@@ -1,21 +1,20 @@
-import { DefaultNodeModel, Toolkit, PortModel } from 'storm-react-diagrams'
+import { DefaultNodeModel, Toolkit, PortModel } from './../main.js'
 import { BlockPortModel } from './BlockPortModel';
 
+const toolkit = new Toolkit()
 export class BlockNodeModel extends DefaultNodeModel {
-	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)", fade: boolean = false) {
+	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)") {
 		super(name, color)
-		this.fade = fade
-		this.linter = []
 	}
 
 	addInPort(label: string): BlockPortModel {
-		return this.addPort(new BlockPortModel(true, Toolkit.UID(), label));
+		return this.addPort(new BlockPortModel(true, toolkit.UID(), label, toolkit.UID()));
 	}
 
 	addOutPort(label: string): BlockPortModel {
-		return this.addPort(new BlockPortModel(false, Toolkit.UID(), label));
+		return this.addPort(new BlockPortModel(false, toolkit.UID(), label, toolkit.UID()));
 	}
-	
+
 	removePort(port: PortModel) {
 		// clear the parent node reference
 		if (this.ports[port.name]) {

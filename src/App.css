@@ -643,6 +643,9 @@ border-radius: 0px 5px 5px 0px !important;
     -webkit-transition: box-shadow 150ms ease !important;
     transition: box-shadow 150ms ease !important;
 }
+.list-group-item:hover{
+    background-color: #F7F9FB;
+}
 .form-control-border{
   background-color: #F7F9FB !important;
 /*  min-height: 45px !important;*/
@@ -792,7 +795,7 @@ border-radius: 0px 5px 5px 0px !important;
     box-shadow: 0 2px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 }
 .card {
-/*    border: 1px solid #fff;*/
+   /* border: 1px solid #fff; */
     border-radius: 6px;
     box-shadow: 0 2px 4px 0 rgba(14,30,37,.12);
     border-radius: 10px;
@@ -949,6 +952,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     text-align: center;
     color: #8da2b5 !important;
     font-size: 13px;
+    min-width: 170px;
+}
+.icon-image .drop-child{
+    min-width: auto !important;
 }
 .dropzone.enter-url, .audio-box, .image-box {
     cursor: default;
@@ -1356,10 +1363,10 @@ body.modal-open {
     position: relative;
     z-index: 1;
     background-position-y: -12px;
-    background-image: url("/saved.svg"), linear-gradient(-180deg,rgba(47,208,193,.12),rgba(47,208,193,.15) 98%) !important;
+    background-image: url("/saved.svg"), linear-gradient(-180deg,rgba(62,207,142,.09),rgba(62,207,142,.25) 98%) !important;
 }
 .btn-successful:hover{
-    background-image: url("/saved-2.svg"), linear-gradient(-180deg,rgba(47,208,193,.15),rgba(47,208,193,.22) 98%) !important;
+    background-image: url("/saved-2.svg"), linear-gradient(-180deg,rgba(62,207,142,.15),rgba(62,207,142,.22) 98%) !important;
 }
 .tippy-tooltip {
     /*background-color: #42A5FF !important;*/
@@ -1468,7 +1475,6 @@ body.modal-open {
     background-image: url("/share-gray.svg");
 }
 #icon-save{
-    background-image: url("/save-gray.svg");
 }
 #icon-save.unsaved{
     background-image: url("/save-dark.svg"), linear-gradient(#5D9DF515,#5D9DF530);
@@ -1644,8 +1650,148 @@ kbd {
         visibility: hidden;
     }
 }
+.live-mode-disabled {
+    opacity: 0.3;
+}
+
 .transfer-btn {
     height:50px;
     width:50px;
     border-radius: 100%;
 }
+
+.react-toggle {
+    touch-action: pan-x;
+  
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+  
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .react-toggle-screenreader-only {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  .react-toggle--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    -webkit-transition: opacity 0.25s;
+    transition: opacity 0.25s;
+  }
+  
+  .react-toggle-track {
+    width: 49px;
+    height: 24px;
+    padding: 0;
+    border-radius: 30px;
+    background-image: linear-gradient(#BECEDC85, #BECEDC);
+    /* background-color: #8da2b5; */
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  }
+  
+  .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+    background-color: #00000000;
+  }
+  
+  .react-toggle--checked .react-toggle-track {
+    background-image: linear-gradient(to bottom,#49a4ffa6,#0F88FF);
+  }
+  
+  .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+  background-image: linear-gradient(to bottom,#49a4ffa6,#0F88FF);
+  }
+  
+  .react-toggle-track-check {
+    position: absolute;
+    width: 14px;
+    height: 10px;
+    top: 0px;
+    bottom: 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 0;
+    left: 8px;
+    opacity: 0;
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
+  }
+  
+  .react-toggle--checked .react-toggle-track-check {
+    opacity: 1;
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
+  }
+  
+  .react-toggle-track-x {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 0px;
+    bottom: 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 0;
+    right: 10px;
+    opacity: 1;
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
+  }
+  
+  .react-toggle--checked .react-toggle-track-x {
+    opacity: 0;
+  }
+  
+  .react-toggle-thumb {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    /* border: 1px solid #4D4D4D; */
+    border-radius: 50%;
+    background-color: #FAFAFA;
+    box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17,49,96,.16);
+  
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+  }
+  
+  .react-toggle--checked .react-toggle-thumb {
+    left: 27px;
+    border-color: #19AB27;
+  }
+
+  #secondary-nav-right-group .react-toggle{
+    margin-bottom: -8px;
+  }

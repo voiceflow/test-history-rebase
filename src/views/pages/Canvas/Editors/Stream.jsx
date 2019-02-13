@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import AudioDrop from '../../../components/Uploads/AudioDrop'
-import Switch from '@material-ui/core/Switch'
+import Toggle from 'react-toggle'
+import _ from 'lodash'
 
 class Stream extends Component {
     constructor(props) {
@@ -13,7 +14,11 @@ class Stream extends Component {
         this.togglePause = this.togglePause.bind(this)
         this.toggleLoop = this.toggleLoop.bind(this)
     }
-
+    static getDerivedStateFromProps(props){
+        return {
+            node: props.node
+        }
+    }
     onUpdate(){
         this.forceUpdate();
         this.props.onUpdate();
@@ -30,22 +35,51 @@ class Stream extends Component {
         let ports = node.getPorts();
 
         if(this.state.node.extras.custom_pause){
+            let bestNode
+            if (node.parentCombine){
+                bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
+            }
             for (let name in ports) {
                 let port = node.getPort(name);
                 if(port.in) continue
 
                 if (port.label === 'pause') {
                     node.removePort(port)
+                    if (node.parentCombine) {
+                        if (bestNode !== -1) {
+                            node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
+                            node.parentCombine.combines[bestNode].extras.custom_pause = !node.parentCombine.combines[bestNode].extras.custom_pause;
+                        }
+                        node.parentCombine.removePort(port);
+                    }
                 }
             }
         }else{
             this.state.node.addOutPort('pause').setMaximumLinks(1)
+            node = this.state.node
+            if (this.state.node.parentCombine) {
+                let isLast = _.last(node.parentCombine.combines).id === node.id
+                let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
+                let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+                if (isLast) {
+                    _.forEach(newPort, np => {
+                        np.parent = node.parentCombine
+                        node.parentCombine.ports[np.name] = np
+                    })
+                }
+                if (!_.find(this.props.diagramEngine.getDiagramModel().getNodes(), n => n.id === node.id)) {
+                    node.parentCombine.combines[bestNode] = node.serialize()
+                    node.parentCombine.combines[bestNode].extras.custom_pause = !node.parentCombine.combines[bestNode].extras.custom_pause;
+                }
+            }
         }
-
         node.extras.custom_pause = !node.extras.custom_pause
-
-        this.props.repaint()
-        this.onUpdate()
+        this.setState({
+            node: node
+        }, this.props.onUpdate);
+        // this.props.diagramEngine.setSuperSelect(node.parentCombine);
+        this.props.repaint();
+        this.forceUpdate()
     }
 
     render() {
@@ -63,19 +97,19 @@ class Stream extends Component {
                 />
                 <div className="space-between mt-3">
                     <label>Custom Pause</label>
-                    <Switch
+                    <Toggle
+                        icons={false}
                         checked={!!this.state.node.extras.custom_pause}
                         onChange={this.togglePause}
-                        color="primary"
                         className="fulfill-switch"
                     />
                 </div>
                 <div className="space-between">
                     <label>Loop Audio</label>
-                    <Switch
+                    <Toggle
+                        icons={false}
                         checked={!!this.state.node.extras.loop}
                         onChange={this.toggleLoop}
-                        color="primary"
                         className="fulfill-switch"
                     />
                 </div>

@@ -1,8 +1,10 @@
-import * as React from "react";
-import { DiagramEngine, DefaultLinkWidget, AbstractLinkFactory } from "storm-react-diagrams";
+import React from "react";
+import { DiagramEngine, DefaultLinkWidget, LinkModel } from "./../main.js";
+import { Toolkit } from './../Toolkit';
 import { BlockLinkModel } from './../models/BlockLinkModel'
 
-export class BlockLinkFactory extends AbstractLinkFactory<BlockLinkModel> {
+const toolkit = new Toolkit()
+export class BlockLinkFactory extends LinkModel{
 	constructor(color='#E3E9EE', width=2.5) {
 		super("default");
 		this.color = color;
@@ -17,9 +19,12 @@ export class BlockLinkFactory extends AbstractLinkFactory<BlockLinkModel> {
 	}
 
 	getNewInstance(initialConfig?: any): BlockLinkModel {
-		return new BlockLinkModel();
+		return new BlockLinkModel("default", toolkit.UID());
 	}
 
+	getType(){
+		return this.type;
+	}
 	generateLinkSegment(model: BlockLinkModel, widget: DefaultLinkWidget, selected: boolean, path: string) {
 		return (
 			<path

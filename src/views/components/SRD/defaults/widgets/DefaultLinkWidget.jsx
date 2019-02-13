@@ -168,11 +168,12 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			let lengths = _.last(this.refPaths).getTotalLength();
 			svgPosition = _.last(this.refPaths).getPointAtLength(lengths/2)
 		}
+		console.log(this.props)
 		return (
 			<g key={"link-" + id}>
 				{Bottom}
 				{Top}
-				{svgPosition && this.state.selected ? <foreignObject style={{x: svgPosition.x-15, y: svgPosition.y-15, zIndex: 10}} onClick={(e) => {
+				{svgPosition && this.state.selected && !this.props.preview ? <foreignObject style={{x: svgPosition.x-15, y: svgPosition.y-15, zIndex: 10}} onClick={(e) => {
 					e.preventDefault()
 					this.props.link.remove()
 				}}

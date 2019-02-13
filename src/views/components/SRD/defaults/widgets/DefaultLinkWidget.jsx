@@ -168,7 +168,6 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			let lengths = _.last(this.refPaths).getTotalLength();
 			svgPosition = _.last(this.refPaths).getPointAtLength(lengths/2)
 		}
-		console.log(this.props)
 		return (
 			<g key={"link-" + id}>
 				{Bottom}

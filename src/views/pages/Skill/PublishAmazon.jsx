@@ -14,8 +14,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Textarea from 'react-textarea-autosize'
 import Image from '../../components/Uploads/Image'
 import Multiple from '../../components/Forms/Multiple'
-import ErrorModal from '../../components/Modals/ErrorModal'
-import ConfirmModal from '../../components/Modals/ConfirmModal'
 import AmazonLogin from '../../components/Forms/AmazonLogin'
 import Select from 'react-select'
 import './Skill.css'
@@ -55,20 +53,17 @@ class Skill extends Component {
             dropdown: false,
             saved: true,
             skill_id: this.props.skill.skill_id,
-            error: null,
             stage: 1,
             publish: false,
             id_collapse: false,
             amzn_id: null,
-            stage_error: null,
-            displayingConfirmWithdraw: false
+            stage_error: null
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
         this.toggle = this.toggle.bind(this);
         this.togglePublish = this.togglePublish.bind(this);
-        this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this);
         this.closePublish = this.closePublish.bind(this);
         this.save = this.save.bind(this);
         this.onRadio = this.onRadio.bind(this);
@@ -147,12 +142,12 @@ class Skill extends Component {
 
         this.setState({
             publish: false,
-            stage: 2,
-            error: ((
-                err.response &&
-                err.response.data &&
-                err.response.data.message) ? error_message : default_error)
-        });
+            stage: 2
+        })
+        this.props.onError(((
+            err.response &&
+            err.response.data &&
+            err.response.data.message) ? error_message : default_error))
     }
 
     onWithdraw(){
@@ -323,26 +318,15 @@ class Skill extends Component {
       const s = this.state;
       let split_keywords = s.keywords.split(',')
       if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
-          this.setState({
-              error: 'Privacy policy must be a url'
-          })
+        this.props.onError('Privacy policy must be a url')
       } else if(s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)){
-          this.setState({
-              error: 'Terms and conditions must be a url'
-          })
+        this.props.onError('Terms and conditions must be a url')
       } else if(split_keywords.length > 30) {
-          this.setState({
-              error: 'Limited to 30 keywords'
-          })
+        this.props.onError('Limited to 30 keywords')
       } else if(s.keywords.length - split_keywords.length + 1> 500) {
-          this.setState({
-              error: 'The total length of all keywords must be less than or equal to 150'
-          })
+        this.props.onError('The total length of all keywords must be less than or equal to 150')
       } else {
-        this.setState({
-          publish: true,
-          error: null
-        })
+        this.setState({publish: true})
       }
     }
     save(publish=false, cb){
@@ -377,22 +361,20 @@ class Skill extends Component {
             terms_and_cond: s.terms_and_cond,
             ...store
         }
-        this.props.updateSkill({...this.props.skill, ...properties})
 
         properties.locales = JSON.stringify(properties.locales)
 
+        if(!properties.name){
+            return this.props.onError('Publish Settings not Saved: No Project Name')
+        }
+
         axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), properties)
         .then(res => {
-            this.setState({
-                saved: true
-            });
-            if(typeof(cb) === 'function') cb();
+            this.props.updateSkill({...this.props.skill, ...properties})
         })
         .catch(err => {
-            console.log(err);
-            this.setState({
-                error: 'Save Error, updates not saved'
-            });
+            console.log(err)
+            this.props.onError('Save Error, Publish Settings not Saved')
         })
     }
 
@@ -422,23 +404,6 @@ class Skill extends Component {
         this.setState({
             publish: !this.state.publish
         });
-    }
-
-    toggleConfirmWithdraw() {
-        if(!this.state.displayingConfirmWithdraw){
-            this.setState({
-                displayingConfirmWithdraw: {
-                    text: "Are you sure you want to withdraw this Skill?",
-                    confirm: this.onWithdraw
-                },
-                stage: 12
-            });
-        }else{
-            this.setState({
-                displayingConfirmWithdraw: false,
-                stage: 11
-            });
-        }
     }
 
     closePublish() {
@@ -642,11 +607,6 @@ class Skill extends Component {
                         </div>
                     </ModalBody>
                 </Modal>
-                <ConfirmModal
-                    confirm = {this.state.displayingConfirmWithdraw}
-                    toggle = {this.toggleConfirmWithdraw}
-                />
-                <ErrorModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
 
                 <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
                     <div className="row justify-content-center">
@@ -776,7 +736,12 @@ class Skill extends Component {
                                 <h5 className="mb-0">This skill is currently in review so you cannot edit it.</h5>
                                 <div>
                                     <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl} target="_blank">Visit Dashboard</MUIButton>
-                                    <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Skill</MUIButton>
+                                    <MUIButton variant="contained" className="purple-btn ml-3" onClick={()=>{
+                                        this.props.onConfirm({
+                                            text: "Are you sure you want to withdraw this Skill?",
+                                            confirm: this.onWithdraw
+                                        })
+                                    }}>Withdraw Skill</MUIButton>
                                 </div>
                             </div>
                         </div>

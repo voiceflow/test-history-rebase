@@ -27,13 +27,12 @@ export class DefaultNodeModel extends NodeModel {
 	deSerialize(object, engine) {
 		super.deSerialize(object, engine);
 		this.name = object.name;
-		this.color = object.color;
+		this.color = null;
 	}
 
 	serialize() {
 		return _.merge(super.serialize(), {
 			name: this.name,
-			color: this.color
 		});
 	}
 

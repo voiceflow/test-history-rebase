@@ -473,7 +473,11 @@ export class BlockNodeWidget extends BaseWidget {
 									style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
 									autoFocus
 								/>:
-						<div>{this.props.node.name ? (this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` :this.props.node.name)  : _.startCase(this.props.node.extras.type)}</div>}
+						< div > {
+							_.trim(this.props.node.name) ?
+							(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
+							_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
+						} </div>}
 					</div>
 				</div>
 				<div className={this.bem("__ports")}

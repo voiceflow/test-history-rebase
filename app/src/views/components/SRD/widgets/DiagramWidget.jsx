@@ -327,7 +327,7 @@ export class DiagramWidget extends BaseWidget {
 								current.parentCombine = null;
 								current.extras.nextID = null;
 								this.props.diagramEngine.getDiagramModel().clearSelection()
-								this.props.diagramEngine.setSuperSelect(current)
+								this.props.diagramEngine.setSuperSelect(null)
 								this.props.forceRepaint()
 							} else {
 								let nodeIdx = _.findIndex(target_node.combines, c => c === 'temp')

@@ -51,7 +51,9 @@ const Track = require('./routes/track.js')
 
 app.use(cors())
 app.use(helmet())
-app.use(request_logger)
+if(process.env.NODE_ENV !== 'test'){
+    app.use(request_logger)
+}
 
 const rawBodyPaths = ['/customer/webhook']
 const getRawBody = () => {

@@ -119,9 +119,9 @@ const interactionModel = (req, locale) => {
 
 	// INTERFACE REQUIRED INTENTS
 	if(Array.isArray(req.alexa_interfaces)){
-		for(interface of req.alexa_interfaces){
-			if(INTERFACE_INTENTS[interface]){
-				INTERFACE_INTENTS[interface].forEach(i => intents_for_amazon.push(i))
+		for(alexa_interface of req.alexa_interfaces){
+			if(INTERFACE_INTENTS[alexa_interface]){
+				INTERFACE_INTENTS[alexa_interface].forEach(i => intents_for_amazon.push(i))
 			}
 		}
 	}
@@ -336,7 +336,7 @@ const manifest = (r, encoded_id, name) => {
 		})
 	}
 	if (Array.isArray(r.alexa_interfaces) && r.alexa_interfaces.length !== 0) {
-		interfaces.push(...(r.alexa_interfaces.map(interface => ({"type": interface}))))
+		interfaces.push(...(r.alexa_interfaces.map(alexa_interface => ({"type": alexa_interface}))))
 	}
 	if(interfaces.length !== 0){
 		ret.manifest.apis.custom.interfaces = interfaces

@@ -46,19 +46,21 @@ const trackUser = async (data, analytics_data) => {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 	}
 
-	analytics.identify({
-		userId: id,
-		traits: {
-			'email': data.email,
-			'name': data.name,
-			'admin': data.admin,
-			'type': analytics_data.platform,
-			'city': city,
-			'country': country,
-			'os': analytics_data.device.os,
-			'browser': analytics_data.device.browser
-		}
-	})
+	if(process.env.NODE_ENV !== 'test'){
+		analytics.identify({
+			userId: id,
+			traits: {
+				'email': data.email,
+				'name': data.name,
+				'admin': data.admin,
+				'type': analytics_data.platform,
+				'city': city,
+				'country': country,
+				'os': analytics_data.device.os,
+				'browser': analytics_data.device.browser
+			}
+		})
+	}
 }
 
 function generateUserEmailLink(user_id, name, body, mailFunction, prefix, max_retry, res) {
@@ -283,11 +285,13 @@ const putSession = (req, res) => {
 };
 
 const deleteSession = (req, res) => {
-	if(req.cookies.auth){
-		let userHash = req.cookies.auth.substring(0, 16);
-    	redisClient.del(userHash);
+	if(req.user){
+		if(req.cookies.auth){
+			let userHash = req.cookies.auth.substring(0, 16)
+			redisClient.del(userHash)
+		}
+		redisClient.del(`s_${req.user.id}`)
 	}
-	redisClient.del(`s_${req.user.id}`)
   res.sendStatus(200);
 };
 

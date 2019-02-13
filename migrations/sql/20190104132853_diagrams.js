@@ -9,7 +9,7 @@ exports.up = function (knex, Promise) {
           t.timestamp('created', true).defaultTo(knex.fn.now())
           t.timestamp('modified', true).defaultTo(knex.fn.now())
           t.integer('skill_id')
-          t.foreign('skill_id').references('skills.skill_id').onDelete('CASCADE')
+          t.foreign('skill_id').references('skills.skill_id').onDelete('CASCADE').onUpdate('CASCADE')
           t.text('sub_diagrams').defaultTo('[]')
           t.json('permissions').defaultTo('[]')
           t.json('used_intents').notNullable().defaultTo('[]')

@@ -345,7 +345,7 @@ class BasicAdvancedSettings extends Component{
                                     : "When the user asks to repeat, only the last speak block before the choice/interaction will be repeated"}
                                 </div>
                                 <div className="col-2">
-                                    <Toggle icons={false} checked={this.state.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)}T/>
+                                    <Toggle icons={false} checked={this.state.skill.repeat > 1} onChange={() => this.toggleRepeat(1, 100)}/>
                                 </div>
                             </div>
                         </React.Fragment>}

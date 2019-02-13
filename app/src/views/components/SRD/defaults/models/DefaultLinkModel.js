@@ -13,18 +13,14 @@ export class DefaultLinkModel extends LinkModel {
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
-			width: this.width,
-			color: this.color,
-			curvyness: this.curvyness
-		});
+		return super.serialize()
 	}
 
 	deSerialize(ob, engine) {
 		super.deSerialize(ob, engine);
-		this.color = ob.color;
-		this.width = ob.width;
-		this.curvyness = ob.curvyness;
+		this.color = "#555D6D";
+		this.width = 2.5;
+		this.curvyness = 175;
 	}
 
 	addLabel(label) {

@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
-import * as SRD from 'storm-react-diagrams'
+import * as SRD from './../../components/SRD/main.js'
 import axios from 'axios'
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
-import 'storm-react-diagrams/dist/style.min.css'
+import './../../components/SRD/sass/main.css'
 import './StoryBoard.css'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import {convertDiagram} from './util'
 
-import { BlockLinkFactory } from './SRD/factories/BlockLinkFactory'
-import { BlockPortFactory } from './SRD/factories/BlockPortFactory'
-import { BlockNodeFactory } from './SRD/factories/BlockNodeFactory'
+import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
+import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'
+import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFactory'
 
 const line_color = '#D1D8E2'
 const line_width = 2.5
@@ -50,7 +50,6 @@ class LightCanvas extends Component {
             loading_diagram: true,
             saving: false,
             saved: true,
-            last_save: false,
             testing_modal: false,
             testing_info: false,
             variables: [],
@@ -183,7 +182,6 @@ class LightCanvas extends Component {
                 open: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                last_save: diagram.last_save,
                 loading_diagram: false,
                 variables: variables
             })

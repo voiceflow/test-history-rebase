@@ -6,8 +6,8 @@ import { Tooltip } from 'react-tippy'
 import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import './Intent.css'
-import Switch from '@material-ui/core/Switch'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import Toggle from 'react-toggle'
 
 const _ = require('lodash')
 
@@ -158,15 +158,15 @@ class Intent extends Component {
             const is_google = /^actions\.intent/.test(props.data.value)
 
             return (
-                    <components.Option {...props}>
-                        <div className="d-flex slot-label justify-content-between">
-                            <span className="mr-2">{props.data.label}</span>
-                            <span className="d-flex">
-                                {is_alexa && <i className="fab fa-amazon align-self-center"/>}
-                                {is_google && <i className="fab fa-google align-self-center"/>}
-                            </span>
-                        </div>
-                    </components.Option>
+                <components.Option {...props}>
+                    <div className="d-flex slot-label justify-content-between">
+                        <span className="mr-2">{props.data.label}</span>
+                        <span className="d-flex">
+                            {is_alexa && <i className="fab fa-amazon align-self-center" />}
+                            {is_google && <i className="fab fa-google align-self-center" />}
+                        </span>
+                    </div>
+                </components.Option>
             )
         }
 
@@ -179,8 +179,8 @@ class Intent extends Component {
                     <div className="d-flex slot-label justify-content-between">
                         <span className="mr-2">{props.data.label}</span>
                         <span className="d-flex">
-                            {is_alexa && <i className="fab fa-amazon align-self-center"/>}
-                            {is_google && <i className="fab fa-google align-self-center"/>}
+                            {is_alexa && <i className="fab fa-amazon align-self-center" />}
+                            {is_google && <i className="fab fa-google align-self-center" />}
                         </span>
                     </div>
                 </components.SingleValue>
@@ -212,7 +212,7 @@ class Intent extends Component {
                 <label>
                     Select Intent
                 </label>
-            <PlatformTooltip platform={this.props.platform} field={'Intent handlers'} />
+                <PlatformTooltip platform={this.props.platform} field={'Intent handlers'} />
             </div>
             <div className="super-center flex-hard">
                 <Select
@@ -227,6 +227,7 @@ class Intent extends Component {
                     styles={{
                         singleValue: (base) => ({ ...base, width: '100%' }),
                     }}
+                    isDisabled={this.props.live_mode}
                 />
             </div>
             {!!slots &&
@@ -256,7 +257,7 @@ class Intent extends Component {
             let split = intent.name.split('.')
             let label = split[split.length - 1]
 
-            return {label: label, value: intent.name, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
+            return { label: label, value: intent.name, key: intent.key, inputs: intent.inputs, built_in: intent.built_in }
         })
 
         switch (this.state.tab) {
@@ -276,6 +277,7 @@ class Intent extends Component {
                         update={this.update}
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'slots':
@@ -290,6 +292,7 @@ class Intent extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             default:
@@ -298,50 +301,53 @@ class Intent extends Component {
     }
 
     render() {
-
         const checked = this.isFulfill()
         const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
 
-        return <React.Fragment>
-            <ButtonGroup className="toggle-group mb-2">
-                <Button outline={this.state.tab !== 'Select'} onClick={() => { this.setState({ tab: 'Select' }) }} disabled={this.state.tab === 'Select'}> Select </Button>
-                <Button outline={this.state.tab !== 'intents'} onClick={() => { this.setState({ tab: 'intents' }) }} disabled={this.state.tab === 'intents'}> Intents </Button>
-                <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
-            </ButtonGroup>
-            {this.renderTab()}
-            {!(this.props.platform === 'google') && this.state.isRoot && intent && <hr />}
-            {!(this.props.platform === 'google') && this.state.isRoot && intent &&
-                <div>
-                    <div className="mb-2 d-flex">
-                        <Switch
-                            name="fulfill_toggle"
-                            checked={checked}
-                            onChange={this.toggleCanFulfill}
-                            color="primary"
-                            className="fulfill-switch"
-                        />
-                        <div className="ml-2 w-100 fulfill-label va">Can Fulfill Intent</div>
-                        <div className="va">
-                            <Tooltip
-                                className="menu-tip"
-                                title='Handle CanFulfillIntent Requests with this block. If your intent has slots, use Slot Fulfillment" to specify which slots your skill is able to handle'
-                                position="bottom"
-                                theme="block"
-                            >
-                                ?
-                        </Tooltip></div>
+        return (
+            <React.Fragment>
+                <ButtonGroup className="toggle-group mb-2">
+                    <Button outline={this.state.tab !== 'Select'} onClick={() => { this.setState({ tab: 'Select' }) }} disabled={this.state.tab === 'Select'}> Select </Button>
+                    <Button outline={this.state.tab !== 'intents'} onClick={() => { this.setState({ tab: 'intents' }) }} disabled={this.state.tab === 'intents'}> Intents </Button>
+                    <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
+                </ButtonGroup>
+                <div className={this.props.live_mode ? 'disabled-overlay' : null}>
+                    {this.renderTab()}
+                    {!(this.props.platform === 'google') && this.state.isRoot && intent && <hr />}
+                    {!(this.props.platform === 'google') && this.state.isRoot && intent &&
+                        <div>
+                            <div className="mb-2 d-flex">
+                                <Toggle
+                                    icons={false}
+                                    name="fulfill_toggle"
+                                    checked={checked}
+                                    onChange={this.toggleCanFulfill}
+                                    color="primary"
+                                    className="fulfill-switch"
+                                />
+                                <div className="ml-2 w-100 fulfill-label va">Can Fulfill Intent</div>
+                                <div className="va">
+                                    <Tooltip
+                                        className="menu-tip"
+                                        title='Handle CanFulfillIntent Requests with this block. If your intent has slots, use Slot Fulfillment" to specify which slots your skill is able to handle'
+                                        position="bottom"
+                                        theme="block"
+                                    >
+                                        ?
+                            </Tooltip></div>
 
-                    </div>
-                    {checked && intent && this.hasSlots(intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
-                        this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${intent ? intent.key : ''}`)
-                    }}>
-                        <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
-                    </button>}
+                            </div>
+                            {checked && this.state.node.extras.intent && this.hasSlots(this.state.node.extras.intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
+                                this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
+                            }}>
+                                <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
+                            </button>}
+                        </div>
+                    }
                 </div>
-            }
-
-        </React.Fragment>
+            </React.Fragment>
+        )
     }
 }
 

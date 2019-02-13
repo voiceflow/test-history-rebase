@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash'
 import { InputGroup, Input } from 'reactstrap';
 
 class RandomBlock extends Component {
@@ -14,19 +15,31 @@ class RandomBlock extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    handleAddPath() {
-        let node = this.state.node;
+    handleAddPath(e) {
+        var node = this.state.node;
 
         node.extras.paths++;
 
         let path = node.addOutPort(node.extras.paths);
         path.setMaximumLinks(1);
 
+        if (node.parentCombine) {
+            let isLast = _.last(node.parentCombine.combines).id === node.id
+            let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
+            if (isLast) {
+                node.parentCombine.ports[newPort[0].name] = newPort[0]
+                node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
+            }
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
+
+        }
         this.setState({
             node: node
         }, this.props.onUpdate);
-
+        // this.props.diagramEngine.setSuperSelect(node.parentCombine);
         this.props.repaint();
+        e.preventDefault()
     }
 
     handleRemovePath() {
@@ -44,6 +57,12 @@ class RandomBlock extends Component {
 
             if (port.label === node.extras.paths) {
                 node.removePort(port);
+                if (node.parentCombine) {
+                    node.parentCombine.removePort(port);
+                    let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
+                    node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
+                    node.parentCombine.combines[bestNode].extras.path--;
+                }
                 break;
             }
         }
@@ -61,10 +80,15 @@ class RandomBlock extends Component {
     handleInputChange(event) {
         let node = this.state.node;
         node.extras.smart = event.target.checked;
+        if (node.parentCombine) {
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
 
+        }
         this.setState({
           node: node
         }, this.props.onUpdate);
+        this.props.repaint()
     }
 
     render() {

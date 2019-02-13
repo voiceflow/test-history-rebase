@@ -15,7 +15,7 @@ class DefaultModal extends React.Component {
           {this.props.content}
         </ModalBody>
         <ModalFooter className="super-center">
-            <button type="button" className="purple-btn" onClick={this.props.toggle}>Close</button>
+            <button type="button" className="purple-btn" onClick={this.props.toggle}>{this.props.close_button_text? this.props.close_button_text: "Close"}</button>
         </ModalFooter>
       </Modal>
     );

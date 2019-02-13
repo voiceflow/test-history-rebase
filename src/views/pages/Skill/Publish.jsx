@@ -48,7 +48,11 @@ class Publish extends Component {
         if (this.props.page === 'market') {
             page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            page = <PublishGoogle {...this.props} />
+            if (window.user_detail.admin === 0) {
+                // Upgrade modal
+            } else {
+                page = <PublishGoogle {...this.props} />
+            }
         } else {
             page = <PublishAmazon {...this.props} />
         }

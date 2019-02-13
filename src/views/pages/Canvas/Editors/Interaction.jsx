@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
@@ -36,10 +37,15 @@ class Interaction extends Component {
         this.setState({
             node: node
         })
+        if (node.parentCombine) {
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
+        }
         this.props.onUpdate()
+        this.props.repaint();
     }
 
-    handleAddChoice() {
+    handleAddChoice(e) {
         const node = this.state.node
         const g_extras = node.extras.google
         const a_extras = node.extras.alexa
@@ -54,12 +60,24 @@ class Interaction extends Component {
 
         let test = node.addOutPort(a_choices.length);
         test.setMaximumLinks(1);
+        if (node.parentCombine) {
+            let isLast = _.last(node.parentCombine.combines).id === node.id
+            let newPort = _.differenceBy(node.getOutPorts(), node.parentCombine.getOutPorts(), 'id');
+            if (isLast) {
+                node.parentCombine.ports[newPort[0].name] = newPort[0]
+                node.parentCombine.ports[newPort[0].name].parent = node.parentCombine
+            }
+            let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
+            node.parentCombine.combines[bestNode] = node.serialize()
+
+        }
 
         this.setState({
             node: node
-        })
+        }, this.props.onUpdate);
+        // this.props.diagramEngine.setSuperSelect(node.parentCombine);
         this.props.onUpdate()
-        this.props.repaint()
+        this.props.repaint();
     }
 
     handleRemoveChoice(i) {
@@ -70,11 +88,21 @@ class Interaction extends Component {
         const g_choices = g_extras.choices
         const a_choices = a_extras.choices
 
+        let bestNode;
+        if (node.parentCombine){
+            bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
+        }
         for (var name in node.getPorts()) {
             var port = node.getPort(name)
 
             if (port.label === a_choices.length) {
                 node.removePort(port)
+                if (node.parentCombine && bestNode >= 0) {
+                    node.parentCombine.removePort(port);
+                    // eslint-disable-next-line
+                    node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
+                    node.parentCombine.combines[bestNode].extras.choices.splice(i,1);
+                }
                 break
             }
         }
@@ -115,6 +143,7 @@ class Interaction extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'intents':
@@ -131,6 +160,7 @@ class Interaction extends Component {
                         update={this.update}
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             case 'slots':
@@ -145,6 +175,7 @@ class Interaction extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
+                        live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
             default:
@@ -154,14 +185,16 @@ class Interaction extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <ButtonGroup className="toggle-group mb-2">
-                    <Button outline={this.state.tab !== 'choices'} onClick={() => { this.setState({ tab: 'choices' }) }} disabled={this.state.tab === 'choices'}> Choices </Button>
-                    <Button outline={this.state.tab !== 'intents'} onClick={() => { this.setState({ tab: 'intents' }) }} disabled={this.state.tab === 'intents'}> Intents </Button>
-                    <Button outline={this.state.tab !== 'slots'} onClick={() => { this.setState({ tab: 'slots' }) }} disabled={this.state.tab === 'slots'}> Slots </Button>
-                </ButtonGroup>
+        <React.Fragment>
+            <ButtonGroup className="toggle-group mb-2">
+                <Button outline={this.state.tab !== 'choices'} onClick={() => {this.setState({tab: 'choices'})}} disabled={this.state.tab === 'choices'}> Choices </Button>
+                <Button outline={this.state.tab !== 'intents'} onClick={() => {this.setState({tab: 'intents'})}} disabled={this.state.tab === 'intents'}> Intents </Button>
+                <Button outline={this.state.tab !== 'slots'} onClick={() => {this.setState({tab: 'slots'})}} disabled={this.state.tab === 'slots'}> Slots </Button>
+            </ButtonGroup>
+            <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
                 {this.renderTab()}
-            </React.Fragment>
+            </div>
+        </React.Fragment>
         );
     }
 }

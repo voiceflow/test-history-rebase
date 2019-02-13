@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Alert } from 'reactstrap'
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import VoiceCards from 'views/components/Cards/VoiceCards'
@@ -20,6 +21,8 @@ class Multimodal extends Component {
             error: null,
             confirm: null
         }
+
+        this.deleteDisplay = this.deleteDisplay.bind(this)
     }
 
     componentWillMount() {
@@ -44,22 +47,26 @@ class Multimodal extends Component {
     }
 
     deleteDisplay(id) {
-        this.props.onConfirm(null)
-        axios.delete(`/multimodal/display/${id}`)
-        .then(()=>{
-            let displays = this.state.displays;
-            let index = displays.findIndex(d => d.id === id);
-            if (index > -1) {
-              displays.splice(index, 1);
+        this.props.onConfirm({
+            text: <Alert color="warning" className="mb-0">Deleting this display will delete it from your project and all versions of it.</Alert>,
+            confirm: () => {
+                axios.delete(`/multimodal/display/${id}`)
+                .then(()=>{
+                    let displays = this.state.displays;
+                    let index = displays.findIndex(d => d.id === id);
+                    if (index > -1) {
+                    displays.splice(index, 1);
+                    }
+                    this.setState({
+                        displays: displays
+                    });
+                })
+                .catch(err=>{
+                    console.error(err)
+                    this.props.onError('Unable to delete display')
+                })
             }
-            this.setState({
-                displays: displays
-            });
         })
-        .catch(err=>{
-            console.error(err)
-            this.props.onError('Unable to delete display')
-        });
     }
 
     render() {
@@ -107,7 +114,7 @@ class Multimodal extends Component {
                                         id={display.id}
                                         name={display.title}
                                         placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
-                                        onDelete={this.deleteProduct}
+                                        onDelete={this.deleteDisplay}
                                         deleteLabel="Delete Visual"
                                         onClick={()=>this.props.history.push(`/visuals/${this.props.skill.skill_id}/display/${display.id}`)}
                                         buttonLabel="Edit Visual"

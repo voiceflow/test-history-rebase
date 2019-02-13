@@ -1,23 +1,24 @@
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import * as React from "react";
 import { BlockNodeWidget } from "./../widgets/BlockNodeWidget"
-import { DiagramEngine, AbstractNodeFactory } from "storm-react-diagrams";
+import {  AbstractFactory } from "./../main.js";
 /**
  * @author Dylan Vorster
  */
-export class BlockNodeFactory extends AbstractNodeFactory<BlockNodeModel> {
+export class BlockNodeFactory extends AbstractFactory {
 	constructor() {
 		super("default");
 	}
 
-	generateReactWidget(diagramEngine: DiagramEngine, node: BlockNodeModel): JSX.Element {
+	generateReactWidget(diagramEngine, node, repaint){
 		return React.createElement(BlockNodeWidget, {
 			node: node,
-			diagramEngine: diagramEngine
+			diagramEngine: diagramEngine,
+			repaint: repaint,
 		});
 	}
 
-	getNewInstance(initialConfig?: any): BlockNodeModel {
+	getNewInstance(initialConfig) {
 		return new BlockNodeModel();
 	}
 }

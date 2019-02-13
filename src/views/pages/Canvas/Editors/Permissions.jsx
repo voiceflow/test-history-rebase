@@ -114,7 +114,7 @@ class Permissions extends Component {
 
     render() {
         return (
-            <div>
+            <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
                 {this.state.node.extras.permissions.map((perm, i) => {
                     return (
                         <Permission

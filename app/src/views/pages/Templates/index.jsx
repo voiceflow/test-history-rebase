@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import TemplateCard from './TemplateCard'
 import LOCALE_MAP from './../../../services/LocaleMap'
-import { Modal, Alert } from 'reactstrap'
+import { Modal, Alert, Button } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import _ from 'lodash'
 import './Template.css'
@@ -20,7 +20,8 @@ class Templates extends Component {
             name: '',
             locales: ['en-US'],
             error: '',
-            template: {}
+            template: {},
+            platform: 'alexa'
         }
 
         this.createSkill = this.createSkill.bind(this)
@@ -68,7 +69,8 @@ class Templates extends Component {
         this.setState({loading: true})
         axios.post(`/marketplace/template/${module_id}/copy`, {
             name: this.state.name,
-            locales: this.state.locales
+            locales: this.state.locales,
+            platform: this.state.platform
         })
         .then(res => {
             if(res.data.skill_id && res.data.diagram){
@@ -137,7 +139,7 @@ class Templates extends Component {
             default:
                 return <div id="name-box" className="text-center">
                     <div className="mb-5">
-                        <h5 className="text-dark">NAME & REGION</h5>
+                        <h5 className="text-dark">Create Project</h5>
                         <Alert color='danger' style={{visibility: this.state.error ? 'visible': 'hidden'}} className="mt-3 d-inline-block">&nbsp;{this.state.error}&nbsp;</Alert><br/>
                         <input
                             id="skill-name"
@@ -158,6 +160,15 @@ class Templates extends Component {
                                 <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
                             </button>
                         })}
+                    </div>
+                    <div className="text-muted mt-4 mb-3">Platform</div>
+                    <div className="grid-col-3 mx--1 d-flex justify-content-center">
+                        <Button outline color="primary" className={`mr-2 ${this.state.platform === 'alexa' ? 'active' : ''}`} onClick={() => { this.setState({ platform: 'alexa'}) }}>
+                        <i className="fab fa-amazon mr-2" />Alexa
+                        </Button>
+                        <Button outline color="primary" className={`${this.state.platform === 'google' ? 'active' : ''}`} onClick={() => { this.setState({ platform: 'google'}) }}>
+                            <i className="fab fa-google mr-2" />Google
+                        </Button>
                     </div>
                     <div className="mt-5">
                         <MUIButton varient="contained" className="purple-btn" onClick={this.saveSettings}>Continue</MUIButton>

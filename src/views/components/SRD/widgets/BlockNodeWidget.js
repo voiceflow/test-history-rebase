@@ -91,7 +91,10 @@ export class BlockNodeWidget extends BaseWidget {
 		}
 	}
 	generatePort(port) {
-		return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine} isLast={this.props.isLast} isMoving={this.props.node.isMoveInside} />;
+		if (port.parent){
+			return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine} isLast={this.props.isLast} isMoving={this.props.node.isMoveInside} />;
+		}
+		return null;
 	}
 
 	handleChange(event) {

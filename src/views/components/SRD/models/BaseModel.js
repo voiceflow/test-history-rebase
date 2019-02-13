@@ -1,5 +1,4 @@
 const { BaseEntity } = require("../BaseEntity");
-const _ = require('lodash')
 
 export class BaseModel extends BaseEntity {
 	constructor(type, id) {

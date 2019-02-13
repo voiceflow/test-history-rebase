@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import { LinkModel } from "../../models/LinkModel";
 import { DefaultLabelModel } from "./DefaultLabelModel";
 import { LabelModel } from "../../models/LabelModel";

@@ -362,15 +362,14 @@ class Skill extends Component {
             ...store
         }
 
-        properties.locales = JSON.stringify(properties.locales)
-
         if(!properties.name){
             return this.props.onError('Publish Settings not Saved: No Project Name')
         }
 
-        axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), properties)
+        axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {...properties, locales: JSON.stringify(properties.locales)})
         .then(res => {
             this.props.updateSkill({...this.props.skill, ...properties})
+            if(typeof cb === 'function') cb()
         })
         .catch(err => {
             console.log(err)

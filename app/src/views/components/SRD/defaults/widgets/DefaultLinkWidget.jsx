@@ -168,6 +168,11 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			let lengths = _.last(this.refPaths).getTotalLength();
 			svgPosition = _.last(this.refPaths).getPointAtLength(lengths/2)
 		}
+		let endArrow;
+		if (_.last(this.refPaths) && this.props.link.sourcePort && this.props.link.targetPort) {
+			let lengths = _.last(this.refPaths).getTotalLength();
+			endArrow = lengths >= 15 ? _.last(this.refPaths).getPointAtLength(lengths - 15) : _.last(this.refPaths).getPointAtLength(lengths)
+		}
 		return (
 			<g key={"link-" + id}>
 				{Bottom}
@@ -186,6 +191,20 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 						<i className="fa fa-trash" />
 					</button>
 				</foreignObject>: null
+				}
+				{endArrow &&
+					 <foreignObject style={{x: endArrow.x-9, y: endArrow.y-14, zIndex: 10}} onClick={(e) => {
+					e.preventDefault()
+					this.props.link.remove()
+				}}
+				onMouseLeave={() => {
+					this.setState({ selected: false });
+				}}
+				onMouseEnter={() => {
+					this.setState({ selected: true });
+				}}>
+					<img src={'/link-arrow.svg'} width="12" height="12"/>
+				</foreignObject>
 				}
 			</g>
 		);

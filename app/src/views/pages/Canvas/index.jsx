@@ -1391,10 +1391,8 @@ class Canvas extends Component {
         try {
             if (!this.props.preview){
                 state && this.setState({ saving: true })
-                var engine = this.state.engine
-                var model = engine.getDiagramModel()
-                let serialize = model.serializeDiagram()
-                var data = JSON.stringify(this.serialize())
+                let serialize = this.serialize()
+                var data = JSON.stringify(serialize)
 
                 let sub_diagrams = []
                 let used_intent_names = new Set()

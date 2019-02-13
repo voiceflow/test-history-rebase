@@ -1,5 +1,4 @@
 const { BaseEntity } = require("../BaseEntity");
-const _ = require('lodash')
 
 export class BaseModel extends BaseEntity {
 	constructor(type, id) {
@@ -25,15 +24,12 @@ export class BaseModel extends BaseEntity {
 
 	deSerialize(ob, engine) {
 		super.deSerialize(ob, engine);
-		this.type = ob.type;
-		this.selected = ob.selected;
+		this.type = "default";
+		this.selected = false;
 	}
 
 	serialize() {
-		return _.merge(super.serialize(), {
-			type: this.type,
-			selected: this.selected
-		});
+		return super.serialize()
 	}
 
 	getType(): string {

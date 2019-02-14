@@ -3,6 +3,8 @@ const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
 const { pool, hashids } = require('./../services')
 
+jest.setTimeout(10000)
+
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -25,7 +27,6 @@ const getTemplate = new Promise(async (resolve, reject) => {
 })
 
 describe('Skill', () => {
-
   var token = ''
   let diagram_id = generateID()
   let skill_id
@@ -78,14 +79,14 @@ describe('Skill', () => {
 
     it('creates diagram', done => {
       request(app)
-        .post('/diagram')
+        .post('/diagram?new=1')
         .send({
           data: JSON.stringify(new_diagram),
           id: diagram_id,
           skill: skill_id,
-          variables: []
+          variables: ['path_selector', 'technic_angel']
         })
-        .set('cookie', 'auth='+token)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
           if (err) throw err
@@ -98,7 +99,7 @@ describe('Skill', () => {
     it('gets skills', done => {
       request(app)
         .get('/skills')
-        .set('cookie', 'auth='+token)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (res.body.length !== 1 || res.body[0].skill_id !== skill_id)
@@ -122,8 +123,8 @@ describe('Skill', () => {
 
     it('gets created skill', done => {
       request(app)
-        .get('/skill/'+skill_id)
-        .set('cookie', 'auth='+token)
+        .get(`/skill/${skill_id}`)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (res.body.skill_id !== skill_id) throw new Error('incorrect result')
@@ -136,8 +137,8 @@ describe('Skill', () => {
 
     it('gets created skill preview', done => {
       request(app)
-        .get('/skill/'+skill_id+'?preview=1')
-        .set('cookie', 'auth='+token)
+        .get(`/skill/${skill_id}?preview=1`)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (res.body.skill_id !== skill_id) throw new Error('incorrect result')
@@ -152,7 +153,7 @@ describe('Skill', () => {
 
     it('gets created skill simple', done => {
       request(app)
-        .get('/skill/'+skill_id+'?simple=1')
+        .get(`/skill/${skill_id}?simple=1`)
         .set('cookie', 'auth='+token)
         .expect(200)
         .expect(res => {
@@ -169,7 +170,7 @@ describe('Skill', () => {
 
     it('doesn\'t get skill if not authenticated', done => {
       request(app)
-        .get('/skill/'+skill_id)
+        .get(`/skill/${skill_id}`)
         .expect(401)
         .end((err, res) => {
           if (err) throw err
@@ -179,8 +180,8 @@ describe('Skill', () => {
 
     it('gets created diagram', done => {
       request(app)
-        .get('/diagram/'+diagram_id)
-        .set('cookie', 'auth='+token)
+        .get(`/diagram/${diagram_id}`)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (res.body.id !== diagram_id) throw new Error('incorrect result')
@@ -191,9 +192,55 @@ describe('Skill', () => {
         })
     })
 
+    it('updates diagram name', done => {
+      request(app)
+        .post(`/diagram/${diagram_id}/name`)
+        .send({name: 'virtual_self'})
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .expect(async (res) => {
+          try {
+            let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE id = $1`, [diagram_id])).rows
+            expect(diagram_data[0].name).toEqual('virtual_self')
+          } catch (err) {
+            if(err) throw err
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('doesn\'t allow empty diagram names', done => {
+      request(app)
+        .post(`/diagram/${diagram_id}/name`)
+        .send({name: ''})
+        .set('cookie', `auth=${token}`)
+        .expect(401)
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('gets diagram variables', done => {
+      request(app)
+      .get(`/diagram/${diagram_id}/variables`)
+      .set('cookie', `auth=${token}`)
+      .expect(200)
+      .expect(res => {
+        expect(res.body).toEqual(['path_selector', 'technic_angel'])
+      })
+      .end((err, res) => {
+        if(err) throw err
+        done()
+      })
+    })
+
     it('doesn\'t get diagram if not authenticated', done => {
       request(app)
-        .get('/diagram/'+diagram_id)
+        .get(`/diagram/${diagram_id}`)
         .expect(401)
         .end((err, res) => {
           if (err) throw err
@@ -203,10 +250,27 @@ describe('Skill', () => {
 
     it('creates a new version', done => {
       request(app)
-        .post(`/skill/${skill_id}/publish`)
+        .post(`/diagram/${diagram_id}/${skill_id}/publish`)
+        .set('cookie', `auth=${token}`)
         .expect(200)
-        .expect(res => {
+        .expect(async (res) => {
+          try{
+            let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`, [hashids.decode(skill_id)[0]])).rows
+            let skill_data = (await pool.query(`SELECT * FROM skills WHERE creator_id = 1`)).rows
+            // Initial skill won't have default values for used-choices, used_intents, alexa_interfaces, alexa_permissions
+            let filtered_fields = ['diagram', 'created', 'live', 'last_save', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces', 'alexa_permissions']
 
+            for(let i in skill_data){
+              for(let field of filtered_fields){
+                delete skill_data[i][field]
+              }
+            }
+            expect(version_data[0]).toEqual({version: null, canonical_skill_id: 2, skill_id: 2, last_save: null})
+            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: 2, skill_id: 3, last_save: null})
+            expect(skill_data[1]).toEqual(skill_data[2])
+          } catch (err) {
+            if(err) throw err
+          }
         })
         .end((err, res) => {
           if(err) throw err
@@ -218,8 +282,8 @@ describe('Skill', () => {
   describe('Deletion', () => {
     it('deletes skill', done => {
       request(app)
-        .delete('/skill/'+skill_id)
-        .set('cookie', 'auth='+token)
+        .delete(`/skill/${skill_id}`)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
           if (err) throw err
@@ -230,7 +294,7 @@ describe('Skill', () => {
     it('doesn\'t get deleted skill', done => {
       request(app)
         .get('/skills')
-        .set('cookie', 'auth='+token)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (res.body.length !== 0) throw new Error('incorrect result')

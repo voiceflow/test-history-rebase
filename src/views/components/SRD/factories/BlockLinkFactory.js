@@ -5,16 +5,19 @@ import { BlockLinkModel } from './../models/BlockLinkModel'
 
 const toolkit = new Toolkit()
 export class BlockLinkFactory extends LinkModel{
-	constructor(color='#E3E9EE', width=2.5) {
+	constructor(color='#E3E9EE', width=2.5, preview) {
 		super("default");
 		this.color = color;
 		this.width = width;
+		this.preview = preview
 	}
 
-	generateReactWidget(diagramEngine: DiagramEngine, link: BlockLinkModel): JSX.Element {
+	generateReactWidget(diagramEngine: DiagramEngine, link: BlockLinkModel, preview): JSX.Element {
 		return React.createElement(DefaultLinkWidget, {
 			link: link,
-			diagramEngine: diagramEngine
+			diagramEngine: diagramEngine,
+			preview: this.preview
+
 		});
 	}
 

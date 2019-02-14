@@ -92,11 +92,11 @@ class Canvas extends Component {
         this.paste = this.paste.bind(this);
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
-        this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
+        // this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
         this.combineValidation = this.combineValidation.bind(this)
         this.combineAppendValidation = this.combineAppendValidation.bind(this)
         this.combineNode = this.combineNode.bind(this)
-        this.createWithTemplate = this.createWithTemplate.bind(this)
+        // this.createWithTemplate = this.createWithTemplate.bind(this)
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
@@ -116,6 +116,7 @@ class Canvas extends Component {
         this.appendCombineNode = this.appendCombineNode.bind(this);
         this.removeCombineNode = this.removeCombineNode.bind(this);
         this.canSave = this.canSave.bind(this)
+        this.serialize = this.serialize.bind(this);
         this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
@@ -125,7 +126,7 @@ class Canvas extends Component {
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
         engine.registerNodeFactory(new BlockNodeFactory())
-        engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width))
+        engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width, this.props.preview))
         engine.registerPortFactory(new BlockPortFactory())
 
         let open
@@ -133,6 +134,12 @@ class Canvas extends Component {
 
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
+        if (window.chmln){
+            window.chmln.identify(window.user_detail.id, {
+                email: window.user_detail.email,
+                name: window.user_detail.name
+            })
+        }
         this.loaded = false
 
         // Intent Variables All Skills Must Have
@@ -208,34 +215,7 @@ class Canvas extends Component {
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
                 if(this.lastModel){
-                    var serialize = this.state.engine.getDiagramModel().serializeDiagram()
-                    serialize.id = this.props.diagram_id
-                    _.map(serialize.nodes, node => {
-                        if (!_.isEmpty(node.combines)) {
-                            node.extras.nextID = node.combines[0].id
-                        }
-                        if (!_.isEmpty(node.combines)) {
-                            node.extras.nextID = node.combines[0].id
-                        }
-                        node.combines = _.map(node.combines, (combine, idx) => {
-                            if (combine.parentCombine) {
-                                delete combine.parentCombine
-                            }
-                            if (idx !== node.combines.length - 1 && combine.extras) {
-                                combine.extras.nextID = node.combines[idx + 1].id
-                            } else {
-                                _.forEach(combine.ports, cp => {
-                                    if (!cp.in) {
-                                        if (_.find(node.ports, np => np.id === cp.id)) {
-                                            cp.links = _.find(node.ports, np => np.id === cp.id).links;
-                                        }
-                                    }
-                                })
-                            }
-                            return combine.serialize ? combine.serialize() : combine
-                        })
-                    })
-                var currentModel = JSON.stringify(serialize)
+                var currentModel = JSON.stringify(this.serialize())
                     if(currentModel !== this.lastModel){
                         if(this.canSave(currentModel)){
                             this.tooBig = false
@@ -286,6 +266,36 @@ class Canvas extends Component {
               this.onLoadDiagrams(this.props.diagram_id)
             })
         }
+    }
+
+    serialize(){
+        let serialize = this.state.engine.getDiagramModel().serializeDiagram()
+        serialize.id = this.props.diagram_id
+        _.map(serialize.nodes, node => {
+            if (!_.isEmpty(node.combines)) {
+                node.extras.nextID = node.combines[0].id
+                node.combines = _.map(node.combines, (combine, idx) => {
+                    if (combine.parentCombine){
+                        delete combine.parentCombine
+                    }
+                    if (idx !== node.combines.length - 1 && combine.extras) {
+                        combine.extras.nextID = node.combines[idx + 1].id
+                    } else {
+                        _.forEach(combine.ports, cp => {
+                            if (!cp.in) {
+                                if (_.find(node.ports, np => np.id === cp.id)) {
+                                    cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                }
+                            }
+                        })
+                    }
+                    return combine.serialize ? combine.serialize() : combine
+                })
+            } else {
+                delete node.combines
+            }
+        })
+        return serialize
     }
 
     canSave(currentModel){
@@ -439,25 +449,25 @@ class Canvas extends Component {
         this.toggleTemplateConfirm(module)
     }
 
-    replaceWithTemplate(module_id){
-        this.setState({
-            template_confirm: null
-        })
+    // replaceWithTemplate(module_id){
+    //     this.setState({
+    //         template_confirm: null
+    //     })
 
-        axios.get(`/marketplace/template/${module_id}/`, {
-            diagram_id: this.props.diagram_id
-        })
-        .then(res => {
-            this.loadDiagram(res.data)
-        })
-        .catch(err => {
-            console.log(err.response)
-            this.setState({
-                saving: false
-            })
-            this.props.onError('Error retrieving template')
-        })
-    }
+    //     axios.get(`/marketplace/template/${module_id}/`, {
+    //         diagram_id: this.props.diagram_id
+    //     })
+    //     .then(res => {
+    //         this.loadDiagram(res.data)
+    //     })
+    //     .catch(err => {
+    //         console.log(err.response)
+    //         this.setState({
+    //             saving: false
+    //         })
+    //         this.props.onError('Error retrieving template')
+    //     })
+    // }
 
     createFlowFromTemplate(module_id){
         if(this.props.preview) return
@@ -520,21 +530,21 @@ class Canvas extends Component {
         }
     }
 
-    createWithTemplate(module){
-        axios.get(`/marketplace/template/${module.module_id}`, {
-            diagram_id: this.props.diagram_id
-        })
-        .then(res => {
-            this.loadDiagram(res.data)
-        })
-        .catch(err => {
-            console.log(err.response)
-            this.setState({
-                saving: false
-            })
-            this.props.onError('Error retrieving template')
-        })
-    }
+    // createWithTemplate(module){
+    //     axios.get(`/marketplace/template/${module.module_id}`, {
+    //         diagram_id: this.props.diagram_id
+    //     })
+    //     .then(res => {
+    //         this.loadDiagram(res.data)
+    //     })
+    //     .catch(err => {
+    //         console.log(err.response)
+    //         this.setState({
+    //             saving: false
+    //         })
+    //         this.props.onError('Error retrieving template')
+    //     })
+    // }
             
     removeNode(selectedNode = null){
         let selected = selectedNode ? selectedNode : this.state.engine.getSuperSelect()
@@ -1355,29 +1365,7 @@ class Canvas extends Component {
         try {
             if (!this.props.preview){
                 state && this.setState({ saving: true })
-                var engine = this.state.engine
-                var model = engine.getDiagramModel()
-                let serialize = model.serializeDiagram()
-                serialize.id = this.props.diagram_id
-                _.map(serialize.nodes, node => {
-                    if (!_.isEmpty(node.combines)) {
-                        node.extras.nextID = node.combines[0].id
-                    }
-                    node.combines = _.map(node.combines, (combine, idx) => {
-                        if (idx !== node.combines.length - 1 && combine.extras) {
-                            combine.extras.nextID = node.combines[idx + 1].id
-                        } else {
-                            _.forEach(combine.ports, cp => {
-                                if (!cp.in) {
-                                    if (_.find(node.ports, np => np.id === cp.id)){
-                                        cp.links = _.find(node.ports, np => np.id === cp.id).links;
-                                    }
-                                }
-                            })
-                        }
-                        return combine.serialize ? combine.serialize() : combine
-                    })
-                })
+                let serialize = this.serialize()
                 var data = JSON.stringify(serialize)
 
                 let sub_diagrams = []
@@ -1451,7 +1439,6 @@ class Canvas extends Component {
                 }
 
                 var diagram = {
-                    id: this.props.diagram_id,
                     title: this.state.diagram_name,
                     variables: this.state.variables,
                     data: data,
@@ -1492,7 +1479,6 @@ class Canvas extends Component {
                     }
                 }).catch(rej_err => {
                     this.saving = false
-                    console.log(rej_err)
                     state && this.setState({
                         saving: false
                     }) && this.props.onError('Error Saving Project')
@@ -1513,7 +1499,7 @@ class Canvas extends Component {
         }
     }
 
-    loadDiagram(diagram) {
+    loadDiagram(diagram, diagram_id) {
         var engine = this.state.engine
         var model = new SRD.DiagramModel()
 
@@ -1528,6 +1514,7 @@ class Canvas extends Component {
         }
         if (diagram_json) {
             // CONVERT DEPRECATED BLOCKS
+            diagram_json.id = diagram_id
             diagram_json = convertDiagram(diagram_json, this.state.diagrams)
             this.lastModel = JSON.stringify(diagram_json)
 
@@ -1766,7 +1753,7 @@ class Canvas extends Component {
     onLoadId(diagram_id) {
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
-            this.loadDiagram(res.data)
+            this.loadDiagram(res.data, diagram_id)
             if(!this.props.preview){
                 localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
             }

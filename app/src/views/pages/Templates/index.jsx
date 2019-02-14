@@ -192,7 +192,7 @@ class Templates extends Component {
                                 <div className="mx--1 d-flex justify-content-center">
                                     <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.alexa ? 'active' : ''}`} onClick={() => { this.setState({ alexa: !this.state.alexa, error: '' }) }}>
                                         <div className={`platform-checkbox ${this.state.alexa ? 'active' : ''}`}/>
-                                        <div>
+                                        <div className="image-container d-flex flex-column justify-content-between">
                                             <div className={`platform-label mt-2 ${this.state.alexa ? 'active' : ''}`}>Alexa</div>
                                             <img className="platform-image alexa" src="/alexa.png" alt="empty" />
                                         </div>

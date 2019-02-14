@@ -63,7 +63,7 @@ export class BlockNodeWidget extends BaseWidget<BlockNodeProps, BlockNodeState> 
 								)
 							})}
 						</div>}>
-						<img className="warning-logo" src="/warning.svg" alt="logo"/>
+						<img className="warning-logo" src="/badge.svg" alt="logo"/>
 					</Tooltip>
 				}
 				<div className={this.bem("__title") + ' no-select'}>

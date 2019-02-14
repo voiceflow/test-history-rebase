@@ -15,7 +15,7 @@ class MultiPlatformModalContent extends React.Component {
         <img className="platform-modal-img" src="/alexa.png" alt="empty" />
         <img className="platform-modal-img" src="/google_home.png" alt="empty" />
         </div>
-        <div className="d-flex justify-content-end py-4" style={{"background-color" : "#f5f4f5", "border-radius" : "0 0 10px 10px"}}>
+        <div className="d-flex justify-content-end py-4" style={{backgroundColor : "#eff2f8", borderRadius : "0 0 10px 10px", borderTop: '1px solid 1px solid rgba(141, 162, 181, .28)'}}>
           <button className="mr-4 previous-btn btn btn-secondary" onClick={this.props.toggle}>Close</button>
           <button type="button" className="purple-btn mr-4" onClick={() => {this.props.history.push('/account/upgrade')}}>Upgrade</button>
         </div>

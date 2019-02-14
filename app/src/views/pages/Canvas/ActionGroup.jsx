@@ -25,7 +25,7 @@ const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable']
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App']
 
 const invNameError = (name, locales) => {
-    if(!name.trim()){
+    if(!name || !name.trim()){
         return 'Invocation name required for Alexa'
     }
     let characters = InvRegex.validLatinChars

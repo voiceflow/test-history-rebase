@@ -35,9 +35,10 @@ describe('Skill', () => {
     // Get Authentication Token
     await request(app)
     .put('/session')
-    .send({
-      email: 'tests@getvoiceflow.com',
-      password: 'password'
+    .send({user: {
+        email: 'tests@getvoiceflow.com',
+        password: 'password'
+      }
     })
     .expect(200)
     .then(res => {
@@ -54,7 +55,6 @@ describe('Skill', () => {
       } catch (e) {
         module_id = null
       }
-      console.log('fuck',module_id)
     })
 
     it('creates skill', done => {
@@ -197,6 +197,19 @@ describe('Skill', () => {
         .expect(401)
         .end((err, res) => {
           if (err) throw err
+          done()
+        })
+    })
+
+    it('creates a new version', done => {
+      request(app)
+        .post(`/skill/${skill_id}/publish`)
+        .expect(200)
+        .expect(res => {
+
+        })
+        .end((err, res) => {
+          if(err) throw err
           done()
         })
     })

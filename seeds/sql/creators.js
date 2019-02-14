@@ -18,6 +18,40 @@ exports.seed = function(knex, Promise) {
           "gid": null,
           "fid": "NULL"
         }
-      ]);
+      ]).then(() => {
+        return knex('skills').insert([
+          {
+            "name": "Initial Template",
+            "diagram": "b000cc30e8be511b9d5bd2b8d4aa40da",
+            "creator_id": 1,
+
+          }
+        ]).then(() => {
+          return knex('diagrams').insert([
+            {
+              "id": "b000cc30e8be511b9d5bd2b8d4aa40da",
+              "name": "ROOT",
+              "skill_id": 1
+            }
+          ]).then(() => {
+            return knex('modules').insert([
+              {
+                "skill_id": 1,
+                "creator_id": 1,
+                "type": "TEMPLATES"
+              }
+            ]).then(() => {
+              return knex('versions').insert([
+                {
+                  "module_id": 1,
+                  "diagram_id": "b000cc30e8be511b9d5bd2b8d4aa40da",
+                  "version_id": 1,
+                  "template_skill_id": 1
+                }
+              ])
+            })
+          })
+        })
+      });
     });
 };

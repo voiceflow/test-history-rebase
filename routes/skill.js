@@ -562,7 +562,6 @@ const checkVersions = (req, id, token) => {
             if(live_id){
               num_versions_to_delete -= 1
             }
-
             while (i < data.rows.length && num_versions_to_delete > 0) {
               if(data.rows[i].skill_id != live_id){
                 deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {delete_all_versions: false, diagram_updated: false}))
@@ -646,7 +645,6 @@ exports.buildSkill = async (req, res) => {
                 request.data.manifest.lastUpdateRequest.status === 'FAILED') {
                 amzn_id = null;
               }
-              // console.log(JSON.stringify(request.data.manifest));
             } catch (err) {
               if (err.response.status === 404) {
                 amzn_id = null;

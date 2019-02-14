@@ -484,7 +484,6 @@ const retrieveTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-					console.log(data.rows[0])
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
 						TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
@@ -555,9 +554,7 @@ const getDefaultTemplates = (req, res) => {
 
 // NEW PROJECTS CREATED HERE
 const copyDefaultTemplate = (req, res) => {
-	console.log("!!!")
 	let module_id = hashids.decode(req.params.module_id)[0]
-	console.log("???")
 	// Retrieve diagram, trying 5 times 
 	const getDiagram = (row, num_tries) => {
 		let params = {
@@ -577,7 +574,6 @@ const copyDefaultTemplate = (req, res) => {
 			} else if (num_tries < 5) {
 				getDiagram(row, num_tries + 1)
 			} else {
-				console.log('dafuq')
 				res.sendStatus(500)
 			}
 		})
@@ -611,16 +607,13 @@ const copyDefaultTemplate = (req, res) => {
 			})
 		}
 	}
-	console.log("A")
 	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
 		[module_id],
 		(err, data) => {
 			if(err){
-				console.log("B")
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)
 			} else {
-				console.log("C")
 				if(data.rows.length > 0){
 					let template_skill_id = hashids.encode(data.rows[0].template_skill_id)
 					req.params.id = template_skill_id

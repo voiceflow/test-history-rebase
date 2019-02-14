@@ -448,7 +448,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           if (!options.rendered_set.has(node.extras.diagram_id)) {
             let result
             try {
-              // console.log('going in', node.extras.diagram_id);
               // let new_options = options
               // Reset diagram id for sub flows in modules
               // if(type === 'market'){

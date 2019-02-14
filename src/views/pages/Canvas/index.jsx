@@ -1531,30 +1531,8 @@ class Canvas extends Component {
                 alexa: new Set(),
                 google: new Set()
             }
-
-            var nodes = model.getNodes()
-            for (let key in nodes) {
-                const node = nodes[key]
-                const type = node.extras.type
-                this.addRemoveListener(node)
-                if (this.state.skill.platform === 'google') {
-                    if (type === 'god') {
-                        node.combines.forEach(n => {
-                            n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
-                        })
-                    } else {
-                        nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
-                    }
-                } else {
-                    if (type === 'god') {
-                        node.combines.forEach(n => {
-                            n.fade = false
-                        })
-                    } else {
-                        nodes[key].fade = false
-                    }
-                }
-
+            
+            const makeNodeMultiPlatform = (type, node) => {
                 if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
                     if (!node.extras.google && !node.extras.alexa) {
 
@@ -1592,6 +1570,31 @@ class Canvas extends Component {
                             }
                         }
                     }
+                }
+            }
+
+            var nodes = model.getNodes()
+            for (let key in nodes) {
+                const node = nodes[key]
+                const type = node.extras.type
+                this.addRemoveListener(node)
+
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        if (this.state.skill.platform === 'google') {
+                            n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
+                        } else {
+                            n.fade = false
+                        }
+                        makeNodeMultiPlatform(n.extras.type, n)
+                    })
+                } else {
+                    if (this.state.skill.platform === 'google') {
+                        nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                    } else {
+                        nodes[key].fade = false
+                    }
+                    makeNodeMultiPlatform(type, node)
                 }
             }
 
@@ -1692,6 +1695,8 @@ class Canvas extends Component {
         let update = false
 
         const lint = n => {
+            if (!n.linter) n.linter = []
+
             if (Linter[n.extras.type] && n.linter) {
                 const res = Linter[n.extras.type](n, this.state.skill.platform)
                 if (res) update = true
@@ -1702,11 +1707,12 @@ class Canvas extends Component {
             const node = nodes[key]
             const type = node.extras.type
 
-            if (!node.linter) node.linter = []
 
             if (type === 'god') {
                 node.combines.forEach(lint)
             } else {
+                if (!node.linter) node.linter = []
+
                 if (Linter[type] && node.linter) {
                     const res = Linter[type](node, this.state.skill.platform)
                     if (res) update = true

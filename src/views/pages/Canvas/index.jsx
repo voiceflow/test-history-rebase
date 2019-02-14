@@ -174,6 +174,12 @@ class Canvas extends Component {
 
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
+        if (window.chmln){
+            window.chmln.identify(window.user_detail.id, {
+                email: window.user_detail.email,
+                name: window.user_detail.name
+            })
+        }
         this.loaded = false
 
         // Intent Variables All Skills Must Have

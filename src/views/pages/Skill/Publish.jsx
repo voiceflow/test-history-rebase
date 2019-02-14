@@ -50,7 +50,7 @@ class Publish extends Component {
         if (this.props.page === 'market') {
             page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            if (window.user_detail.admin === 0 && this.props.skill.platform !== 'google') {
+            if (window.user_detail.admin === -1 && this.props.skill.platform !== 'google') { // Multiplatform paywall soft-disable
                 page = <div className="w-100 h-100">
                 <div className="d-flex justify-content-center mt-5">
                     <div className="card" id="upgrade">
@@ -69,7 +69,7 @@ class Publish extends Component {
                 page = <PublishGoogle {...this.props} />
             }
         } else {
-            if (window.user_detail.admin === 0 && this.props.skill.platform !== 'alexa') {
+            if (window.user_detail.admin === -1 && this.props.skill.platform !== 'alexa') { // Multiplatform paywall soft-disable
                 page = <div className="w-100 h-100">
                 <div className="d-flex justify-content-center mt-5">
                     <div className="card" id="upgrade">

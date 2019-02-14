@@ -304,14 +304,24 @@ class GooglePublish extends Component {
           skill_id: this.state.skill_id
         }
       })
-      this.setState({
-        credentials: false,
+
+      const publish_info = {
+        google_publish_info : {
         project_id: null,
         locales: [],
         main_locale: null,
         uploaded: false,
         google_link_user: 0
+      }
+    }
+
+      this.setState({
+        credentials: false,
+        ...publish_info.google_publish_info
       })
+
+      this.props.updateSkill({...this.props.skill, ...publish_info})
+
     } catch (e) {
       this.props.onError(e)
     }

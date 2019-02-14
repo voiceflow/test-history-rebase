@@ -630,10 +630,10 @@ class ActionGroup extends PureComponent {
                         className="switch switch-blue mr-4"
                         tag='div'
                     >
-                        <input onClick={() => { if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
-                        <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
                         <input onClick={() => { if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
                         <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
+                        <input onClick={() => { if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
+                        <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
                         <span className="switch-selection"></span>
                     </Tooltip>
                 </div>

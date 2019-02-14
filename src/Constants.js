@@ -2954,7 +2954,8 @@ const ALLOWED_GOOGLE_BLOCKS = [
   'interaction',
   'intent',
   'command',
-  'code'
+  'code',
+  'god'
 ]
 
 // const BUILT_IN_INTENTS_GOOGLE = [{

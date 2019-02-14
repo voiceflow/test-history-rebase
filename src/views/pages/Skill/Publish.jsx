@@ -6,7 +6,9 @@ import PublishMarket from '../PublishMarket/PublishMarket'
 import PublishGoogle from './PublishGoogle'
 import cloneDeep from 'lodash/cloneDeep';
 
-import { Badge } from 'reactstrap';
+import { Badge, Button } from 'reactstrap';
+
+const PAID_FEATURES = ['Multi-Platform Publishing', 'In-depth Analytics', 'Email Automation', 'Business Support', 'In Skill Purchases', 'Project Backups']
 
 const updateLink = (link, skill_id) => {
     return link.replace(':skill_id', skill_id)
@@ -48,13 +50,42 @@ class Publish extends Component {
         if (this.props.page === 'market') {
             page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            if (window.user_detail.admin === 0) {
-                // Upgrade modal
+            if (window.user_detail.admin === 0 && this.props.skill.platform !== 'google') {
+                page = <div className="w-100 h-100">
+                <div className="d-flex justify-content-center mt-5">
+                    <div className="card" id="upgrade">
+                        <h2>Upgrade to publish simultaneously to Alexa and Google</h2>
+                        <p className="text-muted">To gain access to business features such as Multi-Platform Publishing, upgrade your Voiceflow account to a paid tier</p>
+                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/blue_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
+                        <div className="mt-2">
+                            <Button className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>
+                                Upgrade Plan
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             } else {
                 page = <PublishGoogle {...this.props} />
             }
         } else {
-            page = <PublishAmazon {...this.props} />
+            if (window.user_detail.admin === 0 && this.props.skill.platform !== 'alexa') {
+                page = <div className="w-100 h-100">
+                <div className="d-flex justify-content-center mt-5">
+                    <div className="card" id="upgrade">
+                        <h2>Upgrade to publish simultaneously to Alexa and Google</h2>
+                        <p className="text-muted">To gain access to business features such as Multi-Platform Publishing, upgrade your Voiceflow account to a paid tier</p>
+                        {PAID_FEATURES.map((feature, i) => <p key={i}><img src="/icon/blue_check.svg" width={25} className="mr-3" alt="check"/>{feature}</p>)}
+                        <div className="mt-2">
+                            <Button className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>
+                                Upgrade Plan
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>            } else {
+                page = <PublishAmazon {...this.props} />
+            }        
         }
 
         return (

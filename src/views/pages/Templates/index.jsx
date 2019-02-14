@@ -3,13 +3,14 @@ import axios from 'axios'
 import TemplateCard from './TemplateCard'
 import LOCALE_MAP from './../../../services/LocaleMap'
 import { Modal, Alert, Button } from 'reactstrap'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Template.css'
 import LightCanvas from './../Canvas/LightCanvas'
 import MUIButton from '@material-ui/core/Button';
+
 class Templates extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -21,7 +22,8 @@ class Templates extends Component {
             locales: ['en-US'],
             error: '',
             template: {},
-            platform: 'alexa'
+            google: false,
+            alexa: false
         }
 
         this.createSkill = this.createSkill.bind(this)
@@ -31,7 +33,7 @@ class Templates extends Component {
         this.saveSettings = this.saveSettings.bind(this)
         this.onLocaleBtnClick = this.onLocaleBtnClick.bind(this)
     }
-    
+
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
@@ -42,52 +44,84 @@ class Templates extends Component {
         let locales = this.state.locales;
         if (locales.includes(locale)) {
             if (locales.length > 1) {
-                _.remove(locales, (v) => { return v === locale})
+                _.remove(locales, (v) => { return v === locale })
             }
         } else {
             locales.push(locale)
         }
         this.setState({
             saved: false,
-            locales : locales
+            locales: locales
         })
     }
 
     saveSettings() {
-        if(this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0){
-          this.setState({stage: 1})
-        }else{
-          this.setState({error: 'Please Complete All Fields'})
+        switch (this.state.stage) {
+            case 0:
+                if (this.state.name.trim() && Array.isArray(this.state.locales) && this.state.locales.length !== 0) {
+                    const stage = window.user_detail.admin === 0 ? 1 : 2
+                    this.setState({ stage: stage, error: '' })
+                } else {
+                    this.setState({ error: 'Please Complete All Fields' })
+                }
+                break
+            case 1:
+                if (this.state.google || this.state.alexa) {
+                    if (this.state.google && this.state.alexa && window.user_detail.admin === 0) {
+                        // Modal
+                    } else {
+                        this.setState({ stage: 2, error: '' })
+                    }
+                } else {
+                    this.setState({ error: 'Must select at least one platform' })
+                }
+                break
+            default:
+                break
         }
     }
 
-    componentDidMount(){
+    goBack() {
+        switch (this.state.stage) {
+            case 1:
+                this.setState({ stage: 0 })
+                break
+            case 2:
+                this.setState({ stage: 1 })
+                break
+            default:
+                break
+        }
+
+    }
+
+    componentDidMount() {
         this.loadDefaultTemplates()
     }
 
-    createSkill(module_id){
-        this.setState({loading: true})
+    createSkill(module_id) {
+        this.setState({ loading: true })
         axios.post(`/marketplace/template/${module_id}/copy`, {
             name: this.state.name,
             locales: this.state.locales,
-            platform: this.state.platform
+            platform: this.state.google ? 'google' : 'alexa'
         })
-        .then(res => {
-            if(res.data.skill_id && res.data.diagram){
-                setTimeout(()=>{
-                    this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
-                }, 3000)
-            }else{
-                throw new Error('Invalid Response Format')
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            alert('unable to create skill')
-        })
+            .then(res => {
+                if (res.data.skill_id && res.data.diagram) {
+                    setTimeout(() => {
+                        this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                    }, 3000)
+                } else {
+                    throw new Error('Invalid Response Format')
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                alert('unable to create skill')
+            })
     }
 
-    previewTemplate(template){
+    previewTemplate(template) {
         this.setState({
             preview: true,
             template: template,
@@ -95,40 +129,52 @@ class Templates extends Component {
         })
     }
 
-    loadDefaultTemplates(){
+    loadDefaultTemplates() {
         axios.get('/marketplace/default_templates')
-        .then(res => {
-            if(Array.isArray(res.data)){
-                this.setState({
-                    templates: res.data
-                })
-                // preload images for performance
-                this.images = []
-                res.data.forEach((template, i)=>{
-                    this.images[i] = new Image()
-                    this.images[i].src = template.module_icon
-                })
-            }else{
-                throw new Error('Malformed Response')
-            }
-        })
-        .catch(err => {
-            console.log(err.response)
-            alert('Unable to Retrieve Templates')
-        })
+            .then(res => {
+                if (Array.isArray(res.data)) {
+                    this.setState({
+                        templates: res.data
+                    })
+                    // preload images for performance
+                    this.images = []
+                    res.data.forEach((template, i) => {
+                        this.images[i] = new Image()
+                        this.images[i].src = template.module_icon
+                    })
+                } else {
+                    throw new Error('Malformed Response')
+                }
+            })
+            .catch(err => {
+                console.log(err.response)
+                alert('Unable to Retrieve Templates')
+            })
+    }
+
+    renderContinueButton() {
+        if (this.state.alexa && this.state.google && window.user_detail.admin === 0) {
+            return (<div className="mt-1">
+                <div className="mb-4 text-muted">Building for both platforms simultaneously is a premium feature.<br />Please upgrade to continue</div>
+                <MUIButton varient="contained" className="purple-btn" onClick={() => this.props.history.push('/account/upgrade')}>Upgrade</MUIButton>
+            </div>)
+        } else {
+            return (<div className="mt-1">
+                <MUIButton varient="contained" className="purple-btn" onClick={this.saveSettings}>Continue</MUIButton>
+            </div>)
+        }
     }
 
     renderBody() {
-        switch(this.state.stage){
-            case 1:
+        switch (this.state.stage) {
+            case 2:
                 return <div className="container text-center">
-                    <h5 className="text-dark mb-5">CHOOSE YOUR TEMPLATE</h5>
-                    <hr/>
+                    <h5 className="text-dark mb-5">Choose Your Template</h5>
                     <div className="mt-4">
                         <div className="grid-col-3 mx--4">
-                            {this.state.templates.map(template => 
-                                <TemplateCard 
-                                    key={template.module_id} 
+                            {this.state.templates.map(template =>
+                                <TemplateCard
+                                    key={template.module_id}
                                     template={template}
                                     createSkill={this.createSkill}
                                     previewTemplate={this.previewTemplate}
@@ -136,11 +182,41 @@ class Templates extends Component {
                         </div>
                     </div>
                 </div>
+            case 1:
+                return <div className="container text-center d-flex flex-fill flex-column">
+                    <h5 className="text-dark mb-5">Select Your Platforms</h5>
+                    <div className="d-flex flex-fill flex-column justify-content-center">
+                        <div className="pb-5 mb-5 align-self-center">
+                            <div className="px-4 py-2 text-center project-card">
+                                <div className="mb-4 text-muted">Are you building for Alexa, Google, or both?</div>
+                                <div className="mx--1 d-flex justify-content-center">
+                                    <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.alexa ? 'active' : ''}`} onClick={() => { this.setState({ alexa: !this.state.alexa, error: '' }) }}>
+                                        <div className={`platform-checkbox ${this.state.alexa ? 'active' : ''}`}/>
+                                        <div>
+                                            <div className={`platform-label mt-2 ${this.state.alexa ? 'active' : ''}`}>Alexa</div>
+                                            <img className="platform-image alexa" src="/alexa.png" alt="empty" />
+                                        </div>
+                                    </button>
+                                    <button color="primary" className={`d-flex justify-content-center template-platform-btn ${this.state.google ? 'active' : ''}`} onClick={() => { this.setState({ google: !this.state.google, error: '' }) }}>
+                                        <div className={`platform-checkbox ${this.state.google ? 'active' : ''}`}/>
+                                        <div>
+                                            <div className={`platform-label mt-2 ${this.state.google ? 'active' : ''}`}>Google</div>
+                                            <img className="platform-image mt-2" src="/google_home.png" alt="empty" />
+                                        </div>
+                                    </button>
+                                </div>
+                                {this.state.error && <Alert color='danger' style={{ visibility: this.state.error ? 'visible' : 'hidden' }} className="my-4 d-inline-block fadeIn">&nbsp;{this.state.error}&nbsp;</Alert>}
+                                <br />
+                            </div>
+                            {this.renderContinueButton()}
+                        </div>
+                    </div>
+                </div>
             default:
                 return <div id="name-box" className="text-center">
                     <div className="mb-5">
                         <h5 className="text-dark">Create Project</h5>
-                        <Alert color='danger' style={{visibility: this.state.error ? 'visible': 'hidden'}} className="mt-3 d-inline-block">&nbsp;{this.state.error}&nbsp;</Alert><br/>
+                        <Alert color='danger' style={{ visibility: this.state.error ? 'visible' : 'hidden' }} className="mt-3 d-inline-block">&nbsp;{this.state.error}&nbsp;</Alert><br />
                         <input
                             id="skill-name"
                             className="input-underline"
@@ -156,19 +232,10 @@ class Templates extends Component {
                     <div className="grid-col-3 mx--1">
                         {LOCALE_MAP.map((locale, i) => {
                             const active = this.state.locales.includes(locale.value) ? "active" : "";
-                            return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value)}}>
+                            return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.onLocaleBtnClick(locale.value) }}>
                                 <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
                             </button>
                         })}
-                    </div>
-                    <div className="text-muted mt-4 mb-3">Platform</div>
-                    <div className="grid-col-3 mx--1 d-flex justify-content-center">
-                        <Button outline color="primary" className={`mr-2 ${this.state.platform === 'alexa' ? 'active' : ''}`} onClick={() => { this.setState({ platform: 'alexa'}) }}>
-                        <i className="fab fa-amazon mr-2" />Alexa
-                        </Button>
-                        <Button outline color="primary" className={`${this.state.platform === 'google' ? 'active' : ''}`} onClick={() => { this.setState({ platform: 'google'}) }}>
-                            <i className="fab fa-google mr-2" />Google
-                        </Button>
                     </div>
                     <div className="mt-5">
                         <MUIButton varient="contained" className="purple-btn" onClick={this.saveSettings}>Continue</MUIButton>
@@ -178,30 +245,33 @@ class Templates extends Component {
     }
 
     render() {
-        if(this.state.loading){
+        if (this.state.loading) {
             return <div id="loading-diagram">
                 <div className="text-center">
                     <h5 className="text-muted mb-2">Loading New Skill</h5>
-                    <span className="loader"/>
+                    <span className="loader" />
                 </div>
             </div>
         }
 
         return <div id="template-box-container">
             <div className="card">
+                {[1,2].includes(this.state.stage) &&
+                    <div><img src={"/back.svg"} alt="back" className="mr-3 back-arrow" onClick={()=>this.goBack()}/></div>
+                }
                 <Link id="exit-template" to='/dashboard' className="close">&times;</Link>
                 {this.renderBody()}
             </div>
-            <Modal isOpen={this.state.preview} size="xl" toggle={()=>this.setState({preview: false})} onClosed={()=>{this.setState({diagram_id: null})}} className="light-canvas-modal">
+            <Modal isOpen={this.state.preview} size="xl" toggle={() => this.setState({ preview: false })} onClosed={() => { this.setState({ diagram_id: null }) }} className="light-canvas-modal">
                 <div id="light-canvas-wrap">
                     <div className="no-select" id="PreviewBar">
                         <h3 className="font-weight-light">{this.state.template.title} Preview</h3>
                     </div>
-                    <LightCanvas diagram_id={this.state.diagram_id}/>
+                    <LightCanvas diagram_id={this.state.diagram_id} />
                 </div>
-                <button className="goback-btn position-absolute" onClick={()=>this.setState({preview: false})} style={{top: 320, left: -90}}/>
-                <div className="position-absolute" style={{bottom: -75, left: '50%', marginLeft: -73}}>
-                    <MUIButton varient="contained" className="purple-btn" onClick={()=>this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
+                <button className="goback-btn position-absolute" onClick={() => this.setState({ preview: false })} style={{ top: 320, left: -90 }} />
+                <div className="position-absolute" style={{ bottom: -75, left: '50%', marginLeft: -73 }}>
+                    <MUIButton varient="contained" className="purple-btn" onClick={() => this.createSkill(this.state.template.module_id)}>Select Template</MUIButton>
                 </div>
             </Modal>
         </div>

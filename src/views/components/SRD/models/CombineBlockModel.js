@@ -1,10 +1,10 @@
-import { DefaultNodeModel, Toolkit, PortModel } from './../main.js'
+import { Toolkit, PortModel } from './../main.js'
 import { BlockPortModel } from './BlockPortModel';
 
 const toolkit = new Toolkit()
-export class BlockNodeModel extends DefaultNodeModel {
+export class BlockNodeModel extends BlockPortModel {
 	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)") {
-		super(name, color)
+		super(name, color);
 	}
 
 	addInPort(label: string): BlockPortModel {

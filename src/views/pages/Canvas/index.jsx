@@ -40,6 +40,7 @@ import { checkBlockDisabledLive } from './Blocks'
 
 import { Prompt } from 'react-router'
 import moment from 'moment'
+import Upgrade from '../../components/Modals/MultiPlatformModalContent.jsx';
 
 // import Joyride from 'react-joyride'
 // import { rejects } from 'assert'
@@ -170,7 +171,8 @@ class Canvas extends Component {
             confirm_info: null,
             default_templates: [],
             spotlight: false,
-            keyboard_help: false
+            keyboard_help: false,
+            upgrade_modal: false
         }
 
         // SKILL IS LOADED HERE
@@ -1549,9 +1551,21 @@ class Canvas extends Component {
                 const type = node.extras.type
                 this.addRemoveListener(node)
                 if (this.state.skill.platform === 'google') {
-                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                    if (type === 'god') {
+                        node.combines.forEach(n => {
+                            n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
+                        })
+                    } else {
+                        nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                    }
                 } else {
-                    nodes[key].fade = false
+                    if (type === 'god') {
+                        node.combines.forEach(n => {
+                            n.fade = false
+                        })
+                    } else {
+                        nodes[key].fade = false
+                    }
                 }
 
                 if (type === 'intent' || type === 'jump' || type === 'interaction' || type === 'command') {
@@ -1632,31 +1646,55 @@ class Canvas extends Component {
     toggleGoogle() {
 
         if (window.user_detail.admin === 0) {
-            // Popup
+            this.setState({
+                upgrade_modal: true
+            })
             return
         }
 
-        const engine = this.state.engine
-        const model = engine.getDiagramModel()
-        const nodes = model.getNodes()
         const skill = this.state.skill
         let platform = skill.platform === 'google' ? 'alexa' : 'google'
         skill.platform = platform
 
-        for (let key in nodes) {
-            const node = nodes[key]
-            if (!ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)) {
-                nodes[key].fade = platform === 'google'
-            }
-        }
-        
-        engine.repaintCanvas()
-
         this.setState({
-            engine: engine,
             skill: skill
         })
+        this.updateGoogleFade()
         this.updateLinter()
+    }
+
+    updateGoogleFade() {
+        const engine = this.state.engine
+        const model = engine.getDiagramModel()
+        const nodes = model.getNodes()
+
+        for (let key in nodes) {
+            const node = nodes[key]
+            const type = node.extras.type
+            this.addRemoveListener(node)
+
+            if (this.state.skill.platform === 'google') {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
+                    })
+                } else {
+                    nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
+                }
+            } else {
+                if (type === 'god') {
+                    node.combines.forEach(n => {
+                        n.fade = false
+                    })
+                } else {
+                    nodes[key].fade = false
+                }
+            }
+        }
+        engine.repaintCanvas()
+        this.setState({
+            engine: engine,
+        })
     }
 
     updateLinter(force=false) {
@@ -1665,12 +1703,27 @@ class Canvas extends Component {
         const nodes = model.getNodes()
 
         let update = false
+
+        const lint = n => {
+            if (Linter[n.extras.type] && n.linter) {
+                const res = Linter[n.extras.type](n, this.state.skill.platform)
+                if (res) update = true
+            }                
+        }
+
         for (let key in nodes) {
             const node = nodes[key]
             const type = node.extras.type
-            if (Linter[type] && node.linter) {
-                const res = Linter[type](node, this.state.skill.platform)
-                if (res) update = true
+
+            if (!node.linter) node.linter = []
+
+            if (type === 'god') {
+                node.combines.forEach(lint)
+            } else {
+                if (Linter[type] && node.linter) {
+                    const res = Linter[type](node, this.state.skill.platform)
+                    if (res) update = true
+                }
             }
         }
         
@@ -2403,12 +2456,6 @@ class Canvas extends Component {
             engine.stopMove()
             node.extras.type = type
 
-            if (this.state.skill.platform === 'google') {
-                node.fade = !ALLOWED_GOOGLE_BLOCKS.includes(node.extras.type)
-            } else {
-                node.fade = false
-            }
-
             var points = engine.getRelativeMousePoint(event)
             node.x = points.x-(node.name.length*4.5 + 40)
             node.y = points.y-30
@@ -2426,6 +2473,7 @@ class Canvas extends Component {
                 open: type !== 'comment'
             })
             this.updateLinter()
+            this.updateGoogleFade()
         }
     }
 
@@ -2499,6 +2547,14 @@ class Canvas extends Component {
                         }
                         return true
                     }}
+                />
+                <DefaultModal
+                    open={this.state.upgrade_modal}
+                    header="Multi Platform Development"
+                    toggle={() => this.setState({ upgrade_modal : !this.state.upgrade_modal })}
+                    content={<Upgrade history={this.props.history} toggle={() => this.setState({ upgrade_modal : !this.state.upgrade_modal })}/>}
+                    hideFooter={true}
+                    noPadding={true}
                 />
                 <DefaultModal
                     open={this.state.keyboard_help}

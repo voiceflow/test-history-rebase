@@ -38,9 +38,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 	
 	serialize() {
 		return _.merge(super.serialize(), {
-			combines: !_.isEmpty(this.combines) ? this.combines : null,
-			fade: this.fade,
-			linter: this.linter
+			combines: !_.isEmpty(this.combines) ? this.combines : null
 		});
 	}
 	setSelected(selected) {

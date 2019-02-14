@@ -54,7 +54,7 @@ export class Toolkit {
 			curvyX = 200;
 			curvyY = 0
 		}
-		if (Math.abs(lastPoint.y - firstPoint.y) < 20){
+		if (Math.abs(lastPoint.y - firstPoint.y) < 10){
 			curvyX = 0
 			curvyY = 0;
 		}

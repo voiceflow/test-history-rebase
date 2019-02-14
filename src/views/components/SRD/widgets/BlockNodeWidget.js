@@ -92,7 +92,10 @@ export class BlockNodeWidget extends BaseWidget {
 		}
 	}
 	generatePort(port) {
-		return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine} isLast={this.props.isLast} isMoving={this.props.node.isMoveInside} />;
+		if (port.parent){
+			return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine} isLast={this.props.isLast} isMoving={this.props.node.isMoveInside} />;
+		}
+		return null;
 	}
 
 	handleChange(event) {
@@ -501,7 +504,11 @@ export class BlockNodeWidget extends BaseWidget {
 									style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
 									autoFocus
 								/>:
-						<div>{this.props.node.name ? (this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` :this.props.node.name)  : _.startCase(this.props.node.extras.type)}</div>}
+						< div > {
+							_.trim(this.props.node.name) ?
+							(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
+							_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
+						} </div>}
 					</div>
 				</div>
 				<div className={this.bem("__ports")}
@@ -538,12 +545,12 @@ export class BlockNodeWidget extends BaseWidget {
 												key: node.id,
 												isLast: idx !== this.props.node.combines.length-1,
 												selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
-												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node),
+												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
 												onClick: () => {
-													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node))
+													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
 												},
 											},
-											this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node))
+											this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
 										)
 								} else {
 									return <AnimateHeight

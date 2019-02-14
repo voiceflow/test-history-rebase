@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import TemplateCard from './TemplateCard'
 import LOCALE_MAP from './../../../services/LocaleMap'
-import { Modal, Alert, Button } from 'reactstrap'
+import { Modal, Alert } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import './Template.css'
@@ -87,7 +87,7 @@ class Templates extends Component {
                 this.setState({ stage: 0 })
                 break
             case 2:
-                this.setState({ stage: 1 })
+                this.setState({ stage: window.user_detail.admin === 0 ? 1 : 0 })
                 break
             default:
                 break

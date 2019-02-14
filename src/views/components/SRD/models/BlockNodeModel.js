@@ -18,12 +18,12 @@ export class BlockNodeModel extends DefaultNodeModel {
 		return this.addPort(new BlockPortModel(false, toolkit.UID(), label, toolkit.UID()));
 	}
 
-	deSerialize(object, engine: DiagramEngine, parentCombine=null) {
+	deSerialize(object, engine: DiagramEngine, parentCombine=null, fade=false, linter=[]) {
 			super.deSerialize(object, engine);
-			this.combines = object.combines;
+			this.combines = object.combines ? object.combines : [];
 			this.parentCombine = parentCombine;
-			this.fade = object.fade;
-			this.linter = object.linter;
+			this.fade = fade;
+			this.linter = linter;
 			return this;
 	}
 
@@ -38,9 +38,7 @@ export class BlockNodeModel extends DefaultNodeModel {
 	
 	serialize() {
 		return _.merge(super.serialize(), {
-			name: this.name,
-			color: this.color,
-			combines: this.combines,
+			combines: !_.isEmpty(this.combines) ? this.combines : null,
 			fade: this.fade,
 			linter: this.linter
 		});

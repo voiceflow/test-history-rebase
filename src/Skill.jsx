@@ -13,12 +13,25 @@ import DefaultModal from './views/components/Modals/DefaultModal'
 import { Link } from 'react-router-dom';
 import {Alert} from 'reactstrap'
 import AuthenticationService from './services/Authentication'
+import {getDevice} from 'Helper'
 
-const live_modal_content = <div>
-    <img className="modal-img-small mb-4 mt-3 mx-auto" src="/warning.svg" alt="Upload"/>
-    <div className="modal-bg-txt text-center mt-2"> Entering Live Editing</div>
-    <div className="modal-txt text-center mt-2 mb-3"> Updating your skill in live mode will not effect the live version of the skill until you hit the upload button.</div>
+const live_modal_content = <div className="text-center">
+    <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
+    <div className="modal-bg-txt mt-2">Entering Live Editing</div>
+    <div className="modal-txt mt-2 mb-3"> Updating your skill in live mode will not effect the live version of the skill until you hit the upload button.</div>
 </div>
+
+const session_warning_content = <div style={{maxWidth: 600}} className="text-center">
+    <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
+    <div className="modal-bg-txt mt-2">You have another session in progress</div>
+    <div className="modal-txt mt-2 mb-3">For project safety, we only allow one editable version of your project to be open at a time - otherwise they may overwrite each other</div>
+</div>
+
+const connection_error = <Alert color="danger" className="text-center p-4">
+    <i class="fas fa-wifi-slash text-lg"/><br/><br/>
+    <b>Unable to Connect to Voiceflow</b><br/>
+    Refresh your page or try again later
+</Alert>
 
 class Skill extends Component {
     constructor(props){
@@ -26,6 +39,7 @@ class Skill extends Component {
         this.state = {
             skill: null,
             load_skill: true,
+            load_session: true,
             diagram_id: null,
             secondary: !props.preview,
             error: null,
@@ -104,7 +118,12 @@ class Skill extends Component {
         axios.post('/analytics/track_canvas_time', {
             duration: time_unmounted - this.state.time_mounted,
             skill_id: this.state.skill.skill_id
-        }).then(()=>{}).catch(()=>{})
+        })
+
+        // UNMOUNT SOCKET SESSION
+        delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]
+        window.CreatorSocket.emit('leave')
+
         this.componentGracefulUnmount()
     }
 
@@ -124,6 +143,43 @@ class Skill extends Component {
     }
 
     onLoadSkill(skill_id){
+        this.skill_id = skill_id
+
+        // SKILL SOCKET STATUS
+        if(window.CreatorSocket.status === 'CONNECTED'){
+            window.CreatorSocket.emit('project', {
+                skill_id: skill_id,
+                auth: AuthenticationService.getAuth(),
+                device: getDevice()
+            })
+            window.CreatorSocket.on('occupied', data => {
+                this.setState({error_screen: session_warning_content})
+            })
+            window.CreatorSocket.on('joined', data => {
+                if(data === skill_id){
+                    this.setState({load_session: false})
+                }
+            })
+            // IF RECONNECTED RE-EMIT PROPERTY
+            window.CreatorSocket.connectedCB[`SKILL_${skill_id}`] = () => {
+                window.CreatorSocket.emit('project', {
+                    skill_id: skill_id,
+                    auth: AuthenticationService.getAuth(),
+                    device: getDevice(),
+                    reconnect: true
+                })
+            }
+            // IF REJOINED AND THERE IS CONFLICT - THROW WARNING
+            window.CreatorSocket.on('conflict', () => {
+                this.onError(<React.Fragment>
+                    <b>Conflict:</b><br/>
+                    There is another existing session on this project, please close the older version before making changes
+                </React.Fragment>)
+            })
+        }else{
+            this.setState({error_screen: connection_error})
+        }
+
         axios.get(`/skill/${skill_id}?${this.props.preview ? 'preview=1' : 'simple=1'}`, {
             headers: { Pragma: 'no-cache' }
         })
@@ -375,7 +431,7 @@ class Skill extends Component {
             </div>
         }
 
-        if(this.state.load_skill || ((!this.state.skill || !this.state.skill.skill_id) && !this.props.new)){
+        if((this.state.load_skill || this.state.load_session) || ((!this.state.skill || !this.state.skill.skill_id) && !this.props.new)){
             return <div id="loading-diagram">
                 <div className="text-center">
                     <h5 className="text-muted mb-2">Loading Skill</h5>

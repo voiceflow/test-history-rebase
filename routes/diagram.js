@@ -130,8 +130,11 @@ const setDiagram = async (req, res) => {
     return res.status(500).send('Empty Project')
   }
 
-  try {
-    let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
+  let DIAGRAM_ID = diagram.id ? diagram_id : data.id
+  if(!DIAGRAM_ID) return res.status(500).send('Empty Project')
+
+  try{
+      let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
 
     if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin < 100) {
       return res.sendStatus(403)
@@ -146,14 +149,14 @@ const setDiagram = async (req, res) => {
   }
 
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
-    Item: {
-      id: diagram.id,
-      variables: diagram.variables,
-      data: diagram.data,
-      skill: diagram.skill,
-      creator: diagram.creator
-    }
+      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+      Item: {
+          id: DIAGRAM_ID,
+          variables: diagram.variables,
+          data: diagram.data,
+          skill: diagram.skill,
+          creator: diagram.creator
+      }
   }
 
   let global_string, used_intents_string
@@ -535,9 +538,27 @@ const publishTest = async (req, res) => {
 const rerenderDiagram = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
   let diagram_id = req.params.diagram_id
+  
+  try{
+    let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
+    let skill = skill_data[0]
 
-  try {
-    await renderDiagram(req.user, diagram_id, skill_id);
+    let intents = {}
+    let slots = {}
+    // CONVERT ARRAY TO OBJECTS
+    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    if (Array.isArray(skill.intents)) {
+      skill.intents.forEach(intent => {
+        if (intent.key) intents[intent.key] = intent.name
+      })
+    }
+    if (Array.isArray(skill.slots)) {
+      skill.slots.forEach(slot => {
+        if (slot.key) slots[slot.key] = slot.name
+      })
+    }
+
+    await renderDiagram(req.user, diagram_id, skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
     res.sendStatus(200)
   } catch (err) {
     console.trace(err)

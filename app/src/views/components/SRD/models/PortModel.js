@@ -13,17 +13,14 @@ export class PortModel extends BaseModel{
 	deSerialize(ob, engine: DiagramEngine) {
 		super.deSerialize(ob, engine);
 		this.name = ob.name;
-		this.maximumLinks = ob.maximumLinks;
+		this.maximumLinks = ob.in ? null : 1;
 	}
 
 	serialize() {
 		return _.merge(super.serialize(), {
 			name: this.name,
 			parentNode: this.parent.id,
-			links: _.map(this.links, link => {
-				return link.id;
-			}),
-			maximumLinks: this.maximumLinks
+			links: _.map(this.links, link => link.id)
 		});
 	}
 

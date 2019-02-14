@@ -81,14 +81,17 @@ class Choice extends Component {
                     node.parentCombine.removePort(port);
                     // eslint-disable-next-line
                     node.parentCombine.combines[bestNode].ports = _.filter(node.parentCombine.combines[bestNode].ports, p => p.id !== port.id)
-                    node.parentCombine.combines[bestNode].extras.choices.splice(i, 1);
-                    node.parentCombine.combines[bestNode].extras.inputs.splice(i, 1);
+                    // node.parentCombine.combines[bestNode].extras.choices.splice(i, 1);
+                    // node.parentCombine.combines[bestNode].extras.inputs.splice(i, 1);
                 }
                 break;
             }
         }
         node.extras.choices.splice(i, 1);
         node.extras.inputs.splice(i, 1);
+        if (node.parentCombine){
+            node.parentCombine.combines[bestNode] = node.serialize()
+        }
         this.setState({
             node: node
         }, this.props.onUpdate);

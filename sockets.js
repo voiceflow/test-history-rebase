@@ -2,64 +2,63 @@ const {redisClient, verify} = require('./services')
 
 module.exports = (io) => {
 
-io.on('connection', (socket) => {
-    socket.ip = socket.client.request.headers['cf-connecting-ip']
+    const join = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteJoin(socket_id, room, (err) => {err ? reject(err) : resolve()}))
+    const leave = (socket_id, room) => new Promise((resolve, reject) => io.of('/').adapter.remoteLeave(socket_id, room, (err) => {err ? reject(err) : resolve()}))
 
-    const fail = () => {
-        socket.emit('fail')
-    }
+    io.on('connection', (socket) => {
+        socket.ip = socket.client.request.headers['cf-connecting-ip']
 
-    socket.on('handshake', data => {
-        if(!(data.auth && data.device)){
-            return fail()
-        }
+        const fail = () => socket.emit('fail')
 
-        socket.device = data.device
+        socket.on('project', (data) => {
+            if(!(data.skill_id && data.auth && data.device)) return fail()
+            socket.device = data.device
 
-        // verify the user's login token
-        verify(data.auth, data =>{
-            if(!data){
-                return fail()
-            }
-
-            // check if there is an existing socket session already
-            redisClient.get(`s_${data.user.id}`, (err, session) => {
-                if(err){
-                    console.trace(err)
-                    return fail()
-                }else if(session && session !== socket.id){
-                    let connected = io.sockets.connected[session]
-                    if(connected){
-                        return socket.emit('in_use', {
-                            device: socket.device,
-                            ip: socket.ip ? socket.ip : 'localhost'
-                        })
+            // verify the user's login token
+            verify(data.auth, async user =>{
+                if(!user) return fail()
+                
+                io.in(data.skill_id).clients((err, clients) => {
+                    if(err || clients.length === 0){
+                        if(err) console.error(err)
+                        socket.skill_id = data.skill_id
+                        join(socket.id, data.skill_id)
+                        socket.emit('joined', data.skill_id)
+                    }else{
+                        if(data.reconnect){
+                            socket.skill_id = data.skill_id
+                            join(socket.id, data.skill_id)
+                            socket.emit('conflict')
+                        }else{
+                            socket.emit('occupied')
+                        }
                     }
-                }
-
-                // no existing sessions create new one
-                redisClient.set(`s_${data.user.id}`, socket.id, err => {
-                    if(err){
-                        console.trace(err)
-                        return fail()
-                    }
-
-                    socket.account = data.user
-                    socket.emit('verified')
                 })
             })
         })
-    })
 
-    socket.on('disconnect', () => {
-        if(socket.account){
-            redisClient.get(`s_${socket.account.id}`, (err, session) => {
-                if(!err && session && session === socket.id){
-                    redisClient.del(`s_${socket.account.id}`)
+        socket.on('leave', () => {
+            // leave all rooms the socket is connected to
+            if(socket.skill_id) leave(socket.id, socket.skill_id)
+            
+            io.of('/').adapter.clientRooms(socket.id, (err, rooms) => {
+                if(!err){
+                    for(var room of rooms) leave(socket.id, room)
+                    socket.skill_id = null
                 }
             })
-        }
+        })
+
+        socket.on('disconnect', () => {
+            // DEPRECATE (this is to flush out the redis server)
+            if(socket.account){
+                redisClient.get(`s_${socket.account.id}`, (err, session) => {
+                    if(!err && session && session === socket.id){
+                        redisClient.del(`s_${socket.account.id}`)
+                    }
+                })
+            }
+        })
     })
-})
 
 }

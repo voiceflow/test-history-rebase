@@ -1,17 +1,27 @@
 const bcrypt = require('bcrypt');
 const randomstring = require("randomstring");
 const crypto = require('crypto');
-const uuidv1 = require('uuid/v1');
+const uuid = require('uuid/v4');
 const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
 const {jwt, docClient, pool, redisClient, config, hashids, writeToLogs } = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const { getEnvVariable } = require('../util')
+const del = require('del');
+const spawn = require('child_process').spawn
+
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const mkdirp = require('mkdirp');
 const { getDevice } = require('./../app/src/Helper')
 
 const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
+const _ = require('lodash')
+
+const fs = require('fs');
+const GACTIONS_CLI_ROOT = './gactions_cli'
+
+const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
 // recursive loop to keep looking for user hash if there are duplicates
 function generateUserHash(callback) {
@@ -365,6 +375,97 @@ const googleLogin = async(req, res) => {
     }
 }
 
+const hasGoogleAccessToken = (req, res) => {
+	let creator_id = req.user.id
+
+	if (!creator_id) {
+		res.status(400).send('Missing creator ID')
+		return
+	}
+
+	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creator_id], (err, data) => {
+		if(err){
+			console.trace(err)
+			res.status(500).send("Unable to Access Database");
+		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
+			res.status(200).send({token: true})
+		} else {
+			res.status(200).send({token: false})
+		}
+	})
+}
+
+const hasDialogflowToken = (req, res) => {
+	let skill_id = req.params.skill_id
+
+	if (!skill_id) {
+		res.status(400).send('Missing skill ID')
+		return
+	}
+
+	skill_id = hashids.decode(skill_id)[0]
+
+	pool.query('SELECT dialogflow_token FROM skills WHERE skill_id = $1', [skill_id], (err, data) => {
+		if(err){
+			console.trace(err)
+			res.status(500).send("Unable to Access Database");
+		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].dialogflow_token)) {
+			res.status(200).send({token: true})
+		} else {
+			res.status(200).send({token: false})
+		}
+	})
+}
+
+const verifyDialogflowToken = async (req, res) => {
+	let token = req.body.token
+	let skill_id = req.body.skill_id
+
+	try {
+		if (!token || !skill_id) {
+			res.status(400).send('Bad Request: Parameters missing')
+			return
+		}
+
+		skill_id = hashids.decode(skill_id)[0]
+
+		const parsed = JSON.parse(token)
+		if (!(parsed.type === 'service_account')) {
+			throw('Invalid credential type, should be type "service_account"')
+		}
+		if (!parsed.project_id) {
+			throw('Missing project ID in credentials')
+		}
+		if (!parsed.private_key) {
+			throw('Missing private key in credentials')
+		}
+		if (!parsed.client_email === 'service_account') {
+			throw('Missing client email in credentials')
+		}
+		await new Promise((resolve, reject) => {
+			pool.query('UPDATE skills SET dialogflow_token = $2 WHERE skill_id = $1 RETURNING *', [skill_id, token], (err) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve()
+				}
+			})
+		})
+		
+		let { project_id, private_key, client_email } = parsed
+
+		const client = new DialogflowClient(project_id, private_key, client_email)
+		const agents = await client.getAgent();
+
+		let { defaultLanguageCode, supportedLanguageCodes } = agents[0]
+
+		res.status(200).send({ project_id, defaultLanguageCode, supportedLanguageCodes })
+	} catch (e) {
+		console.log("error", e)
+		res.status(400).send(e)
+	}
+}
+
 const fbLogin = async(req, res) => {
     let name = req.body.user.name;
     let email = req.body.user.email;
@@ -627,6 +728,131 @@ const getUser = (req, res) => {
 	})
 }
 
+const verifyGoogleAccessToken = async (req, res) => {
+	let token = req.body.token
+	const creator_id = req.user.id
+	if (!token || !creator_id) {
+		res.status(400).send('Bad Request: Parameters missing')
+		return
+	}
+
+	token = token.trim()
+	if (!/^[\S]{40,80}$/.test(token)) {
+		res.status(400).send('Bad request: Malformed Token')
+		return
+	}
+
+	let random_id = uuid()
+	let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+	while (fs.existsSync(dir)){
+		random_id = uuid()
+		dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+	}
+	
+	try {
+		await new Promise ((resolve, reject) => {
+			mkdirp(dir, function (err) {
+				if (err) reject(err)
+				else resolve()
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
+				if (err) reject(err)
+				resolve()
+			})
+		})
+
+		await new Promise ((resolve, reject) => {
+			const gactions = spawn('./gactions', ['list', '--project='], {cwd: dir})
+			gactions.stdin.setEncoding('utf-8');		
+		
+			gactions.stdout.on('data', (data) => {
+				if (/Enter authorization code/.test(data)) {
+					gactions.stdin.write(`${token}\n`)
+				}
+			});
+	
+			gactions.stderr.on('data', (data) => {
+				if (/400 Bad Request/.test(data)) {
+					reject(data)
+				} else {
+					fs.readFile(`${dir}/creds.data`, {encoding: 'utf8'}, (err, data) => {
+						if (err){
+							reject (err)
+						} else {
+							pool.query('UPDATE creators SET gactions_token = $2 WHERE creator_id = $1', [creator_id, data], (err) => {
+								if(err){
+									console.trace(err)
+									reject()
+								} else {
+									resolve()
+								}
+							})
+						}
+					})
+				}
+			})
+		})
+		res.status(200).send('Token Verified')
+	} catch (e) {
+		res.status(500).send('Unable to verify google token')
+	}
+	await new Promise ((resolve, reject) => {
+		del([dir]).then(resolve()).catch(e => reject(e))
+	})
+}
+
+const _getGoogleAccessToken = (creatorId) => new Promise((resolve, reject) => {
+	pool.query('SELECT gactions_token FROM creators WHERE creator_id = $1', [creatorId], (err, data) => {
+		if(err){
+			console.trace(err)
+			reject("Unable to Access Database");
+		} else if (data.rows && data.rows.length > 0 && !_.isNil(data.rows[0].gactions_token)) {
+			resolve(data.rows[0].gactions_token)
+		} else {
+			reject('Google Auth Token not Found')
+		}
+	})
+})
+
+const deleteGoogleAccessToken = async (req, res) => {
+	const creator_id = req.user.id
+	if (!creator_id) {
+		res.status(400).send('Bad Request: Creator ID Missing')
+		return
+	}
+
+	try {
+		await pool.query('UPDATE creators SET gactions_token = NULL WHERE creator_id = $1', [creator_id])
+		await pool.query('UPDATE skills SET dialogflow_token = NULL, google_publish_info=$2 WHERE creator_id = $1', [creator_id, {}])
+		await pool.query('UPDATE skill_versions AS sv SET google_versions = NULL FROM skills AS sk WHERE sv.skill_id = sk.skill_id AND sk.creator_id = $1', [creator_id])
+
+		res.sendStatus(200)
+	} catch (e) {
+		console.error(e)
+		res.status(500).send(e)
+	}
+}
+
+const deleteDialogflowToken = async (req, res) => {
+	let skill_id = req.body.skill_id
+	if (!skill_id) {
+		res.status(400).send('Bad Request: Skill ID Missing')
+		return
+	}
+
+	skill_id = hashids.decode(skill_id)[0]
+
+	try {
+		await pool.query('UPDATE skills SET dialogflow_token = NULL, google_publish_info=$2 WHERE skill_id = $1', [skill_id, {}])
+		res.sendStatus(200)
+	} catch (e) {
+		res.status(500).send(e)
+	}
+}
+
 module.exports = {
 	AccessToken: AccessToken,
 	hasAccessToken: hasAccessToken,
@@ -643,5 +869,12 @@ module.exports = {
 	resetPasswordEmail: resetPasswordEmail,
 	checkReset: (req, res) => reset(req, res),
 	resetPassword: (req, res) => reset(req, res, true),
-  verifyUser: verifyUser,
+	verifyUser: verifyUser,
+	verifyGoogleAccessToken: verifyGoogleAccessToken,
+	hasGoogleAccessToken: hasGoogleAccessToken,
+	hasDialogflowToken: hasDialogflowToken,
+	verifyDialogflowToken: verifyDialogflowToken,
+	_getGoogleAccessToken: _getGoogleAccessToken,
+	deleteGoogleAccessToken: deleteGoogleAccessToken,
+	deleteDialogflowToken: deleteDialogflowToken
 }

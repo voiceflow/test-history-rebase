@@ -6,6 +6,7 @@ import { BlockPortLabel } from "./BlockPortLabelWidget";
 import { BaseWidget} from "./../main.js";
 import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
+import { Tooltip } from 'react-tippy'
 
 const toolkit = new Toolkit()
 export class BlockNodeWidget extends BaseWidget {
@@ -400,8 +401,10 @@ export class BlockNodeWidget extends BaseWidget {
               	<Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
 			</div>
 		}
+		const fade = this.props.node.fade ? " faded-node" : ""
+
 		return (
-			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast && 'last'} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : null}`}
+			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast && 'last'} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : null} ${fade}`}
 				data-nodeid = {
 					this.props.node.id
 				}
@@ -440,6 +443,34 @@ export class BlockNodeWidget extends BaseWidget {
 				}}
 				key={this.props.node.id}
 			>
+				{this.props.node.linter && this.props.node.linter.length > 0 &&
+					<Tooltip
+						target="tooltip"
+						className="linter-badge"
+						position="left"
+						onShow={this.updateHeight}
+						html={<div className="linter-tooltip">
+							<div className="linter-title">
+								Block Errors
+							</div>
+							{this.props.node.linter.map((s, i) => {
+								return (
+									<div className="linter-element d-flex justify-content-start" key={i}>
+									<div className="my-1 mx-1">
+										<span className="linter-number">
+											{i + 1}
+										</span>
+									</div>
+									<span className="linter-text">
+										{s}
+									</span>
+									</div>
+								)
+							})}
+						</div>}>
+						<img className="warning-logo" src="/badge.svg" alt="logo"/>
+					</Tooltip>
+				}
 				{this.props.node.extras && this.props.node.extras.type === 'god' ? <div className='w-100'
 					style={{height: 12}}
 					onMouseEnter = {
@@ -514,12 +545,12 @@ export class BlockNodeWidget extends BaseWidget {
 												key: node.id,
 												isLast: idx !== this.props.node.combines.length-1,
 												selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
-												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node),
+												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
 												onClick: () => {
-													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node))
+													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
 												},
 											},
-											this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node))
+											this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
 										)
 								} else {
 									return <AnimateHeight

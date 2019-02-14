@@ -81,7 +81,6 @@ window.CreatorSocket.on('connect_failed', socketFail)
 // to catch connection events
 window.CreatorSocket.on('connect', () => {
   window.CreatorSocket.status='CONNECTED'
-  console.log('CONNECTED')
   // queued up events after reconnection
   for(var cb in window.CreatorSocket.connectedCB){
     if(typeof window.CreatorSocket.connectedCB[cb] === 'function'){
@@ -214,6 +213,7 @@ class App extends Component {
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
+                <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
                 <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>

@@ -173,5 +173,34 @@ export default {
 		.catch(err => {
 			cb(err);
 		})
-	}
+	},
+	googleAccessToken: () => new Promise((resolve, reject) => {
+		axios.get(`/session/google/access_token`)
+		.then(res => {
+			resolve(!!(res.data && res.data.token))
+		})
+		.catch(() => {
+			reject('Error with checking access token');
+		});
+	}),
+	dialogflowToken: (skill_id) => new Promise((resolve, reject) => {
+		axios.get(`/session/google/dialogflow_access_token/${skill_id}`)
+		.then(res => {
+			resolve(!!(res.data && res.data.token))
+		})
+		.catch(() => {
+			reject('Error with checking access token');
+		});
+	}),
+	verifyGoogleToken: (token) => new Promise((resolve, reject) => {
+		axios.post('/session/google/verify_token', {
+			token: token,
+		})
+		.then(res => {
+			resolve(res)
+		})
+		.catch(() => {
+			reject('Invalid access token, please try again');
+		});
+	})
 }

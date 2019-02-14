@@ -47,6 +47,9 @@ class Skill extends Component {
             mounted: true,
             error_screen: null,
             time_mounted: null,
+            linter: [],
+            upgrade_modal: false,
+            selected_plan: 1,
             live_mode: false,
             live_version: null,
             show_live_mode_modal: false
@@ -194,7 +197,10 @@ class Skill extends Component {
             // TODO: this function is horrible and needs to die
             let globals = Array.isArray(skill.global) ? skill.global : []
             // make sure that there are no duplicate variables and that the defaults are included
-            let global_variables = ['sessions', 'user_id', 'timestamp', 'locale']
+            let global_variables = ['sessions', 'user_id', 'timestamp', 'platform', 'locale']
+            if(window.user_detail.admin > 0){
+                global_variables.push('access_token')
+            }
             if (Array.isArray(globals)) {
                 globals.forEach(v => {
                     if(!global_variables.includes(v)){
@@ -208,6 +214,8 @@ class Skill extends Component {
             if(!skill.fulfillment){
                 skill.fulfillment = {}
             }
+
+            skill.platform = skill.platform === 'google' ? 'google' : 'alexa'
 
             // TODO SKILL PREVIEW NOT ENABLED
             this.setState({
@@ -373,6 +381,7 @@ class Skill extends Component {
                     ref={this.child_canvas}
                     onSwapVersions={this.onSwapVersions}
                     updateSkill={this.updateSkill}
+                    linter={this.state.linter}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'business':
                 return <Business

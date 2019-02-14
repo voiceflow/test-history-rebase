@@ -47,7 +47,7 @@ exports.STORYFLOW_INTENT = {
   ]
 }
 
-exports.BUILT_IN_INTENTS = [
+exports.BUILT_IN_INTENTS_ALEXA = [
     { name: "AMAZON.AddAction<object@Book,targetCollection@ReadingList>",
       slots: [
         "targetCollection.owner.name",

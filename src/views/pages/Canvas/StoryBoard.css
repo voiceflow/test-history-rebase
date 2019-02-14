@@ -1454,7 +1454,8 @@ label {
     transition: all .15s ease-in-out;
     /*display: flex;*/
     /*flex-direction: row;*/
-    will-change: transform, box-shadow;
+    /* will-change: transform, box-shadow; */
+    position: relative;
 }
 
 .srd-default-node:hover {

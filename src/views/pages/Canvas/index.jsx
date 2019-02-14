@@ -1548,15 +1548,19 @@ class Canvas extends Component {
                             delete node.extras.choices
                             delete node.extras.choices_open
                         } else if (node.extras.intent) {
-                            node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['intent', 'mappings', 'resume']))
+                            node.extras.alexa = _.cloneDeep(_.pick(node.extras, ['intent', 'mappings', 'resume', 'end', 'diagram_id']))
                             node.extras.google = {
                                 intent: null,
                                 mappings: [],
-                                resume: node.extras.resume
+                                resume: node.extras.resume,
+                                end: node.extras.end,
+                                diagram_id: node.extras.diagram_id
                             }
                             delete node.extras.intent
                             delete node.extras.mappings
                             delete node.extras.resume
+                            delete node.extras.end
+                            delete node.extras.diagram_id
                         }
                     }
                     if (node.extras.alexa && node.extras.google) {

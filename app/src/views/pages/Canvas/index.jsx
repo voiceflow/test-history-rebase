@@ -1581,6 +1581,7 @@ class Canvas extends Component {
 
                 if (type === 'god') {
                     node.combines.forEach(n => {
+                        if (typeof n !== 'object') return
                         if (this.state.skill.platform === 'google') {
                             n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
                         } else {
@@ -1695,6 +1696,7 @@ class Canvas extends Component {
         let update = false
 
         const lint = n => {
+            if (typeof n !== 'object') return
             if (!n.linter) n.linter = []
 
             if (Linter[n.extras.type] && n.linter) {

@@ -264,7 +264,7 @@ class Canvas extends Component {
                         }
                     }
                 }
-            }, 5000)
+            }, 10000)
         }
     }
 

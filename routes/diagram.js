@@ -130,7 +130,7 @@ const setDiagram = async (req, res) => {
     return res.status(500).send('Empty Project')
   }
 
-  let DIAGRAM_ID = diagram.id ? diagram_id : data.id
+  let DIAGRAM_ID = diagram.id ? diagram.id : data.id
   if(!DIAGRAM_ID) return res.status(500).send('Empty Project')
 
   try{

@@ -44,7 +44,8 @@ export class Toolkit {
 		// var isHorizontal = true
 		var curvyX = 200;
 		var curvyY = 0;
-		if (firstPoint.parent.sourcePort.in){
+
+		if (firstPoint.parent.sourcePort && firstPoint.parent.sourcePort.in){
 			let temp = firstPoint;
 			firstPoint = lastPoint;
 			lastPoint = temp;

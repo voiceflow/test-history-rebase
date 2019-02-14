@@ -170,11 +170,19 @@
 
 .platform-image {
     width: 14em;
+    position: absolute; 
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: -5rem;
 }
 
 .platform-label {
     /* font-size: 0.8em; */
     color: #8da2b5;
+    position: absolute; 
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 1rem;
 }
 
 .platform-checkbox {
@@ -199,7 +207,7 @@
 }
 
 .platform-image.alexa {
-    margin-top: 1.2em;
+    bottom: -6rem;
 }
 
 .back-arrow {
@@ -209,4 +217,8 @@
     left: 40px;
     font-size: 36px;
     margin-top: 0.3em;
+}
+
+.image-container {
+    height: 20rem;
 }

@@ -81,7 +81,6 @@ window.CreatorSocket.on('connect_failed', socketFail)
 // to catch connection events
 window.CreatorSocket.on('connect', () => {
   window.CreatorSocket.status='CONNECTED'
-  console.log('CONNECTED')
   // queued up events after reconnection
   for(var cb in window.CreatorSocket.connectedCB){
     if(typeof window.CreatorSocket.connectedCB[cb] === 'function'){

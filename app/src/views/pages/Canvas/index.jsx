@@ -1640,7 +1640,7 @@ class Canvas extends Component {
 
     toggleGoogle() {
 
-        if (window.user_detail.admin === 0) {
+        if (window.user_detail.admin === -1) { // Multiplatform paywall soft-disable
             this.setState({
                 upgrade_modal: true
             })

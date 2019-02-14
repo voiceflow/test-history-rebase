@@ -5,10 +5,11 @@ import AuthenticationService from '../../../services/Authentication'
 
 import axios from 'axios'
 
-import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert, ModalHeader } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import ErrorModal from '../../components/Modals/ErrorModal'
 import ConfirmModal from '../../components/Modals/ConfirmModal'
+import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
 import { Tooltip } from 'react-tippy';
@@ -48,8 +49,8 @@ const _ = require('lodash');
 
 const GOOGLE_PUBLISH_STAGES = {
   "-1": "Login Failed",
-  "0": "Just one more step: Authenticate with Google Actions",
-  "1": "Verifying Google Auth Token",
+  "0": "Last step: Authenticate with Google Actions",
+  "1": "Last step: Authenticate with Google Actions",
   "2": "Rendering",
   "3": "Publishing",
   "4": "Published",
@@ -391,26 +392,27 @@ class GooglePublish extends Component {
   }
 
   googleAuthTokenContent() {
-    if (this.state.stage !== 0) {
+    if (this.state.stage !== 0 && this.state.stage !== 1) {
       return null
     } else {
-      return (
-        <div>
-          <FormGroup className="google-form-group">
-            <div className="row">
-              <div className="col-3 google-verification-info">
-                <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" rel="noopener noreferrer" className="google-link">logging in</a> and pasting your authentication token here.</p>
-              </div>
-              <div className="col-9 vertical-space">
-                <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
-                <div className="subheader-right">
-                  <button variant="contained" className="purple-btn google-verify-btn" onClick={() => this.verifyGoogleToken()}>Verify Token <i className="fab fa-google ml-2" /></button>
-                </div>
-              </div>
-            </div>
-          </FormGroup>
-        </div>
-      )
+      // return (
+      //   <div>
+      //     <FormGroup className="google-form-group">
+      //       <div className="row">
+      //         <div className="col-3 google-verification-info">
+      //           <p className="mb-0 text-secondary"><b>Allow Voiceflow to Manage your Google Assistant projects</b> by <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" rel="noopener noreferrer" className="google-link">logging in</a> and pasting your authentication token here.</p>
+      //         </div>
+      //         <div className="col-9 vertical-space">
+      //           <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.state.google_token} onChange={this.handleChange} />
+      //           <div className="subheader-right">
+      //             <button variant="contained" className="purple-btn google-verify-btn" onClick={() => this.verifyGoogleToken()}>Verify Token <i className="fab fa-google ml-2" /></button>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     </FormGroup>
+      //   </div>
+      // )
+      return <GoogleAuth onVerify={this.verifyGoogleToken} token={this.state.google_token} onChange={this.handleChange} loading={this.state.stage === 1}/>
     }
   }
 
@@ -445,7 +447,6 @@ class GooglePublish extends Component {
     let modal_content = null
 
     if (
-      this.state.stage === 1 ||
       this.state.stage === 2 ||
       this.state.stage === 3 ||
       this.state.stage === 6 ||
@@ -455,7 +456,7 @@ class GooglePublish extends Component {
         <h1><span className="loader" /></h1>
         <p className="loading">{GOOGLE_PUBLISH_STAGES[this.state.stage]}</p>
       </div>
-    } else if (this.state.stage === 0) {
+    } else if (this.state.stage === 0 || this.state.stage === 1) {
       modal_content = this.googleAuthTokenContent()
     } else if (this.state.stage === 4) {
       modal_content = this.publishedContent()
@@ -477,12 +478,15 @@ class GooglePublish extends Component {
           toggle={this.togglePublish}
           className="stage_modal"
           centered
-          size="lg"
-          onClosed={this.closePublish}>
-          <ModalBody>
+          size={[0, 1].includes(this.state.stage) ? "md" : "lg"}
+          onClosed={this.closePublish}
+          >
+          <ModalHeader toggle={this.togglePublish} className="w-100">
             <div className="d-flex justify-content-between" ref={this.privacyTop}>
-              <b>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</b> <button type="button" className="close" onClick={this.togglePublish}>&times;</button>
+              <div>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</div>
             </div>
+          </ModalHeader>
+          <ModalBody style={{ padding: 0 }}>
             <div className="modal-info">
               {modal_content}
             </div>
@@ -737,7 +741,7 @@ class GooglePublish extends Component {
                   className="purple-btn"
                   onClick={this.onPublishClicked}
                 >
-                  Publish Skill
+                  Publish Action
                   <i className="fab fa-google ml-2" />
                 </button>
               </div>}

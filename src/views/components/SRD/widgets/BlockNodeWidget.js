@@ -468,7 +468,7 @@ export class BlockNodeWidget extends BaseWidget {
 								)
 							})}
 						</div>}>
-						<img className="warning-logo" src="/warning.svg" alt="logo"/>
+						<img className="warning-logo" src="/badge.svg" alt="logo"/>
 					</Tooltip>
 				}
 				{this.props.node.extras && this.props.node.extras.type === 'god' ? <div className='w-100'

@@ -22,6 +22,8 @@ export class BlockNodeModel extends DefaultNodeModel {
 			super.deSerialize(object, engine);
 			this.combines = object.combines;
 			this.parentCombine = parentCombine;
+			this.fade = object.fade;
+			this.linter = object.linter;
 			return this;
 	}
 
@@ -39,6 +41,8 @@ export class BlockNodeModel extends DefaultNodeModel {
 			name: this.name,
 			color: this.color,
 			combines: this.combines,
+			fade: this.fade,
+			linter: this.linter
 		});
 	}
 	setSelected(selected) {

@@ -37,11 +37,11 @@
     font-weight: bold;
 }
 
-.switch-label-off {
+.switch-label-on {
     padding-left: 2px;
 }
 
-.switch-label-on {
+.switch-label-off {
     padding-right: 2px;
 }
 
@@ -68,8 +68,8 @@
 }
 
 .switch-input.checked+.switch-label-on~.switch-selection {
-    /* Note: left: 50% doesn't transition in WebKit */
-    left: 78px;
+    /* Note: right: 50% doesn't transition in WebKit */
+    right: 80px;
 }
 
 .switch-selection {
@@ -77,7 +77,7 @@
     position: absolute;
     z-index: 1;
     top: 2px;
-    left: 2px;
+    right: 2px;
     width: 58px;
     height: 22px;
     background: #65bd63;
@@ -88,10 +88,10 @@
     background-image: linear-gradient(to bottom, #9dd993, #65bd63);
     -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
-    -webkit-transition: left 0.15s ease-out;
-    -moz-transition: left 0.15s ease-out;
-    -o-transition: left 0.15s ease-out;
-    transition: left 0.15s ease-out;
+    -webkit-transition: right 0.15s ease-out;
+    -moz-transition: right 0.15s ease-out;
+    -o-transition: right 0.15s ease-out;
+    transition: right 0.15s ease-out;
 }
 
 .switch-blue .switch-selection {

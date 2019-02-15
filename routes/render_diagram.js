@@ -325,6 +325,9 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
 
           let interactions = []
           let extras = node.extras[platform]
+          if(!extras){
+            extras = node.extras
+          }
 
           extras.choices.forEach(choice => {
             let new_choice = {

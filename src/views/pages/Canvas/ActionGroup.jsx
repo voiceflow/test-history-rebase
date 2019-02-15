@@ -157,12 +157,9 @@ class ActionGroup extends PureComponent {
     }
 
     openUpdateLive() {
-        this.props.setCB(() => {
-            this.setState({
-                updateLiveModal: true
-            })
+        this.setState({
+            updateLiveModal: true
         })
-        this.props.onSave()
     }
 
     checkVendor() {

@@ -282,9 +282,9 @@ class Canvas extends Component {
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.onSave(false)
         }
-        // if(this.interval){
-        //     clearInterval(this.interval)
-        // }
+        if(this.interval){
+            clearInterval(this.interval)
+        }
     }
 
     componentDidUpdate(previous_props) {

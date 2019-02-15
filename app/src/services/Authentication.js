@@ -14,7 +14,7 @@ window.user_detail = {
 
 let appId = "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e";
 
-var options={response_type:"code", scope:"alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test"}
+var options={response_type:"code", scope:"alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test profile"}
 
 const load = () => new Promise((resolve) => {
   // @TODO: handle errors
@@ -98,10 +98,9 @@ export default {
 	AmazonAccessToken: cb => {
 		axios.get('/session/amazon/access_token')
 		.then(res => {
-			cb(true);
+			cb(res.data);
 		})
 		.catch(err => {
-			// console.error(err);
 			cb(null);
 		});
 	},

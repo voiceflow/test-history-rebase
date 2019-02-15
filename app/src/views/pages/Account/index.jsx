@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import AuthenticationService from './../../../services/Authentication'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
 import UpgradeModal from './../../components/Modals/UpgradeModal'
-import {Button, Alert} from 'reactstrap'
+import {Button, Alert, Label} from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
@@ -52,7 +52,7 @@ class Account extends Component {
         confirm: () => {
           this.setState({confirm: null, amzn: LOADING}, () => {
             axios.delete('/session/amazon').then(()=>{
-              this.setState({amzn: UNLINKED})
+              this.setState({amzn: UNLINKED, profile: null})
             })
             .catch(err => {
               this.setState({amzn: LINKED})
@@ -65,10 +65,18 @@ class Account extends Component {
   }
 
   componentDidMount() {
-      AuthenticationService.AmazonAccessToken(token => {
+      AuthenticationService.AmazonAccessToken(data => {
+        if(data){
           this.setState({
-              amzn: !!token ? LINKED : UNLINKED
-          });
+              amzn: !!data.token ? LINKED : UNLINKED,
+              token: data.token,
+              profile: data.profile
+          })
+        } else {
+          this.setState({
+            amzn: UNLINKED,
+          })
+        }
       })
 
       axios.get('/user')
@@ -156,12 +164,29 @@ class Account extends Component {
                 </div>
                 <h5 className="ml-3">Developer Integration</h5>
                 <div className="card mb-5">
-                  <div className="p-4 space-between">
+                  <div className={!!this.state.profile ? "pl-4 pr-4 pt-4 space-between" : "p-4 space-between"}>
                     <h4 className="mb-0 text-muted">Amazon</h4>
                     <div className="super-center">
                       {this.renderButton(this.state.amzn, this.resetAmazon)}
                     </div>
                   </div>
+                  {this.state.profile &&
+                    <React.Fragment>
+                      <hr/>
+                      <div className="pl-4 pb-4 pr-4 space-between helper-text">
+                        <div className="col-0">
+                          Name:<br/>
+                          Email:<br/>
+                          User Id:<br/>
+                        </div>
+                        <div className="col-sm">
+                          {this.state.profile.name}<br/>
+                          {this.state.profile.email}<br/>
+                          {this.state.profile.user_id}<br/>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  }
                 </div>
               </div>
           </div>

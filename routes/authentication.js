@@ -191,12 +191,18 @@ const AccessToken = (user_id, cb) => {
 	});
 }
 
-const hasAccessToken = (req, res) => {
+const getAccessToken = (req, res) => {
 	AccessToken(req.user.id, token => {
 		if(token === null){
 			res.sendStatus(404);
 		}else{
-			res.sendStatus(200);
+			axios.get(`https://api.amazon.com/user/profile?access_token=${token}`)
+			.then(result => {
+				res.send({token: token, profile: result.data})
+			})
+			.catch(err => {
+				res.sendStatus(500)
+			})
 		}
 	})
 }
@@ -629,7 +635,7 @@ const getUser = (req, res) => {
 
 module.exports = {
 	AccessToken: AccessToken,
-	hasAccessToken: hasAccessToken,
+	getAccessToken: getAccessToken,
 	getAmazonCode: getAmazonCode,
 	getSession: getSession,
 	putSession: putSession,

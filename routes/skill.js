@@ -536,7 +536,7 @@ const checkVersions = (req, id, token) => {
           } catch (err) {
             live_id = null
           }
-
+          
           // Update SQL to show which skill is live
           try{
             await pool.query(`

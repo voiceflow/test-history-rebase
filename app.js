@@ -114,9 +114,17 @@ const ensureLoggedOut = () => {
     }
 }
 
-app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.hasAccessToken);
+app.get('/session/amazon/access_token', ensureLoggedIn(), Authentication.getAccessToken);
 app.get('/session/amazon/:code', ensureLoggedIn(), Authentication.getAmazonCode);
 app.delete('/session/amazon', ensureLoggedIn(), Authentication.deleteAmazon);
+
+app.get('/session/google/access_token', ensureLoggedIn(), Authentication.hasGoogleAccessToken);
+app.delete('/session/google/access_token', ensureLoggedIn(), Authentication.deleteGoogleAccessToken);
+app.get('/session/google/dialogflow_access_token/:skill_id', ensureLoggedIn(), Authentication.hasDialogflowToken);
+app.post('/session/google/verify_token', ensureLoggedIn(), Authentication.verifyGoogleAccessToken);
+app.post('/session/google/verify_dialogflow_token', ensureLoggedIn(), Authentication.verifyDialogflowToken);
+app.delete('/session/google/dialogflow_access_token', ensureLoggedIn(), Authentication.deleteDialogflowToken);
+
 app.get('/session', Authentication.getSession);
 app.get('/session/vendor', ensureLoggedIn(), Authentication.getVendor);
 app.put('/session', Authentication.putSession);
@@ -158,6 +166,7 @@ app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDi
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
+app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
 app.get('/skill/:id/live_version', ensureLoggedIn(), Skill.getLiveVersion)
@@ -172,6 +181,7 @@ app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:id/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
+app.post('/skill/:id/publishgoogle', ensureLoggedIn(), Skill.buildGoogleSkill);
 app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);

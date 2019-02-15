@@ -1,69 +1,7 @@
 const _ = require('lodash')
-const {BUILT_IN_INTENTS, DEFAULT_INTENTS, VALID_UTTERANCES, STORYFLOW_INTENT, INTERFACE_INTENTS} = require('./Constants')
+const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, VALID_UTTERANCES, STORYFLOW_INTENT, INTERFACE_INTENTS} = require('./Constants')
 const { getEnvVariable } = require('./../util')
-
-const _formatName = (name) => {
-	let formatted_name = name.replace(' ', '_')
-	Array.from(Array(10).keys()).forEach(i => {
-		formatted_name = formatted_name.replace(i.toString(), String.fromCharCode(i + 65))
-	})
-	return formatted_name
-}
-
-const _getUtterancesWithSlotNames = (utterances, slots) => {
-
-	const re = /(\{\{\[[^\}\{\[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
-	let m;
-
-	const utterance_text = utterances.map(e => e.text)
-
-	const new_utterances = utterance_text.map(input => {
-		let new_input = input
-		do {
-			m = re.exec(input)
-			if (m) {
-				const replace = m[1]
-				const key = m[2]
-				const slot = _.find(slots, {
-					key: key
-				})
-				if (slot) {
-					let slot_name = _.find(slots, {
-						key: key
-					}).name
-					slot_name = _formatName(slot_name)
-					new_input = new_input.replace(replace, `{${slot_name}}`)
-				} else {
-					return new_input
-				}
-			}
-		} while (m);
-		return new_input
-	})
-	return new_utterances
-}
-
-const _getSlotsForKeys = (keys, slots) => {
-	let key_set = new Set()
-
-	keys.forEach(key_arr => {
-		key_arr.forEach(key => {
-			key_set.add(key)
-		})
-	})
-
-	key_set = [...key_set]
-
-	return key_set.map(key => {
-		const slot = _.find(slots, {
-			key: key
-		})
-		return {
-			name: _formatName(slot.name),
-			type: slot.type.value !== 'CUSTOM' ? slot.type.value : _formatName(slot.name)
-		}
-	})
-}
+const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat } = require('../app/src/util')
 
 const interactionModel = (req, locale) => {
 
@@ -72,6 +10,7 @@ const interactionModel = (req, locale) => {
 	const slots = req.slots
 	const used_choices = req.used_choices
 	const used_intents = req.used_intents
+	const platform = 'alexa'
 
 	const intents_for_amazon = []
 	const entered_intents = new Set()
@@ -81,7 +20,7 @@ const interactionModel = (req, locale) => {
 
 		let intent
 		if (intent_key.startsWith('AMAZON.')) {
-			intent = _.find(BUILT_IN_INTENTS, {
+			intent = _.find(BUILT_IN_INTENTS_ALEXA, {
 				name: intent_key
 			})
 			intent.built_in = true
@@ -96,7 +35,7 @@ const interactionModel = (req, locale) => {
 			// throw(`Intent Key ${intent_key} not found!`)
 		}
 
-		const name = _formatName(intent.name)
+		const name = formatName(intent.name)
 
 		if (!entered_intents.has(name)) {
 
@@ -107,8 +46,8 @@ const interactionModel = (req, locale) => {
 			}
 
 			if (!intent.built_in) {
-				formatted_intent.samples = _getUtterancesWithSlotNames(intent.inputs, slots)
-				formatted_intent.slots = _getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
+				formatted_intent.samples = getUtterancesWithSlotNames(intent.inputs, slots, false, true)
+				formatted_intent.slots = getSlotsForKeysAndFormat(intent.inputs.map(input => input.slots), slots, platform)
 			} else {
 				formatted_intent.samples = []
 			}
@@ -187,8 +126,8 @@ const interactionModel = (req, locale) => {
 	})
 
 	slots.forEach(slot => {
-		if (slot.type.value === 'CUSTOM' || !slot.type.value) {
-			const slot_name = _formatName(slot.name)
+		if (!slot.type.value || slot.type.value.toLowerCase() === 'custom') {
+			const slot_name = formatName(slot.name)
 			const values = slot.inputs.map(input => {
 				return {
 					name: {
@@ -348,7 +287,5 @@ const manifest = (r, encoded_id, name) => {
 
 module.exports = {
 	interactionModel: interactionModel,
-	manifest: manifest,
-	_getUtterancesWithSlotNames: _getUtterancesWithSlotNames,
-	_getSlotsForKeys: _getSlotsForKeys
+	manifest: manifest
 }

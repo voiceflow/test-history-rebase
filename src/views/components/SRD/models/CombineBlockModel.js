@@ -1,4 +1,4 @@
-import { DefaultNodeModel, Toolkit, PortModel } from './../main.js'
+import { Toolkit, PortModel } from './../main.js'
 import { BlockPortModel } from './BlockPortModel';
 
 const toolkit = new Toolkit()
@@ -16,7 +16,7 @@ export class BlockNodeModel extends BlockPortModel {
 	}
 
 	removePort(port: PortModel) {
-		//clear the parent node reference
+		// clear the parent node reference
 		if (this.ports[port.name]) {
 			this.ports[port.name].setParent(null);
 			let links = this.ports[port.name].getLinks();

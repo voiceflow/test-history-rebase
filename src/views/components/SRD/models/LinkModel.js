@@ -32,7 +32,7 @@ export class LinkModel extends BaseModel {
 			);
 		}
 
-		if (ob.source) {
+		if (ob.source && this.getParent().getNode(ob.source)) {
 			this.setSourcePort(
 				this.getParent()
 					.getNode(ob.source)

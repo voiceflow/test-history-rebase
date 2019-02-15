@@ -5,16 +5,17 @@ import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
+import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 
 class Interaction extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             node: this.props.node,
             tab: 'choices'
         }
-        
+
         this.handleChoicesChange = this.handleChoicesChange.bind(this)
         this.handleAddChoice = this.handleAddChoice.bind(this)
         this.handleRemoveChoice = this.handleRemoveChoice.bind(this)
@@ -23,14 +24,16 @@ class Interaction extends Component {
         this.update = this.update.bind(this)
     }
 
-    update(){
+    update() {
         this.forceUpdate()
         this.props.onUpdate()
     }
 
     handleChoicesChange(choices) {
         const node = this.state.node
-        node.extras.choices = choices
+        const extras = node.extras[this.props.platform]
+        extras.choices = choices
+
         this.setState({
             node: node
         })
@@ -43,12 +46,19 @@ class Interaction extends Component {
     }
 
     handleAddChoice(e) {
-        var node = this.state.node
-        const choices = node.extras.choices
+        const node = this.state.node
+        const g_extras = node.extras.google
+        const a_extras = node.extras.alexa
 
-        choices.push({intent: null, mappings: [], key: randomstring.generate(12), open: true})
+        const g_choices = g_extras.choices
+        const a_choices = a_extras.choices
 
-        let test = node.addOutPort(node.extras.choices.length);
+        const key = randomstring.generate(12)
+
+        g_choices.push({ intent: null, mappings: [], key: key, open: true })
+        a_choices.push({ intent: null, mappings: [], key: key, open: true })
+
+        let test = node.addOutPort(a_choices.length);
         test.setMaximumLinks(1);
         if (node.parentCombine) {
             let isLast = _.last(node.parentCombine.combines).id === node.id
@@ -68,12 +78,16 @@ class Interaction extends Component {
         // this.props.diagramEngine.setSuperSelect(node.parentCombine);
         this.props.onUpdate()
         this.props.repaint();
-        e.preventDefault()
     }
 
     handleRemoveChoice(i) {
-        const node = this.state.node;
-        const choices = node.extras.choices
+        const node = this.state.node
+        const g_extras = node.extras.google
+        const a_extras = node.extras.alexa
+
+        const g_choices = g_extras.choices
+        const a_choices = a_extras.choices
+
         let bestNode;
         if (node.parentCombine){
             bestNode = _.findIndex(node.parentCombine.combines, npc => npc.name === node.name)
@@ -81,7 +95,7 @@ class Interaction extends Component {
         for (var name in node.getPorts()) {
             var port = node.getPort(name)
 
-            if (port.label === node.extras.choices.length) {
+            if (port.label === a_choices.length) {
                 node.removePort(port)
                 if (node.parentCombine && bestNode >= 0) {
                     node.parentCombine.removePort(port);
@@ -93,7 +107,9 @@ class Interaction extends Component {
             }
         }
 
-        choices.splice(i, 1)
+        a_choices.splice(i, 1)
+        g_choices.splice(i, 1)
+
         if (node.parentCombine){
             node.parentCombine.combines[bestNode] = node.serialize();
         }
@@ -104,24 +120,32 @@ class Interaction extends Component {
         this.props.repaint()
     }
 
-    renderTab(){
-        switch(this.state.tab){
+    renderTab() {
+
+        const node = this.state.node
+        const extras = node.extras[this.props.platform]
+
+        switch (this.state.tab) {
             case 'choices':
                 return <React.Fragment>
-                    <label>
-                        Choices
-                    </label>
+                    <div className="d-flex justify-content-between">
+                        <label>
+                            Choices
+                        </label>
+                        <PlatformTooltip platform={this.props.platform} field={'Interaction choices'}/>
+                    </div>
                     <ChoiceDropdownInputs
-                        choices={this.state.node.extras.choices}
+                        choices={extras.choices}
                         onAdd={this.handleAddChoice}
                         onRemove={this.handleRemoveChoice}
                         onChange={this.handleChoicesChange}
                         intents={this.props.intents}
                         variables={this.props.variables}
-                        slots = {this.props.slots}
+                        slots={this.props.slots}
                         built_ins={this.props.built_ins}
                         onError={this.props.onError}
                         update={this.update}
+                        platform={this.props.platform}
                         live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
@@ -138,6 +162,7 @@ class Interaction extends Component {
                         onError={this.props.onError}
                         update={this.update}
                         onConfirm={this.props.onConfirm}
+                        platform={this.props.platform}
                         live_mode={this.props.live_mode}
                     />
                 </React.Fragment>
@@ -152,6 +177,7 @@ class Interaction extends Component {
                         slot_types={this.props.slot_types}
                         onError={this.props.onError}
                         update={this.update}
+                        platform={this.props.platform}
                         live_mode={this.props.live_mode}
                     />
                 </React.Fragment>

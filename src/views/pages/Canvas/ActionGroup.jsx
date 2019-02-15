@@ -1,39 +1,52 @@
 import React, { PureComponent } from 'react'
-import { Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
-         ModalHeader, ModalBody, Button } from 'reactstrap'
+import {
+    Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
+    ModalHeader, ModalBody, Button
+} from 'reactstrap'
 import ClipBoard from './../../components/ClipBoard'
 import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
-import {Tooltip} from 'react-tippy'
+import { Tooltip } from 'react-tippy'
 import Toggle from 'react-toggle'
 
 import AuthenticationService from './../../../services/Authentication'
 import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
+import './ActionGroup.css'
+
 const loading = (message) => {
     return <div className="super-center mb-4">
         <div className='text-center'>
-            <h1><span className="loader"/></h1>
+            <h1><span className="loader" /></h1>
             <p className="loading">{message}</p>
         </div>
     </div>
 }
 
-const ENDING_STAGES = [2,4,9]
+const GOOGLE_STAGES = {
+    "0": "No Google Token Found",
+    "1": "No Project ID Found",
+    "2": "Confirm Publish",
+    "3": "Rendering",
+    "4": "Publishing",
+    "5": "Published",
+}
+
+const ENDING_STAGES = [2, 4, 9]
 const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable']
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App']
 
 const invNameError = (name, locales) => {
-    if(!name.trim()){
+    if(!name || !name.trim()){
         return 'Invocation name required for Alexa'
     }
     let characters = InvRegex.validLatinChars
     let inv_name_error = `[${locales.filter(l => l !== 'jp-JP').join(",")}] Invocation name may only contain Latin characters, apostrophes, periods and spaces`
-    if(locales.length === 1 && locales[0] === 'ja-JP'){
+    if (locales.length === 1 && locales[0] === 'ja-JP') {
         characters = InvRegex.validSpokenCharacters
         inv_name_error = 'Invocation name may only contain Japanese/English characters, apostrophes, periods and spaces'
-    }else if(locales.some(l => l.includes('en'))){
+    } else if (locales.some(l => l.includes('en'))) {
         // If an English Skill No Accents Allowed
         inv_name_error = `[${locales.filter(l => l.includes('en')).join(",")}] Invocation name may only contain alphabetic characters, apostrophes, periods and spaces`
         characters = InvRegex.validCharacters
@@ -41,13 +54,13 @@ const invNameError = (name, locales) => {
 
     let validRegex = `[^${characters}.' ]+`
     let match = name.match(validRegex)
-    if(match){
+    if (match) {
         return inv_name_error + ` - Invalid Characters: "${match.join()}"`
-    }else if(WAKE_WORDS.some(l => name.toLowerCase().includes(l.toLowerCase()))){
+    } else if (WAKE_WORDS.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
         return 'Invocation name can not contain Alexa keywords e.g. ' + WAKE_WORDS.join(', ')
-    }else if(LAUNCH_PHRASES.some(l => name.toLowerCase().includes(l.toLowerCase()))){
+    } else if (LAUNCH_PHRASES.some(l => name.toLowerCase().includes(l.toLowerCase()))) {
         return 'Invocation name can not contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
-    }else{
+    } else {
         return null
     }
 }
@@ -63,10 +76,10 @@ class ActionGroup extends PureComponent {
             diagrams: [],
             share: false,
             allowPreview: false,
-            platform: 'amazon',
             updateModal: false,
             updateLiveModal: false,
             stage: 0,
+            google_stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
             skill: null,
@@ -89,14 +102,16 @@ class ActionGroup extends PureComponent {
         this.openUpdateLive = this.openUpdateLive.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
         this.reset = this.reset.bind(this)
+        this.renderGoogleBody = this.renderGoogleBody.bind(this)
+        this.updateGoogle = this.updateGoogle.bind(this)
         this.shouldReset = this.shouldReset.bind(this)
         this.token = null
         this.updateLiveVersion = this.updateLiveVersion.bind(this)
     }
 
-    componentWillReceiveProps(props){
+    componentWillReceiveProps(props) {
         // create a local copy of skill settings
-        if(!this.state.skill && props.skill.name !== '...'){
+        if (!this.state.skill && props.skill.name !== '...') {
             this.setState({
                 skill: {
                     name: props.skill.name,
@@ -112,10 +127,14 @@ class ActionGroup extends PureComponent {
             this.token = token;
             this.reset();
         });
+        AuthenticationService.googleAccessToken(this.props.skill.skill_id).then(token => {
+            this.google_token = token;
+            this.reset()
+        });
     }
 
     shouldReset() {
-        if(ENDING_STAGES.includes(this.state.stage)){
+        if (ENDING_STAGES.includes(this.state.stage)) {
             this.reset()
         }
     }
@@ -132,7 +151,8 @@ class ActionGroup extends PureComponent {
     reset() {
         this.setState({
             amzn_error: false,
-            stage: this.token ? 0 : 5
+            stage: this.token ? 0 : 5,
+            google_stage: this.google_token ? 2 : 0
         })
     }
 
@@ -145,61 +165,61 @@ class ActionGroup extends PureComponent {
         this.props.onSave()
     }
 
-    checkVendor(){
-        this.setState({stage: 7});
+    checkVendor() {
+        this.setState({ stage: 7 });
 
         axios.get('/session/vendor')
-        .then(() => {
-            this.setState({stage: 0});
-        })
-        .catch(err => {
-            console.error(err);
-            this.setState({stage: 6});
-        });
+            .then(() => {
+                this.setState({ stage: 0 });
+            })
+            .catch(err => {
+                console.error(err);
+                this.setState({ stage: 6 });
+            });
     }
 
     async enableSkill(locale) {
-        this.setState({stage: 13})
-        try{
+        this.setState({ stage: 13 })
+        try {
             await axios.put(`/interaction_model/${this.props.skill.amzn_id}/enable`)
             this.SucceedLocale = locale
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
-        this.setState({stage: 2})
+        this.setState({ stage: 2 })
     }
 
     checkInteractionModel() {
-        this.setState({stage: 12})
+        this.setState({ stage: 12 })
         this.SucceedLocale = null
         const iterate = (depth) => {
             // wait up to 20 seconds
-            if(depth === 20){
+            if (depth === 20) {
                 this.setState({
                     stage: 2
                 })
-            }else{
+            } else {
                 setTimeout(() => {
                     axios.get(`/interaction_model/${this.props.skill.amzn_id}/status`)
-                    .then(res => {
-                        // console.log(res.data)
-                        if(res.data && res.data.interactionModel){
-                            for(let key in res.data.interactionModel){
-                                let locale = res.data.interactionModel[key]
-                                if(locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED'){
-                                    this.enableSkill(key)
-                                    return
+                        .then(res => {
+                            // console.log(res.data)
+                            if (res.data && res.data.interactionModel) {
+                                for (let key in res.data.interactionModel) {
+                                    let locale = res.data.interactionModel[key]
+                                    if (locale.lastUpdateRequest && locale.lastUpdateRequest.status && locale.lastUpdateRequest.status === 'SUCCEEDED') {
+                                        this.enableSkill(key)
+                                        return
+                                    }
                                 }
                             }
-                        }
-                        iterate(depth + 1)
-                    })
-                    .catch(err => {
-                        console.error(err)
-                        this.setState({
-                            stage: 2
+                            iterate(depth + 1)
                         })
-                    })
+                        .catch(err => {
+                            console.error(err)
+                            this.setState({
+                                stage: 2
+                            })
+                        })
                 }, 3000)
             }
         }
@@ -210,72 +230,108 @@ class ActionGroup extends PureComponent {
     async updateAlexa() {
         let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
         let error = invNameError(inv_name, this.props.skill.locales)
-        if(error){
-            this.setState({inv_name: inv_name, inv_name_error: error, stage: 14}, ()=>{
-                this.setState({flash: true}, ()=>setTimeout(()=>this.setState({flash: false}), 1500))
+        if (error) {
+            this.setState({ inv_name: inv_name, inv_name_error: error, stage: 14 }, () => {
+                this.setState({ flash: true }, () => setTimeout(() => this.setState({ flash: false }), 1500))
             })
             return
         }
-        this.setState({stage: 1})
-        if(this.state.stage === 14){
-            this.setState({stage: 1})
-            try{
-                await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, {inv_name: this.state.inv_name})
+        this.setState({ stage: 1 })
+        if (this.state.stage === 14) {
+            this.setState({ stage: 1 })
+            try {
+                await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: this.state.inv_name })
                 let skill = this.props.skill
                 skill.inv_name = this.state.inv_name
                 this.props.updateSkill(skill)
-            }catch(err){
-                this.setState({stage: 6})
+            } catch (err) {
+                this.setState({ stage: 6 })
             }
         }
-        axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`)
-        .then(res => {
-            let new_version_data = res.data
-            this.setState({stage: 11}, () => {
-                axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
-                .then(res => {
-                    let skill = this.props.skill;
-                    skill.amzn_id = res.data;
-                    this.props.updateSkill(skill)
-                    this.checkInteractionModel()
-                })
-                .catch(err => {
-                    if(err.status === 403 || err.response.status === 403){
-                        // No Vendor ID/Amazon Developer Account
-                        this.setState({
-                            stage: 6
-                        });
-                    }else{
-                        let error_message = ''
-                        if(err.response && err.response.data && err.response.data.message){
-                            error_message += err.response.data.message
-
-                            if (err.response.data.violations) {
-                                for (let i = 0; i < err.response.data.violations.length; i++){
-                                    error_message += '\n' + err.response.data.violations[i].message
-                                }
-                            }
-                        }
-
-                        this.setState({
-                            stage: 9,
-                            upload_error: ((
-                                err.response &&
-                                err.response.data &&
-                                err.response.data.message) ? error_message : 'Error Encountered')
+        axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
+            .then(res => {
+                let new_version_data = res.data
+                this.setState({ stage: 11 }, () => {
+                    axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
+                        .then(res => {
+                            let skill = this.props.skill;
+                            skill.amzn_id = res.data;
+                            this.props.updateSkill(skill)
+                            this.checkInteractionModel()
                         })
-                    }
-                })
-            });
-        })
-        .catch(err => {
-            console.error(err)
-            this.setState({stage: 4});
-        })
+                        .catch(err => {
+                            if (err.status === 403 || err.response.status === 403) {
+                                // No Vendor ID/Amazon Developer Account
+                                this.setState({
+                                    stage: 6
+                                });
+                            } else {
+                                let error_message = ''
+                                if (err.response && err.response.data && err.response.data.message) {
+                                    error_message += err.response.data.message
+
+                                    if (err.response.data.violations) {
+                                        for (let i = 0; i < err.response.data.violations.length; i++) {
+                                            error_message += '\n' + err.response.data.violations[i].message
+                                        }
+                                    }
+                                }
+
+                                this.setState({
+                                    stage: 9,
+                                    upload_error: ((
+                                        err.response &&
+                                        err.response.data &&
+                                        err.response.data.message) ? error_message : 'Error Encountered')
+                                })
+                            }
+                        })
+                });
+            })
+            .catch(err => {
+                console.error(err)
+                this.setState({ stage: 4 });
+            })
+    }
+
+    updateGoogle() {
+        const s = this.state
+        const p = this.props
+
+        if (s.google_stage === 0 || s.google_stage === 1 || !p.skill.google_publish_info || !p.skill.google_publish_info.project_id) {
+            p.history.push(`/publish/${p.skill.skill_id}/google`)
+            return
+        }
+
+        this.setState({ google_stage: 3 });
+
+        axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+            .then(res => {
+                this.setState({ google_stage: 4 });
+                let new_version_data = res.data
+                axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
+                    .then(res => {
+                        this.setState({
+                            google_stage: 5,
+                            project_id: res.data.project_id || this.state.project_id
+                        });
+                    })
+                    .catch(err => {
+                        this.setState({
+                            google_stage: 2,
+                            updateModal: false
+                        })
+                        const error_msg = err.response && err.response.data ? err.response.data : err
+                        p.onError(error_msg)
+                    })
+            })
+            .catch(err => {
+                p.onError(err)
+            })
     }
 
     toggleUpdate() {
-        if(![1,7,11,12,13].includes(this.state.stage)){
+        if (![1, 7, 11, 12, 13].includes(this.state.stage)) {
             this.setState({
                 updateModal: false
             })
@@ -298,71 +354,71 @@ class ActionGroup extends PureComponent {
 
     toggle() {
         this.setState({
-          dropdownOpen: !this.state.dropdownOpen
+            dropdownOpen: !this.state.dropdownOpen
         });
     }
 
     togglePreview() {
-        if(this.state.togglingPreview) return
+        if (this.state.togglingPreview) return
 
-        this.setState({ 
+        this.setState({
             allowPreview: !this.state.allowPreview,
             togglingPreview: true
         }, () => {
             axios.patch('/skill/' + this.props.skill.skill_id + '?preview=true', {
                 isPreview: !!this.state.allowPreview,
             })
-            .then(() => {
-                this.setState({togglingPreview: false})
-            })
-            .catch(err => {
-                this.setState({
-                    allowPreview: !this.state.allowPreview,
-                    togglingPreview: false
+                .then(() => {
+                    this.setState({ togglingPreview: false })
                 })
-                this.props.onError('Unable to toggle preview')
-            })
+                .catch(err => {
+                    this.setState({
+                        allowPreview: !this.state.allowPreview,
+                        togglingPreview: false
+                    })
+                    this.props.onError('Unable to toggle preview')
+                })
         })
     }
 
     toggleShare() {
-      this.setState({
-          share: !this.state.share
-      });
+        this.setState({
+            share: !this.state.share
+        });
     }
 
     updateLiveVersion() {
-        this.setState({live_update_stage: 1})
+        this.setState({ live_update_stage: 1 })
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
-        .then(() => {
-            this.setState({
-                live_update_stage: 2
+            .then(() => {
+                this.setState({
+                    live_update_stage: 2
+                })
             })
-        })
-        .catch(err => {
-            this.props.onError('Error updating live version')
-        })
+            .catch(err => {
+                this.props.onError('Error updating live version')
+            })
     }
 
     renderLiveStage() {
-        if(this.state.live_update_stage === 2){
+        if (this.state.live_update_stage === 2) {
             // return <React.Fragment>
             //     Congrats we did it
             //     Do you want to overwrite your development version with your current live version?
             //     <button className="purple-btn" onClick={() => { this.props.onSwapVersions(this.props.skill.skill_id, this.props.skill) }}>Overwrite</button>
             // </React.Fragment>
             return <React.Fragment>
-                <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live-success.svg" alt="Upload"/>
+                <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live-success.svg" alt="Upload" />
                 <div className="modal-bg-txt text-center mt-2"> Live Version Updated</div>
                 <div className="modal-txt text-center mt-2 mb-3">This may take a few minutes to be reflected on your device.</div>
             </React.Fragment>
-        } else if(this.state.live_update_stage === 1) {
+        } else if (this.state.live_update_stage === 1) {
             return loading('Rendering Flows')
         } else {
             return <React.Fragment>
-                <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload"/>
+                <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
                 <div className="modal-bg-txt text-center mt-2"> Confirm Live Update</div>
-                    <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
+                <div className="modal-txt text-center mt-2 mb-3">This update will effect the live version of your project. Please be sure you wish to do this.</div>
                 <button className="purple-btn mb-3" onClick={this.updateLiveVersion}>Confirm Update</button>
             </React.Fragment>
         }
@@ -370,18 +426,18 @@ class ActionGroup extends PureComponent {
 
     render_body() {
         // I had to get this out really fast the states are all REALLY fucking wack
-        if(!this.props.skill.locales){
+        if (!this.props.skill.locales) {
             return null;
         }
 
-        switch(this.state.stage){
+        switch (this.state.stage) {
             case 1:
                 return loading('Rendering Flows')
             case 2:
-                if(this.SucceedLocale){
+                if (this.SucceedLocale) {
                     return <React.Fragment>
-                        <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
-                        <br/>
+                        <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
+                        <br />
                         <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
                         <span className="modal-txt text-center">
                             You may test on the Alexa simulator or live on your personal Alexa device
@@ -389,22 +445,22 @@ class ActionGroup extends PureComponent {
                         <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
                         <div className="my-3">
                             <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
-                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                                 Test on Alexa Simulator
                             </a>
                         </div>
                     </React.Fragment>
-                }else{
+                } else {
                     return <React.Fragment>
-                        <img src="/images/clipboard-icon.svg" alt="Success" height="160"/>
-                        <br/>
+                        <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
+                        <br />
                         <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
                         <span className="modal-txt text-center">
                             You may test on the Alexa simulator or live on your personal Alexa device
                         </span>
                         <div className="my-3">
                             <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
-                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                                 Test on Alexa Simulator
                             </a>
                         </div>
@@ -421,36 +477,36 @@ class ActionGroup extends PureComponent {
                     <div className="text-center mt-4">
                         <AmazonLogin
                             updateLogin={(stage) => {
-                                if(stage === 2){
+                                if (stage === 2) {
                                     this.token = true;
                                     this.checkVendor();
-                                }else if(1){
-                                    this.setState({stage: 8});
-                                }else{
-                                    this.setState({stage: 0, amzn_error: true});
+                                } else if (1) {
+                                    this.setState({ stage: 8 });
+                                } else {
+                                    this.setState({ stage: 0, amzn_error: true });
                                 }
                             }}
                         />
                     </div>
                 </div>
             case 6:
-                 return <React.Fragment>
+                return <React.Fragment>
                     Your Amazon Account needs to set up developer settings to Upload Skills
                     <Alert className="mt-4">
                         Press "Create your Amazon Developer account"
                         and sign up with the same email as your Amazon Account.
                     </Alert>
                     <div className="my-3">
-                        <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank"  rel="noopener noreferrer">
+                        <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
                             Developer Sign Up
                         </a>
                         <Button color="clear" onClick={this.checkVendor}>
-                            <i className="fas fa-sync-alt"/> Check Again
+                            <i className="fas fa-sync-alt" /> Check Again
                         </Button>
                     </div>
                 </React.Fragment>
             case 7:
-            return loading('Checking Vendor')
+                return loading('Checking Vendor')
             case 8:
                 return loading('Verifying Login')
             case 9:
@@ -472,13 +528,13 @@ class ActionGroup extends PureComponent {
                     <div className="space-between text-muted">
                         <label>Invocation Name</label>
                         <Tooltip
-                            html={(<React.Fragment>Alexa listens for the Invocation Name<br/> to launch your skill<br/> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
+                            html={(<React.Fragment>Alexa listens for the Invocation Name<br /> to launch your skill<br /> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
                             position="bottom"
                         >
-                            <i className="fal fa-question-circle"/>
+                            <i className="fal fa-question-circle" />
                         </Tooltip>
                     </div>
-                    <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e)=>this.setState({inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales)})}/>
+                    <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e) => this.setState({ inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales) })} />
                     <small className={"text-blue" + (this.state.flash ? ' blink' : '')}>{this.state.inv_name_error}</small>
                     <div className="super-center mt-4-5 mb-3">
                         <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
@@ -486,7 +542,7 @@ class ActionGroup extends PureComponent {
                 </div>
             default:
                 return <div>
-                    <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload"/>
+                    <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
                     <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
                     <div className="modal-txt text-center mt-2"> Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console</div>
                     <div className="super-center mb-3 mt-3">
@@ -496,129 +552,191 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    renderGoogleBody() {
+        let modal_content = null
+        if (
+            this.state.google_stage === 3 ||
+            this.state.google_stage === 4
+        ) {
+            modal_content = <div className="super-center mb-4">
+                <div className='text-center'>
+                    <h1><span className="loader" /></h1>
+                    <p className="loading">{GOOGLE_STAGES[this.state.google_stage]}</p>
+                </div>
+            </div>
+        } else if (this.state.google_stage === 5) {
+            modal_content = <React.Fragment>
+                <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
+                <br />
+                <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Google Actions </span>
+                <span className="modal-txt text-center">
+                    You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
+            </span>
+                <div className="my-3">
+                    <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                        className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                        Test on Google Actions Simulator
+                </a>
+                </div>
+            </React.Fragment>
+        } else {
+            modal_content = <div>
+                <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
+                <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
+                {(this.props.skill.live || this.props.skill.review) && <hr />}
+                <div>
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
+                </div>
+
+                <div className="super-center mb-3 mt-3">
+                    <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
+                </div>
+            </div>
+        }
+        return modal_content
+    }
+
     render() {
 
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
 
         return (
             <React.Fragment>
-            <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
-                <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
-                <ModalBody className="modal-info">
-                    <div>
-                        {this.render_body()}
+                <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
+                    <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
+                    <ModalBody className="modal-info">
+                        <div>
+                            {(this.props.platform === 'google') ? this.renderGoogleBody() : this.render_body()}
+                        </div>
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.updateLiveModal} toggle={this.toggleUpdateLive} onClosed={() => { this.setState({ live_update_stage: 0 }) }} className="stage_modal">
+                    <ModalHeader toggle={this.toggleUpdateLive}>Update Live Version</ModalHeader>
+                    <ModalBody className="modal-info">
+                        <div>
+                            {this.renderLiveStage()}
+                        </div>
+                    </ModalBody>
+                </Modal>
+
+                <div id="middle-group">
+                    <Tooltip
+                        distance={16}
+                        title={(this.props.platform === 'google') ? "Switch to Amazon View" : "Switch to Google View"}
+                        position="bottom"
+                        className="switch switch-blue mr-4"
+                        tag='div'
+                    >
+                        <input onClick={() => { if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
+                        <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
+                        <input onClick={() => { if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
+                        <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
+                        <span className="switch-selection"></span>
+                    </Tooltip>
+                </div>
+
+                <div className="title-group no-select">
+                    <div className="align-icon">
+                        <Tooltip
+                            distance={16}
+                            title={this.props.lastSave}
+                            position="bottom"
+                            className="mr-4"
+                        >
+                            <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
+                                {this.props.saving && <span className="save-loader" />}
+                            </button>
+                        </Tooltip>
                     </div>
-                </ModalBody>
-            </Modal>
-
-            <Modal isOpen={this.state.updateLiveModal} toggle={this.toggleUpdateLive} onClosed={()=>{this.setState({live_update_stage: 0})}}className="stage_modal">
-                <ModalHeader toggle={this.toggleUpdateLive}>Update Live Version</ModalHeader>
-                <ModalBody className="modal-info">
-                    <div>
-                        {this.renderLiveStage()}
+                    <div className="title-group-sub">
+                        <Tooltip
+                            className="top-nav-icon"
+                            title="Share"
+                            position="bottom"
+                            distance={16}
+                        >
+                            <button id="icon-share" className="nav-btn-border" onClick={this.toggleShare}></button>
+                        </Tooltip>
+                        <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
+                            <PopoverHeader>Share Link</PopoverHeader>
+                            <PopoverBody style={{ minWidth: '260px' }}>
+                                <div className="space-between">
+                                    <label>Allow preview sharing</label>
+                                    <Toggle
+                                        checked={this.state.allowPreview}
+                                        disabled={this.state.togglingPreview}
+                                        icons={false}
+                                        onChange={this.togglePreview}
+                                    />
+                                </div>
+                                {this.state.allowPreview &&
+                                    <InputGroup className="mb-3">
+                                        <InputGroupAddon addonType="prepend">
+                                            <ClipBoard
+                                                component="button"
+                                                className="btn btn-primary"
+                                                value={link}
+                                                id="shareLink"
+                                            >
+                                                <i className="fas fa-copy" />
+                                            </ClipBoard>
+                                        </InputGroupAddon>
+                                        <Input readOnly value={link} className="form-control-border right" />
+                                    </InputGroup>
+                                }
+                            </PopoverBody>
+                        </Popover>
                     </div>
-                </ModalBody>
-            </Modal>
+                    <div className="align-icon">
+                        <Tooltip
+                            distance={16}
+                            title="Test"
+                            position="bottom"
+                            className="ml-4 mr-4"
+                        >
+                            <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play" /></button>
+                        </Tooltip>
+                    </div>
 
-            <div className="title-group no-select">
-                <div className="align-icon">
-                    <Tooltip
-                        distance={16}
-                        title="Save"
-                        position="bottom"
-                        className="mr-4"
-                    >
-                        <button id="icon-save" className={`${this.props.saved ? 'nav-btn btn-successful' : 'nav-btn unsaved'} ${this.props.saving ? 'saving' : ''}`} onClick={this.props.onSave}>
-                            {this.props.saving && <span className="save-loader"/>}
-                        </button>
-                    </Tooltip>
+                    {this.props.live_mode ?
+                        <Tooltip
+                            html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
+                            position="bottom"
+                            distance={16}
+                        >
+                            <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
+                                Update Live Version <div className="launch">
+                                    <div className="first">
+                                        <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
+                                    </div>
+                                    <div className="second">
+                                        <img src={'/rocket.svg'} alt="check" width="16" height="16" />
+                                    </div>
+                                </div>
+                            </Button>
+                        </Tooltip>
+                        :
+                        <Tooltip
+                            html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                            position="bottom"
+                            distance={16}
+                        >
+                            <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                                {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
+                                    <div className="first">
+                                        <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
+                                    </div>
+                                    <div className="second">
+                                        <img src={'/rocket.svg'} alt="check" width="16" height="16" />
+                                    </div>
+                                </div>
+                            </Button>
+                        </Tooltip>
+                    }
                 </div>
-                <div className="title-group-sub">
-                    <Tooltip
-                        className="top-nav-icon"
-                        title="Share"
-                        position="bottom"
-                        distance={16}
-                    >
-                        <button id="icon-share" className="nav-btn-border" onClick={this.toggleShare}></button>
-                    </Tooltip>
-                    <Popover placement="bottom" isOpen={this.state.share} target="icon-share" toggle={this.toggleShare} className="mt-3">
-                        <PopoverHeader>Share Link</PopoverHeader>
-                        <PopoverBody style={{minWidth: '260px'}}>
-                            <div className="space-between">
-                                <label>Allow preview sharing</label>
-                                <Toggle
-                                    checked={this.state.allowPreview}
-                                    disabled={this.state.togglingPreview}
-                                    icons={false}
-                                    onChange={this.togglePreview}
-                                />
-                            </div>
-                            {this.state.allowPreview &&
-                                <InputGroup className="mb-3">
-                                    <InputGroupAddon addonType="prepend">
-                                        <ClipBoard
-                                            component="button"
-                                            className="btn btn-primary"
-                                            value={link}
-                                            id="shareLink"
-                                        >
-                                            <i className="fas fa-copy"/>
-                                        </ClipBoard>
-                                    </InputGroupAddon>
-                                    <Input readOnly value={link} className="form-control-border right"/>
-                                </InputGroup>
-                            }
-                        </PopoverBody>
-                    </Popover>
-                </div>
-                <div className="align-icon">
-                    <Tooltip
-                        distance={16}
-                        title="Test"
-                        position="bottom"
-                        className="ml-4 mr-4"
-                    >
-                        <button className="nav-btn" onClick={this.props.onTest}><i className="far fa-play"/></button>
-                    </Tooltip>
-                </div>
-
-                {this.props.live_mode ? 
-                    <Tooltip
-                        html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
-                        position="bottom"
-                        distance={16}
-                    >
-                        <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
-                            Update Live Version <div className="launch">
-                                <div className="first">
-                                    <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
-                                </div>
-                                <div className="second">
-                                    <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
-                                </div>
-                            </div>
-                        </Button>
-                    </Tooltip>
-                    :
-                    <Tooltip
-                        html={<div style={{ width: 155 }}>Test your skill on your own Alexa device, or in the Alexa developer console</div>}
-                        position="bottom"
-                        distance={16}
-                    >
-                        <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
-                            Upload to Alexa <div className="launch">
-                                <div className="first">
-                                    <img src={'/up-arrow.svg'} alt="upload" width="18" height="18"/>
-                                </div>
-                                <div className="second">
-                                    <img src={'/rocket.svg'} alt="check" width="16" height="16"/>
-                                </div>
-                            </div>
-                        </Button>
-                    </Tooltip>
-                }
-            </div>
             </React.Fragment>
         );
     }

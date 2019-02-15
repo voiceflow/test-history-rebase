@@ -1043,6 +1043,9 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
     border-color: transparent !important;
     color: #8da2b5 !important;
 }
+.icon-image .image-box>button{
+    padding: 0 !important;
+}
 .audio-box>div, .combined-box>div{
     margin-bottom: 10px;
 }

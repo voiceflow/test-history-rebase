@@ -310,16 +310,21 @@
 }
 
 .title-group .title-group-sub {
-    display: flex;
-    align-items: center;
     border-right: 1px solid #E2E9EC;
     border-left: 1px solid #E2E9EC;
     height: 100%;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.back-btn {
+.title-group .toggle-google {
+    border-left: 1px solid #E2E9EC;
+}
+
+.back-btn{
     background: transparent !important;
     border: 1px solid none;
     color: #42A5FF !important;
@@ -350,15 +355,29 @@
 .previous-btn:active {
     background-color: #2b39501c !important;
 }
+#middle-group {
+    position: fixed;
+    z-index: 1040;
+    display: flex;
+    top: 0px;
+    width: 200px;
+    left: 50%;
+    margin-left: -100px;
+    height: 65px;
+    align-items: center;
+    justify-content: center;
+}
 
 .title-group {
     position: fixed;
-    right: 75px;
+    right: 70px;
     top: 0px;
     z-index: 1040;
     display: flex;
     align-items: center;
     height: 65px;
+    border-left: 1px solid #E2E9EC;
+    padding-left: 1.5rem;
 }
 
 .modal-img {
@@ -371,7 +390,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 13%;
+    width: 60px;
 }
 
 .modal-txt {
@@ -1434,6 +1453,8 @@ label {
     transition: all .15s ease-in-out;
     /*display: flex;*/
     /*flex-direction: row;*/
+    /* will-change: transform, box-shadow; */
+    position: relative;
 }
 
 .srd-default-node:hover {
@@ -2855,6 +2876,58 @@ button.close:hover{
     /*color: #2325E2;*/
     color: #fff;
     border-radius: 10px;
+}
+
+.faded-node {
+    opacity: 0.25;
+}
+
+.google-btn {
+    margin-top: 0px !important;
+    margin-right: 1em !important;
+}
+
+.linter-badge {
+    position: absolute;
+    left: -0.5em;
+    top: -0.8em;
+    color: #ff9f8d;
+    font-size: 30px;
+    transition: all 0.2s ease;
+    background-image: url(/upgrade.svg);
+}
+
+.linter-badge:hover {
+    transform: scale(1.1)
+}
+
+.linter-element {
+    border-radius: 3px;
+    border-width: 2px;
+    background:#93CBFF;
+    max-width: 15em;
+}
+
+.linter-number {
+    border-radius: 3px;
+    border-width: 2px;
+    background:#42a5ff;
+    padding: 0 5px 0 5px;
+}
+
+.linter-title {
+    border-radius: 3px;
+    border-width: 2px;
+    background:#93CBFF;
+    padding: 0 5px 0 5px;
+    margin-bottom: 5px;
+}
+
+.linter-text {
+    margin: 2px;
+    padding: 0 5px 0 5px;
+    text-align: left;
+
 }
 
 .premium-block{

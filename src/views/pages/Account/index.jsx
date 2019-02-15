@@ -32,6 +32,7 @@ class Account extends Component {
 
     this.state = {
       amzn: LOADING,
+      google: LOADING,
       expiry: null,
       confirm: null
     };
@@ -40,6 +41,7 @@ class Account extends Component {
     this.toggle = this.toggle.bind(this)
     this.resetAmazon = this.resetAmazon.bind(this)
     this.logout = this.logout.bind(this)
+    this.resetGoogle = this.resetGoogle.bind(this)
   }
 
   resetAmazon() {
@@ -64,6 +66,28 @@ class Account extends Component {
     })
   }
 
+  resetGoogle() {
+    this.setState({
+      confirm: {
+        text: <Alert color="danger" className="mb-0">
+          <i className="fas fa-exclamation-triangle fa-2x"/><br/>
+          Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
+        </Alert>,
+        confirm: () => {
+          this.setState({confirm: null, google: LOADING}, () => {
+            axios.delete('/session/google/access_token').then(()=>{
+              this.setState({google: UNLINKED})
+            })
+            .catch(err => {
+              this.setState({google: LINKED})
+              alert('Failed to unlink Google Account')
+            })
+          })
+        }
+      }
+    })
+  }
+
   componentDidMount() {
       AuthenticationService.AmazonAccessToken(data => {
         if(data){
@@ -77,6 +101,12 @@ class Account extends Component {
             amzn: UNLINKED,
           })
         }
+      })
+
+      AuthenticationService.googleAccessToken().then(g_token => {
+        this.setState({
+          google: !!g_token ? LINKED : UNLINKED
+        })
       })
 
       axios.get('/user')
@@ -187,6 +217,14 @@ class Account extends Component {
                       </div>
                     </React.Fragment>
                   }
+                </div>
+                <div className="card mb-5">
+                  <div className="p-4 space-between">
+                    <h4 className="mb-0 text-muted">Google</h4>
+                    <div className="super-center">
+                      {this.renderButton(this.state.google, this.resetGoogle)}
+                    </div>
+                  </div>
                 </div>
               </div>
           </div>

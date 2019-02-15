@@ -306,7 +306,6 @@ class Canvas extends Component {
 
     serialize(){
         let serialize = this.state.engine.getDiagramModel().serializeDiagram()
-        serialize.id = this.props.diagram_id
         _.map(serialize.nodes, node => {
             if (!_.isEmpty(node.combines)) {
                 node.extras.nextID = node.combines[0].id

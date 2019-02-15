@@ -247,25 +247,25 @@ class Canvas extends Component {
             }
         })
 
-        // AUTOSAVE EVERY 5 SECONDS
-        // if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
-        //     this.interval = setInterval(()=>{
-        //         if(this.lastModel){
-        //         var currentModel = JSON.stringify(this.serialize())
-        //             if(currentModel !== this.lastModel){
-        //                 if(this.canSave(currentModel)){
-        //                     this.tooBig = false
-        //                     this.onSave()
-        //                 }else{
-        //                     if(!this.tooBig){
-        //                         this.tooBig = true
-        //                         this.props.onError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size')
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }, 10000)
-        // }
+        // AUTOSAVE EVERY 10 SECONDS
+        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+            this.interval = setInterval(()=>{
+                if(this.lastModel){
+                var currentModel = JSON.stringify(this.serialize())
+                    if(currentModel !== this.lastModel){
+                        if(this.canSave(currentModel)){
+                            this.tooBig = false
+                            this.onSave()
+                        }else{
+                            if(!this.tooBig){
+                                this.tooBig = true
+                                this.props.onError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size')
+                            }
+                        }
+                    }
+                }
+            }, 10000)
+        }
     }
 
     static getDerivedStateFromProps(props, state){

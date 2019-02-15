@@ -86,7 +86,7 @@ class BackupSettings extends Component{
         }
 
         if((!Array.isArray(this.state.versions) || this.state.versions.length === 0) && !this.state.live_version){
-            return <div className="settings-content clearfix"><Alert color="warning" className="mb-0">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill to Alexa</Alert></div>
+            return <div className="settings-content clearfix"><Alert color="warning" className="mb-0">There are currently no backups for this skill<br/>Backups are generated every time when you upload your skill</Alert></div>
         }
 
         return <React.Fragment>
@@ -126,6 +126,7 @@ class BackupSettings extends Component{
                                 <thead>
                                     <tr>
                                         <th>Saved</th>
+                                        <th>Platform</th>
                                         <th>Preview</th>
                                         <th>Restore</th>
                                     </tr>
@@ -147,7 +148,8 @@ class BackupSettings extends Component{
                                     }
                                     {this.state.versions.map((version, i) => {
                                         return <tr key={i}>
-                                            <td>{moment(version.created).fromNow()}</td>
+                                            <td >{moment(version.created).fromNow()}</td>
+                                            <td className="text-center">{version.published_platform === 'google' ? <i className="fab fa-google"/> :  <i className="fab fa-amazon"/>}</td>
                                             <td>
                                                 <Button className='purple-btn' onClick={() => this.previewBackup(version)}>Preview</Button>
                                             </td>

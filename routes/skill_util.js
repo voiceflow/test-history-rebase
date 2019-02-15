@@ -368,7 +368,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
       })
     }
     try{
-      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
+      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
       // UPDATE SKILL 
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
       [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
@@ -400,27 +400,27 @@ exports.copySkill = async (req, res, options, cb = false) => {
             name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
           INSERT INTO skills (
             name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info, dialogflow_token
           )
           SELECT ` +
       copy_str + `
             $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info, dialogflow_token
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
 

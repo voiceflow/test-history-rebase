@@ -3,8 +3,7 @@ import { Collapse } from 'reactstrap'
 import { MentionsInput, Mention } from 'react-mentions'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
-
-const _ = require('lodash')
+import { getUtterancesWithSlotNames } from '../../../../../util'
 
 class IntentInput extends Component {
     constructor(props) {
@@ -146,36 +145,9 @@ class IntentInput extends Component {
         }
     }
 
-    _getUtterancesWithSlotNames(utterances, slots) {
-        const re = /(\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
-        let m;
-
-        const utterance_text = utterances.map(e => e.text)
-
-        const new_utterances = utterance_text.map( input => {
-            let new_input = input
-            do {
-                m = re.exec(input)
-                if (m) {
-                    const replace = m[1]
-                    const key = m[2]
-                    const slot =_.find(slots, { key: key })
-                    if (slot) {
-                        const slot_name = _.find(slots, { key: key }).name
-                        new_input = new_input.replace(replace, `[${slot_name}]`)
-                    } else {
-                        return new_input
-                    }
-                }
-            } while (m);
-            return new_input
-        })
-        return new_utterances
-    }
-
     renderUtterances = (utterances) => {
         if (Array.isArray(utterances)) {
-            utterances = this._getUtterancesWithSlotNames(utterances, this.props.slots)
+            utterances = getUtterancesWithSlotNames(utterances, this.props.slots, true)
             return utterances.map( (u, i) => {
                 return <div className="interaction-utterance" key={i}>
                     <div>{u}</div>
@@ -187,9 +159,14 @@ class IntentInput extends Component {
     }
 
     render() {
+        let disabled = false
+        if ((this.props.intent._platform === 'google' && !(this.props.platform === 'google')) || (this.props.intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
+            disabled = true
+        }
+
         return (
-            <div className="interaction-block">
-                <div className="intent-title">
+            <div className={"interaction-block"}>
+                <div className={`intent-title ${disabled ? 'faded' : ''}`}>
                     <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.intent.open ? " fa-rotate-90" : "")}></i></span>
                     <Tooltip
                         className="flex-hard"
@@ -212,6 +189,8 @@ class IntentInput extends Component {
                     <button className="close" onClick={()=>this.props.removeIntent(this.props.intent.key)} disabled={this.props.live_mode}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.intent.open}>
+                {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Intent is Unavailable on {(this.props.platform === 'google')? 'Google Assistant' : 'Alexa'}</div>}
+                <div className={disabled ? 'disabled faded' : ''}>
                     <div>
                         {this.renderUtterances(this.props.intent.inputs)}
                     </div>
@@ -240,9 +219,10 @@ class IntentInput extends Component {
                                 style={{backgroundColor: '#DCEEFF', outline: '1px solid #DCEEFF'}}
                             />
                         </MentionsInput>
-                    </Tooltip>
-                    <div className="text-center mt-2">
-                        <span className="key-bubble forward pointer" onClick={this.addUtterance}><i className="far fa-long-arrow-right"/></span>
+                        </Tooltip>
+                        <div className="text-center mt-2">
+                            <span className="key-bubble forward pointer" onClick={this.addUtterance}><i className="far fa-long-arrow-right"/></span>
+                        </div>
                     </div>
                 </Collapse>
             </div>

@@ -110,6 +110,7 @@ class IntentInputs extends Component {
                         nameExists={this.checkName}
                         removeIntent={this.handleRemoveIntent}
                         update={this.props.update}
+                        platform={this.props.platform}
                         live_mode={this.props.live_mode}
                     />)
                 }

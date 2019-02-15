@@ -41,11 +41,25 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-import { SLOT_TYPES_MAP, BUILT_IN_INTENTS, SLOT_TYPES_UNIVERSAL } from './Constants'
+import { SLOT_TYPES, BUILT_IN_INTENTS_ALEXA, BUILT_IN_INTENTS_GOOGLE } from 'Constants'
 
-const BUILT_INS = BUILT_IN_INTENTS.map( intent => {
+const ALEXA_BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
     return {
         built_in: true,
+        platform: 'alexa',
+        name: intent.name,
+        key: intent.name,
+        inputs: [{
+            text: '',
+            slots: intent.slots
+        }]
+    }
+})
+
+const GOOGLE_BUILT_INS = BUILT_IN_INTENTS_GOOGLE.map(intent => {
+    return {
+        built_in: true,
+        platform: 'google',
         name: intent.name,
         key: intent.name,
         inputs: [{
@@ -103,16 +117,29 @@ class Editor extends Component {
     }
 
     getSlotTypes(locales) {
-        let SLOT_TYPES = []
-        _.map(locales, locale => {
-            SLOT_TYPES.push(SLOT_TYPES_MAP[locale])
-        })
-        SLOT_TYPES.push(SLOT_TYPES_UNIVERSAL)
-        SLOT_TYPES = _.uniq(_.flatten(SLOT_TYPES))
-        if (SLOT_TYPES.length > 0) {
-            SLOT_TYPES = SLOT_TYPES.slice(0, 1).concat(SLOT_TYPES.slice(1).sort())
+        let slots = [SLOT_TYPES[0]] //Custom Slot
+        for (let i in SLOT_TYPES) {
+            const slot = SLOT_TYPES[i]
+            if ((slot.type.google && this.props.platform === 'google') || (slot.type.alexa && this.props.platform === 'alexa')) {
+                const slot_locales = slot.locales[this.props.platform]
+                if (this.props.platform === 'google') {
+                    slots.push(slot)
+                } else if (!slot_locales || _.intersection(slot_locales, locales).length > 0) {
+                    slots.push(slot)
+                }
+            }
         }
-        return SLOT_TYPES
+
+        slots = slots.slice(0, 1).concat(slots.slice(1).sort((a, b) => {
+            if (a.type.google && a.type.alexa && !(b.type.google && b.type.alexa)) {
+                return -1
+            } else if (b.type.google && b.type.alexa && !(a.type.google && a.type.alexa)) {
+                return 1
+            } else {
+                return a.label.localeCompare(b.label)
+            }
+        }))
+        return slots
     }
 
     BlockViewer(variables) {
@@ -131,13 +158,13 @@ class Editor extends Component {
             case 'intent':
                 return <Intent
                         node={this.state.node}
-                        onUpdate={this.props.onUpdate}
+                        onUpdate={this.props.onIntentUpdate}
                         intents={this.props.intents}
                         slots={this.props.slots}
                         diagramEngine={this.props.diagramEngine}
                         variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
-                        built_ins={BUILT_INS}
+                        built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         skill={this.props.skill}
@@ -146,8 +173,9 @@ class Editor extends Component {
                         diagram_id={this.props.diagram_id}
                         setCanFulfill={this.props.setCanFulfill}
                         diagram_level_intents={this.props.diagram_level_intents}
+                        platform={this.props.platform}
                         live_mode={this.props.live_mode}
-                    />
+                        />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
                 if(typeof this.state.node.extras.commands === 'string'){
@@ -155,12 +183,12 @@ class Editor extends Component {
                 }else{
                     return <Command
                         node={this.state.node}
-                        onUpdate={this.props.onUpdate}
+                        onUpdate={this.props.onIntentUpdate}
                         intents={this.props.intents}
                         slots={this.props.slots}
                         variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
-                        built_ins={BUILT_INS}
+                        built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         repaint={this.props.repaint}
                         createDiagram={this.props.createDiagram}
@@ -168,13 +196,15 @@ class Editor extends Component {
                         diagrams={this.props.diagrams}
                         enterFlow={this.props.enterFlow}
                         onConfirm={this.props.onConfirm}
+                        platform={this.props.platform}
+                        diagram_level_intents={this.props.diagram_level_intents}
                         live_mode={this.props.live_mode}
                     />
                 }
             case 'interaction':
                 return <Interaction
                     node={this.state.node}
-                    onUpdate={this.props.onUpdate}
+                    onUpdate={this.props.onIntentUpdate}
                     repaint={this.props.repaint}
                     intents={this.props.intents}
                     slots={this.props.slots}
@@ -183,9 +213,10 @@ class Editor extends Component {
                     diagramEngine={this.props.diagramEngine}
                     variables={variables}
                     slot_types={this.getSlotTypes(this.props.locales)}
-                    built_ins={BUILT_INS}
+                    built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
+                    platform={this.props.platform}
                     live_mode={this.props.live_mode}
                     />
             case 'combine':

@@ -10,7 +10,7 @@ class Choice extends Component {
             node: this.props.node,
             voices: Array.isArray(this.props.voices) ? this.props.voices : []
         };
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleAddChoice = this.handleAddChoice.bind(this);
         this.handleRemoveChoice = this.handleRemoveChoice.bind(this);
@@ -28,11 +28,11 @@ class Choice extends Component {
             node.extras[name] = value;
         }
         if (node.parentCombine) {
-          let bestNode = _.findIndex(
-            node.parentCombine.combines,
-            npc => npc.id === node.id
-          );
-          node.parentCombine.combines[bestNode] = node.serialize();
+            let bestNode = _.findIndex(
+                node.parentCombine.combines,
+                npc => npc.id === node.id
+            );
+            node.parentCombine.combines[bestNode] = node.serialize();
         }
         this.setState({
             node: node
@@ -69,7 +69,7 @@ class Choice extends Component {
     handleRemoveChoice(e, i) {
         var node = this.state.node;
         let bestNode;
-        if (node.parentCombine){
+        if (node.parentCombine) {
             bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
         }
         for (var name in node.getPorts()) {
@@ -102,9 +102,11 @@ class Choice extends Component {
     render() {
         return (
             <div>
-                <label>
-                    Choices
-                </label>
+                <div className="d-flex justify-content-between">
+                    <label>
+                        Choices
+                    </label>
+                </div>
                 <div className={this.props.live_mode ? 'disabled-overlay' : null}>
                     <ChoiceInputs
                         choices={this.state.node.extras.choices}

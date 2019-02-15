@@ -279,7 +279,7 @@ class DashBoard extends Component {
                             distance={16}
                             title="Join the Voiceflow forum for help and updates"
                             position="bottom"
-                            className="ml-4 mr-4"
+                            className="ml-1 mr-4"
                         >
                         <form action="https://forum.getvoiceflow.com">
                             <button className="nav-btn" type="submit"><i className="fas fa-info-circle"/></button>

@@ -106,7 +106,7 @@ options object properties {
   slots: Object of all the slots used in the skill (required)
 }
 */
-const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platform='alexa') => new Promise((resolve) => {
   if(!options.rendered_set) options.rendered_set = new Set()
   if(!options.used_intents) options.used_intents = new Set()
   if(!options.used_choices) options.used_choices = new Set()
@@ -195,7 +195,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           story.lines[node.id] = {
             end: true
           }
-        } else if (node.extras.type === 'command' || node.extras.type === 'jump' || (node.extras.type === 'intent' && node.extras.intent)) {
+        } else if (node.extras.type === 'command' || node.extras.type === 'jump' || (node.extras.type === 'intent' && node.extras.alexa && node.extras.alexa.intent)) {
 
           let nextLink = null;
           for (var j = 0; j < node.ports.length; j++) {
@@ -205,74 +205,78 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           }
 
           let nextId = getLink(nextLink)
-          if (node.extras.intent) {
-            let intent = node.extras.intent
-            // Log that this intent has been used
-            options.used_intents.add(intent.key)
+          let extras = node.extras[platform]
 
-            let mappings = []
-            if (Array.isArray(node.extras.mappings)) {
-              node.extras.mappings.forEach(mapping => {
-                if (!mapping.slot) {
-                  return
-                }
-                if (intent.built_in) {
-                  mappings.push({
-                    variable: mapping.variable,
-                    slot: mapping.slot.label
-                  })
-                } else if (mapping.slot.key in options.slots) {
-                  mappings.push({
-                    variable: mapping.variable,
-                    slot: options.slots[mapping.slot.key]
-                  })
-                }
-              })
-            }
-
-            if (intent.built_in) {
-              intent = intent.label
-            } else if (intent.key in options.intents) {
-              intent = options.intents[intent.key]
-            }
-            if (intent) {
-              if (node.extras.resume) {
-                if (node.extras.diagram_id) {
-                  let result
-                  try {
-                    result = await renderDiagram(user, node.extras.diagram_id, skill_id, options, depth + 1)
-                  } catch (err) {
-                    result = 500
+          if (extras) { // Default stop and helps don't have platform-specific extras
+            if (extras.intent) {
+              let intent = extras.intent
+              // Log that this intent has been used
+              options.used_intents.add(intent.key)
+  
+              let mappings = []
+              if (Array.isArray(extras.mappings)) {
+                extras.mappings.forEach(mapping => {
+                  if (!mapping.slot) {
+                    return
                   }
-                  if (result < 300) {
-                    story.commands.push({
-                      intent: intent,
-                      mappings: mappings,
-                      diagram_id: node.extras.diagram_id,
-                      end: !!node.extras.end
+                  if (intent.built_in) {
+                    mappings.push({
+                      variable: mapping.variable,
+                      slot: mapping.slot.label
+                    })
+                  } else if (mapping.slot.key in options.slots) {
+                    mappings.push({
+                      variable: mapping.variable,
+                      slot: options.slots[mapping.slot.key]
                     })
                   }
-                }
-              } else if (nextId) {
-                story.commands.push({
-                  intent: intent,
-                  mappings: mappings,
-                  next: nextId
                 })
               }
-            }
-          } else if (node.extras.commands) {
-            // DEPRECATE OLD COMMANDS
-            let commands = node.extras.commands.split('\n').filter(i => {
-              return !!i
-            })
-
-            commands.forEach(command => {
-              story.commands.push({
-                string: command,
-                value: nextId
+  
+              if (intent.built_in) {
+                intent = intent.value
+              } else if (intent.key in options.intents) {
+                intent = options.intents[intent.key]
+              }
+              if (intent) {
+                if (extras.resume) {
+                  if (extras.diagram_id) {
+                    let result
+                    try {
+                      result = await renderDiagram(user, extras.diagram_id, skill_id, options, depth + 1, platform)
+                    } catch (err) {
+                      result = 500
+                    }
+                    if (result < 300) {
+                      story.commands.push({
+                        intent: intent,
+                        mappings: mappings,
+                        diagram_id: extras.diagram_id,
+                        end: !!extras.end
+                      })
+                    }
+                  }
+                } else if (nextId) {
+                  story.commands.push({
+                    intent: intent,
+                    mappings: mappings,
+                    next: nextId
+                  })
+                }
+              }
+            } else if (extras.commands) {
+              // DEPRECATE OLD COMMANDS
+              let commands = extras.commands.split('\n').filter(i => {
+                return !!i
               })
-            })
+  
+              commands.forEach(command => {
+                story.commands.push({
+                  string: command,
+                  value: nextId
+                })
+              })
+            }
           }
         } else if (node.extras.type === 'random') {
           let list = node.ports.filter(a => !a.in && a.links.length > 0).map(port => getLink(port.links[0]))
@@ -308,7 +312,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
               }
             })
           }
-
         } else if (node.extras.type === 'god') {
           _.forEach(node.combines, nc => {
             if (!nc.in){
@@ -318,20 +321,23 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
           story.lines[node.id] = {
             nextId: node.extras.nextID
           }
-        } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && node.extras.choices)) {
+        } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && (node.extras.alexa && node.extras.alexa.choices))) {
 
           let interactions = []
-          node.extras.choices.forEach(choice => {
+          let extras = node.extras[platform]
+
+          extras.choices.forEach(choice => {
             let new_choice = {
               mappings: []
             }
+
             if (choice.intent) {
 
               // Log that this intent has been used
               options.used_intents.add(choice.intent.key)
 
               if (choice.intent.built_in) {
-                new_choice.intent = choice.intent.label
+                new_choice.intent = choice.intent.value
               } else if (choice.intent.key in options.intents) {
                 new_choice.intent = options.intents[choice.intent.key]
               }
@@ -456,7 +462,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0) => new
               //     new_options = JSON.parse(JSON.stringify(options))
               //     new_options['is_module_subflow'] = true
               // }
-              result = await renderDiagram(user, node.extras.diagram_id, skill_id, options, depth + 1);
+              result = await renderDiagram(user, node.extras.diagram_id, skill_id, options, depth + 1, platform);
             } catch (err) {
               return resolve(500)
             }

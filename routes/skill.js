@@ -1,11 +1,33 @@
 const axios = require('axios')
 const _ = require('lodash')
-const { pool, hashids, intercom, jwt, logAxiosError, writeToLogs } = require('./../services')
-const { AccessToken } = require('./authentication')
+const {
+  pool,
+  hashids,
+  intercom,
+  jwt,
+  logAxiosError,
+  writeToLogs
+} = require('./../services')
+const {
+  AccessToken,
+  _getGoogleAccessToken
+} = require('./authentication')
 const JSONs = require('./../config/amazon_json')
-const { getEnvVariable } = require('../util')
-const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
-const { copySkill, deleteSkillPromise, deleteSkillDiagramsPromise } = require('./skill_util')
+const {
+  generateDialogflowPackage
+} = require('./../config/gactions_package')
+const {
+  getEnvVariable
+} = require('../util')
+
+const analytics = new(require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const {
+  deleteSkillPromise,
+  copySkill,
+  deleteSkillDiagramsPromise
+} = require('./skill_util')
+
+const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
 const latestSkillToIntercom = (id, name) => {
   intercom.users.create({
@@ -98,7 +120,9 @@ exports.getSkills = (req, res) => {
     WHERE version IS NULL AND creator_id = $1`,
     [userId], (err, data) => {
       if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        });
         res.sendStatus(500);
       } else {
         res.send(data.rows.map(skill => {
@@ -134,9 +158,29 @@ exports.getSkill = (req, res) => {
     params = [id];
   } else if (req.query.simple) {
     sql = `
-    SELECT
-      sv.last_save, name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, 
-      preview, account_linking, resume_prompt, error_prompt, fulfillment, alexa_events, repeat
+      SELECT
+        sv.last_save,
+        name,
+        amzn_id,
+        review,
+        live,
+        diagram,
+        locales,
+        restart,
+        global,
+        intents,
+        slots,
+        inv_name,
+        preview,
+        account_linking,
+        resume_prompt,
+        error_prompt,
+        fulfillment,
+        alexa_events,
+        created,
+        platform,
+        google_publish_info,
+        repeat
     FROM
       skills s
     INNER JOIN skill_versions sv ON (s.skill_id = sv.canonical_skill_id AND s.skill_id = sv.skill_id) OR (s.live = TRUE)
@@ -159,7 +203,9 @@ exports.getSkill = (req, res) => {
 
   pool.query(sql, params, (err, data) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      });
       res.sendStatus(500);
     } else if (data.rows.length === 0) {
       res.sendStatus(404);
@@ -204,7 +250,9 @@ exports.getDiagrams = (req, res) => {
 
   pool.query(sql, [id], (err, data) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      });
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -224,7 +272,9 @@ exports.getProducts = (req, res) => {
 
   pool.query(sql, [id], (err, data) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      })
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -245,7 +295,9 @@ exports.getProduct = (req, res) => {
 
   pool.query(sql, [id, pid], (err, data) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      });
       res.sendStatus(500);
     } else {
       res.send(data.rows);
@@ -266,7 +318,9 @@ exports.setProduct = async (req, res) => {
       product.creator = req.user.id
     }
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    });
     return res.sendStatus(500)
   }
 
@@ -286,7 +340,9 @@ exports.setProduct = async (req, res) => {
       });
     }
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    });
     res.sendStatus(500);
   }
 }
@@ -294,9 +350,11 @@ exports.setProduct = async (req, res) => {
 const deleteProductSQL = async (pid, res) => {
   pool.query('DELETE FROM products WHERE id = $1', [pid], (err, results) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      })
       res.sendStatus(500)
-    }else{
+    } else {
       res.sendStatus(200)
     }
   })
@@ -313,24 +371,26 @@ exports.deleteProduct = async (req, res) => {
   try {
     result = await pool.query('SELECT p.amzn_prod_id FROM products p INNER JOIN skills s ON s.skill_id = p.skill_id WHERE s.creator_id = $1 AND p.id = $2 LIMIT 1', [req.user.id, pid])
 
-    if (result.rows.length === 0 ) {
+    if (result.rows.length === 0) {
       return res.sendStatus(412)
-    }else{
+    } else {
       result = result.rows[0]
     }
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    });
     return res.sendStatus(500)
   }
 
-  if(result.amzn_prod_id){
+  if (result.amzn_prod_id) {
     AccessToken(req.user.id, async (token) => {
       if (token === null) {
         return res.status(401).send({
           message: "Invalid Amazon Login Token"
         })
       }
-      try{
+      try {
         await axios.request({
           url: `https://api.amazonalexa.com/v1/inSkillProducts/${result.amzn_prod_id}/stages/development`,
           method: 'DELETE',
@@ -338,10 +398,10 @@ exports.deleteProduct = async (req, res) => {
             Authorization: token
           }
         })
-      }catch(err){}
+      } catch (err) {}
       deleteProductSQL(pid, res)
     })
-  }else{
+  } else {
     deleteProductSQL(pid, res)
   }
 }
@@ -353,11 +413,16 @@ exports.deleteSkill = async (req, res) => {
   }
   let id = hashids.decode(req.params.id)[0]
 
-  try{
-    await deleteSkillPromise(req.user.id, id, {delete_all_versions: true, diagram_updated: false})
+  try {
+    await deleteSkillPromise(req.user.id, id, {
+      delete_all_versions: true,
+      diagram_updated: false
+    })
     res.sendStatus(200)
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
     res.sendStatus(500)
   }
 }
@@ -380,14 +445,14 @@ exports.patchSkill = async (req, res) => {
   if (!b.fulfillment) b.fulfillment = '{}'
   if (!b.name) b.name = 'UNTITLED PROJECT'
 
-  try{
-    if (req.query.fulfillment){
+  try {
+    if (req.query.fulfillment) {
       // UPDATE FULFILLMENT COLUMN
       await pool.query(`UPDATE skills SET fulfillment = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.fulfillment])
-    }else if(req.query.inv_name){
+    } else if (req.query.inv_name) {
       await pool.query(`UPDATE skills SET inv_name = $3 WHERE skill_id = $1 AND creator_id = $2`, [id, req.user.id, b.inv_name])
-    }else if (req.query.settings) {
-      if(typeof b.repeat !== 'number'){
+    } else if (req.query.settings) {
+      if (typeof b.repeat !== 'number') {
         b.repeat = 100
       }
       // UPDATE COLUMNS RELATED TO SETTINGS
@@ -395,38 +460,50 @@ exports.patchSkill = async (req, res) => {
         [id, req.user.id, b.name, b.restart, b.resume_prompt, b.error_prompt, b.alexa_events, b.repeat])
     } else if (req.query.intents) {
       // UPDATE INTENTS COLUMN
-      await pool.query(`UPDATE skills SET intents = $3, slots = $4, fulfillment = $5, account_linking = $6 WHERE skill_id = $1 AND creator_id = $2`,
-        [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking])
+      await pool.query(`UPDATE skills SET intents = $3, slots = $4, fulfillment = $5, account_linking = $6, platform = $7 WHERE skill_id = $1 AND creator_id = $2`,
+        [id, req.user.id, b.intents, b.slots, b.fulfillment, b.account_linking, b.platform])
     } else if (req.query.preview) {
       // UPDATE PREVIEW COLUMN
       await pool.query(`UPDATE skills SET preview = $2 WHERE skill_id = $1 AND creator_id = $3`, [id, b.isPreview, req.user.id])
     } else if (req.query.publish) {
       // UPDATE EVERYTHING RELATED TO PUBLISHING THE SKILL
-      await pool.query(`
-            UPDATE skills
-            SET
-            name = $2,
-            inv_name = $3,
-            summary = $4,
-            description = $5,
-            keywords = $6,
-            invocations = $7,
-            small_icon = $8,
-            large_icon = $9,
-            category = $10,
-            purchase = $11,
-            personal = $12,
-            copa = $13,
-            ads = $14,
-            export = $15,
-            instructions = $16,
-            locales = $17,
-            privacy_policy = $18,
-            terms_and_cond = $19
-            WHERE skill_id = $1 AND creator_id = $20`,
-          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {value: b.invocations}, b.small_icon, b.large_icon, b.category,
-          b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id])
-          latestSkillToIntercom(req.user.id, b.name)
+      if (req.query.platform === 'google') {
+        await pool.query(`
+          UPDATE skills
+          SET
+          google_publish_info = $3
+          WHERE skill_id = $1 AND creator_id = $2`,
+          [id, req.user.id, JSON.stringify(b.google_publish_info)])
+      } else {
+        await pool.query(`
+              UPDATE skills
+              SET
+              name = $2,
+              inv_name = $3,
+              summary = $4,
+              description = $5,
+              keywords = $6,
+              invocations = $7,
+              small_icon = $8,
+              large_icon = $9,
+              category = $10,
+              purchase = $11,
+              personal = $12,
+              copa = $13,
+              ads = $14,
+              export = $15,
+              instructions = $16,
+              locales = $17,
+              privacy_policy = $18,
+              terms_and_cond = $19
+              WHERE skill_id = $1 AND creator_id = $20`,
+          [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {
+              value: b.invocations
+            }, b.small_icon, b.large_icon, b.category,
+            b.purchase, b.personal, b.copa, b.ads, b.export, b.instructions, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id
+          ])
+      }
+      latestSkillToIntercom(req.user.id, b.name)
     } else {
       // UPDATE GENERAL SKILL SETTINGS
       await pool.query(`
@@ -445,13 +522,18 @@ exports.patchSkill = async (req, res) => {
               privacy_policy = $12,
               terms_and_cond = $13
               WHERE skill_id = $1 AND creator_id = $14`,
-        [id, b.name, b.inv_name, b.summary, b.description, b.keywords,{value: b.invocations},
-          b.small_icon, b.large_icon, b.category, b.locales,b.privacy_policy, b.terms_and_cond, req.user.id])
-        latestSkillToIntercom(req.user.id, b.name)
+        [id, b.name, b.inv_name, b.summary, b.description, b.keywords, {
+            value: b.invocations
+          },
+          b.small_icon, b.large_icon, b.category, b.locales, b.privacy_policy, b.terms_and_cond, req.user.id
+        ])
+      latestSkillToIntercom(req.user.id, b.name)
     }
     res.sendStatus(200)
-  }catch(err){
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+  } catch (err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
     res.sendStatus(500)
   }
 }
@@ -505,98 +587,125 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (req, id, token) => {
+const checkVersions = (req, id, token, platform) => {
   return new Promise(async (resolve, reject) => {
     pool.query(`
-      SELECT * FROM skill_versions INNER JOIN skills ON skill_versions.skill_id = skills.skill_id 
-      WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-        AND version IS NOT NULL AND creator_id = $2 ORDER BY version ASC`,
-      [id, req.user.id],
+    SELECT * FROM skill_versions INNER JOIN skills ON skill_versions.skill_id = skills.skill_id 
+    WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
+    AND (published_platform = $2 OR version is NULL) AND creator_id = $3 ORDER BY version ASC`,
+      [id, platform, req.user.id],
       async (err, data) => {
         if (err) {
-          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+          writeToLogs('CREATOR_BACKEND_ERRORS', {
+            err: err
+          })
           reject(err)
         } else {
-
           // Check for live version
-          let live_id
+          let live_ids = []
           try {
             // If so, we wanna know what version the live skill is pointing to rn
-            let request = await axios.request({
-              // url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/development/manifest`
-              url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
-              method: 'GET',
-              headers: {
-                Authorization: token
+            if (platform === 'alexa') {
+              let request = await axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
+                method: 'GET',
+                headers: {
+                  Authorization: token
+                }
+              })
+              // Delete the oldest version that isn't live
+              let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
+              live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
+
+              try {
+                await pool.query(`
+                UPDATE skills s SET live = FALSE 
+                FROM skill_versions sv
+                WHERE s.skill_id = sv.skill_id
+                  AND sv.published_platform = $3
+                  AND sv.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1) 
+                  AND creator_id = $2`, [id, req.user.id, platform])
+                if (live_ids[0]) {
+                  await pool.query(`
+                  UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
+                }
+              } catch (err) {
+                writeToLogs('CREATOR_BACKEND_ERRORS', {
+                  err: err
+                })
+                reject(err)
               }
-            })
-            // Delete the oldest version that isn't live
-            let split_uri = request.data.manifest.apis.custom.endpoint.uri.split('/')
-            live_id = hashids.decode(split_uri[split_uri.length - 1])[0]
-          } catch (err) {
-            live_id = null
-          }
-          
-          // Update SQL to show which skill is live
-          try{
-            await pool.query(`
-            UPDATE skills s SET live = FALSE 
-            FROM skill_versions sv
-            WHERE s.skill_id = sv.skill_id 
-              AND sv.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1) 
-              AND creator_id = $2`, [id, req.user.id])
-            if(live_id){
-              await pool.query(`
-              UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_id])
+            } else if (platform === 'google') {
+              // Get the latest list of versions from skill_versions table
+              // Compare with each skill's attached versions
+              // If no matches, then it is ok to delete
+              let current_skill
+              for (const row of data.rows) {
+                if (!row.version) {
+                  current_skill = row
+                  break
+                }
+              }
+              const all_google_versions = current_skill.google_versions
+              for (const row of data.rows) {
+                if (row.version && row.google_versions) {
+                  const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
+                  if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
+                    live_ids.push(row.skill_id)
+                  }
+                }
+              }
             }
           } catch (err) {
-            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-            reject(err)
+            console.error(err)
+            live_ids = []
           }
 
-          // Check whether user has more versions than they should
-          if ((req.user.admin >= 100 && data.rows.length > 3) || data.rows.length > 5) {
-            let i = 0
-            let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 3 : data.rows.length - 5
-            let deletion_promises = []
-            if(live_id){
+          let i = 0
+          let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 4 : data.rows.length - 6
+          let deletion_promises = []
+          if (live_ids) {
+            num_versions_to_delete -= live_ids.length
+          }
+
+          while (i < data.rows.length && num_versions_to_delete > 0) {
+            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].version) {
+              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {
+                delete_all_versions: false,
+                diagram_updated: false
+              }))
               num_versions_to_delete -= 1
             }
+            i += 1
+          }
 
-            while (i < data.rows.length && num_versions_to_delete > 0) {
-              if(data.rows[i].skill_id != live_id){
-                deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {delete_all_versions: false, diagram_updated: false}))
-                num_versions_to_delete -= 1
-              }
-              i += 1
-            }
-
-            Promise.all(deletion_promises)
+          Promise.all(deletion_promises)
             .then(() => {
               resolve()
             })
             .catch((err) => {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+              writeToLogs('CREATOR_BACKEND_ERRORS', {
+                err: err
+              })
               reject(err)
             })
-          } else {
-            resolve()
-          }
         }
       })
-    })
+  })
 }
 
 exports.buildSkill = async (req, res) => {
   if (!req.params.id) {
     res.sendStatus(401)
   }
-  try{
+  try {
     incrementTimesPublishedIntercom(req.user.id);
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
   }
-  
+
 
   let id = hashids.decode(req.params.id)[0];
   let original_id = req.params.id
@@ -609,11 +718,14 @@ exports.buildSkill = async (req, res) => {
       return;
     }
 
-    checkVersions(req, id, token)
+    // Asynchronously check version logic, doesn't affect publishing
+    checkVersions(req, id, token, 'alexa')
 
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
         res.sendStatus(500)
       } else {
 
@@ -626,8 +738,8 @@ exports.buildSkill = async (req, res) => {
           userId: req.user.id,
           event: 'Publish Attempt',
           properties: {
-              amzn_id: amzn_id,
-              skill_id: id
+            amzn_id: amzn_id,
+            skill_id: id
           }
         })
 
@@ -685,7 +797,7 @@ exports.buildSkill = async (req, res) => {
             })
           }
 
-          try{
+          try {
             if (!amzn_id) {
 
               manifest.vendorId = vendorId;
@@ -703,17 +815,17 @@ exports.buildSkill = async (req, res) => {
 
               await pool.query("UPDATE skills SET amzn_id = $1 WHERE skill_id = $2", [amzn_id, r.skill_id]);
             } else {
-              
-                await axios.request({
-                  url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
-                  method: 'PUT',
-                  headers: {
-                    Authorization: token
-                  },
-                  data: manifest
-                })
+
+              await axios.request({
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/manifest`,
+                method: 'PUT',
+                headers: {
+                  Authorization: token
+                },
+                data: manifest
+              })
             }
-          }catch(err){
+          } catch (err) {
             logAxiosError(err, 'PUT MANIFEST', JSON.stringify(manifest))
             throw err
           }
@@ -742,7 +854,7 @@ exports.buildSkill = async (req, res) => {
                     }
                   })
                 } catch (err) {
-                  if(err) logAxiosError(err, 'PRODUCT', JSON.stringify(product))
+                  if (err) logAxiosError(err, 'PRODUCT', JSON.stringify(product))
                   // Create new product and update the database
                   let product_response = await axios.request({
                     url: `https://api.amazonalexa.com/v1/inSkillProducts`,
@@ -779,9 +891,9 @@ exports.buildSkill = async (req, res) => {
               return;
             } else {
               setTimeout(async () => {
-                for(locale of r.locales){
+                for (locale of r.locales) {
                   let model = JSONs.interactionModel(r, locale)
-                  try{
+                  try {
                     await axios.request({
                       url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
                       method: 'PUT',
@@ -790,7 +902,7 @@ exports.buildSkill = async (req, res) => {
                       },
                       data: model
                     })
-                  }catch(err){
+                  } catch (err) {
                     logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(model))
                     if (err.response) {
                       if (err.response.status === 404) {
@@ -807,13 +919,13 @@ exports.buildSkill = async (req, res) => {
 
                 if (!_.isNull(r.account_linking)) {
                   let account_linking = r.account_linking
-                  if(account_linking.defaultTokenExpirationInSeconds){
+                  if (account_linking.defaultTokenExpirationInSeconds) {
                     account_linking.defaultTokenExpirationInSeconds = parseInt(account_linking.defaultTokenExpirationInSeconds)
                   }
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
                   account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
-                  try{
+                  try {
                     await axios.request({
                       url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/accountLinkingClient`,
                       method: 'PUT',
@@ -824,7 +936,7 @@ exports.buildSkill = async (req, res) => {
                         accountLinkingRequest: account_linking
                       }
                     })
-                  }catch(err){
+                  } catch (err) {
                     logAxiosError(err, 'ACCOUNT LINKING')
                     // return res.status(500).send(err.response.data)
                   }
@@ -861,7 +973,9 @@ exports.buildSkill = async (req, res) => {
                             [amzn_id, id],
                             (err) => {
                               if (err) {
-                                writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+                                writeToLogs('CREATOR_BACKEND_ERRORS', {
+                                  err: err
+                                })
                                 res.sendStatus(500)
                               } else {
                                 res.send(amzn_id)
@@ -942,15 +1056,17 @@ exports.certifySkill = (req, res) => {
                     [req.params.amzn_id],
                     (err) => {
                       if (err) {
-                        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+                        writeToLogs('CREATOR_BACKEND_ERRORS', {
+                          err: err
+                        });
                         res.sendStatus(500);
                       } else {
                         analytics.track({
                           userId: req.user.id,
                           event: 'Submitted for Certification',
                           properties: {
-                              amzn_id: req.params.amzn_id,
-                              skill_id: hashids.decode(req.params.id)[0]
+                            amzn_id: req.params.amzn_id,
+                            skill_id: hashids.decode(req.params.id)[0]
                           }
                         })
                         res.sendStatus(200);
@@ -1007,7 +1123,9 @@ exports.withdrawSkill = (req, res) => {
           [req.params.amzn_id],
           (err) => {
             if (err) {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+              writeToLogs('CREATOR_BACKEND_ERRORS', {
+                err: err
+              });
               res.sendStatus(500);
             } else {
               res.sendStatus(200);
@@ -1040,7 +1158,9 @@ exports.copyProduct = async (req, res) => {
     `
   pool.query(copy_query, [id, pid], (err, data) => {
     if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      });
       res.sendStatus(500)
     } else {
       // let new_product_id = data.rows[0].id
@@ -1050,10 +1170,52 @@ exports.copyProduct = async (req, res) => {
   })
 }
 
+// Async call to copy all products
+copyAllProducts = (id, new_skill_id) => {
+  let copy_query = `
+    INSERT INTO products (skill_id, name, data, amzn_prod_id)
+    SELECT $1, name, data, amzn_prod_id FROM products WHERE id = $2
+  `
+
+  pool.query(copy_query, [new_skill_id, id], (err) => {
+    if (err) {
+      console.trace(err)
+    }
+  })
+}
+
+// Async call to copy all templates
+copyAllTemplates = (id, new_skill_id) => {
+  let copy_query = `
+    INSERT INTO email_templates (creator_id, title, created, content, sender, variables, subject, skill_id)
+    SELECT creator_id, title, NOW(), content, sender, variables, subject, $1 FROM email_templates WHERE skill_id = $2
+  `
+
+  pool.query(copy_query, [new_skill_id, id], (err) => {
+    if (err) {
+      console.trace(err)
+    }
+  })
+}
+
+// Async call to
+copyAllDisplays = (id, new_skill_id) => {
+  let copy_query = `
+    INSERT INTO displays (document, compatibility, created_at, creator_id, title, description, datasource, skill_id)
+    SELECT document, compatibility, NOW(), creator_id, title, description, datasource, $1 FROM displays WHERE skill_id = $2
+  `
+
+  pool.query(copy_query, [new_skill_id, id], (err) => {
+    if (err) {
+      console.trace(err)
+    }
+  })
+}
+
 exports.getSkillVersions = (req, res) => {
   let id = hashids.decode(req.params.id)[0]
   pool.query(`
-        SELECT skills.skill_id, created, version, diagram, canonical_skill_id, name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
+        SELECT skills.skill_id, created, version, published_platform, platform, diagram, canonical_skill_id, name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
         FROM skills 
         INNER JOIN skill_versions 
         ON skills.skill_id = skill_versions.skill_id 
@@ -1063,7 +1225,9 @@ exports.getSkillVersions = (req, res) => {
         ORDER BY version DESC`, [id],
     (err, data) => {
       if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
         res.sendStatus(500)
       } else {
         for (let i = 0; i < data.rows.length; i++) {
@@ -1081,14 +1245,18 @@ exports.restoreSkillVersion = async (req, res) => {
   let canonical_skill_id
   try {
     canonical_skill_id = (await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1`, [hashids.decode(req.params.restore_id)[0]])).rows[0].canonical_skill_id
-  } catch(err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+  } catch (err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
     res.sendStatus(500)
   }
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
   // Make a copy of the verision
-  copySkill(req, res, {complete_copy: true}, async (row) => {
+  copySkill(req, res, {
+    complete_copy: true
+  }, async (row) => {
     try {
       // Delete the canonical skill's old diagrams
       await deleteSkillDiagramsPromise(canonical_skill_id)
@@ -1118,19 +1286,242 @@ exports.restoreSkillVersion = async (req, res) => {
         WHERE skill_id = $2
       `, [canonical_skill_id, new_skill_id])
       // Delete the new copy's skill row
-      await deleteSkillPromise(req.user.id, new_skill_id, {delete_all_versions: false, diagram_updated: true})
+      await deleteSkillPromise(req.user.id, new_skill_id, {
+        delete_all_versions: false,
+        diagram_updated: true
+      })
       row.skill_id = hashids.encode(canonical_skill_id)
       res.send(row)
     } catch (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+      writeToLogs('CREATOR_BACKEND_ERRORS', {
+        err: err
+      })
       res.sendStatus(500)
     }
   })
 }
 
+exports.buildGoogleSkill = async (req, res) => {
+  if (!req.params.id) {
+    res.sendStatus(401)
+  }
+  let id = hashids.decode(req.params.id)[0];
+  let original_id = req.params.id
+
+  try {
+    const skill_info = await new Promise((resolve, reject) => {
+      pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
+        if (err) {
+          console.trace(err)
+          reject()
+        } else {
+          let r = data.rows[0]
+          resolve(r)
+        }
+      })
+    })
+
+    const publish_info = skill_info.google_publish_info
+    if (!publish_info) {
+      throw ('No publish info found')
+    }
+
+    const project_id = publish_info.project_id
+
+    let {
+      locales,
+      main_locale
+    } = publish_info
+
+    if (!locales) {
+      locales = []
+    }
+
+    if (!main_locale) {
+      main_locale = 'en'
+    }
+
+    if (_.isNil(project_id)) {
+      throw ('Project ID not found')
+    }
+
+    skill_info.skill_id = original_id
+
+    let dialogflow_creds
+    try {
+      dialogflow_creds = JSON.parse(skill_info.dialogflow_token)
+    } catch (e) {
+      throw ('Credentials not found')
+    }
+
+    checkVersions(req, id, '', 'google')
+
+    const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
+
+    let agent = await main_client.getAgent()
+    if (agent && agent.length > 0) {
+      agent = agent[0]
+    }
+
+    // Have to update the agent. TODO: Use canonical skill id in endpoint so this doesn't have to happen every time
+    await main_client.updateAgentFulfillment(original_id, main_locale, locales)
+
+    const updates = []
+    const package = generateDialogflowPackage(skill_info)
+
+    if (!locales.includes(main_locale)) {
+      locales.push(main_locale)
+    }
+
+    locales.forEach(locale => {
+      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, package, skill_info, locale))
+    })
+    await Promise.all(updates)
+    publish_info.uploaded = true
+
+    await new Promise((resolve, reject) => {
+      pool.query('UPDATE skills set google_publish_info = $2 WHERE skills.skill_id = $1', [id, publish_info], async (err) => {
+        if (err) {
+          console.trace(err)
+          reject()
+        } else {
+          resolve()
+        }
+      })
+    })
+
+    res.status(200).send({
+      project_id: project_id
+    })
+  } catch (e) {
+    console.trace(e)
+    res.status(400).send(`Error while building skill: ${e}`)
+  }
+}
+
+const updateDialogflowPackage = ({
+  private_key,
+  client_email
+}, project_id, {
+  intents,
+  slots
+}, {
+  skill_id
+}, locale) => new Promise(async (resolve, reject) => {
+  try {
+    const client = new DialogflowClient(project_id, private_key, client_email)
+    client.setLocale(locale)
+    await client.updateEntities(slots)
+    await client.updateIntents(intents)
+    await client.trainAgent()
+    resolve()
+  } catch (e) {
+    reject(e)
+  }
+})
+
+exports.getGoogleSkill = async (req, res) => {
+  if (!req.params.id) {
+    res.sendStatus(401);
+    return;
+  }
+
+  let id = hashids.decode(req.params.id)[0];
+  let sql;
+  let params;
+
+  sql = `
+        SELECT
+            created, diagram, google_publish_info, dialogflow_token, privacy_policy, terms_and_cond
+        FROM
+            skills
+        WHERE
+            skill_id = $1 AND
+            creator_id = $2 LIMIT 1`;
+  params = [id, req.user.id];
+
+  pool.query(sql, params, async (err, data) => {
+    if (err) {
+      console.trace(err);
+      res.sendStatus(500);
+    } else if (data.rows.length === 0) {
+      res.sendStatus(404);
+    } else {
+      let publish_info = data.rows[0].google_publish_info
+
+      let project_id
+      let private_key
+      let client_email
+
+      let defaultLanguageCode, supportedLanguageCodes
+      if (data.rows[0].dialogflow_token) {
+        try {
+          let dialogflow_token = JSON.parse(data.rows[0].dialogflow_token)
+          project_id = dialogflow_token.project_id
+          private_key = dialogflow_token.private_key
+          client_email = dialogflow_token.client_email
+
+        } catch (e) {
+          // JSON parse failed
+          console.trace('Parsing dialogflow_token failed', e)
+        }
+
+        const client = new DialogflowClient(project_id, private_key, client_email)
+        const agents = await client.getAgent();
+
+        ({
+          defaultLanguageCode,
+          supportedLanguageCodes
+        } = agents[0])
+      }
+
+      let {
+        google_id,
+        created,
+        diagram,
+        privacy_policy,
+        terms_and_cond
+      } = data.rows[0]
+
+      const skillResp = {
+        publish_info,
+        created,
+        diagram,
+        project_id,
+        defaultLanguageCode,
+        supportedLanguageCodes,
+        privacy_policy,
+        terms_and_cond
+      }
+
+      // Rehash the skill id
+      if (!google_id) {
+        res.send(skillResp)
+      } else {
+        // Sync up with google
+        // Check Current google Status
+        const token = await _getGoogleAccessToken(req.user.id)
+        if (token === null) {
+          return res.send(skillResp);
+        }
+
+        try {
+          // TODO Check status, in review/live/etc
+          // Using gactions CLI
+          skillResp.google_id = google_id
+          res.send(skillResp)
+        } catch (err) {
+          console.log(err);
+          res.send(skillResp);
+        }
+      }
+    }
+  });
+}
+
 exports.getLiveVersion = async (req, res) => {
   let skill_id = hashids.decode(req.params.id)[0]
-  try{
+  try {
     let live_version_data = await pool.query(`
       SELECT s.skill_id AS sid, s.diagram AS sdia, sv.canonical_skill_id
       FROM skills s 
@@ -1140,12 +1531,14 @@ exports.getLiveVersion = async (req, res) => {
         AND creator_id = $2
       LIMIT 1
     `, [skill_id, req.user.id])
-    if(live_version_data.rows.length > 0){
+    if (live_version_data.rows.length > 0) {
       res.send({
         live_version: hashids.encode(live_version_data.rows[0].sid)
       })
     } else {
-      res.send({live_version: null})
+      res.send({
+        live_version: null
+      })
     }
   } catch (err) {
     console.trace(err)
@@ -1155,11 +1548,11 @@ exports.getLiveVersion = async (req, res) => {
 
 exports.getDevVersion = async (req, res) => {
   let skill_id = hashids.decode(req.params.id)[0]
-  try{
+  try {
     let dev_version_data = await pool.query(`
       SELECT * FROM skills WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1) AND creator_id = $2 LIMIT 1
     `, [skill_id, req.user.id])
-    if(dev_version_data.rows.length > 0){
+    if (dev_version_data.rows.length > 0) {
       dev_version_data.rows[0].skill_id = hashids.encode(dev_version_data.rows[0].skill_id)
       res.send(dev_version_data.rows[0])
     } else {

@@ -3,33 +3,23 @@ exports.VALID_UTTERANCES = 'a-zA-Z\xC0-\xFF\u0100-\u017F\u3000-\u303F\u3040-\u30
 exports.DEFAULT_INTENTS = [
   {
     "name": "AMAZON.CancelIntent",
-    "samples": [
-      "cancel"
-    ]
+    "samples": []
   },
   {
     "name": "AMAZON.HelpIntent",
-    "samples": [
-      "help"
-    ]
+    "samples": []
   },
   {
     "name": "AMAZON.StopIntent",
-    "samples": [
-      "stop"
-    ]
+    "samples": []
   },
   {
     "name": "AMAZON.YesIntent",
-    "samples": [
-      "yes"
-    ]
+    "samples": []
   },
   {
     "name": "AMAZON.NoIntent",
-    "samples": [
-      "no"
-    ]
+    "samples": []
   }
 ]
 
@@ -57,7 +47,7 @@ exports.STORYFLOW_INTENT = {
   ]
 }
 
-exports.BUILT_IN_INTENTS = [
+exports.BUILT_IN_INTENTS_ALEXA = [
     { name: "AMAZON.AddAction<object@Book,targetCollection@ReadingList>",
       slots: [
         "targetCollection.owner.name",

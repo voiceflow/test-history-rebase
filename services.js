@@ -183,19 +183,16 @@ const writeToLogs = async (log_group, msg_details) => {
 
         if(process.env.NODE_ENV === 'development'){
             console.log(`WRITING TO LOGS ${group}`, msg)
+            // console.log(stack_trace)
         }
-
+        let name = `${time} ${stack_trace[1].fileName} ${Math.floor(Math.random()*16777215).toString(16)}`
         let stream = {
             logGroupName: group,
-            logStreamName: `${time}`
-        }
-        let getStream= {
-            logGroupName: group,
-            logStreamNamePrefix: `${time}`
+            logStreamName: `${name}`
         }
         let params = {
             logGroupName: group,
-            logStreamName: `${time}`,
+            logStreamName: `${name}`,
             logEvents: [
                 {
                     message: JSON.stringify(msg),
@@ -204,20 +201,9 @@ const writeToLogs = async (log_group, msg_details) => {
             ]
         }
         try {
-            let data =  await cloudWatchLogs.describeLogStreams(getStream).promise()
-            if (!_.isEmpty(data.logStreams)) {
-                streamExist = true;
-                params.sequenceToken = _.head(data.logStreams).uploadSequenceToken;
-            }
+            await cloudWatchLogs.createLogStream(stream).promise()
         } catch (err) {
             console.trace(err);
-        }
-        if (!streamExist){
-            try {
-                await cloudWatchLogs.createLogStream(stream).promise()
-            } catch (err) {
-                console.trace(err);
-            }
         }
         cloudWatchLogs.putLogEvents(params, (err) => {
             if (err) {

@@ -32,15 +32,15 @@ export class BaseModel extends BaseEntity {
 		return super.serialize()
 	}
 
-	getType(): string {
+	getType() {
 		return this.type;
 	}
 
-	getID(): string {
+	getID() {
 		return this.id;
 	}
 
-	isSelected(): boolean {
+	isSelected() {
 		return this.selected;
 	}
 

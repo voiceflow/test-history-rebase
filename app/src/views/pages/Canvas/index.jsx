@@ -241,10 +241,10 @@ class Canvas extends Component {
     }
 
     componentWillUnmount() {
-        Mousetrap.reset()
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.onSave(false)
         }
+        Mousetrap.reset()
         if(this.interval){
             clearInterval(this.interval)
         }
@@ -1357,7 +1357,7 @@ class Canvas extends Component {
         this.forceUpdate()
     }
 
-    onSave(cb, is_new=false, state=true) {
+    onSave(state=true) {
         if (this.saving) return
         this.saving = true
         try {

@@ -11,7 +11,6 @@ import { NodeModel } from "../models/NodeModel";
 import { BlockNodeModel } from '../models/BlockNodeModel';
 import { PointModel } from "../models/PointModel";
 import { PortModel } from "../models/PortModel";
-import { LinkModel } from "../models/LinkModel";
 import { BaseWidget } from "./BaseWidget";
 import { checkBlockDisabledLive } from "./../../../pages/Canvas/Blocks"
 
@@ -561,8 +560,8 @@ export class DiagramWidget extends BaseWidget {
 						return;
 					}
 
-					let selectedPoint: PointModel = model.model;
-					let link: LinkModel = selectedPoint.getLink();
+					let selectedPoint = model.model;
+					let link = selectedPoint.getLink();
 					if (link.getSourcePort() === null || link.getTargetPort() === null) {
 						link.remove();
 					}
@@ -576,9 +575,9 @@ export class DiagramWidget extends BaseWidget {
 					return;
 				}
 
-				let link: LinkModel = model.model.getLink();
-				let sourcePort: PortModel = link.getSourcePort();
-				let targetPort: PortModel = link.getTargetPort();
+				let link = model.model.getLink();
+				let sourcePort = link.getSourcePort();
+				let targetPort = link.getTargetPort();
 				if (sourcePort !== null && targetPort !== null) {
 					if (!sourcePort.canLinkToPort(targetPort)) {
 						//link not allowed
@@ -586,7 +585,7 @@ export class DiagramWidget extends BaseWidget {
 					} else if (
 						_.some(
 							_.values(targetPort.getLinks()),
-							(l: LinkModel) =>
+							(l) =>
 								l !== link && (l.getSourcePort() === sourcePort || l.getTargetPort() === sourcePort)
 						)
 					) {
@@ -757,7 +756,7 @@ export class DiagramWidget extends BaseWidget {
 				{this.state.renderedNodes && (
 					<LinkLayerWidget
 						diagramEngine={diagramEngine}
-						pointAdded={(point: PointModel, event) => {
+						pointAdded={(point, event) => {
 							this.state.document.addEventListener("mousemove", this.onMouseMove);
 							this.state.document.addEventListener("mouseup", this.onMouseUp);
 							event.stopPropagation();

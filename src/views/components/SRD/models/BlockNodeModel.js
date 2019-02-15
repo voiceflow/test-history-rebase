@@ -4,21 +4,21 @@ import { BlockPortModel } from './BlockPortModel';
 const toolkit = new Toolkit();
 
 export class BlockNodeModel extends DefaultNodeModel {
-	constructor(name: string = "Untitled", color: string = "rgb(0,192,255)", id, fade: boolean = false) {
+	constructor(name = "Untitled", color = "rgb(0,192,255)", id, fade = false) {
 		super(name, color, id);
 		this.fade = fade
 		this.linter = []
 	}
 
-	addInPort(label: string): BlockPortModel {
+	addInPort(label){
 		return this.addPort(new BlockPortModel(true, toolkit.UID(), label, toolkit.UID()));
 	}
 
-	addOutPort(label: string): BlockPortModel {
+	addOutPort(label){
 		return this.addPort(new BlockPortModel(false, toolkit.UID(), label, toolkit.UID()));
 	}
 
-	deSerialize(object, engine: DiagramEngine, parentCombine=null, fade=false, linter=[]) {
+	deSerialize(object, engine, parentCombine=null, fade=false, linter=[]) {
 			super.deSerialize(object, engine);
 			this.combines = object.combines ? object.combines : [];
 			this.parentCombine = parentCombine;

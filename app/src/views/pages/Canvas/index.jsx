@@ -210,7 +210,7 @@ class Canvas extends Component {
             }
         })
 
-        // AUTOSAVE EVERY 5 SECONDS
+        // AUTOSAVE EVERY 10 SECONDS
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
                 if(this.lastModel){

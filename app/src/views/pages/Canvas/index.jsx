@@ -61,7 +61,6 @@ const generateID = () => {
         return v.toString(16)
     })
 }
-
 class Canvas extends Component {
     constructor(props) {
         super(props)
@@ -270,7 +269,6 @@ class Canvas extends Component {
 
     serialize(){
         let serialize = this.state.engine.getDiagramModel().serializeDiagram()
-        serialize.id = this.props.diagram_id
         _.map(serialize.nodes, node => {
             if (!_.isEmpty(node.combines)) {
                 node.extras.nextID = node.combines[0].id
@@ -1474,7 +1472,7 @@ class Canvas extends Component {
                         saved: true
                     })
                     if(typeof this.saveCB === "function"){
-                        this.saveCB(this.props.diagram_id)
+                        this.saveCB(serialize.id)
                         this.saveCB = null
                     }
                 }).catch(rej_err => {
@@ -1514,8 +1512,8 @@ class Canvas extends Component {
         }
         if (diagram_json) {
             // CONVERT DEPRECATED BLOCKS
-            diagram_json.id = diagram_id
             diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+            diagram_json.id = diagram_id
             this.lastModel = JSON.stringify(diagram_json)
 
             // This should not happen

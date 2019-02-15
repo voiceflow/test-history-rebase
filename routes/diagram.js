@@ -84,9 +84,7 @@ const getDiagram = (req, res) => {
       })
       res.sendStatus(err.statusCode);
     } else if (data.Item) {
-      let diagram = data.Item
-
-      if (diagram.preview === false) {
+      if (data.Item.preview === false) {
         res.sendStatus(403)
         return;
       }

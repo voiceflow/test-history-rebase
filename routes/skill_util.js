@@ -270,7 +270,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     new_creator_id = req.user.id
   }
 
-  const retrieveDiagram = (diagram_id, new_skill_id) => {
+  const retrieveDiagram = (diagram_id, new_skill_id, platform) => {
     const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
@@ -308,6 +308,9 @@ exports.copySkill = async (req, res, options, cb = false) => {
           if (node.extras.diagram_id && node.extras.diagram_id !== null) {
             node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
             sub_diagrams.push(node.extras.diagram_id)
+          } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
+            node.extras[platform].diagram_id = diagram_mapping[node.extras[platform].diagram_id]
+            sub_diagrams.push(node.extras[platform].diagram_id)
           } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
             node.extras.display_id = remapped_displays[node.extras.display_id]
           } else if (node.extras.template_id && node.extras.template_id !== null && remapped_emails[node.extras.template_id]){
@@ -449,7 +452,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         diagram_mapping[diagram_data.rows[i].id] = generateID()
       }
       retrieve_promises.push(
-        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id)
+        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id, copy_skill.platform)
       )
     }
     Promise.all(retrieve_promises)

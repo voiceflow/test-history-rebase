@@ -325,8 +325,10 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       })
     })
 
+    const cli_filename = /production/.test(process.env.NODE_ENV) || /staging/.test(process.env.NODE_ENV) ? 'gactions_linux' : 'gactions'
+
     await new Promise((resolve, reject) => {
-      fs.copyFile(`${GACTIONS_CLI_ROOT}/gactions`, `${dir}/gactions`, (err) => {
+      fs.copyFile(`${GACTIONS_CLI_ROOT}/${cli_filename}`, `${dir}/gactions`, (err) => {
         if (err) reject(err)
         resolve()
       })

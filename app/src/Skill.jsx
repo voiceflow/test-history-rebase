@@ -118,10 +118,12 @@ class Skill extends Component {
 
     componentWillUnmount(){
         let time_unmounted = new Date()
-        axios.post('/analytics/track_canvas_time', {
-            duration: time_unmounted - this.state.time_mounted,
-            skill_id: this.state.skill.skill_id
-        })
+        if(this.state.skill){
+            axios.post('/analytics/track_canvas_time', {
+                duration: time_unmounted - this.state.time_mounted,
+                skill_id: this.state.skill.skill_id
+            })
+        }
 
         // UNMOUNT SOCKET SESSION
         delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]
@@ -148,39 +150,44 @@ class Skill extends Component {
     onLoadSkill(skill_id){
         this.skill_id = skill_id
 
-        // SKILL SOCKET STATUS
-        if(window.CreatorSocket.status === 'CONNECTED'){
-            window.CreatorSocket.emit('project', {
-                skill_id: skill_id,
-                auth: AuthenticationService.getAuth(),
-                device: getDevice()
-            })
-            window.CreatorSocket.on('occupied', data => {
-                this.setState({error_screen: session_warning_content})
-            })
-            window.CreatorSocket.on('joined', data => {
-                if(data === skill_id){
-                    this.setState({load_session: false})
-                }
-            })
-            // IF RECONNECTED RE-EMIT PROPERTY
-            window.CreatorSocket.connectedCB[`SKILL_${skill_id}`] = () => {
+        // NO NEED FOR SINGLE SESSION CHECK ON PREVIEW
+        if(this.props.preview){
+            this.setState({load_session: false})
+        }else{
+            // SKILL SOCKET STATUS
+            if(window.CreatorSocket.status === 'CONNECTED'){
                 window.CreatorSocket.emit('project', {
                     skill_id: skill_id,
                     auth: AuthenticationService.getAuth(),
-                    device: getDevice(),
-                    reconnect: true
+                    device: getDevice()
                 })
+                window.CreatorSocket.on('occupied', data => {
+                    this.setState({error_screen: session_warning_content})
+                })
+                window.CreatorSocket.on('joined', data => {
+                    if(data === skill_id){
+                        this.setState({load_session: false})
+                    }
+                })
+                // IF RECONNECTED RE-EMIT PROPERTY
+                window.CreatorSocket.connectedCB[`SKILL_${skill_id}`] = () => {
+                    window.CreatorSocket.emit('project', {
+                        skill_id: skill_id,
+                        auth: AuthenticationService.getAuth(),
+                        device: getDevice(),
+                        reconnect: true
+                    })
+                }
+                // IF REJOINED AND THERE IS CONFLICT - THROW WARNING
+                window.CreatorSocket.on('conflict', () => {
+                    this.onError(<React.Fragment>
+                        <b>Conflict:</b><br/>
+                        There is another existing session on this project, please close the older version before making changes
+                    </React.Fragment>)
+                })
+            }else{
+                this.setState({error_screen: connection_error})
             }
-            // IF REJOINED AND THERE IS CONFLICT - THROW WARNING
-            window.CreatorSocket.on('conflict', () => {
-                this.onError(<React.Fragment>
-                    <b>Conflict:</b><br/>
-                    There is another existing session on this project, please close the older version before making changes
-                </React.Fragment>)
-            })
-        }else{
-            this.setState({error_screen: connection_error})
         }
 
         axios.get(`/skill/${skill_id}?${this.props.preview ? 'preview=1' : 'simple=1'}`, {

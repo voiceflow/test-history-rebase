@@ -1602,11 +1602,15 @@ label {
 
 .srd-default-node.god {
     background-color: #e7eaf1e8 !important;
-    border: 2px solid #fff !important;
+    border: 2px solid #fff;
     width: 250px;
+    /* border-color: #42a5ff !important; */
 }
-.srd-default-node.god--selected>*{
-    border: 2px solid #007bff !important;
+.srd-node--selected .srd-default-node.god{
+    border-color: #8DA2B5 !important;
+    border-width: 2px !important;
+    box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important;
+    
 }
 .srd-default-node__out.god .srd-default-port .srd-port.unlinked{
     background-color: #f0f3f7;

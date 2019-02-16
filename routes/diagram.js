@@ -162,7 +162,7 @@ const setDiagram = async (req, res) => {
 }
 
 const deleteDiagram = (req, res) => {
-
+  console.log('hello', req.params)
   pool.query(`
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id

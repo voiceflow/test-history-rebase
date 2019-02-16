@@ -76,23 +76,6 @@ describe('Skill', () => {
           done()
         })
     })
-
-    it('creates diagram', done => {
-      request(app)
-        .post('/diagram?new=1')
-        .send({
-          data: JSON.stringify(new_diagram),
-          id: diagram_id,
-          skill: skill_id,
-          variables: ['path_selector', 'technic_angel']
-        })
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
   })
 
   describe('Retrieval', () => {
@@ -178,76 +161,6 @@ describe('Skill', () => {
         })
     })
 
-    it('gets created diagram', done => {
-      request(app)
-        .get(`/diagram/${diagram_id}`)
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .expect(res => {
-          if (res.body.id !== diagram_id) throw new Error('incorrect result')
-        })
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
-
-    it('updates diagram name', done => {
-      request(app)
-        .post(`/diagram/${diagram_id}/name`)
-        .send({name: 'virtual_self'})
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .expect(async (res) => {
-          try {
-            let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE id = $1`, [diagram_id])).rows
-            expect(diagram_data[0].name).toEqual('virtual_self')
-          } catch (err) {
-            if(err) throw err
-          }
-        })
-        .end((err, res) => {
-          if(err) throw err
-          done()
-        })
-    })
-
-    it('doesn\'t allow empty diagram names', done => {
-      request(app)
-        .post(`/diagram/${diagram_id}/name`)
-        .send({name: ''})
-        .set('cookie', `auth=${token}`)
-        .expect(401)
-        .end((err, res) => {
-          if(err) throw err
-          done()
-        })
-    })
-
-    it('gets diagram variables', done => {
-      request(app)
-      .get(`/diagram/${diagram_id}/variables`)
-      .set('cookie', `auth=${token}`)
-      .expect(200)
-      .expect(res => {
-        expect(res.body).toEqual(['path_selector', 'technic_angel'])
-      })
-      .end((err, res) => {
-        if(err) throw err
-        done()
-      })
-    })
-
-    it('doesn\'t get diagram if not authenticated', done => {
-      request(app)
-        .get(`/diagram/${diagram_id}`)
-        .expect(401)
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
-
     it('creates a new version', done => {
       request(app)
         .post(`/diagram/${diagram_id}/${skill_id}/publish`)
@@ -255,7 +168,8 @@ describe('Skill', () => {
         .expect(200)
         .expect(async (res) => {
           try{
-            let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`, [hashids.decode(skill_id)[0]])).rows
+            let decoded_skill_id = hashids.decode(skill_id)[0]
+            let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`, [decoded_skill_id])).rows
             let skill_data = (await pool.query(`SELECT * FROM skills WHERE creator_id = 1`)).rows
             // Initial skill won't have default values for used-choices, used_intents, alexa_interfaces, alexa_permissions
             let filtered_fields = ['diagram', 'created', 'live', 'last_save', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces', 'alexa_permissions']
@@ -265,8 +179,9 @@ describe('Skill', () => {
                 delete skill_data[i][field]
               }
             }
-            expect(version_data[0]).toEqual({version: null, canonical_skill_id: 2, skill_id: 2, last_save: null})
-            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: 2, skill_id: 3, last_save: null})
+            
+            expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, last_save: null})
+            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, last_save: null})
             expect(skill_data[1]).toEqual(skill_data[2])
           } catch (err) {
             if(err) throw err

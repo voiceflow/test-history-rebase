@@ -15,11 +15,15 @@ const interactionModel = (req, locale) => {
 	const intents_for_amazon = []
 	const entered_intents = new Set()
 
+	const slot_intents = new Set()
 	used_intents.forEach(intent_key => {
 		if (typeof intent_key !== 'string') return
 
 		let intent
-		if (intent_key.startsWith('AMAZON.')) {
+		if (intent_key.startsWith('CUSTOM:') || intent_key.startsWith('CAPTURE:')) {
+			slot_intents.add(intent_key)
+			return
+		}else if (intent_key.startsWith('AMAZON.')) {
 			intent = _.find(BUILT_IN_INTENTS_ALEXA, {
 				name: intent_key
 			})

@@ -641,6 +641,17 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             prompt: true,
             nextId: getLink(nextLink)
           }
+
+          if(platform === 'alexa' && node.extras.slot_type){
+            if(node.extras.slot_type.label === 'CUSTOM'){
+              if(Array.isArray(node.extras.slot_inputs) && node.extras.slot_inputs.length !== 0){
+                options.used_intents.add('CUSTOM:' + JSON.stringify(node.extras.slot_inputs.filter(s=>s.trim())))
+              }
+            }else{
+              options.used_intents.add('CAPTURE:' + node.extras.slot_type.label)
+            }
+          }
+          
         } else if (node.extras.type === 'api') {
 
           if (!_.isNil(node.extras.params)) {

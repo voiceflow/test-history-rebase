@@ -139,7 +139,20 @@ class Editor extends Component {
                 return a.label.localeCompare(b.label)
             }
         }))
-        return slots
+        return slots.map(type => {
+            let value
+            if ((type.type.alexa && type.type.google) || (!type.type.alexa && !type.type.google)) {
+                value = type.label
+            } 
+            else if (type.type.alexa && !type.type.google) {
+                value = type.type.alexa
+            }
+            else if (!type.type.alexa && type.type.google) {
+                value = type.type.google
+            }
+
+            return {label: type.label, value: value}
+        })
     }
 
     BlockViewer(variables) {
@@ -256,7 +269,15 @@ class Editor extends Component {
                             variables={variables}
                         />
             case 'capture':
-                return <Capture node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                return <Capture
+                    live_mode={this.props.live_mode}
+                    slot_types={this.getSlotTypes(this.props.locales)}
+                    platform={this.props.platform}
+                    node={this.state.node}
+                    onUpdate={this.props.onUpdate} 
+                    variables={variables}
+                    onError={this.props.onError}
+                />
             case 'flow':
                 return <Diagram node={this.state.node}
                     onUpdate={this.props.onUpdate}

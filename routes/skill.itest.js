@@ -85,8 +85,8 @@ describe('Skill', () => {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
-          if (res.body.length !== 1 || res.body[0].skill_id !== skill_id)
-            throw new Error('incorrect result')
+          // One for default template, one for new skill made
+          expect(res.body.length).toEqual(1)
         })
         .end((err, res) => {
           if (err) throw err
@@ -182,7 +182,7 @@ describe('Skill', () => {
             
             expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, last_save: null})
             expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, last_save: null})
-            expect(skill_data[1]).toEqual(skill_data[2])
+            expect(skill_data[0]).toEqual(skill_data[1])
           } catch (err) {
             if(err) throw err
           }

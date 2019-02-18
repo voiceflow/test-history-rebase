@@ -162,16 +162,18 @@ const setDiagram = async (req, res) => {
 }
 
 const deleteDiagram = (req, res) => {
-  console.log('hello', req.params)
+  console.log("deleteDiagram 1", req.params.id)
   pool.query(`
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
         `,
     [req.params.id, req.user.id], async (err, response) => {
       if (err) {
+        console.log("deleteDiagram 2")
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         return res.sendStatus(500)
       }
+      console.log('deleteDiagram 3', response.rowCount)
       if (response.rowCount !== 0) {
         try{
           await deleteDynamoDiagramPromise(req.params.id)
@@ -180,6 +182,8 @@ const deleteDiagram = (req, res) => {
           console.trace(err)
           return res.sendStatus(500)
         }
+      } else {
+        return res.sendStatus(404)
       }
     }
   )

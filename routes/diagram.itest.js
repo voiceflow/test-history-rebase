@@ -2,6 +2,7 @@ const app = require('../app')
 const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
 const { pool, hashids } = require('./../services')
+const axios = require('axios')
 
 jest.setTimeout(10000)
 
@@ -41,37 +42,25 @@ describe('Diagram', () => {
       password: 'password'
     }})
     .expect(200)
-    .then(res => {
+    .then(async res => {
       token = res.body.token
-    })
-
-    try{
-      module_id = await getTemplate
-    } catch (e) {
-      module_id = null
-    }
-
-    request(app)
-    .post(`/marketplace/template/${hashids.encode(module_id)}/copy`)
-    .send({
-      name: 'Test',
-      locales: ['en-US']
-    })
-    .set('cookie', 'auth='+token)
-    .expect(200)
-    .expect(res => {
-      if (!('skill_id' in res.body)) throw new Error('missing id')
-    })
-    .end((err, res) => {
-      if (err) throw err
-      skill_id = res.body.skill_id
+      try{
+        module_id = await getTemplate
+        let res = (await axios.post(`/marketplace/template/${hashids.encode(module_id)}/copy`, {name: 'Test', locales: ['en-US'], headers: {Cookie: `auth=${token}`}}))
+        skill_id = res.body.skill_id
+        console.log('borko', skill_id, res.body)
+      } catch (e) {
+        module_id = null
+      }
     })
   })
 
-  afterAll(() => {
-    request(app)
-    .delete(`/skill/${skill_id}`)
-    .expect(200)
+  afterAll(async () => {
+    try {
+      await axios.delete(`/skill/${skill_id}`)
+    } catch (err) {
+      throw err
+    }
   })
 
   describe('Creation', () => {
@@ -87,6 +76,7 @@ describe('Diagram', () => {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
+          console.log('dorko', skill_id)
           if (err) throw err
           done()
         })

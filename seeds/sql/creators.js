@@ -37,7 +37,8 @@ exports.seed = function(knex, Promise) {
             "name": "Initial Template",
             "diagram": "b000cc30e8be511b9d5bd2b8d4aa40da",
             "creator_id": 0,
-
+            "intents": '[{"name":"name_intent","inputs":[{"slots":[],"text":"[name]"},{"slots":[],"text":"My name is [name]"}],"key":"tjlYMvRuRFoI","open":true}]',
+            "slots": '[{"name":"name_intent","inputs":[{"slots":[],"text":"[name]"},{"slots":[],"text":"My name is [name]"}],"key":"tjlYMvRuRFoI","open":true}]'
           }
         ]).then(() => {
           return knex('diagrams').insert([
@@ -61,7 +62,15 @@ exports.seed = function(knex, Promise) {
                   "version_id": 1,
                   "template_skill_id": 1
                 }
-              ])
+              ]).then(() => {
+                return knex('products').insert([
+                  {
+                    "skill_id": 1,
+                    "name": "tons of mula",
+                    "data": "{}"
+                  }
+                ])
+              })
             })
           })
         })

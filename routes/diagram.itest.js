@@ -46,9 +46,16 @@ describe('Diagram', () => {
       token = res.body.token
       try{
         module_id = await getTemplate
-        let res = (await axios.post(`/marketplace/template/${hashids.encode(module_id)}/copy`, {name: 'Test', locales: ['en-US'], headers: {Cookie: `auth=${token}`}}))
-        skill_id = res.body.skill_id
-        console.log('borko', skill_id, res.body)
+        await request(app)
+          .post(`/marketplace/template/${hashids.encode(module_id)}/copy`)
+          .send({
+            name: 'Test', 
+            locales: ['en-US']
+          })
+          .set('cookie', `auth=${token}`)
+          .then(res => {
+            skill_id = res.body.skill_id
+          })
       } catch (e) {
         module_id = null
       }
@@ -57,7 +64,7 @@ describe('Diagram', () => {
 
   afterAll(async () => {
     try {
-      await axios.delete(`/skill/${skill_id}`)
+      await request(app).delete(`/skill/${skill_id}`)
     } catch (err) {
       throw err
     }
@@ -76,10 +83,33 @@ describe('Diagram', () => {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
-          console.log('dorko', skill_id)
           if (err) throw err
           done()
         })
+    })
+
+    it('copies diagram', done => {
+      request(app)
+        .get(`/diagram/copy/${diagram_id}`)
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .end(async (err, res) => {
+          if(err) throw err
+          let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE skill_id = $1`, [hashids.decode(skill_id)[0]])).rows
+          expect(diagram_data.length).toEqual(3)
+          done()
+        })
+    })
+
+    it('doesn\'t copy missing diagram', done => {
+      request(app)
+      .get(`/diagram/copy/123242`)
+      .set('cookie', `auth=${token}`)
+      .expect(404)
+      .end((err, res) => {
+        if(err) throw err
+        done()
+      })
     })
   })
 
@@ -170,7 +200,50 @@ describe('Diagram', () => {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
-          if (err) throw err
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('publishes test version', done => {
+      request(app)
+        .post(`/diagram/${diagram_id}/test/publish`)
+        .send({
+          slots: [ { name: 'slot_one',
+            inputs: [ 'dog', 'cow', 'cat', 'horse' ],
+            type: { label: 'CUSTOM', value: 'CUSTOM' },
+            key: 'sYCbueQF1wRW',
+            open: true } ],
+          intents: [ { name: 'intent_one',
+            inputs: [ [Object], [Object], [Object] ],
+            key: '1yWbnwrRcYIo',
+            open: true } ]
+        })
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('doesn\'t publish without diagram id', done => {
+      request(app)
+        .post(`/diagram/youmakemesosad/test/publish`)
+        .expect(401)
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('rerenders the diagram', done => {
+      request(app)
+        .post(`/diagram/${diagram_id}/${skill_id}/rerender`)
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .end((err, res) => {
+          if(err) throw err
           done()
         })
     })
@@ -200,7 +273,7 @@ describe('Diagram', () => {
       request(app)
       .delete(`/diagram/12323`)
       .set('cookie', `auth=${token}`)
-      .expect(500)
+      .expect(404)
       .end((err, res) => {
         if(err) throw err
         done()

@@ -162,18 +162,15 @@ const setDiagram = async (req, res) => {
 }
 
 const deleteDiagram = (req, res) => {
-  console.log("deleteDiagram 1", req.params.id)
   pool.query(`
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
         `,
     [req.params.id, req.user.id], async (err, response) => {
       if (err) {
-        console.log("deleteDiagram 2")
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         return res.sendStatus(500)
       }
-      console.log('deleteDiagram 3', response.rowCount)
       if (response.rowCount !== 0) {
         try{
           await deleteDynamoDiagramPromise(req.params.id)
@@ -261,6 +258,7 @@ const copyDiagram = async (req, res) => {
     }
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    res.sendStatus(500)
   }
 }
 
@@ -306,8 +304,7 @@ const publish = (req, res) => {
 
 const publishTest = async (req, res) => {
   if (!req.user || !req.params.diagram_id) {
-    res.sendStatus(401)
-    return;
+    return res.sendStatus(401)
   }
 
   let intents = {}
@@ -337,7 +334,6 @@ const publishTest = async (req, res) => {
 const rerenderDiagram = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
   let diagram_id = req.params.diagram_id
-  
   try{
     let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
     let skill = skill_data[0]

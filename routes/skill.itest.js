@@ -65,7 +65,7 @@ describe('Skill', () => {
           name: 'Test',
           locales: ['en-US']
         })
-        .set('cookie', 'auth='+token)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (!('skill_id' in res.body)) throw new Error('missing id')
@@ -79,7 +79,7 @@ describe('Skill', () => {
   })
 
   describe('Retrieval', () => {
-    it('gets skills', done => {
+    it('gets skills, no params', done => {
       request(app)
         .get('/skills')
         .set('cookie', `auth=${token}`)
@@ -137,7 +137,7 @@ describe('Skill', () => {
     it('gets created skill simple', done => {
       request(app)
         .get(`/skill/${skill_id}?simple=1`)
-        .set('cookie', 'auth='+token)
+        .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {
           if (res.body.skill_id !== skill_id) throw new Error('incorrect result')
@@ -150,6 +150,64 @@ describe('Skill', () => {
           done()
         })
     })
+
+    it('gets skills diagrams', done => {
+      request(app)
+        .get(`/skill/${skill_id}/diagrams`)
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .expect(async res => {
+          try{
+            let diagram_data = (await pool.query(`SELECT d.id, d.name, d.sub_diagrams FROM diagrams d
+                                                  INNER JOIN skills s ON s.skill_id = d.skill_id WHERE d.skill_id = $1`, [hashids.decode(skill_id)[0]])).rows
+            expect(diagram_data).toEqual(res.body)
+          } catch (err) {
+            throw err
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('gets skills products', done => {
+      request(app)
+        .get(`/skill/${skill_id}/products`)
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .expect(async res => {
+          try{
+            let product_data = (await pool.query(`SELECT id, name, data FROM products WHERE skill_id = $1`, [hashids.decode(skill_id)[0]])).rows
+            expect(product_data).toEqual(res.body)
+          } catch (err) {
+            throw err
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('gets a product', done => {
+      request(app)
+        .get(`/skill/${skill_id}/product/1`)
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .expect(async res => {
+          try{
+            let product_data = (await pool.query(`SELECT id, name, data FROM products WHERE skill_id = $1 AND id = $2`, [hashids.decode(skill_id)[0], 1])).rows
+            expect(product_data).toEqual(res.body)
+          } catch (err) {
+            throw err
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+      })
 
     it('doesn\'t get skill if not authenticated', done => {
       request(app)
@@ -224,7 +282,7 @@ describe('Skill', () => {
   afterAll(async () => {
     await request(app)
     .delete('/session')
-    .set('cookie', 'auth='+token)
+    .set('cookie', `auth=${token}`)
     .expect(200)
   })
 })

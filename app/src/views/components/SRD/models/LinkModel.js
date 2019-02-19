@@ -19,7 +19,7 @@ export class LinkModel extends BaseModel {
 		this.extras = {};
 		this.labels = [];
 		this.points = _.map(ob.points || [], (point) => {
-			var p = new PointModel(this, { x: point.x, y: point.y }, toolkit.UID());
+			var p = new PointModel(this, { x: point.x, y: point.y });
 			p.deSerialize(point, engine);
 			return p;
 		});

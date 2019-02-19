@@ -5,9 +5,9 @@ import { Toolkit } from './../Toolkit'
 
 const toolkit = new Toolkit()
 export class LinkModel extends BaseModel {
-	constructor(linkType = "default", id) {
+	constructor(linkType = "default", id, testing=true) {
 		super(linkType, id);
-		this.points = [new PointModel(this, { x: 0, y: 0 }, toolkit.UID()), new PointModel(this, { x: 0, y: 0 }, toolkit.UID())];
+		this.points = !testing ? [new PointModel(this, { x: 0, y: 0 }, toolkit.UID()), new PointModel(this, { x: 0, y: 0 }, toolkit.UID())] : null;
 		this.extras = {};
 		this.sourcePort = null;
 		this.targetPort = null;

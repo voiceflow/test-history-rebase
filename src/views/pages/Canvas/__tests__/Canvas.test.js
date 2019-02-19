@@ -10,5 +10,8 @@ describe('Canvas', () => {
         let skill = testSkill
         const component = shallow(<Canvas skill={skill}/>);
         expect(component).toMatchSnapshot()
+        component.unmount()
     });
+    
 })
+

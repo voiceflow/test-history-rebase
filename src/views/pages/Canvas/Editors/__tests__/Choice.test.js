@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
+import _ from 'lodash'
 import Choice from './../Choice';
 import {defaultNode} from '../__mock__/defaultNode';
 

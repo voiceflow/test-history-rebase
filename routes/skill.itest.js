@@ -76,6 +76,62 @@ describe('Skill', () => {
           done()
         })
     })
+
+    it('creates a new product', done => {
+      request(app)
+        .post(`/skill/product?new=1`)
+        .send({
+          skill: skill_id,
+          data: {burritos: 'yummy'},
+          name: 'A Long Way From Home'
+        })
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .expect(async res => {
+          try{
+            let product_data = (await pool.query(`SELECT * FROM products WHERE skill_id = $1 AND name='A Long Way From Home'`, [hashids.decode(skill_id)[0]])).rows
+            expect(product_data.length).toEqual(1)
+          } catch (err) {
+            throw err
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('creates a new version', done => {
+      request(app)
+        .post(`/diagram/${diagram_id}/${skill_id}/publish`)
+        .set('cookie', `auth=${token}`)
+        .expect(200)
+        .expect(async (res) => {
+          try{
+            let decoded_skill_id = hashids.decode(skill_id)[0]
+            let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`, [decoded_skill_id])).rows
+            let skill_data = (await pool.query(`SELECT * FROM skills WHERE creator_id = 1`)).rows
+            // Initial skill won't have default values for used-choices, used_intents, alexa_interfaces, alexa_permissions
+            let filtered_fields = ['diagram', 'created', 'live', 'last_save', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces', 'alexa_permissions']
+
+            for(let i in skill_data){
+              for(let field of filtered_fields){
+                delete skill_data[i][field]
+              }
+            }
+            
+            expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, last_save: null})
+            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, last_save: null})
+            expect(skill_data[0]).toEqual(skill_data[1])
+          } catch (err) {
+            if(err) throw err
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
   })
 
   describe('Retrieval', () => {
@@ -207,7 +263,7 @@ describe('Skill', () => {
           if(err) throw err
           done()
         })
-      })
+    })
 
     it('doesn\'t get skill if not authenticated', done => {
       request(app)
@@ -218,31 +274,26 @@ describe('Skill', () => {
           done()
         })
     })
+  })
 
-    it('creates a new version', done => {
+  describe('Update', () => {
+    it('updates an existing product', done => {
       request(app)
-        .post(`/diagram/${diagram_id}/${skill_id}/publish`)
+        .post(`/skill/product`)
+        .send({
+          skill: skill_id,
+          data: {tacos: 'soft'},
+          id: 1,
+          name: 'Red Rocks'
+        })
         .set('cookie', `auth=${token}`)
         .expect(200)
-        .expect(async (res) => {
+        .expect(async res => {
           try{
-            let decoded_skill_id = hashids.decode(skill_id)[0]
-            let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`, [decoded_skill_id])).rows
-            let skill_data = (await pool.query(`SELECT * FROM skills WHERE creator_id = 1`)).rows
-            // Initial skill won't have default values for used-choices, used_intents, alexa_interfaces, alexa_permissions
-            let filtered_fields = ['diagram', 'created', 'live', 'last_save', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces', 'alexa_permissions']
-
-            for(let i in skill_data){
-              for(let field of filtered_fields){
-                delete skill_data[i][field]
-              }
-            }
-            
-            expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, last_save: null})
-            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, last_save: null})
-            expect(skill_data[0]).toEqual(skill_data[1])
+            let product_data = (await pool.query(`SELECT * FROM products WHERE id = 1`)).rows
+            expect(product_data[0].name).toEqual('Red Rocks')
           } catch (err) {
-            if(err) throw err
+            throw err
           }
         })
         .end((err, res) => {
@@ -250,6 +301,56 @@ describe('Skill', () => {
           done()
         })
     })
+
+    it('tries to update a skill without body', done => {
+      request(app)
+        .patch(`/skill/${skill_id}`)
+        .set('cookie', `auth=${token}`)
+        .expect(401)
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    it('updates a skill, defaults', done => {
+      request(app)
+        .patch(`/skill/${skill_id}`)
+        .set('cookie', `auth=${token}`)
+        .send({})
+        .expect(200)
+        .expect(async res => {
+          try { 
+            let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1`, [hashids.decode(skill_id)[0]])).rows
+            let r = skill_data[0]
+            expect(r.locales).toEqual('["en-US"]')
+            expect(r.fulfillment).toEqual('{}')
+            expect(r.name).toEqual('UNTITLED PROJECT')
+          } catch (err) {
+            if(err) throw err
+            done()
+          }
+        })
+        .end((err, res) => {
+          if(err) throw err
+          done()
+        })
+    })
+
+    // it('updates a skill', done => {
+    //   request(app)
+    //     .patch(`/skill/${skill_id}`)
+    //     .set('cookie', `auth=${token}`)
+    //     .send()
+    //     .expect(200)
+    //     .expect(async res => {
+
+    //     })
+    //     .end((err, res) => {
+    //       if(err) throw err
+    //       done()
+    //     })
+    // })
   })
 
   describe('Deletion', () => {
@@ -274,6 +375,36 @@ describe('Skill', () => {
         })
         .end((err, res) => {
           if (err) throw err
+          done()
+        })
+    })
+
+    // it('deletes a product from the db', done => {
+    //   request(app)
+    //     .del(`/skill/${skill_id}/product/1`)
+    //     .set('cookie', `auth=${token}`)
+    //     .expect(200)
+    //     .expect(async res => {
+    //       try{
+    //         let product_data = (await pool.query(`SELECT * FROM products WHERE skill_id = $1 AND name='A Long Way From Home'`, [hashids.decode(skill_id)[0]])).rows
+    //         expect(product_data.length).toEqual(0)
+    //       } catch (err) {
+    //         throw err
+    //       }
+    //     })
+    //     .end((err, res) => {
+    //       if(err) throw err
+    //       done()
+    //     })
+    // })
+
+    it('doesn\'t delete a missing product from the db', done => {
+      request(app)
+        .del(`/skill/${skill_id}/product/0`)
+        .set('cookie', `auth=${token}`)
+        .expect(412)
+        .end((err, res) => {
+          if(err) throw err
           done()
         })
     })

@@ -14,6 +14,7 @@ describe('RandomEditor', () => {
             type: "random"
         }
         const component = shallow(<Random node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

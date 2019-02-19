@@ -20,6 +20,7 @@ describe('SpeakEditor', () => {
             type: "speak"
         }
         const component = shallow(<Speak node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

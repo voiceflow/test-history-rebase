@@ -14,6 +14,7 @@ describe('SetEditor', () => {
             type: "set"
         }
         const component = shallow(<Set node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

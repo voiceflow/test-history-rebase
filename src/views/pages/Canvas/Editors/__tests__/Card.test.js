@@ -16,6 +16,7 @@ describe('Card', () => {
             type: "card"
         }
         const component = shallow(<Card node={node}/>);
+         expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

@@ -19,6 +19,7 @@ describe('MailEditor', () => {
         let skill = testSkill
         let templates = []
         const component = shallow(<Mail node={node} templates={templates} skill={skill}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

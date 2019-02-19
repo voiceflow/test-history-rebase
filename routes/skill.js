@@ -1366,14 +1366,14 @@ exports.buildGoogleSkill = async (req, res) => {
     await main_client.updateAgentFulfillment(original_id, main_locale, locales)
 
     const updates = []
-    const package = generateDialogflowPackage(skill_info)
+    const _package = generateDialogflowPackage(skill_info)
 
     if (!locales.includes(main_locale)) {
       locales.push(main_locale)
     }
 
     locales.forEach(locale => {
-      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, package, skill_info, locale))
+      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, _package, skill_info, locale))
     })
     await Promise.all(updates)
     publish_info.uploaded = true

@@ -1,0 +1,19 @@
+import React from 'react';
+import { mount, shallow, render } from 'enzyme';
+import Permissions from './../Permissions';
+import {defaultNode} from '../__mock__/defaultNode';
+
+const clickFn = jest.fn()
+
+describe('PermissionsEditor', () => {
+    it('render permissions block editor', () => {
+        let node = defaultNode;
+        node.name = "Permissions"
+        node.extras = {
+            permissions: [],
+            type: "permission"
+        }
+        const component = shallow(<Permissions node={node}/>);
+        expect(component).toMatchSnapshot()
+    });
+})

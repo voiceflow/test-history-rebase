@@ -1,0 +1,1029 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReminderEditor render reminder block editor 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ReminderBlock
+    node={
+      Object {
+        "color": null,
+        "extras": Object {
+          "reminder": Object {
+            "byDay": Array [],
+            "date": "",
+            "freq": null,
+            "publishNotification": true,
+            "reminder_type": "SCHEDULED_RELATIVE",
+            "text": Object {},
+            "time": Object {},
+            "timezone": "User Timezone",
+          },
+          "type": "reminder",
+        },
+        "fade": false,
+        "height": 50,
+        "id": "test",
+        "isMoving": false,
+        "linter": Array [],
+        "listeners": Object {},
+        "locked": false,
+        "name": "Reminder",
+        "type": "default",
+        "width": 80,
+        "x": 0,
+        "y": 0,
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <label
+          className="mt-0"
+        >
+          Reminder Type
+        </label>,
+        <ButtonGroup
+          className="toggle-group mb-2"
+          role="group"
+          tag="div"
+        >
+          <Button
+            color="secondary"
+            disabled={true}
+            onClick={[Function]}
+            outline={false}
+            tag="button"
+          >
+             Timer 
+          </Button>
+          <Button
+            color="secondary"
+            disabled={false}
+            onClick={[Function]}
+            outline={true}
+            tag="button"
+          >
+             Scheduled 
+          </Button>
+        </ButtonGroup>,
+        <React.Fragment>
+          <label>
+            Time From Now
+          </label>
+        </React.Fragment>,
+        <div
+          className="grid-col-3 text-muted mb-2"
+        >
+          <div>
+            Hours
+          </div>
+          <div
+            className="px-1"
+          >
+            Minutes
+          </div>
+          <div>
+            Seconds
+          </div>
+          <div>
+            <Input
+              onChange={[Function]}
+              placeholder="0"
+              type="text"
+            />
+          </div>
+          <div
+            className="px-1"
+          >
+            <Input
+              onChange={[Function]}
+              placeholder="0"
+              type="text"
+            />
+          </div>
+          <div>
+            <Input
+              onChange={[Function]}
+              placeholder="0"
+              type="text"
+            />
+          </div>
+        </div>,
+        false,
+        <label>
+          Reminder
+        </label>,
+        <VariableText
+          className="editor"
+          placeholder="Walk the dog, do the dishes, etc."
+          raw={Object {}}
+          updateRaw={[Function]}
+        />,
+        <Alert
+          className="mt-3"
+          closeAriaLabel="Close"
+          color="success"
+          fade={true}
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          If failing, try prompting the user with the 
+          <b>
+            Permission
+          </b>
+           block and a message
+        </Alert>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "Reminder Type",
+          "className": "mt-0",
+        },
+        "ref": null,
+        "rendered": "Reminder Type",
+        "type": "label",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            <Button
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={false}
+              tag="button"
+            >
+               Timer 
+            </Button>,
+            <Button
+              color="secondary"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+               Scheduled 
+            </Button>,
+          ],
+          "className": "toggle-group mb-2",
+          "role": "group",
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": " Timer ",
+              "color": "secondary",
+              "disabled": true,
+              "onClick": [Function],
+              "outline": false,
+              "tag": "button",
+            },
+            "ref": null,
+            "rendered": " Timer ",
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": " Scheduled ",
+              "color": "secondary",
+              "disabled": false,
+              "onClick": [Function],
+              "outline": true,
+              "tag": "button",
+            },
+            "ref": null,
+            "rendered": " Scheduled ",
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": <label>
+            Time From Now
+          </label>,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "Time From Now",
+          },
+          "ref": null,
+          "rendered": "Time From Now",
+          "type": "label",
+        },
+        "type": Symbol(react.fragment),
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div>
+              Hours
+            </div>,
+            <div
+              className="px-1"
+            >
+              Minutes
+            </div>,
+            <div>
+              Seconds
+            </div>,
+            <div>
+              <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />
+            </div>,
+            <div
+              className="px-1"
+            >
+              <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />
+            </div>,
+            <div>
+              <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />
+            </div>,
+          ],
+          "className": "grid-col-3 text-muted mb-2",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Hours",
+            },
+            "ref": null,
+            "rendered": "Hours",
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Minutes",
+              "className": "px-1",
+            },
+            "ref": null,
+            "rendered": "Minutes",
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Seconds",
+            },
+            "ref": null,
+            "rendered": "Seconds",
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onChange": [Function],
+                "placeholder": "0",
+                "type": "text",
+                "value": undefined,
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />,
+              "className": "px-1",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onChange": [Function],
+                "placeholder": "0",
+                "type": "text",
+                "value": undefined,
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onChange": [Function],
+                "placeholder": "0",
+                "type": "text",
+                "value": undefined,
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      false,
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "Reminder",
+        },
+        "ref": null,
+        "rendered": "Reminder",
+        "type": "label",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "className": "editor",
+          "placeholder": "Walk the dog, do the dishes, etc.",
+          "raw": Object {},
+          "updateRaw": [Function],
+          "variables": undefined,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            "If failing, try prompting the user with the ",
+            <b>
+              Permission
+            </b>,
+            " block and a message",
+          ],
+          "className": "mt-3",
+          "closeAriaLabel": "Close",
+          "color": "success",
+          "fade": true,
+          "isOpen": true,
+          "tag": "div",
+          "transition": Object {
+            "appear": true,
+            "baseClass": "fade",
+            "baseClassActive": "show",
+            "enter": true,
+            "exit": true,
+            "in": true,
+            "mountOnEnter": false,
+            "onEnter": [Function],
+            "onEntered": [Function],
+            "onEntering": [Function],
+            "onExit": [Function],
+            "onExited": [Function],
+            "onExiting": [Function],
+            "tag": "div",
+            "timeout": 150,
+            "unmountOnExit": true,
+          },
+        },
+        "ref": null,
+        "rendered": Array [
+          "If failing, try prompting the user with the ",
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Permission",
+            },
+            "ref": null,
+            "rendered": "Permission",
+            "type": "b",
+          },
+          " block and a message",
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <label
+            className="mt-0"
+          >
+            Reminder Type
+          </label>,
+          <ButtonGroup
+            className="toggle-group mb-2"
+            role="group"
+            tag="div"
+          >
+            <Button
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={false}
+              tag="button"
+            >
+               Timer 
+            </Button>
+            <Button
+              color="secondary"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+               Scheduled 
+            </Button>
+          </ButtonGroup>,
+          <React.Fragment>
+            <label>
+              Time From Now
+            </label>
+          </React.Fragment>,
+          <div
+            className="grid-col-3 text-muted mb-2"
+          >
+            <div>
+              Hours
+            </div>
+            <div
+              className="px-1"
+            >
+              Minutes
+            </div>
+            <div>
+              Seconds
+            </div>
+            <div>
+              <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />
+            </div>
+            <div
+              className="px-1"
+            >
+              <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />
+            </div>
+            <div>
+              <Input
+                onChange={[Function]}
+                placeholder="0"
+                type="text"
+              />
+            </div>
+          </div>,
+          false,
+          <label>
+            Reminder
+          </label>,
+          <VariableText
+            className="editor"
+            placeholder="Walk the dog, do the dishes, etc."
+            raw={Object {}}
+            updateRaw={[Function]}
+          />,
+          <Alert
+            className="mt-3"
+            closeAriaLabel="Close"
+            color="success"
+            fade={true}
+            isOpen={true}
+            tag="div"
+            transition={
+              Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              }
+            }
+          >
+            If failing, try prompting the user with the 
+            <b>
+              Permission
+            </b>
+             block and a message
+          </Alert>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "Reminder Type",
+            "className": "mt-0",
+          },
+          "ref": null,
+          "rendered": "Reminder Type",
+          "type": "label",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <Button
+                color="secondary"
+                disabled={true}
+                onClick={[Function]}
+                outline={false}
+                tag="button"
+              >
+                 Timer 
+              </Button>,
+              <Button
+                color="secondary"
+                disabled={false}
+                onClick={[Function]}
+                outline={true}
+                tag="button"
+              >
+                 Scheduled 
+              </Button>,
+            ],
+            "className": "toggle-group mb-2",
+            "role": "group",
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Timer ",
+                "color": "secondary",
+                "disabled": true,
+                "onClick": [Function],
+                "outline": false,
+                "tag": "button",
+              },
+              "ref": null,
+              "rendered": " Timer ",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Scheduled ",
+                "color": "secondary",
+                "disabled": false,
+                "onClick": [Function],
+                "outline": true,
+                "tag": "button",
+              },
+              "ref": null,
+              "rendered": " Scheduled ",
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": <label>
+              Time From Now
+            </label>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Time From Now",
+            },
+            "ref": null,
+            "rendered": "Time From Now",
+            "type": "label",
+          },
+          "type": Symbol(react.fragment),
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div>
+                Hours
+              </div>,
+              <div
+                className="px-1"
+              >
+                Minutes
+              </div>,
+              <div>
+                Seconds
+              </div>,
+              <div>
+                <Input
+                  onChange={[Function]}
+                  placeholder="0"
+                  type="text"
+                />
+              </div>,
+              <div
+                className="px-1"
+              >
+                <Input
+                  onChange={[Function]}
+                  placeholder="0"
+                  type="text"
+                />
+              </div>,
+              <div>
+                <Input
+                  onChange={[Function]}
+                  placeholder="0"
+                  type="text"
+                />
+              </div>,
+            ],
+            "className": "grid-col-3 text-muted mb-2",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Hours",
+              },
+              "ref": null,
+              "rendered": "Hours",
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Minutes",
+                "className": "px-1",
+              },
+              "ref": null,
+              "rendered": "Minutes",
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Seconds",
+              },
+              "ref": null,
+              "rendered": "Seconds",
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Input
+                  onChange={[Function]}
+                  placeholder="0"
+                  type="text"
+                />,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "onChange": [Function],
+                  "placeholder": "0",
+                  "type": "text",
+                  "value": undefined,
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Input
+                  onChange={[Function]}
+                  placeholder="0"
+                  type="text"
+                />,
+                "className": "px-1",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "onChange": [Function],
+                  "placeholder": "0",
+                  "type": "text",
+                  "value": undefined,
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <Input
+                  onChange={[Function]}
+                  placeholder="0"
+                  type="text"
+                />,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "onChange": [Function],
+                  "placeholder": "0",
+                  "type": "text",
+                  "value": undefined,
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+        false,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "Reminder",
+          },
+          "ref": null,
+          "rendered": "Reminder",
+          "type": "label",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "className": "editor",
+            "placeholder": "Walk the dog, do the dishes, etc.",
+            "raw": Object {},
+            "updateRaw": [Function],
+            "variables": undefined,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              "If failing, try prompting the user with the ",
+              <b>
+                Permission
+              </b>,
+              " block and a message",
+            ],
+            "className": "mt-3",
+            "closeAriaLabel": "Close",
+            "color": "success",
+            "fade": true,
+            "isOpen": true,
+            "tag": "div",
+            "transition": Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            },
+          },
+          "ref": null,
+          "rendered": Array [
+            "If failing, try prompting the user with the ",
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Permission",
+              },
+              "ref": null,
+              "rendered": "Permission",
+              "type": "b",
+            },
+            " block and a message",
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

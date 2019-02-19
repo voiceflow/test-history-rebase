@@ -540,7 +540,6 @@ const rerenderDiagram = async (req, res) => {
   try{
     let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
     let skill = skill_data[0]
-
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS

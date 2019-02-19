@@ -181,9 +181,8 @@ const writeToLogs = async (log_group, msg_details) => {
             ...msg_details
         }
 
-        if(process.env.NODE_ENV === 'development'){
+        if(process.env.NODE_ENV === 'development' || 'test'){
             console.log(`WRITING TO LOGS ${group}`, msg)
-            // console.log(stack_trace)
         }
         let name = `${time} ${stack_trace[1].fileName} ${Math.floor(Math.random()*16777215).toString(16)}`
         let stream = {
@@ -200,16 +199,18 @@ const writeToLogs = async (log_group, msg_details) => {
                 }
             ]
         }
-        try {
-            await cloudWatchLogs.createLogStream(stream).promise()
-        } catch (err) {
-            console.trace(err);
-        }
-        cloudWatchLogs.putLogEvents(params, (err) => {
-            if (err) {
+        if(process.env.NODE_ENV !== 'test'){
+            try {
+                await cloudWatchLogs.createLogStream(stream).promise()
+            } catch (err) {
                 console.trace(err);
-            } 
-        })
+            }
+            cloudWatchLogs.putLogEvents(params, (err) => {
+                if (err) {
+                    console.trace(err);
+                } 
+            })
+        }
     } catch (err) {
         // Do nothing, if logs fail it shouldn't affect runtime
         console.trace(err)

@@ -463,7 +463,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
               res.sendStatus(500)
             }
           })
-
           if(process.env.NODE_ENV !== 'test'){
             analytics.track({
               userId: req.user.id,

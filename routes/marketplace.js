@@ -586,7 +586,7 @@ const copyDefaultTemplate = (req, res) => {
 			let sum = `This is a new summary for the skill ${name}`;
 			let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
 			let locales = ['en-US']
-			let platform = req.body.platform
+			let platform = req.body.platform || 'alexa'
 		
 			if (req.body.locales) {
 				locales = req.body.locales
@@ -607,6 +607,8 @@ const copyDefaultTemplate = (req, res) => {
 					res.send(skill)
 				}
 			})
+		} else {
+			res.send(skill)
 		}
 	}
 	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,

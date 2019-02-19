@@ -12,3 +12,25 @@ describe('ActionGroup', () => {
         expect(component).toMatchSnapshot()
     });
 })
+
+describe('Upload Button', () => {
+    it ('user can upload to alexa', () => {
+        let skill = testSkill
+        const component = shallow(<ActionGroup onClick={clickFn} skill={skill} />)
+        component.find('.publish-btn').simulate('keydown', {keyCode: 32})
+
+        expect(component).toMatchSnapshot();
+        component.unmount()
+    })
+})
+
+describe('Save Button', () => {
+    it ('user can upload to alexa', () => {
+        let skill = testSkill
+        const component = shallow(<ActionGroup onClick={clickFn} skill={skill} />)
+        component.find('#icon-save').simulate('keydown', {keyCode: 32})
+
+        expect(component).toMatchSnapshot();
+        component.unmount()
+    })
+})

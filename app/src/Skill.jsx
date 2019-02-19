@@ -188,7 +188,6 @@ class Skill extends Component {
         })
         .then(res => {
             let skill = res.data
-            console.log(skill)
             if(this.props.preview && !skill.preview){
                 this.setState({
                     error_screen: <Alert color="danger">Preview not enabled for this skill</Alert>

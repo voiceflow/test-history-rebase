@@ -1,0 +1,1062 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IntentEditor render intent block editor 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Intent
+    built_ins={
+      Array [
+        Object {
+          "built_in": true,
+          "inputs": Array [],
+          "key": "AMAZON.CancelIntent",
+          "name": "AMAZON.CancelIntent",
+          "platform": "alexa",
+        },
+      ]
+    }
+    diagram_id="test_id"
+    diagrams={
+      Array [
+        Object {
+          "id": "test_id",
+          "name": "ROOT",
+          "sub_diagrams": Array [],
+        },
+      ]
+    }
+    intents={
+      Array [
+        Object {
+          "_platform": "alexa",
+          "inputs": Array [],
+          "key": "M5s3gMETzsul",
+          "name": "intent_one",
+          "open": true,
+        },
+      ]
+    }
+    node={
+      Object {
+        "color": null,
+        "extras": Object {
+          "alex": Object {
+            "intent": null,
+            "mappings": Array [],
+            "resume": false,
+          },
+          "alexa": Object {
+            "intent": null,
+            "mappings": Array [],
+          },
+          "google": Object {
+            "intent": null,
+            "mappings": Array [],
+            "resume": false,
+          },
+          "type": "intent",
+        },
+        "fade": false,
+        "height": 50,
+        "id": "test",
+        "isMoving": false,
+        "linter": Array [],
+        "listeners": Object {},
+        "locked": false,
+        "name": "Intent",
+        "type": "default",
+        "width": 80,
+        "x": 0,
+        "y": 0,
+      }
+    }
+    platform="alexa"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <ButtonGroup
+          className="toggle-group mb-2"
+          role="group"
+          tag="div"
+        >
+          <Button
+            color="secondary"
+            disabled={true}
+            onClick={[Function]}
+            outline={false}
+            tag="button"
+          >
+             Select 
+          </Button>
+          <Button
+            color="secondary"
+            disabled={false}
+            onClick={[Function]}
+            outline={true}
+            tag="button"
+          >
+             Intents 
+          </Button>
+          <Button
+            color="secondary"
+            disabled={false}
+            onClick={[Function]}
+            outline={true}
+            tag="button"
+          >
+             Slots 
+          </Button>
+        </ButtonGroup>,
+        <div
+          className={null}
+        >
+          <React.Fragment>
+            <div
+              className="d-flex justify-content-between"
+            >
+              <label>
+                Select Intent
+              </label>
+              <PlatformTooltip
+                field="Intent handlers"
+                platform="alexa"
+              />
+            </div>
+            <div
+              className="super-center flex-hard"
+            >
+              <StateManager
+                className="select-box mb-1"
+                classNamePrefix="select-box"
+                components={
+                  Object {
+                    "Option": [Function],
+                    "SingleValue": [Function],
+                  }
+                }
+                defaultInputValue=""
+                defaultMenuIsOpen={false}
+                defaultValue={null}
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "built_in": undefined,
+                      "inputs": Array [],
+                      "key": "M5s3gMETzsul",
+                      "label": "intent_one",
+                      "value": "intent_one",
+                    },
+                    Object {
+                      "built_in": true,
+                      "inputs": Array [],
+                      "key": "AMAZON.CancelIntent",
+                      "label": "CancelIntent",
+                      "value": "AMAZON.CancelIntent",
+                    },
+                  ]
+                }
+                placeholder="Select Intent"
+                styles={
+                  Object {
+                    "singleValue": [Function],
+                  }
+                }
+                value={null}
+              />
+            </div>
+          </React.Fragment>
+        </div>,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            <Button
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={false}
+              tag="button"
+            >
+               Select 
+            </Button>,
+            <Button
+              color="secondary"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+               Intents 
+            </Button>,
+            <Button
+              color="secondary"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+               Slots 
+            </Button>,
+          ],
+          "className": "toggle-group mb-2",
+          "role": "group",
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": " Select ",
+              "color": "secondary",
+              "disabled": true,
+              "onClick": [Function],
+              "outline": false,
+              "tag": "button",
+            },
+            "ref": null,
+            "rendered": " Select ",
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": " Intents ",
+              "color": "secondary",
+              "disabled": false,
+              "onClick": [Function],
+              "outline": true,
+              "tag": "button",
+            },
+            "ref": null,
+            "rendered": " Intents ",
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": " Slots ",
+              "color": "secondary",
+              "disabled": false,
+              "onClick": [Function],
+              "outline": true,
+              "tag": "button",
+            },
+            "ref": null,
+            "rendered": " Slots ",
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <React.Fragment>
+              <div
+                className="d-flex justify-content-between"
+              >
+                <label>
+                  Select Intent
+                </label>
+                <PlatformTooltip
+                  field="Intent handlers"
+                  platform="alexa"
+                />
+              </div>
+              <div
+                className="super-center flex-hard"
+              >
+                <StateManager
+                  className="select-box mb-1"
+                  classNamePrefix="select-box"
+                  components={
+                    Object {
+                      "Option": [Function],
+                      "SingleValue": [Function],
+                    }
+                  }
+                  defaultInputValue=""
+                  defaultMenuIsOpen={false}
+                  defaultValue={null}
+                  onChange={[Function]}
+                  options={
+                    Array [
+                      Object {
+                        "built_in": undefined,
+                        "inputs": Array [],
+                        "key": "M5s3gMETzsul",
+                        "label": "intent_one",
+                        "value": "intent_one",
+                      },
+                      Object {
+                        "built_in": true,
+                        "inputs": Array [],
+                        "key": "AMAZON.CancelIntent",
+                        "label": "CancelIntent",
+                        "value": "AMAZON.CancelIntent",
+                      },
+                    ]
+                  }
+                  placeholder="Select Intent"
+                  styles={
+                    Object {
+                      "singleValue": [Function],
+                    }
+                  }
+                  value={null}
+                />
+              </div>
+            </React.Fragment>,
+            null,
+            null,
+          ],
+          "className": null,
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="d-flex justify-content-between"
+                >
+                  <label>
+                    Select Intent
+                  </label>
+                  <PlatformTooltip
+                    field="Intent handlers"
+                    platform="alexa"
+                  />
+                </div>,
+                <div
+                  className="super-center flex-hard"
+                >
+                  <StateManager
+                    className="select-box mb-1"
+                    classNamePrefix="select-box"
+                    components={
+                      Object {
+                        "Option": [Function],
+                        "SingleValue": [Function],
+                      }
+                    }
+                    defaultInputValue=""
+                    defaultMenuIsOpen={false}
+                    defaultValue={null}
+                    onChange={[Function]}
+                    options={
+                      Array [
+                        Object {
+                          "built_in": undefined,
+                          "inputs": Array [],
+                          "key": "M5s3gMETzsul",
+                          "label": "intent_one",
+                          "value": "intent_one",
+                        },
+                        Object {
+                          "built_in": true,
+                          "inputs": Array [],
+                          "key": "AMAZON.CancelIntent",
+                          "label": "CancelIntent",
+                          "value": "AMAZON.CancelIntent",
+                        },
+                      ]
+                    }
+                    placeholder="Select Intent"
+                    styles={
+                      Object {
+                        "singleValue": [Function],
+                      }
+                    }
+                    value={null}
+                  />
+                </div>,
+                false,
+              ],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <label>
+                      Select Intent
+                    </label>,
+                    <PlatformTooltip
+                      field="Intent handlers"
+                      platform="alexa"
+                    />,
+                  ],
+                  "className": "d-flex justify-content-between",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Select Intent",
+                    },
+                    "ref": null,
+                    "rendered": "Select Intent",
+                    "type": "label",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "field": "Intent handlers",
+                      "platform": "alexa",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                ],
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <StateManager
+                    className="select-box mb-1"
+                    classNamePrefix="select-box"
+                    components={
+                      Object {
+                        "Option": [Function],
+                        "SingleValue": [Function],
+                      }
+                    }
+                    defaultInputValue=""
+                    defaultMenuIsOpen={false}
+                    defaultValue={null}
+                    onChange={[Function]}
+                    options={
+                      Array [
+                        Object {
+                          "built_in": undefined,
+                          "inputs": Array [],
+                          "key": "M5s3gMETzsul",
+                          "label": "intent_one",
+                          "value": "intent_one",
+                        },
+                        Object {
+                          "built_in": true,
+                          "inputs": Array [],
+                          "key": "AMAZON.CancelIntent",
+                          "label": "CancelIntent",
+                          "value": "AMAZON.CancelIntent",
+                        },
+                      ]
+                    }
+                    placeholder="Select Intent"
+                    styles={
+                      Object {
+                        "singleValue": [Function],
+                      }
+                    }
+                    value={null}
+                  />,
+                  "className": "super-center flex-hard",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "className": "select-box mb-1",
+                    "classNamePrefix": "select-box",
+                    "components": Object {
+                      "Option": [Function],
+                      "SingleValue": [Function],
+                    },
+                    "defaultInputValue": "",
+                    "defaultMenuIsOpen": false,
+                    "defaultValue": null,
+                    "isDisabled": undefined,
+                    "onChange": [Function],
+                    "options": Array [
+                      Object {
+                        "built_in": undefined,
+                        "inputs": Array [],
+                        "key": "M5s3gMETzsul",
+                        "label": "intent_one",
+                        "value": "intent_one",
+                      },
+                      Object {
+                        "built_in": true,
+                        "inputs": Array [],
+                        "key": "AMAZON.CancelIntent",
+                        "label": "CancelIntent",
+                        "value": "AMAZON.CancelIntent",
+                      },
+                    ],
+                    "placeholder": "Select Intent",
+                    "styles": Object {
+                      "singleValue": [Function],
+                    },
+                    "value": null,
+                  },
+                  "ref": Object {
+                    "current": null,
+                  },
+                  "rendered": null,
+                  "type": [Function],
+                },
+                "type": "div",
+              },
+              false,
+            ],
+            "type": Symbol(react.fragment),
+          },
+          null,
+          null,
+        ],
+        "type": "div",
+      },
+    ],
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <ButtonGroup
+            className="toggle-group mb-2"
+            role="group"
+            tag="div"
+          >
+            <Button
+              color="secondary"
+              disabled={true}
+              onClick={[Function]}
+              outline={false}
+              tag="button"
+            >
+               Select 
+            </Button>
+            <Button
+              color="secondary"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+               Intents 
+            </Button>
+            <Button
+              color="secondary"
+              disabled={false}
+              onClick={[Function]}
+              outline={true}
+              tag="button"
+            >
+               Slots 
+            </Button>
+          </ButtonGroup>,
+          <div
+            className={null}
+          >
+            <React.Fragment>
+              <div
+                className="d-flex justify-content-between"
+              >
+                <label>
+                  Select Intent
+                </label>
+                <PlatformTooltip
+                  field="Intent handlers"
+                  platform="alexa"
+                />
+              </div>
+              <div
+                className="super-center flex-hard"
+              >
+                <StateManager
+                  className="select-box mb-1"
+                  classNamePrefix="select-box"
+                  components={
+                    Object {
+                      "Option": [Function],
+                      "SingleValue": [Function],
+                    }
+                  }
+                  defaultInputValue=""
+                  defaultMenuIsOpen={false}
+                  defaultValue={null}
+                  onChange={[Function]}
+                  options={
+                    Array [
+                      Object {
+                        "built_in": undefined,
+                        "inputs": Array [],
+                        "key": "M5s3gMETzsul",
+                        "label": "intent_one",
+                        "value": "intent_one",
+                      },
+                      Object {
+                        "built_in": true,
+                        "inputs": Array [],
+                        "key": "AMAZON.CancelIntent",
+                        "label": "CancelIntent",
+                        "value": "AMAZON.CancelIntent",
+                      },
+                    ]
+                  }
+                  placeholder="Select Intent"
+                  styles={
+                    Object {
+                      "singleValue": [Function],
+                    }
+                  }
+                  value={null}
+                />
+              </div>
+            </React.Fragment>
+          </div>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <Button
+                color="secondary"
+                disabled={true}
+                onClick={[Function]}
+                outline={false}
+                tag="button"
+              >
+                 Select 
+              </Button>,
+              <Button
+                color="secondary"
+                disabled={false}
+                onClick={[Function]}
+                outline={true}
+                tag="button"
+              >
+                 Intents 
+              </Button>,
+              <Button
+                color="secondary"
+                disabled={false}
+                onClick={[Function]}
+                outline={true}
+                tag="button"
+              >
+                 Slots 
+              </Button>,
+            ],
+            "className": "toggle-group mb-2",
+            "role": "group",
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Select ",
+                "color": "secondary",
+                "disabled": true,
+                "onClick": [Function],
+                "outline": false,
+                "tag": "button",
+              },
+              "ref": null,
+              "rendered": " Select ",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Intents ",
+                "color": "secondary",
+                "disabled": false,
+                "onClick": [Function],
+                "outline": true,
+                "tag": "button",
+              },
+              "ref": null,
+              "rendered": " Intents ",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": " Slots ",
+                "color": "secondary",
+                "disabled": false,
+                "onClick": [Function],
+                "outline": true,
+                "tag": "button",
+              },
+              "ref": null,
+              "rendered": " Slots ",
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <React.Fragment>
+                <div
+                  className="d-flex justify-content-between"
+                >
+                  <label>
+                    Select Intent
+                  </label>
+                  <PlatformTooltip
+                    field="Intent handlers"
+                    platform="alexa"
+                  />
+                </div>
+                <div
+                  className="super-center flex-hard"
+                >
+                  <StateManager
+                    className="select-box mb-1"
+                    classNamePrefix="select-box"
+                    components={
+                      Object {
+                        "Option": [Function],
+                        "SingleValue": [Function],
+                      }
+                    }
+                    defaultInputValue=""
+                    defaultMenuIsOpen={false}
+                    defaultValue={null}
+                    onChange={[Function]}
+                    options={
+                      Array [
+                        Object {
+                          "built_in": undefined,
+                          "inputs": Array [],
+                          "key": "M5s3gMETzsul",
+                          "label": "intent_one",
+                          "value": "intent_one",
+                        },
+                        Object {
+                          "built_in": true,
+                          "inputs": Array [],
+                          "key": "AMAZON.CancelIntent",
+                          "label": "CancelIntent",
+                          "value": "AMAZON.CancelIntent",
+                        },
+                      ]
+                    }
+                    placeholder="Select Intent"
+                    styles={
+                      Object {
+                        "singleValue": [Function],
+                      }
+                    }
+                    value={null}
+                  />
+                </div>
+              </React.Fragment>,
+              null,
+              null,
+            ],
+            "className": null,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="d-flex justify-content-between"
+                  >
+                    <label>
+                      Select Intent
+                    </label>
+                    <PlatformTooltip
+                      field="Intent handlers"
+                      platform="alexa"
+                    />
+                  </div>,
+                  <div
+                    className="super-center flex-hard"
+                  >
+                    <StateManager
+                      className="select-box mb-1"
+                      classNamePrefix="select-box"
+                      components={
+                        Object {
+                          "Option": [Function],
+                          "SingleValue": [Function],
+                        }
+                      }
+                      defaultInputValue=""
+                      defaultMenuIsOpen={false}
+                      defaultValue={null}
+                      onChange={[Function]}
+                      options={
+                        Array [
+                          Object {
+                            "built_in": undefined,
+                            "inputs": Array [],
+                            "key": "M5s3gMETzsul",
+                            "label": "intent_one",
+                            "value": "intent_one",
+                          },
+                          Object {
+                            "built_in": true,
+                            "inputs": Array [],
+                            "key": "AMAZON.CancelIntent",
+                            "label": "CancelIntent",
+                            "value": "AMAZON.CancelIntent",
+                          },
+                        ]
+                      }
+                      placeholder="Select Intent"
+                      styles={
+                        Object {
+                          "singleValue": [Function],
+                        }
+                      }
+                      value={null}
+                    />
+                  </div>,
+                  false,
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <label>
+                        Select Intent
+                      </label>,
+                      <PlatformTooltip
+                        field="Intent handlers"
+                        platform="alexa"
+                      />,
+                    ],
+                    "className": "d-flex justify-content-between",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Select Intent",
+                      },
+                      "ref": null,
+                      "rendered": "Select Intent",
+                      "type": "label",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "field": "Intent handlers",
+                        "platform": "alexa",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                  ],
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <StateManager
+                      className="select-box mb-1"
+                      classNamePrefix="select-box"
+                      components={
+                        Object {
+                          "Option": [Function],
+                          "SingleValue": [Function],
+                        }
+                      }
+                      defaultInputValue=""
+                      defaultMenuIsOpen={false}
+                      defaultValue={null}
+                      onChange={[Function]}
+                      options={
+                        Array [
+                          Object {
+                            "built_in": undefined,
+                            "inputs": Array [],
+                            "key": "M5s3gMETzsul",
+                            "label": "intent_one",
+                            "value": "intent_one",
+                          },
+                          Object {
+                            "built_in": true,
+                            "inputs": Array [],
+                            "key": "AMAZON.CancelIntent",
+                            "label": "CancelIntent",
+                            "value": "AMAZON.CancelIntent",
+                          },
+                        ]
+                      }
+                      placeholder="Select Intent"
+                      styles={
+                        Object {
+                          "singleValue": [Function],
+                        }
+                      }
+                      value={null}
+                    />,
+                    "className": "super-center flex-hard",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "className": "select-box mb-1",
+                      "classNamePrefix": "select-box",
+                      "components": Object {
+                        "Option": [Function],
+                        "SingleValue": [Function],
+                      },
+                      "defaultInputValue": "",
+                      "defaultMenuIsOpen": false,
+                      "defaultValue": null,
+                      "isDisabled": undefined,
+                      "onChange": [Function],
+                      "options": Array [
+                        Object {
+                          "built_in": undefined,
+                          "inputs": Array [],
+                          "key": "M5s3gMETzsul",
+                          "label": "intent_one",
+                          "value": "intent_one",
+                        },
+                        Object {
+                          "built_in": true,
+                          "inputs": Array [],
+                          "key": "AMAZON.CancelIntent",
+                          "label": "CancelIntent",
+                          "value": "AMAZON.CancelIntent",
+                        },
+                      ],
+                      "placeholder": "Select Intent",
+                      "styles": Object {
+                        "singleValue": [Function],
+                      },
+                      "value": null,
+                    },
+                    "ref": Object {
+                      "current": null,
+                    },
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": "div",
+                },
+                false,
+              ],
+              "type": Symbol(react.fragment),
+            },
+            null,
+            null,
+          ],
+          "type": "div",
+        },
+      ],
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

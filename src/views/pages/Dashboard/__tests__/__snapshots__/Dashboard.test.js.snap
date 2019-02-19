@@ -1,0 +1,2381 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard render dashboard 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <DashBoard />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          id="navbar-top-left"
+        >
+          <div
+            className="searchBar ml-4"
+          >
+            <Input
+              className="search-input form-control-2"
+              onChange={[Function]}
+              placeholder="Search Skills"
+              type="text"
+            />
+          </div>
+        </div>,
+        <div
+          className="title-group no-select pr-2"
+        >
+          <div
+            className="subheader-right"
+          >
+            <Tooltip
+              animateFill={true}
+              animation="shift"
+              arrow={false}
+              arrowSize="regular"
+              className="ml-1 mr-4"
+              delay={0}
+              disabled={false}
+              distance={16}
+              duration={375}
+              followCursor={false}
+              hideDelay={0}
+              hideDuration={375}
+              hideOnClick={true}
+              html={null}
+              inertia={false}
+              interactive={false}
+              interactiveBorder={2}
+              multiple={false}
+              offset={0}
+              onHidden={[Function]}
+              onHide={[Function]}
+              onRequestClose={[Function]}
+              onShow={[Function]}
+              onShown={[Function]}
+              popperOptions={Object {}}
+              position="bottom"
+              size="regular"
+              sticky={false}
+              stickyDuration={200}
+              style={Object {}}
+              theme="dark"
+              title="Join the Voiceflow forum for help and updates"
+              touchHold={false}
+              trigger="mouseenter focus"
+              unmountHTMLWhenHide={false}
+            >
+              <form
+                action="https://forum.getvoiceflow.com"
+              >
+                <button
+                  className="nav-btn"
+                  type="submit"
+                >
+                  <i
+                    className="fas fa-info-circle"
+                  />
+                </button>
+              </form>
+            </Tooltip>
+            <Link
+              className="no-underline ml-1"
+              replace={false}
+              to="/templates"
+            >
+              <button
+                className="btn purple-btn"
+                varient="contained"
+              >
+                New Project
+              </button>
+            </Link>
+          </div>
+        </div>,
+        <ConfirmModal
+          confirm={false}
+          toggle={[Function]}
+        />,
+        <WarningModal
+          dismiss={[Function]}
+          error={null}
+        />,
+        <div
+          className="my-5 pt-5 container"
+        >
+          <div
+            id="loading-diagram"
+          >
+            <div
+              className="text-center"
+            >
+              <h5
+                className="text-muted mb-2"
+              >
+                Loading Skills
+              </h5>
+              <span
+                className="loader"
+              />
+            </div>
+          </div>
+        </div>,
+      ],
+      "id": "app",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            className="searchBar ml-4"
+          >
+            <Input
+              className="search-input form-control-2"
+              onChange={[Function]}
+              placeholder="Search Skills"
+              type="text"
+            />
+          </div>,
+          "id": "navbar-top-left",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <Input
+              className="search-input form-control-2"
+              onChange={[Function]}
+              placeholder="Search Skills"
+              type="text"
+            />,
+            "className": "searchBar ml-4",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "className": "search-input form-control-2",
+              "onChange": [Function],
+              "placeholder": "Search Skills",
+              "type": "text",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": "div",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            className="subheader-right"
+          >
+            <Tooltip
+              animateFill={true}
+              animation="shift"
+              arrow={false}
+              arrowSize="regular"
+              className="ml-1 mr-4"
+              delay={0}
+              disabled={false}
+              distance={16}
+              duration={375}
+              followCursor={false}
+              hideDelay={0}
+              hideDuration={375}
+              hideOnClick={true}
+              html={null}
+              inertia={false}
+              interactive={false}
+              interactiveBorder={2}
+              multiple={false}
+              offset={0}
+              onHidden={[Function]}
+              onHide={[Function]}
+              onRequestClose={[Function]}
+              onShow={[Function]}
+              onShown={[Function]}
+              popperOptions={Object {}}
+              position="bottom"
+              size="regular"
+              sticky={false}
+              stickyDuration={200}
+              style={Object {}}
+              theme="dark"
+              title="Join the Voiceflow forum for help and updates"
+              touchHold={false}
+              trigger="mouseenter focus"
+              unmountHTMLWhenHide={false}
+            >
+              <form
+                action="https://forum.getvoiceflow.com"
+              >
+                <button
+                  className="nav-btn"
+                  type="submit"
+                >
+                  <i
+                    className="fas fa-info-circle"
+                  />
+                </button>
+              </form>
+            </Tooltip>
+            <Link
+              className="no-underline ml-1"
+              replace={false}
+              to="/templates"
+            >
+              <button
+                className="btn purple-btn"
+                varient="contained"
+              >
+                New Project
+              </button>
+            </Link>
+          </div>,
+          "className": "title-group no-select pr-2",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className="ml-1 mr-4"
+                delay={0}
+                disabled={false}
+                distance={16}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Join the Voiceflow forum for help and updates"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>
+              </Tooltip>,
+              <Link
+                className="no-underline ml-1"
+                replace={false}
+                to="/templates"
+              >
+                <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>
+              </Link>,
+            ],
+            "className": "subheader-right",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "animateFill": true,
+                "animation": "shift",
+                "arrow": false,
+                "arrowSize": "regular",
+                "children": <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>,
+                "className": "ml-1 mr-4",
+                "delay": 0,
+                "disabled": false,
+                "distance": 16,
+                "duration": 375,
+                "followCursor": false,
+                "hideDelay": 0,
+                "hideDuration": 375,
+                "hideOnClick": true,
+                "html": null,
+                "inertia": false,
+                "interactive": false,
+                "interactiveBorder": 2,
+                "multiple": false,
+                "offset": 0,
+                "onHidden": [Function],
+                "onHide": [Function],
+                "onRequestClose": [Function],
+                "onShow": [Function],
+                "onShown": [Function],
+                "popperOptions": Object {},
+                "position": "bottom",
+                "size": "regular",
+                "sticky": false,
+                "stickyDuration": 200,
+                "style": Object {},
+                "theme": "dark",
+                "title": "Join the Voiceflow forum for help and updates",
+                "touchHold": false,
+                "trigger": "mouseenter focus",
+                "unmountHTMLWhenHide": false,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "action": "https://forum.getvoiceflow.com",
+                  "children": <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <i
+                      className="fas fa-info-circle"
+                    />,
+                    "className": "nav-btn",
+                    "type": "submit",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "className": "fas fa-info-circle",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": "i",
+                  },
+                  "type": "button",
+                },
+                "type": "form",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>,
+                "className": "no-underline ml-1",
+                "replace": false,
+                "to": "/templates",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "New Project",
+                  "className": "btn purple-btn",
+                  "varient": "contained",
+                },
+                "ref": null,
+                "rendered": "New Project",
+                "type": "button",
+              },
+              "type": [Function],
+            },
+          ],
+          "type": "div",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "confirm": false,
+          "toggle": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "dismiss": [Function],
+          "error": null,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            id="loading-diagram"
+          >
+            <div
+              className="text-center"
+            >
+              <h5
+                className="text-muted mb-2"
+              >
+                Loading Skills
+              </h5>
+              <span
+                className="loader"
+              />
+            </div>
+          </div>,
+          "className": "my-5 pt-5 container",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="text-center"
+            >
+              <h5
+                className="text-muted mb-2"
+              >
+                Loading Skills
+              </h5>
+              <span
+                className="loader"
+              />
+            </div>,
+            "id": "loading-diagram",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>,
+                <span
+                  className="loader"
+                />,
+              ],
+              "className": "text-center",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Loading Skills",
+                  "className": "text-muted mb-2",
+                },
+                "ref": null,
+                "rendered": "Loading Skills",
+                "type": "h5",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "className": "loader",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "span",
+              },
+            ],
+            "type": "div",
+          },
+          "type": "div",
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            id="navbar-top-left"
+          >
+            <div
+              className="searchBar ml-4"
+            >
+              <Input
+                className="search-input form-control-2"
+                onChange={[Function]}
+                placeholder="Search Skills"
+                type="text"
+              />
+            </div>
+          </div>,
+          <div
+            className="title-group no-select pr-2"
+          >
+            <div
+              className="subheader-right"
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className="ml-1 mr-4"
+                delay={0}
+                disabled={false}
+                distance={16}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Join the Voiceflow forum for help and updates"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>
+              </Tooltip>
+              <Link
+                className="no-underline ml-1"
+                replace={false}
+                to="/templates"
+              >
+                <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>
+              </Link>
+            </div>
+          </div>,
+          <ConfirmModal
+            confirm={false}
+            toggle={[Function]}
+          />,
+          <WarningModal
+            dismiss={[Function]}
+            error={null}
+          />,
+          <div
+            className="my-5 pt-5 container"
+          >
+            <div
+              id="loading-diagram"
+            >
+              <div
+                className="text-center"
+              >
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>
+                <span
+                  className="loader"
+                />
+              </div>
+            </div>
+          </div>,
+        ],
+        "id": "app",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="searchBar ml-4"
+            >
+              <Input
+                className="search-input form-control-2"
+                onChange={[Function]}
+                placeholder="Search Skills"
+                type="text"
+              />
+            </div>,
+            "id": "navbar-top-left",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Input
+                className="search-input form-control-2"
+                onChange={[Function]}
+                placeholder="Search Skills"
+                type="text"
+              />,
+              "className": "searchBar ml-4",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "className": "search-input form-control-2",
+                "onChange": [Function],
+                "placeholder": "Search Skills",
+                "type": "text",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="subheader-right"
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className="ml-1 mr-4"
+                delay={0}
+                disabled={false}
+                distance={16}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Join the Voiceflow forum for help and updates"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>
+              </Tooltip>
+              <Link
+                className="no-underline ml-1"
+                replace={false}
+                to="/templates"
+              >
+                <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>
+              </Link>
+            </div>,
+            "className": "title-group no-select pr-2",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <Tooltip
+                  animateFill={true}
+                  animation="shift"
+                  arrow={false}
+                  arrowSize="regular"
+                  className="ml-1 mr-4"
+                  delay={0}
+                  disabled={false}
+                  distance={16}
+                  duration={375}
+                  followCursor={false}
+                  hideDelay={0}
+                  hideDuration={375}
+                  hideOnClick={true}
+                  html={null}
+                  inertia={false}
+                  interactive={false}
+                  interactiveBorder={2}
+                  multiple={false}
+                  offset={0}
+                  onHidden={[Function]}
+                  onHide={[Function]}
+                  onRequestClose={[Function]}
+                  onShow={[Function]}
+                  onShown={[Function]}
+                  popperOptions={Object {}}
+                  position="bottom"
+                  size="regular"
+                  sticky={false}
+                  stickyDuration={200}
+                  style={Object {}}
+                  theme="dark"
+                  title="Join the Voiceflow forum for help and updates"
+                  touchHold={false}
+                  trigger="mouseenter focus"
+                  unmountHTMLWhenHide={false}
+                >
+                  <form
+                    action="https://forum.getvoiceflow.com"
+                  >
+                    <button
+                      className="nav-btn"
+                      type="submit"
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                      />
+                    </button>
+                  </form>
+                </Tooltip>,
+                <Link
+                  className="no-underline ml-1"
+                  replace={false}
+                  to="/templates"
+                >
+                  <button
+                    className="btn purple-btn"
+                    varient="contained"
+                  >
+                    New Project
+                  </button>
+                </Link>,
+              ],
+              "className": "subheader-right",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "animateFill": true,
+                  "animation": "shift",
+                  "arrow": false,
+                  "arrowSize": "regular",
+                  "children": <form
+                    action="https://forum.getvoiceflow.com"
+                  >
+                    <button
+                      className="nav-btn"
+                      type="submit"
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                      />
+                    </button>
+                  </form>,
+                  "className": "ml-1 mr-4",
+                  "delay": 0,
+                  "disabled": false,
+                  "distance": 16,
+                  "duration": 375,
+                  "followCursor": false,
+                  "hideDelay": 0,
+                  "hideDuration": 375,
+                  "hideOnClick": true,
+                  "html": null,
+                  "inertia": false,
+                  "interactive": false,
+                  "interactiveBorder": 2,
+                  "multiple": false,
+                  "offset": 0,
+                  "onHidden": [Function],
+                  "onHide": [Function],
+                  "onRequestClose": [Function],
+                  "onShow": [Function],
+                  "onShown": [Function],
+                  "popperOptions": Object {},
+                  "position": "bottom",
+                  "size": "regular",
+                  "sticky": false,
+                  "stickyDuration": 200,
+                  "style": Object {},
+                  "theme": "dark",
+                  "title": "Join the Voiceflow forum for help and updates",
+                  "touchHold": false,
+                  "trigger": "mouseenter focus",
+                  "unmountHTMLWhenHide": false,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "action": "https://forum.getvoiceflow.com",
+                    "children": <button
+                      className="nav-btn"
+                      type="submit"
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                      />
+                    </button>,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <i
+                        className="fas fa-info-circle"
+                      />,
+                      "className": "nav-btn",
+                      "type": "submit",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "className": "fas fa-info-circle",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": "i",
+                    },
+                    "type": "button",
+                  },
+                  "type": "form",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <button
+                    className="btn purple-btn"
+                    varient="contained"
+                  >
+                    New Project
+                  </button>,
+                  "className": "no-underline ml-1",
+                  "replace": false,
+                  "to": "/templates",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "New Project",
+                    "className": "btn purple-btn",
+                    "varient": "contained",
+                  },
+                  "ref": null,
+                  "rendered": "New Project",
+                  "type": "button",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "confirm": false,
+            "toggle": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "dismiss": [Function],
+            "error": null,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              id="loading-diagram"
+            >
+              <div
+                className="text-center"
+              >
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>
+                <span
+                  className="loader"
+                />
+              </div>
+            </div>,
+            "className": "my-5 pt-5 container",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <div
+                className="text-center"
+              >
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>
+                <span
+                  className="loader"
+                />
+              </div>,
+              "id": "loading-diagram",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <h5
+                    className="text-muted mb-2"
+                  >
+                    Loading Skills
+                  </h5>,
+                  <span
+                    className="loader"
+                  />,
+                ],
+                "className": "text-center",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Loading Skills",
+                    "className": "text-muted mb-2",
+                  },
+                  "ref": null,
+                  "rendered": "Loading Skills",
+                  "type": "h5",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "className": "loader",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "span",
+                },
+              ],
+              "type": "div",
+            },
+            "type": "div",
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`dashboard create skill create new skill 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <DashBoard
+    onClick={[MockFunction]}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div
+          id="navbar-top-left"
+        >
+          <div
+            className="searchBar ml-4"
+          >
+            <Input
+              className="search-input form-control-2"
+              onChange={[Function]}
+              placeholder="Search Skills"
+              type="text"
+            />
+          </div>
+        </div>,
+        <div
+          className="title-group no-select pr-2"
+        >
+          <div
+            className="subheader-right"
+          >
+            <Tooltip
+              animateFill={true}
+              animation="shift"
+              arrow={false}
+              arrowSize="regular"
+              className="ml-1 mr-4"
+              delay={0}
+              disabled={false}
+              distance={16}
+              duration={375}
+              followCursor={false}
+              hideDelay={0}
+              hideDuration={375}
+              hideOnClick={true}
+              html={null}
+              inertia={false}
+              interactive={false}
+              interactiveBorder={2}
+              multiple={false}
+              offset={0}
+              onHidden={[Function]}
+              onHide={[Function]}
+              onRequestClose={[Function]}
+              onShow={[Function]}
+              onShown={[Function]}
+              popperOptions={Object {}}
+              position="bottom"
+              size="regular"
+              sticky={false}
+              stickyDuration={200}
+              style={Object {}}
+              theme="dark"
+              title="Join the Voiceflow forum for help and updates"
+              touchHold={false}
+              trigger="mouseenter focus"
+              unmountHTMLWhenHide={false}
+            >
+              <form
+                action="https://forum.getvoiceflow.com"
+              >
+                <button
+                  className="nav-btn"
+                  type="submit"
+                >
+                  <i
+                    className="fas fa-info-circle"
+                  />
+                </button>
+              </form>
+            </Tooltip>
+            <Link
+              className="no-underline ml-1"
+              replace={false}
+              to="/templates"
+            >
+              <button
+                className="btn purple-btn"
+                varient="contained"
+              >
+                New Project
+              </button>
+            </Link>
+          </div>
+        </div>,
+        <ConfirmModal
+          confirm={false}
+          toggle={[Function]}
+        />,
+        <WarningModal
+          dismiss={[Function]}
+          error={null}
+        />,
+        <div
+          className="my-5 pt-5 container"
+        >
+          <div
+            id="loading-diagram"
+          >
+            <div
+              className="text-center"
+            >
+              <h5
+                className="text-muted mb-2"
+              >
+                Loading Skills
+              </h5>
+              <span
+                className="loader"
+              />
+            </div>
+          </div>
+        </div>,
+      ],
+      "id": "app",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            className="searchBar ml-4"
+          >
+            <Input
+              className="search-input form-control-2"
+              onChange={[Function]}
+              placeholder="Search Skills"
+              type="text"
+            />
+          </div>,
+          "id": "navbar-top-left",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <Input
+              className="search-input form-control-2"
+              onChange={[Function]}
+              placeholder="Search Skills"
+              type="text"
+            />,
+            "className": "searchBar ml-4",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "className": "search-input form-control-2",
+              "onChange": [Function],
+              "placeholder": "Search Skills",
+              "type": "text",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          "type": "div",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            className="subheader-right"
+          >
+            <Tooltip
+              animateFill={true}
+              animation="shift"
+              arrow={false}
+              arrowSize="regular"
+              className="ml-1 mr-4"
+              delay={0}
+              disabled={false}
+              distance={16}
+              duration={375}
+              followCursor={false}
+              hideDelay={0}
+              hideDuration={375}
+              hideOnClick={true}
+              html={null}
+              inertia={false}
+              interactive={false}
+              interactiveBorder={2}
+              multiple={false}
+              offset={0}
+              onHidden={[Function]}
+              onHide={[Function]}
+              onRequestClose={[Function]}
+              onShow={[Function]}
+              onShown={[Function]}
+              popperOptions={Object {}}
+              position="bottom"
+              size="regular"
+              sticky={false}
+              stickyDuration={200}
+              style={Object {}}
+              theme="dark"
+              title="Join the Voiceflow forum for help and updates"
+              touchHold={false}
+              trigger="mouseenter focus"
+              unmountHTMLWhenHide={false}
+            >
+              <form
+                action="https://forum.getvoiceflow.com"
+              >
+                <button
+                  className="nav-btn"
+                  type="submit"
+                >
+                  <i
+                    className="fas fa-info-circle"
+                  />
+                </button>
+              </form>
+            </Tooltip>
+            <Link
+              className="no-underline ml-1"
+              replace={false}
+              to="/templates"
+            >
+              <button
+                className="btn purple-btn"
+                varient="contained"
+              >
+                New Project
+              </button>
+            </Link>
+          </div>,
+          "className": "title-group no-select pr-2",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className="ml-1 mr-4"
+                delay={0}
+                disabled={false}
+                distance={16}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Join the Voiceflow forum for help and updates"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>
+              </Tooltip>,
+              <Link
+                className="no-underline ml-1"
+                replace={false}
+                to="/templates"
+              >
+                <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>
+              </Link>,
+            ],
+            "className": "subheader-right",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "animateFill": true,
+                "animation": "shift",
+                "arrow": false,
+                "arrowSize": "regular",
+                "children": <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>,
+                "className": "ml-1 mr-4",
+                "delay": 0,
+                "disabled": false,
+                "distance": 16,
+                "duration": 375,
+                "followCursor": false,
+                "hideDelay": 0,
+                "hideDuration": 375,
+                "hideOnClick": true,
+                "html": null,
+                "inertia": false,
+                "interactive": false,
+                "interactiveBorder": 2,
+                "multiple": false,
+                "offset": 0,
+                "onHidden": [Function],
+                "onHide": [Function],
+                "onRequestClose": [Function],
+                "onShow": [Function],
+                "onShown": [Function],
+                "popperOptions": Object {},
+                "position": "bottom",
+                "size": "regular",
+                "sticky": false,
+                "stickyDuration": 200,
+                "style": Object {},
+                "theme": "dark",
+                "title": "Join the Voiceflow forum for help and updates",
+                "touchHold": false,
+                "trigger": "mouseenter focus",
+                "unmountHTMLWhenHide": false,
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "action": "https://forum.getvoiceflow.com",
+                  "children": <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <i
+                      className="fas fa-info-circle"
+                    />,
+                    "className": "nav-btn",
+                    "type": "submit",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "className": "fas fa-info-circle",
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": "i",
+                  },
+                  "type": "button",
+                },
+                "type": "form",
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>,
+                "className": "no-underline ml-1",
+                "replace": false,
+                "to": "/templates",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "New Project",
+                  "className": "btn purple-btn",
+                  "varient": "contained",
+                },
+                "ref": null,
+                "rendered": "New Project",
+                "type": "button",
+              },
+              "type": [Function],
+            },
+          ],
+          "type": "div",
+        },
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "confirm": false,
+          "toggle": [Function],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "dismiss": [Function],
+          "error": null,
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            id="loading-diagram"
+          >
+            <div
+              className="text-center"
+            >
+              <h5
+                className="text-muted mb-2"
+              >
+                Loading Skills
+              </h5>
+              <span
+                className="loader"
+              />
+            </div>
+          </div>,
+          "className": "my-5 pt-5 container",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="text-center"
+            >
+              <h5
+                className="text-muted mb-2"
+              >
+                Loading Skills
+              </h5>
+              <span
+                className="loader"
+              />
+            </div>,
+            "id": "loading-diagram",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>,
+                <span
+                  className="loader"
+                />,
+              ],
+              "className": "text-center",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Loading Skills",
+                  "className": "text-muted mb-2",
+                },
+                "ref": null,
+                "rendered": "Loading Skills",
+                "type": "h5",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "className": "loader",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "span",
+              },
+            ],
+            "type": "div",
+          },
+          "type": "div",
+        },
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            id="navbar-top-left"
+          >
+            <div
+              className="searchBar ml-4"
+            >
+              <Input
+                className="search-input form-control-2"
+                onChange={[Function]}
+                placeholder="Search Skills"
+                type="text"
+              />
+            </div>
+          </div>,
+          <div
+            className="title-group no-select pr-2"
+          >
+            <div
+              className="subheader-right"
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className="ml-1 mr-4"
+                delay={0}
+                disabled={false}
+                distance={16}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Join the Voiceflow forum for help and updates"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>
+              </Tooltip>
+              <Link
+                className="no-underline ml-1"
+                replace={false}
+                to="/templates"
+              >
+                <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>
+              </Link>
+            </div>
+          </div>,
+          <ConfirmModal
+            confirm={false}
+            toggle={[Function]}
+          />,
+          <WarningModal
+            dismiss={[Function]}
+            error={null}
+          />,
+          <div
+            className="my-5 pt-5 container"
+          >
+            <div
+              id="loading-diagram"
+            >
+              <div
+                className="text-center"
+              >
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>
+                <span
+                  className="loader"
+                />
+              </div>
+            </div>
+          </div>,
+        ],
+        "id": "app",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="searchBar ml-4"
+            >
+              <Input
+                className="search-input form-control-2"
+                onChange={[Function]}
+                placeholder="Search Skills"
+                type="text"
+              />
+            </div>,
+            "id": "navbar-top-left",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Input
+                className="search-input form-control-2"
+                onChange={[Function]}
+                placeholder="Search Skills"
+                type="text"
+              />,
+              "className": "searchBar ml-4",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "className": "search-input form-control-2",
+                "onChange": [Function],
+                "placeholder": "Search Skills",
+                "type": "text",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              className="subheader-right"
+            >
+              <Tooltip
+                animateFill={true}
+                animation="shift"
+                arrow={false}
+                arrowSize="regular"
+                className="ml-1 mr-4"
+                delay={0}
+                disabled={false}
+                distance={16}
+                duration={375}
+                followCursor={false}
+                hideDelay={0}
+                hideDuration={375}
+                hideOnClick={true}
+                html={null}
+                inertia={false}
+                interactive={false}
+                interactiveBorder={2}
+                multiple={false}
+                offset={0}
+                onHidden={[Function]}
+                onHide={[Function]}
+                onRequestClose={[Function]}
+                onShow={[Function]}
+                onShown={[Function]}
+                popperOptions={Object {}}
+                position="bottom"
+                size="regular"
+                sticky={false}
+                stickyDuration={200}
+                style={Object {}}
+                theme="dark"
+                title="Join the Voiceflow forum for help and updates"
+                touchHold={false}
+                trigger="mouseenter focus"
+                unmountHTMLWhenHide={false}
+              >
+                <form
+                  action="https://forum.getvoiceflow.com"
+                >
+                  <button
+                    className="nav-btn"
+                    type="submit"
+                  >
+                    <i
+                      className="fas fa-info-circle"
+                    />
+                  </button>
+                </form>
+              </Tooltip>
+              <Link
+                className="no-underline ml-1"
+                replace={false}
+                to="/templates"
+              >
+                <button
+                  className="btn purple-btn"
+                  varient="contained"
+                >
+                  New Project
+                </button>
+              </Link>
+            </div>,
+            "className": "title-group no-select pr-2",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <Tooltip
+                  animateFill={true}
+                  animation="shift"
+                  arrow={false}
+                  arrowSize="regular"
+                  className="ml-1 mr-4"
+                  delay={0}
+                  disabled={false}
+                  distance={16}
+                  duration={375}
+                  followCursor={false}
+                  hideDelay={0}
+                  hideDuration={375}
+                  hideOnClick={true}
+                  html={null}
+                  inertia={false}
+                  interactive={false}
+                  interactiveBorder={2}
+                  multiple={false}
+                  offset={0}
+                  onHidden={[Function]}
+                  onHide={[Function]}
+                  onRequestClose={[Function]}
+                  onShow={[Function]}
+                  onShown={[Function]}
+                  popperOptions={Object {}}
+                  position="bottom"
+                  size="regular"
+                  sticky={false}
+                  stickyDuration={200}
+                  style={Object {}}
+                  theme="dark"
+                  title="Join the Voiceflow forum for help and updates"
+                  touchHold={false}
+                  trigger="mouseenter focus"
+                  unmountHTMLWhenHide={false}
+                >
+                  <form
+                    action="https://forum.getvoiceflow.com"
+                  >
+                    <button
+                      className="nav-btn"
+                      type="submit"
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                      />
+                    </button>
+                  </form>
+                </Tooltip>,
+                <Link
+                  className="no-underline ml-1"
+                  replace={false}
+                  to="/templates"
+                >
+                  <button
+                    className="btn purple-btn"
+                    varient="contained"
+                  >
+                    New Project
+                  </button>
+                </Link>,
+              ],
+              "className": "subheader-right",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "animateFill": true,
+                  "animation": "shift",
+                  "arrow": false,
+                  "arrowSize": "regular",
+                  "children": <form
+                    action="https://forum.getvoiceflow.com"
+                  >
+                    <button
+                      className="nav-btn"
+                      type="submit"
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                      />
+                    </button>
+                  </form>,
+                  "className": "ml-1 mr-4",
+                  "delay": 0,
+                  "disabled": false,
+                  "distance": 16,
+                  "duration": 375,
+                  "followCursor": false,
+                  "hideDelay": 0,
+                  "hideDuration": 375,
+                  "hideOnClick": true,
+                  "html": null,
+                  "inertia": false,
+                  "interactive": false,
+                  "interactiveBorder": 2,
+                  "multiple": false,
+                  "offset": 0,
+                  "onHidden": [Function],
+                  "onHide": [Function],
+                  "onRequestClose": [Function],
+                  "onShow": [Function],
+                  "onShown": [Function],
+                  "popperOptions": Object {},
+                  "position": "bottom",
+                  "size": "regular",
+                  "sticky": false,
+                  "stickyDuration": 200,
+                  "style": Object {},
+                  "theme": "dark",
+                  "title": "Join the Voiceflow forum for help and updates",
+                  "touchHold": false,
+                  "trigger": "mouseenter focus",
+                  "unmountHTMLWhenHide": false,
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "action": "https://forum.getvoiceflow.com",
+                    "children": <button
+                      className="nav-btn"
+                      type="submit"
+                    >
+                      <i
+                        className="fas fa-info-circle"
+                      />
+                    </button>,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <i
+                        className="fas fa-info-circle"
+                      />,
+                      "className": "nav-btn",
+                      "type": "submit",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "className": "fas fa-info-circle",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": "i",
+                    },
+                    "type": "button",
+                  },
+                  "type": "form",
+                },
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "children": <button
+                    className="btn purple-btn"
+                    varient="contained"
+                  >
+                    New Project
+                  </button>,
+                  "className": "no-underline ml-1",
+                  "replace": false,
+                  "to": "/templates",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "New Project",
+                    "className": "btn purple-btn",
+                    "varient": "contained",
+                  },
+                  "ref": null,
+                  "rendered": "New Project",
+                  "type": "button",
+                },
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "confirm": false,
+            "toggle": [Function],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "dismiss": [Function],
+            "error": null,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <div
+              id="loading-diagram"
+            >
+              <div
+                className="text-center"
+              >
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>
+                <span
+                  className="loader"
+                />
+              </div>
+            </div>,
+            "className": "my-5 pt-5 container",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <div
+                className="text-center"
+              >
+                <h5
+                  className="text-muted mb-2"
+                >
+                  Loading Skills
+                </h5>
+                <span
+                  className="loader"
+                />
+              </div>,
+              "id": "loading-diagram",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <h5
+                    className="text-muted mb-2"
+                  >
+                    Loading Skills
+                  </h5>,
+                  <span
+                    className="loader"
+                  />,
+                ],
+                "className": "text-center",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Loading Skills",
+                    "className": "text-muted mb-2",
+                  },
+                  "ref": null,
+                  "rendered": "Loading Skills",
+                  "type": "h5",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "className": "loader",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "span",
+                },
+              ],
+              "type": "div",
+            },
+            "type": "div",
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

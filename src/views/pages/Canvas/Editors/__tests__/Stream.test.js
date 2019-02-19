@@ -14,6 +14,7 @@ describe('StreamEditor', () => {
             audio: "",
         }
         const component = shallow(<Stream node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

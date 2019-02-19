@@ -14,6 +14,7 @@ describe('PermissionsEditor', () => {
             type: "permission"
         }
         const component = shallow(<Permissions node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

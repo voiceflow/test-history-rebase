@@ -14,6 +14,7 @@ describe('IfEditor', () => {
             type: "if"
         }
         const component = shallow(<If node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

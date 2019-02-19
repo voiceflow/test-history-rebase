@@ -24,6 +24,7 @@ describe('API', () => {
         }
         let variables = []
         const component = shallow(<API node={node} variables={variables}/>);
+         expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

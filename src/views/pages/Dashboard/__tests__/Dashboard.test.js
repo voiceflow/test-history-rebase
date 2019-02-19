@@ -24,7 +24,7 @@ describe('dashboard create skill', () => {
         }
         const component = shallow(<Dashboard onClick={clickFn} />)
         component.find('button.btn').simulate('keydown', {keyCode: 32})
-
+        expect(component.props().id).toEqual('app')
         expect(component).toMatchSnapshot();
         component.unmount()
     })

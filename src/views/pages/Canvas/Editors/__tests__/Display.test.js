@@ -18,6 +18,7 @@ describe('DisplayEditor', () => {
         let skill = testSkill
         let display = []
         const component = shallow(<Display node={node} displays={display} skill={testSkill}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

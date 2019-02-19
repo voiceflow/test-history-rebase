@@ -29,6 +29,7 @@ describe('IntentEditor', () => {
         }
 
         const component = shallow(<Intent diagrams={diagrams} diagram_id={diagram_id} node={node} intents={intents} platform={platform} built_ins={built_ins} diagrams={diagrams} />);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

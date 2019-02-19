@@ -14,4 +14,9 @@ const getEnvVariable = (var_name) => {
     return variable
 }
 
+const delay = (ms) => new Promise(resolve => {
+    setTimeout(resolve, ms)
+})
+
 exports.getEnvVariable = getEnvVariable;
+exports.delay = delay;

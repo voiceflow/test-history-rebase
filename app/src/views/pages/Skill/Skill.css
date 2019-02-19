@@ -142,7 +142,7 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 200px;
+  min-height: 120px;
 }
 
 .stage_modal .modal-info>h1 {
@@ -563,6 +563,34 @@ textarea::placeholder {
   margin: 0px;
 }
 
+.google-link {
+  color: #3691b0;
+  text-decoration: underline;
+}
+
+.google-upload {
+  height: auto;
+  padding: 1em;
+}
+
+.google-verification-info {
+  font-size: .85em;
+}
+
+.google-verify-btn {
+  float: bottom;
+}
+
+.vertical-space {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.google-form-group {
+  margin-bottom: 0px !important;
+}
+
 .combine-node{
   display: block;
   width: 100%;
@@ -605,6 +633,13 @@ textarea::placeholder {
   font-weight: bold
 }
 
+.disabled {
+  pointer-events: none;
+}
+.faded {
+  opacity: 0.55;
+}
+
 .publish-label {
   margin-top: -2px;
 }
@@ -614,4 +649,31 @@ textarea::placeholder {
     height: 160px;
     width: 160px
   }
+}
+
+.publish-loader > .loader {
+  height: 2.5em;
+  width: 2.5em;
+}
+
+.tooltip-link {
+  cursor: pointer;
+  font-size: 0.8em;
+  color: #8da2b5;
+}
+
+.tooltip-link:hover {
+  color: #42a5ff;
+}
+
+.google-link-input {
+  height: 1.6em;
+  width: 1.5em;
+  display: inline;
+  padding: 0.1em;
+  text-align: center;
+}
+
+.google-link-publish {
+  font-size: 0.8em;
 }

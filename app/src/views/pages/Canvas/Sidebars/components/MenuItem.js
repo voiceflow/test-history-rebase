@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import {Tooltip} from 'react-tippy';
+import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
 class MenuItem extends Component {
     render() {
+
+        let className = `MenuItem ${this.props.item.type}`
+        if (this.props.platform === 'google' && !ALLOWED_GOOGLE_BLOCKS.includes(this.props.item.type)) {
+            className = `${className} faded-node`
+        }
+
         return (
             <div className="wrap" style={(!this.props.draggable) ? {opacity: 0.3} : null}>
                 <div
-                    className={'MenuItem ' + this.props.item.type}
+                    className={className}
                     draggable={this.props.draggable}
                     onDragStart={event => {
                         event.dataTransfer.setData('node', this.props.item.type);

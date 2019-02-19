@@ -1,4 +1,4 @@
-export default [
+exports.AMAZON_CATEGORIES = [
     {
         value: "ALARMS_AND_CLOCKS",
         label: "Alarms & Clocks"

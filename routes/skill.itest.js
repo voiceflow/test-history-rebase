@@ -302,17 +302,6 @@ describe('Skill', () => {
         })
     })
 
-    it('tries to update a skill without body', done => {
-      request(app)
-        .patch(`/skill/${skill_id}`)
-        .set('cookie', `auth=${token}`)
-        .expect(401)
-        .end((err, res) => {
-          if(err) throw err
-          done()
-        })
-    })
-
     it('updates a skill, defaults', done => {
       request(app)
         .patch(`/skill/${skill_id}`)
@@ -323,8 +312,8 @@ describe('Skill', () => {
           try { 
             let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1`, [hashids.decode(skill_id)[0]])).rows
             let r = skill_data[0]
-            expect(r.locales).toEqual('["en-US"]')
-            expect(r.fulfillment).toEqual('{}')
+            expect(r.locales).toEqual(["en-US"])
+            expect(r.fulfillment).toEqual({})
             expect(r.name).toEqual('UNTITLED PROJECT')
           } catch (err) {
             if(err) throw err

@@ -16,18 +16,12 @@ export class LinkModel extends BaseModel {
 
 	deSerialize(ob, engine) {
 		super.deSerialize(ob, engine);
-		this.extras = ob.extras;
+		this.extras = {};
+		this.labels = [];
 		this.points = _.map(ob.points || [], (point) => {
 			var p = new PointModel(this, { x: point.x, y: point.y }, toolkit.UID());
 			p.deSerialize(point, engine);
 			return p;
-		});
-
-		//deserialize labels
-		_.forEach(ob.labels || [], (label: any) => {
-			let labelOb = engine.getLabelFactory(label.type).getNewInstance();
-			labelOb.deSerialize(label, engine);
-			this.addLabel(labelOb);
 		});
 
 		if (ob.target) {
@@ -38,7 +32,7 @@ export class LinkModel extends BaseModel {
 			);
 		}
 
-		if (ob.source) {
+		if (ob.source && this.getParent().getNode(ob.source)) {
 			this.setSourcePort(
 				this.getParent()
 					.getNode(ob.source)
@@ -55,10 +49,6 @@ export class LinkModel extends BaseModel {
 			targetPort: this.targetPort ? this.targetPort.id : null,
 			points: _.map(this.points, point => {
 				return point.serialize();
-			}),
-			extras: this.extras,
-			labels: _.map(this.labels, label => {
-				return label.serialize();
 			})
 		});
 	}

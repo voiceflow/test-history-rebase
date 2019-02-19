@@ -586,15 +586,17 @@ const copyDefaultTemplate = (req, res) => {
 			let sum = `This is a new summary for the skill ${name}`;
 			let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
 			let locales = ['en-US']
+			let platform = req.body.platform
 		
 			if (req.body.locales) {
 				locales = req.body.locales
 			}
 		
-			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8 WHERE skill_id = $9`,
+			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8, platform=$9 WHERE skill_id = $10`,
 					[name, sum, desc, invs, name, JSON.stringify(locales), 
 						`https://creator.getvoiceflow.com/creator/privacy_policy?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
 						`https://creator.getvoiceflow.com/creator/terms?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
+						platform,
 			hashids.decode(skill.skill_id)[0]], (err) => {
 				if(err){
 					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

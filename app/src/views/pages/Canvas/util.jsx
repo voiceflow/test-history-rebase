@@ -1,3 +1,5 @@
+// Convert older deprecated blocks to newer ones
+
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -6,8 +8,7 @@ const generateID = () => {
     })
 }
 
-// Convert older deprecated blocks to newer ones
-exports.convertDiagram = (diagram, diagrams) => {
+const convertDiagram = (diagram, diagrams) => {
 
     const port_ids = new Set()
 
@@ -19,7 +20,7 @@ exports.convertDiagram = (diagram, diagrams) => {
                 if(find){
                     node.name = find.name
                 }
-            }else if(node.extras.type === 'command' && (typeof node.extras.commands !== 'string')){
+            }else if(node.extras.type === 'command' && (typeof node.extras.commands !== 'string') && !(node.extras.google || node.extras.alexa)){
                 if(!node.extras.resume){
                     node.extras.type = 'jump'
                     if(node.name.toLowerCase() === 'command'){
@@ -79,4 +80,8 @@ exports.convertDiagram = (diagram, diagrams) => {
     })
 
     return diagram
+}
+
+export {
+    convertDiagram
 }

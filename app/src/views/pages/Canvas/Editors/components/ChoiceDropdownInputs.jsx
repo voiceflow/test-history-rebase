@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Collapse, Alert } from 'reactstrap'
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import SlotMappings from '../../Editors/components/SlotMappings' 
 
 const _ = require('lodash')
@@ -20,7 +20,7 @@ class ChoiceDropdownInputs extends Component {
             if (!choice_obj.intent || choice_obj.intent.built_in) {
                 return choice_obj
             }
-            const key = choice_obj.intent ? choice_obj.intent.value : null
+            const key = choice_obj.intent ? choice_obj.intent.key : null
 
             if(!key && key!==0) return null
 
@@ -51,14 +51,6 @@ class ChoiceDropdownInputs extends Component {
                 return choice_obj
             }
         })
-
-        // if (props.choices.length !== current_state.choices.length) {
-        //     return {
-        //         choices: new_choices,
-        //         open: props.open,
-        //         intents: _.cloneDeep(props.intents)
-        //     }
-        // }
 
         return {
             choices: new_choices,
@@ -99,6 +91,53 @@ class ChoiceDropdownInputs extends Component {
     }
 
     render() {
+        const SlotOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^actions\.intent/.test(props.data.value)
+
+            return (
+                    <components.Option {...props}>
+                        <div className="d-flex slot-label justify-content-between">
+                            <span className="mr-2">{props.data.label}</span>
+                            <span className="d-flex">
+                                {is_alexa && <i className="fab fa-amazon align-self-center"/>}
+                                {is_google && <i className="fab fa-google align-self-center"/>}
+                            </span>
+                        </div>
+                    </components.Option>
+            )
+        }
+
+        const SingleValueOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^actions\.intent/.test(props.data.value)
+
+            return (
+                <components.SingleValue {...props}>
+                    <div className="d-flex slot-label justify-content-between">
+                        <span className="mr-2">{props.data.label}</span>
+                        <span className="d-flex">
+                            {is_alexa && <i className="fab fa-amazon align-self-center"/>}
+                            {is_google && <i className="fab fa-google align-self-center"/>}
+                        </span>
+                    </div>
+                </components.SingleValue>
+            )
+        }
+
+        const options = this.props.intents.concat(this.props.built_ins).filter(intent => {
+            if ((intent._platform === 'google' && !(this.props.platform === 'google')) || (intent._platform === 'alexa' && !(this.props.platform === 'alexa'))) {
+                return null
+            } else {
+                return intent
+            }
+        }).map(intent => {
+            let split = intent.name.split('.')
+            let label = split[split.length - 1]
+
+            return {label: label, value: intent.name, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
+        })
+
         return (
             <div className="w-100">
                 {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
@@ -135,9 +174,11 @@ class ChoiceDropdownInputs extends Component {
                                     classNamePrefix="select-box"
                                     value={choice.intent}
                                     onChange={(e) => this.updateChoice(e, i)}
-                                    options={this.props.intents.concat(this.props.built_ins).map(intent => {
-                                        return {label: intent.name, value: intent.key, key: intent.key, inputs: intent.inputs, built_in: intent.built_in}
-                                    })}
+                                    options={options}
+                                    components={{ Option: SlotOption, SingleValue: SingleValueOption }}
+                                    styles={{
+                                        singleValue: (base) => ({ ...base, width: '100%' }),
+                                    }}
                                     isDisabled={this.props.live_mode}
                                 />
                             </div>

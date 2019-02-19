@@ -143,7 +143,7 @@ class DiagramBlock extends Component {
                     : 
                     <React.Fragment>
                         <Button className="btn-primary btn-block btn-lg btn btn-secondary mb-3" block onClick={() => this.props.enterFlow(this.state.node.extras.diagram_id)}>Enter Flow</Button>
-                        <Select
+                        {/* <Select
                             classNamePrefix="select-box"
                             onChange={(selected) => {
                                 let node = this.state.node;
@@ -152,7 +152,7 @@ class DiagramBlock extends Component {
                             }}
                             options={options}
                             placeholder="Change subflow"
-                        />
+                        /> */}
                         <label>Input Variables</label>
                         <DiagramVariables
                             arg1_options={this.props.variables}

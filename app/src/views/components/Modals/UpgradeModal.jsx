@@ -29,6 +29,7 @@ const options = [
             "Project Backups (5)",
             "In Skill Purchases",
             "Basic Analytics",
+            "Multi-Platform Support (Google Assistant and Alexa)",
             "30,000 utterances/mo"
         ]
     },
@@ -42,6 +43,7 @@ const options = [
             "In Skill Purchases",
             "Account Linking",
             "User Analytics",
+            "Multi-Platform Support (Google Assistant and Alexa)",
             "Staging Environment"
         ]
     }

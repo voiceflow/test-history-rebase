@@ -27,10 +27,8 @@ import Templates from './views/pages/Templates'
 import Page404 from 'views/pages/404'
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
-import ErrorScreen from './Error';
 import ErrorBoundary from './ErrorBoundary';
 import socket from 'socket.io-client'
-import {getDevice} from 'Helper'
 
 // SECRET
 var STRIPE_KEY
@@ -67,7 +65,30 @@ const getEndpoint = () => {
   return `${protocol}://${window.location.hostname}${port}`
 }
 
+const socketFail = () => {
+  window.CreatorSocket.status = 'FAIL'
+}
+
 window.CreatorSocket = socket(getEndpoint())
+window.CreatorSocket.connectedCB = {}
+// catch error events
+window.CreatorSocket.on('fail', socketFail)
+window.CreatorSocket.on('error', socketFail)
+// to catch if the server is offline
+window.CreatorSocket.on('connect_error', socketFail)
+// catch failed connection attempts
+window.CreatorSocket.on('connect_failed', socketFail)
+// to catch connection events
+window.CreatorSocket.on('connect', () => {
+  window.CreatorSocket.status='CONNECTED'
+  // queued up events after reconnection
+  for(var cb in window.CreatorSocket.connectedCB){
+    if(typeof window.CreatorSocket.connectedCB[cb] === 'function'){
+      window.CreatorSocket.connectedCB[cb]()
+    }
+  }
+})
+
 window.addEventListener('beforeunload', function () {
   if(window.CreatorSocket && window.CreatorSocket.disconnect){
     window.CreatorSocket.disconnect()
@@ -103,11 +124,8 @@ class App extends Component {
     this.state = {
       loading: AuthenticationService.isAuth(),
       session: false,
-      stripe: null,
-      error: null
+      stripe: null
     }
-
-    this.socketFail = this.socketFail.bind(this)
 
     if(AuthenticationService.isAuth()){
       AuthenticationService.check((err, res) => {
@@ -118,11 +136,10 @@ class App extends Component {
           });
           history.push('/login');
         }else{
-          window.CreatorSocket.emit('handshake', {
-            auth: AuthenticationService.getAuth(),
-            device: getDevice()
-          }, () => {window.CreatorSocket.status = 'HANDSHAKE'})
-          this.setState({session: true})
+          this.setState({
+            session: true,
+            loading: false
+          })
         }
       })
     }
@@ -132,58 +149,6 @@ class App extends Component {
         session: AuthenticationService.isAuth()
       })
     })
-
-    // verified after a handshake
-    window.CreatorSocket.on('verified', () => {window.CreatorSocket.status = 'VERIFIED'; this.setState({loading: false})})
-    // catch error events
-    window.CreatorSocket.on('fail', this.socketFail)
-    window.CreatorSocket.on('error', this.socketFail)
-    // to catch if the server is offline
-    window.CreatorSocket.on('connect_error', this.socketFail)
-    // catch failed connection attempts
-    window.CreatorSocket.on('connect_failed', this.socketFail)
-    // to catch connection events
-    window.CreatorSocket.on('connect', () => {
-      // attempt to verify again if previously failed already
-      if(window.CreatorSocket.status === 'FAIL' && AuthenticationService.isAuth()){
-        window.CreatorSocket.emit('handshake', {
-          auth: AuthenticationService.getAuth(),
-          device: getDevice()
-        }, () => {window.CreatorSocket.status = 'HANDSHAKE'})
-      }
-    })
-
-    window.CreatorSocket.on('in_use', (data) => {
-      window.CreatorSocket.disconnect()
-      window.error = true
-      this.setState({
-        error: {
-          type: 'socket-used',
-          override: true,
-          data: data
-        },
-        loading: false,
-        session: true
-      })
-    })
-  }
-
-  socketFail(){
-    window.CreatorSocket.status = 'FAIL'
-    // if(AuthenticationService.isAuth() && window.CreatorSocket.status !== 'FAIL'){
-    //   window.error = true
-    //   window.CreatorSocket.status = 'FAIL'
-    //   this.setState({
-    //     error: {
-    //       type: 'socket-fail',
-    //       action: () => {
-    //         window.error = false
-    //         this.setState({loading: false, error: null})
-    //       },
-    //     },
-    //     loading: false
-    //   })
-    // }
   }
 
   componentDidMount() {
@@ -210,17 +175,10 @@ class App extends Component {
       </div>
     }
 
-    if(this.state.error && this.state.error.override){
-      return <div id="loading-diagram">
-        <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> 
-      </div>
-    }
-
     return (
       <StripeProvider stripe={this.state.stripe}>
         <Router history={history}>
           <div id="body">
-            { this.state.error && <ErrorScreen error={this.state.error} history={history} close={()=>this.setState({error: null})}/> }
             {(this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
                   return <NavBar {...props}/>
             }} /> }
@@ -255,6 +213,7 @@ class App extends Component {
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
+                <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
                 <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>

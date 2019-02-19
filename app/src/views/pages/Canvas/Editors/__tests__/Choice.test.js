@@ -21,6 +21,7 @@ describe('Choice', () => {
             type: "choice"
         }
         const component = shallow(<Choice node={node}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

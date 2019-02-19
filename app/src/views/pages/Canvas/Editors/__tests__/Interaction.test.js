@@ -31,6 +31,7 @@ describe('InteractionEditor', () => {
         }
         let platform = 'google'
         const component = shallow(<Interaction node={node} platform={platform}/>);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

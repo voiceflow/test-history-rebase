@@ -28,6 +28,7 @@ describe('CommandEditor', () => {
         let platform = 'alexa'
         let diagram_id = "test_id"
         const component = shallow(<Command node={node} intents={intents} platform={platform} built_ins={built_ins} diagrams={diagrams} diagram_id={diagram_id} />);
+        expect(component.state().node).toEqual(node)
         expect(component).toMatchSnapshot()
     });
 })

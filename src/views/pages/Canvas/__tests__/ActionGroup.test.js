@@ -28,7 +28,10 @@ describe('Buttons test', () => {
         component.find('#icon-save').simulate('click')
 
         expect(clickFn).toHaveBeenCalled()
-        component.unmount()
-    })
+        setTimeout(() => {
+            expect(component.exists('.modal')).toBe(true);
+            component.find('.modal .modal-body button.purple-btn').simulate('click')
+        }, 500);
+    });
 })
 

@@ -663,7 +663,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
 
           let formattedBody
-          if (node.extras.bodyInputType = 'rawInput') {
+          if (node.extras.bodyInputType === 'rawInput') {
             if (node.extras.content) {
               formattedBody = node.extras.content
             } else if (!_.isNil(node.extras.rawContent)) {

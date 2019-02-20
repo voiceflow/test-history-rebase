@@ -1550,9 +1550,9 @@ class Canvas extends Component {
                             node.extras.google = {
                                 intent: null,
                                 mappings: [],
-                                resume: node.extras.resume,
-                                end: node.extras.end,
-                                diagram_id: node.extras.diagram_id
+                                resume: node.extras.alexa.resume,
+                                end: node.extras.alexa.end,
+                                diagram_id: node.extras.alexa.diagram_id
                             }
                             delete node.extras.intent
                             delete node.extras.mappings
@@ -1977,13 +1977,18 @@ class Canvas extends Component {
         }
     }
     // Create a new diagram from the flow block
-    createDiagram(node, base_flow_name='New Flow', template=null){
+    createDiagram(node, base_flow_name='New Flow', template=null, forCommand=false){
         this.setState({
             loading_diagram: true
         })
 
         let id = generateID()
-        node.extras.diagram_id = id
+
+        if (forCommand) {
+            node.extras[this.state.skill.platform].diagram_id = id
+        } else {
+            node.extras.diagram_id = id
+        }
 
         // save the current diagram
         this.saveCB = () => {

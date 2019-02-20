@@ -2695,7 +2695,9 @@ class Canvas extends Component {
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
                         onMouseLeave={()=>this.diagram_focus=false}
-                        onClick={e => this.clickDiagram(e)}
+                        // onClick={e => {
+                        //     this.clickDiagram(e)
+                        // }}
                         onContextMenu={this.generateBlockMenu}
                     >
                         <div id="widget-bar">
@@ -2725,6 +2727,7 @@ class Canvas extends Component {
                             removeNode={!this.props.preview ? this.removeNode : _.noop()}
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}
+                            clickDiagram={this.clickDiagram}
                         />
                     </div>
                 </div>

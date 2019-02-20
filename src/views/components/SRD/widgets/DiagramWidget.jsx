@@ -494,6 +494,7 @@ export class DiagramWidget extends BaseWidget {
 	}
 
 	onMouseUp(event) {
+		this.props.clickDiagram();
 		var diagramEngine = this.props.diagramEngine;
 		var diagramModel = diagramEngine.getDiagramModel();
 		diagramEngine.stopMove();
@@ -690,7 +691,6 @@ export class DiagramWidget extends BaseWidget {
 					if (event.nativeEvent.which === 3) return;
 					this.setState({ ...this.state, wasMoved: false });
 					diagramEngine.stopMove();
-
 					// diagramEngine.clearRepaintEntities();
 					var model = this.getMouseElement(event);
 					var relative;

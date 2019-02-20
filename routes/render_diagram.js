@@ -125,6 +125,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   }
 
   let testing = (skill_id === "TEST");
+
   docClient.get(params, async (err, data) => {
     if (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

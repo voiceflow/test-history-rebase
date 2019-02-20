@@ -1,8 +1,9 @@
 const app = require('../app')
 const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
-const { pool, hashids } = require('./../services')
+const { pool, hashids, redisClient } = require('./../services')
 const axios = require('axios')
+const moxios = require('moxios')
 let { AccessToken } = require('./authentication')
 
 AccessToken = jest.fn().mockImplementation((user_id, cb) => {
@@ -10,7 +11,6 @@ AccessToken = jest.fn().mockImplementation((user_id, cb) => {
   cb('asdfghjkl')
 })
 
-jest.mock('axios')
 jest.setTimeout(10000)
 
 const generateID = () => {
@@ -40,6 +40,8 @@ describe('Skill', () => {
   let skill_id
   new_diagram.id = diagram_id
 
+  let accessMock
+
   beforeAll(async () => {
     // Get Authentication Token
     await request(app)
@@ -52,6 +54,19 @@ describe('Skill', () => {
     .expect(200)
     .then(res => {
       token = res.body.token
+    })
+
+    jest.mock('./../services', () => {
+      return {
+        redisClient: {
+          set: jest.fn(() => {
+            console.log("MOCK REDIS SET")
+          }),
+          get: jest.fn(() => {
+            console.log("MOCK REDIS GET")
+          })
+        }
+      }
     })
   })
 
@@ -247,6 +262,19 @@ describe('Skill', () => {
     //       done()
     //     })
     // })
+
+    beforeEach(() => {
+      moxios.install()
+
+      moxios.stubRequest('/say/hello', {
+        status: 200,
+        responseText: 'hello'
+      })
+    })
+
+    afterEach(() => {
+      moxios.uninstall()
+    })
 
     it('updates a skill, defaults', done => {
       request(app)
@@ -462,10 +490,11 @@ describe('Skill', () => {
     it('doesn\'t enable a skill without token', done => {
       request(app)
         .put('/interaction_model/1/enable')
-        .send('cookie', `auth=${token}`)
+        .set('cookie', `auth=${token}`)
         .expect(401)
         .end((err, res) => {
           if(err) throw err
+          done()
         })
     })
   })

@@ -112,7 +112,7 @@ const validateEmail = (email) => {
 }
 
 // SECRET
-const intercom_client = new Intercom.Client({ token: getEnvVariable('INTERCOM_TOKEN') })
+const intercom_client = new Intercom.Client({ token: getEnvVariable('INTERCOM_TOKEN')})
 
 const logging_pool = new pg.Pool({
     user: getEnvVariable('LOGGING_USER'),

@@ -358,8 +358,8 @@ exports.createInteractionModel = (req, locale) => {
 		}else if(slot.startsWith("CAPTURE:")){
 			// check it there is a {capture} only slot for this slot type
 			let slot_type = slot.substring(8)
+			slot_type = getSlotType({name: slot_type, type: {value: slot_type}}, 'alexa')
 			if(!capture_intents.has(slot_type)){
-				slot_type = getSlotType({name: slot_type, type: {value: slot_type}}, 'alexa')
 				if(!slot_type.startsWith('AMAZON.')){
 					return
 				}

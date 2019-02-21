@@ -1,0 +1,798 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountLinkEditor render account linking block editor 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <LinkAccount
+    skill={
+      Object {
+        "account_linking": null,
+        "alexa_events": null,
+        "amzn_id": null,
+        "created": "2019-02-15T22:25:56.687Z",
+        "diagram": "e9f52b0622f08ff1b21137bae05a242b",
+        "error_prompt": null,
+        "fulfillment": Object {},
+        "global": Array [
+          "sessions",
+          "user_id",
+          "timestamp",
+          "platform",
+          "locale",
+          "access_token",
+        ],
+        "google_publish_info": Object {},
+        "intents": Array [
+          Object {
+            "inputs": Array [],
+            "key": "M5s3gMETzsul",
+            "name": "intent_one",
+            "open": true,
+          },
+        ],
+        "inv_name": "Test Skill",
+        "last_save": "2019-02-15T22:25:57.304Z",
+        "live": false,
+        "locales": Array [
+          "en-US",
+        ],
+        "name": "Test Skill",
+        "platform": "alexa",
+        "preview": false,
+        "repeat": 100,
+        "restart": true,
+        "resume_prompt": null,
+        "review": false,
+        "skill_id": "L8mr69wm4K",
+        "slots": Array [],
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": <div>
+        <label>
+          Accounts
+        </label>
+        <div>
+          <Alert
+            closeAriaLabel="Close"
+            color="warning"
+            fade={true}
+            isOpen={true}
+            tag="div"
+            transition={
+              Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              }
+            }
+          >
+            No Account Link found
+          </Alert>
+        </div>
+        <Button
+          block={true}
+          color="clear"
+          onClick={[Function]}
+          tag="button"
+        >
+          Edit Account Linking
+        </Button>
+        <hr />
+        <Alert
+          closeAriaLabel="Close"
+          color="success"
+          fade={true}
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          After Account is Successfully Linked, global variable 
+          <b>
+            {access_token}
+          </b>
+           will be initialized from 
+          <i>
+            undefined
+          </i>
+        </Alert>
+      </div>,
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <label>
+            Accounts
+          </label>,
+          <div>
+            <Alert
+              closeAriaLabel="Close"
+              color="warning"
+              fade={true}
+              isOpen={true}
+              tag="div"
+              transition={
+                Object {
+                  "appear": true,
+                  "baseClass": "fade",
+                  "baseClassActive": "show",
+                  "enter": true,
+                  "exit": true,
+                  "in": true,
+                  "mountOnEnter": false,
+                  "onEnter": [Function],
+                  "onEntered": [Function],
+                  "onEntering": [Function],
+                  "onExit": [Function],
+                  "onExited": [Function],
+                  "onExiting": [Function],
+                  "tag": "div",
+                  "timeout": 150,
+                  "unmountOnExit": true,
+                }
+              }
+            >
+              No Account Link found
+            </Alert>
+          </div>,
+          <Button
+            block={true}
+            color="clear"
+            onClick={[Function]}
+            tag="button"
+          >
+            Edit Account Linking
+          </Button>,
+          <hr />,
+          <Alert
+            closeAriaLabel="Close"
+            color="success"
+            fade={true}
+            isOpen={true}
+            tag="div"
+            transition={
+              Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              }
+            }
+          >
+            After Account is Successfully Linked, global variable 
+            <b>
+              {access_token}
+            </b>
+             will be initialized from 
+            <i>
+              undefined
+            </i>
+          </Alert>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "Accounts",
+          },
+          "ref": null,
+          "rendered": "Accounts",
+          "type": "label",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <Alert
+              closeAriaLabel="Close"
+              color="warning"
+              fade={true}
+              isOpen={true}
+              tag="div"
+              transition={
+                Object {
+                  "appear": true,
+                  "baseClass": "fade",
+                  "baseClassActive": "show",
+                  "enter": true,
+                  "exit": true,
+                  "in": true,
+                  "mountOnEnter": false,
+                  "onEnter": [Function],
+                  "onEntered": [Function],
+                  "onEntering": [Function],
+                  "onExit": [Function],
+                  "onExited": [Function],
+                  "onExiting": [Function],
+                  "tag": "div",
+                  "timeout": 150,
+                  "unmountOnExit": true,
+                }
+              }
+            >
+              No Account Link found
+            </Alert>,
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": "No Account Link found",
+              "closeAriaLabel": "Close",
+              "color": "warning",
+              "fade": true,
+              "isOpen": true,
+              "tag": "div",
+              "transition": Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              },
+            },
+            "ref": null,
+            "rendered": "No Account Link found",
+            "type": [Function],
+          },
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "block": true,
+            "children": "Edit Account Linking",
+            "color": "clear",
+            "onClick": [Function],
+            "tag": "button",
+          },
+          "ref": null,
+          "rendered": "Edit Account Linking",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "hr",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              "After Account is Successfully Linked, global variable ",
+              <b>
+                {access_token}
+              </b>,
+              " will be initialized from ",
+              <i>
+                undefined
+              </i>,
+            ],
+            "closeAriaLabel": "Close",
+            "color": "success",
+            "fade": true,
+            "isOpen": true,
+            "tag": "div",
+            "transition": Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            },
+          },
+          "ref": null,
+          "rendered": Array [
+            "After Account is Successfully Linked, global variable ",
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "{access_token}",
+              },
+              "ref": null,
+              "rendered": "{access_token}",
+              "type": "b",
+            },
+            " will be initialized from ",
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "undefined",
+              },
+              "ref": null,
+              "rendered": "undefined",
+              "type": "i",
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": "div",
+    },
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": <div>
+          <label>
+            Accounts
+          </label>
+          <div>
+            <Alert
+              closeAriaLabel="Close"
+              color="warning"
+              fade={true}
+              isOpen={true}
+              tag="div"
+              transition={
+                Object {
+                  "appear": true,
+                  "baseClass": "fade",
+                  "baseClassActive": "show",
+                  "enter": true,
+                  "exit": true,
+                  "in": true,
+                  "mountOnEnter": false,
+                  "onEnter": [Function],
+                  "onEntered": [Function],
+                  "onEntering": [Function],
+                  "onExit": [Function],
+                  "onExited": [Function],
+                  "onExiting": [Function],
+                  "tag": "div",
+                  "timeout": 150,
+                  "unmountOnExit": true,
+                }
+              }
+            >
+              No Account Link found
+            </Alert>
+          </div>
+          <Button
+            block={true}
+            color="clear"
+            onClick={[Function]}
+            tag="button"
+          >
+            Edit Account Linking
+          </Button>
+          <hr />
+          <Alert
+            closeAriaLabel="Close"
+            color="success"
+            fade={true}
+            isOpen={true}
+            tag="div"
+            transition={
+              Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              }
+            }
+          >
+            After Account is Successfully Linked, global variable 
+            <b>
+              {access_token}
+            </b>
+             will be initialized from 
+            <i>
+              undefined
+            </i>
+          </Alert>
+        </div>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <label>
+              Accounts
+            </label>,
+            <div>
+              <Alert
+                closeAriaLabel="Close"
+                color="warning"
+                fade={true}
+                isOpen={true}
+                tag="div"
+                transition={
+                  Object {
+                    "appear": true,
+                    "baseClass": "fade",
+                    "baseClassActive": "show",
+                    "enter": true,
+                    "exit": true,
+                    "in": true,
+                    "mountOnEnter": false,
+                    "onEnter": [Function],
+                    "onEntered": [Function],
+                    "onEntering": [Function],
+                    "onExit": [Function],
+                    "onExited": [Function],
+                    "onExiting": [Function],
+                    "tag": "div",
+                    "timeout": 150,
+                    "unmountOnExit": true,
+                  }
+                }
+              >
+                No Account Link found
+              </Alert>
+            </div>,
+            <Button
+              block={true}
+              color="clear"
+              onClick={[Function]}
+              tag="button"
+            >
+              Edit Account Linking
+            </Button>,
+            <hr />,
+            <Alert
+              closeAriaLabel="Close"
+              color="success"
+              fade={true}
+              isOpen={true}
+              tag="div"
+              transition={
+                Object {
+                  "appear": true,
+                  "baseClass": "fade",
+                  "baseClassActive": "show",
+                  "enter": true,
+                  "exit": true,
+                  "in": true,
+                  "mountOnEnter": false,
+                  "onEnter": [Function],
+                  "onEntered": [Function],
+                  "onEntering": [Function],
+                  "onExit": [Function],
+                  "onExited": [Function],
+                  "onExiting": [Function],
+                  "tag": "div",
+                  "timeout": 150,
+                  "unmountOnExit": true,
+                }
+              }
+            >
+              After Account is Successfully Linked, global variable 
+              <b>
+                {access_token}
+              </b>
+               will be initialized from 
+              <i>
+                undefined
+              </i>
+            </Alert>,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Accounts",
+            },
+            "ref": null,
+            "rendered": "Accounts",
+            "type": "label",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <Alert
+                closeAriaLabel="Close"
+                color="warning"
+                fade={true}
+                isOpen={true}
+                tag="div"
+                transition={
+                  Object {
+                    "appear": true,
+                    "baseClass": "fade",
+                    "baseClassActive": "show",
+                    "enter": true,
+                    "exit": true,
+                    "in": true,
+                    "mountOnEnter": false,
+                    "onEnter": [Function],
+                    "onEntered": [Function],
+                    "onEntering": [Function],
+                    "onExit": [Function],
+                    "onExited": [Function],
+                    "onExiting": [Function],
+                    "tag": "div",
+                    "timeout": 150,
+                    "unmountOnExit": true,
+                  }
+                }
+              >
+                No Account Link found
+              </Alert>,
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": "No Account Link found",
+                "closeAriaLabel": "Close",
+                "color": "warning",
+                "fade": true,
+                "isOpen": true,
+                "tag": "div",
+                "transition": Object {
+                  "appear": true,
+                  "baseClass": "fade",
+                  "baseClassActive": "show",
+                  "enter": true,
+                  "exit": true,
+                  "in": true,
+                  "mountOnEnter": false,
+                  "onEnter": [Function],
+                  "onEntered": [Function],
+                  "onEntering": [Function],
+                  "onExit": [Function],
+                  "onExited": [Function],
+                  "onExiting": [Function],
+                  "tag": "div",
+                  "timeout": 150,
+                  "unmountOnExit": true,
+                },
+              },
+              "ref": null,
+              "rendered": "No Account Link found",
+              "type": [Function],
+            },
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "block": true,
+              "children": "Edit Account Linking",
+              "color": "clear",
+              "onClick": [Function],
+              "tag": "button",
+            },
+            "ref": null,
+            "rendered": "Edit Account Linking",
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": "hr",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": Array [
+                "After Account is Successfully Linked, global variable ",
+                <b>
+                  {access_token}
+                </b>,
+                " will be initialized from ",
+                <i>
+                  undefined
+                </i>,
+              ],
+              "closeAriaLabel": "Close",
+              "color": "success",
+              "fade": true,
+              "isOpen": true,
+              "tag": "div",
+              "transition": Object {
+                "appear": true,
+                "baseClass": "fade",
+                "baseClassActive": "show",
+                "enter": true,
+                "exit": true,
+                "in": true,
+                "mountOnEnter": false,
+                "onEnter": [Function],
+                "onEntered": [Function],
+                "onEntering": [Function],
+                "onExit": [Function],
+                "onExited": [Function],
+                "onExiting": [Function],
+                "tag": "div",
+                "timeout": 150,
+                "unmountOnExit": true,
+              },
+            },
+            "ref": null,
+            "rendered": Array [
+              "After Account is Successfully Linked, global variable ",
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "{access_token}",
+                },
+                "ref": null,
+                "rendered": "{access_token}",
+                "type": "b",
+              },
+              " will be initialized from ",
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "undefined",
+                },
+                "ref": null,
+                "rendered": "undefined",
+                "type": "i",
+              },
+            ],
+            "type": [Function],
+          },
+        ],
+        "type": "div",
+      },
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

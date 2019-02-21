@@ -1,0 +1,1853 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`API render api editor 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <API
+    node={
+      Object {
+        "color": null,
+        "extras": Object {
+          "body": Array [],
+          "bodyInputType": "keyValue",
+          "content": "",
+          "failure_id": "",
+          "headers": Array [],
+          "mapping": Array [],
+          "method": "GET",
+          "params": Array [],
+          "success_id": "",
+          "type": "api",
+          "url": Object {
+            "blocks": Array [],
+            "entityMap": Object {},
+          },
+        },
+        "fade": false,
+        "height": 50,
+        "id": "test",
+        "isMoving": false,
+        "linter": Array [],
+        "listeners": Object {},
+        "locked": false,
+        "name": "API",
+        "type": "default",
+        "width": 80,
+        "x": 0,
+        "y": 0,
+      }
+    }
+    variables={Array []}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <Modal
+          autoFocus={true}
+          backdrop={true}
+          backdropTransition={
+            Object {
+              "mountOnEnter": true,
+              "timeout": 150,
+            }
+          }
+          centered={false}
+          fade={true}
+          isOpen={false}
+          keyboard={true}
+          modalTransition={
+            Object {
+              "timeout": 300,
+            }
+          }
+          onClosed={[Function]}
+          onOpened={[Function]}
+          role="dialog"
+          size="lg"
+          toggle={[Function]}
+          zIndex={1050}
+        >
+          <ModalHeader
+            charCode={215}
+            closeAriaLabel="Close"
+            tag="h5"
+            toggle={[Function]}
+            wrapTag="div"
+          >
+            API Test
+          </ModalHeader>
+          <ModalBody
+            tag="div"
+          >
+            <div
+              className="text-center mt-3"
+            >
+              <div
+                className="loader text-lg"
+              />
+            </div>
+          </ModalBody>
+        </Modal>,
+        <label>
+          URL Endpoint
+        </label>,
+        <br />,
+        <InputGroup
+          tag="div"
+        >
+          <InputGroupButtonDropdown
+            addonType="prepend"
+            className="mb-3 pt-1 pb-1"
+            isOpen={false}
+            toggle={[Function]}
+          >
+            <DropdownToggle
+              aria-haspopup={true}
+              caret={true}
+              color="secondary"
+            >
+              GET
+            </DropdownToggle>
+            <DropdownMenu
+              flip={true}
+              tag="div"
+            >
+              <DropdownItem
+                disabled={true}
+                tag="button"
+                toggle={true}
+              >
+                GET
+              </DropdownItem>
+              <DropdownItem
+                onClick={[Function]}
+                tag="button"
+                toggle={true}
+              >
+                POST
+              </DropdownItem>
+              <DropdownItem
+                onClick={[Function]}
+                tag="button"
+                toggle={true}
+              >
+                PUT
+              </DropdownItem>
+              <DropdownItem
+                onClick={[Function]}
+                tag="button"
+                toggle={true}
+              >
+                DELETE
+              </DropdownItem>
+              <DropdownItem
+                onClick={[Function]}
+                tag="button"
+                toggle={true}
+              >
+                PATCH
+              </DropdownItem>
+            </DropdownMenu>
+          </InputGroupButtonDropdown>
+          <VariableInput
+            className="form-control-border top-left form-control right mb-3"
+            placeholder="URL Endpoint"
+            raw={
+              Object {
+                "blocks": Array [],
+                "entityMap": Object {},
+              }
+            }
+            updateRaw={[Function]}
+            variables={Array []}
+          />
+        </InputGroup>,
+        <Button
+          block={true}
+          color="clear"
+          onClick={[Function]}
+          size="sm"
+          tag="button"
+        >
+          <i
+            className="fas fa-power-off mr-1"
+          />
+          Test Endpoint
+        </Button>,
+        <hr />,
+        <Nav
+          className="mb-3"
+          tabs={true}
+          tag="ul"
+          vertical={false}
+        >
+          <NavItem
+            className="mr-2"
+            onClick={[Function]}
+            tag="li"
+          >
+            <NavLink
+              active={true}
+              href="#"
+              tag="a"
+            >
+              Headers
+            </NavLink>
+          </NavItem>
+          <NavItem
+            className="mr-2"
+            onClick={[Function]}
+            tag="li"
+          >
+            <NavLink
+              active={false}
+              disabled={true}
+              href="#"
+              tag="a"
+            >
+              Body
+            </NavLink>
+          </NavItem>
+          <NavItem
+            className="mr-2"
+            onClick={[Function]}
+            tag="li"
+          >
+            <NavLink
+              active={false}
+              href="#"
+              tag="a"
+            >
+              Params
+            </NavLink>
+          </NavItem>
+        </Nav>,
+        <APIInputs
+          onAdd={[Function]}
+          onChange={[Function]}
+          onRemove={[Function]}
+          pairs={Array []}
+          type="headers"
+          variables={Array []}
+        />,
+        <hr />,
+        <label>
+          Result Variable Mapping
+        </label>,
+        <APIMapping
+          onAdd={[Function]}
+          onChange={[Function]}
+          onRemove={[Function]}
+          pairs={Array []}
+          variables={Array []}
+        />,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "autoFocus": true,
+          "backdrop": true,
+          "backdropTransition": Object {
+            "mountOnEnter": true,
+            "timeout": 150,
+          },
+          "centered": false,
+          "children": Array [
+            <ModalHeader
+              charCode={215}
+              closeAriaLabel="Close"
+              tag="h5"
+              toggle={[Function]}
+              wrapTag="div"
+            >
+              API Test
+            </ModalHeader>,
+            <ModalBody
+              tag="div"
+            >
+              <div
+                className="text-center mt-3"
+              >
+                <div
+                  className="loader text-lg"
+                />
+              </div>
+            </ModalBody>,
+          ],
+          "fade": true,
+          "isOpen": false,
+          "keyboard": true,
+          "modalTransition": Object {
+            "timeout": 300,
+          },
+          "onClosed": [Function],
+          "onOpened": [Function],
+          "role": "dialog",
+          "size": "lg",
+          "toggle": [Function],
+          "zIndex": 1050,
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "charCode": 215,
+              "children": "API Test",
+              "closeAriaLabel": "Close",
+              "tag": "h5",
+              "toggle": [Function],
+              "wrapTag": "div",
+            },
+            "ref": null,
+            "rendered": "API Test",
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": <div
+                className="text-center mt-3"
+              >
+                <div
+                  className="loader text-lg"
+                />
+              </div>,
+              "tag": "div",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": <div
+                  className="loader text-lg"
+                />,
+                "className": "text-center mt-3",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "className": "loader text-lg",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "div",
+              },
+              "type": "div",
+            },
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "URL Endpoint",
+        },
+        "ref": null,
+        "rendered": "URL Endpoint",
+        "type": "label",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": "br",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            <InputGroupButtonDropdown
+              addonType="prepend"
+              className="mb-3 pt-1 pb-1"
+              isOpen={false}
+              toggle={[Function]}
+            >
+              <DropdownToggle
+                aria-haspopup={true}
+                caret={true}
+                color="secondary"
+              >
+                GET
+              </DropdownToggle>
+              <DropdownMenu
+                flip={true}
+                tag="div"
+              >
+                <DropdownItem
+                  disabled={true}
+                  tag="button"
+                  toggle={true}
+                >
+                  GET
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  POST
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  PUT
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  DELETE
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  PATCH
+                </DropdownItem>
+              </DropdownMenu>
+            </InputGroupButtonDropdown>,
+            <VariableInput
+              className="form-control-border top-left form-control right mb-3"
+              placeholder="URL Endpoint"
+              raw={
+                Object {
+                  "blocks": Array [],
+                  "entityMap": Object {},
+                }
+              }
+              updateRaw={[Function]}
+              variables={Array []}
+            />,
+          ],
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "addonType": "prepend",
+              "children": Array [
+                <DropdownToggle
+                  aria-haspopup={true}
+                  caret={true}
+                  color="secondary"
+                >
+                  GET
+                </DropdownToggle>,
+                <DropdownMenu
+                  flip={true}
+                  tag="div"
+                >
+                  <DropdownItem
+                    disabled={true}
+                    tag="button"
+                    toggle={true}
+                  >
+                    GET
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    POST
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    PUT
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    DELETE
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    PATCH
+                  </DropdownItem>
+                </DropdownMenu>,
+              ],
+              "className": "mb-3 pt-1 pb-1",
+              "isOpen": false,
+              "toggle": [Function],
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "aria-haspopup": true,
+                  "caret": true,
+                  "children": "GET",
+                  "color": "secondary",
+                },
+                "ref": null,
+                "rendered": "GET",
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "children": Array [
+                    <DropdownItem
+                      disabled={true}
+                      tag="button"
+                      toggle={true}
+                    >
+                      GET
+                    </DropdownItem>,
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      POST
+                    </DropdownItem>,
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      PUT
+                    </DropdownItem>,
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      DELETE
+                    </DropdownItem>,
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      PATCH
+                    </DropdownItem>,
+                  ],
+                  "flip": true,
+                  "tag": "div",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "GET",
+                      "disabled": true,
+                      "tag": "button",
+                      "toggle": true,
+                    },
+                    "ref": null,
+                    "rendered": "GET",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "POST",
+                      "onClick": [Function],
+                      "tag": "button",
+                      "toggle": true,
+                    },
+                    "ref": null,
+                    "rendered": "POST",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "2",
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "PUT",
+                      "onClick": [Function],
+                      "tag": "button",
+                      "toggle": true,
+                    },
+                    "ref": null,
+                    "rendered": "PUT",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "3",
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "DELETE",
+                      "onClick": [Function],
+                      "tag": "button",
+                      "toggle": true,
+                    },
+                    "ref": null,
+                    "rendered": "DELETE",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "4",
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "PATCH",
+                      "onClick": [Function],
+                      "tag": "button",
+                      "toggle": true,
+                    },
+                    "ref": null,
+                    "rendered": "PATCH",
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "className": "form-control-border top-left form-control right mb-3",
+              "placeholder": "URL Endpoint",
+              "raw": Object {
+                "blocks": Array [],
+                "entityMap": Object {},
+              },
+              "updateRaw": [Function],
+              "variables": Array [],
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "block": true,
+          "children": Array [
+            <i
+              className="fas fa-power-off mr-1"
+            />,
+            "Test Endpoint",
+          ],
+          "color": "clear",
+          "onClick": [Function],
+          "size": "sm",
+          "tag": "button",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "className": "fas fa-power-off mr-1",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "i",
+          },
+          "Test Endpoint",
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": "hr",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": Array [
+            <NavItem
+              className="mr-2"
+              onClick={[Function]}
+              tag="li"
+            >
+              <NavLink
+                active={true}
+                href="#"
+                tag="a"
+              >
+                Headers
+              </NavLink>
+            </NavItem>,
+            <NavItem
+              className="mr-2"
+              onClick={[Function]}
+              tag="li"
+            >
+              <NavLink
+                active={false}
+                disabled={true}
+                href="#"
+                tag="a"
+              >
+                Body
+              </NavLink>
+            </NavItem>,
+            <NavItem
+              className="mr-2"
+              onClick={[Function]}
+              tag="li"
+            >
+              <NavLink
+                active={false}
+                href="#"
+                tag="a"
+              >
+                Params
+              </NavLink>
+            </NavItem>,
+          ],
+          "className": "mb-3",
+          "tabs": true,
+          "tag": "ul",
+          "vertical": false,
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": <NavLink
+                active={true}
+                href="#"
+                tag="a"
+              >
+                Headers
+              </NavLink>,
+              "className": "mr-2",
+              "onClick": [Function],
+              "tag": "li",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "active": true,
+                "children": "Headers",
+                "href": "#",
+                "tag": "a",
+              },
+              "ref": null,
+              "rendered": "Headers",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": <NavLink
+                active={false}
+                disabled={true}
+                href="#"
+                tag="a"
+              >
+                Body
+              </NavLink>,
+              "className": "mr-2",
+              "onClick": [Function],
+              "tag": "li",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "active": false,
+                "children": "Body",
+                "disabled": true,
+                "href": "#",
+                "tag": "a",
+              },
+              "ref": null,
+              "rendered": "Body",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": <NavLink
+                active={false}
+                href="#"
+                tag="a"
+              >
+                Params
+              </NavLink>,
+              "className": "mr-2",
+              "onClick": [Function],
+              "tag": "li",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "active": false,
+                "children": "Params",
+                "href": "#",
+                "tag": "a",
+              },
+              "ref": null,
+              "rendered": "Params",
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": "headers",
+        "nodeType": "class",
+        "props": Object {
+          "onAdd": [Function],
+          "onChange": [Function],
+          "onRemove": [Function],
+          "pairs": Array [],
+          "type": "headers",
+          "variables": Array [],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": "hr",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": "Result Variable Mapping",
+        },
+        "ref": null,
+        "rendered": "Result Variable Mapping",
+        "type": "label",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "onAdd": [Function],
+          "onChange": [Function],
+          "onRemove": [Function],
+          "pairs": Array [],
+          "variables": Array [],
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+    ],
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <Modal
+            autoFocus={true}
+            backdrop={true}
+            backdropTransition={
+              Object {
+                "mountOnEnter": true,
+                "timeout": 150,
+              }
+            }
+            centered={false}
+            fade={true}
+            isOpen={false}
+            keyboard={true}
+            modalTransition={
+              Object {
+                "timeout": 300,
+              }
+            }
+            onClosed={[Function]}
+            onOpened={[Function]}
+            role="dialog"
+            size="lg"
+            toggle={[Function]}
+            zIndex={1050}
+          >
+            <ModalHeader
+              charCode={215}
+              closeAriaLabel="Close"
+              tag="h5"
+              toggle={[Function]}
+              wrapTag="div"
+            >
+              API Test
+            </ModalHeader>
+            <ModalBody
+              tag="div"
+            >
+              <div
+                className="text-center mt-3"
+              >
+                <div
+                  className="loader text-lg"
+                />
+              </div>
+            </ModalBody>
+          </Modal>,
+          <label>
+            URL Endpoint
+          </label>,
+          <br />,
+          <InputGroup
+            tag="div"
+          >
+            <InputGroupButtonDropdown
+              addonType="prepend"
+              className="mb-3 pt-1 pb-1"
+              isOpen={false}
+              toggle={[Function]}
+            >
+              <DropdownToggle
+                aria-haspopup={true}
+                caret={true}
+                color="secondary"
+              >
+                GET
+              </DropdownToggle>
+              <DropdownMenu
+                flip={true}
+                tag="div"
+              >
+                <DropdownItem
+                  disabled={true}
+                  tag="button"
+                  toggle={true}
+                >
+                  GET
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  POST
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  PUT
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  DELETE
+                </DropdownItem>
+                <DropdownItem
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                >
+                  PATCH
+                </DropdownItem>
+              </DropdownMenu>
+            </InputGroupButtonDropdown>
+            <VariableInput
+              className="form-control-border top-left form-control right mb-3"
+              placeholder="URL Endpoint"
+              raw={
+                Object {
+                  "blocks": Array [],
+                  "entityMap": Object {},
+                }
+              }
+              updateRaw={[Function]}
+              variables={Array []}
+            />
+          </InputGroup>,
+          <Button
+            block={true}
+            color="clear"
+            onClick={[Function]}
+            size="sm"
+            tag="button"
+          >
+            <i
+              className="fas fa-power-off mr-1"
+            />
+            Test Endpoint
+          </Button>,
+          <hr />,
+          <Nav
+            className="mb-3"
+            tabs={true}
+            tag="ul"
+            vertical={false}
+          >
+            <NavItem
+              className="mr-2"
+              onClick={[Function]}
+              tag="li"
+            >
+              <NavLink
+                active={true}
+                href="#"
+                tag="a"
+              >
+                Headers
+              </NavLink>
+            </NavItem>
+            <NavItem
+              className="mr-2"
+              onClick={[Function]}
+              tag="li"
+            >
+              <NavLink
+                active={false}
+                disabled={true}
+                href="#"
+                tag="a"
+              >
+                Body
+              </NavLink>
+            </NavItem>
+            <NavItem
+              className="mr-2"
+              onClick={[Function]}
+              tag="li"
+            >
+              <NavLink
+                active={false}
+                href="#"
+                tag="a"
+              >
+                Params
+              </NavLink>
+            </NavItem>
+          </Nav>,
+          <APIInputs
+            onAdd={[Function]}
+            onChange={[Function]}
+            onRemove={[Function]}
+            pairs={Array []}
+            type="headers"
+            variables={Array []}
+          />,
+          <hr />,
+          <label>
+            Result Variable Mapping
+          </label>,
+          <APIMapping
+            onAdd={[Function]}
+            onChange={[Function]}
+            onRemove={[Function]}
+            pairs={Array []}
+            variables={Array []}
+          />,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "autoFocus": true,
+            "backdrop": true,
+            "backdropTransition": Object {
+              "mountOnEnter": true,
+              "timeout": 150,
+            },
+            "centered": false,
+            "children": Array [
+              <ModalHeader
+                charCode={215}
+                closeAriaLabel="Close"
+                tag="h5"
+                toggle={[Function]}
+                wrapTag="div"
+              >
+                API Test
+              </ModalHeader>,
+              <ModalBody
+                tag="div"
+              >
+                <div
+                  className="text-center mt-3"
+                >
+                  <div
+                    className="loader text-lg"
+                  />
+                </div>
+              </ModalBody>,
+            ],
+            "fade": true,
+            "isOpen": false,
+            "keyboard": true,
+            "modalTransition": Object {
+              "timeout": 300,
+            },
+            "onClosed": [Function],
+            "onOpened": [Function],
+            "role": "dialog",
+            "size": "lg",
+            "toggle": [Function],
+            "zIndex": 1050,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "charCode": 215,
+                "children": "API Test",
+                "closeAriaLabel": "Close",
+                "tag": "h5",
+                "toggle": [Function],
+                "wrapTag": "div",
+              },
+              "ref": null,
+              "rendered": "API Test",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": <div
+                  className="text-center mt-3"
+                >
+                  <div
+                    className="loader text-lg"
+                  />
+                </div>,
+                "tag": "div",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <div
+                    className="loader text-lg"
+                  />,
+                  "className": "text-center mt-3",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "className": "loader text-lg",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "div",
+                },
+                "type": "div",
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "URL Endpoint",
+          },
+          "ref": null,
+          "rendered": "URL Endpoint",
+          "type": "label",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "br",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <InputGroupButtonDropdown
+                addonType="prepend"
+                className="mb-3 pt-1 pb-1"
+                isOpen={false}
+                toggle={[Function]}
+              >
+                <DropdownToggle
+                  aria-haspopup={true}
+                  caret={true}
+                  color="secondary"
+                >
+                  GET
+                </DropdownToggle>
+                <DropdownMenu
+                  flip={true}
+                  tag="div"
+                >
+                  <DropdownItem
+                    disabled={true}
+                    tag="button"
+                    toggle={true}
+                  >
+                    GET
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    POST
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    PUT
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    DELETE
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    PATCH
+                  </DropdownItem>
+                </DropdownMenu>
+              </InputGroupButtonDropdown>,
+              <VariableInput
+                className="form-control-border top-left form-control right mb-3"
+                placeholder="URL Endpoint"
+                raw={
+                  Object {
+                    "blocks": Array [],
+                    "entityMap": Object {},
+                  }
+                }
+                updateRaw={[Function]}
+                variables={Array []}
+              />,
+            ],
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "addonType": "prepend",
+                "children": Array [
+                  <DropdownToggle
+                    aria-haspopup={true}
+                    caret={true}
+                    color="secondary"
+                  >
+                    GET
+                  </DropdownToggle>,
+                  <DropdownMenu
+                    flip={true}
+                    tag="div"
+                  >
+                    <DropdownItem
+                      disabled={true}
+                      tag="button"
+                      toggle={true}
+                    >
+                      GET
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      POST
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      PUT
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      DELETE
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={[Function]}
+                      tag="button"
+                      toggle={true}
+                    >
+                      PATCH
+                    </DropdownItem>
+                  </DropdownMenu>,
+                ],
+                "className": "mb-3 pt-1 pb-1",
+                "isOpen": false,
+                "toggle": [Function],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "aria-haspopup": true,
+                    "caret": true,
+                    "children": "GET",
+                    "color": "secondary",
+                  },
+                  "ref": null,
+                  "rendered": "GET",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "function",
+                  "props": Object {
+                    "children": Array [
+                      <DropdownItem
+                        disabled={true}
+                        tag="button"
+                        toggle={true}
+                      >
+                        GET
+                      </DropdownItem>,
+                      <DropdownItem
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                      >
+                        POST
+                      </DropdownItem>,
+                      <DropdownItem
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                      >
+                        PUT
+                      </DropdownItem>,
+                      <DropdownItem
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                      >
+                        DELETE
+                      </DropdownItem>,
+                      <DropdownItem
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                      >
+                        PATCH
+                      </DropdownItem>,
+                    ],
+                    "flip": true,
+                    "tag": "div",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "GET",
+                        "disabled": true,
+                        "tag": "button",
+                        "toggle": true,
+                      },
+                      "ref": null,
+                      "rendered": "GET",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "POST",
+                        "onClick": [Function],
+                        "tag": "button",
+                        "toggle": true,
+                      },
+                      "ref": null,
+                      "rendered": "POST",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "2",
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "PUT",
+                        "onClick": [Function],
+                        "tag": "button",
+                        "toggle": true,
+                      },
+                      "ref": null,
+                      "rendered": "PUT",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "3",
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "DELETE",
+                        "onClick": [Function],
+                        "tag": "button",
+                        "toggle": true,
+                      },
+                      "ref": null,
+                      "rendered": "DELETE",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "4",
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "PATCH",
+                        "onClick": [Function],
+                        "tag": "button",
+                        "toggle": true,
+                      },
+                      "ref": null,
+                      "rendered": "PATCH",
+                      "type": [Function],
+                    },
+                  ],
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "className": "form-control-border top-left form-control right mb-3",
+                "placeholder": "URL Endpoint",
+                "raw": Object {
+                  "blocks": Array [],
+                  "entityMap": Object {},
+                },
+                "updateRaw": [Function],
+                "variables": Array [],
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "block": true,
+            "children": Array [
+              <i
+                className="fas fa-power-off mr-1"
+              />,
+              "Test Endpoint",
+            ],
+            "color": "clear",
+            "onClick": [Function],
+            "size": "sm",
+            "tag": "button",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "className": "fas fa-power-off mr-1",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "i",
+            },
+            "Test Endpoint",
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "hr",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <NavItem
+                className="mr-2"
+                onClick={[Function]}
+                tag="li"
+              >
+                <NavLink
+                  active={true}
+                  href="#"
+                  tag="a"
+                >
+                  Headers
+                </NavLink>
+              </NavItem>,
+              <NavItem
+                className="mr-2"
+                onClick={[Function]}
+                tag="li"
+              >
+                <NavLink
+                  active={false}
+                  disabled={true}
+                  href="#"
+                  tag="a"
+                >
+                  Body
+                </NavLink>
+              </NavItem>,
+              <NavItem
+                className="mr-2"
+                onClick={[Function]}
+                tag="li"
+              >
+                <NavLink
+                  active={false}
+                  href="#"
+                  tag="a"
+                >
+                  Params
+                </NavLink>
+              </NavItem>,
+            ],
+            "className": "mb-3",
+            "tabs": true,
+            "tag": "ul",
+            "vertical": false,
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": <NavLink
+                  active={true}
+                  href="#"
+                  tag="a"
+                >
+                  Headers
+                </NavLink>,
+                "className": "mr-2",
+                "onClick": [Function],
+                "tag": "li",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "active": true,
+                  "children": "Headers",
+                  "href": "#",
+                  "tag": "a",
+                },
+                "ref": null,
+                "rendered": "Headers",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": <NavLink
+                  active={false}
+                  disabled={true}
+                  href="#"
+                  tag="a"
+                >
+                  Body
+                </NavLink>,
+                "className": "mr-2",
+                "onClick": [Function],
+                "tag": "li",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "active": false,
+                  "children": "Body",
+                  "disabled": true,
+                  "href": "#",
+                  "tag": "a",
+                },
+                "ref": null,
+                "rendered": "Body",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": <NavLink
+                  active={false}
+                  href="#"
+                  tag="a"
+                >
+                  Params
+                </NavLink>,
+                "className": "mr-2",
+                "onClick": [Function],
+                "tag": "li",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "active": false,
+                  "children": "Params",
+                  "href": "#",
+                  "tag": "a",
+                },
+                "ref": null,
+                "rendered": "Params",
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": "headers",
+          "nodeType": "class",
+          "props": Object {
+            "onAdd": [Function],
+            "onChange": [Function],
+            "onRemove": [Function],
+            "pairs": Array [],
+            "type": "headers",
+            "variables": Array [],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": "hr",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": "Result Variable Mapping",
+          },
+          "ref": null,
+          "rendered": "Result Variable Mapping",
+          "type": "label",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "onAdd": [Function],
+            "onChange": [Function],
+            "onRemove": [Function],
+            "pairs": Array [],
+            "variables": Array [],
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

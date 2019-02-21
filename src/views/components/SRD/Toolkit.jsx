@@ -44,7 +44,6 @@ export class Toolkit {
 		// var isHorizontal = true
 		var curvyX = 200;
 		var curvyY = 0;
-
 		if (firstPoint.parent.sourcePort && firstPoint.parent.sourcePort.in){
 			let temp = firstPoint;
 			firstPoint = lastPoint;
@@ -54,8 +53,9 @@ export class Toolkit {
 			curvyX = 0
 			curvyY = 0;
 		}
+
 		return `M${firstPoint.x},${firstPoint.y} C ${firstPoint.x + curvyX},${firstPoint.y + curvyY}
-    ${lastPoint.x - curvyX},${lastPoint.y - curvyY} ${lastPoint.x-15},${lastPoint.y}`;
+    ${lastPoint.x - curvyX},${lastPoint.y - curvyY} ${firstPoint.parent.sourcePort && firstPoint.parent.targetPort ? lastPoint.x-15 : lastPoint.x+5},${lastPoint.y}`;
 	}
 
 	generateDynamicPath(pathCoords) {

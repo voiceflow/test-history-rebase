@@ -219,8 +219,7 @@ exports.createInteractionModel = (req, locale) => {
 			// there already exists an intent similar enough to this function
 			if(samples[stripped] !== undefined){
 				// since it is a match we don't have to do a parsed input check
-				let intent = samples[stripped]
-				matched.push(intent)
+				matched.push(samples[stripped])
 			}else{
 				parsed_inputs.push(parsed_input)
 			}
@@ -240,6 +239,8 @@ exports.createInteractionModel = (req, locale) => {
 				let high = -1
 
 				for(match of matched){
+					if(!Array.isArray(match.samples)) continue
+
 					let i, sum=0;
 					for(i=0; i<match.samples.length; i++){
 						sum += stringSimilarity.compareTwoStrings(parsed_input.formatted_input.toLowerCase(), match.samples[0].toLowerCase())

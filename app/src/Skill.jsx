@@ -118,10 +118,12 @@ class Skill extends Component {
 
     componentWillUnmount(){
         let time_unmounted = new Date()
-        axios.post('/analytics/track_canvas_time', {
-            duration: time_unmounted - this.state.time_mounted,
-            skill_id: this.state.skill.skill_id
-        })
+        if(this.state.skill){
+            axios.post('/analytics/track_canvas_time', {
+                duration: time_unmounted - this.state.time_mounted,
+                skill_id: this.state.skill.skill_id
+            })
+        }
 
         // UNMOUNT SOCKET SESSION
         delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]

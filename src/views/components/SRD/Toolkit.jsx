@@ -55,7 +55,7 @@ export class Toolkit {
 			curvyY = 0;
 		}
 		return `M${firstPoint.x},${firstPoint.y} C ${firstPoint.x + curvyX},${firstPoint.y + curvyY}
-    ${lastPoint.x - curvyX},${lastPoint.y - curvyY} ${lastPoint.x},${lastPoint.y}`;
+    ${lastPoint.x - curvyX},${lastPoint.y - curvyY} ${lastPoint.x-15},${lastPoint.y}`;
 	}
 
 	generateDynamicPath(pathCoords) {

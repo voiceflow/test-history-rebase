@@ -55,19 +55,6 @@ describe('Skill', () => {
     .then(res => {
       token = res.body.token
     })
-
-    jest.mock('./../services', () => {
-      return {
-        redisClient: {
-          set: jest.fn(() => {
-            console.log("MOCK REDIS SET")
-          }),
-          get: jest.fn(() => {
-            console.log("MOCK REDIS GET")
-          })
-        }
-      }
-    })
   })
 
   describe('Creation', () => {

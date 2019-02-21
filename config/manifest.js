@@ -110,7 +110,7 @@ exports.createManifest = (r, encoded_id, name) => {
 		})
 	}
 	if (Array.isArray(r.alexa_interfaces) && r.alexa_interfaces.length !== 0) {
-		interfaces.push(...(r.alexa_interfaces.map(interface => ({"type": interface}))))
+		interfaces.push(...(r.alexa_interfaces.map(_interface => ({"type": _interface}))))
 	}
 	if(interfaces.length !== 0){
 		ret.manifest.apis.custom.interfaces = interfaces

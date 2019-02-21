@@ -1,9 +1,8 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, INTERFACE_INTENTS} = require('./Constants')
 const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat, parseChoiceInput, stripSample, utteranceToIntentName} = require('../app/src/util')
-const compare = require('clj-fuzzy').metrics
 const randomstring = require("randomstring")
-var levenshtein = require('fast-levenshtein')
+var stringSimilarity = require('string-similarity')
 
 const addSlots = (extracted_slots, intent, existing) => {
 	if(extracted_slots.length !== 0){
@@ -178,13 +177,15 @@ exports.createInteractionModel = (req, locale) => {
 	// Make this faster
 	if(used_choices.length !== 0){
 		used_choices = used_choices.map(c => {
-			let sum = 1
+			if(c.length === 1) return [1, c]
+			let sum = 0, num = 0
 			for(let i = 0; i < c.length; i++) {
 				for(let k = i + 1; k < c.length; k++) {
-					sum += 1 - (levenshtein.get(c[i], c[k])/Math.max(c[i].length, c[k].length))
+					num++
+					sum += stringSimilarity.compareTwoStrings(c[i].toLowerCase(), c[k].toLowerCase())
 				}
 			}
-			return [sum/c.length, c]
+			return [sum/num, c]
 		}).sort((i, k) => (k[0] - i[0])).map(c => c[1])
 	}
 
@@ -241,8 +242,7 @@ exports.createInteractionModel = (req, locale) => {
 				for(match of matched){
 					let i, sum=0;
 					for(i=0; i<match.samples.length; i++){
-						sum += 1 - (levenshtein.get(parsed_input.formatted_input, match.samples[0])/Math.max(parsed_input.formatted_input.length, match.samples[0].length))
-						// compare.dice(parsed_input.formatted_input, match.samples[0])
+						sum += stringSimilarity.compareTwoStrings(parsed_input.formatted_input.toLowerCase(), match.samples[0].toLowerCase())
 					}
 					let avg = sum/i
 					if(avg > high){

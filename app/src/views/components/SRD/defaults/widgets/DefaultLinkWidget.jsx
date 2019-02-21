@@ -128,10 +128,10 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 		);
 	}
 
-	generateLink(path, extraProps, id) {
+	generateLink(path, extraProps, id, isLast = false) {
 		var props = this.props;
 		var Bottom = React.cloneElement(
-			(props.diagramEngine.getFactoryForLink(this.props.link)).generateLinkSegment(
+			(props.diagramEngine.getFactoryForLink(this.props.link)).generateLinkSegmentWithEnd(
 				this.props.link,
 				this,
 				this.state.selected || this.props.link.isSelected(),
@@ -141,7 +141,19 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 				ref: ref => ref && this.refPaths.push(ref)
 			}
 		);
-
+		if (isLast){
+			Bottom = React.cloneElement(
+				(props.diagramEngine.getFactoryForLink(this.props.link)).generateLinkSegment(
+					this.props.link,
+					this,
+					this.state.selected || this.props.link.isSelected(),
+					path
+				),
+				{
+					ref: ref => ref && this.refPaths.push(ref)
+				}
+			);
+		}
 		var Top = React.cloneElement(Bottom, {
 			...extraProps,
 			strokeLinecap: "round",
@@ -316,7 +328,6 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 				);
 			}
 		}
-
 		// true when smart routing was skipped or not enabled.
 		// See @link{#isSmartRoutingApplicable()}.
 		if (paths.length === 0) {
@@ -368,7 +379,8 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 									this.addPointToLink(event, j + 1);
 								}
 							},
-							j
+							j,
+							j !== points.length -2
 						)
 					);
 				}

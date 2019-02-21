@@ -1350,9 +1350,7 @@ exports.buildGoogleSkill = async (req, res) => {
       main_locale
     } = publish_info
 
-    if (!locales) {
-      locales = []
-    }
+    locales = [] // We only support one locale for now
 
     if (!main_locale) {
       main_locale = 'en'

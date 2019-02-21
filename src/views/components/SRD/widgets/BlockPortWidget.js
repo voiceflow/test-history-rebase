@@ -1,21 +1,12 @@
 import _ from 'lodash';
 import * as React from "react";
-import { NodeModel, BaseWidget, BaseWidgetProps } from "./../main.js"
-
-export interface PortProps extends BaseWidgetProps {
-	name: string;
-	node: NodeModel;
-}
-
-export interface PortState {
-	selected: boolean;
-}
+import { BaseWidget } from "./../main.js"
 
 /**
  * @author Dylan Vorster
  */
-export class BlockPortWidget extends BaseWidget<PortProps, PortState> {
-	constructor(props: PortProps) {
+export class BlockPortWidget extends BaseWidget {
+	constructor(props) {
 		super("srd-port", props);
 		this.state = {
 			selected: false

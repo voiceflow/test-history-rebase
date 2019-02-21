@@ -9,7 +9,8 @@ class SecondaryNavBar extends Component {
         super(props)
 
         this.state = {
-            loading: false
+            loading: false,
+            platform: this.props.skill.platform
         }
 
         this.renderItem = this.renderItem.bind(this)
@@ -28,6 +29,8 @@ class SecondaryNavBar extends Component {
             let suffix = ''
             if (page === 'settings') {
                 suffix = 'basic'
+            } else if (page === 'publish') {
+                suffix = this.state.platform === 'alexa' ? '' : this.state.platform
             }
             return <Link to={`/${page}/${this.props.skill.skill_id}/${suffix}`} key={page} className="nav-item">
                 {page}

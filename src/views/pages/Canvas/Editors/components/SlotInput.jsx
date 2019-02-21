@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import { Collapse } from 'reactstrap';
-import Select from 'react-select'
+import Select, { components } from 'react-select'
 import {Tooltip} from 'react-tippy'
 
 class SlotInput extends Component {
@@ -129,9 +129,54 @@ class SlotInput extends Component {
     }
 
     render() {
+
+        const SlotOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^@sys\./.test(props.data.value)
+            const is_global = !is_alexa && !is_google
+
+            const is_custom = props.data.label === 'Custom'
+
+            return (
+                    <components.Option {...props}>
+                        <div className="d-flex slot-label justify-content-between">
+                            <span className="mr-2">{props.data.label}</span>
+                            <span className="d-flex">
+                                {!is_custom && (is_alexa || is_global) && <i className="fab fa-amazon align-self-center"/>}
+                                {!is_custom && (is_google || is_global) && <i className="fab fa-google align-self-center"/>}
+                            </span>
+                        </div>
+                    </components.Option>
+            )
+        }
+
+        const SingleValueOption = (props) => {
+            const is_alexa = /AMAZON/.test(props.data.value)
+            const is_google = /^@sys\./.test(props.data.value)
+            const is_global = !is_alexa && !is_google
+
+            const is_custom = props.data.label === 'Custom'
+
+            return (
+                <components.SingleValue {...props}>
+                    <div className="d-flex slot-label justify-content-between">
+                        <span className="mr-2">{props.data.label}</span>
+                        <span className="d-flex">
+                            {!is_custom && (is_alexa || is_global) && <i className="fab fa-amazon align-self-center"/>}
+                            {!is_custom && (is_google || is_global) && <i className="fab fa-google align-self-center"/>}
+                        </span>
+                    </div>
+                </components.SingleValue>
+            )
+        }
+
+        let disabled = false
+        const slot_type = this.props.slot.type.value
+        if ((/AMAZON/.test(slot_type) && !(this.props.platform === 'alexa')) || (/^@sys\./.test(slot_type) && !(this.props.platform === 'google'))) disabled = true
+
         return (
-            <div className="interaction-block mb-2">
-                <div className="intent-title">
+            <div className={`interaction-block mb-2`}>
+                <div className={`intent-title ${ disabled ? 'faded' : ''}`}>
                     <span onClick={this.toggleCollapse}><i className={"fas fa-caret-right rotate" + (this.props.slot.open ? " fa-rotate-90" : "")}></i></span>
                     <Tooltip
                         className="flex-hard"
@@ -154,34 +199,51 @@ class SlotInput extends Component {
                     <button className="close" onClick={()=>this.props.removeSlot(this.props.slot.key)} disabled={this.props.live_mode}>&times;</button>
                 </div>
                 <Collapse isOpen={this.props.slot.open}>
-                    <div className="super-center flex-hard choice-select">
-                        <Select
-                            placeholder="Select Slot Type"
-                            classNamePrefix="select-box"
-                            className='select-box mb-2'
-                            value={this.props.slot.type}
-                            onChange={this.updateSlotType}
-                            options={this.props.slot_types.map(type => {
-                                return {label: type, value: type}
-                            })}
-                            isDisabled={this.props.live_mode}
+                    {disabled && <div className='unavailable-input'><div><i className="fas fa-frown"></i></div>This Slot Type is Unavailable on {(this.props.platform === 'google') ? 'Google Assistant' : 'Alexa'}</div>}
+                    <div className={disabled ? 'disabled faded' : ''}>
+                        <div className="super-center flex-hard choice-select">
+                            <Select
+                                placeholder="Select Slot Type"
+                                classNamePrefix="select-box"
+                                className='select-box mb-2'
+                                value={this.props.slot.type}
+                                onChange={this.updateSlotType}
+                                options={this.props.slot_types.map(type => {
+                                    let value
+                                    if ((type.type.alexa && type.type.google) || (!type.type.alexa && !type.type.google)) {
+                                        value = type.label
+                                    } 
+                                    else if (type.type.alexa && !type.type.google) {
+                                        value = type.type.alexa
+                                    }
+                                    else if (!type.type.alexa && type.type.google) {
+                                        value = type.type.google
+                                    }
+
+                                    return {label: type.label, value: value}
+                                })}
+                                components={{ Option: SlotOption, SingleValue: SingleValueOption }}
+                                styles={{
+                                    singleValue: (base) => ({ ...base, width: '100%' }),
+                                }}
+                                isDisabled={this.props.live_mode}
+                                />
+                        </div>
+                        <hr className="mt-1 mb-2"/>
+                        <div>
+                            {this.renderUtterances(this.props.slot.inputs)}
+                        </div>
+                        <Textarea 
+                            className="slot-input"
+                            name="inputs"
+                            value={this.state.text} 
+                            onKeyPress={this.handleKeyPress}
+                            onChange={this.onTextChange}
+                            placeholder="Enter Slot Content Example" 
                         />
-                    </div>
-                    <hr className="mt-1 mb-2"/>
-                    <div>
-                        {this.renderUtterances(this.props.slot.inputs)}
-                    </div>
-                    <Textarea 
-                        className="slot-input"
-                        name="inputs"
-                        value={this.state.text} 
-                        onKeyPress={this.handleKeyPress}
-                        onChange={this.onTextChange}
-                        placeholder="Enter Slot Content Example" 
-                        disabled={this.props.live_mode}
-                    />
-                    <div className="text-center mt-2">
-                        <span className="key-bubble forward pointer" onClick={this.addValue}><i className="far fa-long-arrow-right"/></span>
+                        <div className="text-center mt-2">
+                            <span className="key-bubble forward pointer" onClick={this.addValue}><i className="far fa-long-arrow-right"/></span>
+                        </div>
                     </div>
                 </Collapse>
             </div> 

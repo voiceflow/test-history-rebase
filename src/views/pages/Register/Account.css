@@ -23,6 +23,11 @@
     margin-bottom: 20px;
     width: 55px !important;
 }
+.warning-logo{
+    margin-bottom: 6px;
+    width: 35px !important;
+    pointer-events: none;
+}
 .login-btn{
     font-weight: 600;
     width: 100%;

@@ -66,7 +66,7 @@ export class BlockPortModel extends PortModel {
 		}
 		this.setSelected(true)
 
-		if(!link) link = new BlockLinkModel("default", toolkit.UID())
+		if(!link) link = new BlockLinkModel("default", toolkit.UID(), false)
 
 		return link
 	}

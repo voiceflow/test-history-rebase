@@ -21,7 +21,7 @@ import {Link} from 'react-router-dom'
 import AuthenticationService from '../../../services/Authentication'
 import LOCALE_MAP from '../../../services/LocaleMap'
 
-import categories from '../../../services/Categories'
+import { AMAZON_CATEGORIES } from '../../../services/Categories'
 const _ = require('lodash');
 
 const stage_title = {
@@ -51,7 +51,6 @@ class Skill extends Component {
         this.state = {
             loaded: false,
             dropdown: false,
-            saved: true,
             skill_id: this.props.skill.skill_id,
             stage: 1,
             publish: false,
@@ -86,7 +85,7 @@ class Skill extends Component {
         axios.get('/skill/' + this.state.skill_id + '?verbose=1')
         .then(res => {
             if(res.data.category){
-                for(let option of categories){
+                for(let option of AMAZON_CATEGORIES){
                     if(option.value === res.data.category){
                         res.data.category = option;
                         break;
@@ -102,6 +101,9 @@ class Skill extends Component {
                 res.data.invocations = ['']
             }
 
+            if (!res.data.keywords) {
+                res.data.keywords = ''
+            }
 
             if(res.data.review){
                 res.data.stage = 11;
@@ -109,6 +111,8 @@ class Skill extends Component {
                 delete res.data.stage;
             }
             res.data.privacy_policy = !_.isEmpty(res.data.privacy_policy) ? res.data.privacy_policy : ''
+
+            // TODO: Antipattern, fix this when we do redux
             this.setState({
                 loaded: true,
                 ...res.data
@@ -121,8 +125,7 @@ class Skill extends Component {
 
     onRadio(type, value) {
         this.setState({
-            [type]: value,
-            saved: false
+            [type]: value
         })
     }
 
@@ -270,7 +273,7 @@ class Skill extends Component {
         })
         this.setState({ stage: 3 });
 
-        axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`)
+        axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`, { platform: 'alexa' })
             .then(res => {
                 this.setState({ stage: 4 });
                 let new_version_data = res.data
@@ -311,7 +314,9 @@ class Skill extends Component {
     }
 
     componentWillUnmount() {
-        this.save(true)
+        if (this.state.loaded) {
+            this.save(true)
+        }
     }
 
     validateForm() {
@@ -380,7 +385,6 @@ class Skill extends Component {
     handleChange(event){
         if(this.state.stage !== 11){
             this.setState({
-                saved: false,
                 [event.target.name]: event.target.value
             });
         }
@@ -388,7 +392,6 @@ class Skill extends Component {
 
     handleSelection(value){
         this.setState({
-            saved: false,
             category: value
         });
     }
@@ -423,7 +426,6 @@ class Skill extends Component {
             locales.push(locale)
         }
         this.setState({
-            saved: false,
             locales : locales
         })
     }
@@ -565,7 +567,7 @@ class Skill extends Component {
             content = <div>
                 <img src="/images/preview.svg" alt="Success" height="160"/>
                 <br/>
-                You Skill Has been uploaded to Alexa Development!
+                Your Skill Has been uploaded to Alexa Development!
                 <span className="text-muted text-center">
                     You may test on the Alexa Simulator or Submit your Skill for review
                 </span>
@@ -845,7 +847,7 @@ class Skill extends Component {
                                                 isDisabled={disabled_stages.has(this.state.stage)}
                                                 value={this.state.category}
                                                 onChange={this.handleSelection}
-                                                options={categories}
+                                                options={AMAZON_CATEGORIES}
                                             />
                                         </div>
                                     </div>
@@ -894,7 +896,7 @@ class Skill extends Component {
                                                 list={this.state.invocations}
                                                 max={3}
                                                 prepend="Alexa,"
-                                                update={(list) => this.setState({invocations: list, saved: false})}
+                                                update={(list) => this.setState({invocations: list})}
                                                 isDisabled={disabled_stages.has(this.state.stage)}
                                                 placeholder={"open/start/launch " + this.state.name}
                                                 add={<span><i className="fas fa-plus"/> Add Invocation</span>}

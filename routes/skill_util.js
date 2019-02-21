@@ -3,7 +3,7 @@ const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../s
 const { AccessToken } = require('./authentication')
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
-const { renderDiagram } = require('./render_diagram')
+const { renderDiagram } = require('../config/render_diagram')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -359,7 +359,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    let used_intents = new Set(), used_choices = [], permissions = new Set(), interfaces = new Set()
     if (Array.isArray(skill.intents)) {
       skill.intents.forEach(intent => {
         if (intent.key) intents[intent.key] = intent.name
@@ -374,7 +374,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
       await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
       // UPDATE SKILL 
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
-      [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
+      [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify(used_choices), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
     }catch(err){
       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
     }

@@ -1367,50 +1367,10 @@ class Canvas extends Component {
                 var data = JSON.stringify(serialize)
 
                 let sub_diagrams = []
-                let used_intent_names = new Set()
-                let used_intents = []
 
                 serialize.nodes.forEach(node => {
                     if(node.extras.diagram_id){
                         sub_diagrams.push(node.extras.diagram_id)
-                    }else if (node.extras.type === 'interaction') {
-                        node.extras.alexa.choices.forEach(choice => {
-                            if (choice.intent && !used_intent_names.has(choice.intent.value)) {
-                                if (choice.intent.built_in) {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: true,
-                                        platform: 'alexa'
-                                    })
-                                } else {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: false,
-                                        platform: 'alexa'
-                                    })
-                                }
-                                used_intent_names.add(choice.intent.value)
-                            }
-                        })
-    
-                        node.extras.google.choices.forEach(choice => {
-                            if (choice.intent && !used_intent_names.has(choice.intent.value)) {
-                                if (choice.intent.built_in) {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: true,
-                                        platform: 'google'
-                                    })
-                                } else {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: false,
-                                        platform: 'google'
-                                    })
-                                }
-                                used_intent_names.add(choice.intent.value)
-                            }
-                        })
                     }
                 })
 
@@ -1442,7 +1402,6 @@ class Canvas extends Component {
                     data: data,
                     skill: this.state.skill.skill_id,
                     sub_diagrams: JSON.stringify(sub_diagrams),
-                    used_intents: used_intents,
                     global: this.state.skill.global
                 }
                 const s = this.state.skill;

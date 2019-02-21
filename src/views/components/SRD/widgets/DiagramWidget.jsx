@@ -487,7 +487,7 @@ export class DiagramWidget extends BaseWidget {
 										})
 									} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
 										element.remove();
-									} else {
+									} else if (!(element instanceof BlockNodeModel)){
 										element.remove();
 									}
                  }

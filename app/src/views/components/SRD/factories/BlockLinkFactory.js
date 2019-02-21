@@ -22,7 +22,7 @@ export class BlockLinkFactory extends LinkModel{
 	}
 
 	getNewInstance(initialConfig?: any): BlockLinkModel {
-		return new BlockLinkModel("default", toolkit.UID());
+		return new BlockLinkModel("default", toolkit.UID(), false);
 	}
 
 	getType(){

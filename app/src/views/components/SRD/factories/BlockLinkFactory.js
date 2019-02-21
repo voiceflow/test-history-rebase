@@ -22,7 +22,7 @@ export class BlockLinkFactory extends LinkModel{
 	}
 
 	getNewInstance(initialConfig?: any): BlockLinkModel {
-		return new BlockLinkModel("default", toolkit.UID());
+		return new BlockLinkModel("default", toolkit.UID(), false);
 	}
 
 	getType(){
@@ -32,8 +32,19 @@ export class BlockLinkFactory extends LinkModel{
 		return (
 			<path
 				className={selected ? widget.bem("--path-selected") : ""}
-				strokeWidth={this.width}
-				stroke={this.color}
+				strokeWidth={1}
+				stroke={"#8DA2B5"}
+				d={path}
+			/>
+		);
+	}
+	generateLinkSegmentWithEnd(model: BlockLinkModel, widget: DefaultLinkWidget, selected: boolean, path: string) {
+		return (
+			<path
+				className={selected ? widget.bem("--path-selected") : ""}
+				markerEnd='url(#head)'
+				strokeWidth={1}
+				stroke={"#8DA2B5"}
 				d={path}
 			/>
 		);

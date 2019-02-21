@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { 
     Button, 
     Input, 
@@ -64,7 +65,10 @@ class FlowButton extends Component {
                 <ButtonGroup className="diagram-block">
                     <Button disabled={active} 
                         onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)} block>
-                        <span className="diagram-text">{this.props.flow.name === 'ROOT' ? 'HOME' : this.state.name}</span>
+                        < span className = "diagram-text" > {
+                            this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.state.name) ?
+                                (this.state.name.length > 15 ? `${this.state.name.substring(0,15)}...` : this.state.name) : 'Flow'
+                        } </span>
                     </Button>
                     { (this.props.flow.name !== 'ROOT' && !this.props.preview) && 
                         <UncontrolledDropdown inNavbar>

@@ -1,7 +1,7 @@
 import { LinkModel, DefaultLinkModelListener, BaseEvent, DiagramEngine, DefaultLabelModel, LabelModel } from './../main.js';
 export class BlockLinkModel extends LinkModel {
-	constructor(type: string = "default", id) {
-		super(type, id);
+	constructor(type: string = "default", id, testing) {
+		super(type, id, testing);
 		this.color = "8DA2B5";
 		this.width = 1;
 		this.curvyness = 175;

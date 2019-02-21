@@ -1,0 +1,4981 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Onboarding renders without crashing 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Account
+    location={
+      Object {
+        "hash": "",
+        "key": "i4q8aw",
+        "pathname": "/login",
+        "search": "",
+      }
+    }
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": <div
+        className="login-card open-register"
+      >
+        <div
+          id="side-form"
+        >
+          <Form
+            id="login-form"
+            onSubmit={[Function]}
+            tag="form"
+          >
+            <img
+              alt="logo"
+              className="login-logo"
+              src="/logo.svg"
+            />
+            <div
+              className="px-5 pb-5 pt-4"
+            >
+              <div
+                className="text-center"
+              >
+                <h3
+                  className="mb-3"
+                >
+                  Login
+                </h3>
+              </div>
+              <div
+                className="social-login"
+              >
+                <e
+                  accessType="online"
+                  buttonText="Login with Google"
+                  className="social-button class-ggl mb-2"
+                  clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                  cookiePolicy="single_host_origin"
+                  disabledStyle={
+                    Object {
+                      "opacity": 0.6,
+                    }
+                  }
+                  fetchBasicProfile={true}
+                  icon={true}
+                  isSignedIn={false}
+                  jsSrc="https://apis.google.com/js/client:platform.js"
+                  onRequest={[Function]}
+                  onSuccess={[Function]}
+                  prompt=""
+                  scope="profile email"
+                  tag="button"
+                  theme="light"
+                  type="button"
+                  uxMode="popup"
+                />
+                <t
+                  appId="382723665627980"
+                  callback={[Function]}
+                  cssClass="social-button class-fb"
+                  fields="name,email"
+                  icon="fa-facebook"
+                  size="metro"
+                  tag="button"
+                  textButton="Login with Facebook"
+                  typeButton="button"
+                />
+                <div
+                  className="break"
+                >
+                  <span
+                    className="or"
+                  >
+                    OR
+                  </span>
+                </div>
+              </div>
+              <FormGroup
+                tag="div"
+              >
+                <Input
+                  className="form-bg"
+                  minLength="6"
+                  name="email"
+                  onChange={[Function]}
+                  placeholder="Email"
+                  required={true}
+                  type="email"
+                  value=""
+                />
+              </FormGroup>
+              <FormGroup
+                tag="div"
+              >
+                <Input
+                  className="form-bg"
+                  minLength="8"
+                  name="password"
+                  onChange={[Function]}
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                  value=""
+                />
+              </FormGroup>
+              <Button
+                block={true}
+                className="purple-btn login-btn"
+                color="secondary"
+                tag="button"
+                type="submit"
+              >
+                Login
+              </Button>
+              <div
+                className="text-center small mt-2"
+              >
+                <Link
+                  replace={false}
+                  style={
+                    Object {
+                      "color": "#8da2b5",
+                    }
+                  }
+                  to="/reset"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
+              <hr />
+              <div
+                className="text-center"
+              >
+                Dont have an account? 
+                <a
+                  href="/signup"
+                  onClick={[Function]}
+                >
+                  Sign Up
+                </a>
+              </div>
+            </div>
+          </Form>
+          <Form
+            id="signup-form"
+            onSubmit={[Function]}
+            tag="form"
+          >
+            <img
+              alt="logo"
+              className="login-logo"
+              src="/logo.svg"
+            />
+            <div
+              className="px-5 pb-5 pt-4"
+            >
+              <div
+                className="text-center"
+              >
+                <h3
+                  className="mb-3"
+                >
+                  Sign Up
+                </h3>
+              </div>
+              <div
+                className="social-login"
+              >
+                <e
+                  accessType="online"
+                  buttonText="Sign up with Google"
+                  className="social-button class-ggl mb-2"
+                  clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                  cookiePolicy="single_host_origin"
+                  disabledStyle={
+                    Object {
+                      "opacity": 0.6,
+                    }
+                  }
+                  fetchBasicProfile={true}
+                  icon={true}
+                  isSignedIn={false}
+                  jsSrc="https://apis.google.com/js/client:platform.js"
+                  onRequest={[Function]}
+                  onSuccess={[Function]}
+                  prompt=""
+                  scope="profile email"
+                  tag="button"
+                  theme="light"
+                  type="button"
+                  uxMode="popup"
+                />
+                <t
+                  appId="382723665627980"
+                  callback={[Function]}
+                  cssClass="social-button class-fb"
+                  fields="name,email"
+                  icon="fa-facebook"
+                  size="metro"
+                  tag="button"
+                  textButton="Sign up with Facebook"
+                  typeButton="button"
+                />
+                <div
+                  className="break"
+                >
+                  <span
+                    className="or"
+                  >
+                    OR
+                  </span>
+                </div>
+              </div>
+              <FormGroup
+                tag="div"
+              >
+                <Label
+                  for="name"
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Name
+                </Label>
+                <Input
+                  className="form-bg"
+                  minLength="3"
+                  name="r_name"
+                  onChange={[Function]}
+                  placeholder="Full Name"
+                  required={true}
+                  type="text"
+                  value=""
+                />
+              </FormGroup>
+              <FormGroup
+                tag="div"
+              >
+                <Label
+                  for="email"
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Email
+                </Label>
+                <Input
+                  className="form-bg"
+                  minLength="6"
+                  name="r_email"
+                  onChange={[Function]}
+                  placeholder="bezos@amazon.com"
+                  required={true}
+                  type="email"
+                  value=""
+                />
+              </FormGroup>
+              <FormGroup
+                tag="div"
+              >
+                <Label
+                  for="password"
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Password
+                </Label>
+                <Input
+                  className="form-bg"
+                  minLength="8"
+                  name="r_password"
+                  onChange={[Function]}
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                  value=""
+                />
+              </FormGroup>
+              <Button
+                block={true}
+                className="purple-btn login-btn"
+                color="secondary"
+                tag="button"
+                type="submit"
+              >
+                Create Account
+              </Button>
+              <hr />
+              <div
+                className="text-center"
+              >
+                Already have an account? 
+                <a
+                  href="/login"
+                  onClick={[Function]}
+                >
+                  Login
+                </a>
+              </div>
+            </div>
+          </Form>
+        </div>
+      </div>,
+      "className": "d-flex flex-row align-items-center justify-content-center",
+      "id": "main",
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <div
+          id="side-form"
+        >
+          <Form
+            id="login-form"
+            onSubmit={[Function]}
+            tag="form"
+          >
+            <img
+              alt="logo"
+              className="login-logo"
+              src="/logo.svg"
+            />
+            <div
+              className="px-5 pb-5 pt-4"
+            >
+              <div
+                className="text-center"
+              >
+                <h3
+                  className="mb-3"
+                >
+                  Login
+                </h3>
+              </div>
+              <div
+                className="social-login"
+              >
+                <e
+                  accessType="online"
+                  buttonText="Login with Google"
+                  className="social-button class-ggl mb-2"
+                  clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                  cookiePolicy="single_host_origin"
+                  disabledStyle={
+                    Object {
+                      "opacity": 0.6,
+                    }
+                  }
+                  fetchBasicProfile={true}
+                  icon={true}
+                  isSignedIn={false}
+                  jsSrc="https://apis.google.com/js/client:platform.js"
+                  onRequest={[Function]}
+                  onSuccess={[Function]}
+                  prompt=""
+                  scope="profile email"
+                  tag="button"
+                  theme="light"
+                  type="button"
+                  uxMode="popup"
+                />
+                <t
+                  appId="382723665627980"
+                  callback={[Function]}
+                  cssClass="social-button class-fb"
+                  fields="name,email"
+                  icon="fa-facebook"
+                  size="metro"
+                  tag="button"
+                  textButton="Login with Facebook"
+                  typeButton="button"
+                />
+                <div
+                  className="break"
+                >
+                  <span
+                    className="or"
+                  >
+                    OR
+                  </span>
+                </div>
+              </div>
+              <FormGroup
+                tag="div"
+              >
+                <Input
+                  className="form-bg"
+                  minLength="6"
+                  name="email"
+                  onChange={[Function]}
+                  placeholder="Email"
+                  required={true}
+                  type="email"
+                  value=""
+                />
+              </FormGroup>
+              <FormGroup
+                tag="div"
+              >
+                <Input
+                  className="form-bg"
+                  minLength="8"
+                  name="password"
+                  onChange={[Function]}
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                  value=""
+                />
+              </FormGroup>
+              <Button
+                block={true}
+                className="purple-btn login-btn"
+                color="secondary"
+                tag="button"
+                type="submit"
+              >
+                Login
+              </Button>
+              <div
+                className="text-center small mt-2"
+              >
+                <Link
+                  replace={false}
+                  style={
+                    Object {
+                      "color": "#8da2b5",
+                    }
+                  }
+                  to="/reset"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
+              <hr />
+              <div
+                className="text-center"
+              >
+                Dont have an account? 
+                <a
+                  href="/signup"
+                  onClick={[Function]}
+                >
+                  Sign Up
+                </a>
+              </div>
+            </div>
+          </Form>
+          <Form
+            id="signup-form"
+            onSubmit={[Function]}
+            tag="form"
+          >
+            <img
+              alt="logo"
+              className="login-logo"
+              src="/logo.svg"
+            />
+            <div
+              className="px-5 pb-5 pt-4"
+            >
+              <div
+                className="text-center"
+              >
+                <h3
+                  className="mb-3"
+                >
+                  Sign Up
+                </h3>
+              </div>
+              <div
+                className="social-login"
+              >
+                <e
+                  accessType="online"
+                  buttonText="Sign up with Google"
+                  className="social-button class-ggl mb-2"
+                  clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                  cookiePolicy="single_host_origin"
+                  disabledStyle={
+                    Object {
+                      "opacity": 0.6,
+                    }
+                  }
+                  fetchBasicProfile={true}
+                  icon={true}
+                  isSignedIn={false}
+                  jsSrc="https://apis.google.com/js/client:platform.js"
+                  onRequest={[Function]}
+                  onSuccess={[Function]}
+                  prompt=""
+                  scope="profile email"
+                  tag="button"
+                  theme="light"
+                  type="button"
+                  uxMode="popup"
+                />
+                <t
+                  appId="382723665627980"
+                  callback={[Function]}
+                  cssClass="social-button class-fb"
+                  fields="name,email"
+                  icon="fa-facebook"
+                  size="metro"
+                  tag="button"
+                  textButton="Sign up with Facebook"
+                  typeButton="button"
+                />
+                <div
+                  className="break"
+                >
+                  <span
+                    className="or"
+                  >
+                    OR
+                  </span>
+                </div>
+              </div>
+              <FormGroup
+                tag="div"
+              >
+                <Label
+                  for="name"
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Name
+                </Label>
+                <Input
+                  className="form-bg"
+                  minLength="3"
+                  name="r_name"
+                  onChange={[Function]}
+                  placeholder="Full Name"
+                  required={true}
+                  type="text"
+                  value=""
+                />
+              </FormGroup>
+              <FormGroup
+                tag="div"
+              >
+                <Label
+                  for="email"
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Email
+                </Label>
+                <Input
+                  className="form-bg"
+                  minLength="6"
+                  name="r_email"
+                  onChange={[Function]}
+                  placeholder="bezos@amazon.com"
+                  required={true}
+                  type="email"
+                  value=""
+                />
+              </FormGroup>
+              <FormGroup
+                tag="div"
+              >
+                <Label
+                  for="password"
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Password
+                </Label>
+                <Input
+                  className="form-bg"
+                  minLength="8"
+                  name="r_password"
+                  onChange={[Function]}
+                  placeholder="Password"
+                  required={true}
+                  type="password"
+                  value=""
+                />
+              </FormGroup>
+              <Button
+                block={true}
+                className="purple-btn login-btn"
+                color="secondary"
+                tag="button"
+                type="submit"
+              >
+                Create Account
+              </Button>
+              <hr />
+              <div
+                className="text-center"
+              >
+                Already have an account? 
+                <a
+                  href="/login"
+                  onClick={[Function]}
+                >
+                  Login
+                </a>
+              </div>
+            </div>
+          </Form>
+        </div>,
+        "className": "login-card open-register",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <Form
+              id="login-form"
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <img
+                alt="logo"
+                className="login-logo"
+                src="/logo.svg"
+              />
+              <div
+                className="px-5 pb-5 pt-4"
+              >
+                <div
+                  className="text-center"
+                >
+                  <h3
+                    className="mb-3"
+                  >
+                    Login
+                  </h3>
+                </div>
+                <div
+                  className="social-login"
+                >
+                  <e
+                    accessType="online"
+                    buttonText="Login with Google"
+                    className="social-button class-ggl mb-2"
+                    clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                    cookiePolicy="single_host_origin"
+                    disabledStyle={
+                      Object {
+                        "opacity": 0.6,
+                      }
+                    }
+                    fetchBasicProfile={true}
+                    icon={true}
+                    isSignedIn={false}
+                    jsSrc="https://apis.google.com/js/client:platform.js"
+                    onRequest={[Function]}
+                    onSuccess={[Function]}
+                    prompt=""
+                    scope="profile email"
+                    tag="button"
+                    theme="light"
+                    type="button"
+                    uxMode="popup"
+                  />
+                  <t
+                    appId="382723665627980"
+                    callback={[Function]}
+                    cssClass="social-button class-fb"
+                    fields="name,email"
+                    icon="fa-facebook"
+                    size="metro"
+                    tag="button"
+                    textButton="Login with Facebook"
+                    typeButton="button"
+                  />
+                  <div
+                    className="break"
+                  >
+                    <span
+                      className="or"
+                    >
+                      OR
+                    </span>
+                  </div>
+                </div>
+                <FormGroup
+                  tag="div"
+                >
+                  <Input
+                    className="form-bg"
+                    minLength="6"
+                    name="email"
+                    onChange={[Function]}
+                    placeholder="Email"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Input
+                    className="form-bg"
+                    minLength="8"
+                    name="password"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </FormGroup>
+                <Button
+                  block={true}
+                  className="purple-btn login-btn"
+                  color="secondary"
+                  tag="button"
+                  type="submit"
+                >
+                  Login
+                </Button>
+                <div
+                  className="text-center small mt-2"
+                >
+                  <Link
+                    replace={false}
+                    style={
+                      Object {
+                        "color": "#8da2b5",
+                      }
+                    }
+                    to="/reset"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <hr />
+                <div
+                  className="text-center"
+                >
+                  Dont have an account? 
+                  <a
+                    href="/signup"
+                    onClick={[Function]}
+                  >
+                    Sign Up
+                  </a>
+                </div>
+              </div>
+            </Form>,
+            <Form
+              id="signup-form"
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <img
+                alt="logo"
+                className="login-logo"
+                src="/logo.svg"
+              />
+              <div
+                className="px-5 pb-5 pt-4"
+              >
+                <div
+                  className="text-center"
+                >
+                  <h3
+                    className="mb-3"
+                  >
+                    Sign Up
+                  </h3>
+                </div>
+                <div
+                  className="social-login"
+                >
+                  <e
+                    accessType="online"
+                    buttonText="Sign up with Google"
+                    className="social-button class-ggl mb-2"
+                    clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                    cookiePolicy="single_host_origin"
+                    disabledStyle={
+                      Object {
+                        "opacity": 0.6,
+                      }
+                    }
+                    fetchBasicProfile={true}
+                    icon={true}
+                    isSignedIn={false}
+                    jsSrc="https://apis.google.com/js/client:platform.js"
+                    onRequest={[Function]}
+                    onSuccess={[Function]}
+                    prompt=""
+                    scope="profile email"
+                    tag="button"
+                    theme="light"
+                    type="button"
+                    uxMode="popup"
+                  />
+                  <t
+                    appId="382723665627980"
+                    callback={[Function]}
+                    cssClass="social-button class-fb"
+                    fields="name,email"
+                    icon="fa-facebook"
+                    size="metro"
+                    tag="button"
+                    textButton="Sign up with Facebook"
+                    typeButton="button"
+                  />
+                  <div
+                    className="break"
+                  >
+                    <span
+                      className="or"
+                    >
+                      OR
+                    </span>
+                  </div>
+                </div>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="name"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Name
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="3"
+                    name="r_name"
+                    onChange={[Function]}
+                    placeholder="Full Name"
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="email"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Email
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="6"
+                    name="r_email"
+                    onChange={[Function]}
+                    placeholder="bezos@amazon.com"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="password"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Password
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="8"
+                    name="r_password"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </FormGroup>
+                <Button
+                  block={true}
+                  className="purple-btn login-btn"
+                  color="secondary"
+                  tag="button"
+                  type="submit"
+                >
+                  Create Account
+                </Button>
+                <hr />
+                <div
+                  className="text-center"
+                >
+                  Already have an account? 
+                  <a
+                    href="/login"
+                    onClick={[Function]}
+                  >
+                    Login
+                  </a>
+                </div>
+              </div>
+            </Form>,
+          ],
+          "id": "side-form",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <img
+                  alt="logo"
+                  className="login-logo"
+                  src="/logo.svg"
+                />,
+                <div
+                  className="px-5 pb-5 pt-4"
+                >
+                  <div
+                    className="text-center"
+                  >
+                    <h3
+                      className="mb-3"
+                    >
+                      Login
+                    </h3>
+                  </div>
+                  <div
+                    className="social-login"
+                  >
+                    <e
+                      accessType="online"
+                      buttonText="Login with Google"
+                      className="social-button class-ggl mb-2"
+                      clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                      cookiePolicy="single_host_origin"
+                      disabledStyle={
+                        Object {
+                          "opacity": 0.6,
+                        }
+                      }
+                      fetchBasicProfile={true}
+                      icon={true}
+                      isSignedIn={false}
+                      jsSrc="https://apis.google.com/js/client:platform.js"
+                      onRequest={[Function]}
+                      onSuccess={[Function]}
+                      prompt=""
+                      scope="profile email"
+                      tag="button"
+                      theme="light"
+                      type="button"
+                      uxMode="popup"
+                    />
+                    <t
+                      appId="382723665627980"
+                      callback={[Function]}
+                      cssClass="social-button class-fb"
+                      fields="name,email"
+                      icon="fa-facebook"
+                      size="metro"
+                      tag="button"
+                      textButton="Login with Facebook"
+                      typeButton="button"
+                    />
+                    <div
+                      className="break"
+                    >
+                      <span
+                        className="or"
+                      >
+                        OR
+                      </span>
+                    </div>
+                  </div>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Input
+                      className="form-bg"
+                      minLength="6"
+                      name="email"
+                      onChange={[Function]}
+                      placeholder="Email"
+                      required={true}
+                      type="email"
+                      value=""
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Input
+                      className="form-bg"
+                      minLength="8"
+                      name="password"
+                      onChange={[Function]}
+                      placeholder="Password"
+                      required={true}
+                      type="password"
+                      value=""
+                    />
+                  </FormGroup>
+                  <Button
+                    block={true}
+                    className="purple-btn login-btn"
+                    color="secondary"
+                    tag="button"
+                    type="submit"
+                  >
+                    Login
+                  </Button>
+                  <div
+                    className="text-center small mt-2"
+                  >
+                    <Link
+                      replace={false}
+                      style={
+                        Object {
+                          "color": "#8da2b5",
+                        }
+                      }
+                      to="/reset"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
+                  <hr />
+                  <div
+                    className="text-center"
+                  >
+                    Dont have an account? 
+                    <a
+                      href="/signup"
+                      onClick={[Function]}
+                    >
+                      Sign Up
+                    </a>
+                  </div>
+                </div>,
+              ],
+              "id": "login-form",
+              "onSubmit": [Function],
+              "tag": "form",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "alt": "logo",
+                  "className": "login-logo",
+                  "src": "/logo.svg",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "img",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <div
+                      className="text-center"
+                    >
+                      <h3
+                        className="mb-3"
+                      >
+                        Login
+                      </h3>
+                    </div>,
+                    undefined,
+                    <div
+                      className="social-login"
+                    >
+                      <e
+                        accessType="online"
+                        buttonText="Login with Google"
+                        className="social-button class-ggl mb-2"
+                        clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                        cookiePolicy="single_host_origin"
+                        disabledStyle={
+                          Object {
+                            "opacity": 0.6,
+                          }
+                        }
+                        fetchBasicProfile={true}
+                        icon={true}
+                        isSignedIn={false}
+                        jsSrc="https://apis.google.com/js/client:platform.js"
+                        onRequest={[Function]}
+                        onSuccess={[Function]}
+                        prompt=""
+                        scope="profile email"
+                        tag="button"
+                        theme="light"
+                        type="button"
+                        uxMode="popup"
+                      />
+                      <t
+                        appId="382723665627980"
+                        callback={[Function]}
+                        cssClass="social-button class-fb"
+                        fields="name,email"
+                        icon="fa-facebook"
+                        size="metro"
+                        tag="button"
+                        textButton="Login with Facebook"
+                        typeButton="button"
+                      />
+                      <div
+                        className="break"
+                      >
+                        <span
+                          className="or"
+                        >
+                          OR
+                        </span>
+                      </div>
+                    </div>,
+                    undefined,
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Input
+                        className="form-bg"
+                        minLength="6"
+                        name="email"
+                        onChange={[Function]}
+                        placeholder="Email"
+                        required={true}
+                        type="email"
+                        value=""
+                      />
+                    </FormGroup>,
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Input
+                        className="form-bg"
+                        minLength="8"
+                        name="password"
+                        onChange={[Function]}
+                        placeholder="Password"
+                        required={true}
+                        type="password"
+                        value=""
+                      />
+                    </FormGroup>,
+                    <Button
+                      block={true}
+                      className="purple-btn login-btn"
+                      color="secondary"
+                      tag="button"
+                      type="submit"
+                    >
+                      Login
+                    </Button>,
+                    <div
+                      className="text-center small mt-2"
+                    >
+                      <Link
+                        replace={false}
+                        style={
+                          Object {
+                            "color": "#8da2b5",
+                          }
+                        }
+                        to="/reset"
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>,
+                    <hr />,
+                    <div
+                      className="text-center"
+                    >
+                      Dont have an account? 
+                      <a
+                        href="/signup"
+                        onClick={[Function]}
+                      >
+                        Sign Up
+                      </a>
+                    </div>,
+                  ],
+                  "className": "px-5 pb-5 pt-4",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <h3
+                        className="mb-3"
+                      >
+                        Login
+                      </h3>,
+                      "className": "text-center",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Login",
+                        "className": "mb-3",
+                      },
+                      "ref": null,
+                      "rendered": "Login",
+                      "type": "h3",
+                    },
+                    "type": "div",
+                  },
+                  undefined,
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <e
+                          accessType="online"
+                          buttonText="Login with Google"
+                          className="social-button class-ggl mb-2"
+                          clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                          cookiePolicy="single_host_origin"
+                          disabledStyle={
+                            Object {
+                              "opacity": 0.6,
+                            }
+                          }
+                          fetchBasicProfile={true}
+                          icon={true}
+                          isSignedIn={false}
+                          jsSrc="https://apis.google.com/js/client:platform.js"
+                          onRequest={[Function]}
+                          onSuccess={[Function]}
+                          prompt=""
+                          scope="profile email"
+                          tag="button"
+                          theme="light"
+                          type="button"
+                          uxMode="popup"
+                        />,
+                        <t
+                          appId="382723665627980"
+                          callback={[Function]}
+                          cssClass="social-button class-fb"
+                          fields="name,email"
+                          icon="fa-facebook"
+                          size="metro"
+                          tag="button"
+                          textButton="Login with Facebook"
+                          typeButton="button"
+                        />,
+                        <div
+                          className="break"
+                        >
+                          <span
+                            className="or"
+                          >
+                            OR
+                          </span>
+                        </div>,
+                      ],
+                      "className": "social-login",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "accessType": "online",
+                          "buttonText": "Login with Google",
+                          "className": "social-button class-ggl mb-2",
+                          "clientId": "60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com",
+                          "cookiePolicy": "single_host_origin",
+                          "disabledStyle": Object {
+                            "opacity": 0.6,
+                          },
+                          "fetchBasicProfile": true,
+                          "icon": true,
+                          "isSignedIn": false,
+                          "jsSrc": "https://apis.google.com/js/client:platform.js",
+                          "onRequest": [Function],
+                          "onSuccess": [Function],
+                          "prompt": "",
+                          "scope": "profile email",
+                          "tag": "button",
+                          "theme": "light",
+                          "type": "button",
+                          "uxMode": "popup",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "appId": "382723665627980",
+                          "callback": [Function],
+                          "cssClass": "social-button class-fb",
+                          "fields": "name,email",
+                          "icon": "fa-facebook",
+                          "size": "metro",
+                          "tag": "button",
+                          "textButton": "Login with Facebook",
+                          "typeButton": "button",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": <span
+                            className="or"
+                          >
+                            OR
+                          </span>,
+                          "className": "break",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": "OR",
+                            "className": "or",
+                          },
+                          "ref": null,
+                          "rendered": "OR",
+                          "type": "span",
+                        },
+                        "type": "div",
+                      },
+                    ],
+                    "type": "div",
+                  },
+                  undefined,
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": <Input
+                        className="form-bg"
+                        minLength="6"
+                        name="email"
+                        onChange={[Function]}
+                        placeholder="Email"
+                        required={true}
+                        type="email"
+                        value=""
+                      />,
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "className": "form-bg",
+                        "minLength": "6",
+                        "name": "email",
+                        "onChange": [Function],
+                        "placeholder": "Email",
+                        "required": true,
+                        "type": "email",
+                        "value": "",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": <Input
+                        className="form-bg"
+                        minLength="8"
+                        name="password"
+                        onChange={[Function]}
+                        placeholder="Password"
+                        required={true}
+                        type="password"
+                        value=""
+                      />,
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "className": "form-bg",
+                        "minLength": "8",
+                        "name": "password",
+                        "onChange": [Function],
+                        "placeholder": "Password",
+                        "required": true,
+                        "type": "password",
+                        "value": "",
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": true,
+                      "children": "Login",
+                      "className": "purple-btn login-btn",
+                      "color": "secondary",
+                      "tag": "button",
+                      "type": "submit",
+                    },
+                    "ref": null,
+                    "rendered": "Login",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <Link
+                        replace={false}
+                        style={
+                          Object {
+                            "color": "#8da2b5",
+                          }
+                        }
+                        to="/reset"
+                      >
+                        Forgot your password?
+                      </Link>,
+                      "className": "text-center small mt-2",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "Forgot your password?",
+                        "replace": false,
+                        "style": Object {
+                          "color": "#8da2b5",
+                        },
+                        "to": "/reset",
+                      },
+                      "ref": null,
+                      "rendered": "Forgot your password?",
+                      "type": [Function],
+                    },
+                    "type": "div",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": "hr",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        "Dont have an account? ",
+                        <a
+                          href="/signup"
+                          onClick={[Function]}
+                        >
+                          Sign Up
+                        </a>,
+                      ],
+                      "className": "text-center",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "Dont have an account? ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "Sign Up",
+                          "href": "/signup",
+                          "onClick": [Function],
+                        },
+                        "ref": null,
+                        "rendered": "Sign Up",
+                        "type": "a",
+                      },
+                    ],
+                    "type": "div",
+                  },
+                ],
+                "type": "div",
+              },
+            ],
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <img
+                  alt="logo"
+                  className="login-logo"
+                  src="/logo.svg"
+                />,
+                <div
+                  className="px-5 pb-5 pt-4"
+                >
+                  <div
+                    className="text-center"
+                  >
+                    <h3
+                      className="mb-3"
+                    >
+                      Sign Up
+                    </h3>
+                  </div>
+                  <div
+                    className="social-login"
+                  >
+                    <e
+                      accessType="online"
+                      buttonText="Sign up with Google"
+                      className="social-button class-ggl mb-2"
+                      clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                      cookiePolicy="single_host_origin"
+                      disabledStyle={
+                        Object {
+                          "opacity": 0.6,
+                        }
+                      }
+                      fetchBasicProfile={true}
+                      icon={true}
+                      isSignedIn={false}
+                      jsSrc="https://apis.google.com/js/client:platform.js"
+                      onRequest={[Function]}
+                      onSuccess={[Function]}
+                      prompt=""
+                      scope="profile email"
+                      tag="button"
+                      theme="light"
+                      type="button"
+                      uxMode="popup"
+                    />
+                    <t
+                      appId="382723665627980"
+                      callback={[Function]}
+                      cssClass="social-button class-fb"
+                      fields="name,email"
+                      icon="fa-facebook"
+                      size="metro"
+                      tag="button"
+                      textButton="Sign up with Facebook"
+                      typeButton="button"
+                    />
+                    <div
+                      className="break"
+                    >
+                      <span
+                        className="or"
+                      >
+                        OR
+                      </span>
+                    </div>
+                  </div>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Label
+                      for="name"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Name
+                    </Label>
+                    <Input
+                      className="form-bg"
+                      minLength="3"
+                      name="r_name"
+                      onChange={[Function]}
+                      placeholder="Full Name"
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Label
+                      for="email"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Email
+                    </Label>
+                    <Input
+                      className="form-bg"
+                      minLength="6"
+                      name="r_email"
+                      onChange={[Function]}
+                      placeholder="bezos@amazon.com"
+                      required={true}
+                      type="email"
+                      value=""
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Label
+                      for="password"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Password
+                    </Label>
+                    <Input
+                      className="form-bg"
+                      minLength="8"
+                      name="r_password"
+                      onChange={[Function]}
+                      placeholder="Password"
+                      required={true}
+                      type="password"
+                      value=""
+                    />
+                  </FormGroup>
+                  <Button
+                    block={true}
+                    className="purple-btn login-btn"
+                    color="secondary"
+                    tag="button"
+                    type="submit"
+                  >
+                    Create Account
+                  </Button>
+                  <hr />
+                  <div
+                    className="text-center"
+                  >
+                    Already have an account? 
+                    <a
+                      href="/login"
+                      onClick={[Function]}
+                    >
+                      Login
+                    </a>
+                  </div>
+                </div>,
+              ],
+              "id": "signup-form",
+              "onSubmit": [Function],
+              "tag": "form",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "alt": "logo",
+                  "className": "login-logo",
+                  "src": "/logo.svg",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": "img",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <div
+                      className="text-center"
+                    >
+                      <h3
+                        className="mb-3"
+                      >
+                        Sign Up
+                      </h3>
+                    </div>,
+                    undefined,
+                    <div
+                      className="social-login"
+                    >
+                      <e
+                        accessType="online"
+                        buttonText="Sign up with Google"
+                        className="social-button class-ggl mb-2"
+                        clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                        cookiePolicy="single_host_origin"
+                        disabledStyle={
+                          Object {
+                            "opacity": 0.6,
+                          }
+                        }
+                        fetchBasicProfile={true}
+                        icon={true}
+                        isSignedIn={false}
+                        jsSrc="https://apis.google.com/js/client:platform.js"
+                        onRequest={[Function]}
+                        onSuccess={[Function]}
+                        prompt=""
+                        scope="profile email"
+                        tag="button"
+                        theme="light"
+                        type="button"
+                        uxMode="popup"
+                      />
+                      <t
+                        appId="382723665627980"
+                        callback={[Function]}
+                        cssClass="social-button class-fb"
+                        fields="name,email"
+                        icon="fa-facebook"
+                        size="metro"
+                        tag="button"
+                        textButton="Sign up with Facebook"
+                        typeButton="button"
+                      />
+                      <div
+                        className="break"
+                      >
+                        <span
+                          className="or"
+                        >
+                          OR
+                        </span>
+                      </div>
+                    </div>,
+                    undefined,
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Label
+                        for="name"
+                        tag="label"
+                        widths={
+                          Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ]
+                        }
+                      >
+                        Name
+                      </Label>
+                      <Input
+                        className="form-bg"
+                        minLength="3"
+                        name="r_name"
+                        onChange={[Function]}
+                        placeholder="Full Name"
+                        required={true}
+                        type="text"
+                        value=""
+                      />
+                    </FormGroup>,
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Label
+                        for="email"
+                        tag="label"
+                        widths={
+                          Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ]
+                        }
+                      >
+                        Email
+                      </Label>
+                      <Input
+                        className="form-bg"
+                        minLength="6"
+                        name="r_email"
+                        onChange={[Function]}
+                        placeholder="bezos@amazon.com"
+                        required={true}
+                        type="email"
+                        value=""
+                      />
+                    </FormGroup>,
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Label
+                        for="password"
+                        tag="label"
+                        widths={
+                          Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ]
+                        }
+                      >
+                        Password
+                      </Label>
+                      <Input
+                        className="form-bg"
+                        minLength="8"
+                        name="r_password"
+                        onChange={[Function]}
+                        placeholder="Password"
+                        required={true}
+                        type="password"
+                        value=""
+                      />
+                    </FormGroup>,
+                    <Button
+                      block={true}
+                      className="purple-btn login-btn"
+                      color="secondary"
+                      tag="button"
+                      type="submit"
+                    >
+                      Create Account
+                    </Button>,
+                    <hr />,
+                    <div
+                      className="text-center"
+                    >
+                      Already have an account? 
+                      <a
+                        href="/login"
+                        onClick={[Function]}
+                      >
+                        Login
+                      </a>
+                    </div>,
+                  ],
+                  "className": "px-5 pb-5 pt-4",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": <h3
+                        className="mb-3"
+                      >
+                        Sign Up
+                      </h3>,
+                      "className": "text-center",
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "Sign Up",
+                        "className": "mb-3",
+                      },
+                      "ref": null,
+                      "rendered": "Sign Up",
+                      "type": "h3",
+                    },
+                    "type": "div",
+                  },
+                  undefined,
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <e
+                          accessType="online"
+                          buttonText="Sign up with Google"
+                          className="social-button class-ggl mb-2"
+                          clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                          cookiePolicy="single_host_origin"
+                          disabledStyle={
+                            Object {
+                              "opacity": 0.6,
+                            }
+                          }
+                          fetchBasicProfile={true}
+                          icon={true}
+                          isSignedIn={false}
+                          jsSrc="https://apis.google.com/js/client:platform.js"
+                          onRequest={[Function]}
+                          onSuccess={[Function]}
+                          prompt=""
+                          scope="profile email"
+                          tag="button"
+                          theme="light"
+                          type="button"
+                          uxMode="popup"
+                        />,
+                        <t
+                          appId="382723665627980"
+                          callback={[Function]}
+                          cssClass="social-button class-fb"
+                          fields="name,email"
+                          icon="fa-facebook"
+                          size="metro"
+                          tag="button"
+                          textButton="Sign up with Facebook"
+                          typeButton="button"
+                        />,
+                        <div
+                          className="break"
+                        >
+                          <span
+                            className="or"
+                          >
+                            OR
+                          </span>
+                        </div>,
+                      ],
+                      "className": "social-login",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "accessType": "online",
+                          "buttonText": "Sign up with Google",
+                          "className": "social-button class-ggl mb-2",
+                          "clientId": "60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com",
+                          "cookiePolicy": "single_host_origin",
+                          "disabledStyle": Object {
+                            "opacity": 0.6,
+                          },
+                          "fetchBasicProfile": true,
+                          "icon": true,
+                          "isSignedIn": false,
+                          "jsSrc": "https://apis.google.com/js/client:platform.js",
+                          "onFailure": undefined,
+                          "onRequest": [Function],
+                          "onSuccess": [Function],
+                          "prompt": "",
+                          "scope": "profile email",
+                          "tag": "button",
+                          "theme": "light",
+                          "type": "button",
+                          "uxMode": "popup",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "appId": "382723665627980",
+                          "callback": [Function],
+                          "cssClass": "social-button class-fb",
+                          "fields": "name,email",
+                          "icon": "fa-facebook",
+                          "size": "metro",
+                          "tag": "button",
+                          "textButton": "Sign up with Facebook",
+                          "typeButton": "button",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": <span
+                            className="or"
+                          >
+                            OR
+                          </span>,
+                          "className": "break",
+                        },
+                        "ref": null,
+                        "rendered": Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": "OR",
+                            "className": "or",
+                          },
+                          "ref": null,
+                          "rendered": "OR",
+                          "type": "span",
+                        },
+                        "type": "div",
+                      },
+                    ],
+                    "type": "div",
+                  },
+                  undefined,
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": Array [
+                        <Label
+                          for="name"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          Name
+                        </Label>,
+                        <Input
+                          className="form-bg"
+                          minLength="3"
+                          name="r_name"
+                          onChange={[Function]}
+                          placeholder="Full Name"
+                          required={true}
+                          type="text"
+                          value=""
+                        />,
+                      ],
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "children": "Name",
+                          "for": "name",
+                          "tag": "label",
+                          "widths": Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": "Name",
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "className": "form-bg",
+                          "minLength": "3",
+                          "name": "r_name",
+                          "onChange": [Function],
+                          "placeholder": "Full Name",
+                          "required": true,
+                          "type": "text",
+                          "value": "",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": Array [
+                        <Label
+                          for="email"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          Email
+                        </Label>,
+                        <Input
+                          className="form-bg"
+                          minLength="6"
+                          name="r_email"
+                          onChange={[Function]}
+                          placeholder="bezos@amazon.com"
+                          required={true}
+                          type="email"
+                          value=""
+                        />,
+                      ],
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "children": "Email",
+                          "for": "email",
+                          "tag": "label",
+                          "widths": Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": "Email",
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "className": "form-bg",
+                          "minLength": "6",
+                          "name": "r_email",
+                          "onChange": [Function],
+                          "placeholder": "bezos@amazon.com",
+                          "required": true,
+                          "type": "email",
+                          "value": "",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "function",
+                    "props": Object {
+                      "children": Array [
+                        <Label
+                          for="password"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          Password
+                        </Label>,
+                        <Input
+                          className="form-bg"
+                          minLength="8"
+                          name="r_password"
+                          onChange={[Function]}
+                          placeholder="Password"
+                          required={true}
+                          type="password"
+                          value=""
+                        />,
+                      ],
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "function",
+                        "props": Object {
+                          "children": "Password",
+                          "for": "password",
+                          "tag": "label",
+                          "widths": Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": "Password",
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "className": "form-bg",
+                          "minLength": "8",
+                          "name": "r_password",
+                          "onChange": [Function],
+                          "placeholder": "Password",
+                          "required": true,
+                          "type": "password",
+                          "value": "",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": true,
+                      "children": "Create Account",
+                      "className": "purple-btn login-btn",
+                      "color": "secondary",
+                      "tag": "button",
+                      "type": "submit",
+                    },
+                    "ref": null,
+                    "rendered": "Create Account",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {},
+                    "ref": null,
+                    "rendered": null,
+                    "type": "hr",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        "Already have an account? ",
+                        <a
+                          href="/login"
+                          onClick={[Function]}
+                        >
+                          Login
+                        </a>,
+                      ],
+                      "className": "text-center",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "Already have an account? ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "Login",
+                          "href": "/login",
+                          "onClick": [Function],
+                        },
+                        "ref": null,
+                        "rendered": "Login",
+                        "type": "a",
+                      },
+                    ],
+                    "type": "div",
+                  },
+                ],
+                "type": "div",
+              },
+            ],
+            "type": [Function],
+          },
+        ],
+        "type": "div",
+      },
+      "type": "div",
+    },
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <div
+          className="login-card open-register"
+        >
+          <div
+            id="side-form"
+          >
+            <Form
+              id="login-form"
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <img
+                alt="logo"
+                className="login-logo"
+                src="/logo.svg"
+              />
+              <div
+                className="px-5 pb-5 pt-4"
+              >
+                <div
+                  className="text-center"
+                >
+                  <h3
+                    className="mb-3"
+                  >
+                    Login
+                  </h3>
+                </div>
+                <div
+                  className="social-login"
+                >
+                  <e
+                    accessType="online"
+                    buttonText="Login with Google"
+                    className="social-button class-ggl mb-2"
+                    clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                    cookiePolicy="single_host_origin"
+                    disabledStyle={
+                      Object {
+                        "opacity": 0.6,
+                      }
+                    }
+                    fetchBasicProfile={true}
+                    icon={true}
+                    isSignedIn={false}
+                    jsSrc="https://apis.google.com/js/client:platform.js"
+                    onRequest={[Function]}
+                    onSuccess={[Function]}
+                    prompt=""
+                    scope="profile email"
+                    tag="button"
+                    theme="light"
+                    type="button"
+                    uxMode="popup"
+                  />
+                  <t
+                    appId="382723665627980"
+                    callback={[Function]}
+                    cssClass="social-button class-fb"
+                    fields="name,email"
+                    icon="fa-facebook"
+                    size="metro"
+                    tag="button"
+                    textButton="Login with Facebook"
+                    typeButton="button"
+                  />
+                  <div
+                    className="break"
+                  >
+                    <span
+                      className="or"
+                    >
+                      OR
+                    </span>
+                  </div>
+                </div>
+                <FormGroup
+                  tag="div"
+                >
+                  <Input
+                    className="form-bg"
+                    minLength="6"
+                    name="email"
+                    onChange={[Function]}
+                    placeholder="Email"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Input
+                    className="form-bg"
+                    minLength="8"
+                    name="password"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </FormGroup>
+                <Button
+                  block={true}
+                  className="purple-btn login-btn"
+                  color="secondary"
+                  tag="button"
+                  type="submit"
+                >
+                  Login
+                </Button>
+                <div
+                  className="text-center small mt-2"
+                >
+                  <Link
+                    replace={false}
+                    style={
+                      Object {
+                        "color": "#8da2b5",
+                      }
+                    }
+                    to="/reset"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <hr />
+                <div
+                  className="text-center"
+                >
+                  Dont have an account? 
+                  <a
+                    href="/signup"
+                    onClick={[Function]}
+                  >
+                    Sign Up
+                  </a>
+                </div>
+              </div>
+            </Form>
+            <Form
+              id="signup-form"
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <img
+                alt="logo"
+                className="login-logo"
+                src="/logo.svg"
+              />
+              <div
+                className="px-5 pb-5 pt-4"
+              >
+                <div
+                  className="text-center"
+                >
+                  <h3
+                    className="mb-3"
+                  >
+                    Sign Up
+                  </h3>
+                </div>
+                <div
+                  className="social-login"
+                >
+                  <e
+                    accessType="online"
+                    buttonText="Sign up with Google"
+                    className="social-button class-ggl mb-2"
+                    clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                    cookiePolicy="single_host_origin"
+                    disabledStyle={
+                      Object {
+                        "opacity": 0.6,
+                      }
+                    }
+                    fetchBasicProfile={true}
+                    icon={true}
+                    isSignedIn={false}
+                    jsSrc="https://apis.google.com/js/client:platform.js"
+                    onRequest={[Function]}
+                    onSuccess={[Function]}
+                    prompt=""
+                    scope="profile email"
+                    tag="button"
+                    theme="light"
+                    type="button"
+                    uxMode="popup"
+                  />
+                  <t
+                    appId="382723665627980"
+                    callback={[Function]}
+                    cssClass="social-button class-fb"
+                    fields="name,email"
+                    icon="fa-facebook"
+                    size="metro"
+                    tag="button"
+                    textButton="Sign up with Facebook"
+                    typeButton="button"
+                  />
+                  <div
+                    className="break"
+                  >
+                    <span
+                      className="or"
+                    >
+                      OR
+                    </span>
+                  </div>
+                </div>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="name"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Name
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="3"
+                    name="r_name"
+                    onChange={[Function]}
+                    placeholder="Full Name"
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="email"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Email
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="6"
+                    name="r_email"
+                    onChange={[Function]}
+                    placeholder="bezos@amazon.com"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="password"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Password
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="8"
+                    name="r_password"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </FormGroup>
+                <Button
+                  block={true}
+                  className="purple-btn login-btn"
+                  color="secondary"
+                  tag="button"
+                  type="submit"
+                >
+                  Create Account
+                </Button>
+                <hr />
+                <div
+                  className="text-center"
+                >
+                  Already have an account? 
+                  <a
+                    href="/login"
+                    onClick={[Function]}
+                  >
+                    Login
+                  </a>
+                </div>
+              </div>
+            </Form>
+          </div>
+        </div>,
+        "className": "d-flex flex-row align-items-center justify-content-center",
+        "id": "main",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <div
+            id="side-form"
+          >
+            <Form
+              id="login-form"
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <img
+                alt="logo"
+                className="login-logo"
+                src="/logo.svg"
+              />
+              <div
+                className="px-5 pb-5 pt-4"
+              >
+                <div
+                  className="text-center"
+                >
+                  <h3
+                    className="mb-3"
+                  >
+                    Login
+                  </h3>
+                </div>
+                <div
+                  className="social-login"
+                >
+                  <e
+                    accessType="online"
+                    buttonText="Login with Google"
+                    className="social-button class-ggl mb-2"
+                    clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                    cookiePolicy="single_host_origin"
+                    disabledStyle={
+                      Object {
+                        "opacity": 0.6,
+                      }
+                    }
+                    fetchBasicProfile={true}
+                    icon={true}
+                    isSignedIn={false}
+                    jsSrc="https://apis.google.com/js/client:platform.js"
+                    onRequest={[Function]}
+                    onSuccess={[Function]}
+                    prompt=""
+                    scope="profile email"
+                    tag="button"
+                    theme="light"
+                    type="button"
+                    uxMode="popup"
+                  />
+                  <t
+                    appId="382723665627980"
+                    callback={[Function]}
+                    cssClass="social-button class-fb"
+                    fields="name,email"
+                    icon="fa-facebook"
+                    size="metro"
+                    tag="button"
+                    textButton="Login with Facebook"
+                    typeButton="button"
+                  />
+                  <div
+                    className="break"
+                  >
+                    <span
+                      className="or"
+                    >
+                      OR
+                    </span>
+                  </div>
+                </div>
+                <FormGroup
+                  tag="div"
+                >
+                  <Input
+                    className="form-bg"
+                    minLength="6"
+                    name="email"
+                    onChange={[Function]}
+                    placeholder="Email"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Input
+                    className="form-bg"
+                    minLength="8"
+                    name="password"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </FormGroup>
+                <Button
+                  block={true}
+                  className="purple-btn login-btn"
+                  color="secondary"
+                  tag="button"
+                  type="submit"
+                >
+                  Login
+                </Button>
+                <div
+                  className="text-center small mt-2"
+                >
+                  <Link
+                    replace={false}
+                    style={
+                      Object {
+                        "color": "#8da2b5",
+                      }
+                    }
+                    to="/reset"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+                <hr />
+                <div
+                  className="text-center"
+                >
+                  Dont have an account? 
+                  <a
+                    href="/signup"
+                    onClick={[Function]}
+                  >
+                    Sign Up
+                  </a>
+                </div>
+              </div>
+            </Form>
+            <Form
+              id="signup-form"
+              onSubmit={[Function]}
+              tag="form"
+            >
+              <img
+                alt="logo"
+                className="login-logo"
+                src="/logo.svg"
+              />
+              <div
+                className="px-5 pb-5 pt-4"
+              >
+                <div
+                  className="text-center"
+                >
+                  <h3
+                    className="mb-3"
+                  >
+                    Sign Up
+                  </h3>
+                </div>
+                <div
+                  className="social-login"
+                >
+                  <e
+                    accessType="online"
+                    buttonText="Sign up with Google"
+                    className="social-button class-ggl mb-2"
+                    clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                    cookiePolicy="single_host_origin"
+                    disabledStyle={
+                      Object {
+                        "opacity": 0.6,
+                      }
+                    }
+                    fetchBasicProfile={true}
+                    icon={true}
+                    isSignedIn={false}
+                    jsSrc="https://apis.google.com/js/client:platform.js"
+                    onRequest={[Function]}
+                    onSuccess={[Function]}
+                    prompt=""
+                    scope="profile email"
+                    tag="button"
+                    theme="light"
+                    type="button"
+                    uxMode="popup"
+                  />
+                  <t
+                    appId="382723665627980"
+                    callback={[Function]}
+                    cssClass="social-button class-fb"
+                    fields="name,email"
+                    icon="fa-facebook"
+                    size="metro"
+                    tag="button"
+                    textButton="Sign up with Facebook"
+                    typeButton="button"
+                  />
+                  <div
+                    className="break"
+                  >
+                    <span
+                      className="or"
+                    >
+                      OR
+                    </span>
+                  </div>
+                </div>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="name"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Name
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="3"
+                    name="r_name"
+                    onChange={[Function]}
+                    placeholder="Full Name"
+                    required={true}
+                    type="text"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="email"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Email
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="6"
+                    name="r_email"
+                    onChange={[Function]}
+                    placeholder="bezos@amazon.com"
+                    required={true}
+                    type="email"
+                    value=""
+                  />
+                </FormGroup>
+                <FormGroup
+                  tag="div"
+                >
+                  <Label
+                    for="password"
+                    tag="label"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    Password
+                  </Label>
+                  <Input
+                    className="form-bg"
+                    minLength="8"
+                    name="r_password"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    required={true}
+                    type="password"
+                    value=""
+                  />
+                </FormGroup>
+                <Button
+                  block={true}
+                  className="purple-btn login-btn"
+                  color="secondary"
+                  tag="button"
+                  type="submit"
+                >
+                  Create Account
+                </Button>
+                <hr />
+                <div
+                  className="text-center"
+                >
+                  Already have an account? 
+                  <a
+                    href="/login"
+                    onClick={[Function]}
+                  >
+                    Login
+                  </a>
+                </div>
+              </div>
+            </Form>
+          </div>,
+          "className": "login-card open-register",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <Form
+                id="login-form"
+                onSubmit={[Function]}
+                tag="form"
+              >
+                <img
+                  alt="logo"
+                  className="login-logo"
+                  src="/logo.svg"
+                />
+                <div
+                  className="px-5 pb-5 pt-4"
+                >
+                  <div
+                    className="text-center"
+                  >
+                    <h3
+                      className="mb-3"
+                    >
+                      Login
+                    </h3>
+                  </div>
+                  <div
+                    className="social-login"
+                  >
+                    <e
+                      accessType="online"
+                      buttonText="Login with Google"
+                      className="social-button class-ggl mb-2"
+                      clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                      cookiePolicy="single_host_origin"
+                      disabledStyle={
+                        Object {
+                          "opacity": 0.6,
+                        }
+                      }
+                      fetchBasicProfile={true}
+                      icon={true}
+                      isSignedIn={false}
+                      jsSrc="https://apis.google.com/js/client:platform.js"
+                      onRequest={[Function]}
+                      onSuccess={[Function]}
+                      prompt=""
+                      scope="profile email"
+                      tag="button"
+                      theme="light"
+                      type="button"
+                      uxMode="popup"
+                    />
+                    <t
+                      appId="382723665627980"
+                      callback={[Function]}
+                      cssClass="social-button class-fb"
+                      fields="name,email"
+                      icon="fa-facebook"
+                      size="metro"
+                      tag="button"
+                      textButton="Login with Facebook"
+                      typeButton="button"
+                    />
+                    <div
+                      className="break"
+                    >
+                      <span
+                        className="or"
+                      >
+                        OR
+                      </span>
+                    </div>
+                  </div>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Input
+                      className="form-bg"
+                      minLength="6"
+                      name="email"
+                      onChange={[Function]}
+                      placeholder="Email"
+                      required={true}
+                      type="email"
+                      value=""
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Input
+                      className="form-bg"
+                      minLength="8"
+                      name="password"
+                      onChange={[Function]}
+                      placeholder="Password"
+                      required={true}
+                      type="password"
+                      value=""
+                    />
+                  </FormGroup>
+                  <Button
+                    block={true}
+                    className="purple-btn login-btn"
+                    color="secondary"
+                    tag="button"
+                    type="submit"
+                  >
+                    Login
+                  </Button>
+                  <div
+                    className="text-center small mt-2"
+                  >
+                    <Link
+                      replace={false}
+                      style={
+                        Object {
+                          "color": "#8da2b5",
+                        }
+                      }
+                      to="/reset"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
+                  <hr />
+                  <div
+                    className="text-center"
+                  >
+                    Dont have an account? 
+                    <a
+                      href="/signup"
+                      onClick={[Function]}
+                    >
+                      Sign Up
+                    </a>
+                  </div>
+                </div>
+              </Form>,
+              <Form
+                id="signup-form"
+                onSubmit={[Function]}
+                tag="form"
+              >
+                <img
+                  alt="logo"
+                  className="login-logo"
+                  src="/logo.svg"
+                />
+                <div
+                  className="px-5 pb-5 pt-4"
+                >
+                  <div
+                    className="text-center"
+                  >
+                    <h3
+                      className="mb-3"
+                    >
+                      Sign Up
+                    </h3>
+                  </div>
+                  <div
+                    className="social-login"
+                  >
+                    <e
+                      accessType="online"
+                      buttonText="Sign up with Google"
+                      className="social-button class-ggl mb-2"
+                      clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                      cookiePolicy="single_host_origin"
+                      disabledStyle={
+                        Object {
+                          "opacity": 0.6,
+                        }
+                      }
+                      fetchBasicProfile={true}
+                      icon={true}
+                      isSignedIn={false}
+                      jsSrc="https://apis.google.com/js/client:platform.js"
+                      onRequest={[Function]}
+                      onSuccess={[Function]}
+                      prompt=""
+                      scope="profile email"
+                      tag="button"
+                      theme="light"
+                      type="button"
+                      uxMode="popup"
+                    />
+                    <t
+                      appId="382723665627980"
+                      callback={[Function]}
+                      cssClass="social-button class-fb"
+                      fields="name,email"
+                      icon="fa-facebook"
+                      size="metro"
+                      tag="button"
+                      textButton="Sign up with Facebook"
+                      typeButton="button"
+                    />
+                    <div
+                      className="break"
+                    >
+                      <span
+                        className="or"
+                      >
+                        OR
+                      </span>
+                    </div>
+                  </div>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Label
+                      for="name"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Name
+                    </Label>
+                    <Input
+                      className="form-bg"
+                      minLength="3"
+                      name="r_name"
+                      onChange={[Function]}
+                      placeholder="Full Name"
+                      required={true}
+                      type="text"
+                      value=""
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Label
+                      for="email"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Email
+                    </Label>
+                    <Input
+                      className="form-bg"
+                      minLength="6"
+                      name="r_email"
+                      onChange={[Function]}
+                      placeholder="bezos@amazon.com"
+                      required={true}
+                      type="email"
+                      value=""
+                    />
+                  </FormGroup>
+                  <FormGroup
+                    tag="div"
+                  >
+                    <Label
+                      for="password"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Password
+                    </Label>
+                    <Input
+                      className="form-bg"
+                      minLength="8"
+                      name="r_password"
+                      onChange={[Function]}
+                      placeholder="Password"
+                      required={true}
+                      type="password"
+                      value=""
+                    />
+                  </FormGroup>
+                  <Button
+                    block={true}
+                    className="purple-btn login-btn"
+                    color="secondary"
+                    tag="button"
+                    type="submit"
+                  >
+                    Create Account
+                  </Button>
+                  <hr />
+                  <div
+                    className="text-center"
+                  >
+                    Already have an account? 
+                    <a
+                      href="/login"
+                      onClick={[Function]}
+                    >
+                      Login
+                    </a>
+                  </div>
+                </div>
+              </Form>,
+            ],
+            "id": "side-form",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <img
+                    alt="logo"
+                    className="login-logo"
+                    src="/logo.svg"
+                  />,
+                  <div
+                    className="px-5 pb-5 pt-4"
+                  >
+                    <div
+                      className="text-center"
+                    >
+                      <h3
+                        className="mb-3"
+                      >
+                        Login
+                      </h3>
+                    </div>
+                    <div
+                      className="social-login"
+                    >
+                      <e
+                        accessType="online"
+                        buttonText="Login with Google"
+                        className="social-button class-ggl mb-2"
+                        clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                        cookiePolicy="single_host_origin"
+                        disabledStyle={
+                          Object {
+                            "opacity": 0.6,
+                          }
+                        }
+                        fetchBasicProfile={true}
+                        icon={true}
+                        isSignedIn={false}
+                        jsSrc="https://apis.google.com/js/client:platform.js"
+                        onRequest={[Function]}
+                        onSuccess={[Function]}
+                        prompt=""
+                        scope="profile email"
+                        tag="button"
+                        theme="light"
+                        type="button"
+                        uxMode="popup"
+                      />
+                      <t
+                        appId="382723665627980"
+                        callback={[Function]}
+                        cssClass="social-button class-fb"
+                        fields="name,email"
+                        icon="fa-facebook"
+                        size="metro"
+                        tag="button"
+                        textButton="Login with Facebook"
+                        typeButton="button"
+                      />
+                      <div
+                        className="break"
+                      >
+                        <span
+                          className="or"
+                        >
+                          OR
+                        </span>
+                      </div>
+                    </div>
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Input
+                        className="form-bg"
+                        minLength="6"
+                        name="email"
+                        onChange={[Function]}
+                        placeholder="Email"
+                        required={true}
+                        type="email"
+                        value=""
+                      />
+                    </FormGroup>
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Input
+                        className="form-bg"
+                        minLength="8"
+                        name="password"
+                        onChange={[Function]}
+                        placeholder="Password"
+                        required={true}
+                        type="password"
+                        value=""
+                      />
+                    </FormGroup>
+                    <Button
+                      block={true}
+                      className="purple-btn login-btn"
+                      color="secondary"
+                      tag="button"
+                      type="submit"
+                    >
+                      Login
+                    </Button>
+                    <div
+                      className="text-center small mt-2"
+                    >
+                      <Link
+                        replace={false}
+                        style={
+                          Object {
+                            "color": "#8da2b5",
+                          }
+                        }
+                        to="/reset"
+                      >
+                        Forgot your password?
+                      </Link>
+                    </div>
+                    <hr />
+                    <div
+                      className="text-center"
+                    >
+                      Dont have an account? 
+                      <a
+                        href="/signup"
+                        onClick={[Function]}
+                      >
+                        Sign Up
+                      </a>
+                    </div>
+                  </div>,
+                ],
+                "id": "login-form",
+                "onSubmit": [Function],
+                "tag": "form",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "alt": "logo",
+                    "className": "login-logo",
+                    "src": "/logo.svg",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "img",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <div
+                        className="text-center"
+                      >
+                        <h3
+                          className="mb-3"
+                        >
+                          Login
+                        </h3>
+                      </div>,
+                      undefined,
+                      <div
+                        className="social-login"
+                      >
+                        <e
+                          accessType="online"
+                          buttonText="Login with Google"
+                          className="social-button class-ggl mb-2"
+                          clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                          cookiePolicy="single_host_origin"
+                          disabledStyle={
+                            Object {
+                              "opacity": 0.6,
+                            }
+                          }
+                          fetchBasicProfile={true}
+                          icon={true}
+                          isSignedIn={false}
+                          jsSrc="https://apis.google.com/js/client:platform.js"
+                          onRequest={[Function]}
+                          onSuccess={[Function]}
+                          prompt=""
+                          scope="profile email"
+                          tag="button"
+                          theme="light"
+                          type="button"
+                          uxMode="popup"
+                        />
+                        <t
+                          appId="382723665627980"
+                          callback={[Function]}
+                          cssClass="social-button class-fb"
+                          fields="name,email"
+                          icon="fa-facebook"
+                          size="metro"
+                          tag="button"
+                          textButton="Login with Facebook"
+                          typeButton="button"
+                        />
+                        <div
+                          className="break"
+                        >
+                          <span
+                            className="or"
+                          >
+                            OR
+                          </span>
+                        </div>
+                      </div>,
+                      undefined,
+                      <FormGroup
+                        tag="div"
+                      >
+                        <Input
+                          className="form-bg"
+                          minLength="6"
+                          name="email"
+                          onChange={[Function]}
+                          placeholder="Email"
+                          required={true}
+                          type="email"
+                          value=""
+                        />
+                      </FormGroup>,
+                      <FormGroup
+                        tag="div"
+                      >
+                        <Input
+                          className="form-bg"
+                          minLength="8"
+                          name="password"
+                          onChange={[Function]}
+                          placeholder="Password"
+                          required={true}
+                          type="password"
+                          value=""
+                        />
+                      </FormGroup>,
+                      <Button
+                        block={true}
+                        className="purple-btn login-btn"
+                        color="secondary"
+                        tag="button"
+                        type="submit"
+                      >
+                        Login
+                      </Button>,
+                      <div
+                        className="text-center small mt-2"
+                      >
+                        <Link
+                          replace={false}
+                          style={
+                            Object {
+                              "color": "#8da2b5",
+                            }
+                          }
+                          to="/reset"
+                        >
+                          Forgot your password?
+                        </Link>
+                      </div>,
+                      <hr />,
+                      <div
+                        className="text-center"
+                      >
+                        Dont have an account? 
+                        <a
+                          href="/signup"
+                          onClick={[Function]}
+                        >
+                          Sign Up
+                        </a>
+                      </div>,
+                    ],
+                    "className": "px-5 pb-5 pt-4",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": <h3
+                          className="mb-3"
+                        >
+                          Login
+                        </h3>,
+                        "className": "text-center",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "Login",
+                          "className": "mb-3",
+                        },
+                        "ref": null,
+                        "rendered": "Login",
+                        "type": "h3",
+                      },
+                      "type": "div",
+                    },
+                    undefined,
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <e
+                            accessType="online"
+                            buttonText="Login with Google"
+                            className="social-button class-ggl mb-2"
+                            clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                            cookiePolicy="single_host_origin"
+                            disabledStyle={
+                              Object {
+                                "opacity": 0.6,
+                              }
+                            }
+                            fetchBasicProfile={true}
+                            icon={true}
+                            isSignedIn={false}
+                            jsSrc="https://apis.google.com/js/client:platform.js"
+                            onRequest={[Function]}
+                            onSuccess={[Function]}
+                            prompt=""
+                            scope="profile email"
+                            tag="button"
+                            theme="light"
+                            type="button"
+                            uxMode="popup"
+                          />,
+                          <t
+                            appId="382723665627980"
+                            callback={[Function]}
+                            cssClass="social-button class-fb"
+                            fields="name,email"
+                            icon="fa-facebook"
+                            size="metro"
+                            tag="button"
+                            textButton="Login with Facebook"
+                            typeButton="button"
+                          />,
+                          <div
+                            className="break"
+                          >
+                            <span
+                              className="or"
+                            >
+                              OR
+                            </span>
+                          </div>,
+                        ],
+                        "className": "social-login",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "accessType": "online",
+                            "buttonText": "Login with Google",
+                            "className": "social-button class-ggl mb-2",
+                            "clientId": "60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com",
+                            "cookiePolicy": "single_host_origin",
+                            "disabledStyle": Object {
+                              "opacity": 0.6,
+                            },
+                            "fetchBasicProfile": true,
+                            "icon": true,
+                            "isSignedIn": false,
+                            "jsSrc": "https://apis.google.com/js/client:platform.js",
+                            "onRequest": [Function],
+                            "onSuccess": [Function],
+                            "prompt": "",
+                            "scope": "profile email",
+                            "tag": "button",
+                            "theme": "light",
+                            "type": "button",
+                            "uxMode": "popup",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "appId": "382723665627980",
+                            "callback": [Function],
+                            "cssClass": "social-button class-fb",
+                            "fields": "name,email",
+                            "icon": "fa-facebook",
+                            "size": "metro",
+                            "tag": "button",
+                            "textButton": "Login with Facebook",
+                            "typeButton": "button",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": <span
+                              className="or"
+                            >
+                              OR
+                            </span>,
+                            "className": "break",
+                          },
+                          "ref": null,
+                          "rendered": Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": "OR",
+                              "className": "or",
+                            },
+                            "ref": null,
+                            "rendered": "OR",
+                            "type": "span",
+                          },
+                          "type": "div",
+                        },
+                      ],
+                      "type": "div",
+                    },
+                    undefined,
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "children": <Input
+                          className="form-bg"
+                          minLength="6"
+                          name="email"
+                          onChange={[Function]}
+                          placeholder="Email"
+                          required={true}
+                          type="email"
+                          value=""
+                        />,
+                        "tag": "div",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "className": "form-bg",
+                          "minLength": "6",
+                          "name": "email",
+                          "onChange": [Function],
+                          "placeholder": "Email",
+                          "required": true,
+                          "type": "email",
+                          "value": "",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "children": <Input
+                          className="form-bg"
+                          minLength="8"
+                          name="password"
+                          onChange={[Function]}
+                          placeholder="Password"
+                          required={true}
+                          type="password"
+                          value=""
+                        />,
+                        "tag": "div",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "className": "form-bg",
+                          "minLength": "8",
+                          "name": "password",
+                          "onChange": [Function],
+                          "placeholder": "Password",
+                          "required": true,
+                          "type": "password",
+                          "value": "",
+                        },
+                        "ref": null,
+                        "rendered": null,
+                        "type": [Function],
+                      },
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "block": true,
+                        "children": "Login",
+                        "className": "purple-btn login-btn",
+                        "color": "secondary",
+                        "tag": "button",
+                        "type": "submit",
+                      },
+                      "ref": null,
+                      "rendered": "Login",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": <Link
+                          replace={false}
+                          style={
+                            Object {
+                              "color": "#8da2b5",
+                            }
+                          }
+                          to="/reset"
+                        >
+                          Forgot your password?
+                        </Link>,
+                        "className": "text-center small mt-2",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": "Forgot your password?",
+                          "replace": false,
+                          "style": Object {
+                            "color": "#8da2b5",
+                          },
+                          "to": "/reset",
+                        },
+                        "ref": null,
+                        "rendered": "Forgot your password?",
+                        "type": [Function],
+                      },
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "hr",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Dont have an account? ",
+                          <a
+                            href="/signup"
+                            onClick={[Function]}
+                          >
+                            Sign Up
+                          </a>,
+                        ],
+                        "className": "text-center",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "Dont have an account? ",
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": "Sign Up",
+                            "href": "/signup",
+                            "onClick": [Function],
+                          },
+                          "ref": null,
+                          "rendered": "Sign Up",
+                          "type": "a",
+                        },
+                      ],
+                      "type": "div",
+                    },
+                  ],
+                  "type": "div",
+                },
+              ],
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "children": Array [
+                  <img
+                    alt="logo"
+                    className="login-logo"
+                    src="/logo.svg"
+                  />,
+                  <div
+                    className="px-5 pb-5 pt-4"
+                  >
+                    <div
+                      className="text-center"
+                    >
+                      <h3
+                        className="mb-3"
+                      >
+                        Sign Up
+                      </h3>
+                    </div>
+                    <div
+                      className="social-login"
+                    >
+                      <e
+                        accessType="online"
+                        buttonText="Sign up with Google"
+                        className="social-button class-ggl mb-2"
+                        clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                        cookiePolicy="single_host_origin"
+                        disabledStyle={
+                          Object {
+                            "opacity": 0.6,
+                          }
+                        }
+                        fetchBasicProfile={true}
+                        icon={true}
+                        isSignedIn={false}
+                        jsSrc="https://apis.google.com/js/client:platform.js"
+                        onRequest={[Function]}
+                        onSuccess={[Function]}
+                        prompt=""
+                        scope="profile email"
+                        tag="button"
+                        theme="light"
+                        type="button"
+                        uxMode="popup"
+                      />
+                      <t
+                        appId="382723665627980"
+                        callback={[Function]}
+                        cssClass="social-button class-fb"
+                        fields="name,email"
+                        icon="fa-facebook"
+                        size="metro"
+                        tag="button"
+                        textButton="Sign up with Facebook"
+                        typeButton="button"
+                      />
+                      <div
+                        className="break"
+                      >
+                        <span
+                          className="or"
+                        >
+                          OR
+                        </span>
+                      </div>
+                    </div>
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Label
+                        for="name"
+                        tag="label"
+                        widths={
+                          Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ]
+                        }
+                      >
+                        Name
+                      </Label>
+                      <Input
+                        className="form-bg"
+                        minLength="3"
+                        name="r_name"
+                        onChange={[Function]}
+                        placeholder="Full Name"
+                        required={true}
+                        type="text"
+                        value=""
+                      />
+                    </FormGroup>
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Label
+                        for="email"
+                        tag="label"
+                        widths={
+                          Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ]
+                        }
+                      >
+                        Email
+                      </Label>
+                      <Input
+                        className="form-bg"
+                        minLength="6"
+                        name="r_email"
+                        onChange={[Function]}
+                        placeholder="bezos@amazon.com"
+                        required={true}
+                        type="email"
+                        value=""
+                      />
+                    </FormGroup>
+                    <FormGroup
+                      tag="div"
+                    >
+                      <Label
+                        for="password"
+                        tag="label"
+                        widths={
+                          Array [
+                            "xs",
+                            "sm",
+                            "md",
+                            "lg",
+                            "xl",
+                          ]
+                        }
+                      >
+                        Password
+                      </Label>
+                      <Input
+                        className="form-bg"
+                        minLength="8"
+                        name="r_password"
+                        onChange={[Function]}
+                        placeholder="Password"
+                        required={true}
+                        type="password"
+                        value=""
+                      />
+                    </FormGroup>
+                    <Button
+                      block={true}
+                      className="purple-btn login-btn"
+                      color="secondary"
+                      tag="button"
+                      type="submit"
+                    >
+                      Create Account
+                    </Button>
+                    <hr />
+                    <div
+                      className="text-center"
+                    >
+                      Already have an account? 
+                      <a
+                        href="/login"
+                        onClick={[Function]}
+                      >
+                        Login
+                      </a>
+                    </div>
+                  </div>,
+                ],
+                "id": "signup-form",
+                "onSubmit": [Function],
+                "tag": "form",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "alt": "logo",
+                    "className": "login-logo",
+                    "src": "/logo.svg",
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": "img",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <div
+                        className="text-center"
+                      >
+                        <h3
+                          className="mb-3"
+                        >
+                          Sign Up
+                        </h3>
+                      </div>,
+                      undefined,
+                      <div
+                        className="social-login"
+                      >
+                        <e
+                          accessType="online"
+                          buttonText="Sign up with Google"
+                          className="social-button class-ggl mb-2"
+                          clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                          cookiePolicy="single_host_origin"
+                          disabledStyle={
+                            Object {
+                              "opacity": 0.6,
+                            }
+                          }
+                          fetchBasicProfile={true}
+                          icon={true}
+                          isSignedIn={false}
+                          jsSrc="https://apis.google.com/js/client:platform.js"
+                          onRequest={[Function]}
+                          onSuccess={[Function]}
+                          prompt=""
+                          scope="profile email"
+                          tag="button"
+                          theme="light"
+                          type="button"
+                          uxMode="popup"
+                        />
+                        <t
+                          appId="382723665627980"
+                          callback={[Function]}
+                          cssClass="social-button class-fb"
+                          fields="name,email"
+                          icon="fa-facebook"
+                          size="metro"
+                          tag="button"
+                          textButton="Sign up with Facebook"
+                          typeButton="button"
+                        />
+                        <div
+                          className="break"
+                        >
+                          <span
+                            className="or"
+                          >
+                            OR
+                          </span>
+                        </div>
+                      </div>,
+                      undefined,
+                      <FormGroup
+                        tag="div"
+                      >
+                        <Label
+                          for="name"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          Name
+                        </Label>
+                        <Input
+                          className="form-bg"
+                          minLength="3"
+                          name="r_name"
+                          onChange={[Function]}
+                          placeholder="Full Name"
+                          required={true}
+                          type="text"
+                          value=""
+                        />
+                      </FormGroup>,
+                      <FormGroup
+                        tag="div"
+                      >
+                        <Label
+                          for="email"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          Email
+                        </Label>
+                        <Input
+                          className="form-bg"
+                          minLength="6"
+                          name="r_email"
+                          onChange={[Function]}
+                          placeholder="bezos@amazon.com"
+                          required={true}
+                          type="email"
+                          value=""
+                        />
+                      </FormGroup>,
+                      <FormGroup
+                        tag="div"
+                      >
+                        <Label
+                          for="password"
+                          tag="label"
+                          widths={
+                            Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ]
+                          }
+                        >
+                          Password
+                        </Label>
+                        <Input
+                          className="form-bg"
+                          minLength="8"
+                          name="r_password"
+                          onChange={[Function]}
+                          placeholder="Password"
+                          required={true}
+                          type="password"
+                          value=""
+                        />
+                      </FormGroup>,
+                      <Button
+                        block={true}
+                        className="purple-btn login-btn"
+                        color="secondary"
+                        tag="button"
+                        type="submit"
+                      >
+                        Create Account
+                      </Button>,
+                      <hr />,
+                      <div
+                        className="text-center"
+                      >
+                        Already have an account? 
+                        <a
+                          href="/login"
+                          onClick={[Function]}
+                        >
+                          Login
+                        </a>
+                      </div>,
+                    ],
+                    "className": "px-5 pb-5 pt-4",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": <h3
+                          className="mb-3"
+                        >
+                          Sign Up
+                        </h3>,
+                        "className": "text-center",
+                      },
+                      "ref": null,
+                      "rendered": Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "Sign Up",
+                          "className": "mb-3",
+                        },
+                        "ref": null,
+                        "rendered": "Sign Up",
+                        "type": "h3",
+                      },
+                      "type": "div",
+                    },
+                    undefined,
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <e
+                            accessType="online"
+                            buttonText="Sign up with Google"
+                            className="social-button class-ggl mb-2"
+                            clientId="60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com"
+                            cookiePolicy="single_host_origin"
+                            disabledStyle={
+                              Object {
+                                "opacity": 0.6,
+                              }
+                            }
+                            fetchBasicProfile={true}
+                            icon={true}
+                            isSignedIn={false}
+                            jsSrc="https://apis.google.com/js/client:platform.js"
+                            onRequest={[Function]}
+                            onSuccess={[Function]}
+                            prompt=""
+                            scope="profile email"
+                            tag="button"
+                            theme="light"
+                            type="button"
+                            uxMode="popup"
+                          />,
+                          <t
+                            appId="382723665627980"
+                            callback={[Function]}
+                            cssClass="social-button class-fb"
+                            fields="name,email"
+                            icon="fa-facebook"
+                            size="metro"
+                            tag="button"
+                            textButton="Sign up with Facebook"
+                            typeButton="button"
+                          />,
+                          <div
+                            className="break"
+                          >
+                            <span
+                              className="or"
+                            >
+                              OR
+                            </span>
+                          </div>,
+                        ],
+                        "className": "social-login",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "accessType": "online",
+                            "buttonText": "Sign up with Google",
+                            "className": "social-button class-ggl mb-2",
+                            "clientId": "60536514156-b0rhdgh006vmo07p1as9s236jmqurugj.apps.googleusercontent.com",
+                            "cookiePolicy": "single_host_origin",
+                            "disabledStyle": Object {
+                              "opacity": 0.6,
+                            },
+                            "fetchBasicProfile": true,
+                            "icon": true,
+                            "isSignedIn": false,
+                            "jsSrc": "https://apis.google.com/js/client:platform.js",
+                            "onFailure": undefined,
+                            "onRequest": [Function],
+                            "onSuccess": [Function],
+                            "prompt": "",
+                            "scope": "profile email",
+                            "tag": "button",
+                            "theme": "light",
+                            "type": "button",
+                            "uxMode": "popup",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "appId": "382723665627980",
+                            "callback": [Function],
+                            "cssClass": "social-button class-fb",
+                            "fields": "name,email",
+                            "icon": "fa-facebook",
+                            "size": "metro",
+                            "tag": "button",
+                            "textButton": "Sign up with Facebook",
+                            "typeButton": "button",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": <span
+                              className="or"
+                            >
+                              OR
+                            </span>,
+                            "className": "break",
+                          },
+                          "ref": null,
+                          "rendered": Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": "OR",
+                              "className": "or",
+                            },
+                            "ref": null,
+                            "rendered": "OR",
+                            "type": "span",
+                          },
+                          "type": "div",
+                        },
+                      ],
+                      "type": "div",
+                    },
+                    undefined,
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "children": Array [
+                          <Label
+                            for="name"
+                            tag="label"
+                            widths={
+                              Array [
+                                "xs",
+                                "sm",
+                                "md",
+                                "lg",
+                                "xl",
+                              ]
+                            }
+                          >
+                            Name
+                          </Label>,
+                          <Input
+                            className="form-bg"
+                            minLength="3"
+                            name="r_name"
+                            onChange={[Function]}
+                            placeholder="Full Name"
+                            required={true}
+                            type="text"
+                            value=""
+                          />,
+                        ],
+                        "tag": "div",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "function",
+                          "props": Object {
+                            "children": "Name",
+                            "for": "name",
+                            "tag": "label",
+                            "widths": Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": "Name",
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "className": "form-bg",
+                            "minLength": "3",
+                            "name": "r_name",
+                            "onChange": [Function],
+                            "placeholder": "Full Name",
+                            "required": true,
+                            "type": "text",
+                            "value": "",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                      ],
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "children": Array [
+                          <Label
+                            for="email"
+                            tag="label"
+                            widths={
+                              Array [
+                                "xs",
+                                "sm",
+                                "md",
+                                "lg",
+                                "xl",
+                              ]
+                            }
+                          >
+                            Email
+                          </Label>,
+                          <Input
+                            className="form-bg"
+                            minLength="6"
+                            name="r_email"
+                            onChange={[Function]}
+                            placeholder="bezos@amazon.com"
+                            required={true}
+                            type="email"
+                            value=""
+                          />,
+                        ],
+                        "tag": "div",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "function",
+                          "props": Object {
+                            "children": "Email",
+                            "for": "email",
+                            "tag": "label",
+                            "widths": Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": "Email",
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "className": "form-bg",
+                            "minLength": "6",
+                            "name": "r_email",
+                            "onChange": [Function],
+                            "placeholder": "bezos@amazon.com",
+                            "required": true,
+                            "type": "email",
+                            "value": "",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                      ],
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "function",
+                      "props": Object {
+                        "children": Array [
+                          <Label
+                            for="password"
+                            tag="label"
+                            widths={
+                              Array [
+                                "xs",
+                                "sm",
+                                "md",
+                                "lg",
+                                "xl",
+                              ]
+                            }
+                          >
+                            Password
+                          </Label>,
+                          <Input
+                            className="form-bg"
+                            minLength="8"
+                            name="r_password"
+                            onChange={[Function]}
+                            placeholder="Password"
+                            required={true}
+                            type="password"
+                            value=""
+                          />,
+                        ],
+                        "tag": "div",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "function",
+                          "props": Object {
+                            "children": "Password",
+                            "for": "password",
+                            "tag": "label",
+                            "widths": Array [
+                              "xs",
+                              "sm",
+                              "md",
+                              "lg",
+                              "xl",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": "Password",
+                          "type": [Function],
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "class",
+                          "props": Object {
+                            "className": "form-bg",
+                            "minLength": "8",
+                            "name": "r_password",
+                            "onChange": [Function],
+                            "placeholder": "Password",
+                            "required": true,
+                            "type": "password",
+                            "value": "",
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": [Function],
+                        },
+                      ],
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "block": true,
+                        "children": "Create Account",
+                        "className": "purple-btn login-btn",
+                        "color": "secondary",
+                        "tag": "button",
+                        "type": "submit",
+                      },
+                      "ref": null,
+                      "rendered": "Create Account",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "hr",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          "Already have an account? ",
+                          <a
+                            href="/login"
+                            onClick={[Function]}
+                          >
+                            Login
+                          </a>,
+                        ],
+                        "className": "text-center",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        "Already have an account? ",
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": "Login",
+                            "href": "/login",
+                            "onClick": [Function],
+                          },
+                          "ref": null,
+                          "rendered": "Login",
+                          "type": "a",
+                        },
+                      ],
+                      "type": "div",
+                    },
+                  ],
+                  "type": "div",
+                },
+              ],
+              "type": [Function],
+            },
+          ],
+          "type": "div",
+        },
+        "type": "div",
+      },
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

@@ -14,7 +14,7 @@ window.user_detail = {
 
 let appId = "amzn1.application-oa2-client.582f261a95e1447894d13a4fe2a1c72e";
 
-var options={response_type:"code", scope:"alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test"}
+var options={response_type:"code", scope:"alexa::ask:skills:readwrite alexa::ask:models:readwrite alexa::ask:skills:test profile"}
 
 const load = () => new Promise((resolve) => {
   // @TODO: handle errors
@@ -98,10 +98,9 @@ export default {
 	AmazonAccessToken: cb => {
 		axios.get('/session/amazon/access_token')
 		.then(res => {
-			cb(true);
+			cb(res.data);
 		})
 		.catch(err => {
-			// console.error(err);
 			cb(null);
 		});
 	},
@@ -173,5 +172,34 @@ export default {
 		.catch(err => {
 			cb(err);
 		})
-	}
+	},
+	googleAccessToken: () => new Promise((resolve, reject) => {
+		axios.get(`/session/google/access_token`)
+		.then(res => {
+			resolve(!!(res.data && res.data.token))
+		})
+		.catch(() => {
+			reject('Error with checking access token');
+		});
+	}),
+	dialogflowToken: (skill_id) => new Promise((resolve, reject) => {
+		axios.get(`/session/google/dialogflow_access_token/${skill_id}`)
+		.then(res => {
+			resolve(!!(res.data && res.data.token))
+		})
+		.catch(() => {
+			reject('Error with checking access token');
+		});
+	}),
+	verifyGoogleToken: (token) => new Promise((resolve, reject) => {
+		axios.post('/session/google/verify_token', {
+			token: token,
+		})
+		.then(res => {
+			resolve(res)
+		})
+		.catch(() => {
+			reject('Invalid access token, please try again');
+		});
+	})
 }

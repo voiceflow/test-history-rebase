@@ -270,7 +270,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     new_creator_id = req.user.id
   }
 
-  const retrieveDiagram = (diagram_id, new_skill_id) => {
+  const retrieveDiagram = (diagram_id, new_skill_id, platform) => {
     const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
       let params = {
         TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
@@ -308,6 +308,9 @@ exports.copySkill = async (req, res, options, cb = false) => {
           if (node.extras.diagram_id && node.extras.diagram_id !== null) {
             node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
             sub_diagrams.push(node.extras.diagram_id)
+          } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
+            node.extras[platform].diagram_id = diagram_mapping[node.extras[platform].diagram_id]
+            sub_diagrams.push(node.extras[platform].diagram_id)
           } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
             node.extras.display_id = remapped_displays[node.extras.display_id]
           } else if (node.extras.template_id && node.extras.template_id !== null && remapped_emails[node.extras.template_id]){
@@ -368,7 +371,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
       })
     }
     try{
-      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
+      await renderDiagram(req.user, skill.diagram, skill.skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots}, undefined, skill.platform)
       // UPDATE SKILL 
       await pool.query('UPDATE skills set used_intents = $2, used_choices = $3, alexa_permissions = $4, alexa_interfaces = $5 WHERE skill_id = $1', 
       [skill.skill_id, JSON.stringify([...used_intents]), JSON.stringify([...used_choices]), JSON.stringify([...permissions]), JSON.stringify([...interfaces])])
@@ -400,27 +403,27 @@ exports.copySkill = async (req, res, options, cb = false) => {
             name, diagram,creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
             purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
             privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
+            account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
           )
           SELECT ` +
       copy_str + `
               $1 AS diagram, $2 AS creator_id, amzn_id, summary, description, keywords, invocations, small_icon, large_icon, category,
               purchase, personal, copa, ads, export, instructions, inv_name, stage, review, locales, restart, global,
               privacy_policy, terms_and_cond, intents, slots, used_intents, used_choices, preview, resume_prompt, error_prompt,
-              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
+              account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat, platform, google_publish_info, dialogflow_token
           FROM skills WHERE skill_id = $3 RETURNING *`
   } else {
     copy_query = `
           INSERT INTO skills (
             name, diagram, creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info, dialogflow_token
           )
           SELECT ` +
       copy_str + `
             $1 AS diagram, $2 AS creator_id, summary, description, keywords, invocations, small_icon, large_icon, category, purchase,
             personal, copa, ads, export, instructions, inv_name, locales, restart, global, privacy_policy, terms_and_cond,
-            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events
+            intents, slots, used_intents, used_choices, resume_prompt, error_prompt, account_linking, fulfillment, repeat, alexa_events, platform, google_publish_info, dialogflow_token
           FROM skills WHERE skill_id = $3 RETURNING *`
   }
 
@@ -449,7 +452,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         diagram_mapping[diagram_data.rows[i].id] = generateID()
       }
       retrieve_promises.push(
-        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id)
+        retrieveDiagram(diagram_data.rows[i].id, copy_skill.skill_id, copy_skill.platform)
       )
     }
     Promise.all(retrieve_promises)

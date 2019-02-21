@@ -485,7 +485,9 @@ export class DiagramWidget extends BaseWidget {
 											confirm: this.onDeleteConfirm,
 											params: [selectedItems, element]
 										})
-									} else if (element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
+									} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
+										element.remove();
+									} else {
 										element.remove();
 									}
                  }
@@ -509,7 +511,7 @@ export class DiagramWidget extends BaseWidget {
 					model.element.style.pointerEvents = 'all';
 				}
 				if (model.model instanceof BlockNodeModel) {
-					if (!model.model.isMoving) {
+					if (!model.model.isMoving ||this.props.editorOpen) {
 						this.props.clickDiagram()
 					}
 					model.model.isMoving = false;

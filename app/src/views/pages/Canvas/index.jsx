@@ -2692,6 +2692,7 @@ class Canvas extends Component {
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}
                             clickDiagram={this.clickDiagram}
+                            editorOpen={this.state.open}
                         />
                     </div>
                 </div>

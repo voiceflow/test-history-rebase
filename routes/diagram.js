@@ -1,4 +1,3 @@
-const Util = require('./../config/util');
 const {
   docClient,
   pool,
@@ -16,7 +15,7 @@ const {
 } = require('./skill_util')
 const {
   renderDiagram
-} = require('./render_diagram.js')
+} = require('./../config/render_diagram.js')
 
 const {
   _getGoogleAccessToken
@@ -518,7 +517,7 @@ const publishTest = async (req, res) => {
   }
 
   let used_intents = new Set()
-  let used_choices = new Set()
+  let used_choices = []
   let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {
     used_intents,
     used_choices,
@@ -540,7 +539,7 @@ const rerenderDiagram = async (req, res) => {
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    let used_intents = new Set(), used_choices = [], permissions = new Set(), interfaces = new Set()
     if (Array.isArray(skill.intents)) {
       skill.intents.forEach(intent => {
         if (intent.key) intents[intent.key] = intent.name

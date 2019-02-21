@@ -1,5 +1,6 @@
 const axios = require('axios')
 const _ = require('lodash')
+const secondPass = require('./../config/secondary_pass')
 const {
   pool,
   hashids,
@@ -12,7 +13,8 @@ const {
   AccessToken,
   _getGoogleAccessToken
 } = require('./authentication')
-const JSONs = require('./../config/amazon_json')
+const {createManifest} = require('./../config/manifest')
+const {createInteractionModel} = require('./../config/interaction_model')
 const {
   generateDialogflowPackage
 } = require('./../config/gactions_package')
@@ -605,7 +607,7 @@ const checkVersions = (req, id, token, platform) => {
           let live_ids = []
           try {
             // If so, we wanna know what version the live skill is pointing to rn
-            if (platform === 'alexa') {
+            if (platform === 'alexa' && data.rows[0].amzn_id) {
               let request = await axios.request({
                 url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
                 method: 'GET',
@@ -657,7 +659,6 @@ const checkVersions = (req, id, token, platform) => {
               }
             }
           } catch (err) {
-            console.error(err)
             live_ids = []
           }
 
@@ -732,7 +733,7 @@ exports.buildSkill = async (req, res) => {
         let r = data.rows[0]
 
         let amzn_id = r.amzn_id
-        let manifest = JSONs.manifest(r, original_id, req.user.name)
+        let manifest = createManifest(r, original_id, req.user.name)
 
         analytics.track({
           userId: req.user.id,
@@ -891,8 +892,24 @@ exports.buildSkill = async (req, res) => {
               return;
             } else {
               setTimeout(async () => {
+
+                // interaction models only need to be generated per langauge. i.e en-US/en-CA or fr-CA/fr-FR are the same shit
+                let models = {}
+                let secondary = false // flag on doing a secondary pass
                 for (locale of r.locales) {
-                  let model = JSONs.interactionModel(r, locale)
+                  // ONLY NEED ONE INTERACTION MODEL PER LANGUAGE LOCALE
+                  let lang = locale.substring(0,2)
+                  if(!(lang in models)){
+                    let {model, samples} = createInteractionModel(r, locale)
+
+                    models[lang] = model
+                    // ruh-oh time to do a secondary pass on the entire project's diagram ripperionis
+                    if(samples && !secondary) {
+                      secondary = true
+                      secondPass(r.diagram, samples)
+                    }
+                  }
+                  
                   try {
                     await axios.request({
                       url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/interactionModel/locales/${locale}`,
@@ -900,10 +917,10 @@ exports.buildSkill = async (req, res) => {
                       headers: {
                         Authorization: token
                       },
-                      data: model
+                      data: models[lang]
                     })
                   } catch (err) {
-                    logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(model))
+                    logAxiosError(err, 'INTERACTION MODEL UPLOAD', JSON.stringify(models[lang]))
                     if (err.response) {
                       if (err.response.status === 404) {
                         iterate(depth + 1)

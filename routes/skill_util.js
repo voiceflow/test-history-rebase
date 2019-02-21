@@ -465,7 +465,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
               res.sendStatus(500)
             }
           })
-
+          
           analytics.track({
             userId: req.user.id,
             event: 'Project Created',

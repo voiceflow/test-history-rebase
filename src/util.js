@@ -183,3 +183,4 @@ exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
 exports.formatName = formatName
 exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat
 exports.getSlotsForKeys = getSlotsForKeys
+exports.getSlotType = getSlotType

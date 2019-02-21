@@ -50,8 +50,8 @@ const line_color = '#D1D8E2'
 const line_width = 2.5
 const toolkit = new Toolkit()
 
-const commandHasIntent = (node, intent) => {
-    return (node.extras.type === 'command' && node.extras.intent && node.extras.intent.value === intent)
+const commandHasIntent = (node, intent, platform='alexa') => {
+    return (node.extras.type === 'command' && node.extras[platform].intent && node.extras[platform].intent.value === intent)
 }
 
 const generateID = () => {

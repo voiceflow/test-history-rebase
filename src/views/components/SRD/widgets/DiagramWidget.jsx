@@ -11,7 +11,6 @@ import { NodeModel } from "../models/NodeModel";
 import { BlockNodeModel } from '../models/BlockNodeModel';
 import { PointModel } from "../models/PointModel";
 import { PortModel } from "../models/PortModel";
-import { LinkModel } from "../models/LinkModel";
 import { BaseWidget } from "./BaseWidget";
 import { checkBlockDisabledLive } from "./../../../pages/Canvas/Blocks"
 
@@ -259,7 +258,9 @@ export class DiagramWidget extends BaseWidget {
 						// Update combines
 						let current = model.model;
 						let target_node = current.parentCombine;
-						current.isMoving = true;
+						if (Math.abs(amountX) > 2 || Math.abs(amountY) > 2){
+							current.isMoving = true;
+						}
 						if (current && target_node && (Math.abs(amountX) > 5 || Math.abs(amountY) > 5)){
 							_.remove(target_node.combines, (n, idx) => {
 								if (n.id === current.id){
@@ -508,6 +509,9 @@ export class DiagramWidget extends BaseWidget {
 					model.element.style.pointerEvents = 'all';
 				}
 				if (model.model instanceof BlockNodeModel) {
+					if (!model.model.isMoving) {
+						this.props.clickDiagram()
+					}
 					model.model.isMoving = false;
 					if (model.model.extras.type === 'god') {
 						let totalHeight = 40;
@@ -561,8 +565,8 @@ export class DiagramWidget extends BaseWidget {
 						return;
 					}
 
-					let selectedPoint: PointModel = model.model;
-					let link: LinkModel = selectedPoint.getLink();
+					let selectedPoint = model.model;
+					let link = selectedPoint.getLink();
 					if (link.getSourcePort() === null || link.getTargetPort() === null) {
 						link.remove();
 					}
@@ -576,9 +580,9 @@ export class DiagramWidget extends BaseWidget {
 					return;
 				}
 
-				let link: LinkModel = model.model.getLink();
-				let sourcePort: PortModel = link.getSourcePort();
-				let targetPort: PortModel = link.getTargetPort();
+				let link = model.model.getLink();
+				let sourcePort = link.getSourcePort();
+				let targetPort = link.getTargetPort();
 				if (sourcePort !== null && targetPort !== null) {
 					if (!sourcePort.canLinkToPort(targetPort)) {
 						//link not allowed
@@ -586,7 +590,7 @@ export class DiagramWidget extends BaseWidget {
 					} else if (
 						_.some(
 							_.values(targetPort.getLinks()),
-							(l: LinkModel) =>
+							(l) =>
 								l !== link && (l.getSourcePort() === sourcePort || l.getTargetPort() === sourcePort)
 						)
 					) {
@@ -599,6 +603,7 @@ export class DiagramWidget extends BaseWidget {
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();
+			this.props.clickDiagram()
 		}
 		this.state.document.removeEventListener("mousemove", this.onMouseMove);
 		this.state.document.removeEventListener("mouseup", this.onMouseUp);
@@ -691,7 +696,6 @@ export class DiagramWidget extends BaseWidget {
 					if (event.nativeEvent.which === 3) return;
 					this.setState({ ...this.state, wasMoved: false });
 					diagramEngine.stopMove();
-
 					// diagramEngine.clearRepaintEntities();
 					var model = this.getMouseElement(event);
 					var relative;
@@ -757,7 +761,7 @@ export class DiagramWidget extends BaseWidget {
 				{this.state.renderedNodes && (
 					<LinkLayerWidget
 						diagramEngine={diagramEngine}
-						pointAdded={(point: PointModel, event) => {
+						pointAdded={(point, event) => {
 							this.state.document.addEventListener("mousemove", this.onMouseMove);
 							this.state.document.addEventListener("mouseup", this.onMouseUp);
 							event.stopPropagation();

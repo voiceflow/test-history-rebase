@@ -1,9 +1,9 @@
 require('dotenv').config()
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme';
-import { pool } from '../../../services';
-import App from '../App';
+import Account from '../index';
 
 jest.mock('react-ga');
 
@@ -17,15 +17,22 @@ jest.mock('react-ga');
 });*/
 
 describe('Onboarding', () => {
+  let location = {
+      hash: "",
+      key: "i4q8aw",
+      pathname: "/login",
+      search: "",
+  }
   it('renders without crashing', () => {
-    mount(<App />);
+    const component = shallow(<Account location={location} />);
+    expect(component).toMatchSnapshot()
   });
   it('redirects to login if unauthenticated', () => {
-    const app = mount(<App />);
+    const app = shallow(<Account location={location} />);
     expect(app.exists('#signup-form')).toBe(true);
   });
   it('creates accounts on signup', () => {
-    const app = mount(<App />);
+    const app = mountWrap(<Account location={location} />);
     app.find('#signup-form input[name="r_name"]')
       .simulate('change', {target: {value:'Voiceflow Tester'}});
     app.find('#signup-form input[name="r_email"]')
@@ -39,7 +46,7 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('disallows duplicate accounts', () => {
-    const app = mount(<App />);
+    const app = mountWrap(<Account location={location} />);
     app.find('#signup-form input[name="r_name"]')
       .simulate('change', {target: {value:'Voiceflow Tester'}});
     app.find('#signup-form input[name="r_email"]')
@@ -53,7 +60,7 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('onboards on first login', () => {
-    const app = mount(<App />);
+    const app = mountWrap(<Account location={location} />);
     app.find('#login-form input[name="email"]')
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
     app.find('#login-form input[name="password"]')

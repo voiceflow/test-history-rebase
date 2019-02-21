@@ -134,7 +134,8 @@ class TestModal extends React.Component {
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
-      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100
+      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100,
+      platform: this.props.platform
     };
 
     // Inject New Globals in if updated
@@ -147,6 +148,7 @@ class TestModal extends React.Component {
     // stick in global variables
     this.story_state.globals[0].sessions = 1
     this.story_state.globals[0].user_id = 'TEST_USER'
+    this.story_state.globals[0].platform = this.props.platform
   }
 
   componentWillUnmount() {
@@ -312,7 +314,6 @@ class TestModal extends React.Component {
             })
           }
         }
-
         data.detected_intents = detected_intents
       } catch (err) {
         // NLC No Match

@@ -1,19 +1,12 @@
 import * as React from "react";
 import _ from 'lodash';
-import { BlockPortModel } from "../models/BlockPortModel";
 import { BlockPortWidget } from "./BlockPortWidget";
-import { BaseWidget, BaseWidgetProps } from "./../main.js";
-
-export interface BlockPortLabelProps extends BaseWidgetProps {
-	model: BlockPortModel;
-}
-
-export interface BlockPortLabelState {}
+import { BaseWidget } from "./../main.js";
 
 /**
  * @author Dylan Vorster
  */
-export class BlockPortLabel extends BaseWidget<BlockPortLabelProps, BlockPortLabelState> {
+export class BlockPortLabel extends BaseWidget {
 	constructor(props) {
 		super("srd-default-port", props);
 	}

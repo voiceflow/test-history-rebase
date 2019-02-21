@@ -4,7 +4,7 @@ import randomstring from 'randomstring';
 import Select from 'react-select';
 import {Collapse, Input, InputGroup} from 'reactstrap';
 import AudioDrop from '../../../components/Uploads/AudioDrop'
-import { VOICES } from '../Constants'
+import { VOICES } from 'Constants'
 
 const BLOCK_LIMIT = 50
 

@@ -1,0 +1,34 @@
+/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
+
+import React from 'react';
+import './Modals.css'
+import { Input } from 'reactstrap'
+
+class MultiPlatformModalContent extends React.Component {
+
+  render() {
+    return (
+      <div className="d-flex flex-column">
+        <div>
+          <div className="mt-3 mb-4" style={{ padding: '0 2em 0 2em' }}>
+            <div className="my-2">Step 1</div>
+            <div className="text-muted my-3" style={{ fontSize: '0.9rem'}}>Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.</div>
+            <a href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state" target="_blank" rel="noopener noreferrer" ><button type="button" className="btn btn-clear">Log In</button></a>
+          </div>
+          <hr/>
+          <div className="my-4" style={{ padding: '0 2em 0 2em' }}>
+            <div className="my-2">Step 2</div>
+            <div className="text-muted mb-2 mt-3" style={{ fontSize: '0.9rem'}}>Copy and paste the authentication code given in the field below.</div>
+            <Input className="form-bg" type="text" name="google_token" placeholder="Paste your Google Authentication Token here" value={this.props.token} onChange={this.props.onChange} disabled={this.props.loading}/>
+          </div>
+        </div>
+        <div className="d-flex justify-content-center py-4 w-100" style={{ backgroundColor: "#eff2f8", borderRadius: "0 0 10px 10px", borderTop: '1px solid 1px solid rgba(141, 162, 181, .28)' }}>
+          {!this.props.loading && <button type="button" className="purple-btn mr-4" onClick={this.props.onVerify}>Verify</button>}
+          {this.props.loading && <span style={{height: '44px'}} className="loader"/>}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default MultiPlatformModalContent;

@@ -1,6 +1,8 @@
 
 const  { find } = require('lodash')
 const { SLOT_TYPES } = require('./Constants')
+const randomstring = require("randomstring")
+const { validSpokenCharacters, validLatinChars } = require('./services/Regex')
 
 const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, format_name=false) => {
 
@@ -45,6 +47,19 @@ const formatName = (name) => {
 	return formatted_name
 }
 
+const getSlotType = (slot, platform) => {
+	let type = slot.name
+	if (slot.type.value.toLowerCase() !== 'custom') {
+		let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
+		if (!default_slot) {
+			type = slot.type.value  //Platform specific slot
+		} else {
+			type = default_slot.type[platform]
+		}
+	}
+	return type
+}
+
 const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 	let key_set = new Set()
 
@@ -61,19 +76,11 @@ const getSlotsForKeysAndFormat = (keys, slots, platform) => {
 			key: key
 		})
 
-		let type = formatName(slot.name)
-		if (slot.type.value.toLowerCase() !== 'custom') {
-			let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
-			if (!default_slot) {
-				type = slot.type.value  //Platform specific slot
-			} else {
-				type = default_slot.type[platform]
-			}
-		}
+		slot.name = formatName(slot.name)
 
 		return {
-			name: formatName(slot.name),
-			type: type
+			name: slot.name,
+			type: getSlotType(slot, platform)
 		}
 	})
 }
@@ -109,7 +116,74 @@ const getSlotsForKeys = (keys, slots, platform) => {
 	})
 }
 
+const replacer = (match, inner, slots, extracted) => {
+	const slot = find(slots, {name: inner})
+	if(slot){
+		slot.name = formatName(slot.name)
+		extracted.push({
+			name: slot.name,
+			type: getSlotType(slot, 'alexa')
+		})
+		return `{${slot.name}}`
+	}else{
+		return inner.replace(/_/g, " ")
+	}
+}
+
+exports.parseChoiceInput = (input, slots) => {
+	let extracted = []
+	input = input.replace(/\[([a-zA-Z_]{1,170})\]/g, (match, inner) => replacer(match, inner, slots, extracted)).replace()
+
+	// get rid of any non valid characters
+	let reg = new RegExp("[^"+validSpokenCharacters+" \\{\\}|]", "g")
+	return {
+		formatted_input: input.replace(reg, ''),
+		extracted_slots: extracted
+	}
+}
+
+exports.stripSample = (utterance) => {
+	let reg = new RegExp("[^"+validSpokenCharacters+"\\{\\}|]", "g")
+	return utterance.replace(reg, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
+}
+
+exports.utteranceToIntentName = (utterance, existing) => {
+	let reg = new RegExp("[^"+validLatinChars+"_|]", "g")
+	// REGEX GOD
+	let name = utterance
+		.trim().replace(/\s/g, '_').replace(reg, '').normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, "").toLowerCase().substring(0, 170)
+
+	// make sure the first letter is valid alphanumeric
+	while(!'abcdefghijklmnopqrstuvwxyz'.includes(name.charAt(0)) && name.length > 0){
+		name = name.substring(1)
+	}
+
+	while(existing.has(name) || !name.trim()){
+		name = name.substring(0, 164) + '_' + randomstring.generate({length: 5, charset: 'alphabetic', capitalization: 'lowercase'})
+	}
+
+	return name
+}
+
+// THIS IS TERRIBLE BUT JUST TO CHECK IF IT IS ON BACKEND
+// if(process.env.CONFIG_ID_HASH){
+// 	const { DEFAULT_ALEXA_INTENT_MATCH } = require('./Constants')
+// 	const LANGUAGE_SET = {}
+// 	for(var language in DEFAULT_ALEXA_INTENT_MATCH){
+// 		let intents = DEFAULT_ALEXA_INTENT_MATCH[language]
+// 		LANGUAGE_SET[language] = {}
+// 		for(var intent of intents){
+// 			for(var sample of intent.samples){
+// 				LANGUAGE_SET[language][exports.stripSample(sample)] = intent.name
+// 			}
+// 		}
+// 	}
+// 	exports.LANGUAGE_SET = LANGUAGE_SET
+// }
+
 exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
 exports.formatName = formatName
 exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat
 exports.getSlotsForKeys = getSlotsForKeys
+exports.getSlotType = getSlotType

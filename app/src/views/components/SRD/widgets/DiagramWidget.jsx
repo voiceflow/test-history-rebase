@@ -258,7 +258,9 @@ export class DiagramWidget extends BaseWidget {
 						// Update combines
 						let current = model.model;
 						let target_node = current.parentCombine;
-						current.isMoving = true;
+						if (Math.abs(amountX) > 2 || Math.abs(amountY) > 2){
+							current.isMoving = true;
+						}
 						if (current && target_node && (Math.abs(amountX) > 5 || Math.abs(amountY) > 5)){
 							_.remove(target_node.combines, (n, idx) => {
 								if (n.id === current.id){
@@ -483,7 +485,9 @@ export class DiagramWidget extends BaseWidget {
 											confirm: this.onDeleteConfirm,
 											params: [selectedItems, element]
 										})
-									} else if (element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
+									} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
+										element.remove();
+									} else {
 										element.remove();
 									}
                  }
@@ -507,6 +511,9 @@ export class DiagramWidget extends BaseWidget {
 					model.element.style.pointerEvents = 'all';
 				}
 				if (model.model instanceof BlockNodeModel) {
+					if (!model.model.isMoving ||this.props.editorOpen) {
+						this.props.clickDiagram()
+					}
 					model.model.isMoving = false;
 					if (model.model.extras.type === 'god') {
 						let totalHeight = 40;
@@ -598,6 +605,7 @@ export class DiagramWidget extends BaseWidget {
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();
+			this.props.clickDiagram()
 		}
 		this.state.document.removeEventListener("mousemove", this.onMouseMove);
 		this.state.document.removeEventListener("mouseup", this.onMouseUp);
@@ -690,7 +698,6 @@ export class DiagramWidget extends BaseWidget {
 					if (event.nativeEvent.which === 3) return;
 					this.setState({ ...this.state, wasMoved: false });
 					diagramEngine.stopMove();
-
 					// diagramEngine.clearRepaintEntities();
 					var model = this.getMouseElement(event);
 					var relative;

@@ -188,7 +188,7 @@ class GooglePublish extends Component {
         }
 
         if (!publish_info.locales) {
-          publish_info.locales = ['en']
+          publish_info.locales = []
         }
         if (!publish_info.main_locale) {
           publish_info.main_locale = 'en'

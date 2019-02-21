@@ -1,7 +1,7 @@
 const isVarName = require('is-var-name');
 const { getEnvVariable } = require('../util')
-const { docClient, pool, hashids, writeToLogs } = require('./../services')
-const draftToMarkdown = require('./../config/drafttomarkdown')
+const { docClient, pool, hashids, writeToLogs } = require('../services')
+const draftToMarkdown = require('./drafttomarkdown')
 const validUrl = require('valid-url');
 const _ = require('lodash');
 
@@ -109,16 +109,16 @@ options object properties {
 const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platform='alexa') => new Promise((resolve) => {
   if(!options.rendered_set) options.rendered_set = new Set()
   if(!options.used_intents) options.used_intents = new Set()
-  if(!options.used_choices) options.used_choices = new Set()
   if(!options.permissions) options.permissions = new Set()
   if(!options.interfaces) options.interfaces = new Set()
+  if(!options.used_choices) options.used_choices = []
 
   let params = {
     TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
     Key: {
       'id': diagram_id
     }
-  };
+  }
   if (depth > 10) {
     resolve(413)
     return
@@ -301,16 +301,10 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               let link = getLink(port.links[0]);
               return link ? link : null;
             })
-          };
+          }
 
-          if (inputs) {
-            node.extras.inputs.forEach(input => {
-              if (input.trim() !== '') {
-                input.split('\n').forEach(c => {
-                  options.used_choices.add(c.toLowerCase())
-                })
-              }
-            })
+          for(input of inputs){
+            if(input.length) options.used_choices.push(input)
           }
         } else if (node.extras.type === 'god') {
           _.forEach(node.combines, nc => {
@@ -641,6 +635,17 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             prompt: true,
             nextId: getLink(nextLink)
           }
+
+          if(platform === 'alexa' && node.extras.slot_type){
+            if(node.extras.slot_type.label.toUpperCase() === 'CUSTOM'){
+              if(Array.isArray(node.extras.slot_inputs) && node.extras.slot_inputs.length !== 0){
+                options.used_intents.add('CUSTOM:' + JSON.stringify(node.extras.slot_inputs.filter(s=>s.trim())))
+              }
+            }else{
+              options.used_intents.add('CAPTURE:' + node.extras.slot_type.label)
+            }
+          }
+          
         } else if (node.extras.type === 'api') {
 
           if (!_.isNil(node.extras.params)) {
@@ -663,7 +668,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
 
           let formattedBody
-          if (node.extras.bodyInputType = 'rawInput') {
+          if (node.extras.bodyInputType === 'rawInput') {
             if (node.extras.content) {
               formattedBody = node.extras.content
             } else if (!_.isNil(node.extras.rawContent)) {

@@ -84,6 +84,7 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.3",
     "dynamodb-migrations": "0.0.10",
     "jest": "^23.6.0",
     "supertest": "^3.3.0"

@@ -239,9 +239,10 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               } else if (intent.key in options.intents) {
                 intent = options.intents[intent.key]
               }
+
               if (intent) {
                 if (extras.resume) {
-                  if (extras.diagram_id) {
+                  if (extras.diagram_id && !options.rendered_set.has(extras.diagram_id)) {
                     let result
                     try {
                       result = await renderDiagram(user, extras.diagram_id, skill_id, options, depth + 1, platform)

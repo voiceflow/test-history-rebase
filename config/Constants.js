@@ -1306,3 +1306,5 @@ exports.DEFAULT_INTENTS = {
     "samples": ["no", "nein", "kein", "nicht"]
   }]
 }
+
+exports.PLATFORMS = ['alexa', 'google']

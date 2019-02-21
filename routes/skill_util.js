@@ -4,6 +4,7 @@ const { AccessToken } = require('./authentication')
 const { getEnvVariable } = require('../util')
 const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
 const { renderDiagram } = require('../config/render_diagram')
+const { PLATFORMS } = require('../config/Constants')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -308,7 +309,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
             node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
             sub_diagrams.push(node.extras.diagram_id)
           } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
-            node.extras[platform].diagram_id = diagram_mapping[node.extras[platform].diagram_id]
+
+            PLATFORMS.forEach(p => {
+              node.extras[p].diagram_id = diagram_mapping[node.extras[p].diagram_id]
+            })
+
             sub_diagrams.push(node.extras[platform].diagram_id)
           } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
             node.extras.display_id = remapped_displays[node.extras.display_id]

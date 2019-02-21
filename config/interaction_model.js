@@ -41,7 +41,7 @@ const generateRandomName = (prefix, used_slots) => {
 }
 
 exports.createInteractionModel = (req, locale) => {
-	// console.log("PERFORMANCE START"); let time = Date.now()
+	console.log("PERFORMANCE START"); let time = Date.now()
 	const invocation = req.inv_name
 	const intents = req.intents
 	const slots = req.slots
@@ -59,31 +59,43 @@ exports.createInteractionModel = (req, locale) => {
 	const LOCALE_DEFAULTS = _.cloneDeep(DEFAULT_INTENTS[locale.substring(0,2)])
 	const LOCALE_DEFAULT_SET = {}
 
-	// Write in default intents
-	LOCALE_DEFAULTS.forEach(intent => {
-		entered_intents.add(intent.name)
-		intents_for_amazon.push(intent)
-		for(sample of intent.samples){
-			samples[stripSample(sample)] = intent
-		}
-		LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples)
-	})
-
 	// Add in the repeat intent if it is needed
 	if(typeof req.repeat === 'number' && req.repeat > 0){
-		if (!entered_intents.has('AMAZON.RepeatIntent')) {
-			entered_intents.add('AMAZON.RepeatIntent')
-			let repeat_intent = {name: 'AMAZON.RepeatIntent'}
-			intents_for_amazon.push(repeat_intent)
-			samples["repeat"] = repeat_intent
-		}
+		entered_intents.add('AMAZON.RepeatIntent')
 	}
+
+	// Write in default intents
+	["defaults", "built_ins"].forEach(type => {
+		LOCALE_DEFAULTS[type].forEach(intent => {
+			// don't log built_ins because they might now be needed
+			if(type === 'defaults'){
+				entered_intents.add(intent.name)
+				intents_for_amazon.push(intent)
+			}
+			for(sample of intent.samples){
+				samples[stripSample(sample)] = intent
+			}
+			LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples)
+		})
+	})
 	
 	// Add in the fallback intent by default if in English Region
 	if(locale && locale.includes('en')){
 		if (!entered_intents.has('AMAZON.FallbackIntent')) {
 			entered_intents.add('AMAZON.FallbackIntent')
 			intents_for_amazon.push({name: 'AMAZON.FallbackIntent'})
+		}
+	}
+
+	// INTERFACE REQUIRED INTENTS
+	if(Array.isArray(req.alexa_interfaces)){
+		for(interface of req.alexa_interfaces){
+			if(INTERFACE_INTENTS[interface]){
+				INTERFACE_INTENTS[interface].forEach(i => {
+					intents_for_amazon.push(i)
+					entered_intents.add(i.name)
+				})
+			}
 		}
 	}
 
@@ -139,19 +151,9 @@ exports.createInteractionModel = (req, locale) => {
 			} else {
 				formatted_intent.samples = []
 			}
-
 			intents_for_amazon.push(formatted_intent)
 		}
 	})
-
-	// INTERFACE REQUIRED INTENTS
-	if(Array.isArray(req.alexa_interfaces)){
-		for(interface of req.alexa_interfaces){
-			if(INTERFACE_INTENTS[interface]){
-				INTERFACE_INTENTS[interface].forEach(i => intents_for_amazon.push(i))
-			}
-		}
-	}
 
 	// Push a sample and its associated slots into an intent
 	const pushToIntent = (input_object, intent) => {
@@ -166,12 +168,16 @@ exports.createInteractionModel = (req, locale) => {
 			}
 		}else{
 			// only default intents should not have slots
-			input_object.formatted_input = input_object.formatted_input.replace(/(\{|\})/g, '')
+			input_object.formatted_input = input_object.formatted_input.replace(/(\{|\})/g, '').replace(/_/g, " ")
 		}
 
 		samples[input_object.stripped] = intent
 		// Add input to intent sample and stripped version to dictionary of used samples
 		intent.samples.push(input_object.formatted_input)
+		if(!entered_intents.has(intent.name)){
+			entered_intents.add(intent.name)
+			intents_for_amazon.push(intent)
+		}
 	}
 
 	// Make this faster
@@ -239,7 +245,7 @@ exports.createInteractionModel = (req, locale) => {
 				let high = -1
 
 				for(match of matched){
-					if(!Array.isArray(match.samples)) continue
+					if(!Array.isArray(match.samples)){console.log(match); continue}
 
 					let i, sum=0;
 					for(i=0; i<match.samples.length; i++){
@@ -381,11 +387,19 @@ exports.createInteractionModel = (req, locale) => {
 	})
 
 	// amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
-	if(intents_for_amazon.length > LOCALE_DEFAULTS.length){
+	if(entered_intents.size > LOCALE_DEFAULTS.defaults.length + 1){
 		// this removes the examples for locale default intents, they were there to match choice blocks
-		LOCALE_DEFAULTS.forEach(intent => {
+		LOCALE_DEFAULTS.defaults.forEach(intent => {
 			intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
 			if(intent.samples.length === 0) delete intent.samples
+		})
+
+		LOCALE_DEFAULTS.built_ins.forEach(intent => {
+			// if this built in intent actually got used, give it the same treatment as the default ones
+			if(entered_intents.has(intent.name)){
+				intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
+				if(intent.samples.length === 0) delete intent.samples
+			}
 		})
 	}
 
@@ -402,7 +416,7 @@ exports.createInteractionModel = (req, locale) => {
 		interaction_model.interactionModel.languageModel.types = slot_types
 	}
 
-	// console.log("PERFORMANCE END. ms:", Date.now() - time)
+	console.log("PERFORMANCE END. ms:", Date.now() - time)
 	// pass the samples back to do the secondary pass because I REALLY want garbage collection to destroy this shitty function
 	return {
 		model: interaction_model,

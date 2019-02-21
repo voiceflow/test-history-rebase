@@ -132,9 +132,12 @@ const replacer = (match, inner, slots, extracted) => {
 
 exports.parseChoiceInput = (input, slots) => {
 	let extracted = []
-	input = input.replace(/\[([a-zA-Z_]{1,170})\]/g, (match, inner) => replacer(match, inner, slots, extracted))
+	input = input.replace(/\[([a-zA-Z_]{1,170})\]/g, (match, inner) => replacer(match, inner, slots, extracted)).replace()
+
+	// get rid of any non valid characters
+	let reg = new RegExp("[^"+validSpokenCharacters+" \\{\\}|]", "g")
 	return {
-		formatted_input: input,
+		formatted_input: input.replace(reg, ''),
 		extracted_slots: extracted
 	}
 }

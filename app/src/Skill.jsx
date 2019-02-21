@@ -180,10 +180,11 @@ class Skill extends Component {
                 }
                 // IF REJOINED AND THERE IS CONFLICT - THROW WARNING
                 window.CreatorSocket.on('conflict', () => {
-                    this.onError(<React.Fragment>
-                        <b>Conflict:</b><br/>
-                        There is another existing session on this project, please close the older version before making changes
-                    </React.Fragment>)
+                    console.log('conflict')
+                    // this.onError(<React.Fragment>
+                    //     <b>Conflict:</b><br/>
+                    //     There is another existing session on this project, please close the older version before making changes
+                    // </React.Fragment>)
                 })
             }else{
                 this.setState({error_screen: connection_error})

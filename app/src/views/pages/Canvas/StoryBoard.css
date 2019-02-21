@@ -1532,7 +1532,7 @@ label {
     border-color: #42A5FF !important;
 }
 /* ADVANCED BLOCKS */
-.srd-default-node.interaction, .srd-default-node.flow, .srd-default-node.stream, .srd-default-node.api, .srd-default-node.code, .srd-default-node.capture,
+.srd-default-node.interaction, .srd-default-node.flow, .srd-default-node.stream, .srd-default-node.api, .srd-default-node.code,
 .srd-default-node.command, .srd-default-node.intent{
     border-top: 6px solid #7dbee2 !important;
     border-color: #7dbee2 !important;
@@ -1554,7 +1554,7 @@ label {
     border-color: #ff9f8d !important;
 }
 /* LOGIC BLOCKS */
-.srd-default-node.random, .srd-default-node.set, .srd-default-node.variable, .srd-default-node.if {
+.srd-default-node.random, .srd-default-node.set, .srd-default-node.variable, .srd-default-node.if, .srd-default-node.capture {
     background-color: #fff;
     border-top: 6px solid #627ff9;
     border-color: #627ff9 !important;

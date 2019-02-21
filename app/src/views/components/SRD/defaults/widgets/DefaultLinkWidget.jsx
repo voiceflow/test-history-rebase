@@ -128,10 +128,10 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 		);
 	}
 
-	generateLink(path, extraProps, id) {
+	generateLink(path, extraProps, id, isLast = false) {
 		var props = this.props;
 		var Bottom = React.cloneElement(
-			(props.diagramEngine.getFactoryForLink(this.props.link)).generateLinkSegment(
+			(props.diagramEngine.getFactoryForLink(this.props.link)).generateLinkSegmentWithEnd(
 				this.props.link,
 				this,
 				this.state.selected || this.props.link.isSelected(),
@@ -141,7 +141,19 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 				ref: ref => ref && this.refPaths.push(ref)
 			}
 		);
-
+		if (isLast){
+			Bottom = React.cloneElement(
+				(props.diagramEngine.getFactoryForLink(this.props.link)).generateLinkSegment(
+					this.props.link,
+					this,
+					this.state.selected || this.props.link.isSelected(),
+					path
+				),
+				{
+					ref: ref => ref && this.refPaths.push(ref)
+				}
+			);
+		}
 		var Top = React.cloneElement(Bottom, {
 			...extraProps,
 			strokeLinecap: "round",
@@ -172,23 +184,34 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			<g key={"link-" + id}>
 				{Bottom}
 				{Top}
-				{svgPosition && this.state.selected && !this.props.preview ? <foreignObject style={{x: svgPosition.x-15, y: svgPosition.y-15, zIndex: 10}} onClick={(e) => {
-					e.preventDefault()
-					this.props.link.remove()
-				}}
-				onMouseLeave={() => {
+				{svgPosition && this.state.selected && !this.props.preview ? (
+				<foreignObject
+					x={svgPosition.x - 15}
+					y={svgPosition.y - 15}
+					width='30px'
+					height='30px'
+					style={{
+					zIndex: 10,
+					position: 'absolute',
+					}}
+					onClick={e => {
+					e.preventDefault();
+					this.props.link.remove();
+					}}
+					onMouseLeave={() => {
 					this.setState({ selected: false });
-				}}
-				onMouseEnter={() => {
+					}}
+					onMouseEnter={() => {
 					this.setState({ selected: true });
-				}}>
+					}}
+				>
 					<button className="white-circ mr-2">
-						<i className="fa fa-trash" />
+					<i className="fa fa-trash" />
 					</button>
-				</foreignObject>: null
-				}
+				</foreignObject>
+				) : null}
 			</g>
-		);
+    	);
 	}
 
 	findPathAndRelativePositionToRenderLabel = index => {
@@ -305,7 +328,6 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 				);
 			}
 		}
-
 		// true when smart routing was skipped or not enabled.
 		// See @link{#isSmartRoutingApplicable()}.
 		if (paths.length === 0) {
@@ -357,7 +379,8 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 									this.addPointToLink(event, j + 1);
 								}
 							},
-							j
+							j,
+							j !== points.length -2
 						)
 					);
 				}

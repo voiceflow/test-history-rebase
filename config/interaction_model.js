@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const {BUILT_IN_INTENTS_ALEXA, DEFAULT_INTENTS, INTERFACE_INTENTS} = require('./Constants')
-const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat, parseChoiceInput, stripSample, utteranceToIntentName} = require('../app/src/util')
+const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat, parseChoiceInput, stripSample, utteranceToIntentName, getSlotType} = require('../app/src/util')
 const randomstring = require("randomstring")
 var stringSimilarity = require('string-similarity')
 
@@ -359,6 +359,10 @@ exports.createInteractionModel = (req, locale) => {
 			// check it there is a {capture} only slot for this slot type
 			let slot_type = slot.substring(8)
 			if(!capture_intents.has(slot_type)){
+				slot_type = getSlotType({name: slot_type, type: {value: slot_type}}, 'alexa')
+				if(!slot_type.startsWith('AMAZON.')){
+					return
+				}
 				// create an intent just for this slot :(
 				let intent_name = generateRandomName('capture_intent_', entered_intents)
 				entered_intents.add(intent_name)

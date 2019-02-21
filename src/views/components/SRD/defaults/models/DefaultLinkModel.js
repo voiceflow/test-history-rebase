@@ -1,10 +1,12 @@
 import { LinkModel } from "../../models/LinkModel";
 import { DefaultLabelModel } from "./DefaultLabelModel";
 import { LabelModel } from "../../models/LabelModel";
+import { Toolkit } from '../../Toolkit'
 
+const toolkit = new Toolkit()
 export class DefaultLinkModel extends LinkModel {
 	constructor(type = "default") {
-		super(type);
+		super(type, toolkit.UID(), false);
 		this.color = "rgba(255,255,255,0.5)";
 		this.width = 3;
 		this.curvyness = 50;

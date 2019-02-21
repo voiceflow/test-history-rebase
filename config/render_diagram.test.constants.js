@@ -882,3 +882,183 @@ module.exports._2_AllBlocks_Inputs = _2_AllBlocks_Inputs
 module.exports._2_AllBlocks_Options = _2_AllBlocks_Options
 module.exports._2_AllBlocks_Outputs_Alexa = _2_AllBlocks_Outputs_Alexa
 module.exports._2_AllBlocks_Outputs_Google = _2_AllBlocks_Outputs_Google
+
+const _3_AdvancedBlocks_Inputs = {
+  "a4cd5c7865a951bfa65d24c1e9241e7e": {
+    "creator": 1,
+    "data": "{\"id\":\"6bda540051b656a6871aa99e851dffe5\",\"offsetX\":548.793607494076,\"offsetY\":-47.0197295254313,\"zoom\":66.47379353841143,\"links\":[{\"id\":\"4506aaf9-0189-4077-9afb-107cdc84df7a\",\"source\":\"540600c2-9675-469c-8e15-879b5b392ef8\",\"sourcePort\":\"bc62ed8a-8d37-4455-a757-14d54ec67be4\",\"target\":\"8a594555-1016-4418-8e1e-7ebf2ee363a5\",\"targetPort\":\"7a9efc29-292a-44a9-90a5-4187467aa0df\",\"points\":[{\"id\":\"86c3873d-e524-453e-9109-248604bbe073\",\"x\":-83.32812795951897,\"y\":501.3593890742729},{\"id\":\"9dfaf37a-fdfa-44e0-840e-353e4e5c7991\",\"x\":116.95312392108502,\"y\":611.6093730687245}]},{\"id\":\"593febe0-500e-478b-9d3a-25795bcd0719\",\"source\":\"8a594555-1016-4418-8e1e-7ebf2ee363a5\",\"sourcePort\":\"72e8e4d8-2eb5-446d-add9-b4863cae08e5\",\"target\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"targetPort\":\"5023fbb7-021b-4bb5-b668-4d57c6da5dce\",\"points\":[{\"id\":\"e217dc58-6d6a-432d-bf5b-ea38c2ae6cc4\",\"x\":231.95312430537194,\"y\":611.6093730687245},{\"id\":\"5384f874-3f7f-4d9a-b6d5-14d4b2887603\",\"x\":388.0781229891894,\"y\":538.7812452982562}]},{\"id\":\"f6f22904-5a02-4a06-98fc-19ac300c993b\",\"source\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"sourcePort\":\"6d3741b4-33ec-474f-9ea4-dd39aec0127b\",\"target\":\"2fffe8c8-a5bc-45f3-8f29-8b67292ad38e\",\"targetPort\":\"13ee834a-d6d6-459e-9a70-981d2fc3d8d3\",\"points\":[{\"id\":\"ed38f8d7-e7c6-4c4a-aca6-f9274c7bc143\",\"x\":607.0781424341055,\"y\":672.6875068148537},{\"id\":\"8a140d3a-2fee-449e-aded-d62d4a027535\",\"x\":777.4218324781472,\"y\":659.2968768203251}]},{\"id\":\"2eb635da-599f-4db9-a660-b1266c933d2a\",\"source\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"sourcePort\":\"9d7626e3-d49a-48cf-8532-2302d4bfaf24\",\"target\":\"2fffe8c8-a5bc-45f3-8f29-8b67292ad38e\",\"targetPort\":\"13ee834a-d6d6-459e-9a70-981d2fc3d8d3\",\"points\":[{\"id\":\"24a9b249-6132-4947-b7d6-1e0ae0832807\",\"x\":607.0781424341055,\"y\":641.6875070454257},{\"id\":\"b5ae5bc4-0a7d-4fa8-b40f-98c99bab42c8\",\"x\":777.4218324781472,\"y\":659.2968768203251}]},{\"id\":\"86fd40ce-69e9-43e0-8322-60cd97d78a91\",\"source\":\"2fffe8c8-a5bc-45f3-8f29-8b67292ad38e\",\"sourcePort\":\"da5088a3-86f1-45fc-b4eb-cf5259a3b8d6\",\"target\":\"b78735ce-4b5a-468c-9a5b-7769826f2eae\",\"targetPort\":\"c00b7274-00bd-46f5-8c86-36dccfa45741\",\"points\":[{\"id\":\"9be6e545-f32b-4f1d-9341-0755e56dd1b9\",\"x\":892.4218328624341,\"y\":659.2968768203251},{\"id\":\"e2bdfea7-9f72-4f02-a9ad-1248a6e8b6be\",\"x\":1003.0312788029928,\"y\":865.9062575858293}]}],\"nodes\":[{\"id\":\"540600c2-9675-469c-8e15-879b5b392ef8\",\"x\":-210.83842346787014,\"y\":451.8736456158544,\"extras\":{\"audio\":\"\",\"audioText\":\"\",\"audioVoice\":\"\",\"preview\":\"\",\"previewText\":\"\",\"previewVoice\":\"\",\"prompt\":\"\",\"promptText\":\"This is the default error message! Erase me!\",\"promptVoice\":\"\",\"type\":\"story\",\"promptTextCollapse\":true},\"ports\":[{\"id\":\"bc62ed8a-8d37-4455-a757-14d54ec67be4\",\"name\":\"ada4c7d0-bc0e-40f6-a5b3-c8871f71bbb0\",\"parentNode\":\"540600c2-9675-469c-8e15-879b5b392ef8\",\"links\":[\"4506aaf9-0189-4077-9afb-107cdc84df7a\"],\"in\":false,\"label\":\" \"}],\"name\":\"Start\"},{\"id\":\"ccc303fa-d036-479b-8d38-19ca67b57bb9\",\"x\":-211.7336317232214,\"y\":256.4037856610436,\"extras\":{\"type\":\"command\",\"alexa\":{\"intent\":{\"label\":\"AMAZON.HelpIntent\",\"value\":\"AMAZON.HelpIntent\",\"key\":\"AMAZON.HelpIntent\",\"inputs\":[{\"text\":\"\",\"slots\":[]}],\"built_in\":true},\"mappings\":[],\"resume\":true,\"diagram_id\":\"7cdc8159d4becb62b25a78be25da4cd9\"},\"google\":{\"intent\":null,\"mappings\":[],\"resume\":true,\"diagram_id\":\"d79bd1a4bce89085b08b1626c488000a\"}},\"ports\":[],\"name\":\"Help command\"},{\"id\":\"de8bb345-f59e-4e3d-b607-5a52674bbf4e\",\"x\":-212.73747980754462,\"y\":351.8449420620599,\"extras\":{\"type\":\"command\",\"alexa\":{\"intent\":{\"label\":\"AMAZON.StopIntent\",\"value\":\"AMAZON.StopIntent\",\"key\":\"AMAZON.StopIntent\",\"inputs\":[{\"text\":\"\",\"slots\":[]}],\"built_in\":true},\"mappings\":[],\"resume\":true,\"diagram_id\":\"53a2df7369e746c6a4ae27cf57d56d59\"},\"google\":{\"intent\":null,\"mappings\":[],\"resume\":true,\"diagram_id\":\"326eaabd48d64758b55ad94bca0562f7\"}},\"ports\":[],\"name\":\"Stop command\"},{\"id\":\"8a594555-1016-4418-8e1e-7ebf2ee363a5\",\"x\":104.46154878913309,\"y\":562.1170541430059,\"extras\":{\"sets\":[{\"variable\":null,\"expression\":{\"type\":\"and\",\"value\":[{\"type\":\"equals\",\"value\":[{\"type\":\"minus\",\"value\":[{\"type\":\"variable\",\"value\":\"var1\",\"depth\":3},{\"type\":\"value\",\"value\":\"9\",\"depth\":3}],\"depth\":2},{\"type\":\"times\",\"value\":[{\"type\":\"value\",\"value\":\"3\",\"depth\":3},{\"type\":\"value\",\"value\":\"7\",\"depth\":3}],\"depth\":2}],\"depth\":1},{\"type\":\"or\",\"value\":[{\"type\":\"or\",\"value\":[{\"type\":\"less\",\"value\":[{\"type\":\"variable\",\"value\":\"var1\",\"depth\":4},{\"type\":\"value\",\"value\":\"1\",\"depth\":4}],\"depth\":3},{\"type\":\"plus\",\"value\":[{\"type\":\"variable\",\"value\":\"var2\",\"depth\":4},{\"type\":\"value\",\"value\":\"5\",\"depth\":4}],\"depth\":3}],\"depth\":2},{\"type\":\"or\",\"value\":[{\"type\":\"greater\",\"value\":[{\"type\":\"variable\",\"value\":\"var2\",\"depth\":4},{\"type\":\"value\",\"value\":\"5\",\"depth\":4}],\"depth\":3},{\"type\":\"divide\",\"value\":[{\"type\":\"variable\",\"value\":\"var1\",\"depth\":4},{\"type\":\"value\",\"value\":\"56\",\"depth\":4}],\"depth\":3}],\"depth\":2}],\"depth\":1}],\"depth\":0}}],\"type\":\"set\"},\"ports\":[{\"id\":\"7a9efc29-292a-44a9-90a5-4187467aa0df\",\"name\":\"2206a624-3c4f-415f-83d1-9b464223f1a9\",\"parentNode\":\"8a594555-1016-4418-8e1e-7ebf2ee363a5\",\"links\":[\"4506aaf9-0189-4077-9afb-107cdc84df7a\"],\"in\":true,\"label\":\" \"},{\"id\":\"72e8e4d8-2eb5-446d-add9-b4863cae08e5\",\"name\":\"eaa87b1c-01ca-4439-bf62-116c7240466f\",\"parentNode\":\"8a594555-1016-4418-8e1e-7ebf2ee363a5\",\"links\":[\"593febe0-500e-478b-9d3a-25795bcd0719\"],\"in\":false,\"label\":\" \"}],\"name\":\"Set\"},{\"id\":\"42cfa077-6664-40f1-8197-6ba926529128\",\"x\":75.53451992009306,\"y\":263.113809635638,\"extras\":{\"alexa\":{\"intent\":{\"label\":\"animal_intent\",\"value\":\"Rijf7vSXGSiP\",\"key\":\"Rijf7vSXGSiP\",\"inputs\":[{\"slots\":[\"OILNaLk2SWjS\"],\"text\":\"i like {{[animal].OILNaLk2SWjS}}\"}]},\"mappings\":[{\"variable\":\"var1\",\"slot\":{\"label\":\"[animal]\",\"value\":\"OILNaLk2SWjS\",\"key\":\"OILNaLk2SWjS\"}}],\"resume\":true,\"diagram_id\":\"7cdc8159d4becb62b25a78be25da4cd9\"},\"google\":{\"intent\":null,\"mappings\":[],\"resume\":true},\"type\":\"command\"},\"ports\":[],\"name\":\"Command\"},{\"id\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"x\":386.58420060170823,\"y\":514.7008231906857,\"extras\":{\"type\":\"god\",\"nextID\":\"0ddc7613-7d5b-4577-82d0-25f6e811b4f0\"},\"ports\":[{\"id\":\"9d7626e3-d49a-48cf-8532-2302d4bfaf24\",\"name\":\"38e51611-0b8f-428b-96a9-99c9ead184e0\",\"parentNode\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"links\":[\"2eb635da-599f-4db9-a660-b1266c933d2a\"],\"in\":false,\"label\":\"else\"},{\"id\":\"5023fbb7-021b-4bb5-b668-4d57c6da5dce\",\"name\":\"b20c100b-05e5-47ea-8d01-33ac8417ce20\",\"parentNode\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"links\":[\"593febe0-500e-478b-9d3a-25795bcd0719\"],\"in\":true,\"label\":\" \"},{\"id\":\"6d3741b4-33ec-474f-9ea4-dd39aec0127b\",\"name\":\"4c338f9e-d89a-4927-b638-d9620684814c\",\"parentNode\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"links\":[\"f6f22904-5a02-4a06-98fc-19ac300c993b\"],\"in\":false,\"label\":1}],\"name\":\"Combine Block\",\"combines\":[{\"id\":\"0ddc7613-7d5b-4577-82d0-25f6e811b4f0\",\"x\":396.58420060170823,\"y\":554.7008231906857,\"extras\":{\"randomize\":false,\"type\":\"speak\",\"dialogs\":[{\"index\":\"nUZmU\",\"voice\":\"Alexa\",\"rawContent\":{\"blocks\":[{\"key\":\"aguip\",\"text\":\"test combine\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}},\"open\":true}],\"nextID\":\"1aa76a1e-4fb8-4155-86ef-d871fa235c59\"},\"ports\":[{\"id\":\"5023fbb7-021b-4bb5-b668-4d57c6da5dce\",\"name\":\"b20c100b-05e5-47ea-8d01-33ac8417ce20\",\"parentNode\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"links\":[],\"in\":true,\"label\":\" \"},{\"id\":\"3ad7b363-e759-4031-9bab-b0cc0e671b5e\",\"name\":\"91d6a3e2-5639-4a3a-8004-d2f82a997a49\",\"parentNode\":\"0ddc7613-7d5b-4577-82d0-25f6e811b4f0\",\"links\":[],\"in\":false,\"label\":\" \"}],\"name\":\"Speak\",\"combines\":null,\"linter\":[],\"fade\":false},{\"id\":\"1aa76a1e-4fb8-4155-86ef-d871fa235c59\",\"x\":396.58420060170823,\"y\":594.7008231906857,\"extras\":{\"alexa\":{\"choices\":[{\"intent\":{\"label\":\"CancelIntent\",\"value\":\"AMAZON.CancelIntent\",\"key\":\"AMAZON.CancelIntent\",\"inputs\":[{\"text\":\"\",\"slots\":[]}],\"built_in\":true},\"mappings\":[],\"key\":\"igLNW4ghNOoJ\",\"open\":true}]},\"google\":{\"choices\":[{\"intent\":null,\"mappings\":[],\"key\":\"igLNW4ghNOoJ\",\"open\":true}]},\"type\":\"interaction\",\"reprompt\":{\"voice\":\"audio\",\"content\":\"https://s3.amazonaws.com/com.getstoryflow.audio.production/1550790357688-superhero-copy.m4a\"}},\"ports\":[{\"id\":\"ecbdaae7-8069-46b7-b5d7-a38a791dbb06\",\"name\":\"8605ac6e-89a1-4144-ad43-82d3f132c062\",\"parentNode\":\"1aa76a1e-4fb8-4155-86ef-d871fa235c59\",\"links\":[],\"in\":true,\"label\":\" \"},{\"id\":\"9d7626e3-d49a-48cf-8532-2302d4bfaf24\",\"name\":\"38e51611-0b8f-428b-96a9-99c9ead184e0\",\"parentNode\":\"1aa76a1e-4fb8-4155-86ef-d871fa235c59\",\"links\":[\"2eb635da-599f-4db9-a660-b1266c933d2a\"],\"in\":false,\"label\":\"else\"},{\"id\":\"6d3741b4-33ec-474f-9ea4-dd39aec0127b\",\"name\":\"4c338f9e-d89a-4927-b638-d9620684814c\",\"parentNode\":\"1ea9d967-7df0-4590-8e04-3f192bbc5c52\",\"links\":[\"f6f22904-5a02-4a06-98fc-19ac300c993b\"],\"in\":false,\"label\":1}],\"name\":\"Interaction\",\"combines\":null,\"linter\":[],\"fade\":false}]},{\"id\":\"2fffe8c8-a5bc-45f3-8f29-8b67292ad38e\",\"x\":764.9307049304365,\"y\":609.7986346624533,\"extras\":{\"variable\":\"var2\",\"type\":\"capture\",\"slot_inputs\":[\"test\",\"capture\"],\"slot_type\":{\"label\":\"Custom\",\"value\":\"Custom\"},\"reprompt\":{\"voice\":\"Alexa\",\"content\":{\"blocks\":[{\"key\":\"5vorg\",\"text\":\"test reprompt\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}}},\"ports\":[{\"id\":\"13ee834a-d6d6-459e-9a70-981d2fc3d8d3\",\"name\":\"0fbf67db-995b-4426-880a-9b51541513e9\",\"parentNode\":\"2fffe8c8-a5bc-45f3-8f29-8b67292ad38e\",\"links\":[\"f6f22904-5a02-4a06-98fc-19ac300c993b\",\"2eb635da-599f-4db9-a660-b1266c933d2a\"],\"in\":true,\"label\":\" \"},{\"id\":\"da5088a3-86f1-45fc-b4eb-cf5259a3b8d6\",\"name\":\"a80bef72-423c-400d-8686-fe87ee6f3f6d\",\"parentNode\":\"2fffe8c8-a5bc-45f3-8f29-8b67292ad38e\",\"links\":[\"86fd40ce-69e9-43e0-8322-60cd97d78a91\"],\"in\":false,\"label\":\" \"}],\"name\":\"Capture\"},{\"id\":\"b78735ce-4b5a-468c-9a5b-7769826f2eae\",\"x\":990.5442534421968,\"y\":816.4188169133919,\"extras\":{\"url\":{\"blocks\":[{\"key\":\"fnp3r\",\"text\":\"some test endpoint\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}},\"method\":\"POST\",\"headers\":[],\"body\":[{\"index\":\"jY33bfEHXY\",\"key\":{\"blocks\":[{\"key\":\"57fb2\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}},\"val\":{\"blocks\":[{\"key\":\"eih1l\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}}],\"content\":\"some test input\",\"bodyInputType\":\"rawInput\",\"params\":[],\"mapping\":[],\"success_id\":\"\",\"failure_id\":\"\",\"type\":\"api\"},\"ports\":[{\"id\":\"c00b7274-00bd-46f5-8c86-36dccfa45741\",\"name\":\"5081650e-6e12-4c82-bfb4-a5186960750b\",\"parentNode\":\"b78735ce-4b5a-468c-9a5b-7769826f2eae\",\"links\":[\"86fd40ce-69e9-43e0-8322-60cd97d78a91\"],\"in\":true,\"label\":\" \"},{\"id\":\"5386b11a-7b88-48bb-98fe-b12f992bdbfb\",\"name\":\"5c332cdf-6eb2-4a9c-9aa6-f5f75cda7490\",\"parentNode\":\"b78735ce-4b5a-468c-9a5b-7769826f2eae\",\"links\":[],\"in\":false,\"label\":\" \"},{\"id\":\"4d386dba-4c5f-4fda-9513-094c9d59148f\",\"name\":\"ea23f7d0-4b74-402e-977e-011783a0d99e\",\"parentNode\":\"b78735ce-4b5a-468c-9a5b-7769826f2eae\",\"links\":[],\"in\":false,\"label\":\"fail\"}],\"name\":\"API\"}]}",
+    "id": "a4cd5c7865a951bfa65d24c1e9241e7e",
+    "skill": 1,
+    "variables": []
+  },
+  "53a2df7369e746c6a4ae27cf57d56d59": {
+    "creator": 1,
+    "data": "{\"id\":\"925c713e766184cba1bce8186b2282b8\",\"offsetX\":-87.4943519174515,\"offsetY\":-370.4380134195621,\"zoom\":107.2755839029948,\"gridSize\":0,\"links\":[{\"id\":\"382b8562-a2f0-4520-9c22-c338f8b59afa\",\"type\":\"default\",\"selected\":false,\"source\":\"09c59c5e-579c-49b2-a59b-125b6d8924b3\",\"sourcePort\":\"7b3ce0a0-5cd2-4b46-a3c5-67909add19bc\",\"target\":\"2ec505d6-fcbd-457f-b37d-dc84a81091b6\",\"targetPort\":\"d99346eb-b902-4c99-97b4-62491e76cbcf\",\"points\":[{\"id\":\"ba31573f-4149-4b15-8459-615947124898\",\"selected\":false,\"x\":466.1562412400178,\"y\":519.499991856302},{\"id\":\"ddb4e2f7-3904-434a-8503-bc589575ca27\",\"selected\":false,\"x\":553.2812549542435,\"y\":519.0312569247632}],\"extras\":{},\"labels\":[],\"width\":2.5,\"color\":\"#D1D8E2\",\"curvyness\":50},{\"id\":\"17df2656-91bc-4ff8-814a-30eabc92e028\",\"type\":\"default\",\"selected\":false,\"source\":\"2ec505d6-fcbd-457f-b37d-dc84a81091b6\",\"sourcePort\":\"51bf2ade-c589-4642-9c86-8a198b5a8e34\",\"target\":\"1d68bdfc-2358-4b79-a18b-3aceece2e5be\",\"targetPort\":\"cc1f1276-e57d-4568-bf3a-da1bb6e27421\",\"points\":[{\"id\":\"17900d48-22ed-4141-842b-9dd686258338\",\"selected\":false,\"x\":652.6562465976929,\"y\":519.0312569247632},{\"id\":\"0cce60a1-e3c7-4005-9e33-ce400353ff40\",\"selected\":false,\"x\":747.4531286014899,\"y\":519.0312569247632}],\"extras\":{},\"labels\":[],\"width\":2.5,\"color\":\"#D1D8E2\",\"curvyness\":50}],\"nodes\":[{\"id\":\"09c59c5e-579c-49b2-a59b-125b6d8924b3\",\"type\":\"default\",\"selected\":false,\"x\":358.6666666666667,\"y\":468,\"extras\":{\"audio\":\"\",\"audioText\":\"\",\"audioVoice\":\"\",\"preview\":\"\",\"previewText\":\"\",\"previewVoice\":\"\",\"prompt\":\"\",\"promptText\":\"\",\"promptVoice\":\"\",\"type\":\"story\"},\"ports\":[{\"id\":\"7b3ce0a0-5cd2-4b46-a3c5-67909add19bc\",\"type\":\"default\",\"selected\":true,\"name\":\"76579fee-85d2-4685-82b8-bb7dde6f5b79\",\"parentNode\":\"09c59c5e-579c-49b2-a59b-125b6d8924b3\",\"links\":[\"382b8562-a2f0-4520-9c22-c338f8b59afa\"],\"maximumLinks\":1,\"in\":false,\"label\":\" \"}],\"name\":\"Start\",\"color\":\"#FBE9E7\"},{\"id\":\"2ec505d6-fcbd-457f-b37d-dc84a81091b6\",\"type\":\"default\",\"selected\":false,\"x\":540.7843963035269,\"y\":467.53139276856814,\"extras\":{\"randomize\":false,\"type\":\"speak\",\"dialogs\":[{\"index\":\"L8wFR\",\"voice\":\"Kimberly\",\"rawContent\":{\"blocks\":[{\"key\":\"bd1ld\",\"text\":\"This skill will now end\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}},\"open\":true}]},\"ports\":[{\"id\":\"d99346eb-b902-4c99-97b4-62491e76cbcf\",\"type\":\"default\",\"selected\":false,\"name\":\"873143d5-afd1-4d73-a573-5b259015ad71\",\"parentNode\":\"2ec505d6-fcbd-457f-b37d-dc84a81091b6\",\"links\":[\"382b8562-a2f0-4520-9c22-c338f8b59afa\"],\"in\":true,\"label\":\" \"},{\"id\":\"51bf2ade-c589-4642-9c86-8a198b5a8e34\",\"type\":\"default\",\"selected\":true,\"name\":\"8b8a2c78-6340-4858-9405-20b88ab8a6b5\",\"parentNode\":\"2ec505d6-fcbd-457f-b37d-dc84a81091b6\",\"links\":[\"17df2656-91bc-4ff8-814a-30eabc92e028\"],\"maximumLinks\":1,\"in\":false,\"label\":\" \"}],\"name\":\"Ended\",\"color\":\"rgb(0,192,255)\"},{\"id\":\"1d68bdfc-2358-4b79-a18b-3aceece2e5be\",\"type\":\"default\",\"selected\":false,\"x\":734.9608406213288,\"y\":467.5313927685682,\"extras\":{\"type\":\"exit\"},\"ports\":[{\"id\":\"cc1f1276-e57d-4568-bf3a-da1bb6e27421\",\"type\":\"default\",\"selected\":false,\"name\":\"741d2ece-c030-46b6-93bf-d669ccc2bcdc\",\"parentNode\":\"1d68bdfc-2358-4b79-a18b-3aceece2e5be\",\"links\":[\"17df2656-91bc-4ff8-814a-30eabc92e028\"],\"in\":true,\"label\":\" \"}],\"name\":\"End skill\",\"color\":\"rgb(0,192,255)\"}]}",
+    "id": "53a2df7369e746c6a4ae27cf57d56d59",
+    "skill": 1,
+    "variables": []
+  },
+  "7cdc8159d4becb62b25a78be25da4cd9": {
+    "creator": 1,
+    "data": "{\"id\":\"d79bd1a4bce89085b08b1626c488000a\",\"offsetX\":-41.382667880846896,\"offsetY\":-330.8069122961799,\"zoom\":95.65062662760417,\"links\":[{\"id\":\"12e95dd7-6f42-49f8-bb74-b1cf48df0f05\",\"source\":\"09c59c5e-579c-49b2-a59b-125b6d8924b3\",\"sourcePort\":\"7b3ce0a0-5cd2-4b46-a3c5-67909add19bc\",\"target\":\"1009f642-b81b-4f9b-aea0-193d0160d568\",\"targetPort\":\"664ee458-c5f6-4cf1-83db-0675495f79b0\",\"points\":[{\"id\":\"e0ee1439-8cb5-4828-aed6-5d602973be81\",\"x\":486.1562631354875,\"y\":518.5312496502511},{\"id\":\"a3aafdb6-9d70-4657-9989-e212e35cc68e\",\"x\":579.9999928038625,\"y\":517.5000079376415}]},{\"id\":\"bd91444e-8565-4529-92fa-08ec857c53f1\",\"source\":\"1009f642-b81b-4f9b-aea0-193d0160d568\",\"sourcePort\":\"2d4e34dd-a11b-49e3-b5b8-25c56d3c6d24\",\"target\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"targetPort\":\"1da30297-cbcc-481d-a55c-a4902c130a4d\",\"points\":[{\"id\":\"8c2d7314-98dc-47ca-b5d5-d46103d68df1\",\"x\":700.9687742331993,\"y\":517.5000079376415},{\"id\":\"b48dd1d6-8906-4f89-8999-02339799082e\",\"x\":800.9843525066212,\"y\":516.3281278527412}]},{\"id\":\"b8d0ef15-00ec-42e7-a396-6fb06dd712e7\",\"source\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"sourcePort\":\"1ab37021-d75c-49b2-ab51-624293c715d0\",\"target\":\"f07aa725-f1e8-4ad7-9ab5-c2bce7eadc6e\",\"targetPort\":\"3c31a48b-c3fa-4866-971b-4b818d9ac12c\",\"points\":[{\"id\":\"5c976e84-f6d4-4c6c-b18a-c6f3ea9b9c5f\",\"x\":915.9843622909,\"y\":576.3281329575823},{\"id\":\"f0db4e95-15c1-4c60-8e93-83909a099c20\",\"x\":1003.0937536755788,\"y\":575.5000001102185}]}],\"nodes\":[{\"id\":\"09c59c5e-579c-49b2-a59b-125b6d8924b3\",\"x\":358.6666666666667,\"y\":469.04547145717436,\"extras\":{\"audio\":\"\",\"audioText\":\"\",\"audioVoice\":\"\",\"preview\":\"\",\"previewText\":\"\",\"previewVoice\":\"\",\"prompt\":\"\",\"promptText\":\"\",\"promptVoice\":\"\",\"type\":\"story\"},\"ports\":[{\"id\":\"7b3ce0a0-5cd2-4b46-a3c5-67909add19bc\",\"name\":\"76579fee-85d2-4685-82b8-bb7dde6f5b79\",\"parentNode\":\"09c59c5e-579c-49b2-a59b-125b6d8924b3\",\"links\":[\"12e95dd7-6f42-49f8-bb74-b1cf48df0f05\"],\"in\":false,\"label\":\" \"}],\"name\":\"Start\"},{\"id\":\"1009f642-b81b-4f9b-aea0-193d0160d568\",\"x\":567.5,\"y\":468,\"extras\":{\"randomize\":false,\"type\":\"speak\",\"dialogs\":[{\"index\":\"MaBUB\",\"voice\":\"Kimberly\",\"rawContent\":{\"blocks\":[{\"key\":\"dpgi3\",\"text\":\"You said help. Would you like to continue?\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}},\"open\":true}]},\"ports\":[{\"id\":\"664ee458-c5f6-4cf1-83db-0675495f79b0\",\"name\":\"e731ca95-1f64-4d0c-a985-e97cf031f6c1\",\"parentNode\":\"1009f642-b81b-4f9b-aea0-193d0160d568\",\"links\":[\"12e95dd7-6f42-49f8-bb74-b1cf48df0f05\"],\"in\":true,\"label\":\" \"},{\"id\":\"2d4e34dd-a11b-49e3-b5b8-25c56d3c6d24\",\"name\":\"559a9edd-1513-4f4e-a579-3edd05039d84\",\"parentNode\":\"1009f642-b81b-4f9b-aea0-193d0160d568\",\"links\":[\"bd91444e-8565-4529-92fa-08ec857c53f1\"],\"in\":false,\"label\":\" \"}],\"name\":\"Continue\"},{\"id\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"x\":788.4917064942367,\"y\":466.8324430700029,\"extras\":{\"audio\":\"\",\"audioText\":\"\",\"audioVoice\":\"\",\"prompt\":\"\",\"promptText\":\"\",\"promptVoice\":\"\",\"choices\":[\"New Choice\",\"New Choice\"],\"inputs\":[\"yes\",\"no\"],\"type\":\"choice\"},\"ports\":[{\"id\":\"1da30297-cbcc-481d-a55c-a4902c130a4d\",\"name\":\"bbc4ee8c-c9e1-4965-b22f-2166d11dbae2\",\"parentNode\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"links\":[\"bd91444e-8565-4529-92fa-08ec857c53f1\"],\"in\":true,\"label\":\" \"},{\"id\":\"0e597476-591e-48e2-9fd2-cf86646d1cb1\",\"name\":\"c71c209c-be70-4ce3-a529-12007bff51f1\",\"parentNode\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"links\":[],\"in\":false,\"label\":\"else\"},{\"id\":\"7d44a1af-e742-4e69-9eb0-804168ba551d\",\"name\":\"c457c65f-3a04-465f-9aee-208a12750c8a\",\"parentNode\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"links\":[],\"in\":false,\"label\":1},{\"id\":\"1ab37021-d75c-49b2-ab51-624293c715d0\",\"name\":\"34b23e2c-d728-4854-acbb-8d1d40b85de2\",\"parentNode\":\"53ac199f-ecbd-4d67-91d5-77ffedef3bbf\",\"links\":[\"b8d0ef15-00ec-42e7-a396-6fb06dd712e7\"],\"in\":false,\"label\":2}],\"name\":\"Choice\"},{\"id\":\"f07aa725-f1e8-4ad7-9ab5-c2bce7eadc6e\",\"x\":990.603856583676,\"y\":526.0046528756293,\"extras\":{\"type\":\"exit\"},\"ports\":[{\"id\":\"3c31a48b-c3fa-4866-971b-4b818d9ac12c\",\"name\":\"84d69a0d-bedf-4515-a805-02efad717e15\",\"parentNode\":\"f07aa725-f1e8-4ad7-9ab5-c2bce7eadc6e\",\"links\":[\"b8d0ef15-00ec-42e7-a396-6fb06dd712e7\"],\"in\":true,\"label\":\" \"}],\"name\":\"Exit\"}]}",
+    "id": "7cdc8159d4becb62b25a78be25da4cd9",
+    "skill": 1,
+    "variables": []
+  }
+}
+
+const _3_AdvancedBlocks_Options = {
+  intents: {
+    "Rijf7vSXGSiP": 'animal_intent',
+  },
+  slots: {
+    "OILNaLk2SWjS": 'animal',
+  }
+}
+
+const _3_AdvancedBlocks_Outputs_Alexa = [
+  {
+    "commands": [],
+    "id": "53a2df7369e746c6a4ae27cf57d56d59",
+    "lines": {
+      "09c59c5e-579c-49b2-a59b-125b6d8924b3": {
+        "nextId": "2ec505d6-fcbd-457f-b37d-dc84a81091b6"
+      },
+      "1d68bdfc-2358-4b79-a18b-3aceece2e5be": {
+        "end": true
+      },
+      "2ec505d6-fcbd-457f-b37d-dc84a81091b6": {
+        "nextId": "1d68bdfc-2358-4b79-a18b-3aceece2e5be",
+        "speak": "<voice name=\"Kimberly\">This skill will now end</voice>"
+      }
+    },
+    "prompt": null,
+    "skill_id": 1,
+    "startId": "09c59c5e-579c-49b2-a59b-125b6d8924b3",
+    "variables": []
+  },
+  {
+    "commands": [],
+    "id": "7cdc8159d4becb62b25a78be25da4cd9",
+    "lines": {
+      "09c59c5e-579c-49b2-a59b-125b6d8924b3": {
+        "nextId": "1009f642-b81b-4f9b-aea0-193d0160d568"
+      },
+      "1009f642-b81b-4f9b-aea0-193d0160d568": {
+        "nextId": "53ac199f-ecbd-4d67-91d5-77ffedef3bbf",
+        "speak": "<voice name=\"Kimberly\">You said help. Would you like to continue?</voice>"
+      },
+      "53ac199f-ecbd-4d67-91d5-77ffedef3bbf": {
+        "choices": [
+          "New Choice",
+          "New Choice"
+        ],
+        "inputs": [
+          [
+            "yes"
+          ],
+          [
+            "no"
+          ]
+        ],
+        "nextIds": [
+          null,
+          "f07aa725-f1e8-4ad7-9ab5-c2bce7eadc6e"
+        ],
+        "prompt": true
+      },
+      "f07aa725-f1e8-4ad7-9ab5-c2bce7eadc6e": {
+        "end": true
+      }
+    },
+    "prompt": null,
+    "skill_id": 1,
+    "startId": "09c59c5e-579c-49b2-a59b-125b6d8924b3",
+    "variables": []
+  },
+  {
+    "commands": [
+      {
+        "diagram_id": "7cdc8159d4becb62b25a78be25da4cd9",
+        "end": false,
+        "intent": "AMAZON.HelpIntent",
+        "mappings": []
+      },
+      {
+        "diagram_id": "53a2df7369e746c6a4ae27cf57d56d59",
+        "end": false,
+        "intent": "AMAZON.StopIntent",
+        "mappings": []
+      },
+      {
+        "diagram_id": "7cdc8159d4becb62b25a78be25da4cd9",
+        "end": false,
+        "intent": "animal_intent",
+        "mappings": [
+          {
+            "slot": "animal",
+            "variable": "var1"
+          }
+        ]
+      }
+    ],
+    "id": "a4cd5c7865a951bfa65d24c1e9241e7e",
+    "lines": {
+      "0ddc7613-7d5b-4577-82d0-25f6e811b4f0": {
+        "nextId": "1aa76a1e-4fb8-4155-86ef-d871fa235c59",
+        "speak": "test combine"
+      },
+      "1aa76a1e-4fb8-4155-86ef-d871fa235c59": {
+        "elseId": "2fffe8c8-a5bc-45f3-8f29-8b67292ad38e",
+        "interactions": [
+          {
+            "intent": "AMAZON.CancelIntent",
+            "mappings": []
+          }
+        ],
+        "nextIds": [
+          "2fffe8c8-a5bc-45f3-8f29-8b67292ad38e"
+        ],
+        "prompt": true,
+        "reprompt": "<audio src=\"https://s3.amazonaws.com/com.getstoryflow.audio.production/1550790357688-superhero-copy.m4a\"/>"
+      },
+      "1ea9d967-7df0-4590-8e04-3f192bbc5c52": {
+        "nextId": "0ddc7613-7d5b-4577-82d0-25f6e811b4f0"
+      },
+      "2fffe8c8-a5bc-45f3-8f29-8b67292ad38e": {
+        "nextId": "b78735ce-4b5a-468c-9a5b-7769826f2eae",
+        "prompt": true,
+        "reprompt": "test reprompt",
+        "variable": "var2"
+      },
+      "540600c2-9675-469c-8e15-879b5b392ef8": {
+        "nextId": "8a594555-1016-4418-8e1e-7ebf2ee363a5"
+      },
+      "8a594555-1016-4418-8e1e-7ebf2ee363a5": {
+        "nextId": "1ea9d967-7df0-4590-8e04-3f192bbc5c52",
+        "sets": [
+          {
+            "expression": "(((v['var1'] - 9) == (3 * 7)) && (((v['var1'] < 1) || (v['var2'] + 5)) || ((v['var2'] > 5) || (v['var1'] / 56))))",
+            "variable": null
+          }
+        ]
+      },
+      "b78735ce-4b5a-468c-9a5b-7769826f2eae": {
+        "body": "some test input",
+        "headers": [],
+        "mapping": [],
+        "method": "POST",
+        "params": [],
+        "url": "some test endpoint"
+      }
+    },
+    "prompt": null,
+    "skill_id": 1,
+    "startId": "540600c2-9675-469c-8e15-879b5b392ef8",
+    "variables": []
+  }
+]
+
+module.exports._3_AdvancedBlocks_Inputs = _3_AdvancedBlocks_Inputs
+module.exports._3_AdvancedBlocks_Options = _3_AdvancedBlocks_Options
+module.exports._3_AdvancedBlocks_Outputs_Alexa = _3_AdvancedBlocks_Outputs_Alexa

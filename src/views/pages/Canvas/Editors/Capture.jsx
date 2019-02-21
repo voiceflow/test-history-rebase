@@ -45,7 +45,7 @@ class Capture extends Component {
     render() {
         return (
             <div>
-                {this.props.platform === 'alexa' && <React.Fragment>
+                {this.props.platform === 'alexa' && <div className={this.props.live_mode ? 'disabled-overlay' : ''}>
                     <label>Input Type <small>(required)</small></label>
                     <Select
                         placeholder="Select Slot Type"
@@ -67,7 +67,7 @@ class Capture extends Component {
                         placeholder="Custom Input Example"
                     />}
                     <hr/>
-                </React.Fragment>}
+                </div>}
                 <label>Capture Input to: </label>
                 <Select
                     classNamePrefix="variable-box"

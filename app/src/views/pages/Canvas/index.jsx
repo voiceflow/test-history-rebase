@@ -1367,50 +1367,10 @@ class Canvas extends Component {
                 var data = JSON.stringify(serialize)
 
                 let sub_diagrams = []
-                let used_intent_names = new Set()
-                let used_intents = []
 
                 serialize.nodes.forEach(node => {
                     if(node.extras.diagram_id){
                         sub_diagrams.push(node.extras.diagram_id)
-                    }else if (node.extras.type === 'interaction') {
-                        node.extras.alexa.choices.forEach(choice => {
-                            if (choice.intent && !used_intent_names.has(choice.intent.value)) {
-                                if (choice.intent.built_in) {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: true,
-                                        platform: 'alexa'
-                                    })
-                                } else {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: false,
-                                        platform: 'alexa'
-                                    })
-                                }
-                                used_intent_names.add(choice.intent.value)
-                            }
-                        })
-    
-                        node.extras.google.choices.forEach(choice => {
-                            if (choice.intent && !used_intent_names.has(choice.intent.value)) {
-                                if (choice.intent.built_in) {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: true,
-                                        platform: 'google'
-                                    })
-                                } else {
-                                    used_intents.push({
-                                        intent: choice.intent.value,
-                                        built_in: false,
-                                        platform: 'google'
-                                    })
-                                }
-                                used_intent_names.add(choice.intent.value)
-                            }
-                        })
                     }
                 })
 
@@ -1442,7 +1402,6 @@ class Canvas extends Component {
                     data: data,
                     skill: this.state.skill.skill_id,
                     sub_diagrams: JSON.stringify(sub_diagrams),
-                    used_intents: used_intents,
                     global: this.state.skill.global
                 }
                 const s = this.state.skill;
@@ -1550,9 +1509,9 @@ class Canvas extends Component {
                             node.extras.google = {
                                 intent: null,
                                 mappings: [],
-                                resume: node.extras.resume,
-                                end: node.extras.end,
-                                diagram_id: node.extras.diagram_id
+                                resume: node.extras.alexa.resume,
+                                end: node.extras.alexa.end,
+                                diagram_id: node.extras.alexa.diagram_id
                             }
                             delete node.extras.intent
                             delete node.extras.mappings
@@ -1977,13 +1936,18 @@ class Canvas extends Component {
         }
     }
     // Create a new diagram from the flow block
-    createDiagram(node, base_flow_name='New Flow', template=null){
+    createDiagram(node, base_flow_name='New Flow', template=null, forCommand=false){
         this.setState({
             loading_diagram: true
         })
 
         let id = generateID()
-        node.extras.diagram_id = id
+
+        if (forCommand) {
+            node.extras[this.state.skill.platform].diagram_id = id
+        } else {
+            node.extras.diagram_id = id
+        }
 
         // save the current diagram
         this.saveCB = () => {
@@ -2695,7 +2659,9 @@ class Canvas extends Component {
                         onDrop={this.onDrop}
                         onDragOver={e => e.preventDefault()}
                         onMouseLeave={()=>this.diagram_focus=false}
-                        onClick={e => this.clickDiagram(e)}
+                        // onClick={e => {
+                        //     this.clickDiagram(e)
+                        // }}
                         onContextMenu={this.generateBlockMenu}
                     >
                         <div id="widget-bar">
@@ -2725,6 +2691,7 @@ class Canvas extends Component {
                             removeNode={!this.props.preview ? this.removeNode : _.noop()}
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}
+                            clickDiagram={this.clickDiagram}
                         />
                     </div>
                 </div>

@@ -1,27 +1,27 @@
 exports.VALID_UTTERANCES = 'a-zA-Z\xC0-\xFF\u0100-\u017F\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFF9F\u4E00-\u9FAF\u3400-\u4DBF._\'\\- \\[\\]'
 
-exports.DEFAULT_INTENTS = [
-  {
-    "name": "AMAZON.CancelIntent",
-    "samples": []
-  },
-  {
-    "name": "AMAZON.HelpIntent",
-    "samples": []
-  },
-  {
-    "name": "AMAZON.StopIntent",
-    "samples": []
-  },
-  {
-    "name": "AMAZON.YesIntent",
-    "samples": []
-  },
-  {
-    "name": "AMAZON.NoIntent",
-    "samples": []
-  }
-]
+// exports.DEFAULT_INTENTS = [
+//   {
+//     "name": "AMAZON.CancelIntent",
+//     "samples": []
+//   },
+//   {
+//     "name": "AMAZON.HelpIntent",
+//     "samples": []
+//   },
+//   {
+//     "name": "AMAZON.StopIntent",
+//     "samples": []
+//   },
+//   {
+//     "name": "AMAZON.YesIntent",
+//     "samples": []
+//   },
+//   {
+//     "name": "AMAZON.NoIntent",
+//     "samples": []
+//   }
+// ]
 
 exports.INTERFACE_INTENTS = {
   "AUDIO_PLAYER": [
@@ -31,19 +31,6 @@ exports.INTERFACE_INTENTS = {
     {
       "name": "AMAZON.PauseIntent",
     }
-  ]
-}
-
-exports.STORYFLOW_INTENT = {
-  "name": "StoryFlowIntent",
-  "slots": [
-    {
-      "name": "content",
-      "type": "Content"
-    }
-  ],
-  "samples": [
-    "{content}"
   ]
 }
 
@@ -1183,30 +1170,139 @@ exports.BUILT_IN_INTENTS_ALEXA = [
     } 
 ]
 
-exports.CATCHALL_SLOT_VALUES = [
-  {
-    "name": {
-      "value": "Quick zephyrs blow, vexing daft Jim"
+exports.DEFAULT_INTENTS = {
+  // English (AU,CA,US,UK,IN)
+  "en": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": ["cancel"]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": ["help"]
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": ["stop"]
+    },
+    {
+      "name": "AMAZON.YesIntent",
+      "samples": ["yes", "yea", "ok", "okay", "yup", "ya", "sure"]
+    },
+    {
+      "name": "AMAZON.NoIntent",
+      "samples": ["no", "nope", "nay", "nah", "no way", "negative"]
     }
+  ],
+  // French (CA,FR)
+  "fr": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": ["annuler"]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": ["aidez-moi", "aider", "servir", "renforcer", "l'assistance", "dépanner", "épauler", "consolider", "les secours", "les services", "l'assistant"]
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": ["s'arrêter", "arrêter", "l'arrêt", "le stop", "la fin", "cesser", "empêcher", "mettre fin", "stopper", "mettre un terme", "interrompre", "supprimer", "faire une halte"]
+    },
+    {
+      "name": "AMAZON.YesIntent",
+      "samples": ["yes", "oui"]
+    },
+    {
+      "name": "AMAZON.NoIntent",
+      "samples": ["no", "non"]
+    }
+  ],
+  // Japanese (JA)
+  "ja": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": ["取り消す", "キャンセル", "取り消し", "取消"]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": ["助ける", "手伝う", "アシスト", "裏付ける", "手助け", "手伝い", "救済", "応援", "助", "手伝", "救い", "力添え", "扶助", "加勢", "援護", "佐", "介添え"]
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": ["止める", "立ち止まる", "止む", "打ち切る", "停める", "留める", "阻む", "途絶える", "句切る", "停まる", "ストップ", "終止", "停留", "止まること"]
+    },
+    {
+      "name": "AMAZON.YesIntent",
+      "samples": ["yes", "はい", "ええ", "そうです"]
+    },
+    {
+      "name": "AMAZON.NoIntent",
+      "samples": ["no", "いいえ", "そうだはない", "いやそれどころか", "ノン", "否", "否や"]
+    }
+  ],
+  // Italian (IT)
+  "it": [{
+      "name": "AMAZON.CancelIntent",
+      "samples": ["cancellare", "annullare", "disdire", "sopprimere", "rescindre", "chiudere", "abrogare", "obliterare"]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": ["la assistenza", "il aiuto", "il soccorso", "lo manforte", "la persona di servizio", "aiutare", "fare a meno di", "contribuire a", "assistere", "servire"]
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": ["la fermata", "il fermo", "lo stop", "la sosta", "la tappa", "fermare", "interrompere", "smettere", "fermarsi", "arrestare", "cessare", "sostare", "finire", "stoppare", "fare una fermata"]
+    },
+    {
+      "name": "AMAZON.YesIntent",
+      "samples": ["yes", "si", "certo"]
+    },
+    {
+      "name": "AMAZON.NoIntent",
+      "samples": ["il no", "no", "il rifiuto", "la negazione", "nessuno"]
+    }
+  ],
+  // Spanish (ES,MX)
+  "es": [{
+      "name": "AMAZON.CancelIntent",
+      "samples": ["cancelar", "anular", "suprimir", "abolir", "dar anulación", "realizar anulación", "hacer anulación", "hacer dar anulación", "noun la cancelación", "la anulación"]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": ["la ayuda", "el favor", "ei auxilio", "el socorro", "el empleado", "la criada", "ayudar", "servir", "auxiliar", "socorrer"]
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": ["detener", "dejar", "parar", "suspender", "cesar", "pararse", "terminar", "de alto"]
+    },
+    {
+      "name": "AMAZON.YesIntent",
+      "samples": ["yes", "si", "decir si"]
+    },
+    {
+      "name": "AMAZON.NoIntent",
+      "samples": ["no", "ninguno", "imposible", "prohibido", "la negativa", "el voto negativo", "el voto en contra"]
+    }
+  ],
+  // German (DE)
+  "de": [{
+    "name": "AMAZON.CancelIntent",
+    "samples": ["stornieren", "aufheben", "kündigen", "annullieren", "beenden", "absagen", "abbestellen", "abmelden", "auflösen", "zurücknehmen"]
   },
   {
-    "name": {
-      "value": "Quick brown fox jumps over the lazy dog"
-    }
+    "name": "AMAZON.HelpIntent",
+    "samples": ["die hilfe", "der beistand", "die aushilfe", "helfen", "beitragen", "behilflich sein", "hilfe leisten"]
   },
   {
-    "name": {
-      "value": "Nymphs blitz quick vex dwarf jog"
-    }
+    "name": "AMAZON.StopIntent",
+    "samples": ["der stopp", "der anschlag", "die haltestelle", "der registerzug", "stoppen", "aufhören", "beenden", "anhalten", "halten", "verhindern", "aufhalten", "unterbrechen", "abbrechen", "unterbinden", "einstellen", "abbestellen", "absetzen"]
   },
   {
-    "name": {
-      "value": "Cwm fjord veg balks nth pyx quiz"
-    }
+    "name": "AMAZON.YesIntent",
+    "samples": ["yes", "ja", "doch", "jawohl"]
   },
   {
-    "name": {
-      "value": "supercalifragilisticexpialidocious"
-    }
-  }
-]
+    "name": "AMAZON.NoIntent",
+    "samples": ["no", "nein", "kein", "nicht"]
+  }]
+}

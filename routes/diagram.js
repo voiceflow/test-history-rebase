@@ -1,4 +1,3 @@
-const Util = require('./../config/util');
 const {
   docClient,
   pool,
@@ -16,7 +15,7 @@ const {
 } = require('./skill_util')
 const {
   renderDiagram
-} = require('./render_diagram.js')
+} = require('./../config/render_diagram.js')
 
 const {
   _getGoogleAccessToken
@@ -157,18 +156,12 @@ const setDiagram = async (req, res) => {
       }
   }
 
-  let global_string, used_intents_string
+  let global_string
   // Make sure that the JSON validly parses
   try {
     global_string = diagram.global ? JSON.stringify(diagram.global) : '[]'
   } catch (err) {
     global_string = '[]'
-  }
-
-  try {
-    used_intents_string = diagram.used_intents ? JSON.stringify(diagram.used_intents) : '[]'
-  } catch (err) {
-    used_intents_string = '[]'
   }
 
   docClient.put(params, async (err) => {
@@ -187,7 +180,7 @@ const setDiagram = async (req, res) => {
           await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
         } else {
           // otherwise update
-          await pool.query(`UPDATE diagrams SET sub_diagrams = $1, used_intents = $2, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, used_intents_string, diagram.id]);
+          await pool.query(`UPDATE diagrams SET sub_diagrams = $1, modified = NOW() WHERE id = $3`, [diagram.sub_diagrams, diagram.id]);
           await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
         }
         res.sendStatus(200);
@@ -523,7 +516,7 @@ const publishTest = async (req, res) => {
   }
 
   let used_intents = new Set()
-  let used_choices = new Set()
+  let used_choices = []
   let status = await renderDiagram(req.user, req.params.diagram_id, 'TEST', {
     used_intents,
     used_choices,
@@ -543,7 +536,7 @@ const rerenderDiagram = async (req, res) => {
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(), used_choices = new Set(), permissions = new Set(), interfaces = new Set()
+    let used_intents = new Set(), used_choices = [], permissions = new Set(), interfaces = new Set()
     if (Array.isArray(skill.intents)) {
       skill.intents.forEach(intent => {
         if (intent.key) intents[intent.key] = intent.name

@@ -1178,17 +1178,6 @@ const SLOT_TYPES = [{
     }
   },
   {
-    label: 'DE_FIST_NAME',
-    type: {
-      alexa: 'AMAZON.DE_FIST_NAME',
-      google: null
-    },
-    locales: {
-      alexa: [L.CA],
-      google: null
-    }
-  },
-  {
     label: "Date Time",
     type: {
       alexa: null,

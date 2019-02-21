@@ -32,6 +32,7 @@ export class BlockLinkFactory extends LinkModel{
 		return (
 			<path
 				className={selected ? widget.bem("--path-selected") : ""}
+				markerEnd='url(#head)'
 				strokeWidth={1}
 				stroke={"#8DA2B5"}
 				d={path}

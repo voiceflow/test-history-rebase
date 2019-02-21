@@ -23,6 +23,7 @@ export class DefaultLinkFactory{
 		return (
 			<path
 				className={selected ? widget.bem("--path-selected") : ""}
+				markerEnd='url(#head)'
 				strokeWidth={model.width}
 				stroke={model.color}
 				d={path}

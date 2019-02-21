@@ -6,7 +6,6 @@ import { Toolkit } from './../Toolkit'
 const toolkit = new Toolkit()
 export class LinkModel extends BaseModel {
 	constructor(linkType = "default", id, testing=true) {
-		console.log(testing)
 		super(linkType, id);
 		this.points = !testing ? [new PointModel(this, { x: 0, y: 0 }, toolkit.UID()), new PointModel(this, { x: 0, y: 0 }, toolkit.UID())] : null;
 		this.extras = {};

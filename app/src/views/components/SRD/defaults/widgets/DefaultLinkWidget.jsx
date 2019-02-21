@@ -174,40 +174,57 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			endArrow = lengths >= 15 ? _.last(this.refPaths).getPointAtLength(lengths - 15) : _.last(this.refPaths).getPointAtLength(lengths)
 		}
 		return (
-			<g key={"link-" + id}>
-				{Bottom}
-				{Top}
-				{svgPosition && this.state.selected && !this.props.preview ? <foreignObject style={{x: svgPosition.x-15, y: svgPosition.y-15, zIndex: 10}} onClick={(e) => {
-					e.preventDefault()
-					this.props.link.remove()
-				}}
-				onMouseLeave={() => {
-					this.setState({ selected: false });
-				}}
-				onMouseEnter={() => {
-					this.setState({ selected: true });
-				}}>
-					<button className="white-circ mr-2">
-						<i className="fa fa-trash" />
-					</button>
-				</foreignObject>: null
-				}
-				{endArrow &&
-					 <foreignObject style={{x: endArrow.x-9, y: endArrow.y-14, zIndex: 10}} onClick={(e) => {
-					e.preventDefault()
-					this.props.link.remove()
-				}}
-				onMouseLeave={() => {
-					this.setState({ selected: false });
-				}}
-				onMouseEnter={() => {
-					this.setState({ selected: true });
-				}}>
-					<img src={'/link-arrow.svg'} width="12" height="12"/>
-				</foreignObject>
-				}
-			</g>
-		);
+      <g key={"link-" + id}>
+		{Bottom}
+		{Top}
+        {svgPosition && this.state.selected && !this.props.preview ? (
+          <foreignObject
+			x={svgPosition.x - 15}
+			y={svgPosition.y - 15}
+			width='30px'
+			height='30px'
+            style={{
+			  zIndex: 10,
+			  position: 'absolute',
+            }}
+            onClick={e => {
+              e.preventDefault();
+              this.props.link.remove();
+            }}
+            onMouseLeave={() => {
+              this.setState({ selected: false });
+            }}
+            onMouseEnter={() => {
+              this.setState({ selected: true });
+            }}
+          >
+            <button className="white-circ mr-2">
+              <i className="fa fa-trash" />
+            </button>
+          </foreignObject>
+        ) : null}
+        {endArrow && (
+          <foreignObject
+			x={endArrow.x - 9}
+			y={endArrow.y - 14}
+			width="30px"
+			height="30px"
+            style={{ zIndex: 10, position: 'absolute' }}
+            onClick={e => {
+              this.props.link.remove();
+            }}
+            onMouseLeave={() => {
+              this.setState({ selected: false });
+            }}
+            onMouseEnter={() => {
+              this.setState({ selected: true });
+            }}
+          >
+            <img src={"/link-arrow.svg"} width="12" height="12" />
+          </foreignObject>
+        )}
+      </g>
+    );
 	}
 
 	findPathAndRelativePositionToRenderLabel = index => {

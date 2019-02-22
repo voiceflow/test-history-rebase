@@ -6,7 +6,6 @@ const {
   writeToLogs
 } = require('./../services');
 const {
-  getEnvVariable,
   delay
 } = require('../util')
 const {
@@ -42,7 +41,7 @@ const generateID = () => {
 
 const getVariables = (req, res) => {
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
       'id': req.params.id
     },
@@ -71,7 +70,7 @@ const getDiagram = (req, res) => {
   }
 
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
       'id': req.params.id
     }
@@ -146,7 +145,7 @@ const setDiagram = async (req, res) => {
   }
 
   let params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+      TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
       Item: {
           id: DIAGRAM_ID,
           variables: diagram.variables,
@@ -236,7 +235,7 @@ const copyDiagram = async (req, res) => {
   try {
     let old_diagram_id = req.params.diagram_id
     let get_params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+      TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
       Key: {
         'id': old_diagram_id
       }
@@ -253,7 +252,7 @@ const copyDiagram = async (req, res) => {
       }
 
       let put_params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Item: {
           id: new_diagram_id,
           variables: data.Item.variables,
@@ -273,7 +272,7 @@ const copyDiagram = async (req, res) => {
       } catch (err) {
         // SQL insert failed so delete the diagram from dynamo
         let delete_params = {
-          TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+          TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
           Key: {
             'id': new_diagram_id
           }

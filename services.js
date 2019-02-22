@@ -8,22 +8,20 @@ const config = require('./config/config');
 const sharp = require('sharp');
 const Hashids = require('hashids');
 const Intercom = require('intercom-client');
-const { getEnvVariable } = require('./util')
+
 const moment = require('moment')
 const _ = require('lodash')
 const StackTrace = require('stacktrace-js')
 
-const hashids = new Hashids(getEnvVariable('CONFIG_ID_HASH'), 10);
+const hashids = new Hashids(process.env.CONFIG_ID_HASH, 10);
 const MB = 1024*1024
 
 const AWS = require('aws-sdk'); 
 AWS.config = new AWS.Config({
-    accessKeyId: getEnvVariable('AWS_ACCESS_KEY_ID'),
-    secretAccessKey: getEnvVariable('AWS_SECRET_ACCESS_KEY'),
-    region: getEnvVariable('AWS_REGION'),
-    endpoint: getEnvVariable('AWS_ENDPOINT')
-});
-
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+})
 
 const docClient = new AWS.DynamoDB.DocumentClient({
     convertEmptyValues: true
@@ -36,17 +34,17 @@ types.setTypeParser(1114, function(stringValue) {
 
 
 const pool = new pg.Pool({
-    user: getEnvVariable('PSQL_USER'),
-    host: getEnvVariable('PSQL_HOST'),
-    database: getEnvVariable('PSQL_DB'),
-    password: getEnvVariable('PSQL_PW'),
+    user: process.env.PSQL_USER,
+    host: process.env.PSQL_HOST,
+    database: process.env.PSQL_DB,
+    password: process.env.PSQL_PW,
     port: 5432
 });
 
 // Create a Redis Client for sessions
 const redisClient = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ? redis.createClient({
-    host: getEnvVariable('REDIS_CLUSTER_HOST'),
-    port: getEnvVariable('REDIS_CLUSTER_PORT')
+    host: process.env.REDIS_CLUSTER_HOST,
+    port: process.env.REDIS_CLUSTER_PORT
 }) : redis.createClient();
 
 const s3 = new AWS.S3();
@@ -112,13 +110,13 @@ const validateEmail = (email) => {
 }
 
 // SECRET
-const intercom_client = new Intercom.Client({ token: getEnvVariable('INTERCOM_TOKEN') })
+const intercom_client = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
 
 const logging_pool = new pg.Pool({
-    user: getEnvVariable('LOGGING_USER'),
-    host: getEnvVariable('LOGGING_HOST'),
-    database: getEnvVariable('LOGGING_DB'),
-    password: getEnvVariable('LOGGING_PW'),
+    user: process.env.LOGGING_USER,
+    host: process.env.LOGGING_HOST,
+    database: process.env.LOGGING_DB,
+    password: process.env.LOGGING_PW,
     port: 5432
 })
 
@@ -161,7 +159,7 @@ const writeToLogs = async (log_group, msg_details) => {
     }
     try {
         let time = moment().format('MMM Do YY')
-        let group = getEnvVariable(log_group);
+        let group = process.env[log_group];
         let stack_trace
 
         try {

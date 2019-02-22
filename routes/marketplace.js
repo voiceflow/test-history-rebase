@@ -2,7 +2,6 @@ const { pool, hashids, docClient, writeToLogs } = require('./../services');
 const { renderDiagram } = require('./diagram')
 const { copySkill } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
-const { getEnvVariable } = require('../util')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 19
@@ -402,7 +401,7 @@ const getCertModule = (req, res) => {
 				}else{
 					if(data.rows.length > 0){
 						let params = {
-					        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+					        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
 					        Key: {'id': data.rows[0].diagram}
 					    };
 					    docClient.get(params, (err, data) => {
@@ -487,7 +486,7 @@ const retrieveTemplate = (req, res) => {
 					console.log(data.rows[0])
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
-						TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.market`,
+						TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
 						Key: {'id': template_diagram_id}
 					}
 					docClient.get(params, (err, data) => {

@@ -9,9 +9,7 @@ const getUtterancesWithSlotNames = (utterances, slots, square_brackets=false, fo
 	const re = /(\{\{\[[^}{[\]]+]\.([a-zA-Z0-9]+)\}\})/g;
 	let m;
 
-	const utterance_text = utterances.map(e => e.text)
-
-	const new_utterances = utterance_text.map(input => {
+	const new_utterances = utterances.map(e => e.text).filter(e => !!e.trim()).map(input => {
 		let new_input = input
 		do {
 			m = re.exec(input)

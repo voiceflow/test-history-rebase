@@ -222,7 +222,7 @@ class Canvas extends Component {
     }
     componentDidMount() {
         this.setMousetrap()
-
+        this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{

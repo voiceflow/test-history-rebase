@@ -41,7 +41,7 @@ const generateRandomName = (prefix, used_slots) => {
 }
 
 exports.createInteractionModel = (req, locale) => {
-	console.log("PERFORMANCE START"); let time = Date.now()
+	// console.log("PERFORMANCE START"); let time = Date.now()
 	const invocation = req.inv_name
 	const intents = req.intents
 	const slots = req.slots
@@ -59,9 +59,12 @@ exports.createInteractionModel = (req, locale) => {
 	const LOCALE_DEFAULTS = _.cloneDeep(DEFAULT_INTENTS[locale.substring(0,2)])
 	const LOCALE_DEFAULT_SET = {}
 
+	let default_size = 0
+
 	// Add in the repeat intent if it is needed
 	if(typeof req.repeat === 'number' && req.repeat > 0){
 		entered_intents.add('AMAZON.RepeatIntent')
+		default_size++
 	}
 
 	// Write in default intents
@@ -71,6 +74,7 @@ exports.createInteractionModel = (req, locale) => {
 			if(type === 'defaults'){
 				entered_intents.add(intent.name)
 				intents_for_amazon.push(intent)
+				default_size++
 			}
 			for(sample of intent.samples){
 				samples[stripSample(sample)] = intent
@@ -84,6 +88,7 @@ exports.createInteractionModel = (req, locale) => {
 		if (!entered_intents.has('AMAZON.FallbackIntent')) {
 			entered_intents.add('AMAZON.FallbackIntent')
 			intents_for_amazon.push({name: 'AMAZON.FallbackIntent'})
+			default_size++
 		}
 	}
 
@@ -387,7 +392,7 @@ exports.createInteractionModel = (req, locale) => {
 	})
 
 	// amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
-	if(entered_intents.size > LOCALE_DEFAULTS.defaults.length + 1){
+	if(entered_intents.size > default_size){
 		// this removes the examples for locale default intents, they were there to match choice blocks
 		LOCALE_DEFAULTS.defaults.forEach(intent => {
 			intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
@@ -416,7 +421,7 @@ exports.createInteractionModel = (req, locale) => {
 		interaction_model.interactionModel.languageModel.types = slot_types
 	}
 
-	console.log("PERFORMANCE END. ms:", Date.now() - time)
+	// console.log("PERFORMANCE END. ms:", Date.now() - time)
 	// pass the samples back to do the secondary pass because I REALLY want garbage collection to destroy this shitty function
 	return {
 		model: interaction_model,

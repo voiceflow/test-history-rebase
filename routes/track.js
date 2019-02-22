@@ -1,6 +1,5 @@
 const { hashids } = require('./../services')
-const { getEnvVariable } = require('./../util')
-const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 
 exports.trackCanvasTime = (req, res) => {
     analytics.track({

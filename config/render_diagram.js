@@ -1,5 +1,4 @@
-const isVarName = require('is-var-name');
-const { getEnvVariable } = require('../util')
+const isVarName = require('is-var-name')
 const { docClient, pool, hashids, writeToLogs } = require('../services')
 const draftToMarkdown = require('./drafttomarkdown')
 const validUrl = require('valid-url');
@@ -108,7 +107,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   if(!options.used_choices) options.used_choices = []
 
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
       'id': diagram_id
     }
@@ -876,7 +875,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         render_type = options.type
       }
       let params = {
-        TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.${render_type}`,
+        TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.${render_type}`,
         Item: story
       }
       docClient.put(params, err => {

@@ -7,15 +7,14 @@ const { OAuth2Client } = require('google-auth-library');
 const {jwt, docClient, pool, redisClient, config, hashids, writeToLogs } = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
-const { getEnvVariable } = require('../util')
 const del = require('del');
 const spawn = require('child_process').spawn
 
-const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const mkdirp = require('mkdirp');
 const { getDevice } = require('./../app/src/Helper')
 
-const client = new OAuth2Client(getEnvVariable('GOOGLE_ID'));
+const client = new OAuth2Client(process.env.GOOGLE_ID);
 const _ = require('lodash')
 
 const fs = require('fs');
@@ -141,7 +140,7 @@ function createLogin(data, analytics_data, cb) {
 async function googleAuth(token, cb) {
   const ticket = await client.verifyIdToken({
     idToken: token,
-    audience: getEnvVariable('GOOGLE_ID'),
+    audience: process.env.GOOGLE_ID,
   });
   const payload = ticket.getPayload();
 	const userid = payload['sub'];
@@ -150,7 +149,7 @@ async function googleAuth(token, cb) {
 // googleAuth().catch(console.error);
 
 async function fbAuth(data, cb) {
-  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${getEnvVariable('APP_TOKEN')}`)
+  axios.get(`https://graph.facebook.com/debug_token?input_token=${data.code}&access_token=${process.env.APP_TOKEN}`)
   .then(res => {
     cb(res);
   })
@@ -173,8 +172,8 @@ const AccessToken = (user_id, cb) => {
 			if(token.expire < Date.now()){
 				axios.post('https://api.amazon.com/auth/o2/token', {
 					grant_type: "refresh_token",
-					client_id: getEnvVariable('CONFIG_CLIENT_ID'),
-					client_secret: getEnvVariable('CONFIG_CLIENT_SECRET'),
+					client_id: process.env.CONFIG_CLIENT_ID,
+					client_secret: process.env.CONFIG_CLIENT_SECRET,
 					refresh_token: token.refresh_token
 				})
 				.then(result => {
@@ -224,8 +223,8 @@ const getAmazonCode = (req, res) => {
     	axios.post('https://api.amazon.com/auth/o2/token', {
     		grant_type: "authorization_code",
     		code: req.params.code,
-			client_id: getEnvVariable('CONFIG_CLIENT_ID'),
-			client_secret: getEnvVariable('CONFIG_CLIENT_SECRET')
+			client_id: process.env.CONFIG_CLIENT_ID,
+			client_secret: process.env.CONFIG_CLIENT_SECRET
     	})
     	.then(result => {
     		let data = {

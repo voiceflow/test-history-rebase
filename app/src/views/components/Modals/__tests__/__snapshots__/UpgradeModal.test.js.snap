@@ -1,0 +1,2540 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Upgrade Modal Test render upgrade modal 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <UpgradeModal />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "autoFocus": true,
+      "backdrop": true,
+      "backdropTransition": Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      },
+      "centered": false,
+      "children": Array [
+        <ModalHeader
+          charCode={215}
+          closeAriaLabel="Close"
+          tag="h5"
+          wrapTag="div"
+        >
+          Upgrade Account
+        </ModalHeader>,
+        <ModalBody
+          tag="div"
+        >
+          <Row
+            className="py-md-4"
+            tag="div"
+          >
+            <Col
+              sm="3"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <span
+                className="text-muted"
+              >
+                Plan
+              </span>
+              <Button
+                block={true}
+                className="mt-2"
+                color="secondary"
+                disabled={true}
+                onClick={[Function]}
+                tag="button"
+              >
+                Plus
+              </Button>
+              <Button
+                block={true}
+                className="mt-2"
+                color="clear"
+                disabled={false}
+                onClick={[Function]}
+                tag="button"
+              >
+                Business
+              </Button>
+            </Col>
+            <Col
+              className="border-left"
+              sm="4"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <span
+                className="text-muted"
+              >
+                Description
+              </span>
+              <div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Intercom Support
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Voiceflow Emails
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Project Backups (5)
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  In Skill Purchases
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Basic Analytics
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Multi-Platform Support (Google Assistant and Alexa)
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  30,000 utterances/mo
+                </div>
+              </div>
+            </Col>
+            <Col
+              className="border-left"
+              sm="5"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <div
+                className="text-muted"
+              >
+                Payment
+              </div>
+              <Elements>
+                <InjectStripe(CheckoutForm)
+                  plan={
+                    Object {
+                      "name": "Plus",
+                      "price": "29",
+                    }
+                  }
+                  selected={1}
+                  switchPlan={[Function]}
+                />
+              </Elements>
+            </Col>
+          </Row>
+        </ModalBody>,
+      ],
+      "fade": true,
+      "isOpen": false,
+      "keyboard": true,
+      "modalTransition": Object {
+        "timeout": 300,
+      },
+      "onClosed": [Function],
+      "onOpened": [Function],
+      "role": "dialog",
+      "size": "xl",
+      "toggle": undefined,
+      "zIndex": 1050,
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "charCode": 215,
+          "children": "Upgrade Account",
+          "closeAriaLabel": "Close",
+          "tag": "h5",
+          "toggle": undefined,
+          "wrapTag": "div",
+        },
+        "ref": null,
+        "rendered": "Upgrade Account",
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": <Row
+            className="py-md-4"
+            tag="div"
+          >
+            <Col
+              sm="3"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <span
+                className="text-muted"
+              >
+                Plan
+              </span>
+              <Button
+                block={true}
+                className="mt-2"
+                color="secondary"
+                disabled={true}
+                onClick={[Function]}
+                tag="button"
+              >
+                Plus
+              </Button>
+              <Button
+                block={true}
+                className="mt-2"
+                color="clear"
+                disabled={false}
+                onClick={[Function]}
+                tag="button"
+              >
+                Business
+              </Button>
+            </Col>
+            <Col
+              className="border-left"
+              sm="4"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <span
+                className="text-muted"
+              >
+                Description
+              </span>
+              <div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Intercom Support
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Voiceflow Emails
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Project Backups (5)
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  In Skill Purchases
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Basic Analytics
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  Multi-Platform Support (Google Assistant and Alexa)
+                </div>
+                <div
+                  className="feature-item"
+                >
+                  <img
+                    alt="check"
+                    className="mr-3"
+                    src="/images/icons/circle_check.svg"
+                    width={25}
+                  />
+                  30,000 utterances/mo
+                </div>
+              </div>
+            </Col>
+            <Col
+              className="border-left"
+              sm="5"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <div
+                className="text-muted"
+              >
+                Payment
+              </div>
+              <Elements>
+                <InjectStripe(CheckoutForm)
+                  plan={
+                    Object {
+                      "name": "Plus",
+                      "price": "29",
+                    }
+                  }
+                  selected={1}
+                  switchPlan={[Function]}
+                />
+              </Elements>
+            </Col>
+          </Row>,
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": Array [
+              <Col
+                sm="3"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <span
+                  className="text-muted"
+                >
+                  Plan
+                </span>
+                <Button
+                  block={true}
+                  className="mt-2"
+                  color="secondary"
+                  disabled={true}
+                  onClick={[Function]}
+                  tag="button"
+                >
+                  Plus
+                </Button>
+                <Button
+                  block={true}
+                  className="mt-2"
+                  color="clear"
+                  disabled={false}
+                  onClick={[Function]}
+                  tag="button"
+                >
+                  Business
+                </Button>
+              </Col>,
+              <Col
+                className="border-left"
+                sm="4"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <span
+                  className="text-muted"
+                >
+                  Description
+                </span>
+                <div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Intercom Support
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Voiceflow Emails
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Project Backups (5)
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    In Skill Purchases
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Basic Analytics
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Multi-Platform Support (Google Assistant and Alexa)
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    30,000 utterances/mo
+                  </div>
+                </div>
+              </Col>,
+              <Col
+                className="border-left"
+                sm="5"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="text-muted"
+                >
+                  Payment
+                </div>
+                <Elements>
+                  <InjectStripe(CheckoutForm)
+                    plan={
+                      Object {
+                        "name": "Plus",
+                        "price": "29",
+                      }
+                    }
+                    selected={1}
+                    switchPlan={[Function]}
+                  />
+                </Elements>
+              </Col>,
+            ],
+            "className": "py-md-4",
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": Array [
+                  <span
+                    className="text-muted"
+                  >
+                    Plan
+                  </span>,
+                  Array [
+                    <Button
+                      block={true}
+                      className="mt-2"
+                      color="secondary"
+                      disabled={true}
+                      onClick={[Function]}
+                      tag="button"
+                    >
+                      Plus
+                    </Button>,
+                    <Button
+                      block={true}
+                      className="mt-2"
+                      color="clear"
+                      disabled={false}
+                      onClick={[Function]}
+                      tag="button"
+                    >
+                      Business
+                    </Button>,
+                  ],
+                ],
+                "sm": "3",
+                "tag": "div",
+                "widths": Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Plan",
+                    "className": "text-muted",
+                  },
+                  "ref": null,
+                  "rendered": "Plan",
+                  "type": "span",
+                },
+                Object {
+                  "instance": null,
+                  "key": "0",
+                  "nodeType": "class",
+                  "props": Object {
+                    "block": true,
+                    "children": "Plus",
+                    "className": "mt-2",
+                    "color": "secondary",
+                    "disabled": true,
+                    "onClick": [Function],
+                    "tag": "button",
+                  },
+                  "ref": null,
+                  "rendered": "Plus",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": "1",
+                  "nodeType": "class",
+                  "props": Object {
+                    "block": true,
+                    "children": "Business",
+                    "className": "mt-2",
+                    "color": "clear",
+                    "disabled": false,
+                    "onClick": [Function],
+                    "tag": "button",
+                  },
+                  "ref": null,
+                  "rendered": "Business",
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": Array [
+                  <span
+                    className="text-muted"
+                  >
+                    Description
+                  </span>,
+                  <div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Intercom Support
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Voiceflow Emails
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Project Backups (5)
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      In Skill Purchases
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Basic Analytics
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Multi-Platform Support (Google Assistant and Alexa)
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      30,000 utterances/mo
+                    </div>
+                  </div>,
+                ],
+                "className": "border-left",
+                "sm": "4",
+                "tag": "div",
+                "widths": Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Description",
+                    "className": "text-muted",
+                  },
+                  "ref": null,
+                  "rendered": "Description",
+                  "type": "span",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": Array [
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Intercom Support
+                      </div>,
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Voiceflow Emails
+                      </div>,
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Project Backups (5)
+                      </div>,
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        In Skill Purchases
+                      </div>,
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Basic Analytics
+                      </div>,
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Multi-Platform Support (Google Assistant and Alexa)
+                      </div>,
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        30,000 utterances/mo
+                      </div>,
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": "0",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "Intercom Support",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "Intercom Support",
+                      ],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "1",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "Voiceflow Emails",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "Voiceflow Emails",
+                      ],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "2",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "Project Backups (5)",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "Project Backups (5)",
+                      ],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "3",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "In Skill Purchases",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "In Skill Purchases",
+                      ],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "4",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "Basic Analytics",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "Basic Analytics",
+                      ],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "5",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "Multi-Platform Support (Google Assistant and Alexa)",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "Multi-Platform Support (Google Assistant and Alexa)",
+                      ],
+                      "type": "div",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": "6",
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />,
+                          "30,000 utterances/mo",
+                        ],
+                        "className": "feature-item",
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "alt": "check",
+                            "className": "mr-3",
+                            "src": "/images/icons/circle_check.svg",
+                            "width": 25,
+                          },
+                          "ref": null,
+                          "rendered": null,
+                          "type": "img",
+                        },
+                        "30,000 utterances/mo",
+                      ],
+                      "type": "div",
+                    },
+                  ],
+                  "type": "div",
+                },
+              ],
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "function",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="text-muted"
+                  >
+                    Payment
+                  </div>,
+                  <Elements>
+                    <InjectStripe(CheckoutForm)
+                      plan={
+                        Object {
+                          "name": "Plus",
+                          "price": "29",
+                        }
+                      }
+                      selected={1}
+                      switchPlan={[Function]}
+                    />
+                  </Elements>,
+                ],
+                "className": "border-left",
+                "sm": "5",
+                "tag": "div",
+                "widths": Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ],
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Payment",
+                    "className": "text-muted",
+                  },
+                  "ref": null,
+                  "rendered": "Payment",
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": <InjectStripe(CheckoutForm)
+                      plan={
+                        Object {
+                          "name": "Plus",
+                          "price": "29",
+                        }
+                      }
+                      selected={1}
+                      switchPlan={[Function]}
+                    />,
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "logout": undefined,
+                      "plan": Object {
+                        "name": "Plus",
+                        "price": "29",
+                      },
+                      "selected": 1,
+                      "switchPlan": [Function],
+                      "user": undefined,
+                    },
+                    "ref": null,
+                    "rendered": null,
+                    "type": [Function],
+                  },
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "autoFocus": true,
+        "backdrop": true,
+        "backdropTransition": Object {
+          "mountOnEnter": true,
+          "timeout": 150,
+        },
+        "centered": false,
+        "children": Array [
+          <ModalHeader
+            charCode={215}
+            closeAriaLabel="Close"
+            tag="h5"
+            wrapTag="div"
+          >
+            Upgrade Account
+          </ModalHeader>,
+          <ModalBody
+            tag="div"
+          >
+            <Row
+              className="py-md-4"
+              tag="div"
+            >
+              <Col
+                sm="3"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <span
+                  className="text-muted"
+                >
+                  Plan
+                </span>
+                <Button
+                  block={true}
+                  className="mt-2"
+                  color="secondary"
+                  disabled={true}
+                  onClick={[Function]}
+                  tag="button"
+                >
+                  Plus
+                </Button>
+                <Button
+                  block={true}
+                  className="mt-2"
+                  color="clear"
+                  disabled={false}
+                  onClick={[Function]}
+                  tag="button"
+                >
+                  Business
+                </Button>
+              </Col>
+              <Col
+                className="border-left"
+                sm="4"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <span
+                  className="text-muted"
+                >
+                  Description
+                </span>
+                <div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Intercom Support
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Voiceflow Emails
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Project Backups (5)
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    In Skill Purchases
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Basic Analytics
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Multi-Platform Support (Google Assistant and Alexa)
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    30,000 utterances/mo
+                  </div>
+                </div>
+              </Col>
+              <Col
+                className="border-left"
+                sm="5"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="text-muted"
+                >
+                  Payment
+                </div>
+                <Elements>
+                  <InjectStripe(CheckoutForm)
+                    plan={
+                      Object {
+                        "name": "Plus",
+                        "price": "29",
+                      }
+                    }
+                    selected={1}
+                    switchPlan={[Function]}
+                  />
+                </Elements>
+              </Col>
+            </Row>
+          </ModalBody>,
+        ],
+        "fade": true,
+        "isOpen": false,
+        "keyboard": true,
+        "modalTransition": Object {
+          "timeout": 300,
+        },
+        "onClosed": [Function],
+        "onOpened": [Function],
+        "role": "dialog",
+        "size": "xl",
+        "toggle": undefined,
+        "zIndex": 1050,
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "charCode": 215,
+            "children": "Upgrade Account",
+            "closeAriaLabel": "Close",
+            "tag": "h5",
+            "toggle": undefined,
+            "wrapTag": "div",
+          },
+          "ref": null,
+          "rendered": "Upgrade Account",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "children": <Row
+              className="py-md-4"
+              tag="div"
+            >
+              <Col
+                sm="3"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <span
+                  className="text-muted"
+                >
+                  Plan
+                </span>
+                <Button
+                  block={true}
+                  className="mt-2"
+                  color="secondary"
+                  disabled={true}
+                  onClick={[Function]}
+                  tag="button"
+                >
+                  Plus
+                </Button>
+                <Button
+                  block={true}
+                  className="mt-2"
+                  color="clear"
+                  disabled={false}
+                  onClick={[Function]}
+                  tag="button"
+                >
+                  Business
+                </Button>
+              </Col>
+              <Col
+                className="border-left"
+                sm="4"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <span
+                  className="text-muted"
+                >
+                  Description
+                </span>
+                <div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Intercom Support
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Voiceflow Emails
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Project Backups (5)
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    In Skill Purchases
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Basic Analytics
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    Multi-Platform Support (Google Assistant and Alexa)
+                  </div>
+                  <div
+                    className="feature-item"
+                  >
+                    <img
+                      alt="check"
+                      className="mr-3"
+                      src="/images/icons/circle_check.svg"
+                      width={25}
+                    />
+                    30,000 utterances/mo
+                  </div>
+                </div>
+              </Col>
+              <Col
+                className="border-left"
+                sm="5"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="text-muted"
+                >
+                  Payment
+                </div>
+                <Elements>
+                  <InjectStripe(CheckoutForm)
+                    plan={
+                      Object {
+                        "name": "Plus",
+                        "price": "29",
+                      }
+                    }
+                    selected={1}
+                    switchPlan={[Function]}
+                  />
+                </Elements>
+              </Col>
+            </Row>,
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "function",
+            "props": Object {
+              "children": Array [
+                <Col
+                  sm="3"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <span
+                    className="text-muted"
+                  >
+                    Plan
+                  </span>
+                  <Button
+                    block={true}
+                    className="mt-2"
+                    color="secondary"
+                    disabled={true}
+                    onClick={[Function]}
+                    tag="button"
+                  >
+                    Plus
+                  </Button>
+                  <Button
+                    block={true}
+                    className="mt-2"
+                    color="clear"
+                    disabled={false}
+                    onClick={[Function]}
+                    tag="button"
+                  >
+                    Business
+                  </Button>
+                </Col>,
+                <Col
+                  className="border-left"
+                  sm="4"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <span
+                    className="text-muted"
+                  >
+                    Description
+                  </span>
+                  <div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Intercom Support
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Voiceflow Emails
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Project Backups (5)
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      In Skill Purchases
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Basic Analytics
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      Multi-Platform Support (Google Assistant and Alexa)
+                    </div>
+                    <div
+                      className="feature-item"
+                    >
+                      <img
+                        alt="check"
+                        className="mr-3"
+                        src="/images/icons/circle_check.svg"
+                        width={25}
+                      />
+                      30,000 utterances/mo
+                    </div>
+                  </div>
+                </Col>,
+                <Col
+                  className="border-left"
+                  sm="5"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="text-muted"
+                  >
+                    Payment
+                  </div>
+                  <Elements>
+                    <InjectStripe(CheckoutForm)
+                      plan={
+                        Object {
+                          "name": "Plus",
+                          "price": "29",
+                        }
+                      }
+                      selected={1}
+                      switchPlan={[Function]}
+                    />
+                  </Elements>
+                </Col>,
+              ],
+              "className": "py-md-4",
+              "tag": "div",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "children": Array [
+                    <span
+                      className="text-muted"
+                    >
+                      Plan
+                    </span>,
+                    Array [
+                      <Button
+                        block={true}
+                        className="mt-2"
+                        color="secondary"
+                        disabled={true}
+                        onClick={[Function]}
+                        tag="button"
+                      >
+                        Plus
+                      </Button>,
+                      <Button
+                        block={true}
+                        className="mt-2"
+                        color="clear"
+                        disabled={false}
+                        onClick={[Function]}
+                        tag="button"
+                      >
+                        Business
+                      </Button>,
+                    ],
+                  ],
+                  "sm": "3",
+                  "tag": "div",
+                  "widths": Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Plan",
+                      "className": "text-muted",
+                    },
+                    "ref": null,
+                    "rendered": "Plan",
+                    "type": "span",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "0",
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": true,
+                      "children": "Plus",
+                      "className": "mt-2",
+                      "color": "secondary",
+                      "disabled": true,
+                      "onClick": [Function],
+                      "tag": "button",
+                    },
+                    "ref": null,
+                    "rendered": "Plus",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": "1",
+                    "nodeType": "class",
+                    "props": Object {
+                      "block": true,
+                      "children": "Business",
+                      "className": "mt-2",
+                      "color": "clear",
+                      "disabled": false,
+                      "onClick": [Function],
+                      "tag": "button",
+                    },
+                    "ref": null,
+                    "rendered": "Business",
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "children": Array [
+                    <span
+                      className="text-muted"
+                    >
+                      Description
+                    </span>,
+                    <div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Intercom Support
+                      </div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Voiceflow Emails
+                      </div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Project Backups (5)
+                      </div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        In Skill Purchases
+                      </div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Basic Analytics
+                      </div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        Multi-Platform Support (Google Assistant and Alexa)
+                      </div>
+                      <div
+                        className="feature-item"
+                      >
+                        <img
+                          alt="check"
+                          className="mr-3"
+                          src="/images/icons/circle_check.svg"
+                          width={25}
+                        />
+                        30,000 utterances/mo
+                      </div>
+                    </div>,
+                  ],
+                  "className": "border-left",
+                  "sm": "4",
+                  "tag": "div",
+                  "widths": Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Description",
+                      "className": "text-muted",
+                    },
+                    "ref": null,
+                    "rendered": "Description",
+                    "type": "span",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": Array [
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          Intercom Support
+                        </div>,
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          Voiceflow Emails
+                        </div>,
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          Project Backups (5)
+                        </div>,
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          In Skill Purchases
+                        </div>,
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          Basic Analytics
+                        </div>,
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          Multi-Platform Support (Google Assistant and Alexa)
+                        </div>,
+                        <div
+                          className="feature-item"
+                        >
+                          <img
+                            alt="check"
+                            className="mr-3"
+                            src="/images/icons/circle_check.svg"
+                            width={25}
+                          />
+                          30,000 utterances/mo
+                        </div>,
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": "0",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "Intercom Support",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Intercom Support",
+                        ],
+                        "type": "div",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "1",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "Voiceflow Emails",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Voiceflow Emails",
+                        ],
+                        "type": "div",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "2",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "Project Backups (5)",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Project Backups (5)",
+                        ],
+                        "type": "div",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "3",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "In Skill Purchases",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "In Skill Purchases",
+                        ],
+                        "type": "div",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "4",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "Basic Analytics",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Basic Analytics",
+                        ],
+                        "type": "div",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "5",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "Multi-Platform Support (Google Assistant and Alexa)",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "Multi-Platform Support (Google Assistant and Alexa)",
+                        ],
+                        "type": "div",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": "6",
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <img
+                              alt="check"
+                              className="mr-3"
+                              src="/images/icons/circle_check.svg"
+                              width={25}
+                            />,
+                            "30,000 utterances/mo",
+                          ],
+                          "className": "feature-item",
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "alt": "check",
+                              "className": "mr-3",
+                              "src": "/images/icons/circle_check.svg",
+                              "width": 25,
+                            },
+                            "ref": null,
+                            "rendered": null,
+                            "type": "img",
+                          },
+                          "30,000 utterances/mo",
+                        ],
+                        "type": "div",
+                      },
+                    ],
+                    "type": "div",
+                  },
+                ],
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "function",
+                "props": Object {
+                  "children": Array [
+                    <div
+                      className="text-muted"
+                    >
+                      Payment
+                    </div>,
+                    <Elements>
+                      <InjectStripe(CheckoutForm)
+                        plan={
+                          Object {
+                            "name": "Plus",
+                            "price": "29",
+                          }
+                        }
+                        selected={1}
+                        switchPlan={[Function]}
+                      />
+                    </Elements>,
+                  ],
+                  "className": "border-left",
+                  "sm": "5",
+                  "tag": "div",
+                  "widths": Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ],
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Payment",
+                      "className": "text-muted",
+                    },
+                    "ref": null,
+                    "rendered": "Payment",
+                    "type": "div",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": <InjectStripe(CheckoutForm)
+                        plan={
+                          Object {
+                            "name": "Plus",
+                            "price": "29",
+                          }
+                        }
+                        selected={1}
+                        switchPlan={[Function]}
+                      />,
+                    },
+                    "ref": null,
+                    "rendered": Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "logout": undefined,
+                        "plan": Object {
+                          "name": "Plus",
+                          "price": "29",
+                        },
+                        "selected": 1,
+                        "switchPlan": [Function],
+                        "user": undefined,
+                      },
+                      "ref": null,
+                      "rendered": null,
+                      "type": [Function],
+                    },
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

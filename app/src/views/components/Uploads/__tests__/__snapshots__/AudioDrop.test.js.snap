@@ -1,0 +1,522 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Audio Drop Test render audio drop 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <AudioDrop />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "accept": "audio/*",
+      "activeClassName": "active",
+      "children": <div>
+        <div
+          className="drop-child"
+        >
+          Drag and Drop files here
+          <br />
+          <small>
+            OR
+          </small>
+          <br />
+          <div
+            className="space-between"
+          >
+            <div
+              className="upload-btn btn btn-primary-small"
+            >
+              Add File
+            </div>
+            <div
+              className="upload-btn btn btn-default"
+              onClick={[Function]}
+            >
+              URL
+            </div>
+          </div>
+        </div>
+        <div
+          className="rejected-file text-danger"
+        >
+          <b>
+            File not Accepted
+          </b>
+        </div>
+      </div>,
+      "className": "dropzone",
+      "disableClick": false,
+      "disablePreview": false,
+      "disabled": false,
+      "getDataTransferItems": [Function],
+      "inputProps": Object {},
+      "maxSize": 10485760,
+      "minSize": 0,
+      "multiple": false,
+      "onDrop": [Function],
+      "preventDropOnDocument": true,
+      "rejectClassName": "reject",
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div
+            className="drop-child"
+          >
+            Drag and Drop files here
+            <br />
+            <small>
+              OR
+            </small>
+            <br />
+            <div
+              className="space-between"
+            >
+              <div
+                className="upload-btn btn btn-primary-small"
+              >
+                Add File
+              </div>
+              <div
+                className="upload-btn btn btn-default"
+                onClick={[Function]}
+              >
+                URL
+              </div>
+            </div>
+          </div>,
+          <div
+            className="rejected-file text-danger"
+          >
+            <b>
+              File not Accepted
+            </b>
+          </div>,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              "Drag and Drop files here",
+              <br />,
+              <small>
+                OR
+              </small>,
+              <br />,
+              <div
+                className="space-between"
+              >
+                <div
+                  className="upload-btn btn btn-primary-small"
+                >
+                  Add File
+                </div>
+                <div
+                  className="upload-btn btn btn-default"
+                  onClick={[Function]}
+                >
+                  URL
+                </div>
+              </div>,
+            ],
+            "className": "drop-child",
+          },
+          "ref": null,
+          "rendered": Array [
+            "Drag and Drop files here",
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": "br",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "OR",
+              },
+              "ref": null,
+              "rendered": "OR",
+              "type": "small",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": "br",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="upload-btn btn btn-primary-small"
+                  >
+                    Add File
+                  </div>,
+                  <div
+                    className="upload-btn btn btn-default"
+                    onClick={[Function]}
+                  >
+                    URL
+                  </div>,
+                ],
+                "className": "space-between",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Add File",
+                    "className": "upload-btn btn btn-primary-small",
+                  },
+                  "ref": null,
+                  "rendered": "Add File",
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "URL",
+                    "className": "upload-btn btn btn-default",
+                    "onClick": [Function],
+                  },
+                  "ref": null,
+                  "rendered": "URL",
+                  "type": "div",
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": <b>
+              File not Accepted
+            </b>,
+            "className": "rejected-file text-danger",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "File not Accepted",
+            },
+            "ref": null,
+            "rendered": "File not Accepted",
+            "type": "b",
+          },
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "accept": "audio/*",
+        "activeClassName": "active",
+        "children": <div>
+          <div
+            className="drop-child"
+          >
+            Drag and Drop files here
+            <br />
+            <small>
+              OR
+            </small>
+            <br />
+            <div
+              className="space-between"
+            >
+              <div
+                className="upload-btn btn btn-primary-small"
+              >
+                Add File
+              </div>
+              <div
+                className="upload-btn btn btn-default"
+                onClick={[Function]}
+              >
+                URL
+              </div>
+            </div>
+          </div>
+          <div
+            className="rejected-file text-danger"
+          >
+            <b>
+              File not Accepted
+            </b>
+          </div>
+        </div>,
+        "className": "dropzone",
+        "disableClick": false,
+        "disablePreview": false,
+        "disabled": false,
+        "getDataTransferItems": [Function],
+        "inputProps": Object {},
+        "maxSize": 10485760,
+        "minSize": 0,
+        "multiple": false,
+        "onDrop": [Function],
+        "preventDropOnDocument": true,
+        "rejectClassName": "reject",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div
+              className="drop-child"
+            >
+              Drag and Drop files here
+              <br />
+              <small>
+                OR
+              </small>
+              <br />
+              <div
+                className="space-between"
+              >
+                <div
+                  className="upload-btn btn btn-primary-small"
+                >
+                  Add File
+                </div>
+                <div
+                  className="upload-btn btn btn-default"
+                  onClick={[Function]}
+                >
+                  URL
+                </div>
+              </div>
+            </div>,
+            <div
+              className="rejected-file text-danger"
+            >
+              <b>
+                File not Accepted
+              </b>
+            </div>,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                "Drag and Drop files here",
+                <br />,
+                <small>
+                  OR
+                </small>,
+                <br />,
+                <div
+                  className="space-between"
+                >
+                  <div
+                    className="upload-btn btn btn-primary-small"
+                  >
+                    Add File
+                  </div>
+                  <div
+                    className="upload-btn btn btn-default"
+                    onClick={[Function]}
+                  >
+                    URL
+                  </div>
+                </div>,
+              ],
+              "className": "drop-child",
+            },
+            "ref": null,
+            "rendered": Array [
+              "Drag and Drop files here",
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": "br",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "OR",
+                },
+                "ref": null,
+                "rendered": "OR",
+                "type": "small",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {},
+                "ref": null,
+                "rendered": null,
+                "type": "br",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": Array [
+                    <div
+                      className="upload-btn btn btn-primary-small"
+                    >
+                      Add File
+                    </div>,
+                    <div
+                      className="upload-btn btn btn-default"
+                      onClick={[Function]}
+                    >
+                      URL
+                    </div>,
+                  ],
+                  "className": "space-between",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Add File",
+                      "className": "upload-btn btn btn-primary-small",
+                    },
+                    "ref": null,
+                    "rendered": "Add File",
+                    "type": "div",
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "URL",
+                      "className": "upload-btn btn btn-default",
+                      "onClick": [Function],
+                    },
+                    "ref": null,
+                    "rendered": "URL",
+                    "type": "div",
+                  },
+                ],
+                "type": "div",
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": <b>
+                File not Accepted
+              </b>,
+              "className": "rejected-file text-danger",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "File not Accepted",
+              },
+              "ref": null,
+              "rendered": "File not Accepted",
+              "type": "b",
+            },
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

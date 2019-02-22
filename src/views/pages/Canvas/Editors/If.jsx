@@ -31,6 +31,8 @@ class IfBlock extends Component {
 
     handleAddBlock(e) {
         var node = this.state.node;
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
 
         if(node.extras.expressions.length < BLOCK_LIMIT){
             node.extras.expressions.push({
@@ -72,7 +74,9 @@ class IfBlock extends Component {
 
     handleRemoveBlock(i) {
         let node = this.state.node;
-
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
+        
         if(node.extras.expressions.length > 1){
             let bestNode;
             if (node.parentCombine){

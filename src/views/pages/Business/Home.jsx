@@ -113,6 +113,11 @@ class Home extends Component {
       .catch(err => {
         if(err){
           console.log(err) //TODO; error modal
+          this.setState({
+            dau: [],
+            dates: [],
+            dau_loading: false
+          })
         }
       })
   }
@@ -132,6 +137,10 @@ class Home extends Component {
       })
       .catch(err => {
         console.log(err) //TODO: error modal
+        this.setState({
+          users_data: [],
+          users_loading: false
+        })
       })
 
     axios.get(`/analytics/${this.props.skill_id}`)
@@ -145,6 +154,12 @@ class Home extends Component {
       })
       .catch(err => {
         console.log(err)
+        this.setState({
+          users: "N/A",
+          sessions: "N/A",
+          interactions: "N/A",
+          stats_loading: false
+        })
       })
 
     // Retrieve todays DAUs by default

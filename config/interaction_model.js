@@ -217,6 +217,7 @@ exports.createInteractionModel = (req, locale) => {
 			// returns parsed_input to {formatted_input, extracted_slots} 
 			let parsed_input = parseChoiceInput(input, slots)
 			let stripped = stripSample(parsed_input.formatted_input)
+			if(!parsed_input.formatted_input.trim()) continue
 
 			// prevent duplicates in utterances
 			if(stripped_set.has(stripped)){

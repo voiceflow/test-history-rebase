@@ -4,10 +4,14 @@ import Menu from './Menu'
 import Editor from './Editor'
 import axios from 'axios'
 import update from 'immutability-helper';
+import { compose } from 'recompose'
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
 import './../../components/SRD/sass/main.css';
 import './StoryBoard.css'
+
+//HOCs
+import {undo, redo} from './../../HOC/UndoRedo';
 
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
@@ -114,8 +118,11 @@ class Canvas extends Component {
         this.generateBlockMenu = this.generateBlockMenu.bind(this)
         this.appendCombineNode = this.appendCombineNode.bind(this);
         this.removeCombineNode = this.removeCombineNode.bind(this);
+        this.undo = this.undo.bind(this)
+        this.redo = this.redo.bind(this)
         this.canSave = this.canSave.bind(this)
         this.serialize = this.serialize.bind(this);
+        this.setMousetrap = this.setMousetrap.bind(this)
         this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
@@ -190,25 +197,31 @@ class Canvas extends Component {
         this.onLoadDiagrams()
     }
 
-    componentDidMount() {
+    setMousetrap() {
+        Mousetrap.reset()
         Mousetrap.bind(['shift+/'], this.toggleShortcuts)
         Mousetrap.bind(['ctrl+c', 'command+c'], this.copy)
         Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
-        Mousetrap.bind(['ctrl+s', 'command+s'], (e)=>{
+        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
+        Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
+        Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
                 this.onSave()
             }
         })
-        Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({spotlight: false})))
+        Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({ spotlight: false })))
         Mousetrap.bind('space', (e) => {
-            if(this.diagram_focus){
+            if (this.diagram_focus) {
                 this.onDiagramUnfocus()
-                this.setState({spotlight: true})
+                this.setState({ spotlight: true })
                 e.preventDefault()
                 e.stopPropagation()
             }
         })
+    }
+    componentDidMount() {
+        this.setMousetrap()
 
         // AUTOSAVE EVERY 10 SECONDS
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
@@ -528,6 +541,41 @@ class Canvas extends Component {
         }
     }
 
+    undo(e) {
+        if (!_.isEmpty(this.props.undoEvents) && !this.state.engine.getDiagramModel().locked){
+            let recent = _.clone(_.last(this.props.undoEvents));
+            if (recent.eventType === 'remove'){
+                _.forEach(recent.node, n => {
+                    if (n instanceof BlockNodeModel){
+                        n.parentCombine = null;
+                        this.state.engine.getDiagramModel().addNode(n)
+                    }});
+            } else {
+                _.forEach(recent.node, n => n instanceof BlockNodeModel && n.remove());
+            }
+            this.state.engine.getDiagramModel().clearSelection();
+            this.props.addRedo(recent)
+            this.props.removeUndo();
+        }
+        e.preventDefault()
+    }
+
+    redo(e){
+        if (!_.isEmpty(this.props.redoEvents) && !this.state.engine.getDiagramModel().locked){
+            let recent = _.last(this.props.redoEvents);
+            if (recent.eventType === 'remove') {
+                _.forEach(recent.node, n => n instanceof BlockNodeModel && n.remove());
+            } else {
+                this.state.engine.getDiagramModel().clearSelection()
+                _.forEach(recent.node, n => n instanceof BlockNodeModel && this.state.engine.getDiagramModel().addNode(n));
+            }
+            this.state.engine.getDiagramModel().clearSelection();
+            this.props.addUndo(recent.node, recent.eventType);
+            this.props.removeRedo();
+        }
+        e.preventDefault()
+    }
+
     // createWithTemplate(module){
     //     axios.get(`/marketplace/template/${module.module_id}`, {
     //         diagram_id: this.props.diagram_id
@@ -555,6 +603,11 @@ class Canvas extends Component {
                                 confirm: () => selected.remove()
                             })
             } else if(selected){
+                if (this.props.undoEvents.length >= 10){
+                    this.props.shiftUndo()
+                }
+                this.props.addUndo([selected], 'remove')
+                this.props.clearReod()
                 selected.remove()
             }
         } else {
@@ -627,8 +680,13 @@ class Canvas extends Component {
             engine.setSuperSelect(node)
             engine.getDiagramModel().addNode(node)
             this.addRemoveListener(node)
+            if (this.props.undoEvents.length >= 10) {
+                this.props.shiftUndo()
+            }
+            this.props.addUndo([node], 'copy')
+            this.props.clearRedo()
             this.setState({
-                engine: engine
+                engine: engine,
             })
         }
     }
@@ -2651,6 +2709,7 @@ class Canvas extends Component {
                         platform={this.state.skill.platform}
                         onIntentUpdate={this.onIntentUpdate}
                         live_mode={this.props.live_mode}
+                        setCanvasEvents={this.setMousetrap}
                     />
                     <div
                         key={this.props.diagram_id}
@@ -2689,6 +2748,13 @@ class Canvas extends Component {
                             onConfirm={this.props.onConfirm}
                             copyNode={!this.props.preview ? this.copyNode : _.noop()}
                             removeNode={!this.props.preview ? this.removeNode : _.noop()}
+                            removeHandler={(node) => {
+                            if (this.props.undoEvents.length >= 10) {
+                                this.props.shiftUndo()
+                            }
+                            this.props.addUndo(node, 'remove')
+                            this.props.clearRedo()
+                            }}
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}
                             clickDiagram={this.clickDiagram}
@@ -2701,4 +2767,4 @@ class Canvas extends Component {
     }
 }
 
-export default Canvas
+export default compose(undo,redo)(Canvas);

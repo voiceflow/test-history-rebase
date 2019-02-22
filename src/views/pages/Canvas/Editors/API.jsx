@@ -405,6 +405,9 @@ class API extends Component {
 
     handleAddPair(type){
         var node = this.state.node;
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras);
+
         node.extras[type].push({
             index: randomstring.generate(10),
             key: '',
@@ -418,6 +421,9 @@ class API extends Component {
 
     handleRemovePair(type, i) {
         let node = this.state.node;
+        this.props.clearRedo()
+        this.props.updateEvents(_.cloneDeep(node).extras);
+
         node.extras[type].splice(i, 1);
 
         this.setState({
@@ -435,6 +441,9 @@ class API extends Component {
 
     handleAddPairMapping(){
         var node = this.state.node;
+        this.props.clearRedo()
+        this.props.updateEvents(_.cloneDeep(node).extras);
+
         node.extras.mapping.push({
             index: randomstring.generate(10),
             path: '',
@@ -448,6 +457,9 @@ class API extends Component {
 
     handleRemovePairMapping(i) {
         let node = this.state.node;
+        this.props.clearRedo()
+        this.props.updateEvents(_.cloneDeep(node).extras);
+
         node.extras.mapping.splice(i, 1);
 
         this.setState({
@@ -457,6 +469,8 @@ class API extends Component {
 
     handleKVMappingChange(new_value, i, inputType) {
         var node = this.state.node;
+        this.props.clearRedo()
+        this.props.updateEvents(_.cloneDeep(node).extras);
         node.extras.mapping[i][inputType] = new_value;
         this.setState({
             node: node

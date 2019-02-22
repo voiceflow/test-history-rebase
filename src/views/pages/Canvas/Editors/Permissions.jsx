@@ -38,6 +38,8 @@ class Permissions extends Component {
 
     handleAddBlock() {
         var node = this.state.node;
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras);
 
         if(node.extras.permissions.length < this.state.permission_options.length){
             let default_selected;
@@ -66,7 +68,9 @@ class Permissions extends Component {
 
     handleRemoveBlock(i) {
         let node = this.state.node;
-
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras);
+        
         if(node.extras.permissions.length > 0){
             node.extras.permissions.splice(i, 1);
 

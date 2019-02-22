@@ -84,7 +84,7 @@ class Skill extends Component {
 
         /* Logic for detecting when page refreshed */
         if (window.performance) {
-            if (performance.navigation.type == 1) {
+            if (performance.navigation.type === 1) {
               this.trackCanvasTime()
             }
         }

@@ -126,7 +126,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     $KNEX migrate:latest --env test
     $KNEX seed:run --env test
 
-    NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --coverage --forceExit --testMatch="**/(*.)+(itest).js?(x)" "$@"
+    NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --coverage --runInBand --forceExit --testMatch="**/(*.)+(itest).js?(x)" "$@"
 
     # Kill Dynamo
     kill -TERM `pgrep -f dynamo`

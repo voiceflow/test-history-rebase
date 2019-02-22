@@ -94,9 +94,9 @@ exports.createInteractionModel = (req, locale) => {
 
 	// INTERFACE REQUIRED INTENTS
 	if(Array.isArray(req.alexa_interfaces)){
-		for(interface of req.alexa_interfaces){
-			if(INTERFACE_INTENTS[interface]){
-				INTERFACE_INTENTS[interface].forEach(i => {
+		for(_interface of req.alexa_interfaces){
+			if(INTERFACE_INTENTS[_interface]){
+				INTERFACE_INTENTS[_interface].forEach(i => {
 					intents_for_amazon.push(i)
 					entered_intents.add(i.name)
 				})

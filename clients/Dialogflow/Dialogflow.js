@@ -3,9 +3,6 @@ const _ = require('lodash')
 const dialogflow = require('dialogflow');
 const uuid = require('uuid/v4')
 const {
-  getEnvVariable
-} = require('../../util')
-const {
   Package,
   Agent
 } = require('./Interfaces')
@@ -247,7 +244,7 @@ class DialogFlow {
   }
 
   async updateAgentFulfillment(encoded_id, main_locale, supported_locales) {
-    const url = `${getEnvVariable('SKILL_ENDPOINT')}/state/skill/gactions/${encoded_id}`
+    const url = `${process.env.SKILL_ENDPOINT}/state/skill/gactions/${encoded_id}`
 
     let agent = Agent()
     agent.webhook = {

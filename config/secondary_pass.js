@@ -1,5 +1,4 @@
 const { docClient, writeToLogs } = require('../services')
-const { getEnvVariable } = require('../util')
 const { stripSample } = require('../app/src/util')
 const _ = require('lodash')
 
@@ -9,7 +8,7 @@ const secondPass = async (diagram_id, samples, visited = new Set(), depth = 0) =
   visited.add(diagram_id)
 
   let params = {
-    TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.live`,
+    TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.live`,
     Key: {
       'id': diagram_id
     }
@@ -32,15 +31,20 @@ const secondPass = async (diagram_id, samples, visited = new Set(), depth = 0) =
     // check that this is a choice block - time to turn this MF into an interaction block lul
     if(Array.isArray(line.inputs)){
       line.interactions = []
+      let intent_set = new Set()
       line.inputs.forEach((input_group, i) => {
         for(input of input_group){
           let stripped = stripSample(input)
           if(stripped in samples){
-            line.interactions.push({
-              intent: samples[stripped].name,
-              mappings: [],
-              nextIdIndex: i
-            })
+            let name = samples[stripped].name
+            if(!intent_set.has(name)){
+              intent_set.add(name)
+              line.interactions.push({
+                intent: name,
+                mappings: [],
+                nextIdIndex: i
+              })
+            }
           }
         }
       })
@@ -60,7 +64,7 @@ const secondPass = async (diagram_id, samples, visited = new Set(), depth = 0) =
   }
 
   params = {
-    TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.live`,
+    TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.live`,
     Item: data.Item
   }
   await docClient.put(params).promise()

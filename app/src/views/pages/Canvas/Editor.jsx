@@ -1,5 +1,11 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import Mousetrap from 'mousetrap';
+import { compose } from 'recompose'
+
+// HOCs
+import {undo, redo} from './../../HOC/UndoRedo';
+
 import Line from './Editors/Line';
 import Choice from './Editors/Choice';
 import Intent from './Editors/Intent'
@@ -74,7 +80,7 @@ class Editor extends Component {
         super(props)
 
         this.state = {
-            node: this.props.node,
+            node: props.node,
             templates: [],
             displays: [],
             account_linking: {},
@@ -89,12 +95,76 @@ class Editor extends Component {
         this.BlockViewer = this.BlockViewer.bind(this)
         this.renderTitle = this.renderTitle.bind(this)
         this.toggleReprompt = this.toggleReprompt.bind(this)
+        this.undo = this.undo.bind(this)
+        this.redo = this.redo.bind(this)
         this.EditorRender = this.EditorRender.bind(this)
     }
-    static getDerivedStateFromProps(props){
+
+    componentDidMount(){
+        Mousetrap.reset()
+        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
+        Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
+    }
+
+    static getDerivedStateFromProps(props, state){
+        if (state.node && props.node && state.node.id !== props.node.id){
+            props.clearRedo();
+            props.clearUndo();
+        }
         return {
             node: props.node
         }
+    }
+
+    undo(e){
+        if (!_.isEmpty(this.props.undoEvents) && this.state.node) {
+            let recent = _.last(this.props.undoEvents);
+            this.props.addRedo({node: _.cloneDeep(this.state.node.extras), eventType: _.cloneDeep(this.state.node.ports)})
+            let node = this.state.node
+            node.extras = recent.node
+            if (recent.eventType) {
+                let diff = _.difference(_.keys(node.ports), _.keys(recent.eventType))
+                if (!_.isEmpty(diff)){
+                    node.removePort(node.ports[_.last(diff)])
+                } else {
+                    diff = _.difference(_.keys(recent.eventType), _.keys(node.ports))
+                    if (!_.isEmpty(diff)){
+                        node.addOutPort(recent.eventType[_.last(diff)].label)
+                    }
+                }
+            }
+            this.props.removeUndo();
+            this.props.onUpdate()
+            this.props.diagramEngine.enableRepaintEntities([this.state.node])
+            this.props.diagramEngine.repaintCanvas(false);
+        }
+        // e.stopPropagation();
+        // e.preventDefault()
+    }
+
+    redo(e){
+        if (!_.isEmpty(this.props.redoEvents) && this.state.node) {
+            let recent = _.last(this.props.redoEvents);
+            this.props.addUndo(_.cloneDeep(this.state.node.extras),  _.cloneDeep(this.state.node.ports))
+            let node = this.state.node
+            node.extras = recent.node
+            if (recent.eventType) {
+                let diff = _.difference(_.keys(recent.eventType), _.keys(node.ports))
+                if (!_.isEmpty(diff)){
+                    node.addOutPort(recent.eventType[_.last(diff)].label)
+                } else {
+                    diff = _.difference(_.keys(node.ports), _.keys(recent.eventType))
+                    node.removePort(node.ports[_.last(diff)])
+                }
+                // node.ports = recent.eventType;
+            }
+            this.props.removeRedo();
+            // this.props.onUpdate()
+            this.props.diagramEngine.enableRepaintEntities([this.state.node])
+            this.props.diagramEngine.repaintCanvas(false);
+        }
+        e.stopPropagation();
+        e.preventDefault()
     }
 
     handleChange(e, key = undefined) {
@@ -162,20 +232,16 @@ class Editor extends Component {
             case 'choice':
             case 'choicenew':
                 return <Choice
-                        node={this.state.node}
-                        onUpdate={this.props.onUpdate}
                         diagramEngine={this.props.diagramEngine}
                         repaint={this.props.repaint}
                         live_mode={this.props.live_mode}
                     />
             case 'intent':
                 return <Intent
-                        node={this.state.node}
                         onUpdate={this.props.onIntentUpdate}
                         intents={this.props.intents}
                         slots={this.props.slots}
                         diagramEngine={this.props.diagramEngine}
-                        variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
@@ -192,14 +258,12 @@ class Editor extends Component {
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
                 if(typeof this.state.node.extras.commands === 'string'){
-                    return <OldCommand node={this.state.node} onUpdate={this.props.onUpdate}/>
+                    return <OldCommand/>
                 }else{
                     return <Command
-                        node={this.state.node}
                         onUpdate={this.props.onIntentUpdate}
                         intents={this.props.intents}
                         slots={this.props.slots}
-                        variables={variables}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
@@ -216,15 +280,17 @@ class Editor extends Component {
                 }
             case 'interaction':
                 return <Interaction
-                    node={this.state.node}
                     onUpdate={this.props.onIntentUpdate}
                     repaint={this.props.repaint}
                     intents={this.props.intents}
+                    clearEvents={() => {
+                        this.props.clearRedo();
+                        this.props.clearUndo();
+                    }}
                     slots={this.props.slots}
                     onSlot={this.props.onSlot}
                     onIntent={this.props.onIntent}
                     diagramEngine={this.props.diagramEngine}
-                    variables={variables}
                     slot_types={this.getSlotTypes(this.props.locales)}
                     built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                     onError={this.props.onError}
@@ -242,32 +308,29 @@ class Editor extends Component {
                     node.extras.type = 'combine'
                     this.setState({node: node})
                 }
-                return <Line node={this.state.node} onUpdate={this.props.onUpdate}/>
+                return <Line/>
             case 'set':
-                return <SetBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
+                return <SetBlock/>
             case 'variable':
-                return <Variable node={this.state.node} variables={variables} onUpdate={this.props.onUpdate}/>
+                return <Variable/>
             case 'if':
                 // DEPRECATE OLD IF BLOCK
                 if(this.state.node.extras.expressions){
-                    return <IfBlock node={this.state.node} diagramEngine={this.props.diagramEngine} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <IfBlock diagramEngine={this.props.diagramEngine} repaint={this.props.repaint}/>
                 }else{
-                    return <OldIfBlock node={this.state.node} variables={variables} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                    return <OldIfBlock repaint={this.props.repaint}/>
                 }
             case 'random':
-                return <Random node={this.state.node} diagramEngine={this.props.diagramEngine} onUpdate={this.props.onUpdate} repaint={this.props.repaint}/>
+                return <Random diagramEngine={this.props.diagramEngine} repaint={this.props.repaint}/>
             case 'speak':
                 // DEPRECATE OLD SPEAK BLOCKS
                 if(this.state.node.extras.raw !== undefined){
-                    return <OldSpeak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                    return <OldSpeak/>
                 } else {
-                    return <Speak node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                    return <Speak/>
                 }
             case 'card':
-                return <Card node={this.state.node}
-                            onUpdate={this.props.onUpdate}
-                            variables={variables}
-                        />
+                return <Card/>
             case 'capture':
                 return <Capture
                     live_mode={this.props.live_mode}
@@ -287,10 +350,9 @@ class Editor extends Component {
                     enterFlow={this.props.enterFlow}
                 />
             case 'api':
-                return <API node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                return <API/>
             case 'payment':
-                return <Payment node={this.state.node}
-                    onUpdate={this.props.onUpdate}
+                return <Payment
                     history={this.props.history}
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
@@ -299,8 +361,7 @@ class Editor extends Component {
                     skill_id={this.props.skill.skill_id}
                 />
             case 'cancel':
-                return <CancelPayment node={this.state.node}
-                    onUpdate={this.props.onUpdate}
+                return <CancelPayment
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
                     products={this.props.products}
@@ -308,23 +369,23 @@ class Editor extends Component {
                     skill_id={this.props.skill.skill_id}
                 />
             case 'module':
-                return <Module node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} user_modules={this.props.user_modules}/>
+                return <Module user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} templates={this.props.templates} skill={this.props.skill}/>
+                return <Mail templates={this.props.templates} skill={this.props.skill}/>
             case 'display':
-                return <Display node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} displays={this.props.displays} skill={this.props.skill}/>
+                return <Display displays={this.props.displays} skill={this.props.skill}/>
             case 'stream':
-                return <Stream node={this.state.node} onUpdate={this.props.onUpdate} diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
+                return <Stream diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions node={this.state.node} onUpdate={this.props.onUpdate} variables={variables} products={this.props.products} live_mode={this.props.live_mode}/>
+                return <Permissions products={this.props.products} live_mode={this.props.live_mode}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
-                return <Reminder node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                return <Reminder/>
             case 'permission':
-                return <PermissionCard node={this.state.node} onUpdate={this.props.onUpdate} skill={this.props.skill} live_mode={this.props.live_mode}/>
+                return <PermissionCard skill={this.props.skill} live_mode={this.props.live_mode}/>
             case 'code':
-                return <Code node={this.state.node} onUpdate={this.props.onUpdate} variables={variables}/>
+                return <Code/>
             default:
               return null
         }
@@ -383,7 +444,13 @@ class Editor extends Component {
     EditorRender(){
         let variables = this.props.global_variables.concat(this.props.variables)
         return <React.Fragment>
-            {this.BlockViewer(variables)}
+            {React.cloneElement(this.BlockViewer(variables),{
+                node: this.state.node,
+                onUpdate: this.props.onUpdate,
+                updateEvents: this.props.addUndo,
+                clearRedo: this.props.clearRedo,
+                variables: variables,
+            })}
             {this.state.node.extras.reprompt && <React.Fragment>
                 <hr/>
                 <div className="space-between">
@@ -401,7 +468,6 @@ class Editor extends Component {
                             this.setState({node: node})
                         }
                     }}
-                    variables={variables}
                 />
             </React.Fragment>}
         </React.Fragment>
@@ -426,6 +492,16 @@ class Editor extends Component {
                 onKeyDownCapture={this.eventHandler}
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
+                onMouseEnter={() => {
+                    this.props.diagramEngine.getDiagramModel().setLocked();
+                    Mousetrap.reset();
+                    Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
+                    Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
+                }}
+                onMouseLeave={() => {
+                    this.props.diagramEngine.getDiagramModel().setLocked(false)
+                    this.props.setCanvasEvents()
+                }}
             >
                 {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
@@ -498,4 +574,4 @@ class Editor extends Component {
     }
 }
 
-export default Editor;
+export default compose(undo, redo)(Editor);

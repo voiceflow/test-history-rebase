@@ -5,7 +5,7 @@ const npmPackage = require('./package.json')
 const port = 8080
 const name = npmPackage.name+' v'+npmPackage.version
 
-const { getEnvVariable } = require('./util')
+
 
 // eslint-disable-next-line no-console
 if (process.env.NODE_ENV !== 'test') {
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'test') {
         pingTimeout: 20000
     })
     const redisAdapter = require('socket.io-redis')
-    io.adapter(redisAdapter({ host: getEnvVariable('REDIS_CLUSTER_HOST'), port: getEnvVariable('REDIS_CLUSTER_PORT') }))
+    io.adapter(redisAdapter({ host: process.env.REDIS_CLUSTER_HOST, port: process.env.REDIS_CLUSTER_PORT }))
     require('./sockets')(io)
 }else{
     app.listen(port, () => console.log(`${name} | PORT ${port}`))

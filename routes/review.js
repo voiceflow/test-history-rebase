@@ -1,4 +1,3 @@
-const { getEnvVariable } = require('../util')
 const { writeToLogs } = require('./../services')
 
 module.exports = (docClient) => {
@@ -68,7 +67,7 @@ const setReview = (req, res) => {
         return;
     }
     let params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Key: {'id': req.params.id }
     };
 

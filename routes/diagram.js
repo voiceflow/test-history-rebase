@@ -6,7 +6,6 @@ const {
   writeToLogs
 } = require('./../services');
 const {
-  getEnvVariable,
   delay
 } = require('../util')
 const {
@@ -42,7 +41,7 @@ const generateID = () => {
 
 const getVariables = (req, res) => {
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
       'id': req.params.id
     },
@@ -71,7 +70,7 @@ const getDiagram = (req, res) => {
   }
 
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
       'id': req.params.id
     }
@@ -146,7 +145,7 @@ const setDiagram = async (req, res) => {
   }
 
   let params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+      TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
       Item: {
           id: DIAGRAM_ID,
           variables: diagram.variables,
@@ -195,7 +194,6 @@ const setDiagram = async (req, res) => {
 }
 
 const deleteDiagram = (req, res) => {
-
   pool.query(`
             DELETE FROM diagrams d USING skills s
             WHERE d.skill_id = s.skill_id AND d.id = $1 AND s.creator_id = $2 AND s.diagram != d.id
@@ -215,6 +213,8 @@ const deleteDiagram = (req, res) => {
           console.trace(err)
           return res.sendStatus(500)
         }
+      } else {
+        return res.sendStatus(404)
       }
     }
   )
@@ -236,7 +236,7 @@ const copyDiagram = async (req, res) => {
   try {
     let old_diagram_id = req.params.diagram_id
     let get_params = {
-      TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+      TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
       Key: {
         'id': old_diagram_id
       }
@@ -253,7 +253,7 @@ const copyDiagram = async (req, res) => {
       }
 
       let put_params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Item: {
           id: new_diagram_id,
           variables: data.Item.variables,
@@ -273,7 +273,7 @@ const copyDiagram = async (req, res) => {
       } catch (err) {
         // SQL insert failed so delete the diagram from dynamo
         let delete_params = {
-          TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+          TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
           Key: {
             'id': new_diagram_id
           }
@@ -293,9 +293,8 @@ const copyDiagram = async (req, res) => {
       res.sendStatus(404)
     }
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    res.sendStatus(500)
   }
 }
 
@@ -495,8 +494,7 @@ const publish = (req, res) => {
 
 const publishTest = async (req, res) => {
   if (!req.user || !req.params.diagram_id) {
-    res.sendStatus(401)
-    return;
+    return res.sendStatus(401)
   }
 
   let intents = {}
@@ -531,11 +529,9 @@ const publishTest = async (req, res) => {
 const rerenderDiagram = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
   let diagram_id = req.params.diagram_id
-  
   try{
     let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
     let skill = skill_data[0]
-
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS

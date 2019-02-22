@@ -1,11 +1,10 @@
-const isVarName = require('is-var-name');
-const { getEnvVariable } = require('../util')
+const isVarName = require('is-var-name')
 const { docClient, pool, hashids, writeToLogs } = require('../services')
 const draftToMarkdown = require('./drafttomarkdown')
 const validUrl = require('valid-url');
 const _ = require('lodash');
 
-const expressionfy = (expression, depth = 0) => {
+const _expressionfy = (expression, depth = 0) => {
   if (depth > 8) {
     // return a blank
     return 0;
@@ -30,47 +29,41 @@ const expressionfy = (expression, depth = 0) => {
     let string = "(";
 
     if (expression.type == 'not') {
-      string += `!${expressionfy(expression.value)}`
+      string += `!${_expressionfy(expression.value)}`
     } else if (expression.type == 'and') {
-      string += `${expressionfy(expression.value[0])} && ${expressionfy(expression.value[1])}`
+      string += `${_expressionfy(expression.value[0])} && ${_expressionfy(expression.value[1])}`
     } else if (expression.type == 'or') {
-      string += `${expressionfy(expression.value[0])} || ${expressionfy(expression.value[1])}`
+      string += `${_expressionfy(expression.value[0])} || ${_expressionfy(expression.value[1])}`
     } else if (expression.type == 'plus') {
-      string += `${expressionfy(expression.value[0])} + ${expressionfy(expression.value[1])}`
+      string += `${_expressionfy(expression.value[0])} + ${_expressionfy(expression.value[1])}`
     } else if (expression.type == 'minus') {
-      let first = expressionfy(expression.value[0]);
-      // if(isNaN(first) && !(/(v\[\")\w+(\"])/.test(first))) return 0;
-      let second = expressionfy(expression.value[1]);
-      // if(isNaN(second) && !(/(v\[\")\w+(\"])/.test(second))) return 0;
+      let first = _expressionfy(expression.value[0]);
+      let second = _expressionfy(expression.value[1]);
 
       string += `${first} - ${second}`
     } else if (expression.type == 'times') {
-      let first = expressionfy(expression.value[0]);
-      // if(isNaN(first) && !(/(v\[\")\w+(\"])/.test(first))) return 0;
-      let second = expressionfy(expression.value[1]);
-      // if(isNaN(second) && !(/(v\[\")\w+(\"])/.test(second))) return 0;
+      let first = _expressionfy(expression.value[0]);
+      let second = _expressionfy(expression.value[1]);
 
       string += `${first} * ${second}`
     } else if (expression.type == 'divide') {
-      let first = expressionfy(expression.value[0]);
-      // if(isNaN(first) && !(/(v\[\")\w+(\"])/.test(first))) return 0;
-      let second = expressionfy(expression.value[1]);
-      // if((isNaN(second) && !(/(v\[\")\w+(\"])/.test(second))) || second == 0) return 0;
+      let first = _expressionfy(expression.value[0]);
+      let second = _expressionfy(expression.value[1]);
 
       string += `${first} / ${second}`
     } else if (expression.type == 'greater') {
-      string += `${expressionfy(expression.value[0])} > ${expressionfy(expression.value[1])}`
+      string += `${_expressionfy(expression.value[0])} > ${_expressionfy(expression.value[1])}`
     } else if (expression.type == 'less') {
-      string += `${expressionfy(expression.value[0])} < ${expressionfy(expression.value[1])}`
+      string += `${_expressionfy(expression.value[0])} < ${_expressionfy(expression.value[1])}`
     } else if (expression.type == 'equals') {
-      string += `${expressionfy(expression.value[0])} == ${expressionfy(expression.value[1])}`
+      string += `${_expressionfy(expression.value[0])} == ${_expressionfy(expression.value[1])}`
     }
 
     return (string + ")");
   }
 }
 
-const addStory = (story, cb) => {
+const _addStory = (story, cb) => {
   pool.query('SELECT 1 FROM diagrams WHERE id = $1 LIMIT 1', [story.id], (err, res) => {
     if (err || res.rows.length < 1) {
       pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)',
@@ -106,7 +99,7 @@ options object properties {
   slots: Object of all the slots used in the skill (required)
 }
 */
-const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platform='alexa') => new Promise((resolve) => {
+const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platform='alexa') => new Promise(async (resolve) => {
   if(!options.rendered_set) options.rendered_set = new Set()
   if(!options.used_intents) options.used_intents = new Set()
   if(!options.permissions) options.permissions = new Set()
@@ -114,7 +107,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   if(!options.used_choices) options.used_choices = []
 
   let params = {
-    TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
     Key: {
       'id': diagram_id
     }
@@ -125,11 +118,10 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   }
 
   let testing = (skill_id === "TEST");
-  docClient.get(params, async (err, data) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-      resolve(500)
-    } else if (data.Item && (data.Item.skill === skill_id || testing)) {
+
+  try {
+    const data = await docClient.get(params).promise()
+    if (data.Item && (data.Item.skill === skill_id || testing)) {
       // Add to set of rendered diagrams to prevent looping
       options.rendered_set.add(diagram_id)
       if (data.Item.creator !== user.id && user.admin < 100) {
@@ -238,15 +230,21 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               } else if (intent.key in options.intents) {
                 intent = options.intents[intent.key]
               }
+
               if (intent) {
                 if (extras.resume) {
                   if (extras.diagram_id) {
                     let result
-                    try {
-                      result = await renderDiagram(user, extras.diagram_id, skill_id, options, depth + 1, platform)
-                    } catch (err) {
-                      result = 500
+                    if (!options.rendered_set.has(extras.diagram_id)) {
+                      try {
+                        result = await renderDiagram(user, extras.diagram_id, skill_id, options, depth + 1, platform)
+                      } catch (err) {
+                        result = 500
+                      }
+                    } else {
+                      result = 200
                     }
+
                     if (result < 300) {
                       story.commands.push({
                         intent: intent,
@@ -451,7 +449,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           if (!options.rendered_set.has(node.extras.diagram_id)) {
             let result
             try {
-              // console.log('going in', node.extras.diagram_id);
               // let new_options = options
               // Reset diagram id for sub flows in modules
               // if(type === 'market'){
@@ -487,7 +484,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               sets: node.extras.sets.map(block => {
                 return {
                   variable: block.variable,
-                  expression: expressionfy(block.expression)
+                  expression: _expressionfy(block.expression)
                 }
               }),
               nextId: getLink(nextLink)
@@ -495,7 +492,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           } else {
             story.lines[node.id] = {
               variable: node.extras.variable,
-              expression: expressionfy(node.extras.expression),
+              expression: _expressionfy(node.extras.expression),
               nextId: getLink(nextLink)
             };
           }
@@ -503,7 +500,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           if (node.extras.expressions) {
             story.lines[node.id] = {
               expressions: node.extras.expressions.map(expression => {
-                let rendered = expressionfy(expression);
+                let rendered = _expressionfy(expression);
                 return rendered ? rendered : false
               }),
               elseId: getLink(node.ports.filter(a => a.label === 'else')[0].links[0]),
@@ -514,7 +511,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             };
           } else {
             story.lines[node.id] = {
-              expression: expressionfy(node.extras.expression),
+              expression: _expressionfy(node.extras.expression),
               trueId: getLink(node.ports.filter(a => a.label === 'true')[0].links[0]),
               falseId: getLink(node.ports.filter(a => a.label === 'false')[0].links[0])
             };
@@ -878,7 +875,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         render_type = options.type
       }
       let params = {
-        TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.${render_type}`,
+        TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.${render_type}`,
         Item: story
       }
       docClient.put(params, err => {
@@ -889,7 +886,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           resolve(200)
         } else {
           // Add the story to SQL as well
-          addStory(story, (err) => {
+          _addStory(story, (err) => {
             if (err) {
               writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               resolve(500)
@@ -903,9 +900,15 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
     } else {
       resolve(404)
     }
-  })
+  } catch (e) {
+    // console.error(e)
+    writeToLogs('CREATOR_BACKEND_ERRORS', {err: e})
+    resolve(500)
+  }
 })
 
 module.exports = {
-  renderDiagram: renderDiagram
+  renderDiagram: renderDiagram,
+  _addStory: _addStory,
+  _expressionfy: _expressionfy
 }

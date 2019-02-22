@@ -33,6 +33,20 @@ const connection_error = <Alert color="danger" className="text-center p-4">
     Refresh your page or try again later
 </Alert>
 
+/* Code for detecting whether a user visits a different tab */
+let hidden = null;
+let visibilityChange = null;
+if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support 
+    hidden = 'hidden';
+    visibilityChange = 'visibilitychange';
+} else if (typeof document.msHidden !== 'undefined') {
+    hidden = 'msHidden';
+    visibilityChange = 'msvisibilitychange';
+} else if (typeof document.webkitHidden !== 'undefined') {
+    hidden = 'webkitHidden';
+    visibilityChange = 'webkitvisibilitychange';
+}
+
 class Skill extends Component {
     constructor(props){
         super(props)
@@ -46,7 +60,6 @@ class Skill extends Component {
             confirm: null,
             mounted: true,
             error_screen: null,
-            time_mounted: null,
             linter: [],
             upgrade_modal: false,
             selected_plan: 1,
@@ -54,6 +67,8 @@ class Skill extends Component {
             live_version: null,
             show_live_mode_modal: false
         }
+
+        this.time_mounted = null
 
         this.renderPage = this.renderPage.bind(this)
         this.onError = this.onError.bind(this)
@@ -65,6 +80,14 @@ class Skill extends Component {
 
         this.child_canvas = React.createRef()
         this.updateSkill = this.updateSkill.bind(this)
+        this.trackCanvasTime = this.trackCanvasTime.bind(this)
+
+        /* Logic for detecting when page refreshed */
+        if (window.performance) {
+            if (performance.navigation.type === 1) {
+              this.trackCanvasTime()
+            }
+        }
     }
 
     static getDerivedStateFromProps(props, state){
@@ -96,6 +119,17 @@ class Skill extends Component {
         return null
     }
 
+    trackCanvasTime(){
+        let time_unmounted = new Date()
+        if(!!this.state.skill){
+            axios.post('/analytics/track_canvas_time', {
+                duration: time_unmounted - this.time_mounted,
+                skill_id: this.state.skill.skill_id
+            })
+        }
+        this.time_mounted = null
+    }
+
     componentGracefulUnmount(){
         this.setState({mounted: false})
         window.removeEventListener('beforeunload', this.componentGracefulUnmount);
@@ -104,7 +138,6 @@ class Skill extends Component {
     componentDidMount(){
         this.setState({
             mounted: true,
-            time_mounted: new Date()
         })
         window.addEventListener('beforeunload', this.componentGracefulUnmount)
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
@@ -114,22 +147,29 @@ class Skill extends Component {
                 load_skill: false,
             })
         }
+        document.addEventListener(visibilityChange, this.handleVisibilityChange, false)
+        this.time_mounted = new Date()
     }
 
     componentWillUnmount(){
-        let time_unmounted = new Date()
         if(this.state.skill){
-            axios.post('/analytics/track_canvas_time', {
-                duration: time_unmounted - this.state.time_mounted,
-                skill_id: this.state.skill.skill_id
-            })
+            this.trackCanvasTime()
         }
 
         // UNMOUNT SOCKET SESSION
         delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]
         window.CreatorSocket.emit('leave')
 
+        document.removeEventListener(visibilityChange, this.handleVisibilityChange)
         this.componentGracefulUnmount()
+    }
+
+    handleVisibilityChange = () => {
+        if (document[hidden]) {
+            this.trackCanvasTime()
+        } else {
+            this.time_mounted = new Date()
+        }
     }
 
     onError(message) {

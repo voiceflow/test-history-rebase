@@ -18,11 +18,8 @@ const {createInteractionModel} = require('./../config/interaction_model')
 const {
   generateDialogflowPackage
 } = require('./../config/gactions_package')
-const {
-  getEnvVariable
-} = require('../util')
 
-const analytics = new(require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const analytics = new(require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const {
   deleteSkillPromise,
   copySkill,
@@ -759,7 +756,6 @@ exports.buildSkill = async (req, res) => {
                 request.data.manifest.lastUpdateRequest.status === 'FAILED') {
                 amzn_id = null;
               }
-              // console.log(JSON.stringify(request.data.manifest));
             } catch (err) {
               if (err.response.status === 404) {
                 amzn_id = null;
@@ -941,7 +937,7 @@ exports.buildSkill = async (req, res) => {
                   }
                   account_linking.domains = _.flattenDeep(account_linking.domains)
                   account_linking.scopes = _.flattenDeep(account_linking.scopes)
-                  account_linking.clientSecret = jwt.verify(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+                  account_linking.clientSecret = jwt.verify(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
                   try {
                     await axios.request({
                       url: `https://api.amazonalexa.com/v1/skills/${encodeURI(amzn_id)}/stages/development/accountLinkingClient`,
@@ -1382,14 +1378,14 @@ exports.buildGoogleSkill = async (req, res) => {
     await main_client.updateAgentFulfillment(original_id, main_locale, locales)
 
     const updates = []
-    const package = generateDialogflowPackage(skill_info)
+    const _package = generateDialogflowPackage(skill_info)
 
     if (!locales.includes(main_locale)) {
       locales.push(main_locale)
     }
 
     locales.forEach(locale => {
-      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, package, skill_info, locale))
+      updates.push(updateDialogflowPackage(dialogflow_creds, project_id, _package, skill_info, locale))
     })
     await Promise.all(updates)
     publish_info.uploaded = true

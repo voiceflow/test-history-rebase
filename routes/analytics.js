@@ -27,90 +27,122 @@ const checkUserOwnsSkill = (req, res, cb) => {
 }
 
 exports.getUsersData = (req, res) => {
-    checkUserOwnsSkill(req, res, () => {
+    checkUserOwnsSkill(req, res, async () => {
         let skill_id = hashids.decode(req.params.skill_id)[0]
-
-        logging_pool.query(
-            `
-            SELECT user_id, count(DISTINCT utterances.session_id) AS sessions, count(*) AS utterances, max(session_end) AS last_interaction, min(session_begin) AS first_interaction 
-            FROM sessions INNER JOIN utterances ON sessions.session_id = utterances.session_id 
-            WHERE skill_id = $1 
-            GROUP BY user_id
-            `,
-            [skill_id],
-            (err, data) => {
-                if(err){
-                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-                    res.sendStatus(500)
-                } else {
-                    res.send(data.rows)
+        let live_skill_id = (await pool.query(`
+            SELECT skills.skill_id 
+            FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
+            WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
+              AND live = TRUE`, [skill_id])).rows[0]
+        
+        if(live_skill_id){
+            live_skill_id = live_skill_id.skill_id
+            logging_pool.query(
+                `
+                SELECT user_id, count(DISTINCT utterances.session_id) AS sessions, count(*) AS utterances, max(session_end) AS last_interaction, min(session_begin) AS first_interaction 
+                FROM sessions INNER JOIN utterances ON sessions.session_id = utterances.session_id 
+                WHERE skill_id = $1 
+                GROUP BY user_id
+                `,
+                [live_skill_id],
+                (err, data) => {
+                    if(err){
+                        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+                        res.sendStatus(500)
+                    } else {
+                        res.send(data.rows)
+                    }
                 }
-            }
-        )
+            )
+        } else {
+            res.sendStatus(500)
+        }
     })
 }
 
 
 exports.getDAU = (req, res) => {
-    checkUserOwnsSkill(req, res, () => {
+    checkUserOwnsSkill(req, res, async () => {
         let skill_id = hashids.decode(req.params.skill_id)[0]
-        let from = req.params.from
-        let to = req.params.to
-        let dau_query
+        let live_skill_id = (await pool.query(`
+            SELECT skills.skill_id 
+            FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
+            WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
+              AND live = TRUE`, [skill_id])).rows[0]
 
-        // If period less than 3days, group by hr
-        if(to - from <= 259200){
-            dau_query = `
-                SELECT count(DISTINCT user_id) AS user_count, date_trunc('hour', to_timestamp(session_begin / 1000)) AS dau_date
-                FROM sessions 
-                WHERE 
-                skill_id = $1 
-                AND to_timestamp(session_begin / 1000) >= to_timestamp($2)
-                AND to_timestamp(session_end / 1000) <= to_timestamp($3)
-                GROUP BY date_trunc('hour', to_timestamp(session_begin / 1000))
-                ORDER BY dau_date ASC`
-        } else {
-            dau_query = `
-                SELECT count(DISTINCT user_id) AS user_count, to_timestamp(session_begin / 1000)::date AS dau_date
-                FROM sessions 
-                WHERE 
+        if(live_skill_id){
+            live_skill_id = live_skill_id.skill_id
+            let from = req.params.from
+            let to = req.params.to
+            let dau_query
+
+            // If period less than 3days, group by hr
+            if(to - from <= 259200){
+                dau_query = `
+                    SELECT count(DISTINCT user_id) AS user_count, date_trunc('hour', to_timestamp(session_begin / 1000)) AS dau_date
+                    FROM sessions 
+                    WHERE 
                     skill_id = $1 
                     AND to_timestamp(session_begin / 1000) >= to_timestamp($2)
                     AND to_timestamp(session_end / 1000) <= to_timestamp($3)
-                GROUP BY to_timestamp(session_begin / 1000)::date
-                ORDER BY dau_date ASC`
-        }
-        // Convert session_begin and session_end to s from ms
-        logging_pool.query(
-            dau_query,
-            [skill_id, from, to],
-            (err, data) => {
-                if(err){
-                    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-                    res.sendStatus(500)
-                } else {
-                    res.send(data.rows)
-                }
+                    GROUP BY date_trunc('hour', to_timestamp(session_begin / 1000))
+                    ORDER BY dau_date ASC`
+            } else {
+                dau_query = `
+                    SELECT count(DISTINCT user_id) AS user_count, to_timestamp(session_begin / 1000)::date AS dau_date
+                    FROM sessions 
+                    WHERE 
+                        skill_id = $1 
+                        AND to_timestamp(session_begin / 1000) >= to_timestamp($2)
+                        AND to_timestamp(session_end / 1000) <= to_timestamp($3)
+                    GROUP BY to_timestamp(session_begin / 1000)::date
+                    ORDER BY dau_date ASC`
             }
-        )
+            // Convert session_begin and session_end to s from ms
+            logging_pool.query(
+                dau_query,
+                [live_skill_id, from, to],
+                (err, data) => {
+                    if(err){
+                        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+                        res.sendStatus(500)
+                    } else {
+                        res.send(data.rows)
+                    }
+                }
+            )
+        } else {
+            res.sendStatus(500)
+        }
     })
 }
 
 exports.getStats = async (req, res) => {
     try{
         let skill_id = hashids.decode(req.params.skill_id)[0]
-        let users = (await logging_pool.query('SELECT count(DISTINCT user_id) AS count FROM sessions WHERE skill_id = $1', [skill_id])).rows[0]
-        let sessions = (await logging_pool.query('SELECT COUNT(DISTINCT session_id) AS count FROM sessions WHERE skill_id = $1', [skill_id])).rows[0]
-        let interactions = (await logging_pool.query(`
-            SELECT COUNT(*) AS count FROM utterances INNER JOIN 
-                (SELECT DISTINCT session_id AS sid FROM sessions WHERE sessions.skill_id = $1) 
-            AS sq ON utterances.session_id = sq.sid`, [skill_id])).rows[0]
-        
-        res.send({
-            users: users.count,
-            sessions: sessions.count,
-            interactions: interactions.count
-        })
+        let live_skill_id = (await pool.query(`
+            SELECT skills.skill_id 
+            FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
+            WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
+              AND live = TRUE`, [skill_id])).rows[0]
+
+        if(live_skill_id) {
+            live_skill_id = live_skill_id.skill_id
+            let users = (await logging_pool.query('SELECT count(DISTINCT user_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id])).rows[0]
+            let sessions = (await logging_pool.query('SELECT COUNT(DISTINCT session_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id])).rows[0]
+            let interactions = (await logging_pool.query(`
+                SELECT COUNT(*) AS count FROM utterances INNER JOIN 
+                    (SELECT DISTINCT session_id AS sid FROM sessions WHERE sessions.skill_id = $1) 
+                AS sq ON utterances.session_id = sq.sid`, [live_skill_id])).rows[0]
+            
+            res.send({
+                users: users.count,
+                sessions: sessions.count,
+                interactions: interactions.count
+            })
+        } else {
+            res.sendStatus(500)
+        }
     } catch (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
         res.sendStatus(500)

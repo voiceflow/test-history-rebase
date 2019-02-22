@@ -6,6 +6,9 @@ describe('Authentication', () => {
     it('doesn\'t accept empty credentials', async () => {
       await request(app)
         .put('/session')
+        .send({
+          user: {}
+        })
         .expect(400)
     })
 
@@ -13,8 +16,10 @@ describe('Authentication', () => {
       await request(app)
         .put('/session')
         .send({
-          email: 'wrongemail@getvoiceflow.com',
-          password: 'password'
+          user: {
+            email: 'wrongemail@getvoiceflow.com',
+            password: 'password'
+          }
         })
         .expect(400)
     })
@@ -23,8 +28,10 @@ describe('Authentication', () => {
       await request(app)
         .put('/session')
         .send({
-          email: 'tests@getvoiceflow.com',
-          password: 'wrongpassword'
+          user: {
+            email: 'tests@getvoiceflow.com',
+            password: 'wrongpassword'
+          }
         })
         .expect(400)
     })
@@ -33,8 +40,10 @@ describe('Authentication', () => {
       await request(app)
         .put('/session')
         .send({
-          email: 'tests@getvoiceflow.com',
-          password: 'password'
+          user: {
+            email: 'tests@getvoiceflow.com',
+            password: 'password'
+          }
         })
         .expect(200)
         .then(res => {
@@ -57,8 +66,10 @@ describe('Authentication', () => {
       await request(app)
         .put('/session')
         .send({
-          email: 'tests@getvoiceflow.com',
-          password: 'password'
+          user: {
+            email: 'tests@getvoiceflow.com',
+            password: 'password'
+          }
         })
         .expect(200)
         .then(res => {

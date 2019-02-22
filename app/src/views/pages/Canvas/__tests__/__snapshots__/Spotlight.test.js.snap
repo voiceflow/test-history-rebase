@@ -46,6 +46,10 @@ ShallowWrapper {
               "value": "if",
             },
             Object {
+              "label": "Capture",
+              "value": "capture",
+            },
+            Object {
               "label": "Random",
               "value": "random",
             },
@@ -159,6 +163,10 @@ ShallowWrapper {
           Object {
             "label": "If",
             "value": "if",
+          },
+          Object {
+            "label": "Capture",
+            "value": "capture",
           },
           Object {
             "label": "Random",
@@ -280,6 +288,10 @@ ShallowWrapper {
                 "value": "if",
               },
               Object {
+                "label": "Capture",
+                "value": "capture",
+              },
+              Object {
                 "label": "Random",
                 "value": "random",
               },
@@ -393,6 +405,10 @@ ShallowWrapper {
             Object {
               "label": "If",
               "value": "if",
+            },
+            Object {
+              "label": "Capture",
+              "value": "capture",
             },
             Object {
               "label": "Random",

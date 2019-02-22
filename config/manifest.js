@@ -1,5 +1,3 @@
-const { getEnvVariable } = require('../util')
-
 exports.createManifest = (r, encoded_id, name) => {
 	if(r.invocations && Array.isArray(r.invocations.value)){
 		r.invocations = r.invocations.value.map(item => ('Alexa, ' + item))
@@ -43,7 +41,7 @@ exports.createManifest = (r, encoded_id, name) => {
 		})
 	}
 
-	let SKILL_ENDPOINT = `${ getEnvVariable('SKILL_ENDPOINT') ? getEnvVariable('SKILL_ENDPOINT') : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`
+	let SKILL_ENDPOINT = `${ process.env.SKILL_ENDPOINT ? process.env.SKILL_ENDPOINT : 'https://app.getvoiceflow.com'}/state/skill/${encoded_id}`
 	let ret = {
 		"manifest": {
 			"publishingInformation": {
@@ -110,7 +108,7 @@ exports.createManifest = (r, encoded_id, name) => {
 		})
 	}
 	if (Array.isArray(r.alexa_interfaces) && r.alexa_interfaces.length !== 0) {
-		interfaces.push(...(r.alexa_interfaces.map(interface => ({"type": interface}))))
+		interfaces.push(...(r.alexa_interfaces.map(_interface => ({"type": _interface}))))
 	}
 	if(interfaces.length !== 0){
 		ret.manifest.apis.custom.interfaces = interfaces

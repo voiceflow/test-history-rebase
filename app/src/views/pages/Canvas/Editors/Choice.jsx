@@ -43,6 +43,8 @@ class Choice extends Component {
     handleAddChoice(e) {
         // console.log(this.state.node.extras.choices);
         var node = this.state.node;
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
         node.extras.choices.push('New Choice');
         node.extras.inputs.push('');
         let test = node.addOutPort(node.extras.choices.length);
@@ -68,6 +70,8 @@ class Choice extends Component {
 
     handleRemoveChoice(e, i) {
         var node = this.state.node;
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
         let bestNode;
         if (node.parentCombine) {
             bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)

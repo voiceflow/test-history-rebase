@@ -195,8 +195,9 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 					position: 'absolute',
 					}}
 					onClick={e => {
-					e.preventDefault();
+					// e.preventDefault();
 					this.props.link.remove();
+					this.props.diagramEngine.repaintCanvas(false)
 					}}
 					onMouseLeave={() => {
 					this.setState({ selected: false });

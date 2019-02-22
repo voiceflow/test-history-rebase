@@ -364,7 +364,6 @@ ShallowWrapper {
           <div
             className=""
             id="diagram"
-            onClick={[Function]}
             onContextMenu={[Function]}
             onDragOver={[Function]}
             onDrop={[Function]}
@@ -456,6 +455,7 @@ ShallowWrapper {
               allowCanvasTranslation={true}
               allowCanvasZoom={true}
               allowLooseLinks={false}
+              clickDiagram={[Function]}
               copyNode={[Function]}
               deleteKeys={
                 Array [
@@ -886,7 +886,6 @@ ShallowWrapper {
             <div
               className=""
               id="diagram"
-              onClick={[Function]}
               onContextMenu={[Function]}
               onDragOver={[Function]}
               onDrop={[Function]}
@@ -978,6 +977,7 @@ ShallowWrapper {
                 allowCanvasTranslation={true}
                 allowCanvasZoom={true}
                 allowLooseLinks={false}
+                clickDiagram={[Function]}
                 copyNode={[Function]}
                 deleteKeys={
                   Array [
@@ -1430,6 +1430,7 @@ ShallowWrapper {
                   allowCanvasTranslation={true}
                   allowCanvasZoom={true}
                   allowLooseLinks={false}
+                  clickDiagram={[Function]}
                   copyNode={[Function]}
                   deleteKeys={
                     Array [
@@ -1507,7 +1508,6 @@ ShallowWrapper {
               ],
               "className": "",
               "id": "diagram",
-              "onClick": [Function],
               "onContextMenu": [Function],
               "onDragOver": [Function],
               "onDrop": [Function],
@@ -1730,6 +1730,7 @@ ShallowWrapper {
                   "allowCanvasTranslation": true,
                   "allowCanvasZoom": true,
                   "allowLooseLinks": false,
+                  "clickDiagram": [Function],
                   "copyNode": [Function],
                   "deleteKeys": Array [
                     46,
@@ -1794,6 +1795,7 @@ ShallowWrapper {
                     },
                     "superSelect": null,
                   },
+                  "editorOpen": undefined,
                   "forceRepaint": [Function],
                   "inverseZoom": false,
                   "live_mode": undefined,
@@ -2124,7 +2126,6 @@ ShallowWrapper {
             <div
               className=""
               id="diagram"
-              onClick={[Function]}
               onContextMenu={[Function]}
               onDragOver={[Function]}
               onDrop={[Function]}
@@ -2216,6 +2217,7 @@ ShallowWrapper {
                 allowCanvasTranslation={true}
                 allowCanvasZoom={true}
                 allowLooseLinks={false}
+                clickDiagram={[Function]}
                 copyNode={[Function]}
                 deleteKeys={
                   Array [
@@ -2646,7 +2648,6 @@ ShallowWrapper {
               <div
                 className=""
                 id="diagram"
-                onClick={[Function]}
                 onContextMenu={[Function]}
                 onDragOver={[Function]}
                 onDrop={[Function]}
@@ -2738,6 +2739,7 @@ ShallowWrapper {
                   allowCanvasTranslation={true}
                   allowCanvasZoom={true}
                   allowLooseLinks={false}
+                  clickDiagram={[Function]}
                   copyNode={[Function]}
                   deleteKeys={
                     Array [
@@ -3190,6 +3192,7 @@ ShallowWrapper {
                     allowCanvasTranslation={true}
                     allowCanvasZoom={true}
                     allowLooseLinks={false}
+                    clickDiagram={[Function]}
                     copyNode={[Function]}
                     deleteKeys={
                       Array [
@@ -3267,7 +3270,6 @@ ShallowWrapper {
                 ],
                 "className": "",
                 "id": "diagram",
-                "onClick": [Function],
                 "onContextMenu": [Function],
                 "onDragOver": [Function],
                 "onDrop": [Function],
@@ -3490,6 +3492,7 @@ ShallowWrapper {
                     "allowCanvasTranslation": true,
                     "allowCanvasZoom": true,
                     "allowLooseLinks": false,
+                    "clickDiagram": [Function],
                     "copyNode": [Function],
                     "deleteKeys": Array [
                       46,
@@ -3554,6 +3557,7 @@ ShallowWrapper {
                       },
                       "superSelect": null,
                     },
+                    "editorOpen": undefined,
                     "forceRepaint": [Function],
                     "inverseZoom": false,
                     "live_mode": undefined,

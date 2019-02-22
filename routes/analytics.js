@@ -33,9 +33,10 @@ exports.getUsersData = (req, res) => {
             SELECT skills.skill_id 
             FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
             WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-              AND live = TRUE`, [skill_id])).rows[0].skill_id
+              AND live = TRUE`, [skill_id])).rows[0]
         
         if(live_skill_id){
+            live_skill_id = live_skill_id.skill_id
             logging_pool.query(
                 `
                 SELECT user_id, count(DISTINCT utterances.session_id) AS sessions, count(*) AS utterances, max(session_end) AS last_interaction, min(session_begin) AS first_interaction 
@@ -67,9 +68,10 @@ exports.getDAU = (req, res) => {
             SELECT skills.skill_id 
             FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
             WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-              AND live = TRUE`, [skill_id])).rows[0].skill_id
+              AND live = TRUE`, [skill_id])).rows[0]
 
         if(live_skill_id){
+            live_skill_id = live_skill_id.skill_id
             let from = req.params.from
             let to = req.params.to
             let dau_query
@@ -122,9 +124,10 @@ exports.getStats = async (req, res) => {
             SELECT skills.skill_id 
             FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
             WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-              AND live = TRUE`, [skill_id])).rows[0].skill_id
+              AND live = TRUE`, [skill_id])).rows[0]
 
         if(live_skill_id) {
+            live_skill_id = live_skill_id.skill_id
             let users = (await logging_pool.query('SELECT count(DISTINCT user_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id])).rows[0]
             let sessions = (await logging_pool.query('SELECT COUNT(DISTINCT session_id) AS count FROM sessions WHERE skill_id = $1', [live_skill_id])).rows[0]
             let interactions = (await logging_pool.query(`

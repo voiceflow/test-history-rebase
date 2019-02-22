@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import SetExpression from './components/SetExpression';
 
 class SetBlock extends Component {
@@ -36,7 +37,8 @@ class SetBlock extends Component {
 
     handleAddBlock() {
         var node = this.state.node;
-
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
         if(node.extras.sets.length < 20){
             node.extras.sets.push({
         		variable: null,
@@ -55,7 +57,8 @@ class SetBlock extends Component {
 
     handleRemoveBlock(i) {
         let node = this.state.node;
-
+        this.props.clearRedo();
+        this.props.updateEvents(_.cloneDeep(node).extras, _.cloneDeep(node).ports);
         if(node.extras.sets.length > 1){
             node.extras.sets.splice(i, 1);
 

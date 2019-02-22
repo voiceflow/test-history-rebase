@@ -474,23 +474,24 @@ export class DiagramWidget extends BaseWidget {
 				diagramEngine.setSuperSelect(selectedItems[0].parentCombine);
 			}
 			if (!_.some(selectedItems, { locked: true })){
-               _.forEach(selectedItems, element => {
-                 if (
-                   !this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
-                 ) {
-									if (element.extras && element.extras.type === 'god'){
-										this.props.onConfirm({
-											warning: true,
-											text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
-											confirm: this.onDeleteConfirm,
-											params: [selectedItems, element]
-										})
-									} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
-										element.remove();
-									} else if (!(element instanceof BlockNodeModel)){
-										element.remove();
-									}
-                 }
+				this.props.removeHandler(selectedItems)
+					_.forEach(selectedItems, element => {
+						if (
+							!this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
+						) {
+							if (element.extras && element.extras.type === 'god'){
+								this.props.onConfirm({
+									warning: true,
+									text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
+									confirm: this.onDeleteConfirm,
+									params: [selectedItems, element]
+								})
+							} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
+								element.remove();
+							} else if (!(element instanceof BlockNodeModel)){
+								element.remove();
+							}
+						}
 			   });
 			}
 			this.forceUpdate();

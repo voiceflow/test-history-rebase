@@ -1,6 +1,5 @@
 const { pool, hashids, jwt, writeToLogs } = require('./../services');
 const isVarName = require('is-var-name');
-const { getEnvVariable } = require('../util')
 
  exports.getTemplate = (req, res) => {
 	let id = hashids.decode(req.params.id)[0];
@@ -17,7 +16,7 @@ const { getEnvVariable } = require('../util')
 				res.sendStatus(404);
 			}else{
 				if(result.rows[0].account_linking){
-					result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'))
+					result.rows[0].account_linking.clientSecret = jwt.verify(result.rows[0].account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE)
 				}
 				result.rows[0].skill_id = hashids.encode(result.rows[0].skill_id);
 				res.send(result.rows[0]);
@@ -35,7 +34,7 @@ const { getEnvVariable } = require('../util')
 	}
 	if(req.body){
 		let account_linking = req.body
-		account_linking.clientSecret = jwt.sign(account_linking.clientSecret, getEnvVariable('ACCOUNT_SECRET_SIGNATURE'));
+		account_linking.clientSecret = jwt.sign(account_linking.clientSecret, process.env.ACCOUNT_SECRET_SIGNATURE);
  		pool.query(
 			'UPDATE skills SET account_linking = $2 WHERE (creator_id = $1 AND skill_id = $3) RETURNING *',
 			[req.user.id, account_linking, skill_id], (err, skill) => {

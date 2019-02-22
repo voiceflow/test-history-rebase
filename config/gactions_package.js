@@ -1,4 +1,3 @@
-const { getEnvVariable } = require('../util')
 const { BUILT_IN_INTENTS_GOOGLE } = require('../app/src/Constants')
 const _ = require('lodash')
 const { getUtterancesWithSlotNames, formatName, getSlotsForKeysAndFormat } = require('../app/src/util')

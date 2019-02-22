@@ -1,4 +1,3 @@
-const { getEnvVariable } = require('../../util')
 const uuid = require('uuid/v4')
 
 module.exports.Agent = (encoded_skill_id) => {
@@ -24,7 +23,7 @@ module.exports.Agent = (encoded_skill_id) => {
       "isDeviceAgent": false
     },
     "webhook": {
-      "url": `${getEnvVariable('SKILL_ENDPOINT')}/state/skill/gactions/${encoded_skill_id}`,
+      "url": `${process.env.SKILL_ENDPOINT}/state/skill/gactions/${encoded_skill_id}`,
       "available": true,
       "useForDomains": false,
       "cloudFunctionsEnabled": false,

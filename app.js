@@ -1,11 +1,11 @@
-require('dotenv').config()
-if (process.env.NODE_ENV) {
-    // eslint-disable-next-line no-console
-    if (process.env.NODE_ENV !== 'test') console.debug(`Running in ${process.env.NODE_ENV} environment`)
-} else {
-    process.env.NODE_ENV = 'test'
-    // eslint-disable-next-line no-console
-    console.debug(`No Environment Set! Running in ${process.env.NODE_ENV} environment by default`)
+const fs = require('fs')
+
+if(process.env.NODE_ENV && fs.existsSync(`./.env.${process.env.NODE_ENV}`)){
+    if (process.env.NODE_ENV !== 'test') console.log(`Running in ${process.env.NODE_ENV} environment`)
+    require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` })
+}else{
+    console.log(`No Environment Set/Not Found! Running default .env file`)
+    require('dotenv').config()
 }
 
 const express = require('express');
@@ -16,16 +16,15 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const {upload, uploadResize, redisClient, jwt, config, verify} = require('./services');
-const { getEnvVariable } = require('./util')
 const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
 
 AWS.config = new AWS.Config({
-    accessKeyId: getEnvVariable('AWS_ACCESS_KEY_ID'),
-    secretAccessKey: getEnvVariable('AWS_SECRET_ACCESS_KEY'),
-    region: getEnvVariable('AWS_REGION'),
-    endpoint: getEnvVariable('AWS_ENDPOINT')
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+    endpoint: process.env.AWS_ENDPOINT
 });
 
 // IMPORT ROUTES

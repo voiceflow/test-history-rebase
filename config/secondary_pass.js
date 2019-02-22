@@ -1,5 +1,4 @@
 const { docClient, writeToLogs } = require('../services')
-const { getEnvVariable } = require('../util')
 const { stripSample } = require('../app/src/util')
 const _ = require('lodash')
 
@@ -9,7 +8,7 @@ const secondPass = async (diagram_id, samples, visited = new Set(), depth = 0) =
   visited.add(diagram_id)
 
   let params = {
-    TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.live`,
+    TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.live`,
     Key: {
       'id': diagram_id
     }
@@ -60,7 +59,7 @@ const secondPass = async (diagram_id, samples, visited = new Set(), depth = 0) =
   }
 
   params = {
-    TableName: `${getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME')}.live`,
+    TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.live`,
     Item: data.Item
   }
   await docClient.put(params).promise()

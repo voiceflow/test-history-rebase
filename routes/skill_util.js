@@ -1,8 +1,7 @@
 const axios = require('axios')
 const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../services')
 const { AccessToken } = require('./authentication')
-const { getEnvVariable } = require('../util')
-const analytics = new (require('analytics-node'))(getEnvVariable('SEGMENT_WRITE_KEY'))
+const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const { renderDiagram } = require('../config/render_diagram')
 
 const generateID = () => {
@@ -17,14 +16,14 @@ exports.deleteDynamoDiagramPromise = (diagram_id) => {
   return new Promise(async (resolve, reject) => {
     try{
       let diagrams_params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Key: {
           'id': diagram_id
         }
       }
       let delete_diagrams_promise = docClient.delete(diagrams_params).promise()
       let skills_params = {
-        TableName: getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME') + '.live',
+        TableName: process.env.SKILLS_DYNAMO_TABLE_BASE_NAME + '.live',
         Key: {
           'id': diagram_id
         }
@@ -37,7 +36,7 @@ exports.deleteDynamoDiagramPromise = (diagram_id) => {
       // don't care whether it's there or not
       try{
         let tests_params = {
-          TableName: getEnvVariable('SKILLS_DYNAMO_TABLE_BASE_NAME') + '.test',
+          TableName: process.env.SKILLS_DYNAMO_TABLE_BASE_NAME + '.test',
           Key: {
             'id': diagram_id
           }
@@ -273,7 +272,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
   const retrieveDiagram = (diagram_id, new_skill_id, platform) => {
     const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
       let params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Item: {
           id: data.diagram.id,
           variables: data.diagram.variables,
@@ -333,7 +332,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
     // retrieveDiagramIds returns this promise
     return new Promise((resolve, reject) => {
       let get_params = {
-        TableName: getEnvVariable('DIAGRAMS_DYNAMO_TABLE'),
+        TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
         Key: {
           'id': diagram_id
         }

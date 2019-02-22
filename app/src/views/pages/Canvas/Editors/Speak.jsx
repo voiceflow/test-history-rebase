@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import VariableText from './components/VariableText';
 import randomstring from 'randomstring';
 import Select from 'react-select';
@@ -46,6 +47,8 @@ class Speak extends Component {
 
     handleAddBlock(audio=false) {
         var node = this.state.node;
+        this.props.clearRedo()
+        this.props.updateEvents(_.cloneDeep(node).extras);
         if(node.extras.dialogs.length < BLOCK_LIMIT){
             if(audio){
                 node.extras.dialogs.push({
@@ -67,6 +70,8 @@ class Speak extends Component {
 
     handleRemoveBlock(i) {
         let node = this.state.node;
+        this.props.clearRedo()
+        this.props.updateEvents(_.cloneDeep(node).extras)
         node.extras.dialogs.splice(i, 1)
         this.onUpdate()
     }

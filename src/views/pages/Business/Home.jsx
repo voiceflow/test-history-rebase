@@ -42,7 +42,10 @@ class Home extends Component {
       dates: [],
       users: 0,
       sessions: 0,
-      interactions: 0
+      interactions: 0,
+      dau_loading: true,
+      stats_loading: true,
+      users_loading: true
     }
 
     this.handleFilterTypeChange = this.handleFilterTypeChange.bind(this)
@@ -103,7 +106,8 @@ class Home extends Component {
 
         this.setState({
           dau: dau,
-          dates: dates
+          dates: dates,
+          dau_loading: false
         })
       })
       .catch(err => {
@@ -122,7 +126,8 @@ class Home extends Component {
     axios.get(`/analytics/${this.props.skill_id}/users`)
       .then(res => {
         this.setState({
-          users_data: res.data
+          users_data: res.data,
+          users_loading: false
         })
       })
       .catch(err => {
@@ -134,7 +139,8 @@ class Home extends Component {
         this.setState({
           users: res.data.users,
           sessions: res.data.sessions,
-          interactions: res.data.interactions
+          interactions: res.data.interactions,
+          stats_loading: false
         })
       })
       .catch(err => {
@@ -216,9 +222,18 @@ class Home extends Component {
                       <td><label>Interactions</label></td>
                     </tr>
                     <tr>
-                      <td>{this.state.users}</td>
-                      <td>{this.state.sessions}</td>
-                      <td>{this.state.interactions}</td>
+                      <td>{this.state.stats_loading ?
+                           <span className="loader" />
+                           : 
+                           this.state.users}</td>
+                      <td>{this.state.stats_loading ?
+                           <span className="loader" />
+                           :
+                           this.state.sessions}</td>
+                      <td>{this.state.stats_loading ?
+                           <span className="loader" />
+                           :
+                           this.state.interactions}</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -228,7 +243,11 @@ class Home extends Component {
               </div>
             </div>
             <div className="row">
+              {this.state.dau_loading ?
+              <span className="loader" />
+              :
               <LineBar dau={this.state.dau} dates={this.state.dates}/>
+              }
             </div>
           </div>
           <div className="graph-form mt-5">
@@ -236,6 +255,9 @@ class Home extends Component {
               <h5>User Statistics</h5>
             </div>
             <div className="row justify-content-center">
+              {this.state.users_loading ?
+              <span className="loader" />
+              :
               <ReactTable
                 className="w-100"
                 data={this.state.users_data}
@@ -247,6 +269,7 @@ class Home extends Component {
                   }]
                 }
               />
+              }
             </div>
           </div>
         </div>

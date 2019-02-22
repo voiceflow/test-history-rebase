@@ -345,7 +345,7 @@ class Skill extends Component {
 
     toggleLiveMode(disableCb){
         if(this.state.live_mode){
-            this.child_canvas.current.saveCB = () => {
+            window.saveCB = () => {
                 let s = this.state
                 this.setState({
                     skill: s.dev_skill,
@@ -363,7 +363,7 @@ class Skill extends Component {
         } else {
             axios.get(`/skill/${this.state.live_version}`)
             .then((res) => {
-                this.child_canvas.current.saveCB = () => {
+                window.saveCB = () => {
                     this.setState({
                         skill: res.data,
                         diagram_id: res.data.diagram,

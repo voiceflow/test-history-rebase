@@ -705,7 +705,7 @@ class ActionGroup extends PureComponent {
                             distance={16}
                         >
                             <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
-                                Update Live Version <div className="launch">
+                                Update Live <div className="launch">
                                     <div className="first">
                                         <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
                                     </div>

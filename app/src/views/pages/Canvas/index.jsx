@@ -222,7 +222,7 @@ class Canvas extends Component {
     }
     componentDidMount() {
         this.setMousetrap()
-
+        this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
@@ -1254,7 +1254,7 @@ class Canvas extends Component {
         }
 
         if (flow_id === this.props.diagram_id && !this.props.preview) {
-            this.saveCB = () => {
+            window.saveCB = () => {
                 copy(false)
             }
             this.onSave()
@@ -1488,18 +1488,18 @@ class Canvas extends Component {
                         saving: false,
                         saved: true
                     })
-                    if(typeof this.saveCB === "function"){
-                        this.saveCB(serialize.id)
-                        this.saveCB = null
+                    if(typeof window.saveCB === "function"){
+                        window.saveCB(serialize.id)
+                        window.saveCB = null
                     }
                 }).catch(rej_err => {
                     this.saving = false
                     state && this.setState({
                         saving: false
                     }) && this.props.onError('Error Saving Project')
-                    if(typeof this.saveCB === "function"){
-                        this.saveCB(null)
-                        this.saveCB = null
+                    if(typeof window.saveCB === "function"){
+                        window.saveCB(null)
+                        window.saveCB = null
                     }
                 })
             }
@@ -1507,9 +1507,9 @@ class Canvas extends Component {
             this.saving = false
             console.log(e)
             state && this.props.onError('Error Saving - Project Structure (Check Logs)')
-            if(typeof this.saveCB === "function"){
-                this.saveCB(null)
-                this.saveCB = null
+            if(typeof window.saveCB === "function"){
+                window.saveCB(null)
+                window.saveCB = null
             }
         }
     }
@@ -1924,7 +1924,7 @@ class Canvas extends Component {
         if(this.props.preview){
             this.runTest()
         } else {
-            this.saveCB = (diagram_id) => {
+            window.saveCB = (diagram_id) => {
                 if(diagram_id === null){
                     this.setState({
                         testing_modal: false
@@ -2008,7 +2008,7 @@ class Canvas extends Component {
         }
 
         // save the current diagram
-        this.saveCB = () => {
+        window.saveCB = () => {
             this.saveCB = null
             // Generate a new diagram, save it, and go to it
             let curr_template
@@ -2109,7 +2109,7 @@ class Canvas extends Component {
         if(new_diagram_id !== this.props.diagram_id){
             this.setState({loading_diagram: true})
             if(save && !this.props.preview){
-                this.saveCB = () => {
+                window.saveCB = () => {
                     this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
                 }
                 this.onSave()
@@ -2589,7 +2589,7 @@ class Canvas extends Component {
                 />
                 { !this.props.preview ? <ActionGroup
                         lastSave={(this.state.last_save ? "Last saved " + moment(this.state.last_save).fromNow() : "Save")}
-                        setCB={(cb)=>{this.saveCB=cb}}
+                        setCB={(cb)=>{window.saveCB=cb}}
                         skill={this.state.skill}
                         preview={this.props.preview}
                         title={this.state.diagram_name}

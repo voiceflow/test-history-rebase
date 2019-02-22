@@ -3,6 +3,7 @@ const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../s
 const { AccessToken } = require('./authentication')
 const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const { renderDiagram } = require('../config/render_diagram')
+const { PLATFORMS } = require('../config/Constants')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -118,7 +119,6 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
     try{
       if(!opts.diagram_updated){
         let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
-
         if(skill_data_rows.length === 0){
           console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
           resolve()
@@ -308,7 +308,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
             node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
             sub_diagrams.push(node.extras.diagram_id)
           } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
-            node.extras[platform].diagram_id = diagram_mapping[node.extras[platform].diagram_id]
+
+            PLATFORMS.forEach(p => {
+              node.extras[p].diagram_id = diagram_mapping[node.extras[p].diagram_id]
+            })
+
             sub_diagrams.push(node.extras[platform].diagram_id)
           } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
             node.extras.display_id = remapped_displays[node.extras.display_id]
@@ -428,7 +432,6 @@ exports.copySkill = async (req, res, options, cb = false) => {
 
   try {
     let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
-
     // Copy products, displays, and email templates on sql and store new ids for remapping
     if(options.user_copy) {
       try{
@@ -464,15 +467,16 @@ exports.copySkill = async (req, res, options, cb = false) => {
               res.sendStatus(500)
             }
           })
-          
-          analytics.track({
-            userId: req.user.id,
-            event: 'Project Created',
-            properties: {
-              skill_id: copy_skill.skill_id,
-              original_skill_id: id
-            }
-          })
+          if(process.env.NODE_ENV !== 'test'){
+            analytics.track({
+              userId: req.user.id,
+              event: 'Project Created',
+              properties: {
+                skill_id: copy_skill.skill_id,
+                original_skill_id: id
+              }
+            })
+          }
         }
 
         if(options.renderDiagram){

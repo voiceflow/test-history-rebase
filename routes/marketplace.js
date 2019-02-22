@@ -483,7 +483,6 @@ const retrieveTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-					console.log(data.rows[0])
 					let template_diagram_id = data.rows[0].diagram_id;
 					let params = {
 						TableName: `${process.env.SKILLS_DYNAMO_TABLE_BASE_NAME}.market`,
@@ -555,11 +554,10 @@ const getDefaultTemplates = (req, res) => {
 // NEW PROJECTS CREATED HERE
 const copyDefaultTemplate = (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
-
 	// Retrieve diagram, trying 5 times 
 	const getDiagram = (row, num_tries) => {
 		let params = {
-			TableName: `${process.env.DIAGRAMS_DYNAMO_TABLE}`,
+			TableName: `${getEnvVariable('DIAGRAMS_DYNAMO_TABLE')}`,
 			Key: {'id': row.diagram}
 		}
 
@@ -587,7 +585,7 @@ const copyDefaultTemplate = (req, res) => {
 			let sum = `This is a new summary for the skill ${name}`;
 			let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
 			let locales = ['en-US']
-			let platform = req.body.platform
+			let platform = req.body.platform || 'alexa'
 		
 			if (req.body.locales) {
 				locales = req.body.locales
@@ -608,9 +606,10 @@ const copyDefaultTemplate = (req, res) => {
 					res.send(skill)
 				}
 			})
+		} else {
+			res.send(skill)
 		}
 	}
-
 	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
 		[module_id],
 		(err, data) => {

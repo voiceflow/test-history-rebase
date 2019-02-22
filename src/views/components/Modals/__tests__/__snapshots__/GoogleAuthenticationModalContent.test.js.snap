@@ -1,0 +1,868 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render Google Auth Modal Test render default modal 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <MultiPlatformModalContent />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <div>
+          <div
+            className="mt-3 mb-4"
+            style={
+              Object {
+                "padding": "0 2em 0 2em",
+              }
+            }
+          >
+            <div
+              className="my-2"
+            >
+              Step 1
+            </div>
+            <div
+              className="text-muted my-3"
+              style={
+                Object {
+                  "fontSize": "0.9rem",
+                }
+              }
+            >
+              Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
+            </div>
+            <a
+              href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <button
+                className="btn btn-clear"
+                type="button"
+              >
+                Log In
+              </button>
+            </a>
+          </div>
+          <hr />
+          <div
+            className="my-4"
+            style={
+              Object {
+                "padding": "0 2em 0 2em",
+              }
+            }
+          >
+            <div
+              className="my-2"
+            >
+              Step 2
+            </div>
+            <div
+              className="text-muted mb-2 mt-3"
+              style={
+                Object {
+                  "fontSize": "0.9rem",
+                }
+              }
+            >
+              Copy and paste the authentication code given in the field below.
+            </div>
+            <Input
+              className="form-bg"
+              name="google_token"
+              placeholder="Paste your Google Authentication Token here"
+              type="text"
+            />
+          </div>
+        </div>,
+        <div
+          className="d-flex justify-content-center py-4 w-100"
+          style={
+            Object {
+              "backgroundColor": "#eff2f8",
+              "borderRadius": "0 0 10px 10px",
+              "borderTop": "1px solid 1px solid rgba(141, 162, 181, .28)",
+            }
+          }
+        >
+          <button
+            className="purple-btn mr-4"
+            type="button"
+          >
+            Verify
+          </button>
+        </div>,
+      ],
+      "className": "d-flex flex-column",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <div
+              className="mt-3 mb-4"
+              style={
+                Object {
+                  "padding": "0 2em 0 2em",
+                }
+              }
+            >
+              <div
+                className="my-2"
+              >
+                Step 1
+              </div>
+              <div
+                className="text-muted my-3"
+                style={
+                  Object {
+                    "fontSize": "0.9rem",
+                  }
+                }
+              >
+                Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
+              </div>
+              <a
+                href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button
+                  className="btn btn-clear"
+                  type="button"
+                >
+                  Log In
+                </button>
+              </a>
+            </div>,
+            <hr />,
+            <div
+              className="my-4"
+              style={
+                Object {
+                  "padding": "0 2em 0 2em",
+                }
+              }
+            >
+              <div
+                className="my-2"
+              >
+                Step 2
+              </div>
+              <div
+                className="text-muted mb-2 mt-3"
+                style={
+                  Object {
+                    "fontSize": "0.9rem",
+                  }
+                }
+              >
+                Copy and paste the authentication code given in the field below.
+              </div>
+              <Input
+                className="form-bg"
+                name="google_token"
+                placeholder="Paste your Google Authentication Token here"
+                type="text"
+              />
+            </div>,
+          ],
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="my-2"
+                >
+                  Step 1
+                </div>,
+                <div
+                  className="text-muted my-3"
+                  style={
+                    Object {
+                      "fontSize": "0.9rem",
+                    }
+                  }
+                >
+                  Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
+                </div>,
+                <a
+                  href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <button
+                    className="btn btn-clear"
+                    type="button"
+                  >
+                    Log In
+                  </button>
+                </a>,
+              ],
+              "className": "mt-3 mb-4",
+              "style": Object {
+                "padding": "0 2em 0 2em",
+              },
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Step 1",
+                  "className": "my-2",
+                },
+                "ref": null,
+                "rendered": "Step 1",
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.",
+                  "className": "text-muted my-3",
+                  "style": Object {
+                    "fontSize": "0.9rem",
+                  },
+                },
+                "ref": null,
+                "rendered": "Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.",
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": <button
+                    className="btn btn-clear"
+                    type="button"
+                  >
+                    Log In
+                  </button>,
+                  "href": "https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state",
+                  "rel": "noopener noreferrer",
+                  "target": "_blank",
+                },
+                "ref": null,
+                "rendered": Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Log In",
+                    "className": "btn btn-clear",
+                    "type": "button",
+                  },
+                  "ref": null,
+                  "rendered": "Log In",
+                  "type": "button",
+                },
+                "type": "a",
+              },
+            ],
+            "type": "div",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": "hr",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": Array [
+                <div
+                  className="my-2"
+                >
+                  Step 2
+                </div>,
+                <div
+                  className="text-muted mb-2 mt-3"
+                  style={
+                    Object {
+                      "fontSize": "0.9rem",
+                    }
+                  }
+                >
+                  Copy and paste the authentication code given in the field below.
+                </div>,
+                <Input
+                  className="form-bg"
+                  name="google_token"
+                  placeholder="Paste your Google Authentication Token here"
+                  type="text"
+                />,
+              ],
+              "className": "my-4",
+              "style": Object {
+                "padding": "0 2em 0 2em",
+              },
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Step 2",
+                  "className": "my-2",
+                },
+                "ref": null,
+                "rendered": "Step 2",
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "host",
+                "props": Object {
+                  "children": "Copy and paste the authentication code given in the field below.",
+                  "className": "text-muted mb-2 mt-3",
+                  "style": Object {
+                    "fontSize": "0.9rem",
+                  },
+                },
+                "ref": null,
+                "rendered": "Copy and paste the authentication code given in the field below.",
+                "type": "div",
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "className": "form-bg",
+                  "disabled": undefined,
+                  "name": "google_token",
+                  "onChange": undefined,
+                  "placeholder": "Paste your Google Authentication Token here",
+                  "type": "text",
+                  "value": undefined,
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+            ],
+            "type": "div",
+          },
+        ],
+        "type": "div",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <button
+              className="purple-btn mr-4"
+              type="button"
+            >
+              Verify
+            </button>,
+            undefined,
+          ],
+          "className": "d-flex justify-content-center py-4 w-100",
+          "style": Object {
+            "backgroundColor": "#eff2f8",
+            "borderRadius": "0 0 10px 10px",
+            "borderTop": "1px solid 1px solid rgba(141, 162, 181, .28)",
+          },
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "children": "Verify",
+              "className": "purple-btn mr-4",
+              "onClick": undefined,
+              "type": "button",
+            },
+            "ref": null,
+            "rendered": "Verify",
+            "type": "button",
+          },
+          undefined,
+        ],
+        "type": "div",
+      },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <div>
+            <div
+              className="mt-3 mb-4"
+              style={
+                Object {
+                  "padding": "0 2em 0 2em",
+                }
+              }
+            >
+              <div
+                className="my-2"
+              >
+                Step 1
+              </div>
+              <div
+                className="text-muted my-3"
+                style={
+                  Object {
+                    "fontSize": "0.9rem",
+                  }
+                }
+              >
+                Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
+              </div>
+              <a
+                href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <button
+                  className="btn btn-clear"
+                  type="button"
+                >
+                  Log In
+                </button>
+              </a>
+            </div>
+            <hr />
+            <div
+              className="my-4"
+              style={
+                Object {
+                  "padding": "0 2em 0 2em",
+                }
+              }
+            >
+              <div
+                className="my-2"
+              >
+                Step 2
+              </div>
+              <div
+                className="text-muted mb-2 mt-3"
+                style={
+                  Object {
+                    "fontSize": "0.9rem",
+                  }
+                }
+              >
+                Copy and paste the authentication code given in the field below.
+              </div>
+              <Input
+                className="form-bg"
+                name="google_token"
+                placeholder="Paste your Google Authentication Token here"
+                type="text"
+              />
+            </div>
+          </div>,
+          <div
+            className="d-flex justify-content-center py-4 w-100"
+            style={
+              Object {
+                "backgroundColor": "#eff2f8",
+                "borderRadius": "0 0 10px 10px",
+                "borderTop": "1px solid 1px solid rgba(141, 162, 181, .28)",
+              }
+            }
+          >
+            <button
+              className="purple-btn mr-4"
+              type="button"
+            >
+              Verify
+            </button>
+          </div>,
+        ],
+        "className": "d-flex flex-column",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <div
+                className="mt-3 mb-4"
+                style={
+                  Object {
+                    "padding": "0 2em 0 2em",
+                  }
+                }
+              >
+                <div
+                  className="my-2"
+                >
+                  Step 1
+                </div>
+                <div
+                  className="text-muted my-3"
+                  style={
+                    Object {
+                      "fontSize": "0.9rem",
+                    }
+                  }
+                >
+                  Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
+                </div>
+                <a
+                  href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <button
+                    className="btn btn-clear"
+                    type="button"
+                  >
+                    Log In
+                  </button>
+                </a>
+              </div>,
+              <hr />,
+              <div
+                className="my-4"
+                style={
+                  Object {
+                    "padding": "0 2em 0 2em",
+                  }
+                }
+              >
+                <div
+                  className="my-2"
+                >
+                  Step 2
+                </div>
+                <div
+                  className="text-muted mb-2 mt-3"
+                  style={
+                    Object {
+                      "fontSize": "0.9rem",
+                    }
+                  }
+                >
+                  Copy and paste the authentication code given in the field below.
+                </div>
+                <Input
+                  className="form-bg"
+                  name="google_token"
+                  placeholder="Paste your Google Authentication Token here"
+                  type="text"
+                />
+              </div>,
+            ],
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="my-2"
+                  >
+                    Step 1
+                  </div>,
+                  <div
+                    className="text-muted my-3"
+                    style={
+                      Object {
+                        "fontSize": "0.9rem",
+                      }
+                    }
+                  >
+                    Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.
+                  </div>,
+                  <a
+                    href="https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <button
+                      className="btn btn-clear"
+                      type="button"
+                    >
+                      Log In
+                    </button>
+                  </a>,
+                ],
+                "className": "mt-3 mb-4",
+                "style": Object {
+                  "padding": "0 2em 0 2em",
+                },
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Step 1",
+                    "className": "my-2",
+                  },
+                  "ref": null,
+                  "rendered": "Step 1",
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.",
+                    "className": "text-muted my-3",
+                    "style": Object {
+                      "fontSize": "0.9rem",
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "Give Voiceflow access to manage Google Assistant projects by pasting your authentication token.",
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": <button
+                      className="btn btn-clear"
+                      type="button"
+                    >
+                      Log In
+                    </button>,
+                    "href": "https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=237807841406-o6vu1tjkq8oqjub8jilj6vuc396e2d0c.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Factions.builder&state=state",
+                    "rel": "noopener noreferrer",
+                    "target": "_blank",
+                  },
+                  "ref": null,
+                  "rendered": Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "host",
+                    "props": Object {
+                      "children": "Log In",
+                      "className": "btn btn-clear",
+                      "type": "button",
+                    },
+                    "ref": null,
+                    "rendered": "Log In",
+                    "type": "button",
+                  },
+                  "type": "a",
+                },
+              ],
+              "type": "div",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {},
+              "ref": null,
+              "rendered": null,
+              "type": "hr",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": Array [
+                  <div
+                    className="my-2"
+                  >
+                    Step 2
+                  </div>,
+                  <div
+                    className="text-muted mb-2 mt-3"
+                    style={
+                      Object {
+                        "fontSize": "0.9rem",
+                      }
+                    }
+                  >
+                    Copy and paste the authentication code given in the field below.
+                  </div>,
+                  <Input
+                    className="form-bg"
+                    name="google_token"
+                    placeholder="Paste your Google Authentication Token here"
+                    type="text"
+                  />,
+                ],
+                "className": "my-4",
+                "style": Object {
+                  "padding": "0 2em 0 2em",
+                },
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Step 2",
+                    "className": "my-2",
+                  },
+                  "ref": null,
+                  "rendered": "Step 2",
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "host",
+                  "props": Object {
+                    "children": "Copy and paste the authentication code given in the field below.",
+                    "className": "text-muted mb-2 mt-3",
+                    "style": Object {
+                      "fontSize": "0.9rem",
+                    },
+                  },
+                  "ref": null,
+                  "rendered": "Copy and paste the authentication code given in the field below.",
+                  "type": "div",
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "className": "form-bg",
+                    "disabled": undefined,
+                    "name": "google_token",
+                    "onChange": undefined,
+                    "placeholder": "Paste your Google Authentication Token here",
+                    "type": "text",
+                    "value": undefined,
+                  },
+                  "ref": null,
+                  "rendered": null,
+                  "type": [Function],
+                },
+              ],
+              "type": "div",
+            },
+          ],
+          "type": "div",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <button
+                className="purple-btn mr-4"
+                type="button"
+              >
+                Verify
+              </button>,
+              undefined,
+            ],
+            "className": "d-flex justify-content-center py-4 w-100",
+            "style": Object {
+              "backgroundColor": "#eff2f8",
+              "borderRadius": "0 0 10px 10px",
+              "borderTop": "1px solid 1px solid rgba(141, 162, 181, .28)",
+            },
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "children": "Verify",
+                "className": "purple-btn mr-4",
+                "onClick": undefined,
+                "type": "button",
+              },
+              "ref": null,
+              "rendered": "Verify",
+              "type": "button",
+            },
+            undefined,
+          ],
+          "type": "div",
+        },
+      ],
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+  },
+}
+`;

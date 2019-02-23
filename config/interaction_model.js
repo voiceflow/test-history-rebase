@@ -392,22 +392,26 @@ exports.createInteractionModel = (req, locale) => {
 		}
 	})
 
-	// amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
-	if(entered_intents.size > default_size){
-		// this removes the examples for locale default intents, they were there to match choice blocks
-		LOCALE_DEFAULTS.defaults.forEach(intent => {
+	// this removes the examples for locale default intents, they were there to match choice blocks
+	LOCALE_DEFAULTS.defaults.forEach(intent => {
+		intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
+		console.log(intent)
+		if(intent.keep){
+			// amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
+			// right now all the yes intents will have at least a "yes" as a sample
+			intent.samples = [...intent.samples, ...intent.keep]
+			delete intent.keep
+		}
+		if(intent.samples.length === 0) delete intent.samples
+	})
+
+	LOCALE_DEFAULTS.built_ins.forEach(intent => {
+		// if this built in intent actually got used, give it the same treatment as the default ones
+		if(entered_intents.has(intent.name)){
 			intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
 			if(intent.samples.length === 0) delete intent.samples
-		})
-
-		LOCALE_DEFAULTS.built_ins.forEach(intent => {
-			// if this built in intent actually got used, give it the same treatment as the default ones
-			if(entered_intents.has(intent.name)){
-				intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
-				if(intent.samples.length === 0) delete intent.samples
-			}
-		})
-	}
+		}
+	})
 
 	const interaction_model = {
 		"interactionModel": {

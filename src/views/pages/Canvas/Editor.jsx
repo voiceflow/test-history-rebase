@@ -186,10 +186,11 @@ class Editor extends Component {
         });
     }
 
-    getSlotTypes(locales) {
+    getSlotTypes(locales, filter) {
         let slots = [SLOT_TYPES[0]] //Custom Slot
         for (let i in SLOT_TYPES) {
             const slot = SLOT_TYPES[i]
+            if(filter && filter === slot.label) continue
             if ((slot.type.google && this.props.platform === 'google') || (slot.type.alexa && this.props.platform === 'alexa')) {
                 const slot_locales = slot.locales[this.props.platform]
                 if (this.props.platform === 'google') {
@@ -334,7 +335,7 @@ class Editor extends Component {
             case 'capture':
                 return <Capture
                     live_mode={this.props.live_mode}
-                    slot_types={this.getSlotTypes(this.props.locales)}
+                    slot_types={this.getSlotTypes(this.props.locales, 'SearchQuery')}
                     platform={this.props.platform}
                     node={this.state.node}
                     onUpdate={this.props.onUpdate} 

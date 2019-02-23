@@ -444,7 +444,7 @@ class Editor extends Component {
     EditorRender(){
         let variables = this.props.global_variables.concat(this.props.variables)
         return <React.Fragment>
-            {React.cloneElement(this.BlockViewer(variables),{
+            {this.BlockViewer(variables) && React.cloneElement(this.BlockViewer(variables),{
                 node: this.state.node,
                 onUpdate: this.props.onUpdate,
                 updateEvents: this.props.addUndo,

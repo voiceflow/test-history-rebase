@@ -2411,7 +2411,8 @@ class Canvas extends Component {
                 node.extras = {
                     display_id: null,
                     datasource: '',
-                    update_on_change: false
+                    update_on_change: false,
+                    apl_commands: ''
                 }
             } else if (type === 'stream') {
                 node.addInPort(' ')

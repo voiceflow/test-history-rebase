@@ -43,6 +43,7 @@ class Display extends Component {
         this.onChange = this.onChange.bind(this);
         this.selectDisplay = this.selectDisplay.bind(this);
         this.onChangeEditor = this.onChangeEditor.bind(this)
+        this.onChangeCommands = this.onChangeCommands.bind(this)
         this.updateOnChange = this.updateOnChange.bind(this)
         this.renderDisplayTest = this.renderDisplayTest.bind(this)
         this.testDisplay = this.testDisplay.bind(this)
@@ -62,6 +63,14 @@ class Display extends Component {
     onChangeEditor(value) {
         const node = this.state.node
         node.extras.datasource = value
+        this.setState({
+            node: node
+        }, () => this.props.onUpdate())
+    }
+
+    onChangeCommands(value) {
+        const node = this.state.node
+        node.extras.apl_commands = value
         this.setState({
             node: node
         }, () => this.props.onUpdate())
@@ -302,6 +311,36 @@ class Display extends Component {
                         tabSize: 2,
                         useWorker: false
                     }}/>
+                {window.user_detail.admin === 70 && <label>APL Commands</label>}
+                {window.user_detail.admin === 70 && <AceEditor
+                    name="apl_commands_editor"
+                    className="datasource_editor"
+                    mode="json_custom"
+                    theme="monokai"
+                    onChange={this.onChangeCommands}
+                    fontSize={14}
+                    showPrintMargin={false}
+                    showGutter={true}
+                    highlightActiveLine={true}
+                    value={this.state.node.extras.apl_commands}
+                    editorProps={{
+                        $blockScrolling: true,
+                        $rules: {
+                            start : [
+                                {
+                                    token : "highlightWords",
+                                    regex : "word1|word2|word3|phrase one|phrase number two|etc"
+                                }]
+                        }
+                    }}
+                    setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: false,
+                        enableSnippets: false,
+                        showLineNumbers: true,
+                        tabSize: 2,
+                        useWorker: false
+                    }}/>}
                 </div>
             </React.Fragment>
         );

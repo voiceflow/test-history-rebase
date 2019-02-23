@@ -607,7 +607,7 @@ class Canvas extends Component {
                     this.props.shiftUndo()
                 }
                 this.props.addUndo([selected], 'remove')
-                this.props.clearReod()
+                this.props.clearRedo()
                 selected.remove()
             }
         } else {

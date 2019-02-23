@@ -1175,7 +1175,7 @@ exports.DEFAULT_INTENTS = {
   "en": {
     "defaults": [{
         "name": "AMAZON.CancelIntent",
-        "samples": ["cancel"]
+        "samples": ["cancel"],
       },
       {
         "name": "AMAZON.HelpIntent",
@@ -1187,7 +1187,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["yes", "yea", "ok", "okay", "yup", "ya", "sure"]
+        "samples": ["yes", "yea", "ok", "okay", "yup", "ya", "sure"],
+        "keep": ["yes"]
       },
       {
         "name": "AMAZON.NoIntent",
@@ -1217,7 +1218,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["oui","yep","ok","bien sûr","ouais","ouaip","exactement","correct","okay","d'accord"]
+        "samples": ["oui","yep","ok","bien sûr","ouais","ouaip","exactement","correct","okay","d'accord"],
+        "keep": ["oui"]
       },
       {
         "name": "AMAZON.NoIntent",
@@ -1247,7 +1249,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["yes", "はい", "ええ", "そうです"]
+        "samples": ["yes", "はい", "ええ", "そうです"],
+        "keep": ["はい"]
       },
       {
         "name": "AMAZON.NoIntent",
@@ -1277,7 +1280,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["yes", "si", "certo"]
+        "samples": ["yes", "si", "certo"],
+        "keep": ["si"]
       },
       {
         "name": "AMAZON.NoIntent",
@@ -1307,7 +1311,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["yes", "si", "decir si"]
+        "samples": ["yes", "si", "decir si"],
+        "keep": ["si"]
       },
       {
         "name": "AMAZON.NoIntent",
@@ -1338,7 +1343,8 @@ exports.DEFAULT_INTENTS = {
       },
       {
         "name": "AMAZON.YesIntent",
-        "samples": ["yes", "ja", "doch", "jawohl"]
+        "samples": ["yes", "ja", "doch", "jawohl"],
+        "keep": ["ja"]
       },
       {
         "name": "AMAZON.NoIntent",

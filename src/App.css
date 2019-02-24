@@ -13,7 +13,7 @@ body {
     display: block;
     width: 100%;
     font: normal 15px/1.4666666667 Open Sans,Arial,sans-serif;
-    color: #132144;
+    color: #0b1a38;
     background-color: #fff;
     background-image: none;
     background-clip: padding-box;
@@ -168,11 +168,12 @@ body {
     padding-left: 40px !important;
 }
 .user-input {
-    background-image: url('/user.svg') !important;
-    background-size: auto 50% !important;
+    background-image: url(/user.svg) !important;
+    background-size: auto 20px !important;
     background-repeat: no-repeat !important;
-    background-position: 10px center !important;
-    padding-left: 34px !important;
+    background-position: 15px center !important;
+    padding-left: 50px !important;
+    padding-top: 10px;
 }
 .dollar-input{
     background-image: url('/dollar.svg') !important;
@@ -834,11 +835,11 @@ border-radius: 0px 5px 5px 0px !important;
 }
 label {
     /* color: #8da2b5 !important; */
-    font-weight: 400 !important;
+    font-weight: 700 !important;
     font-size: 15px !important;
     display: block;
     font-weight: 600 !important;
-    color: #62778c !important;
+    color: #0b1a38 !important;
     margin-bottom: 11px;
     /*margin: 0px !important;*/
 }
@@ -893,7 +894,9 @@ input, textarea, .text-to-voice, .choice-block,{
 }
 input::placeholder, textarea::placeholder, select:required:invalid, input.form-control::placeholder, textarea.form-control::placeholder,
 .select-box__placeholder {
-    color: #8da2b5 !important;
+    color: #8DA2B5 !important;
+    font-weight: 400;
+    font-size: 15px;
 }
 .TitleBar .publish-btn:hover{
     color: #3d96f0 !important;
@@ -1161,7 +1164,10 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 .text-muted {
     color: #8da2b5 !important;
 }
-
+.tiny-txt{
+    color: #8da2b5 !important;
+    font-size: 12px !important;
+}
 .super-center {
     display: flex;
     justify-content: center;
@@ -1503,7 +1509,7 @@ body.modal-open {
     font-size: 18px;
     width: fit-content;
     width: 500px;
-    color: #132144;
+    color: #0b1a38;
     left: 9px;
     background-color: #fff;
     padding-left: 7px;

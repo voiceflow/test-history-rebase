@@ -22,6 +22,7 @@ class ContainedTextarea extends PureComponent {
 
   render(){
     return <Textarea
+      placeholder={this.props.placeholder}
       className={this.props.className} 
       value={this.state.value} 
       onChange={this.handleChange} 
@@ -145,8 +146,12 @@ class ChoiceInput extends Component {
               <button className="close" onClick={()=>this.props.remove()} disabled={this.props.live_mode}>&times;</button>
             </div>
             {has_entry && <div>
-              <ContainedTextarea className="form-control user-input mb-3 form-bg" value={this.state.samples[0].text} onChange={(text) => this.updateSample(text, 0)}/>
-              <div className="space-between pointer ml-1" onClick={this.toggleOpen}>
+              <ContainedTextarea
+                placeholder='Enter user reply'
+                className="form-control user-input mb-3 form-bg" 
+                value={this.state.samples[0].text} 
+                onChange={(text) => this.updateSample(text, 0)}/>
+              <div className="space-between pointer ml-1 mb-1" onClick={this.toggleOpen}>
                 <label>Synonyms ({this.state.samples.length - 1})</label>
                 <i className={"text-muted fas fa-caret-down rotate" + (this.props.choice.open ? "" : " fa-rotate-90")}/>
               </div>

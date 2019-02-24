@@ -19,7 +19,7 @@
 }
 .interaction-utterance {
     border-bottom: 1px solid #e9eef3 !important;
-    padding: 0px 0px 5px 0px;
+    padding: 8px 0px 7px 9px;
     display: flex;
     color: #8DA2B5 !important;
 }
@@ -37,7 +37,7 @@
 }
 
 .trash-icon {
-    padding: 13px 4px 0 5px;
+    padding: 5px 4px 0 5px;
     cursor: pointer;
     color: #ccd5dc;
 }

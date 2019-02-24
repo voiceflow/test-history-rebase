@@ -145,7 +145,7 @@ class ChoiceInput extends Component {
               <button className="close" onClick={()=>this.props.remove()} disabled={this.props.live_mode}>&times;</button>
             </div>
             {has_entry && <div>
-              <ContainedTextarea className="form-control user-input mb-2" value={this.state.samples[0].text} onChange={(text) => this.updateSample(text, 0)}/>
+              <ContainedTextarea className="form-control user-input mb-3 form-bg" value={this.state.samples[0].text} onChange={(text) => this.updateSample(text, 0)}/>
               <div className="space-between pointer ml-1" onClick={this.toggleOpen}>
                 <label>Synonyms ({this.state.samples.length - 1})</label>
                 <i className={"text-muted fas fa-caret-down rotate" + (this.props.choice.open ? "" : " fa-rotate-90")}/>
@@ -162,14 +162,14 @@ class ChoiceInput extends Component {
                   html={this.state.text_error}
               >
                 <Textarea
-                  className={"form-control" + (has_entry ? (this.state.samples.length === 1 ?  ' mb-2' : '') : ' user-input')}
+                  className={"form-control form-bg" + (has_entry ? (this.state.samples.length === 1 ?  ' mb-3' : '') : ' user-input')}
                   value={this.state.text}
                   onChange={this.onTextChange}
-                  placeholder={this.state.samples.length ? "Enter Synonyms" : "Enter User Reply"}
+                  placeholder={this.state.samples.length ? "Enter synonyms of the user reply" : "Enter user reply"}
                   disabled={this.props.live_mode}
                   onKeyPress={this.handleKeyPress}/>
               </Tooltip>
-              {!has_entry && <div className="space-between my-1 pl-1">
+              {!has_entry && <div className="space-between my-2 pl-1">
                 <small className="text-muted">Press "Enter" to add</small>
                 <span className="key-bubble forward pointer" onClick={this.addUtterance}><i className="far fa-long-arrow-right"/></span>
               </div>}

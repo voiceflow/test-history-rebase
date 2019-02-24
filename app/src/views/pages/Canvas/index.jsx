@@ -2217,12 +2217,7 @@ class Canvas extends Component {
                 node.addInPort(' ')
                 node.addOutPort('else').setMaximumLinks(1)
                 node.extras = {
-                    audio: '',
-                    audioText: '',
-                    audioVoice: '',
-                    prompt: '',
-                    promptText: '',
-                    promptVoice: '',
+                    choices: [],
                     inputs: []
                 };
             } else if(type === 'exit'){
@@ -2410,7 +2405,8 @@ class Canvas extends Component {
                 node.extras = {
                     display_id: null,
                     datasource: '',
-                    update_on_change: false
+                    update_on_change: false,
+                    apl_commands: ''
                 }
             } else if (type === 'stream') {
                 node.addInPort(' ')

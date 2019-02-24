@@ -739,6 +739,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             display_id: id[0],
             datasource: node.extras.datasource,
             update_on_change: node.extras.update_on_change,
+            apl_commands: node.extras.apl_commands,
             nextId: getLink(node.ports.filter(a => a.in === false)[0].links[0])
           }
         } else if(node.extras.type === 'reminder') {

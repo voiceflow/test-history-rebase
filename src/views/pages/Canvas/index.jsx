@@ -2217,12 +2217,6 @@ class Canvas extends Component {
                 node.addInPort(' ')
                 node.addOutPort('else').setMaximumLinks(1)
                 node.extras = {
-                    audio: '',
-                    audioText: '',
-                    audioVoice: '',
-                    prompt: '',
-                    promptText: '',
-                    promptVoice: '',
                     choices: [],
                     inputs: []
                 };

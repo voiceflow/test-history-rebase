@@ -1,41 +1,36 @@
-import React, { Component } from 'react';
-import Textarea from 'react-textarea-autosize';
+import React, { Component } from 'react'
+import ChoiceInput from './ChoiceInput'
 
 class ChoiceInputs extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            choices: this.props.choices,
-            inputs: this.props.inputs
-        };
+    constructor(props){
+        super(props)
+        this.choices_length = props.choices.length
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            choices: props.choices,
-            inputs: props.inputs
-        });
+    shouldComponentUpdate(props, state) {
+        if(this.choices_length !== props.choices.length){
+            this.choices_length = props.choices.length
+            return true
+        }
+        return false
     }
 
     render() {
         return (
             <div className="w-100">
-                {Array.isArray(this.state.choices) ? this.state.choices.map((choice, i) => {
-                    return (
-                        <div key={i} className="choice-block mb-3">
-                            <div className="choice-title">
-                                <span>{i+1}</span>
-                                <button className="close" onClick={e => this.props.onRemove(e, i)} disabled={this.props.live_mode}>&times;</button>
-                            </div>
-                            <Textarea 
-                                name="inputs" 
-                                value={this.state.inputs[i]} 
-                                onChange={e => this.props.onChange(e, i)}
-                                placeholder="Enter user reply (new line for synonyms)" 
-                                disabled={this.props.live_mode}
-                            />
-                        </div> )
+                {Array.isArray(this.props.choices) ? this.props.choices.map((c, i) => {
+                    return (<ChoiceInput
+                        key={c.key}
+                        index={i}
+                        choice={c}
+                        input={this.props.inputs[i]}
+                        onChange={text => this.props.onChange(text, i)}
+                        onChangeChoice={choice => {
+                            let choices = this.props.choices
+                            choices[i] = choice
+                        }}
+                        remove={()=>this.props.onRemove(i)}
+                    />)
                 }) : null}
                 <div><button className="btn btn-clear btn-lg btn-block" onClick={this.props.onAdd} disabled={this.props.live_mode}><i className="far fa-plus"></i> Add Choice</button></div>
             </div>

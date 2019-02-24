@@ -8,6 +8,8 @@ import AmazonLogin from './../../components/Forms/AmazonLogin'
 import axios from 'axios'
 import { Tooltip } from 'react-tippy'
 import Toggle from 'react-toggle'
+import { Progress } from 'react-sweet-progress'
+import "react-sweet-progress/lib/style.css"
 
 import AuthenticationService from './../../../services/Authentication'
 import InvRegex from 'services/Regex'
@@ -18,7 +20,6 @@ import './ActionGroup.css'
 const loading = (message) => {
     return <div className="super-center mb-4">
         <div className='text-center'>
-            <h1><span className="loader" /></h1>
             <p className="loading">{message}</p>
         </div>
     </div>
@@ -33,7 +34,28 @@ const GOOGLE_STAGES = {
     "5": "Published",
 }
 
-const ENDING_STAGES = [2, 4, 9]
+const STAGE_PERCENTAGES = {
+    alexa: {
+        1: 10,
+        11: 20,
+        12: 60,
+        13: 80
+    },
+    google: {
+        3: 10,
+        4: 60
+    }
+}
+
+const ERROR_STAGES = {
+    alexa: [4, 9],
+    google: [2]
+}
+
+const ENDING_STAGES = {
+    alexa: [2, 4, 9],
+    google: [2, 5]
+}
 const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable']
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App']
 
@@ -88,7 +110,10 @@ class ActionGroup extends PureComponent {
             inv_name: null,
             inv_name_error: '',
             flash: false,
-            live_update_stage: 0
+            live_update_stage: 0,
+            is_first_upload: false,
+            show_upload_prompt: false,
+            is_error: false
         }
 
         this.toggle = this.toggle.bind(this)
@@ -107,6 +132,9 @@ class ActionGroup extends PureComponent {
         this.shouldReset = this.shouldReset.bind(this)
         this.token = null
         this.updateLiveVersion = this.updateLiveVersion.bind(this)
+        this.renderUploadButton = this.renderUploadButton.bind(this)
+        this.isUploadLoading = this.isUploadLoading.bind(this)
+        this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
     }
 
     componentWillReceiveProps(props) {
@@ -123,6 +151,17 @@ class ActionGroup extends PureComponent {
     }
 
     componentDidMount() {
+        let is_first_upload = localStorage.getItem('is_first_upload')
+        if(is_first_upload === 'true'){
+            this.setState({
+                is_first_upload: true
+            })
+        } else {
+            this.setState({
+                is_first_upload: false
+            })
+        }
+
         AuthenticationService.AmazonAccessToken(token => {
             this.token = token;
             this.reset();
@@ -134,21 +173,38 @@ class ActionGroup extends PureComponent {
     }
 
     shouldReset() {
-        if (ENDING_STAGES.includes(this.state.stage)) {
+        if (ENDING_STAGES[this.props.platform].includes(this.state.stage)) {
             this.reset()
         }
     }
 
     openUpdate() {
-        this.props.setCB(() => {
-            this.setState({
-                updateModal: true
+        if(this.state.is_first_upload){
+            this.props.setCB(() => {
+                this.setState({
+                    updateModal: true
+                })
             })
-        })
-        this.props.onSave()
+            this.props.onSave()
+        } else if(this.props.platform === 'alexa'){
+            this.updateAlexa()
+        } else {
+            this.updateGoogle()
+        }
     }
 
     reset() {
+        let is_first_upload = localStorage.getItem('is_first_upload')
+        if(is_first_upload === 'true'){
+            this.setState({
+                is_first_upload: true
+            })
+        } else {
+            this.setState({
+                is_first_upload: false
+            })
+        }
+        
         this.setState({
             amzn_error: false,
             stage: this.token ? 0 : 5,
@@ -228,7 +284,7 @@ class ActionGroup extends PureComponent {
         let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
         let error = invNameError(inv_name, this.props.skill.locales)
         if (error) {
-            this.setState({ inv_name: inv_name, inv_name_error: error, stage: 14 }, () => {
+            this.setState({ inv_name: inv_name, inv_name_error: error, stage: 14, show_upload_prompt: !this.state.is_first_upload }, () => {
                 this.setState({ flash: true }, () => setTimeout(() => this.setState({ flash: false }), 1500))
             })
             return
@@ -242,7 +298,10 @@ class ActionGroup extends PureComponent {
                 skill.inv_name = this.state.inv_name
                 this.props.updateSkill(skill)
             } catch (err) {
-                this.setState({ stage: 6 })
+                this.setState({
+                    stage: 6,
+                    display_upload_prompt: !this.state.is_first_upload
+                })
             }
         }
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
@@ -272,10 +331,12 @@ class ActionGroup extends PureComponent {
                                             error_message += '\n' + err.response.data.violations[i].message
                                         }
                                     }
+
                                 }
 
                                 this.setState({
                                     stage: 9,
+                                    show_upload_prompt: true,
                                     upload_error: ((
                                         err.response &&
                                         err.response.data &&
@@ -384,6 +445,36 @@ class ActionGroup extends PureComponent {
         });
     }
 
+    displayUploadPrompt() {
+        if(ERROR_STAGES[this.props.platform].includes(this.state.stage)){
+            setTimeout(() => {
+                this.setState({show_upload_prompt: false})
+            }, 5000)
+        }
+
+        if(this.state.show_upload_prompt){
+            return  <div className="upload-success-popup d-flex">
+                        {!ERROR_STAGES[this.props.platform].includes(this.state.stage) && 
+                            ((this.props.platform === 'alexa' && this.state.stage !== 14) || this.props.platform === 'google') && 
+                            <button className="close close-upload-success-popup" onClick={() => {this.setState({show_upload_prompt: false, stage: 0, google_stage:2})}}>&times;</button>}
+                        {this.props.platform === 'google'? 
+                            this.renderGoogleBody()
+                            :
+                            this.render_body()
+                        }
+                    </div>
+        } 
+        return
+    }
+
+    isUploadLoading(){
+        if(this.props.platform === 'alexa'){
+            return !ENDING_STAGES[this.props.platform].includes(this.state.stage) && ![0, 5, 6, 8].includes(this.state.stage)
+        } else {
+            return !ENDING_STAGES[this.props.platform].includes(this.state.google_stage) && ![0, 5, 6, 8].includes(this.state.google_stage)
+        }
+    }
+
     updateLiveVersion() {
         this.setState({ live_update_stage: 1 })
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/rerender`)
@@ -399,11 +490,6 @@ class ActionGroup extends PureComponent {
 
     renderLiveStage() {
         if (this.state.live_update_stage === 2) {
-            // return <React.Fragment>
-            //     Congrats we did it
-            //     Do you want to overwrite your development version with your current live version?
-            //     <button className="purple-btn" onClick={() => { this.props.onSwapVersions(this.props.skill.skill_id, this.props.skill) }}>Overwrite</button>
-            // </React.Fragment>
             return <React.Fragment>
                 <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live-success.svg" alt="Upload" />
                 <div className="modal-bg-txt text-center mt-2"> Live Version Updated</div>
@@ -421,6 +507,55 @@ class ActionGroup extends PureComponent {
         }
     }
 
+    renderUploadButton() {
+        if(this.props.live_mode){
+            return <Tooltip
+                html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
+                position="bottom"
+                distance={16}
+            >
+                <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
+                    Update Live <div className="launch">
+                        <div className="first">
+                            <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
+                        </div>
+                        <div className="second">
+                            <img src={'/rocket.svg'} alt="check" width="16" height="16" />
+                        </div>
+                    </div>
+                </Button>
+            </Tooltip>
+        } else {
+            if(this.isUploadLoading()){
+                return <Button variant="contained" className="publish-btn" disabled>
+                        <p className="loading-btn m-0 p-0">Uploading</p>
+                        <div className="launch">
+                            <div className="load-spinner pt-1">
+                                <span className="save-loader-white"/>
+                            </div>
+                        </div>
+                    </Button>
+            } else {
+                return <Tooltip
+                    html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
+                    position="bottom"
+                    distance={16}
+                >
+                    <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
+                        {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
+                            <div className="first">
+                                <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
+                            </div>
+                            <div className="second">
+                                <img src={'/rocket.svg'} alt="check" width="16" height="16" />
+                            </div>
+                        </div>
+                    </Button>
+                </Tooltip>
+            }
+        }
+    }
+
     render_body() {
         // I had to get this out really fast the states are all REALLY fucking wack
         if (!this.props.skill.locales) {
@@ -432,26 +567,43 @@ class ActionGroup extends PureComponent {
                 return loading('Rendering Flows')
             case 2:
                 if (this.SucceedLocale) {
-                    return <React.Fragment>
-                        <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
-                        <br />
-                        <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
-                        <span className="modal-txt text-center">
-                            You may test on the Alexa simulator or live on your personal Alexa device
-                        </span>
-                        <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
-                        <div className="my-3">
-                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
-                                className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
-                                Test on Alexa Simulator
-                            </a>
+                    // They completed their first upload successfully
+                    localStorage.setItem('is_first_upload', 'false')
+                    if(!this.state.is_first_upload){
+                        this.setState({
+                            show_upload_prompt: true
+                        })
+                        return <div className="mt-3 text-center">
+                            <span className="modal-bg-txt mb-2"> <span className="pass-icon"/> Upload Successful </span><br/>
+                            <span className="modal-txt">
+                                Your skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
+                                    target="_blank" rel="noopener noreferrer">
+                                    Amazon console
+                                </a>.
+                            </span>
                         </div>
-                    </React.Fragment>
+                    } else {
+                        return <React.Fragment>
+                            <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
+                            <br />
+                            <span className="modal-bg-txt text-center mb-2"> <span className="pass-icon"/> Successfully uploaded to Alexa </span>
+                            <span className="modal-txt text-center">
+                                You may test on the Alexa simulator or live on your personal Alexa device
+                            </span>
+                            <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
+                            <div className="my-3">
+                                <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
+                                    className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                    Test on Alexa Simulator
+                                </a>
+                            </div>
+                        </React.Fragment>
+                    }
                 } else {
                     return <React.Fragment>
                         <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
                         <br />
-                        <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Alexa </span>
+                        <span className="modal-bg-txt text-center mb-2"> <span className="pass-icon"/> Successfully uploaded to Alexa </span>
                         <span className="modal-txt text-center">
                             You may test on the Alexa simulator or live on your personal Alexa device
                         </span>
@@ -464,12 +616,12 @@ class ActionGroup extends PureComponent {
                     </React.Fragment>
                 }
             case 4:
-                return <Alert color="danger">
-                    Rendering Error
+                return <Alert color={"danger" + (this.state.show_upload_prompt ? " mb-0 w-100" : "")}>
+                    <span className="fail-icon"/>  Rendering Error
                 </Alert>
             case 5:
-                return <div className="modal-txt flex-fill text-center mt-3">
-                    {this.state.amzn_error && <Alert color="danger">Login With Amazon Failed - Try Again</Alert>}
+                return <div className={"modal-txt flex-fill text-center" + (this.state.show_upload_prompt? " mt-4 w-100" : " mt-3") }>
+                    {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
                     Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
                     <div className="text-center mt-4">
                         <AmazonLogin
@@ -483,11 +635,12 @@ class ActionGroup extends PureComponent {
                                     this.setState({ stage: 0, amzn_error: true });
                                 }
                             }}
+                            small
                         />
                     </div>
                 </div>
             case 6:
-                return <React.Fragment>
+                return <div className={this.state.show_upload_prompt? "mt-4 text-center" : ""}>
                     Your Amazon Account needs to set up developer settings to Upload Skills
                     <Alert className="mt-4">
                         Press "Create your Amazon Developer account"
@@ -501,14 +654,14 @@ class ActionGroup extends PureComponent {
                             <i className="fas fa-sync-alt" /> Check Again
                         </Button>
                     </div>
-                </React.Fragment>
+                </div>
             case 7:
                 return loading('Checking Vendor')
             case 8:
                 return loading('Verifying Login')
             case 9:
-                return <div className="w-100">
-                    <h5 className="text-muted">Amazon Error Response</h5>
+                return <div className={"w-100" + (this.state.show_upload_prompt? " text-center" : "")}>
+                    <h5 className="text-muted"><span className="fail-icon mr-2"/>Amazon Error Response</h5>
                     <Alert color="danger" className="mt-1">
                         {this.state.upload_error}
                     </Alert>
@@ -557,25 +710,41 @@ class ActionGroup extends PureComponent {
         ) {
             modal_content = <div className="super-center mb-4">
                 <div className='text-center'>
-                    <h1><span className="loader" /></h1>
                     <p className="loading">{GOOGLE_STAGES[this.state.google_stage]}</p>
                 </div>
             </div>
         } else if (this.state.google_stage === 5) {
-            modal_content = <React.Fragment>
-                <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
-                <br />
-                <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Google Actions </span>
-                <span className="modal-txt text-center">
-                    You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
-            </span>
-                <div className="my-3">
-                    <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
-                        className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
-                        Test on Google Actions Simulator
-                </a>
+            // They completed their first upload successfully
+            localStorage.setItem('is_first_upload', 'false')
+            if(!this.state.is_first_upload){
+                this.setState({
+                    show_upload_prompt: true
+                })
+                modal_content = <div className="text-center mt-4">
+                    <span className="modal-bg-txt text-center mb-2"> <span className="pass-icon mr-2"/>Upload Successful </span><br/>
+                    <span className="modal-txt text-center">
+                        You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                            target="_blank" rel="noopener noreferrer">
+                            Google Actions Simulator
+                    </a>. To submit for review, please follow the instructions on the Google Actions Developer Console.
+                </span>
                 </div>
-            </React.Fragment>
+            } else {
+                modal_content = <React.Fragment>
+                    <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
+                    <br />
+                    <span className="modal-bg-txt text-center mb-2"> Successfully uploaded to Google Actions </span>
+                    <span className="modal-txt text-center">
+                        You may test on the Google Actions Simulator. To submit for review, please follow the instructions on the Google Actions Developer Console.
+                </span>
+                    <div className="my-3">
+                        <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                            className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                            Test on Google Actions Simulator
+                    </a>
+                    </div>
+                </React.Fragment>
+            }
         } else {
             modal_content = <div>
                 <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
@@ -596,15 +765,18 @@ class ActionGroup extends PureComponent {
     }
 
     render() {
-
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
-
         return (
             <React.Fragment>
-                <Modal isOpen={this.state.updateModal} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
+                <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
                     <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
                     <ModalBody className="modal-info">
                         <div>
+                            {this.props.platform === 'google' ?
+                                ![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <Progress percent={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
+                                :
+                                ![0, 5, 6, 7, 8].includes(this.state.stage) && !ENDING_STAGES.alexa.includes(this.state.stage) && <Progress percent={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
+                            }
                             {(this.props.platform === 'google') ? this.renderGoogleBody() : this.render_body()}
                         </div>
                     </ModalBody>
@@ -698,41 +870,8 @@ class ActionGroup extends PureComponent {
                         </Tooltip>
                     </div>
 
-                    {this.props.live_mode ?
-                        <Tooltip
-                            html={<div style={{ width: 155 }}>Update your live version with your local changes</div>}
-                            position="bottom"
-                            distance={16}
-                        >
-                            <Button variant="contained" className="publish-btn" onClick={this.openUpdateLive}>
-                                Update Live <div className="launch">
-                                    <div className="first">
-                                        <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
-                                    </div>
-                                    <div className="second">
-                                        <img src={'/rocket.svg'} alt="check" width="16" height="16" />
-                                    </div>
-                                </div>
-                            </Button>
-                        </Tooltip>
-                        :
-                        <Tooltip
-                            html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
-                            position="bottom"
-                            distance={16}
-                        >
-                            <Button variant="contained" className="publish-btn" onClick={this.openUpdate}>
-                                {(this.props.platform === 'google') ? 'Upload to Google' : 'Upload to Alexa'}<div className="launch">
-                                    <div className="first">
-                                        <img src={'/up-arrow.svg'} alt="upload" width="18" height="18" />
-                                    </div>
-                                    <div className="second">
-                                        <img src={'/rocket.svg'} alt="check" width="16" height="16" />
-                                    </div>
-                                </div>
-                            </Button>
-                        </Tooltip>
-                    }
+                    {this.renderUploadButton()}
+                    {this.displayUploadPrompt()}
                 </div>
             </React.Fragment>
         );

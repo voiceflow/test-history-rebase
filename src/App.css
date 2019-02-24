@@ -13,7 +13,7 @@ body {
     display: block;
     width: 100%;
     font: normal 15px/1.4666666667 Open Sans,Arial,sans-serif;
-    color: #0b1a38;
+    color: #132144;
     background-color: #fff;
     background-image: none;
     background-clip: padding-box;
@@ -168,11 +168,11 @@ body {
     padding-left: 40px !important;
 }
 .user-input {
-    background-image: url(/user.svg) !important;
-    background-size: auto 20px !important;
+    background-image: url('/user.svg') !important;
+    background-size: auto 18px !important;
     background-repeat: no-repeat !important;
-    background-position: 15px center !important;
-    padding-left: 50px !important;
+    background-position: 12px 12px !important;
+    padding-left: 40px !important;
     padding-top: 10px;
 }
 .dollar-input{
@@ -608,6 +608,7 @@ hr{
 }
 .form-bg{
     min-height: 45px;
+    padding-top: 10px;
 }
 .form-control-right{
     border-color: #E2E9EC !important;
@@ -835,11 +836,11 @@ border-radius: 0px 5px 5px 0px !important;
 }
 label {
     /* color: #8da2b5 !important; */
-    font-weight: 700 !important;
+    font-weight: 400 !important;
     font-size: 15px !important;
     display: block;
     font-weight: 600 !important;
-    color: #0b1a38 !important;
+    color: #62778c !important;
     margin-bottom: 11px;
     /*margin: 0px !important;*/
 }

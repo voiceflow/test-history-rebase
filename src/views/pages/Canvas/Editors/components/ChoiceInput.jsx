@@ -21,7 +21,12 @@ class ContainedTextarea extends PureComponent {
   }
 
   render(){
-    return <Textarea className={this.props.className} value={this.state.value} onChange={this.handleChange} onBlur={()=>this.props.onChange(this.state.value)}/>
+    return <Textarea
+      className={this.props.className} 
+      value={this.state.value} 
+      onChange={this.handleChange} 
+      onBlur={()=>this.props.onChange(this.state.value)}
+    />
   }
 }
 

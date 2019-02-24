@@ -1355,6 +1355,20 @@ body.modal-open {
     height: 1em;
     line-height: 1;
 }
+.save-loader-white {
+    display: inline-flex;
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    -ms-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+    background-image: url("/loader-white.svg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+}
 .btn-successful{
     width: 42px;
     height: 42px;
@@ -1800,3 +1814,44 @@ kbd {
   #secondary-nav-right-group .react-toggle{
     margin-bottom: -8px;
   }
+  .upload-success-popup {
+    position: absolute;
+    top: 80px;
+    right: -40px;
+    max-width: 350px;
+    min-width: 350px;
+    border-radius: 5px;
+    border: solid 1px;
+    padding: 20px;
+    margin-right: 20px;
+    background-color: #fff;
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
+	border: 1px solid rgba(141, 162, 181, .28);
+}
+.close-upload-success-popup {
+    position: absolute;
+    right: 20px;
+}
+.pass-icon {
+    display: inline-flex;
+    background-image: url("/pass.svg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+}
+.fail-icon{
+    display: inline-flex;
+    background-image: url("/error.svg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+}
+.modal-text{
+    color:  #8da2b5;
+}

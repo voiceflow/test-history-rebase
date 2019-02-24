@@ -2223,7 +2223,6 @@ class Canvas extends Component {
                     prompt: '',
                     promptText: '',
                     promptVoice: '',
-                    choices: [],
                     inputs: []
                 };
             } else if(type === 'exit'){

@@ -75,6 +75,7 @@ const convertDiagram = (diagram, diagrams) => {
             }
 
             if(node.extras.type === 'command'){
+                console.log(node)
                 save_stuff.commands.push(node)
                 diagram.nodes.splice(i, 1)
             }else if(node.extras.type === 'story'){

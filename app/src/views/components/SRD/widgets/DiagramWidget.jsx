@@ -482,6 +482,12 @@ export class DiagramWidget extends BaseWidget {
 						if (
 							!this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
 						) {
+							diagramEngine.setSuperSelect(null)
+							this.props.forceRepaint()
+							if (element instanceof BlockNodeModel && element.extras.type === 'story'){
+								diagramEngine.setSuperSelect(null)
+								this.props.forceRepaint()
+							}
 							if (element.extras && element.extras.type === 'god'){
 								this.props.onConfirm({
 									warning: true,
@@ -491,6 +497,7 @@ export class DiagramWidget extends BaseWidget {
 								})
 							} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
 								if (element.extras.type !== 'story'){
+									diagramEngine.setSuperSelect(null);
 									element.remove()
 								}
 							} else if (!(element instanceof BlockNodeModel)){

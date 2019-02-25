@@ -490,11 +490,11 @@ export class DiagramWidget extends BaseWidget {
 									params: [selectedItems, element]
 								})
 							} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
-								if (element instanceof PointModel && element.parent.sourcePort.parent.extras.type !== 'story'){
+								if (element.extras.type !== 'story'){
 									element.remove()
 								}
 							} else if (!(element instanceof BlockNodeModel)){
-								if (element instanceof PointModel && element.parent.sourcePort.parent.extras.type !== 'story') {
+								if (element instanceof PointModel && element.parent.sourcePort.parent.extras.type !== 'story'){
 									element.remove()
 								}
 							}

@@ -1685,6 +1685,9 @@ label {
     bottom: 26px;
     right: 13px;
 }
+/* .srd-node--selected .srd-default-node__out.god {
+    right: 13px;
+} */
 .srd-default-node__in.god {
     margin-top: -13%;
 }

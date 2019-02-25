@@ -2514,6 +2514,7 @@ class Canvas extends Component {
     }
 
     render() {
+        console.log('superselect', this.state.engine.getSuperSelect() && this.state.engine.getSuperSelect().extras.type)
         return (
             <React.Fragment>
                 <Prompt

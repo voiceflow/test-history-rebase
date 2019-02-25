@@ -305,8 +305,16 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
             if(input.length) options.used_choices.push(input)
           }
         } else if (node.extras.type === 'god') {
-          _.forEach(node.combines, nc => {
-            if (!nc.in){
+          _.forEach(node.combines, (nc, i) => {
+            if (i === node.combines.length -1){
+              _.forEach(nc.ports, cp => {
+                if (!cp.in) {
+                  if (_.find(node.ports, np => np.id === cp.id)) {
+                    cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                  }
+                }
+              })
+            } else if (!nc.in){
               nc.links = [];
             }
           })
@@ -734,7 +742,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
         } else if (node.extras.type === 'display') {
           options.interfaces.add('ALEXA_PRESENTATION_APL')
           let id = hashids.decode(node.extras.display_id)
-
           story.lines[node.id] = {
             display_id: id[0],
             datasource: node.extras.datasource,

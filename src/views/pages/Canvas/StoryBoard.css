@@ -1618,6 +1618,9 @@ label {
 .srd-default-node.god {
     padding: 0px 12px 0px 0px !important;
 }
+.srd-default-node.story {
+    padding: 0px 12px !important;
+}
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #0b1a38 !important;
     border-width: 1px !important;
@@ -1952,7 +1955,7 @@ button.close:hover{
     flex-grow: 1;
     background-color: transparent;
     border-bottom: 1px solid #EAEFF4 !important;
-    margin-bottom: 15px;
+    margin-bottom:15px;
     font-size: 18px;
     font-weight: 700;
     /*line-height: 24px;*/

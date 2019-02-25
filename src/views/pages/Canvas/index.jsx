@@ -2724,6 +2724,7 @@ class Canvas extends Component {
                                 <button onClick={()=>this.zoom(-1000)} className="white-circ round-right"><i className="far fa-minus"/></button>
                             </ButtonGroup>
                             <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
+                            <button className="white-circ ml-2" onClick={() => {this.setState({keyboard_help: true})}}><i className="fas fa-keyboard"></i></button>
                         </div>
                         { this.state.skill.diagram !== this.props.diagram_id && <FlowBar
                                 skill={this.state.skill}

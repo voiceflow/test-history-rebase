@@ -755,6 +755,7 @@ class Canvas extends Component {
         _.remove(combineBlock.combines, (c, idx) => {
             if (c.id === node.id) {
                 nodeIdx = idx;
+                diagramEngine.setSuperSelect(null)
                 return true;
             }
         })
@@ -2712,6 +2713,7 @@ class Canvas extends Component {
                             onConfirm={this.props.onConfirm}
                             copyNode={!this.props.preview ? this.copyNode : _.noop()}
                             removeNode={!this.props.preview ? this.removeNode : _.noop()}
+                            removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
                             removeHandler={(node) => {
                             if (this.props.undoEvents.length >= 10) {
                                 this.props.shiftUndo()

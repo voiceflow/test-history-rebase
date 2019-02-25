@@ -501,7 +501,7 @@ export class DiagramWidget extends BaseWidget {
 									element.remove()
 								}
 							} else if (!(element instanceof BlockNodeModel)){
-								if (element instanceof PointModel && element.parent.sourcePort.parent.extras.type !== 'story'){
+								if (element instanceof PointModel && (element.parent.sourcePort.parent.extras.type !== 'story' || element.parent.points.length > 2)){
 									element.remove()
 								}
 							}
@@ -793,6 +793,7 @@ export class DiagramWidget extends BaseWidget {
 					diagramEngine={diagramEngine}
 					copyNode={this.props.copyNode}
 					removeNode={this.props.removeNode}
+					removeCombineNode={this.props.removeCombineNode}
 				/>
 				{this.state.action instanceof SelectingAction && this.drawSelectionBox()}
 			</div>

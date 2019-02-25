@@ -546,6 +546,17 @@ export class BlockNodeWidget extends BaseWidget {
 								(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
 								_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
 							} </div>}
+							{
+								this.props.node.extras.type ==='command' && this.props.node.parentCombine.extras.type ==='story' ?
+								<button style={{position:'absolute', right:0, top:0}} onMouseDown={(e) => {
+									e.stopPropagation()
+								}}
+								onMouseUp={() => {
+									this.props.removeCombineNode(this.props.node)
+								}}
+								>X</button>:
+								null
+							}
 					</div>}
 				</div>
 				<div className={this.bem("__ports")}
@@ -583,6 +594,7 @@ export class BlockNodeWidget extends BaseWidget {
 												isLast: idx === this.props.node.combines.length-1,
 												selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
 												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
+												removeCombineNode: this.props.removeCombineNode,
 												onClick: () => {
 													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
 												},

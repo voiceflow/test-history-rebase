@@ -54,7 +54,9 @@ export class NodeWidget extends BaseWidget {
 					window.getSelection ? window.getSelection().empty() : document.selection.empty()
 				}}
 			>
-				{React.cloneElement(this.props.children, {copyNode: this.props.copyNode, removeNode: this.props.removeNode})}
+				{React.cloneElement(this.props.children, {
+					copyNode: this.props.copyNode, removeNode: this.props.removeNode, removeCombineNode: this.props.removeCombineNode
+				})}
 			</div>
 		);
 	}

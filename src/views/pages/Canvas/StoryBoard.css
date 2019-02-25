@@ -1609,13 +1609,16 @@ label {
     cursor: text !important;
 }
 
-.srd-default-node.god {
-    background-color: #e7eaf1e8 !important;
+.srd-default-node.god, .srd-default-node.story {
+    background-color: #E5E8EF !important;
     border: 2px solid #fff;
     width: 250px;
     /* border-color: #42a5ff !important; */
 }
-.srd-node--selected .srd-default-node.god{
+.srd-default-node.god {
+    padding: 0px 12px 0px 0px !important;
+}
+.srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #0b1a38 !important;
     border-width: 1px !important;
     box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important;
@@ -1681,9 +1684,6 @@ label {
     bottom: 26px;
     right: 13px;
 }
-.srd-default-node.god{
-    padding: 0px 12px 0px 0px !important;
-}
 .srd-default-node__in.god {
     margin-top: -13%;
 }
@@ -1708,8 +1708,13 @@ label {
     border-color: #42a5ff !important;
 }
 
-.combine-node .srd-default-node.last {
+.combine-node .srd-default-node {
     height: 35px !important;
+}
+
+.god .combine-node .srd-default-node.last {
+    height: auto !important;
+    background-image: none !important
 }
 
 .temp-holder-enter{
@@ -1750,47 +1755,58 @@ label {
 .combine-node .srd-default-node .srd-default-node__ports{
     z-index: 10;
 }
-.combine-node .srd-default-node.last.speak,
-.combine .srd-default-node.last.choice {
+.combine-node .srd-default-node.speak,
+.combine .srd-default-node.choice {
     background-image: url('/speak_combine.svg');
 
 }
 
-.combine-node .srd-default-node.set.last,
-.combine-node .srd-default-node.if.last,
-.combine-node .srd-default-node.capture.last,
-.combine-node .srd-default-node.random.last {
+.combine-node .srd-default-node.set,
+.combine-node .srd-default-node.if,
+.combine-node .srd-default-node.capture,
+.combine-node .srd-default-node.random {
     background-image: url('/logic_combine.svg');
 }
 
-.combine-node .srd-default-node.intent.last,
-.combine-node .srd-default-node.command.last,
-.combine-node .srd-default-node.interaction.last,
-.combine-node .srd-default-node.stream.last,
-.combine-node .srd-default-node.code.last,
-.combine-node .srd-default-node.api.last,
-.combine-node .srd-default-node.flow.last {
+.combine-node .srd-default-node.intent,
+.combine-node .srd-default-node.interaction,
+.combine-node .srd-default-node.stream,
+.combine-node .srd-default-node.code,
+.combine-node .srd-default-node.api,
+.combine-node .srd-default-node.flow {
     background-image: url('/combine_advanced.svg');
 }
 
-.combine-node .srd-default-node.exit.last,
-.combine-node .srd-default-node.combine.last {
+.combine-node .srd-default-node.exit,
+.combine-node .srd-default-node.combine {
     background-image: url('/functional_combine.svg');
 }
 
-.combine-node .srd-default-node.display.last,
-.combine-node .srd-default-node.kard.last {
+.combine-node .srd-default-node.display,
+.combine-node .srd-default-node.kard {
     background-image: url('/visual_combine.svg');
 }
 
-.combine-node .srd-default-node.permission.last,
-.combine-node .srd-default-node.permissions.last,
-.combine-node .srd-default-node.mail.last,
-.combine-node .srd-default-node.link_account.last,
-.combine-node .srd-default-node.payment.last,
-.combine-node .srd-default-node.cancel.last,
-.combine-node .srd-default-node.reminder.last {
+.combine-node .srd-default-node.permission,
+.combine-node .srd-default-node.permissions,
+.combine-node .srd-default-node.mail,
+.combine-node .srd-default-node.link_account,
+.combine-node .srd-default-node.payment,
+.combine-node .srd-default-node.cancel,
+.combine-node .srd-default-node.reminder {
     background-image: url('/business_combine.svg');
+}
+
+#add-command {
+    position: absolute;
+    border-radius: 20px;
+    border: 1px solid #000;
+    font-size: 20px;
+    left: 50%;
+    height: 40px;
+    width: 40px;
+    bottom: -20px;
+    margin-left: -20px;
 }
 
 .srd-default-node.if {

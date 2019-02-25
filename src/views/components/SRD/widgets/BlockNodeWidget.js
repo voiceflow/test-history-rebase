@@ -50,10 +50,6 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addCommand(e){
-		console.log('pls')
-		e.preventDefault()
-		e.stopPropagation()
-		console.log('yeet', this.props.node)
 		const engine = this.props.diagramEngine
 		const node = new BlockNodeModel('New Command', null, toolkit.UID())
 		node.extras = {
@@ -69,8 +65,11 @@ export class BlockNodeWidget extends BaseWidget {
 			},
 			type: 'command'
 		}
-		this.props.node.combines.push(node)
 		engine.setSuperSelect(node)
+		node.setSelected()
+		e.preventDefault()
+		e.stopPropagation()
+		this.props.node.combines.push(node)
 		engine.enableRepaintEntities([this.props.node]);
 		engine.repaintCanvas(false)
 	}
@@ -446,7 +445,7 @@ export class BlockNodeWidget extends BaseWidget {
 					}
 					if(this.props.node.extras.type !== 'story'){
 						var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
-						if (e.buttons === 1 && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
+						if (e.buttons === 1 && this.props.diagramEngine.getSuperSelect() && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
 							nodeElement.style.pointerEvents = 'none';
 						}
 					}
@@ -606,7 +605,7 @@ export class BlockNodeWidget extends BaseWidget {
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
-				{this.props.node.extras.type === 'story' && <button id="add-command" onClick={this.addCommand}><i className="far fa-plus"/></button>}
+				{this.props.node.extras.type === 'story' && <button id="add-command" onMouseUp={this.addCommand}><i className="far fa-plus"/></button>}
 			</div>
 		);
 	}

@@ -1612,6 +1612,7 @@ label {
 .srd-default-node.god, .srd-default-node.story {
     background-color: #E5E8EF !important;
     border: 2px solid #fff;
+    border-width: 2px !important;
     width: 250px;
     /* border-color: #42a5ff !important; */
 }
@@ -1623,7 +1624,7 @@ label {
 }
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #0b1a38 !important;
-    border-width: 1px !important;
+    /* border-width: 1px !important; */
     box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important;
     
 }
@@ -1744,15 +1745,15 @@ label {
     background-position: 95% 50%;
     background-size: 6px;
     background-repeat: no-repeat;
+    border-width: 1px !important;
 }
 
 .combine-node .srd-default-node.selected {
     border-style: solid !important;
-    border-width: 1px !important;
 }
 
 .combine-node .srd-default-node.no-select {
-    border: none !important;
+    border-color: #fff !important;
 }
 
 .combine-node .srd-default-node .srd-default-node__ports{

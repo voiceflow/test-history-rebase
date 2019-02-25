@@ -49,6 +49,7 @@ export class NodeLayerWidget extends BaseWidget {
 					diagramEngine={this.props.diagramEngine}
 					copyNode={this.props.copyNode}
 					removeNode={this.props.removeNode}
+					removeCombineNode={this.props.removeCombineNode}
 				/>
 			</div>
 		);

@@ -415,10 +415,10 @@ export class DiagramWidget extends BaseWidget {
 
 	onKeyUp(event) {
 		//delete all selected
-		let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
-		let diagramEngine = this.props.diagramEngine;
-		let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
 		if (this.props.deleteKeys.indexOf(event.keyCode) !== -1) {
+			let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
+			let diagramEngine = this.props.diagramEngine;
+			let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
 			let first = selectedItems[0]
 			let super_select = diagramEngine.getSuperSelect()
 			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine

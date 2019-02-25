@@ -271,7 +271,7 @@ class Canvas extends Component {
               let nodes = _.values(this.state.engine.diagramModel.nodes)
               this.state.engine.enableRepaintEntities(nodes)
               this.state.engine.repaintCanvas(false)
-              this.onLoadDiagrams(this.props.diagram_id)
+              this.onLoadId(this.props.diagram_id)
             })
         }
     }
@@ -1452,7 +1452,7 @@ class Canvas extends Component {
                     // UPDATE DIAGRAM STRUCTURE
                     let diagrams = this.state.diagrams
                     for (var i = 0; i < diagrams.length; i++) {
-                        if(diagrams[i].id === this.props.diagram_id){
+                        if(diagrams[i].id === serialize.id){
                             diagrams[i].sub_diagrams = sub_diagrams
                         }
                     }

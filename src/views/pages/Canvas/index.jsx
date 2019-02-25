@@ -1349,6 +1349,9 @@ class Canvas extends Component {
         this.diagram_focus=true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
+        if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type ==='story'){
+            selected = [engine.getSuperSelect()]
+        }
         if (selected.length === 1) {
             if(selected[0].extras.type === 'comment'){
                 this.diagram_focus=false

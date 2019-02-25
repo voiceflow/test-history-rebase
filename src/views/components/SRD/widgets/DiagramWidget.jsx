@@ -419,9 +419,10 @@ export class DiagramWidget extends BaseWidget {
 		let diagramEngine = this.props.diagramEngine;
 		let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
 		if (this.props.deleteKeys.indexOf(event.keyCode) !== -1) {
-			if (!_.isEmpty(selectedItems) && _.first(selectedItems).extras && _.first(selectedItems).extras.type === "god" && !_.isNull(diagramEngine.getSuperSelect())
-			&& diagramEngine.getSuperSelect().extras && diagramEngine.getSuperSelect().extras.type !== "god" && diagramEngine.getSuperSelect().parentCombine
-			&& !_.isNull(diagramEngine.getSuperSelect())) {
+			let first = selectedItems[0]
+			let super_select = diagramEngine.getSuperSelect()
+			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine
+			&& super_select.extras && super_select.combines && super_select.combines !== 0 ) {
 				diagramEngine.getDiagramModel().clearSelection()
 				let nodeIdx;
 				_.remove(_.first(selectedItems).combines, (c, idx) => {
@@ -431,47 +432,49 @@ export class DiagramWidget extends BaseWidget {
 					}
 				})
 				let combineBlock = diagramEngine.getSuperSelect().parentCombine
-				if (nodeIdx === combineBlock.combines.length){
-					_.forEach(combineBlock.ports, p=>{
-						if (!p.in){
-							combineBlock.removePort(p);
-						}
-					})
-					let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
-					_.forEach(lastNode.ports, p=> {
-						if (!p.in){
-							combineBlock.ports[p.name] = p
-						}
-					})
-				} else {
-					_.forEach(selectedItems, selected => {
-						if (selected instanceof PointModel && selected.parent.sourcePort.parent.id === _.first(selectedItems).id){
-							selected.updateLocation({x: selected.x, y: selected.y - 30/amountZoom})
-						}
-					})
-				}
-				let totalHeight = 40;
-				_.forEach(combineBlock.combines, (c, idx) => {
-					if (!(c instanceof String) && c.id !== combineBlock.id) {
-						c.x = combineBlock.x + 10;
-						c.y = combineBlock.y + totalHeight;
-						if (c.height) {
-							totalHeight = totalHeight + c.height / amountZoom
-						} else {
-							totalHeight = totalHeight + 40
-						}
+				if(combineBlock.extras.type === 'god'){
+					if (nodeIdx === combineBlock.combines.length){
+						_.forEach(combineBlock.ports, p=>{
+							if (!p.in){
+								combineBlock.removePort(p);
+							}
+						})
+						let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
+						_.forEach(lastNode.ports, p=> {
+							if (!p.in){
+								combineBlock.ports[p.name] = p
+							}
+						})
+					} else {
+						_.forEach(selectedItems, selected => {
+							if (selected instanceof PointModel && selected.parent.sourcePort.parent.id === _.first(selectedItems).id){
+								selected.updateLocation({x: selected.x, y: selected.y - 30/amountZoom})
+							}
+						})
 					}
-				});
-				let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
-				if (combineBlock.combines.length === 1) {
-					let removed = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine);
-					this.props.diagramEngine.getDiagramModel().addNode(removed)
-					removed.parentCombine = null;
-					removed.extras.nextID = null;
-					combineBlock.remove();
+					let totalHeight = 40;
+					_.forEach(combineBlock.combines, (c, idx) => {
+						if (!(c instanceof String) && c.id !== combineBlock.id) {
+							c.x = combineBlock.x + 10;
+							c.y = combineBlock.y + totalHeight;
+							if (c.height) {
+								totalHeight = totalHeight + c.height / amountZoom
+							} else {
+								totalHeight = totalHeight + 40
+							}
+						}
+					})
+					if (combineBlock.combines.length === 1 && combineBlock.extras.type === 'god') {
+						let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
+						let removed = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine);
+						this.props.diagramEngine.getDiagramModel().addNode(removed)
+						removed.parentCombine = null;
+						removed.extras.nextID = null;
+						combineBlock.remove();
+					}
+					selectedItems = [diagramEngine.getSuperSelect()]
+					diagramEngine.setSuperSelect(selectedItems[0].parentCombine)
 				}
-				selectedItems = [diagramEngine.getSuperSelect()]
-				diagramEngine.setSuperSelect(selectedItems[0].parentCombine);
 			}
 			if (!_.some(selectedItems, { locked: true })){
 				this.props.removeHandler(selectedItems)

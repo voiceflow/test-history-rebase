@@ -54,10 +54,6 @@ const line_color = '#D1D8E2'
 const line_width = 2.5
 const toolkit = new Toolkit()
 
-const commandHasIntent = (node, intent, platform='alexa') => {
-    return (node.extras.type === 'command' && node.extras[platform].intent && node.extras[platform].intent.value === intent)
-}
-
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -227,7 +223,7 @@ class Canvas extends Component {
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
                 if(this.lastModel){
-                var currentModel = JSON.stringify(this.serialize())
+                    var currentModel = JSON.stringify(this.serialize())
                     if(currentModel !== this.lastModel){
                         if(this.canSave(currentModel)){
                             this.tooBig = false
@@ -284,21 +280,24 @@ class Canvas extends Component {
         let serialize = this.state.engine.getDiagramModel().serializeDiagram()
         _.map(serialize.nodes, node => {
             if (!_.isEmpty(node.combines)) {
-                node.extras.nextID = node.combines[0].id
+                let isHome = node.extras.type === 'story'
+                if(!isHome) node.extras.nextID = node.combines[0].id
                 node.combines = _.map(node.combines, (combine, idx) => {
                     if (combine.parentCombine){
                         delete combine.parentCombine
                     }
-                    if (idx !== node.combines.length - 1 && combine.extras) {
-                        combine.extras.nextID = node.combines[idx + 1].id
-                    } else {
-                        _.forEach(combine.ports, cp => {
-                            if (!cp.in) {
-                                if (_.find(node.ports, np => np.id === cp.id)) {
-                                    cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                    if(!isHome){
+                        if (idx !== node.combines.length - 1 && combine.extras) {
+                            combine.extras.nextID = node.combines[idx + 1].id
+                        } else {
+                            _.forEach(combine.ports, cp => {
+                                if (!cp.in) {
+                                    if (_.find(node.ports, np => np.id === cp.id)) {
+                                        cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
                     return combine.serialize ? combine.serialize() : combine
                 })
@@ -598,10 +597,10 @@ class Canvas extends Component {
             this.state.engine.stopMove()
             if (selected.extras && selected.extras.type === 'god'){
                 this.props.onConfirm({
-                                warning: true,
-                                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
-                                confirm: () => selected.remove()
-                            })
+                    warning: true,
+                    text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
+                    confirm: () => selected.remove()
+                })
             } else if(selected){
                 if (this.props.undoEvents.length >= 10){
                     this.props.shiftUndo()
@@ -752,13 +751,16 @@ class Canvas extends Component {
         let nodeIdx;
         let diagramEngine = this.state.engine
         let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
-        _.remove(node.parentCombine.combines, (c, idx) => {
+        let combineBlock = node.parentCombine
+        _.remove(combineBlock.combines, (c, idx) => {
             if (c.id === node.id) {
                 nodeIdx = idx;
                 return true;
             }
         })
-        let combineBlock = node.parentCombine
+        
+        if(combineBlock.extras.type !== 'god') return this.forceRepaint()
+
         let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
         if (nodeIdx === combineBlock.combines.length) {
             _.forEach(combineBlock.ports, p => {
@@ -814,7 +816,7 @@ class Canvas extends Component {
         if (current.extras.type === 'god' && target.extras.type === 'god'){
             return false;
         }
-        if (!_.isEmpty(target.combines)){
+        if (!_.isEmpty(target.combines) && _.last(target.combines).extras){
             switch(_.last(target.combines).extras.type){
                 case 'exit':
                     switch(current.extras.type){
@@ -1355,7 +1357,7 @@ class Canvas extends Component {
                 this.setState({
                     open: true
                 })
-                if (_.first(selected).extras.type !== 'god'){
+                if (selected[0].combines && selected[0].combines.length === 0){
                     engine.setSuperSelect(selected[0])
                 }
             }
@@ -2061,38 +2063,9 @@ class Canvas extends Component {
     addRemoveListener(node){
         const isRoot = this.state.skill.diagram === this.props.diagram_id
         const type = node.extras.type
-        if (type === 'story' || type === 'comment') {
+        if (type === 'comment' || type === 'story') {
             node.clearListeners()
             node.addListener({ entityRemoved: e => e.stopPropagation() })
-        } else if (type === 'command' && isRoot) {
-            // DO NOT ALLOW ROOT DIAGRAM HELP/STOP COMMANDS TO BE DELETED
-            node.clearListeners()
-            node.addListener({ entityRemoved: e => {
-                let block = e.entity
-                // TODO: make this better
-                if(block && block.id){
-                    let model = this.state.engine.getDiagramModel()
-                    let command_search
-                    if(commandHasIntent(block, 'AMAZON.HelpIntent')){
-                        command_search = 'AMAZON.HelpIntent'
-                    }else if(commandHasIntent(block, 'AMAZON.StopIntent')){
-                        command_search = 'AMAZON.StopIntent'
-                    }
-                    if(command_search){
-                        let nodes = model.getNodes()
-                        let already_exists = false
-                        for (let key in nodes) {
-                            if(commandHasIntent(nodes[key], command_search) && nodes[key].getID() !== block.id){
-                                already_exists = true
-                            }
-                        }
-                        // Don't remove this command if no other copies exist
-                        if(!already_exists) return
-                    }
-
-                    model.removeNode(block.id)
-                }
-            }})
         } else if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
             if (isRoot) {
                 node.clearListeners()
@@ -2289,19 +2262,6 @@ class Canvas extends Component {
                         intent: null,
                         mappings: [],
                         resume: false
-                    }
-                }
-            } else if (type === 'command') {
-                node.extras = {
-                    alexa: {
-                        intent: null,
-                        mappings: [],
-                        resume: true
-                    },
-                    google: {
-                        intent: null,
-                        mappings: [],
-                        resume: true
                     }
                 }
             } else if (type === 'comment') {

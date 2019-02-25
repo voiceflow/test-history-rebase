@@ -28,6 +28,7 @@ export class BlockNodeWidget extends BaseWidget {
 		this.combineNode = this.combineNode.bind(this);
 		this.combineAppendValidation = this.combineAppendValidation.bind(this);
 		this.close = this.close.bind(this);
+		this.addCommand = this.addCommand.bind(this)
 	}
 
 	static getDerivedStateFromProps(props){
@@ -46,6 +47,31 @@ export class BlockNodeWidget extends BaseWidget {
 		if (!prevProps.node.selected && prevProps.node.edit){
 			this.close();
 		}
+	}
+
+	addCommand(e){
+		console.log('pls')
+		e.preventDefault()
+		e.stopPropagation()
+		console.log('yeet', this.props.node)
+		const engine = this.props.diagramEngine
+		const node = new BlockNodeModel('New Command', null, toolkit.UID())
+		node.extras = {
+			alexa: {
+					intent: null,
+					mappings: [],
+					resume: true
+			},
+			google: {
+					intent: null,
+					mappings: [],
+					resume: true
+			}
+		}
+		this.props.node.combines.push(node)
+		engine.setSuperSelect(node)
+		engine.enableRepaintEntities([this.props.node]);
+		engine.repaintCanvas(false)
 	}
 
 	appendValidator(node){
@@ -105,7 +131,7 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addTemp(e, isTop = false){
-		if (this.props.node.parentCombine && e.buttons === 1 && this.lastValidator(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
+		if (this.props.node.parentCombine && this.props.node.parentCombine.extras.type === 'god' && e.buttons === 1 && this.lastValidator(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
 			if ((this.lastValidator(_.last(this.props.node.parentCombine.combines)) || this.lastValidator(this.props.diagramEngine.getSuperSelect())) && this.lastValidator(this.props.diagramEngine.getSuperSelect())) {
 				let idx = _.findIndex(this.props.node.parentCombine.combines, c => c.id === this.props.node.id);
 				this.props.node.parentCombine.combines.splice(idx + 1, 0, 'temp')
@@ -116,14 +142,16 @@ export class BlockNodeWidget extends BaseWidget {
 				this.props.diagramEngine.enableRepaintEntities([this.props.node.parentCombine, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
 			}
-		} else if (!_.isEmpty(this.props.node.combines) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
-			this.props.node.combines.splice(0, 0, 'temp')
-			this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
-			this.props.diagramEngine.repaintCanvas(false)
-		} else if (!_.isEmpty(this.props.node.combines) && this.props.node.parentCombine && this.lastValidator(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
-			this.props.node.combines.push('temp')
-			this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
-			this.props.diagramEngine.repaintCanvas(false)
+		} else if(!_.isEmpty(this.props.node.combines) && this.props.node.extras.type === 'god') {
+			if (e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
+				this.props.node.combines.splice(0, 0, 'temp')
+				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
+				this.props.diagramEngine.repaintCanvas(false)
+			} else if (this.props.node.parentCombine && this.lastValidator(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
+				this.props.node.combines.push('temp')
+				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
+				this.props.diagramEngine.repaintCanvas(false)
+			}
 		}
 	}
 
@@ -404,7 +432,7 @@ export class BlockNodeWidget extends BaseWidget {
 		const fade = this.props.node.fade ? " faded-node" : ""
 
 		return (
-			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast && 'last'} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : null} ${fade}`}
+			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast ? 'last' : ''} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : ''} ${fade}`}
 				data-nodeid = {
 					this.props.node.id
 				}
@@ -415,9 +443,11 @@ export class BlockNodeWidget extends BaseWidget {
 					} else if (!e.didRun){
 						this.props.diagramEngine.setSuperSelect(this.props.node)
 					}
-					var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
-					if (e.buttons === 1 && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
-						nodeElement.style.pointerEvents = 'none';
+					if(this.props.node.extras.type !== 'story'){
+						var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
+						if (e.buttons === 1 && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
+							nodeElement.style.pointerEvents = 'none';
+						}
 					}
 					window.getSelection ? window.getSelection().empty() : document.selection.empty()
 				}}
@@ -484,7 +514,7 @@ export class BlockNodeWidget extends BaseWidget {
 				}
 				/> : null}
 				<div className={this.bem("__title") + ' no-select'}
-					style={this.props.isLast ? {paddingTop: '10px'} : null}
+					style={this.props.isLast ? undefined : {paddingTop: '10px'}}
 					onMouseEnter = {e => {
 						this.removeTemp(e)
 						if (this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().isMoving && !this.props.diagramEngine.getSuperSelect().isMoveInside){
@@ -543,7 +573,7 @@ export class BlockNodeWidget extends BaseWidget {
 											{
 												diagramEngine: this.props.diagramEngine,
 												key: node.id,
-												isLast: idx !== this.props.node.combines.length-1,
+												isLast: idx === this.props.node.combines.length-1,
 												selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
 												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
 												onClick: () => {
@@ -565,17 +595,17 @@ export class BlockNodeWidget extends BaseWidget {
 					})}
 					</div>
 					{
-						this.props.node.extras.type === 'module'?
+						this.props.node.extras.type === 'module' &&
 							<React.Fragment>
 								<img className="rounded ModuleIcon" draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
 								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
 							</React.Fragment>
-							:null
 					}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
+				{this.props.node.extras.type === 'story' && <button id="add-command" onClick={this.addCommand}><i className="far fa-plus"/></button>}
 			</div>
 		);
 	}

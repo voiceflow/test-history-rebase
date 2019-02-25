@@ -762,7 +762,7 @@ export class DiagramWidget extends BaseWidget {
 					} else {
 						diagramEngine.enableRepaintEntities(diagramModel.getSelectedItems());
 						//its some or other element, probably want to move it
-							if (!event.shiftKey && !model.model.isSelected()) {
+							if (!event.shiftKey && model.model && !model.model.isSelected()) {
 								diagramModel.clearSelection();
 							}
 							model.model.setSelected(true);

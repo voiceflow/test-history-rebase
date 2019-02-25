@@ -1433,6 +1433,13 @@ class Canvas extends Component {
                 serialize.nodes.forEach(node => {
                     if(node.extras.diagram_id){
                         sub_diagrams.push(node.extras.diagram_id)
+                    }else if(node.extras.type === 'story' && Array.isArray(node.combines)){
+                        node.combines.forEach(combine_node => {
+                            let extras = combine_node.extras[this.state.skill.platform]
+                            if(extras && extras.diagram_id){
+                                sub_diagrams.push(extras.diagram_id)
+                            }
+                        })
                     }
                 })
 
@@ -1602,7 +1609,7 @@ class Canvas extends Component {
                 const type = node.extras.type
                 this.addRemoveListener(node)
 
-                if (type === 'god') {
+                if (Array.isArray(node.combines) && node.combines.length !== 0) {
                     node.combines.forEach(n => {
                         if (typeof n !== 'object') return
                         if (this.state.skill.platform === 'google') {
@@ -2514,7 +2521,6 @@ class Canvas extends Component {
     }
 
     render() {
-        console.log('superselect', this.state.engine.getSuperSelect() && this.state.engine.getSuperSelect().extras.type)
         return (
             <React.Fragment>
                 <Prompt

@@ -522,24 +522,31 @@ export class BlockNodeWidget extends BaseWidget {
 						}
 						e.stopPropagation()
 					}}
-					
 				>
-					<div className={this.bem("__name")} style={this.props.node.parentCombine ? {fontSize: '13px', textAlign: 'left', padding: '0 10px', fontWeight: '500'} : {padding: '0 40px'}}>
-						{this.props.node.edit ? 
-								<input
-									name="name"
-									value={this.state.name}
-									onChange={this.handleChange}
-									onKeyDown={(e) => e.keyCode===13 && this.close()}
-									style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
-									autoFocus
-								/>:
-						< div > {
-							_.trim(this.props.node.name) ?
-							(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
-							_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
-						} </div>}
-					</div>
+					{
+						this.props.node.extras.type === 'story' ?
+						<div className="home-block">
+							<div className="home-title">Home</div>
+							<div className="faux-start-block">Start</div>
+							<hr/>
+							<div className="home-title">Commands</div>
+						</div> :
+						<div className={this.bem("__name")} style={this.props.node.parentCombine ? {fontSize: '13px', textAlign: 'left', padding: '0 10px', fontWeight: '500'} : {padding: '0 40px'}}>
+							{this.props.node.edit ? 
+									<input
+										name="name"
+										value={this.state.name}
+										onChange={this.handleChange}
+										onKeyDown={(e) => e.keyCode===13 && this.close()}
+										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
+										autoFocus
+									/>:
+							< div > {
+								_.trim(this.props.node.name) ?
+								(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
+								_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
+							} </div>}
+					</div>}
 				</div>
 				<div className={this.bem("__ports")}
 						onMouseEnter={e => {
@@ -605,7 +612,7 @@ export class BlockNodeWidget extends BaseWidget {
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
-				{this.props.node.extras.type === 'story' && <button id="add-command" onMouseUp={this.addCommand}><i className="far fa-plus"/></button>}
+				{this.props.node.extras.type === 'story' && <button id="add-command" onMouseUp={this.addCommand}><i className="fal fa-plus"/></button>}
 			</div>
 		);
 	}

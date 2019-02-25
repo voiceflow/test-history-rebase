@@ -1619,11 +1619,8 @@ label {
 .srd-default-node.god {
     padding: 0px 12px 0px 0px !important;
 }
-.srd-default-node.story {
-    padding: 0px 12px !important;
-}
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
-    border-color: #0b1a38 !important;
+    border-color: #8DA2B5 !important;
     /* border-width: 1px !important; */
     box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important;
     
@@ -1712,10 +1709,6 @@ label {
     border-color: #42a5ff !important;
 }
 
-.combine-node .srd-default-node {
-    height: 35px !important;
-}
-
 .god .combine-node .srd-default-node.last {
     height: auto !important;
     background-image: none !important
@@ -1737,7 +1730,31 @@ label {
     -webkit-transition: height .3s ease;
     overflow: hidden;
 }
-.combine-node .srd-default-node {
+
+.srd-default-node.story {
+    padding: 10px 12px 18px 12px !important;
+}
+
+.home-block {
+    width: 100%;
+}
+.home-block hr {
+    border-color: #8DA2B5 !important;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: 12px;
+}
+.home-title {
+    color: #8DA2B5;
+}
+
+.srd-default-node__out.story {
+    position: absolute;
+    right: 11px;
+    top: 50px;
+}
+
+.combine-node .srd-default-node, .faux-start-block {
     background-color: #fff !important;
     border-radius: 5px !important;
     margin-bottom: 5px !important;
@@ -1746,6 +1763,34 @@ label {
     background-size: 6px;
     background-repeat: no-repeat;
     border-width: 1px !important;
+    width: 100% !important;
+    padding: 6px 0 0 0 !important;
+    height: 35px !important;
+}
+
+.faux-start-block {
+    height: auto !important;
+    padding: 10px !important;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .08);
+}
+
+#add-command {
+    position: absolute;
+    border-radius: 20px;
+    border: none;
+    color: #8DA2B5;
+    font-size: 20px;
+    left: 50%;
+    height: 40px;
+    width: 40px;
+    bottom: -20px;
+    margin-left: -20px;
+    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .3);
+    padding: 0px;
 }
 
 .combine-node .srd-default-node.selected {
@@ -1799,18 +1844,6 @@ label {
 .combine-node .srd-default-node.cancel,
 .combine-node .srd-default-node.reminder {
     background-image: url('/business_combine.svg');
-}
-
-#add-command {
-    position: absolute;
-    border-radius: 20px;
-    border: 1px solid #000;
-    font-size: 20px;
-    left: 50%;
-    height: 40px;
-    width: 40px;
-    bottom: -20px;
-    margin-left: -20px;
 }
 
 .srd-default-node.if {

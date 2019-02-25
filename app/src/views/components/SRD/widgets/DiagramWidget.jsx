@@ -422,7 +422,7 @@ export class DiagramWidget extends BaseWidget {
 			let first = selectedItems[0]
 			let super_select = diagramEngine.getSuperSelect()
 			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine
-			&& super_select.extras && super_select.combines && super_select.combines !== 0 ) {
+			&& super_select.extras && super_select.combines && super_select.combines !== 0) {
 				diagramEngine.getDiagramModel().clearSelection()
 				let nodeIdx;
 				_.remove(_.first(selectedItems).combines, (c, idx) => {
@@ -490,9 +490,13 @@ export class DiagramWidget extends BaseWidget {
 									params: [selectedItems, element]
 								})
 							} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
-								element.remove();
+								if (element instanceof PointModel && element.parent.sourcePort.parent.extras.type !== 'story'){
+									element.remove()
+								}
 							} else if (!(element instanceof BlockNodeModel)){
-								element.remove();
+								if (element instanceof PointModel && element.parent.sourcePort.parent.extras.type !== 'story') {
+									element.remove()
+								}
 							}
 						}
 			   });

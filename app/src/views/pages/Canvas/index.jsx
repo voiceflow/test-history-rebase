@@ -760,7 +760,6 @@ class Canvas extends Component {
         })
         
         if(combineBlock.extras.type !== 'god') return this.forceRepaint()
-
         let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
         if (nodeIdx === combineBlock.combines.length) {
             _.forEach(combineBlock.ports, p => {

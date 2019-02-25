@@ -309,6 +309,7 @@ class Command extends Component {
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 </React.Fragment>
             case 'slots':

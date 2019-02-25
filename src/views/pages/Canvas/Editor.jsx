@@ -277,6 +277,7 @@ class Editor extends Component {
                         platform={this.props.platform}
                         diagram_level_intents={this.props.diagram_level_intents}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 }
             case 'interaction':
@@ -298,6 +299,7 @@ class Editor extends Component {
                     onConfirm={this.props.onConfirm}
                     platform={this.props.platform}
                     live_mode={this.props.live_mode}
+                    setCanFulfill={this.props.setCanFulfill}
                     />
             case 'combine':
             case 'line':

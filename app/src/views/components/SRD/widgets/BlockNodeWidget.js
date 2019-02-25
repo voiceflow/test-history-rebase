@@ -71,7 +71,7 @@ export class BlockNodeWidget extends BaseWidget {
 		}
 		this.props.node.combines.push(node)
 		engine.setSuperSelect(node)
-		engine.enableRepaintEntities([node]);
+		engine.enableRepaintEntities([this.props.node]);
 		engine.repaintCanvas(false)
 	}
 

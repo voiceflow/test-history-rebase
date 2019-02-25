@@ -66,7 +66,8 @@ export class BlockNodeWidget extends BaseWidget {
 					intent: null,
 					mappings: [],
 					resume: true
-			}
+			},
+			type: 'command'
 		}
 		this.props.node.combines.push(node)
 		engine.setSuperSelect(node)

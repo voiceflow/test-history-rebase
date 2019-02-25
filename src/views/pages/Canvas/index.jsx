@@ -2061,6 +2061,7 @@ class Canvas extends Component {
     addRemoveListener(node){
         const isRoot = this.state.skill.diagram === this.props.diagram_id
         const type = node.extras.type
+
         if (type === 'story' || type === 'comment') {
             node.clearListeners()
             node.addListener({ entityRemoved: e => e.stopPropagation() })
@@ -2093,7 +2094,7 @@ class Canvas extends Component {
                     model.removeNode(block.id)
                 }
             }})
-        } else if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
+        } else if ((type === 'intent' && node.extras[this.state.skill.platform].intent !== undefined) || (type === 'jump' && node.extras[this.state.skill.platform].intent !== undefined)) {
             if (isRoot) {
                 node.clearListeners()
                 node.addListener({
@@ -2147,8 +2148,10 @@ class Canvas extends Component {
 
     updateFulfillmentOnDeletion(deleted_node) {
         const id = deleted_node.id
-        if (deleted_node.extras.intent && deleted_node.extras.intent.key) {
-            const key = deleted_node.extras.intent.key
+        const extras = deleted_node.extras[this.state.skill.platform]
+
+        if (extras.intent && extras.intent.key) {
+            const key = extras.intent.key
             const new_value = false
             this.setCanFulfill(key, new_value)
             this.state.diagram_level_intents[this.state.skill.platform].delete(key)
@@ -2159,11 +2162,13 @@ class Canvas extends Component {
     onDeleteIntentNode(deleted_node) {
         const skill = this.state.skill
         const fulfillments = skill.fulfillment
-        const key = deleted_node.extras.intent ? deleted_node.extras.intent.key : null
+
+        const extras = deleted_node.extras[skill.platform]
+        const key = extras.intent ? extras.intent.key : null
 
         if (key && fulfillments[key]) {
             const confirm_info = {
-                text: `CanfulfillIntent is enabled for the "${deleted_node.extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
+                text: `CanfulfillIntent is enabled for the "${extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
                 confirm: () => {
                     this.updateFulfillmentOnDeletion(deleted_node)
                     this.setState({

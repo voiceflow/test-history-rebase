@@ -146,6 +146,13 @@ class Canvas extends Component {
                 name: window.user_detail.name
             })
         }
+        if (window.Appcues){
+            window.Appcues.identify(window.user_detail.id, {
+                email: window.user_detail.email,
+                name: window.user_detail.name,
+                roles: window.user_detail.admin
+            })
+        }
         this.loaded = false
 
         // Intent Variables All Skills Must Have
@@ -221,6 +228,7 @@ class Canvas extends Component {
         })
     }
     componentDidMount() {
+        window.Appcues.page()
         this.setMousetrap()
         this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
@@ -261,6 +269,7 @@ class Canvas extends Component {
         if(this.interval){
             clearInterval(this.interval)
         }
+        localStorage.setItem('is_first_session', 'false')
     }
 
     componentDidUpdate(previous_props) {
@@ -2695,7 +2704,7 @@ class Canvas extends Component {
                         slots={this.state.skill.slots}
                         locales={this.state.skill.locales}
                         preview={this.props.preview}
-                        onboarding={this.onboarding}
+                        // onboarding={this.onboarding}
                         diagram_id={this.props.diagram_id}
                         finished={()=>{this.onboarding = false}}
                         onError={this.props.onError}

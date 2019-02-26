@@ -1627,7 +1627,6 @@ label {
 }
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #8DA2B5 !important;
-    border-width: 1px !important;
     box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important;
     
 }
@@ -1817,10 +1816,10 @@ label {
     border: none;
     cursor: pointer;
     padding: 0px;
-    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .3);
+    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .17);
 }
 #add-command .round-btn:hover{
-    box-shadow: 0 5px 10px 0 rgba(43, 57, 80, .17);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08) !important;
 }
 
 .combine-node .srd-default-node.selected {

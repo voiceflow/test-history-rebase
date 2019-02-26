@@ -815,8 +815,31 @@ class Canvas extends Component {
             diagramEngine.setSuperSelect(null)
             this.forceRepaint()
         }
-
+        console.log('fuk u too')
         if(node.extras.type === 'command'){
+            if(this.props.diagram_id === this.props.skill.diagram && node.parentCombine){
+                // Do not allow help/stop be deleted
+                try{
+                    const intents = ['AMAZON.HelpIntent', 'AMAZON.StopIntent']
+                    for(var intent of intents){
+                        if(node.extras['alexa'].intent.value === intent){
+                            let count = 0
+                            for(var c_node of node.parentCombine.combines){
+                                try{(c_node.extras['alexa'].intent.value === intent && count++)}catch(e){}
+                            }
+                            if(count < 2){
+                                this.props.onConfirm({
+                                    text: <Alert className="mb-0"><b>{intent}</b> is required by default</Alert>,
+                                    confirm: _.noop
+                                })
+                                return
+                            }
+                            break
+                        }
+                    }
+                }catch (e){}
+            }
+
             this.props.onConfirm({
                 warning: true,
                 text: <Alert color="danger" className="mb-0">Remove this command?</Alert>,
@@ -1367,7 +1390,7 @@ class Canvas extends Component {
         if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type ==='story'){
             selected = [engine.getSuperSelect()]
         }
-        if (selected.length === 1) {
+        if (selected.length === 1 && selected[0]) {
             if(selected[0].extras.type === 'comment'){
                 this.diagram_focus=false
             }else{
@@ -2733,6 +2756,7 @@ class Canvas extends Component {
                                 hasFlow: this.hasFlow,
                                 enterFlow: this.enterFlow,
                                 removeNode: this.removeNode,
+                                removeCombineNode: this.removeCombineNode,
                                 addRemoveListener: this.addRemoveListener
                             }}
                             removeHandler={(node) => {

@@ -52,6 +52,7 @@ export class BlockNodeWidget extends BaseWidget {
 	addCommand(e){
 		const engine = this.props.diagramEngine
 		const node = new BlockNodeModel('New Command', null, toolkit.UID())
+		node.parentCombine = this.props.node
 		node.extras = {
 			alexa: {
 					intent: null,

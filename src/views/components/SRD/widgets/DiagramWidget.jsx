@@ -418,63 +418,12 @@ export class DiagramWidget extends BaseWidget {
 		if (this.props.deleteKeys.indexOf(event.keyCode) !== -1) {
 			let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
 			let diagramEngine = this.props.diagramEngine;
-			let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
 			let first = selectedItems[0]
 			let super_select = diagramEngine.getSuperSelect()
 			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine
 			&& super_select.extras && super_select.combines && super_select.combines !== 0) {
 				diagramEngine.getDiagramModel().clearSelection()
-				let nodeIdx;
-				_.remove(_.first(selectedItems).combines, (c, idx) => {
-					if (c.id === diagramEngine.getSuperSelect().id) {
-						nodeIdx = idx;
-						return true;
-					}
-				})
-				let combineBlock = diagramEngine.getSuperSelect().parentCombine
-				if(combineBlock.extras.type === 'god'){
-					if (nodeIdx === combineBlock.combines.length){
-						_.forEach(combineBlock.ports, p=>{
-							if (!p.in){
-								combineBlock.removePort(p);
-							}
-						})
-						let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
-						_.forEach(lastNode.ports, p=> {
-							if (!p.in){
-								combineBlock.ports[p.name] = p
-							}
-						})
-					} else {
-						_.forEach(selectedItems, selected => {
-							if (selected instanceof PointModel && selected.parent.sourcePort.parent.id === _.first(selectedItems).id){
-								selected.updateLocation({x: selected.x, y: selected.y - 30/amountZoom})
-							}
-						})
-					}
-					let totalHeight = 40;
-					_.forEach(combineBlock.combines, (c, idx) => {
-						if (!(c instanceof String) && c.id !== combineBlock.id) {
-							c.x = combineBlock.x + 10;
-							c.y = combineBlock.y + totalHeight;
-							if (c.height) {
-								totalHeight = totalHeight + c.height / amountZoom
-							} else {
-								totalHeight = totalHeight + 40
-							}
-						}
-					})
-					if (combineBlock.combines.length === 1 && combineBlock.extras.type === 'god') {
-						let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
-						let removed = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine);
-						this.props.diagramEngine.getDiagramModel().addNode(removed)
-						removed.parentCombine = null;
-						removed.extras.nextID = null;
-						combineBlock.remove();
-					}
-					selectedItems = [diagramEngine.getSuperSelect()]
-					diagramEngine.setSuperSelect(selectedItems[0].parentCombine)
-				}
+				this.props.nodeProps.removeCombineNode(super_select)
 			}
 			if (!_.some(selectedItems, { locked: true })){
 				this.props.removeHandler(selectedItems)
@@ -501,7 +450,7 @@ export class DiagramWidget extends BaseWidget {
 									element.remove()
 								}
 							} else if (!(element instanceof BlockNodeModel)){
-								if (element instanceof PointModel && (element.parent.sourcePort.parent.extras.type !== 'story' || element.parent.points.length > 2)){
+								if (element instanceof PointModel && (element.parent.sourcePort.parent && (element.parent.sourcePort.parent.extras.type !== 'story' || element.parent.points.length > 2))){
 									element.remove()
 								}
 							}

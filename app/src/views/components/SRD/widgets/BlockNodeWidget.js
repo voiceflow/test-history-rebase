@@ -625,7 +625,7 @@ export class BlockNodeWidget extends BaseWidget {
 							</React.Fragment>
 					}
 					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
-						className="btn btn-black btn-sm"
+						className="btn btn-black btn-sm mt-1"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.enterFlow(this.props.node.extras.diagram_id)}>
 						Enter Flow

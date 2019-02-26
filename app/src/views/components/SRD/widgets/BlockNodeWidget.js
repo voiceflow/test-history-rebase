@@ -528,8 +528,10 @@ export class BlockNodeWidget extends BaseWidget {
 						<div className="home-block">
 							<div className="home-title">Home</div>
 							<div className="faux-start-block">Start</div>
-							<hr/>
-							<div className="home-title">Commands</div>
+							{!!this.props.node.combines && !!this.props.node.combines.length && <React.Fragment>
+								<hr/>
+								<div className="home-title">Commands</div>
+							</React.Fragment>}
 						</div> :
 						<div className={this.bem("__name")} style={this.props.node.parentCombine ? {fontSize: '13px', textAlign: 'left', padding: '0 10px', fontWeight: '500'} : {padding: '0 40px'}}>
 							{this.props.node.edit ? 
@@ -627,14 +629,25 @@ export class BlockNodeWidget extends BaseWidget {
 					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
 						className="btn btn-black btn-sm"
 						onMouseDown={(e) => e.stopPropagation()}
-						onMouseUp={()=>this.props.enterFlow(this.props.node.extras.diagram_id)}>
+						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
 						Enter Flow
 					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
-				{this.props.node.extras.type === 'story' && <button id="add-command" onMouseUp={this.addCommand}><i className="fal fa-plus"/></button>}
+				{this.props.node.extras.type === 'story' && <div id="add-command" onMouseUp={this.addCommand}>
+						<Tooltip
+							position="bottom"
+							title="Add Command"
+							distance={18}
+						>
+							<button className="round-btn">
+								<i className="fal fa-plus"/>
+							</button>
+						</Tooltip>
+					</div>
+				}
 			</div>
 		);
 	}

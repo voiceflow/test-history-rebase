@@ -815,7 +815,6 @@ class Canvas extends Component {
             diagramEngine.setSuperSelect(null)
             this.forceRepaint()
         }
-        console.log('fuk u too')
         if(node.extras.type === 'command'){
             if(this.props.diagram_id === this.props.skill.diagram && node.parentCombine){
                 // Do not allow help/stop be deleted

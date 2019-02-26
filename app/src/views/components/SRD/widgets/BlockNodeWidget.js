@@ -541,21 +541,23 @@ export class BlockNodeWidget extends BaseWidget {
 										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
 										autoFocus
 									/>:
-							< div > {
+							< span > {
 								_.trim(this.props.node.name) ?
-								(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
+								this.props.node.name :
 								_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
-							} </div>}
+							} </span>}
 							{
-								this.props.node.extras.type ==='command' && this.props.node.parentCombine.extras.type ==='story' ?
-								<i className="fas fa-backspace command-delete" onMouseDown={(e) => {
-										e.stopPropagation()
-									}}
-									onMouseUp={() => {
-										this.props.removeCombineNode(this.props.node)
-									}}
-								/>:
-								null
+								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine 
+								&& this.props.node.parentCombine.extras.type ==='story' && 
+								this.props.nodeProps.hasFlow(this.props.node.extras['alexa'].diagram_id) &&
+								<div className="command-right">
+									<button
+										className="btn btn-black btn-sm"
+										onMouseDown={(e) => e.stopPropagation()}
+										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
+										Enter Flow
+									</button>
+								</div>
 							}
 					</div>}
 				</div>
@@ -575,44 +577,46 @@ export class BlockNodeWidget extends BaseWidget {
 					<div className={`${this.bem("__in")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getInPorts(), this.generatePort.bind(this))}
 					</div>
-					<div className="combine-node"
-						ref = {
-							ref => {
-								if (ref && !_.isEmpty(this.props.node.combines)) {
-									this.props.diagramEngine.setCombineCanvas(ref);
+					{!_.isEmpty(this.props.node.combines) &&
+						<div className="combine-node"
+							ref = {
+								ref => {
+									if (ref && !_.isEmpty(this.props.node.combines)) {
+										this.props.diagramEngine.setCombineCanvas(ref);
+									}
 								}
 							}
-						}
-					>
-					{!_.isEmpty(this.props.node.combines) && _.map(this.props.node.combines,(node, idx) => {
-								if (!(node instanceof String) && node.id){
-									return React.createElement(
-											BlockNodeWidget,
-											{
-												diagramEngine: this.props.diagramEngine,
-												key: node.id,
-												isLast: idx === this.props.node.combines.length-1,
-												selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
-												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
-												removeCombineNode: this.props.removeCombineNode,
-												onClick: () => {
-													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
-												},
-											},
-											this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
-										)
-								} else {
-									return <AnimateHeight
-										key={idx}
-										duration={1000}
-										height={'auto'}>
-											<div className="rearrange-placeholder"
-											style={{height: '40px'}}
-											key={idx} />
-									</AnimateHeight>
-								}
-					})}
-					</div>
+						>
+							{_.map(this.props.node.combines,(node, idx) => {
+										if (!(node instanceof String) && node.id){
+											return React.createElement(
+													BlockNodeWidget,
+													{
+														diagramEngine: this.props.diagramEngine,
+														key: node.id,
+														isLast: idx === this.props.node.combines.length-1,
+														selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
+														node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
+														nodeProps: this.props.nodeProps,
+														onClick: () => {
+															this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
+														},
+													},
+													this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
+												)
+										} else {
+											return <AnimateHeight
+												key={idx}
+												duration={1000}
+												height={'auto'}>
+													<div className="rearrange-placeholder"
+													style={{height: '40px'}}
+													key={idx} />
+											</AnimateHeight>
+										}
+							})}
+						</div>
+					}
 					{
 						this.props.node.extras.type === 'module' &&
 							<React.Fragment>
@@ -620,6 +624,12 @@ export class BlockNodeWidget extends BaseWidget {
 								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
 							</React.Fragment>
 					}
+					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
+						className="btn btn-black btn-sm"
+						onMouseDown={(e) => e.stopPropagation()}
+						onMouseUp={()=>this.props.enterFlow(this.props.node.extras.diagram_id)}>
+						Enter Flow
+					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>

@@ -1771,6 +1771,18 @@ label {
     height: 35px !important;
 }
 
+.combine-node .command-delete {
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 10px 10px 10px 5px;
+    color: #8DA2B5;
+}
+
+.combine-node .command-delete:hover {
+    color: #0b1a38;
+}
 .faux-start-block {
     height: auto !important;
     padding: 10px !important;
@@ -1782,6 +1794,7 @@ label {
 }
 
 #add-command {
+    cursor: pointer;
     position: absolute;
     border-radius: 20px;
     border: none;

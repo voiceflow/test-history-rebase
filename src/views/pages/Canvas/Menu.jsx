@@ -4,7 +4,6 @@ import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
 import Variables from './Sidebars/Variables'
 import Project from './Sidebars/Project'
-import Confirm from './../../components/Modals/ConfirmModal'
 
 const tabs = {
     top: [
@@ -30,7 +29,6 @@ class Menu extends Component {
             open: true,
             tab: tab,
             tree: null,
-            confirm: null,
             depth: 0,
         }
 
@@ -150,7 +148,6 @@ class Menu extends Component {
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
-                <Confirm confirm={this.props.confirm || this.state.confirm} toggle={()=>this.setState({confirm: null}, this.props.updateConfirm(null))}/>
                 <div className='toolbar'>
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {

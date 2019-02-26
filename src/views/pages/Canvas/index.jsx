@@ -748,65 +748,77 @@ class Canvas extends Component {
     }
 
     removeCombineNode(node){
-        let nodeIdx;
-        let diagramEngine = this.state.engine
-        let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
-        let combineBlock = node.parentCombine
-        _.remove(combineBlock.combines, (c, idx) => {
-            if (c.id === node.id) {
-                nodeIdx = idx;
-                diagramEngine.setSuperSelect(null)
-                return true;
-            }
-        })
-        
-        if(combineBlock.extras.type !== 'god') return this.forceRepaint()
-        let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
-        if (nodeIdx === combineBlock.combines.length) {
-            _.forEach(combineBlock.ports, p => {
-                if (!p.in) {
-                    combineBlock.removePort(p);
+        const removeNode = () => {
+            let nodeIdx
+            let diagramEngine = this.state.engine
+            let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
+            let combineBlock = node.parentCombine
+            _.remove(combineBlock.combines, (c, idx) => {
+                if (c.id === node.id) {
+                    nodeIdx = idx;
+                    diagramEngine.setSuperSelect(null)
+                    return true;
                 }
             })
-            _.forEach(lastNode.ports, p => {
-                if (!p.in) {
-                    combineBlock.ports[p.name] = p
-                }
-            })
-        } else {
-            _.forEach(node.parentCombine.getOutPorts(), port => {
-                if (!port.in && !_.isEmpty(port.links)) {
-                    let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
-                    let point = _.first(_.values(port.links)).points[pointIdx]
-                    if (point instanceof PointModel) {
-                        _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
-                        this.repaint()
+            
+            if(combineBlock.extras.type !== 'god') return this.forceRepaint()
+            let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
+            if (nodeIdx === combineBlock.combines.length) {
+                _.forEach(combineBlock.ports, p => {
+                    if (!p.in) {
+                        combineBlock.removePort(p);
                     }
+                })
+                _.forEach(lastNode.ports, p => {
+                    if (!p.in) {
+                        combineBlock.ports[p.name] = p
+                    }
+                })
+            } else {
+                _.forEach(node.parentCombine.getOutPorts(), port => {
+                    if (!port.in && !_.isEmpty(port.links)) {
+                        let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+                        let point = _.first(_.values(port.links)).points[pointIdx]
+                        if (point instanceof PointModel) {
+                            _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
+                            this.repaint()
+                        }
 
-                }
-            })
-        }
-        if (combineBlock.combines.length === 1) {
-            let removed = new BlockNodeModel().deSerialize(lastNode, diagramEngine);
-            diagramEngine.getDiagramModel().addNode(removed)
-            removed.parentCombine = null;
-            removed.extras.nextID = null;
-            combineBlock.remove();
-        }
-        let totalHeight = 40;
-        _.forEach(node.parentCombine.combines, (c, idx) => {
-            if (!(c instanceof String) && c.id !== node.parentCombine.id) {
-                c.x = node.parentCombine.x + 25;
-                c.y = node.parentCombine.y + totalHeight;
-                if (c.height) {
-                    totalHeight = totalHeight + c.height / amountZoom
-                } else {
-                    totalHeight = totalHeight + 40
-                }
+                    }
+                })
             }
-        });
-        diagramEngine.setSuperSelect(null)
-        this.forceRepaint()
+            if (combineBlock.combines.length === 1) {
+                let removed = new BlockNodeModel().deSerialize(lastNode, diagramEngine);
+                diagramEngine.getDiagramModel().addNode(removed)
+                removed.parentCombine = null;
+                removed.extras.nextID = null;
+                combineBlock.remove();
+            }
+            let totalHeight = 40;
+            _.forEach(node.parentCombine.combines, (c, idx) => {
+                if (!(c instanceof String) && c.id !== node.parentCombine.id) {
+                    c.x = node.parentCombine.x + 25;
+                    c.y = node.parentCombine.y + totalHeight;
+                    if (c.height) {
+                        totalHeight = totalHeight + c.height / amountZoom
+                    } else {
+                        totalHeight = totalHeight + 40
+                    }
+                }
+            });
+            diagramEngine.setSuperSelect(null)
+            this.forceRepaint()
+        }
+
+        if(node.extras.type === 'command'){
+            this.props.onConfirm({
+                warning: true,
+                text: <Alert color="danger" className="mb-0">Remove this command?</Alert>,
+                confirm: removeNode
+            })
+        }else{
+            removeNode()
+        }
     }
 
     combineValidation(current, target){
@@ -1266,42 +1278,40 @@ class Canvas extends Component {
     }
     
     deleteFlow(flow_id) {
-        this.setState({
-            confirm: {
-                warning: true,
-                text: <Alert color = "danger"
-                className = "mb-0" >
-                <i className = "fas fa-exclamation-triangle fa-2x" />
-                < br />
-                Deleting this flow permanently deletes everything inside and can not be recovered
-                <br />
-                <br />
-                Are you sure ?
-                </Alert>,
-                confirm : () => {
-                    this.setState({
-                        confirm: null
+        this.props.onConfirm({
+            warning: true,
+            text: <Alert color = "danger"
+            className = "mb-0" >
+            <i className = "fas fa-exclamation-triangle fa-2x" />
+            < br />
+            Deleting this flow permanently deletes everything inside and can not be recovered
+            <br />
+            <br />
+            Are you sure ?
+            </Alert>,
+            confirm : () => {
+                this.setState({
+                    confirm: null
+                })
+                axios.delete('/diagram/' + flow_id)
+                    .then(() => {
+                        let index = this.state.diagrams.findIndex(d => d.id === flow_id)
+                        if (index !== -1) {
+                            let diagrams = this.state.diagrams;
+                            diagrams.splice(index, 1)
+                            this.setState({
+                                diagrams: diagrams
+                            })
+                        }
+                        // If they are deleting the flow they are currently on, go back to ROOT
+                        if (flow_id === this.props.diagram_id) {
+                            this.enterFlow(_.find(this.state.diagrams, d => d.name === 'ROOT').id, false)
+                        }
                     })
-                    axios.delete('/diagram/' + flow_id)
-                        .then(() => {
-                            let index = this.state.diagrams.findIndex(d => d.id === flow_id)
-                            if (index !== -1) {
-                                let diagrams = this.state.diagrams;
-                                diagrams.splice(index, 1)
-                                this.setState({
-                                    diagrams: diagrams
-                                })
-                            }
-                            // If they are deleting the flow they are currently on, go back to ROOT
-                            if (flow_id === this.props.diagram_id) {
-                                this.enterFlow(_.find(this.state.diagrams, d => d.name === 'ROOT').id, false)
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            alert('failed to delete diagram')
-                        })
-                }
+                    .catch(err => {
+                        console.log(err)
+                        alert('failed to delete diagram')
+                    })
             }
         })
     }
@@ -1315,13 +1325,11 @@ class Canvas extends Component {
                 // Make sure that names are unique
                 let find = this.state.diagrams.find(d => d.name === name)
                 if (find) {
-                    return this.setState({
-                        confirm: {
-                            text: 'Flow names must be unique',
-                            confirm: () => this.setState({
-                                confirm: null
-                            })
-                        }
+                    return this.props.onConfirm({
+                        text: 'Flow names must be unique',
+                        confirm: () => this.setState({
+                            confirm: null
+                        })
                     })
                 }
 
@@ -2617,11 +2625,10 @@ class Canvas extends Component {
                         user={this.props.user}
                         loading_diagram={this.state.loading_diagram}
                         text={this.state.text}
-                        confirm={this.state.confirm}
+                        onConfirm={this.props.onConfirm}
                         copyFlow={this.copyFlow}
                         deleteFlow={this.deleteFlow}
                         renameFlow={this.renameFlow}
-                        updateConfirm={(confirm) => this.setState({confirm: confirm})}
                         saving={this.state.saving}
                         preview={this.props.preview}
                         onError={this.props.onError}

@@ -548,13 +548,13 @@ export class BlockNodeWidget extends BaseWidget {
 							} </div>}
 							{
 								this.props.node.extras.type ==='command' && this.props.node.parentCombine.extras.type ==='story' ?
-								<button style={{position:'absolute', right:0, top:0}} onMouseDown={(e) => {
-									e.stopPropagation()
-								}}
-								onMouseUp={() => {
-									this.props.removeCombineNode(this.props.node)
-								}}
-								>X</button>:
+								<i className="fas fa-backspace command-delete" onMouseDown={(e) => {
+										e.stopPropagation()
+									}}
+									onMouseUp={() => {
+										this.props.removeCombineNode(this.props.node)
+									}}
+								/>:
 								null
 							}
 					</div>}

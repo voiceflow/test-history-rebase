@@ -1619,6 +1619,12 @@ label {
 .srd-default-node.god {
     padding: 0px 12px 0px 0px !important;
 }
+.srd-default-node.god>.srd-default-node__title{
+    margin-right: -10px
+}
+.srd-default-node.god>.srd-default-node__title span {
+    margin: 0 auto;
+}
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #8DA2B5 !important;
     /* border-width: 1px !important; */
@@ -1790,19 +1796,22 @@ label {
 }
 
 #add-command {
-    cursor: pointer;
     position: absolute;
-    border-radius: 20px;
-    border: none;
-    color: #8DA2B5;
-    font-size: 20px;
     left: 50%;
-    height: 40px;
-    width: 40px;
     bottom: -20px;
     margin-left: -20px;
-    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .3);
+}
+
+#add-command .round-btn {
+    color: #8DA2B5;
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
     padding: 0px;
+    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .3);
 }
 
 .combine-node .srd-default-node.selected {

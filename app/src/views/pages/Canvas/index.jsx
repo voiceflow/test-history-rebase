@@ -54,10 +54,6 @@ const line_color = '#D1D8E2'
 const line_width = 2.5
 const toolkit = new Toolkit()
 
-const commandHasIntent = (node, intent, platform='alexa') => {
-    return (node.extras.type === 'command' && node.extras[platform].intent && node.extras[platform].intent.value === intent)
-}
-
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -123,6 +119,7 @@ class Canvas extends Component {
         this.canSave = this.canSave.bind(this)
         this.serialize = this.serialize.bind(this);
         this.setMousetrap = this.setMousetrap.bind(this)
+        this.hasFlow = this.hasFlow.bind(this)
         this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
@@ -188,6 +185,8 @@ class Canvas extends Component {
             upgrade_modal: false
         }
 
+        this.diagram_set = new Set()
+
         // SKILL IS LOADED HERE
         if(!this.props.preview){
             // this.loadProducts()
@@ -227,7 +226,7 @@ class Canvas extends Component {
         if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
                 if(this.lastModel){
-                var currentModel = JSON.stringify(this.serialize())
+                    var currentModel = JSON.stringify(this.serialize())
                     if(currentModel !== this.lastModel){
                         if(this.canSave(currentModel)){
                             this.tooBig = false
@@ -275,8 +274,11 @@ class Canvas extends Component {
               let nodes = _.values(this.state.engine.diagramModel.nodes)
               this.state.engine.enableRepaintEntities(nodes)
               this.state.engine.repaintCanvas(false)
-              this.onLoadDiagrams(this.props.diagram_id)
+              this.onLoadId(this.props.diagram_id)
             })
+        }
+        if(this.state.diagrams.length !== this.diagram_set.size){
+            this.diagram_set = new Set(this.state.diagrams.map(d => d.id))
         }
     }
 
@@ -284,21 +286,24 @@ class Canvas extends Component {
         let serialize = this.state.engine.getDiagramModel().serializeDiagram()
         _.map(serialize.nodes, node => {
             if (!_.isEmpty(node.combines)) {
-                node.extras.nextID = node.combines[0].id
+                let isHome = node.extras.type === 'story'
+                if(!isHome) node.extras.nextID = node.combines[0].id
                 node.combines = _.map(node.combines, (combine, idx) => {
                     if (combine.parentCombine){
                         delete combine.parentCombine
                     }
-                    if (idx !== node.combines.length - 1 && combine.extras) {
-                        combine.extras.nextID = node.combines[idx + 1].id
-                    } else {
-                        _.forEach(combine.ports, cp => {
-                            if (!cp.in) {
-                                if (_.find(node.ports, np => np.id === cp.id)) {
-                                    cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                    if(!isHome){
+                        if (idx !== node.combines.length - 1 && combine.extras) {
+                            combine.extras.nextID = node.combines[idx + 1].id
+                        } else {
+                            _.forEach(combine.ports, cp => {
+                                if (!cp.in) {
+                                    if (_.find(node.ports, np => np.id === cp.id)) {
+                                        cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
                     return combine.serialize ? combine.serialize() : combine
                 })
@@ -598,10 +603,10 @@ class Canvas extends Component {
             this.state.engine.stopMove()
             if (selected.extras && selected.extras.type === 'god'){
                 this.props.onConfirm({
-                                warning: true,
-                                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
-                                confirm: () => selected.remove()
-                            })
+                    warning: true,
+                    text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
+                    confirm: () => selected.remove()
+                })
             } else if(selected){
                 if (this.props.undoEvents.length >= 10){
                     this.props.shiftUndo()
@@ -749,62 +754,99 @@ class Canvas extends Component {
     }
 
     removeCombineNode(node){
-        let nodeIdx;
-        let diagramEngine = this.state.engine
-        let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
-        _.remove(node.parentCombine.combines, (c, idx) => {
-            if (c.id === node.id) {
-                nodeIdx = idx;
-                return true;
-            }
-        })
-        let combineBlock = node.parentCombine
-        let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
-        if (nodeIdx === combineBlock.combines.length) {
-            _.forEach(combineBlock.ports, p => {
-                if (!p.in) {
-                    combineBlock.removePort(p);
+        const removeNode = () => {
+            let nodeIdx
+            let diagramEngine = this.state.engine
+            let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
+            let combineBlock = node.parentCombine
+            _.remove(combineBlock.combines, (c, idx) => {
+                if (c.id === node.id) {
+                    nodeIdx = idx;
+                    diagramEngine.setSuperSelect(null)
+                    return true;
                 }
             })
-            _.forEach(lastNode.ports, p => {
-                if (!p.in) {
-                    combineBlock.ports[p.name] = p
-                }
-            })
-        } else {
-            _.forEach(node.parentCombine.getOutPorts(), port => {
-                if (!port.in && !_.isEmpty(port.links)) {
-                    let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
-                    let point = _.first(_.values(port.links)).points[pointIdx]
-                    if (point instanceof PointModel) {
-                        _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
-                        this.repaint()
+            
+            if(combineBlock.extras.type !== 'god') return this.forceRepaint()
+            let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), diagramEngine);
+            if (nodeIdx === combineBlock.combines.length) {
+                _.forEach(combineBlock.ports, p => {
+                    if (!p.in) {
+                        combineBlock.removePort(p);
                     }
+                })
+                _.forEach(lastNode.ports, p => {
+                    if (!p.in) {
+                        combineBlock.ports[p.name] = p
+                    }
+                })
+            } else {
+                _.forEach(node.parentCombine.getOutPorts(), port => {
+                    if (!port.in && !_.isEmpty(port.links)) {
+                        let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
+                        let point = _.first(_.values(port.links)).points[pointIdx]
+                        if (point instanceof PointModel) {
+                            _.first(_.values(port.links)).points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
+                            this.repaint()
+                        }
 
-                }
-            })
-        }
-        if (combineBlock.combines.length === 1) {
-            let removed = new BlockNodeModel().deSerialize(lastNode, diagramEngine);
-            diagramEngine.getDiagramModel().addNode(removed)
-            removed.parentCombine = null;
-            removed.extras.nextID = null;
-            combineBlock.remove();
-        }
-        let totalHeight = 40;
-        _.forEach(node.parentCombine.combines, (c, idx) => {
-            if (!(c instanceof String) && c.id !== node.parentCombine.id) {
-                c.x = node.parentCombine.x + 25;
-                c.y = node.parentCombine.y + totalHeight;
-                if (c.height) {
-                    totalHeight = totalHeight + c.height / amountZoom
-                } else {
-                    totalHeight = totalHeight + 40
-                }
+                    }
+                })
             }
-        });
-        diagramEngine.setSuperSelect(null)
-        this.forceRepaint()
+            if (combineBlock.combines.length === 1) {
+                let removed = new BlockNodeModel().deSerialize(lastNode, diagramEngine);
+                diagramEngine.getDiagramModel().addNode(removed)
+                removed.parentCombine = null;
+                removed.extras.nextID = null;
+                combineBlock.remove();
+            }
+            let totalHeight = 40;
+            _.forEach(node.parentCombine.combines, (c, idx) => {
+                if (!(c instanceof String) && c.id !== node.parentCombine.id) {
+                    c.x = node.parentCombine.x + 25;
+                    c.y = node.parentCombine.y + totalHeight;
+                    if (c.height) {
+                        totalHeight = totalHeight + c.height / amountZoom
+                    } else {
+                        totalHeight = totalHeight + 40
+                    }
+                }
+            });
+            diagramEngine.setSuperSelect(null)
+            this.forceRepaint()
+        }
+        if(node.extras.type === 'command'){
+            if(this.props.diagram_id === this.props.skill.diagram && node.parentCombine){
+                // Do not allow help/stop be deleted
+                try{
+                    const intents = ['AMAZON.HelpIntent', 'AMAZON.StopIntent']
+                    for(var intent of intents){
+                        if(node.extras['alexa'].intent.value === intent){
+                            let count = 0
+                            for(var c_node of node.parentCombine.combines){
+                                try{(c_node.extras['alexa'].intent.value === intent && count++)}catch(e){}
+                            }
+                            if(count < 2){
+                                this.props.onConfirm({
+                                    text: <Alert className="mb-0"><b>{intent}</b> is required by default</Alert>,
+                                    confirm: _.noop
+                                })
+                                return
+                            }
+                            break
+                        }
+                    }
+                }catch (e){}
+            }
+
+            this.props.onConfirm({
+                warning: true,
+                text: <Alert color="danger" className="mb-0">Remove this command?</Alert>,
+                confirm: removeNode
+            })
+        }else{
+            removeNode()
+        }
     }
 
     combineValidation(current, target){
@@ -814,7 +856,7 @@ class Canvas extends Component {
         if (current.extras.type === 'god' && target.extras.type === 'god'){
             return false;
         }
-        if (!_.isEmpty(target.combines)){
+        if (!_.isEmpty(target.combines) && _.last(target.combines).extras){
             switch(_.last(target.combines).extras.type){
                 case 'exit':
                     switch(current.extras.type){
@@ -1264,42 +1306,40 @@ class Canvas extends Component {
     }
     
     deleteFlow(flow_id) {
-        this.setState({
-            confirm: {
-                warning: true,
-                text: <Alert color = "danger"
-                className = "mb-0" >
-                <i className = "fas fa-exclamation-triangle fa-2x" />
-                < br />
-                Deleting this flow permanently deletes everything inside and can not be recovered
-                <br />
-                <br />
-                Are you sure ?
-                </Alert>,
-                confirm : () => {
-                    this.setState({
-                        confirm: null
+        this.props.onConfirm({
+            warning: true,
+            text: <Alert color = "danger"
+            className = "mb-0" >
+            <i className = "fas fa-exclamation-triangle fa-2x" />
+            < br />
+            Deleting this flow permanently deletes everything inside and can not be recovered
+            <br />
+            <br />
+            Are you sure ?
+            </Alert>,
+            confirm : () => {
+                this.setState({
+                    confirm: null
+                })
+                axios.delete('/diagram/' + flow_id)
+                    .then(() => {
+                        let index = this.state.diagrams.findIndex(d => d.id === flow_id)
+                        if (index !== -1) {
+                            let diagrams = this.state.diagrams;
+                            diagrams.splice(index, 1)
+                            this.setState({
+                                diagrams: diagrams
+                            })
+                        }
+                        // If they are deleting the flow they are currently on, go back to ROOT
+                        if (flow_id === this.props.diagram_id) {
+                            this.enterFlow(_.find(this.state.diagrams, d => d.name === 'ROOT').id, false)
+                        }
                     })
-                    axios.delete('/diagram/' + flow_id)
-                        .then(() => {
-                            let index = this.state.diagrams.findIndex(d => d.id === flow_id)
-                            if (index !== -1) {
-                                let diagrams = this.state.diagrams;
-                                diagrams.splice(index, 1)
-                                this.setState({
-                                    diagrams: diagrams
-                                })
-                            }
-                            // If they are deleting the flow they are currently on, go back to ROOT
-                            if (flow_id === this.props.diagram_id) {
-                                this.enterFlow(_.find(this.state.diagrams, d => d.name === 'ROOT').id, false)
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            alert('failed to delete diagram')
-                        })
-                }
+                    .catch(err => {
+                        console.log(err)
+                        alert('failed to delete diagram')
+                    })
             }
         })
     }
@@ -1313,13 +1353,11 @@ class Canvas extends Component {
                 // Make sure that names are unique
                 let find = this.state.diagrams.find(d => d.name === name)
                 if (find) {
-                    return this.setState({
-                        confirm: {
-                            text: 'Flow names must be unique',
-                            confirm: () => this.setState({
-                                confirm: null
-                            })
-                        }
+                    return this.props.onConfirm({
+                        text: 'Flow names must be unique',
+                        confirm: () => this.setState({
+                            confirm: null
+                        })
                     })
                 }
 
@@ -1348,14 +1386,17 @@ class Canvas extends Component {
         this.diagram_focus=true
         let engine = this.state.engine
         let selected = engine.getDiagramModel().getSelectedItems("node")
-        if (selected.length === 1) {
+        if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type ==='story'){
+            selected = [engine.getSuperSelect()]
+        }
+        if (selected.length === 1 && selected[0]) {
             if(selected[0].extras.type === 'comment'){
                 this.diagram_focus=false
             }else{
                 this.setState({
                     open: true
                 })
-                if (_.first(selected).extras.type !== 'god'){
+                if (selected[0].combines && selected[0].combines.length === 0){
                     engine.setSuperSelect(selected[0])
                 }
             }
@@ -1429,6 +1470,13 @@ class Canvas extends Component {
                 serialize.nodes.forEach(node => {
                     if(node.extras.diagram_id){
                         sub_diagrams.push(node.extras.diagram_id)
+                    }else if(node.extras.type === 'story' && Array.isArray(node.combines)){
+                        node.combines.forEach(combine_node => {
+                            let extras = combine_node.extras[this.state.skill.platform]
+                            if(extras && extras.diagram_id){
+                                sub_diagrams.push(extras.diagram_id)
+                            }
+                        })
                     }
                 })
 
@@ -1441,7 +1489,7 @@ class Canvas extends Component {
                     // UPDATE DIAGRAM STRUCTURE
                     let diagrams = this.state.diagrams
                     for (var i = 0; i < diagrams.length; i++) {
-                        if(diagrams[i].id === this.props.diagram_id){
+                        if(diagrams[i].id === serialize.id){
                             diagrams[i].sub_diagrams = sub_diagrams
                         }
                     }
@@ -1598,7 +1646,7 @@ class Canvas extends Component {
                 const type = node.extras.type
                 this.addRemoveListener(node)
 
-                if (type === 'god') {
+                if (Array.isArray(node.combines) && node.combines.length !== 0) {
                     node.combines.forEach(n => {
                         if (typeof n !== 'object') return
                         if (this.state.skill.platform === 'google') {
@@ -2061,40 +2109,10 @@ class Canvas extends Component {
     addRemoveListener(node){
         const isRoot = this.state.skill.diagram === this.props.diagram_id
         const type = node.extras.type
-
-        if (type === 'story' || type === 'comment') {
+        if (type === 'comment' || type === 'story') {
             node.clearListeners()
-            node.addListener({ entityRemoved: e => e.stopPropagation() })
-        } else if (type === 'command' && isRoot) {
-            // DO NOT ALLOW ROOT DIAGRAM HELP/STOP COMMANDS TO BE DELETED
-            node.clearListeners()
-            node.addListener({ entityRemoved: e => {
-                let block = e.entity
-                // TODO: make this better
-                if(block && block.id){
-                    let model = this.state.engine.getDiagramModel()
-                    let command_search
-                    if(commandHasIntent(block, 'AMAZON.HelpIntent')){
-                        command_search = 'AMAZON.HelpIntent'
-                    }else if(commandHasIntent(block, 'AMAZON.StopIntent')){
-                        command_search = 'AMAZON.StopIntent'
-                    }
-                    if(command_search){
-                        let nodes = model.getNodes()
-                        let already_exists = false
-                        for (let key in nodes) {
-                            if(commandHasIntent(nodes[key], command_search) && nodes[key].getID() !== block.id){
-                                already_exists = true
-                            }
-                        }
-                        // Don't remove this command if no other copies exist
-                        if(!already_exists) return
-                    }
-
-                    model.removeNode(block.id)
-                }
-            }})
-        } else if ((type === 'intent' && node.extras[this.state.skill.platform].intent !== undefined) || (type === 'jump' && node.extras[this.state.skill.platform].intent !== undefined)) {
+            node.addListener({ entityRemoved: e => e.stopPropagation()})
+        } else if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
             if (isRoot) {
                 node.clearListeners()
                 node.addListener({
@@ -2104,6 +2122,11 @@ class Canvas extends Component {
                 })
             }
         }
+    }
+
+    hasFlow(diagram_id) {
+        if(!diagram_id) return false
+        return this.diagram_set.has(diagram_id)
     }
 
     enterFlow(new_diagram_id, save=true) {
@@ -2294,19 +2317,6 @@ class Canvas extends Component {
                         intent: null,
                         mappings: [],
                         resume: false
-                    }
-                }
-            } else if (type === 'command') {
-                node.extras = {
-                    alexa: {
-                        intent: null,
-                        mappings: [],
-                        resume: true
-                    },
-                    google: {
-                        intent: null,
-                        mappings: [],
-                        resume: true
                     }
                 }
             } else if (type === 'comment') {
@@ -2652,11 +2662,10 @@ class Canvas extends Component {
                         user={this.props.user}
                         loading_diagram={this.state.loading_diagram}
                         text={this.state.text}
-                        confirm={this.state.confirm}
+                        onConfirm={this.props.onConfirm}
                         copyFlow={this.copyFlow}
                         deleteFlow={this.deleteFlow}
                         renameFlow={this.renameFlow}
-                        updateConfirm={(confirm) => this.setState({confirm: confirm})}
                         saving={this.state.saving}
                         preview={this.props.preview}
                         onError={this.props.onError}
@@ -2747,14 +2756,19 @@ class Canvas extends Component {
                             allowLooseLinks={false}
                             locked={this.props.preview}
                             onConfirm={this.props.onConfirm}
-                            copyNode={!this.props.preview ? this.copyNode : _.noop()}
-                            removeNode={!this.props.preview ? this.removeNode : _.noop()}
+                            nodeProps={{
+                                hasFlow: this.hasFlow,
+                                enterFlow: this.enterFlow,
+                                removeNode: this.removeNode,
+                                removeCombineNode: this.removeCombineNode,
+                                addRemoveListener: this.addRemoveListener
+                            }}
                             removeHandler={(node) => {
-                            if (this.props.undoEvents.length >= 10) {
-                                this.props.shiftUndo()
-                            }
-                            this.props.addUndo(node, 'remove')
-                            this.props.clearRedo()
+                                if (this.props.undoEvents.length >= 10) {
+                                    this.props.shiftUndo()
+                                }
+                                this.props.addUndo(node, 'remove')
+                                this.props.clearRedo()
                             }}
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}

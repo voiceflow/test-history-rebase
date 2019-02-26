@@ -226,12 +226,20 @@ class Command extends Component {
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
                         </Alert>}
-                        <Button block className="mt-2" onClick={() => { let node = this.state.node; let extras = node.extras[this.props.platform]; extras.diagram_id = null; this.setState({ node: node }) }} color="clear">Unlink Flow</Button>
+                        <Button block className="mt-2" onClick={() => { 
+                                let node = this.state.node; 
+                                let extras = node.extras[this.props.platform]; extras.diagram_id = null; 
+                                this.setState({ node: node })
+                                this.props.repaint()
+                            }} 
+                            color="clear">
+                            Unlink Flow
+                        </Button>
                     </React.Fragment> :
                     <React.Fragment>
                         <h5 className="mb-0">Command Flow</h5>
                         <label>Create a New Flow</label>
-                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), true)}>
+                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
                             Create New Flow <i className="fas fa-sign-in" />
                         </Button>
                         <hr className="mb-1" />

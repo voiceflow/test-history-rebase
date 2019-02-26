@@ -28,6 +28,7 @@ export class BlockNodeWidget extends BaseWidget {
 		this.combineNode = this.combineNode.bind(this);
 		this.combineAppendValidation = this.combineAppendValidation.bind(this);
 		this.close = this.close.bind(this);
+		this.addCommand = this.addCommand.bind(this)
 	}
 
 	static getDerivedStateFromProps(props){
@@ -46,6 +47,32 @@ export class BlockNodeWidget extends BaseWidget {
 		if (!prevProps.node.selected && prevProps.node.edit){
 			this.close();
 		}
+	}
+
+	addCommand(e){
+		const engine = this.props.diagramEngine
+		const node = new BlockNodeModel('New Command', null, toolkit.UID())
+		node.parentCombine = this.props.node
+		node.extras = {
+			alexa: {
+					intent: null,
+					mappings: [],
+					resume: true
+			},
+			google: {
+					intent: null,
+					mappings: [],
+					resume: true
+			},
+			type: 'command'
+		}
+		engine.setSuperSelect(node)
+		node.setSelected()
+		e.preventDefault()
+		e.stopPropagation()
+		this.props.node.combines.push(node)
+		engine.enableRepaintEntities([this.props.node]);
+		engine.repaintCanvas(false)
 	}
 
 	appendValidator(node){
@@ -105,7 +132,7 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addTemp(e, isTop = false){
-		if (this.props.node.parentCombine && e.buttons === 1 && this.lastValidator(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
+		if (this.props.node.parentCombine && this.props.node.parentCombine.extras.type === 'god' && e.buttons === 1 && this.lastValidator(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
 			if ((this.lastValidator(_.last(this.props.node.parentCombine.combines)) || this.lastValidator(this.props.diagramEngine.getSuperSelect())) && this.lastValidator(this.props.diagramEngine.getSuperSelect())) {
 				let idx = _.findIndex(this.props.node.parentCombine.combines, c => c.id === this.props.node.id);
 				this.props.node.parentCombine.combines.splice(idx + 1, 0, 'temp')
@@ -116,14 +143,16 @@ export class BlockNodeWidget extends BaseWidget {
 				this.props.diagramEngine.enableRepaintEntities([this.props.node.parentCombine, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
 			}
-		} else if (!_.isEmpty(this.props.node.combines) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
-			this.props.node.combines.splice(0, 0, 'temp')
-			this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
-			this.props.diagramEngine.repaintCanvas(false)
-		} else if (!_.isEmpty(this.props.node.combines) && this.props.node.parentCombine && this.lastValidator(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
-			this.props.node.combines.push('temp')
-			this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
-			this.props.diagramEngine.repaintCanvas(false)
+		} else if(!_.isEmpty(this.props.node.combines) && this.props.node.extras.type === 'god') {
+			if (e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
+				this.props.node.combines.splice(0, 0, 'temp')
+				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
+				this.props.diagramEngine.repaintCanvas(false)
+			} else if (this.props.node.parentCombine && this.lastValidator(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
+				this.props.node.combines.push('temp')
+				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
+				this.props.diagramEngine.repaintCanvas(false)
+			}
 		}
 	}
 
@@ -404,7 +433,7 @@ export class BlockNodeWidget extends BaseWidget {
 		const fade = this.props.node.fade ? " faded-node" : ""
 
 		return (
-			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast && 'last'} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : null} ${fade}`}
+			<div className={`srd-default-node ${this.props.node.extras.type !== 'card' ? this.props.node.extras.type : 'kard'} ${this.props.isLast ? 'last' : ''} ${this.props.selected ? 'selected' : 'no-select'} ${this.props.node.isMoving && this.props.node.parentCombine ? 'moving' : ''} ${fade}`}
 				data-nodeid = {
 					this.props.node.id
 				}
@@ -415,9 +444,11 @@ export class BlockNodeWidget extends BaseWidget {
 					} else if (!e.didRun){
 						this.props.diagramEngine.setSuperSelect(this.props.node)
 					}
-					var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
-					if (e.buttons === 1 && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
-						nodeElement.style.pointerEvents = 'none';
+					if(this.props.node.extras.type !== 'story'){
+						var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
+						if (e.buttons === 1 && this.props.diagramEngine.getSuperSelect() && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
+							nodeElement.style.pointerEvents = 'none';
+						}
 					}
 					window.getSelection ? window.getSelection().empty() : document.selection.empty()
 				}}
@@ -484,7 +515,7 @@ export class BlockNodeWidget extends BaseWidget {
 				}
 				/> : null}
 				<div className={this.bem("__title") + ' no-select'}
-					style={this.props.isLast ? {paddingTop: '10px'} : null}
+					style={this.props.isLast ? undefined : {paddingTop: '10px'}}
 					onMouseEnter = {e => {
 						this.removeTemp(e)
 						if (this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().isMoving && !this.props.diagramEngine.getSuperSelect().isMoveInside){
@@ -492,24 +523,46 @@ export class BlockNodeWidget extends BaseWidget {
 						}
 						e.stopPropagation()
 					}}
-					
 				>
-					<div className={this.bem("__name")} style={this.props.node.parentCombine ? {fontSize: '13px', textAlign: 'left', padding: '0 10px', fontWeight: '500'} : {padding: '0 40px'}}>
-						{this.props.node.edit ? 
-								<input
-									name="name"
-									value={this.state.name}
-									onChange={this.handleChange}
-									onKeyDown={(e) => e.keyCode===13 && this.close()}
-									style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
-									autoFocus
-								/>:
-						< div > {
-							_.trim(this.props.node.name) ?
-							(this.props.node.name.length > 15 ? `${this.props.node.name.substring(0,15)}...` : this.props.node.name) :
-							_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
-						} </div>}
-					</div>
+					{
+						this.props.node.extras.type === 'story' ?
+						<div className="home-block">
+							<div className="home-title">Home</div>
+							<div className="faux-start-block">Start</div>
+							{!!this.props.node.combines && !!this.props.node.combines.length && <React.Fragment>
+								<hr/>
+								<div className="home-title">Commands</div>
+							</React.Fragment>}
+						</div> :
+						<div className={this.bem("__name")} style={this.props.node.parentCombine ? {fontSize: '13px', textAlign: 'left', padding: '0 10px', fontWeight: '500'} : {padding: '0 40px'}}>
+							{this.props.node.edit ? 
+									<input
+										name="name"
+										value={this.state.name}
+										onChange={this.handleChange}
+										onKeyDown={(e) => e.keyCode===13 && this.close()}
+										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
+										autoFocus
+									/>:
+							< span > {
+								_.trim(this.props.node.name) ?
+								this.props.node.name :
+								_.startCase(this.props.node.extras.type === 'god' ? 'Combine Block' : this.props.node.extras.type)
+							} </span>}
+							{
+								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine 
+								&& this.props.node.parentCombine.extras.type ==='story' && 
+								this.props.nodeProps.hasFlow(this.props.node.extras['alexa'].diagram_id) &&
+								<div className="command-right">
+									<button
+										className="btn btn-black btn-sm"
+										onMouseDown={(e) => e.stopPropagation()}
+										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
+										Enter Flow
+									</button>
+								</div>
+							}
+					</div>}
 				</div>
 				<div className={this.bem("__ports")}
 						onMouseEnter={e => {
@@ -527,55 +580,75 @@ export class BlockNodeWidget extends BaseWidget {
 					<div className={`${this.bem("__in")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getInPorts(), this.generatePort.bind(this))}
 					</div>
-					<div className="combine-node"
-						ref = {
-							ref => {
-								if (ref && !_.isEmpty(this.props.node.combines)) {
-									this.props.diagramEngine.setCombineCanvas(ref);
+					{!_.isEmpty(this.props.node.combines) &&
+						<div className="combine-node"
+							ref = {
+								ref => {
+									if (ref && !_.isEmpty(this.props.node.combines)) {
+										this.props.diagramEngine.setCombineCanvas(ref);
+									}
 								}
 							}
-						}
-					>
-					{!_.isEmpty(this.props.node.combines) && _.map(this.props.node.combines,(node, idx) => {
-								if (!(node instanceof String) && node.id){
-									return React.createElement(
-											BlockNodeWidget,
-											{
-												diagramEngine: this.props.diagramEngine,
-												key: node.id,
-												isLast: idx !== this.props.node.combines.length-1,
-												selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
-												node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
-												onClick: () => {
-													this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
-												},
-											},
-											this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
-										)
-								} else {
-									return <AnimateHeight
-										key={idx}
-										duration={1000}
-										height={'auto'}>
-											<div className="rearrange-placeholder"
-											style={{height: '40px'}}
-											key={idx} />
-									</AnimateHeight>
-								}
-					})}
-					</div>
+						>
+							{_.map(this.props.node.combines,(node, idx) => {
+										if (!(node instanceof String) && node.id){
+											return React.createElement(
+													BlockNodeWidget,
+													{
+														diagramEngine: this.props.diagramEngine,
+														key: node.id,
+														isLast: idx === this.props.node.combines.length-1,
+														selected: this.props.diagramEngine.getSuperSelect() && this.props.diagramEngine.getSuperSelect().id===node.id,
+														node: new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter),
+														nodeProps: this.props.nodeProps,
+														onClick: () => {
+															this.props.diagramEngine.setSuperSelect(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
+														},
+													},
+													this.props.diagramEngine.generateWidgetForNode(new BlockNodeModel().deSerialize(node, this.props.diagramEngine, this.props.node, node.fade, node.linter))
+												)
+										} else {
+											return <AnimateHeight
+												key={idx}
+												duration={1000}
+												height={'auto'}>
+													<div className="rearrange-placeholder"
+													style={{height: '40px'}}
+													key={idx} />
+											</AnimateHeight>
+										}
+							})}
+						</div>
+					}
 					{
-						this.props.node.extras.type === 'module'?
+						this.props.node.extras.type === 'module' &&
 							<React.Fragment>
 								<img className="rounded ModuleIcon" draggable={false} src={this.props.node.extras.module_icon} alt={this.props.node.extras.title}/>
 								<h5 className="ml-1">(Vers. {this.props.node.extras.version_id})</h5>
 							</React.Fragment>
-							:null
 					}
+					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
+						className="btn btn-black btn-sm mt-1"
+						onMouseDown={(e) => e.stopPropagation()}
+						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
+						Enter Flow
+					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
+				{this.props.node.extras.type === 'story' && <div id="add-command" onMouseUp={this.addCommand}>
+						<Tooltip
+							position="bottom"
+							title="Add Command"
+							distance={18}
+						>
+							<button className="round-btn">
+								<i className="fal fa-plus"/>
+							</button>
+						</Tooltip>
+					</div>
+				}
 			</div>
 		);
 	}

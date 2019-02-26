@@ -791,9 +791,7 @@ export class DiagramWidget extends BaseWidget {
 				)}
 				<NodeLayerWidget
 					diagramEngine={diagramEngine}
-					copyNode={this.props.copyNode}
-					removeNode={this.props.removeNode}
-					removeCombineNode={this.props.removeCombineNode}
+					nodeProps={this.props.nodeProps}
 				/>
 				{this.state.action instanceof SelectingAction && this.drawSelectionBox()}
 			</div>

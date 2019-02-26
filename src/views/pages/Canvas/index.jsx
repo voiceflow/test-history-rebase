@@ -119,6 +119,7 @@ class Canvas extends Component {
         this.canSave = this.canSave.bind(this)
         this.serialize = this.serialize.bind(this);
         this.setMousetrap = this.setMousetrap.bind(this)
+        this.hasFlow = this.hasFlow.bind(this)
         this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
@@ -183,6 +184,8 @@ class Canvas extends Component {
             keyboard_help: false,
             upgrade_modal: false
         }
+
+        this.diagram_set = new Set()
 
         // SKILL IS LOADED HERE
         if(!this.props.preview){
@@ -273,6 +276,9 @@ class Canvas extends Component {
               this.state.engine.repaintCanvas(false)
               this.onLoadId(this.props.diagram_id)
             })
+        }
+        if(this.state.diagrams.length !== this.diagram_set.size){
+            this.diagram_set = new Set(this.state.diagrams.map(d => d.id))
         }
     }
 
@@ -2096,6 +2102,11 @@ class Canvas extends Component {
         }
     }
 
+    hasFlow(diagram_id) {
+        if(!diagram_id) return false
+        return this.diagram_set.has(diagram_id)
+    }
+
     enterFlow(new_diagram_id, save=true) {
         if(new_diagram_id !== this.props.diagram_id){
             this.setState({loading_diagram: true})
@@ -2718,15 +2729,16 @@ class Canvas extends Component {
                             allowLooseLinks={false}
                             locked={this.props.preview}
                             onConfirm={this.props.onConfirm}
-                            copyNode={!this.props.preview ? this.copyNode : _.noop()}
-                            removeNode={!this.props.preview ? this.removeNode : _.noop()}
-                            removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
+                            nodeProps={{
+                                hasFlow: this.hasFlow,
+                                enterFlow: this.enterFlow
+                            }}
                             removeHandler={(node) => {
-                            if (this.props.undoEvents.length >= 10) {
-                                this.props.shiftUndo()
-                            }
-                            this.props.addUndo(node, 'remove')
-                            this.props.clearRedo()
+                                if (this.props.undoEvents.length >= 10) {
+                                    this.props.shiftUndo()
+                                }
+                                this.props.addUndo(node, 'remove')
+                                this.props.clearRedo()
                             }}
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}

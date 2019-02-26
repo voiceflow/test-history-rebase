@@ -2089,7 +2089,7 @@ class Canvas extends Component {
         const type = node.extras.type
         if (type === 'comment' || type === 'story') {
             node.clearListeners()
-            node.addListener({ entityRemoved: e => e.stopPropagation() })
+            node.addListener({ entityRemoved: e => e.stopPropagation()})
         } else if ((type === 'intent' && node.extras.intent !== undefined) || (type === 'jump' && node.extras.intent !== undefined)) {
             if (isRoot) {
                 node.clearListeners()
@@ -2731,7 +2731,9 @@ class Canvas extends Component {
                             onConfirm={this.props.onConfirm}
                             nodeProps={{
                                 hasFlow: this.hasFlow,
-                                enterFlow: this.enterFlow
+                                enterFlow: this.enterFlow,
+                                removeNode: this.removeNode,
+                                addRemoveListener: this.addRemoveListener
                             }}
                             removeHandler={(node) => {
                                 if (this.props.undoEvents.length >= 10) {

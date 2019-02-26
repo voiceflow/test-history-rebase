@@ -69,6 +69,12 @@ class ChoiceInput extends Component {
         }
     }
 
+    componentWillUnmount(){
+      if(this.state.samples.length === 0 && this.state.text.trim()){
+        this.props.onChange(this.state.text.trim())
+      }
+    }
+
     addUtterance(){
         const newValue = this.state.text.trim()
 
@@ -172,7 +178,8 @@ class ChoiceInput extends Component {
                   onChange={this.onTextChange}
                   placeholder={this.state.samples.length ? "Enter synonyms of the user reply" : "Enter user reply"}
                   disabled={this.props.live_mode}
-                  onKeyPress={this.handleKeyPress}/>
+                  onKeyPress={this.handleKeyPress}
+                />
               </Tooltip>
               {!has_entry && <div className="space-between my-2 pl-1">
                 <small className="text-muted">Press "Enter" to add</small>

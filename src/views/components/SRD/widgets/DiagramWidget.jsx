@@ -423,6 +423,7 @@ export class DiagramWidget extends BaseWidget {
 			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine
 			&& super_select.extras && super_select.combines && super_select.combines !== 0) {
 				diagramEngine.getDiagramModel().clearSelection()
+				selectedItems = [diagramEngine.getSuperSelect()]
 				this.props.nodeProps.removeCombineNode(super_select)
 			}
 			if (!_.some(selectedItems, { locked: true })){

@@ -1619,6 +1619,12 @@ label {
 .srd-default-node.god {
     padding: 0px 12px 0px 0px !important;
 }
+.srd-default-node.god>.srd-default-node__title{
+    margin-right: -10px
+}
+.srd-default-node.god>.srd-default-node__title span {
+    margin: 0 auto;
+}
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #8DA2B5 !important;
     border-width: 1px !important;
@@ -1796,23 +1802,24 @@ label {
 }
 
 #add-command {
-    cursor: pointer;
     position: absolute;
-    border-radius: 50%;
-    border: none;
-    color: #6E849A;
-    font-size: 14px;
     left: 50%;
-    height: 35px;
-    width: 35px;
-    bottom: -19px;
+    bottom: -20px;
     margin-left: -20px;
-    box-shadow: 0 2px 4px 0 rgba(43, 57, 80, .07);
-    padding: 0px;
-    transition: all .15s ease-in-out;
-    /* background-image: url("/start.svg"); */
 }
-#add-command:hover{
+
+#add-command .round-btn {
+    color: #8DA2B5;
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    padding: 0px;
+    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .3);
+}
+#add-command .round-btn:hover{
     box-shadow: 0 5px 10px 0 rgba(43, 57, 80, .17);
 }
 

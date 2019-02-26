@@ -504,7 +504,7 @@ class Editor extends Component {
                     this.props.setCanvasEvents()
                 }}
             >
-                {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
+                {/* {this.props.onboarding && <Onboarding finished={this.props.finished}/>} */}
                 {type ?
                     <div className="controls" key={this.state.node.id}>
                         <div className="top">

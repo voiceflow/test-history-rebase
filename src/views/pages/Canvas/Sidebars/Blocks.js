@@ -15,11 +15,11 @@ class Blocks extends PureComponent {
         let show = localStorage.getItem('show')
         if(!show){
             show = {
-                Basic: true,
-                Logic: false,
-                Advanced: false,
-                Functional: false,
-                Business: false
+                basic: true,
+                logic: false,
+                advanced: false,
+                functional: false,
+                business: false
             }
         } else {
             show = JSON.parse(show)
@@ -56,7 +56,6 @@ class Blocks extends PureComponent {
 
     render() {
         let block_content;
-
         if(this.state.tab === 'blocks'){
             block_content =
                 this.state.sections.map((section, i) => {

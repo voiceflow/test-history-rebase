@@ -278,6 +278,7 @@ class Intent extends Component {
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 </React.Fragment>
             case 'slots':
@@ -314,8 +315,8 @@ class Intent extends Component {
                 </ButtonGroup>
                 <div className={this.props.live_mode ? 'disabled-overlay' : null}>
                     {this.renderTab()}
-                    {!(this.props.platform === 'google') && this.state.isRoot && intent && <hr />}
-                    {!(this.props.platform === 'google') && this.state.isRoot && intent &&
+                    {!(this.props.platform === 'google') && this.state.isRoot && intent && this.state.tab === 'Select' && <hr />}
+                    {!(this.props.platform === 'google') && this.state.isRoot && intent && this.state.tab === 'Select' && 
                         <div>
                             <div className="mb-2 d-flex">
                                 <Toggle

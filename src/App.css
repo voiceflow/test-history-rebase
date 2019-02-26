@@ -256,6 +256,17 @@ audio {
     color: #23e4a6;
 }
 
+.btn-sm {
+    font-size: 10px;
+}
+
+.btn-black {
+    border-radius: 20px;
+    padding: 2px 8px;
+    color: #fff;
+    background: linear-gradient(#35415F, #132144)
+}
+
 .btn-primary{
     border: 1px solid #2295FA !important;
     color: #fff;

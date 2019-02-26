@@ -173,6 +173,7 @@ class Interaction extends Component {
                         live_mode={this.props.live_mode}
                         clearRedo={this.props.clearRedo}
                         updateEvents={this.props.updateEvents}
+                        setCanFulfill={this.props.setCanFulfill}
                 />
                 </React.Fragment>
             case 'slots':

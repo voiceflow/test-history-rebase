@@ -6,6 +6,7 @@ import Select, { components } from 'react-select'
 import { Tooltip } from 'react-tippy'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import { PLATFORMS } from '../../../../Constants'
 const _ = require('lodash')
 
 class Command extends Component {
@@ -248,8 +249,10 @@ class Command extends Component {
                                 <Select
                                     classNamePrefix="select-box"
                                     onChange={(selected) => {
-                                        let extras = this.state.node.extras[this.props.platform]
-                                        extras.diagram_id = selected.value;
+                                        PLATFORMS.forEach(p => {
+                                            let extras = this.state.node.extras[p]
+                                            extras.diagram_id = selected.value;
+                                        })
                                         this.props.enterFlow(selected.value);
                                     }}
                                     options={options}
@@ -317,6 +320,7 @@ class Command extends Component {
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 </React.Fragment>
             case 'slots':

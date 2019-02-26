@@ -2171,8 +2171,10 @@ class Canvas extends Component {
 
     updateFulfillmentOnDeletion(deleted_node) {
         const id = deleted_node.id
-        if (deleted_node.extras.intent && deleted_node.extras.intent.key) {
-            const key = deleted_node.extras.intent.key
+        const extras = deleted_node.extras[this.state.skill.platform]
+
+        if (extras.intent && extras.intent.key) {
+            const key = extras.intent.key
             const new_value = false
             this.setCanFulfill(key, new_value)
             this.state.diagram_level_intents[this.state.skill.platform].delete(key)
@@ -2183,11 +2185,13 @@ class Canvas extends Component {
     onDeleteIntentNode(deleted_node) {
         const skill = this.state.skill
         const fulfillments = skill.fulfillment
-        const key = deleted_node.extras.intent ? deleted_node.extras.intent.key : null
+
+        const extras = deleted_node.extras[skill.platform]
+        const key = extras.intent ? extras.intent.key : null
 
         if (key && fulfillments[key]) {
             const confirm_info = {
-                text: `CanfulfillIntent is enabled for the "${deleted_node.extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
+                text: `CanfulfillIntent is enabled for the "${extras.intent.label}" intent. Deleting this intent will also delete any slot fulfillment values you have set for this intent.`,
                 confirm: () => {
                     this.updateFulfillmentOnDeletion(deleted_node)
                     this.setState({
@@ -2734,6 +2738,7 @@ class Canvas extends Component {
                                 <button onClick={()=>this.zoom(-1000)} className="white-circ round-right"><i className="far fa-minus"/></button>
                             </ButtonGroup>
                             <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
+                            <button className="white-circ ml-2" onClick={() => {this.setState({keyboard_help: true})}}><i className="fas fa-keyboard"></i></button>
                         </div>
                         { this.state.skill.diagram !== this.props.diagram_id && <FlowBar
                                 skill={this.state.skill}

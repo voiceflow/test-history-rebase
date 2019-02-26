@@ -22,3 +22,10 @@ exports.trackOnboarding = (req, res) => {
         }
     })
 }
+
+exports.trackFirstSessionUpload = (req, res) => {
+    analytics.track({
+        userId: req.user.id,
+        event: 'First Session Upload'
+    })
+}

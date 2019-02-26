@@ -16,6 +16,7 @@ import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
 import './ActionGroup.css'
+import { KinesisAnalytics } from 'aws-sdk';
 
 const loading = (message) => {
     return <div className="super-center mb-4">
@@ -567,6 +568,19 @@ class ActionGroup extends PureComponent {
                 return loading('Rendering Flows')
             case 2:
                 if (this.SucceedLocale) {
+                    // Track upload on first session
+                    console.log(localStorage.getItem('is_first_session'))
+                    if(localStorage.getItem('is_first_session') === 'true'){
+                        axios.post('/analytics/track_first_session_upload')
+                        .then(() => {
+                            localStorage.setItem('is_first_session', 'false')
+                        })
+                        .catch(err => {
+                            localStorage.setItem('is_first_session', 'false')
+                            console.log(err)
+                        })
+                    }
+
                     // They completed their first upload successfully
                     localStorage.setItem('is_first_upload', 'false')
                     if(!this.state.is_first_upload){
@@ -714,6 +728,18 @@ class ActionGroup extends PureComponent {
                 </div>
             </div>
         } else if (this.state.google_stage === 5) {
+            // Track upload on first session
+            if(localStorage.getItem('is_first_session') === 'true'){
+                axios.post('/analytics/track_first_session_upload')
+                .then(() => {
+                    localStorage.setItem('is_first_session', 'false')
+                })
+                .catch(err => {
+                    localStorage.setItem('is_first_session', 'false')
+                    console.log(err)
+                })
+            }
+
             // They completed their first upload successfully
             localStorage.setItem('is_first_upload', 'false')
             if(!this.state.is_first_upload){

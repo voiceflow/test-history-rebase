@@ -1609,8 +1609,8 @@ label {
     cursor: text !important;
 }
 
-.srd-default-node.god, .srd-default-node.story {
-    background-color: #E5E8EF !important;
+.srd-default-node.god, .srd-default-node.story{
+    background-color: #e6ebf3d1 !important;
     border: 2px solid #fff;
     border-width: 2px !important;
     width: 250px;
@@ -1621,7 +1621,7 @@ label {
 }
 .srd-node--selected .srd-default-node.god, .srd-node--selected .srd-default-node.story{
     border-color: #8DA2B5 !important;
-    /* border-width: 1px !important; */
+    border-width: 1px !important;
     box-shadow: 0 15px 30px rgba(50, 50, 93, .15), 0 3px 6px rgba(0, 0, 0, .08) !important;
     
 }
@@ -1742,13 +1742,13 @@ label {
     width: 100%;
 }
 .home-block hr {
-    border-color: #8DA2B5 !important;
+    border-color: #d1dce6 !important;
     margin-left: -10px;
     margin-right: -10px;
     margin-bottom: 12px;
 }
 .home-title {
-    color: #8DA2B5;
+    color: #132042;
 }
 
 .srd-default-node__out.story {
@@ -1760,7 +1760,7 @@ label {
 .combine-node .srd-default-node, .faux-start-block {
     background-color: #fff !important;
     border-radius: 5px !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 7px !important;
     position: left 5% !important;
     background-position: 95% 50%;
     background-size: 6px;
@@ -1769,6 +1769,7 @@ label {
     width: 100% !important;
     padding: 6px 0 0 0 !important;
     height: 35px !important;
+    font-size: 14px !important;
 }
 
 .combine-node .command-delete {
@@ -1786,27 +1787,37 @@ label {
 .faux-start-block {
     height: auto !important;
     padding: 10px !important;
+    /* padding-left: 40px !important; */
     text-align: left;
     font-size: 15px;
     font-weight: 500;
     margin-top: 10px;
+    margin-bottom: 20px !important;
     box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .08);
+    /* background-image: url("/start.svg") !important; */
+    /* background-position: 13px;
+    background-size: 15px; */
 }
 
 #add-command {
     cursor: pointer;
     position: absolute;
-    border-radius: 20px;
+    border-radius: 50%;
     border: none;
-    color: #8DA2B5;
-    font-size: 20px;
+    color: #6E849A;
+    font-size: 14px;
     left: 50%;
-    height: 40px;
-    width: 40px;
-    bottom: -20px;
+    height: 35px;
+    width: 35px;
+    bottom: -19px;
     margin-left: -20px;
-    box-shadow: 0 2px 4px 0 rgba(14, 30, 37, .3);
+    box-shadow: 0 2px 4px 0 rgba(43, 57, 80, .07);
     padding: 0px;
+    transition: all .15s ease-in-out;
+    /* background-image: url("/start.svg"); */
+}
+#add-command:hover{
+    box-shadow: 0 5px 10px 0 rgba(43, 57, 80, .17);
 }
 
 .combine-node .srd-default-node.selected {
@@ -1932,7 +1943,7 @@ label {
     text-align: center;
     padding-bottom: 5px;
     font-size: 15px;
-    color: #2b3950 !important;
+    color: #132042 !important;
 }
 
 /* button.close{

@@ -1678,7 +1678,7 @@ label {
 }
 
 .god .srd-default-port--out>.name{
-    padding-right: 30px; 
+    padding-right: 27px; 
 }
 .srd-default-node__out.god {
     position: absolute;
@@ -1767,23 +1767,19 @@ label {
     background-repeat: no-repeat;
     border-width: 1px !important;
     width: 100% !important;
-    padding: 6px 0 0 0 !important;
+    padding: 6px 0 10px 0 !important;
     height: 35px !important;
     font-size: 14px !important;
 }
 
-.combine-node .command-delete {
+.combine-node .command-right {
     cursor: pointer;
     position: absolute;
-    right: 0px;
-    top: 0px;
-    padding: 10px 10px 10px 5px;
+    right: 5px;
+    top: 5px;
     color: #8DA2B5;
 }
 
-.combine-node .command-delete:hover {
-    color: #0b1a38;
-}
 .faux-start-block {
     height: auto !important;
     padding: 10px !important;
@@ -1935,6 +1931,14 @@ label {
     /* padding: 0 40px; */
     font-size: 15px;
     font-weight: 600;
+}
+
+.srd-default-node__name > span {
+    max-width: 120px;
+    display: block;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .srd-default-node__title {

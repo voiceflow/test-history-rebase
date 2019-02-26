@@ -28,10 +28,11 @@ export class BlockPortLabel extends BaseWidget {
 			port={this.props.model} node={this.props.model.getParent()} name={this.props.model.name}
 			link={isEmpty(this.props.model.links)}
 		/>;
-		var label = <div className="name">{_.isEmpty(this.props.model.getParent().combines) && this.props.model.label}</div>;
-		if ((this.props.model.getParent().parentCombine && (this.props.isLast || this.props.model.getParent().isLast)) || (!_.isEmpty(this.props.model.getParent().combines)) || this.props.isMoving){
-			label = null;
+		var label
+		if (!((this.props.model.getParent().parentCombine && (!this.props.isLast || this.props.model.getParent().isLast)) || (!_.isEmpty(this.props.model.getParent().combines)) || this.props.isMoving)){
+			if(this.props.model.label.toString().trim()) label = <div className="name">{this.props.model.label}</div>
 		}
+
 		return (
 			<div {...this.getProps()}>
 				{this.props.model.in || (this.props.model.getParent().parentCombine && !this.props.isLast) ? port : label}

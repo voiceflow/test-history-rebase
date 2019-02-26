@@ -39,7 +39,6 @@ export class NodeWidget extends BaseWidget {
 	}
 
 	render() {
-		// console.log(this.props.node)
 		return (
 			<div
 				{...this.getProps()}
@@ -55,7 +54,7 @@ export class NodeWidget extends BaseWidget {
 				}}
 			>
 				{React.cloneElement(this.props.children, {
-					copyNode: this.props.copyNode, removeNode: this.props.removeNode, removeCombineNode: this.props.removeCombineNode
+					nodeProps: this.props.nodeProps
 				})}
 			</div>
 		);

@@ -1359,5 +1359,3 @@ exports.DEFAULT_INTENTS = {
     ]
   }
 }
-
-exports.PLATFORMS = ['alexa', 'google']

@@ -78,7 +78,15 @@ const convertDiagram = (diagram, diagrams) => {
                 save_stuff.commands.push(node)
                 diagram.nodes.splice(i, 1)
             }else if(node.extras.type === 'story'){
-                if(!node.combines) node.combines = []
+                // DEPRECATE
+                // if(!node.extras.new){
+                //     node.extras.new = true
+                //     node.x = node.x - 91
+                //     node.y = node.y - 16
+                // }
+                if(!node.combines){
+                    node.combines = []
+                }
                 save_stuff.start = node
             }
         }

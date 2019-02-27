@@ -225,12 +225,12 @@ exports.getSkill = async (req, res) => {
   }
 
   try{
-    let skill_data = (await pool.query(sql, params).rows[0])
+    let skill_data = (await pool.query(sql, params)).rows[0]
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
       skill_data.skill_id = req.params.id
-      res.send(skill)
+      res.send(skill_data)
     }
   } catch (err){
     writeToLogs('CREATOR_BACKEND_ERRORS', {

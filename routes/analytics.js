@@ -98,7 +98,6 @@ exports.getDAU = (req, res) => {
                     GROUP BY to_timestamp(session_begin / 1000)::date
                     ORDER BY dau_date ASC`
             }
-            // Convert session_begin and session_end to s from ms
             logging_pool.query(
                 dau_query,
                 [live_skill_id, from, to],

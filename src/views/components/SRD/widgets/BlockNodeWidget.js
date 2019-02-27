@@ -551,7 +551,7 @@ export class BlockNodeWidget extends BaseWidget {
 							} </span>}
 							{
 								this.props.node.extras.type ==='command' && !!this.props.node.parentCombine 
-								&& this.props.node.parentCombine.extras.type ==='story' && 
+								&& this.props.node.parentCombine.extras.type ==='story' && this.props.node.extras['alexa'] &&
 								this.props.nodeProps.hasFlow(this.props.node.extras['alexa'].diagram_id) &&
 								<div className="command-right">
 									<button

@@ -191,13 +191,22 @@ class Editor extends Component {
         for (let i in SLOT_TYPES) {
             const slot = SLOT_TYPES[i]
             if(filter && filter === slot.label) continue
-            if ((slot.type.google && this.props.platform === 'google') || (slot.type.alexa && this.props.platform === 'alexa')) {
-                const slot_locales = slot.locales[this.props.platform]
-                if (this.props.platform === 'google') {
-                    slots.push(slot)
-                } else if (!slot_locales || _.intersection(slot_locales, locales).length > 0) {
-                    slots.push(slot)
-                }
+            if (!slot.type[this.props.platform]) continue
+
+            const slot_locales = slot.locales[this.props.platform]
+
+            switch (this.props.platform) {
+                case 'google':
+                    const google_info = this.props.skill.google_publish_info
+                    if (!(google_info && google_info.main_locale && !slot_locales.includes(google_info.main_locale))) slots.push(slot)
+                    break
+                case 'alexa':
+                    if (!slot_locales || _.intersection(slot_locales, locales).length === locales.length) {
+                        slots.push(slot)
+                    }
+                    break
+                default:
+                    break
             }
         }
 
@@ -277,6 +286,7 @@ class Editor extends Component {
                         platform={this.props.platform}
                         diagram_level_intents={this.props.diagram_level_intents}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 }
             case 'interaction':
@@ -298,6 +308,7 @@ class Editor extends Component {
                     onConfirm={this.props.onConfirm}
                     platform={this.props.platform}
                     live_mode={this.props.live_mode}
+                    setCanFulfill={this.props.setCanFulfill}
                     />
             case 'combine':
             case 'line':

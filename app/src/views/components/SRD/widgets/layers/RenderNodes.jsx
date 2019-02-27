@@ -47,8 +47,7 @@ export class RenderNodes extends BaseWidget {
 							diagramEngine: this.props.diagramEngine,
 							key: node.id,
 							node: node,
-							copyNode: this.props.copyNode,
-							removeNode: this.props.removeNode
+							nodeProps: this.props.nodeProps
 						},
 						this.props.diagramEngine.generateWidgetForNode(node)
 					);

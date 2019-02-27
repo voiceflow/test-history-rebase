@@ -12,7 +12,14 @@ const convertDiagram = (diagram, diagrams) => {
 
     const port_ids = new Set()
 
-    diagram.nodes.forEach(node => {
+    const save_stuff = {}
+    save_stuff.commands = []
+
+    var i;
+    // reverse forloop to do splicing operations
+    for (i = diagram.nodes.length - 1; i >= 0; i -= 1) {
+        let node = diagram.nodes[i]
+
         if(node.extras){
             // If diagram/flow blocks, use the name of their flow as the name
             if (node.extras.type === 'flow' && node.extras.diagram_id) {
@@ -35,8 +42,6 @@ const convertDiagram = (diagram, diagrams) => {
             } else if(node.extras.type === 'intent' && node.extras.choices){
                 node.extras.type = 'interaction'
                 node.name = 'Interaction'
-            } else if(node.extras.type === 'story' && node.name === 'Start Block'){
-                node.name = 'Start'
             } else if(node.extras.type === 'stream') {
                 node.ports.forEach(port => (port.label === 'stop/pause' && (port.label = 'pause')))
 
@@ -68,11 +73,22 @@ const convertDiagram = (diagram, diagrams) => {
                     delete node.extras.player
                 }
             }
+
+            if(node.extras.type === 'command'){
+                console.log(node)
+                save_stuff.commands.push(node)
+                diagram.nodes.splice(i, 1)
+            }else if(node.extras.type === 'story'){
+                if(!node.combines) node.combines = []
+                save_stuff.start = node
+            }
         }
         if(Array.isArray(node.ports)){
             node.ports.forEach(port => port_ids.add(port.id))
         }
-    })
+    }
+
+    save_stuff.commands.forEach(command => save_stuff.start.combines.push(command))
 
     // get rid of links that don't have existing ports
     diagram.links = diagram.links.filter(link => {

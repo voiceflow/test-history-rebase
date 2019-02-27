@@ -3,7 +3,7 @@ const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../s
 const { AccessToken } = require('./authentication')
 const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const { renderDiagram } = require('../config/render_diagram')
-const { PLATFORMS } = require('../config/Constants')
+const { PLATFORMS } = require('../app/src/Constants')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {

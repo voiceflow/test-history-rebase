@@ -50,6 +50,7 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addCommand(e){
+		if(this.props.nodeProps.disabled) return
 		const engine = this.props.diagramEngine
 		const node = new BlockNodeModel('New Command', null, toolkit.UID())
 		node.parentCombine = this.props.node

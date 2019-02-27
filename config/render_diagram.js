@@ -321,8 +321,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           story.lines[node.id] = {
             nextId: node.extras.nextID
           }
-        } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && (node.extras.alexa && node.extras.alexa.choices))) {
-
+        } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && ((node.extras.alexa && node.extras.alexa.choices)) || node.extras.choices)) {
           let interactions = []
           let extras = node.extras[platform]
           if(!extras){

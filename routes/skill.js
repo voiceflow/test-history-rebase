@@ -101,38 +101,49 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
-exports.getSkills = (req, res) => {
+exports.getSkills = async (req, res) => {
   if (!req.user) {
-    res.sendStatus(401);
-    return;
+    res.sendStatus(401)
+    return
   }
   if (req.query.user && req.user.admin < 100) {
-    res.sendStatus(401);
-    return;
+    res.sendStatus(401)
+    return
   }
-  let userId = req.query.user ? req.query.user : req.user.id;
-  pool.query(`
+  
+  let userId = req.query.user ? req.query.user : req.user.id
+  let query = `
     SELECT * 
     FROM skills
     INNER JOIN skill_versions
     ON skills.skill_id = skill_versions.skill_id
-    WHERE version IS NULL AND creator_id = $1`,
-    [userId], (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        });
-        res.sendStatus(500);
-      } else {
-        res.send(data.rows.map(skill => {
-          skill.skill_id = hashids.encode(skill.skill_id);
-          return skill;
-        }));
-      }
+    WHERE version IS NULL AND creator_id = $1`
+
+  // Get dev + live versions
+  if(req.query.user){
+    query = `
+      SELECT * 
+      FROM skills
+      INNER JOIN skill_versions
+      ON skills.skill_id = skill_versions.skill_id
+      WHERE (version IS NULL OR skills.live = true) AND creator_id = $1`
+  } 
+
+  try{
+    let skills_data = (await pool.query(query, [userId])).rows
+    res.send(skills_data.map(skill => {
+      skill.skill_id = hashids.encode(skill.skill_id)
+      return skill
+    }))
+  } catch(err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
     })
+    res.sendStatus(500)
+  }
 }
 
-exports.getSkill = (req, res) => {
+exports.getSkill = async (req, res) => {
   if (!req.params.id) {
     res.sendStatus(401)
     return
@@ -141,6 +152,19 @@ exports.getSkill = (req, res) => {
   let id = hashids.decode(req.params.id)[0]
   let sql
   let params
+
+  // Sync up with AMAZON
+  // Check Current Amazon Status
+  AccessToken(req.user.id, async (token) => {
+    if (token !== null) {
+      try {
+        await checkVersions(req, id, token)
+      } catch (err) {
+        logAxiosError(err, 'GET SKILL')
+      }
+    }
+  })
+
   if (req.query.preview) {
     // expose as little information as possible if previewing
     sql = `
@@ -187,7 +211,7 @@ exports.getSkill = (req, res) => {
       s.skill_id = $1
       AND s.creator_id = $2
     LIMIT 1`;
-    params = [id, req.user.id];
+    params = [id, req.user.id]
   } else {
     sql = `
           SELECT
@@ -197,44 +221,24 @@ exports.getSkill = (req, res) => {
           WHERE
               skill_id = $1 AND
               creator_id = $2 LIMIT 1`;
-    params = [id, req.user.id];
+    params = [id, req.user.id]
   }
 
-  pool.query(sql, params, (err, data) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      });
-      res.sendStatus(500);
-    } else if (data.rows.length === 0) {
-      res.sendStatus(404);
+  try{
+    let skill_data = (await pool.query(sql, params).rows[0])
+    if(skill_data === undefined){
+      res.sendStatus(404)
     } else {
-      let skill = data.rows[0];
-      // Rehash the skill id
-      skill.skill_id = req.params.id;
-      if (req.query.preview || !skill.amzn_id) {
-        res.send(skill)
-      } else {
-        // Sync up with AMAZON
-        // Check Current Amazon Status
-        AccessToken(req.user.id, async (token) => {
-          if (token === null) {
-            // throw('INVALID TOKEN');
-            return res.send(skill);
-          }
-
-          try {
-            await checkVersions(req, id, token)
-            res.send(skill)
-          } catch (err) {
-            logAxiosError(err, 'GET SKILL')
-            res.send(skill);
-          }
-        });
-      }
+      skill_data.skill_id = req.params.id
+      res.send(skill)
     }
-  });
-};
+  } catch (err){
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
+    res.sendStatus(500)
+  }
+}
 
 exports.getDiagrams = (req, res) => {
   if (!req.params.id) {

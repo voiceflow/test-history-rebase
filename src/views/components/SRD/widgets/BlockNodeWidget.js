@@ -527,7 +527,7 @@ export class BlockNodeWidget extends BaseWidget {
 					{
 						this.props.node.extras.type === 'story' ?
 						<div className="home-block">
-							<div className="home-title">Home</div>
+							<div className="home-title">{this.props.nodeProps.diagram.name === 'ROOT' ? 'Home' : this.props.nodeProps.diagram.name}</div>
 							<div className="faux-start-block">Start</div>
 							{!!this.props.node.combines && !!this.props.node.combines.length && <React.Fragment>
 								<hr/>

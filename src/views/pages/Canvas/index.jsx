@@ -2567,6 +2567,7 @@ class Canvas extends Component {
     }
 
     render() {
+        const diagram = _.find(this.state.diagrams, d => d.id === this.props.diagram_id)
         return (
             <React.Fragment>
                 <Prompt
@@ -2747,7 +2748,7 @@ class Canvas extends Component {
                                 renameFlow={this.renameFlow}
                                 enterFlow={this.enterFlow}
                                 preview={this.props.preview}
-                                diagram = {_.find(this.state.diagrams, d => d.id === this.props.diagram_id)}
+                                diagram={diagram}
                             />
                         }
                         {this.state.blockMenu}
@@ -2760,6 +2761,7 @@ class Canvas extends Component {
                                 hasFlow: this.hasFlow,
                                 enterFlow: this.enterFlow,
                                 removeNode: this.removeNode,
+                                diagram: diagram,
                                 removeCombineNode: this.removeCombineNode,
                                 addRemoveListener: this.addRemoveListener
                             }}

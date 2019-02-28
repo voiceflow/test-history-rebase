@@ -22,5 +22,6 @@ log/
 /.env*
 /!.env.example
 
+/migrations
 # Local DynamoDB
 shared-local-instance.db

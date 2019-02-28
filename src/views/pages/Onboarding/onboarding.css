@@ -1,9 +1,6 @@
 .onboarding-survey {
     width: 100%;
     height: 60%;
-    border-radius: 10px !important;
-    background-color: #fff !important;
-    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     border: none !important;
 }
 
@@ -53,6 +50,16 @@
     border-radius: 50%;
     height: 100px;
     width: 100px;
+}
+
+.onboarding-page {
+    width: 97%;
+    height: 95%;
+    margin-left:auto;
+    margin-right:auto;
+    border-radius: 10px !important;
+    background-color: #fff !important;
+    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
 }
 
 #calendly {

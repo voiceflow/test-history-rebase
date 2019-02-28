@@ -28,6 +28,17 @@ const PROG_XP = (xp) => {
 	}
 }
 
+const convertToOld = (xp) => {
+	switch(xp){
+		case 'intermediate':
+			return 1
+		case 'expert':
+			return 2
+		default:
+			return 0
+	}
+}
+
 const submitOnboardSurvey = (req, res) => {
 	if(!req.body.usage_type){
 		req.body.usage_type = 'PERSONAL'
@@ -35,7 +46,7 @@ const submitOnboardSurvey = (req, res) => {
 
 	pool.query(
 		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build) VALUES ($1, $2, $3, $4, $5, $6)",
-		[req.user.id, req.body.usage_type, req.body.company_name, req.body.programming, req.body.design, req.body.build],
+		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build],
 		(err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

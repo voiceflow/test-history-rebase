@@ -19,9 +19,9 @@ const checkIfOnboarded = (req, res) => {
 
 const PROG_XP = (xp) => {
 	switch(xp){
-		case 1:
+		case 'intermediate':
 			return 'OKAY'
-		case 2:
+		case 'expert':
 			return 'GOD'
 		default:
 			return 'NOOB'
@@ -34,8 +34,8 @@ const submitOnboardSurvey = (req, res) => {
 	}
 
 	pool.query(
-		"INSERT INTO user_info (creator_id, usage_type, company_name, role, company_size, industry, xp) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-		[req.user.id, req.body.usage_type, req.body.company_name, req.body.role, req.body.company_size, req.body.industry, req.body.programming],
+		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build) VALUES ($1, $2, $3, $4, $5, $6)",
+		[req.user.id, req.body.usage_type, req.body.company_name, req.body.programming, req.body.design, req.body.build],
 		(err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -49,10 +49,8 @@ const submitOnboardSurvey = (req, res) => {
 					custom_attributes: {
 						usage: req.body.usage_type,
 						company: req.body.company_name,
-						role: req.body.role,
-						company_size: req.body.company_size,
-						industry: req.body.industry,
-						organization: req.body.org,
+						design: req.body.design,
+						build: req.body.build,
 						programming_experience: PROG_XP(req.body.programming)
 					}
 				})

@@ -21,7 +21,6 @@ class ModuleAdminPage extends Component {
             this.setState({
                 modules: res.data
             })
-            console.log(this.state)
         })
         .catch(err => {
             console.log(err)

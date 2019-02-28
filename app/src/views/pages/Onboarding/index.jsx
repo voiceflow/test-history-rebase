@@ -47,7 +47,7 @@ class Onboarding extends Component{
 			var s = this.state;
 			axios.post('/onboard', {
 				usage_type: s.type,
-				programming: experience,
+				programming: s.experience,
 				company_name: s.company_name,
 				design: s.design,
 				build: s.build

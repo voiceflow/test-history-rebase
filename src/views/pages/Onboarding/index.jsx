@@ -83,7 +83,9 @@ class Onboarding extends Component{
 	componentWillUnmount() {
 		// Delete calendly script
 		const calendly_script = document.getElementById('calendly-script')
-		calendly_script.parentNode.removeChild(calendly_script)
+		if(calendly_script !== null){
+			calendly_script.parentNode.removeChild(calendly_script)
+		}
 	}
 
 	trackOnboardingPage(page) {

@@ -1,7 +1,93 @@
 .onboarding-survey {
-	width: 500px;
+    width: 100%;
+    height: 60%;
     border-radius: 10px !important;
     background-color: #fff !important;
     box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
     border: none !important;
+}
+
+.onboarding-modal-txt {
+    color: #8da2b5;
+    font-size: 14px;
+}
+
+.multi-step-total-bar{
+    height: 40px;
+}
+
+.multi-step-bar{
+    width: 50px;
+    height: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    display: inline-block;
+}
+
+.multi-step-active{
+    background-color: #42a5ff!important;
+}
+
+.multi-step-inactive{
+    background-color: #dce5e8!important;
+}
+
+.image-selector{
+    height: 80px;
+    width: 100px;
+}
+
+.void-button{
+    border: 0px;
+}
+
+.void-button:hover{
+    cursor: pointer;
+}
+
+.disabled{
+    opacity: 0.3;
+}
+
+.onboarding-profile {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+
+#calendly {
+    min-width:320px;
+    height:580px;
+}
+
+#submit-calendly {
+    position: absolute;
+    top: 200px;
+    right: 200px;
+    z-index: 10;
+    background-color: black;
+}
+
+.onboarding-survey {
+    overflow: auto;
+}
+
+#company-name-input {
+    /* border: 0px 0px 1px 0px; */
+    border: 0;
+    outline: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+    border-bottom: 1px solid #dce5e8;
+    outline:none!important;
+    width:300px;
+    text-align: center;
+    -moz-text-align-last: center;
+    text-align-last: center;
+}
+
+#company-name-input:focus {
+    outline:none!important; 
 }

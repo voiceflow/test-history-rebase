@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "integration_tests": "./scripts/test.sh",
+    "tests": "./scripts/test.sh",
+    "integration_tests": "NODE_ENV=test ./node_modules/.bin/jest --testPathIgnorePatterns=/app/ --coverage --runInBand --forceExit --testMatch=\"**/(*.)+(itest).js?(x)\"",
     "unit_tests": "NODE_ENV=test ./node_modules/.bin/jest --setupFiles dotenv/config --testPathIgnorePatterns=/app/ --coverage --testMatch=\"**/(*.)+(test).js?(x)\"",
     "build": "cd app && npm run build",
     "start": "NODE_ENV=production node index.js",

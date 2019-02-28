@@ -388,7 +388,6 @@ class Skill extends Component {
                     skill: this.state.dev_skill,
                     diagram_id: this.state.dev_skill.diagram
                 })
-                console.log(this.state)
                 setTimeout(
                     () => {disableCb()},
                     1000

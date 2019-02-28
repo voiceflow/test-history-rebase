@@ -1828,10 +1828,6 @@ kbd {
 	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .06);
 	border: 1px solid rgba(141, 162, 181, .28);
 }
-.close-upload-success-popup {
-    position: absolute;
-    right: 20px;
-}
 .pass-icon {
     display: inline-flex;
     background-image: url("/pass.svg");

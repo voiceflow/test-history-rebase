@@ -190,13 +190,13 @@ class Onboarding extends Component{
 						</div>
 					</div>
 					<div className="justify-content-center">
-						{['WORK', 'PERSONAL'].includes(this.state.type) && <button className="purple-btn" onClick={() => {
+						<button className={"purple-btn" + (!['WORK', 'PERSONAL'].includes(this.state.type) ? ' disabled': '')} disabled={!['WORK', 'PERSONAL'].includes(this.state.type)} onClick={() => {
 							if(this.state.type === 'WORK'){
 								this.setState({stage: 'work_name'})
 							} else if(this.state.type === 'PERSONAL'){
 								this.setState({stage: 'work_plan'})
 							}	
-						}}>Continue</button>}
+						}}>Continue</button>
 					</div>
 				</React.Fragment>
 			default:
@@ -214,27 +214,12 @@ class Onboarding extends Component{
 	}
 
 	render(){
-		var content;
-
-
-		// if(this.state.programming){
-		// 	this.trackOnboardingPage('Programming Page')
-		// 	content = <React.Fragment>
-		// 		<p className="modal-bg-txt text-center mb-2">Do you have programming experience?</p>
-		// 		<p className='modal-txt text-center mb-4'>Voiceflow is great for any level, this helps us get started. </p>
-		// 		<div className="row justify-content-center">
-		//       		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(0)}>None</button> 
-		//       		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(1)}>A Little</button> 
-		//       		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(2)}>A Lot</button> 
-		//       	</div>
-		// 	</React.Fragment>
-		
-		
-
 		return(
-			<div className="container h-100 d-flex justify-content-center onboarding-page">
-			    <div className="my-auto border rounded p-4 text-center onboarding-survey">
-						{this.renderModalContent()}
+			<div className="onboarding-page">
+			    <div className="d-flex h-100 justify-content-center text-center onboarding-survey">
+						<div className="align-self-center">
+							{this.renderModalContent()}
+						</div>
 			    </div>
 			</div>
 

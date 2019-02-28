@@ -251,7 +251,7 @@ exports.createInteractionModel = (req, locale) => {
 				let high = -1
 
 				for(match of matched){
-					if(!Array.isArray(match.samples)){console.log(match); continue}
+					// if(!Array.isArray(match.samples)){console.log(match); continue}
 
 					let i, sum=0;
 					for(i=0; i<match.samples.length; i++){
@@ -395,7 +395,7 @@ exports.createInteractionModel = (req, locale) => {
 	// this removes the examples for locale default intents, they were there to match choice blocks
 	LOCALE_DEFAULTS.defaults.forEach(intent => {
 		intent.samples = intent.samples.filter(s => !LOCALE_DEFAULT_SET[intent.name].has(s))
-		console.log(intent)
+		// console.log(intent)
 		if(intent.keep){
 			// amazon is retarded "Interaction model is not valid. MissingSampleUtterance: Missing sample utterance. At least one sample utterance is required."
 			// right now all the yes intents will have at least a "yes" as a sample

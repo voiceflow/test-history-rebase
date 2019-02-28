@@ -854,6 +854,9 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
         }
         if (node.extras.nextID) {
+          if(story.lines[node.id] === undefined){
+            story.lines[node.id] = {}
+          }
           story.lines[node.id].nextId = node.extras.nextID
         }
         if(node.extras && node.extras.reprompt){

@@ -301,7 +301,7 @@ class ActionGroup extends PureComponent {
             } catch (err) {
                 this.setState({
                     stage: 6,
-                    display_upload_prompt: !this.state.is_first_upload
+                    show_upload_prompt: !this.state.is_first_upload
                 })
             }
         }
@@ -320,8 +320,14 @@ class ActionGroup extends PureComponent {
                             if (err.status === 403 || err.response.status === 403) {
                                 // No Vendor ID/Amazon Developer Account
                                 this.setState({
-                                    stage: 6
-                                });
+                                    stage: 6,
+                                    show_upload_prompt: !this.state.is_first_upload
+                                })
+                            } else if(err.status === 401 || err.response.status === 401) {
+                                this.setState({
+                                    stage: 5,
+                                    show_upload_prompt: !this.state.is_first_upload
+                                })
                             } else {
                                 let error_message = ''
                                 if (err.response && err.response.data && err.response.data.message) {
@@ -337,7 +343,7 @@ class ActionGroup extends PureComponent {
 
                                 this.setState({
                                     stage: 9,
-                                    show_upload_prompt: true,
+                                    show_upload_prompt: !this.state.is_first_upload,
                                     upload_error: ((
                                         err.response &&
                                         err.response.data &&
@@ -455,14 +461,14 @@ class ActionGroup extends PureComponent {
 
         if(this.state.show_upload_prompt){
             return  <div className="upload-success-popup d-flex">
-                        {!ERROR_STAGES[this.props.platform].includes(this.state.stage) && 
-                            ((this.props.platform === 'alexa' && this.state.stage !== 14) || this.props.platform === 'google') && 
-                            <button className="close close-upload-success-popup" onClick={() => {this.setState({show_upload_prompt: false, stage: 0, google_stage:2})}}>&times;</button>}
                         {this.props.platform === 'google'? 
                             this.renderGoogleBody()
                             :
                             this.render_body()
                         }
+                        {!ERROR_STAGES[this.props.platform].includes(this.state.stage) && 
+                            ((this.props.platform === 'alexa' && this.state.stage !== 14) || this.props.platform === 'google') && 
+                            <button className="close close-upload-success-popup" onClick={() => {this.setState({show_upload_prompt: false, stage: 0, google_stage:2})}}>&times;</button>}
                     </div>
         } 
         return
@@ -569,7 +575,6 @@ class ActionGroup extends PureComponent {
             case 2:
                 if (this.SucceedLocale) {
                     // Track upload on first session
-                    console.log(localStorage.getItem('is_first_session'))
                     if(localStorage.getItem('is_first_session') === 'true'){
                         axios.post('/analytics/track_first_session_upload')
                         .then(() => {
@@ -587,27 +592,27 @@ class ActionGroup extends PureComponent {
                         this.setState({
                             show_upload_prompt: true
                         })
-                        return <div className="mt-3 text-center">
-                            <span className="modal-bg-txt mb-2"> <span className="pass-icon"/> Upload Successful </span><br/>
-                            <span className="modal-txt">
+                        return <div className="text-center">
+                            <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
+                            <div className="upload-prompt-text">
                                 Your skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
                                     target="_blank" rel="noopener noreferrer">
                                     Amazon console
                                 </a>.
-                            </span>
+                            </div>
                         </div>
                     } else {
                         return <React.Fragment>
                             <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
                             <br />
-                            <span className="modal-bg-txt text-center mb-2"> <span className="pass-icon"/> Successfully uploaded to Alexa </span>
+                            <div className="d-flex align-items-center justify-content-center mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
                             <span className="modal-txt text-center">
                                 You may test on the Alexa simulator or live on your personal Alexa device
                             </span>
                             <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
                             <div className="my-3">
                                 <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
-                                    className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                    className="purple-btn mr-2" target="_blank" rel="noopener noreferrer">
                                     Test on Alexa Simulator
                                 </a>
                             </div>
@@ -623,7 +628,7 @@ class ActionGroup extends PureComponent {
                         </span>
                         <div className="my-3">
                             <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
-                                className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                                className="purple-btn mr-2" target="_blank" rel="noopener noreferrer">
                                 Test on Alexa Simulator
                             </a>
                         </div>
@@ -634,7 +639,7 @@ class ActionGroup extends PureComponent {
                     <span className="fail-icon"/>  Rendering Error
                 </Alert>
             case 5:
-                return <div className={"modal-txt flex-fill text-center" + (this.state.show_upload_prompt? " mt-4 w-100" : " mt-3") }>
+                return <div className={"modal-txt flex-fill text-center mt-3" + (this.state.show_upload_prompt? " w-100" : "") }>
                     {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
                     Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
                     <div className="text-center mt-4">
@@ -644,9 +649,9 @@ class ActionGroup extends PureComponent {
                                     this.token = true;
                                     this.checkVendor();
                                 } else if (1) {
-                                    this.setState({ stage: 8 });
+                                    this.setState({ stage: 8})
                                 } else {
-                                    this.setState({ stage: 0, amzn_error: true });
+                                    this.setState({ stage: 0, amzn_error: true});
                                 }
                             }}
                             small
@@ -654,7 +659,7 @@ class ActionGroup extends PureComponent {
                     </div>
                 </div>
             case 6:
-                return <div className={this.state.show_upload_prompt? "mt-4 text-center" : ""}>
+                return <div className={this.state.show_upload_prompt? "mt-3 text-center" : ""}>
                     Your Amazon Account needs to set up developer settings to Upload Skills
                     <Alert className="mt-4">
                         Press "Create your Amazon Developer account"
@@ -673,9 +678,9 @@ class ActionGroup extends PureComponent {
                 return loading('Checking Vendor')
             case 8:
                 return loading('Verifying Login')
-            case 9:
+            case 9:        
                 return <div className={"w-100" + (this.state.show_upload_prompt? " text-center" : "")}>
-                    <h5 className="text-muted"><span className="fail-icon mr-2"/>Amazon Error Response</h5>
+                    <div className="d-flex align-items-center jusitfy-content-center"><span className="fail-icon mr-2"/>Amazon Error Response</div>
                     <Alert color="danger" className="mt-1">
                         {this.state.upload_error}
                     </Alert>
@@ -791,6 +796,7 @@ class ActionGroup extends PureComponent {
     }
 
     render() {
+        console.log(this.state)
         let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
         return (
             <React.Fragment>
@@ -799,9 +805,13 @@ class ActionGroup extends PureComponent {
                     <ModalBody className="modal-info">
                         <div>
                             {this.props.platform === 'google' ?
-                                ![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <Progress percent={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
+                                ![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <div className="mb-2">
+                                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
+                                </div>
                                 :
-                                ![0, 5, 6, 7, 8].includes(this.state.stage) && !ENDING_STAGES.alexa.includes(this.state.stage) && <Progress percent={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
+                                ![0, 5, 6, 7, 8].includes(this.state.stage) && !ENDING_STAGES.alexa.includes(this.state.stage) && <div className="mb-2">
+                                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
+                                </div>
                             }
                             {(this.props.platform === 'google') ? this.renderGoogleBody() : this.render_body()}
                         </div>

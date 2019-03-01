@@ -201,7 +201,7 @@ class Onboarding extends Component{
 				</React.Fragment>
 			default:
 				return <React.Fragment>
-					<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
+					<img className='logo mb-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
 						height="25"
 					/>
 					<p className="modal-bg-txt text-center mb-2">Hi, {this.props.user.name}</p>
@@ -215,12 +215,14 @@ class Onboarding extends Component{
 
 	render(){
 		return(
-			<div className="onboarding-page">
-			    <div className="d-flex h-100 justify-content-center text-center onboarding-survey">
-						<div className="align-self-center">
-							{this.renderModalContent()}
+			<div className="scuffed pt-4 pb-4 h-100">
+				<div className="onboarding-page">
+						<div className="d-flex h-100 justify-content-center text-center onboarding-survey">
+							<div className="align-self-center">
+								{this.renderModalContent()}
+							</div>
 						</div>
-			    </div>
+				</div>
 			</div>
 
 		)

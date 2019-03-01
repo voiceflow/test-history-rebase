@@ -3,7 +3,9 @@
 echo "UNIT TESTS"
 npm run unit_tests
 
-echo "INTEGRATION TESTS"
 ./scripts/before_test.sh
+
+echo "INTEGRATION TESTS"
 npm run integration_tests
+
 ./scripts/after_test.sh

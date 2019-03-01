@@ -161,7 +161,6 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
       SELECT
-        sv.last_save,
         name,
         amzn_id,
         review,
@@ -184,11 +183,10 @@ exports.getSkill = (req, res) => {
         google_publish_info,
         repeat
     FROM
-      skills s
-    INNER JOIN skill_versions sv ON (s.skill_id = sv.canonical_skill_id AND s.skill_id = sv.skill_id) OR (s.live = TRUE)
+      skills
     WHERE
-      s.skill_id = $1
-      AND s.creator_id = $2
+      skill_id = $1
+      AND creator_id = $2
     LIMIT 1`;
     params = [id, req.user.id];
   } else {

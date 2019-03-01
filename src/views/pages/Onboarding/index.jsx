@@ -123,15 +123,15 @@ class Onboarding extends Component{
 					<p className="modal-bg-txt text-center mb-5 mt-4">How much expereince do you have coding?</p>
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
-							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'beginner'})}}><img className="image-selector" src={this.state.experience === 'beginner' ? "/design-selected.png" : "/design-unselected.png"}/></button>
+							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'beginner'})}}><img className="image-selector" src={this.state.experience === 'beginner' ? "/beginner-selected.png" : "/beginner-unselected.png"}/></button>
 							<p className={this.state.experience === 'beginner' ? "" : "text-muted"}>None</p>
 						</div>
 						<div className="col-s ml-4 mr-4">
-							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'intermediate'})}}><img className="image-selector" src={this.state.experience === 'intermediate' ? "/publish-selected.png" : "/publish-unselected.png"}/></button>
+							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'intermediate'})}}><img className="image-selector" src={this.state.experience === 'intermediate' ? "/little-selected.png" : "/little-unselected.png"}/></button>
 							<p className={this.state.experience === 'intermediate' ? "" : "text-muted"}>A little</p>
 						</div>
 						<div className="col-s ml-4">
-							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'expert'})}}><img className="image-selector" src={this.state.experience === 'expert' ? "/publish-selected.png" : "/publish-unselected.png"}/></button>
+							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'expert'})}}><img className="image-selector" src={this.state.experience === 'expert' ? "/alot-selected.png" : "/alot-unselected.png"}/></button>
 							<p className={this.state.experience === 'expert' ? "" : "text-muted"}>A lot</p>
 						</div>
 					</div>
@@ -151,7 +151,7 @@ class Onboarding extends Component{
 					<p className="modal-bg-txt text-center mb-5 mt-4">What do you plan to use Voiceflow for?</p>
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
-							<button className="void-button mt-2" onClick={() => {this.setState(prev_state => ({design: !prev_state.design}))}}><img id="design-2" src={this.state.design ? "/design-selected.png" : "/design-unselected.png"}/></button>
+							<button className="void-button mt-2 mb-2" onClick={() => {this.setState(prev_state => ({design: !prev_state.design}))}}><img id="design-2" src={this.state.design ? "/design-selected.png" : "/design-unselected.png"}/></button>
 							<p className={this.state.design ? "" : "text-muted"}>Design & Prototype</p>
 						</div>
 						<div className="col-s ml-4">

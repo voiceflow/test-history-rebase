@@ -38,7 +38,8 @@ class DashBoard extends Component {
         this.deleteSkill = this.deleteSkill.bind(this)
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
-        this.logout = this.logout.bind(this);
+        this.logout = this.logout.bind(this)
+        this.renderSkills = this.renderSkills.bind(this)
     }
 
     deleteSkill(skill_id, skill_name){
@@ -175,7 +176,7 @@ class DashBoard extends Component {
       })
     }
 
-    render() {
+    renderSkills(){
         let skills;
 
         if(this.state.filter_skills === null){
@@ -268,6 +269,11 @@ class DashBoard extends Component {
                 </Masonry>
             </React.Fragment>
         }
+        return skills
+    }
+
+    render() {
+        
 
         return (
             <div id="app">
@@ -295,9 +301,17 @@ class DashBoard extends Component {
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                <div className="my-5 pt-5 container">
-                    {skills}
-                </div>
+                {!(this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&
+                    <div className="my-5 pt-5 container">
+                        {this.renderSkills()}
+                    </div>
+                }
+                {(this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&   
+                    <div className="toy">
+                        {this.renderSkills()}
+                    </div>
+                }
+
             </div>
         );
     }

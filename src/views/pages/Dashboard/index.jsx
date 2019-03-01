@@ -10,11 +10,15 @@ import './DashBoard.css'
 import axios from 'axios'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
 import WarningModal from './../../components/Modals/WarningModal'
+import UpdatesModal from './../../components/Modals/UpdatesModal'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import {Alert, Input} from 'reactstrap'
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
+
+// Change this to build time
+const MOST_RECENT_UPDATE = 20000000000000000
 
 class DashBoard extends Component {
     constructor(props) {
@@ -30,6 +34,7 @@ class DashBoard extends Component {
             error: null,
             filter_text: null,
             filter_tab: "All",
+            show_updates_modal: false
         }
 
         this.onLoadSkills = this.onLoadSkills.bind(this)
@@ -38,7 +43,8 @@ class DashBoard extends Component {
         this.deleteSkill = this.deleteSkill.bind(this)
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
-        this.logout = this.logout.bind(this);
+        this.logout = this.logout.bind(this)
+        this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this)
     }
 
     deleteSkill(skill_id, skill_name){
@@ -77,12 +83,29 @@ class DashBoard extends Component {
 
     componentDidMount() {
         this.onLoadSkills()
+
+        let last_update_seen = localStorage.getItem('last_update_seen')
+        if(last_update_seen === null || parseInt(last_update_seen) < MOST_RECENT_UPDATE){
+            this.setState({
+                show_updates_modal: true
+            })
+            last_update_seen = new Date().getTime()
+            localStorage.setItem('last_update_seen', last_update_seen)
+        } else {
+            localStorage.setItem('last_update_seen', new Date().getTime())
+        }
     }
 
     toggleEnv() {
         this.setState({
             openEnv: !this.state.openEnv
         })
+    }
+
+    toggleUpdatesModal(){
+        this.setState(prev_state => ({
+            show_updates_modal: !prev_state.show_updates_modal
+        }))
     }
 
     switchTab(tab){
@@ -268,6 +291,7 @@ class DashBoard extends Component {
 
         return (
             <div id="app">
+                <UpdatesModal show_update_modal={this.state.show_updates_modal} toggle={this.toggleUpdatesModal}/>
                 <div id="navbar-top-left">
                     <div className="searchBar ml-4">
                         <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>

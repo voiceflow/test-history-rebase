@@ -1834,3 +1834,37 @@ kbd {
   #secondary-nav-right-group .react-toggle{
     margin-bottom: -8px;
   }
+
+  .update-modal-feature{
+      color: blue;
+      display: inline;
+      font-size: 14px;
+  }
+
+  .update-modal-update{
+      color: red;
+      display: inline;
+      font-size: 14px;
+  }
+
+  .update-modal-change{
+      color: green;
+      display: inline;
+      font-size: 14px;
+  }
+
+  .update-modal-txt{
+      display: inline;
+      color: #8DA2B5;
+      font-size: 14px;
+  }
+
+  #update-modal-header-title{
+      padding-bottom:0px !important;
+      font-size: 18px;
+  }
+
+  .update-modal-body{
+      height: 300px;
+      overflow: auto;
+  }

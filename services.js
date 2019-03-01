@@ -1,4 +1,4 @@
-const redis = require('redis');
+const redis = process.env.TEST ? require('redis-mock') : require('redis');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -33,14 +33,13 @@ types.setTypeParser(1114, function(stringValue) {
     return new Date(stringValue + "+0000");
 });
 
-
 const pool = new pg.Pool({
     user: process.env.PSQL_USER,
     host: process.env.PSQL_HOST,
     database: process.env.PSQL_DB,
     password: process.env.PSQL_PW,
     port: 5432
-});
+})
 
 // Create a Redis Client for sessions
 const redisClient = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ? redis.createClient({

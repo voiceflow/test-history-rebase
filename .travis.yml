@@ -7,10 +7,13 @@ services:
 before_script:
   - ./scripts/ecr_credentials.sh
   - ./scripts/before_test.sh
-stage: 'Unit Tests'
-script: npm run unit_tests
-stage: 'Integration Tests'
-script: npm run integration_tests
+jobs:
+  include:
+    - stage: "Tests"                # naming the Tests stage
+      name: "Unit Tests"            # names the first Tests stage job
+      script: npm run unit_tests
+      name: "Integration Tests"     # names the second Tests stage job
+      script: npm run integration_tests
 after_script:
   - ./scripts/after_test.sh
 addons:

@@ -186,13 +186,16 @@ class DashBoard extends Component {
                 </div>
             </div>
         }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
-            skills = <div className="super-center w-100 text-muted mt-5">
-                <div className="horizontal-center mt-5">
+            skills = <div className="super-center w-100 text-muted mt-5 d-flex">
+                <div className="horizontal-center align-self-center mt-5">
                     <div className="">
                       <div className="card-body p-4">
-                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" style={{height: 259}} className="mb-5"/><br/>
+                        <div className="pl-4">
+                            <img src="/create.svg" alt="skill-icon" width="130" className="mb-3"/>
+                        </div>
+                        <br/>
                         <Link to="/templates" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn w-75" id="createskill">Create Skill</button>
+                            <button varient="contained" className="purple-btn" id="createskill">New Project</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">

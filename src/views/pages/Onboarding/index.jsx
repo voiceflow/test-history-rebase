@@ -31,9 +31,14 @@ class Onboarding extends Component{
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSizeSelection = this.handleSizeSelection.bind(this)
 		this.handleIndustrySelection = this.handleIndustrySelection.bind(this)
-		this.trackOnboardingPage = this.trackOnboardingPage.bind(this)
+		// this.trackOnboardingPage = this.trackOnboardingPage.bind(this)
 		this.renderModalContent = this.renderModalContent.bind(this)
 		this.submitSurvey = this.submitSurvey.bind(this)
+		this.closeSurvey = this.closeSurvey.bind(this)
+	}
+
+	closeSurvey(){
+		this.props.history.push('/')
 	}
 
 	handleChange(event){
@@ -77,7 +82,7 @@ class Onboarding extends Component{
 	}
 
 	componentDidMount() {
-		this.trackOnboardingPage('Initial Page')
+		// this.trackOnboardingPage('Initial Page')
 	}
 
 	componentWillUnmount() {
@@ -86,14 +91,16 @@ class Onboarding extends Component{
 		if(calendly_script !== null){
 			calendly_script.parentNode.removeChild(calendly_script)
 		}
+
+		this.submitSurvey()
 	}
 
-	trackOnboardingPage(page) {
-		axios.post('/analytics/track_onboarding', {page: page})
-		.catch((err) => {
+	// trackOnboardingPage(page) {
+	// 	axios.post('/analytics/track_onboarding', {page: page})
+	// 	.catch((err) => {
 
-		})
-	}
+	// 	})
+	// }
 	
 	renderModalContent(){
 		switch (this.state.stage){
@@ -167,7 +174,7 @@ class Onboarding extends Component{
 					<div className="d-flex justify-content-center mb-3">
 						<form actions="">
 							<div className="form-group">
-								<Input placeholder="Enter your company name" onChange={this.handleChange} name="company_name" id="company-name-input"/>
+								<input placeholder="Enter your company name" onChange={this.handleChange} name="company_name" id="company-name-input"/>
 							</div>
 						</form>
 					</div>
@@ -196,7 +203,7 @@ class Onboarding extends Component{
 							} else if(this.state.type === 'PERSONAL'){
 								this.setState({stage: 'work_plan'})
 							}	
-						}}>Continue</button>
+						}}>Next Question</button>
 					</div>
 				</React.Fragment>
 			default:
@@ -219,6 +226,8 @@ class Onboarding extends Component{
 				<div className="onboarding-page">
 						<div className="d-flex h-100 justify-content-center text-center onboarding-survey">
 							<div className="align-self-center">
+								{this.state.stage !== 'calendly' && <button className="exit-survey close" onClick={this.closeSurvey}>x</button>}
+								<span className="onboarding-title">WELCOME SURVEY</span>
 								{this.renderModalContent()}
 							</div>
 						</div>

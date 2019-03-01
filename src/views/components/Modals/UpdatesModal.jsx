@@ -27,7 +27,7 @@ class UpdatesModal extends React.Component {
       updates: [
         {
           type: 'FEATURE',
-          descr: 'This feature is really good, it makes you fly faster and lift heavier'
+          descr: 'This feature is really good, it makes you fly faster and lift ee heavier'
         },
         {
           type: 'UPDATE',
@@ -55,19 +55,21 @@ class UpdatesModal extends React.Component {
 
   render() {
     return (
-      <Modal isOpen={this.props.show_update_modal} toggle={this.props.toggle} centered size="sm">
+      <Modal isOpen={this.props.show_update_modal} toggle={this.props.toggle} centered>
         <div className="pt-3 mb-0 text-center">
           <p className="mb-0" id="update-modal-header-title">Since you've been gone ✨</p>
         </div>
-        <ModalBody className="text-center">
-          <hr className="mt-0"/>
-          <div className="update-modal-body">
+        <ModalBody className="text-center pl-0 pr-0">
+          <hr className="mt-0 w-100"/>
+          <div className="update-modal-body mb-4">
             {this.state.updates.map((entry, i) => {
-              return <div align="left" key={i}>
+              return <React.Fragment>
+                <div align="left" key={i} className="pr-4 pl-4">
                   <p className={class_mapping[entry.type].class}>&bull; {class_mapping[entry.type].label}: </p>
                   <p className="update-modal-txt">{entry.descr}</p>
-                <hr/> 
-              </div>
+                </div>
+                <hr className="w-100"/> 
+              </React.Fragment>
             })}
           </div>
           <div>

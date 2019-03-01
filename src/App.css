@@ -1836,27 +1836,27 @@ kbd {
   }
 
   .update-modal-feature{
-      color: blue;
+      color: #5D9DF5;
       display: inline;
-      font-size: 14px;
+      font-size: 13px;
   }
 
   .update-modal-update{
-      color: red;
+      color: #2B3950;
       display: inline;
-      font-size: 14px;
+      font-size: 13px;
   }
 
   .update-modal-change{
-      color: green;
+      color: #00CC87;
       display: inline;
-      font-size: 14px;
+      font-size: 13px;
   }
 
   .update-modal-txt{
       display: inline;
       color: #8DA2B5;
-      font-size: 14px;
+      font-size: 13px;
   }
 
   #update-modal-header-title{

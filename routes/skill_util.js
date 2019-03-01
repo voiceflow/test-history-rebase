@@ -1,7 +1,6 @@
 const axios = require('axios')
-const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../services')
+const { docClient, pool, hashids, logAxiosError, writeToLogs, analytics } = require('./../services')
 const { AccessToken } = require('./authentication')
-const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const { renderDiagram } = require('../config/render_diagram')
 const { PLATFORMS } = require('../app/src/Constants')
 

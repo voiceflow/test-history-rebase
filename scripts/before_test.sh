@@ -19,27 +19,26 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     #     pretty_output "Postgres server running"
     # else
     pretty_output "Starting postgres server..."
-    sudo systemctl restart postgresql
     # fi
 
     # Create postgresql user
-    USER_CREATED=`sudo -u postgres psql -tc "SELECT 'created' FROM pg_roles WHERE rolname = 'voiceflowtest'"| grep created`
+    USER_CREATED=`psql -tc "SELECT 'created' FROM pg_roles WHERE rolname = 'voiceflowtest'"| grep created`
     if [[ $USER_CREATED == " created" ]]; then
         pretty_output "User voiceflowtest exists, continuing"
     else
         pretty_output "Creating role voiceflowtest"
-        sudo -u postgres psql -c "CREATE ROLE voiceflowtest LOGIN PASSWORD 'dealflow';"
+        psql -c "CREATE ROLE voiceflowtest LOGIN PASSWORD 'dealflow';"
     fi
 
     # Create postgresql database
-    DB_CREATED=`sudo -u postgres psql -tc "SELECT 'created' FROM pg_database WHERE datname = 'voiceflowtest'" | grep created`
+    DB_CREATED=`psql -tc "SELECT 'created' FROM pg_database WHERE datname = 'voiceflowtest'" | grep created`
     if [[ $DB_CREATED == " created" ]]; then
         pretty_output "Deleting existing test database"
-        sudo -u postgres psql -c "DROP DATABASE voiceflowtest;"
+        psql -c "DROP DATABASE voiceflowtest;"
     fi
 
     pretty_output "Creating DB voiceflowtest"
-    sudo -u postgres psql -c "CREATE DATABASE voiceflowtest;"
+    psql -c "CREATE DATABASE voiceflowtest;"
 
     KNEX="./node_modules/.bin/knex"
     cd $PROJECT_ROOT

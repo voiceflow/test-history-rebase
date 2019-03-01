@@ -187,7 +187,7 @@ class DashBoard extends Component {
                 </div>
             </div>
         }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
-            skills = <div className="super-center w-100 text-muted mt-5 d-flex">
+            skills = <div className="super-center w-100 text-muted d-flex">
                 <div className="horizontal-center align-self-center mt-5">
                     <div className="">
                       <div className="card-body p-4">
@@ -301,14 +301,16 @@ class DashBoard extends Component {
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                {!(this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&
+                {!(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&
                     <div className="my-5 pt-5 container">
                         {this.renderSkills()}
                     </div>
                 }
-                {(this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&   
-                    <div className="toy">
-                        {this.renderSkills()}
+                {(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&   
+                    <div className="h-100 d-flex justify-content-center">
+                        <div className="align-self-center">
+                            {this.renderSkills()}
+                        </div>
                     </div>
                 }
 

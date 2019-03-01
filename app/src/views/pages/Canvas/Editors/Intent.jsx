@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
@@ -18,8 +19,7 @@ class Intent extends Component {
         super(props)
 
         this.intentSelectRef = React.createRef();
-
-        let name = this.props.diagrams.find(d => d.id === this.props.diagram_id).name
+        let name = props.diagrams.find(d => d.id === props.diagram_id).name
 
         this.state = {
             node: this.props.node,
@@ -136,7 +136,7 @@ class Intent extends Component {
         const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
         if (intent) {
-            const fulfillments = this.props.skill.fulfillment
+            const fulfillments = this.props.fulfillment
             return !!fulfillments[intent.key]
         }
         return false
@@ -340,7 +340,7 @@ class Intent extends Component {
 
                             </div>
                             {checked && this.state.node.extras.intent && this.hasSlots(this.state.node.extras.intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
-                                this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
+                                this.props.history.push(`/settings/${this.props.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
                             }}>
                                 <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
                             </button>}
@@ -352,4 +352,10 @@ class Intent extends Component {
     }
 }
 
-export default Intent
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    fulfillment: state.skills.skill.fulfillment,
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+export default connect(mapStateToProps)(Intent)

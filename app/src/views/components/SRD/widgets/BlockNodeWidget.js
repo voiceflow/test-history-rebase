@@ -1,5 +1,8 @@
 import * as React from "react";
 import * as _ from "lodash";
+
+//Helpers
+import { combineValidation, combineAppendValidation } from './../../../helpers/combineHelper'
 import {Toolkit}from './../Toolkit'
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";
@@ -21,12 +24,9 @@ export class BlockNodeWidget extends BaseWidget {
 		this.onMouseLeave = this.onMouseLeave.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.appendValidator = this.appendValidator.bind(this);
-		this.lastValidator = this.lastValidator.bind(this);
 		this.removeTemp = this.removeTemp.bind(this);
 		this.addTemp = this.addTemp.bind(this);
-		this.combineValidation = this.combineValidation.bind(this);
 		this.combineNode = this.combineNode.bind(this);
-		this.combineAppendValidation = this.combineAppendValidation.bind(this);
 		this.close = this.close.bind(this);
 		this.addCommand = this.addCommand.bind(this)
 	}
@@ -98,27 +98,6 @@ export class BlockNodeWidget extends BaseWidget {
 		}
 	}
 
-	lastValidator(node){
-		if (node ==='temp' || !node.extras){
-			return false;
-		}
-		switch(node.extras.type){
-			case 'exit':
-				return false;
-			case 'interaction':
-				return false;
-			case 'choice':
-				return false;
-			case 'if':
-				return false;
-			case 'stream':
-				return false;
-			case 'random':
-				return false;
-			default:
-				return true;
-		}
-	}
 	generatePort(port) {
 		if (port.parent){
 			return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine} isLast={this.props.isLast} isMoving={this.props.node.isMoveInside} />;
@@ -133,23 +112,23 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addTemp(e, isTop = false){
-		if (this.props.node.parentCombine && this.props.node.parentCombine.extras.type === 'god' && e.buttons === 1 && this.lastValidator(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
-			if ((this.lastValidator(_.last(this.props.node.parentCombine.combines)) || this.lastValidator(this.props.diagramEngine.getSuperSelect())) && this.lastValidator(this.props.diagramEngine.getSuperSelect())) {
+		if (this.props.node.parentCombine && this.props.node.parentCombine.extras.type === 'god' && e.buttons === 1 && combineAppendValidation(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
+			if ((combineAppendValidation(_.last(this.props.node.parentCombine.combines)) || combineAppendValidation(this.props.diagramEngine.getSuperSelect())) && combineAppendValidation(this.props.diagramEngine.getSuperSelect())) {
 				let idx = _.findIndex(this.props.node.parentCombine.combines, c => c.id === this.props.node.id);
 				this.props.node.parentCombine.combines.splice(idx + 1, 0, 'temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node.parentCombine, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
-			} else if (this.lastValidator(_.last(this.props.node.parentCombine.combines)) && !this.lastValidator(this.props.diagramEngine.getSuperSelect()) && _.last(this.props.node.parentCombine.combines) !== 'temp') {
+			} else if (combineAppendValidation(_.last(this.props.node.parentCombine.combines)) && !combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && _.last(this.props.node.parentCombine.combines) !== 'temp') {
 				this.props.node.parentCombine.combines.push('temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node.parentCombine, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
 			}
 		} else if(!_.isEmpty(this.props.node.combines) && this.props.node.extras.type === 'god') {
-			if (e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
+			if (e.buttons === 1 && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
 				this.props.node.combines.splice(0, 0, 'temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
-			} else if (this.props.node.parentCombine && this.lastValidator(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
+			} else if (this.props.node.parentCombine && combineAppendValidation(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
 				this.props.node.combines.push('temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
@@ -159,11 +138,11 @@ export class BlockNodeWidget extends BaseWidget {
 
 	removeTemp(e){
 		if ((this.props.node.parentCombine && _.includes(this.props.node.parentCombine.combines, 'temp')) || (!_.isEmpty(this.props.node.combines) && _.includes(this.props.node.combines, 'temp'))) {
-			if (this.props.node.parentCombine && this.lastValidator(this.props.diagramEngine.getSuperSelect()) && !this.props.diagramEngine.getSuperSelect().parentCombine) {
+			if (this.props.node.parentCombine && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && !this.props.diagramEngine.getSuperSelect().parentCombine) {
 				_.remove(this.props.node.parentCombine.combines, c => c === 'temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node.parentCombine, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
-			} else if (this.lastValidator(this.props.diagramEngine.getSuperSelect()) && !this.props.diagramEngine.getSuperSelect().parentCombine) {
+			} else if (combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && !this.props.diagramEngine.getSuperSelect().parentCombine) {
 				_.remove(this.props.node.combines, c => c === 'temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
@@ -180,181 +159,10 @@ export class BlockNodeWidget extends BaseWidget {
 		}
 	}
 
-	combineValidation(current, target) {
-		if (current.parentCombine || target.parentCombine) {
-			return false;
-		}
-		if (current.extras.type === 'god' && target.extras.type === 'god') {
-			return false;
-		}
-		if (target.extras) {
-			switch (target.extras.type) {
-				case 'exit':
-					switch (current.extras.type) {
-						case 'exit':
-							return false;
-						case 'choice':
-							return false;
-						case 'stream':
-							return false;
-						case 'interaction':
-							return false;
-						case 'if':
-							return false;
-						case 'random':
-							return false;
-						default:
-							break;
-					}
-					break;
-				case 'choice':
-					switch (current.extras.type) {
-						case 'choice':
-							return false;
-						case 'exit':
-							return false;
-						case 'stream':
-							return false;
-						case 'interaction':
-							return false
-						case 'if':
-							return false;
-						case 'random':
-							return false;
-						default:
-							break;
-					}
-					break;
-				case 'stream':
-					switch (current.extras.type) {
-						case 'stream':
-							return false;
-						case 'exit':
-							return false;
-						case 'choice':
-							return false;
-						case 'interaction':
-							return false;
-						case 'if':
-							return false;
-						case 'random':
-							return false;
-						default:
-							break;
-					}
-					break;
-				case 'interaction':
-					switch (current.extras.type) {
-						case 'interaction':
-							return false;
-						case 'exit':
-							return false;
-						case 'choice':
-							return false;
-						case 'stream':
-							return false;
-						case 'if':
-							return false;
-						case 'random':
-							return false;
-						default:
-							break;
-					}
-					break;
-				case 'if':
-					switch (current.extras.type) {
-						case 'if':
-							return false;
-						case 'exit':
-							return false;
-						case 'choice':
-							return false;
-						case 'stream':
-							return false;
-						case 'interaction':
-							return false;
-						case 'random':
-							return false
-						default:
-							break;
-					}
-					break;
-				case 'random':
-					switch (current.extras.type) {
-						case 'if':
-							return false;
-						case 'exit':
-							return false;
-						case 'choice':
-							return false;
-						case 'stream':
-							return false;
-						case 'interaction':
-							return false;
-						case 'random':
-							return false
-						default:
-							break;
-					}
-					break;
-				default:
-					break;
-			}
-		}
-		switch (target.extras.type) {
-			case 'story':
-				return false;
-			case 'flow':
-				return false;
-			case 'intent':
-				return false;
-			case 'comment':
-				return false;
-			case 'command':
-				return false;
-			default:
-				break;
-		}
-		switch (current.extras.type) {
-			case 'god':
-				return false;
-			case 'story':
-				return false;
-			case 'flow':
-				return false;
-			case 'intent':
-				return false;
-			case 'comment':
-				return false;
-			case 'command':
-				return false;
-			default:
-				return true;
-		}
-	}
-
-	combineAppendValidation(current) {
-		switch (current.extras.type) {
-			case 'exit':
-				return false;
-			case 'interaction':
-				return false;
-			case 'choice':
-				return false;
-			case 'if':
-				return false;
-			case 'stream':
-				return false;
-			case 'random':
-				return false;
-			default:
-				return true;
-		}
-	}
 	combineNode(e = null) {
 		let current = this.props.diagramEngine.getSuperSelect();
 		let target_node = this.props.node
-		if (this.combineValidation(current, target_node)) {
+		if (combineValidation(current, target_node)) {
 			let selected = this.props.diagramEngine.getSuperSelect()
 			let engine = this.props.diagramEngine
 			let targetNode = target_node
@@ -363,7 +171,7 @@ export class BlockNodeWidget extends BaseWidget {
 				e.nodeHover = true;
 				node = new BlockNodeModel('Combine Block', null, toolkit.UID())
 				node.extras.type = "god"
-				if (!this.combineAppendValidation(targetNode)) {
+				if (!combineAppendValidation(targetNode)) {
 					let temp = selected;
 					selected = targetNode;
 					targetNode = temp

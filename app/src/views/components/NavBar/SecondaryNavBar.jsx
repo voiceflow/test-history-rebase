@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
+import axios from 'axios'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
+import { toggleLive } from './../../actions/skillActions'
 const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
 class SecondaryNavBar extends Component {
@@ -10,10 +13,52 @@ class SecondaryNavBar extends Component {
 
         this.state = {
             loading: false,
-            platform: this.props.skill.platform
         }
 
         this.renderItem = this.renderItem.bind(this)
+        this.toggleLiveMode = this.toggleLiveMode.bind(this)
+    }
+
+    toggleLiveMode(disableCb) {
+        if (this.props.live_mode) {
+            this.props.toggleLive(
+                this.props.dev_skill,
+                this.props.dev_skill.diagram,
+                this.props.skill_id,
+                false
+            ).then(() => {
+                this.setState({
+                    loading: false
+                })
+                this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
+            })
+            this.props.onSave()
+        } else {
+            axios.get(`/skill/${this.props.live_version}`)
+                .then((res) => {
+                    this.props.toggleLive(
+                        res.data,
+                        res.data.diagram,
+                        this.props.skill_id,
+                        true
+                    ).then(() => {
+                        this.setState({
+                            loading: false
+                        })
+                        this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+                    })
+                    this.props.onSave()
+                })
+                .catch((err) => {
+                    console.log(err)
+
+                    console.log(this.state)
+                    setTimeout(
+                        () => { disableCb() },
+                        1000
+                    )
+                })
+        }
     }
 
     renderItem(page){
@@ -25,14 +70,14 @@ class SecondaryNavBar extends Component {
             return <div key={page} className="nav-item active">
                 {page}
             </div>
-        }else if(this.props.skill){
+        }else if(this.props.skill_id){
             let suffix = ''
             if (page === 'settings') {
                 suffix = 'basic'
             } else if (page === 'publish') {
-                suffix = this.state.platform === 'alexa' ? '' : this.state.platform
+                suffix = this.props.platform === 'alexa' ? '' : this.props.platform
             }
-            return <Link to={`/${page}/${this.props.skill.skill_id}/${suffix}`} key={page} className="nav-item">
+            return <Link to={`/${page}/${this.props.skill_id}/${suffix}`} key={page} className="nav-item">
                 {page}
             </Link>
         }else{
@@ -49,10 +94,10 @@ class SecondaryNavBar extends Component {
                 {PAGES.map(page => this.renderItem(page))}
             </div>
             <div id="secondary-nav-right-group">
-                {!!(this.props.skill && this.props.skill.amzn_id) &&
+                {this.props.amzn_id &&
                     <React.Fragment>
                         {
-                            this.props.has_live?
+                            this.props.live_version?
                             <React.Fragment>
                                 {
                                     this.props.live_mode ? 
@@ -69,9 +114,7 @@ class SecondaryNavBar extends Component {
                                     icons={false}
                                     onChange={() => {
                                         this.setState({loading: true})
-                                        this.props.toggleLiveMode(() => {
-                                            this.setState({loading: false})
-                                        })
+                                        this.toggleLiveMode()
                                     }}
                                     disabled={this.props.page !== 'canvas' || this.state.loading}
                                 />
@@ -84,7 +127,7 @@ class SecondaryNavBar extends Component {
                             <div className="nav-item">
                                 <img src={'/logs.svg'} alt="logs" width="18"/>
                             </div> :
-                            <Link to={`/creator_logs/${this.props.skill.skill_id}`} className="nav-item">
+                            <Link to={`/creator_logs/${this.props.skill_id}`} className="nav-item">
                                 <img src={'/logs.svg'} alt="logs" width="18"/>
                             </Link>
                         }
@@ -102,4 +145,18 @@ class SecondaryNavBar extends Component {
     }
 }
 
-export default SecondaryNavBar
+const mapStateToProps = state => ({
+    platform: state.skills.skill.platform,
+    skill_id: state.skills.skill.skill_id,
+    amzn_id: state.skills.skill.amzn_id,
+    live_mode: state.skills.live_mode,
+    live_version: state.skills.live_version,
+    dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SecondaryNavBar)

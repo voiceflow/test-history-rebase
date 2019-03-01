@@ -2770,8 +2770,6 @@ const BUILT_IN_INTENTS_ALEXA = [
   }
 ]
 
-exports.SLOT_TYPES = SLOT_TYPES;
-
 const VOICES = [{
     label: 'Default',
     options: [{
@@ -2998,6 +2996,7 @@ const ALLOWED_GOOGLE_BLOCKS = [
 // }]
 const BUILT_IN_INTENTS_GOOGLE = []
 
+exports.SLOT_TYPES = SLOT_TYPES
 exports.PLATFORMS = ['alexa', 'google']
 exports.VOICES = VOICES
 exports.BUILT_IN_INTENTS_ALEXA = BUILT_IN_INTENTS_ALEXA;

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
 class FlowBar extends Component{
     constructor(props){
@@ -12,7 +14,7 @@ class FlowBar extends Component{
     }
     render(){
         return <React.Fragment>
-            <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.skill.diagram)}>
+            <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.diagram)}>
                 <span>Home</span>
             </button>
             <div id="flow-bar">
@@ -43,4 +45,8 @@ class FlowBar extends Component{
         </React.Fragment>
     }
 }
-export default FlowBar;
+
+const mapStateToProps = state => ({
+    diagram: state.skills.skill.diagram
+})
+export default connect(mapStateToProps)(FlowBar);

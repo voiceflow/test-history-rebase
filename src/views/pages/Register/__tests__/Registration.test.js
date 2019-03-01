@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({path:'./.env.test'})
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';

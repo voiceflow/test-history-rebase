@@ -1,166 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Amazon Login Test render empty card 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Button />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        <img
-          alt="Login with Amazon"
-          border="0"
-          className="unpressed"
-          height="64"
-          src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png"
-          width="312"
-        />,
-        <img
-          alt="Login with Amazon"
-          border="0"
-          className="pressed"
-          height="64"
-          src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png"
-          width="312"
-        />,
-      ],
-      "className": "LoginWithAmazon",
-      "onClick": [Function],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "alt": "Login with Amazon",
-          "border": "0",
-          "className": "unpressed",
-          "height": "64",
-          "src": "https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png",
-          "width": "312",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": "img",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "alt": "Login with Amazon",
-          "border": "0",
-          "className": "pressed",
-          "height": "64",
-          "src": "https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png",
-          "width": "312",
-        },
-        "ref": null,
-        "rendered": null,
-        "type": "img",
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          <img
-            alt="Login with Amazon"
-            border="0"
-            className="unpressed"
-            height="64"
-            src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png"
-            width="312"
-          />,
-          <img
-            alt="Login with Amazon"
-            border="0"
-            className="pressed"
-            height="64"
-            src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png"
-            width="312"
-          />,
-        ],
-        "className": "LoginWithAmazon",
-        "onClick": [Function],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "alt": "Login with Amazon",
-            "border": "0",
-            "className": "unpressed",
-            "height": "64",
-            "src": "https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png",
-            "width": "312",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": "img",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "alt": "Login with Amazon",
-            "border": "0",
-            "className": "pressed",
-            "height": "64",
-            "src": "https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png",
-            "width": "312",
-          },
-          "ref": null,
-          "rendered": null,
-          "type": "img",
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+<div
+  className="LoginWithAmazon"
+  onClick={[Function]}
+>
+  <img
+    alt="Login with Amazon"
+    border="0"
+    className="unpressed"
+    height="64"
+    src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png"
+    width="312"
+  />
+  <img
+    alt="Login with Amazon"
+    border="0"
+    className="pressed"
+    height="64"
+    src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png"
+    width="312"
+  />
+</div>
 `;

@@ -49,5 +49,11 @@ if (
   argv.push(hasSourceControl ? '--watch' : '--watchAll');
 }
 
+if(process.env.CIRCLECI) {
+  console.log('continues')
+  argv.push('--detectOpenHandles')
+  argv.push('--runInBand')
+}
+
 
 jest.run(argv);

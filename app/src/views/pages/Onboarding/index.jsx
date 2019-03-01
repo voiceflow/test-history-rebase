@@ -113,7 +113,9 @@ class Onboarding extends Component{
 
 				return <React.Fragment>
 					<StepProgressBar num_stages={5} stage={4}/>
-					<div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow"/>
+					<div className="calendly-outer">
+						<div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow"/>
+					</div>
 
 					<button id="submit-calendly" className="purple-btn" onClick={this.submitSurvey}>Complete</button>
 				</React.Fragment>
@@ -140,9 +142,11 @@ class Onboarding extends Component{
 							if(this.state.type === 'PERSONAL'){
 								this.submitSurvey()
 							} else {
-								this.setState({stage: 'calendly'})}
+								this.setState({
+									stage: 'calendly'
+								})
 							}
-						}>Next Question</button>
+						}}>Complete</button>
 					</div>
 				</React.Fragment>
 			case 'work_plan':

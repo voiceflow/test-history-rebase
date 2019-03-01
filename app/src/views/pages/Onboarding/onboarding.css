@@ -133,9 +133,16 @@
 
 .onboarding-title {
     position: absolute;
-    top: 50px;
+    top: 60px;
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     color: #8da2b5;
+}
+
+.calendly-outer {
+    width: 800px;
+    border: 1px solid #dce5e8!important;
+    border-radius: 5px!important;
+    padding: 2px;
 }

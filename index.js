@@ -4,7 +4,7 @@ const npmPackage = require('./package.json')
 
 const name = npmPackage.name+' v'+npmPackage.version
 
-
+const port = 8080
 
 // eslint-disable-next-line no-console
 if (process.env.NODE_ENV === 'test') {

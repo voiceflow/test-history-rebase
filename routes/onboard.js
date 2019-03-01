@@ -43,7 +43,6 @@ const submitOnboardSurvey = (req, res) => {
 	if(!req.body.usage_type){
 		req.body.usage_type = 'PERSONAL'
 	}
-
 	pool.query(
 		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build) VALUES ($1, $2, $3, $4, $5, $6)",
 		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build],

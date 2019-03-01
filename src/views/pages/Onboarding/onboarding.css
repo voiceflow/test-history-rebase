@@ -46,10 +46,12 @@
 #design-2{
     width: 65;
     height: 55px;
+    margin-bottom: 10px;
 }
 #design{
     width: 65;
     height: 65px;
+    margin-bottom: 10px;
 }
 .void-button:hover{
     cursor: pointer;
@@ -108,13 +110,14 @@
     -webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
-    border-bottom: 2px solid #e2e9ec;
+    border-bottom: 1px solid #e2e9ec;
     outline:none!important;
     width:300px;
     text-align: center;
     -moz-text-align-last: center;
     text-align-last: center;
     transition: border-color .2s ease;
+    padding-bottom: 10px;
 }
 
 #company-name-input:focus {

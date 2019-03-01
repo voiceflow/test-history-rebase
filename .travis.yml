@@ -10,9 +10,8 @@ before_script:
 jobs:
   include:
     - stage: "Tests"                # naming the Tests stage
-      name: "Unit Tests"            # names the first Tests stage job
       script: npm run unit_tests
-      name: "Integration Tests"     # names the second Tests stage job
+    - # stage name not required, will continue to use `test`
       script: npm run integration_tests
 after_script:
   - ./scripts/after_test.sh

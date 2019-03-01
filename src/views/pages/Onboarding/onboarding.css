@@ -82,8 +82,8 @@
 
 #submit-calendly {
     position: absolute;
-    top: 200px;
-    right: 200px;
+    top: 50px;
+    right: 55px;
     z-index: 10;
     background-color: black;
 }
@@ -91,23 +91,48 @@
 .onboarding-survey {
     overflow: auto;
 }
+/* .input-underline {
+    border: none;
+    border-bottom: 2px solid #e2e9ec;
+    outline: none !important;
+    padding: 10px;
+    transition: border-color .2s ease;
+}
+.input-underline:focus {
+    border-color: #42A5FF
+} */
 
 #company-name-input {
-    /* border: 0px 0px 1px 0px; */
-    border: 0;
-    outline: 0;
+    border: none;
     border-radius: 0;
     -webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
-    border-bottom: 1px solid #dce5e8;
+    border-bottom: 2px solid #e2e9ec;
     outline:none!important;
     width:300px;
     text-align: center;
     -moz-text-align-last: center;
     text-align-last: center;
+    transition: border-color .2s ease;
 }
 
 #company-name-input:focus {
     outline:none!important; 
+    border-color: #42A5FF;
+}
+
+.exit-survey {
+    position: absolute;
+    top: 50px;
+    right: 55px;
+}
+
+.onboarding-title {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    color: #8da2b5;
 }

@@ -4,15 +4,13 @@ const crypto = require('crypto');
 const uuid = require('uuid/v4');
 const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
-const {jwt, docClient, pool, redisClient, config, hashids, writeToLogs } = require('./../services');
+const {jwt, pool, redisClient, config, hashids, writeToLogs, analytics } = require('./../services');
 const Codes = require('./../config/codes');
 const Mail = require('./mail.js');
 const del = require('del');
 const spawn = require('child_process').spawn
 
-const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const mkdirp = require('mkdirp');
-const { getDevice } = require('./../app/src/Helper')
 
 const client = new OAuth2Client(process.env.GOOGLE_ID);
 const _ = require('lodash')

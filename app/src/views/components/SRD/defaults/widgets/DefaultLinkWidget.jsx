@@ -111,21 +111,21 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 	}
 
 	generateLabel(label) {
-		const canvas = React.createElement(this.props.diagramEngine.canvas);
-		return (
-			<foreignObject
-				key={label.id}
-				className={this.bem("__label")}
-				width={canvas.offsetWidth}
-				height={canvas.offsetHeight}
-			>
-				<div ref={ref => (this.refLabels[label.id] = ref)}>
-					{this.props.diagramEngine
-						.getFactoryForLabel(label)
-						.generateReactWidget(this.props.diagramEngine, label)}
-				</div>
-			</foreignObject>
-		);
+		// const canvas = React.createElement(this.props.diagramEngine.canvas);
+		// return (
+		// 	<foreignObject
+		// 		key={label.id}
+		// 		className={this.bem("__label")}
+		// 		width={canvas.offsetWidth}
+		// 		height={canvas.offsetHeight}
+		// 	>
+		// 		<div ref={ref => (this.refLabels[label.id] = ref)}>
+		// 			{this.props.diagramEngine
+		// 				.getFactoryForLabel(label)
+		// 				.generateReactWidget(this.props.diagramEngine, label)}
+		// 		</div>
+		// 	</foreignObject>
+		// );
 	}
 
 	generateLink(path, extraProps, id, isLast = false) {

@@ -47,6 +47,7 @@ class IntentInputs extends Component {
                 let i = this.props.intents.findIndex(i => i.key === key)
                 if(i !== -1){
                     this.props.intents.splice(i, 1)
+                    this.props.setCanFulfill(key, false)
                     this.props.update()
                 }
             }

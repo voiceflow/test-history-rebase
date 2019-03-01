@@ -415,63 +415,16 @@ export class DiagramWidget extends BaseWidget {
 
 	onKeyUp(event) {
 		//delete all selected
-		let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
-		let diagramEngine = this.props.diagramEngine;
-		let amountZoom = diagramEngine.getDiagramModel().getZoomLevel() / 100;
 		if (this.props.deleteKeys.indexOf(event.keyCode) !== -1) {
-			if (!_.isEmpty(selectedItems) && _.first(selectedItems).extras && _.first(selectedItems).extras.type === "god" && !_.isNull(diagramEngine.getSuperSelect())
-			&& diagramEngine.getSuperSelect().extras && diagramEngine.getSuperSelect().extras.type !== "god" && diagramEngine.getSuperSelect().parentCombine
-			&& !_.isNull(diagramEngine.getSuperSelect())) {
+			let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
+			let diagramEngine = this.props.diagramEngine;
+			let first = selectedItems[0]
+			let super_select = diagramEngine.getSuperSelect()
+			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine
+			&& super_select.extras && super_select.combines && super_select.combines !== 0) {
 				diagramEngine.getDiagramModel().clearSelection()
-				let nodeIdx;
-				_.remove(_.first(selectedItems).combines, (c, idx) => {
-					if (c.id === diagramEngine.getSuperSelect().id) {
-						nodeIdx = idx;
-						return true;
-					}
-				})
-				let combineBlock = diagramEngine.getSuperSelect().parentCombine
-				if (nodeIdx === combineBlock.combines.length){
-					_.forEach(combineBlock.ports, p=>{
-						if (!p.in){
-							combineBlock.removePort(p);
-						}
-					})
-					let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
-					_.forEach(lastNode.ports, p=> {
-						if (!p.in){
-							combineBlock.ports[p.name] = p
-						}
-					})
-				} else {
-					_.forEach(selectedItems, selected => {
-						if (selected instanceof PointModel && selected.parent.sourcePort.parent.id === _.first(selectedItems).id){
-							selected.updateLocation({x: selected.x, y: selected.y - 30/amountZoom})
-						}
-					})
-				}
-				let totalHeight = 40;
-				_.forEach(combineBlock.combines, (c, idx) => {
-					if (!(c instanceof String) && c.id !== combineBlock.id) {
-						c.x = combineBlock.x + 10;
-						c.y = combineBlock.y + totalHeight;
-						if (c.height) {
-							totalHeight = totalHeight + c.height / amountZoom
-						} else {
-							totalHeight = totalHeight + 40
-						}
-					}
-				});
-				let lastNode = new BlockNodeModel().deSerialize(_.last(combineBlock.combines), this.props.diagramEngine);
-				if (combineBlock.combines.length === 1) {
-					let removed = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine);
-					this.props.diagramEngine.getDiagramModel().addNode(removed)
-					removed.parentCombine = null;
-					removed.extras.nextID = null;
-					combineBlock.remove();
-				}
 				selectedItems = [diagramEngine.getSuperSelect()]
-				diagramEngine.setSuperSelect(selectedItems[0].parentCombine);
+				this.props.nodeProps.removeCombineNode(super_select)
 			}
 			if (!_.some(selectedItems, { locked: true })){
 				this.props.removeHandler(selectedItems)
@@ -479,6 +432,12 @@ export class DiagramWidget extends BaseWidget {
 						if (
 							!this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
 						) {
+							diagramEngine.setSuperSelect(null)
+							this.props.forceRepaint()
+							if (element instanceof BlockNodeModel && element.extras.type === 'story'){
+								diagramEngine.setSuperSelect(null)
+								this.props.forceRepaint()
+							}
 							if (element.extras && element.extras.type === 'god'){
 								this.props.onConfirm({
 									warning: true,
@@ -487,9 +446,14 @@ export class DiagramWidget extends BaseWidget {
 									params: [selectedItems, element]
 								})
 							} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
-								element.remove();
+								if (element.extras.type !== 'story'){
+									diagramEngine.setSuperSelect(null);
+									element.remove()
+								}
 							} else if (!(element instanceof BlockNodeModel)){
-								element.remove();
+								if (element instanceof PointModel && (element.parent.sourcePort.parent && (element.parent.sourcePort.parent.extras.type !== 'story' || element.parent.points.length > 2))){
+									element.remove()
+								}
 							}
 						}
 			   });
@@ -748,7 +712,7 @@ export class DiagramWidget extends BaseWidget {
 					} else {
 						diagramEngine.enableRepaintEntities(diagramModel.getSelectedItems());
 						//its some or other element, probably want to move it
-							if (!event.shiftKey && !model.model.isSelected()) {
+							if (!event.shiftKey && model.model && !model.model.isSelected()) {
 								diagramModel.clearSelection();
 							}
 							model.model.setSelected(true);
@@ -777,8 +741,7 @@ export class DiagramWidget extends BaseWidget {
 				)}
 				<NodeLayerWidget
 					diagramEngine={diagramEngine}
-					copyNode={this.props.copyNode}
-					removeNode={this.props.removeNode}
+					nodeProps={this.props.nodeProps}
 				/>
 				{this.state.action instanceof SelectingAction && this.drawSelectionBox()}
 			</div>

@@ -1,9 +1,8 @@
 const axios = require('axios')
-const { docClient, pool, hashids, logAxiosError, writeToLogs } = require('./../services')
+const { docClient, pool, hashids, logAxiosError, writeToLogs, analytics } = require('./../services')
 const { AccessToken } = require('./authentication')
-const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const { renderDiagram } = require('../config/render_diagram')
-const { PLATFORMS } = require('../config/Constants')
+const { PLATFORMS } = require('../app/src/Constants')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -295,31 +294,44 @@ exports.copySkill = async (req, res, options, cb = false) => {
     })
 
     const remapDiagramIds = async (diagram) => {
-      let sub_diagrams = []
+      let sub_diagrams = new Set()
       let old_diagram_id = diagram.id
       diagram.id = diagram_mapping[diagram.id]
       diagram.skill = new_skill_id
       let JSON_diagram_data = JSON.parse(diagram.data)
       let nodes = JSON_diagram_data.nodes
       if (!!nodes) {
-        for (let i = 0; i < nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++) {
           let node = nodes[i]
           if (node.extras.diagram_id && node.extras.diagram_id !== null) {
             node.extras.diagram_id = diagram_mapping[node.extras.diagram_id]
-            sub_diagrams.push(node.extras.diagram_id)
+            sub_diagrams.add(node.extras.diagram_id)
           } else if (node.extras[platform] && node.extras[platform].diagram_id && node.extras[platform].diagram_id !== null) {
 
             PLATFORMS.forEach(p => {
               node.extras[p].diagram_id = diagram_mapping[node.extras[p].diagram_id]
             })
 
-            sub_diagrams.push(node.extras[platform].diagram_id)
+            sub_diagrams.add(node.extras[platform].diagram_id)
           } else if (node.extras.display_id && node.extras.display_id !== null && remapped_displays[node.extras.display_id]){
             node.extras.display_id = remapped_displays[node.extras.display_id]
           } else if (node.extras.template_id && node.extras.template_id !== null && remapped_emails[node.extras.template_id]){
             node.extras.template_id = remapped_emails[node.extras.template_id]
           } else if (node.extras.product_id && node.extras.product_id !== null && remapped_products[node.extras.product_id]){
             node.extras.product_id = remapped_products[node.extras.product_id]
+          } else if (Array.isArray(node.combines) && node.combines.length !== 0){
+            for(var j = 0; j < node.combines.length; j++){
+              PLATFORMS.forEach(p => {
+                try{
+                  if(node.combines[j].extras[p].diagram_id){
+                    node.combines[j].extras[p].diagram_id = diagram_mapping[node.combines[j].extras[p].diagram_id]
+                    sub_diagrams.add(node.combines[j].extras[p].diagram_id)
+                  }
+                }catch(e){
+                  console.log(e)
+                }
+              })  
+            }
           }
         } 
       }
@@ -327,7 +339,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
       diagram.data = JSON.stringify(JSON_diagram_data)
       let result = await uploadNewDiagram({
         diagram: diagram,
-        sub_diagrams: sub_diagrams,
+        sub_diagrams: [...sub_diagrams],
         old_diagram_id: old_diagram_id
       })
       return result

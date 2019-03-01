@@ -51,10 +51,10 @@ ShallowWrapper {
       "children": Array [
         Array [
           <div
-            className="multiline mb-3"
+            className="multiline mb-2"
           >
             <div
-              className="multi-title-block mb-3"
+              className="multi-title-block mb-2"
             >
               <div
                 className="multi-title"
@@ -74,7 +74,7 @@ ShallowWrapper {
               >
                 Speaking As
                 <StateManager
-                  className="speak-box ml-3"
+                  className="speak-box ml-2"
                   classNamePrefix="select-box"
                   defaultInputValue=""
                   defaultMenuIsOpen={false}
@@ -345,6 +345,9 @@ ShallowWrapper {
           </InputGroup>
         </React.Fragment>,
       ],
+      "style": Object {
+        "marginTop": -6,
+      },
     },
     "ref": null,
     "rendered": Array [
@@ -355,7 +358,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <div
-              className="multi-title-block mb-3"
+              className="multi-title-block mb-2"
             >
               <div
                 className="multi-title"
@@ -375,7 +378,7 @@ ShallowWrapper {
               >
                 Speaking As
                 <StateManager
-                  className="speak-box ml-3"
+                  className="speak-box ml-2"
                   classNamePrefix="select-box"
                   defaultInputValue=""
                   defaultMenuIsOpen={false}
@@ -594,7 +597,7 @@ ShallowWrapper {
             </Collapse>,
             <hr />,
           ],
-          "className": "multiline mb-3",
+          "className": "multiline mb-2",
         },
         "ref": null,
         "rendered": Array [
@@ -622,7 +625,7 @@ ShallowWrapper {
                 >
                   Speaking As
                   <StateManager
-                    className="speak-box ml-3"
+                    className="speak-box ml-2"
                     classNamePrefix="select-box"
                     defaultInputValue=""
                     defaultMenuIsOpen={false}
@@ -809,7 +812,7 @@ ShallowWrapper {
                   ×
                 </button>,
               ],
-              "className": "multi-title-block mb-3",
+              "className": "multi-title-block mb-2",
             },
             "ref": null,
             "rendered": Array [
@@ -871,7 +874,7 @@ ShallowWrapper {
                   "children": Array [
                     "Speaking As",
                     <StateManager
-                      className="speak-box ml-3"
+                      className="speak-box ml-2"
                       classNamePrefix="select-box"
                       defaultInputValue=""
                       defaultMenuIsOpen={false}
@@ -1061,7 +1064,7 @@ ShallowWrapper {
                     "key": undefined,
                     "nodeType": "class",
                     "props": Object {
-                      "className": "speak-box ml-3",
+                      "className": "speak-box ml-2",
                       "classNamePrefix": "select-box",
                       "defaultInputValue": "",
                       "defaultMenuIsOpen": false,
@@ -1588,10 +1591,10 @@ ShallowWrapper {
         "children": Array [
           Array [
             <div
-              className="multiline mb-3"
+              className="multiline mb-2"
             >
               <div
-                className="multi-title-block mb-3"
+                className="multi-title-block mb-2"
               >
                 <div
                   className="multi-title"
@@ -1611,7 +1614,7 @@ ShallowWrapper {
                 >
                   Speaking As
                   <StateManager
-                    className="speak-box ml-3"
+                    className="speak-box ml-2"
                     classNamePrefix="select-box"
                     defaultInputValue=""
                     defaultMenuIsOpen={false}
@@ -1882,6 +1885,9 @@ ShallowWrapper {
             </InputGroup>
           </React.Fragment>,
         ],
+        "style": Object {
+          "marginTop": -6,
+        },
       },
       "ref": null,
       "rendered": Array [
@@ -1892,7 +1898,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <div
-                className="multi-title-block mb-3"
+                className="multi-title-block mb-2"
               >
                 <div
                   className="multi-title"
@@ -1912,7 +1918,7 @@ ShallowWrapper {
                 >
                   Speaking As
                   <StateManager
-                    className="speak-box ml-3"
+                    className="speak-box ml-2"
                     classNamePrefix="select-box"
                     defaultInputValue=""
                     defaultMenuIsOpen={false}
@@ -2131,7 +2137,7 @@ ShallowWrapper {
               </Collapse>,
               <hr />,
             ],
-            "className": "multiline mb-3",
+            "className": "multiline mb-2",
           },
           "ref": null,
           "rendered": Array [
@@ -2159,7 +2165,7 @@ ShallowWrapper {
                   >
                     Speaking As
                     <StateManager
-                      className="speak-box ml-3"
+                      className="speak-box ml-2"
                       classNamePrefix="select-box"
                       defaultInputValue=""
                       defaultMenuIsOpen={false}
@@ -2346,7 +2352,7 @@ ShallowWrapper {
                     ×
                   </button>,
                 ],
-                "className": "multi-title-block mb-3",
+                "className": "multi-title-block mb-2",
               },
               "ref": null,
               "rendered": Array [
@@ -2408,7 +2414,7 @@ ShallowWrapper {
                     "children": Array [
                       "Speaking As",
                       <StateManager
-                        className="speak-box ml-3"
+                        className="speak-box ml-2"
                         classNamePrefix="select-box"
                         defaultInputValue=""
                         defaultMenuIsOpen={false}
@@ -2598,7 +2604,7 @@ ShallowWrapper {
                       "key": undefined,
                       "nodeType": "class",
                       "props": Object {
-                        "className": "speak-box ml-3",
+                        "className": "speak-box ml-2",
                         "classNamePrefix": "select-box",
                         "defaultInputValue": "",
                         "defaultMenuIsOpen": false,

@@ -20,7 +20,9 @@ restart.sh
 log/
 # dotenv environment variables files
 /.env*
-/!.env.example
+!/.env.example
+!/.env.test
 
+/migrations
 # Local DynamoDB
 shared-local-instance.db

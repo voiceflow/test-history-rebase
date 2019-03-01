@@ -1,4 +1,4 @@
-const redis = require('redis');
+const redis = process.env.TEST ? require('redis-mock') : require('redis');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -20,7 +20,8 @@ const AWS = require('aws-sdk');
 AWS.config = new AWS.Config({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+    region: process.env.AWS_REGION,
+    endpoint: process.env.AWS_ENDPOINT
 })
 
 const docClient = new AWS.DynamoDB.DocumentClient({
@@ -32,14 +33,13 @@ types.setTypeParser(1114, function(stringValue) {
     return new Date(stringValue + "+0000");
 });
 
-
 const pool = new pg.Pool({
     user: process.env.PSQL_USER,
     host: process.env.PSQL_HOST,
     database: process.env.PSQL_DB,
     password: process.env.PSQL_PW,
     port: 5432
-});
+})
 
 // Create a Redis Client for sessions
 const redisClient = (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') ? redis.createClient({
@@ -108,9 +108,6 @@ const validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
-
-// SECRET
-const intercom_client = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
 
 const logging_pool = new pg.Pool({
     user: process.env.LOGGING_USER,
@@ -242,7 +239,6 @@ const logAxiosError = (err, context='', data=null) => {
 }
 
 module.exports = {
-    intercom: intercom_client,
     upload: upload,
     docClient: docClient,
     pool: pool,
@@ -260,3 +256,8 @@ module.exports = {
     writeToLogs: writeToLogs
 }
 
+// SECRET
+if(process.env.NODE_ENV !== 'test'){
+    module.exports.intercom = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
+    module.exports.analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
+}

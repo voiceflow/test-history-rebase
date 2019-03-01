@@ -57,84 +57,84 @@ const blocks = [
     icon: <i className="fas fa-code"/>,
     video: "https://www.youtube.com/embed/6xgr-7GPZzU"
   },
-  {
-    type: "jump",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-step-forward"/>,
-    video: "https://www.youtube.com/embed/-nwWqo2v86U"
-  },
-  {
-    type: "intent",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-user-alt"/>,
-    video: "https://www.youtube.com/embed/mxe1iwDboHc"
-  },
-  {
-    type: "stream",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-play"/>,
-    video: "https://www.youtube.com/embed/I6rMkA4JPRM"
-  },
-  {
-    type: "api",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-globe"/>,
-    video: "https://www.youtube.com/embed/6rnoN8rnBrs"
-  },
-  {
-    type: "flow",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-clone"/>,
-    video: "https://www.youtube.com/embed/EMpqNf2HhKw"
-  },
-  {
-    type: "exit",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-sign-out"/>,
-    video: "https://www.youtube.com/embed/mxe1iwDboHc"
-  },
-  {
-    type: "combine",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-compress-alt"/>,
-    video: "https://www.youtube.com/embed/mxe1iwDboHc"
-  },
-  {
-    type: "comment",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-comment"/>,
-    video: "https://www.youtube.com/embed/mxe1iwDboHc"
-  },
-  {
-    type: "card",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-sticky-note"/>,
-    video: "https://www.youtube.com/embed/bQLdxSoXh0Y"
-  },
-  {
-    type: "card",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-sticky-note"/>,
-    video: "https://www.youtube.com/embed/mxe1iwDboHc"
-  },
-  {
-    type: "display",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="far fa-image"/>,
-    video: "https://www.youtube.com/embed/mxe1iwDboHc"
-  },
-  {
-    type: "permissions",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-lock"/>,
-    video: "https://www.youtube.com/embed/EHQuYN8U1ew"
-  },
-  {
-    type: "mail",
-    info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
-    icon: <i className="fas fa-envelope"/>,
-    video: "https://www.youtube.com/embed/6yMxOQfmkVE"
-  }
+  // {
+  //   type: "jump",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-step-forward"/>,
+  //   video: "https://www.youtube.com/embed/-nwWqo2v86U"
+  // },
+  // {
+  //   type: "intent",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-user-alt"/>,
+  //   video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  // },
+  // {
+  //   type: "stream",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-play"/>,
+  //   video: "https://www.youtube.com/embed/I6rMkA4JPRM"
+  // },
+  // {
+  //   type: "api",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-globe"/>,
+  //   video: "https://www.youtube.com/embed/6rnoN8rnBrs"
+  // },
+  // {
+  //   type: "flow",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-clone"/>,
+  //   video: "https://www.youtube.com/embed/EMpqNf2HhKw"
+  // },
+  // {
+  //   type: "exit",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-sign-out"/>,
+  //   video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  // },
+  // {
+  //   type: "combine",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-compress-alt"/>,
+  //   video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  // },
+  // {
+  //   type: "comment",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-comment"/>,
+  //   video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  // },
+  // {
+  //   type: "card",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-sticky-note"/>,
+  //   video: "https://www.youtube.com/embed/bQLdxSoXh0Y"
+  // },
+  // {
+  //   type: "card",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-sticky-note"/>,
+  //   video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  // },
+  // {
+  //   type: "display",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="far fa-image"/>,
+  //   video: "https://www.youtube.com/embed/mxe1iwDboHc"
+  // },
+  // {
+  //   type: "permissions",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-lock"/>,
+  //   video: "https://www.youtube.com/embed/EHQuYN8U1ew"
+  // },
+  // {
+  //   type: "mail",
+  //   info: "Set blocks allow you to set the value of variables using combinations of logic and operations on variables.",
+  //   icon: <i className="fas fa-envelope"/>,
+  //   video: "https://www.youtube.com/embed/6yMxOQfmkVE"
+  // }
 ]
 
 class HelpModal extends React.Component {

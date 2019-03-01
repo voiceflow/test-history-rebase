@@ -21,10 +21,6 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": Array [
-        <ConfirmModal
-          confirm={null}
-          toggle={[Function]}
-        />,
         <div
           className="toolbar"
         >
@@ -359,18 +355,6 @@ ShallowWrapper {
     },
     "ref": null,
     "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "confirm": null,
-          "toggle": [Function],
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
       Object {
         "instance": null,
         "key": undefined,
@@ -1626,7 +1610,6 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "live_mode": undefined,
-                  "platform": undefined,
                   "toggleUpgrade": undefined,
                   "user": undefined,
                   "user_modules": undefined,
@@ -1652,10 +1635,6 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": Array [
-          <ConfirmModal
-            confirm={null}
-            toggle={[Function]}
-          />,
           <div
             className="toolbar"
           >
@@ -1990,18 +1969,6 @@ ShallowWrapper {
       },
       "ref": null,
       "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "confirm": null,
-            "toggle": [Function],
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
         Object {
           "instance": null,
           "key": undefined,
@@ -3257,7 +3224,6 @@ ShallowWrapper {
                   "nodeType": "class",
                   "props": Object {
                     "live_mode": undefined,
-                    "platform": undefined,
                     "toggleUpgrade": undefined,
                     "user": undefined,
                     "user_modules": undefined,

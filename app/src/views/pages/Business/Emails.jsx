@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios';
+import { connect } from 'react-redux'
+
+import { deleteEmail } from './../../actions/emailActions';
 import MUIButton from '@material-ui/core/Button'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
@@ -12,59 +14,12 @@ class Emails extends Component {
         super(props);
 
         this.state = {
-            templates: [],
-            loading: true,
             confirm: null
         }
-
-        this.deleteTemplate = this.deleteTemplate.bind(this);
-    }
-
-    componentWillMount() {
-        axios.get(`/email/templates?skill_id=${this.props.skill_id}`)
-        .then(res => {
-            if(Array.isArray(res.data)){
-                this.setState({
-                    templates: res.data,
-                    loading: false
-                })
-            }else{
-                this.setState({
-                    loading: false
-                })
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            this.setState({
-                loading: false
-            })
-            this.props.onError('Unable to Retrieve Templates')
-        })
-    }
-
-    deleteTemplate(id) {
-        this.setState({confirm: null});
-
-        axios.delete(`/email/template/${id}`)
-        .then(()=>{
-            let templates = this.state.templates;
-            let index = templates.findIndex(t => t.template_id === id);
-            if (index > -1) {
-              templates.splice(index, 1);
-            }
-            this.setState({
-                templates: templates
-            });
-        })
-        .catch(err=>{
-            console.error(err)
-            this.props.onError('Unable to delete diagram')
-        });
     }
 
     render() {
-        if(this.state.loading){
+        if(this.props.loading){
             return <div id="loading-diagram">
                 <div className="text-center">
                     <h5 className="text-muted mb-2">Loading Emails</h5>
@@ -75,7 +30,7 @@ class Emails extends Component {
         return (
             <div className="h-100 w-100">
                 <React.Fragment>
-                    {this.state.templates.length === 0 ?
+                    {this.props.templates.length === 0 ?
                         <div className="super-center w-100 h-100">
                             <div className="empty-container">
                                 <img src='/images/email_2.svg' alt="open safe" width="100"/>
@@ -96,7 +51,7 @@ class Emails extends Component {
                                     </Link>
                                 </div>
                                 <Masonry elementType='div' imagesLoadedOptions={{columnWidth: '200', itemSelector: ".grid-item"}}>
-                                    {this.state.templates.map(template => {
+                                    {this.props.templates.map(template => {
                                         let name = template.title.match(/\b(\w)/g)
                                         if(name) { name = name.join('') }
                                         else { name = template.title }
@@ -107,7 +62,7 @@ class Emails extends Component {
                                             id={template.template_id}
                                             name={template.title}
                                             placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
-                                            onDelete={this.deleteTemplate}
+                                            onDelete={id => this.props.deleteEmail(id)}
                                             deleteLabel="Delete Template"
                                             onClick={()=>this.props.history.push(`/business/${this.props.skill_id}/email/${template.template_id}`)}
                                             buttonLabel="Edit Template"
@@ -125,4 +80,14 @@ class Emails extends Component {
     }
 }
 
-export default Emails
+const mapDispatchToProps = dispatch => {
+    return {
+        deleteEmail: id => dispatch(deleteEmail(id))
+    }
+}
+const mapStateToProps = state => ({
+    templates: state.emails.email_templates,
+    skill_id: state.skills.skill.skill_id,
+    loading: state.emails.loading
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Emails)

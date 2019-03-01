@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import axios from 'axios';
+import { connect } from 'react-redux'
 import { Button, InputGroup, Input, Modal, ModalHeader, ModalBody, InputGroupAddon } from 'reactstrap'
 import {Tooltip} from 'react-tippy'
 import {Link} from 'react-router-dom'
@@ -43,6 +44,7 @@ class Display extends Component {
         this.onChange = this.onChange.bind(this);
         this.selectDisplay = this.selectDisplay.bind(this);
         this.onChangeEditor = this.onChangeEditor.bind(this)
+        this.onChangeCommands = this.onChangeCommands.bind(this)
         this.updateOnChange = this.updateOnChange.bind(this)
         this.renderDisplayTest = this.renderDisplayTest.bind(this)
         this.testDisplay = this.testDisplay.bind(this)
@@ -62,6 +64,14 @@ class Display extends Component {
     onChangeEditor(value) {
         const node = this.state.node
         node.extras.datasource = value
+        this.setState({
+            node: node
+        }, () => this.props.onUpdate())
+    }
+
+    onChangeCommands(value) {
+        const node = this.state.node
+        node.extras.apl_commands = value
         this.setState({
             node: node
         }, () => this.props.onUpdate())
@@ -218,7 +228,7 @@ class Display extends Component {
         if(this.props.displays.length === 0){
             return <div>
                 <span className="text-muted">You currently have no Multimodal Displays</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/visuals/${this.props.skill.skill_id}`}>Add Displays</Link> 
+                <Link className="btn btn-clear btn-block mt-2" to={`/visuals/${this.props.skill_id}`}>Add Displays</Link> 
             </div>
         }
 
@@ -302,10 +312,44 @@ class Display extends Component {
                         tabSize: 2,
                         useWorker: false
                     }}/>
+                {window.user_detail.admin === 70 && <label>APL Commands</label>}
+                {window.user_detail.admin === 70 && <AceEditor
+                    name="apl_commands_editor"
+                    className="datasource_editor"
+                    mode="json_custom"
+                    theme="monokai"
+                    onChange={this.onChangeCommands}
+                    fontSize={14}
+                    showPrintMargin={false}
+                    showGutter={true}
+                    highlightActiveLine={true}
+                    value={this.state.node.extras.apl_commands}
+                    editorProps={{
+                        $blockScrolling: true,
+                        $rules: {
+                            start : [
+                                {
+                                    token : "highlightWords",
+                                    regex : "word1|word2|word3|phrase one|phrase number two|etc"
+                                }]
+                        }
+                    }}
+                    setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: false,
+                        enableSnippets: false,
+                        showLineNumbers: true,
+                        tabSize: 2,
+                        useWorker: false
+                    }}/>}
                 </div>
             </React.Fragment>
         );
     }
 }
 
-export default Display;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill_id,
+    displays: state.displays.displays,
+})
+export default connect(mapStateToProps)(Display);

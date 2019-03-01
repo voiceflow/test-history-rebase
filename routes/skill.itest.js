@@ -1,10 +1,8 @@
 const app = require('../app')
 const request = require('supertest')
 const new_diagram = require('../test/new_diagram.json')
-const { pool, hashids, redisClient } = require('./../services')
-const axios = require('axios')
+const { pool, hashids } = require('./../services')
 const moxios = require('moxios')
-let { AccessToken } = require('./authentication')
 
 AccessToken = jest.fn().mockImplementation((user_id, cb) => {
   console.log("fhioeshfiohesoi")
@@ -98,17 +96,15 @@ describe('Skill', () => {
             let version_data = (await pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 ORDER BY skill_id ASC`, [decoded_skill_id])).rows
             let skill_data = (await pool.query(`SELECT * FROM skills WHERE creator_id = 1`)).rows
             // Initial skill won't have default values for used-choices, used_intents, alexa_interfaces, alexa_permissions
-            let filtered_fields = ['diagram', 'created', 'live', 'last_save', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces', 'alexa_permissions']
+            let filtered_fields = ['diagram', 'created', 'live', 'skill_id', 'used_choices', 'used_intents', 'alexa_interfaces', 'alexa_permissions']
 
             for(let i in skill_data){
               for(let field of filtered_fields){
                 delete skill_data[i][field]
               }
             }
-            version_data[0].last_save = null
-            version_data[1].last_save = null
-            expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, last_save: null, google_versions: null, published_platform: 'alexa'})
-            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, last_save: null, google_versions: null, published_platform: 'alexa'})
+            expect(version_data[0]).toEqual({version: null, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id, google_versions: null, published_platform: 'alexa'})
+            expect(version_data[1]).toEqual({version: 1, canonical_skill_id: decoded_skill_id, skill_id: decoded_skill_id + 1, google_versions: null, published_platform: 'alexa'})
             expect(skill_data[0]).toEqual(skill_data[1])
           } catch (err) {
             if(err) throw err

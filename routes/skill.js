@@ -7,7 +7,8 @@ const {
   intercom,
   jwt,
   logAxiosError,
-  writeToLogs
+  writeToLogs,
+  analytics
 } = require('./../services')
 const {
   AccessToken,
@@ -18,8 +19,6 @@ const {createInteractionModel} = require('./../config/interaction_model')
 const {
   generateDialogflowPackage
 } = require('./../config/gactions_package')
-
-const analytics = new(require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const {
   deleteSkillPromise,
   copySkill,
@@ -29,6 +28,7 @@ const {
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
 const latestSkillToIntercom = (id, name) => {
+  if(process.env.TEST) return
   intercom.users.create({
     user_id: id,
     custom_attributes: {
@@ -38,6 +38,7 @@ const latestSkillToIntercom = (id, name) => {
 }
 
 const incrementSkillsCreatedIntercom = (id) => {
+  if(process.env.TEST) return
   intercom.users.find({
     user_id: id
   }, async (res) => {
@@ -66,6 +67,7 @@ exports.latestSkillToIntercom = latestSkillToIntercom
 exports.incrementSkillsCreatedIntercom = incrementSkillsCreatedIntercom
 
 const incrementTimesPublishedIntercom = (id) => {
+  if(process.env.TEST) return
   intercom.users.find({
     user_id: id
   }, async (res) => {
@@ -84,6 +86,7 @@ const incrementTimesPublishedIntercom = (id) => {
 }
 
 const incrementTimesPublishedSuccessfulIntercom = (id) => {
+  if(process.env.TEST) return
   intercom.users.find({
     user_id: id
   }, async (res) => {
@@ -158,7 +161,6 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
       SELECT
-        sv.last_save,
         name,
         amzn_id,
         review,
@@ -181,11 +183,10 @@ exports.getSkill = (req, res) => {
         google_publish_info,
         repeat
     FROM
-      skills s
-    INNER JOIN skill_versions sv ON (s.skill_id = sv.canonical_skill_id AND s.skill_id = sv.skill_id) OR (s.live = TRUE)
+      skills
     WHERE
-      s.skill_id = $1
-      AND s.creator_id = $2
+      skill_id = $1
+      AND creator_id = $2
     LIMIT 1`;
     params = [id, req.user.id];
   } else {

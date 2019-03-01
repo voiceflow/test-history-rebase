@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+
+import { updateSkill } from './../../actions/skillActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
     ModalHeader, ModalBody, Button
@@ -98,14 +101,12 @@ class ActionGroup extends PureComponent {
             publish: false,
             diagrams: [],
             share: false,
-            allowPreview: false,
             updateModal: false,
             updateLiveModal: false,
             stage: 0,
             google_stage: 0,
             amzn_error: false,
             upload_error: 'No Error',
-            skill: null,
             settings_tab_state: 'basic',
             displayingConfirmDelete: false,
             inv_name: null,
@@ -136,19 +137,6 @@ class ActionGroup extends PureComponent {
         this.renderUploadButton = this.renderUploadButton.bind(this)
         this.isUploadLoading = this.isUploadLoading.bind(this)
         this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
-    }
-
-    componentWillReceiveProps(props) {
-        // create a local copy of skill settings
-        if (!this.state.skill && props.skill.name !== '...') {
-            this.setState({
-                skill: {
-                    name: props.skill.name,
-                    restart: props.skill.restart
-                },
-                allowPreview: props.skill.preview
-            });
-        }
     }
 
     componentDidMount() {
@@ -295,9 +283,7 @@ class ActionGroup extends PureComponent {
             this.setState({ stage: 1 })
             try {
                 await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: this.state.inv_name })
-                let skill = this.props.skill
-                skill.inv_name = this.state.inv_name
-                this.props.updateSkill(skill)
+                this.props.updateSkill('inv_name', this.state.inv_name)
             } catch (err) {
                 this.setState({
                     stage: 6,
@@ -311,9 +297,7 @@ class ActionGroup extends PureComponent {
                 this.setState({ stage: 11 }, () => {
                     axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                         .then(res => {
-                            let skill = this.props.skill;
-                            skill.amzn_id = res.data;
-                            this.props.updateSkill(skill)
+                            this.props.updateSkill('amzn_id', res.data)
                             this.checkInteractionModel()
                         })
                         .catch(err => {
@@ -914,4 +898,14 @@ class ActionGroup extends PureComponent {
     }
 }
 
-export default ActionGroup;
+const mapStateToProps = state => ({
+    skill: state.skills.skill,
+    platform: state.skills.skill.platform,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateSkill: (type, val) => dispatch(updateSkill(type, val))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

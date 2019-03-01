@@ -62,10 +62,6 @@ ShallowWrapper {
               "value": "intent",
             },
             Object {
-              "label": "Command",
-              "value": "command",
-            },
-            Object {
               "label": "Stream",
               "value": "stream",
             },
@@ -179,10 +175,6 @@ ShallowWrapper {
           Object {
             "label": "Intent",
             "value": "intent",
-          },
-          Object {
-            "label": "Command",
-            "value": "command",
           },
           Object {
             "label": "Stream",
@@ -304,10 +296,6 @@ ShallowWrapper {
                 "value": "intent",
               },
               Object {
-                "label": "Command",
-                "value": "command",
-              },
-              Object {
                 "label": "Stream",
                 "value": "stream",
               },
@@ -421,10 +409,6 @@ ShallowWrapper {
             Object {
               "label": "Intent",
               "value": "intent",
-            },
-            Object {
-              "label": "Command",
-              "value": "command",
             },
             Object {
               "label": "Stream",

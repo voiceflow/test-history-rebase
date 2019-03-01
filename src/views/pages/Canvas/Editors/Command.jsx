@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup, InputGroup, Input, Alert } from 'reactstrap'
+import { Button, ButtonGroup, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
-import { Tooltip } from 'react-tippy'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import { PLATFORMS } from '../../../../Constants'
 const _ = require('lodash')
 
 class Command extends Component {
@@ -225,12 +226,20 @@ class Command extends Component {
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
                         </Alert>}
-                        <Button block className="mt-2" onClick={() => { let node = this.state.node; let extras = node.extras[this.props.platform]; extras.diagram_id = null; this.setState({ node: node }) }} color="clear">Unlink Flow</Button>
+                        <Button block className="mt-2" onClick={() => { 
+                                let node = this.state.node; 
+                                let extras = node.extras[this.props.platform]; extras.diagram_id = null; 
+                                this.setState({ node: node })
+                                this.props.repaint()
+                            }} 
+                            color="clear">
+                            Unlink Flow
+                        </Button>
                     </React.Fragment> :
                     <React.Fragment>
                         <h5 className="mb-0">Command Flow</h5>
                         <label>Create a New Flow</label>
-                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), true)}>
+                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
                             Create New Flow <i className="fas fa-sign-in" />
                         </Button>
                         <hr className="mb-1" />
@@ -240,8 +249,10 @@ class Command extends Component {
                                 <Select
                                     classNamePrefix="select-box"
                                     onChange={(selected) => {
-                                        let extras = this.state.node.extras[this.props.platform]
-                                        extras.diagram_id = selected.value;
+                                        PLATFORMS.forEach(p => {
+                                            let extras = this.state.node.extras[p]
+                                            extras.diagram_id = selected.value;
+                                        })
                                         this.props.enterFlow(selected.value);
                                     }}
                                     options={options}
@@ -251,29 +262,6 @@ class Command extends Component {
                     </React.Fragment>
                 }
             </div>
-            {/* DEPPRECATE THIS */}
-            {!!extras.end &&
-                <InputGroup className="my-3">
-                    <label className="input-group-text w-100 m-0 d-flex">
-                        <Input addon type="checkbox" value={!!extras.end} checked={!!extras.end} onChange={this.updateEnd} />
-                        <div className="ml-2 space-between flex-hard">
-                            <span>
-                                Command Ends Skill
-                            </span>
-                            <span>
-                                <Tooltip
-                                    className="menu-tip"
-                                    html='The skill will end on completion of the command'
-                                    position="bottom"
-                                    theme="menu"
-                                >
-                                    ?
-                                </Tooltip>
-                            </span>
-                        </div>
-                    </label>
-                </InputGroup>
-            }
         </React.Fragment>
     }
 
@@ -309,6 +297,7 @@ class Command extends Component {
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 </React.Fragment>
             case 'slots':
@@ -347,4 +336,8 @@ class Command extends Component {
     }
 }
 
-export default Command
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+export default connect(mapStateToProps)(Command)

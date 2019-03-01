@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import Mousetrap from 'mousetrap';
 import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
 // HOCs
 import {undo, redo} from './../../HOC/UndoRedo';
@@ -82,7 +83,6 @@ class Editor extends Component {
         this.state = {
             node: props.node,
             templates: [],
-            displays: [],
             account_linking: {},
             modal: false,
             expanded: false,
@@ -191,13 +191,22 @@ class Editor extends Component {
         for (let i in SLOT_TYPES) {
             const slot = SLOT_TYPES[i]
             if(filter && filter === slot.label) continue
-            if ((slot.type.google && this.props.platform === 'google') || (slot.type.alexa && this.props.platform === 'alexa')) {
-                const slot_locales = slot.locales[this.props.platform]
-                if (this.props.platform === 'google') {
-                    slots.push(slot)
-                } else if (!slot_locales || _.intersection(slot_locales, locales).length > 0) {
-                    slots.push(slot)
-                }
+            if (!slot.type[this.props.platform]) continue
+
+            const slot_locales = slot.locales[this.props.platform]
+
+            switch (this.props.platform) {
+                case 'google':
+                    const google_info = this.props.google_publish_info
+                    if (!(google_info && google_info.main_locale && !slot_locales.includes(google_info.main_locale))) slots.push(slot)
+                    break
+                case 'alexa':
+                    if (!slot_locales || _.intersection(slot_locales, locales).length === locales.length) {
+                        slots.push(slot)
+                    }
+                    break
+                default:
+                    break
             }
         }
 
@@ -240,14 +249,11 @@ class Editor extends Component {
             case 'intent':
                 return <Intent
                         onUpdate={this.props.onIntentUpdate}
-                        intents={this.props.intents}
-                        slots={this.props.slots}
                         diagramEngine={this.props.diagramEngine}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
-                        skill={this.props.skill}
                         history={this.props.history}
                         diagrams={this.props.diagrams}
                         diagram_id={this.props.diagram_id}
@@ -263,8 +269,6 @@ class Editor extends Component {
                 }else{
                     return <Command
                         onUpdate={this.props.onIntentUpdate}
-                        intents={this.props.intents}
-                        slots={this.props.slots}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
@@ -277,18 +281,17 @@ class Editor extends Component {
                         platform={this.props.platform}
                         diagram_level_intents={this.props.diagram_level_intents}
                         live_mode={this.props.live_mode}
+                        setCanFulfill={this.props.setCanFulfill}
                     />
                 }
             case 'interaction':
                 return <Interaction
                     onUpdate={this.props.onIntentUpdate}
                     repaint={this.props.repaint}
-                    intents={this.props.intents}
                     clearEvents={() => {
                         this.props.clearRedo();
                         this.props.clearUndo();
                     }}
-                    slots={this.props.slots}
                     onSlot={this.props.onSlot}
                     onIntent={this.props.onIntent}
                     diagramEngine={this.props.diagramEngine}
@@ -298,6 +301,7 @@ class Editor extends Component {
                     onConfirm={this.props.onConfirm}
                     platform={this.props.platform}
                     live_mode={this.props.live_mode}
+                    setCanFulfill={this.props.setCanFulfill}
                     />
             case 'combine':
             case 'line':
@@ -357,34 +361,30 @@ class Editor extends Component {
                     history={this.props.history}
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
-                    products={this.props.products}
                     onError={this.showErrorPopup}
-                    skill_id={this.props.skill.skill_id}
                 />
             case 'cancel':
                 return <CancelPayment
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
-                    products={this.props.products}
                     onError={this.showErrorPopup}
-                    skill_id={this.props.skill.skill_id}
                 />
             case 'module':
                 return <Module user_modules={this.props.user_modules}/>
             case 'mail':
-                return <Mail templates={this.props.templates} skill={this.props.skill}/>
+                return <Mail/>
             case 'display':
-                return <Display displays={this.props.displays} skill={this.props.skill}/>
+                return <Display/>
             case 'stream':
                 return <Stream diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions products={this.props.products} live_mode={this.props.live_mode}/>
+                return <Permissions live_mode={this.props.live_mode}/>
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
                 return <Reminder/>
             case 'permission':
-                return <PermissionCard skill={this.props.skill} live_mode={this.props.live_mode}/>
+                return <PermissionCard live_mode={this.props.live_mode}/>
             case 'code':
                 return <Code/>
             default:
@@ -495,7 +495,8 @@ class Editor extends Component {
                 onKeyDown={this.props.unfocus}
                 onMouseEnter={() => {
                     this.props.diagramEngine.getDiagramModel().setLocked();
-                    Mousetrap.reset();
+                    Mousetrap.unbind(['ctrl+z', 'command+z'])
+                    Mousetrap.unbind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'])
                     Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
                     Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
                 }}
@@ -575,4 +576,15 @@ class Editor extends Component {
     }
 }
 
-export default compose(undo, redo)(Editor);
+const mapStateToProps = state => ({
+    locales: state.skills.skill.locales,
+    platform: state.skills.skill.platform,
+    global_variables: state.skills.skill.global,
+    variables: state.variables.localVariables,
+    google_publish_info: state.skills.skill.google_publish_info,
+})
+export default compose(
+    connect(mapStateToProps),
+    undo,
+    redo
+)(Editor);

@@ -4,7 +4,6 @@ import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
 import Variables from './Sidebars/Variables'
 import Project from './Sidebars/Project'
-import Confirm from './../../components/Modals/ConfirmModal'
 
 const tabs = {
     top: [
@@ -30,7 +29,6 @@ class Menu extends Component {
             open: true,
             tab: tab,
             tree: null,
-            confirm: null,
             depth: 0,
         }
 
@@ -118,11 +116,7 @@ class Menu extends Component {
         switch(this.state.tab){
             case 'variables':
                 return <Variables
-                    variables={this.props.variables}
                     locked={this.props.preview}
-                    global_variables={this.props.global_variables}
-                    onGlobalVariable={this.props.onGlobalVariable}
-                    onVariable={this.props.onVariable}
                     onError={this.props.onError}
                 />
             case 'project':
@@ -139,7 +133,7 @@ class Menu extends Component {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules} user={this.props.user} platform={this.props.platform} live_mode={this.props.live_mode} toggleUpgrade={this.props.toggleUpgrade}/>
+                return <Blocks user_modules={this.props.user_modules} user={this.props.user} live_mode={this.props.live_mode} toggleUpgrade={this.props.toggleUpgrade}/>
         }
     }
 
@@ -150,7 +144,6 @@ class Menu extends Component {
                 onMouseDown={this.props.unfocus}
                 onKeyDown={this.props.unfocus}
             >
-                <Confirm confirm={this.props.confirm || this.state.confirm} toggle={()=>this.setState({confirm: null}, this.props.updateConfirm(null))}/>
                 <div className='toolbar'>
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {

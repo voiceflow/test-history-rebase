@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
@@ -173,6 +174,7 @@ class Interaction extends Component {
                         live_mode={this.props.live_mode}
                         clearRedo={this.props.clearRedo}
                         updateEvents={this.props.updateEvents}
+                        setCanFulfill={this.props.setCanFulfill}
                 />
                 </React.Fragment>
             case 'slots':
@@ -211,4 +213,8 @@ class Interaction extends Component {
     }
 }
 
-export default Interaction;
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+export default connect(mapStateToProps)(Interaction);

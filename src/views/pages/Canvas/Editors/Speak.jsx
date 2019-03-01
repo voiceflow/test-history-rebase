@@ -79,11 +79,11 @@ class Speak extends Component {
     render() {
         let properties = this.state.node.extras
         return (
-            <div>
+            <div style={{marginTop: -6}}>
                 {properties.dialogs.map((d, i) => {
                     if(d.audio !== undefined){
-                        return <div key={d.index} className="multiline mb-3">
-                            <div className="multi-title-block mb-2">
+                        return <div key={d.index} className="multiline mb-2">
+                            <div className="multi-title-block">
                                 <div className="multi-title" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                     <span className="text-muted">
                                         {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
@@ -96,7 +96,7 @@ class Speak extends Component {
                                 <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>
                             </div>
                             <Collapse isOpen={d.open} className="speak-audio">
-                                <div className="mb-3">
+                                <div className="pb-2">
                                     <AudioDrop
                                         audio={d.audio}
                                         update={(audio)=>{
@@ -106,11 +106,11 @@ class Speak extends Component {
                                     />
                                 </div>
                             </Collapse>
-                            <hr/>
+                            <hr className="mt-2"/>
                         </div>
                     }else{
-                        return <div key={d.index} className="multiline mb-3">
-                            <div className="multi-title-block mb-3">
+                        return <div key={d.index} className="multiline mb-2">
+                            <div className="multi-title-block mb-2">
                                 <div className="multi-title">
                                     <span className="text-muted" onClick={()=>{d.open = !d.open; this.onUpdate()}}>
                                         {d.open ? <i className="fas fa-caret-down"></i> : <i className="fas fa-caret-right"></i>} 
@@ -120,7 +120,7 @@ class Speak extends Component {
                                 <div className="super-center flex-hard mr-5">
                                     Speaking As
                                     <Select
-                                        className="speak-box ml-3"
+                                        className="speak-box ml-2"
                                         classNamePrefix="select-box"
                                         value={{label: d.voice, value: d.voice}}
                                         onChange={(selected) => {d.voice = selected.value; this.onUpdate()}}

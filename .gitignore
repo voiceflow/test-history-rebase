@@ -21,6 +21,7 @@ log/
 # dotenv environment variables files
 /.env*
 /!.env.example
+/!.env.test
 
 /migrations
 # Local DynamoDB

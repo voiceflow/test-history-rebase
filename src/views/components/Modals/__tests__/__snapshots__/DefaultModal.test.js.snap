@@ -47,7 +47,7 @@ ShallowWrapper {
           tag="div"
         >
           <button
-            className="purple-btn"
+            className="btn-clear"
             type="button"
           >
             Close
@@ -107,7 +107,7 @@ ShallowWrapper {
         "nodeType": "function",
         "props": Object {
           "children": <button
-            className="purple-btn"
+            className="btn-clear"
             type="button"
           >
             Close
@@ -122,7 +122,7 @@ ShallowWrapper {
           "nodeType": "host",
           "props": Object {
             "children": "Close",
-            "className": "purple-btn",
+            "className": "btn-clear",
             "onClick": undefined,
             "type": "button",
           },
@@ -170,7 +170,7 @@ ShallowWrapper {
             tag="div"
           >
             <button
-              className="purple-btn"
+              className="btn-clear"
               type="button"
             >
               Close
@@ -230,7 +230,7 @@ ShallowWrapper {
           "nodeType": "function",
           "props": Object {
             "children": <button
-              className="purple-btn"
+              className="btn-clear"
               type="button"
             >
               Close
@@ -245,7 +245,7 @@ ShallowWrapper {
             "nodeType": "host",
             "props": Object {
               "children": "Close",
-              "className": "purple-btn",
+              "className": "btn-clear",
               "onClick": undefined,
               "type": "button",
             },

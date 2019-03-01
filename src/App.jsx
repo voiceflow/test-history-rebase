@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Provider } from "react-redux";
 import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
-import { createBrowserHistory } from 'history';
 import {StripeProvider} from 'react-stripe-elements'
-
+import { store, history } from './views/containers/store'
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -109,7 +109,6 @@ const PublicRoute = ({ component: Component, name: Name, ...rest }) => (
 )
 
 ReactGA.initialize('UA-124745244-3')
-const history = createBrowserHistory()
 
 history.listen((location, action) => {
   ReactGA.set({ page: location.pathname })
@@ -177,6 +176,7 @@ class App extends Component {
 
     return (
       <StripeProvider stripe={this.state.stripe}>
+        <Provider store={store}>
         <Router history={history}>
           <div id="body">
             {(this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
@@ -236,6 +236,7 @@ class App extends Component {
               </Switch>
           </div>
         </Router>
+        </Provider>
       </StripeProvider>
     );
   }

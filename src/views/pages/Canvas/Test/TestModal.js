@@ -1,6 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react'
+import { connect } from 'react-redux'
 import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
 import axios from 'axios'
 import moment from 'moment'
@@ -134,13 +135,13 @@ class TestModal extends React.Component {
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
-      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100,
+      repeat: this.props.repeat ? this.props.repeat : 100,
       platform: this.props.platform
     };
 
     // Inject New Globals in if updated
-    if(Array.isArray(this.props.skill.global)){
-        this.props.skill.global.forEach(variable => {
+    if(Array.isArray(this.props.global)){
+        this.props.global.forEach(variable => {
             this.story_state.globals[0][variable] = 0
         })
     }
@@ -282,7 +283,7 @@ class TestModal extends React.Component {
     let data = this.story_state
     
     if (!data.slots) {
-      data.slots = this.props.skill.slots
+      data.slots = this.props.slots
     }
 
     const nlc = this.props.testing_info.nlc
@@ -688,4 +689,10 @@ class TestModal extends React.Component {
   }
 }
 
-export default TestModal;
+const mapStateToProps = state => ({
+  global: state.skills.skill.global,
+  repeat: state.skills.skill.repeat,
+  slots: state.skills.skill.slots,
+  platform: state.skills.skill.platform
+})
+export default connect(mapStateToProps)(TestModal);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import axios from 'axios';
+import { connect } from 'react-redux'
 import { Button, InputGroup, Input, Modal, ModalHeader, ModalBody, InputGroupAddon } from 'reactstrap'
 import {Tooltip} from 'react-tippy'
 import {Link} from 'react-router-dom'
@@ -227,7 +228,7 @@ class Display extends Component {
         if(this.props.displays.length === 0){
             return <div>
                 <span className="text-muted">You currently have no Multimodal Displays</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/visuals/${this.props.skill.skill_id}`}>Add Displays</Link> 
+                <Link className="btn btn-clear btn-block mt-2" to={`/visuals/${this.props.skill_id}`}>Add Displays</Link> 
             </div>
         }
 
@@ -347,4 +348,8 @@ class Display extends Component {
     }
 }
 
-export default Display;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill_id,
+    displays: state.displays.displays,
+})
+export default connect(mapStateToProps)(Display);

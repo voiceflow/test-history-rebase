@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import Multimodal from './Multimodal'
@@ -52,4 +53,7 @@ class Business extends Component {
     }
 }
 
-export default Business;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_kd
+})
+export default connect(mapStateToProps)(Business);

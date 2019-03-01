@@ -9,7 +9,7 @@ const validateEmail = (email) => {
     return re.test(String(email).toLowerCase());
 }
 
-class Mail extends Component {
+export class Mail extends Component {
     constructor(props) {
         super(props);
 

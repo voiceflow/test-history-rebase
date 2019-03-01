@@ -259,7 +259,6 @@ module.exports = {
 
 // SECRET
 if(process.env.NODE_ENV !== 'test'){
-    process.env.TEST = true
     module.exports.intercom = new Intercom.Client({ token: process.env.INTERCOM_TOKEN })
     module.exports.analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 }

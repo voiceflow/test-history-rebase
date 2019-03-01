@@ -222,7 +222,7 @@ class Onboarding extends Component{
 				<div className="onboarding-page">
 						<div className="d-flex h-100 justify-content-center text-center onboarding-survey">
 							<div className="align-self-center">
-								{this.state.stage !== 'calendly' && <button className="exit-survey close" onClick={this.closeSurvey}>x</button>}
+								{/* {this.state.stage !== 'calendly' && <button className="exit-survey close" onClick={this.closeSurvey}>x</button>} */}
 								<span className="onboarding-title">WELCOME SURVEY</span>
 								{this.renderModalContent()}
 							</div>

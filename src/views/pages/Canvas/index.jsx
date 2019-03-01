@@ -71,7 +71,7 @@ const generateID = () => {
         return v.toString(16)
     })
 }
-class Canvas extends Component {
+export class Canvas extends Component {
     constructor(props) {
         super(props)
 

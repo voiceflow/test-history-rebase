@@ -1,13 +1,13 @@
-require('dotenv').config()
+require('dotenv').config({ path: `./.env.test` })
 
 module.exports = {
   test: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_TEST,
-      user: process.env.PSQL_USER_TEST,
-      password: process.env.PSQL_PW_TEST,
-      host: process.env.PSQL_HOST_TEST
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,
@@ -24,10 +24,10 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_DEVELOPMENT,
-      user: process.env.PSQL_USER_DEVELOPMENT,
-      password: process.env.PSQL_PW_DEVELOPMENT,
-      host: process.env.PSQL_HOST_DEVELOPMENT
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,
@@ -41,10 +41,10 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_STAGING,
-      user: process.env.PSQL_USER_STAGING,
-      password: process.env.PSQL_PW_STAGING,
-      host: process.env.PSQL_HOST_STAGING
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,
@@ -58,10 +58,10 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_PRODUCTION,
-      user: process.env.PSQL_USER_PRODUCTION,
-      password: process.env.PSQL_PW_PRODUCTION,
-      host: process.env.PSQL_HOST_PRODUCTION
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,

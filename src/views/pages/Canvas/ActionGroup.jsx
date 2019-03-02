@@ -68,7 +68,7 @@ const invNameError = (name, locales) => {
     }
 }
 
-class ActionGroup extends PureComponent {
+export class ActionGroup extends PureComponent {
     constructor(props) {
         super(props);
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import Interaction from './../Interaction';
+import { Interaction } from './../Interaction';
 import {defaultNode} from '../__mock__/defaultNode';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -16,7 +17,7 @@ describe('InteractionEditor', () => {
         }
         let platform = 'alexa'
         const component = shallow(<Interaction node={node} platform={platform}/>);
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })
 
@@ -32,6 +33,5 @@ describe('InteractionEditor', () => {
         let platform = 'google'
         const component = shallow(<Interaction node={node} platform={platform}/>);
         expect(component.state().node).toEqual(node)
-        expect(component).toMatchSnapshot()
     });
 })

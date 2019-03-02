@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Button, Alert} from 'reactstrap';
+import { connect } from 'react-redux'
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
 import _ from 'lodash';
@@ -10,7 +11,6 @@ class CancelPaymentBlock extends Component {
 
         this.state = {
             node: this.props.node,
-            products: []
         };
 
         this.onUpdate = this.onUpdate.bind(this);
@@ -122,4 +122,8 @@ class CancelPaymentBlock extends Component {
     }
 }
 
-export default CancelPaymentBlock;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    products: state.products.products
+})
+export default connect(mapStateToProps)(CancelPaymentBlock);

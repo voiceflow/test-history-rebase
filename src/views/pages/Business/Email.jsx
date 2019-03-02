@@ -6,6 +6,7 @@ import { Input, Col, Row, FormGroup } from 'reactstrap';
 
 import AceEditor from 'react-ace';
 
+import { addEmail, updateEmail } from './../../actions/emailActions'
 import 'brace/mode/html';
 import 'brace/theme/monokai';
 import 'brace/ext/language_tools';
@@ -108,6 +109,8 @@ class Template extends Component {
             axios.post(`/email/template?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
                 // get template id back
+                payload.template_id = res.data
+                this.props.dispatch(addEmail(payload))
                 this.props.history.push(`/business/${this.props.skill_id}/email/${res.data}`);
                 this.setState({
                     template_id: res.data,
@@ -125,6 +128,8 @@ class Template extends Component {
         }else{
             axios.patch(`/email/template/${this.state.template_id}?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
+                payload.template_id = this.state.template_id
+                this.props.dispatch(updateEmail(payload))
                 this.setState({
                     saved: true,
                     saving: false

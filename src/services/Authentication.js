@@ -65,17 +65,9 @@ const login = () => new Promise((resolve, reject) => {
 })
 
 const initalizeLogin = (response, cb) => {
-	cookies.set('auth', response.data.token, {path: '/'});
-	cookies.remove('last_session');
-	window.user_detail = response.data.user;
-	let user = response.data.user;
-	if (window.chmln){
-		window.chmln.identify(user.id, {email: user.email, name: user.name, roles: user.admin});
-	}
-	window.CreatorSocket.emit('handshake', {
-		auth: response.data.token,
-		device: getDevice()
-	}, () => {window.CreatorSocket.status = 'HANDSHAKE'})
+	cookies.set('auth', response.data.token, {path: '/'})
+	cookies.remove('last_session')
+	window.user_detail = response.data.user
 	cb(null, response.data.user)
 }
 

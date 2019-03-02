@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy';
 import { ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
@@ -49,4 +50,8 @@ class MenuItem extends Component {
     }
 }
 
-export default MenuItem;
+const mapStateToProps = state => ({
+    platform: state.skills.skill.platform
+})
+
+export default connect(mapStateToProps)(MenuItem);

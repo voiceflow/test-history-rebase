@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import Spotlight from './../Spotlight';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -16,6 +17,6 @@ describe('Spotlight', () => {
             verified: null,
         }
         const component = shallow(<Spotlight />);
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

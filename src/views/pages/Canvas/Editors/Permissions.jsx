@@ -134,7 +134,6 @@ class Permissions extends Component {
                             disabled_perms={this.state.node.extras.permissions}
                             onUpdate={this.onUpdate}
                             variables={this.props.variables}
-                            products={this.props.products}
                         />
                     )
                 })}

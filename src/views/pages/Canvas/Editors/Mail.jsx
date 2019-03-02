@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import Select from 'react-select'
 import { Button, Input, Alert } from 'reactstrap';
 import {Link} from 'react-router-dom'
@@ -8,7 +9,7 @@ const validateEmail = (email) => {
     return re.test(String(email).toLowerCase());
 }
 
-class Mail extends Component {
+export class Mail extends Component {
     constructor(props) {
         super(props);
 
@@ -104,7 +105,7 @@ class Mail extends Component {
         if(this.props.templates.length === 0){
             return <div>
                 <span className="text-muted">You currently have no Email Templates</span>
-                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill.skill_id}/emails`}>Add Templates</Link> 
+                <Link className="btn btn-clear btn-block mt-2" to={`/business/${this.props.skill_id}/emails`}>Add Templates</Link> 
             </div>
         }
 
@@ -185,5 +186,9 @@ class Mail extends Component {
         );
     }
 }
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    templates: state.emails.email_templates,
+})
 
-export default Mail;
+export default connect(mapStateToProps)(Mail);

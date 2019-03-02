@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
 import validUrl from 'valid-url'
 
 import { Button, ButtonGroup, Form,
@@ -51,7 +52,6 @@ class Skill extends Component {
         this.state = {
             loaded: false,
             dropdown: false,
-            skill_id: this.props.skill.skill_id,
             stage: 1,
             publish: false,
             id_collapse: false,
@@ -82,7 +82,7 @@ class Skill extends Component {
             });
         });
 
-        axios.get('/skill/' + this.state.skill_id + '?verbose=1')
+        axios.get('/skill/' + this.props.skill_id + '?verbose=1')
         .then(res => {
             if(res.data.category){
                 for(let option of AMAZON_CATEGORIES){
@@ -147,7 +147,7 @@ class Skill extends Component {
             publish: false,
             stage: 2
         })
-        this.props.onError(((
+        this.props.setError(((
             err.response &&
             err.response.data &&
             err.response.data.message) ? error_message : default_error))
@@ -170,7 +170,7 @@ class Skill extends Component {
     }
 
     onDelete(){
-        axios.delete(`/skill/${this.state.skill_id}`)
+        axios.delete(`/skill/${this.props.skill_id}`)
         .then(() => {
             this.props.history.push('/dashboard');
         })
@@ -186,7 +186,7 @@ class Skill extends Component {
         this.setState({
             stage: 7
         });
-        axios.post(`/amazon/${this.state.skill_id}/${this.state.amzn_id}/certify`)
+        axios.post(`/amazon/${this.props.skill_id}/${this.state.amzn_id}/certify`)
         .then(() => {
             this.setState({
                 stage: 11,
@@ -273,7 +273,7 @@ class Skill extends Component {
         })
         this.setState({ stage: 3 });
 
-        axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`, { platform: 'alexa' })
+        axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'alexa' })
             .then(res => {
                 this.setState({ stage: 4 });
                 let new_version_data = res.data
@@ -323,13 +323,13 @@ class Skill extends Component {
       const s = this.state;
       let split_keywords = s.keywords.split(',')
       if(s.privacy_policy && !validUrl.isUri(s.privacy_policy)){
-        this.props.onError('Privacy policy must be a url')
+        this.props.setError('Privacy policy must be a url')
       } else if(s.terms_and_cond && !validUrl.isUri(s.terms_and_cond)){
-        this.props.onError('Terms and conditions must be a url')
+        this.props.setError('Terms and conditions must be a url')
       } else if(split_keywords.length > 30) {
-        this.props.onError('Limited to 30 keywords')
+        this.props.setError('Limited to 30 keywords')
       } else if(s.keywords.length - split_keywords.length + 1> 500) {
-        this.props.onError('The total length of all keywords must be less than or equal to 150')
+        this.props.setError('The total length of all keywords must be less than or equal to 150')
       } else {
         this.setState({publish: true})
       }
@@ -368,17 +368,16 @@ class Skill extends Component {
         }
 
         if(!properties.name){
-            return this.props.onError('Publish Settings not Saved: No Project Name')
+            return this.props.setError('Publish Settings not Saved: No Project Name')
         }
 
-        axios.patch(('/skill/' + this.state.skill_id + (publish === true ? '?publish=true' : '')), {...properties, locales: JSON.stringify(properties.locales)})
+        axios.patch(('/skill/' + this.props.skill_id + (publish === true ? '?publish=true' : '')), {...properties, locales: JSON.stringify(properties.locales)})
         .then(res => {
-            this.props.updateSkill({...this.props.skill, ...properties})
             if(typeof cb === 'function') cb()
         })
         .catch(err => {
             console.log(err)
-            this.props.onError('Save Error, Publish Settings not Saved')
+            this.props.setError('Save Error, Publish Settings not Saved')
         })
     }
 
@@ -988,4 +987,7 @@ class Skill extends Component {
     }
 }
 
-export default Skill;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id
+})
+export default connect(mapStateToProps)(Skill);

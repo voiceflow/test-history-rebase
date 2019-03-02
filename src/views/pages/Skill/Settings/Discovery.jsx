@@ -44,9 +44,6 @@ class DiscoverySettings extends Component{
             fulfillment: this.state.fulfillment
         })
         .then(() => {
-            let skill = this.props.skill
-            skill.fulfillment = this.state.fulfillment
-            this.props.updateSkill(skill)
         })
         .catch(err => {
             this.props.onError('Error Saving Fulfillment')

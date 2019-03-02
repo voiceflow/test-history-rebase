@@ -138,7 +138,6 @@ exports[`Canvas render canvas 1`] = `
       node={null}
       onIntentUpdate={[Function]}
       onUpdate={[Function]}
-      onboarding={null}
       removeCombineNode={[Function]}
       removeNode={[Function]}
       repaint={[Function]}

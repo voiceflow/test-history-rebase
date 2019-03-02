@@ -203,7 +203,9 @@ export class Canvas extends Component {
         })
     }
     componentDidMount() {
-        window.Appcues.page()
+        if (window.Appcues) {
+            window.Appcues.page()
+        }
         this.setMousetrap()
         this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS

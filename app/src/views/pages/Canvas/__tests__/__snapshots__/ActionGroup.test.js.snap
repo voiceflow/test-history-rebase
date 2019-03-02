@@ -176,7 +176,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       unmountHTMLWhenHide={false}
     >
       <input
-        className="switch-input "
+        className="switch-input checked"
         id="alexa_toggle"
         onClick={[Function]}
         type="radio"

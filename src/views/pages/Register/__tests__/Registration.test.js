@@ -1,9 +1,10 @@
-require('dotenv').config()
+require('dotenv').config({path:'./.env.test'})
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme';
 import Account from '../index';
+import toJson from 'enzyme-to-json';
 
 jest.mock('react-ga');
 
@@ -25,7 +26,7 @@ describe('Onboarding', () => {
   }
   it('renders without crashing', () => {
     const component = shallow(<Account location={location} />);
-    expect(component).toMatchSnapshot()
+    expect(toJson(component)).toMatchSnapshot()
   });
   it('redirects to login if unauthenticated', () => {
     const app = shallow(<Account location={location} />);

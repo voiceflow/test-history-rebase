@@ -3,8 +3,8 @@ import * as SRD from './../../components/SRD/main.js'
 import Menu from './Menu'
 import Editor from './Editor'
 import axios from 'axios'
-import update from 'immutability-helper';
 import { compose } from 'recompose'
+import { connect } from "react-redux";
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
 import './../../components/SRD/sass/main.css';
@@ -12,6 +12,15 @@ import './StoryBoard.css'
 
 //HOCs
 import {undo, redo} from './../../HOC/UndoRedo';
+import { error } from './../../HOC/onError';
+import { open, blockMenu } from './../../HOC/canvasHelper';
+
+//Helpers
+import { combineAppendValidation, combineValidation } from './../../helpers/combineHelper'
+
+import { renameDiagram } from "./../../actions/diagramActions";
+import { updateSkill } from "./../../actions/skillActions";
+import { setVariables } from './../../actions/variableActions'
 
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
@@ -25,6 +34,7 @@ import Spotlight from './Spotlight'
 import { Toolkit } from './../../components/SRD/Toolkit'
 import FlowBar from './FlowBar'
 import DefaultModal from 'views/components/Modals/DefaultModal'
+import ErrorModal from 'views/components/Modals/ErrorModal'
 import ShortCuts from 'views/components/ShortCuts'
 import Mousetrap from 'mousetrap'
 
@@ -61,15 +71,12 @@ const generateID = () => {
         return v.toString(16)
     })
 }
-class Canvas extends Component {
+export class Canvas extends Component {
     constructor(props) {
         super(props)
 
-        this.updateSkill = this.updateSkill.bind(this)
         this.repaint = this.repaint.bind(this)
         this.loadDiagram = this.loadDiagram.bind(this)
-        this.setVariables = this.setVariables.bind(this)
-        this.setGlobalVariables = this.setGlobalVariables.bind(this)
         this.toggleTestModal = this.toggleTestModal.bind(this)
         this.onSave = this.onSave.bind(this)
         this.onTest = this.onTest.bind(this)
@@ -91,11 +98,7 @@ class Canvas extends Component {
         this.paste = this.paste.bind(this);
         this.handleTemplateChoice = this.handleTemplateChoice.bind(this)
         this.toggleTemplateConfirm = this.toggleTemplateConfirm.bind(this)
-        // this.replaceWithTemplate = this.replaceWithTemplate.bind(this)
-        this.combineValidation = this.combineValidation.bind(this)
-        this.combineAppendValidation = this.combineAppendValidation.bind(this)
         this.combineNode = this.combineNode.bind(this)
-        // this.createWithTemplate = this.createWithTemplate.bind(this)
         this.createFlowFromTemplate = this.createFlowFromTemplate.bind(this)
         this.onFlowRenamed = this.onFlowRenamed.bind(this)
         this.clickDiagram = this.clickDiagram.bind(this)
@@ -132,48 +135,25 @@ class Canvas extends Component {
         engine.registerLinkFactory(new BlockLinkFactory(line_color, line_width, this.props.preview))
         engine.registerPortFactory(new BlockPortFactory())
 
-        let open
         let diagram_name = ''
 
         // ONBOARDING
         this.onboarding = localStorage.getItem('onboarding')
-        if (window.chmln){
-            window.chmln.identify(window.user_detail.id, {
-                email: window.user_detail.email,
-                name: window.user_detail.name
-            })
-        }
         this.loaded = false
 
-        // Intent Variables All Skills Must Have
-        let skill = {
-            intents: [],
-            slots: [],
-            fulfillment: {}
-        }
-
         this.state = {
-            skill: {...skill, ...props.skill},
             engine: engine,
-            open: open,
             diagram_name: diagram_name,
-            diagrams: [],
-            products: [],
-            error: null,
-            loading_diagram: true,
             saving: false,
             saved: true,
             testing_modal: false,
             testing_info: false,
-            variables: [],
             help: null,
             helpOpen: false,
             copy: null,
             currentProduct: null,
             user_modules: null,
             user_templates: [],
-            email_templates: [],
-            display_templates: [],
             diagram_level_intents: {
                 alexa: new Set(),
                 google: new Set()
@@ -188,12 +168,7 @@ class Canvas extends Component {
         this.diagram_set = new Set()
 
         // SKILL IS LOADED HERE
-        if(!this.props.preview){
-            // this.loadProducts()
-            // this.loadUserModules()
-            this.onLoadTemplates()
-        }
-        this.onLoadDiagrams()
+        this.onLoadId(props.diagram_id)
     }
 
     setMousetrap() {
@@ -223,7 +198,7 @@ class Canvas extends Component {
         this.setMousetrap()
         this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
-        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+        if(!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
                 if(this.lastModel){
                     var currentModel = JSON.stringify(this.serialize())
@@ -234,7 +209,7 @@ class Canvas extends Component {
                         }else{
                             if(!this.tooBig){
                                 this.tooBig = true
-                                this.props.onError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size')
+                                this.props.setError('Your flow is too large to be saved - Delete blocks and use sub-flows to reduce size')
                             }
                         }
                     }
@@ -243,17 +218,8 @@ class Canvas extends Component {
         }
     }
 
-    static getDerivedStateFromProps(props, state){
-        if (props.skill !== state.skill){
-            return {
-                skill: props.skill
-            }
-        }
-        return null;
-    }
-
     componentWillUnmount() {
-        if(!this.props.preview && this.state.skill && this.state.skill.skill_id && this.props.diagram_id && !window.error){
+        if(!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error){
             this.onSave(false)
         }
         Mousetrap.reset()
@@ -262,23 +228,19 @@ class Canvas extends Component {
         }
     }
 
-    componentDidUpdate(previous_props) {
+    componentDidUpdate(previous_props, prev_state) {
         if(previous_props.diagram_id !== this.props.diagram_id){
             if(this.buildDiagrams !== null){
                 this.buildDiagrams(this.props.diagram_id)
             }
-            this.setState({
-                loading_diagram: true,
-                open: false
-            }, () => {
-              let nodes = _.values(this.state.engine.diagramModel.nodes)
-              this.state.engine.enableRepaintEntities(nodes)
-              this.state.engine.repaintCanvas(false)
-              this.onLoadId(this.props.diagram_id)
-            })
+            this.props.setOpen(false)
+            let nodes = _.values(this.state.engine.diagramModel.nodes)
+            this.state.engine.enableRepaintEntities(nodes)
+            this.state.engine.repaintCanvas(false)
+            this.onLoadId(this.props.diagram_id)
         }
-        if(this.state.diagrams.length !== this.diagram_set.size){
-            this.diagram_set = new Set(this.state.diagrams.map(d => d.id))
+        if(this.props.diagrams.length !== this.diagram_set.size){
+            this.diagram_set = new Set(this.props.diagrams.map(d => d.id))
         }
     }
 
@@ -323,75 +285,6 @@ class Canvas extends Component {
 
     toggleShortcuts(){this.setState({keyboard_help: !this.state.keyboard_help})}
 
-    async onLoadTemplates(){
-        if(window.user_detail && window.user_detail.admin > 0 && this.state.skill){
-            // LOAD EMAIL TEMPLATES IF ON PLAN > 1
-            try {
-                const res = await axios.get(`/email/templates?skill_id=${this.state.skill.skill_id}`)
-                if(Array.isArray(res.data)){
-                    let templates = res.data.map(t => {
-                        let variables = [];
-                        if(t.variables){
-                            try{
-                                variables = JSON.parse(t.variables);
-                            }catch(err){
-                                console.error(err);
-                            }
-                        }
-
-                        return {
-                            title: t.title,
-                            sender: t.sender,
-                            template_id: t.template_id,
-                            variables: variables
-                        }
-                    })
-                    this.setState({
-                        email_templates: templates
-                    })
-                }
-            } catch(err) {
-                console.error(err)
-                // this.props.onError('Unable to Retrieve Email Templates')
-            }
-        }
-
-        // LOAD MULTIMODAL/VISUAL TEMPLATES
-        try {
-            const res = await axios.get(`/multimodal/displays?skill_id=${this.state.skill.skill_id}`)
-            if(Array.isArray(res.data)){
-                let displays = res.data.map(t => {
-                    return {
-                        title: t.title,
-                        display_id: t.id,
-                        document: t.document,
-                        description: t.description,
-                        datasource: t.datasource
-                    }
-                })
-                this.setState({
-                    display_templates: displays
-                })
-            }
-        } catch(err) {
-            console.error(err)
-            // this.props.onError('Unable to Retrieve Visual Templates')
-        }
-
-        // LOAD PRODUCTS
-        if(this.state.skill.locales.includes('en-US')){
-            try{
-                const res = await axios.get('/skill/'+this.state.skill.skill_id+'/products')
-                if(Array.isArray(res.data)){
-                    this.setState({
-                        products: res.data
-                    })
-                }
-            }catch(err){
-                console.error(err)
-            }
-        }
-    }
 
     mouseMove({clientX, clientY}){
         this.mouseX = clientX
@@ -465,26 +358,6 @@ class Canvas extends Component {
         this.toggleTemplateConfirm(module)
     }
 
-    // replaceWithTemplate(module_id){
-    //     this.setState({
-    //         template_confirm: null
-    //     })
-
-    //     axios.get(`/marketplace/template/${module_id}/`, {
-    //         diagram_id: this.props.diagram_id
-    //     })
-    //     .then(res => {
-    //         this.loadDiagram(res.data)
-    //     })
-    //     .catch(err => {
-    //         console.log(err.response)
-    //         this.setState({
-    //             saving: false
-    //         })
-    //         this.props.onError('Error retrieving template')
-    //     })
-    // }
-
     createFlowFromTemplate(module_id){
         if(this.props.preview) return
 
@@ -513,9 +386,9 @@ class Canvas extends Component {
             engine.getDiagramModel().addNode(node)
             engine.setSuperSelect(node)
             this.addRemoveListener(node)
+            this.props.setOpen(type !== 'comment')
             this.setState({
                 engine: engine,
-                open: type !== 'comment',
                 template_confirm: null
             })
             this.createDiagram(node, undefined, JSON.parse(res.data.data))
@@ -525,7 +398,7 @@ class Canvas extends Component {
             this.setState({
                 saving: false
             })
-            this.props.onError('Error retrieving template')
+            this.props.setError('Error retrieving template')
         })
     }
 
@@ -580,22 +453,6 @@ class Canvas extends Component {
         }
         e.preventDefault()
     }
-
-    // createWithTemplate(module){
-    //     axios.get(`/marketplace/template/${module.module_id}`, {
-    //         diagram_id: this.props.diagram_id
-    //     })
-    //     .then(res => {
-    //         this.loadDiagram(res.data)
-    //     })
-    //     .catch(err => {
-    //         console.log(err.response)
-    //         this.setState({
-    //             saving: false
-    //         })
-    //         this.props.onError('Error retrieving template')
-    //     })
-    // }
             
     removeNode(selectedNode = null){
         let selected = selectedNode ? selectedNode : this.state.engine.getSuperSelect()
@@ -616,7 +473,7 @@ class Canvas extends Component {
                 selected.remove()
             }
         } else {
-            this.props.onError('Cannot delete blocks that would alter the interaction model in live version editing')
+            this.props.setError('Cannot delete blocks that would alter the interaction model in live version editing')
         }
     }
     // copy individual node
@@ -700,7 +557,7 @@ class Canvas extends Component {
         let idx = _.findIndex(node.parentCombine.combines, c => c.id === node.id);
         let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100;
         let engine = this.state.engine;
-        if (idx !== -1 && this.combineAppendValidation(node)){
+        if (idx !== -1 && combineAppendValidation(node)){
             engine.stopMove()
 
             var newNode = new BlockNodeModel(node.name + ' copy', null, toolkit.UID())
@@ -849,177 +706,7 @@ class Canvas extends Component {
         }
     }
 
-    combineValidation(current, target){
-        if (current.parentCombine || target.parentCombine) {
-            return false;
-        }
-        if (current.extras.type === 'god' && target.extras.type === 'god'){
-            return false;
-        }
-        if (!_.isEmpty(target.combines) && _.last(target.combines).extras){
-            switch(_.last(target.combines).extras.type){
-                case 'exit':
-                    switch(current.extras.type){
-                        case 'exit':
-                            return false;
-                        case 'choice':
-                            return false;
-                        case 'stream':
-                            return false;
-                        case 'interaction':
-                            return false;
-                        case 'if':
-                            return false;
-                        case 'random':
-                            return false;
-                        default:
-                            break;
-                    }
-                    break;
-                case 'choice':
-                    switch(current.extras.type){
-                        case 'choice':
-                            return false;
-                        case 'exit':
-                            return false;
-                        case 'stream':
-                            return false;
-                        case 'interaction':
-                            return false
-                        case 'if':
-                            return false;
-                        case 'random':
-                            return false;
-                        default:
-                            break;
-                    }
-                    break;
-                case 'stream':
-                    switch(current.extras.type){
-                        case 'stream':
-                            return false;
-                        case 'exit':
-                            return false;
-                        case 'choice':
-                            return false;
-                        case 'interaction':
-                            return false;
-                        case 'if':
-                            return false;
-                        case 'random':
-                            return false;
-                        default:
-                            break;
-                    }
-                    break;
-                case 'interaction':
-                    switch(current.extras.type){
-                        case 'interaction':
-                            return false;
-                        case 'exit':
-                            return false;
-                        case 'choice':
-                            return false;
-                        case 'stream':
-                            return false;
-                        case 'if':
-                            return false;
-                        case 'random':
-                            return false;
-                        default:
-                            break;
-                    }
-                    break;
-                case 'if':
-                    switch(current.extras.type){
-                        case 'if':
-                            return false;
-                        case 'exit':
-                            return false;
-                        case 'choice':
-                            return false;
-                        case 'stream':
-                            return false;
-                        case 'interaction':
-                            return false;
-                        case 'random':
-                            return false;
-                        default:
-                            break;
-                    }
-                break;
-                case 'random':
-                    switch(current.extras.type){
-                        case 'if':
-                            return false;
-                        case 'exit':
-                            return false;
-                        case 'choice':
-                            return false;
-                        case 'stream':
-                            return false;
-                        case 'interaction':
-                            return false;
-                        case 'random':
-                            return false;
-                        default:
-                            break;
-                    }
-                break;
-            default:
-                break;
-            }
-        }
-        switch(target.extras.type){
-            case 'story':
-                return false;
-            case 'flow':
-                return false;
-            case 'intent':
-                return false;
-            case 'comment':
-                return false;
-            case 'command':
-                return false;
-            default:
-                break;
-        }
-        switch(current.extras.type){
-            case 'god':
-                return false;
-            case 'story':
-                return false;
-            case 'flow':
-                return false;
-            case 'intent':
-                return false;
-            case 'comment':
-                return false;
-            case 'command':
-                return false;
-            default:
-                return true;
-        }
-    }
 
-    combineAppendValidation(current){
-        switch(current.extras.type){
-            case 'exit':
-                return false;
-            case 'interaction':
-                return false;
-            case 'choice':
-                return false;
-            case 'if':
-                return false;
-            case 'stream':
-                return false;
-            case 'random':
-                return false;
-            default:
-                return true;
-        }
-    }
     combineNode(e = null) {
       let current = this.state.engine.getSuperSelect();
        let amountZoom = this.state.engine.getDiagramModel().getZoomLevel() / 100
@@ -1054,7 +741,7 @@ class Canvas extends Component {
                          isValid = _.last(current.parentCombine.combines)
                      }
                  }
-                 if ((tempIdx <= parent.combines.length && current.parentCombine && this.combineAppendValidation(isValid)) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
+                 if ((tempIdx <= parent.combines.length && current.parentCombine && combineAppendValidation(isValid)) || (!current.parentCombine && tempIdx + 1 === parent.combines.length)){
                     for (name in parentPorts){
                         let parentPort = parentPorts[name]
                         if (parentPort.in){
@@ -1129,13 +816,13 @@ class Canvas extends Component {
           }
           let overlapX = (current.x >= target_node.x && current.x <= target_node.x+target_node.width) || (current.x+current.width >= target_node.x && current.x+current.width <= target_node.x+target_node.width);
           let overlapY = (current.y >= target_node.y && current.y <= target_node.y+target_node.height/amountZoom) || (current.y+current.height >= target_node.y && current.y+current.height <= target_node.y+target_node.height/amountZoom)
-          if (overlapX && overlapY && this.combineValidation(current, target_node) && !e) {
+          if (overlapX && overlapY && combineValidation(current, target_node) && !e) {
             let selected = this.state.engine.getSuperSelect()
             let engine = this.state.engine
             let targetNode = target_node
             var node;
             if (targetNode.extras && targetNode.extras.type === 'god'){
-            if (!_.some(targetNode.combines, c => c.id === current.id) && (this.combineAppendValidation(current) || this.combineAppendValidation(_.last(targetNode.combines)))){	
+            if (!_.some(targetNode.combines, c => c.id === current.id) && (combineAppendValidation(current) || combineAppendValidation(_.last(targetNode.combines)))){	
                 selected.parentCombine = _.clone(target_node)		
                 let selected_ports = selected.getPorts()	
                 let target_ports = targetNode.getPorts()
@@ -1146,7 +833,7 @@ class Canvas extends Component {
                      if (port.in) {	
                         port.parent = target_node	
                     target_node.ports[name] = port	
-                    } else if (this.combineAppendValidation(_.last(targetNode.combines))) {	
+                    } else if (combineAppendValidation(_.last(targetNode.combines))) {	
                         target_node.removePort(target_node.ports[name])	
                     }	
                     if (!port.in && !_.isEmpty(port.links)){	
@@ -1161,7 +848,7 @@ class Canvas extends Component {
                 }	
                 for (name in selected_ports) {	
                     let port = selected_ports[name]	
-                    if (!port.in && this.combineAppendValidation(_.last(targetNode.combines))) {	
+                    if (!port.in && combineAppendValidation(_.last(targetNode.combines))) {	
                         port.parent = target_node	
                         target_node.ports[name] = port	
                     }	
@@ -1169,7 +856,7 @@ class Canvas extends Component {
                 if (_.isNull(selected.parentCombine)){	
                     selected.remove();	
                 }	
-                if (!this.combineAppendValidation(_.last(targetNode.combines))) {	
+                if (!combineAppendValidation(_.last(targetNode.combines))) {	
                     target_node.combines.splice(target_node.combines.length - 1, 0, selected.serialize())	
                 } else {	
                     target_node.combines.push(selected.serialize());	
@@ -1195,7 +882,7 @@ class Canvas extends Component {
             } else {
               node = new BlockNodeModel('Combine Block', null, toolkit.UID())
               node.extras.type = "god"
-              if (!this.combineAppendValidation(targetNode)) {
+              if (!combineAppendValidation(targetNode)) {
                   let temp = selected;
                   selected = targetNode;
                   targetNode = temp
@@ -1253,19 +940,16 @@ class Canvas extends Component {
     }
     
     copyFlow(flow_id) {
-        let flow = this.state.diagrams.find(d => d.id === flow_id)
+        let flow = this.props.diagrams.find(d => d.id === flow_id)
         if (!flow) {
             return
         }
 
-        this.setState({
-            loading_diagram: true
-        })
         const copy = (save = true) => {
 
             let new_flow_name = flow.name + ' (COPY)'
             let index = 1
-            const exists = (name) => this.state.diagrams.find(d => d.name === name)
+            const exists = (name) => this.props.diagrams.find(d => d.name === name)
             while (exists(new_flow_name)) {
                 new_flow_name = `${flow.name} (COPY ${index})`
                 index++
@@ -1273,7 +957,7 @@ class Canvas extends Component {
 
             axios.get(`/diagram/copy/${flow_id}?name=${encodeURI(new_flow_name)}`)
                 .then((res) => {
-                    let diagrams = this.state.diagrams
+                    let diagrams = this.props.diagrams
                     diagrams.push({
                         id: res.data,
                         name: new_flow_name
@@ -1284,7 +968,6 @@ class Canvas extends Component {
                 })
                 .catch((err) => {
                     this.setState({
-                        loading_diagram: false,
                         text: < Alert color = "danger" > Unable to Copy Flow </Alert>,
                         confirm: {
                             confirm: this.setState({
@@ -1296,7 +979,7 @@ class Canvas extends Component {
         }
 
         if (flow_id === this.props.diagram_id && !this.props.preview) {
-            window.saveCB = () => {
+            this.saveCB = () => {
                 copy(false)
             }
             this.onSave()
@@ -1323,9 +1006,9 @@ class Canvas extends Component {
                 })
                 axios.delete('/diagram/' + flow_id)
                     .then(() => {
-                        let index = this.state.diagrams.findIndex(d => d.id === flow_id)
+                        let index = this.props.diagrams.findIndex(d => d.id === flow_id)
                         if (index !== -1) {
-                            let diagrams = this.state.diagrams;
+                            let diagrams = this.props.diagrams;
                             diagrams.splice(index, 1)
                             this.setState({
                                 diagrams: diagrams
@@ -1333,7 +1016,7 @@ class Canvas extends Component {
                         }
                         // If they are deleting the flow they are currently on, go back to ROOT
                         if (flow_id === this.props.diagram_id) {
-                            this.enterFlow(_.find(this.state.diagrams, d => d.name === 'ROOT').id, false)
+                            this.enterFlow(_.find(this.props.diagrams, d => d.name === 'ROOT').id, false)
                         }
                     })
                     .catch(err => {
@@ -1346,12 +1029,12 @@ class Canvas extends Component {
 
     renameFlow(flow_id, name){
         name = name.trim()
-        let index = this.state.diagrams.findIndex(d => d.id === flow_id)
+        let index = this.props.diagrams.findIndex(d => d.id === flow_id)
         if (index !== -1) {
-            let flow = this.state.diagrams[index]
+            let flow = this.props.diagrams[index]
             if (flow.name !== name) {
                 // Make sure that names are unique
-                let find = this.state.diagrams.find(d => d.name === name)
+                let find = this.props.diagrams.find(d => d.name === name)
                 if (find) {
                     return this.props.onConfirm({
                         text: 'Flow names must be unique',
@@ -1360,24 +1043,8 @@ class Canvas extends Component {
                         })
                     })
                 }
-
-                let old_name = flow.name
-                this.setState({diagrams: update(this.state.diagrams, {
-                    [index]: {name : {$set: name}}
-                })})
-
-                axios.post(`/diagram/${flow.id}/name`, {
-                        name: name
-                    })
-                    .then(() => {
-                        this.onFlowRenamed(flow.id)
-                    })
-                    .catch(err => {
-                        alert('Error - Name not Updated')
-                        this.setState({diagrams: update(this.state.diagrams, {
-                            [index]: {name : {$set: old_name}}
-                        })})
-                    })
+                this.props.renameDiagram(flow.id, name)
+                this.onFlowRenamed(flow_id)
             }
         }
     }
@@ -1393,9 +1060,7 @@ class Canvas extends Component {
             if(selected[0].extras.type === 'comment'){
                 this.diagram_focus=false
             }else{
-                this.setState({
-                    open: true
-                })
+                this.props.setOpen(true)
                 if (selected[0].combines && selected[0].combines.length === 0){
                     engine.setSuperSelect(selected[0])
                 }
@@ -1411,9 +1076,7 @@ class Canvas extends Component {
                 }
             }
         }
-        this.setState({
-            blockMenu: null
-        })
+        this.props.setBlockMenu(null)
     }
 
     loadUserModules(){
@@ -1439,7 +1102,7 @@ class Canvas extends Component {
             this.setState({
                 saving: false
             })
-            this.props.onError('Error retrieving modules')
+            this.props.setError('Error retrieving modules')
         })
     }
 
@@ -1472,7 +1135,7 @@ class Canvas extends Component {
                         sub_diagrams.push(node.extras.diagram_id)
                     }else if(node.extras.type === 'story' && Array.isArray(node.combines)){
                         node.combines.forEach(combine_node => {
-                            let extras = combine_node.extras[this.state.skill.platform]
+                            let extras = combine_node.extras[this.props.skill.platform]
                             if(extras && extras.diagram_id){
                                 sub_diagrams.push(extras.diagram_id)
                             }
@@ -1481,13 +1144,8 @@ class Canvas extends Component {
                 })
 
                 if(state){
-                    // UPDATE SKILL GLOBALS HOTFIX
-                    let skill = this.state.skill;
-                    skill.global = this.state.skill.global
-                    this.props.updateSkill(skill)
-
                     // UPDATE DIAGRAM STRUCTURE
-                    let diagrams = this.state.diagrams
+                    let diagrams = this.props.diagrams
                     for (var i = 0; i < diagrams.length; i++) {
                         if(diagrams[i].id === serialize.id){
                             diagrams[i].sub_diagrams = sub_diagrams
@@ -1504,13 +1162,14 @@ class Canvas extends Component {
 
                 var diagram = {
                     title: this.state.diagram_name,
-                    variables: this.state.variables,
+                    variables: this.props.variables,
                     data: data,
-                    skill: this.state.skill.skill_id,
+                    skill: this.props.skill.skill_id,
                     sub_diagrams: JSON.stringify(sub_diagrams),
-                    global: this.state.skill.global
+                    global: this.props.skill.global
                 }
-                const s = this.state.skill;
+                const s = this.props.skill;
+                
                 const save_skill_intents = new Promise((resolve, reject) => {
                     axios.patch('/skill/' + s.skill_id + '?intents=true', {
                         intents: JSON.stringify(s.intents),
@@ -1536,28 +1195,28 @@ class Canvas extends Component {
                         saving: false,
                         saved: true
                     })
-                    if(typeof window.saveCB === "function"){
-                        window.saveCB(serialize.id)
-                        window.saveCB = null
+                    if(typeof this.saveCB === "function"){
+                        this.saveCB(serialize.id)
+                        this.saveCB = null
                     }
                 }).catch(rej_err => {
                     this.saving = false
                     state && this.setState({
                         saving: false
-                    }) && this.props.onError('Error Saving Project')
-                    if(typeof window.saveCB === "function"){
-                        window.saveCB(null)
-                        window.saveCB = null
+                    }) && this.props.setError('Error Saving Project')
+                    if(typeof this.saveCB === "function"){
+                        this.saveCB(null)
+                        this.saveCB = null
                     }
                 })
             }
         } catch (e) {
             this.saving = false
             console.log(e)
-            state && this.props.onError('Error Saving - Project Structure (Check Logs)')
-            if(typeof window.saveCB === "function"){
-                window.saveCB(null)
-                window.saveCB = null
+            state && this.props.setError('Error Saving - Project Structure (Check Logs)')
+            if(typeof this.saveCB === "function"){
+                this.saveCB(null)
+                this.saveCB = null
             }
         }
     }
@@ -1577,7 +1236,7 @@ class Canvas extends Component {
         }
         if (diagram_json) {
             // CONVERT DEPRECATED BLOCKS
-            diagram_json = convertDiagram(diagram_json, this.state.diagrams)
+            diagram_json = convertDiagram(diagram_json, this.props.diagrams)
             diagram_json.id = diagram_id
             this.lastModel = JSON.stringify(diagram_json)
 
@@ -1649,7 +1308,7 @@ class Canvas extends Component {
                 if (Array.isArray(node.combines) && node.combines.length !== 0) {
                     node.combines.forEach(n => {
                         if (typeof n !== 'object') return
-                        if (this.state.skill.platform === 'google') {
+                        if (this.props.skill.platform === 'google') {
                             n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
                         } else {
                             n.fade = false
@@ -1657,7 +1316,7 @@ class Canvas extends Component {
                         makeNodeMultiPlatform(n.extras.type, n)
                     })
                 } else {
-                    if (this.state.skill.platform === 'google') {
+                    if (this.props.skill.platform === 'google') {
                         nodes[key].fade = !ALLOWED_GOOGLE_BLOCKS.includes(type)
                     } else {
                         nodes[key].fade = false
@@ -1678,26 +1337,28 @@ class Canvas extends Component {
             let variables = []
             if (Array.isArray(diagram.variables)) {
                 diagram.variables.forEach(v => {
-                    if(!variables.includes(v) && !this.state.skill.global.includes(v)){
+                    if(!variables.includes(v) && !this.props.skill.global.includes(v)){
                         variables.push(v)
                     }
                 })
             }
-
+            this.props.setVariables(variables)
+            this.props.setOpen(false)
             this.setState({
-                open: false,
+                load_diagram: false,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
-                loading_diagram: false,
-                variables: variables,
                 diagram_level_intents: diagram_level_intents
             })
-
+            // this.props.history.push(`/canvas/${this.props.skill.skill_id}/${this.props.skill.diagram}`)
             this.setState({ saved: true })
             this.updateLinter(true)
-            this.onIntentUpdate()
+            // this.onIntentUpdate()
         } else {
-            this.props.onError('Could Not Open Project - Corrupted File')
+            this.setState({
+                load_diagram: false
+            })
+            this.props.setError('Could Not Open Project - Corrupted File')
         }
     }
 
@@ -1710,13 +1371,9 @@ class Canvas extends Component {
             return
         }
 
-        const skill = this.state.skill
-        let platform = skill.platform === 'google' ? 'alexa' : 'google'
-        skill.platform = platform
+        let platform = this.props.skill.platform === 'google' ? 'alexa' : 'google'
+        this.props.updateSkill('platform', platform)
 
-        this.setState({
-            skill: skill
-        })
         this.updateGoogleFade()
         this.updateLinter()
     }
@@ -1731,7 +1388,7 @@ class Canvas extends Component {
             const type = node.extras.type
             this.addRemoveListener(node)
 
-            if (this.state.skill.platform === 'google') {
+            if (this.props.skill.platform === 'google') {
                 if (type === 'god') {
                     node.combines.forEach(n => {
                         n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
@@ -1767,7 +1424,7 @@ class Canvas extends Component {
             if (!n.linter) n.linter = []
 
             if (Linter[n.extras.type] && n.linter) {
-                const res = Linter[n.extras.type](n, this.state.skill.platform)
+                const res = Linter[n.extras.type](n, this.props.skill.platform)
                 if (res) update = true
             }                
         }
@@ -1783,7 +1440,7 @@ class Canvas extends Component {
                 if (!node.linter) node.linter = []
 
                 if (Linter[type] && node.linter) {
-                    const res = Linter[type](node, this.state.skill.platform)
+                    const res = Linter[type](node, this.props.skill.platform)
                     if (res) update = true
                 }
             }
@@ -1796,41 +1453,17 @@ class Canvas extends Component {
             engine.repaintCanvas()
         }
     }
-
-    onLoadDiagrams(){
-        axios.get('/skill/'+this.state.skill.skill_id+'/diagrams')
-        .then(res => {
-            this.setState({
-                diagrams: res.data.map(flow => {
-                    try {
-                        return {
-                            id: flow.id,
-                            name: flow.name,
-                            sub_diagrams: JSON.parse(flow.sub_diagrams)
-                        }
-                    } catch(err) {
-                        return {
-                            id: flow.id,
-                            name: flow.name
-                        }
-                    }
-                })
-            }, () => {
-                this.onLoadId(this.props.diagram_id)
-            })
-        })
-        .catch(err => {
-            console.error(err.response)
-            this.props.onError('Could Not Retrieve Project Diagrams')
-        })
-    }
-
     onLoadId(diagram_id) {
+        // this.props.fetchDiagramBegin()
+        this.setState({
+            load_diagram:true,
+        })
         axios.get('/diagram/'+ diagram_id)
         .then(res => {
             this.loadDiagram(res.data, diagram_id)
+            // this.props.fetchDiagramSuccess(true)
             if(!this.props.preview){
-                localStorage.setItem('flow', `${this.state.skill.skill_id}/${diagram_id}`)
+                localStorage.setItem('flow', `${this.props.skill.skill_id}/${diagram_id}`)
             }
             if(this.buildDiagrams !== null){
                 this.buildDiagrams(diagram_id)
@@ -1838,7 +1471,7 @@ class Canvas extends Component {
         })
         .catch(err => {
             console.error(err)
-            this.props.onError('Could Not Retrieve Project')
+            this.props.setError('Could Not Retrieve Project')
         })
     }
 
@@ -1846,7 +1479,7 @@ class Canvas extends Component {
         let nodes = this.state.engine.getDiagramModel().getNodes()
         for (let key in nodes) {
             if (nodes[key].extras.type === 'flow' && nodes[key].extras.diagram_id === id) {
-                nodes[key].name = this.state.diagrams.find(x => x.id === id).name
+                nodes[key].name = this.props.diagrams.find(x => x.id === id).name
             }
         }
         this.repaint()
@@ -1856,32 +1489,13 @@ class Canvas extends Component {
         if(e && e.node && !e.isCreated){
             let selected = this.state.engine.getSuperSelect()
             if(selected && e.node.id === selected.getID()){
-                this.setState({
-                    open: false
-                })
+                this.props.setOpen(false)
             }
         }
 
         if (this.state.saved) {
             this.setState({ saved: false })
         }
-    }
-
-    setVariables(variables) {
-        this.setState({
-            variables: variables,
-            saved: false
-        })
-    }
-
-    setGlobalVariables(variables) {
-        let skill = this.state.skill
-        skill.global = variables
-        this.setState({
-            skill: skill,
-            saved: false
-        })
-        this.props.updateSkill(skill)
     }
 
     toggleTestModal() {
@@ -1926,7 +1540,7 @@ class Canvas extends Component {
             })
 
             slot_mappings = {}
-            this.state.skill.slots.forEach(slot => {
+            this.props.skill.slots.forEach(slot => {
 
                 if (slot.type.value && slot.type.value.toLowerCase() === 'custom') {
                     nlc.addSlotType({
@@ -1936,12 +1550,12 @@ class Canvas extends Component {
                 }
             })
 
-            this.state.skill.intents.forEach(intent => {
+            this.props.skill.intents.forEach(intent => {
                 let samples
                 if (!intent.built_in) {
-                    samples = getUtterancesWithSlotNames(intent.inputs, this.state.skill.slots)
+                    samples = getUtterancesWithSlotNames(intent.inputs, this.props.skill.slots)
                 }
-                const _slots = getSlotsForKeys(intent.inputs.map(input => input.slots), this.state.skill.slots, this.state.skill.platform)
+                const _slots = getSlotsForKeys(intent.inputs.map(input => input.slots), this.props.skill.slots, this.props.skill.platform)
 
                 nlc.registerIntent({
                     intent: intent.name,
@@ -1972,16 +1586,16 @@ class Canvas extends Component {
         if(this.props.preview){
             this.runTest()
         } else {
-            window.saveCB = (diagram_id) => {
+            this.saveCB = (diagram_id) => {
                 if(diagram_id === null){
                     this.setState({
                         testing_modal: false
                     })
                 }else{
                     axios.post(`/diagram/${diagram_id}/test/publish`,{
-                        intents: this.state.skill.intents,
-                        slots: this.state.skill.slots,
-                        platform: this.state.skill.platform
+                        intents: this.props.skill.intents,
+                        slots: this.props.skill.slots,
+                        platform: this.props.skill.platform
                     })
                     .then(this.runTest)
                     .catch(err => {
@@ -1989,7 +1603,7 @@ class Canvas extends Component {
                         this.setState({
                             testing_modal: false
                         })
-                        this.props.onError("Could Not Render Your Project")
+                        this.props.setError("Could Not Render Your Project")
                     })
                 }
             }
@@ -2006,8 +1620,8 @@ class Canvas extends Component {
                 .getNode(nodeElement.getAttribute("data-nodeid"))
             engine.getDiagramModel().clearSelection();
             engine.setSuperSelect(node)
-            this.setState({
-                blockMenu: <React.Fragment>
+            this.props.setBlockMenu(
+                <React.Fragment>
                     <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
                         <ListGroup>
                             <ListGroupItem onClick={(e) => {
@@ -2015,48 +1629,36 @@ class Canvas extends Component {
                                 node.setLocked(true);
                                 node.selected = true;
                                 node.edit = true;
-                                this.setState({
-                                    blockMenu: null
-                                })
+                                this.props.setBlockMenu(null)
                             }}>Rename</ListGroupItem>
                             <ListGroupItem onClick={() => {
                                 this.copyNode(node)
-                                this.setState({
-                                  blockMenu: null
-                                });
+                                this.props.setBlockMenu(null)
                             }}>Copy Block</ListGroupItem>
                             <ListGroupItem onClick={() => {
                                 this.removeNode(node)
-                                this.setState({
-                                  blockMenu: null
-                                });
-                                }}>Delete Block</ListGroupItem>
+                                this.props.setBlockMenu(null)
+                            }}>Delete Block</ListGroupItem>
                         </ListGroup>
                     </div>
                 </React.Fragment>
-            })
+        )
         } else {
-            this.setState({
-                blockMenu: null,
-            })
+            this.props.setBlockMenu(null)
         }
     }
     // Create a new diagram from the flow block
     createDiagram(node, base_flow_name='New Flow', template=null, forCommand=false){
-        this.setState({
-            loading_diagram: true
-        })
-
         let id = generateID()
 
         if (forCommand) {
-            node.extras[this.state.skill.platform].diagram_id = id
+            node.extras[this.props.skill.platform].diagram_id = id
         } else {
             node.extras.diagram_id = id
         }
 
         // save the current diagram
-        window.saveCB = () => {
+        this.saveCB = () => {
             this.saveCB = null
             // Generate a new diagram, save it, and go to it
             let curr_template
@@ -2066,13 +1668,13 @@ class Canvas extends Component {
                 curr_template = template
             }
             curr_template.id = id
-            let skill_id = this.state.skill.skill_id
+            let skill_id = this.props.skill.skill_id
             let data = JSON.stringify(curr_template)
 
             // No Duplicate Flow Names
             let new_flow_name = base_flow_name
             let index = 1
-            const exists = (name) => this.state.diagrams.find(d => d.name === name)
+            const exists = (name) => this.props.diagrams.find(d => d.name === name)
 
             while(exists(new_flow_name)){
                 new_flow_name = `${base_flow_name} ${index}`
@@ -2089,7 +1691,7 @@ class Canvas extends Component {
 
             axios.post('/diagram?new=1', diagram)
             .then(() => {
-                this.state.diagrams.push({
+                this.props.diagrams.push({
                     name: new_flow_name,
                     id: id
                 })
@@ -2100,14 +1702,14 @@ class Canvas extends Component {
                 this.setState({
                     saving: false
                 })
-                this.props.onError('Unable to create new Flow')
+                this.props.setError('Unable to create new Flow')
             })
         }
         this.onSave()
     }
 
     addRemoveListener(node){
-        const isRoot = this.state.skill.diagram === this.props.diagram_id
+        const isRoot = this.props.skill.diagram === this.props.diagram_id
         const type = node.extras.type
         if (type === 'comment' || type === 'story') {
             node.clearListeners()
@@ -2131,23 +1733,22 @@ class Canvas extends Component {
 
     enterFlow(new_diagram_id, save=true) {
         if(new_diagram_id !== this.props.diagram_id){
-            this.setState({loading_diagram: true})
-            if(save && !this.props.preview){
-                window.saveCB = () => {
-                    this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
+            if(save && !this.props.preview && !this.state.saved){
+                this.saveCB = () => {
+                    this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
                 }
                 this.onSave()
             }else if (this.props.preview){
-                this.props.history.push(`/preview/${this.state.skill.skill_id}/${new_diagram_id}`)
+                this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
             }else{
-                this.props.history.push(`/canvas/${this.state.skill.skill_id}/${new_diagram_id}`)
+                this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
             }
         }
     }
 
     setCanFulfill(intent_key, new_value) {
 
-        const skill = this.state.skill
+        const skill = this.props.skill
         const fulfillments = skill.fulfillment
         let fulfillment = fulfillments[intent_key]
         if (fulfillment && !new_value) {
@@ -2155,8 +1756,8 @@ class Canvas extends Component {
             delete fulfillments[intent_key]
         } else if (!fulfillment && new_value) {
             const slot_config = {}
-            const intent = _.find(this.state.skill.intents, {key:intent_key})
-            const intent_slots = getIntentSlots(intent, this.state.skill.slots)
+            const intent = _.find(this.props.skill.intents, {key:intent_key})
+            const intent_slots = getIntentSlots(intent, this.props.skill.slots)
             intent_slots.forEach(slot => {
                 slot_config[slot.key] = []
             })
@@ -2164,26 +1765,23 @@ class Canvas extends Component {
                 slot_config: slot_config
             }
         }
-        this.setState({
-            skill: skill
-        })
     }
 
     updateFulfillmentOnDeletion(deleted_node) {
         const id = deleted_node.id
-        const extras = deleted_node.extras[this.state.skill.platform]
+        const extras = deleted_node.extras[this.props.skill.platform]
 
         if (extras.intent && extras.intent.key) {
             const key = extras.intent.key
             const new_value = false
             this.setCanFulfill(key, new_value)
-            this.state.diagram_level_intents[this.state.skill.platform].delete(key)
+            this.state.diagram_level_intents[this.props.skill.platform].delete(key)
         }
         this.deleteNodeManually(id)
     }
 
     onDeleteIntentNode(deleted_node) {
-        const skill = this.state.skill
+        const skill = this.props.skill
         const fulfillments = skill.fulfillment
 
         const extras = deleted_node.extras[skill.platform]
@@ -2479,7 +2077,7 @@ class Canvas extends Component {
                     }
                 }catch(err){
                     console.error(err)
-                    return this.props.onError('Error - Module Broken')
+                    return this.props.setError('Error - Module Broken')
                 }
             }
             engine.stopMove()
@@ -2497,6 +2095,7 @@ class Canvas extends Component {
             this.addRemoveListener(node)
             // node.updateDimensions(this.state.engine.getNodeDimensions(node))
             this.combineNode()
+            this.props.setOpen(type !== 'comment')
             this.setState({
                 engine: engine,
                 open: type !== 'comment'
@@ -2506,14 +2105,9 @@ class Canvas extends Component {
         }
     }
 
-    updateSkill(skill){
-        this.setState({skill: skill})
-        this.props.updateSkill(skill)
-    }
-
     onIntentUpdate() {
-        const intents = this.state.skill.intents
-        const slots = this.state.skill.slots
+        const intents = this.props.skill.intents
+        const slots = this.props.skill.slots
 
         intents.forEach((intent, i) => {
             let is_google = false
@@ -2534,11 +2128,8 @@ class Canvas extends Component {
             intents[i]._platform = platform
         })
 
-        const skill = this.state.skill
-        skill.intents = intents
-
+        this.props.updateIntents(intents)
         this.setState({
-            skill: skill,
             saved: false
         })
         this.updateLinter()
@@ -2552,7 +2143,7 @@ class Canvas extends Component {
             if(nodes[key].extras && nodes[key].extras.type === 'story'){
                 this.state.engine.setSuperSelect(nodes[key])
                 nodes[key].setSelected()
-                this.setState({open: true})
+                this.props.setOpen(true)
                 model.setZoomLevel(80)
                 model.setOffset((300)-(nodes[key].x*0.8), (300)-(nodes[key].y*0.8))
                 this.repaint()
@@ -2567,6 +2158,7 @@ class Canvas extends Component {
     }
 
     render() {
+        const diagram = _.find(this.props.diagrams, d => d.id === this.props.diagram_id)
         return (
             <React.Fragment>
                 <Prompt
@@ -2577,6 +2169,7 @@ class Canvas extends Component {
                         return true
                     }}
                 />
+                <ErrorModal error={this.props.onError} dismiss={() => this.props.clearError()} />
                 <DefaultModal
                     open={this.state.upgrade_modal}
                     header="Multi Platform Development"
@@ -2599,8 +2192,7 @@ class Canvas extends Component {
                 />
                 { !this.props.preview ? <ActionGroup
                         lastSave={(this.state.last_save ? "Last saved " + moment(this.state.last_save).fromNow() : "Save")}
-                        setCB={(cb)=>{window.saveCB=cb}}
-                        skill={this.state.skill}
+                        setCB={(cb)=>{this.saveCB=cb}}
                         preview={this.props.preview}
                         title={this.state.diagram_name}
                         onSave={this.onSave}
@@ -2611,16 +2203,13 @@ class Canvas extends Component {
                         publishMarket={this.publishMarket}
                         diagram_id={this.props.diagram_id}
                         history={this.props.history}
-                        onError={this.props.onError}
+                        onError={this.props.setError}
                         onConfirm={this.props.onConfirm}
                         toggleGoogle={this.toggleGoogle}
-                        platform={this.state.skill.platform}
-                        updateSkill={this.updateSkill}
                         onTest={this.onTest}
                         has_live={this.props.has_live}
                         toggleLiveMode={this.props.toggleLiveMode}
                         live_mode={this.props.live_mode}
-                        onSwapVersions={this.props.onSwapVersions}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -2631,11 +2220,9 @@ class Canvas extends Component {
                     <TestModal
                         open={this.state.testing_modal}
                         toggle={this.toggleTestModal}
-                        skill={this.state.skill}
                         testing_info={this.state.testing_info}
-                        diagrams={this.state.diagrams}
+                        diagrams={this.props.diagrams}
                         unfocus={this.onDiagramUnfocus}
-                        platform={this.state.skill.platform}
                     />
                 : null}
                 {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
@@ -2646,13 +2233,9 @@ class Canvas extends Component {
                     <Menu
                         unfocus={this.onDiagramUnfocus}
                         helpModal={() => this.setState({help: true, helpOpen: true})}
-                        diagrams={this.state.diagrams}
+                        diagrams={this.props.diagrams}
                         current={this.props.diagram_id}
                         enterFlow={this.enterFlow}
-                        variables={this.state.variables}
-                        global_variables={this.state.skill.global}
-                        onGlobalVariable={this.setGlobalVariables}
-                        onVariable={this.setVariables}
                         build={fn => this.buildDiagrams = fn}
                         user_modules={this.state.user_modules}
                         user_templates={this.state.user_templates}
@@ -2660,7 +2243,7 @@ class Canvas extends Component {
                         onFlowRenamed={this.onFlowRenamed}
                         history={this.props.history}
                         user={this.props.user}
-                        loading_diagram={this.state.loading_diagram}
+                        loading_diagram={this.props.load_diagram}
                         text={this.state.text}
                         onConfirm={this.props.onConfirm}
                         copyFlow={this.copyFlow}
@@ -2668,12 +2251,11 @@ class Canvas extends Component {
                         renameFlow={this.renameFlow}
                         saving={this.state.saving}
                         preview={this.props.preview}
-                        onError={this.props.onError}
-                        platform={this.state.skill.platform}
+                        onError={this.props.setError}
                         live_mode={this.props.live_mode}
                         toggleUpgrade={this.props.toggleUpgrade}
                     />
-                    {this.state.loading_diagram && <div id="loading-diagram">
+                    {this.state.load_diagram && <div id="loading-diagram">
                         <div className="text-center">
                             <h5 className="text-muted mb-2">Loading Flow</h5>
                             <span className="loader"/>
@@ -2681,18 +2263,15 @@ class Canvas extends Component {
                     </div>}
 
                     <Editor
-                        skill={this.state.skill}
                         unfocus={this.onDiagramUnfocus}
-                        open={this.state.open}
+                        open={this.props.open}
                         diagramEngine={this.state.engine}
                         node={this.state.engine.getSuperSelect()}
                         onUpdate={this.onUpdate}
                         close={e => this.setState({ open: false })}
                         repaint={this.repaint}
-                        variables={this.state.variables}
-                        global_variables={this.state.skill.global}
                         setHelp={(help) => this.setState({help: help, helpOpen: true})}
-                        diagrams={this.state.diagrams}
+                        diagrams={this.props.diagrams}
                         createDiagram={this.createDiagram}
                         enterFlow={this.enterFlow}
                         removeNode={!this.props.preview ? this.removeNode : _.noop()}
@@ -2700,22 +2279,15 @@ class Canvas extends Component {
                         copyNode={!this.props.preview ? this.copyNode : _.noop()}
                         appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
                         removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
-                        intents={this.state.skill.intents}
-                        slots={this.state.skill.slots}
-                        locales={this.state.skill.locales}
                         preview={this.props.preview}
                         onboarding={this.onboarding}
                         diagram_id={this.props.diagram_id}
                         finished={()=>{this.onboarding = false}}
-                        onError={this.props.onError}
+                        onError={this.props.setError}
                         onConfirm={this.props.onConfirm}
-                        templates={this.state.email_templates}
-                        displays={this.state.display_templates}
                         setCanFulfill={this.setCanFulfill}
                         history={this.props.history}
                         diagram_level_intents={this.state.diagram_level_intents}
-                        products={this.state.products}
-                        platform={this.state.skill.platform}
                         onIntentUpdate={this.onIntentUpdate}
                         live_mode={this.props.live_mode}
                         setCanvasEvents={this.setMousetrap}
@@ -2740,17 +2312,16 @@ class Canvas extends Component {
                             <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
                             <button className="white-circ ml-2" onClick={() => {this.setState({keyboard_help: true})}}><i className="fas fa-keyboard"></i></button>
                         </div>
-                        { this.state.skill.diagram !== this.props.diagram_id && <FlowBar
-                                skill={this.state.skill}
+                        { this.props.skill.diagram !== this.props.diagram_id && <FlowBar
                                 deleteFlow={this.deleteFlow}
                                 copyFlow={this.copyFlow}
                                 renameFlow={this.renameFlow}
                                 enterFlow={this.enterFlow}
                                 preview={this.props.preview}
-                                diagram = {_.find(this.state.diagrams, d => d.id === this.props.diagram_id)}
+                                diagram={diagram}
                             />
                         }
-                        {this.state.blockMenu}
+                        {this.props.blockMenu}
                         <SRD.DiagramWidget
                             diagramEngine={this.state.engine}
                             allowLooseLinks={false}
@@ -2760,6 +2331,7 @@ class Canvas extends Component {
                                 hasFlow: this.hasFlow,
                                 enterFlow: this.enterFlow,
                                 removeNode: this.removeNode,
+                                diagram: diagram,
                                 removeCombineNode: this.removeCombineNode,
                                 addRemoveListener: this.addRemoveListener
                             }}
@@ -2773,7 +2345,7 @@ class Canvas extends Component {
                             forceRepaint={this.forceRepaint}
                             live_mode={this.props.live_mode}
                             clickDiagram={this.clickDiagram}
-                            editorOpen={this.state.open}
+                            editorOpen={this.props.open}
                         />
                     </div>
                 </div>
@@ -2782,4 +2354,28 @@ class Canvas extends Component {
     }
 }
 
-export default compose(undo,redo)(Canvas);
+const mapStateToProps = state => ({
+  skill: state.skills.skill,
+  diagrams: state.diagrams.diagrams,
+  diagram_error: state.diagrams.error,
+  load_diagram: state.diagrams.loading,
+  error: state.skills.error,
+  variables: state.variables.localVariables
+});
+
+const mapDispatchToProps = dispatch => {
+    return {
+        renameDiagram: (flow_id, name) => dispatch(renameDiagram(flow_id, name)),
+        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        setVariables: (variable) => dispatch(setVariables(variable)),
+    }
+}
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    open,
+    blockMenu,
+    undo,
+    redo,
+    error,
+)(Canvas);

@@ -1,350 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PermissionsEditor render permissions block editor 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Permissions
-    node={
+<div
+  className=""
+>
+  <button
+    className="btn btn-clear btn-lg btn-block"
+    onClick={[Function]}
+  >
+    <i
+      className="far fa-plus"
+    />
+     Add Permission Request
+  </button>
+  <Alert
+    className="mt-3"
+    closeAriaLabel="Close"
+    color="success"
+    fade={true}
+    isOpen={true}
+    tag="div"
+    transition={
       Object {
-        "color": null,
-        "extras": Object {
-          "permissions": Array [],
-          "type": "permission",
-        },
-        "fade": false,
-        "height": 50,
-        "id": "test",
-        "isMoving": false,
-        "linter": Array [],
-        "listeners": Object {},
-        "locked": false,
-        "name": "Permissions",
-        "type": "default",
-        "width": 80,
-        "x": 0,
-        "y": 0,
+        "appear": true,
+        "baseClass": "fade",
+        "baseClassActive": "show",
+        "enter": true,
+        "exit": true,
+        "in": true,
+        "mountOnEnter": false,
+        "onEnter": [Function],
+        "onEntered": [Function],
+        "onEntering": [Function],
+        "onExit": [Function],
+        "onExited": [Function],
+        "onExiting": [Function],
+        "tag": "div",
+        "timeout": 150,
+        "unmountOnExit": true,
       }
     }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": Array [
-        Array [],
-        <button
-          className="btn btn-clear btn-lg btn-block"
-          onClick={[Function]}
-        >
-          <i
-            className="far fa-plus"
-          />
-           Add Permission Request
-        </button>,
-        <Alert
-          className="mt-3"
-          closeAriaLabel="Close"
-          color="success"
-          fade={true}
-          isOpen={true}
-          tag="div"
-          transition={
-            Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            }
-          }
-        >
-          If failing, try prompting the user with the 
-          <b>
-            Permission
-          </b>
-           block and a message
-        </Alert>,
-      ],
-      "className": "",
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": Array [
-            <i
-              className="far fa-plus"
-            />,
-            " Add Permission Request",
-          ],
-          "className": "btn btn-clear btn-lg btn-block",
-          "onClick": [Function],
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "className": "far fa-plus",
-            },
-            "ref": null,
-            "rendered": null,
-            "type": "i",
-          },
-          " Add Permission Request",
-        ],
-        "type": "button",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "children": Array [
-            "If failing, try prompting the user with the ",
-            <b>
-              Permission
-            </b>,
-            " block and a message",
-          ],
-          "className": "mt-3",
-          "closeAriaLabel": "Close",
-          "color": "success",
-          "fade": true,
-          "isOpen": true,
-          "tag": "div",
-          "transition": Object {
-            "appear": true,
-            "baseClass": "fade",
-            "baseClassActive": "show",
-            "enter": true,
-            "exit": true,
-            "in": true,
-            "mountOnEnter": false,
-            "onEnter": [Function],
-            "onEntered": [Function],
-            "onEntering": [Function],
-            "onExit": [Function],
-            "onExited": [Function],
-            "onExiting": [Function],
-            "tag": "div",
-            "timeout": 150,
-            "unmountOnExit": true,
-          },
-        },
-        "ref": null,
-        "rendered": Array [
-          "If failing, try prompting the user with the ",
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": "Permission",
-            },
-            "ref": null,
-            "rendered": "Permission",
-            "type": "b",
-          },
-          " block and a message",
-        ],
-        "type": [Function],
-      },
-    ],
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": Array [
-          Array [],
-          <button
-            className="btn btn-clear btn-lg btn-block"
-            onClick={[Function]}
-          >
-            <i
-              className="far fa-plus"
-            />
-             Add Permission Request
-          </button>,
-          <Alert
-            className="mt-3"
-            closeAriaLabel="Close"
-            color="success"
-            fade={true}
-            isOpen={true}
-            tag="div"
-            transition={
-              Object {
-                "appear": true,
-                "baseClass": "fade",
-                "baseClassActive": "show",
-                "enter": true,
-                "exit": true,
-                "in": true,
-                "mountOnEnter": false,
-                "onEnter": [Function],
-                "onEntered": [Function],
-                "onEntering": [Function],
-                "onExit": [Function],
-                "onExited": [Function],
-                "onExiting": [Function],
-                "tag": "div",
-                "timeout": 150,
-                "unmountOnExit": true,
-              }
-            }
-          >
-            If failing, try prompting the user with the 
-            <b>
-              Permission
-            </b>
-             block and a message
-          </Alert>,
-        ],
-        "className": "",
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": Array [
-              <i
-                className="far fa-plus"
-              />,
-              " Add Permission Request",
-            ],
-            "className": "btn btn-clear btn-lg btn-block",
-            "onClick": [Function],
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "className": "far fa-plus",
-              },
-              "ref": null,
-              "rendered": null,
-              "type": "i",
-            },
-            " Add Permission Request",
-          ],
-          "type": "button",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {
-            "children": Array [
-              "If failing, try prompting the user with the ",
-              <b>
-                Permission
-              </b>,
-              " block and a message",
-            ],
-            "className": "mt-3",
-            "closeAriaLabel": "Close",
-            "color": "success",
-            "fade": true,
-            "isOpen": true,
-            "tag": "div",
-            "transition": Object {
-              "appear": true,
-              "baseClass": "fade",
-              "baseClassActive": "show",
-              "enter": true,
-              "exit": true,
-              "in": true,
-              "mountOnEnter": false,
-              "onEnter": [Function],
-              "onEntered": [Function],
-              "onEntering": [Function],
-              "onExit": [Function],
-              "onExited": [Function],
-              "onExiting": [Function],
-              "tag": "div",
-              "timeout": 150,
-              "unmountOnExit": true,
-            },
-          },
-          "ref": null,
-          "rendered": Array [
-            "If failing, try prompting the user with the ",
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": "Permission",
-              },
-              "ref": null,
-              "rendered": "Permission",
-              "type": "b",
-            },
-            " block and a message",
-          ],
-          "type": [Function],
-        },
-      ],
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+  >
+    If failing, try prompting the user with the 
+    <b>
+      Permission
+    </b>
+     block and a message
+  </Alert>
+</div>
 `;

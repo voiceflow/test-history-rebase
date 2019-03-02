@@ -87,8 +87,7 @@ class Blocks extends PureComponent {
                                         item={item} 
                                         key={i} 
                                         data-tip={item.tip} 
-                                        draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}
-                                        platform={this.props.platform}/>
+                                        draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
                                 })}
                             </div>
                         </Collapse>

@@ -1,522 +1,116 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Spotlight render spotlight 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Spotlight />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "host",
-    "props": Object {
-      "children": <StateManager
-        autoFocus={true}
-        classNamePrefix="spotlight"
-        defaultInputValue=""
-        defaultMenuIsOpen={false}
-        defaultValue={null}
-        filterOption={[Function]}
-        maxMenuHeight={124}
-        onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": "Speak",
-              "value": "speak",
-            },
-            Object {
-              "label": "Choice",
-              "value": "choice",
-            },
-            Object {
-              "label": "Set",
-              "value": "set",
-            },
-            Object {
-              "label": "If",
-              "value": "if",
-            },
-            Object {
-              "label": "Capture",
-              "value": "capture",
-            },
-            Object {
-              "label": "Random",
-              "value": "random",
-            },
-            Object {
-              "label": "Interaction",
-              "value": "interaction",
-            },
-            Object {
-              "label": "Intent",
-              "value": "intent",
-            },
-            Object {
-              "label": "Command",
-              "value": "command",
-            },
-            Object {
-              "label": "Stream",
-              "value": "stream",
-            },
-            Object {
-              "label": "API",
-              "value": "api",
-            },
-            Object {
-              "label": "Flow",
-              "value": "flow",
-            },
-            Object {
-              "label": "Code",
-              "value": "code",
-            },
-            Object {
-              "label": "Exit",
-              "value": "exit",
-            },
-            Object {
-              "label": "Combine",
-              "value": "combine",
-            },
-            Object {
-              "label": "Comment",
-              "value": "comment",
-            },
-            Object {
-              "label": "Card",
-              "value": "card",
-            },
-            Object {
-              "label": "Display",
-              "value": "display",
-            },
-            Object {
-              "label": "Permission",
-              "value": "permission",
-            },
-            Object {
-              "label": "User Info",
-              "value": "permissions",
-            },
-            Object {
-              "label": "Mail",
-              "value": "mail",
-            },
-            Object {
-              "label": "Payment",
-              "value": "payment",
-            },
-            Object {
-              "label": "Cancel Payment",
-              "value": "cancel",
-            },
-            Object {
-              "label": "Reminder",
-              "value": "reminder",
-            },
-          ]
-        }
-        placeholder="Add Block"
-        value={null}
-      />,
-      "id": "spotlight",
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "class",
-      "props": Object {
-        "autoFocus": true,
-        "classNamePrefix": "spotlight",
-        "defaultInputValue": "",
-        "defaultMenuIsOpen": false,
-        "defaultValue": null,
-        "filterOption": [Function],
-        "maxMenuHeight": 124,
-        "onBlur": undefined,
-        "onChange": [Function],
-        "options": Array [
-          Object {
-            "label": "Speak",
-            "value": "speak",
-          },
-          Object {
-            "label": "Choice",
-            "value": "choice",
-          },
-          Object {
-            "label": "Set",
-            "value": "set",
-          },
-          Object {
-            "label": "If",
-            "value": "if",
-          },
-          Object {
-            "label": "Capture",
-            "value": "capture",
-          },
-          Object {
-            "label": "Random",
-            "value": "random",
-          },
-          Object {
-            "label": "Interaction",
-            "value": "interaction",
-          },
-          Object {
-            "label": "Intent",
-            "value": "intent",
-          },
-          Object {
-            "label": "Command",
-            "value": "command",
-          },
-          Object {
-            "label": "Stream",
-            "value": "stream",
-          },
-          Object {
-            "label": "API",
-            "value": "api",
-          },
-          Object {
-            "label": "Flow",
-            "value": "flow",
-          },
-          Object {
-            "label": "Code",
-            "value": "code",
-          },
-          Object {
-            "label": "Exit",
-            "value": "exit",
-          },
-          Object {
-            "label": "Combine",
-            "value": "combine",
-          },
-          Object {
-            "label": "Comment",
-            "value": "comment",
-          },
-          Object {
-            "label": "Card",
-            "value": "card",
-          },
-          Object {
-            "label": "Display",
-            "value": "display",
-          },
-          Object {
-            "label": "Permission",
-            "value": "permission",
-          },
-          Object {
-            "label": "User Info",
-            "value": "permissions",
-          },
-          Object {
-            "label": "Mail",
-            "value": "mail",
-          },
-          Object {
-            "label": "Payment",
-            "value": "payment",
-          },
-          Object {
-            "label": "Cancel Payment",
-            "value": "cancel",
-          },
-          Object {
-            "label": "Reminder",
-            "value": "reminder",
-          },
-        ],
-        "placeholder": "Add Block",
-        "value": null,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <StateManager
-          autoFocus={true}
-          classNamePrefix="spotlight"
-          defaultInputValue=""
-          defaultMenuIsOpen={false}
-          defaultValue={null}
-          filterOption={[Function]}
-          maxMenuHeight={124}
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "Speak",
-                "value": "speak",
-              },
-              Object {
-                "label": "Choice",
-                "value": "choice",
-              },
-              Object {
-                "label": "Set",
-                "value": "set",
-              },
-              Object {
-                "label": "If",
-                "value": "if",
-              },
-              Object {
-                "label": "Capture",
-                "value": "capture",
-              },
-              Object {
-                "label": "Random",
-                "value": "random",
-              },
-              Object {
-                "label": "Interaction",
-                "value": "interaction",
-              },
-              Object {
-                "label": "Intent",
-                "value": "intent",
-              },
-              Object {
-                "label": "Command",
-                "value": "command",
-              },
-              Object {
-                "label": "Stream",
-                "value": "stream",
-              },
-              Object {
-                "label": "API",
-                "value": "api",
-              },
-              Object {
-                "label": "Flow",
-                "value": "flow",
-              },
-              Object {
-                "label": "Code",
-                "value": "code",
-              },
-              Object {
-                "label": "Exit",
-                "value": "exit",
-              },
-              Object {
-                "label": "Combine",
-                "value": "combine",
-              },
-              Object {
-                "label": "Comment",
-                "value": "comment",
-              },
-              Object {
-                "label": "Card",
-                "value": "card",
-              },
-              Object {
-                "label": "Display",
-                "value": "display",
-              },
-              Object {
-                "label": "Permission",
-                "value": "permission",
-              },
-              Object {
-                "label": "User Info",
-                "value": "permissions",
-              },
-              Object {
-                "label": "Mail",
-                "value": "mail",
-              },
-              Object {
-                "label": "Payment",
-                "value": "payment",
-              },
-              Object {
-                "label": "Cancel Payment",
-                "value": "cancel",
-              },
-              Object {
-                "label": "Reminder",
-                "value": "reminder",
-              },
-            ]
-          }
-          placeholder="Add Block"
-          value={null}
-        />,
-        "id": "spotlight",
-      },
-      "ref": null,
-      "rendered": Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "autoFocus": true,
-          "classNamePrefix": "spotlight",
-          "defaultInputValue": "",
-          "defaultMenuIsOpen": false,
-          "defaultValue": null,
-          "filterOption": [Function],
-          "maxMenuHeight": 124,
-          "onBlur": undefined,
-          "onChange": [Function],
-          "options": Array [
-            Object {
-              "label": "Speak",
-              "value": "speak",
-            },
-            Object {
-              "label": "Choice",
-              "value": "choice",
-            },
-            Object {
-              "label": "Set",
-              "value": "set",
-            },
-            Object {
-              "label": "If",
-              "value": "if",
-            },
-            Object {
-              "label": "Capture",
-              "value": "capture",
-            },
-            Object {
-              "label": "Random",
-              "value": "random",
-            },
-            Object {
-              "label": "Interaction",
-              "value": "interaction",
-            },
-            Object {
-              "label": "Intent",
-              "value": "intent",
-            },
-            Object {
-              "label": "Command",
-              "value": "command",
-            },
-            Object {
-              "label": "Stream",
-              "value": "stream",
-            },
-            Object {
-              "label": "API",
-              "value": "api",
-            },
-            Object {
-              "label": "Flow",
-              "value": "flow",
-            },
-            Object {
-              "label": "Code",
-              "value": "code",
-            },
-            Object {
-              "label": "Exit",
-              "value": "exit",
-            },
-            Object {
-              "label": "Combine",
-              "value": "combine",
-            },
-            Object {
-              "label": "Comment",
-              "value": "comment",
-            },
-            Object {
-              "label": "Card",
-              "value": "card",
-            },
-            Object {
-              "label": "Display",
-              "value": "display",
-            },
-            Object {
-              "label": "Permission",
-              "value": "permission",
-            },
-            Object {
-              "label": "User Info",
-              "value": "permissions",
-            },
-            Object {
-              "label": "Mail",
-              "value": "mail",
-            },
-            Object {
-              "label": "Payment",
-              "value": "payment",
-            },
-            Object {
-              "label": "Cancel Payment",
-              "value": "cancel",
-            },
-            Object {
-              "label": "Reminder",
-              "value": "reminder",
-            },
-          ],
-          "placeholder": "Add Block",
-          "value": null,
+<div
+  id="spotlight"
+>
+  <StateManager
+    autoFocus={true}
+    classNamePrefix="spotlight"
+    defaultInputValue=""
+    defaultMenuIsOpen={false}
+    defaultValue={null}
+    filterOption={[Function]}
+    maxMenuHeight={124}
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "Speak",
+          "value": "speak",
         },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      "type": "div",
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
+        Object {
+          "label": "Choice",
+          "value": "choice",
         },
-      },
-    },
-  },
-}
+        Object {
+          "label": "Set",
+          "value": "set",
+        },
+        Object {
+          "label": "If",
+          "value": "if",
+        },
+        Object {
+          "label": "Capture",
+          "value": "capture",
+        },
+        Object {
+          "label": "Random",
+          "value": "random",
+        },
+        Object {
+          "label": "Interaction",
+          "value": "interaction",
+        },
+        Object {
+          "label": "Intent",
+          "value": "intent",
+        },
+        Object {
+          "label": "Stream",
+          "value": "stream",
+        },
+        Object {
+          "label": "API",
+          "value": "api",
+        },
+        Object {
+          "label": "Flow",
+          "value": "flow",
+        },
+        Object {
+          "label": "Code",
+          "value": "code",
+        },
+        Object {
+          "label": "Exit",
+          "value": "exit",
+        },
+        Object {
+          "label": "Combine",
+          "value": "combine",
+        },
+        Object {
+          "label": "Comment",
+          "value": "comment",
+        },
+        Object {
+          "label": "Card",
+          "value": "card",
+        },
+        Object {
+          "label": "Display",
+          "value": "display",
+        },
+        Object {
+          "label": "Permission",
+          "value": "permission",
+        },
+        Object {
+          "label": "User Info",
+          "value": "permissions",
+        },
+        Object {
+          "label": "Mail",
+          "value": "mail",
+        },
+        Object {
+          "label": "Payment",
+          "value": "payment",
+        },
+        Object {
+          "label": "Cancel Payment",
+          "value": "cancel",
+        },
+        Object {
+          "label": "Reminder",
+          "value": "reminder",
+        },
+      ]
+    }
+    placeholder="Add Block"
+    value={null}
+  />
+</div>
 `;

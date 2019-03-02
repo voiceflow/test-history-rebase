@@ -9,8 +9,8 @@ export default {
             "id":"09c59c5e-579c-49b2-a59b-125b6d8924b3",
             "type":"default",
             "selected":false,
-            "x":358.6666666666667,
-            "y":468,
+            "x":360,
+            "y":120,
             "extras":{
                "audio":"",
                "audioText":"",

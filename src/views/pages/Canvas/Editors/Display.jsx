@@ -15,7 +15,7 @@ import 'brace/ext/language_tools';
 
 const _ = require('lodash')
 
-class Display extends Component {
+export class Display extends Component {
     constructor(props) {
         super(props);
 

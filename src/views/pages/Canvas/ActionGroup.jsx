@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { updateSkill } from './../../actions/skillActions'
+import { updateSkill } from './../../../actions/skillActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
     ModalHeader, ModalBody, Button

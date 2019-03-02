@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import {StripeProvider} from 'react-stripe-elements'
-import { store, history } from './views/containers/store'
+import { store, history } from './containers/store'
 import { Alert } from 'reactstrap'
 
 // Import Dependent CSS

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-import { addDisplay, updateDisplay } from './../../actions/displayActions'
+import { addDisplay, updateDisplay } from './../../../actions/displayActions'
 
 import ErrorModal from '../../components/Modals/ErrorModal'
 import axios from 'axios';

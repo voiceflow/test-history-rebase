@@ -18,9 +18,9 @@ import { open, blockMenu } from './../../HOC/canvasHelper';
 //Helpers
 import { combineAppendValidation, combineValidation } from './../../helpers/combineHelper'
 
-import { renameDiagram } from "./../../actions/diagramActions";
-import { updateSkill } from "./../../actions/skillActions";
-import { setVariables } from './../../actions/variableActions'
+import { renameDiagram } from "./../../../actions/diagramActions";
+import { updateSkill } from "./../../../actions/skillActions";
+import { setVariables } from './../../../actions/variableActions'
 
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'

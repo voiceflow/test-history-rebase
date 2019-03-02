@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { ButtonGroup, Button } from 'reactstrap'
 import { connect } from 'react-redux'
-import { updateSkill } from './../../../actions/skillActions'
+import { updateSkill } from './../../../../actions/skillActions'
 
 // SETTING PAGES
 import BasicAdvancedSettings from './BasicAdvanced'

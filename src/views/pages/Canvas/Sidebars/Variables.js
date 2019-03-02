@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { pushVariable, setVariables } from './../../../actions/variableActions'
-import { updateSkill } from './../../../actions/skillActions'
+import { pushVariable, setVariables } from './../../../../actions/variableActions'
+import { updateSkill } from './../../../../actions/skillActions'
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
 import {Tooltip} from 'react-tippy'
 import isVarName from 'is-var-name'

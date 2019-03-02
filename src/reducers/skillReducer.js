@@ -13,7 +13,7 @@ import {
 import update from 'immutability-helper';
 
 const initialState = {
-  skill: [],
+  skill: {},
   loading: false,
   error: null
 };

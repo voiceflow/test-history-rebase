@@ -19,6 +19,7 @@ const {upload, uploadResize, redisClient, jwt, config, verify} = require('./serv
 const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
+const { underMaintenance } = require('./app/src/MAINTENANCE.js')
 
 AWS.config = new AWS.Config({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -81,8 +82,11 @@ app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'app', 'build')))
 
-// Middleware for Authentication
+// Middleware for Authentication/Maintanence Check
 app.use((req, res, next) => {
+    if(underMaintenance()){
+        return res.redirect('https://getvoiceflow.com/maintenance')
+    }
     verify(req.cookies.auth, data => {
         if(data){
             req.user = data.user

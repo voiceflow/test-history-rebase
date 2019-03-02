@@ -9,16 +9,16 @@ const MAINTENANCE = true
 
 // ISO standard time in GMT
 const MAINTENANCE_START='2019-03-03T23:00:00Z'
-
 // downtime in minutes
 const MAINTENANCE_TIME=120
 // how many minutes out to do warnings
 const WARNING_INTERVALS=[60, 30, 10, 5, 1]
 
+// MAINTENANCE OPERATIONS
 const M_START = new Date(MAINTENANCE_START).getTime()
 const M_TIME = (MAINTENANCE_TIME || 30) * 60 * 1000
 
-if(!MAINTENANCE || (false && process.env.NODE_ENV !== 'production')){
+if(!MAINTENANCE || process.env.NODE_ENV !== 'production'){
   module.exports.evaluateMaintenance = _.noop
   module.exports.underMaintenance = () => false
 }else{

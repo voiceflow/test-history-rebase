@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
-import { Button, ButtonGroup, InputGroup, Input, Alert } from 'reactstrap'
+import { Button, ButtonGroup, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
-import { Tooltip } from 'react-tippy'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 const _ = require('lodash')
 
-class Command extends Component {
+export class Command extends Component {
 
     constructor(props) {
         super(props)
@@ -262,29 +262,6 @@ class Command extends Component {
                     </React.Fragment>
                 }
             </div>
-            {/* DEPPRECATE THIS */}
-            {!!extras.end &&
-                <InputGroup className="my-3">
-                    <label className="input-group-text w-100 m-0 d-flex">
-                        <Input addon type="checkbox" value={!!extras.end} checked={!!extras.end} onChange={this.updateEnd} />
-                        <div className="ml-2 space-between flex-hard">
-                            <span>
-                                Command Ends Skill
-                            </span>
-                            <span>
-                                <Tooltip
-                                    className="menu-tip"
-                                    html='The skill will end on completion of the command'
-                                    position="bottom"
-                                    theme="menu"
-                                >
-                                    ?
-                                </Tooltip>
-                            </span>
-                        </div>
-                    </label>
-                </InputGroup>
-            }
         </React.Fragment>
     }
 
@@ -359,4 +336,8 @@ class Command extends Component {
     }
 }
 
-export default Command
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+export default connect(mapStateToProps)(Command)

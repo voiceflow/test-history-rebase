@@ -1,5 +1,4 @@
-const { hashids } = require('./../services')
-const analytics = new (require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
+const { hashids, analytics } = require('./../services')
 
 exports.trackCanvasTime = (req, res) => {
     analytics.track({

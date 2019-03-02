@@ -93,11 +93,10 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
           saving: true
       });
       axios.post(`/link_account/template/?skill_id=${this.props.skill_id}`, this.state.accountLinkingRequest)
-      .then(res=>{
-          // this.props.updateSkill(res.data);
+      .then(()=>{
           this.setState({
               saving: false
-          }, ()=> this.props.updateSkill(res.data));
+          });
       })
       .catch(err=>{
           console.error(err);

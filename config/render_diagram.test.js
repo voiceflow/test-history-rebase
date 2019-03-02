@@ -199,21 +199,4 @@ describe('Render Diagram', () => {
       expect(services.pool.query).toHaveBeenCalledWith('UPDATE diagrams SET name = $1 WHERE id = $2', ['mockName', 1], expect.any(Function))
     })
   })
-
-  describe('Invalid input', () => {
-    it('should return 404 if skill id does not match', async () => {
-      services.docClient.get = jest.fn(() => ({
-        promise: () => Promise.resolve({
-          Item: {
-            skill: 2
-          }
-        })
-      }))
-
-      renderDiagram = require('./render_diagram').renderDiagram
-      const res = await renderDiagram(1, '03ef7b9a9d2e6681ae7ed9dbc26e648e', 1, _.cloneDeep(Constants._1_BasicSpeak_Options))
-
-      expect(res).toEqual(404)
-    })
-  })
 })

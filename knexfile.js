@@ -1,13 +1,21 @@
-require('dotenv').config()
+const fs = require('fs')
+
+if(process.env.NODE_ENV && fs.existsSync(`./.env.${process.env.NODE_ENV}`)){
+    if (process.env.NODE_ENV !== 'test') console.log(`Running in ${process.env.NODE_ENV} environment`)
+    require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` })
+}else{
+    console.log(`No Environment Set/Not Found! Using Test Migration`)
+    require('dotenv').config({path:'./.env.test'})
+}
 
 module.exports = {
   test: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_TEST,
-      user: process.env.PSQL_USER_TEST,
-      password: process.env.PSQL_PW_TEST,
-      host: process.env.PSQL_HOST_TEST
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,
@@ -24,10 +32,10 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_DEVELOPMENT,
-      user: process.env.PSQL_USER_DEVELOPMENT,
-      password: process.env.PSQL_PW_DEVELOPMENT,
-      host: process.env.PSQL_HOST_DEVELOPMENT
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,
@@ -41,10 +49,10 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_STAGING,
-      user: process.env.PSQL_USER_STAGING,
-      password: process.env.PSQL_PW_STAGING,
-      host: process.env.PSQL_HOST_STAGING
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,
@@ -58,10 +66,10 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: process.env.PSQL_DB_PRODUCTION,
-      user: process.env.PSQL_USER_PRODUCTION,
-      password: process.env.PSQL_PW_PRODUCTION,
-      host: process.env.PSQL_HOST_PRODUCTION
+      database: process.env.PSQL_DB,
+      user: process.env.PSQL_USER,
+      password: process.env.PSQL_PW,
+      host: process.env.PSQL_HOST
     },
     pool: {
       min: 1,

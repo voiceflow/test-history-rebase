@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import './Skill.css'
 import AuthenticationService from '../../../services/Authentication'
@@ -66,7 +67,6 @@ class GooglePublish extends Component {
     this.state = {
       auth_error: null,
       invocations: [],
-      skill_id: this.props.skill.skill_id,
       stage: 1,
       loaded: false,
       publish_modal_open: false,
@@ -114,14 +114,14 @@ class GooglePublish extends Component {
         this.setState({
           publish_modal_open: false
         })
-        this.props.onError('Please fill all required fields before publishing')
+        this.props.setError('Please fill all required fields before publishing')
         this.scrollToTop();
         return;
       }
 
       this.setState({ stage: 2 });
 
-      axios.post(`/diagram/${this.state.diagram}/${this.state.skill_id}/publish`, { platform: 'google', project_id: s.project_id })
+      axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'google', project_id: s.project_id })
         .then(res => {
           this.setState({ stage: 3 });
           let new_version_data = res.data
@@ -139,7 +139,7 @@ class GooglePublish extends Component {
                 publish_modal_open: false
               })
               const error_msg = err.response && err.response.data ? err.response.data : err
-              this.props.onError(error_msg)
+              this.props.setError(error_msg)
             })
         })
         .catch(err => {
@@ -147,7 +147,7 @@ class GooglePublish extends Component {
             publish_modal_open: false
           })
           const error_msg = err.response && err.response.data ? err.response.data : err
-          this.props.onError(error_msg)
+          this.props.setError(error_msg)
         })
     });
   }
@@ -161,7 +161,7 @@ class GooglePublish extends Component {
   componentDidMount() {
     try {
       AuthenticationService.googleAccessToken().then(g_token => {
-        AuthenticationService.dialogflowToken(this.state.skill_id).then(d_token => {
+        AuthenticationService.dialogflowToken(this.props.skill_id).then(d_token => {
           this.setState({
             credentials: d_token ? true : false,
             publish_modal_open: d_token && !g_token,
@@ -173,7 +173,7 @@ class GooglePublish extends Component {
       console.error('Error checking google access token', e)
     }
 
-    axios.get(`/skill/google/${this.state.skill_id}`)
+    axios.get(`/skill/google/${this.props.skill_id}`)
       .then(res => {
         if (!_.isObject(res.data.publish_info)) {
           res.data.publish_info = {}
@@ -235,9 +235,7 @@ class GooglePublish extends Component {
       }
     }
 
-    this.props.updateSkill({...this.props.skill, ...publish_info})
-
-    axios.patch(`/skill/${this.state.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, publish_info)
+    axios.patch(`/skill/${this.props.skill_id}?platform=google${publish === true ? '&publish=true' : ''}`, publish_info)
       .then(() => {
         if (typeof (cb) === 'function') cb();
       })
@@ -280,7 +278,7 @@ class GooglePublish extends Component {
       this.setState({
         stage: 0
       })
-      this.props.onError(e)
+      this.props.setError(e)
     }
   }
 
@@ -302,7 +300,7 @@ class GooglePublish extends Component {
     try {
       await axios.delete('/session/google/dialogflow_access_token', { 
         data: {
-          skill_id: this.state.skill_id
+          skill_id: this.props.skill_id
         }
       })
 
@@ -320,11 +318,8 @@ class GooglePublish extends Component {
         credentials: false,
         ...publish_info.google_publish_info
       })
-
-      this.props.updateSkill({...this.props.skill, ...publish_info})
-
     } catch (e) {
-      this.props.onError(e)
+      this.props.setError(e)
     }
 
     this.setState({
@@ -360,7 +355,7 @@ class GooglePublish extends Component {
         try {
           const res = await axios.post('/session/google/verify_dialogflow_token', {
             token: text,
-            skill_id: this.state.skill_id
+            skill_id: this.props.skill_id
           })
 
           this.setState({
@@ -370,7 +365,7 @@ class GooglePublish extends Component {
             publish_modal_open: this.state.stage === 0
           })
         } catch (e) {
-          this.props.onError(e.response.data || e)
+          this.props.setError(e.response.data || e)
           this.setState({
             loading_creds: false,
             publish_modal_open: false
@@ -754,4 +749,8 @@ class GooglePublish extends Component {
   }
 }
 
-export default GooglePublish;
+const mapStateToProps = state => ({
+  skill: state.skills.skill.skill_id
+})
+
+export default connect(mapStateToProps)(GooglePublish);

@@ -321,8 +321,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           story.lines[node.id] = {
             nextId: node.extras.nextID
           }
-        } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && (node.extras.alexa && node.extras.alexa.choices))) {
-
+        } else if (node.extras.type === 'interaction' || (node.extras.type === 'intent' && ((node.extras.alexa && node.extras.alexa.choices)) || node.extras.choices)) {
           let interactions = []
           let extras = node.extras[platform]
           if(!extras){
@@ -897,6 +896,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           _addStory(story, (err) => {
             if (err) {
               writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+              console.log("REET", err)
               resolve(500)
               return
             } else {
@@ -911,6 +911,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   } catch (e) {
     // console.error(e)
     writeToLogs('CREATOR_BACKEND_ERRORS', {err: e})
+    console.log("REEE", e)
     resolve(500)
   }
 })

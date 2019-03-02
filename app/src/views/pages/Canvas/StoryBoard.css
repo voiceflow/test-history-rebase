@@ -1947,6 +1947,14 @@ label {
     text-overflow: ellipsis;
 }
 
+.home-title {
+    max-width: 190px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 auto;
+}
+
 .srd-default-node__title {
     background-color: transparent;
     font-weight: bold;

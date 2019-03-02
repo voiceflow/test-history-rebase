@@ -16,6 +16,8 @@ import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFact
 const line_color = '#D1D8E2'
 const line_width = 2.5
 
+const _ = require('lodash')
+
 class LightCanvas extends Component {
     constructor(props) {
         super(props)
@@ -238,6 +240,7 @@ class LightCanvas extends Component {
     }
 
     render() {
+        const diagram = _.find(this.state.diagrams, d => d.id === this.props.diagram_id)
         return (
             <React.Fragment>
                 <div id="lightcanvas">
@@ -261,7 +264,17 @@ class LightCanvas extends Component {
                             </ButtonGroup>
                         </div>
                         <SRD.DiagramWidget
+                            nodeProps={{
+                                hasFlow: _.noop,
+                                enterFlow: _.noop,
+                                removeNode: _.noop,
+                                diagram: diagram,
+                                removeCombineNode: _.noop,
+                                addRemoveListener: _.noop,
+                                disabled: true
+                            }}
                             diagramEngine={this.state.engine}
+                            clickDiagram={_.noop}
                             allowLooseLinks={false}
                             locked={true}
                         />

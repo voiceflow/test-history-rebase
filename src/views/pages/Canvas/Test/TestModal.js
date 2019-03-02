@@ -14,7 +14,7 @@ import Toggle from 'react-toggle'
 var test_endpoint;
 if (process.env.NODE_ENV === 'production') {
     // production code
-    test_endpoint = 'https://app.getvoiceflow.com/state/test'
+    test_endpoint = 'https://voiceflow.app/state/test'
 } else {
     // dev code
     test_endpoint = 'http://localhost:4000/state/test'

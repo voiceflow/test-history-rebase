@@ -23,7 +23,7 @@ class Copy extends Component {
         .then(res => {
             this.setState({
                 creator_skills: res.data.map(skill => {return {
-                    label: skill.name+' ('+skill.skill_id+')',
+                    label: `${skill.name}-${skill.skill_id} ${(skill.live ? "(Live)" : "")}`,
                     value: skill.skill_id
                 }})
             })

@@ -779,8 +779,7 @@ export class ActionGroup extends PureComponent {
     }
 
     render() {
-        console.log(this.state)
-        let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
+        const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
         return (
             <React.Fragment>
                 <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">

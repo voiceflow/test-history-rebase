@@ -5,6 +5,8 @@ import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import {StripeProvider} from 'react-stripe-elements'
 import { store, history } from './views/containers/store'
+import { Alert } from 'reactstrap'
+
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,11 +31,11 @@ import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 import ErrorBoundary from './ErrorBoundary';
 import socket from 'socket.io-client'
+import {evaluateMaintenance} from './MAINTENANCE'
 
-
-// MOdal
+// GLOBAL MODALS
 import ConfirmModal from "./views/components/Modals/ConfirmModal"
-;
+
 // SECRET
 var STRIPE_KEY
 if (process.env.NODE_ENV === 'production') {
@@ -131,7 +133,7 @@ class App extends Component {
       confirm: null,
     }
 
-    this.onConfirm = this.onConfirm.bind(this);
+    this.onConfirm = this.onConfirm.bind(this)
 
     if(AuthenticationService.isAuth()){
       AuthenticationService.check((err, res) => {
@@ -156,46 +158,21 @@ class App extends Component {
       })
     })
 
-    // MAINTENANCE Comment out for no ongoing MAINTENANCE
-    if(process.env.NODE_ENV !== 'production'){
-      // ISO standard time in GMT
-      const MAINTENANCE_START='2019-03-02T17:40:00Z'
-      // downtime in minutes
-      const MAINTENANCE_TIME=120
-      // how many minutes out to do warnings
-      const WARNING_INTERVALS=[30, 10, 5, 1]
-
-      const M_START = new Date(MAINTENANCE_START).getTime()
-      const M_TIME = (MAINTENANCE_TIME || 30) * 60 * 1000
-
-      const evaluateMaintenance = (first=false) => {
-        const far_out = (Date.now() - M_START)
-        if(far_out > 0 && (far_out < M_TIME)){
-          window.location.href = 'https://getvoiceflow.com/maintenance'
-          throw new Error('MAINTENANCE')
-        }else if(far_out < 0){
-          var i, wait_time = far_out
-          for(i = 0; i < WARNING_INTERVALS.length; i++){
-            const interval = WARNING_INTERVALS[i] * 60 * 1000
-            if((far_out * -1) > interval){
-              wait_time = (far_out * -1) - interval
-              break
-            }
-          }
-            
-          if(i > 0 && !first){
-            console.log("SHOW SHIT at ", WARNING_INTERVALS[i])
-          }
-          if(i === WARNING_INTERVALS.length){
-            console.log('last one')
-            wait_time = (far_out * -1)
-          }
-          console.log("YEYEYEYEYEYEYEYYE", wait_time)
-          setTimeout(evaluateMaintenance, wait_time + 1000)
-        }
+    evaluateMaintenance((time) => {
+      if(time){
+        setTimeout(() => this.onConfirm({
+          size: "rg",
+          text: <Alert className="mb-0">
+            Voiceflow Creator will go under planned maintenance<br/>
+            <b>{time}</b> from now<hr/>
+            Live Projects will not be affected</Alert>
+        }), 100)
+      }else{
+        window.location.replace('https://getvoiceflow.com/maintenance')
+        window.location.href = 'https://getvoiceflow.com/maintenance'
+        throw new Error('MAINTENANCE')
       }
-      evaluateMaintenance(true)
-    }
+    })
   }
 
   componentDidMount() {
@@ -216,6 +193,8 @@ class App extends Component {
       confirm: {
         ...confirm, confirm: () => {
           this.setState({ confirm: null })
+          if (typeof confirm.confirm !== 'function') return
+
           if (confirm.params) {
             confirm.confirm(...confirm.params)
           } else {

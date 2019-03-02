@@ -148,6 +148,41 @@ class App extends Component {
         session: AuthenticationService.isAuth()
       })
     })
+
+    // MAINTENANCE Comment out for no ongoing MAINTENANCE
+
+    // ISO standard time in GMT
+    const MAINTENANCE_START='2019-03-02T02:02:00Z'
+    // downtime in minutes
+    const MAINTENANCE_TIME=120
+    // how many minutes out to do warnings
+    const WARNING_INTERVALS=[30, 10, 5, 1]
+
+    const M_START = new Date(MAINTENANCE_START).getTime()
+    const M_TIME = (MAINTENANCE_TIME || 30) * 60 * 1000
+
+    const evaluateMaintenance = () => {
+      const far_out = (Date.now() - M_START)
+      if(far_out > 0 && (far_out < M_TIME)){
+        window.location.href = 'https://getvoiceflow.com/maintenance'
+        throw new Error('MAINTENANCE')
+      }else if(far_out < 0){
+        var i, wait_time = far_out
+        for(i = 0; i < WARNING_INTERVALS.length; i++){
+          const interval = WARNING_INTERVALS[i] * 60 * 1000
+          if((far_out * -1) > interval){
+            wait_time = (far_out * -1) - interval
+            break
+          }
+        }
+        if(i > 0){
+          console.log("SHOW SHIT")
+        }
+        console.log("YEYEYEYEYEYEYEYYE", wait_time)
+        setTimeout(evaluateMaintenance, wait_time + 1000)
+      }
+    }
+    evaluateMaintenance()
   }
 
   componentDidMount() {

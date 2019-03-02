@@ -32,7 +32,6 @@ import Mail from './Editors/Mail';
 import Display from './Editors/Display'
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
-import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
 import Code from './Editors/Code'
 import PermissionCard from './Editors/PermissionCard'

@@ -19,7 +19,6 @@ import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
 import './ActionGroup.css'
-import { KinesisAnalytics } from 'aws-sdk';
 
 const loading = (message) => {
     return <div className="super-center mb-4">

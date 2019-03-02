@@ -9,7 +9,7 @@ import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 const _ = require('lodash')
 
-class Command extends Component {
+export class Command extends Component {
 
     constructor(props) {
         super(props)

@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import Payment from './../Payment';
 
 const clickFn = jest.fn()
@@ -7,6 +8,6 @@ const clickFn = jest.fn()
 describe('PaymentEditor', () => {
     it('render payment block editor', () => {
         const component = shallow(<Payment />);
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

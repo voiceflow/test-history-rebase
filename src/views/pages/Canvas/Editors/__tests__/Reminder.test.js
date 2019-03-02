@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import Reminder from './../Reminder';
 import {defaultNode} from '../__mock__/defaultNode';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -23,6 +24,6 @@ describe('ReminderEditor', () => {
             type: "reminder"
         }
         const component = shallow(<Reminder node={node}/>);
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

@@ -8,7 +8,7 @@ import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 
-class Interaction extends Component {
+export class Interaction extends Component {
     constructor(props) {
         super(props);
 

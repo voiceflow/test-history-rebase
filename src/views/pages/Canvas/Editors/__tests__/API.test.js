@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import API from './../API';
 import {defaultNode} from '../__mock__/defaultNode';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -25,6 +26,6 @@ describe('API', () => {
         let variables = []
         const component = shallow(<API node={node} variables={variables}/>);
          expect(component.state().node).toEqual(node)
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

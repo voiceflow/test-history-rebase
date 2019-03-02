@@ -18,7 +18,6 @@ import Publish from './views/pages/Skill/Publish'
 import Logs from './views/pages/Logs'
 import axios from 'axios'
 import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
-import ConfirmModal from './views/components/Modals/ConfirmModal'
 import DefaultModal from './views/components/Modals/DefaultModal'
 import { Link } from 'react-router-dom';
 import AuthenticationService from './services/Authentication'
@@ -50,7 +49,6 @@ class Skill extends Component {
         this.state = {
             diagram_id: null,
             secondary: !props.preview,
-            confirm: null,
             mounted: true,
             linter: [],
             upgrade_modal: false,
@@ -60,7 +58,6 @@ class Skill extends Component {
         this.time_mounted = null
 
         this.renderPage = this.renderPage.bind(this)
-        this.onConfirm = this.onConfirm.bind(this)
         this.componentGracefulUnmount = this.componentGracefulUnmount.bind(this)
         this.logout = this.logout.bind(this)
 
@@ -187,17 +184,6 @@ class Skill extends Component {
         }
     }
 
-    onConfirm(confirm){
-        this.setState({confirm: {...confirm, confirm: () => {
-            this.setState({confirm: null})
-            if(confirm.params){
-                confirm.confirm(...confirm.params)   
-            } else {
-                confirm.confirm()
-            }
-        }}})
-    }
-
     logout(e) {
         e.preventDefault();
         AuthenticationService.logout(() => {
@@ -214,7 +200,6 @@ class Skill extends Component {
                     {...this.props} 
                     diagram_id={this.state.diagram_id} 
                     live_mode={this.props.live_mode}
-                    onConfirm={this.onConfirm} 
                     ref={this.child_canvas}
                     setOnSave={save => this.onSave = save}
                     linter={this.state.linter}
@@ -223,21 +208,18 @@ class Skill extends Component {
                 return <Business
                   {...this.props}
                   page={this.props.secondaryPage}
-                  onConfirm={this.onConfirm}
                   toggleUpgrade={this.toggleUpgrade}
                 />
             case 'settings':
                 return <Settings 
                     {...this.props} 
                     page={this.props.secondaryPage}
-                    onConfirm={this.onConfirm}
                     live_mode={this.props.live_mode}
                     toggleUpgrade={this.toggleUpgrade}/>
             case 'publish':
                 return <Publish 
                     {...this.props} 
                     page={this.props.secondaryPage}
-                    onConfirm={this.onConfirm}
                 />
             case 'logs':
                 return <Logs
@@ -247,7 +229,6 @@ class Skill extends Component {
                 return <Visuals
                   {...this.props}
                   page={this.props.secondaryPage}
-                  onConfirm={this.onConfirm}
                 />
             default:
                 return null
@@ -281,9 +262,7 @@ class Skill extends Component {
             </Link>
             {this.props.skill ? this.props.skill.name : "New Skill"}
             </div>
-            <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
             <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
-
             <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
             {this.renderPage()}
             </div>

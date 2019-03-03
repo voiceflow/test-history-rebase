@@ -3,7 +3,7 @@ const _ = require('lodash')
 const moment = require('moment')
 
 // MAINTENANCE - TURN OFF WHEN NOT IN USE FOR PERFORMANCE
-const MAINTENANCE = true
+const MAINTENANCE = false
 
 // MAINTENANCE SETTINGS
 

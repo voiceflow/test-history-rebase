@@ -2268,7 +2268,7 @@ export class Canvas extends Component {
                         diagramEngine={this.state.engine}
                         node={this.state.engine.getSuperSelect()}
                         onUpdate={this.onUpdate}
-                        close={e => this.setState({ open: false })}
+                        close={()=>this.props.setOpen(false)}
                         repaint={this.repaint}
                         setHelp={(help) => this.setState({help: help, helpOpen: true})}
                         diagrams={this.props.diagrams}

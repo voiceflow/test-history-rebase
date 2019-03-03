@@ -1,8 +1,11 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import Masonry from 'react-masonry-component';
+
+import { copyProduct, deleteProduct } from './../../../../actions/productActions'
+
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import MUIButton from '@material-ui/core/Button'
@@ -12,84 +15,10 @@ class Products extends Component {
         super(props);
 
         this.state = {
-          products: [],
-          loading: true,
-          error: null,
           dropdownOpen: false
         }
 
-        this.fetchProducts = this.fetchProducts.bind(this)
-        this.deleteProduct = this.deleteProduct.bind(this)
         this.onProductClick = this.onProductClick.bind(this)
-        this.copyProduct = this.copyProduct.bind(this)
-    }
-
-    componentWillMount() {
-        this.fetchProducts();
-    }
-
-    componentWillReceiveProps() {
-      this.fetchProducts();
-    }
-
-    fetchProducts() {
-      axios.get(`/skill/${this.props.skill_id}/products`)
-      .then(res => {
-          if(Array.isArray(res.data)){
-              this.setState({
-                  products: res.data,
-                  loading: false
-              })
-          }else{
-              this.setState({
-                  loading: false
-              })
-          }
-      })
-      .catch(err => {
-          console.error(err);
-          this.setState({loading: false})
-          this.props.onError('Unable to Retrieve Products')
-      })
-    }
-    deleteProduct(id) {
-        let products = this.state.products;
-        axios.delete(`/skill/${this.props.skill_id}/product/${id}`)
-        .then(()=>{
-            let index = products.findIndex(p => p.id === id);
-            if (index > -1) {
-              products.splice(index, 1);
-            }
-        })
-        .then(() => {
-          this.setState({
-              products: products
-          });
-        })
-        .catch(err=>{
-            console.error(err)
-            this.props.onError('Error Deleting Product')
-        })
-    }
-
-    copyProduct(product_id) {
-        axios.post(`/skill/${this.props.skill_id}/${product_id}/${window.user_detail.id}/copy`)
-        .then(res => {
-            console.log(res);
-            let products = this.state.products
-            let filter_products = this.state.filter_products
-            products.push(res.data)
-            filter_products.push(res.data)
-            this.setState({
-                products: products,
-                filter_products: filter_products,
-                error: null,
-            })
-        })
-        .catch(err => {
-            console.log(err);
-            this.props.onError('Error copying product')
-        })
     }
 
     onProductClick(product_id){
@@ -97,7 +26,7 @@ class Products extends Component {
     }
 
     render() {
-        if(this.state.loading){
+        if(this.props.loading){
             return <div id="loading-diagram">
                 <div className="text-center">
                     <h5 className="text-muted mb-2">Loading Products</h5>
@@ -108,7 +37,7 @@ class Products extends Component {
         return(
             <div className="h-100 w-100">
                 <React.Fragment>
-                    {this.state.products.length === 0 ?
+                    {this.props.products.length === 0 ?
                         <div className="super-center w-100 h-100">
                         <div className="empty-container">
                             <img src='/images/OpenSafe.svg' alt="open safe" width="100px"/>
@@ -129,7 +58,7 @@ class Products extends Component {
                             </Link>
                         </div>
                         <Masonry elementType='div' imagesLoadedOptions={{columnWidth: '200', itemSelector: ".grid-item"}}>
-                            {_.map(this.state.products, product => {
+                            {_.map(this.props.products, product => {
                                 let icon
                                 let smallIcon = product.data.publishingInformation.locales["en-US"].smallIconUri
                                 let largeIcon = product.data.publishingInformation.locales["en-US"].largeIconUri
@@ -153,8 +82,8 @@ class Products extends Component {
                                         icon={icon}
                                         name={product.name}
                                         placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
-                                        onDelete={this.deleteProduct}
-                                        onCopy={this.copyProduct}
+                                        onDelete={product_id => this.props.deleteProduct(this.props.skill_id, product_id)}
+                                        onCopy={product_id => this.props.copyProduct(this.props.skill_id, product_id)}
                                         deleteLabel="Delete Product"
                                         copyLabel="Copy Product"
                                         onClick={this.onProductClick}
@@ -174,4 +103,16 @@ class Products extends Component {
     }
 }
 
-export default Products;
+const mapStateToProps = state => ({
+    products: state.products.products,
+    loading: state.products.loading,
+    skill_id: state.skills.skill.skill_id
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        copyProduct: (skill_id, product_id) => dispatch(copyProduct(skill_id, product_id)),
+        deleteProduct: (skill_id, product_id) => dispatch(deleteProduct(skill_id, product_id))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

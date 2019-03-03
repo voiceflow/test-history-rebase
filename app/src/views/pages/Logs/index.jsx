@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 // import io from 'socket.io-client'
 import axios from 'axios'
 import moment from 'moment'
@@ -107,7 +108,6 @@ class Logs extends Component {
         super(props)
 
         this.state = {
-            skill_id: this.props.computedMatch.params.skill_id,
             // endpoint: socket_endpoint,
             response: '',
             logs: [],
@@ -130,7 +130,7 @@ class Logs extends Component {
     }
 
     onLoad() {
-        axios.get(`/logs/${this.state.skill_id}`)
+        axios.get(`/logs/${this.props.skill_id}`)
         .then(res => {
             this.setState({
                 logs: res.data.rows
@@ -178,10 +178,9 @@ class Logs extends Component {
 
     render() {
         const empty_rows = this.state.rows_per_page - Math.min(this.state.rows_per_page, this.state.logs.length - this.state.page * this.state.rows_per_page)
-
         return(
             <div className='px-5 justify-content-start'>
-                <h5 className='pt-4'><b>{this.props.skill.name}</b> Error Logs</h5>
+                <h5 className='pt-4'><b>{this.props.name}</b> Error Logs</h5>
                 <hr/>
                 {
                     this.state.logs.length > 0?
@@ -239,4 +238,9 @@ class Logs extends Component {
     }
 }
 
-export default Logs
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    name: state.skills.skill.name
+})
+
+export default connect(mapStateToProps)(Logs)

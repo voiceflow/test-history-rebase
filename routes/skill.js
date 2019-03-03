@@ -7,7 +7,8 @@ const {
   intercom,
   jwt,
   logAxiosError,
-  writeToLogs
+  writeToLogs,
+  analytics
 } = require('./../services')
 const {
   AccessToken,
@@ -18,8 +19,6 @@ const {createInteractionModel} = require('./../config/interaction_model')
 const {
   generateDialogflowPackage
 } = require('./../config/gactions_package')
-
-const analytics = new(require('analytics-node'))(process.env.SEGMENT_WRITE_KEY)
 const {
   deleteSkillPromise,
   copySkill,
@@ -29,6 +28,7 @@ const {
 const DialogflowClient = require('../clients/Dialogflow/Dialogflow')
 
 const latestSkillToIntercom = (id, name) => {
+  if(process.env.TEST) return
   intercom.users.create({
     user_id: id,
     custom_attributes: {
@@ -38,6 +38,7 @@ const latestSkillToIntercom = (id, name) => {
 }
 
 const incrementSkillsCreatedIntercom = (id) => {
+  if(process.env.TEST) return
   intercom.users.find({
     user_id: id
   }, async (res) => {
@@ -66,6 +67,7 @@ exports.latestSkillToIntercom = latestSkillToIntercom
 exports.incrementSkillsCreatedIntercom = incrementSkillsCreatedIntercom
 
 const incrementTimesPublishedIntercom = (id) => {
+  if(process.env.TEST) return
   intercom.users.find({
     user_id: id
   }, async (res) => {
@@ -84,6 +86,7 @@ const incrementTimesPublishedIntercom = (id) => {
 }
 
 const incrementTimesPublishedSuccessfulIntercom = (id) => {
+  if(process.env.TEST) return
   intercom.users.find({
     user_id: id
   }, async (res) => {
@@ -101,38 +104,49 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
-exports.getSkills = (req, res) => {
+exports.getSkills = async (req, res) => {
   if (!req.user) {
-    res.sendStatus(401);
-    return;
+    res.sendStatus(401)
+    return
   }
   if (req.query.user && req.user.admin < 100) {
-    res.sendStatus(401);
-    return;
+    res.sendStatus(401)
+    return
   }
-  let userId = req.query.user ? req.query.user : req.user.id;
-  pool.query(`
+  
+  let userId = req.query.user ? req.query.user : req.user.id
+  let query = `
     SELECT * 
     FROM skills
     INNER JOIN skill_versions
     ON skills.skill_id = skill_versions.skill_id
-    WHERE version IS NULL AND creator_id = $1`,
-    [userId], (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        });
-        res.sendStatus(500);
-      } else {
-        res.send(data.rows.map(skill => {
-          skill.skill_id = hashids.encode(skill.skill_id);
-          return skill;
-        }));
-      }
+    WHERE version IS NULL AND creator_id = $1`
+
+  // Get dev + live versions
+  if(req.query.user){
+    query = `
+      SELECT * 
+      FROM skills
+      INNER JOIN skill_versions
+      ON skills.skill_id = skill_versions.skill_id
+      WHERE (version IS NULL OR skills.live = true) AND creator_id = $1`
+  } 
+
+  try{
+    let skills_data = (await pool.query(query, [userId])).rows
+    res.send(skills_data.map(skill => {
+      skill.skill_id = hashids.encode(skill.skill_id)
+      return skill
+    }))
+  } catch(err) {
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
     })
+    res.sendStatus(500)
+  }
 }
 
-exports.getSkill = (req, res) => {
+exports.getSkill = async (req, res) => {
   if (!req.params.id) {
     res.sendStatus(401)
     return
@@ -141,6 +155,19 @@ exports.getSkill = (req, res) => {
   let id = hashids.decode(req.params.id)[0]
   let sql
   let params
+
+  // Sync up with AMAZON
+  // Check Current Amazon Status
+  AccessToken(req.user.id, async (token) => {
+    if (token !== null) {
+      try {
+        await checkVersions(req, id, token)
+      } catch (err) {
+        logAxiosError(err, 'GET SKILL')
+      }
+    }
+  })
+
   if (req.query.preview) {
     // expose as little information as possible if previewing
     sql = `
@@ -158,7 +185,6 @@ exports.getSkill = (req, res) => {
   } else if (req.query.simple) {
     sql = `
       SELECT
-        sv.last_save,
         name,
         amzn_id,
         review,
@@ -181,13 +207,12 @@ exports.getSkill = (req, res) => {
         google_publish_info,
         repeat
     FROM
-      skills s
-    INNER JOIN skill_versions sv ON (s.skill_id = sv.canonical_skill_id AND s.skill_id = sv.skill_id) OR (s.live = TRUE)
+      skills
     WHERE
-      s.skill_id = $1
-      AND s.creator_id = $2
+      skill_id = $1
+      AND creator_id = $2
     LIMIT 1`;
-    params = [id, req.user.id];
+    params = [id, req.user.id]
   } else {
     sql = `
           SELECT
@@ -197,44 +222,24 @@ exports.getSkill = (req, res) => {
           WHERE
               skill_id = $1 AND
               creator_id = $2 LIMIT 1`;
-    params = [id, req.user.id];
+    params = [id, req.user.id]
   }
 
-  pool.query(sql, params, (err, data) => {
-    if (err) {
-      writeToLogs('CREATOR_BACKEND_ERRORS', {
-        err: err
-      });
-      res.sendStatus(500);
-    } else if (data.rows.length === 0) {
-      res.sendStatus(404);
+  try{
+    let skill_data = (await pool.query(sql, params)).rows[0]
+    if(skill_data === undefined){
+      res.sendStatus(404)
     } else {
-      let skill = data.rows[0];
-      // Rehash the skill id
-      skill.skill_id = req.params.id;
-      if (req.query.preview || !skill.amzn_id) {
-        res.send(skill)
-      } else {
-        // Sync up with AMAZON
-        // Check Current Amazon Status
-        AccessToken(req.user.id, async (token) => {
-          if (token === null) {
-            // throw('INVALID TOKEN');
-            return res.send(skill);
-          }
-
-          try {
-            await checkVersions(req, id, token)
-            res.send(skill)
-          } catch (err) {
-            logAxiosError(err, 'GET SKILL')
-            res.send(skill);
-          }
-        });
-      }
+      skill_data.skill_id = req.params.id
+      res.send(skill_data)
     }
-  });
-};
+  } catch (err){
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
+    res.sendStatus(500)
+  }
+}
 
 exports.getDiagrams = (req, res) => {
   if (!req.params.id) {

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {Button, Alert} from 'reactstrap';
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
@@ -12,7 +13,6 @@ class PaymentBlock extends Component {
 
         this.state = {
             node: this.props.node,
-            products: [],
             selectedProduct: null,
         };
 
@@ -138,4 +138,8 @@ class PaymentBlock extends Component {
     }
 }
 
-export default PaymentBlock;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    products: state.products.products
+})
+export default connect(mapStateToProps)(PaymentBlock);

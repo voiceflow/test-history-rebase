@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { deleteDisplay } from './../../../actions/displayActions'
 
 import { Alert } from 'reactstrap'
-import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
@@ -16,61 +18,21 @@ class Multimodal extends Component {
         super(props);
 
         this.state = {
-            displays: [],
-            loading: true,
-            error: null,
             confirm: null
         }
 
         this.deleteDisplay = this.deleteDisplay.bind(this)
     }
 
-    componentWillMount() {
-        axios.get(`/multimodal/displays?skill_id=${this.props.skill.skill_id}`)
-        .then(res => {
-            if(Array.isArray(res.data)){
-                this.setState({
-                    displays: res.data,
-                    loading: false
-                })
-            }else{
-                throw new Error("False Type")
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            this.props.onError('Unable to Retrieve Displays')
-            this.setState({
-                loading: false
-            })
-        })
-    }
-
     deleteDisplay(id) {
         this.props.onConfirm({
             text: <Alert color="warning" className="mb-0">Deleting this display will delete it from your project and all versions of it.</Alert>,
-            confirm: () => {
-                axios.delete(`/multimodal/display/${id}`)
-                .then(()=>{
-                    let displays = this.state.displays;
-                    let index = displays.findIndex(d => d.id === id);
-                    if (index > -1) {
-                    displays.splice(index, 1);
-                    }
-                    this.setState({
-                        displays: displays
-                    });
-                })
-                .catch(err=>{
-                    console.error(err)
-                    this.props.onError('Unable to delete display')
-                })
-            }
+            confirm: () => this.props.deleteDisplay(id)
         })
     }
 
     render() {
-        if(this.state.loading){
+        if(this.props.loading){
             return <div id="loading-diagram">
                 <div className="text-center">
                     <h5 className="text-muted mb-2">Loading Products</h5>
@@ -81,13 +43,13 @@ class Multimodal extends Component {
         return(
             <div className="h-100 w-100">
                 <React.Fragment>
-                    {this.state.displays.length === 0 ?
+                    {this.props.displays.length === 0 ?
                         <div className="super-center w-100 h-100">
                         <div className="empty-container">
                             <img src={'/images/desktop.svg'} alt="open safe" width ="100"/>
                             <p className="empty">No Visual Templates Exist</p>
                             <p className="empty-desc">Add viduals to your project and create stunning visuals with Alexa Presentation Language</p>
-                            <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline">
+                            <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline">
                                 <MUIButton varient="contained" className="purple-btn">New Display</MUIButton>
                             </Link>
                         </div>
@@ -97,12 +59,12 @@ class Multimodal extends Component {
                         <div className="products-container position-relative">
                         <div className="space-between w-100 px-3">
                             <h5 className="text-muted mb-0">Visuals</h5>
-                            <Link to={`/visuals/${this.props.skill.skill_id}/display/new`} className="no-underline btn purple-btn">
+                            <Link to={`/visuals/${this.props.skill_id}/display/new`} className="no-underline btn purple-btn">
                                 New Display
                             </Link>
                         </div>
                         <Masonry elementType='div' imagesLoadedOptions={{columnWidth: '200', itemSelector: ".grid-item"}}>
-                            {this.state.displays.map(display => {
+                            {this.props.displays.map(display => {
                                 let name = display.title.match(/\b(\w)/g)
                                 if(name) { name = name.join('') }
                                 else { name = display.title }
@@ -110,13 +72,13 @@ class Multimodal extends Component {
 
                                 return(
                                     <VoiceCards
-                                        key={display.id}
-                                        id={display.id}
+                                        key={display.display_id}
+                                        id={display.display_id}
                                         name={display.title}
                                         placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
                                         onDelete={this.deleteDisplay}
                                         deleteLabel="Delete Visual"
-                                        onClick={()=>this.props.history.push(`/visuals/${this.props.skill.skill_id}/display/${display.id}`)}
+                                        onClick={()=>this.props.history.push(`/visuals/${this.props.skill_id}/display/${display.display_id}`)}
                                         buttonLabel="Edit Visual"
                                     />
                             )})}
@@ -130,4 +92,15 @@ class Multimodal extends Component {
     }
 }
 
-export default Multimodal;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    displays: state.displays.displays,
+    loading: state.displays.loading
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        deleteDisplay: display_id => dispatch(deleteDisplay(display_id)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Multimodal);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
@@ -7,7 +8,7 @@ import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 
-class Interaction extends Component {
+export class Interaction extends Component {
     constructor(props) {
         super(props);
 
@@ -212,4 +213,8 @@ class Interaction extends Component {
     }
 }
 
-export default Interaction;
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+export default connect(mapStateToProps)(Interaction);

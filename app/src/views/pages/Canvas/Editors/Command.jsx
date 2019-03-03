@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup, Alert } from 'reactstrap'
@@ -8,7 +9,7 @@ import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 const _ = require('lodash')
 
-class Command extends Component {
+export class Command extends Component {
 
     constructor(props) {
         super(props)
@@ -335,4 +336,8 @@ class Command extends Component {
     }
 }
 
-export default Command
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+export default connect(mapStateToProps)(Command)

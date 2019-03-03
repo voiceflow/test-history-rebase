@@ -896,6 +896,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           _addStory(story, (err) => {
             if (err) {
               writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+              console.log("REET", err)
               resolve(500)
               return
             } else {
@@ -910,6 +911,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
   } catch (e) {
     // console.error(e)
     writeToLogs('CREATOR_BACKEND_ERRORS', {err: e})
+    console.log("REEE", e)
     resolve(500)
   }
 })

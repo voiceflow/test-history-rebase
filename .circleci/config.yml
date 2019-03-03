@@ -1,0 +1,57 @@
+version: 2 # use CircleCI 2.0
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    working_directory: ~/storyflow-server # directory where steps will run
+    docker: # run the steps with Docker
+      - image: circleci/node:10 # ...with this image as the primary container; this is where all `steps` will run
+      - image: circleci/postgres:10 # and this image as the secondary service container
+        environment:
+          POSTGRES_USER: voiceflowtest
+          POSTGRES_DB: voiceflowtest
+      - image: circleci/dynamodb:13-oracle
+    steps: # a collection of executable commands
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: update npm version
+          command: 'sudo npm install -g npm@latest'
+    #   - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+        #   key: react-cache-{{ checksum "app/package.json" }}
+      - run:
+          name: npm install react packages
+          command: cd app && npm install
+    #   - save_cache: # special step to save the dependency cache
+        #   key: react-cache-{{ checksum "app/package.json" }}
+        #   paths:
+            # - ./node_modules
+      - run:
+          name: (React Tests)
+          command: cd app && CIRCLECI=TRUE npm run test
+      - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: node-module-cache-{{ checksum "package.json" }}
+      - run:
+          name: npm install packages
+          command: npm install
+      - save_cache: # special step to save the dependency cache
+          key: node-module-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: (Unit Tests)
+          command: npm run unit_tests
+      - run:
+          name: AWS Config
+          command: ./scripts/ecr_credentials.sh
+      - run:
+          name: Wait for Postgres & Dynamo Docker Images
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m && dockerize -wait tcp://localhost:8000 -timeout 1m
+      - run: # run tests
+          name: Before Tests
+          command: CIRCLECI=TRUE ./scripts/before_test.sh
+      - run: # run coverage report
+          name: (Integration Tests)
+          command: npm run integration_tests
+      - run:
+          name: After Tests
+          command: ./scripts/after_test.sh

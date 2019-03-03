@@ -6,6 +6,7 @@ import ProductDescriptionForm from './ProductDescriptionForm';
 import PhrasesForm from './PhrasesForm';
 import PricingForm from './PricingForm';
 import IconsForm from './IconsForm';
+import { addProduct, updateProduct } from './../../../../actions/productActions'
 import ProductDetailsForm from './ProductDetailsForm';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -215,7 +216,9 @@ class EditProduct extends React.Component {
         product.name = data.publishingInformation.locales["en-US"].name
         axios.post('/skill/product?new=1', product)
         .then(res => {
+            product.id = res.data.id
             this.props.history.push(`/business/${this.props.skill_id}/products`)
+            this.props.dispatch(addProduct(product))
         })
         .catch(err => {
             console.log(err.response)
@@ -228,6 +231,7 @@ class EditProduct extends React.Component {
         curr.name = data.publishingInformation.locales["en-US"].name
         axios.post('/skill/product', curr)
         .then(res => {
+            this.props.dispatch(updateProduct(curr))
             this.props.history.push(`/business/${this.props.skill_id}/products`)
         })
         .catch(err => {

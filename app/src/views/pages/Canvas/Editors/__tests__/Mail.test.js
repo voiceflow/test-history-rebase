@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import Mail from './../Mail';
+import { Mail } from './../Mail';
 import {defaultNode} from '../__mock__/defaultNode';
 import {testSkill} from './../../__mock__/MockSkill';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -20,6 +21,6 @@ describe('MailEditor', () => {
         let templates = []
         const component = shallow(<Mail node={node} templates={templates} skill={skill}/>);
         expect(component.state().node).toEqual(node)
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

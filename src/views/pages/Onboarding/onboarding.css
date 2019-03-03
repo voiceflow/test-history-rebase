@@ -1,148 +1,148 @@
 .onboarding-survey {
-    width: 100%;
-    height: 60%;
-    border: none !important;
+  width: 100%;
+  height: 60%;
+  border: none !important;
 }
 
 .onboarding-modal-txt {
-    color: #8da2b5;
-    font-size: 16px;
-    width: 400px;
+  color: #8da2b5;
+  font-size: 16px;
+  width: 400px;
 }
 
 .multi-step-total-bar{
-    height: 40px;
+  height: 40px;
 }
 
 .multi-step-bar{
-    width: 40px;
-    height: 2px;
-    margin-left: 2px;
-    margin-right: 2px;
-    display: inline-block;
+  width: 40px;
+  height: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  display: inline-block;
 }
 
 .multi-step-active{
-    background-color: #42a5ff!important;
+  background-color: #42a5ff!important;
 }
 
 .multi-step-inactive{
-    background-color: #dce5e8!important;
+  background-color: #dce5e8!important;
 }
 
 .image-selector{
-    max-height: 100px;
-    max-width: 80px;
-    margin-bottom: 10px;
+  max-height: 100px;
+  max-width: 80px;
+  margin-bottom: 10px;
 }
 .image-selector-2{
-    height: 100px;
-    width: 80px;
-    margin-bottom: 10px;
+  height: 100px;
+  width: 80px;
+  margin-bottom: 10px;
 }
 .void-button{
-    border: 0px;
+  border: 0px;
 }
 #design-2{
-    width: 65;
-    height: 55px;
-    margin-bottom: 10px;
+  width: 65;
+  height: 55px;
+  margin-bottom: 10px;
 }
 #design{
-    width: 65;
-    height: 65px;
-    margin-bottom: 10px;
+  width: 65;
+  height: 65px;
+  margin-bottom: 10px;
 }
 .void-button:hover{
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .disabled{
-    opacity: 0.3;
+  opacity: 0.3;
 }
 
 .onboarding-profile {
-    border-radius: 50%;
-    height: 100px;
-    width: 100px;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
 }
 
 .onboarding-page {
-    width: 97%;
-    height: 100%;
-    margin-left:auto;
-    margin-right:auto;
-    border-radius: 10px !important;
-    background-color: #fff !important;
-    box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
+  width: 97%;
+  height: 100%;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 10px !important;
+  background-color: #fff !important;
+  box-shadow: 0 0 1px 1px rgba(17,49,96,.06), 0 2px 4px 0 rgba(17,49,96,.12);
 }
 
 #calendly {
-    min-width:320px;
-    height:580px;
+  min-width:320px;
+  height:580px;
 }
 
 #submit-calendly {
-    position: absolute;
-    top: 50px;
-    right: 55px;
-    z-index: 10;
-    background-color: black;
+  position: absolute;
+  top: 50px;
+  right: 55px;
+  z-index: 10;
+  background-color: black;
 }
 
 .onboarding-survey {
-    overflow: auto;
+  overflow: auto;
 }
 /* .input-underline {
-    border: none;
-    border-bottom: 2px solid #e2e9ec;
-    outline: none !important;
-    padding: 10px;
-    transition: border-color .2s ease;
+  border: none;
+  border-bottom: 2px solid #e2e9ec;
+  outline: none !important;
+  padding: 10px;
+  transition: border-color .2s ease;
 }
 .input-underline:focus {
-    border-color: #42A5FF
+  border-color: #42A5FF
 } */
 
 #company-name-input {
-    border: none;
-    border-radius: 0;
-    -webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-    border-bottom: 1px solid #e2e9ec;
-    outline:none!important;
-    width:300px;
-    text-align: center;
-    -moz-text-align-last: center;
-    text-align-last: center;
-    transition: border-color .2s ease;
-    padding-bottom: 10px;
+  border: none;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+-moz-box-shadow: none;
+box-shadow: none;
+  border-bottom: 1px solid #e2e9ec;
+  outline:none!important;
+  width:300px;
+  text-align: center;
+  -moz-text-align-last: center;
+  text-align-last: center;
+  transition: border-color .2s ease;
+  padding-bottom: 10px;
 }
 
 #company-name-input:focus {
-    outline:none!important; 
-    border-color: #42A5FF;
+  outline:none!important; 
+  border-color: #42A5FF;
 }
 
 .exit-survey {
-    position: absolute;
-    top: 50px;
-    right: 55px;
+  position: absolute;
+  top: 50px;
+  right: 55px;
 }
 
 .onboarding-title {
-    position: absolute;
-    top: 60px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    color: #8da2b5;
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: #8da2b5;
 }
 
 .calendly-outer {
-    width: 800px;
-    border: 1px solid #dce5e8!important;
-    border-radius: 5px!important;
-    padding: 2px;
+  width: 800px;
+  border: 1px solid #dce5e8!important;
+  border-radius: 5px!important;
+  padding: 2px;
 }

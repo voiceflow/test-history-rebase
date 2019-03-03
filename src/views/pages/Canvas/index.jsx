@@ -137,9 +137,6 @@ export class Canvas extends Component {
 
         let diagram_name = ''
 
-        // ONBOARDING
-        this.onboarding = localStorage.getItem('onboarding')
-
         if (window.Appcues){
             window.Appcues.identify(window.user_detail.id, {
                 email: window.user_detail.email,
@@ -1890,10 +1887,6 @@ export class Canvas extends Component {
                 node.extras = {
                     randomize: false
                 }
-                // ONBOARDING
-                // if(this.onboarding && this.state.onboarding_step < 1){
-                //     setTimeout(()=>this.setState({onboarding_step: 1, onboarding_run: true}), 400)
-                // }
             } else if (type === 'card') {
                 node.addInPort(' ')
                 node.addOutPort(' ').setMaximumLinks(1)
@@ -2273,14 +2266,13 @@ export class Canvas extends Component {
                             <span className="loader"/>
                         </div>
                     </div>}
-
                     <Editor
                         unfocus={this.onDiagramUnfocus}
                         open={this.props.open}
                         diagramEngine={this.state.engine}
                         node={this.state.engine.getSuperSelect()}
                         onUpdate={this.onUpdate}
-                        close={e => this.setState({ open: false })}
+                        close={() => this.props.setOpen(false)}
                         repaint={this.repaint}
                         setHelp={(help) => this.setState({help: help, helpOpen: true})}
                         diagrams={this.props.diagrams}
@@ -2292,9 +2284,7 @@ export class Canvas extends Component {
                         appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
                         removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
                         preview={this.props.preview}
-                        // onboarding={this.onboarding}
                         diagram_id={this.props.diagram_id}
-                        finished={()=>{this.onboarding = false}}
                         onError={this.props.setError}
                         onConfirm={this.props.onConfirm}
                         setCanFulfill={this.setCanFulfill}

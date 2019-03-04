@@ -1733,6 +1733,7 @@ export class Canvas extends Component {
 
     enterFlow(new_diagram_id, save=true) {
         if(new_diagram_id !== this.props.diagram_id){
+            this.props.updateSkill("diagram", new_diagram_id);
             if(save && !this.props.preview && !this.state.saved){
                 this.saveCB = () => {
                     this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)

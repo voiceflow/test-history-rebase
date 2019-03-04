@@ -2,23 +2,18 @@ FROM node:8
 
 WORKDIR /usr/src/app
 
-
 COPY ./ ./
 
-
 RUN yarn
 
-CMD cd /app
+RUN cd ./app && yarn
 
-RUN yarn
+RUN npm run build
 
-RUN cd ..
-
-CMD ["npm", "run", "build"]
-
+RUN npm install -g forever
 
 EXPOSE 8080
 EXPOSE 6379
 EXPOSE 5432
 
-CMD ["npm", "run", "local"]
+CMD forever -c "npm run start" .

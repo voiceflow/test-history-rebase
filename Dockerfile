@@ -16,4 +16,4 @@ EXPOSE 8080
 EXPOSE 6379
 EXPOSE 5432
 
-CMD log_file_name="`date +%Y_%m_%d_%H_%M`.log" && forever start -l $log_file_name -c "npm run start" .
+CMD forever -c "npm run start" .

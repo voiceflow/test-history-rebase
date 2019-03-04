@@ -29,7 +29,7 @@ const SECTIONS = [{
     title: 'functional',
     items: [
         { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
-        { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
+        // { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
         { text: 'Comment', type: 'comment', icon: <i className="far fa-comment-alt"/>, tip: 'Add notes to your diagram'},
     ]
 },{

@@ -472,13 +472,11 @@ export class DiagramWidget extends BaseWidget {
 			var element = this.getMouseElement(event);
 			_.forEach(this.state.action.selectionModels, model => {
 				//only care about points connecting to things
-				if (model.element){
-					model.element.style.pointerEvents = 'all';
-				}
 				if (model.model instanceof BlockNodeModel) {
 					if (!model.model.isMoving ||this.props.editorOpen) {
 						this.props.clickDiagram()
 					}
+					model.element.style.pointerEvents = 'all';
 					model.model.isMoving = false;
 					if (model.model.extras.type === 'god') {
 						let totalHeight = 40;

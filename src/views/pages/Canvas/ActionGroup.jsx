@@ -19,12 +19,11 @@ import InvRegex from 'services/Regex'
 // import { timingSafeEqual } from 'crypto';
 
 import './ActionGroup.css'
-import { KinesisAnalytics } from 'aws-sdk';
 
 const loading = (message) => {
-    return <div className="super-center mb-4">
+    return <div className="super-center">
         <div className='text-center'>
-            <p className="loading">{message}</p>
+            <p className="loading mb-0">{message}</p>
         </div>
     </div>
 }
@@ -37,6 +36,23 @@ const GOOGLE_STAGES = {
     "4": "Publishing",
     "5": "Published",
 }
+const ALEXA_STAGES = {
+    "0": "Upload Skill",
+    "1": "Voiceflow Rendering",
+    "2": "Success",
+    "4": "Rendering Error",
+    "5": "Amazon Login",
+    "6": "Developer Account",
+    "7": "Check Vendor",
+    "8": "Verifying Login",
+    "9": "Amazon Error",
+    "11": "Uploading to Alexa",
+    "12": "Building Interaction Modelr",
+    "13": "Enable Skill",
+    "14": "Invocation Name",
+}
+
+const SHOW_PROMPT_ALEXA = [4,5,6,9,14,2]
 
 const STAGE_PERCENTAGES = {
     alexa: {
@@ -62,6 +78,14 @@ const ENDING_STAGES = {
 }
 const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable']
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App']
+
+const Video = (link, className) => {
+    return <div className={`mt-3 rounded overflow-hidden ${className ? className : 'w-100'}`}>
+        <video className="rounded w-100 overflow-hidden" controls>
+            <source src={link} type="video/mp4"/>
+        </video>
+    </div>
+}
 
 const invNameError = (name, locales) => {
     if(!name || !name.trim()){
@@ -91,7 +115,7 @@ const invNameError = (name, locales) => {
     }
 }
 
-class ActionGroup extends PureComponent {
+export class ActionGroup extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -122,16 +146,19 @@ class ActionGroup extends PureComponent {
         this.toggleShare = this.toggleShare.bind(this)
         this.togglePreview = this.togglePreview.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.toggleUpdate = this.toggleUpdate.bind(this)
         this.toggleUpdateLive = this.toggleUpdateLive.bind(this)
         this.updateAlexa = this.updateAlexa.bind(this)
         this.openUpdate = this.openUpdate.bind(this)
         this.openUpdateLive = this.openUpdateLive.bind(this)
         this.checkVendor = this.checkVendor.bind(this)
         this.reset = this.reset.bind(this)
+        this.renderBody = this.renderBody.bind(this)
+        this.renderAlexaBody = this.renderAlexaBody.bind(this)
         this.renderGoogleBody = this.renderGoogleBody.bind(this)
         this.updateGoogle = this.updateGoogle.bind(this)
         this.shouldReset = this.shouldReset.bind(this)
+        this.updateAlexaStage = this.updateAlexaStage.bind(this)
+        this.uploadSuccess = this.uploadSuccess.bind(this)
         this.token = null
         this.updateLiveVersion = this.updateLiveVersion.bind(this)
         this.renderUploadButton = this.renderUploadButton.bind(this)
@@ -140,20 +167,9 @@ class ActionGroup extends PureComponent {
     }
 
     componentDidMount() {
-        let is_first_upload = localStorage.getItem('is_first_upload')
-        if(is_first_upload === 'true'){
-            this.setState({
-                is_first_upload: true
-            })
-        } else {
-            this.setState({
-                is_first_upload: false
-            })
-        }
-
         AuthenticationService.AmazonAccessToken(token => {
             this.token = token;
-            this.reset();
+            this.reset()
         });
         AuthenticationService.googleAccessToken(this.props.skill.skill_id).then(token => {
             this.google_token = token;
@@ -175,30 +191,53 @@ class ActionGroup extends PureComponent {
                 })
             })
             this.props.onSave()
-        } else if(this.props.platform === 'alexa'){
-            this.updateAlexa()
         } else {
-            this.updateGoogle()
+            if(this.props.platform === 'alexa'){
+                this.updateAlexa()
+            } else {
+                this.updateGoogle()
+            }
         }
     }
 
     reset() {
-        let is_first_upload = localStorage.getItem('is_first_upload')
-        if(is_first_upload === 'true'){
-            this.setState({
-                is_first_upload: true
-            })
-        } else {
-            this.setState({
-                is_first_upload: false
-            })
-        }
-        
         this.setState({
             amzn_error: false,
             stage: this.token ? 0 : 5,
-            google_stage: this.google_token ? 2 : 0
+            google_stage: this.google_token ? 2 : 0,
+            is_first_upload: (localStorage.getItem('is_first_upload') !== 'false'),
+            // TESTING PURPOSES
+            // show_upload_prompt: true,
+            // stage: 8,
+            // is_first_upload: true,
         })
+    }
+
+    uploadSuccess(platform='alexa', project_id){
+        // They completed their first upload successfully
+        localStorage.setItem('is_first_upload', 'false')
+        if(platform === 'google'){
+            this.setState({
+                google_stage: 5,
+                project_id: project_id || this.state.project_id
+            })
+        }else{
+            this.updateAlexaStage(2)
+        }
+    }
+
+    showUploadPrompt(){
+        this.setState({
+            show_upload_prompt: !this.state.is_first_upload 
+        })
+    }
+
+    updateAlexaStage(stage, cb, props) {
+        if(SHOW_PROMPT_ALEXA.includes(stage)) this.showUploadPrompt()
+        this.setState({
+            ...props,
+            stage: stage,
+        }, cb)
     }
 
     openUpdateLive() {
@@ -208,38 +247,35 @@ class ActionGroup extends PureComponent {
     }
 
     checkVendor() {
-        this.setState({ stage: 7 });
+        this.updateAlexaStage(7)
 
         axios.get('/session/vendor')
-            .then(() => {
-                this.setState({ stage: 0 });
-            })
-            .catch(err => {
-                console.error(err);
-                this.setState({ stage: 6 });
-            });
+        .then(() => {
+            this.updateAlexaStage(0)
+        })
+        .catch(err => {
+            this.updateAlexaStage(6)
+        });
     }
 
     async enableSkill(locale) {
-        this.setState({ stage: 13 })
+        this.updateAlexaStage(13)
         try {
             await axios.put(`/interaction_model/${this.props.skill.amzn_id}/enable`)
             this.SucceedLocale = locale
         } catch (err) {
             console.error(err)
         }
-        this.setState({ stage: 2 })
+        this.uploadSuccess()
     }
 
     checkInteractionModel() {
-        this.setState({ stage: 12 })
+        this.updateAlexaStage(12)
         this.SucceedLocale = null
         const iterate = (depth) => {
             // wait up to 20 seconds
             if (depth === 20) {
-                this.setState({
-                    stage: 2
-                })
+                this.uploadSuccess()
             } else {
                 setTimeout(() => {
                     axios.get(`/interaction_model/${this.props.skill.amzn_id}/status`)
@@ -257,10 +293,7 @@ class ActionGroup extends PureComponent {
                             iterate(depth + 1)
                         })
                         .catch(err => {
-                            console.error(err)
-                            this.setState({
-                                stage: 2
-                            })
+                            this.uploadSuccess()
                         })
                 }, 3000)
             }
@@ -273,28 +306,26 @@ class ActionGroup extends PureComponent {
         let inv_name = this.state.inv_name ? this.state.inv_name : this.props.skill.inv_name
         let error = invNameError(inv_name, this.props.skill.locales)
         if (error) {
-            this.setState({ inv_name: inv_name, inv_name_error: error, stage: 14, show_upload_prompt: !this.state.is_first_upload }, () => {
-                this.setState({ flash: true }, () => setTimeout(() => this.setState({ flash: false }), 1500))
+            this.setState({ inv_name: inv_name, inv_name_error: error, flash: true}, () => {
+                this.updateAlexaStage(14)
+                setTimeout(() => this.setState({ flash: false }), 1500)
             })
             return
         }
-        this.setState({ stage: 1 })
+        this.updateAlexaStage(1)
         if (this.state.stage === 14) {
-            this.setState({ stage: 1 })
+            this.updateAlexaStage(1)
             try {
                 await axios.patch(`/skill/${this.props.skill.skill_id}?inv_name=1`, { inv_name: this.state.inv_name })
                 this.props.updateSkill('inv_name', this.state.inv_name)
             } catch (err) {
-                this.setState({
-                    stage: 6,
-                    show_upload_prompt: !this.state.is_first_upload
-                })
+                this.updateAlexaStage(9, undefined, {upload_error: 'Unable to save Invocation Name'})
             }
         }
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
             .then(res => {
                 let new_version_data = res.data
-                this.setState({ stage: 11 }, () => {
+                this.updateAlexaStage(11, () => {
                     axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
                         .then(res => {
                             this.props.updateSkill('amzn_id', res.data)
@@ -303,15 +334,9 @@ class ActionGroup extends PureComponent {
                         .catch(err => {
                             if (err.status === 403 || err.response.status === 403) {
                                 // No Vendor ID/Amazon Developer Account
-                                this.setState({
-                                    stage: 6,
-                                    show_upload_prompt: !this.state.is_first_upload
-                                })
+                                this.updateAlexaStage(6)
                             } else if(err.status === 401 || err.response.status === 401) {
-                                this.setState({
-                                    stage: 5,
-                                    show_upload_prompt: !this.state.is_first_upload
-                                })
+                                this.updateAlexaStage(5)
                             } else {
                                 let error_message = ''
                                 if (err.response && err.response.data && err.response.data.message) {
@@ -322,12 +347,8 @@ class ActionGroup extends PureComponent {
                                             error_message += '\n' + err.response.data.violations[i].message
                                         }
                                     }
-
                                 }
-
-                                this.setState({
-                                    stage: 9,
-                                    show_upload_prompt: !this.state.is_first_upload,
+                                this.updateAlexaStage(9, undefined, {
                                     upload_error: ((
                                         err.response &&
                                         err.response.data &&
@@ -338,8 +359,7 @@ class ActionGroup extends PureComponent {
                 });
             })
             .catch(err => {
-                console.error(err)
-                this.setState({ stage: 4 });
+                this.updateAlexaStage(4)
             })
     }
 
@@ -360,10 +380,8 @@ class ActionGroup extends PureComponent {
                 let new_version_data = res.data
                 axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
                     .then(res => {
-                        this.setState({
-                            google_stage: 5,
-                            project_id: res.data.project_id || this.state.project_id
-                        });
+                        // They completed their first upload successfully
+                        this.uploadSuccess('google', res.data.project_id)
                     })
                     .catch(err => {
                         this.setState({
@@ -377,14 +395,6 @@ class ActionGroup extends PureComponent {
             .catch(err => {
                 p.onError(err)
             })
-    }
-
-    toggleUpdate() {
-        if (![1, 7, 11, 12, 13].includes(this.state.stage)) {
-            this.setState({
-                updateModal: false
-            })
-        }
     }
 
     toggleUpdateLive() {
@@ -437,23 +447,20 @@ class ActionGroup extends PureComponent {
     }
 
     displayUploadPrompt() {
-        if(ERROR_STAGES[this.props.platform].includes(this.state.stage)){
-            setTimeout(() => {
-                this.setState({show_upload_prompt: false})
+        if(ERROR_STAGES[this.props.platform].includes(this.state.stage) && !this.timeout){
+            this.timeout = setTimeout(() => {
+                this.setState({show_upload_prompt: false, stage: 0})
+                this.timeout = null
             }, 5000)
         }
 
         if(this.state.show_upload_prompt){
             return  <div className="upload-success-popup d-flex">
-                        {this.props.platform === 'google'? 
-                            this.renderGoogleBody()
-                            :
-                            this.render_body()
-                        }
-                        {!ERROR_STAGES[this.props.platform].includes(this.state.stage) && 
-                            ((this.props.platform === 'alexa' && this.state.stage !== 14) || this.props.platform === 'google') && 
-                            <button className="close close-upload-success-popup" onClick={() => {this.setState({show_upload_prompt: false, stage: 0, google_stage:2})}}>&times;</button>}
-                    </div>
+                {this.renderBody(false)}
+                {!ERROR_STAGES[this.props.platform].includes(this.state.stage) && 
+                    ((this.props.platform === 'alexa' && this.state.stage !== 14) || this.props.platform === 'google') && 
+                    <button className="close close-upload-success-popup" onClick={() => {this.setState({show_upload_prompt: false})}}>&times;</button>}
+            </div>
         } 
         return
     }
@@ -518,7 +525,7 @@ class ActionGroup extends PureComponent {
             </Tooltip>
         } else {
             if(this.isUploadLoading()){
-                return <Button variant="contained" className="publish-btn" disabled>
+                return <Button variant="contained" className="publish-btn publish-btn-disabled" onClick={()=>this.setState({show_upload_prompt: true})}>
                         <p className="loading-btn m-0 p-0">Uploading</p>
                         <div className="launch">
                             <div className="load-spinner pt-1">
@@ -547,7 +554,25 @@ class ActionGroup extends PureComponent {
         }
     }
 
-    render_body() {
+    renderBody(modal) {
+        if(this.props.platform === 'google'){
+            return <React.Fragment>
+                {![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <div className="mb-2">
+                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
+                </div>}
+                {this.renderGoogleBody(modal)}
+            </React.Fragment>
+        }else{
+            return <React.Fragment>
+                {![0, 5, 6, 7, 8].includes(this.state.stage) && !ENDING_STAGES.alexa.includes(this.state.stage) && <div className="mb-2">
+                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
+                </div>}
+                {this.renderAlexaBody(modal)}
+            </React.Fragment>
+        }
+    }
+
+    renderAlexaBody(modal) {
         // I had to get this out really fast the states are all REALLY fucking wack
         if (!this.props.skill.locales) {
             return null;
@@ -557,61 +582,39 @@ class ActionGroup extends PureComponent {
             case 1:
                 return loading('Rendering Flows')
             case 2:
-                if (this.SucceedLocale) {
-                    // Track upload on first session
-                    if(localStorage.getItem('is_first_session') === 'true'){
-                        axios.post('/analytics/track_first_session_upload')
-                        .then(() => {
-                            localStorage.setItem('is_first_session', 'false')
-                        })
-                        .catch(err => {
-                            localStorage.setItem('is_first_session', 'false')
-                            console.log(err)
-                        })
-                    }
+                // Track upload on first session
+                if(localStorage.getItem('is_first_session') === 'true'){
+                    axios.post('/analytics/track_first_session_upload')
+                    .then(() => {
+                        localStorage.setItem('is_first_session', 'false')
+                    })
+                    .catch(err => {
+                        localStorage.setItem('is_first_session', 'false')
+                        console.log(err)
+                    })
+                }
+                const locale = (this.SucceedLocale || this.props.skill.locales[0] || 'en-US').replace('-', '_')
 
-                    // They completed their first upload successfully
-                    localStorage.setItem('is_first_upload', 'false')
-                    if(!this.state.is_first_upload){
-                        this.setState({
-                            show_upload_prompt: true
-                        })
-                        return <div className="text-center">
-                            <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
-                            <div className="upload-prompt-text">
-                                Your skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
-                                    target="_blank" rel="noopener noreferrer">
-                                    Amazon console
-                                </a>.
-                            </div>
+                if(!modal){
+                    return <div className="text-center">
+                        <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
+                        <div className="upload-prompt-text">
+                            Your skill is now available to test on your Alexa and the <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
+                                target="_blank" rel="noopener noreferrer">
+                                Amazon console
+                            </a>.
                         </div>
-                    } else {
-                        return <React.Fragment>
-                            <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
-                            <br />
-                            <div className="d-flex align-items-center justify-content-center mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
-                            <span className="modal-txt text-center">
-                                You may test on the Alexa simulator or live on your personal Alexa device
-                            </span>
-                            <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>
-                            <div className="my-3">
-                                <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.SucceedLocale.replace('-', '_')}/`}
-                                    className="purple-btn mr-2" target="_blank" rel="noopener noreferrer">
-                                    Test on Alexa Simulator
-                                </a>
-                            </div>
-                        </React.Fragment>
-                    }
+                    </div>
                 } else {
                     return <React.Fragment>
-                        <img src="/images/clipboard-icon.svg" alt="Success" height="160" />
-                        <br />
-                        <span className="modal-bg-txt text-center mb-2"> <span className="pass-icon"/> Successfully uploaded to Alexa </span>
-                        <span className="modal-txt text-center">
+                        <div className="d-flex align-items-center justify-content-center"> <span className="pass-icon mr-2"/> Upload Successful </div>
+                        {Video('https://s3.amazonaws.com/com.getvoiceflow.videos/loomopt.mp4', 'w-90')}
+                        <span className="modal-txt text-center mt-3">
                             You may test on the Alexa simulator or live on your personal Alexa device
                         </span>
-                        <div className="my-3">
-                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${this.props.skill.locales[0].replace('-', '_')}/`}
+                        {!!this.SucceedLocale && <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>}
+                        <div className="my-45">
+                            <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
                                 className="purple-btn mr-2" target="_blank" rel="noopener noreferrer">
                                 Test on Alexa Simulator
                             </a>
@@ -619,13 +622,14 @@ class ActionGroup extends PureComponent {
                     </React.Fragment>
                 }
             case 4:
-                return <Alert color={"danger" + (this.state.show_upload_prompt ? " mb-0 w-100" : "")}>
+                return <Alert color={"danger" + (modal ? " mb-0 w-100" : "")}>
                     <span className="fail-icon"/>  Rendering Error
                 </Alert>
             case 5:
-                return <div className={"modal-txt flex-fill text-center mt-3" + (this.state.show_upload_prompt? " w-100" : "") }>
+                return <div className={"modal-txt flex-fill text-center mb-4" + (modal ? " w-100" : " mt-4") }>
                     {this.state.amzn_error && <Alert color="danger"><span className="fail-icon"/> Login With Amazon Failed - Try Again</Alert>}
                     Login with Amazon to test your skill on your own Alexa device, or in the Alexa developer console
+                    {modal && Video('https://s3.amazonaws.com/com.getvoiceflow.videos/first.mp4')}
                     <div className="text-center mt-4">
                         <AmazonLogin
                             updateLogin={(stage) => {
@@ -633,9 +637,9 @@ class ActionGroup extends PureComponent {
                                     this.token = true;
                                     this.checkVendor();
                                 } else if (1) {
-                                    this.setState({ stage: 8})
+                                    this.updateAlexaStage(8)
                                 } else {
-                                    this.setState({ stage: 0, amzn_error: true});
+                                    this.updateAlexaStage(0, undefined, {amzn_error: true})
                                 }
                             }}
                             small
@@ -643,17 +647,15 @@ class ActionGroup extends PureComponent {
                     </div>
                 </div>
             case 6:
-                return <div className={this.state.show_upload_prompt? "mt-3 text-center" : ""}>
-                    Your Amazon Account needs to set up developer settings to Upload Skills
-                    <Alert className="mt-4">
-                        Press "Create your Amazon Developer account"
-                        and sign up with the same email as your Amazon Account.
-                    </Alert>
-                    <div className="my-3">
-                        <a href="https://developer.amazon.com/login.html" className="btn btn-primary mr-2" target="_blank" rel="noopener noreferrer">
+                return <div className={"w-100 " + (modal? "text-center" : "")}>
+                    <p><b>Looks like you don't have a developer account</b></p>
+                    <div className="text-muted mb-4 margin-auto" style={{maxWidth: 350}}><b>Important:</b> Make sure to use the same email associated with your Amazon account.</div>
+                    <hr className="full-width"/>
+                    <div className={modal ? 'super-center mb-2' : ''}>
+                        <a href="https://developer.amazon.com/login.html" className="purple-btn mr-3 no-underline d-inline-block mb-2" target="_blank" rel="noopener noreferrer">
                             Developer Sign Up
                         </a>
-                        <Button color="clear" onClick={this.checkVendor}>
+                        <Button color="clear" className="faux-purple-btn d-inline-block mb-2" onClick={this.checkVendor}>
                             <i className="fas fa-sync-alt" /> Check Again
                         </Button>
                     </div>
@@ -663,7 +665,7 @@ class ActionGroup extends PureComponent {
             case 8:
                 return loading('Verifying Login')
             case 9:        
-                return <div className={"w-100" + (this.state.show_upload_prompt? " text-center" : "")}>
+                return <div className={"w-100" + (modal? " text-center" : "")}>
                     <div className="d-flex align-items-center jusitfy-content-center"><span className="fail-icon mr-2"/>Amazon Error Response</div>
                     <Alert color="danger" className="mt-1">
                         {this.state.upload_error}
@@ -729,8 +731,6 @@ class ActionGroup extends PureComponent {
                 })
             }
 
-            // They completed their first upload successfully
-            localStorage.setItem('is_first_upload', 'false')
             if(!this.state.is_first_upload){
                 this.setState({
                     show_upload_prompt: true
@@ -780,24 +780,14 @@ class ActionGroup extends PureComponent {
     }
 
     render() {
-        console.log(this.state)
-        let link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
+        const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
         return (
             <React.Fragment>
-                <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={this.toggleUpdate} onClosed={this.reset} className="stage_modal">
-                    <ModalHeader toggle={this.toggleUpdate}>Update Skill</ModalHeader>
+                <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
+                    <ModalHeader toggle={()=>this.setState({updateModal: false})}>Update Skill</ModalHeader>
                     <ModalBody className="modal-info">
                         <div>
-                            {this.props.platform === 'google' ?
-                                ![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <div className="mb-2">
-                                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
-                                </div>
-                                :
-                                ![0, 5, 6, 7, 8].includes(this.state.stage) && !ENDING_STAGES.alexa.includes(this.state.stage) && <div className="mb-2">
-                                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
-                                </div>
-                            }
-                            {(this.props.platform === 'google') ? this.renderGoogleBody() : this.render_body()}
+                            {this.renderBody(true)}
                         </div>
                     </ModalBody>
                 </Modal>

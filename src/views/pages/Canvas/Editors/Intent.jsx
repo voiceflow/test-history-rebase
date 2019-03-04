@@ -13,7 +13,7 @@ import Toggle from 'react-toggle'
 const _ = require('lodash')
 
 
-class Intent extends Component {
+export class Intent extends Component {
 
     constructor(props) {
         super(props)

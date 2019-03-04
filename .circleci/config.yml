@@ -11,22 +11,34 @@ jobs: # a collection of steps
       - image: circleci/dynamodb:13-oracle
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
-      - add_ssh_keys # add ssh keys to clone the migrations repo
       - run:
           name: update npm version
           command: 'sudo npm install -g npm@latest'
+    #   - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+        #   key: react-cache-{{ checksum "app/package.json" }}
+      - run:
+          name: npm install react packages
+          command: cd app && npm install
+    #   - save_cache: # special step to save the dependency cache
+        #   key: react-cache-{{ checksum "app/package.json" }}
+        #   paths:
+            # - ./node_modules
+      - run:
+          name: (React Tests)
+          command: cd app && CIRCLECI=TRUE npm run test
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: node-module-cache-{{ checksum "package.json" }}
       - run:
           name: npm install packages
           command: npm install
       - save_cache: # special step to save the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: node-module-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
-          name: Unit Tests
+          name: (Unit Tests)
           command: npm run unit_tests
       - run:
           name: AWS Config
@@ -35,7 +47,7 @@ jobs: # a collection of steps
           name: Before Tests
           command: CIRCLECI=TRUE ./scripts/before_test.sh
       - run: # run coverage report
-          name: Integration Tests
+          name: (Integration Tests)
           command: npm run integration_tests
       - run:
           name: After Tests

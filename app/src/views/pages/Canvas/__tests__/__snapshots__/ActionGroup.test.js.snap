@@ -1,140 +1,476 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionGroup render action group/top nav bar 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Connect(ActionGroup)
-    skill={
+<Fragment>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropTransition={
       Object {
-        "account_linking": null,
-        "alexa_events": null,
-        "amzn_id": null,
-        "created": "2019-02-15T22:25:56.687Z",
-        "diagram": "e9f52b0622f08ff1b21137bae05a242b",
-        "error_prompt": null,
-        "fulfillment": Object {},
-        "global": Array [
-          "sessions",
-          "user_id",
-          "timestamp",
-          "platform",
-          "locale",
-          "access_token",
-        ],
-        "google_publish_info": Object {},
-        "intents": Array [
-          Object {
-            "inputs": Array [],
-            "key": "M5s3gMETzsul",
-            "name": "intent_one",
-            "open": true,
-          },
-        ],
-        "inv_name": "Test Skill",
-        "last_save": "2019-02-15T22:25:57.304Z",
-        "live": false,
-        "locales": Array [
-          "en-US",
-        ],
-        "name": "Test Skill",
-        "platform": "alexa",
-        "preview": false,
-        "repeat": 100,
-        "restart": true,
-        "resume_prompt": null,
-        "review": false,
-        "skill_id": "L8mr69wm4K",
-        "slots": Array [],
+        "mountOnEnter": true,
+        "timeout": 150,
       }
     }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "children": [Function],
-    },
-    "ref": null,
-    "rendered": [Function],
-    "type": Object {
-      "$$typeof": Symbol(react.context),
-      "_calculateChangedBits": null,
-      "_context": Object {
-        "$$typeof": Symbol(react.context),
-        "Consumer": [Circular],
-        "Provider": Object {
-          "$$typeof": Symbol(react.provider),
-          "_context": [Circular],
-        },
-        "_calculateChangedBits": null,
-        "_currentRenderer": null,
-        "_currentRenderer2": null,
-        "_currentValue": null,
-        "_currentValue2": null,
-        "_threadCount": 0,
-      },
-    },
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": [Function],
-      },
-      "ref": null,
-      "rendered": [Function],
-      "type": Object {
-        "$$typeof": Symbol(react.context),
-        "_calculateChangedBits": null,
-        "_context": Object {
-          "$$typeof": Symbol(react.context),
-          "Consumer": [Circular],
-          "Provider": Object {
-            "$$typeof": Symbol(react.provider),
-            "_context": [Circular],
-          },
-          "_calculateChangedBits": null,
-          "_currentRenderer": null,
-          "_currentRenderer2": null,
-          "_currentValue": null,
-          "_currentValue2": null,
-          "_threadCount": 0,
-        },
-      },
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+    centered={false}
+    className="stage_modal"
+    fade={true}
+    isOpen={false}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    role="dialog"
+    toggle={[Function]}
+    zIndex={1050}
+  >
+    <ModalHeader
+      charCode={215}
+      closeAriaLabel="Close"
+      tag="h5"
+      toggle={[Function]}
+      wrapTag="div"
+    >
+      Update Skill
+    </ModalHeader>
+    <ModalBody
+      className="modal-info"
+      tag="div"
+    >
+      <div>
+        <div>
+          <img
+            alt="Upload"
+            className="modal-img mb-3 mx-auto"
+            src="/upload.svg"
+          />
+          <div
+            className="modal-bg-txt text-center mt-2"
+          >
+             Upload your skill for testing
+          </div>
+          <div
+            className="modal-txt text-center mt-2"
+          >
+             Updating to Alexa will allow you to test on your Alexa device or the Alexa Developer Console
+          </div>
+          <div
+            className="super-center mb-3 mt-3"
+          >
+            <button
+              className="purple-btn"
+              onClick={[Function]}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </ModalBody>
+  </Modal>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropTransition={
+      Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      }
+    }
+    centered={false}
+    className="stage_modal"
+    fade={true}
+    isOpen={false}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    role="dialog"
+    toggle={[Function]}
+    zIndex={1050}
+  >
+    <ModalHeader
+      charCode={215}
+      closeAriaLabel="Close"
+      tag="h5"
+      toggle={[Function]}
+      wrapTag="div"
+    >
+      Update Live Version
+    </ModalHeader>
+    <ModalBody
+      className="modal-info"
+      tag="div"
+    >
+      <div>
+        <img
+          alt="Upload"
+          className="modal-img-small mb-4 mt-3 mx-auto"
+          src="/live.svg"
+        />
+        <div
+          className="modal-bg-txt text-center mt-2"
+        >
+           Confirm Live Update
+        </div>
+        <div
+          className="modal-txt text-center mt-2 mb-3"
+        >
+          This update will effect the live version of your project. Please be sure you wish to do this.
+        </div>
+        <button
+          className="purple-btn mb-3"
+          onClick={[Function]}
+        >
+          Confirm Update
+        </button>
+      </div>
+    </ModalBody>
+  </Modal>
+  <div
+    id="middle-group"
+  >
+    <Tooltip
+      animateFill={true}
+      animation="shift"
+      arrow={false}
+      arrowSize="regular"
+      className="switch switch-blue mr-4"
+      delay={0}
+      disabled={false}
+      distance={16}
+      duration={375}
+      followCursor={false}
+      hideDelay={0}
+      hideDuration={375}
+      hideOnClick={true}
+      html={null}
+      inertia={false}
+      interactive={false}
+      interactiveBorder={2}
+      multiple={false}
+      offset={0}
+      onHidden={[Function]}
+      onHide={[Function]}
+      onRequestClose={[Function]}
+      onShow={[Function]}
+      onShown={[Function]}
+      popperOptions={Object {}}
+      position="bottom"
+      size="regular"
+      sticky={false}
+      stickyDuration={200}
+      style={Object {}}
+      tag="div"
+      theme="dark"
+      title="Switch to Google View"
+      touchHold={false}
+      trigger="mouseenter focus"
+      unmountHTMLWhenHide={false}
+    >
+      <input
+        className="switch-input checked"
+        id="alexa_toggle"
+        onClick={[Function]}
+        type="radio"
+        value="alexa_toggle"
+      />
+      <label
+        className="switch-label switch-label-on mt-2"
+        htmlFor="alexa_toggle"
+      >
+        Alexa
+      </label>
+      <input
+        className="switch-input "
+        id="google_toggle"
+        onClick={[Function]}
+        type="radio"
+        value="google_toggle"
+      />
+      <label
+        className="switch-label switch-label-off mt-2"
+        htmlFor="google_toggle"
+      >
+        Google
+      </label>
+      <span
+        className="switch-selection"
+      />
+    </Tooltip>
+  </div>
+  <div
+    className="title-group no-select"
+  >
+    <div
+      className="align-icon"
+    >
+      <Tooltip
+        animateFill={true}
+        animation="shift"
+        arrow={false}
+        arrowSize="regular"
+        className="mr-4"
+        delay={0}
+        disabled={false}
+        distance={16}
+        duration={375}
+        followCursor={false}
+        hideDelay={0}
+        hideDuration={375}
+        hideOnClick={true}
+        html={null}
+        inertia={false}
+        interactive={false}
+        interactiveBorder={2}
+        multiple={false}
+        offset={0}
+        onHidden={[Function]}
+        onHide={[Function]}
+        onRequestClose={[Function]}
+        onShow={[Function]}
+        onShown={[Function]}
+        popperOptions={Object {}}
+        position="bottom"
+        size="regular"
+        sticky={false}
+        stickyDuration={200}
+        style={Object {}}
+        theme="dark"
+        touchHold={false}
+        trigger="mouseenter focus"
+        unmountHTMLWhenHide={false}
+      >
+        <button
+          className="nav-btn unsaved "
+          id="icon-save"
+        />
+      </Tooltip>
+    </div>
+    <div
+      className="title-group-sub"
+    >
+      <Tooltip
+        animateFill={true}
+        animation="shift"
+        arrow={false}
+        arrowSize="regular"
+        className="top-nav-icon"
+        delay={0}
+        disabled={false}
+        distance={16}
+        duration={375}
+        followCursor={false}
+        hideDelay={0}
+        hideDuration={375}
+        hideOnClick={true}
+        html={null}
+        inertia={false}
+        interactive={false}
+        interactiveBorder={2}
+        multiple={false}
+        offset={0}
+        onHidden={[Function]}
+        onHide={[Function]}
+        onRequestClose={[Function]}
+        onShow={[Function]}
+        onShown={[Function]}
+        popperOptions={Object {}}
+        position="bottom"
+        size="regular"
+        sticky={false}
+        stickyDuration={200}
+        style={Object {}}
+        theme="dark"
+        title="Share"
+        touchHold={false}
+        trigger="mouseenter focus"
+        unmountHTMLWhenHide={false}
+      >
+        <button
+          className="nav-btn-border"
+          id="icon-share"
+          onClick={[Function]}
+        />
+      </Tooltip>
+      <Popover
+        className="mt-3"
+        delay={
+          Object {
+            "hide": 0,
+            "show": 0,
+          }
+        }
+        hideArrow={false}
+        isOpen={false}
+        placement="bottom"
+        placementPrefix="bs-popover"
+        target="icon-share"
+        toggle={[Function]}
+      >
+        <PopoverHeader
+          tag="h3"
+        >
+          Share Link
+        </PopoverHeader>
+        <PopoverBody
+          style={
+            Object {
+              "minWidth": "260px",
+            }
+          }
+          tag="div"
+        >
+          <div
+            className="space-between"
+          >
+            <label>
+              Allow preview sharing
+            </label>
+            <Toggle
+              icons={false}
+              onChange={[Function]}
+            />
+          </div>
+        </PopoverBody>
+      </Popover>
+    </div>
+    <div
+      className="align-icon"
+    >
+      <Tooltip
+        animateFill={true}
+        animation="shift"
+        arrow={false}
+        arrowSize="regular"
+        className="ml-4 mr-4"
+        delay={0}
+        disabled={false}
+        distance={16}
+        duration={375}
+        followCursor={false}
+        hideDelay={0}
+        hideDuration={375}
+        hideOnClick={true}
+        html={null}
+        inertia={false}
+        interactive={false}
+        interactiveBorder={2}
+        multiple={false}
+        offset={0}
+        onHidden={[Function]}
+        onHide={[Function]}
+        onRequestClose={[Function]}
+        onShow={[Function]}
+        onShown={[Function]}
+        popperOptions={Object {}}
+        position="bottom"
+        size="regular"
+        sticky={false}
+        stickyDuration={200}
+        style={Object {}}
+        theme="dark"
+        title="Test"
+        touchHold={false}
+        trigger="mouseenter focus"
+        unmountHTMLWhenHide={false}
+      >
+        <button
+          className="nav-btn"
+        >
+          <i
+            className="far fa-play"
+          />
+        </button>
+      </Tooltip>
+    </div>
+    <Tooltip
+      animateFill={true}
+      animation="shift"
+      arrow={false}
+      arrowSize="regular"
+      className=""
+      delay={0}
+      disabled={false}
+      distance={16}
+      duration={375}
+      followCursor={false}
+      hideDelay={0}
+      hideDuration={375}
+      hideOnClick={true}
+      html={
+        <div
+          style={
+            Object {
+              "width": 155,
+            }
+          }
+        >
+          Test your skill on your own Alexa device, or in the Alexa developer console
+        </div>
+      }
+      inertia={false}
+      interactive={false}
+      interactiveBorder={2}
+      multiple={false}
+      offset={0}
+      onHidden={[Function]}
+      onHide={[Function]}
+      onRequestClose={[Function]}
+      onShow={[Function]}
+      onShown={[Function]}
+      popperOptions={Object {}}
+      position="bottom"
+      size="regular"
+      sticky={false}
+      stickyDuration={200}
+      style={Object {}}
+      theme="dark"
+      touchHold={false}
+      trigger="mouseenter focus"
+      unmountHTMLWhenHide={false}
+    >
+      <Button
+        className="publish-btn"
+        color="secondary"
+        onClick={[Function]}
+        tag="button"
+        variant="contained"
+      >
+        Upload to Alexa
+        <div
+          className="launch"
+        >
+          <div
+            className="first"
+          >
+            <img
+              alt="upload"
+              height="18"
+              src="/up-arrow.svg"
+              width="18"
+            />
+          </div>
+          <div
+            className="second"
+          >
+            <img
+              alt="check"
+              height="16"
+              src="/rocket.svg"
+              width="16"
+            />
+          </div>
+        </div>
+      </Button>
+    </Tooltip>
+  </div>
+</Fragment>
 `;

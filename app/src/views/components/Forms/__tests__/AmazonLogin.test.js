@@ -1,13 +1,14 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import AmazonLogin from '../AmazonLogin';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
 describe('Amazon Login Test', () => {
     it('render empty card', () => {
         const component = shallow(<AmazonLogin />);
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
     it('can login', () => {
     const login = jest.spyOn(AmazonLogin.prototype, "triggerLogin");

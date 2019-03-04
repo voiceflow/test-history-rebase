@@ -2,6 +2,7 @@ import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import Stream from './../Stream';
 import {defaultNode} from '../__mock__/defaultNode';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -15,6 +16,6 @@ describe('StreamEditor', () => {
         }
         const component = shallow(<Stream node={node}/>);
         expect(component.state().node).toEqual(node)
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

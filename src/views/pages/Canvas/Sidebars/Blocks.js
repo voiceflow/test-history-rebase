@@ -18,7 +18,6 @@ class Blocks extends PureComponent {
                 Basic: true,
                 Logic: false,
                 Advanced: false,
-                Functional: false,
                 Business: false
             }
         } else {

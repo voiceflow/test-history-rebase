@@ -91,8 +91,6 @@ class Onboarding extends Component{
 		if(calendly_script !== null){
 			calendly_script.parentNode.removeChild(calendly_script)
 		}
-
-		this.submitSurvey()
 	}
 
 	// trackOnboardingPage(page) {

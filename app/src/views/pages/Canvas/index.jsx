@@ -162,7 +162,8 @@ export class Canvas extends Component {
             default_templates: [],
             spotlight: false,
             keyboard_help: false,
-            upgrade_modal: false
+            upgrade_modal: false,
+            type_counter: {}
         }
 
         this.diagram_set = new Set()
@@ -1225,6 +1226,7 @@ export class Canvas extends Component {
         var engine = this.state.engine
         var model = new SRD.DiagramModel()
 
+        let type_counter = {}
         let diagram_json = false
         try {
             diagram_json = JSON.parse(diagram.data)
@@ -1303,11 +1305,25 @@ export class Canvas extends Component {
             for (let key in nodes) {
                 const node = nodes[key]
                 const type = node.extras.type
+                if(type_counter[type] === undefined){
+                    type_counter[type] = 1 
+                } else {
+                    type_counter[type] += 1
+                }
+
                 this.addRemoveListener(node)
 
+                // Combine block
                 if (Array.isArray(node.combines) && node.combines.length !== 0) {
                     node.combines.forEach(n => {
                         if (typeof n !== 'object') return
+
+                        if(type_counter[n.extras.type] === undefined){
+                            type_counter[n.extras.type] = 1 
+                        } else {
+                            type_counter[n.extras.type] += 1
+                        }
+
                         if (this.props.skill.platform === 'google') {
                             n.fade = !ALLOWED_GOOGLE_BLOCKS.includes(n.extras.type)
                         } else {
@@ -1346,6 +1362,7 @@ export class Canvas extends Component {
             this.props.setOpen(false)
             this.setState({
                 load_diagram: false,
+                type_counter: type_counter,
                 engine: engine,
                 diagram_name: diagram.title ? diagram.title : 'New Flow',
                 diagram_level_intents: diagram_level_intents
@@ -1356,7 +1373,8 @@ export class Canvas extends Component {
             // this.onIntentUpdate()
         } else {
             this.setState({
-                load_diagram: false
+                load_diagram: false,
+                type_counter: type_counter
             })
             this.props.setError('Could Not Open Project - Corrupted File')
         }
@@ -2255,6 +2273,7 @@ export class Canvas extends Component {
                         onError={this.props.setError}
                         live_mode={this.props.live_mode}
                         toggleUpgrade={this.props.toggleUpgrade}
+                        type_counter={this.state.type_counter}
                     />
                     {this.state.load_diagram && <div id="loading-diagram">
                         <div className="text-center">

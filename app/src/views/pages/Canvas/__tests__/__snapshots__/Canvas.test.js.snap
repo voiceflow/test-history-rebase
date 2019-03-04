@@ -57,6 +57,7 @@ exports[`Canvas render canvas 1`] = `
       onFlowRenamed={[Function]}
       renameFlow={[Function]}
       saving={false}
+      type_counter={Object {}}
       unfocus={[Function]}
       user_modules={null}
       user_templates={Array []}

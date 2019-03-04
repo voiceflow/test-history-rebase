@@ -30,7 +30,7 @@ export const combineValidation = (current, target) => {
     if (current.extras.type === 'god' && target.extras.type === 'god'){
         return false;
     }
-    if (!_.isEmpty(target.combines)){
+    if (!_.isEmpty(target.combines) && _.last(target.combines) !== 'temp') {
         switch(_.last(target.combines).extras.type){
             case 'exit':
                 switch(current.extras.type){

@@ -255,6 +255,7 @@ export class BlockNodeWidget extends BaseWidget {
 					}
 					if(this.props.node.extras.type !== 'story'){
 						var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
+						this.nodeElement = nodeElement
 						if (e.buttons === 1 && this.props.diagramEngine.getSuperSelect() && this.props.node.id === this.props.diagramEngine.getSuperSelect().id) {
 							nodeElement.style.pointerEvents = 'none';
 						}

@@ -51,7 +51,7 @@ class SlotInputs extends Component {
         })
 
         if (used_slots.has(key)) {
-            const error = `Cannot remove slot as it is currently being used in an intent (${slot_names[key]})!`
+            const error = `Cannot remove slot as it is currently being used in an intent (${slot_names[key]})`
             this.props.onError(error)
         } else {
             let i = this.props.slots.findIndex(i => i.key === key)

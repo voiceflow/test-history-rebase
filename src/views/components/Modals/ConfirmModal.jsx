@@ -10,7 +10,7 @@ class ConfirmModal extends React.Component {
       return null
     }
     return (
-      <Modal isOpen={!!this.props.confirm} toggle={this.props.toggle} centered size="sm">
+      <Modal isOpen={!!this.props.confirm} toggle={this.props.toggle} centered size={this.props.confirm.size || "sm"}>
         <ModalBody className="text-center">
           {this.props.confirm.text}
         </ModalBody>

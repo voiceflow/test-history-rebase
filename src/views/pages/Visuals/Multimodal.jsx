@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { deleteDisplay } from './../../actions/displayActions'
+import { deleteDisplay } from './../../../actions/displayActions'
 
 import { Alert } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button';

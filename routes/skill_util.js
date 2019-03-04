@@ -323,13 +323,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
             for(var j = 0; j < node.combines.length; j++){
               PLATFORMS.forEach(p => {
                 try{
-                  if(node.combines[j].extras[p].diagram_id){
+                  if(node.combines[j].extras[p] && node.combines[j].extras[p].diagram_id){
                     node.combines[j].extras[p].diagram_id = diagram_mapping[node.combines[j].extras[p].diagram_id]
                     sub_diagrams.add(node.combines[j].extras[p].diagram_id)
                   }
-                }catch(e){
-                  console.log(e)
-                }
+                }catch(e){}
               })  
             }
           }

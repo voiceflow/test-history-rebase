@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
-import { toggleLive } from './../../actions/skillActions'
+import { toggleLive } from './../../../actions/skillActions'
 const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
 class SecondaryNavBar extends Component {

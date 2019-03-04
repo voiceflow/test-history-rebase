@@ -18,9 +18,9 @@ import { open, blockMenu } from './../../HOC/canvasHelper';
 //Helpers
 import { combineAppendValidation, combineValidation } from './../../helpers/combineHelper'
 
-import { renameDiagram } from "./../../actions/diagramActions";
-import { updateSkill } from "./../../actions/skillActions";
-import { setVariables } from './../../actions/variableActions'
+import { renameDiagram } from "./../../../actions/diagramActions";
+import { updateSkill } from "./../../../actions/skillActions";
+import { setVariables } from './../../../actions/variableActions'
 
 import ActionGroup from './ActionGroup'
 import TemplateConfirmModal from './../../components/Modals/TemplateConfirmModal'
@@ -2272,7 +2272,7 @@ export class Canvas extends Component {
                         diagramEngine={this.state.engine}
                         node={this.state.engine.getSuperSelect()}
                         onUpdate={this.onUpdate}
-                        close={() => this.props.setOpen(false)}
+                        close={()=>this.props.setOpen(false)}
                         repaint={this.repaint}
                         setHelp={(help) => this.setState({help: help, helpOpen: true})}
                         diagrams={this.props.diagrams}

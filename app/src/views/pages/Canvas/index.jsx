@@ -126,6 +126,7 @@ export class Canvas extends Component {
         this.lastModel = null
         // build diagram tree function from child
         this.buildDiagrams = null
+        this.addComment = this.addComment.bind(this)
         // preview mode
         // this.preview = !!this.props.preview
 
@@ -178,6 +179,7 @@ export class Canvas extends Component {
         Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
         Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
         Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
+        Mousetrap.bind(['ctrl+/', 'command+/'], this.addComment)
         Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
@@ -452,6 +454,11 @@ export class Canvas extends Component {
             this.props.removeRedo();
         }
         e.preventDefault()
+    }
+
+    addComment(e){
+        e.preventDefault()
+        this.onDrop('comment')
     }
             
     removeNode(selectedNode = null){

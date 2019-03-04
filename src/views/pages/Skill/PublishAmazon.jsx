@@ -23,6 +23,8 @@ import AuthenticationService from '../../../services/Authentication'
 import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
+
+import { updateSkill, updateEntireSkill } from "./../../../actions/skillActions"
 const _ = require('lodash');
 
 const stage_title = {
@@ -373,6 +375,7 @@ class Skill extends Component {
 
         axios.patch(('/skill/' + this.props.skill_id + (publish === true ? '?publish=true' : '')), {...properties, locales: JSON.stringify(properties.locales)})
         .then(res => {
+            this.props.updateEntireSkill(properties)
             if(typeof cb === 'function') cb()
         })
         .catch(err => {
@@ -990,4 +993,10 @@ class Skill extends Component {
 const mapStateToProps = state => ({
     skill_id: state.skills.skill.skill_id
 })
-export default connect(mapStateToProps)(Skill);
+const mapDispatchToProps = dispatch => {
+    return {
+        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        updateEntireSkill: (val) => dispatch(updateEntireSkill(val))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Skill);

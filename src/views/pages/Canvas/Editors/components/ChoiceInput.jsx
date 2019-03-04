@@ -173,7 +173,7 @@ class ChoiceInput extends Component {
                   html={this.state.text_error}
               >
                 <Textarea
-                  className={"form-control form-bg" + (has_entry ? (this.state.samples.length === 1 ?  ' mb-3' : '') : ' user-input')}
+                  className={`form-control form-bg user-input ${this.state.samples.length === 1 ?  ' mb-3' : ''}`}
                   value={this.state.text}
                   onChange={this.onTextChange}
                   placeholder={this.state.samples.length ? "Enter synonyms of the user reply" : "Enter user reply"}

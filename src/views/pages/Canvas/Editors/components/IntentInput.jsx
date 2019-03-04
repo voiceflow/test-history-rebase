@@ -70,7 +70,7 @@ class IntentInput extends Component {
         }
 
         if(this.props.utteranceExists(newValue)){
-            return this.props.onError('Duplicate utterances are not allowed!')
+            return this.props.onError('Duplicate utterances are not allowed')
         }
 
         const slot_keys= this._getSlotKeys(newValue)

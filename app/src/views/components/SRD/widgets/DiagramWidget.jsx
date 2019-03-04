@@ -251,6 +251,9 @@ export class DiagramWidget extends BaseWidget {
 					model.model.setSelected(true);
 					// update port coordinates as well
 					if (model.model instanceof NodeModel) {
+						if (event.buttons === 1 && this.props.diagramEngine.getSuperSelect()) {
+							model.element.style.pointerEvents = 'none';
+						}
 						_.forEach(model.model.getPorts(), port => {
 							const portCoords = this.props.diagramEngine.getPortCoords(port);
 							port.updateCoords(portCoords);

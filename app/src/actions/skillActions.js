@@ -39,12 +39,16 @@ export const setLiveModeModal = isLive => ({
 export const updateSkill = (type, val) => ({
     type: "UPDATE_SKILL",
     payload: { type, val }
+})
 
+export const updateEntireSkill = (skill) => ({
+    type: "UPDATE_ENTIRE_SKILL",
+    payload: { skill }
 })
 
 export const updateSkillMerge = (type, val) => ({
     type: "UPDATE_SKILL_MERGE",
-    payload: { type, val}
+    payload: { type, val }
 })
 
 export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispatch => {
@@ -139,5 +143,6 @@ export const FETCH_SKILLS_FAILURE = 'FETCH_SKILLS_FAILURE';
 export const FETCH_SKILLS = 'FETCH_SKILLS';
 export const TOGGLE_LIVE = 'TOGGLE_LIVE'
 export const UPDATE_SKILL = 'UPDATE_SKILL'
+export const UPDATE_ENTIRE_SKILL = 'UPDATE_ENTIRE_SKILL'
 export const UPDATE_SKILL_MERGE = 'UPDATE_SKILL_MERGE'
 export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';

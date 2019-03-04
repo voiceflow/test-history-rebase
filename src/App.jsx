@@ -4,7 +4,9 @@ import { Provider } from "react-redux";
 import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import {StripeProvider} from 'react-stripe-elements'
-import { store, history } from './views/containers/store'
+import { store, history } from './containers/store'
+import { Alert } from 'reactstrap'
+
 // Import Dependent CSS
 import 'react-tippy/dist/tippy.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,11 +31,11 @@ import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
 import ErrorBoundary from './ErrorBoundary';
 import socket from 'socket.io-client'
+import {evaluateMaintenance} from './MAINTENANCE'
 
-
-// MOdal
+// GLOBAL MODALS
 import ConfirmModal from "./views/components/Modals/ConfirmModal"
-;
+
 // SECRET
 var STRIPE_KEY
 if (process.env.NODE_ENV === 'production') {
@@ -131,7 +133,7 @@ class App extends Component {
       confirm: null,
     }
 
-    this.onConfirm = this.onConfirm.bind(this);
+    this.onConfirm = this.onConfirm.bind(this)
 
     if(AuthenticationService.isAuth()){
       AuthenticationService.check((err, res) => {
@@ -155,6 +157,22 @@ class App extends Component {
         session: AuthenticationService.isAuth()
       })
     })
+
+    evaluateMaintenance((time) => {
+      if(time){
+        setTimeout(() => this.onConfirm({
+          size: "rg",
+          text: <Alert className="mb-0">
+            Voiceflow Creator will go under planned maintenance<br/>
+            <b>{time}</b> from now<hr/>
+            Live Projects will not be affected</Alert>
+        }), 100)
+      }else{
+        window.location.replace('https://getvoiceflow.com/maintenance')
+        window.location.href = 'https://getvoiceflow.com/maintenance'
+        throw new Error('MAINTENANCE')
+      }
+    })
   }
 
   componentDidMount() {
@@ -175,6 +193,8 @@ class App extends Component {
       confirm: {
         ...confirm, confirm: () => {
           this.setState({ confirm: null })
+          if (typeof confirm.confirm !== 'function') return
+
           if (confirm.params) {
             confirm.confirm(...confirm.params)
           } else {

@@ -43,11 +43,6 @@ export default function diagramReducer(state = initialState, action) {
       return {
         ...state
       }
-    case SET_LIVE_MODE_MODAL:
-      return {
-        ...state,
-        show_live_mode_modal: action.payload.isLive
-      }
     default:
       return state;
   }

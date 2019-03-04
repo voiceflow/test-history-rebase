@@ -3,7 +3,7 @@ import {Button, Alert} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 
-import { fetchDiagramVariables } from './../../../actions/diagramVariablesAction';
+import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
 import DiagramVariables from './components/DiagramVariables';
 // import Expressionfy from './components/Expressionfy';
 

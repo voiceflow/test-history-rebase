@@ -4,11 +4,11 @@ import { compose } from 'recompose'
 
 import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
 
-import { fetchSkills, setLiveModeModal } from './views/actions/skillActions'
-import { fetchDiagram } from './views/actions/diagramActions'
-import { fetchProducts } from "./views/actions/productActions";
-import { fetchDisplays } from "./views/actions/displayActions";
-import { fetchEmails } from "./views/actions/emailActions";
+import { fetchSkills, setLiveModeModal } from './actions/skillActions'
+import { fetchDiagram } from './actions/diagramActions'
+import { fetchProducts } from "./actions/productActions";
+import { fetchDisplays } from "./actions/displayActions";
+import { fetchEmails } from "./actions/emailActions";
 
 import Canvas from './views/pages/Canvas'
 import Visuals from './views/pages/Visuals'

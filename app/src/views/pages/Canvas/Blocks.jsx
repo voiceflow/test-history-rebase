@@ -6,6 +6,7 @@ const SECTIONS = [{
     items: [
         { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
         { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
+        { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
     ]
 },{
     title: 'logic',
@@ -25,13 +26,6 @@ const SECTIONS = [{
         { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
         { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},
    ]
-},{
-    title: 'functional',
-    items: [
-        { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
-        // { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
-        // { text: 'Comment', type: 'comment', icon: <i className="far fa-comment-alt"/>, tip: 'Add notes to your diagram'},
-    ]
 },{
     title: 'visuals',
     items: [

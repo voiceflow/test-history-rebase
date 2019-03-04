@@ -47,7 +47,7 @@ class SlotInput extends Component {
 
         let name_error
         if (!re.test(input) && input.length > 0) {
-            name_error = 'Slot names can only contain lowercase letters and underscores!'
+            name_error = 'Slot names can only contain lowercase letters and underscores'
         } else {
             name_error = null
         }

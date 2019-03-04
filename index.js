@@ -9,7 +9,8 @@ const port = 8080
 
 // eslint-disable-next-line no-console
 if (process.env.NODE_ENV === 'test') {
-    app.listen(port, () => console.log(`${name} | PORT ${port}`))
+    console.log('INTEGRATION TESTS')
+    app.listen(port, () => console.log(`TESTING ${name} | PORT ${port}`))
 }else{
     const io = require('socket.io')(app.listen(port, () => console.log(`${name} | PORT ${port}`)), {
         pingInterval: 10000,

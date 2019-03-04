@@ -21,4 +21,4 @@ EXPOSE 8080
 EXPOSE 6379
 EXPOSE 5432
 
-CMD ["npm", "run", "local"]
+CMD ["npm", "run", "start"]

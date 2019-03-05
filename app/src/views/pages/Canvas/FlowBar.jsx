@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'
 class FlowBar extends Component{
@@ -14,7 +15,7 @@ class FlowBar extends Component{
     }
     render(){
         return <React.Fragment>
-            <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.diagram)}>
+            <button id="home-button" className="btn-home pl-3" onClick={()=>this.props.enterFlow(this.props.root_id)}>
                 <span>Home</span>
             </button>
             <div id="flow-bar">
@@ -32,10 +33,10 @@ class FlowBar extends Component{
                             <DropdownItem header>
                                 Flow Options
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram.id)} className="pointer">
+                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram)} className="pointer">
                                 <i className="fas fa-clone text-muted"/> Copy
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram.id)} className="pointer">
+                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram)} className="pointer">
                                 <i className="fas fa-times-square text-muted"/> Delete
                             </DropdownItem>
                         </DropdownMenu>
@@ -47,6 +48,7 @@ class FlowBar extends Component{
 }
 
 const mapStateToProps = state => ({
-    diagram: state.skills.skill.diagram
+    diagram: state.skills.skill.diagram,
+    root_id: _.find(state.diagrams.diagrams, d => d.name === 'ROOT').id,
 })
 export default connect(mapStateToProps)(FlowBar);

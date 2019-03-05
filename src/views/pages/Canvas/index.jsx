@@ -1751,7 +1751,6 @@ export class Canvas extends Component {
 
     enterFlow(new_diagram_id, save=true) {
         if(new_diagram_id !== this.props.diagram_id){
-            this.props.updateSkill("diagram", new_diagram_id);
             if(save && !this.props.preview && !this.state.saved){
                 this.saveCB = () => {
                     this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
@@ -1763,6 +1762,7 @@ export class Canvas extends Component {
                 this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
             }
         }
+        this.props.updateSkill("diagram", new_diagram_id);
     }
 
     setCanFulfill(intent_key, new_value) {
@@ -2332,7 +2332,7 @@ export class Canvas extends Component {
                             <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
                             <button className="white-circ ml-2" onClick={() => {this.setState({keyboard_help: true})}}><i className="fas fa-keyboard"></i></button>
                         </div>
-                        { this.props.skill.diagram !== this.props.diagram_id && <FlowBar
+                        { this.props.root_id !== this.props.diagram_id && <FlowBar
                                 deleteFlow={this.deleteFlow}
                                 copyFlow={this.copyFlow}
                                 renameFlow={this.renameFlow}
@@ -2378,6 +2378,7 @@ const mapStateToProps = state => ({
   skill: state.skills.skill,
   diagrams: state.diagrams.diagrams,
   diagram_error: state.diagrams.error,
+  root_id: _.find(state.diagrams.diagrams, d => d.name === 'ROOT').id,
   load_diagram: state.diagrams.loading,
   error: state.skills.error,
   variables: state.variables.localVariables

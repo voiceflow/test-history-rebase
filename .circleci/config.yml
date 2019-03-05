@@ -1,6 +1,6 @@
 version: 2 # use CircleCI 2.0
 jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
+  test: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/storyflow-server # directory where steps will run
     docker: # run the steps with Docker
       - image: circleci/node:10 # ...with this image as the primary container; this is where all `steps` will run
@@ -55,3 +55,26 @@ jobs: # a collection of steps
       - run:
           name: After Tests
           command: ./scripts/after_test.sh
+  deploy-staging:
+    docker:
+      - image: ubuntu:14.04
+    working_directory: /tmp/app
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: Deploy if tests pass and branch is Master
+          command: echo 'OH MY PLEASE JUST WORK OKAY'
+      - run:
+          name: ls the directory
+          command: ls -a
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - test
+      - deploy-staging:
+          requires:
+            - test
+          filters:
+            branches:
+              only: staging

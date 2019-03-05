@@ -15,11 +15,12 @@ class Blocks extends PureComponent {
         let show = localStorage.getItem('show')
         if(!show){
             show = {
-                Basic: true,
-                Logic: false,
-                Advanced: false,
-                Functional: false,
-                Business: false
+                favorites: true,
+                basic: true,
+                logic: false,
+                advanced: false,
+                functional: false,
+                business: false
             }
         } else {
             show = JSON.parse(show)
@@ -31,11 +32,19 @@ class Blocks extends PureComponent {
         this.state = {
             tab: tab,
             show: show,
-            sections: getSections()
+            sections: getSections(this.props.type_counter)
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
         this.switchTab = this.switchTab.bind(this)
+    }
+
+    componentWillReceiveProps(props){
+        if(props.type_counter !== this.props.type_counter){
+            this.setState({
+                sections: getSections(props.type_counter)
+            })
+        }
     }
 
     switchTab(tab){
@@ -68,7 +77,7 @@ class Blocks extends PureComponent {
                                 <i className={"fas fa-caret-down mr-1 rotate" + (this.state.show[section.title] ? "" : " fa-rotate--90")}/>
                                 {section.title}
                                 </span>
-                                <span className={"title-dot " + section.title}/>
+                                <span className={(section.title !== 'favorites' ? "title-dot " + section.title : section.title)}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
                             {(section.title === 'business' && window.user_detail.admin === 0) ?

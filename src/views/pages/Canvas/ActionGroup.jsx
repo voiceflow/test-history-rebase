@@ -618,7 +618,7 @@ export class ActionGroup extends PureComponent {
                 // Track upload on first session
                 if(localStorage.getItem('is_first_session') === 'true'){
                     axios.post('/analytics/track_first_session_upload')
-                    .then(() => {
+                    .then(res => {
                         localStorage.setItem('is_first_session', 'false')
                     })
                     .catch(err => {
@@ -755,7 +755,7 @@ export class ActionGroup extends PureComponent {
             // Track upload on first session
             if(localStorage.getItem('is_first_session') === 'true'){
                 axios.post('/analytics/track_first_session_upload')
-                .then(() => {
+                .then(res => {
                     localStorage.setItem('is_first_session', 'false')
                 })
                 .catch(err => {

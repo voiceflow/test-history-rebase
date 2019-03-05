@@ -60,8 +60,14 @@ jobs: # a collection of steps
     steps:
       - checkout # special step to check out source code to working directory
       - run:
-          name: 'Update PIP && Install AWS EB CLI'
-          command: pip install --upgrade pip && pip install awsebcli
+          name: 'Update PIP && Install AWS CLI'
+          command: |
+            pip install --upgrade pip
+            pip install awsebcli
+            pip install awscli --upgrade --user
+            aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_DOCKERRUN.json ./Dockerrun.aws.json
+            echo $DOCKER_PASS
+            ls -a
       - run:
           name: Docker Login
           command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
@@ -73,7 +79,10 @@ jobs: # a collection of steps
           command: docker push "andrewvoiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
       - run:
           name: Update Dockerrun
-          command: sed -i'' -e "s;%BUILD_NUM%;$CIRCLE_BUILD_NUM;g" ./Dockerrun.aws.json && cat ./Dockerrun.aws.json
+          command: |
+            sed -i'' -e "s;%BUILD_NUM%;$CIRCLE_BUILD_NUM;g" ./Dockerrun.aws.json
+            sed -i'' -e "s;%ENV%;voiceflow-server-staging;g" ./Dockerrun.aws.json
+            cat ./Dockerrun.aws.json
 workflows:
   version: 2
   build-deploy:

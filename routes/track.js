@@ -20,6 +20,7 @@ exports.trackOnboarding = (req, res) => {
             page: req.body.page
         }
     })
+    res.sendStatus(200)
 }
 
 exports.trackFirstSessionUpload = (req, res) => {
@@ -27,4 +28,5 @@ exports.trackFirstSessionUpload = (req, res) => {
         userId: req.user.id,
         event: 'First Session Upload'
     })
+    res.sendStatus(200)
 }

@@ -7,7 +7,8 @@ import {
   SET_LIVE_MODE_MODAL,
   TOGGLE_LIVE,
   UPDATE_SKILL,
-  UPDATE_SKILL_MERGE
+  UPDATE_SKILL_MERGE,
+  UPDATE_ENTIRE_SKILL
 } from '../actions/skillActions';
 
 import update from 'immutability-helper';
@@ -67,6 +68,11 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, { [action.payload.type]: {$set: action.payload.val }})
+      }
+    case UPDATE_ENTIRE_SKILL:
+      return {
+        ...state,
+        skill: update(state.skill, {$merge: action.payload.skill })
       }
     case UPDATE_SKILL_MERGE:
       return {

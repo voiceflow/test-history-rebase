@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "andrewvoiceflow/voiceflow-creator",
+    "Name": "andrewvoiceflow/voiceflow-creator:%BUILD_NUM%",
     "Update": "true"
   },
   "Ports": [

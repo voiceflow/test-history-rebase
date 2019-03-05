@@ -254,7 +254,7 @@ class Skill extends Component {
         }
 
         return <React.Fragment>
-            {this.state.secondary && <SecondaryNavBar page={this.props.page} onSave={this.onSave}/>}
+            {this.state.secondary && <SecondaryNavBar page={this.props.page} onSave={this.onSave} history={this.props.history}/>}
 
             <div className="skill-name-top-left fixed-top">
             <Link to="/" className="mx-2">

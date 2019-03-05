@@ -56,14 +56,14 @@ const SHOW_PROMPT_ALEXA = [4,5,6,9,14,2]
 
 const STAGE_PERCENTAGES = {
     alexa: {
-        1: 10,
-        11: 20,
-        12: 60,
-        13: 80
+        1: [0, 5],
+        11: [10, 59],
+        12: [60, 79],
+        13: [95, 100]
     },
     google: {
-        3: 10,
-        4: 60
+        3: [10, 59],
+        4: [60, 99]
     }
 }
 
@@ -112,6 +112,39 @@ const invNameError = (name, locales) => {
         return 'Invocation name can not contain Launch Phrases e.g. ' + LAUNCH_PHRASES.join(', ')
     } else {
         return null
+    }
+}
+
+class RenderProgress extends PureComponent {
+    constructor(props){
+        super(props)
+        this.state = {
+            percent: this.props.range[0]
+        }
+        this.increment = this.increment.bind(this)
+    }
+
+    componentDidMount(){
+        this.increment()
+    }
+
+    increment() {
+        if(this.state.percent <= this.props.range[1]){
+            this.setState({percent: this.state.percent + 1})
+            this.timeout = setTimeout(this.increment, 500)
+        }
+    }
+
+    componentDidUpdate(props){
+        if(props.range !== this.props.range){
+            if(this.timeout) clearTimeout(this.timeout)
+            this.setState({percent: this.props.range[0]})
+            this.increment()
+        }
+    }
+
+    render(){
+        return <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={this.state.percent}/>
     }
 }
 
@@ -558,14 +591,14 @@ export class ActionGroup extends PureComponent {
         if(this.props.platform === 'google'){
             return <React.Fragment>
                 {![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <div className="mb-2">
-                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
+                    <RenderProgress range={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
                 </div>}
                 {this.renderGoogleBody(modal)}
             </React.Fragment>
         }else{
             return <React.Fragment>
-                {![0, 5, 6, 7, 8].includes(this.state.stage) && !ENDING_STAGES.alexa.includes(this.state.stage) && <div className="mb-2">
-                    <Progress type="circle" strokeWidth={5} theme={{default: {color: '#42a5ff'}}} percent={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
+                {STAGE_PERCENTAGES.alexa[this.state.stage] && <div className="mb-2">
+                    <RenderProgress range={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
                 </div>}
                 {this.renderAlexaBody(modal)}
             </React.Fragment>
@@ -615,7 +648,7 @@ export class ActionGroup extends PureComponent {
                         {!!this.SucceedLocale && <Alert className="w-75 mb-1 mt-3 text-center"><b>Alexa,</b> open {this.props.skill.inv_name}</Alert>}
                         <div className="my-45">
                             <a href={`https://developer.amazon.com/alexa/console/ask/test/${this.props.skill.amzn_id}/development/${locale}/`}
-                                className="purple-btn mr-2" target="_blank" rel="noopener noreferrer">
+                                className="purple-btn mr-2 no-underline" target="_blank" rel="noopener noreferrer">
                                 Test on Alexa Simulator
                             </a>
                         </div>

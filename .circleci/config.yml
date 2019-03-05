@@ -1,6 +1,6 @@
 version: 2 # use CircleCI 2.0
 jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
+  test: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/storyflow-server # directory where steps will run
     docker: # run the steps with Docker
       - image: circleci/node:10 # ...with this image as the primary container; this is where all `steps` will run
@@ -14,16 +14,16 @@ jobs: # a collection of steps
       - run:
           name: update npm version
           command: 'sudo npm install -g npm@latest'
-    #   - restore_cache: # special step to restore the dependency cache
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-        #   key: react-cache-{{ checksum "app/package.json" }}
+      - restore_cache: # special step to restore the dependency cache
+          Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: react-cache-{{ checksum "app/package.json" }}
       - run:
           name: npm install react packages
           command: cd app && npm install
-    #   - save_cache: # special step to save the dependency cache
-        #   key: react-cache-{{ checksum "app/package.json" }}
-        #   paths:
-            # - ./node_modules
+      - save_cache: # special step to save the dependency cache
+          key: react-cache-{{ checksum "app/package.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: (React Tests)
           command: cd app && CIRCLECI=TRUE npm run test
@@ -55,3 +55,33 @@ jobs: # a collection of steps
       - run:
           name: After Tests
           command: ./scripts/after_test.sh
+  deploy-staging:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: 'Update PIP && Install AWS EB CLI'
+          command: pip install --upgrade pip && pip install awsebcli
+      - run:
+          name: Docker Login
+          command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+      - run:
+          name: Docker Build
+          command: docker build -t "andrewvoiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM" .
+      - run:
+          name: Docker Push
+          command: docker push "andrewvoiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
+      - run:
+          name: Update Dockerrun
+          command: sed -i'' -e "s;%BUILD_NUM%;$CIRCLE_BUILD_NUM;g" ./Dockerrun.aws.json && cat ./Dockerrun.aws.json
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - test
+      - deploy-staging:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master

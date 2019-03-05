@@ -84,7 +84,7 @@ const getSections = (type_counter) => {
     // Check whether we want a favourites section
     let sortable = []
     for(let type in type_counter){
-        if(type !== 'god' && type !== 'comment' && type !== 'combine' && type_counter[type] >= 3){
+        if(type !== 'god' && type !== 'comment' && type !== 'combine' && type !== 'command' && type_counter[type] >= 3){
             sortable.push([type, type_counter[type]])
         }
     }

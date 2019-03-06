@@ -6,11 +6,11 @@ import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from '
 class FlowBar extends Component{
     constructor(props){
         super(props);
-        this.state = { name: this.props.diagram ? this.props.diagram.name : "Flow" };
+        this.state = { name: this.props.name? this.props.name : "Flow" };
     }
     static getDerivedStateFromProps(props){
         return {
-            name: props.diagram ? props.diagram.name : "Flow"
+            name: props.name ? props.name: "Flow"
         };
     }
     render(){
@@ -49,6 +49,7 @@ class FlowBar extends Component{
 
 const mapStateToProps = state => ({
     diagram: state.skills.skill.diagram,
+    name: state.skills.skill.name,
     root_id: _.find(state.diagrams.diagrams, d => d.name === 'ROOT').id,
 })
 export default connect(mapStateToProps)(FlowBar);

@@ -180,9 +180,10 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
               [nextLink] = node.ports[j].links;
             }
           }
+          if(node.extras && node.extras.nextID) delete node.extras.nextID
           story.lines[node.id] = {
             nextId: getLink(nextLink)
-          };
+          }
         } else if (node.extras.type === 'exit') {
           story.lines[node.id] = {
             end: true
@@ -861,6 +862,7 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
         }
         if (node.extras.nextID) {
+          console.log("THIS NODE HAS A NEXT ID", node)
           if(!story.lines[node.id]) story.lines[node.id] = {}
           story.lines[node.id].nextId = node.extras.nextID
         }

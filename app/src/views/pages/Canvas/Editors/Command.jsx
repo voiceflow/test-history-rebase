@@ -7,6 +7,7 @@ import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
+import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
 const _ = require('lodash')
 
 export class Command extends Component {
@@ -44,7 +45,6 @@ export class Command extends Component {
 
         if (diagram_intents.has(selected.key)) {
             this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
-            this.intentSelectRef.current.blur();
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -64,7 +64,8 @@ export class Command extends Component {
 
     update() {
         this.forceUpdate()
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
     }
 
     static getDerivedStateFromProps(props) {
@@ -338,6 +339,15 @@ export class Command extends Component {
 
 const mapStateToProps = state => ({
     intents: state.skills.skill.intents,
-    slots: state.skills.skill.slots
+    slots: state.skills.skill.slots,
+    diagrams: state.diagrams.diagrams,
+    live_mode: state.skills.live_mode,
 })
-export default connect(mapStateToProps)(Command)
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntents: () => dispatch(updateIntents()),
+        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Command)

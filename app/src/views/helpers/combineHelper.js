@@ -22,6 +22,27 @@ export const combineAppendValidation = current => {
     }
 }
 
+export const appendValidator = node => {
+    if (!node.extras) {
+        return false;
+    }
+    switch (node.extras.type) {
+        case 'god':
+            return false;
+        case 'story':
+            return false;
+        case 'flow':
+            return false;
+        case 'intent':
+            return false;
+        case 'comment':
+            return false;
+        case 'command':
+            return false;
+        default:
+            return true;
+    }
+}
 
 export const combineValidation = (current, target) => {
     if (current.parentCombine || target.parentCombine) {

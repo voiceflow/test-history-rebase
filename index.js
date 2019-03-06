@@ -7,8 +7,8 @@ if(process.env.NODE_ENV && fs.existsSync(`./.env.${process.env.NODE_ENV}`)){
 }else{
     console.log(`No Environment Set/Not Found! Running default .env file`)
     require('dotenv').config()
-    console.log(`Process Environment`, process.env)
 }
+console.log(`Process Environment`, process.env)
 
 const app = require('./app')
 const npmPackage = require('./package.json')

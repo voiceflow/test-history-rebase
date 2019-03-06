@@ -32,10 +32,10 @@ class FlowBar extends Component{
                             <DropdownItem header>
                                 Flow Options
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram.id)} className="pointer">
+                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram)} className="pointer">
                                 <i className="fas fa-clone text-muted"/> Copy
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram.id)} className="pointer">
+                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram)} className="pointer">
                                 <i className="fas fa-times-square text-muted"/> Delete
                             </DropdownItem>
                         </DropdownMenu>

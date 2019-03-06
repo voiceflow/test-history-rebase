@@ -5,7 +5,7 @@ import { Toolkit } from './../Toolkit';
 const toolkit = new Toolkit()
 
 export class MoveItemsAction extends BaseAction {
-	constructor(mouseX, mouseY, diagramEngine, e) {
+	constructor(mouseX, mouseY, diagramEngine, e, locked) {
 		super(mouseX, mouseY);
 		this.moved = false;
 		diagramEngine.enableRepaintEntities(diagramEngine.getDiagramModel().getSelectedItems());
@@ -17,9 +17,7 @@ export class MoveItemsAction extends BaseAction {
 				}
 			}
 		}
-		selectedItems = selectedItems.filter(item => {
-			return !diagramEngine.isModelLocked(item);
-		});
+		if (locked) selectedItems = []
 		var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]");
 		this.selectionModels = selectedItems.map(item => {
 			return {

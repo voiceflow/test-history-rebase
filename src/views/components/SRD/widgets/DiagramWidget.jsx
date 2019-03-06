@@ -447,6 +447,7 @@ export class DiagramWidget extends BaseWidget {
 	}
 
 	onKeyUp(event) {
+		if (this.props.locked) return;
 		//delete all selected
 		if (this.props.deleteKeys.indexOf(event.keyCode) !== -1) {
 			let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
@@ -463,7 +464,7 @@ export class DiagramWidget extends BaseWidget {
 				this.props.removeHandler(selectedItems)
 					_.forEach(selectedItems, element => {
 						if (
-							!this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
+							!element.isLocked()
 						) {
 							diagramEngine.setSuperSelect(null)
 							this.props.forceRepaint()
@@ -606,7 +607,7 @@ export class DiagramWidget extends BaseWidget {
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();
-			this.clickDiagram()
+			this.props.setOpen(false)
 		}
 		this.state.document.removeEventListener("mousemove", this.onMouseMove);
 		this.state.document.removeEventListener("mouseup", this.onMouseUp);
@@ -737,9 +738,8 @@ export class DiagramWidget extends BaseWidget {
 								diagramModel.clearSelection();
 								link.getLastPoint().setSelected(true);
 								diagramModel.addLink(link);
-
 								this.startFiringAction(
-									new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event)
+									new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked)
 								);
 							}
 						} else {
@@ -752,8 +752,7 @@ export class DiagramWidget extends BaseWidget {
 								diagramModel.clearSelection();
 							}
 							model.model.setSelected(true);
-
-							this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event));
+							this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked));
 					}
 					this.state.document.addEventListener("mousemove", this.onMouseMove);
 					this.state.document.addEventListener("mouseup", this.onMouseUp);
@@ -770,7 +769,7 @@ export class DiagramWidget extends BaseWidget {
 							event.stopPropagation();
 							diagramModel.clearSelection(point);
 							this.setState({
-								action: new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event)
+								action: new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked)
 							});
 						}}
 					/>

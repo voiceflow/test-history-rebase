@@ -182,7 +182,8 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
           story.lines[node.id] = {
             nextId: getLink(nextLink)
-          };
+          }
+          console.log("START BLOCK", story.lines[node.id])
         } else if (node.extras.type === 'exit') {
           story.lines[node.id] = {
             end: true

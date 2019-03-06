@@ -72,10 +72,10 @@ jobs: # a collection of steps
           command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
       - run:
           name: Docker Build
-          command: docker build -t "andrewvoiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM" .
+          command: docker build -t "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM" .
       - run:
           name: Docker Push
-          command: docker push "andrewvoiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
+          command: docker push "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
       - run:
           name: Update Dockerrun
           command: |

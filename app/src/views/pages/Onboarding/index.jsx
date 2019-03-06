@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import "./onboarding.css"
 import axios from 'axios'
 import StepProgressBar from './../../components/StepProgressBar'
+import { Form, FormGroup, Input} from 'reactstrap'
 
 const PROG_XP = (xp) => {
 	switch(xp){
@@ -21,6 +22,8 @@ class Onboarding extends Component{
 		this.state = {
 			stage: null,
 			company_name: '',
+			company_role: '',
+			company_size: '',
 			type: '',
 			experience: '',
 			design: false,
@@ -53,6 +56,9 @@ class Onboarding extends Component{
 				usage_type: s.type,
 				programming: s.experience,
 				company_name: s.company_name,
+				company_role: s.company_role,
+				company_size: s.company_size,
+				purpose: s.purpose,
 				design: s.design,
 				build: s.build
 			})
@@ -109,17 +115,37 @@ class Onboarding extends Component{
 				head.appendChild(script)
 
 				return <React.Fragment>
-					<StepProgressBar num_stages={5} stage={4}/>
+					<StepProgressBar num_stages={6} stage={5} classes={"onboarding-progress"}/>
 					<div className="calendly-outer">
 						<div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow"/>
 					</div>
 
 					<button key={this.state.stage} id="submit-calendly" className="purple-btn" onClick={this.submitSurvey}>Complete</button>
 				</React.Fragment>
+			case 'purpose_stage':
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={(this.state.company_size >= 10 ? 4: 5)} classes={"onboarding-progress"}/>
+						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
+						<div className="row justify-content-center mb-3">
+							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>Interested in voice and want to explore</button>
+						</div>
+						<div className="row justify-content-center mb-5">
+							<button className={(this.state.purpose === 'IDEA' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'IDEA'})}}>I have an idea and want to build it</button>
+						</div>
+						<div className="justify-content-center">
+							<button key={this.state.stage} className={"purple-btn" + (!['EXPLORING', 'IDEA'].includes(this.state.purpose) ? ' disabled': '')} disabled={!['EXPLORING', 'IDEA'].includes(this.state.purpose)} onClick={() => {
+								if(this.state.company_size >= 10){
+									this.setState({stage: 'calendly'})
+								} else {
+									this.submitSurvey()
+								}
+							}}>{this.state.company_size >= 10 ? 'Next Question' : 'Complete'}</button>
+						</div>
+					</React.Fragment>
 			case 'code_stage':
 				return <React.Fragment>
-					<StepProgressBar num_stages={5} stage={(this.state.type === 'PERSONAL'? 4: 3)}/>
-					<p className="modal-bg-txt text-center mb-5 mt-4">How much expereince do you have coding?</p>
+					<StepProgressBar num_stages={6} stage={(this.state.type === 'PERSONAL'? 4: 3)} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-5 mt-4">How much experience do you have coding?</p>
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
 							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'beginner'})}}><img className="image-selector" alt="beginner" src={this.state.experience === 'beginner' ? "/beginner-selected.png" : "/beginner-unselected.png"}/></button>
@@ -136,19 +162,13 @@ class Onboarding extends Component{
 					</div>
 					<div className="justify-content-center">
 						<button key={this.state.stage} className={"purple-btn" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
-							if(this.state.type === 'PERSONAL'){
-								this.submitSurvey()
-							} else {
-								this.setState({
-									stage: 'calendly'
-								})
-							}
+							this.setState({stage: 'purpose_stage'})
 						}}>Complete</button>
 					</div>
 				</React.Fragment>
 			case 'work_plan':
 				return <React.Fragment>
-					<StepProgressBar num_stages={5} stage={(this.state.type === 'PERSONAL'? 3: 2)}/>
+					<StepProgressBar num_stages={6} stage={(this.state.type === 'PERSONAL'? 3: 2)} classes={"onboarding-progress"}/>
 					<p className="modal-bg-txt text-center mb-5 mt-4">What do you plan to use Voiceflow for?</p>
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
@@ -166,23 +186,35 @@ class Onboarding extends Component{
 				</React.Fragment>
 			case 'work_name':
 				return <React.Fragment>
-					<StepProgressBar num_stages={5} stage={1}/>
-					<p className="modal-bg-txt text-center mb-4 mt-4">What is the name of your company?</p>
+					<StepProgressBar num_stages={6} stage={1} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-4 mt-4">Tell us more about your company</p>
 					<div className="d-flex justify-content-center mb-3">
-						<form actions="">
-							<div className="form-group">
-								<input placeholder="Enter your company name" onChange={this.handleChange} name="company_name" id="company-name-input"/>
-							</div>
-						</form>
+						<Form className="w-100">
+							<FormGroup>
+								<Input className="form-bg" name="company_name" onChange={this.handleChange} placeholder="Company name" value={this.state.company_name}/>
+							</FormGroup>
+							<FormGroup>
+								<Input className="form-bg" name="company_role" onChange={this.handleChange} placeholder="Role" value={this.state.company_role}/>
+							</FormGroup>
+							<FormGroup>
+								<Input className="form-bg" type="number" name="company_size" onChange={this.handleChange} placeholder="Company size" value={this.state.company_size}/>
+							</FormGroup>
+						</Form>
 					</div>
 					<div className="justify-content-center">
-						<button key={this.state.stage} className={"purple-btn" + (this.state.company_name === '' ? ' disabled': '')} disabled={this.state.company_name === ''} onClick={() => {this.setState({stage: 'work_plan'})}}>Next Question</button>
+						<button 
+							key={this.state.stage} 
+							className={"purple-btn" + (!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0) ? ' disabled': '')} 
+							disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)} 
+							onClick={() => {this.setState({stage: 'work_plan'})}}>
+							Next Question
+						</button>
 					</div>
 				</React.Fragment>
 			case 'work_type':
 				return <React.Fragment>
-					<StepProgressBar num_stages={5} stage={0}/>
-					<p className="modal-bg-txt text-center mb-5 mt-4">What do you plan to use Voiceflow for?</p>
+					<StepProgressBar num_stages={6} stage={0} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-5 mt-4">Are you using Voiceflow for work?</p>
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
 							<button className="void-button mb-2" onClick={() => {this.setState({type: "PERSONAL"})}}><img id="design" alt="selected" src={this.state.type === 'PERSONAL' ? "/selected.png" : "/unselected.png"}/></button>
@@ -209,7 +241,7 @@ class Onboarding extends Component{
 						height="25"
 					/>
 					<p className="modal-bg-txt text-center mb-3">Hi, {this.props.user.name}</p>
-					<p className="onboarding-modal-txt text-center mb-4">To help personalize your experience we have 5 quick questions to ask you. We're excited to have you! - Voiceflow team <span role="img" aria-label="Heart">❤️</span></p>
+					<p className="onboarding-modal-txt text-center mb-4">To help personalize your experience we have 5 quick questions to ask you. We're excited to have you! <br/>- Voiceflow team <span role="img" aria-label="Heart">❤️</span></p>
 					<div className="justify-content-center">
 						<button key={this.state.stage} className="purple-btn" onClick={() => {this.setState({stage: 'work_type'})}}>Continue</button>
 					</div>

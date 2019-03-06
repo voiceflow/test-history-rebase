@@ -44,8 +44,8 @@ const submitOnboardSurvey = (req, res) => {
 		req.body.usage_type = 'PERSONAL'
 	}
 	pool.query(
-		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build) VALUES ($1, $2, $3, $4, $5, $6)",
-		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build],
+		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build, req.body.company_size, req.body.company_role, req.body.purpose],
 		(err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -59,8 +59,10 @@ const submitOnboardSurvey = (req, res) => {
 					custom_attributes: {
 						usage: req.body.usage_type,
 						company: req.body.company_name,
+						company_size: req.body.company_size,
 						design: req.body.design,
 						build: req.body.build,
+						purpose: req.body.purpose,
 						programming_experience: PROG_XP(req.body.programming)
 					}
 				})

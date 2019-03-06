@@ -66,10 +66,10 @@ jobs: # a collection of steps
             pip install awsebcli
             pip install awscli --upgrade --user
             aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_DOCKERRUN ./Dockerrun.aws.json
-            aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_STAGING_ENV ./.env
+            aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_ENV_STAGING ./.env
             cat ./Dockerrun.aws.json
       - run:
-          name: Push to ELB
+          name: Push to Elastic Beanstalk
           command: |
             eb init --region us-east-1 --platform docker voiceflow-creator
             eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM
@@ -77,7 +77,10 @@ workflows:
   version: 2
   build-deploy:
     jobs:
+      # - test
       - deploy-staging:
+          # requires:
+          #   - test
           filters:
             branches:
               only: master

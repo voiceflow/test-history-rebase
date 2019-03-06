@@ -43,6 +43,7 @@ import { PointModel } from './../../components/SRD/models/PointModel'
 import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'
 import { BlockNodeFactory } from './../../components/SRD/factories/BlockNodeFactory'
+import { Spinner } from './../../components/Spinner'
 
 import { SLOT_TYPES, ALLOWED_GOOGLE_BLOCKS } from 'Constants'
 
@@ -2275,12 +2276,7 @@ export class Canvas extends Component {
                         toggleUpgrade={this.props.toggleUpgrade}
                         type_counter={this.state.type_counter}
                     />
-                    {this.state.load_diagram && <div id="loading-diagram">
-                        <div className="text-center">
-                            <h5 className="text-muted mb-2">Loading Flow</h5>
-                            <span className="loader"/>
-                        </div>
-                    </div>}
+                    {this.state.load_diagram && React.createElement(Spinner, {name: 'Diagram'})}
 
                     <Editor
                         unfocus={this.onDiagramUnfocus}

@@ -45,7 +45,6 @@ export class Intent extends Component {
         if (Array.isArray(selected) || (intent && selected.key === intent.key)) {
             return
         }
-
         if (diagram_intents.has(selected.key)) {
             this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow`)
         } else {

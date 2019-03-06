@@ -1508,6 +1508,7 @@ export class Canvas extends Component {
                                 removeNode: this.removeNode,
                                 diagram: this.props.diagram,
                                 removeCombineNode: this.removeCombineNode,
+                                disabled: !!this.props.preview
                             }}
                             removeHandler={(node) => {
                                 if (this.props.undoEvents.length >= 10) {

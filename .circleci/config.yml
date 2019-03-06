@@ -76,9 +76,9 @@ jobs: # a collection of steps
       - run:
           name: Docker Build
           command: docker build -t "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM" .
-      - run:
-          name: Docker Push
-          command: docker push "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
+      # - run:
+      #     name: Docker Push
+      #     command: docker push "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
       - run:
           name: Update Dockerrun
           command: |

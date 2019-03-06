@@ -65,17 +65,17 @@ jobs: # a collection of steps
             pip install --upgrade pip
             pip install awsebcli
             pip install awscli --upgrade --user
-            aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_DOCKERRUN.json ./.deploy/Dockerrun.aws.json
+            # aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_DOCKERRUN.json ./.deploy/Dockerrun.aws.json
             aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_STAGING_ENV ./.env
       - run:
           name: Initialize ElasticBeanstalk
           command: eb init --region us-east-1 --platform docker voiceflow-creator
-      - run:
-          name: Update Dockerrun
-          command: |
-            sed -i'' -e "s;%BUILD_NUM%;$CIRCLE_BUILD_NUM;g" ./.deploy/Dockerrun.aws.json
-            sed -i'' -e "s;%ENV%;voiceflow-server-staging;g" ./.deploy/Dockerrun.aws.json
-            cat ./.deploy/Dockerrun.aws.json
+      # - run:
+      #     name: Update Dockerrun
+      #     command: |
+      #       sed -i'' -e "s;%BUILD_NUM%;$CIRCLE_BUILD_NUM;g" ./.deploy/Dockerrun.aws.json
+      #       sed -i'' -e "s;%ENV%;voiceflow-server-staging;g" ./.deploy/Dockerrun.aws.json
+      #       cat ./.deploy/Dockerrun.aws.json
       # - run:
       #     name: Docker Login
       #     command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"

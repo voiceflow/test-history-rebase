@@ -23,11 +23,7 @@ export const fetchDiagramVariablesFailure = error => ({
 export const fetchDiagramVariables = diagram_id => {
     return dispatch => {
         dispatch(fetchDiagramVariablesBegin());
-        return axios.get(`/diagram/${diagram_id}/variables`, {
-                headers: {
-                    Pragma: 'no-cache'
-                }
-            })
+        return axios.get(`/diagram/${diagram_id}/variables`)
             .then(res => {
                 if (Array.isArray(res.data)) {
                     dispatch(fetchDiagramVariablesSuccess(res.data))

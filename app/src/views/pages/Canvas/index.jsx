@@ -1390,10 +1390,10 @@ export class Canvas extends Component {
         }
 
         let platform = this.props.skill.platform === 'google' ? 'alexa' : 'google'
-        this.props.updateSkill('platform', platform)
-
-        this.updateGoogleFade()
-        this.updateLinter()
+        this.props.updateSkill('platform', platform).then(() => {
+            this.updateGoogleFade()
+            this.updateLinter()
+        })
     }
 
     updateGoogleFade() {
@@ -1430,7 +1430,7 @@ export class Canvas extends Component {
         })
     }
 
-    updateLinter(force=false) {
+    updateLinter(force=true) {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()

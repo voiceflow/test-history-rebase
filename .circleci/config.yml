@@ -79,10 +79,10 @@ jobs: # a collection of steps
       # - run:
       #     name: Docker Login
       #     command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-      - run:
-          name: Docker Build
+      # - run:
+          # name: Docker Build
           # command: docker build -t "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM" .
-          command: eb local run
+          # command: eb local run
       # - run:
       #     name: Docker Push
       #     command: docker push "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"

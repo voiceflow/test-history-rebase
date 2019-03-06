@@ -55,3 +55,45 @@ jobs: # a collection of steps
       - run:
           name: After Tests
           command: ./scripts/after_test.sh
+  deploy-staging:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: 'Update PIP && Install AWS CLI'
+          command: |
+            pip install --upgrade pip
+            pip install awsebcli
+            pip install awscli --upgrade --user
+            aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_DOCKERRUN.json ./.deploy/Dockerrun.aws.json
+            aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_STAGING_ENV ./.env
+      - run:
+          name: Docker Login
+          command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+      - run:
+          name: Docker Build
+          command: docker build -t "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM" .
+      - run:
+          name: Docker Push
+          command: docker push "voiceflow/voiceflow-creator-staging:$CIRCLE_BUILD_NUM"
+      - run:
+          name: Update Dockerrun
+          command: |
+            sed -i'' -e "s;%BUILD_NUM%;$CIRCLE_BUILD_NUM;g" ./.deploy/Dockerrun.aws.json
+            sed -i'' -e "s;%ENV%;voiceflow-server-staging;g" ./.deploy/Dockerrun.aws.json
+            cat ./.deploy/Dockerrun.aws.json
+      - run:
+          name: Push to ELB
+          command: |
+            cd ./.deploy
+            eb init --region us-east-1 --platform VoiceflowCreator-staging
+            eb init -r us-east-1 VoiceflowCreator-staging
+            eb deploy -l $CIRCLE_BUILD_NUM
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - deploy-staging:
+          filters:
+            branches:
+              only: master

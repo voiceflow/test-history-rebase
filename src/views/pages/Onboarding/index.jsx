@@ -241,7 +241,8 @@ class Onboarding extends Component{
 						height="25"
 					/>
 					<p className="modal-bg-txt text-center mb-3">Hi, {this.props.user.name}</p>
-					<p className="onboarding-modal-txt text-center mb-4">To help personalize your experience we have 5 quick questions to ask you. We're excited to have you! <br/>- Voiceflow team <span role="img" aria-label="Heart">❤️</span></p>
+					<p className="onboarding-modal-txt text-center mb-2">You just joined the worlds biggest community of VUI designer and developers building voice apps. We have a few questions to personalize your experience!</p>
+					<p className="onboarding-modal-txt text-center mb-4">- Voiceflow team <span role="img" aria-label="Heart">❤️</span></p>
 					<div className="justify-content-center">
 						<button key={this.state.stage} className="purple-btn" onClick={() => {this.setState({stage: 'work_type'})}}>Continue</button>
 					</div>

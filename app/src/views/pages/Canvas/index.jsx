@@ -1294,6 +1294,7 @@ export class Canvas extends Component {
                 this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
             }
         }
+        this.props.updateSkill("diagram", new_diagram_id);
     }
 
     updateFulfillmentOnDeletion(deleted_node) {
@@ -1535,11 +1536,11 @@ const mapStateToProps = state => ({
   diagram_id: state.skills.skill.diagram,
   diagrams: state.diagrams.diagrams,
   diagram_error: state.diagrams.error,
+  root_id: _.find(state.diagrams.diagrams, d => d.name === 'ROOT').id,
   load_diagram: state.diagrams.loading,
   error: state.skills.error,
   variables: state.variables.localVariables,
   diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
-  root_id: _.find(state.diagrams.diagrams, d=> d.name === 'ROOT').id,
   diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram)
 });
 

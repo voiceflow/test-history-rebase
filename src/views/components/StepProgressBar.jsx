@@ -17,7 +17,7 @@ class StepProgressBar extends Component  {
 
   render(){
     return(
-        <div className="multi-step-total-bar w-100">
+        <div className={"multi-step-total-bar w-100 " + this.props.classes}>
           {this.renderMultiSteps()}
         </div>
     )

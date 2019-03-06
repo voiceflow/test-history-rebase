@@ -66,19 +66,17 @@ jobs: # a collection of steps
             pip install awsebcli
             eb init --region us-east-1 --platform docker voiceflow-creator
             eb use VoiceflowCreator-staging
-            # eb setenv `cat .env | sed '/^#/ d' | sed '/^$/ d'`
       - run:
           name: Push to Elastic Beanstalk
           command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM
-          # background: true
 workflows:
   version: 2
   build-deploy:
     jobs:
-      # - test
+      - test
       - deploy-staging:
           requires:
-            # - test
+            - test
           filters:
             branches:
               only: master

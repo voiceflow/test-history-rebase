@@ -4,7 +4,9 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-RUN yarn && cd ./app && yarn
+RUN yarn
+
+RUN cd ./app && yarn
 
 RUN npm run build
 

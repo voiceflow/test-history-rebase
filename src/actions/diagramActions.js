@@ -56,16 +56,29 @@ export const fetchDiagram = skill_id => {
 }
 
 export const renameDiagram = (flow_id, name) => {
-    return dispatch => {
-        return axios.post(`/diagram/${flow_id}/name`, {
-            name: name
-        })
-        .then(() => {
-            dispatch(onFlowRename(flow_id))
-        })
-        .catch(err => {
-            alert('Error - Name not Updated')
-        })
+    return (dispatch, getState) => {
+        name = name.trim();
+        let index = getState().diagrams.diagrams.findIndex(d => d.id === flow_id);
+        if (index !== -1){
+            let flow = getState().diagrams.diagrams.find(d => d.name === name)
+            if (flow && flow.name !== name) {
+                return this.props.onConfirm({
+                    text: 'Flow names must be unique',
+                    confirm: () => this.setState({
+                        confirm: null
+                    })
+                })
+            }
+            return axios.post(`/diagram/${flow_id}/name`, {
+                name: name
+            })
+            .then(() => {
+                dispatch(onFlowRename(flow_id))
+            })
+            .catch(err => {
+                alert('Error - Name not Updated')
+            })
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import Permissions from './../Permissions';
+import { Permissions } from './../Permissions';
 import {defaultNode} from '../__mock__/defaultNode';
 
 const clickFn = jest.fn()

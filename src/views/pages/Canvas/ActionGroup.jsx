@@ -96,6 +96,7 @@ export class ActionGroup extends PureComponent {
         this.toggleShare = this.toggleShare.bind(this)
         this.togglePreview = this.togglePreview.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.toggleGoogle = this.toggleGoogle.bind(this)
         this.toggleUpdate = this.toggleUpdate.bind(this)
         this.toggleUpdateLive = this.toggleUpdateLive.bind(this)
         this.updateAlexa = this.updateAlexa.bind(this)
@@ -381,6 +382,14 @@ export class ActionGroup extends PureComponent {
             })
     }
 
+    toggleGoogle() {
+        let platform = this.props.platform === 'google' ? 'alexa' : 'google'
+        this.props.updateSkill('platform', platform).then(() => {
+            this.props.updateGoogleFade();
+            this.props.updateLinter()
+        })
+    }
+
     renderLiveStage() {
         if (this.state.live_update_stage === 2) {
             return <React.Fragment>
@@ -606,9 +615,9 @@ export class ActionGroup extends PureComponent {
                         className="switch switch-blue mr-4"
                         tag='div'
                     >
-                        <input onClick={() => { if (this.props.platform !== 'alexa') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
+                        <input onClick={() => { if (this.props.platform !== 'alexa') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'alexa' ? 'checked' : ''}`} value="alexa_toggle" id="alexa_toggle" />
                         <label className="switch-label switch-label-on mt-2" htmlFor="alexa_toggle">Alexa</label>
-                        <input onClick={() => { if (this.props.platform !== 'google') this.props.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
+                        <input onClick={() => { if (this.props.platform !== 'google') this.toggleGoogle() }} type="radio" className={`switch-input ${this.props.platform === 'google' ? 'checked' : ''}`} value="google_toggle" id="google_toggle" />
                         <label className="switch-label switch-label-off mt-2" htmlFor="google_toggle">Google</label>
                         <span className="switch-selection"></span>
                     </Tooltip>
@@ -721,6 +730,8 @@ export class ActionGroup extends PureComponent {
 const mapStateToProps = state => ({
     skill: state.skills.skill,
     platform: state.skills.skill.platform,
+    diagram_id: state.skills.skill.diagram,
+    live_mode: state.skills.live_mode,
 })
 
 const mapDispatchToProps = dispatch => {

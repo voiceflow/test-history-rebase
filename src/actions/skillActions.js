@@ -36,10 +36,13 @@ export const setLiveModeModal = isLive => ({
     payload: { isLive }
 })
 
-export const updateSkill = (type, val) => ({
-    type: "UPDATE_SKILL",
-    payload: { type, val }
-})
+export const updateSkill = (type, val) => dispatch => {
+    dispatch({
+        type: "UPDATE_SKILL",
+        payload: { type, val }
+    })
+    return Promise.resolve()
+}
 
 export const updateEntireSkill = (skill) => ({
     type: "UPDATE_ENTIRE_SKILL",

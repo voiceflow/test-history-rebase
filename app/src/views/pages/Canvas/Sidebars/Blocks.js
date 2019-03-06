@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
+import { connect } from 'react-redux'
 import ModuleItem from './components/ModuleItem';
 import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
@@ -91,13 +92,13 @@ class Blocks extends PureComponent {
                                 </div>
                             : null}
                             <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
-                                {section.items.map((item, i) => {
-                                    return <MenuItem 
-                                        item={item} 
-                                        key={i} 
-                                        data-tip={item.tip} 
-                                        draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
-                                })}
+                                {section.items.map((item, i) => 
+                                    item && <MenuItem 
+                                            item={item} 
+                                            key={i} 
+                                            data-tip={item.tip} 
+                                            draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
+                                )}
                             </div>
                         </Collapse>
                     </div>
@@ -131,4 +132,7 @@ class Blocks extends PureComponent {
     }
 }
 
-export default Blocks;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(Blocks);

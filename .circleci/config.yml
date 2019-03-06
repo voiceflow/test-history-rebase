@@ -14,16 +14,16 @@ jobs: # a collection of steps
       - run:
           name: update npm version
           command: 'sudo npm install -g npm@latest'
-    #   - restore_cache: # special step to restore the dependency cache
-          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-        #   key: react-cache-{{ checksum "app/package.json" }}
+      - restore_cache: # special step to restore the dependency cache
+          Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: react-cache-{{ checksum "app/package.json" }}
       - run:
           name: npm install react packages
           command: cd app && npm install
-    #   - save_cache: # special step to save the dependency cache
-        #   key: react-cache-{{ checksum "app/package.json" }}
-        #   paths:
-            # - ./node_modules
+      - save_cache: # special step to save the dependency cache
+          key: react-cache-{{ checksum "app/package.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: (React Tests)
           command: cd app && CIRCLECI=TRUE npm run test
@@ -56,17 +56,31 @@ jobs: # a collection of steps
           name: After Tests
           command: ./scripts/after_test.sh
   deploy-staging:
-    docker:
-      - image: ubuntu:14.04
-    working_directory: /tmp/app
+    machine: true
     steps:
       - checkout # special step to check out source code to working directory
       - run:
-          name: Deploy if tests pass and branch is Master
-          command: echo 'OH MY PLEASE JUST WORK OKAY'
+          name: 'Update PIP && Install AWS CLI'
+          command: |
+            pip install awsebcli
+            eb init --region us-east-1 --platform docker voiceflow-creator
+            eb use VoiceflowCreator-staging
       - run:
-          name: ls the directory
-          command: ls -a
+          name: Push to Elastic Beanstalk
+          command: eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM --timeout 4
+  deploy-production:
+    machine: true
+    steps:
+      - checkout # special step to check out source code to working directory
+      - run:
+          name: 'Update PIP && Install AWS CLI'
+          command: |
+            pip install awsebcli
+            eb init --region us-east-1 --platform docker voiceflow-creator
+            eb use VoiceflowCreator-env
+      - run:
+          name: Push to Elastic Beanstalk
+          command: eb deploy VoiceflowCreator-env -l $CIRCLE_BUILD_NUM --timeout 4
 workflows:
   version: 2
   build-deploy:
@@ -78,3 +92,9 @@ workflows:
           filters:
             branches:
               only: staging
+      - deploy-production:
+          requires:
+            - test
+          filters:
+            branches:
+              only: production

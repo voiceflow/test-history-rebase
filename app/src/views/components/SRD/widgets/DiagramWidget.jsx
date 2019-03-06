@@ -40,6 +40,7 @@ export class DiagramWidget extends BaseWidget {
 		};
 		this.repaint = false;
 		this.onDeleteConfirm = this.onDeleteConfirm.bind(this)
+		this.clickDiagram = this.clickDiagram.bind(this)
 	}
 
 	componentWillUnmount() {
@@ -200,6 +201,35 @@ export class DiagramWidget extends BaseWidget {
 		if (setState) {
 			this.setState({ action: action });
 		}
+	}
+
+	clickDiagram(e) {
+		let engine = this.props.diagramEngine
+		let selected = engine.getDiagramModel().getSelectedItems("node")
+		if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type === 'story') {
+			selected = [engine.getSuperSelect()]
+		}
+		if (selected.length === 1 && selected[0]) {
+			if (selected[0].extras.type === 'comment') {
+				this.diagram_focus = false
+			} else {
+				this.props.setOpen(true)
+				if (selected[0].combines && selected[0].combines.length === 0) {
+					engine.setSuperSelect(selected[0])
+				}
+			}
+		} else if (selected.length === 0) {
+			engine.setSuperSelect(null)
+			let model = engine.getDiagramModel()
+			let nodes = model.getNodes()
+			for (let key in nodes) {
+				if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
+					model.removeNode(nodes[key].getID())
+					this.forceUpdate()
+				}
+			}
+		}
+		this.props.setBlockMenu(null)
 	}
 
 	onMouseMove(event) {
@@ -441,7 +471,12 @@ export class DiagramWidget extends BaseWidget {
 								diagramEngine.setSuperSelect(null)
 								this.props.forceRepaint()
 							}
-							if (element.extras && element.extras.type === 'god'){
+							if (element.extras && (element.extras.type === 'comment' || element.extras.type === 'story')) {
+								element.clearListeners()
+								element.addListener({ entityRemoved: e => e.stopPropagation() })
+							} else if (element.extras && element.extras.type === 'intent'){
+								this.props.onDeleteIntentNode(element);
+							} else if (element.extras && element.extras.type === 'god'){
 								this.props.onConfirm({
 									warning: true,
 									text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
@@ -477,7 +512,7 @@ export class DiagramWidget extends BaseWidget {
 				//only care about points connecting to things
 				if (model.model instanceof BlockNodeModel) {
 					if (!model.model.isMoving ||this.props.editorOpen) {
-						this.props.clickDiagram()
+						this.clickDiagram()
 					}
 					model.element.style.pointerEvents = 'all';
 					model.model.isMoving = false;
@@ -571,7 +606,7 @@ export class DiagramWidget extends BaseWidget {
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();
-			this.props.clickDiagram()
+			this.clickDiagram()
 		}
 		this.state.document.removeEventListener("mousemove", this.onMouseMove);
 		this.state.document.removeEventListener("mouseup", this.onMouseUp);

@@ -5,11 +5,11 @@ import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from '
 class FlowBar extends Component{
     constructor(props){
         super(props);
-        this.state = { name: this.props.diagram ? this.props.diagram.name : "Flow" };
+        this.state = { name: this.props.name? this.props.name : "Flow" };
     }
     static getDerivedStateFromProps(props){
         return {
-            name: props.diagram ? props.diagram.name : "Flow"
+            name: props.name ? props.name: "Flow"
         };
     }
     render(){
@@ -32,10 +32,10 @@ class FlowBar extends Component{
                             <DropdownItem header>
                                 Flow Options
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram.id)} className="pointer">
+                            <DropdownItem onClick={() => this.props.copyFlow(this.props.diagram)} className="pointer">
                                 <i className="fas fa-clone text-muted"/> Copy
                             </DropdownItem>
-                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram.id)} className="pointer">
+                            <DropdownItem onClick={() => this.props.deleteFlow(this.props.diagram)} className="pointer">
                                 <i className="fas fa-times-square text-muted"/> Delete
                             </DropdownItem>
                         </DropdownMenu>
@@ -47,6 +47,7 @@ class FlowBar extends Component{
 }
 
 const mapStateToProps = state => ({
-    diagram: state.skills.skill.diagram
+    diagram: state.skills.skill.diagram,
+    name: state.skills.skill.name
 })
 export default connect(mapStateToProps)(FlowBar);

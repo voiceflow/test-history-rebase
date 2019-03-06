@@ -10,6 +10,8 @@ import './Intent.css'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
+import { updateIntents, setCanFulfill } from './../../../../actions/skillActions'
+
 const _ = require('lodash')
 
 
@@ -19,12 +21,11 @@ export class Intent extends Component {
         super(props)
 
         this.intentSelectRef = React.createRef();
-        let name = props.diagrams.find(d => d.id === props.diagram_id).name
 
         this.state = {
             node: this.props.node,
             tab: 'Select',
-            isRoot: name === 'ROOT',
+            isRoot: props.name === 'ROOT',
             confirm_info: null
         }
 
@@ -47,7 +48,6 @@ export class Intent extends Component {
 
         if (diagram_intents.has(selected.key)) {
             this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow`)
-            this.intentSelectRef.current.blur();
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -67,7 +67,8 @@ export class Intent extends Component {
 
     update() {
         this.forceUpdate()
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter()
     }
 
     static getDerivedStateFromProps(props) {
@@ -119,7 +120,8 @@ export class Intent extends Component {
                 text: `CanfulfillIntent is enabled for the "${intent_name}" intent. Turning CanFulfillIntent off for this intent will also delete any slot fulfillment values you have set for this intent.`,
                 confirm: () => {
                     this.props.setCanFulfill(intent_key, !fulfilled)
-                    this.props.onUpdate()
+                    this.props.updateIntents()
+                    this.props.updateLinter()
                     this.setState({
                         confirm_info: null
                     })
@@ -128,7 +130,8 @@ export class Intent extends Component {
             this.props.onConfirm(confirm_info)
         } else {
             this.props.setCanFulfill(intent_key, !fulfilled)
-            this.props.onUpdate()
+            this.props.updateIntents()
+            this.props.updateLinter()
         }
     }
 
@@ -353,9 +356,18 @@ export class Intent extends Component {
 }
 
 const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode,
     skill_id: state.skills.skill.skill_id,
     fulfillment: state.skills.skill.fulfillment,
     intents: state.skills.skill.intents,
-    slots: state.skills.skill.slots
+    slots: state.skills.skill.slots,
+    name: state.diagrams.diagrams.find(d => d.id === state.skills.skill.diagram).name
 })
-export default connect(mapStateToProps)(Intent)
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntents: () => dispatch(updateIntents()),
+        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Intent)

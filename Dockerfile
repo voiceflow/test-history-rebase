@@ -13,7 +13,5 @@ RUN npm run build
 RUN npm install -g forever
 
 EXPOSE 8080
-EXPOSE 6379
-EXPOSE 5432
 
-CMD forever -c "npm run start" .
+CMD forever -c "node index.js" .

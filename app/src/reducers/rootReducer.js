@@ -7,6 +7,7 @@ import diagrams from './diagramReducer'
 import products from './productReducer'
 import displays from './displayReducer'
 import emails from './emailReducer'
+import userSetting from './userReducer'
 
 export default (history) => combineReducers({
     router: connectRouter(history),
@@ -16,5 +17,6 @@ export default (history) => combineReducers({
     emails,
     diagrams,
     variables,
+    userSetting,
     diagramVariables,
 })

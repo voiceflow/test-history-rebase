@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import { Button, ButtonGroup, Input } from 'reactstrap'
 import FlowButton from './components/FlowButton'
 
@@ -45,9 +46,7 @@ class Project extends PureComponent {
                         <FlowButton
                             key={diagram.id}
                             flow={diagram}
-                            active={this.props.current}
                             enterFlow={this.props.enterFlow}
-                            renameFlow={this.props.renameFlow}
                             copyFlow={()=>this.props.copyFlow(diagram.id)}
                             deleteFlow={()=>this.props.deleteFlow(diagram.id, this.props.updateTree)}
                         />
@@ -74,9 +73,7 @@ class Project extends PureComponent {
                     return <FlowButton
                         key={diagram.id}
                         flow={diagram}
-                        active={this.props.current}
                         enterFlow={this.props.enterFlow}
-                        renameFlow={this.props.renameFlow}
                         copyFlow={()=>this.props.copyFlow(diagram.id)}
                         deleteFlow={()=>this.props.deleteFlow(diagram.id)}
                     />
@@ -115,4 +112,7 @@ class Project extends PureComponent {
     }
 }
 
-export default Project;
+const mapStateToProps = state => ({
+    diagrams: state.diagrams.diagrams
+})
+export default connect(mapStateToProps)(Project);

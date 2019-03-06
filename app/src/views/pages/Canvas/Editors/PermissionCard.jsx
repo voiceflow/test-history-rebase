@@ -120,6 +120,7 @@ class PermissionCard extends Component {
 
 const mapStateToProps = state => ({
     skill_id: state.skills.skill.skill_id,
-    account_linking: state.skills.skill.account_linking
+    account_linking: state.skills.skill.account_linking,
+    live_mode: state.skills.live_mode,
 })
 export default connect(mapStateToProps)(PermissionCard);

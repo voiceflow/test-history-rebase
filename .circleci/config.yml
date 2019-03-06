@@ -89,7 +89,7 @@ jobs: # a collection of steps
       - run:
           name: Push to ELB
           command: |
-            cd ./.deploy
+            # cd ./.deploy
             eb deploy VoiceflowCreator-staging -l $CIRCLE_BUILD_NUM
 workflows:
   version: 2

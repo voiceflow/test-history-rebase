@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 import { 
     Button, 
@@ -11,6 +12,8 @@ import {
     DropdownMenu,
     DropdownItem 
 } from 'reactstrap'
+
+import { renameDiagram } from "./../../../../../actions/diagramActions";
 
 class FlowButton extends Component {
 
@@ -96,4 +99,14 @@ class FlowButton extends Component {
     }
 }
 
-export default FlowButton;
+const mapStateToProps = state => ({
+    active: state.skills.skill.diagram
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        renameFlow: (flow_id, name) => dispatch(renameDiagram(flow_id, name))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlowButton);

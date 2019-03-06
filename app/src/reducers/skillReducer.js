@@ -7,6 +7,8 @@ import {
   SET_LIVE_MODE_MODAL,
   TOGGLE_LIVE,
   UPDATE_SKILL,
+  UPDATE_FULFILLMENT,
+  REMOVE_FULFILLMENT,
   UPDATE_SKILL_MERGE,
   UPDATE_ENTIRE_SKILL
 } from '../actions/skillActions';
@@ -68,6 +70,17 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, { [action.payload.type]: {$set: action.payload.val }})
+      }
+    case UPDATE_FULFILLMENT:
+      return {
+        ...state,
+        skill: update(state.skill, { fulfillment: {[action.payload.intent_key]: {$set: {[action.payload.slot_config]: action.payload.slot_config}}}})
+      }
+
+    case REMOVE_FULFILLMENT:
+      return {
+        ...state,
+        skill: update(state.skill, { fulfillment: {$unset: [action.payload.intent_key]}})
       }
     case UPDATE_ENTIRE_SKILL:
       return {

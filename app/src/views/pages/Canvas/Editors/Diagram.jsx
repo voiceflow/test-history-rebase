@@ -165,7 +165,7 @@ class DiagramBlock extends Component {
 }
 
 const mapStateToProps = state => ({
-    diagram: state.diagrams.diagram,
+    diagrams: state.diagrams.diagrams,
     load_diagram: state.diagrams.loading,
     broken: state.diagrams.error
 })

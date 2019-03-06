@@ -1,5 +1,10 @@
 // Convert older deprecated blocks to newer ones
+import _ from 'lodash'
+import { BlockNodeModel } from './../../components/SRD/models/BlockNodeModel'
+import { Toolkit } from "./../../components/SRD/Toolkit";
 
+const toolkit = new Toolkit()
+;
 const generateID = () => {
     return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
         const r = (Math.random() * 16) | 0
@@ -105,6 +110,308 @@ const convertDiagram = (diagram, diagrams) => {
     return diagram
 }
 
+
+const serializeDiagram = engine => {
+    let serialize = engine.getDiagramModel().serializeDiagram();
+    _.map(serialize.nodes, node => {
+        if (!_.isEmpty(node.combines)) {
+            let isHome = node.extras.type === 'story'
+            if (!isHome) node.extras.nextID = node.combines[0].id
+            node.combines = _.map(node.combines, (combine, idx) => {
+                if (combine.parentCombine) {
+                    delete combine.parentCombine
+                }
+                if (!isHome) {
+                    if (idx !== node.combines.length - 1 && combine.extras) {
+                        combine.extras.nextID = node.combines[idx + 1].id
+                    } else {
+                        _.forEach(combine.ports, cp => {
+                            if (!cp.in) {
+                                if (_.find(node.ports, np => np.id === cp.id)) {
+                                    cp.links = _.find(node.ports, np => np.id === cp.id).links;
+                                }
+                            }
+                        })
+                    }
+                }
+                return combine.serialize ? combine.serialize() : combine
+            })
+        } else {
+            delete node.combines
+        }
+    })
+    return serialize
+}
+
+const canSave = currentModel => {
+    // Get the size of the diagram in bytes
+    const size = (new TextEncoder('utf-8').encode(currentModel)).length
+    // If the size is too large warn the user
+    return size < 399000
+}
+
+const createDropNode = (event, engine, type, name) => {
+    var node = new BlockNodeModel(name, null, toolkit.UID())
+
+    if (type) {
+        if (type === 'choice') {
+            node.addInPort(' ')
+            node.addOutPort('else').setMaximumLinks(1)
+            node.extras = {
+                choices: [],
+                inputs: []
+            };
+        } else if (type === 'exit') {
+            node.addInPort(' ')
+        } else if (type === 'interaction') {
+            node.addInPort(' ');
+            node.addOutPort('else').setMaximumLinks(1);
+            node.extras = {
+                alexa: {
+                    choices: []
+                },
+                google: {
+                    choices: []
+                }
+            }
+        } else if (type === 'combine') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                audio: false,
+                lines: [
+                    {
+                        collapse: true,
+                        audio: false,
+                        title: 'Line Audio'
+                    }
+                ]
+            }
+        } else if (type === 'speak') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                randomize: false
+            }
+            // ONBOARDING
+            // if(this.onboarding && this.state.onboarding_step < 1){
+            //     setTimeout(()=>this.setState({onboarding_step: 1, onboarding_run: true}), 400)
+            // }
+        } else if (type === 'card') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                cardtype: 'Simple'
+            }
+        } else if (type === 'reminder') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                reminder: null
+            }
+        } else if (type === 'flow') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                diagram_id: null,
+                inputs: [],
+                outputs: []
+            }
+        } else if (type === 'intent') {
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                alexa: {
+                    intent: null,
+                    mappings: [],
+                    resume: false
+                },
+                google: {
+                    intent: null,
+                    mappings: [],
+                    resume: false
+                }
+            }
+        } else if (type === 'comment') {
+            node.name = 'New Comment'
+            node.clearListeners()
+        } else if (type === 'ending') {
+            node.addInPort(' ')
+            node.extras = {
+                audio: '',
+                audioText: '',
+                audioVoice: ''
+            }
+        } else if (type === 'random') {
+            node.addInPort(' ')
+            node.addOutPort(1).setMaximumLinks(1)
+            node.extras = {
+                paths: 1
+            }
+        } else if (type === 'variable') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {}
+        } else if (type === 'set') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                sets: []
+            }
+        } else if (type === 'if') {
+            node.addInPort(' ')
+            node.addOutPort('else').setMaximumLinks(1)
+            node.addOutPort('1').setMaximumLinks(1)
+            node.extras = {
+                expressions: [{
+                    type: 'value',
+                    value: '',
+                    depth: 0
+                }]
+            }
+        } else if (type === 'api') {
+            node.name = 'API'
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                url: '',
+                method: 'GET',
+                headers: [],
+                body: [],
+                content: '',
+                bodyInputType: 'keyValue',
+                params: [],
+                mapping: [],
+                success_id: '',
+                failure_id: ''
+            }
+        } else if (type === 'payment') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                product_id: null
+            }
+        } else if (type === 'cancel') {
+            let data = event.dataTransfer.getData('data')
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                product_id: data ? (data * 1) : null
+            }
+        } else if (type === 'link_account') {
+            node.name = 'Link Account'
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+        } else if (type === 'capture') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                variable: null
+            }
+        } else if (type === 'mail') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                template_id: null,
+                mapping: [],
+                to: ''
+            }
+        } else if (type === 'code') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                code: ''
+            }
+        } else if (type === 'display') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {
+                display_id: null,
+                datasource: '',
+                update_on_change: false,
+                apl_commands: ''
+            }
+        } else if (type === 'stream') {
+            node.addInPort(' ')
+            node.addOutPort('next').setMaximumLinks(1)
+            node.addOutPort('previous').setMaximumLinks(1)
+            node.extras = {
+                audio: ''
+            }
+        } else if (type === 'permission') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.extras = {}
+        } else if (type === 'permissions') {
+            node.name = 'User Info'
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+            node.addOutPort('fail').setMaximumLinks(1)
+            node.extras = {
+                permissions: []
+            }
+        } else if (type === 'link_account') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+        } else if (type === 'module') {
+            node.addInPort(' ')
+            node.addOutPort(' ').setMaximumLinks(1)
+
+            try {
+                let data = JSON.parse(event.dataTransfer.getData('data'))
+                let inputs = data.input ? JSON.parse(data.input) : []
+                let outputs = data.output ? JSON.parse(data.output) : []
+
+                node.name = data.title ? data.title : 'Module'
+
+                node.extras = {
+                    diagram_id: data.diagram_id,
+                    mapping: {
+                        inputs: inputs.map(i => {
+                            return {
+                                key: i,
+                                val: ''
+                            }
+                        }),
+                        outputs: outputs.map(i => {
+                            return {
+                                key: i,
+                                val: ''
+                            }
+                        })
+                    },
+                    version_id: data.version_id,
+                    module_id: data.module_id,
+                    module_icon: data.module_icon,
+                    color: data.color
+                }
+            } catch (err) {
+                console.error(err)
+                return this.props.setError('Error - Module Broken')
+            }
+        }
+        engine.stopMove()
+        node.extras.type = type
+
+        var points = engine.getRelativeMousePoint(event)
+        node.x = points.x - (node.name.length * 4.5 + 40)
+        node.y = points.y - 30
+
+        node.setSelected()
+        engine.getDiagramModel().clearSelection()
+        engine.getDiagramModel().addNode(node)
+        engine.setSuperSelect(node)
+    }
+}
 export {
-    convertDiagram
+    canSave,
+    generateID,
+    serializeDiagram,
+    convertDiagram,
+    createDropNode
 }

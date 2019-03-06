@@ -13,6 +13,7 @@ import { Tooltip } from 'react-tippy'
 import Toggle from 'react-toggle'
 import { Progress } from 'react-sweet-progress'
 import "react-sweet-progress/lib/style.css"
+import Confetti from 'react-dom-confetti'
 
 import AuthenticationService from './../../../services/Authentication'
 import InvRegex from 'services/Regex'
@@ -172,7 +173,8 @@ export class ActionGroup extends PureComponent {
             live_update_stage: 0,
             is_first_upload: false,
             show_upload_prompt: false,
-            is_error: false
+            is_error: false,
+            should_pop_confetti: false
         }
 
         this.toggle = this.toggle.bind(this)
@@ -620,9 +622,15 @@ export class ActionGroup extends PureComponent {
                     axios.post('/analytics/track_first_session_upload')
                     .then(res => {
                         localStorage.setItem('is_first_session', 'false')
+                        this.setState({
+                            should_pop_confetti: true
+                        })
                     })
                     .catch(err => {
                         localStorage.setItem('is_first_session', 'false')
+                        this.setState({
+                            should_pop_confetti: true
+                        })
                         console.log(err)
                     })
                 }
@@ -757,9 +765,15 @@ export class ActionGroup extends PureComponent {
                 axios.post('/analytics/track_first_session_upload')
                 .then(res => {
                     localStorage.setItem('is_first_session', 'false')
+                    this.setState({
+                        should_pop_confetti: true
+                    })
                 })
                 .catch(err => {
                     localStorage.setItem('is_first_session', 'false')
+                    this.setState({
+                        should_pop_confetti: true
+                    })
                     console.log(err)
                 })
             }
@@ -814,6 +828,16 @@ export class ActionGroup extends PureComponent {
 
     render() {
         const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
+        const confetti_config = {
+            angle: 90,
+            spread: 70,
+            startVelocity: 50,
+            elementCount: 75,
+            dragFriction: 0.05,
+            duration: 8000,
+            delay: 0
+        }
+
         return (
             <React.Fragment>
                 <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
@@ -915,6 +939,9 @@ export class ActionGroup extends PureComponent {
 
                     {this.renderUploadButton()}
                     {this.displayUploadPrompt()}
+                    <div id="confetti-positioner">
+                        <Confetti active={this.state.should_pop_confetti} config={confetti_config}/>
+                    </div>
                 </div>
             </React.Fragment>
         );

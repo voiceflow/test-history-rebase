@@ -127,7 +127,7 @@ class Onboarding extends Component{
 					<StepProgressBar num_stages={6} stage={(this.state.company_size >= 10 ? 4: 5)} classes={"onboarding-progress"}/>
 						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
 						<div className="row justify-content-center mb-3">
-							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>Interested in voice and want to explore</button>
+							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>I'm interested in voice and want to explore</button>
 						</div>
 						<div className="row justify-content-center mb-5">
 							<button className={(this.state.purpose === 'IDEA' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'IDEA'})}}>I have an idea and want to build it</button>

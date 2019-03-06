@@ -79,6 +79,7 @@
     "react-day-picker": "^7.2.4",
     "react-dev-utils": "^7.0.1",
     "react-dom": "^16.5.2",
+    "react-dom-confetti": "^0.1.0",
     "react-dropzone": "^6.2.4",
     "react-facebook-login": "^4.1.1",
     "react-ga": "^2.5.3",

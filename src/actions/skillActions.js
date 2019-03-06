@@ -1,6 +1,9 @@
 import React from 'react'
 import axios from 'axios';
 import {Alert} from 'reactstrap'
+import { getSlotsForKeys } from './../util'
+import { getIntentSlots } from './../Helper'
+import _ from 'lodash'
 
 export const fetchSkillsBegin = () => ({
   type: "FETCH_SKILL_BEGIN"
@@ -62,7 +65,65 @@ export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispat
     return Promise.resolve()
 }
 
-export const fetchSkills = (skill_id, preview) => {
+export const removeFulfillment = intent_key => ({
+    type: "REMOVE_FULFILLMENT",
+    payload: { intent_key }
+})
+
+export const updateFulfillment = ( intent_key, slot_config ) => ({
+    type: "UPDATE_FULFILLMENT",
+    payload: { intent_key, slot_config }
+})
+
+export const updateIntents = () => {
+    return (dispatch, getState) => {
+        const intents = getState().skills.skill.intents
+        const slots = getState().skills.skill.slots
+
+        intents.forEach((intent, i) => {
+            let is_google = false
+            let is_alexa = false
+
+            let intent_slots = getSlotsForKeys(intent.inputs.map(input => input.slots), slots)
+            intent_slots.forEach(intent_slot => {
+                const slot_type = intent_slot.type
+
+                if (slot_type && slot_type.toLowerCase() !== 'custom') {
+                    if (/AMAZON/.test(slot_type)) is_alexa = true
+                    if (/^@sys\./.test(slot_type)) is_google = true
+                }
+            })
+            let platform = null
+            if (is_google && !is_alexa) platform = 'google'
+            if (is_alexa && !is_google) platform = 'alexa'
+            intents[i]._platform = platform
+        })
+        dispatch(updateSkill('intents', intents))
+    }
+}
+
+export const setCanFulfill = (intent_key, new_value) => {
+    return (dispatch, getState) => {
+        const skill = getState().skills.skill
+        const fulfillments = skill.fulfillment;
+        let fulfillment = fulfillments[intent_key]
+
+        if (fulfillment && !new_value){
+            dispatch(removeFulfillment(intent_key))
+        } else if (!fulfillment && new_value)  {
+            const slot_config = {};
+            const intent = _.find(skill.intents, {key: intent_key})
+            const intent_slots = getIntentSlots(intent, skill.slots);
+            
+            intent_slots.forEach(slot => {
+                slot_config[slot.key] = []
+            })
+            dispatch(updateFulfillment(intent_key, slot_config))
+        }
+    }
+}
+
+export const fetchSkills = (skill_id, preview, diagram_id) => {
     return dispatch => {
         dispatch(fetchSkillsBegin());
         return axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}`, {
@@ -98,6 +159,9 @@ export const fetchSkills = (skill_id, preview) => {
                 }
 
                 skill.platform = skill.platform === 'google' ? 'google' : 'alexa'
+                if (diagram_id && skill.diagram !== diagram_id){
+                    skill.diagram = diagram_id
+                }
                 dispatch(fetchLiveSkills(skill_id))
                 dispatch(fetchSkillsSuccess(skill))
             })
@@ -149,3 +213,5 @@ export const UPDATE_SKILL = 'UPDATE_SKILL'
 export const UPDATE_ENTIRE_SKILL = 'UPDATE_ENTIRE_SKILL'
 export const UPDATE_SKILL_MERGE = 'UPDATE_SKILL_MERGE'
 export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
+export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
+export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'

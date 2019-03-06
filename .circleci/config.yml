@@ -67,6 +67,7 @@ jobs: # a collection of steps
             pip install awscli --upgrade --user
             aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_DOCKERRUN.json ./.deploy/Dockerrun.aws.json
             aws s3 cp s3://com.getvoiceflow.docker-config/CREATOR_STAGING_ENV ./.env
+            eb init --region us-east-1 --platform docker-1.5.0 VoiceflowCreator-staging
       - run:
           name: Docker Login
           command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
@@ -86,13 +87,12 @@ jobs: # a collection of steps
           name: Push to ELB
           command: |
             cd ./.deploy
-            eb init --region us-east-1 --platform VoiceflowCreator-staging
-            eb init -r us-east-1 VoiceflowCreator-staging
             eb deploy -l $CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build-deploy:
     jobs:
+      - test
       - deploy-staging:
           filters:
             branches:

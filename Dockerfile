@@ -14,4 +14,4 @@ RUN npm install -g forever
 
 EXPOSE 8080
 
-CMD forever -c "npm run start" .
+CMD forever -c "node index.js" .

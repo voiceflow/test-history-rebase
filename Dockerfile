@@ -4,9 +4,11 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-RUN npm install -g forever && yarn && cd ./app && yarn
+RUN yarn && cd ./app && yarn
 
 RUN npm run build
+
+RUN npm install -g forever
 
 EXPOSE 8080
 

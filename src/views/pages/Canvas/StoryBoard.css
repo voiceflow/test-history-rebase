@@ -3070,3 +3070,15 @@ button.close:hover{
     margin-bottom: 60px;
     max-width: 80%;
 }
+
+#confetti-positioner {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    z-index: 100;
+}

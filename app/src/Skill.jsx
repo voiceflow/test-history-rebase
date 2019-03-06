@@ -19,6 +19,7 @@ import Logs from './views/pages/Logs'
 import axios from 'axios'
 import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
 import DefaultModal from './views/components/Modals/DefaultModal'
+import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
 import AuthenticationService from './services/Authentication'
 
@@ -245,12 +246,7 @@ class Skill extends Component {
         }
 
         if((this.props.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
-            return <div id="loading-diagram">
-                <div className="text-center">
-                    <h5 className="text-muted mb-2">Loading Skill</h5>
-                    <span className="loader"/>
-                </div>
-            </div>
+            return React.createElement(Spinner,  {name: 'Skill'})
         }
 
         return <React.Fragment>
@@ -295,5 +291,5 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     errorScreen,
     loadSession,
-    socketCheck
+    socketCheck,
 )(Skill)

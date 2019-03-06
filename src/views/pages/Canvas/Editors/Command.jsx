@@ -45,7 +45,6 @@ export class Command extends Component {
 
         if (diagram_intents.has(selected.key)) {
             this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
-            this.intentSelectRef.current.blur();
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected

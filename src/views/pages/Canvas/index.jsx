@@ -2328,7 +2328,7 @@ export class Canvas extends Component {
                             <button className="white-circ ml-2" onClick={this.centerDiagram}><i className="fas fa-map-marker-alt"></i></button>
                             <button className="white-circ ml-2" onClick={() => {this.setState({keyboard_help: true})}}><i className="fas fa-keyboard"></i></button>
                         </div>
-                        { this.props.skill.diagram !== this.props.diagram_id && <FlowBar
+                        { this.props.root_id !== this.props.diagram_id && <FlowBar
                                 deleteFlow={this.deleteFlow}
                                 copyFlow={this.copyFlow}
                                 renameFlow={this.renameFlow}
@@ -2376,7 +2376,8 @@ const mapStateToProps = state => ({
   diagram_error: state.diagrams.error,
   load_diagram: state.diagrams.loading,
   error: state.skills.error,
-  variables: state.variables.localVariables
+  variables: state.variables.localVariables,
+  root_id: _.find(state.diagrams.diagrams, d=> d.name === 'ROOT').id
 });
 
 const mapDispatchToProps = dispatch => {

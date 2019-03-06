@@ -198,12 +198,6 @@ exports[`Canvas render canvas 1`] = `
           />
         </button>
       </div>
-      <Connect(FlowBar)
-        copyFlow={[Function]}
-        deleteFlow={[Function]}
-        enterFlow={[Function]}
-        renameFlow={[Function]}
-      />
       <DiagramWidget
         allowCanvasTranslation={true}
         allowCanvasZoom={true}

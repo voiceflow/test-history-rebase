@@ -140,7 +140,7 @@ class DiagramBlock extends Component {
                         <label>Input Variables</label>
                         <DiagramVariables
                             arg1_options={this.props.variables}
-                            arg2_options={this.state.variables}
+                            arg2_options={this.props.diagramVariables}
                             arguments={this.state.node.extras.inputs}
                             onAdd={() => this.handleAddMap('inputs')}
                             onRemove={(i) => this.handleRemoveMap('inputs', i)}
@@ -151,7 +151,7 @@ class DiagramBlock extends Component {
                         <DiagramVariables
                             reverse
                             arg1_options={this.props.variables}
-                            arg2_options={this.state.variables}
+                            arg2_options={this.props.diagramVariables}
                             arguments={this.state.node.extras.outputs}
                             onAdd={() => this.handleAddMap('outputs')}
                             onRemove={(i) => this.handleRemoveMap('outputs', i)}
@@ -167,7 +167,8 @@ class DiagramBlock extends Component {
 const mapStateToProps = state => ({
     diagram: state.diagrams.diagram,
     load_diagram: state.diagrams.loading,
-    broken: state.diagrams.error
+    broken: state.diagrams.error,
+    diagramVariables: state.diagramVariables.diagramVariables
 })
 
 export default connect(mapStateToProps)(DiagramBlock);

@@ -408,10 +408,11 @@ const createDropNode = (event, engine, type, name) => {
         engine.setSuperSelect(node)
     }
 }
+
 export {
     canSave,
     generateID,
     serializeDiagram,
     convertDiagram,
-    createDropNode
+    createDropNode,
 }

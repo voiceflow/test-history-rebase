@@ -23,9 +23,9 @@ export const fetchDiagramFailure = error => ({
   payload: { error }
 });
 
-export const onFlowRename = flow_id => ({
+export const onFlowRename = (flow_id, name)=> ({
     type: "ON_FLOW_RENAME",
-    payload: {flow_id}
+    payload: {flow_id, name}
 })
 
 export const fetchDiagram = skill_id => {
@@ -56,16 +56,30 @@ export const fetchDiagram = skill_id => {
 }
 
 export const renameDiagram = (flow_id, name) => {
-    return dispatch => {
-        return axios.post(`/diagram/${flow_id}/name`, {
-            name: name
-        })
-        .then(() => {
-            dispatch(onFlowRename(flow_id))
-        })
-        .catch(err => {
-            alert('Error - Name not Updated')
-        })
+    return (dispatch, getState) => {
+        name = name.trim();
+        let index = getState().diagrams.diagrams.findIndex(d => d.id === flow_id);
+        if (index !== -1){
+            let flow = getState().diagrams.diagrams.find(d => d.name === name)
+            if (flow && flow.name !== name) {
+                return this.props.onConfirm({
+                    text: 'Flow names must be unique',
+                    confirm: () => this.setState({
+                        confirm: null
+                    })
+                })
+            }
+            return axios.post(`/diagram/${flow_id}/name`, {
+                name: name
+            })
+            .then(() => {
+
+                dispatch(onFlowRename(flow_id, name))
+            })
+            .catch(err => {
+                alert('Error - Name not Updated')
+            })
+        }
     }
 }
 
@@ -74,4 +88,4 @@ export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';
 export const FETCH_DIAGRAM_SUCCESS = 'FETCH_DIAGRAM_SUCCESS'
 export const FETCH_DIAGRAM_FAILURE = 'FETCH_DIAGRAM_FAILURE';
 export const FETCH_DIAGRAM = 'FETCH_DIAGRAM';
-export const RENAME_DIAGRAM = 'RENAME_DIAGRAM'
+export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { addDisplay, updateDisplay } from './../../../actions/displayActions'
 
 import ErrorModal from '../../components/Modals/ErrorModal'
+import { Spinner } from 'views/components/Spinner'
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import { Input, Row, Col, FormGroup, Button } from 'reactstrap';
@@ -201,12 +202,7 @@ class Display extends Component {
                     this.setState({error: null});
                 }}/>
                 { this.state.loading ? 
-                    <div id="loading-diagram">
-                        <div className="text-center">
-                            <h5 className="text-muted mb-2">Loading Template</h5>
-                            <span className="loader"/>
-                        </div>
-                    </div> :
+                    React.createElement(Spinner, {name: 'Displays'}) :
                     <Dropzone
                         id="page-drop"
                         activeClassName="active"

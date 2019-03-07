@@ -22,9 +22,9 @@ import InvRegex from 'services/Regex'
 import './ActionGroup.css'
 
 const loading = (message) => {
-    return <div className="super-center">
+    return <div className="super-center mb-2">
         <div className='text-center'>
-            <p className="loading mb-0">{message}</p>
+            <p className="mb-0">{message}</p>
         </div>
     </div>
 }
@@ -37,45 +37,53 @@ const GOOGLE_STAGES = {
     "4": "Publishing",
     "5": "Published",
 }
-const ALEXA_STAGES = {
-    "0": "Upload Skill",
-    "1": "Voiceflow Rendering",
-    "2": "Success",
-    "4": "Rendering Error",
-    "5": "Amazon Login",
-    "6": "Developer Account",
-    "7": "Check Vendor",
-    "8": "Verifying Login",
-    "9": "Amazon Error",
-    "11": "Uploading to Alexa",
-    "12": "Building Interaction Modelr",
-    "13": "Enable Skill",
-    "14": "Invocation Name",
-}
+
+// USE AS REFERENCE
+// const ALEXA_STAGES = {
+//     "0": "Upload Skill",
+//     "1": "Voiceflow Rendering",
+//     "2": "Success",
+//     "4": "Rendering Error",
+//     "5": "Amazon Login",
+//     "6": "Developer Account",
+//     "7": "Check Vendor",
+//     "8": "Verifying Login",
+//     "9": "Amazon Error",
+//     "11": "Uploading to Alexa",
+//     "12": "Building Interaction Model",
+//     "13": "Enable Skill",
+//     "14": "Invocation Name",
+// }
 
 const SHOW_PROMPT_ALEXA = [4,5,6,9,14,2]
 
 const STAGE_PERCENTAGES = {
     alexa: {
         1: [0, 5],
-        11: [10, 79],
-        12: [80, 95],
+        11: [10, 49],
+        12: [50, 95],
         13: [96, 100]
     },
     google: {
-        3: [10, 59],
+        3: [0, 59],
         4: [60, 99]
     }
 }
 
+// Loading without percentages
+const LOADING_STAGES = {
+  alexa: [7, 8],
+  google: []
+}
+
 const ERROR_STAGES = {
-    alexa: [4, 9],
-    google: [2]
+  alexa: [4, 9],
+  google: [2]
 }
 
 const ENDING_STAGES = {
-    alexa: [2, 4, 9],
-    google: [2, 5]
+  alexa: [2, 4, 9, 10],
+  google: [2, 5]
 }
 const LAUNCH_PHRASES = ['launch', 'ask', 'tell', 'load', 'begin', 'enable']
 const WAKE_WORDS = ['Alexa', 'Amazon', 'Echo', 'Skill', 'App']
@@ -194,11 +202,14 @@ export class ActionGroup extends PureComponent {
         this.shouldReset = this.shouldReset.bind(this)
         this.updateAlexaStage = this.updateAlexaStage.bind(this)
         this.uploadSuccess = this.uploadSuccess.bind(this)
+        this.closePrompt = this.closePrompt.bind(this)
         this.token = null
         this.updateLiveVersion = this.updateLiveVersion.bind(this)
         this.renderUploadButton = this.renderUploadButton.bind(this)
         this.isUploadLoading = this.isUploadLoading.bind(this)
         this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
+
+        // localStorage.setItem('is_first_session_' + window.user_detail.id, 'true')
     }
 
     componentDidMount() {
@@ -213,7 +224,7 @@ export class ActionGroup extends PureComponent {
     }
 
     shouldReset() {
-        if (ENDING_STAGES[this.props.platform].includes(this.state.stage)) {
+        if (ENDING_STAGES[this.props.platform].includes((this.props.platform === 'alexa' ? this.state.stage : this.state.google_stage))) {
             this.reset()
         }
     }
@@ -236,39 +247,53 @@ export class ActionGroup extends PureComponent {
     }
 
     reset() {
-        this.setState({
-            amzn_error: false,
-            stage: this.token ? 0 : 5,
-            google_stage: this.google_token ? 2 : 0,
-            is_first_upload: (localStorage.getItem('is_first_upload') !== 'false'),
-            // TESTING PURPOSES
-            // show_upload_prompt: true,
-            // stage: 8,
-            // is_first_upload: true,
-        })
+      // TEST FIRST SESSION
+      this.setState({
+          amzn_error: false,
+          stage: this.token ? 0 : 5,
+          google_stage: this.google_token ? 2 : 0,
+          is_first_upload: (localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'),
+          // // TESTING PURPOSES
+          // show_upload_prompt: true,
+          // stage: 5,
+          // updateModal: true,
+          // is_first_upload: true,
+      })
     }
 
     uploadSuccess(platform='alexa', project_id){
-        // They completed their first upload successfully
-        localStorage.setItem('is_first_upload', 'false')
-        if(platform === 'google'){
-            this.setState({
-                google_stage: 5,
-                project_id: project_id || this.state.project_id
-            })
-        }else{
-            this.updateAlexaStage(2)
-        }
-    }
-
-    showUploadPrompt(){
+      // Track upload on first session
+      // They completed their first upload successfully
+      if(platform === 'google'){
         this.setState({
-            show_upload_prompt: !this.state.is_first_upload 
+            google_stage: 5,
+            project_id: project_id || this.state.project_id
         })
+        if(!this.state.is_first_upload){
+          this.setState({
+              show_upload_prompt: true
+          })
+        }
+      }else{
+          this.updateAlexaStage(2)
+      }
+      if(localStorage.getItem('is_first_session_' + window.user_detail.id) === 'true'){
+        localStorage.setItem('is_first_session_' + window.user_detail.id, 'false')
+        this.setState({should_pop_confetti: true})
+        axios.post('/analytics/track_first_session_upload')
+      }
     }
 
     updateAlexaStage(stage, cb, props) {
         if(SHOW_PROMPT_ALEXA.includes(stage)) this.showUploadPrompt()
+        if(!this.state.is_first_upload){
+          if(ERROR_STAGES[this.props.platform].includes(stage) && !this.timeout){
+            this.timeout = setTimeout(() => {
+                this.setState({show_upload_prompt: false, stage: 0})
+                this.timeout = null
+            }, 10000)
+          }
+        }
         this.setState({
             ...props,
             stage: stage,
@@ -355,6 +380,7 @@ export class ActionGroup extends PureComponent {
                 this.props.updateSkill('inv_name', this.state.inv_name)
             } catch (err) {
                 this.updateAlexaStage(9, undefined, {upload_error: 'Unable to save Invocation Name'})
+                return
             }
         }
         axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
@@ -481,20 +507,24 @@ export class ActionGroup extends PureComponent {
         });
     }
 
-    displayUploadPrompt() {
-        if(ERROR_STAGES[this.props.platform].includes(this.state.stage) && !this.timeout){
-            this.timeout = setTimeout(() => {
-                this.setState({show_upload_prompt: false, stage: 0})
-                this.timeout = null
-            }, 5000)
-        }
+    showUploadPrompt(){
+      this.setState({
+          show_upload_prompt: !this.state.is_first_upload 
+      })
+    }
 
+    closePrompt(){
+      this.setState({show_upload_prompt: false})
+      if(!this.isUploadLoading()){
+        this.reset()
+      }
+    }
+
+    displayUploadPrompt() {
         if(this.state.show_upload_prompt){
-            return  <div className="upload-success-popup d-flex">
+            return  <div className="upload-success-popup">
                 {this.renderBody(false)}
-                {!ERROR_STAGES[this.props.platform].includes(this.state.stage) && 
-                    ((this.props.platform === 'alexa' && this.state.stage !== 14) || this.props.platform === 'google') && 
-                    <button className="close close-upload-success-popup" onClick={() => {this.setState({show_upload_prompt: false})}}>&times;</button>}
+                <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
             </div>
         } 
         return
@@ -560,7 +590,7 @@ export class ActionGroup extends PureComponent {
             </Tooltip>
         } else {
             if(this.isUploadLoading()){
-                return <Button variant="contained" className="publish-btn publish-btn-disabled" onClick={()=>this.setState({show_upload_prompt: true})}>
+                return <Button variant="contained" className="publish-btn publish-btn-disabled" onClick={()=>this.setState({show_upload_prompt: !this.state.show_upload_prompt})}>
                         <p className="loading-btn m-0 p-0">Uploading</p>
                         <div className="launch">
                             <div className="load-spinner pt-1">
@@ -592,16 +622,19 @@ export class ActionGroup extends PureComponent {
     renderBody(modal) {
         if(this.props.platform === 'google'){
             return <React.Fragment>
-                {![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && <div className="mb-2">
+                {![0].includes(this.state.google_stage) && !ENDING_STAGES.google.includes(this.state.google_stage) && 
+                <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
                     <RenderProgress range={STAGE_PERCENTAGES.google[this.state.google_stage]}/>
                 </div>}
                 {this.renderGoogleBody(modal)}
             </React.Fragment>
         }else{
             return <React.Fragment>
-                {STAGE_PERCENTAGES.alexa[this.state.stage] && <div className="mb-2">
+                {(STAGE_PERCENTAGES.alexa[this.state.stage] && 
+                <div className={"mb-3 text-center" + (modal ? '' : ' mt-3')}>
                     <RenderProgress range={STAGE_PERCENTAGES.alexa[this.state.stage]}/>
-                </div>}
+                </div>) || 
+                (LOADING_STAGES.alexa.includes(this.state.stage) && <div className={"text-center mb-3" + (modal ? '' : ' mt-3')}><div className="loader text-lg"></div></div>)}
                 {this.renderAlexaBody(modal)}
             </React.Fragment>
         }
@@ -617,23 +650,6 @@ export class ActionGroup extends PureComponent {
             case 1:
                 return loading('Rendering Flows')
             case 2:
-                // Track upload on first session
-                if(localStorage.getItem('is_first_session') === 'true'){
-                    axios.post('/analytics/track_first_session_upload')
-                    .then(res => {
-                        localStorage.setItem('is_first_session', 'false')
-                        this.setState({
-                            should_pop_confetti: true
-                        })
-                    })
-                    .catch(err => {
-                        localStorage.setItem('is_first_session', 'false')
-                        this.setState({
-                            should_pop_confetti: true
-                        })
-                        console.log(err)
-                    })
-                }
                 const locale = (this.SucceedLocale || this.props.skill.locales[0] || 'en-US').replace('-', '_')
 
                 if(!modal){
@@ -663,7 +679,7 @@ export class ActionGroup extends PureComponent {
                     </React.Fragment>
                 }
             case 4:
-                return <Alert color={"danger" + (modal ? " mb-0 w-100" : "")}>
+                return <Alert color={"danger mb-0 w-90"}>
                     <span className="fail-icon"/>  Rendering Error
                 </Alert>
             case 5:
@@ -721,8 +737,8 @@ export class ActionGroup extends PureComponent {
                 return loading('Enabling Skill')
             case 14:
                 return <div className="w-100">
-                    <div className="space-between text-muted">
-                        <label>Invocation Name</label>
+                    <div className="d-flex text-muted align-items-center">
+                        <label className="mr-1">Invocation Name</label>
                         <Tooltip
                             html={(<React.Fragment>Alexa listens for the Invocation Name<br /> to launch your skill<br /> e.g. <i>Alexa, open <b>Invocation Name</b></i></React.Fragment>)}
                             position="bottom"
@@ -732,7 +748,7 @@ export class ActionGroup extends PureComponent {
                     </div>
                     <input className="form-control" value={this.state.inv_name} placeholder='Invocation Name' onChange={(e) => this.setState({ inv_name: e.target.value, inv_name_error: invNameError(e.target.value, this.props.skill.locales) })} />
                     <small className={"text-blue" + (this.state.flash ? ' blink' : '')}>{this.state.inv_name_error}</small>
-                    <div className="super-center mt-4-5 mb-3">
+                    <div className="super-center mt-3 mb-2">
                         <button className="purple-btn" onClick={this.updateAlexa}>Continue</button>
                     </div>
                 </div>
@@ -748,48 +764,23 @@ export class ActionGroup extends PureComponent {
         }
     }
 
-    renderGoogleBody() {
+    renderGoogleBody(modal) {
         let modal_content = null
         if (
             this.state.google_stage === 3 ||
             this.state.google_stage === 4
         ) {
-            modal_content = <div className="super-center mb-4">
-                <div className='text-center'>
-                    <p className="loading">{GOOGLE_STAGES[this.state.google_stage]}</p>
-                </div>
-            </div>
+            modal_content = loading(GOOGLE_STAGES[this.state.google_stage])
         } else if (this.state.google_stage === 5) {
-            // Track upload on first session
-            if(localStorage.getItem('is_first_session') === 'true'){
-                axios.post('/analytics/track_first_session_upload')
-                .then(res => {
-                    localStorage.setItem('is_first_session', 'false')
-                    this.setState({
-                        should_pop_confetti: true
-                    })
-                })
-                .catch(err => {
-                    localStorage.setItem('is_first_session', 'false')
-                    this.setState({
-                        should_pop_confetti: true
-                    })
-                    console.log(err)
-                })
-            }
-
-            if(!this.state.is_first_upload){
-                this.setState({
-                    show_upload_prompt: true
-                })
-                modal_content = <div className="text-center mt-4">
-                    <span className="modal-bg-txt text-center mb-2"> <span className="pass-icon mr-2"/>Upload Successful </span><br/>
-                    <span className="modal-txt text-center">
-                        You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
-                            target="_blank" rel="noopener noreferrer">
-                            Google Actions Simulator
-                    </a>. To submit for review, please follow the instructions on the Google Actions Developer Console.
-                </span>
+            if(!modal){
+                modal_content = <div className="text-center">
+                    <div className="d-flex align-items-center justify-content-center upload-prompt-title mb-2"> <span className="pass-icon mr-2"/> Upload Successful </div>
+                    <div className="upload-prompt-text">
+                      You may test on the <a href={`https://console.actions.google.com/u/${this.props.skill.google_publish_info.google_link_user || '0'}/project/${this.state.project_id}/simulator`}
+                              target="_blank" rel="noopener noreferrer">
+                              Google Actions Simulator
+                      </a>. To submit for review, please follow the instructions on the Google Actions Developer Console.
+                    </div>
                 </div>
             } else {
                 modal_content = <React.Fragment>
@@ -828,28 +819,27 @@ export class ActionGroup extends PureComponent {
 
     render() {
         const link = `https://creator.getvoiceflow.com/preview/${this.props.skill.skill_id}/${this.props.diagram_id}`
-        const confetti_config = {
-            angle: 90,
-            spread: 70,
-            startVelocity: 50,
-            elementCount: 75,
-            dragFriction: 0.05,
-            duration: 8000,
-            delay: 0
-        }
 
         return (
             <React.Fragment>
+                {this.state.updateModal && <div id="confetti-positioner">
+                    <Confetti active={this.state.should_pop_confetti} config={{
+                        angle: 90,
+                        spread: 70,
+                        startVelocity: 50,
+                        elementCount: 75,
+                        dragFriction: 0.05,
+                        duration: 8000,
+                        delay: 0
+                    }}/>
+                </div>}
                 <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
-                    <ModalHeader toggle={()=>this.setState({updateModal: false})}>Update Skill</ModalHeader>
-                    <ModalBody className="modal-info">
+                    <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4"/>
+                    <ModalBody className="modal-info" style={{padding: '1rem 2rem'}}>
                         <div>
                             {this.renderBody(true)}
                         </div>
                     </ModalBody>
-                    <div id="confetti-positioner">
-                        <Confetti active={this.state.should_pop_confetti} config={confetti_config}/>
-                    </div>
                 </Modal>
 
                 <Modal isOpen={this.state.updateLiveModal} toggle={this.toggleUpdateLive} onClosed={() => { this.setState({ live_update_stage: 0 }) }} className="stage_modal">

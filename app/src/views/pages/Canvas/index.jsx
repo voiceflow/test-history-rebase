@@ -136,17 +136,20 @@ export class Canvas extends Component {
         Mousetrap.reset()
         Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp))
         Mousetrap.bind(['ctrl+c', 'command+c'], () => this.setState({
-            copy: this.state.engine.getSuperSelect()
-        }))
-        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
-        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
+            copy: this.state.engine
+                .getDiagramModel()
+                .getSelectedItems()
+                .filter(n => n instanceof BlockNodeModel)
+        }), 'keyup')
+        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste, 'keyup')
+        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo, 'keyup')
         Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
         Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
                 this.onSave()
             }
-        })
+        }, 'keyup')
         Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({ spotlight: false })))
         Mousetrap.bind('space', (e) => {
             if (this.diagram_focus) {
@@ -155,7 +158,7 @@ export class Canvas extends Component {
                 e.preventDefault()
                 e.stopPropagation()
             }
-        })
+        }, 'keyup')
     }
     componentDidMount() {
         this.setMousetrap()
@@ -219,7 +222,11 @@ export class Canvas extends Component {
                 clientY: this.mouseY
             }
             var point = this.state.engine.getRelativeMousePoint(event)
-            this.copyNode(this.state.copy, { x: point.x - (this.state.copy.name.length * 4.5 + 40), y: point.y -30})
+            let centerX = _.maxBy(this.state.copy, 'x').x - (_.maxBy(this.state.copy, 'x').x - _.minBy(this.state.copy, 'x').x)/2
+            let centerY = _.maxBy(this.state.copy, 'y').y - (_.maxBy(this.state.copy, 'y').y - _.minBy(this.state.copy, 'y').y)/2
+            _.forEach(this.state.copy, (node,idx) => {
+                this.copyNode(node, { x: point.x + (node.x - centerX), y: point.y + (node.y - centerY)})
+            })
         }
     }
 

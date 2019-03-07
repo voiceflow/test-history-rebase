@@ -896,6 +896,17 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     background-color: #2fd0c1;
 }
 
+.Menu #sidebar .section-title .favorites {
+    background-image: url('/star.svg') !important;
+    right: 0px;
+    overflow: auto;
+    z-index: 10px;
+    height: 15px;
+    width: 15px;
+    margin-top: 4px;
+    margin-right: -1px;
+}
+
 .section-title:hover {
     cursor: pointer;
 }

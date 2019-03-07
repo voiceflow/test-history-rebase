@@ -1,8 +1,9 @@
 import * as React from "react";
 import * as _ from "lodash";
+import { connect } from 'react-redux'
 
 //Helpers
-import { combineValidation, combineAppendValidation } from './../../../helpers/combineHelper'
+import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
 import {Toolkit}from './../Toolkit'
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import { BlockPortLabel } from "./BlockPortLabelWidget";
@@ -10,9 +11,10 @@ import { BaseWidget} from "./../main.js";
 import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import { Tooltip } from 'react-tippy'
+import { renameDiagram } from 'actions/diagramActions'
 
 const toolkit = new Toolkit()
-export class BlockNodeWidget extends BaseWidget {
+class BlockNodeWidget extends BaseWidget {
 	constructor(props) {
 		super("srd-default-node", props);
 		this.state={
@@ -23,7 +25,6 @@ export class BlockNodeWidget extends BaseWidget {
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 		this.onMouseLeave = this.onMouseLeave.bind(this);
 		this.handleChange = this.handleChange.bind(this);
-		this.appendValidator = this.appendValidator.bind(this);
 		this.removeTemp = this.removeTemp.bind(this);
 		this.addTemp = this.addTemp.bind(this);
 		this.combineNode = this.combineNode.bind(this);
@@ -76,28 +77,6 @@ export class BlockNodeWidget extends BaseWidget {
 		engine.repaintCanvas(false)
 	}
 
-	appendValidator(node){
-		if (!node.extras){
-			return false;
-		}
-		switch (node.extras.type) {
-			case 'god':
-				return false;
-			case 'story':
-				return false;
-			case 'flow':
-				return false;
-			case 'intent':
-				return false;
-			case 'comment':
-				return false;
-			case 'command':
-				return false;
-			default:
-				return true;
-		}
-	}
-
 	generatePort(port) {
 		if (port.parent){
 			return <BlockPortLabel model={port} key={port.id} diagramEngine={this.props.diagramEngine} isLast={this.props.isLast} isMoving={this.props.node.isMoveInside} />;
@@ -112,7 +91,7 @@ export class BlockNodeWidget extends BaseWidget {
 	}
 
 	addTemp(e, isTop = false){
-		if (this.props.node.parentCombine && this.props.node.parentCombine.extras.type === 'god' && e.buttons === 1 && combineAppendValidation(this.props.node) && this.appendValidator(this.props.diagramEngine.getSuperSelect())) {
+		if (this.props.node.parentCombine && this.props.node.parentCombine.extras.type === 'god' && e.buttons === 1 && combineAppendValidation(this.props.node) && appendValidator(this.props.diagramEngine.getSuperSelect())) {
 			if ((combineAppendValidation(_.last(this.props.node.parentCombine.combines)) || combineAppendValidation(this.props.diagramEngine.getSuperSelect())) && combineAppendValidation(this.props.diagramEngine.getSuperSelect())) {
 				let idx = _.findIndex(this.props.node.parentCombine.combines, c => c.id === this.props.node.id);
 				this.props.node.parentCombine.combines.splice(idx + 1, 0, 'temp')
@@ -124,11 +103,11 @@ export class BlockNodeWidget extends BaseWidget {
 				this.props.diagramEngine.repaintCanvas(false)
 			}
 		} else if(!_.isEmpty(this.props.node.combines) && this.props.node.extras.type === 'god') {
-			if (e.buttons === 1 && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
+			if (e.buttons === 1 && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && appendValidator(this.props.diagramEngine.getSuperSelect()) && isTop) {
 				this.props.node.combines.splice(0, 0, 'temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
-			} else if (this.props.node.parentCombine && combineAppendValidation(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && this.appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
+			} else if (this.props.node.parentCombine && combineAppendValidation(_.last(this.props.node.parentCombine.combines)) && e.buttons === 1 && combineAppendValidation(this.props.diagramEngine.getSuperSelect()) && appendValidator(this.props.diagramEngine.getSuperSelect()) && !isTop) {
 				this.props.node.combines.push('temp')
 				this.props.diagramEngine.enableRepaintEntities([this.props.node, this.props.diagramEngine.getSuperSelect()]);
 				this.props.diagramEngine.repaintCanvas(false)
@@ -153,6 +132,9 @@ export class BlockNodeWidget extends BaseWidget {
 	close() {
 		if (!this.props.preview) {
 			this.props.node.name = this.state.name;
+			if (this.props.node.extras.type === 'flow'){
+				this.props.renameFlow(this.props.node.extras.diagram_id, this.state.name)
+			}
 			this.props.node.setLocked(false);
 			this.props.node.edit = false
 			this.forceUpdate();
@@ -460,3 +442,9 @@ export class BlockNodeWidget extends BaseWidget {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	renameFlow: (id, name) => dispatch(renameDiagram(id, name))
+})
+
+export default connect(null, mapDispatchToProps)(BlockNodeWidget)

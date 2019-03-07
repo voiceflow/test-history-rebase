@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
+import { connect } from 'react-redux'
 import { SingleValueOption, SlotOption, SlotSynonyms } from './components/SlotComponents'
 
 class Capture extends Component {
@@ -84,4 +85,7 @@ class Capture extends Component {
     }
 }
 
-export default Capture;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(Capture);

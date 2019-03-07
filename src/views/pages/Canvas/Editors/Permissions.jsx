@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Permission from './components/Permission'
+import { connect } from 'react-redux'
 import {Alert} from 'reactstrap'
 const _ = require('lodash')
 
@@ -14,7 +15,7 @@ const permission_options = [
     // Removed for now, amazon pay permissions broken
 ]
 
-class Permissions extends Component {
+export class Permissions extends Component {
     constructor(props) {
         super(props);
 
@@ -148,4 +149,7 @@ class Permissions extends Component {
     }
 }
 
-export default Permissions;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(Permissions);

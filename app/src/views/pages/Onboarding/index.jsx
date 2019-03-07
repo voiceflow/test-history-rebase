@@ -163,7 +163,7 @@ class Onboarding extends Component{
 					<div className="justify-content-center">
 						<button key={this.state.stage} className={"purple-btn" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
 							this.setState({stage: 'purpose_stage'})
-						}}>Complete</button>
+						}}>Next Question</button>
 					</div>
 				</React.Fragment>
 			case 'work_plan':

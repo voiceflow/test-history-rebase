@@ -3073,12 +3073,12 @@ button.close:hover{
 
 #confetti-positioner {
     position: fixed;
-    bottom: 0px;
+    bottom: -200px;
     left: 0;
     right: 0;
     margin-right: auto;
     margin-left: auto;
     width: 20px;
     height: 20px;
-    z-index: 100;
+    z-index: 16777271;
 }

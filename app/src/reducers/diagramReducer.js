@@ -4,7 +4,6 @@ import {
   FETCH_DIAGRAM_SUCCESS,
   FETCH_DIAGRAM_FAILURE,
   ON_FLOW_RENAME,
-  SET_LIVE_MODE_MODAL,
 } from '../actions/diagramActions';
 
 const initialState = {

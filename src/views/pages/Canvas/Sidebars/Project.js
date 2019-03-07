@@ -5,7 +5,7 @@ import FlowButton from './components/FlowButton'
 
 const TABS = ['structure', 'flows']
 
-class Project extends PureComponent {
+export class Project extends PureComponent {
     constructor(props) {
         super(props);
 

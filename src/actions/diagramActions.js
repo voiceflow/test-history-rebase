@@ -23,9 +23,9 @@ export const fetchDiagramFailure = error => ({
   payload: { error }
 });
 
-export const onFlowRename = flow_id => ({
+export const onFlowRename = (flow_id, name)=> ({
     type: "ON_FLOW_RENAME",
-    payload: {flow_id}
+    payload: {flow_id, name}
 })
 
 export const fetchDiagram = skill_id => {
@@ -73,7 +73,8 @@ export const renameDiagram = (flow_id, name) => {
                 name: name
             })
             .then(() => {
-                dispatch(onFlowRename(flow_id))
+
+                dispatch(onFlowRename(flow_id, name))
             })
             .catch(err => {
                 alert('Error - Name not Updated')
@@ -87,4 +88,4 @@ export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';
 export const FETCH_DIAGRAM_SUCCESS = 'FETCH_DIAGRAM_SUCCESS'
 export const FETCH_DIAGRAM_FAILURE = 'FETCH_DIAGRAM_FAILURE';
 export const FETCH_DIAGRAM = 'FETCH_DIAGRAM';
-export const RENAME_DIAGRAM = 'RENAME_DIAGRAM'
+export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'

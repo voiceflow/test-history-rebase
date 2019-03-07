@@ -847,6 +847,9 @@ export class ActionGroup extends PureComponent {
                             {this.renderBody(true)}
                         </div>
                     </ModalBody>
+                    <div id="confetti-positioner">
+                        <Confetti active={this.state.should_pop_confetti} config={confetti_config}/>
+                    </div>
                 </Modal>
 
                 <Modal isOpen={this.state.updateLiveModal} toggle={this.toggleUpdateLive} onClosed={() => { this.setState({ live_update_stage: 0 }) }} className="stage_modal">
@@ -939,9 +942,6 @@ export class ActionGroup extends PureComponent {
 
                     {this.renderUploadButton()}
                     {this.displayUploadPrompt()}
-                    <div id="confetti-positioner">
-                        <Confetti active={this.state.should_pop_confetti} config={confetti_config}/>
-                    </div>
                 </div>
             </React.Fragment>
         );

@@ -55,7 +55,7 @@ class Card extends Component {
                         <label className="space-between">Image <span className="section-title">OPTIONAL</span></label>
                         <Image 
                             url
-                            max_size={512*1024}
+                            max_size={5*1024*1024}
                             image={this.state.node.extras.large_img} 
                             update={(url) => this.updateContent('large_img', url)}
                         />
@@ -63,7 +63,7 @@ class Card extends Component {
                             <label>Small Screen Image</label>
                             <Image 
                                 url
-                                max_size={512*1024}
+                                max_size={5*1024*1024}
                                 image={this.state.node.extras.small_img} 
                                 update={(url) => this.updateContent('small_img', url)}
                                 margin

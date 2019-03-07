@@ -1,13 +1,3 @@
-const fs = require('fs')
-
-if(process.env.NODE_ENV && fs.existsSync(`./.env.${process.env.NODE_ENV}`)){
-    if (process.env.NODE_ENV !== 'test') console.log(`Running in ${process.env.NODE_ENV} environment`)
-    require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` })
-}else{
-    console.log(`No Environment Set/Not Found! Running default .env file`)
-    require('dotenv').config()
-}
-
 const express = require('express');
 const app = express();
 const path = require('path');

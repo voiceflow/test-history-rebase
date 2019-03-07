@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import _ from 'lodash';
 import ChoiceInputs from './components/ChoiceInputs';
 import randomstring from 'randomstring'
 
-class Choice extends Component {
+export class Choice extends Component {
     constructor(props) {
         super(props);
 
@@ -121,4 +122,7 @@ class Choice extends Component {
     }
 }
 
-export default Choice;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(Choice);

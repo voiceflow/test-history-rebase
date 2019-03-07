@@ -9,6 +9,7 @@ import { copyProduct, deleteProduct } from './../../../../actions/productActions
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import MUIButton from '@material-ui/core/Button'
+import { Spinner } from 'views/components/Spinner'
 
 class Products extends Component {
     constructor(props) {
@@ -27,12 +28,7 @@ class Products extends Component {
 
     render() {
         if(this.props.loading){
-            return <div id="loading-diagram">
-                <div className="text-center">
-                    <h5 className="text-muted mb-2">Loading Products</h5>
-                    <span className="loader"/>
-                </div>
-            </div>
+            return React.createElement(Spinner, {name: 'Products'})
         }
         return(
             <div className="h-100 w-100">

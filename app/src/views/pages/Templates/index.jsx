@@ -8,6 +8,7 @@ import _ from 'lodash'
 import './Template.css'
 import LightCanvas from './../Canvas/LightCanvas'
 import MUIButton from '@material-ui/core/Button';
+import { Spinner } from 'views/components/Spinner'
 
 class Templates extends Component {
     constructor(props) {
@@ -246,12 +247,7 @@ class Templates extends Component {
 
     render() {
         if (this.state.loading) {
-            return <div id="loading-diagram">
-                <div className="text-center">
-                    <h5 className="text-muted mb-2">Loading New Skill</h5>
-                    <span className="loader" />
-                </div>
-            </div>
+            return React.createElement(Spinner, {name: 'Templates'})
         }
 
         return <div id="template-box-container">

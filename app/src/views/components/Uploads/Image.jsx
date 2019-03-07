@@ -18,7 +18,8 @@ class Image extends Component {
             url_open: false,
             url: ''
         }
-        
+
+        this.max_size = this.props.max_size || MAX_SIZE
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -29,27 +30,27 @@ class Image extends Component {
     }
 
     onDropImage(files, rejected) {
-        if (files.length === 1) {
-            let data = new FormData();
-            data.append('image', files[0]);
-            this.setState({loading: true});
-            axios.post('/image' + (this.props.path ? this.props.path : ''), data)
-            .then(res => {
-                this.setState({loading: false});
-            	this.props.update(res.data);
-            })
-            .catch(err => {
-                this.setState({loading: false});
-            	console.error(err);
-            	window.alert('Image Upload Error');
-            });
-        }else if(Array.isArray(rejected) && rejected.length === 1 && rejected[0].size > MAX_SIZE){
-            this.setState({
-                error: <div>
-                    <b>File is too large<br/>(5MB max)</b>
-                </div>
-            })
-        }
+      if (files.length === 1) {
+        let data = new FormData();
+        data.append('image', files[0]);
+        this.setState({loading: true});
+        axios.post('/image' + (this.props.path ? this.props.path : ''), data)
+        .then(res => {
+            this.setState({loading: false});
+          this.props.update(res.data);
+        })
+        .catch(err => {
+            this.setState({loading: false});
+          console.error(err);
+          window.alert('Image Upload Error');
+        });
+      }else if(Array.isArray(rejected) && rejected.length === 1 && rejected[0].size > this.max_size){
+        this.setState({
+            error: <div>
+                <b>File is too large<br/>({(this.max_size / (1024 * 1024)).toFixed(1)} MB max)</b>
+            </div>
+        })
+      }
     }
 
 	render() {
@@ -91,8 +92,8 @@ class Image extends Component {
                     rejectClassName="reject"
                     multiple={false}
                     disableClick={false}
-                    maxSize={this.props.max_size ? this.props.max_size : MAX_SIZE}
-                    accept="image/jpeg, image/png"
+                    maxSize={this.max_size}
+                    accept="image/jpeg,image/png"
                     onDrop={this.onDropImage}
                 >
                     <div className="w-100">

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Collapse } from 'reactstrap'
 import { MentionsInput, Mention } from 'react-mentions'
+import { connect } from 'react-redux'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../../util'
@@ -230,4 +231,7 @@ class IntentInput extends Component {
     }
 }
 
-export default IntentInput;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(IntentInput);

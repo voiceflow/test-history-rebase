@@ -104,8 +104,14 @@ export class Canvas extends Component {
 
         let diagram_name = ''
 
-        // ONBOARDING
-        this.onboarding = localStorage.getItem('onboarding')
+        if (window.Appcues){
+            window.Appcues.identify(window.user_detail.id, {
+                email: window.user_detail.email,
+                name: window.user_detail.name,
+                roles: window.user_detail.admin
+            })
+        }
+        this.loaded = false
 
         this.state = {
             engine: engine,
@@ -161,6 +167,9 @@ export class Canvas extends Component {
         }, 'keyup')
     }
     componentDidMount() {
+        if (window.Appcues) {
+            window.Appcues.page()
+        }
         this.setMousetrap()
         this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
@@ -192,6 +201,7 @@ export class Canvas extends Component {
         if(this.interval){
             clearInterval(this.interval)
         }
+        localStorage.setItem('is_first_session', 'false')
     }
 
     componentDidUpdate(previous_props, prev_state) {
@@ -1470,8 +1480,6 @@ export class Canvas extends Component {
                         appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
                         removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
                         preview={this.props.preview}
-                        onboarding={this.onboarding}
-                        finished={()=>{this.onboarding = false}}
                         onError={this.props.setError}
                         onConfirm={this.props.onConfirm}
                         history={this.props.history}

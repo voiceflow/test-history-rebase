@@ -115,3 +115,23 @@
     background-image: -o-linear-gradient(top, #e0dd94, #c4bb61);
     background-image: linear-gradient(to bottom, #e0dd94, #c4bb61);
 }
+
+.upload-prompt-text {
+    color: #8da2b5;
+    font-size: 13px;
+}
+
+.upload-prompt-title {
+    color: #132144;
+    font-size: 15px;
+}
+
+.close-upload-success-popup {
+    position: absolute;
+    right: 12px;
+    top: 6px;
+}
+
+.react-sweet-progress-symbol {
+    color: #0b1a38;
+}

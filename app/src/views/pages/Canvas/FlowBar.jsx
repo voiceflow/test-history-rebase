@@ -48,8 +48,8 @@ class FlowBar extends Component{
 }
 
 const mapStateToProps = state => ({
-    diagram: state.skills.skill.diagram,
-    name: state.skills.skill.name,
-    root_id: _.find(state.diagrams.diagrams, d => d.name === 'ROOT').id,
-})
+  diagram: state.skills.skill.diagram,
+  name: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram).name,
+  root_id: _.find(state.diagrams.diagrams, d => d.name === "ROOT").id
+});
 export default connect(mapStateToProps)(FlowBar);

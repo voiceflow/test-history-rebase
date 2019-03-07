@@ -29,15 +29,19 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
   >
     <ModalHeader
       charCode={215}
+      className="pb-0 mb--4"
       closeAriaLabel="Close"
       tag="h5"
       toggle={[Function]}
       wrapTag="div"
-    >
-      Update Skill
-    </ModalHeader>
+    />
     <ModalBody
       className="modal-info"
+      style={
+        Object {
+          "padding": "1rem 2rem",
+        }
+      }
       tag="div"
     >
       <div>

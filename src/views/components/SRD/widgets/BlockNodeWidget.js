@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
+import { connect } from 'react-redux'
 
 //Helpers
 import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
@@ -10,9 +11,10 @@ import { BaseWidget} from "./../main.js";
 import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import { Tooltip } from 'react-tippy'
+import { renameDiagram } from 'actions/diagramActions'
 
 const toolkit = new Toolkit()
-export class BlockNodeWidget extends BaseWidget {
+class BlockNodeWidget extends BaseWidget {
 	constructor(props) {
 		super("srd-default-node", props);
 		this.state={
@@ -130,6 +132,9 @@ export class BlockNodeWidget extends BaseWidget {
 	close() {
 		if (!this.props.preview) {
 			this.props.node.name = this.state.name;
+			if (this.props.node.extras.type === 'flow'){
+				this.props.renameFlow(this.props.node.extras.diagram_id, this.state.name)
+			}
 			this.props.node.setLocked(false);
 			this.props.node.edit = false
 			this.forceUpdate();
@@ -437,3 +442,9 @@ export class BlockNodeWidget extends BaseWidget {
 		);
 	}
 }
+
+const mapDispatchToProps = dispatch => ({
+	renameFlow: (id, name) => dispatch(renameDiagram(id, name))
+})
+
+export default connect(null, mapDispatchToProps)(BlockNodeWidget)

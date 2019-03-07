@@ -481,8 +481,8 @@ class GooglePublish extends Component {
               <div>{GOOGLE_PUBLISH_STAGES[this.state.stage]}</div>
             </div>
           </ModalHeader>
-          <ModalBody style={{ padding: 0 }}>
-            <div className="modal-info">
+          <ModalBody className="p-0">
+            <div className="modal-info" style={{padding: '0 2rem 1rem 2rem'}}>
               {modal_content}
             </div>
           </ModalBody>

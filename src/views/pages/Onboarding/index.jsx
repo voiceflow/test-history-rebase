@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import { Input } from 'reactstrap'
 import "./onboarding.css"
 import axios from 'axios'
-import company_sizes from './../../../services/CompanySize'
-import industries from './../../../services/Industries'
-import Select from 'react-select'
+import StepProgressBar from './../../components/StepProgressBar'
+import { Form, FormGroup, Input} from 'reactstrap'
 
 const PROG_XP = (xp) => {
 	switch(xp){
-		case 1:
+		case 'intermediate':
 			return 'OKAY'
-		case 2:
+		case 'expert':
 			return 'GOD'
 		default:
 			return 'NOOB'
@@ -22,20 +20,27 @@ class Onboarding extends Component{
 		super(props);
 
 		this.state = {
-			usage_type: "",
-			company_name: "",
-			role: "",
-			company_size: "",
-			industry: "",
-			failed: false,
-			programming: false
+			stage: null,
+			company_name: '',
+			company_role: '',
+			company_size: '',
+			type: '',
+			experience: '',
+			design: false,
+			build: false
 		}
 
-		this.handleChange = this.handleChange.bind(this);
-		this.submitOnboardingSurvey = this.submitOnboardingSurvey.bind(this);
-		this.handleSizeSelection = this.handleSizeSelection.bind(this);
-		this.handleIndustrySelection = this.handleIndustrySelection.bind(this);
-		this.trackOnboardingPage = this.trackOnboardingPage.bind(this)
+		this.handleChange = this.handleChange.bind(this)
+		this.handleSizeSelection = this.handleSizeSelection.bind(this)
+		this.handleIndustrySelection = this.handleIndustrySelection.bind(this)
+		// this.trackOnboardingPage = this.trackOnboardingPage.bind(this)
+		this.renderModalContent = this.renderModalContent.bind(this)
+		this.submitSurvey = this.submitSurvey.bind(this)
+		this.closeSurvey = this.closeSurvey.bind(this)
+	}
+
+	closeSurvey(){
+		this.props.history.push('/')
 	}
 
 	handleChange(event){
@@ -45,48 +50,26 @@ class Onboarding extends Component{
         });
     }
 
-    submitOnboardingSurvey(prog_xp){
-    	var s = this.state;
-
-    	const submitSurvey = () => {
-    		axios.post('/onboard', {
-				usage_type: s.usage_type,
+    submitSurvey(prog_xp){
+			var s = this.state;
+			axios.post('/onboard', {
+				usage_type: s.type,
+				programming: s.experience,
 				company_name: s.company_name,
-				role: s.role,
-				company_size: s.company_size.label,
-				industry: s.industry.label,
-				programming: prog_xp
+				company_role: s.company_role,
+				company_size: s.company_size,
+				purpose: s.purpose,
+				design: s.design,
+				build: s.build
 			})
 			.then(res => {
-				localStorage.setItem('onboarding', PROG_XP(prog_xp))
+				localStorage.setItem('onboarding', PROG_XP(s.experience))
 				this.props.history.push('/')
 			})
 			.catch(err => {
-				localStorage.setItem('onboarding', PROG_XP(prog_xp))
+				localStorage.setItem('onboarding', PROG_XP(s.experience))
 				this.props.history.push('/')
 			})
-			this.trackOnboardingPage('Finished')
-    	}
-
-    	if(s.usage_type === "WORK"){
-    		if(s.company_name && s.role && s.industry && s.company_size){
-    			submitSurvey();
-    		} else {
-    			this.setState({
-    				failed: true
-    			});
-    		}
-    	} else if(s.usage_type === "EDUCATION"){
-    		if(s.company_name && s.role){
-    			submitSurvey();
-    		} else {
-    			this.setState({
-    				failed: true
-    			});
-    		}
-    	} else {
-    		submitSurvey();
-    	}
     }
 
     handleSizeSelection(value) {
@@ -104,117 +87,181 @@ class Onboarding extends Component{
 	}
 
 	componentDidMount() {
-		this.trackOnboardingPage('Initial Page')
+		// this.trackOnboardingPage('Initial Page')
 	}
 
-	trackOnboardingPage(page) {
-		axios.post('/analytics/track_onboarding', {page: page})
-		.catch((err) => {
+	componentWillUnmount() {
+		// Delete calendly script
+		const calendly_script = document.getElementById('calendly-script')
+		if(calendly_script !== null){
+			calendly_script.parentNode.removeChild(calendly_script)
+		}
+	}
 
-		})
+	// trackOnboardingPage(page) {
+	// 	axios.post('/analytics/track_onboarding', {page: page})
+	// 	.catch((err) => {
+
+	// 	})
+	// }
+	
+	renderModalContent(){
+		switch (this.state.stage){
+			case 'calendly':
+				const head = document.querySelector('head')
+				const script = document.createElement('script')
+				script.id = 'calendly-script'
+				script.setAttribute('src',  'https://assets.calendly.com/assets/external/widget.js')
+				head.appendChild(script)
+
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={5} classes={"onboarding-progress"}/>
+					<div className="calendly-outer">
+						<div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow"/>
+					</div>
+
+					<button key={this.state.stage} id="submit-calendly" className="purple-btn" onClick={this.submitSurvey}>Complete</button>
+				</React.Fragment>
+			case 'purpose_stage':
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={(this.state.company_size >= 10 ? 4: 5)} classes={"onboarding-progress"}/>
+						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
+						<div className="row justify-content-center mb-3">
+							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>I'm interested in voice and want to explore</button>
+						</div>
+						<div className="row justify-content-center mb-5">
+							<button className={(this.state.purpose === 'IDEA' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'IDEA'})}}>I have an idea and want to build it</button>
+						</div>
+						<div className="justify-content-center">
+							<button key={this.state.stage} className={"purple-btn" + (!['EXPLORING', 'IDEA'].includes(this.state.purpose) ? ' disabled': '')} disabled={!['EXPLORING', 'IDEA'].includes(this.state.purpose)} onClick={() => {
+								if(this.state.company_size >= 10){
+									this.setState({stage: 'calendly'})
+								} else {
+									this.submitSurvey()
+								}
+							}}>{this.state.company_size >= 10 ? 'Next Question' : 'Complete'}</button>
+						</div>
+					</React.Fragment>
+			case 'code_stage':
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={(this.state.type === 'PERSONAL'? 4: 3)} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-5 mt-4">How much experience do you have coding?</p>
+					<div className="row justify-content-center mb-3">
+						<div className="col-s mr-4">
+							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'beginner'})}}><img className="image-selector" alt="beginner" src={this.state.experience === 'beginner' ? "/beginner-selected.png" : "/beginner-unselected.png"}/></button>
+							<p className={this.state.experience === 'beginner' ? "" : "text-muted"}>None</p>
+						</div>
+						<div className="col-s ml-4 mr-4">
+							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'intermediate'})}}><img className="image-selector" alt="intermediate" src={this.state.experience === 'intermediate' ? "/little-selected.png" : "/little-unselected.png"}/></button>
+							<p className={this.state.experience === 'intermediate' ? "" : "text-muted"}>A little</p>
+						</div>
+						<div className="col-s ml-4">
+							<button className="void-button mb-2" onClick={() => {this.setState({experience: 'expert'})}}><img className="image-selector" alt="alot" src={this.state.experience === 'expert' ? "/alot-selected.png" : "/alot-unselected.png"}/></button>
+							<p className={this.state.experience === 'expert' ? "" : "text-muted"}>A lot</p>
+						</div>
+					</div>
+					<div className="justify-content-center">
+						<button key={this.state.stage} className={"purple-btn" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
+							this.setState({stage: 'purpose_stage'})
+						}}>Next Question</button>
+					</div>
+				</React.Fragment>
+			case 'work_plan':
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={(this.state.type === 'PERSONAL'? 3: 2)} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-5 mt-4">What do you plan to use Voiceflow for?</p>
+					<div className="row justify-content-center mb-3">
+						<div className="col-s mr-4">
+							<button className="void-button mt-2 mb-2" onClick={() => {this.setState(prev_state => ({design: !prev_state.design}))}}><img id="design-2" alt="design" src={this.state.design ? "/design-selected.png" : "/design-unselected.png"}/></button>
+							<p className={this.state.design ? "" : "text-muted"}>Design & Prototype</p>
+						</div>
+						<div className="col-s ml-4">
+							<button className="void-button mb-2" onClick={() => {this.setState(prev_state => ({build: !prev_state.build}))}}><img id="design" alt="publish" src={this.state.build ? "/publish-selected.png" : "/publish-unselected.png"}/></button>
+							<p className={this.state.build ? "" : "text-muted"}>Build & Publish</p>
+						</div>
+					</div>
+					<div className="justify-content-center">
+						<button key={this.state.stage} className={"purple-btn" + (!(this.state.design || this.state.build) ? ' disabled': '')} disabled={!(this.state.design || this.state.build) } onClick={() => {this.setState({stage: 'code_stage'})}}>Next Question</button>
+					</div>
+				</React.Fragment>
+			case 'work_name':
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={1} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-4 mt-4">Tell us more about your company</p>
+					<div className="d-flex justify-content-center mb-3">
+						<Form className="w-100">
+							<FormGroup>
+								<Input className="form-bg" name="company_name" onChange={this.handleChange} placeholder="Company name" value={this.state.company_name}/>
+							</FormGroup>
+							<FormGroup>
+								<Input className="form-bg" name="company_role" onChange={this.handleChange} placeholder="Role" value={this.state.company_role}/>
+							</FormGroup>
+							<FormGroup>
+								<Input className="form-bg" type="number" name="company_size" onChange={this.handleChange} placeholder="Company size" value={this.state.company_size}/>
+							</FormGroup>
+						</Form>
+					</div>
+					<div className="justify-content-center">
+						<button 
+							key={this.state.stage} 
+							className={"purple-btn" + (!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0) ? ' disabled': '')} 
+							disabled={!(!!this.state.company_name && !!this.state.company_role && parseInt(this.state.company_size) > 0)} 
+							onClick={() => {this.setState({stage: 'work_plan'})}}>
+							Next Question
+						</button>
+					</div>
+				</React.Fragment>
+			case 'work_type':
+				return <React.Fragment>
+					<StepProgressBar num_stages={6} stage={0} classes={"onboarding-progress"}/>
+					<p className="modal-bg-txt text-center mb-5 mt-4">Are you using Voiceflow for work?</p>
+					<div className="row justify-content-center mb-3">
+						<div className="col-s mr-4">
+							<button className="void-button mb-2" onClick={() => {this.setState({type: "PERSONAL"})}}><img id="design" alt="selected" src={this.state.type === 'PERSONAL' ? "/selected.png" : "/unselected.png"}/></button>
+							<p className={this.state.type === 'PERSONAL' ? "" : "text-muted"}>Personal</p>
+						</div>
+						<div className="col-s ml-4">
+							<button className="void-button mb-2" onClick={() => {this.setState({type: "WORK"})}}><img id="design" alt="work" src={this.state.type === 'WORK' ? "/selected-2.png" : "/unselected-2.png"}/></button>
+							<p className={this.state.type === 'WORK' ? "" : "text-muted"}>Work</p>
+						</div>
+					</div>
+					<div className="justify-content-center">
+						<button key={this.state.stage} className={"purple-btn" + (!['WORK', 'PERSONAL'].includes(this.state.type) ? ' disabled': '')} disabled={!['WORK', 'PERSONAL'].includes(this.state.type)} onClick={() => {
+							if(this.state.type === 'WORK'){
+								this.setState({stage: 'work_name'})
+							} else if(this.state.type === 'PERSONAL'){
+								this.setState({stage: 'work_plan'})
+							}	
+						}}>Next Question</button>
+					</div>
+				</React.Fragment>
+			default:
+				return <React.Fragment>
+					<img className='logo mb-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
+						height="25"
+					/>
+					<p className="modal-bg-txt text-center mb-3">Hi, {this.props.user.name}</p>
+					<p className="onboarding-modal-txt text-center mb-2">You just joined the worlds biggest community of VUI designer and developers building voice apps. We have a few questions to personalize your experience!</p>
+					<p className="onboarding-modal-txt text-center mb-4">- Voiceflow team <span role="img" aria-label="Heart">❤️</span></p>
+					<div className="justify-content-center">
+						<button key={this.state.stage} className="purple-btn" onClick={() => {this.setState({stage: 'work_type'})}}>Continue</button>
+					</div>
+				</React.Fragment>
+		}
 	}
 
 	render(){
-		var content;
-
-		if(this.state.programming){
-			this.trackOnboardingPage('Programming Page')
-			content = <React.Fragment>
-				<p className="modal-bg-txt text-center mb-2">Do you have programming experience?</p>
-				<p className='modal-txt text-center mb-4'>Voiceflow is great for any level, this helps us get started. </p>
-				<div className="row justify-content-center">
-		      		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(0)}>None</button> 
-		      		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(1)}>A Little</button> 
-		      		<button className="btn-info mr-3" onClick={()=>this.submitOnboardingSurvey(2)}>A Lot</button> 
-		      	</div>
-			</React.Fragment>
-		}else if(this.state.usage_type === ""){
-			content = 
-			<React.Fragment>
-		      	<p className="modal-bg-txt text-center mb-2">Hi, {this.props.user.name} 😊</p>
-		      	<p className="modal-txt text-center mb-4">Help us tailor your experience. What do you plan on using Voiceflow for?</p>
-		      	<div className="justify-content-center">
-		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "WORK"})}}>Work</button> 
-		      		<button className="btn-info mr-3" onClick={() => {this.setState({programming: true})}}>Personal</button> 
-		      		<button className="btn-info mr-3" onClick={() => {this.setState({usage_type: "EDUCATION"})}}>Education</button> 
-		      	</div>
-			</React.Fragment>
-		} else if(this.state.usage_type === "WORK"){
-			this.trackOnboardingPage('Work Page')
-			content =
-			<React.Fragment>
-				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest</p>
-				{this.state.failed?
-		    		<div className="alert alert-primary" role="alert">
-					  	Missing required fields!
-					</div>
-		    		:
-		    		null
-		    	}
-				<Input className="mb-2 form-bg" type="text" name="company_name" placeholder="Company Name" value={this.state.company_name} onChange={this.handleChange}/>
-				<Input className="mb-2 form-bg" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
-				<Select
-                    className="input-select mb-2 text-left"
-                    classNamePrefix="select-box"
-                    name="company_size"
-                    value={this.state.company_size}
-                    onChange={this.handleSizeSelection}
-                    options={company_sizes}
-                    placeholder="Company Size"
-                />
-				<Select
-                    className="input-select mb-2 text-left"
-                    classNamePrefix="select-box"
-                    name="industry"
-                    value={this.state.industry}
-                    onChange={this.handleIndustrySelection}
-                    options={industries}
-                    placeholder="Industry"
-                />
-                <div className="mt-3">
-                	<button className="btn previous-btn exit mr-2" onClick={()=>this.setState({usage_type: ""})}>
-					Back
-					</button>
-                	<button className="btn purple-btn" onClick={()=>this.setState({programming: true})}>
-                		Get Started
-                	</button>
-                </div>
-			</React.Fragment>
-		} else if(this.state.usage_type === "EDUCATION"){
-			this.trackOnboardingPage('Education Page')
-			content =
-			<React.Fragment>
-				<p className="modal-txt text-center mb-4">Tell us a bit more about yourself to receive personalized content to help you use Voiceflow to the fullest.</p>
-				{this.state.failed?
-		    		<div className="alert alert-primary" role="alert">
-					  	Missing required fields!
-					</div>
-		    		:
-		    		null
-		    	}
-				<Input className="mb-2 form-bg" type="text" name="company_name" placeholder="Organization Name" value={this.state.company_name} onChange={this.handleChange}/>
-				<Input className="mb-2 form-bg" type="text" name="role" placeholder="Role" value={this.state.role} onChange={this.handleChange}/>
-				<div className="mt-3">
-                	<button className="btn previous-btn exit mr-2" onClick={()=>this.setState({usage_type: ""})}>
-						Back
-					</button>
-                	<button className="btn purple-btn" onClick={()=>this.setState({programming: true})}>
-                		Get Started
-                	</button>
-                </div>
-			</React.Fragment>
-		}
-
-		
-
 		return(
-			<div className="container h-100 d-flex justify-content-center onboarding-page">
-			    <div className="my-auto border rounded p-4 text-center onboarding-survey">
-			    	<img className='logo mb-3 mt-3' src={process.env.PUBLIC_URL+'/logo.svg'} alt='logo' 
-						height="25"
-					/>
-			    	{content}
-			    </div>
+			<div className="scuffed pt-4 pb-4 h-100">
+				<div className="onboarding-page">
+						<div className="d-flex h-100 justify-content-center text-center onboarding-survey">
+							<div className="align-self-center">
+								{/* {this.state.stage !== 'calendly' && <button className="exit-survey close" onClick={this.closeSurvey}>x</button>} */}
+								<span className="onboarding-title">WELCOME SURVEY</span>
+								{this.renderModalContent()}
+							</div>
+						</div>
+				</div>
 			</div>
 
 		)
@@ -222,4 +269,3 @@ class Onboarding extends Component{
 }
 
 export default Onboarding;
-

@@ -862,7 +862,6 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
         }
         if (node.extras.nextID) {
-          console.log("THIS NODE HAS A NEXT ID", node)
           if(!story.lines[node.id]) story.lines[node.id] = {}
           story.lines[node.id].nextId = node.extras.nextID
         }

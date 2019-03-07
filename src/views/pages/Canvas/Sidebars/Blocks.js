@@ -8,7 +8,7 @@ import { Button, Collapse } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
 // const TABS = ['blocks', 'modules']
 
-class Blocks extends PureComponent {
+export class Blocks extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -37,7 +37,6 @@ class Blocks extends PureComponent {
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
-        this.switchTab = this.switchTab.bind(this)
     }
 
     componentWillReceiveProps(props){
@@ -45,14 +44,6 @@ class Blocks extends PureComponent {
             this.setState({
                 sections: getSections(props.type_counter)
             })
-        }
-    }
-
-    switchTab(tab){
-        if(tab !== this.state.tab){
-            this.setState({
-                tab: tab
-            }, ()=>localStorage.setItem('block_tab', tab))
         }
     }
 
@@ -66,6 +57,7 @@ class Blocks extends PureComponent {
 
     render() {
         let block_content;
+        if (!window.user_detail) return null;
         if(this.state.tab === 'blocks'){
             block_content =
                 this.state.sections.map((section, i) => {
@@ -115,17 +107,6 @@ class Blocks extends PureComponent {
             }
         }
         return <React.Fragment>
-            {/* <ButtonGroup className="toggle-group mb-2">
-                {TABS.map(tab => {
-                    return <Button
-                        key={tab}
-                        onClick={() => this.switchTab(tab)}
-                        outline={this.state.tab !== tab}
-                        disabled={this.state.tab === tab}>
-                        {tab}
-                    </Button>
-                })}
-            </ButtonGroup> */}
             {block_content}
         </React.Fragment>
     }

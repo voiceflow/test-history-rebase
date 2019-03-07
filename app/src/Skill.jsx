@@ -138,10 +138,6 @@ class Skill extends Component {
             this.trackCanvasTime()
         }
 
-        // UNMOUNT SOCKET SESSION
-        delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]
-        window.CreatorSocket.emit('leave')
-
         document.removeEventListener(visibilityChange, this.handleVisibilityChange)
         this.componentGracefulUnmount()
     }

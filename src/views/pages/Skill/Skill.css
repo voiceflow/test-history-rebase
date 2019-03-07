@@ -157,7 +157,7 @@ textarea::placeholder {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 120px;
+  min-height: 80px;
 }
 
 .stage_modal .modal-info>h1 {

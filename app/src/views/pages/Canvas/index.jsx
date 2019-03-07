@@ -136,7 +136,10 @@ export class Canvas extends Component {
         Mousetrap.reset()
         Mousetrap.bind(['shift+/'], () => this.props.toggleKeyboard(!this.props.keyboardHelp))
         Mousetrap.bind(['ctrl+c', 'command+c'], () => this.setState({
-            copy: this.state.engine.getSuperSelect()
+            copy: this.state.engine
+                .getDiagramModel()
+                .getSelectedItems()
+                .filter(n => n instanceof BlockNodeModel)
         }))
         Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
         Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
@@ -219,7 +222,11 @@ export class Canvas extends Component {
                 clientY: this.mouseY
             }
             var point = this.state.engine.getRelativeMousePoint(event)
-            this.copyNode(this.state.copy, { x: point.x - (this.state.copy.name.length * 4.5 + 40), y: point.y -30})
+            let centerX = _.maxBy(this.state.copy, 'x').x - (_.maxBy(this.state.copy, 'x').x - _.minBy(this.state.copy, 'x').x)/2
+            let centerY = _.maxBy(this.state.copy, 'y').y - (_.maxBy(this.state.copy, 'y').y - _.minBy(this.state.copy, 'y').y)/2
+            _.forEach(this.state.copy, (node,idx) => {
+                this.copyNode(node, { x: point.x + (node.x - centerX), y: point.y + (node.y - centerY)})
+            })
         }
     }
 

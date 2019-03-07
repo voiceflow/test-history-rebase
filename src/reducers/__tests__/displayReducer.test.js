@@ -59,10 +59,15 @@ describe('Test Diagram Reducer', () => {
     it('should handle ON_FLOW_RENAME', () => {
         const rename = {
             type: actions.ON_FLOW_RENAME,
-            payload: {flow_id: 1}
+            payload: {flow_id: 1, name: 'test'}
         }
-        expect(diagramReducer({}, rename)).toEqual({
-            
+        expect(diagramReducer({diagrams: [{id: 1, name: 'default'}]}, rename)).toEqual({
+            diagrams: [
+                {
+                    id: 1,
+                    name: 'test'
+                }
+            ]
         })
     })
 })

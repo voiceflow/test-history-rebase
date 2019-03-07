@@ -5,6 +5,7 @@ import {
   FETCH_DIAGRAM_FAILURE,
   ON_FLOW_RENAME,
 } from '../actions/diagramActions';
+import update from 'immutability-helper'
 
 const initialState = {
   diagrams: [],
@@ -39,8 +40,10 @@ export default function diagramReducer(state = initialState, action) {
         diagrams: [],
       };
     case ON_FLOW_RENAME:
+      let idx = state.diagrams.findIndex(d => d.id === action.payload.flow_id)
       return {
-        ...state
+        ...state,
+        diagrams: update(state.diagrams, {[idx]: {name: {$set: action.payload.name}}})
       }
     default:
       return state;

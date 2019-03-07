@@ -1,6 +1,6 @@
 import { BlockNodeModel } from "./../models/BlockNodeModel";
 import * as React from "react";
-import { BlockNodeWidget } from "./../widgets/BlockNodeWidget"
+import BlockNodeWidget from "./../widgets/BlockNodeWidget"
 import {  AbstractFactory } from "./../main.js";
 /**
  * @author Dylan Vorster

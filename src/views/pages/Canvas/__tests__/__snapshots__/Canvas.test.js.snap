@@ -132,7 +132,6 @@ exports[`Canvas render canvas 1`] = `
         }
       }
       enterFlow={[Function]}
-      finished={[Function]}
       node={null}
       onUpdate={[Function]}
       removeCombineNode={[Function]}

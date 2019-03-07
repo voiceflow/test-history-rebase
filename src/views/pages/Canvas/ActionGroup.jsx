@@ -58,9 +58,9 @@ const SHOW_PROMPT_ALEXA = [4,5,6,9,14,2]
 const STAGE_PERCENTAGES = {
     alexa: {
         1: [0, 5],
-        11: [10, 59],
-        12: [60, 79],
-        13: [95, 100]
+        11: [10, 79],
+        12: [80, 95],
+        13: [96, 100]
     },
     google: {
         3: [10, 59],
@@ -132,7 +132,7 @@ class RenderProgress extends PureComponent {
     increment() {
         if(this.state.percent <= this.props.range[1]){
             this.setState({percent: this.state.percent + 1})
-            this.timeout = setTimeout(this.increment, 500)
+            this.timeout = setTimeout(this.increment, 250)
         }
     }
 

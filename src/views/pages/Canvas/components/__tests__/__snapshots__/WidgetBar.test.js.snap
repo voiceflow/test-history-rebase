@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Widget Bar render canvas widget bar 1`] = `
+<div
+  id="widget-bar"
+>
+  <ButtonGroup
+    role="group"
+    tag="div"
+  >
+    <button
+      className="white-circ round-left"
+      onClick={[Function]}
+    >
+      <i
+        className="far fa-plus"
+      />
+    </button>
+    <button
+      className="white-circ round-right"
+      onClick={[Function]}
+    >
+      <i
+        className="far fa-minus"
+      />
+    </button>
+  </ButtonGroup>
+  <button
+    className="white-circ ml-2"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-map-marker-alt"
+    />
+  </button>
+  <button
+    className="white-circ ml-2"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-keyboard"
+    />
+  </button>
+</div>
+`;

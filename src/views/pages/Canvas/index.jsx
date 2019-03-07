@@ -140,16 +140,16 @@ export class Canvas extends Component {
                 .getDiagramModel()
                 .getSelectedItems()
                 .filter(n => n instanceof BlockNodeModel)
-        }))
-        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
-        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
+        }), 'keyup')
+        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste, 'keyup')
+        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo, 'keyup')
         Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
         Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
                 this.onSave()
             }
-        })
+        }, 'keyup')
         Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({ spotlight: false })))
         Mousetrap.bind('space', (e) => {
             if (this.diagram_focus) {
@@ -158,7 +158,7 @@ export class Canvas extends Component {
                 e.preventDefault()
                 e.stopPropagation()
             }
-        })
+        }, 'keyup')
     }
     componentDidMount() {
         this.setMousetrap()

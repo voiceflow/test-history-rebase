@@ -1232,6 +1232,12 @@ input::placeholder, textarea::placeholder, select:required:invalid, input.form-c
 
 .modal-header {
     align-items: center;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem;
+    border: 0 !important;
+    z-index: 1;
 }
 .modal-content{
     /*overflow: hidden;*/

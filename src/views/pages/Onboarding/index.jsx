@@ -87,6 +87,19 @@ class Onboarding extends Component{
 	}
 
 	componentDidMount() {
+    let pictures = [
+      '/beginner-unselected.png', 
+      '/little-unselected.png', 
+      '/alot-unselected.png',
+      '/design-unselected.png',
+      '/publish-unselected.png',
+      '/unselected.png',
+      '/unselected-2.png'
+    ]
+    pictures.forEach((picture) => {
+      const img = new Image();
+      img.src = picture.fileName;
+    })
 		// this.trackOnboardingPage('Initial Page')
 	}
 

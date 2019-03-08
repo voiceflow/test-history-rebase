@@ -35,13 +35,6 @@ td {
     -ms-flex-align: end;
     align-items: flex-end;
 }
-.modal-header{
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
-    padding-top: 1rem !important;
-    padding-bottom: 1rem;
-    border: 0 !important;
-}
 .chatbox {
     height: 444px;
     width: 100%;

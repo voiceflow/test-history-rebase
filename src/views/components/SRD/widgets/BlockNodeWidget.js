@@ -316,10 +316,26 @@ class BlockNodeWidget extends BaseWidget {
 					{
 						this.props.node.extras.type === 'story' ?
 						<div className="home-block">
+						{
+							this.props.node.extras.type === 'story' &&
+							<Tooltip
+								className="float-left menu-tip-home"
+								position="left"
+								title="This is where your project begins"
+								distance={18}
+							><img src={'/home.svg'} height={11} width={11}/></Tooltip>
+						}
 							<div className="home-title">{this.props.nodeProps.diagram ? (this.props.nodeProps.diagram.name === 'ROOT' ? 'Home' : this.props.nodeProps.diagram.name) : 'Flow'}</div>
 							<div className="faux-start-block">Start</div>
 							{!!this.props.node.combines && !!this.props.node.combines.length && <React.Fragment>
 								<hr/>
+								<Tooltip
+									className="float-left menu-tip-command"
+									position="left"
+									title = "Commands can be accessed by the user from anywhere in your skill. For example, if a user says “Alexa, help” while in your skill, they will activate the help flow. Once a user is done the help flow they will be returned to the wherever they previously were in the skill."
+									distance={18}
+									color={"#8da2b5"}
+								>?</Tooltip>
 								<div className="home-title">Commands</div>
 							</React.Fragment>}
 						</div> :

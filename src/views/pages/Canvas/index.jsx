@@ -22,6 +22,7 @@ import { combineAppendValidation } from './../../helpers/combineHelper'
 
 import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
 import { setVariables } from './../../../actions/variableActions'
+import { renameDiagram } from 'actions/diagramActions'
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -1524,7 +1525,8 @@ export class Canvas extends Component {
                                 removeNode: this.removeNode,
                                 diagram: this.props.diagram,
                                 removeCombineNode: this.removeCombineNode,
-                                disabled: !!this.props.preview
+                                disabled: !!this.props.preview,
+                                renameFlow: this.props.renameFlow
                             }}
                             removeHandler={(node) => {
                                 if (this.props.undoEvents.length >= 10) {
@@ -1565,6 +1567,7 @@ const mapDispatchToProps = dispatch => {
         setVariables: (variable) => dispatch(setVariables(variable)),
         updateIntents: () => dispatch(updateIntents()),
         setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+        renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
     }
 }
 

@@ -151,7 +151,7 @@ export class BlockNodeWidget extends BaseWidget {
 				e.nodeHover = true;
 				node = new BlockNodeModel('Combine Block', null, toolkit.UID())
 				node.extras.type = "god"
-				if (!combineAppendValidation(targetNode)) {
+				if (!(combineAppendValidation(current) ? !combineAppendValidation(target_node) : combineAppendValidation(target_node))) {
 					let temp = selected;
 					selected = targetNode;
 					targetNode = temp

@@ -323,7 +323,7 @@ class BlockNodeWidget extends BaseWidget {
 								position="left"
 								title="This is where your project begins"
 								distance={18}
-							><img src={'/home.svg'} height={11} width={11}/></Tooltip>
+							><img src={'/home.svg'} height={11} width={11} alt="home"/></Tooltip>
 						}
 							<div className="home-title">{this.props.nodeProps.diagram ? (this.props.nodeProps.diagram.name === 'ROOT' ? 'Home' : this.props.nodeProps.diagram.name) : 'Flow'}</div>
 							<div className="faux-start-block">Start</div>

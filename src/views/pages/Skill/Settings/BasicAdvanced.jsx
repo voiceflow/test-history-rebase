@@ -18,58 +18,51 @@ class BasicAdvancedSettings extends Component{
 
         this.state = {
             saving: false,
-            hide_resume: !!props.skill.resume_prompt,
+            hide_resume: !props.skill.resume_prompt,
             show_overwrite_modal: false
         }
 
-        this.requestPDF = this.requestPDF.bind(this)
+        if(!props.skill.error_prompt) {
+            let error_prompt = {
+                voice: 'Alexa',
+                content: ''
+            }
+            props.skill.error_prompt = error_prompt
+        }
+        if (!props.skill.resume_prompt) {
+            let resume_prompt = {
+                voice: 'Alexa',
+                content: ''
+            }
+            props.skill.resume_prompt = resume_prompt
+        }
+        if (!props.skill.alexa_events){
+            props.skill.alexa_events = ''
+        }
+
+        this.baseline = _.cloneDeep(props.skill)
+
+        this.state.resume_collapse = props.skill.resume_prompt ? !!props.skill.resume_prompt.follow_content : false
+
         this.confirmDelete = this.confirmDelete.bind(this)
         this.onDelete = this.onDelete.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
-        this.saveSettings = this.saveSettings.bind(this)
         this.handleUpdate = this.handleUpdate.bind(this)
         this.renderSettings = this.renderSettings.bind(this)
-        this.isDifferent = this.isDifferent.bind(this)
-        this.getSaveButton = this.getSaveButton.bind(this)
         this.toggleRepeat = this.toggleRepeat.bind(this)
         this.overwriteSuccessModal = this.overwriteSuccessModal.bind(this)
         this.confirmOverwrite = this.confirmOverwrite.bind(this)
+        this.toggleResumeFollowUp = this.toggleResumeFollowUp.bind(this)
     }
 
-    static getDerivedStateFromProps(props) {
-        if (props.skill){
-            if (!props.skill.error_prompt) {
-                let error_prompt = {
-                    voice: 'Alexa',
-                    content: ''
-                }
-                props.skill.error_prompt = error_prompt
-            }
-            if (!props.skill.resume_prompt) {
-                let resume_prompt = {
-                    voice: 'Alexa',
-                    content: ''
-                }
-                props.skill.resume_prompt = resume_prompt
-            }
-            if (!props.skill.alexa_events){
-                props.skill.alexa_events = ''
-            }
-            return {
-                resume_collapse: props.skill.resume_prompt ? !!props.skill.resume_prompt.follow_content : false,
-                baseline: _.clone(props.skill),
-            }
-        }
-        return null
+    toggleResumeFollowUp() {
+      this.setState({
+        resume_collapse: !this.state.resume_collapse,
+      })
     }
 
     toggleRepeat(low, high) {
-        let skill = this.props.skill
-        if(skill.repeat > low){
-            this.props.updateSkill('repeat', low)
-        }else{
-            this.props.updateSkill('repeat', high)
-        }
+      this.props.updateSkill('repeat', this.props.skill.repeat > low ? low : high)
     }
 
     handleUpdate(e) {
@@ -99,95 +92,49 @@ class BasicAdvancedSettings extends Component{
         this.props.updateSkill(e.target.name, !this.props.skill[e.target.name])
     }
 
-    requestPDF(){
-        if (_.isNull(localStorage.getItem('requestPDF'))){
-          axios.post(`/requestPDF`, {
-            skill: this.props.skill,
-          })
-          .then(() => {
-            localStorage.setItem('requestPDF', true);
-            this.props.onError('PDF will be sent to your email within 12 hours')
-          })
-          .catch(err => {
-            this.props.onError('Failed to send')
-          })
-
-        } else {
-          this.props.onError('Request already sent')
-        }
+    componentWillUnmount() {
+      this.saveSettings()
     }
 
     saveSettings() {
-        let skill = _.clone(this.props.skill)
-        if (this.state.hide_resume || !this.props.skill.resume_prompt.content) {
-            this.props.updateSkill('resume_prompt', null)
-        }else if(!this.state.resume_collapse){
-            delete skill.resume_prompt.follow_content
-            delete skill.resume_prompt.follow_voice
-        }
+      if (this.state.hide_resume || !this.props.skill.resume_prompt.content) {
+          this.props.updateSkill('resume_prompt', null)
+      }else if(!this.state.resume_collapse){
+        delete this.props.skill.resume_prompt.follow_content
+        delete this.props.skill.resume_prompt.follow_voice
+      }
 
-        if (!this.props.skill.error_prompt.content) {
-            this.props.updateSkill('error_prompt', null)
-        }
-        if(skill.alexa_events.trim()){
-            try{
-                JSON.parse(skill.alexa_events)
-            }catch(err){
-                this.props.onError('Invalid JSON For Skill Events: '+ err.message)
-                return
-            }
-        }else{
-            this.props.updateSkill('alexa_events', null)
-        }
+      // Don't save if nothing has changed - save me some HTTP calls
+      if(_.isEqual(this.baseline, this.props.skill)) return
+      // this.baseline = _.cloneDeep(this.props.skill)
 
-        this.setState({ saving: true })
-        axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, skill)
-        .then(() => {
-            this.setState({ saving: false })
-        })
-        .catch(err => {
-            this.setState({ saving: false })
-            this.props.onError('Settings Save Error')
-        })
-    }
+      if (!this.props.skill.error_prompt.content) {
+          this.props.updateSkill('error_prompt', null)
+      }
+      if(this.props.skill.alexa_events.trim()){
+          try{
+              JSON.parse(this.props.skill.alexa_events)
+          }catch(err){
+              this.props.onError('Invalid JSON For Skill Events: '+ err.message)
+              return
+          }
+      }else{
+          this.props.updateSkill('alexa_events', null)
+      }
 
-    isDifferent(keys){
-        let different = false;
-        if (this.props.skill && this.state.baseline) {
-          _.forEach(keys, key => {
-            if (this.props.skill[key] !== this.state.baseline[key]) {
-              different = true;
-            }
-          })
-        }
-        if(!this.state.resume_collapse && this.props.skill.resume_prompt && this.props.skill.resume_prompt.follow_content) different = true
-        return different;
-    }
-
-    getSaveButton(keys=_.keys(this.props.skill)){
-        return <React.Fragment>
-            {(this.props.page !== "backups" && this.isDifferent(keys)) && <div className="text-center">
-                <hr />
-                <button className="purple-btn" style={{ minWidth: 150 }} onClick={this.saveSettings}>
-                    {this.state.saving ? <span className="loader" /> : <React.Fragment>
-                        Save Settings
-                    </React.Fragment>}
-                </button>
-            </div>}
-        </React.Fragment>
+      axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill)
+      .catch(err => {
+          this.props.onError('Settings Save Error')
+      })
     }
 
     overwriteSuccessModal(result){
-        let msg
-        if(result) {
-            msg = "Devlopment version successfully overwritten"
-        } else {
-            msg = "Overwrite failed."
-        }
-        this.setState({
-            show_overwrite_modal: true,
-            overwrite_status: msg
-        })
+      let msg = result ? "Devlopment version successfully overwritten" : "Overwrite failed."
+
+      this.setState({
+          show_overwrite_modal: true,
+          overwrite_status: msg
+      })
     }
 
     confirmOverwrite() {
@@ -220,7 +167,6 @@ class BasicAdvancedSettings extends Component{
                         </div>
                         <Prompt placeholder="Sorry, this skill has encountered an error" voice={this.props.skill.error_prompt.voice} content={this.props.skill.error_prompt.content} updatePrompt={prompt => this.props.updateSkillMerge('error_prompt', prompt)} />
                       </FormGroup>
-                      {this.getSaveButton(["error_prompt"])}
                     </div>
                     <div className="settings-content clearfix">
                       <FormGroup>
@@ -234,7 +180,6 @@ class BasicAdvancedSettings extends Component{
                               }} fontSize={14} showPrintMargin={false} showGutter={true} highlightActiveLine={true} value={this.props.skill.alexa_events} editorProps={{ $blockScrolling: true }} setOptions={{ enableBasicAutocompletion: true, enableLiveAutocompletion: false, enableSnippets: false, showLineNumbers: true, tabSize: 2, useWorker: false }} />
                           </div>}
                       </FormGroup>
-                      {this.getSaveButton(["alexa_events"])}
                     </div>
                     { this.props.live_mode && 
                     <div className="settings-content clearfix">
@@ -281,18 +226,6 @@ class BasicAdvancedSettings extends Component{
                       <FormGroup>
                         <Label className="mb-1">Repeat</Label>
                         <div className="helper-text mb-3">
-                          {/* <p id="react-toggle-info">Users will be able to say repeat at
-                          any choice/interaction and the dialog
-                          will repeat</p>
-                          <div id="repeat-toggle-div">
-                            <Toggle icons={false} checked={this.state.skill.repeat > 0} onChange={() => this.toggleRepeat(0, 100)}/>
-                            <b>
-                            {this.state.skill.repeat > 0
-                                ? "On"
-                                : "Off"}
-                            </b>
-                          </div> */}
-
                           <div className="row mb-3">
                                 <div className="helper-text col-10">
                                     Users will be able to say repeat at any choice/interaction and the dialog will repeat
@@ -317,7 +250,6 @@ class BasicAdvancedSettings extends Component{
                             </div>
                         </React.Fragment>}
                       </FormGroup>
-                      {this.getSaveButton(['name', 'repeat'])}
                     </div>
                     <div className="settings-content clearfix mb-5">
                       <FormGroup>
@@ -368,21 +300,12 @@ class BasicAdvancedSettings extends Component{
                                         updatePrompt={prompt => this.props.updateSkillMerge('resume_prompt', prompt)}
                                     />
                                 </Collapse>
-                                <Button color='clear' className="mt-3" onClick={()=>this.setState({resume_collapse: !this.state.resume_collapse})}>
+                                <Button color='clear' className="mt-3" onClick={this.toggleResumeFollowUp}>
                                     {this.state.resume_collapse ? 'Cancel Follow Up' : 'Resume Follow Up'}
                                 </Button>
                             </React.Fragment>}
                           </React.Fragment>}
-                        {this.props.user.admin >= 30 && <FormGroup className="mt-4">
-                            <hr/>
-                            <Label>Generate PDF</Label>
-                            <Button color="clear" onClick={this.requestPDF}>
-                              Request for PDF &nbsp;
-                              <i className="far fa-file-pdf" />
-                            </Button>
-                          </FormGroup>}
                       </FormGroup>
-                        {this.getSaveButton(['restart', 'hide_resume', 'resume_prompt'])}
                     </div>
                   </React.Fragment>
         }

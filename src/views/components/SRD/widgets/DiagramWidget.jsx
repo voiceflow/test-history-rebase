@@ -698,6 +698,7 @@ export class DiagramWidget extends BaseWidget {
 					// }
 				}}
 				onMouseDown={event => {
+					this.props.setBlockMenu(null);
 					if (event.nativeEvent.which === 3) return;
 					this.setState({ ...this.state, wasMoved: false });
 					diagramEngine.stopMove();

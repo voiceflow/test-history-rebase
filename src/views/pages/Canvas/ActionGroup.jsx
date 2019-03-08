@@ -159,58 +159,59 @@ class RenderProgress extends PureComponent {
 
 export class ActionGroup extends PureComponent {
     constructor(props) {
-        super(props);
+      // localStorage.clear()
+      super(props)
 
-        this.state = {
-            dropdownOpen: false,
-            projects: false,
-            publish: false,
-            diagrams: [],
-            share: false,
-            updateModal: false,
-            updateLiveModal: false,
-            stage: 0,
-            google_stage: 0,
-            amzn_error: false,
-            upload_error: 'No Error',
-            settings_tab_state: 'basic',
-            displayingConfirmDelete: false,
-            inv_name: null,
-            inv_name_error: '',
-            flash: false,
-            live_update_stage: 0,
-            is_first_upload: false,
-            show_upload_prompt: false,
-            is_error: false,
-            should_pop_confetti: false
-        }
+      this.state = {
+          dropdownOpen: false,
+          projects: false,
+          publish: false,
+          diagrams: [],
+          share: false,
+          updateModal: false,
+          updateLiveModal: false,
+          stage: 0,
+          google_stage: 0,
+          amzn_error: false,
+          upload_error: 'No Error',
+          settings_tab_state: 'basic',
+          displayingConfirmDelete: false,
+          inv_name: null,
+          inv_name_error: '',
+          flash: false,
+          live_update_stage: 0,
+          is_first_upload: false,
+          show_upload_prompt: false,
+          is_error: false,
+          should_pop_confetti: false
+      }
 
-        this.toggle = this.toggle.bind(this)
-        this.toggleShare = this.toggleShare.bind(this)
-        this.togglePreview = this.togglePreview.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.toggleGoogle = this.toggleGoogle.bind(this)
-        this.toggleUpdateLive = this.toggleUpdateLive.bind(this)
-        this.updateAlexa = this.updateAlexa.bind(this)
-        this.openUpdate = this.openUpdate.bind(this)
-        this.openUpdateLive = this.openUpdateLive.bind(this)
-        this.checkVendor = this.checkVendor.bind(this)
-        this.reset = this.reset.bind(this)
-        this.renderBody = this.renderBody.bind(this)
-        this.renderAlexaBody = this.renderAlexaBody.bind(this)
-        this.renderGoogleBody = this.renderGoogleBody.bind(this)
-        this.updateGoogle = this.updateGoogle.bind(this)
-        this.shouldReset = this.shouldReset.bind(this)
-        this.updateAlexaStage = this.updateAlexaStage.bind(this)
-        this.uploadSuccess = this.uploadSuccess.bind(this)
-        this.closePrompt = this.closePrompt.bind(this)
-        this.token = null
-        this.updateLiveVersion = this.updateLiveVersion.bind(this)
-        this.renderUploadButton = this.renderUploadButton.bind(this)
-        this.isUploadLoading = this.isUploadLoading.bind(this)
-        this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
+      this.toggle = this.toggle.bind(this)
+      this.toggleShare = this.toggleShare.bind(this)
+      this.togglePreview = this.togglePreview.bind(this)
+      this.handleChange = this.handleChange.bind(this)
+      this.toggleGoogle = this.toggleGoogle.bind(this)
+      this.toggleUpdateLive = this.toggleUpdateLive.bind(this)
+      this.updateAlexa = this.updateAlexa.bind(this)
+      this.openUpdate = this.openUpdate.bind(this)
+      this.openUpdateLive = this.openUpdateLive.bind(this)
+      this.checkVendor = this.checkVendor.bind(this)
+      this.reset = this.reset.bind(this)
+      this.renderBody = this.renderBody.bind(this)
+      this.renderAlexaBody = this.renderAlexaBody.bind(this)
+      this.renderGoogleBody = this.renderGoogleBody.bind(this)
+      this.updateGoogle = this.updateGoogle.bind(this)
+      this.shouldReset = this.shouldReset.bind(this)
+      this.updateAlexaStage = this.updateAlexaStage.bind(this)
+      this.uploadSuccess = this.uploadSuccess.bind(this)
+      this.closePrompt = this.closePrompt.bind(this)
+      this.token = null
+      this.updateLiveVersion = this.updateLiveVersion.bind(this)
+      this.renderUploadButton = this.renderUploadButton.bind(this)
+      this.isUploadLoading = this.isUploadLoading.bind(this)
+      this.displayUploadPrompt = this.displayUploadPrompt.bind(this)
 
-        // localStorage.setItem('is_first_session_' + window.user_detail.id, 'true')
+      // localStorage.setItem('is_first_session_' + window.user_detail.id, 'true')
     }
 
     componentDidMount() {
@@ -231,20 +232,26 @@ export class ActionGroup extends PureComponent {
     }
 
     openUpdate() {
-        if(this.state.is_first_upload){
-            this.props.setCB(() => {
-                this.setState({
-                    updateModal: true
-                })
+      if(this.state.is_first_upload){
+        this.props.setCB(() => {
+            this.setState({
+                updateModal: true
             })
-            this.props.onSave()
-        } else {
+        })
+        this.props.onSave()
+      } else {
+        this.setState({saving: true}, () => {
+          this.props.setCB(() => {
             if(this.props.platform === 'alexa'){
                 this.updateAlexa()
             } else {
                 this.updateGoogle()
             }
-        }
+            this.setState({saving: false})
+          })
+          this.props.onSave()
+        })
+      }
     }
 
     reset() {
@@ -256,7 +263,7 @@ export class ActionGroup extends PureComponent {
           is_first_upload: (localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'),
           // // TESTING PURPOSES
           // show_upload_prompt: true,
-          // stage: 5,
+          // stage: 2,
           // updateModal: true,
           // is_first_upload: true,
       })
@@ -278,9 +285,9 @@ export class ActionGroup extends PureComponent {
       }else{
           this.updateAlexaStage(2)
       }
-      if(localStorage.getItem('is_first_session_' + window.user_detail.id) === 'true'){
+      if(localStorage.getItem('is_first_session_' + window.user_detail.id) !== 'false'){
         localStorage.setItem('is_first_session_' + window.user_detail.id, 'false')
-        this.setState({should_pop_confetti: true})
+        setTimeout(()=>this.setState({should_pop_confetti: true}), 300)
         axios.post('/analytics/track_first_session_upload')
       }
     }
@@ -532,11 +539,12 @@ export class ActionGroup extends PureComponent {
     }
 
     isUploadLoading(){
-        if(this.props.platform === 'alexa'){
-            return !ENDING_STAGES[this.props.platform].includes(this.state.stage) && ![0, 5, 6, 8].includes(this.state.stage)
-        } else {
-            return !ENDING_STAGES[this.props.platform].includes(this.state.google_stage) && ![0, 5, 6, 8].includes(this.state.google_stage)
-        }
+      if(this.state.saving) return true
+      if(this.props.platform === 'alexa'){
+          return !ENDING_STAGES[this.props.platform].includes(this.state.stage) && ![0, 5, 6, 8].includes(this.state.stage)
+      } else {
+          return !ENDING_STAGES[this.props.platform].includes(this.state.google_stage) && ![0, 5, 6, 8].includes(this.state.google_stage)
+      }
     }
 
     updateLiveVersion() {

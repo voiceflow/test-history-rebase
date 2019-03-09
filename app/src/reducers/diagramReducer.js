@@ -3,6 +3,7 @@ import {
   FETCH_DIAGRAMS_SUCCESS,
   FETCH_DIAGRAMS_FAILURE,
   ON_FLOW_RENAME,
+  UPDATE_DIAGRAM_ROOT,
 } from '../actions/diagramActions';
 import update from 'immutability-helper'
 
@@ -14,6 +15,11 @@ const initialState = {
 
 export default function diagramReducer(state = initialState, action) {
   switch(action.type) {
+    case UPDATE_DIAGRAM_ROOT:
+      return {
+        ...state,
+        root_id: action.payload.root_id
+      }
     case FETCH_DIAGRAMS_BEGIN:
       return {
         ...state,

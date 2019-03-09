@@ -1429,6 +1429,7 @@ export class Canvas extends Component {
                         onTest={this.onTest}
                         updateGoogleFade={this.updateGoogleFade}
                         updateLinter={this.updateLinter}
+                        history={this.props.history}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>

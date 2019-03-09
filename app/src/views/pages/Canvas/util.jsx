@@ -79,7 +79,7 @@ const convertDiagram = (diagram, diagrams) => {
                 }
             }
 
-            if(node.extras.type === 'command'){
+            if(node.extras.type === 'command' && !node.extras.commands){
                 save_stuff.commands.push(node)
                 diagram.nodes.splice(i, 1)
             }else if(node.extras.type === 'story'){
@@ -98,6 +98,12 @@ const convertDiagram = (diagram, diagrams) => {
         if(Array.isArray(node.ports)){
             node.ports.forEach(port => port_ids.add(port.id))
         }
+    }
+
+    if(!save_stuff.start){
+      console.log("NO START BLOCK????")
+      save_stuff.start = {"id":"88888888-8888-8888-8888-888888888888","x":754,"y":-279,"extras":{"type":"story"},"ports":[{"id":"bc62ed8a-8d37-4455-a757-14d54ec67be4","name":"ada4c7d0-bc0e-40f6-a5b3-c8871f71bbb0","parentNode":"88888888-8888-8888-8888-888888888888","links":[],"in":false,"label":" "}],"name":"Start","combines":[]}
+      diagram.nodes.push(save_stuff.start)
     }
 
     save_stuff.commands.forEach(command => save_stuff.start.combines.push(command))

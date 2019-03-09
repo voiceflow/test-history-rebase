@@ -1,8 +1,7 @@
 import {
-  FETCH_DIAGRAM_BEGIN,
+  FETCH_DIAGRAMS_BEGIN,
   FETCH_DIAGRAMS_SUCCESS,
-  FETCH_DIAGRAM_SUCCESS,
-  FETCH_DIAGRAM_FAILURE,
+  FETCH_DIAGRAMS_FAILURE,
   ON_FLOW_RENAME,
 } from '../actions/diagramActions';
 import update from 'immutability-helper'
@@ -15,7 +14,7 @@ const initialState = {
 
 export default function diagramReducer(state = initialState, action) {
   switch(action.type) {
-    case FETCH_DIAGRAM_BEGIN:
+    case FETCH_DIAGRAMS_BEGIN:
       return {
         ...state,
         loading: true,
@@ -27,12 +26,7 @@ export default function diagramReducer(state = initialState, action) {
         diagrams: action.payload.diagrams,
         loading: false,
       };
-    case FETCH_DIAGRAM_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-      }
-    case FETCH_DIAGRAM_FAILURE:
+    case FETCH_DIAGRAMS_FAILURE:
       return {
         ...state,
         loading: false,

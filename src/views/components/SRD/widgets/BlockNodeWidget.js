@@ -142,7 +142,7 @@ export class BlockNodeWidget extends BaseWidget {
 	combineNode(e = null) {
 		let current = this.props.diagramEngine.getSuperSelect();
 		let target_node = this.props.node
-		if (combineValidation(current, target_node) && (combineAppendValidation(current) ? !combineAppendValidation(target_node) : combineAppendValidation(target_node))) {
+		if (combineValidation(current, target_node) && (combineAppendValidation(current) || (combineAppendValidation(target_node)))) {
 			let selected = this.props.diagramEngine.getSuperSelect()
 			let engine = this.props.diagramEngine
 			let targetNode = target_node

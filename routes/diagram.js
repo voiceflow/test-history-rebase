@@ -176,10 +176,10 @@ const setDiagram = async (req, res) => {
             diagram.title = "New Flow";
           }
           // If it is a new diagram insert (assume it has no blocks)
-          await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [diagram.id, diagram.title, diagram.skill]);
+          await pool.query('INSERT INTO diagrams (id, name, skill_id) VALUES ($1, $2, $3)', [DIAGRAM_ID, diagram.title, diagram.skill]);
         } else {
           // otherwise update
-          await pool.query(`UPDATE diagrams SET sub_diagrams = $1, modified = NOW() WHERE id = $2`, [diagram.sub_diagrams, diagram.id]);
+          await pool.query(`UPDATE diagrams SET sub_diagrams = $1, modified = NOW() WHERE id = $2`, [diagram.sub_diagrams, DIAGRAM_ID]);
           await pool.query(`UPDATE skills SET global = $1 WHERE skill_id = $2`, [global_string, diagram.skill])
         }
         res.sendStatus(200);

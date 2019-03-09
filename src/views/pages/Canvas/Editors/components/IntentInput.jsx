@@ -14,7 +14,8 @@ class IntentInput extends Component {
             name: (this.props.intent && this.props.intent.name) ? this.props.intent.name : "",
             text: "",
             name_error: null,
-            text_error: null
+            text_error: null,
+            intent: this.props.intent
         }
         this.handleKeyPress = this.handleKeyPress.bind(this)
         this.onTextChange = this.onTextChange.bind(this)
@@ -92,7 +93,11 @@ class IntentInput extends Component {
 
     deleteUtterance(e, i) {
         e.preventDefault()
-        this.props.intent.inputs.splice(i, 1)
+        const intent = this.state.intent
+        intent.inputs.splice(i, 1)
+        this.setState({
+            intent: intent
+        })
         this.props.update()
     }
 

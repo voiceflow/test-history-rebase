@@ -1016,7 +1016,6 @@ export class Canvas extends Component {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
-
         let update = false
 
         const lint = n => {
@@ -1379,6 +1378,7 @@ export class Canvas extends Component {
         this.setState({
             open: type !== 'comment'
         })
+        this.updateGoogleFade()
         this.updateLinter()
     }
 

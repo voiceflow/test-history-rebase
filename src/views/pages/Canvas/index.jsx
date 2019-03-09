@@ -1279,11 +1279,6 @@ export class Canvas extends Component {
             id: id
         })
         this.enterFlow(id)
-        // this.props.updateSkill('diagram', id).then(() => {
-        //     this.props.history.push(
-        //       `/canvas/${skill_id}/${id}`
-        //     );
-        // })
       })
       .catch(err => {
         console.log(err.response)
@@ -1544,17 +1539,12 @@ export class Canvas extends Component {
 }
 
 const mapStateToProps = state => {
-  let root = _.find(state.diagrams.diagrams, d => d.name === 'ROOT')
-  if(!root){
-    state.diagrams.diagrams[0].name = 'ROOT'
-    root = state.diagrams.diagrams[0]
-  }
   return {
     skill: state.skills.skill,
     diagram_id: state.skills.skill.diagram,
     diagrams: state.diagrams.diagrams,
     diagram_error: state.diagrams.error,
-    root_id: root.id,
+    root_id: state.diagrams.root_id,
     error: state.skills.error,
     variables: state.variables.localVariables,
     diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),

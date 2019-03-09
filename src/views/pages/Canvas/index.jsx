@@ -1299,20 +1299,21 @@ export class Canvas extends Component {
     }
 
     enterFlow(new_diagram_id, save=true) {
-        if(new_diagram_id !== this.props.diagram_id){
-            this.props.updateSkill("diagram", new_diagram_id)
-            if(save && !this.props.preview && !this.state.saved){
-                this.saveCB = () => {
-                    this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
-                }
-                this.onSave()
-            }else if (this.props.preview){
-                this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
-            }else{
-                this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
-            }
-        }
-        this.props.updateSkill("diagram", new_diagram_id);
+      this.setState({load_diagram: true})
+      if(new_diagram_id !== this.props.diagram_id){
+          this.props.updateSkill("diagram", new_diagram_id)
+          if(save && !this.props.preview && !this.state.saved){
+              this.saveCB = () => {
+                  this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+              }
+              this.onSave()
+          }else if (this.props.preview){
+              this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
+          }else{
+              this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+          }
+      }
+      this.props.updateSkill("diagram", new_diagram_id);
     }
 
     updateFulfillmentOnDeletion(deleted_node) {
@@ -1464,8 +1465,7 @@ export class Canvas extends Component {
                         toggleUpgrade={this.props.toggleUpgrade}
                         type_counter={this.state.type_counter}
                     />
-                    {this.state.load_diagram && React.createElement(Spinner, {name: 'Diagram'})}
-
+                    {this.state.load_diagram && React.createElement(Spinner, {name: 'Flow'})}
                     <Editor
                         unfocus={this.onDiagramUnfocus}
                         open={this.props.open}
@@ -1563,13 +1563,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-    return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-        setVariables: (variable) => dispatch(setVariables(variable)),
-        updateIntents: () => dispatch(updateIntents()),
-        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
-        renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
-    }
+  return {
+      updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+      setVariables: (variable) => dispatch(setVariables(variable)),
+      updateIntents: () => dispatch(updateIntents()),
+      setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+      renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
+  }
 }
 
 export default compose(

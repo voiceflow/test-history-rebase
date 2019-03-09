@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 export const fetchDiagramsBegin = () => ({
   type: "FETCH_DIAGRAMS_BEGIN"
@@ -19,12 +20,17 @@ export const onFlowRename = (flow_id, name)=> ({
     payload: {flow_id, name}
 })
 
+export const updateDiagramRoot = (root_id)=> ({
+  type: "UPDATE_DIAGRAM_ROOT",
+  payload: {root_id}
+})
+
 export const fetchDiagrams = skill_id => {
     return dispatch => {
       dispatch(fetchDiagramsBegin());
       return axios.get('/skill/' + skill_id + '/diagrams')
         .then(res => {
-          dispatch(fetchDiagramsSuccess(res.data.map(flow => {
+          let diagrams = res.data.map(flow => {
               try {
                   return {
                       id: flow.id,
@@ -37,7 +43,18 @@ export const fetchDiagrams = skill_id => {
                       name: flow.name
                   }
               }
-          })))
+          })
+          
+          if(diagrams.length === 0) throw new Error("No Diagrams Associated With this Skill")
+
+          let root = _.find(diagrams, d => d.name === 'ROOT')
+          if(!root){
+            diagrams[0].name = 'ROOT'
+            root=diagrams[0]
+            renameDiagram(root.id, 'ROOT')
+          }
+          dispatch(updateDiagramRoot(root.id))
+          dispatch(fetchDiagramsSuccess(diagrams))
         })
         .catch(err => {
           console.error(err.response)
@@ -73,8 +90,9 @@ export const renameDiagram = (flow_id, name) => {
     }
 }
 
-export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN';
-export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';
-export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE';
-export const FETCH_DIAGRAM = 'FETCH_DIAGRAM';
+export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
+export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'
+export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
+export const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
+export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'

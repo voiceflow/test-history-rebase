@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as _ from "lodash";
-import { connect } from 'react-redux'
 
 //Helpers
 import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
@@ -11,10 +10,9 @@ import { BaseWidget} from "./../main.js";
 import Textarea from 'react-textarea-autosize';
 import AnimateHeight from 'react-animate-height'
 import { Tooltip } from 'react-tippy'
-import { renameDiagram } from 'actions/diagramActions'
 
 const toolkit = new Toolkit()
-class BlockNodeWidget extends BaseWidget {
+export class BlockNodeWidget extends BaseWidget {
 	constructor(props) {
 		super("srd-default-node", props);
 		this.state={
@@ -133,7 +131,7 @@ class BlockNodeWidget extends BaseWidget {
 		if (!this.props.preview) {
 			this.props.node.name = this.state.name;
 			if (this.props.node.extras.type === 'flow'){
-				this.props.renameFlow(this.props.node.extras.diagram_id, this.state.name)
+				this.props.nodeProps.renameFlow(this.props.node.extras.diagram_id, this.state.name)
 			}
 			this.props.node.setLocked(false);
 			this.props.node.edit = false
@@ -153,7 +151,7 @@ class BlockNodeWidget extends BaseWidget {
 				e.nodeHover = true;
 				node = new BlockNodeModel('Combine Block', null, toolkit.UID())
 				node.extras.type = "god"
-				if (!combineAppendValidation(targetNode)) {
+				if (!(combineAppendValidation(current) ? !combineAppendValidation(target_node) : combineAppendValidation(target_node))) {
 					let temp = selected;
 					selected = targetNode;
 					targetNode = temp
@@ -316,10 +314,26 @@ class BlockNodeWidget extends BaseWidget {
 					{
 						this.props.node.extras.type === 'story' ?
 						<div className="home-block">
+						{
+							this.props.node.extras.type === 'story' &&
+							<Tooltip
+								className="float-left menu-tip-home"
+								position="left"
+								title="This is where your project begins"
+								distance={18}
+							><img src={'/home.svg'} height={11} width={11} alt="home"/></Tooltip>
+						}
 							<div className="home-title">{this.props.nodeProps.diagram ? (this.props.nodeProps.diagram.name === 'ROOT' ? 'Home' : this.props.nodeProps.diagram.name) : 'Flow'}</div>
 							<div className="faux-start-block">Start</div>
 							{!!this.props.node.combines && !!this.props.node.combines.length && <React.Fragment>
 								<hr/>
+								<Tooltip
+									className="float-left menu-tip-command"
+									position="left"
+									title = "Commands can be accessed by the user from anywhere in your skill. For example, if a user says “Alexa, help” while in your skill, they will activate the help flow. Once a user is done the help flow they will be returned to the wherever they previously were in the skill."
+									distance={18}
+									color={"#8da2b5"}
+								>?</Tooltip>
 								<div className="home-title">Commands</div>
 							</React.Fragment>}
 						</div> :
@@ -443,8 +457,8 @@ class BlockNodeWidget extends BaseWidget {
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	renameFlow: (id, name) => dispatch(renameDiagram(id, name))
-})
+// const mapDispatchToProps = dispatch => ({
+// 	renameFlow: (id, name) => dispatch(renameDiagram(id, name))
+// })
 
-export default connect(null, mapDispatchToProps)(BlockNodeWidget)
+// export default connect(null, mapDispatchToProps)(BlockNodeWidget)

@@ -144,8 +144,6 @@ app.post('/test/api', ensureLoggedIn(), Test.api)
 app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
 app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
 
-app.post('/requestPDF', ensureLoggedIn(), Mail.sendRequestPDFEmail);
-
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
 app.post('/email/template', ensurePlan(1), Email.setTemplate);
@@ -240,6 +238,7 @@ app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
 app.post('/analytics/track_canvas_time', ensureLoggedIn(), Track.trackCanvasTime)
+app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
 
 app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
 app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)

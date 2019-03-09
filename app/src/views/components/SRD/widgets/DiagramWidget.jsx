@@ -268,6 +268,7 @@ export class DiagramWidget extends BaseWidget {
 		} else if (this.state.action instanceof MoveItemsAction) {
 			let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
+			if (amountX === 0 && amountY === 0) return;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
 			_.forEach(this.state.action.selectionModels, model => {
 				// in this case we need to also work out the relative grid position
@@ -697,6 +698,7 @@ export class DiagramWidget extends BaseWidget {
 					// }
 				}}
 				onMouseDown={event => {
+					this.props.setBlockMenu(null);
 					if (event.nativeEvent.which === 3) return;
 					this.setState({ ...this.state, wasMoved: false });
 					diagramEngine.stopMove();

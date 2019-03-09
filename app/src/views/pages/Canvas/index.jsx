@@ -22,6 +22,7 @@ import { combineAppendValidation } from './../../helpers/combineHelper'
 
 import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
 import { setVariables } from './../../../actions/variableActions'
+import { renameDiagram } from 'actions/diagramActions'
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -104,8 +105,14 @@ export class Canvas extends Component {
 
         let diagram_name = ''
 
-        // ONBOARDING
-        this.onboarding = localStorage.getItem('onboarding')
+        if (window.Appcues){
+            window.Appcues.identify(window.user_detail.id, {
+                email: window.user_detail.email,
+                name: window.user_detail.name,
+                roles: window.user_detail.admin
+            })
+        }
+        this.loaded = false
 
         this.state = {
             engine: engine,
@@ -140,16 +147,16 @@ export class Canvas extends Component {
                 .getDiagramModel()
                 .getSelectedItems()
                 .filter(n => n instanceof BlockNodeModel)
-        }), 'keyup')
-        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste, 'keyup')
-        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo, 'keyup')
+        }))
+        Mousetrap.bind(['ctrl+v', 'command+v'], this.paste)
+        Mousetrap.bind(['ctrl+z', 'command+z'], this.undo)
         Mousetrap.bind(['ctrl+y', 'command+y', 'ctrl+shift+z', 'command+shift+z'], this.redo)
         Mousetrap.bind(['ctrl+s', 'command+s'], (e) => {
             e.preventDefault()
             if (!this.state.saved && !this.props.preview) {
                 this.onSave()
             }
-        }, 'keyup')
+        })
         Mousetrap.bind('esc', () => (this.state.spotlight && this.setState({ spotlight: false })))
         Mousetrap.bind('space', (e) => {
             if (this.diagram_focus) {
@@ -158,9 +165,12 @@ export class Canvas extends Component {
                 e.preventDefault()
                 e.stopPropagation()
             }
-        }, 'keyup')
+        })
     }
     componentDidMount() {
+        if (window.Appcues) {
+            window.Appcues.page()
+        }
         this.setMousetrap()
         this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
@@ -192,6 +202,7 @@ export class Canvas extends Component {
         if(this.interval){
             clearInterval(this.interval)
         }
+        localStorage.setItem('is_first_session', 'false')
     }
 
     componentDidUpdate(previous_props, prev_state) {
@@ -1418,6 +1429,7 @@ export class Canvas extends Component {
                         onTest={this.onTest}
                         updateGoogleFade={this.updateGoogleFade}
                         updateLinter={this.updateLinter}
+                        history={this.props.history}
                     /> :
                     <div className="title-group no-select">
                     <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
@@ -1470,8 +1482,6 @@ export class Canvas extends Component {
                         appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
                         removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
                         preview={this.props.preview}
-                        onboarding={this.onboarding}
-                        finished={()=>{this.onboarding = false}}
                         onError={this.props.setError}
                         onConfirm={this.props.onConfirm}
                         history={this.props.history}
@@ -1516,7 +1526,8 @@ export class Canvas extends Component {
                                 removeNode: this.removeNode,
                                 diagram: this.props.diagram,
                                 removeCombineNode: this.removeCombineNode,
-                                disabled: !!this.props.preview
+                                disabled: !!this.props.preview,
+                                renameFlow: this.props.renameFlow
                             }}
                             removeHandler={(node) => {
                                 if (this.props.undoEvents.length >= 10) {
@@ -1557,6 +1568,7 @@ const mapDispatchToProps = dispatch => {
         setVariables: (variable) => dispatch(setVariables(variable)),
         updateIntents: () => dispatch(updateIntents()),
         setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+        renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
     }
 }
 

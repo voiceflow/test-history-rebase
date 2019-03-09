@@ -17,6 +17,7 @@ class MenuItem extends Component {
                     className={className}
                     draggable={this.props.draggable}
                     onDragStart={event => {
+                        window.Appcues.track('block dragged')
                         event.dataTransfer.setData('node', this.props.item.type);
                         if(this.props.data){
                             event.dataTransfer.setData('data', this.props.data)

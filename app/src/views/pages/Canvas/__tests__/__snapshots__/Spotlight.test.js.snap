@@ -68,14 +68,6 @@ exports[`Spotlight render spotlight 1`] = `
           "value": "exit",
         },
         Object {
-          "label": "Combine",
-          "value": "combine",
-        },
-        Object {
-          "label": "Comment",
-          "value": "comment",
-        },
-        Object {
           "label": "Card",
           "value": "card",
         },

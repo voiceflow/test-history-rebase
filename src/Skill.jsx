@@ -4,8 +4,8 @@ import { compose } from 'recompose'
 
 import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
 
-import { fetchSkills, setLiveModeModal } from './actions/skillActions'
-import { fetchDiagram } from './actions/diagramActions'
+import { fetchSkills, setLiveModeModal, updateSkill } from './actions/skillActions'
+import { fetchDiagrams } from './actions/diagramActions'
 import { fetchProducts } from "./actions/productActions";
 import { fetchDisplays } from "./actions/displayActions";
 import { fetchEmails } from "./actions/emailActions";
@@ -19,6 +19,7 @@ import Logs from './views/pages/Logs'
 import axios from 'axios'
 import SecondaryNavBar from './views/components/NavBar/SecondaryNavBar'
 import DefaultModal from './views/components/Modals/DefaultModal'
+import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
 import AuthenticationService from './services/Authentication'
 
@@ -47,12 +48,11 @@ class Skill extends Component {
     constructor(props){
         super(props)
         this.state = {
-            diagram_id: null,
-            secondary: !props.preview,
             mounted: true,
             linter: [],
             upgrade_modal: false,
             selected_plan: 1,
+            load_skill: true
         }
 
         this.time_mounted = null
@@ -70,35 +70,6 @@ class Skill extends Component {
               this.trackCanvasTime()
             }
         }
-    }
-
-    static getDerivedStateFromProps(props, state){
-        if(props.page === 'canvas'){
-            let match = props.computedMatch && props.computedMatch.params && props.computedMatch.params.diagram_id
-            if(match && match !== state.diagram_id){
-                return {
-                    diagram_id: props.computedMatch.params.diagram_id
-                }
-            }else if(!match && props.skill){
-                if(!state.diagram_id){
-                    let diagram_id = props.skill.diagram
-                    let last_session = localStorage.getItem('flow')
-                    if(last_session){
-                        let parts = last_session.split('/')
-                        if(parts.length === 2 && parts[0] === props.skill.skill_id){
-                            diagram_id = last_session.split('/')[1]
-                        }
-                    }
-                    props.history.push(`/canvas/${props.skill.skill_id}/${diagram_id}`)
-                    return {
-                        diagram_id: diagram_id
-                    }
-                }else{
-                    props.history.push(`/canvas/${props.skill.skill_id}/${state.diagram_id}`)
-                }
-            }
-        }
-        return null
     }
 
     trackCanvasTime(){
@@ -121,40 +92,41 @@ class Skill extends Component {
         this.setState({
             mounted: true,
         })
-                 window.addEventListener(
-                   "beforeunload",
-                   this.componentGracefulUnmount
-                 );
+        window.addEventListener(
+          "beforeunload",
+          this.componentGracefulUnmount
+        )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
-            this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview).then(() => {
-                if (!this.props.preview){
-                    if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
-                        // LOAD EMAIL TEMPLATES IF ON PLAN > 1
-                        try {
-                            this.props.getEmails(this.props.skill.skill_id)
-                        } catch (err) {
-                            console.error(err)
-                        }
-                    }
-
-                    // LOAD MULTIMODAL/VISUAL TEMPLATES
-                    try {
-                        this.props.getDisplays(this.props.skill.skill_id)
-                    } catch (err) {
-                        console.error(err)
-                    }
-
-                    // LOAD PRODUCTS
-                    if (this.props.skill.locales && this.props.skill.locales.includes('en-US')) {
-                        try {
-                            this.props.getProducts(this.props.skill.skill_id)
-                        } catch (err) {
-                            console.error(err)
-                        }
-                    }
+          this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
+            this.setState({load_skill: false})
+            if (!this.props.preview){
+              if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
+                // LOAD EMAIL TEMPLATES IF ON PLAN > 1
+                try {
+                    this.props.getEmails(this.props.skill.skill_id)
+                } catch (err) {
+                    console.error(err)
                 }
-            })
-            this.props.getDiagrams(this.props.computedMatch.params.skill_id)
+              }
+
+              // LOAD MULTIMODAL/VISUAL TEMPLATES
+              try {
+                this.props.getDisplays(this.props.skill.skill_id)
+              } catch (err) {
+                console.error(err)
+              }
+
+              // LOAD PRODUCTS
+              if (this.props.skill.locales && this.props.skill.locales.includes('en-US')) {
+                try {
+                  this.props.getProducts(this.props.skill.skill_id)
+                } catch (err) {
+                  console.error(err)
+                }
+              }
+            }
+          })
+          this.props.getDiagrams(this.props.computedMatch.params.skill_id)
         }else{
             this.setState({
                 load_skill: false,
@@ -167,10 +139,6 @@ class Skill extends Component {
         if(this.props.skill){
             this.trackCanvasTime()
         }
-
-        // UNMOUNT SOCKET SESSION
-        delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]
-        window.CreatorSocket.emit('leave')
 
         document.removeEventListener(visibilityChange, this.handleVisibilityChange)
         this.componentGracefulUnmount()
@@ -198,7 +166,6 @@ class Skill extends Component {
             case 'canvas':
                 return <Canvas 
                     {...this.props} 
-                    diagram_id={this.state.diagram_id} 
                     live_mode={this.props.live_mode}
                     ref={this.child_canvas}
                     setOnSave={save => this.onSave = save}
@@ -244,17 +211,12 @@ class Skill extends Component {
             </div>
         }
 
-        if((this.props.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
-            return <div id="loading-diagram">
-                <div className="text-center">
-                    <h5 className="text-muted mb-2">Loading Skill</h5>
-                    <span className="loader"/>
-                </div>
-            </div>
+        if((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
+            return React.createElement(Spinner,  {name: 'Skill'})
         }
 
         return <React.Fragment>
-            {this.state.secondary && <SecondaryNavBar page={this.props.page} onSave={this.onSave}/>}
+            {!this.props.preview && <SecondaryNavBar page={this.props.page} onSave={this.onSave} history={this.props.history}/>}
 
             <div className="skill-name-top-left fixed-top">
             <Link to="/" className="mx-2">
@@ -263,7 +225,7 @@ class Skill extends Component {
             {this.props.skill ? this.props.skill.name : "New Skill"}
             </div>
             <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
-            <div id="app" className={(this.state.secondary ? "secondary-padding " : "") + this.props.page}>
+            <div id="app" className={(!this.props.preview ? "secondary-padding " : "") + this.props.page}>
             {this.renderPage()}
             </div>
           </React.Fragment>;
@@ -272,28 +234,28 @@ class Skill extends Component {
 
 const mapStateToProps = state => ({
     skill: state.skills.skill,
-    load_skill: state.skills.loading,
     load_diagram: state.diagrams.loading,
     error: state.skills.error,
     show_live_mode_modal: state.skills.show_live_mode_modal,
     live_mode: state.skills.live_mode,
-    dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill
+    dev_skill: state.skills.dev_skill ? state.skills.dev_skill : state.skills.skill,
 })
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getDiagrams: (skill_id) => dispatch(fetchDiagram(skill_id)),
-        getSkills: (skill_id, preview) => dispatch(fetchSkills(skill_id, preview)),
-        setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
-        getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
-        getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
-        getEmails: (skill_id) => dispatch(fetchEmails(skill_id))
-    }
+  return {
+    getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
+    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchSkills(skill_id, preview, diagram_id)),
+    setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
+    getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
+    getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
+    getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
+    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+  }
 }
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    errorScreen,
-    loadSession,
-    socketCheck
+  connect(mapStateToProps, mapDispatchToProps),
+  errorScreen,
+  loadSession,
+  socketCheck,
 )(Skill)

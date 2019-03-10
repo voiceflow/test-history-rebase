@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
 import Select from 'react-select'
 import {Tooltip} from 'react-tippy'
+import { connect } from 'react-redux'
 import { SingleValueOption, SlotOption, SlotDiabled, SlotSynonyms } from './SlotComponents'
 
 class SlotInput extends Component {
@@ -153,4 +154,7 @@ class SlotInput extends Component {
     }
 }
 
-export default SlotInput;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(SlotInput);

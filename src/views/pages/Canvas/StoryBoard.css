@@ -896,6 +896,17 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
     background-color: #2fd0c1;
 }
 
+.Menu #sidebar .section-title .favorites {
+    background-image: url('/star.svg') !important;
+    right: 0px;
+    overflow: auto;
+    z-index: 10px;
+    height: 15px;
+    width: 15px;
+    margin-top: 4px;
+    margin-right: -1px;
+}
+
 .section-title:hover {
     cursor: pointer;
 }
@@ -1063,6 +1074,19 @@ box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .07) !important;
 
 .MenuItem:hover .menu-tip {
     display: block !important;
+}
+
+.home-block .menu-tip-home {
+    position:absolute;
+    left:13px;
+    top: 9px;
+}
+
+.home-block .menu-tip-command {
+    position:absolute;
+    left: 13px;
+    height: 100px;
+    color: #8da2b5 !important;
 }
 
 .menu-tip {
@@ -3069,4 +3093,16 @@ button.close:hover{
     margin-right: auto;
     margin-bottom: 60px;
     max-width: 80%;
+}
+
+#confetti-positioner {
+    position: fixed;
+    bottom: -200px;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    z-index: 16777271;
 }

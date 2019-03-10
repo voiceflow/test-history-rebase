@@ -47,7 +47,7 @@ export class BlockPortModel extends PortModel {
 
 	canLinkToPort(port) {
 		if (port instanceof BlockPortModel) {
-			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks))
+			return (this.in !== port.in && (port.in || _.size(port.links) <= port.maximumLinks) && this.parent !== port.parent)
 		}
 		return false
 	}

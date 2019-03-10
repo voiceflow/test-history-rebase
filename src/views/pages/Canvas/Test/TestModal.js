@@ -542,15 +542,6 @@ class TestModal extends React.Component {
   }
 
   render() {
-
-    let flow
-    if(this.current_diagram){
-      let find = this.props.diagrams.find(d => d.id === this.current_diagram.id)
-      if(find){
-        flow = find.name;
-      }
-    }
-
     return (
       <Modal isOpen={this.props.open} size='lg'>
         <ModalHeader toggle={this.props.toggle}>Project Testing</ModalHeader>
@@ -657,12 +648,12 @@ class TestModal extends React.Component {
                         onChange={() => {
                           this.setState(prev_state => ({debug: !prev_state.debug}))
                         }}
-                        value={this.state.debug}
+                        value={`${this.state.debug}`}
                       />
                   </div>
                   { this.state.started && this.state.debug ?
                     <React.Fragment>
-                      <small className="py-2">Current Flow: <b>{flow}</b></small>
+                      <small className="py-2">Current Flow: <b>{this.props.flow}</b></small>
                       <div className="sidebar-scroll">
                         {this.getVariables()}
                       </div>
@@ -693,6 +684,6 @@ const mapStateToProps = state => ({
   global: state.skills.skill.global,
   repeat: state.skills.skill.repeat,
   slots: state.skills.skill.slots,
-  platform: state.skills.skill.platform
+  platform: state.skills.skill.platform,
 })
 export default connect(mapStateToProps)(TestModal);

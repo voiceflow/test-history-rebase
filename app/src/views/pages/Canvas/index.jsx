@@ -202,7 +202,6 @@ export class Canvas extends Component {
         if(this.interval){
             clearInterval(this.interval)
         }
-        this.props.resetSkill()
         localStorage.setItem('is_first_session', 'false')
     }
 

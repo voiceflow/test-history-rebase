@@ -305,48 +305,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
           }
           key="5"
         />
-      </div>
-    </Collapse>
-  </div>
-  <div
-    className="section no-select"
-    key="3"
-  >
-    <div
-      className="section-title"
-      onClick={[Function]}
-    >
-      <span>
-        <i
-          className="fas fa-caret-down mr-1 rotate fa-rotate--90"
-        />
-        functional
-      </span>
-      <span
-        className="title-dot functional"
-      />
-    </div>
-    <Collapse
-      appear={false}
-      enter={true}
-      exit={true}
-      in={false}
-      isOpen={false}
-      mountOnEnter={false}
-      onEnter={[Function]}
-      onEntered={[Function]}
-      onEntering={[Function]}
-      onExit={[Function]}
-      onExited={[Function]}
-      onExiting={[Function]}
-      tag="div"
-      timeout={350}
-      unmountOnExit={false}
-    >
-      <div
-        className="mb-3 section-blocks"
-        style={null}
-      >
         <Connect(MenuItem)
           data-tip="End the skill on the current flow"
           draggable={true}
@@ -360,44 +318,14 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
               "type": "exit",
             }
           }
-          key="0"
-        />
-        <Connect(MenuItem)
-          data-tip="Combine Different Audio Files to bypass Amazon 5 Audio limit"
-          draggable={true}
-          item={
-            Object {
-              "icon": <i
-                className="fas fa-compress-alt"
-              />,
-              "text": "Combine",
-              "tip": "Combine Different Audio Files to bypass Amazon 5 Audio limit",
-              "type": "combine",
-            }
-          }
-          key="1"
-        />
-        <Connect(MenuItem)
-          data-tip="Add notes to your diagram"
-          draggable={true}
-          item={
-            Object {
-              "icon": <i
-                className="far fa-comment-alt"
-              />,
-              "text": "Comment",
-              "tip": "Add notes to your diagram",
-              "type": "comment",
-            }
-          }
-          key="2"
+          key="6"
         />
       </div>
     </Collapse>
   </div>
   <div
     className="section no-select"
-    key="4"
+    key="3"
   >
     <div
       className="section-title"
@@ -469,7 +397,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 0 1`] = `
   </div>
   <div
     className="section no-select"
-    key="5"
+    key="4"
   >
     <div
       className="section-title"
@@ -927,48 +855,6 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
           }
           key="5"
         />
-      </div>
-    </Collapse>
-  </div>
-  <div
-    className="section no-select"
-    key="3"
-  >
-    <div
-      className="section-title"
-      onClick={[Function]}
-    >
-      <span>
-        <i
-          className="fas fa-caret-down mr-1 rotate fa-rotate--90"
-        />
-        functional
-      </span>
-      <span
-        className="title-dot functional"
-      />
-    </div>
-    <Collapse
-      appear={false}
-      enter={true}
-      exit={true}
-      in={false}
-      isOpen={false}
-      mountOnEnter={false}
-      onEnter={[Function]}
-      onEntered={[Function]}
-      onEntering={[Function]}
-      onExit={[Function]}
-      onExited={[Function]}
-      onExiting={[Function]}
-      tag="div"
-      timeout={350}
-      unmountOnExit={false}
-    >
-      <div
-        className="mb-3 section-blocks"
-        style={null}
-      >
         <Connect(MenuItem)
           data-tip="End the skill on the current flow"
           draggable={true}
@@ -982,44 +868,14 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
               "type": "exit",
             }
           }
-          key="0"
-        />
-        <Connect(MenuItem)
-          data-tip="Combine Different Audio Files to bypass Amazon 5 Audio limit"
-          draggable={true}
-          item={
-            Object {
-              "icon": <i
-                className="fas fa-compress-alt"
-              />,
-              "text": "Combine",
-              "tip": "Combine Different Audio Files to bypass Amazon 5 Audio limit",
-              "type": "combine",
-            }
-          }
-          key="1"
-        />
-        <Connect(MenuItem)
-          data-tip="Add notes to your diagram"
-          draggable={true}
-          item={
-            Object {
-              "icon": <i
-                className="far fa-comment-alt"
-              />,
-              "text": "Comment",
-              "tip": "Add notes to your diagram",
-              "type": "comment",
-            }
-          }
-          key="2"
+          key="6"
         />
       </div>
     </Collapse>
   </div>
   <div
     className="section no-select"
-    key="4"
+    key="3"
   >
     <div
       className="section-title"
@@ -1091,7 +947,7 @@ exports[`SideBar Blocks render sidebar blocks on admin 100 1`] = `
   </div>
   <div
     className="section no-select"
-    key="5"
+    key="4"
   >
     <div
       className="section-title"

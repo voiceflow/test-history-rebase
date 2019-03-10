@@ -51,7 +51,8 @@ const SECTIONS = [{
         BLOCK_TYPES.stream,
         BLOCK_TYPES.api,
         BLOCK_TYPES.flow,
-        BLOCK_TYPES.code
+        BLOCK_TYPES.code,
+        BLOCK_TYPES.exit
    ]
 },{
     title: 'visuals',

@@ -1206,39 +1206,52 @@ export class Canvas extends Component {
     }
     
     generateBlockMenu(e){
-        var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]")
-        if (nodeElement && !this.props.preview){
-            e.preventDefault()
-            let engine = this.state.engine
-            let node = this.state.engine.getDiagramModel()
-                .getNode(nodeElement.getAttribute("data-nodeid"))
-            engine.getDiagramModel().clearSelection();
-            engine.setSuperSelect(node)
-            this.props.setBlockMenu(
-                <React.Fragment>
-                    <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
-                        <ListGroup>
-                            <ListGroupItem onClick={(e) => {
-                                // e.stopPropagation();
-                                node.setLocked(true);
-                                node.selected = true;
-                                node.edit = true;
-                                this.props.setBlockMenu(null)
-                            }}>Rename</ListGroupItem>
-                            <ListGroupItem onClick={() => {
-                                this.copyNode(node)
-                                this.props.setBlockMenu(null)
-                            }}>Copy Block</ListGroupItem>
-                            <ListGroupItem onClick={() => {
-                                this.removeNode(node)
-                                this.props.setBlockMenu(null)
-                            }}>Delete Block</ListGroupItem>
-                        </ListGroup>
-                    </div>
-                </React.Fragment>
-        )
+      if(this.props.preview){
+        this.props.setBlockMenu(null)
+        return
+      }
+      var nodeElement = toolkit.closest(e.target, ".node[data-nodeid]")
+      e.preventDefault()
+      let engine = this.state.engine
+      if (nodeElement){
+          let node = this.state.engine.getDiagramModel()
+            .getNode(nodeElement.getAttribute("data-nodeid"))
+          engine.getDiagramModel().clearSelection();
+          engine.setSuperSelect(node)
+          this.props.setBlockMenu(
+            <React.Fragment>
+                <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
+                    <ListGroup>
+                        <ListGroupItem onClick={(e) => {
+                            // e.stopPropagation();
+                            node.setLocked(true);
+                            node.selected = true;
+                            node.edit = true;
+                            this.props.setBlockMenu(null)
+                        }}>Rename</ListGroupItem>
+                        <ListGroupItem onClick={() => {
+                            this.copyNode(node)
+                            this.props.setBlockMenu(null)
+                        }}>Copy Block</ListGroupItem>
+                        <ListGroupItem onClick={() => {
+                            this.removeNode(node)
+                            this.props.setBlockMenu(null)
+                        }}>Delete Block</ListGroupItem>
+                    </ListGroup>
+                </div>
+              </React.Fragment>)
         } else {
-            this.props.setBlockMenu(null)
+            this.props.setBlockMenu(
+            <React.Fragment>
+              <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 110), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
+                  <ListGroup>
+                      <ListGroupItem onClick={() => {
+                        this.addComment(e)
+                        this.props.setBlockMenu(null)
+                      }}>Add Comment</ListGroupItem>
+                  </ListGroup>
+              </div>
+            </React.Fragment>)
         }
     }
     // Create a new diagram from the flow block

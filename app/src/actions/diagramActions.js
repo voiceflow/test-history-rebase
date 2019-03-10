@@ -51,7 +51,7 @@ export const fetchDiagrams = skill_id => {
           if(!root){
             diagrams[0].name = 'ROOT'
             root=diagrams[0]
-            renameDiagram(root.id, 'ROOT')
+            dispatch(renameDiagram(root.id, 'ROOT'))
           }
           dispatch(updateDiagramRoot(root.id))
           dispatch(fetchDiagramsSuccess(diagrams))

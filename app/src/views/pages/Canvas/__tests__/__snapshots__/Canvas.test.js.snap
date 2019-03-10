@@ -57,7 +57,7 @@ exports[`Canvas render canvas 1`] = `
       unfocus={[Function]}
     />
     <Spinner
-      name="Diagram"
+      name="Flow"
     />
     <Connect(withStateHandlers(withStateHandlers(Editor)))
       appendCombineNode={[Function]}

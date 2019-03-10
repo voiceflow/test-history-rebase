@@ -1,7 +1,8 @@
 import axios from 'axios';
+import _ from 'lodash';
 
-export const fetchDiagramBegin = () => ({
-  type: "FETCH_DIAGRAM_BEGIN"
+export const fetchDiagramsBegin = () => ({
+  type: "FETCH_DIAGRAMS_BEGIN"
 });
 
 export const fetchDiagramsSuccess = diagrams => ({
@@ -9,17 +10,8 @@ export const fetchDiagramsSuccess = diagrams => ({
   payload: { diagrams }
 });
 
-export const fetchDiagramSuccess = success => ({
-    type: "FETCH_DIAGRAM_SUCCESS",
-    payload: { success }
-})
-export const fetchDiagramBlocked = message => ({
-    type: "FETCH_DIAGRAM_BLOCKED",
-    payload: { message }
-})
-
-export const fetchDiagramFailure = error => ({
-  type: "FETCH_DIAGRAM_FAILURE",
+export const fetchDiagramsFailure = error => ({
+  type: "FETCH_DIAGRAMS_FAILURE",
   payload: { error }
 });
 
@@ -28,30 +20,46 @@ export const onFlowRename = (flow_id, name)=> ({
     payload: {flow_id, name}
 })
 
-export const fetchDiagram = skill_id => {
+export const updateDiagramRoot = (root_id)=> ({
+  type: "UPDATE_DIAGRAM_ROOT",
+  payload: {root_id}
+})
+
+export const fetchDiagrams = skill_id => {
     return dispatch => {
-        dispatch(fetchDiagramBegin());
-        return axios.get('/skill/' + skill_id + '/diagrams')
-            .then(res => {
-                dispatch(fetchDiagramsSuccess(res.data.map(flow => {
-                    try {
-                        return {
-                            id: flow.id,
-                            name: flow.name,
-                            sub_diagrams: JSON.parse(flow.sub_diagrams)
-                        }
-                    } catch (err) {
-                        return {
-                            id: flow.id,
-                            name: flow.name
-                        }
-                    }
-                })))
-            })
-            .catch(err => {
-                console.error(err.response)
-                dispatch(fetchDiagramFailure('Could Not Retrieve Project Diagrams'))
-            })
+      dispatch(fetchDiagramsBegin());
+      return axios.get('/skill/' + skill_id + '/diagrams')
+        .then(res => {
+          let diagrams = res.data.map(flow => {
+              try {
+                  return {
+                      id: flow.id,
+                      name: flow.name,
+                      sub_diagrams: JSON.parse(flow.sub_diagrams)
+                  }
+              } catch (err) {
+                  return {
+                      id: flow.id,
+                      name: flow.name
+                  }
+              }
+          })
+          
+          if(diagrams.length === 0) throw new Error("No Diagrams Associated With this Skill")
+
+          let root = _.find(diagrams, d => d.name === 'ROOT')
+          if(!root){
+            diagrams[0].name = 'ROOT'
+            root=diagrams[0]
+            dispatch(renameDiagram(root.id, 'ROOT'))
+          }
+          dispatch(updateDiagramRoot(root.id))
+          dispatch(fetchDiagramsSuccess(diagrams))
+        })
+        .catch(err => {
+          console.error(err.response)
+          dispatch(fetchDiagramsFailure('Could Not Retrieve Project Diagrams'))
+        })
     }
 }
 
@@ -73,7 +81,6 @@ export const renameDiagram = (flow_id, name) => {
                 name: name
             })
             .then(() => {
-
                 dispatch(onFlowRename(flow_id, name))
             })
             .catch(err => {
@@ -83,9 +90,9 @@ export const renameDiagram = (flow_id, name) => {
     }
 }
 
-export const FETCH_DIAGRAM_BEGIN = 'FETCH_DIAGRAM_BEGIN';
-export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS';
-export const FETCH_DIAGRAM_SUCCESS = 'FETCH_DIAGRAM_SUCCESS'
-export const FETCH_DIAGRAM_FAILURE = 'FETCH_DIAGRAM_FAILURE';
-export const FETCH_DIAGRAM = 'FETCH_DIAGRAM';
+export const FETCH_DIAGRAMS_BEGIN = 'FETCH_DIAGRAMS_BEGIN'
+export const FETCH_DIAGRAMS_SUCCESS = 'FETCH_DIAGRAMS_SUCCESS'
+export const FETCH_DIAGRAMS_FAILURE = 'FETCH_DIAGRAMS_FAILURE'
+export const FETCH_DIAGRAM = 'FETCH_DIAGRAM'
 export const ON_FLOW_RENAME = 'ON_FLOW_RENAME'
+export const UPDATE_DIAGRAM_ROOT = 'UPDATE_DIAGRAM_ROOT'

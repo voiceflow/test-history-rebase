@@ -19,6 +19,10 @@ export const fetchSkillsBlocked = message => ({
     payload: { message }
 })
 
+export const resetSkill = () => ({
+    type: "RESET_SKILL",
+})
+
 export const fetchSkillsFailure = error => ({
   type: "FETCH_SKILLS_FAILURE",
   payload: { error }
@@ -215,3 +219,4 @@ export const UPDATE_SKILL_MERGE = 'UPDATE_SKILL_MERGE'
 export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
 export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
+export const RESET_SKILL = 'RESET_SKILL'

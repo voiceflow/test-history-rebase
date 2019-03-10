@@ -20,7 +20,7 @@ import { WidgetBar } from './components/WidgetBar'
 //Helpers
 import { combineAppendValidation } from './../../helpers/combineHelper'
 
-import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
+import { updateSkill, updateIntents, setCanFulfill, resetSkill } from "./../../../actions/skillActions";
 import { setVariables } from './../../../actions/variableActions'
 import { renameDiagram } from 'actions/diagramActions'
 
@@ -202,6 +202,7 @@ export class Canvas extends Component {
         if(this.interval){
             clearInterval(this.interval)
         }
+        this.props.resetSkill()
         localStorage.setItem('is_first_session', 'false')
     }
 
@@ -1016,7 +1017,6 @@ export class Canvas extends Component {
         const engine = this.state.engine
         const model = engine.getDiagramModel()
         const nodes = model.getNodes()
-
         let update = false
 
         const lint = n => {
@@ -1235,84 +1235,74 @@ export class Canvas extends Component {
     }
     // Create a new diagram from the flow block
     createDiagram(node, base_flow_name='New Flow', template=null, forCommand=false){
-        let id = util.generateID()
+      this.setState({load_diagram: true})
+      let id = util.generateID()
 
+      // Generate a new diagram, save it, and go to it
+      let curr_template
+      if(!template){
+          curr_template = new_template
+      } else {
+          curr_template = template
+      }
+      curr_template.id = id
+      let skill_id = this.props.skill.skill_id
+      let data = JSON.stringify(curr_template)
+
+      // No Duplicate Flow Names
+      let new_flow_name = base_flow_name
+      let index = 1
+      const exists = (name) => this.props.diagrams.find(d => d.name === name)
+
+      while(exists(new_flow_name)){
+          new_flow_name = `${base_flow_name} ${index}`
+          index++
+      }
+
+      var diagram = {
+          id: id,
+          title: new_flow_name,
+          variables: [],
+          data: data,
+          skill: skill_id
+      }
+
+      axios.post('/diagram?new=1', diagram)
+      .then(() => {
         if (forCommand) {
-            node.extras[this.props.skill.platform].diagram_id = id
+          node.extras[this.props.skill.platform].diagram_id = id
         } else {
-            node.extras.diagram_id = id
+          node.extras.diagram_id = id
         }
-
-        // save the current diagram
-        this.saveCB = () => {
-            this.saveCB = null
-            // Generate a new diagram, save it, and go to it
-            let curr_template
-            if(!template){
-                curr_template = new_template
-            } else {
-                curr_template = template
-            }
-            curr_template.id = id
-            let skill_id = this.props.skill.skill_id
-            let data = JSON.stringify(curr_template)
-
-            // No Duplicate Flow Names
-            let new_flow_name = base_flow_name
-            let index = 1
-            const exists = (name) => this.props.diagrams.find(d => d.name === name)
-
-            while(exists(new_flow_name)){
-                new_flow_name = `${base_flow_name} ${index}`
-                index++
-            }
-
-            var diagram = {
-                id: id,
-                title: new_flow_name,
-                variables: [],
-                data: data,
-                skill: skill_id
-            }
-
-            axios.post('/diagram?new=1', diagram)
-            .then(() => {
-                this.props.diagrams.push({
-                    name: new_flow_name,
-                    id: id
-                })
-                this.props.updateSkill('diagram', id).then(() => {
-                    this.props.history.push(
-                      `/canvas/${skill_id}/${id}`
-                    );
-                })
-            })
-            .catch(err => {
-                console.log(err.response)
-                this.setState({
-                    saving: false
-                })
-                this.props.setError('Unable to create new Flow')
-            })
-        }
-        this.onSave()
+        this.props.diagrams.push({
+            name: new_flow_name,
+            id: id
+        })
+        this.enterFlow(id)
+      })
+      .catch(err => {
+        console.log(err.response)
+        this.setState({loading_diagram: false})
+        this.props.setError('Unable to create new Flow')
+      })
     }
 
     enterFlow(new_diagram_id, save=true) {
-        if(new_diagram_id !== this.props.diagram_id){
-            this.props.updateSkill("diagram", new_diagram_id)
-            if(save && !this.props.preview && !this.state.saved){
-                this.saveCB = () => {
-                    this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
-                }
-                this.onSave()
-            }else if (this.props.preview){
-                this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
-            }else{
-                this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
-            }
-        }
-        this.props.updateSkill("diagram", new_diagram_id);
+      this.setState({load_diagram: true})
+      if(new_diagram_id !== this.props.diagram_id){
+          this.props.updateSkill("diagram", new_diagram_id)
+          if(save && !this.props.preview){
+              this.saveCB = () => {
+                  this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+              }
+              this.onSave()
+          }else if (this.props.preview){
+              this.props.history.push(`/preview/${this.props.skill.skill_id}/${new_diagram_id}`)
+          }else{
+              this.props.history.push(`/canvas/${this.props.skill.skill_id}/${new_diagram_id}`)
+          }
+      }
+      this.props.updateSkill("diagram", new_diagram_id);
     }
 
     updateFulfillmentOnDeletion(deleted_node) {
@@ -1379,6 +1369,7 @@ export class Canvas extends Component {
         this.setState({
             open: type !== 'comment'
         })
+        this.updateGoogleFade()
         this.updateLinter()
     }
 
@@ -1464,8 +1455,7 @@ export class Canvas extends Component {
                         toggleUpgrade={this.props.toggleUpgrade}
                         type_counter={this.state.type_counter}
                     />
-                    {this.state.load_diagram && React.createElement(Spinner, {name: 'Diagram'})}
-
+                    {this.state.load_diagram && React.createElement(Spinner, {name: 'Flow'})}
                     <Editor
                         unfocus={this.onDiagramUnfocus}
                         open={this.props.open}
@@ -1549,35 +1539,37 @@ export class Canvas extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-  skill: state.skills.skill,
-  diagram_id: state.skills.skill.diagram,
-  diagrams: state.diagrams.diagrams,
-  diagram_error: state.diagrams.error,
-  root_id: _.find(state.diagrams.diagrams, d => d.name === 'ROOT').id,
-  load_diagram: state.diagrams.loading,
-  error: state.skills.error,
-  variables: state.variables.localVariables,
-  diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
-  diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram)
-});
+const mapStateToProps = state => {
+  return {
+    skill: state.skills.skill,
+    diagram_id: state.skills.skill.diagram,
+    diagrams: state.diagrams.diagrams,
+    diagram_error: state.diagrams.error,
+    root_id: state.diagrams.root_id,
+    error: state.skills.error,
+    variables: state.variables.localVariables,
+    diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
+    diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram)
+  }
+}
 
 const mapDispatchToProps = dispatch => {
-    return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-        setVariables: (variable) => dispatch(setVariables(variable)),
-        updateIntents: () => dispatch(updateIntents()),
-        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
-        renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
-    }
+  return {
+    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+    setVariables: (variable) => dispatch(setVariables(variable)),
+    updateIntents: () => dispatch(updateIntents()),
+    setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+    renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
+    resetSkill: () => dispatch(resetSkill())
+  }
 }
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    open,
-    blockMenu,
-    keyboardModal,
-    undo,
-    redo,
-    error,
+  connect(mapStateToProps, mapDispatchToProps),
+  open,
+  blockMenu,
+  keyboardModal,
+  undo,
+  redo,
+  error,
 )(Canvas);

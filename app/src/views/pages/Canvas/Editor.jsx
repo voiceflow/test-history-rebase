@@ -200,7 +200,7 @@ class Editor extends Component {
                     if (!(google_info && google_info.main_locale && !slot_locales.includes(google_info.main_locale))) slots.push(slot)
                     break
                 case 'alexa':
-                    if (!slot_locales || _.intersection(slot_locales, locales).length === locales.length) {
+                    if (!slot_locales || (locales && _.intersection(slot_locales, locales).length === locales.length)) {
                         slots.push(slot)
                     }
                     break

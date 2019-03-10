@@ -24,10 +24,6 @@ exports[`Spotlight render spotlight 1`] = `
           "value": "choice",
         },
         Object {
-          "label": "Exit",
-          "value": "exit",
-        },
-        Object {
           "label": "Set",
           "value": "set",
         },
@@ -66,6 +62,10 @@ exports[`Spotlight render spotlight 1`] = `
         Object {
           "label": "Code",
           "value": "code",
+        },
+        Object {
+          "label": "Exit",
+          "value": "exit",
         },
         Object {
           "label": "Card",

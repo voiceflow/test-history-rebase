@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Collapse, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
+import { connect } from 'react-redux'
 import SlotMappings from '../../Editors/components/SlotMappings' 
 
 const _ = require('lodash')
@@ -203,4 +204,7 @@ class ChoiceDropdownInputs extends Component {
     }
 }
 
-export default ChoiceDropdownInputs;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(ChoiceDropdownInputs);

@@ -23,14 +23,16 @@ class Button extends Component{
 	}
 
 	render(){
+		const width = this.props.small ? "234" : "312"
+		const height = this.props.small ? "48" : "64"
 	  	return(
 	  		<div className="LoginWithAmazon" onClick={this.triggerLogin}>
 		        <img border="0" alt="Login with Amazon" className="unpressed"
 		            src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64.png"
-		            width="312" height="64" />
+		            width={width} height={height} />
 		        <img border="0" alt="Login with Amazon" className="pressed"
 		            src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_312x64_pressed.png"
-		            width="312" height="64" />
+		            width={width} height={height} />
 			</div>
 		)
 	}

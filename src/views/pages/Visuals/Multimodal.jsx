@@ -8,6 +8,7 @@ import { Alert } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button';
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
+import { Spinner } from 'views/components/Spinner'
 import Masonry from 'react-masonry-component';
 
 import './Display.css'
@@ -33,12 +34,7 @@ class Multimodal extends Component {
 
     render() {
         if(this.props.loading){
-            return <div id="loading-diagram">
-                <div className="text-center">
-                    <h5 className="text-muted mb-2">Loading Products</h5>
-                    <span className="loader"/>
-                </div>
-            </div>
+            return React.createElement(Spinner, {name: 'Displays'})
         }
         return(
             <div className="h-100 w-100">

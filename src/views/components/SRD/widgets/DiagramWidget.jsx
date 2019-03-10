@@ -40,6 +40,7 @@ export class DiagramWidget extends BaseWidget {
 		};
 		this.repaint = false;
 		this.onDeleteConfirm = this.onDeleteConfirm.bind(this)
+		this.clickDiagram = this.clickDiagram.bind(this)
 	}
 
 	componentWillUnmount() {
@@ -202,6 +203,35 @@ export class DiagramWidget extends BaseWidget {
 		}
 	}
 
+	clickDiagram(e) {
+		let engine = this.props.diagramEngine
+		let selected = engine.getDiagramModel().getSelectedItems("node")
+		if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type === 'story') {
+			selected = [engine.getSuperSelect()]
+		}
+		if (selected.length === 1 && selected[0]) {
+			if (selected[0].extras.type === 'comment') {
+				this.diagram_focus = false
+			} else {
+				this.props.setOpen(true)
+				if (selected[0].combines && selected[0].combines.length === 0) {
+					engine.setSuperSelect(selected[0])
+				}
+			}
+		} else if (selected.length === 0) {
+			engine.setSuperSelect(null)
+			let model = engine.getDiagramModel()
+			let nodes = model.getNodes()
+			for (let key in nodes) {
+				if (nodes[key].extras.type === 'comment' && nodes[key].name.trim().length === 0) {
+					model.removeNode(nodes[key].getID())
+					this.forceUpdate()
+				}
+			}
+		}
+		this.props.setBlockMenu(null)
+	}
+
 	onMouseMove(event) {
 		var diagramModel = this.props.diagramEngine.getDiagramModel();
 		//select items so draw a bounding box
@@ -238,6 +268,7 @@ export class DiagramWidget extends BaseWidget {
 		} else if (this.state.action instanceof MoveItemsAction) {
 			let amountX = event.clientX - this.state.action.mouseX;
 			let amountY = event.clientY - this.state.action.mouseY;
+			if (amountX === 0 && amountY === 0) return;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
 			_.forEach(this.state.action.selectionModels, model => {
 				// in this case we need to also work out the relative grid position
@@ -417,6 +448,7 @@ export class DiagramWidget extends BaseWidget {
 	}
 
 	onKeyUp(event) {
+		if (this.props.locked) return;
 		//delete all selected
 		if (this.props.deleteKeys.indexOf(event.keyCode) !== -1) {
 			let selectedItems = this.props.diagramEngine.getDiagramModel().getSelectedItems()
@@ -433,7 +465,7 @@ export class DiagramWidget extends BaseWidget {
 				this.props.removeHandler(selectedItems)
 					_.forEach(selectedItems, element => {
 						if (
-							!this.props.diagramEngine.isModelLocked(element) && !element.isLocked()
+							!element.isLocked()
 						) {
 							diagramEngine.setSuperSelect(null)
 							this.props.forceRepaint()
@@ -441,7 +473,12 @@ export class DiagramWidget extends BaseWidget {
 								diagramEngine.setSuperSelect(null)
 								this.props.forceRepaint()
 							}
-							if (element.extras && element.extras.type === 'god'){
+							if (element.extras && (element.extras.type === 'comment' || element.extras.type === 'story')) {
+								element.clearListeners()
+								element.addListener({ entityRemoved: e => e.stopPropagation() })
+							} else if (element.extras && element.extras.type === 'intent'){
+								this.props.onDeleteIntentNode(element);
+							} else if (element.extras && element.extras.type === 'god'){
 								this.props.onConfirm({
 									warning: true,
 									text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
@@ -477,7 +514,7 @@ export class DiagramWidget extends BaseWidget {
 				//only care about points connecting to things
 				if (model.model instanceof BlockNodeModel) {
 					if (!model.model.isMoving ||this.props.editorOpen) {
-						this.props.clickDiagram()
+						this.clickDiagram()
 					}
 					model.element.style.pointerEvents = 'all';
 					model.model.isMoving = false;
@@ -571,7 +608,7 @@ export class DiagramWidget extends BaseWidget {
 			this.stopFiringAction(!this.state.wasMoved);
 		} else {
 			this.stopFiringAction();
-			this.props.clickDiagram()
+			this.props.setOpen(false)
 		}
 		this.state.document.removeEventListener("mousemove", this.onMouseMove);
 		this.state.document.removeEventListener("mouseup", this.onMouseUp);
@@ -661,6 +698,7 @@ export class DiagramWidget extends BaseWidget {
 					// }
 				}}
 				onMouseDown={event => {
+					this.props.setBlockMenu(null);
 					if (event.nativeEvent.which === 3) return;
 					this.setState({ ...this.state, wasMoved: false });
 					diagramEngine.stopMove();
@@ -702,9 +740,8 @@ export class DiagramWidget extends BaseWidget {
 								diagramModel.clearSelection();
 								link.getLastPoint().setSelected(true);
 								diagramModel.addLink(link);
-
 								this.startFiringAction(
-									new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event)
+									new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked)
 								);
 							}
 						} else {
@@ -717,8 +754,7 @@ export class DiagramWidget extends BaseWidget {
 								diagramModel.clearSelection();
 							}
 							model.model.setSelected(true);
-
-							this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event));
+							this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked));
 					}
 					this.state.document.addEventListener("mousemove", this.onMouseMove);
 					this.state.document.addEventListener("mouseup", this.onMouseUp);
@@ -735,7 +771,7 @@ export class DiagramWidget extends BaseWidget {
 							event.stopPropagation();
 							diagramModel.clearSelection(point);
 							this.setState({
-								action: new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event)
+								action: new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked)
 							});
 						}}
 					/>

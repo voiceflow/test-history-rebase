@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy'
 import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
@@ -78,7 +79,6 @@ class Menu extends Component {
                     flow={node}
                     active={current_id}
                     enterFlow={this.props.enterFlow}
-                    renameFlow={this.props.renameFlow}
                     copyFlow={()=>this.props.copyFlow(node.id)}
                     preview={this.props.preview}
                     deleteFlow={()=>this.props.deleteFlow(node.id)}
@@ -121,11 +121,8 @@ class Menu extends Component {
                 />
             case 'project':
                 return <Project
-                    diagrams={this.props.diagrams}
                     tree={this.state.tree}
-                    current={this.props.current}
                     visited={this.visited}
-                    renameFlow={this.props.renameFlow}
                     enterFlow={this.props.enterFlow}
                     copyFlow={this.props.copyFlow}
                     deleteFlow={this.props.deleteFlow}
@@ -133,7 +130,7 @@ class Menu extends Component {
                     history={this.props.history}
                 />
             default:
-                return <Blocks user_modules={this.props.user_modules} user={this.props.user} live_mode={this.props.live_mode} toggleUpgrade={this.props.toggleUpgrade}/>
+                return <Blocks user_modules={this.props.user_modules} user={this.props.user} toggleUpgrade={this.props.toggleUpgrade} type_counter={this.props.type_counter}/>
         }
     }
 
@@ -194,4 +191,7 @@ class Menu extends Component {
     }
 }
 
-export default Menu;
+const mapStateToProps = state => ({
+    diagrams: state.diagrams.diagrams
+})
+export default connect(mapStateToProps)(Menu);

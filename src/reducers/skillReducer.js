@@ -4,10 +4,14 @@ import {
   FETCH_SKILLS_FAILURE,
   FETCH_LIVE_SKILLS_SUCCESS,
   FETCH_DEV_SKILLS_SUCCESS,
+  RESET_SKILL,
   SET_LIVE_MODE_MODAL,
   TOGGLE_LIVE,
   UPDATE_SKILL,
-  UPDATE_SKILL_MERGE
+  UPDATE_FULFILLMENT,
+  REMOVE_FULFILLMENT,
+  UPDATE_SKILL_MERGE,
+  UPDATE_ENTIRE_SKILL
 } from '../actions/skillActions';
 
 import update from 'immutability-helper';
@@ -33,7 +37,12 @@ export default function skillReducer(state = initialState, action) {
         loading: false,
         skill: action.payload.skills
       };
-
+    case RESET_SKILL:
+      return {
+        ...state,
+        loading: false,
+        skill: null
+      }
     case FETCH_LIVE_SKILLS_SUCCESS:
       return {
         ...state,
@@ -67,6 +76,22 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         skill: update(state.skill, { [action.payload.type]: {$set: action.payload.val }})
+      }
+    case UPDATE_FULFILLMENT:
+      return {
+        ...state,
+        skill: update(state.skill, { fulfillment: {[action.payload.intent_key]: {$set: {[action.payload.slot_config]: action.payload.slot_config}}}})
+      }
+
+    case REMOVE_FULFILLMENT:
+      return {
+        ...state,
+        skill: update(state.skill, { fulfillment: {$unset: [action.payload.intent_key]}})
+      }
+    case UPDATE_ENTIRE_SKILL:
+      return {
+        ...state,
+        skill: update(state.skill, {$merge: action.payload.skill })
       }
     case UPDATE_SKILL_MERGE:
       return {

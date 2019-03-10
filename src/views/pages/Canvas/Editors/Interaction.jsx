@@ -7,6 +7,7 @@ import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
 
 export class Interaction extends Component {
     constructor(props) {
@@ -27,7 +28,8 @@ export class Interaction extends Component {
 
     update() {
         this.forceUpdate()
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
     }
 
     handleChoicesChange(choices) {
@@ -42,7 +44,8 @@ export class Interaction extends Component {
             let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
             node.parentCombine.combines[bestNode] = node.serialize()
         }
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
         this.props.repaint();
     }
 
@@ -80,9 +83,9 @@ export class Interaction extends Component {
 
         this.setState({
             node: node
-        }, this.props.onUpdate);
+        }, this.props.updateIntents);
+        this.props.updateLinter();
         // this.props.diagramEngine.setSuperSelect(node.parentCombine);
-        this.props.onUpdate()
         this.props.repaint();
     }
 
@@ -124,7 +127,8 @@ export class Interaction extends Component {
         this.setState({
             node: node,
         })
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
         this.props.repaint()
     }
 
@@ -217,4 +221,11 @@ const mapStateToProps = state => ({
     intents: state.skills.skill.intents,
     slots: state.skills.skill.slots
 })
-export default connect(mapStateToProps)(Interaction);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntents: () => dispatch(updateIntents()),
+        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Interaction);

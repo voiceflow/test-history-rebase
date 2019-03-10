@@ -54,6 +54,11 @@ export const socketCheck = lifecycle({
                 this.props.setErrorScreen(connection_error)
             }
         }
+    },
+    componentWillUnmount(){
+      // UNMOUNT SOCKET SESSION
+      delete window.CreatorSocket.connectedCB[`SKILL_${this.skill_id}`]
+      window.CreatorSocket.emit('leave')
     }
 })
 

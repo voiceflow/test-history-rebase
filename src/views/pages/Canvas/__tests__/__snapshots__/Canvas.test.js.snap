@@ -24,7 +24,6 @@ exports[`Canvas render canvas 1`] = `
   <DefaultModal
     content={<ShortCuts />}
     header="Keyboard Shortcuts"
-    open={false}
     toggle={[Function]}
   />
   <HelpModal
@@ -40,26 +39,25 @@ exports[`Canvas render canvas 1`] = `
     saved={true}
     saving={false}
     setCB={[Function]}
-    title=""
-    toggleGoogle={[Function]}
+    updateGoogleFade={[Function]}
+    updateLinter={[Function]}
   />
   <div
     id="canvas"
+    onMouseDown={[Function]}
     onMouseMove={[Function]}
     onMouseUp={[Function]}
   >
-    <Menu
+    <Connect(Menu)
       build={[Function]}
       copyFlow={[Function]}
       deleteFlow={[Function]}
       enterFlow={[Function]}
-      helpModal={[Function]}
-      onFlowRenamed={[Function]}
-      renameFlow={[Function]}
-      saving={false}
+      type_counter={Object {}}
       unfocus={[Function]}
-      user_modules={null}
-      user_templates={Array []}
+    />
+    <Spinner
+      name="Flow"
     />
     <Connect(withStateHandlers(withStateHandlers(Editor)))
       appendCombineNode={[Function]}
@@ -90,7 +88,7 @@ exports[`Canvas render canvas 1`] = `
           },
           "linkFactories": Object {
             "default": BlockLinkFactory {
-              "color": "#D1D8E2",
+              "color": null,
               "extras": Object {},
               "id": undefined,
               "labels": Array [],
@@ -102,7 +100,7 @@ exports[`Canvas render canvas 1`] = `
               "sourcePort": null,
               "targetPort": null,
               "type": "default",
-              "width": 2.5,
+              "width": null,
             },
           },
           "linksThatHaveInitiallyRendered": Object {},
@@ -134,19 +132,15 @@ exports[`Canvas render canvas 1`] = `
         }
       }
       enterFlow={[Function]}
-      finished={[Function]}
       node={null}
-      onIntentUpdate={[Function]}
       onUpdate={[Function]}
-      onboarding={null}
       removeCombineNode={[Function]}
       removeNode={[Function]}
       repaint={[Function]}
-      setCanFulfill={[Function]}
       setCanvasEvents={[Function]}
       setHelp={[Function]}
       unfocus={[Function]}
-      user_modules={null}
+      updateLinter={[Function]}
     />
     <div
       className=""
@@ -156,58 +150,74 @@ exports[`Canvas render canvas 1`] = `
       onDrop={[Function]}
       onMouseLeave={[Function]}
     >
-      <div
-        id="widget-bar"
-      >
-        <ButtonGroup
-          role="group"
-          tag="div"
-        >
-          <button
-            className="white-circ round-left"
-            onClick={[Function]}
-          >
-            <i
-              className="far fa-plus"
-            />
-          </button>
-          <button
-            className="white-circ round-right"
-            onClick={[Function]}
-          >
-            <i
-              className="far fa-minus"
-            />
-          </button>
-        </ButtonGroup>
-        <button
-          className="white-circ ml-2"
-          onClick={[Function]}
-        >
-          <i
-            className="fas fa-map-marker-alt"
-          />
-        </button>
-        <button
-          className="white-circ ml-2"
-          onClick={[Function]}
-        >
-          <i
-            className="fas fa-keyboard"
-          />
-        </button>
-      </div>
-      <Connect(FlowBar)
-        copyFlow={[Function]}
-        deleteFlow={[Function]}
-        enterFlow={[Function]}
-        renameFlow={[Function]}
+      <WidgetBar
+        engine={
+          DiagramEngine {
+            "canvas": null,
+            "combineCanvas": null,
+            "diagramModel": DiagramModel {
+              "gridSize": 0,
+              "id": undefined,
+              "links": Object {},
+              "listeners": Object {},
+              "locked": false,
+              "nodes": Object {},
+              "offsetX": 0,
+              "offsetY": 0,
+              "rendered": false,
+              "zoom": 100,
+            },
+            "id": undefined,
+            "labelFactories": Object {
+              "default": DefaultLabelFactory {
+                "type": "default",
+              },
+            },
+            "linkFactories": Object {
+              "default": BlockLinkFactory {
+                "color": null,
+                "extras": Object {},
+                "id": undefined,
+                "labels": Array [],
+                "listeners": Object {},
+                "locked": false,
+                "points": null,
+                "preview": undefined,
+                "selected": false,
+                "sourcePort": null,
+                "targetPort": null,
+                "type": "default",
+                "width": null,
+              },
+            },
+            "linksThatHaveInitiallyRendered": Object {},
+            "listeners": Object {},
+            "locked": false,
+            "moving": false,
+            "nodeFactories": Object {
+              "default": BlockNodeFactory {
+                "id": undefined,
+                "listeners": Object {},
+                "locked": false,
+                "selected": false,
+                "type": "default",
+              },
+            },
+            "paintableWidgets": null,
+            "portFactories": Object {
+              "default": BlockPortFactory {
+                "type": "default",
+              },
+            },
+            "superSelect": null,
+          }
+        }
+        update={[Function]}
       />
       <DiagramWidget
         allowCanvasTranslation={true}
         allowCanvasZoom={true}
         allowLooseLinks={false}
-        clickDiagram={[Function]}
         deleteKeys={
           Array [
             46,
@@ -238,7 +248,7 @@ exports[`Canvas render canvas 1`] = `
             },
             "linkFactories": Object {
               "default": BlockLinkFactory {
-                "color": "#D1D8E2",
+                "color": null,
                 "extras": Object {},
                 "id": undefined,
                 "labels": Array [],
@@ -250,7 +260,7 @@ exports[`Canvas render canvas 1`] = `
                 "sourcePort": null,
                 "targetPort": null,
                 "type": "default",
-                "width": 2.5,
+                "width": null,
               },
             },
             "linksThatHaveInitiallyRendered": Object {},
@@ -280,14 +290,16 @@ exports[`Canvas render canvas 1`] = `
         maxNumberPointsPerLink={Infinity}
         nodeProps={
           Object {
-            "addRemoveListener": [Function],
             "diagram": undefined,
+            "disabled": false,
             "enterFlow": [Function],
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],
+            "renameFlow": undefined,
           }
         }
+        onDeleteIntentNode={[Function]}
         removeHandler={[Function]}
         smartRouting={false}
       />

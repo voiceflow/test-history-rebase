@@ -10,9 +10,9 @@ describe('Test Diagram Reducer', () => {
         })
     });
 
-    it('should handle FETCH_DIAGRAM_BEGIN', () => {
+    it('should handle FETCH_DIAGRAMS_BEGIN', () => {
         const beginFetch = {
-            type: actions.FETCH_DIAGRAM_BEGIN
+            type: actions.FETCH_DIAGRAMS_BEGIN
         }
         expect(diagramReducer(undefined, beginFetch)).toEqual({
             diagrams: [],
@@ -44,9 +44,9 @@ describe('Test Diagram Reducer', () => {
         })
     })
 
-    it('should handle FETCH_DIAGRAM_FAILURE', () => {
+    it('should handle FETCH_DIAGRAMS_FAILURE', () => {
         const fail = {
-            type: actions.FETCH_DIAGRAM_FAILURE,
+            type: actions.FETCH_DIAGRAMS_FAILURE,
             payload: { error: true }
         }
         expect(diagramReducer({}, fail)).toEqual({
@@ -59,10 +59,15 @@ describe('Test Diagram Reducer', () => {
     it('should handle ON_FLOW_RENAME', () => {
         const rename = {
             type: actions.ON_FLOW_RENAME,
-            payload: {flow_id: 1}
+            payload: {flow_id: 1, name: 'test'}
         }
-        expect(diagramReducer({}, rename)).toEqual({
-            
+        expect(diagramReducer({diagrams: [{id: 1, name: 'default'}]}, rename)).toEqual({
+            diagrams: [
+                {
+                    id: 1,
+                    name: 'test'
+                }
+            ]
         })
     })
 })

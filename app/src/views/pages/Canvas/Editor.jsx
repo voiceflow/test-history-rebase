@@ -32,7 +32,6 @@ import Mail from './Editors/Mail';
 import Display from './Editors/Display'
 import Stream from './Editors/Stream';
 import Permissions from './Editors/Permissions';
-import Onboarding from './Onboarding'
 import Reminder from './Editors/Reminder'
 import Code from './Editors/Code'
 import PermissionCard from './Editors/PermissionCard'
@@ -201,7 +200,7 @@ class Editor extends Component {
                     if (!(google_info && google_info.main_locale && !slot_locales.includes(google_info.main_locale))) slots.push(slot)
                     break
                 case 'alexa':
-                    if (!slot_locales || _.intersection(slot_locales, locales).length === locales.length) {
+                    if (!slot_locales || (locales && _.intersection(slot_locales, locales).length === locales.length)) {
                         slots.push(slot)
                     }
                     break
@@ -244,23 +243,18 @@ class Editor extends Component {
                 return <Choice
                         diagramEngine={this.props.diagramEngine}
                         repaint={this.props.repaint}
-                        live_mode={this.props.live_mode}
                     />
             case 'intent':
                 return <Intent
-                        onUpdate={this.props.onIntentUpdate}
                         diagramEngine={this.props.diagramEngine}
+                        updateLinter={this.props.updateLinter}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         onConfirm={this.props.onConfirm}
                         history={this.props.history}
-                        diagrams={this.props.diagrams}
-                        diagram_id={this.props.diagram_id}
-                        setCanFulfill={this.props.setCanFulfill}
                         diagram_level_intents={this.props.diagram_level_intents}
                         platform={this.props.platform}
-                        live_mode={this.props.live_mode}
                         />
             case 'command':
                 // DEPRECATE OLD COMMAND BLOCKS
@@ -268,41 +262,43 @@ class Editor extends Component {
                     return <OldCommand/>
                 }else{
                     return <Command
-                        onUpdate={this.props.onIntentUpdate}
                         slot_types={this.getSlotTypes(this.props.locales)}
+                        updateLinter={this.props.updateLinter}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
                         onError={this.props.onError}
                         repaint={this.props.repaint}
                         createDiagram={this.props.createDiagram}
-                        current={this.props.diagram_id}
-                        diagrams={this.props.diagrams}
                         enterFlow={this.props.enterFlow}
                         onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         diagram_level_intents={this.props.diagram_level_intents}
-                        live_mode={this.props.live_mode}
-                        setCanFulfill={this.props.setCanFulfill}
                     />
                 }
             case 'interaction':
-                return <Interaction
-                    onUpdate={this.props.onIntentUpdate}
+                return (
+                  <Interaction
                     repaint={this.props.repaint}
+                    updateLinter={this.props.updateLinter}
                     clearEvents={() => {
-                        this.props.clearRedo();
-                        this.props.clearUndo();
+                      this.props.clearRedo();
+                      this.props.clearUndo();
                     }}
                     onSlot={this.props.onSlot}
                     onIntent={this.props.onIntent}
                     diagramEngine={this.props.diagramEngine}
-                    slot_types={this.getSlotTypes(this.props.locales)}
-                    built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
+                    slot_types={this.getSlotTypes(
+                      this.props.locales
+                    )}
+                    built_ins={
+                      this.props.platform === "google"
+                        ? GOOGLE_BUILT_INS
+                        : ALEXA_BUILT_INS
+                    }
                     onError={this.props.onError}
                     onConfirm={this.props.onConfirm}
                     platform={this.props.platform}
-                    live_mode={this.props.live_mode}
-                    setCanFulfill={this.props.setCanFulfill}
-                    />
+                  />
+                );
             case 'combine':
             case 'line':
             case 'audio':
@@ -338,7 +334,6 @@ class Editor extends Component {
                 return <Card/>
             case 'capture':
                 return <Capture
-                    live_mode={this.props.live_mode}
                     slot_types={this.getSlotTypes(this.props.locales, 'SearchQuery')}
                     platform={this.props.platform}
                     node={this.state.node}
@@ -351,7 +346,6 @@ class Editor extends Component {
                     onUpdate={this.props.onUpdate}
                     variables={this.props.variables}
                     createDiagram={this.props.createDiagram}
-                    diagrams={this.props.diagrams}
                     enterFlow={this.props.enterFlow}
                 />
             case 'api':
@@ -378,13 +372,13 @@ class Editor extends Component {
             case 'stream':
                 return <Stream diagramEngine={this.props.diagramEngine} forceRepaint={this.props.forceRepaint} repaint={this.props.repaint}/>
             case 'permissions':
-                return <Permissions live_mode={this.props.live_mode}/>
+                return <Permissions />
             case 'exit':
                 return <Alert>This block ends the skill in its current flow and state</Alert>
             case 'reminder':
                 return <Reminder/>
             case 'permission':
-                return <PermissionCard live_mode={this.props.live_mode}/>
+                return <PermissionCard />
             case 'code':
                 return <Code/>
             default:
@@ -505,7 +499,6 @@ class Editor extends Component {
                     this.props.setCanvasEvents()
                 }}
             >
-                {this.props.onboarding && <Onboarding finished={this.props.finished}/>}
                 {type ?
                     <div className="controls" key={this.state.node.id}>
                         <div className="top">
@@ -582,6 +575,7 @@ const mapStateToProps = state => ({
     global_variables: state.skills.skill.global,
     variables: state.variables.localVariables,
     google_publish_info: state.skills.skill.google_publish_info,
+    diagrams: state.diagrams.diagrams
 })
 export default compose(
     connect(mapStateToProps),

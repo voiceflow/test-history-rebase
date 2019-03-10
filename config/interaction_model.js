@@ -251,7 +251,7 @@ exports.createInteractionModel = (req, locale) => {
 				let high = -1
 
 				for(match of matched){
-					if(!Array.isArray(match.samples)){console.log(match); continue}
+					// if(!Array.isArray(match.samples)){console.log(match); continue}
 
 					let i, sum=0;
 					for(i=0; i<match.samples.length; i++){

@@ -16,7 +16,7 @@ const defaultVariables = {
 
 const TABS = ['global', 'local']
 
-class Variables extends PureComponent {
+export class Variables extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -103,7 +103,7 @@ class Variables extends PureComponent {
         if(this.state.tab === 'global'){
             variable_tab = <React.Fragment>
                 {/*<span className="text-muted">Global variables can be accessed anywhere in the project</span>*/}
-                <form onSubmit={this.addGlobalVariable}>
+                <form id="variable-submit" onSubmit={this.addGlobalVariable}>
                     <FormGroup className="mb-0">
                         <Label className='section-title mt-3'>Add New Global Variable</Label>
                         <InputGroup>
@@ -131,7 +131,7 @@ class Variables extends PureComponent {
         }else if(this.state.tab === 'local'){
             variable_tab = <React.Fragment>
                 {/*<span className="text-muted">Local Variables are accessed only by the current flow</span>*/}
-                <form onSubmit={this.addVariable}>
+                <form id="variable-submit" onSubmit={this.addVariable}>
                     <FormGroup className="mb-0">
                         <Label className='section-title mt-3'>Add New Local Variable</Label>
                         <InputGroup>

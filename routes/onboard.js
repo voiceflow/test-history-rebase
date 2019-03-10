@@ -19,12 +19,23 @@ const checkIfOnboarded = (req, res) => {
 
 const PROG_XP = (xp) => {
 	switch(xp){
-		case 1:
+		case 'intermediate':
 			return 'OKAY'
-		case 2:
+		case 'expert':
 			return 'GOD'
 		default:
 			return 'NOOB'
+	}
+}
+
+const convertToOld = (xp) => {
+	switch(xp){
+		case 'intermediate':
+			return 1
+		case 'expert':
+			return 2
+		default:
+			return 0
 	}
 }
 
@@ -32,10 +43,9 @@ const submitOnboardSurvey = (req, res) => {
 	if(!req.body.usage_type){
 		req.body.usage_type = 'PERSONAL'
 	}
-
 	pool.query(
-		"INSERT INTO user_info (creator_id, usage_type, company_name, role, company_size, industry, xp) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-		[req.user.id, req.body.usage_type, req.body.company_name, req.body.role, req.body.company_size, req.body.industry, req.body.programming],
+		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build, req.body.company_size, req.body.company_role, req.body.purpose],
 		(err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -49,10 +59,10 @@ const submitOnboardSurvey = (req, res) => {
 					custom_attributes: {
 						usage: req.body.usage_type,
 						company: req.body.company_name,
-						role: req.body.role,
 						company_size: req.body.company_size,
-						industry: req.body.industry,
-						organization: req.body.org,
+						design: req.body.design,
+						build: req.body.build,
+						purpose: req.body.purpose,
 						programming_experience: PROG_XP(req.body.programming)
 					}
 				})

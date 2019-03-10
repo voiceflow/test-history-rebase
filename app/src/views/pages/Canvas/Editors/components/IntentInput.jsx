@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Collapse } from 'reactstrap'
 import { MentionsInput, Mention } from 'react-mentions'
+import { connect } from 'react-redux'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../../util'
@@ -13,7 +14,8 @@ class IntentInput extends Component {
             name: (this.props.intent && this.props.intent.name) ? this.props.intent.name : "",
             text: "",
             name_error: null,
-            text_error: null
+            text_error: null,
+            intent: this.props.intent
         }
         this.handleKeyPress = this.handleKeyPress.bind(this)
         this.onTextChange = this.onTextChange.bind(this)
@@ -91,7 +93,11 @@ class IntentInput extends Component {
 
     deleteUtterance(e, i) {
         e.preventDefault()
-        this.props.intent.inputs.splice(i, 1)
+        const intent = this.state.intent
+        intent.inputs.splice(i, 1)
+        this.setState({
+            intent: intent
+        })
         this.props.update()
     }
 
@@ -230,4 +236,7 @@ class IntentInput extends Component {
     }
 }
 
-export default IntentInput;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(IntentInput);

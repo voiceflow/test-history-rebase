@@ -20,7 +20,7 @@ import { WidgetBar } from './components/WidgetBar'
 //Helpers
 import { combineAppendValidation } from './../../helpers/combineHelper'
 
-import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
+import { updateSkill, updateIntents, setCanFulfill, resetSkill } from "./../../../actions/skillActions";
 import { setVariables } from './../../../actions/variableActions'
 import { renameDiagram } from 'actions/diagramActions'
 
@@ -202,6 +202,7 @@ export class Canvas extends Component {
         if(this.interval){
             clearInterval(this.interval)
         }
+        this.props.resetSkill()
         localStorage.setItem('is_first_session', 'false')
     }
 
@@ -1559,6 +1560,7 @@ const mapDispatchToProps = dispatch => {
     updateIntents: () => dispatch(updateIntents()),
     setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
     renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
+    resetSkill: () => dispatch(resetSkill())
   }
 }
 

@@ -216,7 +216,12 @@ export class BlockNodeWidget extends BaseWidget {
 	render() {
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={`srd-default-node ${this.props.node.extras.type}`}>
-              	<Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
+        <Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate()}} onBlur={()=>{
+          if(!this.props.node.name.trim()){
+            this.props.diagramEngine.getDiagramModel().removeNode(this.props.node)
+            this.forceUpdate()
+          }
+        }}/>
 			</div>
 		}
 		const fade = this.props.node.fade ? " faded-node" : ""

@@ -52,6 +52,7 @@ class Skill extends Component {
             linter: [],
             upgrade_modal: false,
             selected_plan: 1,
+            load_skill: true
         }
 
         this.time_mounted = null
@@ -97,6 +98,7 @@ class Skill extends Component {
         )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
           this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
+            this.setState({load_skill: false})
             if (!this.props.preview){
               if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
                 // LOAD EMAIL TEMPLATES IF ON PLAN > 1
@@ -209,7 +211,7 @@ class Skill extends Component {
             </div>
         }
 
-        if((this.props.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
+        if((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
             return React.createElement(Spinner,  {name: 'Skill'})
         }
 
@@ -232,7 +234,6 @@ class Skill extends Component {
 
 const mapStateToProps = state => ({
     skill: state.skills.skill,
-    load_skill: state.skills.loading,
     load_diagram: state.diagrams.loading,
     error: state.skills.error,
     show_live_mode_modal: state.skills.show_live_mode_modal,

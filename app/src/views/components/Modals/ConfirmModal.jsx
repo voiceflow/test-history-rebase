@@ -15,6 +15,7 @@ class ConfirmModal extends React.Component {
           {this.props.confirm.text}
         </ModalBody>
         <ModalFooter className="justify-content-center">
+          <Button color="clear" onClick={this.props.toggle}>Cancel</Button>
           <Button color={this.props.confirm.warning ? "warning" : "primary"} 
             onClick={() => {
               if(this.props.confirm.params){

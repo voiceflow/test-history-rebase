@@ -253,6 +253,7 @@ class App extends Component {
                 {/* Admin routes */}
                 <PrivateRoute path="/visuals/:skill_id/display/:id" onConfirm={this.onConfirm} component={Skill} page='visuals' secondaryPage="display"/>
                 <PrivateRoute path="/visuals/:skill_id" component={Skill} onConfirm={this.onConfirm} page='visuals' secondaryPage="displays"/>
+                <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>

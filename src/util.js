@@ -158,7 +158,10 @@ exports.utteranceToIntentName = (utterance, existing) => {
 	}
 
 	while(existing.has(name) || !name.trim()){
-		name = name.substring(0, 164) + '_' + randomstring.generate({length: 5, charset: 'alphabetic', capitalization: 'lowercase'})
+    if(name.trim()){
+      name = name.substring(0, 164) + '_'
+    }
+		name += randomstring.generate({length: 5, charset: 'alphabetic', capitalization: 'lowercase'})
 	}
 
 	return name

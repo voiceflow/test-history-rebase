@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import Select from 'react-select';
 const _ = require('lodash')
 
@@ -109,4 +110,8 @@ class Permission extends Component {
     }
 }
 
-export default Permission;
+const mapStateToProps = state => ({
+    products: state.products.products
+})
+
+export default connect(mapStateToProps)(Permission);

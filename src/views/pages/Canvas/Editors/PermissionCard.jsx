@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {Alert, Button, ButtonGroup} from 'reactstrap'
 import Switch from '@material-ui/core/Switch'
 import {Link} from 'react-router-dom'
@@ -81,13 +82,13 @@ class PermissionCard extends Component {
                 </ButtonGroup>
                 <div className={this.props.live_mode ? "text-center disabled-overlay" : "text-center"}>
                 {this.state.node.extras.a_l ? <React.Fragment>
-                    {this.props.skill.account_linking?
-                        <label><b>{this.props.skill.account_linking.authorizationUrl}</b></label>:
+                    {this.props.account_linking?
+                        <label><b>{this.props.account_linking.authorizationUrl}</b></label>:
                         <Alert color='warning' className="mt-3"><i className="far fa-exclamation-triangle mr-1"/> No Account Link found</Alert>
                     }
                     <Link
                         className="btn btn-clear btn-block"
-                        to={`/business/${this.props.skill.skill_id}/link_account/templates`}
+                        to={`/business/${this.props.skill_id}/link_account/templates`}
                     >Edit Account Linking</Link>
                     <hr/>
                     <div className="px-4">
@@ -117,4 +118,9 @@ class PermissionCard extends Component {
     }
 }
 
-export default PermissionCard;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    account_linking: state.skills.skill.account_linking,
+    live_mode: state.skills.live_mode,
+})
+export default connect(mapStateToProps)(PermissionCard);

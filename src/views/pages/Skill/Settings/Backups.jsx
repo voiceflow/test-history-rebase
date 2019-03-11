@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import axios from 'axios'
 // import _ from 'lodash'
 
+import { Spinner } from 'views/components/Spinner'
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{
@@ -73,16 +74,13 @@ class BackupSettings extends Component{
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
             confirm: this.props.onSwapVersions,
-            params: [skill_id, skill]
+            params: [skill_id]
         })
     }
 
     render(){
         if(this.state.loading){
-            return <div className="text-center mt-5">
-                <span className="loader text-lg"/>
-                <h5 className="text-muted mt-2">Loading Backups</h5>
-            </div>
+            return React.createElement(Spinner, {name: 'Backups'})
         }
 
         if((!Array.isArray(this.state.versions) || this.state.versions.length === 0) && !this.state.live_version){

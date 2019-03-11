@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse } from 'reactstrap';
 import Select from 'react-select'
 import {Tooltip} from 'react-tippy'
+import { connect } from 'react-redux'
 import { SingleValueOption, SlotOption, SlotDiabled, SlotSynonyms } from './SlotComponents'
 
 class SlotInput extends Component {
@@ -47,7 +48,7 @@ class SlotInput extends Component {
 
         let name_error
         if (!re.test(input) && input.length > 0) {
-            name_error = 'Slot names can only contain lowercase letters and underscores!'
+            name_error = 'Slot names can only contain lowercase letters and underscores'
         } else {
             name_error = null
         }
@@ -153,4 +154,7 @@ class SlotInput extends Component {
     }
 }
 
-export default SlotInput;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(SlotInput);

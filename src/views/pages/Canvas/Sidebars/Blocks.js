@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import MenuItem from './components/MenuItem';
+import { connect } from 'react-redux'
 import ModuleItem from './components/ModuleItem';
 import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
@@ -7,7 +8,7 @@ import { Button, Collapse } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
 // const TABS = ['blocks', 'modules']
 
-class Blocks extends PureComponent {
+export class Blocks extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -15,11 +16,12 @@ class Blocks extends PureComponent {
         let show = localStorage.getItem('show')
         if(!show){
             show = {
-                Basic: true,
-                Logic: false,
-                Advanced: false,
-                Functional: false,
-                Business: false
+                favorites: true,
+                basic: true,
+                logic: false,
+                advanced: false,
+                functional: false,
+                business: false
             }
         } else {
             show = JSON.parse(show)
@@ -31,18 +33,17 @@ class Blocks extends PureComponent {
         this.state = {
             tab: tab,
             show: show,
-            sections: getSections()
+            sections: getSections(this.props.type_counter)
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
-        this.switchTab = this.switchTab.bind(this)
     }
 
-    switchTab(tab){
-        if(tab !== this.state.tab){
+    componentWillReceiveProps(props){
+        if(props.type_counter !== this.props.type_counter){
             this.setState({
-                tab: tab
-            }, ()=>localStorage.setItem('block_tab', tab))
+                sections: getSections(props.type_counter)
+            })
         }
     }
 
@@ -56,7 +57,7 @@ class Blocks extends PureComponent {
 
     render() {
         let block_content;
-
+        if (!window.user_detail) return null;
         if(this.state.tab === 'blocks'){
             block_content =
                 this.state.sections.map((section, i) => {
@@ -68,7 +69,7 @@ class Blocks extends PureComponent {
                                 <i className={"fas fa-caret-down mr-1 rotate" + (this.state.show[section.title] ? "" : " fa-rotate--90")}/>
                                 {section.title}
                                 </span>
-                                <span className={"title-dot " + section.title}/>
+                                <span className={(section.title !== 'favorites' ? "title-dot " + section.title : section.title)}/>
                         </div>
                         <Collapse isOpen={this.state.show[section.title]}>
                             {(section.title === 'business' && window.user_detail.admin === 0) ?
@@ -82,14 +83,13 @@ class Blocks extends PureComponent {
                                 </div>
                             : null}
                             <div className="mb-3 section-blocks" style={(section.title === 'business' && window.user_detail.admin === 0) ? {opacity: 0.3} : null}>
-                                {section.items.map((item, i) => {
-                                    return <MenuItem 
-                                        item={item} 
-                                        key={i} 
-                                        data-tip={item.tip} 
-                                        draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}
-                                        platform={this.props.platform}/>
-                                })}
+                                {section.items.map((item, i) => 
+                                    item && <MenuItem 
+                                            item={item} 
+                                            key={i} 
+                                            data-tip={item.tip} 
+                                            draggable={((section.title === 'business' && window.user_detail.admin === 0) || checkBlockDisabledLive(this.props.live_mode, item.type)) ? false : true}/>
+                                )}
                             </div>
                         </Collapse>
                     </div>
@@ -107,20 +107,12 @@ class Blocks extends PureComponent {
             }
         }
         return <React.Fragment>
-            {/* <ButtonGroup className="toggle-group mb-2">
-                {TABS.map(tab => {
-                    return <Button
-                        key={tab}
-                        onClick={() => this.switchTab(tab)}
-                        outline={this.state.tab !== tab}
-                        disabled={this.state.tab === tab}>
-                        {tab}
-                    </Button>
-                })}
-            </ButtonGroup> */}
             {block_content}
         </React.Fragment>
     }
 }
 
-export default Blocks;
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode
+})
+export default connect(mapStateToProps)(Blocks);

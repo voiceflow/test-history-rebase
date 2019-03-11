@@ -69,8 +69,12 @@ const initalizeLogin = (response, cb) => {
 	cookies.remove('last_session');
 	window.user_detail = response.data.user;
 	let user = response.data.user;
-	if (window.chmln){
-		window.chmln.identify(user.id, {email: user.email, name: user.name, roles: user.admin});
+	if (window.Appcues){
+		window.Appcues.identify(user.id, {
+			email: user.email,
+			name: user.name,
+			roles: user.admin
+		})
 	}
 	window.CreatorSocket.emit('handshake', {
 		auth: response.data.token,

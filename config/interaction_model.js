@@ -72,12 +72,12 @@ exports.createInteractionModel = (req, locale) => {
 			// don't log built_ins because they might not be needed
 			if(type === 'defaults' || used_built_ins.has(intent.name)){
 				entered_intents.add(intent.name)
-        intents_for_amazon.push(intent)
-        for(sample of intent.samples){
-          samples[stripSample(sample)] = intent
-        }
-        LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples)
+				intents_for_amazon.push(intent)
 			}
+			for(sample of intent.samples){
+				samples[stripSample(sample)] = intent
+			}
+			LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples)
 		})
 	})
 	

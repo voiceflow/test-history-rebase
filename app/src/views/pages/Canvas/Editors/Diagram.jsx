@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {Button, Alert} from 'reactstrap';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Select from 'react-select';
+
+import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
 import DiagramVariables from './components/DiagramVariables';
 // import Expressionfy from './components/Expressionfy';
 
@@ -14,7 +16,6 @@ class DiagramBlock extends Component {
         this.state = {
             node: this.props.node,
             variables: [],
-            broken: false
         };
 
         this.onUpdate = this.onUpdate.bind(this);
@@ -32,24 +33,7 @@ class DiagramBlock extends Component {
         // diagram_id = '5f33383b-a9a8-4a85-9fa5-16bdad17b37f';
 
         if(diagram_id){
-            if(diagram_id){
-                axios.get(`/diagram/${diagram_id}/variables`, {
-                    headers: { Pragma: 'no-cache' }
-                })
-                .then(res => {
-                    if(Array.isArray(res.data)){
-                        this.setState({
-                            variables: res.data
-                        });
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.setState({
-                        broken: true
-                    })
-                });
-            }
+            this.props.dispatch(fetchDiagramVariables(diagram_id));
         }
     }
 
@@ -108,7 +92,7 @@ class DiagramBlock extends Component {
         // if(this.state.node.extras.diagram_id){
         //     block = this.props.diagrams.find(d => d.id === this.state.node.extras.diagram_id)
         // }
-        if(this.state.broken){
+        if(this.props.broken){
             return <Alert color="danger" className="text-center">
                 <i className="fas fa-exclamation-triangle fa-2x mb-2"/><br/>
                 Unable to Retrieve Flow - This Flow may be broken or deleted<br/><br/>
@@ -128,6 +112,9 @@ class DiagramBlock extends Component {
                                     onChange={(selected) => {
                                         let node = this.state.node;
                                         node.extras.diagram_id = selected.value;
+                                        this.setState({
+                                            node: node
+                                        }, this.props.onUpdate)
                                         this.props.enterFlow(selected.value);
                                     }}
                                     options={options}
@@ -156,7 +143,7 @@ class DiagramBlock extends Component {
                         <label>Input Variables</label>
                         <DiagramVariables
                             arg1_options={this.props.variables}
-                            arg2_options={this.state.variables}
+                            arg2_options={this.props.diagramVariables}
                             arguments={this.state.node.extras.inputs}
                             onAdd={() => this.handleAddMap('inputs')}
                             onRemove={(i) => this.handleRemoveMap('inputs', i)}
@@ -167,7 +154,7 @@ class DiagramBlock extends Component {
                         <DiagramVariables
                             reverse
                             arg1_options={this.props.variables}
-                            arg2_options={this.state.variables}
+                            arg2_options={this.props.diagramVariables}
                             arguments={this.state.node.extras.outputs}
                             onAdd={() => this.handleAddMap('outputs')}
                             onRemove={(i) => this.handleRemoveMap('outputs', i)}
@@ -180,4 +167,11 @@ class DiagramBlock extends Component {
     }
 }
 
-export default DiagramBlock;
+const mapStateToProps = state => ({
+    diagrams: state.diagrams.diagrams,
+    load_diagram: state.diagrams.loading,
+    broken: state.diagrams.error,
+    diagramVariables: state.diagramVariables.diagramVariables
+})
+
+export default connect(mapStateToProps)(DiagramBlock);

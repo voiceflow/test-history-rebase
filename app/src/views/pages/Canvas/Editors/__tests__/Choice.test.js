@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
 import _ from 'lodash'
-import Choice from './../Choice';
+import { Choice } from './../Choice';
 import {defaultNode} from '../__mock__/defaultNode';
+import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
@@ -23,6 +24,6 @@ describe('Choice', () => {
         }
         const component = shallow(<Choice node={node}/>);
         expect(component.state().node).toEqual(node)
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

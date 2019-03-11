@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup, Alert } from 'reactstrap'
@@ -6,9 +7,10 @@ import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
+import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
 const _ = require('lodash')
 
-class Command extends Component {
+export class Command extends Component {
 
     constructor(props) {
         super(props)
@@ -43,7 +45,6 @@ class Command extends Component {
 
         if (diagram_intents.has(selected.key)) {
             this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
-            this.intentSelectRef.current.blur();
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -63,7 +64,8 @@ class Command extends Component {
 
     update() {
         this.forceUpdate()
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
     }
 
     static getDerivedStateFromProps(props) {
@@ -335,4 +337,17 @@ class Command extends Component {
     }
 }
 
-export default Command
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots,
+    diagrams: state.diagrams.diagrams,
+    live_mode: state.skills.live_mode,
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntents: () => dispatch(updateIntents()),
+        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Command)

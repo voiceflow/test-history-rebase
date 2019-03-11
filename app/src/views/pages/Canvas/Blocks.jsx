@@ -1,57 +1,105 @@
 import React from 'react'
 import cloneDeep from 'lodash/cloneDeep';
 
+const FAVORITE_SECTION_MAX = 3;
+
+const BLOCK_TYPES = {
+    'speak': { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
+    'choice': { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
+    'set': { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once' },
+    'if': { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
+    'capture': { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable' },
+    'random': { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
+    'interaction': { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
+    'intent': { text: 'Intent', type: 'intent', icon: <i className="fas fa-step-forward"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)'},
+    'stream': { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
+    'api': { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
+    'flow': { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
+    'code': { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},
+    'exit': { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
+    'combine': { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
+    'comment': { text: 'Comment', type: 'comment', icon: <i className="far fa-comment-alt"/>, tip: 'Add notes to your diagram'},
+    'card': { text: 'Card', type: 'card', icon: <i className="fas fa-sticky-note"/>, tip: 'Tell Alexa to show a card'  },
+    'display': { text: 'Display', type: 'display', icon: <i className="far fa-image"/>, tip: 'Show a Multimodal Display on the screen using APL' },
+    'permission': { text: 'Permission', type: 'permission', icon: <i className="fas fa-lock"></i>, tip: 'Ask users to enable permissions (User Info, Reminders, etc.)' },
+    'permissions': { text: 'User Info', type: 'permissions', icon: <i className="fas fa-user"></i>, tip: 'Get User Information and check Permissions' },
+    'mail': { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' },
+    'payment': { text: 'Payment', type: 'payment', icon: <i className="fas fa-dollar-sign" />, tip: 'Request payment from user' },
+    'cancel': { text: 'Cancel Payment', type: 'cancel', icon: <i className="fas fa-user-minus" />, tip: 'Refund a purchase or cancel an user\'s subscription' },
+    'reminder': { text: 'Reminder', type: 'reminder', icon: <i className="fas fa-bell" />, tip: 'Send a remind to the user in a set amount of time' }
+}
+
 const SECTIONS = [{
     title: 'basic',
     items: [
-        { text: 'Speak', type: 'speak', icon: <i className="fas fa-comment"/>, tip: 'Tell Alexa to play sounds or talk to the user' },
-        { text: 'Choice', type: 'choice', icon: <i className="fas fa-project-diagram"/>, tip: 'Listen for the user to make a choice from a list of options you set'  },
+        BLOCK_TYPES.speak,
+        BLOCK_TYPES.choice,
     ]
 },{
     title: 'logic',
     items: [
-        { text: 'Set', type: 'set', icon: <i className="fas fa-code"/>, tip: 'Set the value of a variable, or many variables at once' },
-        { text: 'If', type: 'if', icon: <i className="fas fa-code-branch"/>, tip: 'Set conditions that activate paths only when true' },
-        { text: 'Capture', type: 'capture', icon: <i className="fas fa-microphone"/>, tip: 'Capture what the user says into a variable' },
-        { text: 'Random', type: 'random', icon: <i className="fas fa-random"/>, tip: 'Choose randomly from a set number of paths' },
+        BLOCK_TYPES.set,
+        BLOCK_TYPES.if,
+        BLOCK_TYPES.capture,
+        BLOCK_TYPES.random
    ]
 },{
     title: 'advanced',
     items: [
-        { text: 'Interaction', type: 'interaction', icon: <i className="fas fa-user-alt"/>, tip: 'Select choices and capture slot values from user input' },
-        { text: 'Intent', type: 'intent', icon: <i className="fas fa-step-forward"/>, tip: 'Handle intents, from within the skill and upon skill launch with CanFulfillIntent)'},
-        { text: 'Stream', type: 'stream', icon: <i className="fas fa-play"/>, tip: 'Stream long audio files & URLs for the user' },
-        { text: 'API', type: 'api', icon: <i className="fas fa-globe"/>, tip: 'Use external APIs and store responses into variables' },
-        { text: 'Flow', type: 'flow', icon: <i className="fas fa-clone"/>, tip: 'Organize your project into manageable sections or perform computations'},
-        { text: 'Code', type: 'code', icon: <i className="fab fa-js-square"/>, tip: 'Modify Variables directly with Code'},
+        BLOCK_TYPES.interaction,
+        BLOCK_TYPES.intent,
+        BLOCK_TYPES.stream,
+        BLOCK_TYPES.api,
+        BLOCK_TYPES.flow,
+        BLOCK_TYPES.code,
+        BLOCK_TYPES.exit
    ]
-},{
-    title: 'functional',
-    items: [
-        { text: 'Exit', type: 'exit', icon: <i className="fas fa-sign-out"/>, tip: 'End the skill on the current flow' },
-        { text: 'Combine', type: 'combine', icon: <i className="fas fa-compress-alt"/>, tip: 'Combine Different Audio Files to bypass Amazon 5 Audio limit' },
-        { text: 'Comment', type: 'comment', icon: <i className="far fa-comment-alt"/>, tip: 'Add notes to your diagram'},
-    ]
 },{
     title: 'visuals',
     items: [
-        { text: 'Card', type: 'card', icon: <i className="fas fa-sticky-note"/>, tip: 'Tell Alexa to show a card'  },
-        { text: 'Display', type: 'display', icon: <i className="far fa-image"/>, tip: 'Show a Multimodal Display on the screen using APL' }
+        BLOCK_TYPES.card,
+        BLOCK_TYPES.display
     ]
 },{
     title: 'business',
     items: [
-        { text: 'Permission', type: 'permission', icon: <i className="fas fa-lock"></i>, tip: 'Ask users to enable permissions (User Info, Reminders, etc.)' },
-        { text: 'User Info', type: 'permissions', icon: <i className="fas fa-user"></i>, tip: 'Get User Information and check Permissions' },
-        { text: 'Mail', type: 'mail', icon: <i className="fas fa-envelope"></i>, tip: 'Send Emails via SendGrid' },
-        { text: 'Payment', type: 'payment', icon: <i className="fas fa-dollar-sign" />, tip: 'Request payment from user' },
-        { text: 'Cancel Payment', type: 'cancel', icon: <i className="fas fa-user-minus" />, tip: 'Refund a purchase or cancel an user\'s subscription' },
-        { text: 'Reminder', type: 'reminder', icon: <i className="fas fa-bell" />, tip: 'Send a remind to the user in a set amount of time' }
+        BLOCK_TYPES.permission,
+        BLOCK_TYPES.permissions,
+        BLOCK_TYPES.mail,
+        BLOCK_TYPES.payment,
+        BLOCK_TYPES.cancel,
+        BLOCK_TYPES.reminder
     ]
 }]
 
-const getSections = () => {
+const getSections = (type_counter) => {
     let sections = cloneDeep(SECTIONS);
+
+    // Check whether we want a favourites section
+    let sortable = []
+    for(let type in type_counter){
+        if(type !== 'god' && type !== 'comment' && type !== 'combine' && type !== 'command' && type_counter[type] >= 3){
+            sortable.push([type, type_counter[type]])
+        }
+    }
+
+    sortable.sort((a, b) => {
+        return b[1] - a[1]
+    })
+    sortable = sortable.slice(0, Math.min(FAVORITE_SECTION_MAX ,sortable.length))
+
+    if(sortable.length > 0){
+        let favorite_section = {
+            title: 'favorites',
+            items: []
+        }
+
+        for(let i in sortable){
+            favorite_section.items.push(BLOCK_TYPES[sortable[i][0]])
+        }
+
+        sections.unshift(favorite_section)
+    }
 
     return sections
 }

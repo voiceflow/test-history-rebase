@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { compose } from 'recompose'
 
+import { error } from './../../HOC/onError'
+
+import ErrorModal from './../../components/Modals/ErrorModal';
 import PublishAmazon from './PublishAmazon'
 import PublishMarket from '../PublishMarket/PublishMarket'
 import PublishGoogle from './PublishGoogle'
@@ -50,7 +55,7 @@ class Publish extends Component {
         if (this.props.page === 'market') {
             page = <PublishMarket {...this.props} />
         } else if (this.props.page === 'google') {
-            if (window.user_detail.admin === -1 && this.props.skill.platform !== 'google') { // Multiplatform paywall soft-disable
+            if (window.user_detail.admin === -1 && this.props.platform !== 'google') { // Multiplatform paywall soft-disable
                 page = <div className="w-100 h-100">
                 <div className="d-flex justify-content-center mt-5">
                     <div className="card" id="upgrade">
@@ -69,7 +74,7 @@ class Publish extends Component {
                 page = <PublishGoogle {...this.props} />
             }
         } else {
-            if (window.user_detail.admin === -1 && this.props.skill.platform !== 'alexa') { // Multiplatform paywall soft-disable
+            if (window.user_detail.admin === -1 && this.props.platform !== 'alexa') { // Multiplatform paywall soft-disable
                 page = <div className="w-100 h-100">
                 <div className="d-flex justify-content-center mt-5">
                     <div className="card" id="upgrade">
@@ -90,6 +95,7 @@ class Publish extends Component {
 
         return (
             <div id="business">
+                <ErrorModal error={this.props.onError} dismiss={() => this.props.clearError()} />
                 <div md="3" className="sidebar-nav">
                     {this.state.tabs.map((tab, i) => {
                         let res
@@ -98,7 +104,7 @@ class Publish extends Component {
                                 {tab.display(i)}
                             </div>
                         } else {
-                            res = <Link to={updateLink(tab.link, this.props.skill.skill_id)} className="nav-item">
+                            res = <Link to={updateLink(tab.link, this.props.skill_id)} className="nav-item">
                                 {tab.display(i)}
                             </Link>
                         }
@@ -117,4 +123,13 @@ class Publish extends Component {
     }
 }
 
-export default Publish;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+    platform: state.skills.skill.platform,
+    onError: state.skills.error
+})
+
+export default compose(
+    connect(mapStateToProps),
+    error
+)(Publish)

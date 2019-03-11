@@ -45,6 +45,7 @@ class DashBoard extends Component {
         this.switchTab = this.switchTab.bind(this)
         this.logout = this.logout.bind(this)
         this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this)
+        this.renderSkills = this.renderSkills.bind(this)
     }
 
     deleteSkill(skill_id, skill_name){
@@ -198,7 +199,7 @@ class DashBoard extends Component {
       })
     }
 
-    render() {
+    renderSkills(){
         let skills;
 
         if(this.state.filter_skills === null){
@@ -209,13 +210,16 @@ class DashBoard extends Component {
                 </div>
             </div>
         }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
-            skills = <div className="super-center w-100 text-muted mt-5">
-                <div className="horizontal-center mt-5">
+            skills = <div className="super-center w-100 text-muted d-flex">
+                <div className="horizontal-center align-self-center mt-5">
                     <div className="">
                       <div className="card-body p-4">
-                        <img src="/images/entertainment-icon.svg" alt="skill-icon" width="400" style={{height: 259}} className="mb-5"/><br/>
+                        <div className="pl-4">
+                            <img src="/create.svg" alt="skill-icon" width="130" className="mb-3"/>
+                        </div>
+                        <br/>
                         <Link to="/templates" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn w-75" id="createskill">Create Skill</button>
+                            <button varient="contained" className="purple-btn" id="createskill">New Project</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">
@@ -288,6 +292,11 @@ class DashBoard extends Component {
                 </Masonry>
             </React.Fragment>
         }
+        return skills
+    }
+
+    render() {
+        
 
         return (
             <div id="app">
@@ -316,9 +325,19 @@ class DashBoard extends Component {
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                <div className="my-5 pt-5 container">
-                    {skills}
-                </div>
+                {!(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&
+                    <div className="my-5 pt-5 container">
+                        {this.renderSkills()}
+                    </div>
+                }
+                {(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&   
+                    <div className="h-100 d-flex justify-content-center">
+                        <div className="align-self-center">
+                            {this.renderSkills()}
+                        </div>
+                    </div>
+                }
+
             </div>
         );
     }

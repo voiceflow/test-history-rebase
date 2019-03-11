@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import './Business.css'
 import AccountLinkTemplate from './AccountLinkTemplate'
@@ -101,5 +102,8 @@ class Business extends Component {
         )
     }
 }
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id,
+})
 
-export default Business;
+export default connect(mapStateToProps)(Business);

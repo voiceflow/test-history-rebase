@@ -120,11 +120,11 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
         let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
         if(skill_data_rows.length === 0){
           console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
-          resolve()
+          return resolve()
         }
 
         // Only if deleting the whole project
-        if(skill_data_rows[0].amzn_id && opts.delete_all_versions){
+        if(skill_data_rows[0] && skill_data_rows[0].amzn_id && opts.delete_all_versions){
           AccessToken(creator_id, token => {
             if (token === null) {
               return;
@@ -323,13 +323,11 @@ exports.copySkill = async (req, res, options, cb = false) => {
             for(var j = 0; j < node.combines.length; j++){
               PLATFORMS.forEach(p => {
                 try{
-                  if(node.combines[j].extras[p].diagram_id){
+                  if(node.combines[j].extras[p] && node.combines[j].extras[p].diagram_id){
                     node.combines[j].extras[p].diagram_id = diagram_mapping[node.combines[j].extras[p].diagram_id]
                     sub_diagrams.add(node.combines[j].extras[p].diagram_id)
                   }
-                }catch(e){
-                  console.log(e)
-                }
+                }catch(e){}
               })  
             }
           }

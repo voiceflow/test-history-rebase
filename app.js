@@ -1,13 +1,3 @@
-const fs = require('fs')
-
-if(process.env.NODE_ENV && fs.existsSync(`./.env.${process.env.NODE_ENV}`)){
-    if (process.env.NODE_ENV !== 'test') console.log(`Running in ${process.env.NODE_ENV} environment`)
-    require('dotenv').config({ path: `./.env.${process.env.NODE_ENV}` })
-}else{
-    console.log(`No Environment Set/Not Found! Running default .env file`)
-    require('dotenv').config()
-}
-
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -19,6 +9,7 @@ const {upload, uploadResize, redisClient, jwt, config, verify} = require('./serv
 const {policy, terms} = require('./policy');
 const AWS = require('aws-sdk')
 const { request_logger } = require('./logger.js')
+const { underMaintenance } = require('./app/src/MAINTENANCE.js')
 
 AWS.config = new AWS.Config({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -81,8 +72,11 @@ app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'app', 'build')))
 
-// Middleware for Authentication
+// Middleware for Authentication/Maintanence Check
 app.use((req, res, next) => {
+    if(underMaintenance()){
+        return res.redirect('https://getvoiceflow.com/maintenance')
+    }
     verify(req.cookies.auth, data => {
         if(data){
             req.user = data.user
@@ -149,8 +143,6 @@ app.post('/test/api', ensureLoggedIn(), Test.api)
 
 app.get('/link_account/template/:id', ensurePlan(1), LinkAccount.getTemplate);
 app.post('/link_account/template', ensurePlan(1), LinkAccount.setTemplate);
-
-app.post('/requestPDF', ensureLoggedIn(), Mail.sendRequestPDFEmail);
 
 app.get('/email/templates', ensurePlan(1), Email.getTemplates);
 app.get('/email/template/:id', ensurePlan(1), Email.getTemplate);
@@ -246,6 +238,7 @@ app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
 app.post('/analytics/track_canvas_time', ensureLoggedIn(), Track.trackCanvasTime)
+app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
 
 app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
 app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)

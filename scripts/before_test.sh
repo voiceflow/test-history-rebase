@@ -10,7 +10,15 @@ PROJECT_ROOT=$DIR'/..'
 pretty_output 'Cloning Migrations'
 git clone https://github.com/storyflow/migrations.git
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+if [ $CIRCLECI == "TRUE" ]; then
+    pretty_output "Perform Migrations"
+    node ./test/migrate_dynamo.js
+
+    KNEX="./node_modules/.bin/knex"
+    $KNEX migrate:latest --env test
+    $KNEX seed:run --env test
+
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then
 
     # # Start postgres if not up
     # PSQL_READY=`pg_isready -h localhost`
@@ -58,10 +66,6 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Perform dynamo migrations and seeds
     pretty_output "Start Dynamodb and Perform Migrations"
     node ./test/migrate_dynamo.js
-
-    # Flush redis
-    pretty_output "Flushing Redis"
-    redis-cli flushdb
 
     $KNEX migrate:latest --env test
     $KNEX seed:run --env test
@@ -114,10 +118,6 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Perform dynamo migrations and seeds
     pretty_output "Start Dynamodb and Perform Migrations"
     node ./test/migrate_dynamo.js
-
-    # Flush redis
-    pretty_output "Flushing Redis"
-    redis-cli flushdb
 
     $KNEX migrate:latest --env test
     $KNEX seed:run --env test

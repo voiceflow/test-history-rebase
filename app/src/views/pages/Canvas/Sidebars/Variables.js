@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { pushVariable, setVariables } from './../../../../actions/variableActions'
+import { updateSkill } from './../../../../actions/skillActions'
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
 import {Tooltip} from 'react-tippy'
 import isVarName from 'is-var-name'
@@ -13,7 +16,7 @@ const defaultVariables = {
 
 const TABS = ['global', 'local']
 
-class Variables extends PureComponent {
+export class Variables extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -53,8 +56,7 @@ class Variables extends PureComponent {
         let variables = this.props.variables;
         let new_var = this.state.new_var;
         if(isVarName(new_var) && !variables.includes(new_var) && !this.props.global_variables.includes(new_var)){
-            variables.push(new_var);
-            this.props.onVariable(variables);
+            this.props.addVariable(new_var)
             this.setState({
                 new_var: ""
             })
@@ -70,7 +72,7 @@ class Variables extends PureComponent {
         let new_var = this.state.new_global;
         if(isVarName(new_var) && !variables.includes(new_var) && !this.props.variables.includes(new_var)){
             variables.push(new_var);
-            this.props.onGlobalVariable(variables);
+            this.props.updateSkill('globals', variables)
             this.setState({
                 new_global: ""
             })
@@ -84,7 +86,7 @@ class Variables extends PureComponent {
         let variables = this.props.variables
         let index = variables.indexOf(variable)
         if (index !== -1) variables.splice(index, 1)
-        this.props.onVariable(variables)
+        this.props.setVariables(variables)
         this.forceUpdate()
     }
 
@@ -92,7 +94,7 @@ class Variables extends PureComponent {
         let variables = this.props.global_variables
         let index = variables.indexOf(variable)
         if (index !== -1) variables.splice(index, 1)
-        this.props.onGlobalVariable(variables)
+        this.props.updateSkill('globals', variables)
         this.forceUpdate()
     }
 
@@ -101,7 +103,7 @@ class Variables extends PureComponent {
         if(this.state.tab === 'global'){
             variable_tab = <React.Fragment>
                 {/*<span className="text-muted">Global variables can be accessed anywhere in the project</span>*/}
-                <form onSubmit={this.addGlobalVariable}>
+                <form id="variable-submit" onSubmit={this.addGlobalVariable}>
                     <FormGroup className="mb-0">
                         <Label className='section-title mt-3'>Add New Global Variable</Label>
                         <InputGroup>
@@ -129,7 +131,7 @@ class Variables extends PureComponent {
         }else if(this.state.tab === 'local'){
             variable_tab = <React.Fragment>
                 {/*<span className="text-muted">Local Variables are accessed only by the current flow</span>*/}
-                <form onSubmit={this.addVariable}>
+                <form id="variable-submit" onSubmit={this.addVariable}>
                     <FormGroup className="mb-0">
                         <Label className='section-title mt-3'>Add New Local Variable</Label>
                         <InputGroup>
@@ -169,4 +171,16 @@ class Variables extends PureComponent {
     }
 }
 
-export default Variables;
+const mapStateToProps = state => ({
+    global_variables: state.skills.skill.global,
+    variables: state.variables.localVariables
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addVariable: variable => dispatch(pushVariable(variable)),
+        setVariables: variables => dispatch(setVariables(variables)),
+        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Variables);

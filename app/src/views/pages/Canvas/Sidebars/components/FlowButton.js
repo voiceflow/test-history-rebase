@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 import { 
     Button, 
@@ -12,6 +13,8 @@ import {
     DropdownItem 
 } from 'reactstrap'
 
+import { renameDiagram } from "./../../../../../actions/diagramActions";
+
 class FlowButton extends Component {
 
     constructor(props) {
@@ -19,7 +22,7 @@ class FlowButton extends Component {
 
         this.state = {
             edit: false,
-            name: props.flow ? props.flow.name : ''
+            name: props.name ? props.name : ''
         }
 
         this.close = this.close.bind(this);
@@ -66,8 +69,8 @@ class FlowButton extends Component {
                     <Button disabled={active} 
                         onClick={active ? null : ()=>this.props.enterFlow(this.props.flow.id)} block>
                         < span className = "diagram-text" > {
-                            this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.state.name) ?
-                                (this.state.name.length > 15 ? `${this.state.name.substring(0,15)}...` : this.state.name) : 'Flow'
+                            this.props.flow.name === 'ROOT' ? 'HOME' : _.trim(this.props.name) ?
+                                (this.props.name.length > 15 ? `${this.props.name.substring(0,15)}...` : this.props.name) : 'Flow'
                         } </span>
                     </Button>
                     { (this.props.flow.name !== 'ROOT' && !this.props.preview) && 
@@ -79,7 +82,7 @@ class FlowButton extends Component {
                                 <DropdownItem header>
                                     Flow Options
                                 </DropdownItem>
-                                <DropdownItem onClick={()=>this.setState({edit: true, name: this.props.flow.name})} className="pointer">
+                                <DropdownItem onClick={()=>this.setState({edit: true, name: this.props.name})} className="pointer">
                                     <i className="fas fa-edit text-muted"/> Edit Name
                                 </DropdownItem>
                                 <DropdownItem onClick={this.props.copyFlow} className="pointer">
@@ -96,4 +99,15 @@ class FlowButton extends Component {
     }
 }
 
-export default FlowButton;
+const mapStateToProps = (state, props) => ({
+    active: state.skills.skill.diagram,
+    name: _.find(state.diagrams.diagrams, d => d.id === props.flow.id).name
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        renameFlow: (flow_id, name) => dispatch(renameDiagram(flow_id, name))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlowButton);

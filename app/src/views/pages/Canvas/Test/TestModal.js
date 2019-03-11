@@ -1,6 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react'
+import { connect } from 'react-redux'
 import { Table, Button, Modal, ModalBody, ModalHeader, ModalFooter, InputGroup, Input, InputGroupAddon, Form, Alert, ListGroup, ListGroupItem } from 'reactstrap'
 import axios from 'axios'
 import moment from 'moment'
@@ -13,7 +14,7 @@ import Toggle from 'react-toggle'
 var test_endpoint;
 if (process.env.NODE_ENV === 'production') {
     // production code
-    test_endpoint = 'https://app.getvoiceflow.com/state/test'
+    test_endpoint = 'https://voiceflow.app/state/test'
 } else {
     // dev code
     test_endpoint = 'http://localhost:4000/state/test'
@@ -134,13 +135,13 @@ class TestModal extends React.Component {
       testing: true,
       skill_id: 'TEST_SKILL',
       globals: [{}],
-      repeat: this.props.skill.repeat ? this.props.skill.repeat : 100,
+      repeat: this.props.repeat ? this.props.repeat : 100,
       platform: this.props.platform
     };
 
     // Inject New Globals in if updated
-    if(Array.isArray(this.props.skill.global)){
-        this.props.skill.global.forEach(variable => {
+    if(Array.isArray(this.props.global)){
+        this.props.global.forEach(variable => {
             this.story_state.globals[0][variable] = 0
         })
     }
@@ -282,7 +283,7 @@ class TestModal extends React.Component {
     let data = this.story_state
     
     if (!data.slots) {
-      data.slots = this.props.skill.slots
+      data.slots = this.props.slots
     }
 
     const nlc = this.props.testing_info.nlc
@@ -541,15 +542,6 @@ class TestModal extends React.Component {
   }
 
   render() {
-
-    let flow
-    if(this.current_diagram){
-      let find = this.props.diagrams.find(d => d.id === this.current_diagram.id)
-      if(find){
-        flow = find.name;
-      }
-    }
-
     return (
       <Modal isOpen={this.props.open} size='lg'>
         <ModalHeader toggle={this.props.toggle}>Project Testing</ModalHeader>
@@ -656,12 +648,12 @@ class TestModal extends React.Component {
                         onChange={() => {
                           this.setState(prev_state => ({debug: !prev_state.debug}))
                         }}
-                        value={this.state.debug}
+                        value={`${this.state.debug}`}
                       />
                   </div>
                   { this.state.started && this.state.debug ?
                     <React.Fragment>
-                      <small className="py-2">Current Flow: <b>{flow}</b></small>
+                      <small className="py-2">Current Flow: <b>{this.props.flow}</b></small>
                       <div className="sidebar-scroll">
                         {this.getVariables()}
                       </div>
@@ -688,4 +680,10 @@ class TestModal extends React.Component {
   }
 }
 
-export default TestModal;
+const mapStateToProps = state => ({
+  global: state.skills.skill.global,
+  repeat: state.skills.skill.repeat,
+  slots: state.skills.skill.slots,
+  platform: state.skills.skill.platform,
+})
+export default connect(mapStateToProps)(TestModal);

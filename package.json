@@ -14,7 +14,6 @@
     "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
-    "babel-jest": "^23.4.2",
     "babel-loader": "8.0.4",
     "babel-plugin-named-asset-import": "^0.3.0",
     "babel-preset-env": "^1.7.0",
@@ -28,6 +27,7 @@
     "chart.js": "^2.7.3",
     "clipboard": "^2.0.1",
     "closest": "0.0.1",
+    "connected-react-router": "^6.3.1",
     "css-loader": "1.0.0",
     "dotenv": "6.0.0",
     "dotenv-expand": "4.2.0",
@@ -35,8 +35,6 @@
     "draft-js-mention-plugin": "github:DecathectZero/draft-js-mention",
     "draft-js-plugins-editor": "^2.1.1",
     "draft-js-single-line-plugin": "^2.0.2",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0",
     "eslint": "5.6.0",
     "eslint-config-react-app": "^3.0.6",
     "eslint-loader": "2.1.1",
@@ -51,7 +49,6 @@
     "html-webpack-plugin": "4.0.0-alpha.2",
     "immutability-helper": "^2.9.0",
     "is-var-name": "^2.0.0",
-    "jest": "23.6.0",
     "jest-resolve": "23.6.0",
     "lodash": "^4.17.11",
     "mini-css-extract-plugin": "0.4.3",
@@ -82,6 +79,7 @@
     "react-day-picker": "^7.2.4",
     "react-dev-utils": "^7.0.1",
     "react-dom": "^16.5.2",
+    "react-dom-confetti": "^0.1.0",
     "react-dropzone": "^6.2.4",
     "react-facebook-login": "^4.1.1",
     "react-ga": "^2.5.3",
@@ -90,18 +88,22 @@
     "react-json-view": "github:groovy-tunes/react-json-view",
     "react-masonry-component": "^6.2.1",
     "react-mentions": "^2.4.1",
+    "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scrollspy": "^3.3.5",
     "react-select": "^2.1.0",
     "react-social-login": "^3.4.2",
     "react-sortable-hoc": "^0.8.3",
     "react-stripe-elements": "^2.0.1",
+    "react-sweet-progress": "^1.1.2",
     "react-table": "^6.8.6",
     "react-test-renderer": "^16.6.3",
     "react-textarea-autosize": "^7.0.4",
     "react-tippy": "^1.2.3",
     "react-toggle": "^4.0.2",
     "reactstrap": "^6.5.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
     "serialize-error": "^3.0.0",
@@ -119,18 +121,23 @@
   "scripts": {
     "start": "HTTPS=true node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom --watchAll=false --coverage",
+    "test": "node scripts/test.js --env=jsdom --watchAll=false",
     "prepublish": "patch-package"
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.4.2",
+    "babel-jest": "^23.6.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.10.0",
+    "enzyme-to-json": "^3.3.5",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "jest-pnp-resolver": "^1.0.1",
     "patch-package": "^5.1.1",
+    "redux-devtools": "^3.5.0",
+    "redux-mock-store": "^1.5.3",
     "regenerator-runtime": "^0.13.1"
   },
   "browserslist": [
@@ -139,53 +146,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "resolver": "jest-pnp-resolver",
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js",
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "testURL": "http://localhost",
-    "moduleDirectories": [
-      "node_modules",
-      "src",
-      "test"
-    ],
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ]
-  },
   "babel": {
     "presets": [
       "react-app"

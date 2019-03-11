@@ -1,546 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Card render card block editor 1`] = `
-ShallowWrapper {
-  Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Card
-    node={
-      Object {
-        "color": null,
-        "extras": Object {
-          "cardtype": "Simple",
-          "content": Object {},
-          "title": Object {},
-          "type": "card",
-        },
-        "fade": false,
-        "height": 50,
-        "id": "test",
-        "isMoving": false,
-        "linter": Array [],
-        "listeners": Object {},
-        "locked": false,
-        "name": "Card",
-        "type": "default",
-        "width": 80,
-        "x": 0,
-        "y": 0,
-      }
+<Fragment>
+  <label
+    className="mt-0"
+  >
+    Card Type
+  </label>
+  <ButtonGroup
+    className="toggle-group mb-2"
+    role="group"
+    tag="div"
+  >
+    <Button
+      color="secondary"
+      disabled={true}
+      onClick={[Function]}
+      outline={false}
+      tag="button"
+    >
+       Simple 
+    </Button>
+    <Button
+      color="secondary"
+      disabled={false}
+      onClick={[Function]}
+      outline={true}
+      tag="button"
+    >
+       Standard 
+    </Button>
+  </ButtonGroup>
+  <label>
+    Title
+  </label>
+  <VariableInput
+    className="form-control"
+    placeholder="Welcome to Skill Name"
+    raw={Object {}}
+    updateRaw={[Function]}
+  />
+  <label>
+    Content
+  </label>
+  <VariableText
+    className="editor"
+    placeholder={
+      <React.Fragment>
+        Here are some actions you can do
+        <br />
+        - Action 1
+        <br />
+        - Action 2 etc.
+        <br />
+      </React.Fragment>
     }
-  />,
-  Symbol(enzyme.__renderer__): Object {
-    "batchedUpdates": [Function],
-    "checkPropTypes": [Function],
-    "getNode": [Function],
-    "render": [Function],
-    "simulateError": [Function],
-    "simulateEvent": [Function],
-    "unmount": [Function],
-  },
-  Symbol(enzyme.__node__): Object {
-    "instance": null,
-    "key": undefined,
-    "nodeType": "function",
-    "props": Object {
-      "children": Array [
-        <label
-          className="mt-0"
-        >
-          Card Type
-        </label>,
-        <ButtonGroup
-          className="toggle-group mb-2"
-          role="group"
-          tag="div"
-        >
-          <Button
-            color="secondary"
-            disabled={true}
-            onClick={[Function]}
-            outline={false}
-            tag="button"
-          >
-             Simple 
-          </Button>
-          <Button
-            color="secondary"
-            disabled={false}
-            onClick={[Function]}
-            outline={true}
-            tag="button"
-          >
-             Standard 
-          </Button>
-        </ButtonGroup>,
-        <label>
-          Title
-        </label>,
-        <VariableInput
-          className="form-control"
-          placeholder="Welcome to Skill Name"
-          raw={Object {}}
-          updateRaw={[Function]}
-        />,
-        false,
-        <React.Fragment>
-          <label>
-            Content
-          </label>
-          <VariableText
-            className="editor"
-            placeholder={
-              <React.Fragment>
-                Here are some actions you can do
-                <br />
-                - Action 1
-                <br />
-                - Action 2 etc.
-                <br />
-              </React.Fragment>
-            }
-            raw={Object {}}
-            updateRaw={[Function]}
-          />
-        </React.Fragment>,
-      ],
-    },
-    "ref": null,
-    "rendered": Array [
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Card Type",
-          "className": "mt-0",
-        },
-        "ref": null,
-        "rendered": "Card Type",
-        "type": "label",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "children": Array [
-            <Button
-              color="secondary"
-              disabled={true}
-              onClick={[Function]}
-              outline={false}
-              tag="button"
-            >
-               Simple 
-            </Button>,
-            <Button
-              color="secondary"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-               Standard 
-            </Button>,
-          ],
-          "className": "toggle-group mb-2",
-          "role": "group",
-          "tag": "div",
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": " Simple ",
-              "color": "secondary",
-              "disabled": true,
-              "onClick": [Function],
-              "outline": false,
-              "tag": "button",
-            },
-            "ref": null,
-            "rendered": " Simple ",
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "children": " Standard ",
-              "color": "secondary",
-              "disabled": false,
-              "onClick": [Function],
-              "outline": true,
-              "tag": "button",
-            },
-            "ref": null,
-            "rendered": " Standard ",
-            "type": [Function],
-          },
-        ],
-        "type": [Function],
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "host",
-        "props": Object {
-          "children": "Title",
-        },
-        "ref": null,
-        "rendered": "Title",
-        "type": "label",
-      },
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "class",
-        "props": Object {
-          "className": "form-control",
-          "placeholder": "Welcome to Skill Name",
-          "raw": Object {},
-          "updateRaw": [Function],
-          "variables": undefined,
-        },
-        "ref": null,
-        "rendered": null,
-        "type": [Function],
-      },
-      false,
-      Object {
-        "instance": null,
-        "key": undefined,
-        "nodeType": "function",
-        "props": Object {
-          "children": Array [
-            <label>
-              Content
-            </label>,
-            <VariableText
-              className="editor"
-              placeholder={
-                <React.Fragment>
-                  Here are some actions you can do
-                  <br />
-                  - Action 1
-                  <br />
-                  - Action 2 etc.
-                  <br />
-                </React.Fragment>
-              }
-              raw={Object {}}
-              updateRaw={[Function]}
-            />,
-          ],
-        },
-        "ref": null,
-        "rendered": Array [
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "host",
-            "props": Object {
-              "children": "Content",
-            },
-            "ref": null,
-            "rendered": "Content",
-            "type": "label",
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "className": "editor",
-              "placeholder": <React.Fragment>
-                Here are some actions you can do
-                <br />
-                - Action 1
-                <br />
-                - Action 2 etc.
-                <br />
-              </React.Fragment>,
-              "raw": Object {},
-              "updateRaw": [Function],
-              "variables": undefined,
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-        ],
-        "type": Symbol(react.fragment),
-      },
-    ],
-    "type": Symbol(react.fragment),
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "children": Array [
-          <label
-            className="mt-0"
-          >
-            Card Type
-          </label>,
-          <ButtonGroup
-            className="toggle-group mb-2"
-            role="group"
-            tag="div"
-          >
-            <Button
-              color="secondary"
-              disabled={true}
-              onClick={[Function]}
-              outline={false}
-              tag="button"
-            >
-               Simple 
-            </Button>
-            <Button
-              color="secondary"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-            >
-               Standard 
-            </Button>
-          </ButtonGroup>,
-          <label>
-            Title
-          </label>,
-          <VariableInput
-            className="form-control"
-            placeholder="Welcome to Skill Name"
-            raw={Object {}}
-            updateRaw={[Function]}
-          />,
-          false,
-          <React.Fragment>
-            <label>
-              Content
-            </label>
-            <VariableText
-              className="editor"
-              placeholder={
-                <React.Fragment>
-                  Here are some actions you can do
-                  <br />
-                  - Action 1
-                  <br />
-                  - Action 2 etc.
-                  <br />
-                </React.Fragment>
-              }
-              raw={Object {}}
-              updateRaw={[Function]}
-            />
-          </React.Fragment>,
-        ],
-      },
-      "ref": null,
-      "rendered": Array [
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Card Type",
-            "className": "mt-0",
-          },
-          "ref": null,
-          "rendered": "Card Type",
-          "type": "label",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {
-            "children": Array [
-              <Button
-                color="secondary"
-                disabled={true}
-                onClick={[Function]}
-                outline={false}
-                tag="button"
-              >
-                 Simple 
-              </Button>,
-              <Button
-                color="secondary"
-                disabled={false}
-                onClick={[Function]}
-                outline={true}
-                tag="button"
-              >
-                 Standard 
-              </Button>,
-            ],
-            "className": "toggle-group mb-2",
-            "role": "group",
-            "tag": "div",
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": " Simple ",
-                "color": "secondary",
-                "disabled": true,
-                "onClick": [Function],
-                "outline": false,
-                "tag": "button",
-              },
-              "ref": null,
-              "rendered": " Simple ",
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "children": " Standard ",
-                "color": "secondary",
-                "disabled": false,
-                "onClick": [Function],
-                "outline": true,
-                "tag": "button",
-              },
-              "ref": null,
-              "rendered": " Standard ",
-              "type": [Function],
-            },
-          ],
-          "type": [Function],
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "host",
-          "props": Object {
-            "children": "Title",
-          },
-          "ref": null,
-          "rendered": "Title",
-          "type": "label",
-        },
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "class",
-          "props": Object {
-            "className": "form-control",
-            "placeholder": "Welcome to Skill Name",
-            "raw": Object {},
-            "updateRaw": [Function],
-            "variables": undefined,
-          },
-          "ref": null,
-          "rendered": null,
-          "type": [Function],
-        },
-        false,
-        Object {
-          "instance": null,
-          "key": undefined,
-          "nodeType": "function",
-          "props": Object {
-            "children": Array [
-              <label>
-                Content
-              </label>,
-              <VariableText
-                className="editor"
-                placeholder={
-                  <React.Fragment>
-                    Here are some actions you can do
-                    <br />
-                    - Action 1
-                    <br />
-                    - Action 2 etc.
-                    <br />
-                  </React.Fragment>
-                }
-                raw={Object {}}
-                updateRaw={[Function]}
-              />,
-            ],
-          },
-          "ref": null,
-          "rendered": Array [
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "host",
-              "props": Object {
-                "children": "Content",
-              },
-              "ref": null,
-              "rendered": "Content",
-              "type": "label",
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "className": "editor",
-                "placeholder": <React.Fragment>
-                  Here are some actions you can do
-                  <br />
-                  - Action 1
-                  <br />
-                  - Action 2 etc.
-                  <br />
-                </React.Fragment>,
-                "raw": Object {},
-                "updateRaw": [Function],
-                "variables": undefined,
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-          ],
-          "type": Symbol(react.fragment),
-        },
-      ],
-      "type": Symbol(react.fragment),
-    },
-  ],
-  Symbol(enzyme.__options__): Object {
-    "adapter": ReactSixteenAdapter {
-      "options": Object {
-        "enableComponentDidUpdateOnSetState": true,
-        "legacyContextMode": "parent",
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getChildContext": Object {
-            "calledByRenderer": false,
-          },
-          "getDerivedStateFromProps": true,
-          "getSnapshotBeforeUpdate": true,
-          "setState": Object {
-            "skipsComponentDidUpdateOnNullish": true,
-          },
-        },
-      },
-    },
-  },
-}
+    raw={Object {}}
+    updateRaw={[Function]}
+  />
+</Fragment>
 `;

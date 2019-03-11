@@ -83,6 +83,8 @@ class Account extends Component {
           this.setState({signup_error: false})
         }.bind(this), 5000)
       }else{
+        localStorage.setItem('is_first_upload', 'true')
+        localStorage.setItem('is_first_session', 'true')
         this.props.history.push('/onboarding')
       }
     });

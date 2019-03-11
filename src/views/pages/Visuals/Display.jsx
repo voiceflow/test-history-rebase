@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
+import { addDisplay, updateDisplay } from './../../../actions/displayActions'
 
 import ErrorModal from '../../components/Modals/ErrorModal'
+import { Spinner } from 'views/components/Spinner'
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import { Input, Row, Col, FormGroup, Button } from 'reactstrap';
@@ -111,10 +115,12 @@ class Display extends Component {
         }
 
         if(this.state.display_id === 'new'){
-            axios.post(`/multimodal/display?skill_id=${this.props.skill.skill_id}`, payload)
+            axios.post(`/multimodal/display?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
                 // get display id back
-                this.props.history.push(`/visuals/${this.props.skill.skill_id}/display/${res.data}`);
+                this.props.history.push(`/visuals/${this.props.skill_id}/display/${res.data}`);
+                payload.display_id = res.data;
+                this.props.dispatch(addDisplay(payload));
                 this.setState({
                     display_id: res.data,
                     saved: true,
@@ -131,8 +137,10 @@ class Display extends Component {
                 })
             })
         }else{
-            axios.patch(`/multimodal/display/${this.state.display_id}?skill_id=${this.props.skill.skill_id}`, payload)
+            axios.patch(`/multimodal/display/${this.state.display_id}?skill_id=${this.props.skill_id}`, payload)
             .then(res=>{
+                payload.display_id = this.state.display_id;
+                this.props.dispatch(updateDisplay(payload))
                 this.setState({
                     saved: true,
                     saving: false
@@ -194,12 +202,7 @@ class Display extends Component {
                     this.setState({error: null});
                 }}/>
                 { this.state.loading ? 
-                    <div id="loading-diagram">
-                        <div className="text-center">
-                            <h5 className="text-muted mb-2">Loading Template</h5>
-                            <span className="loader"/>
-                        </div>
-                    </div> :
+                    React.createElement(Spinner, {name: 'Displays'}) :
                     <Dropzone
                         id="page-drop"
                         activeClassName="active"
@@ -234,7 +237,7 @@ class Display extends Component {
                                 <div className="text-muted"><h5 className="mb-0">APL Template</h5> <small><i className="far fa-link"/> ( <a href="https://developer.amazon.com/alexa/console/ask/displays" target="_blank" rel="noopener noreferrer">Authoring Tool</a> )</small></div>
                                 <div className="subheader-right">
                                     <MUIButton varient="contained" className="previous-btn mr-2" onClick={()=>{
-                                        this.props.history.push(`/visuals/${this.props.skill.skill_id}`);
+                                        this.props.history.push(`/visuals/${this.props.skill_id}`);
                                     }}>
                                         <i className="fas fa-arrow-left mr-2"/>{' '}Back
                                     </MUIButton>
@@ -333,4 +336,7 @@ class Display extends Component {
     }
 }
 
-export default Display;
+const mapStateToProps = state => ({
+    skill_id: state.skills.skill.skill_id
+})
+export default connect(mapStateToProps)(Display);

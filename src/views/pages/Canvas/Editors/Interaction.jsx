@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
@@ -6,8 +7,9 @@ import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
+import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
 
-class Interaction extends Component {
+export class Interaction extends Component {
     constructor(props) {
         super(props);
 
@@ -26,7 +28,8 @@ class Interaction extends Component {
 
     update() {
         this.forceUpdate()
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
     }
 
     handleChoicesChange(choices) {
@@ -41,7 +44,8 @@ class Interaction extends Component {
             let bestNode = _.findIndex(node.parentCombine.combines, npc => npc.id === node.id)
             node.parentCombine.combines[bestNode] = node.serialize()
         }
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
         this.props.repaint();
     }
 
@@ -79,9 +83,9 @@ class Interaction extends Component {
 
         this.setState({
             node: node
-        }, this.props.onUpdate);
+        }, this.props.updateIntents);
+        this.props.updateLinter();
         // this.props.diagramEngine.setSuperSelect(node.parentCombine);
-        this.props.onUpdate()
         this.props.repaint();
     }
 
@@ -123,7 +127,8 @@ class Interaction extends Component {
         this.setState({
             node: node,
         })
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter();
         this.props.repaint()
     }
 
@@ -212,4 +217,15 @@ class Interaction extends Component {
     }
 }
 
-export default Interaction;
+const mapStateToProps = state => ({
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntents: () => dispatch(updateIntents()),
+        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Interaction);

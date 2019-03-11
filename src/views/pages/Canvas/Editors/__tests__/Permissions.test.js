@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import Permissions from './../Permissions';
+import toJson from 'enzyme-to-json';
+import { Permissions } from './../Permissions';
 import {defaultNode} from '../__mock__/defaultNode';
 
 const clickFn = jest.fn()
@@ -15,6 +16,6 @@ describe('PermissionsEditor', () => {
         }
         const component = shallow(<Permissions node={node}/>);
         expect(component.state().node).toEqual(node)
-        expect(component).toMatchSnapshot()
+        expect(toJson(component)).toMatchSnapshot()
     });
 })

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import IntentInputs from './components/IntentInputs'
 import SlotInputs from './components/SlotInputs'
 import { Button, ButtonGroup } from 'reactstrap'
@@ -9,22 +10,22 @@ import './Intent.css'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
+import { updateIntents, setCanFulfill } from './../../../../actions/skillActions'
+
 const _ = require('lodash')
 
 
-class Intent extends Component {
+export class Intent extends Component {
 
     constructor(props) {
         super(props)
 
         this.intentSelectRef = React.createRef();
 
-        let name = this.props.diagrams.find(d => d.id === this.props.diagram_id).name
-
         this.state = {
             node: this.props.node,
             tab: 'Select',
-            isRoot: name === 'ROOT',
+            isRoot: props.name === 'ROOT',
             confirm_info: null
         }
 
@@ -44,10 +45,8 @@ class Intent extends Component {
         if (Array.isArray(selected) || (intent && selected.key === intent.key)) {
             return
         }
-
         if (diagram_intents.has(selected.key)) {
-            this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
-            this.intentSelectRef.current.blur();
+            this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow`)
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -67,7 +66,8 @@ class Intent extends Component {
 
     update() {
         this.forceUpdate()
-        this.props.onUpdate()
+        this.props.updateIntents()
+        this.props.updateLinter()
     }
 
     static getDerivedStateFromProps(props) {
@@ -119,7 +119,8 @@ class Intent extends Component {
                 text: `CanfulfillIntent is enabled for the "${intent_name}" intent. Turning CanFulfillIntent off for this intent will also delete any slot fulfillment values you have set for this intent.`,
                 confirm: () => {
                     this.props.setCanFulfill(intent_key, !fulfilled)
-                    this.props.onUpdate()
+                    this.props.updateIntents()
+                    this.props.updateLinter()
                     this.setState({
                         confirm_info: null
                     })
@@ -128,7 +129,8 @@ class Intent extends Component {
             this.props.onConfirm(confirm_info)
         } else {
             this.props.setCanFulfill(intent_key, !fulfilled)
-            this.props.onUpdate()
+            this.props.updateIntents()
+            this.props.updateLinter()
         }
     }
 
@@ -136,7 +138,7 @@ class Intent extends Component {
         const extras = this.props.node.extras[this.props.platform]
         const intent = extras.intent
         if (intent) {
-            const fulfillments = this.props.skill.fulfillment
+            const fulfillments = this.props.fulfillment
             return !!fulfillments[intent.key]
         }
         return false
@@ -340,7 +342,7 @@ class Intent extends Component {
 
                             </div>
                             {checked && this.state.node.extras.intent && this.hasSlots(this.state.node.extras.intent) && <button className="btn btn-clear btn-shadow w-100 my-2 d-flex space-between fulfill-label" onClick={() => {
-                                this.props.history.push(`/settings/${this.props.skill.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
+                                this.props.history.push(`/settings/${this.props.skill_id}/discovery/canfulfill/${this.state.node.extras.intent ? this.state.node.extras.intent.key : ''}`)
                             }}>
                                 <span className="slot-fulfillment"><i className="fas fa-comment-alt-check mr-2"></i> Slot Fulfillment </span>
                             </button>}
@@ -352,4 +354,19 @@ class Intent extends Component {
     }
 }
 
-export default Intent
+const mapStateToProps = state => ({
+    live_mode: state.skills.live_mode,
+    skill_id: state.skills.skill.skill_id,
+    fulfillment: state.skills.skill.fulfillment,
+    intents: state.skills.skill.intents,
+    slots: state.skills.skill.slots,
+    name: state.diagrams.diagrams.find(d => d.id === state.skills.skill.diagram).name
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateIntents: () => dispatch(updateIntents()),
+        setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Intent)

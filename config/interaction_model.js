@@ -59,27 +59,25 @@ exports.createInteractionModel = (req, locale) => {
 	const LOCALE_DEFAULTS = _.cloneDeep(DEFAULT_INTENTS[locale.substring(0,2)])
 	const LOCALE_DEFAULT_SET = {}
 
-	let default_size = 0
-
+  let used_built_ins = new Set()
 	// Add in the repeat intent if it is needed
 	if(typeof req.repeat === 'number' && req.repeat > 0){
-		entered_intents.add('AMAZON.RepeatIntent')
-		default_size++
+    used_built_ins.add('AMAZON.RepeatIntent')
 	}
 
+  // IF BUILD INS WERE DECLARED BEFORE THIS BLOCK, THEY WILL BE ADDED IN
 	// Write in default intents
 	["defaults", "built_ins"].forEach(type => {
 		LOCALE_DEFAULTS[type].forEach(intent => {
-			// don't log built_ins because they might now be needed
-			if(type === 'defaults'){
+			// don't log built_ins because they might not be needed
+			if(type === 'defaults' || used_built_ins.has(intent.name)){
 				entered_intents.add(intent.name)
-				intents_for_amazon.push(intent)
-				default_size++
+        intents_for_amazon.push(intent)
+        for(sample of intent.samples){
+          samples[stripSample(sample)] = intent
+        }
+        LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples)
 			}
-			for(sample of intent.samples){
-				samples[stripSample(sample)] = intent
-			}
-			LOCALE_DEFAULT_SET[intent.name] = new Set(intent.samples)
 		})
 	})
 	
@@ -88,7 +86,6 @@ exports.createInteractionModel = (req, locale) => {
 		if (!entered_intents.has('AMAZON.FallbackIntent')) {
 			entered_intents.add('AMAZON.FallbackIntent')
 			intents_for_amazon.push({name: 'AMAZON.FallbackIntent'})
-			default_size++
 		}
 	}
 

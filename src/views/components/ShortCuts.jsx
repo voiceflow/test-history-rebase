@@ -25,6 +25,10 @@ class ShortCuts extends Component  {
           <div className="shortcut-cmd"><kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd></div>
           </div>
           <div className="shortcut">
+            <div className="shortcut-desc">Comment</div>
+          <div className="shortcut-cmd"><kbd>⌘</kbd> / <kbd>Ctrl</kbd> + <kbd>/</kbd></div>
+          </div>
+          <div className="shortcut">
             <div className="shortcut-desc">Multiple Block Selection</div>
             <div className="shortcut-cmd"><kbd>Shift</kbd> + Drag</div>
           </div>

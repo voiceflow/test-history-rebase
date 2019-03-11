@@ -17,9 +17,6 @@ import {Alert, Input} from 'reactstrap'
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
-// Change this to build time
-const MOST_RECENT_UPDATE = 20000000000000000
-
 class DashBoard extends Component {
     constructor(props) {
         super(props)
@@ -86,15 +83,28 @@ class DashBoard extends Component {
         this.onLoadSkills()
 
         let last_update_seen = localStorage.getItem('last_update_seen')
-        if(last_update_seen === null || parseInt(last_update_seen) < MOST_RECENT_UPDATE){
-            this.setState({
-                show_updates_modal: true
-            })
+
+        if(last_update_seen === null){
+            last_update_seen = new Date().getTime()
+        } else {
+            last_update_seen = parseInt(last_update_seen)
+        }
+
+        axios.get(`/product_updates/${last_update_seen}`)
+        .then(res => {
+            if(res.data.length > 0){
+                this.setState({
+                    show_updates_modal: true,
+                    product_updates: res.data
+                })
+            }
+
             last_update_seen = new Date().getTime()
             localStorage.setItem('last_update_seen', last_update_seen)
-        } else {
-            localStorage.setItem('last_update_seen', new Date().getTime())
-        }
+        })
+        .catch(err => {
+            console.error(err)
+        })
     }
 
     toggleEnv() {
@@ -300,7 +310,7 @@ class DashBoard extends Component {
 
         return (
             <div id="app">
-                <UpdatesModal show_update_modal={this.state.show_updates_modal} toggle={this.toggleUpdatesModal}/>
+                <UpdatesModal show_update_modal={this.state.show_updates_modal} toggle={this.toggleUpdatesModal} product_updates={this.state.product_updates}/>
                 <div id="navbar-top-left">
                     <div className="searchBar ml-4">
                         <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>

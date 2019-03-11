@@ -4,6 +4,10 @@ exports[`Dashboard render dashboard 1`] = `
 <div
   id="app"
 >
+  <UpdatesModal
+    show_update_modal={false}
+    toggle={[Function]}
+  />
   <div
     id="navbar-top-left"
   >

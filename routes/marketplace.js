@@ -18,44 +18,55 @@ const hashIds = (rows) => {
 	}
 }
 
-const getModules = (req, res) => {
-	pool.query('SELECT * FROM modules INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions ON modules.module_id = distinct_versions.module_id INNER JOIN creators ON creators.creator_id = modules.creator_id LIMIT $1', 
-        [module_limit], (err, data) => {
-        if(err){
-            res.sendStatus(500);
-        }else{
-        	hashIds(data.rows);
-            res.send(data.rows);
-        }
-    });
+const getModules = async (req, res) => {
+	try{
+		let module_data = (await pool.query(`
+			SELECT * 
+			FROM modules 
+			INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
+				ON modules.module_id = distinct_versions.module_id 
+			INNER JOIN creators 
+				ON creators.creator_id = modules.creator_id LIMIT $1
+		`), [module_limit]).rows
+		hashIds(module_data)
+		res.send(module_data)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
-const getFeaturedModules = (req, res) => {
-	pool.query('SELECT * FROM featured INNER JOIN modules ON featured.module_id = modules.module_id', 
-        [], (err, data) => {
-        if(err){
-            res.sendStatus(500);
-        }else{
-        	hashIds(data.rows);
-            res.send(data.rows);
-        }
-    });
+const getFeaturedModules = async (req, res) => {
+	try {
+		let featured_modules_data = (await pool.query(`
+			SELECT * 
+			FROM featured 
+			INNER JOIN modules 
+				ON featured.module_id = modules.module_id
+		`)).rows	
+		hashIds(featured_modules_data)
+		res.send(featured_modules_data)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
-const cancelCertification = (req, res) => {
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
-	pool.query(
-		`DELETE FROM versions WHERE versions.module_id = (SELECT module_id FROM modules WHERE skill_id = $1) AND cert_approved IS NULL`,
-		[decoded_skill_id],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
-			}else{
-				res.sendStatus(200);
-			}
-		}
-	);
+const cancelCertification = async (req, res) => {
+	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
+
+	try{
+		await pool.query(`
+			DELETE FROM versions
+			WHERE 
+				versions.module_id = (SELECT module_id FROM modules WHERE skill_id = $1) 
+				AND cert_approved IS NULL
+		`, [decoded_skill_id])
+		res.sendStatus(200)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
 const saveCertification = (req, res) => {

@@ -144,7 +144,7 @@ class SlotInput extends Component {
                         <hr className={`mt-1 ${this.props.slot.inputs && this.props.slot.inputs.length > 0 ? 'mb-0' : 'mb-2'}`}/>
                         <SlotSynonyms
                             inputs={this.props.slot.inputs}
-                            update={this.update}
+                            update={() => this.forceUpdate()}
                             onError={this.props.onError}
                         />
                     </div>

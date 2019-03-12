@@ -93,7 +93,11 @@ class SlotSynonyms extends Component {
             })
         }
         let inputs = this.props.inputs
-        inputs[i] = text
+        if (text) {
+            inputs[i] = text
+        } else {
+            this.props.inputs.splice(i, 1)
+        }
         this.props.update()
     }
 

@@ -94,6 +94,7 @@ class SlotSynonyms extends Component {
         }
         let inputs = this.props.inputs
         inputs[i] = text
+        this.props.update()
     }
 
     beginSlotEdit(i) {
@@ -101,10 +102,17 @@ class SlotSynonyms extends Component {
     }
 
     _synonymsToBadges(synonyms) {
-        return synonyms.split(',').map(e => e.trim()).map(s => {
-            return <Badge className='slot-badge'>
-                {s}
-            </Badge>
+        return synonyms.split(',').map(e => e.trim()).map((s, i) => {
+            if (i === 0) {
+                return <div key={i} className='my-1'>
+                    {s}
+                </div>
+            } else {
+                return <Badge key={i} className='slot-badge'>
+                    {s}
+                </Badge>
+            }
+
         })
     }
 

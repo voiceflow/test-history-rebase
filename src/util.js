@@ -99,7 +99,7 @@ const getSlotsForKeys = (keys, slots, platform) => {
 		let slot_type = slot.type.value
 		let formatted_type = slot.name
 
-		if (slot_type.toLowerCase() !== 'custom') {
+		if (slot_type && slot_type.toLowerCase() !== 'custom') {
 			formatted_type = slot.type.value
 			const built_in_slot = find(SLOT_TYPES, { label: slot_type })
 			if (built_in_slot && platform && built_in_slot.type[platform]) {

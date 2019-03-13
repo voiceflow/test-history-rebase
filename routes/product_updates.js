@@ -1,7 +1,11 @@
 const { pool, writeToLogs } = require('./../services')
 
+const milliToUnix = (milli) => {
+  return parseInt(parseInt(milli) / 1000)
+}
+
 exports.getUpdates = async (req, res) => {
-  let ts = parseInt(parseInt(req.params.ts) / 1000)
+  let ts = milliToUnix(req.params.ts)
 
   try{
     let update_data = (await pool.query('SELECT * FROM product_updates WHERE created > to_timestamp($1) AND created < NOW()', [ts])).rows
@@ -13,8 +17,9 @@ exports.getUpdates = async (req, res) => {
 }
 
 exports.createUpdate = async (req, res) => {
+  let ts = milliToUnix(req.body.ts)
   try{
-    await pool.query('INSERT INTO product_updates (type, details, created) VALUES ($1, $2, to_timestamp($3))', [req.body.type, req.body.details, (parseInt(req.body.ts)/1000)])
+    await pool.query('INSERT INTO product_updates (type, details, created) VALUES ($1, $2, to_timestamp($3))', [req.body.type, req.body.details, ts])
     res.sendStatus(200)
   } catch (err){
     res.sendStatus(500)

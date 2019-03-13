@@ -29,7 +29,7 @@ class IntentInput extends Component {
 
     toggleCollapse(){
         this.props.intent.open = !this.props.intent.open
-        this.props.update()
+        this.forceUpdate()
     }
 
     _getSlotKeys(input) {

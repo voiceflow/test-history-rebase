@@ -21,31 +21,37 @@ class SecondaryNavBar extends Component {
 
     toggleLiveMode(disableCb) {
         if (this.props.live_mode) {
-            this.props.toggleLive(
-                this.props.dev_skill,
-                this.props.dev_skill.diagram,
-                this.props.skill_id,
-                false
-            ).then(() => {
-                this.setState({
-                    loading: false
+            this.props.setSaveCB(() => {
+                this.props.toggleLive(
+                    this.props.dev_skill,
+                    this.props.dev_skill.diagram,
+                    this.props.skill_id,
+                    false
+                ).then(() => {
+                    this.setState({
+                        loading: false
+                    })
+                    this.props.setSaveCB(null)
+                    this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
                 })
-                this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
             })
             this.props.onSave()
         } else {
             axios.get(`/skill/${this.props.live_version}`)
                 .then((res) => {
-                    this.props.toggleLive(
-                        res.data,
-                        res.data.diagram,
-                        this.props.skill_id,
-                        true
-                    ).then(() => {
-                        this.setState({
-                            loading: false
+                    this.props.setSaveCB(() => {
+                        this.props.toggleLive(
+                            res.data,
+                            res.data.diagram,
+                            res.data.skill_id,
+                            true
+                        ).then(() => {
+                            this.setState({
+                                loading: false
+                            })
+                            this.props.setSaveCB(null)
+                            this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
                         })
-                        this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
                     })
                     this.props.onSave()
                 })

@@ -234,6 +234,8 @@
     padding-top: 6px;
     margin-top: 3px;
     margin-bottom: 5px;
+    background-color: #42a5ff;
+    color: #fff;
 }
 
 .slot-utterance:last-child {

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
 import { toggleLive } from './../../../actions/skillActions'
+import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
 const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
 class SecondaryNavBar extends Component {
@@ -22,6 +23,8 @@ class SecondaryNavBar extends Component {
     toggleLiveMode(disableCb) {
         if (this.props.live_mode) {
             this.props.setSaveCB(() => {
+                this.props.updateDiagramRoot(this.props.dev_skill.diagram)
+                this.props.fetchDiagrams(this.props.dev_skill.skill_id)
                 this.props.toggleLive(
                     this.props.dev_skill,
                     this.props.dev_skill.diagram,
@@ -40,6 +43,8 @@ class SecondaryNavBar extends Component {
             axios.get(`/skill/${this.props.live_version}`)
                 .then((res) => {
                     this.props.setSaveCB(() => {
+                        this.props.updateDiagramRoot(res.data.diagram)
+                        this.props.fetchDiagrams(res.data.skill_id)
                         this.props.toggleLive(
                             res.data,
                             res.data.diagram,
@@ -162,7 +167,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive))
+        toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
+        updateDiagramRoot: (root_id) => dispatch(updateDiagramRoot(root_id)),
+        fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SecondaryNavBar)

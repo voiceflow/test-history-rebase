@@ -84,10 +84,10 @@ class DashBoard extends Component {
 
         let last_update_seen = localStorage.getItem('last_update_seen')
 
-        if(last_update_seen === null){
-            last_update_seen = new Date().getTime()
+        if(!last_update_seen){
+          last_update_seen = new Date().getTime()
         } else {
-            last_update_seen = parseInt(last_update_seen)
+          last_update_seen = parseInt(last_update_seen)
         }
 
         axios.get(`/product_updates/${last_update_seen}`)

@@ -10,6 +10,7 @@ import './DashBoard.css'
 import axios from 'axios'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
 import WarningModal from './../../components/Modals/WarningModal'
+import UpdatesModal from './../../components/Modals/UpdatesModal'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import {Alert, Input} from 'reactstrap'
@@ -30,6 +31,7 @@ class DashBoard extends Component {
             error: null,
             filter_text: null,
             filter_tab: "All",
+            show_updates_modal: false
         }
 
         this.onLoadSkills = this.onLoadSkills.bind(this)
@@ -39,6 +41,7 @@ class DashBoard extends Component {
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
         this.logout = this.logout.bind(this)
+        this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this)
         this.renderSkills = this.renderSkills.bind(this)
     }
 
@@ -78,12 +81,41 @@ class DashBoard extends Component {
 
     componentDidMount() {
         this.onLoadSkills()
+
+        let last_update_seen = localStorage.getItem('last_update_seen_' + window.user_detail.id)
+
+        if(!last_update_seen){
+          last_update_seen = Date.now()
+        } else {
+          last_update_seen = parseInt(last_update_seen)
+        }
+
+        axios.get(`/product_updates/${last_update_seen}`)
+        .then(res => {
+            if(res.data.length > 0){
+                this.setState({
+                    show_updates_modal: true,
+                    product_updates: res.data
+                })
+            }
+            last_update_seen = Date.now()
+            localStorage.setItem('last_update_seen_' + window.user_detail.id, last_update_seen)
+        })
+        .catch(err => {
+            console.error(err)
+        })
     }
 
     toggleEnv() {
         this.setState({
             openEnv: !this.state.openEnv
         })
+    }
+
+    toggleUpdatesModal(){
+        this.setState(prev_state => ({
+            show_updates_modal: !prev_state.show_updates_modal
+        }))
     }
 
     switchTab(tab){
@@ -277,6 +309,7 @@ class DashBoard extends Component {
 
         return (
             <div id="app">
+                <UpdatesModal show_update_modal={this.state.show_updates_modal} toggle={this.toggleUpdatesModal} product_updates={this.state.product_updates}/>
                 <div id="navbar-top-left">
                     <div className="searchBar ml-4">
                         <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>

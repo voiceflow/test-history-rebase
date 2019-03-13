@@ -38,6 +38,7 @@ const Analytics = require('./routes/analytics.js')
 const Mail = require('./routes/mail.js');
 const {copySkill} = require('./routes/skill_util')
 const Track = require('./routes/track.js')
+const ProductUpdates = require('./routes/product_updates.js')
 
 app.use(cors())
 app.use(helmet())
@@ -246,6 +247,9 @@ app.get('/analytics/:skill_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);
+
+app.get('/product_updates/:ts', ensureLoggedIn(), ProductUpdates.getUpdates)
+app.post('/product_updates', ensureLoggedIn(), ProductUpdates.createUpdate)
 
 app.get('/logs/:skill_id', ensureLoggedIn(), Logs.getLogs)
 

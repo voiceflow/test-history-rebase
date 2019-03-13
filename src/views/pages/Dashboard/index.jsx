@@ -82,10 +82,10 @@ class DashBoard extends Component {
     componentDidMount() {
         this.onLoadSkills()
 
-        let last_update_seen = localStorage.getItem('last_update_seen')
+        let last_update_seen = localStorage.getItem('last_update_seen_' + window.user_detail.id)
 
         if(!last_update_seen){
-          last_update_seen = new Date().getTime()
+          last_update_seen = Date.now()
         } else {
           last_update_seen = parseInt(last_update_seen)
         }
@@ -98,9 +98,8 @@ class DashBoard extends Component {
                     product_updates: res.data
                 })
             }
-
-            last_update_seen = new Date().getTime()
-            localStorage.setItem('last_update_seen', last_update_seen)
+            last_update_seen = Date.now()
+            localStorage.setItem('last_update_seen_' + window.user_detail.id, last_update_seen)
         })
         .catch(err => {
             console.error(err)

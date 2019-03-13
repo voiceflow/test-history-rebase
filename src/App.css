@@ -1881,6 +1881,40 @@ kbd {
   #secondary-nav-right-group .react-toggle{
     margin-bottom: -8px;
   }
+
+  .update-modal-feature{
+      color: #5D9DF5;
+      display: inline;
+      font-size: 13px;
+  }
+
+  .update-modal-update{
+      color: #2B3950;
+      display: inline;
+      font-size: 13px;
+  }
+
+  .update-modal-change{
+      color: #00CC87;
+      display: inline;
+      font-size: 13px;
+  }
+
+  .update-modal-txt{
+      display: inline;
+      color: #8DA2B5;
+      font-size: 13px;
+  }
+
+  #update-modal-header-title{
+      padding-bottom:0px !important;
+      font-size: 18px;
+  }
+
+  .update-modal-body{
+      height: 300px;
+      overflow: auto;
+  }
   .upload-success-popup {
     position: absolute;
     top: 75px;

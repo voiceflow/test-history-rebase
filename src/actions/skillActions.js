@@ -166,6 +166,7 @@ export const fetchSkills = (skill_id, preview, diagram_id) => {
                 if (diagram_id && skill.diagram !== diagram_id){
                     skill.diagram = diagram_id
                 }
+                dispatch(fetchDevSkillsSuccess(skill))
                 dispatch(fetchLiveSkills(skill_id))
                 dispatch(fetchSkillsSuccess(skill))
             })

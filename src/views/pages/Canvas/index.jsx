@@ -813,7 +813,9 @@ export class Canvas extends Component {
                         saving: false,
                         saved: true
                     })
-                    if(typeof this.saveCB === "function"){
+                    if(typeof this.props.skillSaveCB === "function"){
+                        this.props.skillSaveCB(serialize.id)
+                    } else if(typeof this.saveCB === "function"){
                         this.saveCB(serialize.id)
                         this.saveCB = null
                     }
@@ -822,7 +824,10 @@ export class Canvas extends Component {
                     state && this.setState({
                         saving: false
                     }) && this.props.setError('Error Saving Project')
-                    if(typeof this.saveCB === "function"){
+
+                    if(typeof this.props.skillSaveCB === "function"){
+                        this.props.skillSaveCB(null)
+                    } else if(typeof this.saveCB === "function"){
                         this.saveCB(null)
                         this.saveCB = null
                     }
@@ -832,7 +837,9 @@ export class Canvas extends Component {
             this.saving = false
             console.log(e)
             state && this.props.setError('Error Saving - Project Structure (Check Logs)')
-            if(typeof this.saveCB === "function"){
+            if(typeof this.props.skillSaveCB === "function"){
+                this.props.skillSaveCB(null)
+            } else if(typeof this.saveCB === "function"){
                 this.saveCB(null)
                 this.saveCB = null
             }

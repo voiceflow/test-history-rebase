@@ -17,7 +17,8 @@ exports.getUpdates = async (req, res) => {
 }
 
 exports.createUpdate = async (req, res) => {
-  let ts = milliToUnix(req.body.ts)
+  let ts = req.body.ts ? parseInt(req.body.ts) : milliToUnix(Date.now())
+  
   try{
     await pool.query('INSERT INTO product_updates (type, details, created) VALUES ($1, $2, to_timestamp($3))', [req.body.type, req.body.details, ts])
     res.sendStatus(200)

@@ -246,7 +246,7 @@ class API extends Component {
 
                 let varMap = {}
 
-                axios.post('https://vdn76t8ti1.execute-api.us-east-1.amazonaws.com/production/api/test', {api: request_obj})
+                axios.post('/test/api', {api: request_obj})
                 .then(res => {
                     // Map all paths user requires to varMap
                     _.forEach(mapping, map => {

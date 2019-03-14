@@ -44,14 +44,17 @@ export const appendValidator = node => {
     }
 }
 
-export const combineValidation = (current, target) => {
+export const combineValidation = (current, target, setError) => {
     if (current.parentCombine || target.parentCombine) {
+        setError('cannot combine two combine blocks')
         return false;
     }
     if (current.extras.type === 'god' && target.extras.type === 'god'){
+        setError('cannot combine two combine blocks')
         return false;
     }
     if (!_.isEmpty(target.combines) && _.last(target.combines) !== 'temp') {
+        setError(`Cannot combine ${current.extras.type} to ${_.last(target.combines).extras.type}`)
         switch(_.last(target.combines).extras.type){
             case 'exit':
                 switch(current.extras.type){

@@ -11,7 +11,8 @@ const {
 	parseChoiceInput,
 	stripSample,
 	utteranceToIntentName,
-	getSlotType
+  getSlotType,
+  findSlot
 } = require('../app/src/util')
 const randomstring = require("randomstring")
 var stringSimilarity = require('string-similarity')
@@ -324,10 +325,11 @@ exports.createInteractionModel = (req, locale) => {
 	const slot_utterances = new Set()
 	// Add all the slots to the interaction model
 	slots.forEach(slot => {
-		if (!slot.type.value || slot.type.value.toLowerCase() === 'custom') {
-			const slot_name = slot.name
+		if (Array.isArray(slot.inputs) && slot.inputs.length !== 0){
+      const slot_name = (!slot.type.value || slot.type.value.toLowerCase() === 'custom') ? slot.name : findSlot(slot.type.value, 'alexa')
+
 			// Don't add the slot if it ain't used
-			if (!used_slots.has(slot_name)) {
+			if (!slot_name || !used_slots.has(slot_name)) {
 				return
 			}
 
@@ -352,7 +354,7 @@ exports.createInteractionModel = (req, locale) => {
 				name: slot_name,
 				values: values
 			})
-		}
+    }
 	})
 
 	// UNION SIMILAR SLOTS FOR CATCHALL/CAPTURE

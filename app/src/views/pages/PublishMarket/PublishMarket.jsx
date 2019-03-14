@@ -140,7 +140,8 @@ class PublishMarket extends Component {
 
     save(){
         const s = this.state;
-        const type = (s.type && s.type.value ? s.type.value : null);
+        // const type = (s.type && s.type.value ? s.type.value : null);
+        const type = 'FLOW'
         axios.patch('/marketplace/cert/' + this.state.skill_id, {
             title: s.title,
             descr: s.descr,
@@ -167,25 +168,27 @@ class PublishMarket extends Component {
     }
 
     publish(){
-        this.save();
-        let s = this.state;
+        this.save()
+        let s = this.state
+        console.log('yo', s)
         // if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
-            if (s.title && s.descr && s.tags && s.type && s.overview){
+        if (s.title && s.descr && s.overview){
         	axios.post('/marketplace/cert/' + this.state.skill_id)
             .then(res => {
+                console.log('bo')
                 this.setState({
                     saved: true,
                     in_review: true,
                     show_incomp_alert: false
-                });
+                })
             })
             .catch(err => {
                 console.log(err);
                 this.setState({
                     error: 'Publish Error, failed to publish',
                     show_incomp_alert: false
-                });
-            });
+                })
+            })
         } else {
             this.setState({
                 show_incomp_alert: true
@@ -310,9 +313,28 @@ class PublishMarket extends Component {
                     </div>
                 </span>
 
+                <ConfirmModal 
+                    confirm = {this.state.displayingConfirmWithdraw}
+                    toggle = {this.toggleConfirmWithdraw}
+                />
+
                 <div className="subheader-page-container">
                     <div>
                         <div className="container">
+
+                            {this.state.in_review?
+                                <div className="alert alert-success mb-4" role="alert">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <h5 className="mb-0">This skill is currently being reviewed for the Marketplace.</h5>
+                                        <div>
+                                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
+                                        </div>
+                                    </div>
+                                </div>
+                                :
+                                null
+                            }
+
                             <Form>
                                 <div className="big-settings-alignment-div">
                                     <div className="mb-4 mt-5"><b>Basic Skill Info</b></div>
@@ -493,38 +515,6 @@ class PublishMarket extends Component {
             </React.Fragment>
         )
     }
-
-
-
-
-    /*
-			<div className="Window skill">
-                <div className="subheader">
-                    <div className="container space-between">
-                        <span className="text-muted">
-                            <span className="text-secondary">{this.props.skill.name}</span>{' '}
-                            <small> / created {moment(this.props.skill.created).fromNow()}</small>
-                        </span>
-                        {
-                        	this.state.in_review?
-                        	null
-                        	:
-	                        <div className="subheader-right">
-
-	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Submit to Marketplace <i className="fas fa-store-alt ml-2"/></MUIButton>
-	                        </div>
-                    	}
-                    </div>
-                </div>
-
-                <ConfirmModal 
-                    confirm = {this.state.displayingConfirmWithdraw}
-                    toggle = {this.toggleConfirmWithdraw}
-                />
-
-                
-*/
 }
 
 export default PublishMarket

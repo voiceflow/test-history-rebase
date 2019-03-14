@@ -132,6 +132,7 @@ exports[`Canvas render canvas 1`] = `
         }
       }
       enterFlow={[Function]}
+      finished={[Function]}
       node={null}
       onUpdate={[Function]}
       removeCombineNode={[Function]}
@@ -150,6 +151,18 @@ exports[`Canvas render canvas 1`] = `
       onDrop={[Function]}
       onMouseLeave={[Function]}
     >
+      <div
+        className="canvas-warnings"
+      >
+        <CSSTransitionGroup
+          transitionAppear={false}
+          transitionEnter={true}
+          transitionEnterTimeout={500}
+          transitionLeave={true}
+          transitionLeaveTimeout={300}
+          transitionName="fade"
+        />
+      </div>
       <WidgetBar
         engine={
           DiagramEngine {
@@ -296,7 +309,7 @@ exports[`Canvas render canvas 1`] = `
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],
-            "renameFlow": undefined,
+            "setCanvasError": undefined,
           }
         }
         onDeleteIntentNode={[Function]}

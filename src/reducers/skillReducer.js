@@ -70,7 +70,7 @@ export default function skillReducer(state = initialState, action) {
         skill: action.payload.skill,
         diagram_id: action.payload.skill_id,
         live_version: action.payload.live_version,
-        live_mode: action.payload.live_mode,
+        live_mode: action.payload.live_mode
       }
     case UPDATE_SKILL:
       return {

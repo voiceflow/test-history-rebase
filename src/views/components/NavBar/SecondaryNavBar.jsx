@@ -3,7 +3,6 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
-import { Tooltip } from 'react-tippy'
 
 import { toggleLive } from './../../../actions/skillActions'
 import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
@@ -122,7 +121,7 @@ class SecondaryNavBar extends Component {
                                     </div>
                                 }
                                 <Toggle
-                                    defaultChecked={this.props.live_mode}
+                                    checked={this.props.live_mode}
                                     icons={false}
                                     onChange={() => {
                                         this.setState({loading: true})

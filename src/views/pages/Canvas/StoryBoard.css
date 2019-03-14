@@ -1632,8 +1632,8 @@ label {
 /* FUNCTIONAL BLOCKS */
 .srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline, .srd-default-node.combine, .srd-default-node.exit{
     background-color: #fff;
-    border-top: 6px solid #ff9f8d;
-    border-color: #ff9f8d !important;
+    border-top: 6px solid #7dbee2;
+    border-color: #7dbee2 !important;
 }
 /* LOGIC BLOCKS */
 .srd-default-node.random, .srd-default-node.set, .srd-default-node.variable, .srd-default-node.if, .srd-default-node.capture {
@@ -2161,9 +2161,9 @@ button.close:hover{
 }
 
 .block.exit {
-    background-color: #ff9f8d36;
-    color: #ff9f8d;
-    border: 1px solid #ff9f8d50;
+    background-color: #7dbee235;
+    color: #7dbee2;
+    border: 1px solid #7dbee235;
     font-size: 15px;
 }
 

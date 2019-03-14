@@ -67,7 +67,6 @@ class SlotSynonyms extends Component {
         this.renderUtterances = this.renderUtterances.bind(this)
         this.beginSlotEdit = this.beginSlotEdit.bind(this)
         this._synonymsToBadges = this._synonymsToBadges.bind(this)
-        this.handleTextAreaKeyPress = this.handleTextAreaKeyPress.bind(this)
     }
 
     addValue() {
@@ -121,29 +120,20 @@ class SlotSynonyms extends Component {
     }
 
     renderUtterances = (utterances, deleteExample) => {
-        if (Array.isArray(utterances)) {
-            return utterances.map((u, i) => {
-                return <div className="slot-utterance" key={randomstring.generate(5)}>
-                    {this.state.focus === i ? <ContainedTextarea
-                        placeholder='Enter user reply'
-                        value={this.props.inputs[i]}
-                        onChange={(text) => this.updateInputText(text, i)}
-                        slots={this.props.slots}
-                        onKeyPress={(e, text) => this.handleTextAreaKeyPress(e, text, i)}
-                        autoFocus={true} /> : <div onClick={() => this.beginSlotEdit(i)}>{this._synonymsToBadges(this.props.inputs[i])}</div>}
-                    <i onClick={() => deleteExample(i)} className="fas fa-backspace trash-icon"></i>
-                </div>
-            });
-        }
-        return null
-    }
-
-    handleTextAreaKeyPress(e, text, i) {
-        if (e.charCode === 8) {
-            e.preventDefault()
-        } else if (e.charCode === 13) {
-            this.updateInputText(text, i)
-        }
+      if (Array.isArray(utterances)) {
+        return utterances.map((u, i) => {
+          return <div className="slot-utterance" key={randomstring.generate(5)}>
+            {this.state.focus === i ? <ContainedTextarea
+              placeholder='Enter user reply'
+              value={this.props.inputs[i]}
+              onChange={(text) => this.updateInputText(text, i)}
+              autoFocus={true}
+            /> : <div onClick={() => this.beginSlotEdit(i)}>{this._synonymsToBadges(this.props.inputs[i])}</div>}
+            <i onClick={() => deleteExample(i)} className="fas fa-backspace trash-icon"></i>
+          </div>
+        })
+      }
+      return null
     }
 
     onDeleteExample(i) {

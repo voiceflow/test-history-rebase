@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as _ from "lodash";
-
 //Helpers
 import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
 import {Toolkit}from './../Toolkit'
@@ -142,7 +141,10 @@ export class BlockNodeWidget extends BaseWidget {
 	combineNode(e = null) {
 		let current = this.props.diagramEngine.getSuperSelect();
 		let target_node = this.props.node
-		if (combineValidation(current, target_node) && (combineAppendValidation(current) || (combineAppendValidation(target_node)))) {
+		if (!(combineAppendValidation(target_node) && combineAppendValidation(current)) || !combineValidation(current, target_node, this.props.nodeProps.setCanvasError)) {
+			this.props.nodeProps.setCanvasError(`Cannot combine blocks of type ${current.extras.type} and ${target_node.extras.type}`)
+		}
+		if (combineValidation(current, target_node, this.props.nodeProps.setCanvasError) && (combineAppendValidation(current) || (combineAppendValidation(target_node)))) {
 			let selected = this.props.diagramEngine.getSuperSelect()
 			let engine = this.props.diagramEngine
 			let targetNode = target_node
@@ -461,9 +463,3 @@ export class BlockNodeWidget extends BaseWidget {
 		);
 	}
 }
-
-// const mapDispatchToProps = dispatch => ({
-// 	renameFlow: (id, name) => dispatch(renameDiagram(id, name))
-// })
-
-// export default connect(null, mapDispatchToProps)(BlockNodeWidget)

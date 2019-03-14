@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash'
 // import createSingleLinePlugin from 'draft-js-single-line-plugin';
 // import createMentionPlugin, { defaultSuggestionsFilter } from './../../../../../assets/draft-js-mention/lib';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
@@ -21,6 +22,7 @@ class VariableText extends Component {
         this.mentionPlugin = createMentionPlugin({
             supportWhitespace: false,
             theme: {
+                mention: 'depressing',
                 mentionSuggestions: 'mentionSuggestions',
                 mentionSuggestionsEntry: 'mentionSuggestionsEntry',
                 mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
@@ -71,10 +73,10 @@ class VariableText extends Component {
 
     onAddMention = () => {
         // get the mention object selected
+        console.log('yo yo yo')
     }
 
     render() {
-
         const { MentionSuggestions } = this.mentionPlugin;
         const plugins = [this.mentionPlugin];
 
@@ -90,9 +92,11 @@ class VariableText extends Component {
                 />
                 <MentionSuggestions
                   onSearchChange={this.onSearchChange}
-                  suggestions={this.state.suggestions}
+                  suggestions={_.concat(this.state.suggestions, [{name: "Create Variable"}])}
                   onAddMention={this.onAddMention}
-                />
+                >
+                    <div>TESTING MENTION SHIT</div>
+                </MentionSuggestions>
             </div>
         );
     }

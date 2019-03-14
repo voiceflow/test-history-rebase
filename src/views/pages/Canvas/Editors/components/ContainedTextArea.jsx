@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import Textarea from 'react-textarea-autosize'
 
-class ContainedTextarea extends Component {
+class ContainedTextarea extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -9,16 +9,6 @@ class ContainedTextarea extends Component {
       value: props.value
     }
     this.handleChange = this.handleChange.bind(this)
-  }
-
-  shouldComponentUpdate(newProps, newState) {
-    if (newProps.value !== this.state.value) {
-      this.state.value = newProps.value
-      return true
-    } else if (newState.value !== this.state.value) {
-      return true
-    }
-    return false
   }
 
   componentDidMount() {
@@ -37,11 +27,10 @@ class ContainedTextarea extends Component {
       className={this.props.className} 
       value={this.state.value} 
       onChange={this.handleChange} 
-      onKeyPress={(e) => this.props.onKeyPress && this.props.onKeyPress(e, this.state.value)}
       onBlur={()=>this.props.onChange(this.state.value)}
       inputRef={(input) => { this.textInput = input; }} 
     />
   }
 }
 
-module.exports = ContainedTextarea
+export default ContainedTextarea

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
+import { Tooltip } from 'react-tippy'
 
 import { toggleLive } from './../../../actions/skillActions'
 import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
@@ -133,7 +134,6 @@ class SecondaryNavBar extends Component {
                             :
                             null
                         }
-
                         {this.props.page === 'logs' ?
                             <div className="nav-item">
                                 <img src={'/logs.svg'} alt="logs" width="18"/>

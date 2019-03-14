@@ -23,7 +23,7 @@ class SecondaryNavBar extends Component {
 
     toggleLiveMode(disableCb) {
         if (this.props.live_mode) {
-            // this.props.setSaveCB(() => {
+            this.props.setSaveCB(() => {
                 this.props.updateDiagramRoot(this.props.dev_skill.diagram)
                 this.props.fetchDiagrams(this.props.dev_skill.skill_id)
                 this.props.setLiveModal(false)
@@ -39,12 +39,12 @@ class SecondaryNavBar extends Component {
                     this.props.setSaveCB(null)
                     this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
                 })
-            // })
+            })
             this.props.onSave()
         } else {
             axios.get(`/skill/${this.props.live_version}`)
                 .then((res) => {
-                    // this.props.setSaveCB(() => {
+                    this.props.setSaveCB(() => {
                         this.props.updateDiagramRoot(res.data.diagram)
                         this.props.fetchDiagrams(res.data.skill_id)
                         this.props.setLiveModal(true)
@@ -60,7 +60,7 @@ class SecondaryNavBar extends Component {
                             this.props.setSaveCB(null)
                             this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
                         })
-                    // })
+                    })
                     this.props.onSave()
                 })
                 .catch((err) => {

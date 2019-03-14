@@ -114,6 +114,12 @@ const getSlotsForKeys = (keys, slots, platform) => {
 	})
 }
 
+const findSlot = (slot_type, platform) => {
+  const built_in_slot = find(SLOT_TYPES, { label: slot_type })
+  if(built_in_slot) return built_in_slot.type[platform] 
+  return null
+}
+
 const replacer = (match, inner, slots, extracted) => {
 	const slot = find(slots, {name: inner})
 	if(slot){
@@ -183,6 +189,7 @@ exports.utteranceToIntentName = (utterance, existing) => {
 // 	exports.LANGUAGE_SET = LANGUAGE_SET
 // }
 
+exports.findSlot = findSlot
 exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
 exports.formatName = formatName
 exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat

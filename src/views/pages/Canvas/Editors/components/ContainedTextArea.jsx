@@ -9,11 +9,20 @@ class ContainedTextarea extends PureComponent {
       value: props.value
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
   componentDidMount() {
     if (this.props.autoFocus) {
       this.textInput.focus()
+    }
+  }
+
+  handleKeyPress(e){
+    // Enter key pressed
+    if (e.charCode === 13) {
+      e.preventDefault();
+      this.props.onChange(this.state.value)
     }
   }
 
@@ -28,6 +37,7 @@ class ContainedTextarea extends PureComponent {
       value={this.state.value} 
       onChange={this.handleChange} 
       onBlur={()=>this.props.onChange(this.state.value)}
+      onKeyPress={this.handleKeyPress}
       inputRef={(input) => { this.textInput = input; }} 
     />
   }

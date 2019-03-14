@@ -25,7 +25,7 @@ import { combineAppendValidation } from './../../helpers/combineHelper'
 
 import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
 import { setVariables } from './../../../actions/variableActions'
-import { closeCanvasError, setCanvasError } from 'actions/userActions'
+import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
 
 import ActionGroup from './ActionGroup'

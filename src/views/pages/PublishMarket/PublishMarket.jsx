@@ -27,6 +27,7 @@ class PublishMarket extends Component {
             title: '',
             module_icon: null,
             displayingConfirmWithdraw: false,
+            displayingConfirmSubmission: false,
             color: '',
             input: [],
             output: [],
@@ -38,6 +39,7 @@ class PublishMarket extends Component {
 
         this.handleTypeSelection = this.handleTypeSelection.bind(this)
         this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this)
+        this.toggleConfirmSubmission = this.toggleConfirmSubmission.bind(this)
         this.onWithdraw = this.onWithdraw.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.save = this.save.bind(this)
@@ -170,28 +172,29 @@ class PublishMarket extends Component {
     publish(){
         this.save()
         let s = this.state
-        console.log('yo', s)
         // if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
         if (s.title && s.descr && s.overview){
         	axios.post('/marketplace/cert/' + this.state.skill_id)
             .then(res => {
-                console.log('bo')
                 this.setState({
                     saved: true,
                     in_review: true,
-                    show_incomp_alert: false
+                    show_incomp_alert: false,
+                    displayingConfirmSubmission: false
                 })
             })
             .catch(err => {
                 console.log(err);
                 this.setState({
                     error: 'Publish Error, failed to publish',
-                    show_incomp_alert: false
+                    show_incomp_alert: false,
+                    displayingConfirmSubmission: false
                 })
             })
         } else {
             this.setState({
-                show_incomp_alert: true
+                show_incomp_alert: true,
+                displayingConfirmSubmission: false
             })
         }
     }
@@ -216,13 +219,28 @@ class PublishMarket extends Component {
         if(!this.state.displayingConfirmWithdraw){
             this.setState({
                 displayingConfirmWithdraw: {
-                    text: "Are you sure you want to withdraw this Skill?",
+                    text: "Are you sure you want to withdraw this flow?",
                     confirm: this.onWithdraw
                 }
             });
         }else{
             this.setState({
                 displayingConfirmWithdraw: false
+            }); 
+        }
+    }
+
+    toggleConfirmSubmission(){
+        if(!this.state.displayingConfirmSubmission){
+            this.setState({
+                displayingConfirmSubmission: {
+                    text: "Are you sure you want to publish this flow?",
+                    confirm: this.publish
+                }
+            });
+        }else{
+            this.setState({
+                displayingConfirmSubmission: false
             }); 
         }
     }
@@ -318,14 +336,19 @@ class PublishMarket extends Component {
                     toggle = {this.toggleConfirmWithdraw}
                 />
 
+                <ConfirmModal 
+                    confirm = {this.state.displayingConfirmSubmission}
+                    toggle = {this.toggleConfirmSubmission}
+                />
+
                 <div className="subheader-page-container">
                     <div>
-                        <div className="container">
+                        <div className="container pt-3">
 
                             {this.state.in_review?
                                 <div className="alert alert-success mb-4" role="alert">
                                     <div className="d-flex justify-content-between align-items-center">
-                                        <h5 className="mb-0">This skill is currently being reviewed for the Marketplace.</h5>
+                                        <span>This skill is currently being reviewed for the Marketplace.</span>
                                         <div>
                                             <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
                                         </div>
@@ -499,14 +522,8 @@ class PublishMarket extends Component {
                                 </div>
                             </Form>
                             <div className="text-center">
-                                <button
-                                variant="contained"
-                                className="purple-btn"
-                                onClick={() => {
-                                    this.publish()
-                                }}
-                                >
-                                Submit Flow
+                                <button variant="contained" className="purple-btn" onClick={this.toggleConfirmSubmission}>
+                                    Submit Flow
                                 </button>
                             </div>
                         </div>

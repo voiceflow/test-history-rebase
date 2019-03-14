@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
-import { toggleLive } from './../../../actions/skillActions'
+import { toggleLive, setLiveModeModal } from "./../../../actions/skillActions";
 import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
 const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
@@ -25,6 +25,7 @@ class SecondaryNavBar extends Component {
             this.props.setSaveCB(() => {
                 this.props.updateDiagramRoot(this.props.dev_skill.diagram)
                 this.props.fetchDiagrams(this.props.dev_skill.skill_id)
+                this.props.setLiveModal(false)
                 this.props.toggleLive(
                     this.props.dev_skill,
                     this.props.dev_skill.diagram,
@@ -45,6 +46,7 @@ class SecondaryNavBar extends Component {
                     this.props.setSaveCB(() => {
                         this.props.updateDiagramRoot(res.data.diagram)
                         this.props.fetchDiagrams(res.data.skill_id)
+                        this.props.setLiveModal(true)
                         this.props.toggleLive(
                             res.data,
                             res.data.diagram,
@@ -168,7 +170,8 @@ const mapDispatchToProps = dispatch => {
     return {
         toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
         updateDiagramRoot: (root_id) => dispatch(updateDiagramRoot(root_id)),
-        fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id))
+        fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
+        setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SecondaryNavBar)

@@ -76,7 +76,7 @@ class ModuleAdminPage extends Component {
                 </div>
             }
         }
-
+        console.log(this.state.modules)
         return(
             <div className='Window'>
                 {content}

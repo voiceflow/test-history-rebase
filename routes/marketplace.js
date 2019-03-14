@@ -73,6 +73,8 @@ const saveCertification = (req, res) => {
 	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
 
 	const createNewModule = (skill_id, global) => {
+		// Leaving module icon in for now, but not using it anymore
+		req.body.module_icon = null
 		pool.query(
 			`INSERT INTO modules (title, descr, creator_id, skill_id, tags, type, overview, module_icon, color, input, output, global) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
 			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global],
@@ -88,6 +90,8 @@ const saveCertification = (req, res) => {
 	}
 
 	const updateModule = (module_id, global) => {
+		// Leaving module icon in for now, but not using it anymore
+		req.body.module_icon = null
 		pool.query(
 			`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9, global = $10 WHERE module_id = $11`, 
 			[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global, module_id],
@@ -138,63 +142,57 @@ const saveCertification = (req, res) => {
 
 
 
-const giveCertification = (req, res) => {
+const giveCertification = async (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
 	const updateVersionTable = (market_id, module_id, template_skill_id) => {
-		pool.query(
-			`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
-			[market_id, template_skill_id, module_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					res.sendStatus(200);
-				}
-			}
-		)	
+		try{
+			pool.query(
+				`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
+				[market_id, template_skill_id, module_id])
+			res.sendStatus(200)
+		} catch (err) {
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+			res.sendStatus(500)
+		}
 	}
 
-	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
-		async (err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
-			}else{
-				if(data.rows.length > 0){
-					let version_id = data.rows[0].version_id
-					let diagram_id = data.rows[0].diagram_id
-					let module_id = data.rows[0].module_id
-					let skill_id = data.rows[0].skill_id
-					let market_id = "$" + version_id + '_' + diagram_id
-					
+	try {
+		let module_version_data = (await pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id])).rows
+		if(module_version_data.length > 0){
+			let version_id = module_version_data[0].version_id
+			let diagram_id = module_version_data[0].diagram_id
+			let module_id = module_version_data[0].module_id
+			let skill_id = module_version_data[0].skill_id
+			let market_id = "$" + version_id + '_' + diagram_id
 
-					if(data.rows[0].type === 'FLOW') {
-						let status = await renderDiagram(req.user, diagram_id, skill_id, {version: version_id, type: 'MARKET'});
-						if(status === 200){
-							updateVersionTable(market_id, module_id);
-						}else{
-							console.log("Failed to render diagram")
-							res.sendStatus(500);
-						}
-					} else {
-						// Alter request object to conform to copy skill, able to do this since we don't use req anymore in this fcn
-						req.params.id = hashids.encode(skill_id)
-						req.params.target_creator = ADMIN_MARKETPLACE_ACC
-						req.user.id = data.rows[0].creator_id
-						copySkill(req, res, {copying_default_template: true}, (row) => {
-							let new_skill_id = hashids.decode(row.skill_id)[0]
-							updateVersionTable(row.diagram, module_id, new_skill_id)
-						})
-					}
-					
+			if(data.rows[0].type === 'FLOW') {
+				let status = await renderDiagram(req.user, diagram_id, skill_id, {version: version_id, type: 'MARKET'});
+				if(status === 200){
+					updateVersionTable(market_id, module_id);
 				}else{
-					res.sendStatus(400);				
+					console.log("Failed to render diagram")
+					res.sendStatus(500);
 				}
-			}
+			} 
+			// !!!! ONLY FLOWS FOR NOW !!!!
+			// else {
+			// 	// Alter request object to conform to copy skill, able to do this since we don't use req anymore in this fcn
+			// 	req.params.id = hashids.encode(skill_id)
+			// 	req.params.target_creator = ADMIN_MARKETPLACE_ACC
+			// 	req.user.id = data.rows[0].creator_id
+			// 	copySkill(req, res, {copying_default_template: true}, (row) => {
+			// 		let new_skill_id = hashids.decode(row.skill_id)[0]
+			// 		updateVersionTable(row.diagram, module_id, new_skill_id)
+			// 	})
+			// }
+		} else {
+			res.sendStatus(400)
 		}
-	);	
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
 const requestCertification = (req, res) => {

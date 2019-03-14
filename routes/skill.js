@@ -1536,9 +1536,6 @@ exports.getGoogleSkill = async (req, res) => {
 }
 
 exports.getLiveVersion = async (req, res) => {
-  //TEMP FIX
-  return res.sendStatus(200)
-
   let skill_id = hashids.decode(req.params.id)[0]
   try {
     let live_version_data = await pool.query(`

@@ -168,9 +168,10 @@ class Skill extends Component {
                     {...this.props} 
                     live_mode={this.props.live_mode}
                     ref={this.child_canvas}
-                    setOnSave={save => this.onSave = save}
+                    setOnSave={save => this.setState({onSave: save})}
                     linter={this.state.linter}
-                    toggleUpgrade={this.toggleUpgrade}/>
+                    toggleUpgrade={this.toggleUpgrade}
+                    skillSaveCB={this.state.saveCB}/>
             case 'business':
                 return <Business
                   {...this.props}
@@ -216,7 +217,7 @@ class Skill extends Component {
         }
 
         return <React.Fragment>
-            {!this.props.preview && <SecondaryNavBar page={this.props.page} onSave={this.onSave} history={this.props.history}/>}
+            {!this.props.preview && <SecondaryNavBar page={this.props.page} onSave={this.state.onSave} history={this.props.history} setSaveCB={(saveCB) => {this.setState({saveCB: saveCB})}}/>}
 
             <div className="skill-name-top-left fixed-top">
             <Link to="/" className="mx-2">

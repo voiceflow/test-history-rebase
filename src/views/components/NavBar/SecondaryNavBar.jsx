@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
 import { toggleLive } from './../../../actions/skillActions'
-const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
+const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish', 'market']
 
 class SecondaryNavBar extends Component {
     constructor(props){

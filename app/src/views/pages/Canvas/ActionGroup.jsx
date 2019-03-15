@@ -311,9 +311,10 @@ export class ActionGroup extends PureComponent {
   }
 
   openUpdateLive() {
-      this.setState({
-          updateLiveModal: true
-      })
+    this.setState({
+      updateLiveModal: true
+    })
+    this.props.onSave()
   }
 
   checkVendor() {
@@ -578,7 +579,12 @@ export class ActionGroup extends PureComponent {
               <div className="modal-txt text-center mt-2 mb-3">This may take a few minutes to be reflected on your device.</div>
           </React.Fragment>
       } else if (this.state.live_update_stage === 1) {
-          return loading('Rendering Flows')
+          return <div className="pb-4 mb-2">
+            <div className={"text-center my-3"}>
+              <div className="loader text-lg"/>
+            </div>
+            {loading('Rendering Flows')}
+          </div>
       } else {
           return <React.Fragment>
               <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />

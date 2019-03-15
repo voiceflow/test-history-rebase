@@ -160,6 +160,7 @@ app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDi
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
+app.get('/skill/:id/info', ensureAdmin(), Skill.getSkillInfo);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)

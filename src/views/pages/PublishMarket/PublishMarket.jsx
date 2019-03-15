@@ -521,11 +521,13 @@ class PublishMarket extends Component {
                                     </div>
                                 </div>
                             </Form>
+                            {!this.state.in_review &&
                             <div className="text-center">
                                 <button variant="contained" className="purple-btn" onClick={this.toggleConfirmSubmission}>
                                     Submit Flow
                                 </button>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>

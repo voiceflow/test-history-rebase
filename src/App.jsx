@@ -260,8 +260,10 @@ class App extends Component {
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/market" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="market"/>
                 <PrivateRoute path="/publish/:skill_id" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
-                <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
-                <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
+                {/* <PrivateRoute path="/market/:skill_id/:module_id" component={Skill} secondary={ModulePage} /> */}
+                <PrivateRoute path="/market/:skill_id/flows" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="flows"/>
+                <PrivateRoute path="/market/:skill_id/templates" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="templates"/>
+                <PrivateRoute path="/market/:skill_id" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="flows"/>
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
                 <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>

@@ -1,4 +1,4 @@
-const { pool, intercom, writeToLogs } = require('./../services');
+const { pool, intercom, writeToLogs, analytics } = require('./../services');
 
 const checkIfOnboarded = (req, res) => {
 	pool.query("SELECT * FROM user_info WHERE creator_id = $1", [req.user.id],
@@ -43,6 +43,27 @@ const submitOnboardSurvey = (req, res) => {
 	if(!req.body.usage_type){
 		req.body.usage_type = 'PERSONAL'
 	}
+
+	analytics.identify({
+		userId: req.user.id, 
+		traits: {
+			email: req.user.email,
+			name: req.user.name,
+			usage: req.body.usage_type,
+			company: req.body.company_name,
+			company_size: req.body.company_size,
+			design: req.body.design,
+			build: req.body.build,
+			purpose: req.body.purpose,
+			programming_experience: PROG_XP(req.body.programming)
+		}
+	}, () => {
+		analytics.track({
+			userId: req.user.id,
+			event: 'Completed onboarding survey'
+		})
+	})
+
 	pool.query(
 		"INSERT INTO user_info (creator_id, usage_type, company_name, xp, design, build, company_size, role, purpose) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
 		[req.user.id, req.body.usage_type, req.body.company_name, convertToOld(req.body.programming), req.body.design, req.body.build, req.body.company_size, req.body.company_role, req.body.purpose],

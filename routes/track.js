@@ -30,3 +30,19 @@ exports.trackFirstSessionUpload = (req, res) => {
     })
     res.sendStatus(200)
 }
+
+exports.trackFirstProject = (req, res) => {
+    analytics.track({
+        userId: req.user.id,
+        event: 'Started First Project'
+    })
+    res.sendStatus(200)
+}
+
+exports.trackDevAccount = (req, res) => {
+    analytics.track({
+        userId: req.user.id,
+        event: 'Dev Account Setup'
+    })
+    res.sendStatus(200)
+}

@@ -75,10 +75,13 @@ class Skill extends Component {
     trackCanvasTime(){
         let time_unmounted = new Date()
         if(!!this.props.skill){
-            axios.post('/analytics/track_canvas_time', {
-                duration: time_unmounted - this.time_mounted,
-                skill_id: this.props.skill.skill_id
-            })
+            let duration = time_unmounted - this.time_mounted
+            if(duration < 18000){
+                axios.post('/analytics/track_canvas_time', {
+                    duration: time_unmounted - this.time_mounted,
+                    skill_id: this.props.skill.skill_id
+                })
+            }
         }
         this.time_mounted = null
     }

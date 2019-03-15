@@ -181,7 +181,6 @@ export class Canvas extends Component {
             window.Appcues.page()
         }
         this.setMousetrap()
-        this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
         if(!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
@@ -1603,6 +1602,7 @@ export class Canvas extends Component {
                     enterFlow={this.enterFlow}
                     preview={this.props.preview}
                     diagram={this.props.diagram}
+                    root_id={this.props.root_id}
                   />
                 )}
                 {this.props.blockMenu}

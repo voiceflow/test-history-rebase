@@ -1,8 +1,8 @@
 import React from 'react'
 import { ButtonGroup } from 'reactstrap'
 
-export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update}) =>
-    <div id="widget-bar">
+export const WidgetBar = ({ toggleKeyboard, keyboardHelp, engine, setOpen, update }) =>
+    <div id={`widget-bar`}>
         <ButtonGroup>
             <button onClick={()=>zoom(1000, engine, update)} className="white-circ round-left"><i className="far fa-plus"/></button>
             <button onClick={()=>zoom(-1000, engine, update)} className="white-circ round-right"><i className="far fa-minus"/></button>

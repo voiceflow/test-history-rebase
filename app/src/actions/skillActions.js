@@ -64,9 +64,8 @@ export const updateSkillMerge = (type, val) => ({
 export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispatch => {
     dispatch({
         type: "TOGGLE_LIVE",
-        payload: { skill, diagram_id, live_version, live_mode}
+        payload: { skill, diagram_id, live_version, live_mode }
     })
-    return Promise.resolve()
 }
 
 export const removeFulfillment = intent_key => ({

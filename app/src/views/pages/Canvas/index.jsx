@@ -5,6 +5,8 @@ import Editor from './Editor'
 import axios from 'axios'
 import { compose } from 'recompose'
 import { connect } from "react-redux";
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 // import Loader from './Loader'
 import 'draft-js/dist/Draft.css'
 import './../../components/SRD/sass/main.css';
@@ -17,11 +19,13 @@ import { open, blockMenu } from './../../HOC/canvasHelper';
 import { keyboardModal } from './../../HOC/ModalHandlers'
 
 import { WidgetBar } from './components/WidgetBar'
+import CanvasWarning from './components/CanvasWarning'
 //Helpers
 import { combineAppendValidation } from './../../helpers/combineHelper'
 
 import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
 import { setVariables } from './../../../actions/variableActions'
+import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
 
 import ActionGroup from './ActionGroup'
@@ -29,6 +33,7 @@ import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
 import { Alert, ListGroup, ListGroupItem } from 'reactstrap'
+
 import cloneDeep from 'lodash/cloneDeep'
 import * as util from './util'
 import Spotlight from './Spotlight'
@@ -176,7 +181,6 @@ export class Canvas extends Component {
             window.Appcues.page()
         }
         this.setMousetrap()
-        this.props.setOnSave(this.onSave)
         // AUTOSAVE EVERY 10 SECONDS
         if(!this.props.preview && this.props.skill && this.props.skill.skill_id && this.props.diagram_id && !window.error){
             this.interval = setInterval(()=>{
@@ -813,7 +817,9 @@ export class Canvas extends Component {
                         saving: false,
                         saved: true
                     })
-                    if(typeof this.saveCB === "function"){
+                    if(typeof this.props.skillSaveCB === "function"){
+                        this.props.skillSaveCB(serialize.id)
+                    } else if(typeof this.saveCB === "function"){
                         this.saveCB(serialize.id)
                         this.saveCB = null
                     }
@@ -822,7 +828,10 @@ export class Canvas extends Component {
                     state && this.setState({
                         saving: false
                     }) && this.props.setError('Error Saving Project')
-                    if(typeof this.saveCB === "function"){
+
+                    if(typeof this.props.skillSaveCB === "function"){
+                        this.props.skillSaveCB(null)
+                    } else if(typeof this.saveCB === "function"){
                         this.saveCB(null)
                         this.saveCB = null
                     }
@@ -832,7 +841,9 @@ export class Canvas extends Component {
             this.saving = false
             console.log(e)
             state && this.props.setError('Error Saving - Project Structure (Check Logs)')
-            if(typeof this.saveCB === "function"){
+            if(typeof this.props.skillSaveCB === "function"){
+                this.props.skillSaveCB(null)
+            } else if(typeof this.saveCB === "function"){
                 this.saveCB(null)
                 this.saveCB = null
             }
@@ -1401,162 +1412,235 @@ export class Canvas extends Component {
 
     render() {
         return (
-            <React.Fragment>
-                <Prompt
-                    message={()=>{
-                        if(!util.canSave()){
-                            return "This flow is too large to be saved, please remove blocks to reduce size - are you sure you would like to leave without saving?"
-                        }
-                        return true
-                    }}
-                />
-                <ErrorModal error={this.props.onError} dismiss={() => this.props.clearError()} />
-                <DefaultModal
-                    open={this.state.upgrade_modal}
-                    header="Multi Platform Development"
-                    toggle={() => this.setState({ upgrade_modal : !this.state.upgrade_modal })}
-                    content={<Upgrade history={this.props.history} toggle={() => this.setState({ upgrade_modal : !this.state.upgrade_modal })}/>}
-                    hideFooter={true}
-                    noPadding={true}
-                />
-                <DefaultModal
-                    open={this.props.keyboardHelp}
-                    header="Keyboard Shortcuts"
-                    toggle={() => this.props.toggleKeyboard(!this.props.keyboardHelp)}
-                    content={<ShortCuts/>}
-                />
-                <HelpModal
-                    open={this.state.helpOpen}
-                    help={this.state.help}
-                    toggle={()=>this.setState({helpOpen: !this.state.helpOpen})}
-                    setHelp={(help) => this.setState({help: help})}
-                />
-                { !this.props.preview ? <ActionGroup
-                        lastSave={(this.state.last_save ? "Last saved " + moment(this.state.last_save).fromNow() : "Save")}
-                        setCB={(cb)=>{this.saveCB=cb}}
-                        onSave={this.onSave}
-                        saving={this.state.saving}
-                        saved={this.state.saved}
-                        onError={this.props.setError}
-                        onTest={this.onTest}
-                        updateGoogleFade={this.updateGoogleFade}
-                        updateLinter={this.updateLinter}
-                        history={this.props.history}
-                    /> :
-                    <div className="title-group no-select">
-                    <span className="text-blue" id="preview-title"><span className="dot"/> PREVIEW MODE</span>
-                    </div>
+          <React.Fragment>
+            <Prompt
+              message={() => {
+                if (!util.canSave()) {
+                  return "This flow is too large to be saved, please remove blocks to reduce size - are you sure you would like to leave without saving?";
                 }
-                {this.state.testing_modal ?
-                    <TestModal
-                        open={this.state.testing_modal}
-                        toggle={this.toggleTestModal}
-                        testing_info={this.state.testing_info}
-                        unfocus={this.onDiagramUnfocus}
-                        flow={this.props.diagram.name}
-                    />
-                : null}
-                {this.state.spotlight && <Spotlight addBlock={this.onDrop} cancel={()=>this.setState({spotlight: false})}></Spotlight>}
-                <div id="canvas"
-                  onMouseMove={this.mouseMove}
-                  onMouseUp={this.combineNode}
-                  onMouseDown={() => this.diagram_focus = true}
-                >
-                    <Menu
-                        unfocus={this.onDiagramUnfocus}
-                        enterFlow={this.enterFlow}
-                        build={fn => this.buildDiagrams = fn}
-                        history={this.props.history}
-                        user={this.props.user}
-                        loading_diagram={this.props.load_diagram}
-                        copyFlow={this.copyFlow}
-                        deleteFlow={this.deleteFlow}
-                        preview={this.props.preview}
-                        onError={this.props.setError}
-                        toggleUpgrade={this.props.toggleUpgrade}
-                        type_counter={this.state.type_counter}
-                    />
-                    {this.state.load_diagram && React.createElement(Spinner, {name: 'Flow'})}
-                    <Editor
-                        unfocus={this.onDiagramUnfocus}
-                        open={this.props.open}
-                        diagramEngine={this.state.engine}
-                        node={this.state.engine.getSuperSelect()}
-                        onUpdate={this.onUpdate}
-                        close={()=>this.props.setOpen(false)}
-                        setHelp={(help) => this.setState({help: help, helpOpen: true})}
-                        createDiagram={this.createDiagram}
-                        enterFlow={this.enterFlow}
-                        repaint={this.forceRepaint}
-                        removeNode={!this.props.preview ? this.removeNode : _.noop()}
-                        copyNode={!this.props.preview ? this.copyNode : _.noop()}
-                        appendCombineNode={!this.props.preview ? this.appendCombineNode : _.noop()}
-                        removeCombineNode={!this.props.preview ? this.removeCombineNode : _.noop()}
-                        preview={this.props.preview}
-                        onError={this.props.setError}
-                        onConfirm={this.props.onConfirm}
-                        history={this.props.history}
-                        diagram_level_intents={this.state.diagram_level_intents}
-                        setCanvasEvents={this.setMousetrap}
-                        updateLinter={this.updateLinter}
-                    />
-                    <div
-                        key={this.props.diagram_id}
-                        id="diagram"
-                        className={this.props.preview ? " no-padding" : ""}
-                        onDrop={this.onDrop}
-                        onDragOver={e => e.preventDefault()}
-                        onMouseLeave={()=>this.diagram_focus=false}
-                        onContextMenu={this.generateBlockMenu}
+                return true;
+              }}
+            />
+            <ErrorModal
+              error={this.props.onError}
+              dismiss={() => this.props.clearError()}
+            />
+            <DefaultModal
+              open={this.state.upgrade_modal}
+              header="Multi Platform Development"
+              toggle={() =>
+                this.setState({
+                  upgrade_modal: !this.state.upgrade_modal
+                })
+              }
+              content={
+                <Upgrade
+                  history={this.props.history}
+                  toggle={() =>
+                    this.setState({
+                      upgrade_modal: !this.state.upgrade_modal
+                    })
+                  }
+                />
+              }
+              hideFooter={true}
+              noPadding={true}
+            />
+            <DefaultModal
+              open={this.props.keyboardHelp}
+              header="Keyboard Shortcuts"
+              toggle={() =>
+                this.props.toggleKeyboard(!this.props.keyboardHelp)
+              }
+              content={<ShortCuts />}
+            />
+            <HelpModal
+              open={this.state.helpOpen}
+              help={this.state.help}
+              toggle={() =>
+                this.setState({ helpOpen: !this.state.helpOpen })
+              }
+              setHelp={help => this.setState({ help: help })}
+            />
+            {!this.props.preview ?
+              <ActionGroup
+                lastSave={
+                  this.state.last_save
+                    ? "Last saved " +
+                      moment(this.state.last_save).fromNow()
+                    : "Save"
+                }
+                setCB={cb => {
+                  this.saveCB = cb;
+                }}
+                onSave={this.onSave}
+                saving={this.state.saving}
+                saved={this.state.saved}
+                onError={this.props.setError}
+                onTest={this.onTest}
+                updateGoogleFade={this.updateGoogleFade}
+                updateLinter={this.updateLinter}
+                history={this.props.history}
+              />
+            :
+              <div className="title-group no-select">
+                <span className="text-blue" id="preview-title">
+                  <span className="dot" /> PREVIEW MODE
+                </span>
+              </div>
+            }
+            {this.state.testing_modal ? (
+              <TestModal
+                open={this.state.testing_modal}
+                toggle={this.toggleTestModal}
+                testing_info={this.state.testing_info}
+                unfocus={this.onDiagramUnfocus}
+                flow={this.props.diagram.name}
+              />
+            ) : null}
+            {this.state.spotlight && (
+              <Spotlight
+                addBlock={this.onDrop}
+                cancel={() => this.setState({ spotlight: false })}
+              />
+            )}
+            <div
+              id="canvas"
+              onMouseMove={this.mouseMove}
+              onMouseUp={this.combineNode}
+              onMouseDown={() => (this.diagram_focus = true)}
+            >
+              <Menu
+                unfocus={this.onDiagramUnfocus}
+                enterFlow={this.enterFlow}
+                build={fn => (this.buildDiagrams = fn)}
+                history={this.props.history}
+                user={this.props.user}
+                loading_diagram={this.props.load_diagram}
+                copyFlow={this.copyFlow}
+                deleteFlow={this.deleteFlow}
+                preview={this.props.preview}
+                onError={this.props.setError}
+                toggleUpgrade={this.props.toggleUpgrade}
+                type_counter={this.state.type_counter}
+              />
+              {this.state.load_diagram &&
+                React.createElement(Spinner, { name: "Flow" })}
+
+              <Editor
+                unfocus={this.onDiagramUnfocus}
+                open={this.props.open}
+                diagramEngine={this.state.engine}
+                node={this.state.engine.getSuperSelect()}
+                onUpdate={this.onUpdate}
+                close={() => this.props.setOpen(false)}
+                setHelp={help =>
+                  this.setState({ help: help, helpOpen: true })
+                }
+                createDiagram={this.createDiagram}
+                enterFlow={this.enterFlow}
+                repaint={this.forceRepaint}
+                removeNode={
+                  !this.props.preview ? this.removeNode : _.noop()
+                }
+                copyNode={
+                  !this.props.preview ? this.copyNode : _.noop()
+                }
+                appendCombineNode={
+                  !this.props.preview
+                    ? this.appendCombineNode
+                    : _.noop()
+                }
+                removeCombineNode={
+                  !this.props.preview
+                    ? this.removeCombineNode
+                    : _.noop()
+                }
+                preview={this.props.preview}
+                onboarding={this.onboarding}
+                finished={() => {
+                  this.onboarding = false;
+                }}
+                onError={this.props.setError}
+                onConfirm={this.props.onConfirm}
+                history={this.props.history}
+                diagram_level_intents={this.state.diagram_level_intents}
+                setCanvasEvents={this.setMousetrap}
+                updateLinter={this.updateLinter}
+              />
+              <div
+                key={this.props.diagram_id}
+                id="diagram"
+                className={this.props.preview ? " no-padding" : ""}
+                onDrop={this.onDrop}
+                onDragOver={e => e.preventDefault()}
+                onMouseLeave={() => (this.diagram_focus = false)}
+                onContextMenu={this.generateBlockMenu}
+              >
+              <div className='canvas-warnings'>
+                    <ReactCSSTransitionGroup
+                        transitionName="fade"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={300}
                     >
-                        <WidgetBar
-                            toggleKeyboard={this.props.toggleKeyboard}
-                            keyboardHelp={this.props.keyboardHelp}
-                            engine={this.state.engine}
-                            setOpen={this.props.setOpen}
-                            update={(engine) => this.setState({ engine: engine })}
-                        />
-                        { this.props.root_id !== this.props.diagram_id && <FlowBar
-                                deleteFlow={this.deleteFlow}
-                                copyFlow={this.copyFlow}
-                                enterFlow={this.enterFlow}
-                                preview={this.props.preview}
-                                diagram={this.props.diagram}
-                            />
-                        }
-                        {this.props.blockMenu}
-                        <SRD.DiagramWidget
-                            diagramEngine={this.state.engine}
-                            allowLooseLinks={false}
-                            locked={this.props.preview}
-                            onConfirm={this.props.onConfirm}
-                            onDeleteIntentNode={this.onDeleteIntentNode.bind(this)}
-                            nodeProps={{
-                                hasFlow: diagram_id => this.props.diagram_set.has(diagram_id),
-                                enterFlow: this.enterFlow,
-                                removeNode: this.removeNode,
-                                diagram: this.props.diagram,
-                                removeCombineNode: this.removeCombineNode,
-                                disabled: !!this.props.preview,
-                                renameFlow: this.props.renameFlow
-                            }}
-                            removeHandler={(node) => {
-                                if (this.props.undoEvents.length >= 10) {
-                                    this.props.shiftUndo()
-                                }
-                                this.props.addUndo(node, 'remove')
-                                this.props.clearRedo()
-                            }}
-                            forceRepaint={this.forceRepaint}
-                            live_mode={this.props.live_mode}
-                            editorOpen={this.props.open}
-                            setBlockMenu={this.props.setBlockMenu}
-                            setOpen={this.props.setOpen}
-                        />
-                    </div>
-                </div>
-            </React.Fragment>
-        )
+                        {_.map(this.props.canvasError, (err, idx) =>
+                            <CanvasWarning key={idx} idx={idx} err={err} />
+                        )}
+                    </ReactCSSTransitionGroup>
+              </div>
+                <WidgetBar
+                  toggleKeyboard={this.props.toggleKeyboard}
+                  keyboardHelp={this.props.keyboardHelp}
+                  engine={this.state.engine}
+                  setOpen={this.props.setOpen}
+                  update={engine => this.setState({ engine: engine })}
+                />
+                {this.props.root_id !== this.props.diagram_id && (
+                  <FlowBar
+                    deleteFlow={this.deleteFlow}
+                    copyFlow={this.copyFlow}
+                    enterFlow={this.enterFlow}
+                    preview={this.props.preview}
+                    diagram={this.props.diagram}
+                    root_id={this.props.root_id}
+                  />
+                )}
+                {this.props.blockMenu}
+                <SRD.DiagramWidget
+                  diagramEngine={this.state.engine}
+                  allowLooseLinks={false}
+                  locked={this.props.preview}
+                  onConfirm={this.props.onConfirm}
+                  onDeleteIntentNode={this.onDeleteIntentNode.bind(
+                    this
+                  )}
+                  nodeProps={{
+                    hasFlow: diagram_id =>
+                      this.props.diagram_set.has(diagram_id),
+                    enterFlow: this.enterFlow,
+                    setCanvasError: this.props.setCanvasError,
+                    removeNode: this.removeNode,
+                    diagram: this.props.diagram,
+                    removeCombineNode: this.removeCombineNode,
+                    disabled: !!this.props.preview
+                  }}
+                  removeHandler={node => {
+                    if (this.props.undoEvents.length >= 10) {
+                      this.props.shiftUndo();
+                    }
+                    this.props.addUndo(node, "remove");
+                    this.props.clearRedo();
+                  }}
+                  forceRepaint={this.forceRepaint}
+                  live_mode={this.props.live_mode}
+                  editorOpen={this.props.open}
+                  setBlockMenu={this.props.setBlockMenu}
+                  setOpen={this.props.setOpen}
+                />
+              </div>
+            </div>
+          </React.Fragment>
+        );
     }
 }
 
@@ -1570,7 +1654,8 @@ const mapStateToProps = state => {
     error: state.skills.error,
     variables: state.variables.localVariables,
     diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
-    diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram)
+    diagram: _.find(state.diagrams.diagrams, d => d.id === state.skills.skill.diagram),
+    canvasError: state.userSetting.canvasError
   }
 }
 
@@ -1581,6 +1666,7 @@ const mapDispatchToProps = dispatch => {
     updateIntents: () => dispatch(updateIntents()),
     setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
     renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
+    setCanvasError: (err) => dispatch(setCanvasError(err)),
   }
 }
 

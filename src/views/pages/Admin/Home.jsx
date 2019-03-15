@@ -44,7 +44,7 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      skill_id: 'vndn8V7mLW',
+      skill_id: '',
       encoded: true,
       loading: false,
       skill_info: null

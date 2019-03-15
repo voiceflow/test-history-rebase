@@ -1,6 +1,5 @@
-const { pool, hashids, docClient, writeToLogs } = require('./../services');
-const { renderDiagram } = require('./diagram')
-const { copySkill } = require('./skill_util')
+const { pool, hashids, docClient, writeToLogs } = require('./../services')
+const { copySkill, copyDiagramFromSkill, deleteSkillPromise } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -56,12 +55,16 @@ const cancelCertification = async (req, res) => {
 	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
 
 	try{
-		await pool.query(`
-			DELETE FROM versions
+		let deleted_row = (await pool.query(`
+			DELETE FROM skill_versions
 			WHERE 
-				versions.module_id = (SELECT module_id FROM modules WHERE skill_id = $1) 
+				canonical_skill_id = $1
+				AND cert_requested IS NOT NULL
 				AND cert_approved IS NULL
-		`, [decoded_skill_id])
+			RETURNING *
+		`, [decoded_skill_id])).rows[0]
+
+		await deleteSkillPromise(ADMIN_MARKETPLACE_ACC, deleted_row.skill_id, {delete_all_versions: false})
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -69,87 +72,17 @@ const cancelCertification = async (req, res) => {
 	}
 }
 
-const saveCertification = (req, res) => {
+const saveCertification = async (req, res) => {
 	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
 
-	const createNewModule = (skill_id, global) => {
+	const createNewModule = async (skill_id) => {
 		// Leaving module icon in for now, but not using it anymore
 		req.body.module_icon = null
-		pool.query(
-			`INSERT INTO modules (title, descr, creator_id, skill_id, tags, type, overview, module_icon, color, input, output, global) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
-			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					res.sendStatus(200);
-				}
-			}
-		);
-	}
 
-	const updateModule = (module_id, global) => {
-		// Leaving module icon in for now, but not using it anymore
-		req.body.module_icon = null
-		pool.query(
-			`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9, global = $10 WHERE module_id = $11`, 
-			[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, global, module_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					res.sendStatus(200);
-				}
-			}
-		);
-	}
-
-	const getOrCreateModule = (skill_id, global) => {
-		pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [skill_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					if(data.rows.length > 0){
-						// There's a module for this skill
-						updateModule(data.rows[0].module_id, global);
-					}else{
-						createNewModule(skill_id, global);
-					}
-				}
-			}
-		);
-	}
-
-	pool.query(`SELECT global FROM skills WHERE skill_id = $1`, [decoded_skill_id],
-	 	(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-				res.sendStatus(500)
-			}else{
-				if(data.rows.length > 0){
-					getOrCreateModule(decoded_skill_id, JSON.stringify(data.rows[0].global));
-				}else{
-					res.sendStatus(404)
-				}
-			}
-		}
-	)
-}
-
-
-
-const giveCertification = async (req, res) => {
-	let skill_id = hashids.decode(req.params.skill_id)[0];
-
-	const updateVersionTable = (market_id, module_id, template_skill_id) => {
 		try{
-			pool.query(
-				`UPDATE versions SET diagram_id = $1, cert_approved = now(), template_skill_id = $2 WHERE module_id = $3 AND cert_approved IS NULL`,
-				[market_id, template_skill_id, module_id])
+			await pool.query(
+			`INSERT INTO modules (title, descr, creator_id, skill_id, tags, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
+			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output])
 			res.sendStatus(200)
 		} catch (err) {
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -157,37 +90,27 @@ const giveCertification = async (req, res) => {
 		}
 	}
 
-	try {
-		let module_version_data = (await pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id])).rows
-		if(module_version_data.length > 0){
-			let version_id = module_version_data[0].version_id
-			let diagram_id = module_version_data[0].diagram_id
-			let module_id = module_version_data[0].module_id
-			let skill_id = module_version_data[0].skill_id
-			let market_id = "$" + version_id + '_' + diagram_id
+	const updateModule = async (module_id) => {
+		// Leaving module icon in for now, but not using it anymore
+		req.body.module_icon = null
 
-			if(data.rows[0].type === 'FLOW') {
-				let status = await renderDiagram(req.user, diagram_id, skill_id, {version: version_id, type: 'MARKET'});
-				if(status === 200){
-					updateVersionTable(market_id, module_id);
-				}else{
-					console.log("Failed to render diagram")
-					res.sendStatus(500);
-				}
-			} 
-			// !!!! ONLY FLOWS FOR NOW !!!!
-			// else {
-			// 	// Alter request object to conform to copy skill, able to do this since we don't use req anymore in this fcn
-			// 	req.params.id = hashids.encode(skill_id)
-			// 	req.params.target_creator = ADMIN_MARKETPLACE_ACC
-			// 	req.user.id = data.rows[0].creator_id
-			// 	copySkill(req, res, {copying_default_template: true}, (row) => {
-			// 		let new_skill_id = hashids.decode(row.skill_id)[0]
-			// 		updateVersionTable(row.diagram, module_id, new_skill_id)
-			// 	})
-			// }
+		try{
+			await pool.query(
+											`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
+											[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id])
+			res.sendStatus(200)
+		} catch (err) {
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+			res.sendStatus(500);
+		}
+	}
+
+	try{
+		let module_data = (await pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [decoded_skill_id])).rows
+		if(module_data.length > 0){
+			updateModule(module_data[0].module_id)
 		} else {
-			res.sendStatus(400)
+			createNewModule(decoded_skill_id)
 		}
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -195,103 +118,50 @@ const giveCertification = async (req, res) => {
 	}
 }
 
-const requestCertification = (req, res) => {
-	// PRepAre 2 acQUIre cANcEr ;)
+
+
+const giveCertification = async (req, res) => {
+	let skill_id = hashids.decode(req.params.skill_id)[0];
+
+	try{
+		await pool.query(
+			`UPDATE skill_versions SET cert_approved = now() WHERE skill_id = $1 AND cert_approved IS NULL AND cert_requested IS NOT NULL`,
+			[skill_id])
+		res.sendStatus(200)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
+}
+
+const requestCertification = async (req, res) => {
 	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
 
-	const createNewVersion = (skill_id, diagram_id, module_id, global) => {
-		// Retrieve most recent version
-		pool.query(
-			`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 ORDER BY version_id DESC LIMIT 1`,
-			[skill_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-					res.sendStatus(500)
-				}else{
-					let version_id
-					let input_array = "[]"
-					let output_array = "[]"
-					if(data.rows.length > 0){
-						version_id = data.rows[0].version_id + 1
-						input_array = data.rows[0].input
-						output_array = data.rows[0].output
-					}else{
-						version_id = 1
-					}
+	try{
+		let versions_data = (await pool.query(`SELECT min(version) FROM skill_versions WHERE canonical_skill_id = $1`, [decoded_skill_id])).rows[0].min
+		
+		if(versions_data === null){
+			versions_data = -1
+		} else {
+			versions_data -= 1
+		}
 
-					pool.query(
-						`INSERT INTO versions (module_id, diagram_id, version_id, input, output, global) VALUES ($1, $2, $3, $4, $5, $6)`, 
-						[module_id, diagram_id, version_id, input_array, output_array, global],
-						(err, data) => {
-							if(err){
-								writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-								res.sendStatus(500)
-							}else{
-								res.sendStatus(200)
-							}
-						}
-					)
-				}
-			}
-		)
+		// Creates a new version of the skill at this pt
+		req.params.id = req.params.skill_id
+		req.params.target_creator = ADMIN_MARKETPLACE_ACC
+		copySkill(req, res, {user_copy: true, request_cert: true, canonical_skill_id: decoded_skill_id, version: versions_data}, () => {
+			res.sendStatus(200)	
+		})
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
 	}
-
-	const getModule = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM modules WHERE modules.skill_id = $1`, [skill_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					if(data.rows.length > 0){
-						createNewVersion(skill_id, diagram_id, data.rows[0].module_id, JSON.stringify(data.rows[0].global));
-					}
-				}
-			}
-		);
-	}
-
-	const checkVersions = (skill_id, diagram_id) => {
-		pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					if(data.rows.length > 0){
-						// Already in publishing process, return 
-						res.status(400).send({
-	                        message: "Flow is in the certification process"
-	                    });
-					}else{
-						getModule(skill_id, diagram_id);					
-					}
-				}
-			}
-		);	
-	};
-
-	const retrieveDiagrams = (skill_id) => {
-		pool.query(`SELECT diagram FROM skills WHERE skill_id = $1`, [skill_id],
-			(err, data) => {
-				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
-				}else{
-					checkVersions(skill_id, data.rows[0].diagram);
-				}
-			}
-		);
-	}
-
-	retrieveDiagrams(decoded_skill_id);
 }
 
 const certStatus = (req, res) => {
 	let skill_id = hashids.decode(req.params.skill_id)[0];
 
-	pool.query(`SELECT * FROM versions, modules WHERE versions.module_id = modules.module_id AND modules.skill_id = $1 AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL`, [skill_id],
 		(err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
@@ -516,22 +386,20 @@ const retrieveTemplate = (req, res) => {
 	)
 }
 
-const getPendingModules = (req, res) => {
-	pool.query(
-		`
-		SELECT * FROM versions JOIN modules ON versions.module_id = modules.module_id WHERE cert_approved IS NULL
-		`,
-		[],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-				res.sendStatus(500)
-			} else {
-				hashIds(data.rows)
-				res.send(data.rows)
-			}
-		}
-	)
+const getPendingModules = async (req, res) => {
+	try{ 
+		let module_data = (await pool.query(`
+			SELECT * 
+			FROM skill_versions 
+				JOIN modules ON skill_versions.canonical_skill_id = modules.skill_id 
+				JOIN skills ON skill_versions.skill_id = skills.skill_id
+			WHERE cert_approved IS NULL AND cert_requested IS NOT NULL`)).rows
+		hashIds(module_data)
+		res.status(200).send(module_data)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
 const getDefaultTemplates = (req, res) => {

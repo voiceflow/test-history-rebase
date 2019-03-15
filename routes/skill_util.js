@@ -441,7 +441,10 @@ exports.copySkill = async (req, res, options, cb = false) => {
   }
 
   try {
-    let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
+    let copy_skill
+    if(!options.diagrams_only){
+      copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
+    }
     // Copy products, displays, and email templates on sql and store new ids for remapping
     if(options.user_copy) {
       try{
@@ -471,21 +474,28 @@ exports.copySkill = async (req, res, options, cb = false) => {
       .then(async () => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
-          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
-            if (err) {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-              res.sendStatus(500)
-            }
-          })
-          if(process.env.NODE_ENV !== 'test'){
-            analytics.track({
-              userId: req.user.id,
-              event: 'Project Created',
-              properties: {
-                skill_id: copy_skill.skill_id,
-                original_skill_id: id
+          try{
+            if(options.request_cert){
+              await pool.query(
+                `INSERT INTO skill_versions (canonical_skill_id, skill_id, cert_requested, version) VALUES ($1, $2, now(), $3)`, 
+                [options.canonical_skill_id, copy_skill.skill_id, options.version])
+            } else {
+              await pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id])
+
+              if(process.env.NODE_ENV !== 'test'){
+                analytics.track({
+                  userId: req.user.id,
+                  event: 'Project Created',
+                  properties: {
+                    skill_id: copy_skill.skill_id,
+                    original_skill_id: id
+                  }
+                })
               }
-            })
+            } 
+          } catch (err) {
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+            res.sendStatus(500)
           }
         }
 
@@ -510,3 +520,67 @@ exports.copySkill = async (req, res, options, cb = false) => {
     res.sendStatus(500)
   }
 }
+
+// exports.copyDiagramFromSkill = async (skill_id, new_user, target_skill_id) => {
+//   // skill_id = hashids.decode(skill_id)[0]
+//   // if(target_skill_id){
+//   //   target_skill_id = hashids.decode(target_skill_id)[0]
+//   // }
+
+//   const copyDynamo = (diagram_id) => {
+//     let get_params = {
+//       TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+//       Key: {
+//         'id': diagram_id
+//       }
+//     }
+
+//     try{
+//       let data = await docClient.get(get_params).promise()
+//       if(data.Item){
+//         remapDiagramIds(data.Item)
+//       } else {
+//         return null
+//       }
+
+//     } catch (err){
+//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+//       return null
+//     }
+//   }
+
+//   const copyDiagram = (diagram_row, user) => {
+//     if(user === undefined){
+//       user = 185 // TODO: set to marketplace user
+//     }
+
+//     return new Promise((resolve, reject) => {
+//       let new_diagram_id = copyDynamo()
+
+//       // Copy on SQL
+//     })
+//   }
+
+//   try{
+//     let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
+//     let copied_diagram_promises = []
+//     for(let i in diagram_data){
+//       copied_diagram_promises.push(copyDiagram(diagram_data[i], new_user))
+//     }
+
+//     Promise.all(copied_diagram_promises)
+//     .then(() => {
+//       console.log('goteem')
+//       return 200
+//     })
+//     .catch(err => {
+//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+//       return 500
+//     })
+
+//     return 500
+//   } catch (err) {
+//     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+//     return 500
+//   }
+// }

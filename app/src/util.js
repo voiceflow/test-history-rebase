@@ -47,7 +47,7 @@ const formatName = (name) => {
 
 const getSlotType = (slot, platform) => {
 	let type = slot.name
-	if (slot.type.value.toLowerCase() !== 'custom') {
+	if (slot.type.value && slot.type.value.toLowerCase() !== 'custom') {
 		let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
 		if (!default_slot) {
 			type = slot.type.value  //Platform specific slot

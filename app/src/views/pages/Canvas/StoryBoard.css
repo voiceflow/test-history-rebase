@@ -1778,6 +1778,12 @@ label {
 }
 .srd-default-node__title {
     padding: 0 !important;
+    background-color: transparent;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 15px;
+    color: #132042 !important;
 }
 
 .srd-default-node.comment .srd-default-node__name {
@@ -2033,15 +2039,6 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 auto;
-}
-
-.srd-default-node__title {
-    background-color: transparent;
-    font-weight: bold;
-    text-align: center;
-    padding-bottom: 5px;
-    font-size: 15px;
-    color: #132042 !important;
 }
 
 /* button.close{

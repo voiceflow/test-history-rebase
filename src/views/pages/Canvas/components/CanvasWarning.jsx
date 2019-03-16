@@ -16,9 +16,9 @@ class CanvasWarning extends Component {
     render(){
         return(
                 <div className='canvas-warning'>
-                    <img className="float-left mt-3 mb-3 ml-2 mr-2" src={"/yellow-error.svg"} alt="error"/>
-                    <div className="float-right mr-1 mt-1 close-warning" onClick={() => this.props.closeCanvasError(this.props.idx)}>x</div>
-                    <div className="pt-3 pb-3">{`${this.props.err}`}</div>
+                    <img className="mr-2" src={"/yellow-error.svg"} alt="error"/>
+                    <div className="text-center w-100">{`${this.props.err}`}</div>
+                    <div className="close-warning ml-3" onClick={() => this.props.closeCanvasError(this.props.idx)}>x</div>
                 </div>
         )
     }

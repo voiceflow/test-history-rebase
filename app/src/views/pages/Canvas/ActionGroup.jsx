@@ -785,6 +785,12 @@ export class ActionGroup extends PureComponent {
                   </div>
               </div>
           default:
+              if (this.state.is_first_upload) {
+                  axios.post('/analytics/track_dev_account')
+                      .catch(err => {
+                          console.error(err)
+                      })
+              }
               return <div>
                   <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
                   <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
@@ -831,6 +837,12 @@ export class ActionGroup extends PureComponent {
               </React.Fragment>
           }
       } else {
+          if (this.state.is_first_upload) {
+              axios.post('/analytics/track_dev_account')
+                  .catch(err => {
+                      console.error(err)
+                  })
+          }
           modal_content = <div>
               <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
               <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>

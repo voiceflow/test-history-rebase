@@ -75,10 +75,17 @@ const generateDialogflowPackage = (params) => {
         entities: slot.inputs.map(input => {
 
           const input_arr = input.split(',').map(e => e.trim())
+          const synonyms = input_arr.slice(1)
 
-          return {
-            value: input_arr[0],
-            synonyms: input_arr.length > 1 ? input_arr.slice(1) : undefined
+          if (synonyms.length > 0) {
+            return {
+              value: input_arr[0],
+              synonyms: synonyms
+            }
+          } else {
+            return {
+              value: input_arr[0]
+            }
           }
         })
       })

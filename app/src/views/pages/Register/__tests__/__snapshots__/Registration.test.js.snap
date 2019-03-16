@@ -122,7 +122,6 @@ exports[`Onboarding renders without crashing 1`] = `
             className="text-center small mt-2"
           >
             <Link
-              replace={false}
               style={
                 Object {
                   "color": "#8da2b5",

@@ -102,6 +102,14 @@ class Templates extends Component {
 
     createSkill(module_id) {
         this.setState({ loading: true })
+
+        if(localStorage.getItem('is_first_session') === 'true'){
+            axios.post('/analytics/track_first_project')
+            .catch(err => {
+                console.error(err)
+            })
+        }
+
         axios.post(`/marketplace/template/${module_id}/copy`, {
             name: this.state.name,
             locales: this.state.locales,

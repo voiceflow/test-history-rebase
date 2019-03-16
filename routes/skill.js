@@ -1579,3 +1579,28 @@ exports.getDevVersion = async (req, res) => {
     res.sendStatus(500)
   }
 }
+
+exports.getSkillInfo = async (req, res) => {
+  let skill = {}
+  if(req.query.encoded){
+    skill.id = hashids.decode(req.params.id)[0]
+    skill.encoded = req.params.id
+  }else{
+    skill.encoded = hashids.encode(req.params.id)
+    skill.id = req.params.id
+  }
+  try {
+    let find = await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1 LIMIT 1`, [skill.id])
+    if(find.rows.length === 0){
+      res.sendStatus(404)
+      return
+    }
+    skill.canonical_skill_id = find.rows[0].canonical_skill_id
+    skill.skills = (await pool.query(`SELECT * FROM skills s INNER JOIN skill_versions sv ON sv.skill_id = s.skill_id WHERE sv.canonical_skill_id = $1`, [skill.canonical_skill_id])).rows
+    skill.skill = _.find(skill.skills, s => s.skill_id = skill.id)
+    res.send(skill)
+  }catch(e){
+    console.error(e)
+    res.status(500).send(e)
+  }
+}

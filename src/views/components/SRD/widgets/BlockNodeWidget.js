@@ -141,7 +141,7 @@ export class BlockNodeWidget extends BaseWidget {
 	combineNode(e = null) {
 		let current = this.props.diagramEngine.getSuperSelect();
 		let target_node = this.props.node
-		if (!(combineAppendValidation(target_node) && combineAppendValidation(current)) || !combineValidation(current, target_node, this.props.nodeProps.setCanvasError)) {
+		if ((!combineAppendValidation(target_node) && !combineAppendValidation(current))) {
 			this.props.nodeProps.setCanvasError(`Cannot combine blocks of type ${current.extras.type} and ${target_node.extras.type}`)
 		}
 		if (combineValidation(current, target_node, this.props.nodeProps.setCanvasError) && (combineAppendValidation(current) || (combineAppendValidation(target_node)))) {

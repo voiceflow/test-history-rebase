@@ -368,7 +368,7 @@ export class BlockNodeWidget extends BaseWidget {
 										className="btn btn-black btn-sm"
 										onMouseDown={(e) => e.stopPropagation()}
 										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
-										Enter Flow
+										<i className="fas fa-clone mr-1"/>Enter Flow
 									</button>
 								</div>
 							}
@@ -438,10 +438,10 @@ export class BlockNodeWidget extends BaseWidget {
 							</React.Fragment>
 					}
 					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
-						className="btn btn-black btn-sm mt-1"
+						className="btn btn-black btn-sm mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
-						Enter Flow
+						<i className="fas fa-clone mr-1"/>Enter Flow
 					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}

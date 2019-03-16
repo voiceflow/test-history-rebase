@@ -121,7 +121,7 @@ class DiagramBlock extends Component {
                                         this.setState({
                                             node: node
                                         }, this.props.onUpdate)
-                                        this.props.enterFlow(selected.value);
+                                        this.props.enterFlow(node.extras.diagram_id);
                                     }}
                                     options={options}
                                 />

@@ -271,6 +271,7 @@ audio {
 }
 
 .btn-black {
+  min-width: 88px;
     border-radius: 20px;
     color: #8da2b5;
     background-color: #fff;

@@ -2026,7 +2026,7 @@ label {
 }
 
 .srd-default-node__name > span {
-    max-width: 120px;
+    max-width: 115px;
     display: block;
     white-space: nowrap; 
     overflow: hidden;

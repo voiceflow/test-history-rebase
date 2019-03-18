@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import ConfirmModal from '../ConfirmModal';
+import {ConfirmModal} from '../ConfirmModal';
 import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()

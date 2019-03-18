@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import { SingleValueOption, SlotOption, SlotSynonyms } from './components/SlotComponents'
+import SlotSynonyms, { SingleValueOption, SlotOption } from './components/SlotComponents'
 import { openTab } from 'actions/userActions'
 import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
@@ -74,7 +74,6 @@ class Capture extends Component {
                     {this.state.node.extras.slot_type && this.state.node.extras.slot_type.label === 'Custom' && <SlotSynonyms
                         inputs={this.state.node.extras.slot_inputs}
                         update={this.update}
-                        onError={this.props.onError}
                         placeholder="Custom Input Example"
                     />}
                     <hr/>

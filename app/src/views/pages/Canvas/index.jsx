@@ -14,7 +14,6 @@ import './StoryBoard.css'
 
 //HOCs
 import {undo, redo} from './../../HOC/UndoRedo';
-import { error } from './../../HOC/onError';
 import { open, blockMenu } from './../../HOC/canvasHelper';
 import { keyboardModal } from './../../HOC/ModalHandlers'
 
@@ -27,6 +26,7 @@ import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/sk
 import { setVariables } from './../../../actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
+import { setError, setConfirm } from 'actions/modalActions'
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
@@ -40,7 +40,6 @@ import Spotlight from './Spotlight'
 import { Toolkit } from './../../components/SRD/Toolkit'
 import FlowBar from './FlowBar'
 import DefaultModal from 'views/components/Modals/DefaultModal'
-import ErrorModal from 'views/components/Modals/ErrorModal'
 import ShortCuts from 'views/components/ShortCuts'
 import Mousetrap from 'mousetrap'
 
@@ -294,7 +293,7 @@ export class Canvas extends Component {
         if(!checkBlockDisabledLive(this.props.live_mode, selected.extras.type)){
             this.state.engine.stopMove()
             if (selected.extras && selected.extras.type === 'god'){
-                this.props.onConfirm({
+                this.props.setConfirm({
                     warning: true,
                     text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{selected.name}</i> can not be recovered</Alert>,
                     confirm: () => selected.remove()
@@ -516,7 +515,7 @@ export class Canvas extends Component {
                                 try{(c_node.extras['alexa'].intent.value === intent && count++)}catch(e){}
                             }
                             if(count < 2){
-                                this.props.onConfirm({
+                                this.props.setConfirm({
                                     text: <Alert className="mb-0"><b>{intent}</b> is required by default</Alert>,
                                     confirm: _.noop
                                 })
@@ -528,7 +527,7 @@ export class Canvas extends Component {
                 }catch (e){}
             }
 
-            this.props.onConfirm({
+            this.props.setConfirm({
                 warning: true,
                 text: <Alert color="danger" className="mb-0">Remove this command?</Alert>,
                 confirm: removeNode
@@ -694,7 +693,7 @@ export class Canvas extends Component {
     }
     
     deleteFlow(flow_id) {
-        this.props.onConfirm({
+        this.props.setConfirm({
             warning: true,
             text: <Alert color = "danger"
             className = "mb-0" >
@@ -1365,7 +1364,7 @@ export class Canvas extends Component {
                     })
                 }
             }
-            this.props.onConfirm(confirm_info)
+            this.props.setConfirm(confirm_info)
         } else {
             this.updateFulfillmentOnDeletion(deleted_node)
         }
@@ -1421,10 +1420,6 @@ export class Canvas extends Component {
                 return true;
               }}
             />
-            <ErrorModal
-              error={this.props.onError}
-              dismiss={() => this.props.clearError()}
-            />
             <DefaultModal
               open={this.state.upgrade_modal}
               header="Multi Platform Development"
@@ -1476,7 +1471,6 @@ export class Canvas extends Component {
                 onSave={this.onSave}
                 saving={this.state.saving}
                 saved={this.state.saved}
-                onError={this.props.setError}
                 onTest={this.onTest}
                 updateGoogleFade={this.updateGoogleFade}
                 updateLinter={this.updateLinter}
@@ -1520,7 +1514,6 @@ export class Canvas extends Component {
                 copyFlow={this.copyFlow}
                 deleteFlow={this.deleteFlow}
                 preview={this.props.preview}
-                onError={this.props.setError}
                 toggleUpgrade={this.props.toggleUpgrade}
                 type_counter={this.state.type_counter}
               />
@@ -1561,8 +1554,6 @@ export class Canvas extends Component {
                 finished={() => {
                   this.onboarding = false;
                 }}
-                onError={this.props.setError}
-                onConfirm={this.props.onConfirm}
                 history={this.props.history}
                 diagram_level_intents={this.state.diagram_level_intents}
                 setCanvasEvents={this.setMousetrap}
@@ -1610,7 +1601,7 @@ export class Canvas extends Component {
                   diagramEngine={this.state.engine}
                   allowLooseLinks={false}
                   locked={this.props.preview}
-                  onConfirm={this.props.onConfirm}
+                  onConfirm={this.props.setConfirm}
                   onDeleteIntentNode={this.onDeleteIntentNode.bind(
                     this
                   )}
@@ -1667,6 +1658,8 @@ const mapDispatchToProps = dispatch => {
     setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
     renameFlow: (id, name) => dispatch(renameDiagram(id, name)),
     setCanvasError: (err) => dispatch(setCanvasError(err)),
+    setError: (err) => dispatch(setError(err)),
+    setConfirm: (confirm) => dispatch(setConfirm(confirm))
   }
 }
 
@@ -1677,5 +1670,4 @@ export default compose(
   keyboardModal,
   undo,
   redo,
-  error,
 )(Canvas);

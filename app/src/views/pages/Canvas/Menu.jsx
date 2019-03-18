@@ -115,7 +115,6 @@ class Menu extends Component {
             case 'variables':
                 return <Variables
                     locked={this.props.preview}
-                    onError={this.props.onError}
                 />
             case 'project':
                 return <Project

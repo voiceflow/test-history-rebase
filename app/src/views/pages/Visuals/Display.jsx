@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import { addDisplay, updateDisplay } from './../../../actions/displayActions'
+import { setError } from 'actions/modalActions'
 
-import ErrorModal from '../../components/Modals/ErrorModal'
 import { Spinner } from 'views/components/Spinner'
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
@@ -28,7 +28,6 @@ class Display extends Component {
 
         this.state = {
             loading: !is_new,
-            error: null,
             display_id: id,
             document: is_new ? 'Write/Paste APL Document Here' : '',
             title: '',
@@ -65,11 +64,9 @@ class Display extends Component {
                 });
             }).catch(err => {
                 console.error(err);
-                this.setState({
-                    error: {
+                this.props.setError({
                         message: 'Unable to Retrieve Display',
-                    }
-                });
+                    })
             })
         }else{
             this.setState({
@@ -129,10 +126,10 @@ class Display extends Component {
             })
             .catch(err=>{
                 console.error(err);
+                this.props.setError({
+                  message: "Unable to save new display"
+                });
                 this.setState({
-                    error: {
-                        message: 'Unable to save new display'
-                    },
                     saving: false
                 })
             })
@@ -148,10 +145,10 @@ class Display extends Component {
             })
             .catch(err=>{
                 console.error(err);
+                this.props.setError({
+                  message: "Unable to save display"
+                });
                 this.setState({
-                    error: {
-                        message: 'Unable to save display'
-                    },
                     saving: false
                 });
             });
@@ -183,14 +180,14 @@ class Display extends Component {
                         datasource: JSON.stringify(datasource, null, "\t")
                     })
                 }catch(err){
-                    return this.props.onError("Invalid JSON Format")
+                    return this.props.setError("Invalid JSON Format")
                 }
             }
 
             fileReader.onloadend = handleFileRead;
             fileReader.readAsText(accepted[0])
         }else if(Array.isArray(rejected) && rejected.length > 0){
-            this.props.onError("APL JSON Files Only")
+            this.props.setError("APL JSON Files Only")
         }
     }
 
@@ -198,9 +195,6 @@ class Display extends Component {
 
         return (
             <div className="business-page-inner">
-                <ErrorModal error={this.state.error} dismiss={()=>{
-                    this.setState({error: null});
-                }}/>
                 { this.state.loading ? 
                     React.createElement(Spinner, {name: 'Displays'}) :
                     <Dropzone
@@ -339,4 +333,10 @@ class Display extends Component {
 const mapStateToProps = state => ({
     skill_id: state.skills.skill.skill_id
 })
-export default connect(mapStateToProps)(Display);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err)),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Display);

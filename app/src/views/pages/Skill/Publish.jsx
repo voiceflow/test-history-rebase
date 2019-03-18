@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { compose } from 'recompose'
 
 import PublishAmazon from './PublishAmazon'
 import PublishMarket from '../PublishMarket/PublishMarket'

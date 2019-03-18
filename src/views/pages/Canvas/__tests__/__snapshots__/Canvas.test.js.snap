@@ -4,6 +4,7 @@ exports[`Canvas render canvas 1`] = `
 <Fragment>
   <Prompt
     message={[Function]}
+    when={true}
   />
   <ErrorModal
     dismiss={[Function]}

@@ -80,6 +80,7 @@ exports[`Dashboard render dashboard 1`] = `
       </Tooltip>
       <Link
         className="no-underline ml-1"
+        replace={false}
         to="/templates"
       >
         <button

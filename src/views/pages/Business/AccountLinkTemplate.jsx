@@ -1,13 +1,15 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import update from 'immutability-helper';
 import Select from 'react-select';
 
- import ErrorModal from './../../components/Modals/ErrorModal'
 import MultipleFields from './../../components/Forms/MultipleFields';
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import { Nav, NavItem, NavLink, Input } from 'reactstrap';
+
+import { setError } from 'actions/modalActions'
 
  const clientAuthScheme = [
   {value: 'HTTP_BASIC', label: 'HTTP Basic(recommended)'},
@@ -20,7 +22,6 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
         super(props);
 
          this.state = {
-            error: null,
             accountLinkingRequest: {
               skipOnEnablement: false,
               type: "AUTH_CODE",
@@ -80,11 +81,7 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
           }
         }).catch(err => {
             console.error(err);
-            this.setState({
-                error: {
-                    message: 'Unable to Retrieve Template',
-                }
-            });
+            this.props.setError({message: 'Unable to Retrieve Template',})
         })
     }
 
@@ -100,10 +97,8 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
       })
       .catch(err=>{
           console.error(err);
+          this.props.setError({message: 'Unable to save template'})
           this.setState({
-              error: {
-                  message: 'Unable to save template'
-              },
               saving: false
           });
       });
@@ -144,9 +139,6 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
      render() {
         return (
             <div className="business-page-inner">
-                <ErrorModal error={this.state.error} dismiss={()=>{
-                    this.setState({error: null});
-                }}/>
                 <div className="content">
                     <div className="space-between">
                         <h5 className="text-muted mb-0">Account Linking Template</h5>
@@ -317,4 +309,9 @@ import { Nav, NavItem, NavLink, Input } from 'reactstrap';
     }
 }
 
- export default AccountLinkTemplate;
+const mapDispatchToProps = dispatch => {
+  return {
+    setError: (err) => dispatch(setError(err))
+  }
+}
+ export default connect(null, mapDispatchToProps)(AccountLinkTemplate);

@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
+import { connect } from 'react-redux'
 import CanFulfill from './Canfulfill'
 import { BUILT_IN_INTENTS_ALEXA } from 'Constants'
 // import { Discovery } from 'aws-sdk';
 import { intentHasSlots } from 'Helper'
 import { FormGroup, Label, Alert } from 'reactstrap'
+import { setError } from 'actions/modalActions'
 import axios from 'axios'
 
 const BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {
@@ -46,7 +48,7 @@ class DiscoverySettings extends Component{
         .then(() => {
         })
         .catch(err => {
-            this.props.onError('Error Saving Fulfillment')
+            this.props.setError('Error Saving Fulfillment')
         })
     }
 
@@ -88,7 +90,6 @@ class DiscoverySettings extends Component{
                             selected_intent={fulfillment_intent}
                             history={this.props.history}
                             skill_id={this.props.skill.skill_id}
-                            onError={this.props.onError}
                             save={this.save}
                         />}
                 </FormGroup>
@@ -103,4 +104,9 @@ class DiscoverySettings extends Component{
     }
 }
 
-export default DiscoverySettings
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(null, mapDispatchToProps)(DiscoverySettings)

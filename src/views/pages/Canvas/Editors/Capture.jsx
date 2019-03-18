@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { SingleValueOption, SlotOption, SlotSynonyms } from './components/SlotComponents'
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
 class Capture extends Component {
     constructor(props) {
@@ -27,12 +29,20 @@ class Capture extends Component {
     }
 
     handleSelection(selected){
-        let node = this.state.node
-        node.extras.variable = selected.value
+        if (selected.value !== 'Create Variable'){
+            let node = this.state.node
+            node.extras.variable = selected.value
 
-        this.setState({
-            node: node
-        }, this.props.onUpdate)
+            this.setState({
+                node: node
+            }, this.props.onUpdate)
+        } else {
+            localStorage.setItem(
+                "tab",
+                "variables"
+            );
+            this.props.openVarTab("variables");
+        }
     }
 
     updateSlotType(target) {
@@ -72,12 +82,17 @@ class Capture extends Component {
                 <label>Capture Input to: </label>
                 <Select
                     classNamePrefix="variable-box"
+                    styles={selectStyles}
                     placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                     className="variable-box"
+                    components={{Option: variableComponent}}
                     value={this.state.node.extras.variable ? {label: '{' + this.state.node.extras.variable + '}', value: this.state.node.extras.variable} : null}
                     onChange={this.handleSelection}
-                    options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                        return {label: '{' + variable + '}', value: variable}
+                    options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                        if (idx === this.props.variables.length-1){
+                            return { label: variable, value: variable, openVar: this.props.openVarTab }
+                        }
+                        return { label: '{' + variable + '}', value: variable }
                     }) : null}
                 />
             </div>
@@ -88,4 +103,11 @@ class Capture extends Component {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode
 })
-export default connect(mapStateToProps)(Capture);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Capture);

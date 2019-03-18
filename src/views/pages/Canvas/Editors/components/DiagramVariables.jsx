@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import Select from 'react-select';
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class DiagramVariables extends Component {
     render() {
@@ -41,4 +44,11 @@ class DiagramVariables extends Component {
     }
 }
 
-export default DiagramVariables;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+
+export default connect(null, mapDispatchToProps)(DiagramVariables);

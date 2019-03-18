@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
+import { compose, withProps } from 'recompose'
 // import createSingleLinePlugin from 'draft-js-single-line-plugin';
 // import createMentionPlugin, { defaultSuggestionsFilter } from './../../../../../assets/draft-js-mention/lib';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
@@ -18,7 +19,6 @@ class VariableText extends Component {
 
     constructor(props) {
         super(props);
-
         this.mentionPlugin = createMentionPlugin({
             supportWhitespace: false,
             theme: {
@@ -41,7 +41,7 @@ class VariableText extends Component {
 
         this.state = {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
-            suggestions: this.props.variables.map(v => {return {name: v}})
+            suggestions: _.filter(this.props.variables, v => v !== 'Create Variable').map(v => {return {name: v}})
         };
     }
 
@@ -59,7 +59,7 @@ class VariableText extends Component {
 
     onSearchChange = ({ value }) => {
         this.setState({
-            suggestions: defaultSuggestionsFilter(value, this.props.variables.map(v => {return {name: v}})),
+            suggestions: defaultSuggestionsFilter(value, _.filter(this.props.variables, v=> v !== 'Create Variable').map(v => {return {name: v}})),
         });
     };
 
@@ -86,7 +86,6 @@ class VariableText extends Component {
                     onChange={this.onChange}
                     placeholder={this.props.placeholder ? this.props.placeholder : 'Enter Text Here'}
                     stripPastedStyles={true}
-                    // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions
                   onSearchChange={this.onSearchChange}

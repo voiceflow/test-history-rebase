@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {Dropdown, Input, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import { connect } from "react-redux";
 import Select from 'react-select';
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 import './Expression.css'
 
 import { symbols, groups } from './Expression.config'
@@ -123,12 +126,20 @@ class Expression extends Component {
     }
 
     handleSelection(selected){
-        let expression = this.state.expression;
-        expression.value = selected.value;
+        if (selected.value !== 'Create Variable') {
+            let expression = this.state.expression;
+            expression.value = selected.value;
 
-        this.setState({
-            expression: expression
-        }, this.props.onUpdate);
+            this.setState({
+                expression: expression
+            }, this.props.onUpdate);
+        } else {
+            localStorage.setItem(
+                "tab",
+                "variables"
+            );
+            this.props.openVarTab("variables");
+        }
     }
 
     render() {
@@ -161,12 +172,17 @@ class Expression extends Component {
                     <div className="d-flex">
                         <Select
                             classNamePrefix="variable-box"
+                            styles={selectStyles}
                             placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                             className="variable-box"
+                            components={{Option: variableComponent}}
                             value={this.state.expression.value ? {label: '{' + this.state.expression.value + '}', value: this.state.expression.value} : null}
                             onChange={this.handleSelection}
-                            options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                return {label: '{' + variable + '}', value: variable}
+                            options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                                if (idx === this.props.variables.length-1){
+                                    return { label: variable, value: variable, openVar: this.props.openVarTab }
+                                }
+                                return { label: '{' + variable + '}', value: variable }
                             }) : null}
                         />
                         {dropdown}
@@ -200,4 +216,10 @@ class Expression extends Component {
     }
 }
 
-export default Expression;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Expression);

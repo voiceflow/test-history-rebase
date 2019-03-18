@@ -34,7 +34,9 @@ import socket from 'socket.io-client'
 import {evaluateMaintenance} from './MAINTENANCE'
 
 // GLOBAL MODALS
+import { setConfirm } from 'actions/modalActions'
 import ConfirmModal from "./views/components/Modals/ConfirmModal"
+import ErrorModal from './views/components/Modals/ErrorModal'
 
 // SECRET
 var STRIPE_KEY
@@ -130,10 +132,7 @@ class App extends Component {
       loading: AuthenticationService.isAuth(),
       session: false,
       stripe: null,
-      confirm: null,
     }
-
-    this.onConfirm = this.onConfirm.bind(this)
 
     if(AuthenticationService.isAuth()){
       AuthenticationService.check((err, res) => {
@@ -160,13 +159,13 @@ class App extends Component {
 
     evaluateMaintenance((time) => {
       if(time){
-        setTimeout(() => this.onConfirm({
+        setTimeout(() => store.dispatch(setConfirm({
           size: "rg",
           text: <Alert className="mb-0">
             Voiceflow Creator will go under planned maintenance<br/>
             <b>{time}</b> from now<hr/>
             Live Projects will not be affected</Alert>
-        }), 100)
+        })), 100)
       }else{
         window.location.replace('https://getvoiceflow.com/maintenance')
         window.location.href = 'https://getvoiceflow.com/maintenance'
@@ -188,23 +187,6 @@ class App extends Component {
     }
   }
 
-  onConfirm(confirm) {
-    this.setState({
-      confirm: {
-        ...confirm, confirm: () => {
-          this.setState({ confirm: null })
-          if (typeof confirm.confirm !== 'function') return
-
-          if (confirm.params) {
-            confirm.confirm(...confirm.params)
-          } else {
-            confirm.confirm()
-          }
-        }
-      }
-    })
-  }
-
   render() {
 
     if(this.state.loading){
@@ -215,11 +197,11 @@ class App extends Component {
           </div>
       </div>
     }
-
     return (
       <StripeProvider stripe={this.state.stripe}>
         <Provider store={store}>
-        <ConfirmModal confirm={this.state.confirm} toggle={() => this.setState({ confirm: null })} />
+          <ConfirmModal/>
+          <ErrorModal />
         <Router history={history}>
           <div id="body">
             {(this.state.session && history.location.pathname !== '/onboarding') && <Route render={(props) => {
@@ -234,40 +216,40 @@ class App extends Component {
                 {/* Template Routes */}
                 <PrivateRoute exact path="/templates" component={Templates}/>
                 {/* Canvas Routes */}
-                <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" onConfirm={this.onConfirm} preview/>
-                <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} onConfirm={this.onConfirm} page="canvas"/>
-                <PrivateRoute path="/canvas/:skill_id" component={Skill} onConfirm={this.onConfirm} page="canvas"/>
+                <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
+                <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
+                <PrivateRoute path="/canvas/:skill_id" component={Skill} page="canvas"/>
                 {/* Business routes */}
-                <PrivateRoute path="/business/:skill_id/link_account/templates" component={Skill} onConfirm={this.onConfirm} page='business' secondaryPage="link_account"/>
-                <PrivateRoute path="/business/:skill_id/email/:id" component={Skill} onConfirm={this.onConfirm} page='business' secondaryPage="email"/>
-                <PrivateRoute path="/business/:skill_id/emails" component={Skill} onConfirm={this.onConfirm} page='business' secondaryPage="emails"/>
-                <PrivateRoute path="/business/:skill_id/product/:id" component={Skill} onConfirm={this.onConfirm} page="business" secondaryPage="product"/>
-                <PrivateRoute path="/business/:skill_id/products" component={Skill} onConfirm={this.onConfirm} page="business" secondaryPage="products"/>
-                <PrivateRoute path="/business/:skill_id" component={Skill} onConfirm={this.onConfirm} page='business' secondaryPage="home"/>
+                <PrivateRoute path="/business/:skill_id/link_account/templates" component={Skill} page='business' secondaryPage="link_account"/>
+                <PrivateRoute path="/business/:skill_id/email/:id" component={Skill} page='business' secondaryPage="email"/>
+                <PrivateRoute path="/business/:skill_id/emails" component={Skill} page='business' secondaryPage="emails"/>
+                <PrivateRoute path="/business/:skill_id/product/:id" component={Skill} page="business" secondaryPage="product"/>
+                <PrivateRoute path="/business/:skill_id/products" component={Skill} page="business" secondaryPage="products"/>
+                <PrivateRoute path="/business/:skill_id" component={Skill} page='business' secondaryPage="home"/>
                 {/* Settings routes */}
-                <PrivateRoute path="/settings/:skill_id/discovery/canfulfill/:id" component={Skill} onConfirm={this.onConfirm} page='settings' secondaryPage="discovery"/>
-                <PrivateRoute path="/settings/:skill_id/discovery/" component={Skill} onConfirm={this.onConfirm} page='settings' secondaryPage="discovery"/>
-                <PrivateRoute path="/settings/:skill_id/basic/" component={Skill} onConfirm={this.onConfirm} page='settings' secondaryPage="basic"/>
-                <PrivateRoute path="/settings/:skill_id/advanced/" component={Skill} onConfirm={this.onConfirm} page='settings' secondaryPage="advanced"/>
-                <PrivateRoute path="/settings/:skill_id/backups/" component={Skill} onConfirm={this.onConfirm} page='settings' secondaryPage="backups"/>
+                <PrivateRoute path="/settings/:skill_id/discovery/canfulfill/:id" component={Skill} page='settings' secondaryPage="discovery"/>
+                <PrivateRoute path="/settings/:skill_id/discovery/" component={Skill} page='settings' secondaryPage="discovery"/>
+                <PrivateRoute path="/settings/:skill_id/basic/" component={Skill} page='settings' secondaryPage="basic"/>
+                <PrivateRoute path="/settings/:skill_id/advanced/" component={Skill} page='settings' secondaryPage="advanced"/>
+                <PrivateRoute path="/settings/:skill_id/backups/" component={Skill} page='settings' secondaryPage="backups"/>
                 {/* Admin routes */}
-                <PrivateRoute path="/visuals/:skill_id/display/:id" onConfirm={this.onConfirm} component={Skill} page='visuals' secondaryPage="display"/>
-                <PrivateRoute path="/visuals/:skill_id" component={Skill} onConfirm={this.onConfirm} page='visuals' secondaryPage="displays"/>
+                <PrivateRoute path="/visuals/:skill_id/display/:id" component={Skill} page='visuals' secondaryPage="display"/>
+                <PrivateRoute path="/visuals/:skill_id" component={Skill} page='visuals' secondaryPage="displays"/>
                 <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
                 <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
-                <PrivateRoute path="/publish/:skill_id/google" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="google"/>
-                <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
-                <PrivateRoute path="/publish/:skill_id/market" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="market"/>
-                <PrivateRoute path="/publish/:skill_id" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
+                <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
+                <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
+                <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
+                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
                 <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
                 <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>
                 <PrivateRoute path="/account" name="Account" component={Account} />\
-                <PrivateRoute path="/creator_logs/:skill_id" component={Skill} onConfirm={this.onConfirm} page="logs"/>
+                <PrivateRoute path="/creator_logs/:skill_id" component={Skill} page="logs"/>
                 <Route exact path="/" render={() => (
                   AuthenticationService.isAuth() ? (
                     <Redirect to="/dashboard"/>

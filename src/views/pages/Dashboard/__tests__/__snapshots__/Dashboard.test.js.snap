@@ -92,7 +92,7 @@ exports[`Dashboard render dashboard 1`] = `
       </Link>
     </div>
   </div>
-  <ConfirmModal
+  <Connect(ConfirmModal)
     confirm={false}
     toggle={[Function]}
   />

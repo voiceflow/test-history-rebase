@@ -22,7 +22,6 @@ class VariableText extends Component {
         this.mentionPlugin = createMentionPlugin({
             supportWhitespace: false,
             theme: {
-                mention: 'depressing',
                 mentionSuggestions: 'mentionSuggestions',
                 mentionSuggestionsEntry: 'mentionSuggestionsEntry',
                 mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
@@ -73,7 +72,6 @@ class VariableText extends Component {
 
     onAddMention = () => {
         // get the mention object selected
-        console.log('yo yo yo')
     }
 
     render() {
@@ -92,11 +90,9 @@ class VariableText extends Component {
                 />
                 <MentionSuggestions
                   onSearchChange={this.onSearchChange}
-                  suggestions={_.concat(this.state.suggestions, [{name: "Create Variable"}])}
+                  suggestions={this.state.suggestions}
                   onAddMention={this.onAddMention}
-                >
-                    <div>TESTING MENTION SHIT</div>
-                </MentionSuggestions>
+                />
             </div>
         );
     }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Select from 'react-select';
 import { openTab } from 'actions/userActions'
-import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class DiagramVariables extends Component {
     render() {

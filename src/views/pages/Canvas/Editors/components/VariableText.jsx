@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
-import { compose, withProps } from 'recompose'
 // import createSingleLinePlugin from 'draft-js-single-line-plugin';
 // import createMentionPlugin, { defaultSuggestionsFilter } from './../../../../../assets/draft-js-mention/lib';
 import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';

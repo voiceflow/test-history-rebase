@@ -13,6 +13,17 @@ export const closeCanvasError = idx => ({
     payload: [idx]
 })
 
+export const openTab = tab => ({
+    type: "SET_TAB",
+    payload: {tab},
+})
+
+export const closeTab = () => ({
+    type: "CLOSE_TAB",
+})
+
 export const SET_PREVIEW = 'SET_PREVIEW'
 export const CANVAS_ERROR = 'CANVAS_ERROR'
 export const CLOSE_CANVAS_ERROR = 'CLOSE_CANVAS_ERROR'
+export const SET_TAB = 'SET_TAB'
+export const CLOSE_TAB = 'CLOSE_TAB'

@@ -344,7 +344,7 @@ class Editor extends Component {
             case 'flow':
                 return <Diagram node={this.state.node}
                     onUpdate={this.props.onUpdate}
-                    variables={this.props.variables}
+                    variables={variables}
                     createDiagram={this.props.createDiagram}
                     enterFlow={this.props.enterFlow}
                 />
@@ -438,6 +438,7 @@ class Editor extends Component {
 
     EditorRender(){
         let variables = this.props.global_variables.concat(this.props.variables)
+        variables = variables.concat(['Create Variable'])
         return <React.Fragment>
             {this.BlockViewer(variables) && React.cloneElement(this.BlockViewer(variables),{
                 node: this.state.node,

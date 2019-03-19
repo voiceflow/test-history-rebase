@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import AuthenticationService from './../../../services/Authentication'
 import ConfirmModal from './../../components/Modals/ConfirmModal'
-import UpgradeModal from './../../components/Modals/UpgradeModal'
 import {Button, Alert} from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
@@ -166,13 +165,6 @@ class Account extends Component {
                       </span>
                   </div>
               </div>
-              <UpgradeModal
-                upgrade_modal={this.props.upgrade}
-                toggle={this.toggle}
-                selected_plan={this.state.selected_plan}
-                user={this.props.user}
-                logout={this.logout}
-              />
               <div className="container my-5 pt-4">
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">

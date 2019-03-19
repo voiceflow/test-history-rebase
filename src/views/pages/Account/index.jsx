@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import AuthenticationService from './../../../services/Authentication'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import UpgradeModal from './../../components/Modals/UpgradeModal'
+import { setConfirm } from 'actions/modalActions'
 import {Button, Alert} from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
@@ -34,7 +35,6 @@ class Account extends Component {
       amzn: LOADING,
       google: LOADING,
       expiry: null,
-      confirm: null
     };
 
     this.handleChange = this.handleChange.bind(this)
@@ -45,14 +45,14 @@ class Account extends Component {
   }
 
   resetAmazon() {
-    this.setState({
-      confirm: {
+    this.props.setConfirm({
         text: <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x"/><br/>
           Resetting your Amazon Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
         </Alert>,
+        warning: true,
         confirm: () => {
-          this.setState({confirm: null, amzn: LOADING}, () => {
+          this.setState({amzn: LOADING}, () => {
             axios.delete('/session/amazon').then(()=>{
               this.setState({amzn: UNLINKED, profile: null})
             })
@@ -62,19 +62,18 @@ class Account extends Component {
             })
           })
         }
-      }
     })
   }
 
   resetGoogle() {
-    this.setState({
-      confirm: {
+    this.props.setConfirm({
         text: <Alert color="danger" className="mb-0">
           <i className="fas fa-exclamation-triangle fa-2x"/><br/>
           Resetting your Google Account is dangerous and will de-sync all your published projects. Do not reset unless you know what you are doing
         </Alert>,
+        warning: true,
         confirm: () => {
-          this.setState({confirm: null, google: LOADING}, () => {
+          this.setState({google: LOADING}, () => {
             axios.delete('/session/google/access_token').then(()=>{
               this.setState({google: UNLINKED})
             })
@@ -84,7 +83,6 @@ class Account extends Component {
             })
           })
         }
-      }
     })
   }
 
@@ -154,7 +152,6 @@ class Account extends Component {
 
   render() {
     return <div id="app" className="pt-6">
-              <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})} warning/>
               <div className="subheader">
                   <div className="container space-between">
                       <span className="subheader-title">
@@ -231,4 +228,9 @@ class Account extends Component {
   }
 }
 
-export default Account;
+const mapDispatchToProps = dispatch => {
+  return {
+    setConfirm: confirm => dispatch(setConfirm(confirm))
+  }
+}
+export default connect(null, mapDispatchToProps)(Account);

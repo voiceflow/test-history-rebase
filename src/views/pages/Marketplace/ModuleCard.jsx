@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardBody, Button } from 'reactstrap';
+import { Card, CardBody } from 'reactstrap';
 import './Marketplace.css';
 import axios from 'axios';
+import { renderModuleIcon } from './../../../util'
 
 class ModuleCard extends Component{
 	constructor(props){
@@ -13,7 +14,6 @@ class ModuleCard extends Component{
 
 		this.handleModuleView = this.handleModuleView.bind(this)
 		this.handleAddRemove = this.handleAddRemove.bind(this)
-		this.renderIcon = this.renderIcon.bind(this)
 	}
 
 	handleModuleView() {
@@ -53,25 +53,6 @@ class ModuleCard extends Component{
 		}
 	}
 
-	renderIcon(){
-		let name = this.props.module.title.match(/\b(\w)/g)
-		if(name) { name = name.join('') }
-		else { name = this.props.module.title }
-		name = name.substring(0,3)
-		
-		let module_colors = this.props.module.color.split('|')
-		if(module_colors.length === 1){
-				module_colors = ['F86683', 'FEF2F4']
-		}
-
-		let icon_style = {
-				backgroundColor: `#${module_colors[1]}`,
-				color: `#${module_colors[0]}`
-		}
-		
-		return <div className="module-card-icon"><div className="no-image module-image" style={icon_style}><h1>{name}</h1></div></div>
-	}
-
 	render(){
 		return (
 			<div className="card-container">
@@ -82,7 +63,7 @@ class ModuleCard extends Component{
 						onMouseLeave={() => {this.setState({hover:false})}}
 					>
 						<CardBody className="text-center pb-0">
-							{this.renderIcon()}
+							{this.props.module && renderModuleIcon(this.props.module.title, this.props.module.color)}
 							<h5 onClick={this.props.onClick}>{this.props.module.title}</h5>
 							<p className="text-secondary module-card-text">{this.props.module.descr}</p>
 							<hr className="m-0"/>

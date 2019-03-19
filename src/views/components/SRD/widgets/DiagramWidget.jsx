@@ -207,7 +207,9 @@ export class DiagramWidget extends BaseWidget {
 		let engine = this.props.diagramEngine
 		let selected = engine.getDiagramModel().getSelectedItems("node")
 		if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type === 'story') {
-			selected = [engine.getSuperSelect()]
+			if (engine.getSuperSelect().extras.type !== 'story'){
+				selected = [engine.getSuperSelect()]
+			}
 		}
 		if (selected.length === 1 && selected[0]) {
 			if (selected[0].extras.type === 'comment') {
@@ -217,6 +219,9 @@ export class DiagramWidget extends BaseWidget {
 				if (selected[0].combines && selected[0].combines.length === 0) {
 					engine.setSuperSelect(selected[0])
 				}
+			}
+			else {
+				this.props.setOpen(false)
 			}
 		} else if (selected.length === 0) {
 			engine.setSuperSelect(null)

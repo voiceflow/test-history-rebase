@@ -155,7 +155,6 @@ export class Interaction extends Component {
                         variables={this.props.variables}
                         slots={this.props.slots}
                         built_ins={this.props.built_ins}
-                        onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
@@ -171,9 +170,7 @@ export class Interaction extends Component {
                         onAdd={this.props.handleAddIntent}
                         onRemove={this.props.handleRemoveIntent}
                         slots={this.props.slots}
-                        onError={this.props.onError}
                         update={this.update}
-                        onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
                         clearRedo={this.props.clearRedo}
@@ -190,7 +187,6 @@ export class Interaction extends Component {
                         intents={this.props.intents}
                         slots={this.props.slots}
                         slot_types={this.props.slot_types}
-                        onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}

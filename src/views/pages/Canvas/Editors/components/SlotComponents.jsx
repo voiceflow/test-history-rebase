@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { components } from 'react-select'
+import { connect } from 'react-redux'
 import Textarea from 'react-textarea-autosize'
 import ContainedTextarea from './ContainedTextArea'
 import randomstring from 'randomstring'
 import { Badge } from 'reactstrap'
+
+import { setError } from 'actions/modalActions'
 
 const SlotOption = (props) => {
     const is_alexa = /AMAZON/.test(props.data.value)
@@ -74,7 +77,7 @@ class SlotSynonyms extends Component {
 
         if (newValue) {
             if (this.props.inputs.includes(newValue)) {
-                return this.props.onError('Duplicate value in slot')
+                return this.props.setError('Duplicate value in slot')
             }
 
             this.props.inputs.push(newValue);
@@ -175,4 +178,10 @@ class SlotSynonyms extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
 export { SlotOption, SingleValueOption, SlotDiabled, SlotSynonyms }
+export default connect(null, mapDispatchToProps )(SlotSynonyms)

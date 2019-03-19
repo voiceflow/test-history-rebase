@@ -8,12 +8,13 @@ import axios from 'axios'
 
 import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert, ModalHeader } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
-import ErrorModal from '../../components/Modals/ErrorModal'
 import ConfirmModal from '../../components/Modals/ConfirmModal'
 import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
 import { Tooltip } from 'react-tippy';
+
+import { setConfirm, setError } from 'actions/modalActions'
 
 const MAX_SIZE = 10 * 1024 * 1024
 
@@ -241,9 +242,7 @@ class GooglePublish extends Component {
       })
       .catch(err => {
         console.log(err);
-        this.setState({
-          error: 'Save Error, updates not saved'
-        });
+        this.props.setError("Save Error, updates not saved");
       });
   }
 
@@ -268,7 +267,7 @@ class GooglePublish extends Component {
       if (this.state.publish_clicked) {
         this.onPublish()
       } else {
-        this.props.onConfirm({
+        this.props.setConfirm({
           warning: false,
           text: <Alert color="success" className="mb-0">Success! Your project is now ready for upload.</Alert>,
           confirm: () => {}
@@ -283,7 +282,7 @@ class GooglePublish extends Component {
   }
 
   onUnlinkClick() {
-    this.props.onConfirm({
+    this.props.setConfirm({
       warning: true,
       text: <Alert color="warning" className="mb-0">Are you sure you want to unlink the google project {this.state.project_id}? You will be able to link a new google project afterwards.</Alert>,
       confirm: () => {
@@ -491,7 +490,6 @@ class GooglePublish extends Component {
           confirm={this.state.displayingConfirmWithdraw}
           toggle={this.toggleConfirmWithdraw}
         />
-        <ErrorModal error={this.state.error} dismiss={() => this.setState({ error: null })} />
 
         <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
           <div className="row justify-content-center">
@@ -753,4 +751,11 @@ const mapStateToProps = state => ({
   skill: state.skills.skill.skill_id
 })
 
-export default connect(mapStateToProps)(GooglePublish);
+const mapDispatchToProps = dispatch => {
+  return {
+    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    setError: (err) => dispatch(setError(err)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GooglePublish);

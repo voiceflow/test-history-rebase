@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Input } from 'reactstrap'
 import SlotInput from './SlotInput'
 import randomstring from 'randomstring'
 import converter from 'number-to-words'
+import { setError } from 'actions/modalActions'
+
 const _getIndex = (index) => {
     return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')
 }
@@ -52,7 +55,7 @@ class SlotInputs extends Component {
 
         if (used_slots.has(key)) {
             const error = `Cannot remove slot as it is currently being used in an intent (${slot_names[key]})`
-            this.props.onError(error)
+            this.props.setError(error)
         } else {
             let i = this.props.slots.findIndex(i => i.key === key)
             if(i !== -1){
@@ -89,7 +92,6 @@ class SlotInputs extends Component {
                         slot_types={this.props.slot_types}
                         nameExists={this.checkNames}
                         update={this.props.update}
-                        onError={this.props.onError}
                         removeSlot={this.handleRemoveSlot}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
@@ -108,4 +110,9 @@ class SlotInputs extends Component {
     }
 }
 
-export default SlotInputs;
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(null, mapDispatchToProps)(SlotInputs);

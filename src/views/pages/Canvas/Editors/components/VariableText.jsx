@@ -18,11 +18,9 @@ class VariableText extends Component {
 
     constructor(props) {
         super(props);
-
         this.mentionPlugin = createMentionPlugin({
             supportWhitespace: false,
             theme: {
-                mention: 'depressing',
                 mentionSuggestions: 'mentionSuggestions',
                 mentionSuggestionsEntry: 'mentionSuggestionsEntry',
                 mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
@@ -42,7 +40,7 @@ class VariableText extends Component {
 
         this.state = {
             editorState: props.raw ? EditorState.createWithContent(convertFromRaw(props.raw)) : EditorState.createEmpty(),
-            suggestions: this.props.variables.map(v => {return {name: v}})
+            suggestions: _.filter(this.props.variables, v => v !== 'Create Variable').map(v => {return {name: v}})
         };
     }
 
@@ -60,7 +58,7 @@ class VariableText extends Component {
 
     onSearchChange = ({ value }) => {
         this.setState({
-            suggestions: defaultSuggestionsFilter(value, this.props.variables.map(v => {return {name: v}})),
+            suggestions: defaultSuggestionsFilter(value, _.filter(this.props.variables, v=> v !== 'Create Variable').map(v => {return {name: v}})),
         });
     };
 
@@ -73,7 +71,6 @@ class VariableText extends Component {
 
     onAddMention = () => {
         // get the mention object selected
-        console.log('yo yo yo')
     }
 
     render() {
@@ -88,15 +85,12 @@ class VariableText extends Component {
                     onChange={this.onChange}
                     placeholder={this.props.placeholder ? this.props.placeholder : 'Enter Text Here'}
                     stripPastedStyles={true}
-                    // blockRenderMap={singleLinePlugin.blockRenderMap}
                 />
                 <MentionSuggestions
                   onSearchChange={this.onSearchChange}
-                  suggestions={_.concat(this.state.suggestions, [{name: "Create Variable"}])}
+                  suggestions={this.state.suggestions}
                   onAddMention={this.onAddMention}
-                >
-                    <div>TESTING MENTION SHIT</div>
-                </MentionSuggestions>
+                />
             </div>
         );
     }

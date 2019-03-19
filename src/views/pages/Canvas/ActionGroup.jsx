@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import { updateSkill } from './../../../actions/skillActions'
+import { setError } from 'actions/modalActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
     ModalHeader, ModalBody, Button
@@ -461,11 +462,11 @@ export class ActionGroup extends PureComponent {
               })
               this.updateGoogleStage(2)
               const error_msg = err.response && err.response.data ? err.response.data : err
-              p.onError(error_msg)
+              p.setError(error_msg)
           })
     })
     .catch(err => {
-        p.onError(err)
+        p.setError(err)
     })
   }
 
@@ -507,7 +508,7 @@ export class ActionGroup extends PureComponent {
               allowPreview: !this.state.allowPreview,
               togglingPreview: false
           })
-          this.props.onError('Unable to toggle preview')
+          this.props.setError('Unable to toggle preview')
       })
     })
   }
@@ -559,7 +560,7 @@ export class ActionGroup extends PureComponent {
               })
           })
           .catch(err => {
-              this.props.onError('Error updating live version')
+              this.props.setError('Error updating live version')
           })
   }
 
@@ -991,7 +992,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val))
+        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        setError: err => dispatch(setError(err))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

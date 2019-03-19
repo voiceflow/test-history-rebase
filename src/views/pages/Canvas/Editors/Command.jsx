@@ -8,6 +8,8 @@ import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
+import { setError } from 'actions/modalActions'
+
 const _ = require('lodash')
 
 export class Command extends Component {
@@ -44,7 +46,7 @@ export class Command extends Component {
         }
 
         if (diagram_intents.has(selected.key)) {
-            this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
+            this.props.setError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -296,9 +298,7 @@ export class Command extends Component {
                         onAdd={this.props.handleAddIntent}
                         onRemove={this.props.handleRemoveIntent}
                         slots={this.props.slots}
-                        onError={this.props.onError}
                         update={this.update}
-                        onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
                         setCanFulfill={this.props.setCanFulfill}
@@ -313,7 +313,6 @@ export class Command extends Component {
                         intents={this.props.intents}
                         slots={this.props.slots}
                         slot_types={this.props.slot_types}
-                        onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
@@ -351,6 +350,7 @@ const mapDispatchToProps = dispatch => {
     return {
         updateIntents: () => dispatch(updateIntents()),
         setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+        setError: err => dispatch(setError(err))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Command)

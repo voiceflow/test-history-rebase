@@ -237,7 +237,7 @@ class Editor extends Component {
     BlockViewer(variables) {
         switch(this.state.node.extras.type) {
             case 'story':
-                return <Story/>;
+                return;
             case 'choice':
             case 'choicenew':
                 return <Choice

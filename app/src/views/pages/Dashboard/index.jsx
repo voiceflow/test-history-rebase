@@ -18,7 +18,7 @@ import {Alert, Input} from 'reactstrap'
 import { setConfirm, setError } from 'actions/modalActions'
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
-class DashBoard extends Component {
+export class DashBoard extends Component {
     constructor(props) {
         super(props)
 

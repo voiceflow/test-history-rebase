@@ -94,6 +94,7 @@ class NewTeam extends Component {
       this.stripeHandler.open({
         closed: () => {
           this.setState({stripe_load: false})
+          console.log("closed", this)
           let gtfo = document.getElementsByClassName("stripe_checkout_app")
           if(gtfo && gtfo.length !== 0) gtfo[0].parentNode.removeChild(gtfo[0])
         }
@@ -159,17 +160,24 @@ class NewTeam extends Component {
   }
 
   onSource(source) {
-    console.log(source)
-    // axios
-    //   .post("/team/checkout", {
-    //     source: source,
-    //     invites: this.state.invites,
-    //     name: this.state.name,
-    //     image_url: this.state.image_url
-    //   })
-    //   .then(() => {
-    //     console.log("I GOT BACK")
-    //   });
+    axios
+      .post("/team/checkout", {
+        source: source,
+        invites: this.state.invites,
+        name: this.state.name,
+        image_url: this.state.image_url
+      })
+      .then(() => {
+        axios.get(`https://api.stripe.com/v1/sources/${source.id}`, {
+          params: {
+            client_secret: source.client_secret,
+            key: STRIPE_KEY
+          }
+        })
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   async handlePayment(source = null) {

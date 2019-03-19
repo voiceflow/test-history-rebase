@@ -68,7 +68,7 @@ exports.addTeam = async (req, res) => {
 
 // Creating a paid team on the first go
 exports.checkout = async (req, res) => {
-  if (!(Array.isArray(req.body.invites) && typeof req.body.name === 'string' && req.body.name.length <= 32 && req.body.token)) {
+  if (!(Array.isArray(req.body.invites) && typeof req.body.name === 'string' && req.body.name.length <= 32 && req.body.source)) {
     return res.sendStatus(400)
   }
 
@@ -84,7 +84,7 @@ exports.checkout = async (req, res) => {
         id: team_id,
         name: req.body.name
       },
-      source: req.body.token.id
+      source: req.body.source.id
     })
 
     await pool.query('UPDATE teams SET stripe_id = $1 WHERE team_id = $2', [customer.id, team_id])

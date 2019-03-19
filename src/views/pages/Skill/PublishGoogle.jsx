@@ -8,7 +8,6 @@ import axios from 'axios'
 
 import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert, ModalHeader } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
-import ConfirmModal from '../../components/Modals/ConfirmModal'
 import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
@@ -486,10 +485,6 @@ class GooglePublish extends Component {
             </div>
           </ModalBody>
         </Modal>
-        <ConfirmModal
-          confirm={this.state.displayingConfirmWithdraw}
-          toggle={this.toggleConfirmWithdraw}
-        />
 
         <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
           <div className="row justify-content-center">

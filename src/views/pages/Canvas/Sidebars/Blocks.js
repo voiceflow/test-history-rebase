@@ -7,6 +7,7 @@ import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
 import axios from 'axios';
+import withRenderModuleIcon from './../../../HOC/ModuleIcon'
 // const TABS = ['blocks', 'modules']
 
 export class Blocks extends PureComponent {
@@ -164,4 +165,4 @@ export class Blocks extends PureComponent {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode
 })
-export default connect(mapStateToProps)(Blocks);
+export default connect(mapStateToProps)(withRenderModuleIcon(Blocks));

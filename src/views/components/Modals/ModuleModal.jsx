@@ -1,5 +1,5 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-
+import withRenderModuleIcon from '../../HOC/ModuleIcon'
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 
@@ -10,11 +10,11 @@ class ModuleModal extends React.Component {
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle}>
         <ModalBody>
-          Sup
+          {this.props.module && this.props.renderIcon(this.props.module)}
         </ModalBody>
       </Modal>
     );
   }
 }
 
-export default ModuleModal;
+export default withRenderModuleIcon(ModuleModal)

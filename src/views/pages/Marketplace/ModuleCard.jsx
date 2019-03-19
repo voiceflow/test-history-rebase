@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardBody } from 'reactstrap';
 import './Marketplace.css';
 import axios from 'axios';
-import { renderModuleIcon } from './../../../util'
+import withRenderModuleIcon from '../../HOC/ModuleIcon'
 
 class ModuleCard extends Component{
 	constructor(props){
@@ -63,7 +63,7 @@ class ModuleCard extends Component{
 						onMouseLeave={() => {this.setState({hover:false})}}
 					>
 						<CardBody className="text-center pb-0">
-							{this.props.module && renderModuleIcon(this.props.module.title, this.props.module.color)}
+							{this.props.renderIcon(this.props.module)}
 							<h5 onClick={this.props.onClick}>{this.props.module.title}</h5>
 							<p className="text-secondary module-card-text">{this.props.module.descr}</p>
 							<hr className="m-0"/>
@@ -81,4 +81,4 @@ class ModuleCard extends Component{
 
 }
 
-export default ModuleCard;
+export default withRenderModuleIcon(ModuleCard)

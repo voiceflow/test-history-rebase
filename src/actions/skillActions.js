@@ -66,6 +66,7 @@ export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispat
         type: "TOGGLE_LIVE",
         payload: { skill, diagram_id, live_version, live_mode }
     })
+    return Promise.resolve()
 }
 
 export const removeFulfillment = intent_key => ({

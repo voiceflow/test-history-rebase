@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Select from 'react-select';
+import { openTab } from "actions/userActions";
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 const _ = require('lodash')
 
 const PERMISSIONS_WITH_VARIABLE_MAPS = ['User Phone Number', 'User Email', 'User Name', 'Account Linking']
@@ -35,11 +37,16 @@ class Permission extends Component {
                         <Select
                             classNamePrefix="variable-box"
                             className="map-box"
+                            styles={selectStyles}
+                            components={{ Option: variableComponent }}
                             value={this.props.map_to}
                             onChange={this.props.selectVariableToMap}
                             placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
-                            options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                return {label: '{' + variable + '}', value: variable}
+                            options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                                if (idx === this.props.variables.length-1){
+                                    return { label: variable, value: variable, openVar: this.props.openVarTab }
+                                }
+                                return { label: '{' + variable + '}', value: variable }
                             }) : null}
                         />
                     </React.Fragment>
@@ -69,12 +76,17 @@ class Permission extends Component {
                         <label>Map Purchase Quantity To</label>
                         <Select
                             classNamePrefix="variable-box"
+                            styles={ selectStyles }
+                            components={{Option: variableComponent}}
                             className="map-box"
                             value={this.props.map_to}
                             onChange={this.props.selectVariableToMap}
                             placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
-                            options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                return {label: '{' + variable + '}', value: variable}
+                            options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                                if (idx === this.props.variables.length - 1) {
+                                    return { label: variable, value: variable, openVar: this.props.openVarTab }
+                                }
+                                return { label: '{' + variable + '}', value: variable }
                             }) : null}
                         />
                     </React.Fragment>}
@@ -114,4 +126,10 @@ const mapStateToProps = state => ({
     products: state.products.products
 })
 
-export default connect(mapStateToProps)(Permission);
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Permission);

@@ -66,6 +66,11 @@ const trackUser = async (data, analytics_data) => {
 				'os': analytics_data.device.os,
 				'browser': analytics_data.device.browser
 			}
+		}, () => {
+			analytics.track({
+				userId: id,
+				event: "Signed up"
+			})
 		})
 	}
 }

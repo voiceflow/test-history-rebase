@@ -160,6 +160,7 @@ app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDi
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
+app.get('/skill/:id/info', ensureAdmin(), Skill.getSkillInfo);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
@@ -240,6 +241,8 @@ app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
 app.post('/analytics/track_canvas_time', ensureLoggedIn(), Track.trackCanvasTime)
 app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
+app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
+app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
 app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
 app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)

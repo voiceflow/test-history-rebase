@@ -4,7 +4,7 @@ import { compose } from 'recompose'
 
 import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
 
-import { fetchSkills, setLiveModeModal, updateSkill } from './actions/skillActions'
+import { fetchSkills, setLiveModeModal, updateSkill, resetSkill } from './actions/skillActions'
 import { fetchDiagrams } from './actions/diagramActions'
 import { fetchProducts } from "./actions/productActions";
 import { fetchDisplays } from "./actions/displayActions";
@@ -75,10 +75,13 @@ class Skill extends Component {
     trackCanvasTime(){
         let time_unmounted = new Date()
         if(!!this.props.skill){
-            axios.post('/analytics/track_canvas_time', {
-                duration: time_unmounted - this.time_mounted,
-                skill_id: this.props.skill.skill_id
-            })
+            let duration = time_unmounted - this.time_mounted
+            if(duration < 18000){
+                axios.post('/analytics/track_canvas_time', {
+                    duration: time_unmounted - this.time_mounted,
+                    skill_id: this.props.skill.skill_id
+                })
+            }
         }
         this.time_mounted = null
     }
@@ -139,6 +142,7 @@ class Skill extends Component {
         if(this.props.skill){
             this.trackCanvasTime()
         }
+        this.props.resetSkill()
 
         document.removeEventListener(visibilityChange, this.handleVisibilityChange)
         this.componentGracefulUnmount()
@@ -168,10 +172,9 @@ class Skill extends Component {
                     {...this.props} 
                     live_mode={this.props.live_mode}
                     ref={this.child_canvas}
-                    setOnSave={save => this.setState({onSave: save})}
                     linter={this.state.linter}
                     toggleUpgrade={this.toggleUpgrade}
-                    skillSaveCB={this.state.saveCB}/>
+                />
             case 'business':
                 return <Business
                   {...this.props}
@@ -212,24 +215,24 @@ class Skill extends Component {
             </div>
         }
 
-        if((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
-            return React.createElement(Spinner,  {name: 'Skill'})
-        }
-
         return <React.Fragment>
-            {!this.props.preview && <SecondaryNavBar page={this.props.page} onSave={this.state.onSave} history={this.props.history} setSaveCB={(saveCB) => {this.setState({saveCB: saveCB})}}/>}
-
-            <div className="skill-name-top-left fixed-top">
+          {!this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history}/>}
+          <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
+          <div className="skill-name-top-left fixed-top">
             <Link to="/" className="mx-2">
                 <img src={"/back.svg"} alt="back" className="mr-3" />
             </Link>
-            {this.props.skill ? this.props.skill.name : "New Skill"}
-            </div>
-            <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
-            <div id="app" className={(!this.props.preview ? "secondary-padding " : "") + this.props.page}>
-            {this.renderPage()}
-            </div>
-          </React.Fragment>;
+            {this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"}
+          </div>
+          {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ? 
+            React.createElement(Spinner,  {name: 'Skill'}) :
+            <>
+              <div id="app" className={(!this.props.preview ? "secondary-padding " : "") + this.props.page}>
+                {this.renderPage()}
+              </div>
+            </>
+          }
+        </React.Fragment>
     }
 }
 
@@ -251,6 +254,7 @@ const mapDispatchToProps = dispatch => {
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
     getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
     updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+    resetSkill: () => dispatch(resetSkill())
   }
 }
 

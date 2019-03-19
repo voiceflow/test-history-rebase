@@ -1,9 +1,12 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react'
+import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 
-class ConfirmModal extends React.Component {
+import { clearModal } from 'actions/modalActions'
+
+export class ConfirmModal extends React.Component {
   // TODO this class is pure cancer
   render() {
     if(!this.props.confirm){
@@ -23,6 +26,7 @@ class ConfirmModal extends React.Component {
               } else {
                 this.props.confirm.confirm()
               }
+              this.props.toggle()
             }}>
             Confirm
           </Button>{' '}
@@ -32,4 +36,13 @@ class ConfirmModal extends React.Component {
   }
 }
 
-export default ConfirmModal
+const mapStateToProps = state => ({
+  confirm: state.modal.confirmModal
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggle: () => dispatch(clearModal())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmModal)

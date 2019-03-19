@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Tooltip} from 'react-tippy'
+import { openTab, closeTab } from 'actions/userActions'
 import FlowButton from './Sidebars/components/FlowButton'
 import Blocks from './Sidebars/Blocks'
 import Variables from './Sidebars/Variables'
@@ -23,12 +24,11 @@ class Menu extends Component {
     constructor(props) {
         super(props)
 
+        // DO THIS IN MAPSTATE TO PROPS
         let tab = localStorage.getItem('tab')
         if(!tab) tab = 'blocks'
 
         this.state = {
-            open: true,
-            tab: tab,
             tree: null,
             depth: 0,
         }
@@ -104,20 +104,17 @@ class Menu extends Component {
     }
 
     openTab(tab) {
-        if(tab !== this.state.tab || !this.state.open){
-            this.setState({
-                open: true,
-                tab: tab
-            }, () => localStorage.setItem('tab', tab))
+        if(tab !== this.props.tab || !this.props.open){
+            localStorage.setItem('tab', tab)
+            this.props.setTab(tab)
         }
     }
 
     renderSideBar(){
-        switch(this.state.tab){
+        switch(this.props.tab){
             case 'variables':
                 return <Variables
                     locked={this.props.preview}
-                    onError={this.props.onError}
                 />
             case 'project':
                 return <Project
@@ -145,8 +142,8 @@ class Menu extends Component {
                     <div className="top-down">
                         {tabs.top.map((tab, i) => {
                             return (
-                                <Tooltip key={i} title={tab.tip} position='right' disabled={true && tab.tab === this.state.tab && this.state.open}>
-                                    <div className={"tool" + ((tab.tab === this.state.tab && this.state.open) ? ' active' : '')}
+                                <Tooltip key={i} title={tab.tip} position='right' disabled={true && tab.tab === this.props.tab && this.props.open}>
+                                    <div className={"tool" + ((tab.tab === this.props.tab && this.props.open) ? ' active' : '')}
                                         onClick={() => this.openTab(tab.tab)}>
                                         {tab.icon}
                                     </div>
@@ -167,13 +164,13 @@ class Menu extends Component {
                         })}
                     </div>
                 </div>
-                <div id="sidebar" className={(this.state.open ? 'open' : '')}>
+                <div id="sidebar" className={(this.props.open ? 'open' : '')}>
                     {this.props.loading_diagram ?
                         null :
                         <React.Fragment>
                             <div>
-                                <div className='block-title no-select mb-3' onClick={() => this.setState({open: false})}>
-                                    <h5 className="mb-0">{this.state.tab}</h5>
+                                <div className='block-title no-select mb-3' onClick={() => this.props.closeTab()}>
+                                    <h5 className="mb-0">{this.props.tab}</h5>
                                     <div className="close pl-3 py-3">&times;</div>
                                 </div>
                             </div>
@@ -191,7 +188,20 @@ class Menu extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    diagrams: state.diagrams.diagrams
-})
-export default connect(mapStateToProps)(Menu);
+const mapStateToProps = state => {
+    let tab = localStorage.getItem('tab')
+    return{
+        diagrams: state.diagrams.diagrams,
+        tab: tab ? tab : state.userSetting.tab,
+        open: state.userSetting.menuOpen,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setTab: (tab) => dispatch(openTab(tab)),
+        closeTab: () => dispatch(closeTab()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

@@ -41,7 +41,8 @@ export default function skillReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        skill: null
+        error: null,
+        skill: {}
       }
     case FETCH_LIVE_SKILLS_SUCCESS:
       return {

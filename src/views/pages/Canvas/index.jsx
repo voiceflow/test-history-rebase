@@ -32,7 +32,7 @@ import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
-import { Alert, ListGroup, ListGroupItem } from 'reactstrap'
+import { Alert, ListGroup, ListGroupItem, Input } from 'reactstrap'
 
 import cloneDeep from 'lodash/cloneDeep'
 import * as util from './util'
@@ -214,6 +214,21 @@ export class Canvas extends Component {
 
     componentDidUpdate(previous_props, prev_state) {
         if(previous_props.diagram_id !== this.props.diagram_id){
+            if (!_.find(this.props.diagrams,d => d.id === this.props.diagram_id).sub_diagrams){
+                this.props.setConfirm({
+                    text: <>
+                        <div className="mb-2">Name your flow</div>
+                        <Input className="form-bg mb-3"
+                            placeholder={`Enter flow name`}
+                            value={this.state.newFlowName}
+                            onChange={e => this.setState({
+                                newFlowName: e.target.value
+                            })}
+                        />
+                    </>,
+                    confirm: () => this.props.renameFlow(this.props.diagram_id, this.state.newFlowName)
+                })
+            }
             if(this.buildDiagrams !== null){
                 this.buildDiagrams(this.props.diagram_id)
             }

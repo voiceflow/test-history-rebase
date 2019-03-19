@@ -75,36 +75,16 @@ class ModuleCard extends Component{
 	render(){
 		return (
 			<div className="card-container">
-				<a onClick={this.props.showModuleDetailView} className="card-link">
+				<a onClick={() => {this.props.showModuleDetailView(this.props.module)}} className="card-link">
 					<Card 
 											className="market-card"
 						onMouseEnter={() => {this.setState({hover:true})}}
 						onMouseLeave={() => {this.setState({hover:false})}}
 					>
-						{/* <div className="d-flex justify-content-between">
-							{
-								this.props.ownership.has(this.props.module.module_id)?
-								<i className="checkbox-active fas fa-check"></i>
-								:
-								<i className="checkbox"></i>
-							}
-						</div> */}
 						<CardBody className="text-center pb-0">
-							{/* <img src={this.props.module.module_icon} className="card-icon border rounded mb-3 card-link" alt="Card icon" onClick={this.props.onClick}/> */}
 							{this.renderIcon()}
 							<h5 onClick={this.props.onClick}>{this.props.module.title}</h5>
 							<p className="text-secondary module-card-text">{this.props.module.descr}</p>
-							{/* <hr className="mb-2"/>
-							<div className="d-flex creator-class">
-								<p className="text-secondary"><small className="small-blue">CREATED BY</small><br/><i className="fas fa-user-circle invisible"></i> {this.props.module.name}</p>
-							</div> */}
-							{/* {
-								this.state.hover
-								?
-									<Button className="add-btn" onClick={this.handleAddRemove}>{this.props.ownership.has(this.props.module.module_id)? "Remove" : "Add"}</Button>
-								:
-									<Button className="nonhover-btn" onClick={this.handleAddRemove}>{this.props.ownership.has(this.props.module.module_id)? "Remove" : "Add"}</Button>
-							} */}
 							<hr className="m-0"/>
 							<div className="row w-100 justify-content-between mr-0 ml-0 p-3">
 								<span className="align-middle text-secondary">{this.props.module.name}</span> 

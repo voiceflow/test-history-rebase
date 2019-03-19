@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Select from 'react-select'
 import { Label } from 'reactstrap';
+import { connect } from 'react-redux'
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
 class Module extends Component {
     constructor(props) {
@@ -15,17 +18,22 @@ class Module extends Component {
     }
 
     selectVariable(selected, index, type) {
-        let node = this.state.node;
+        if (selected.value !== "Create Variable") {
+          let node = this.state.node;
 
-        if(type === 'inputs'){
-            node.extras.mapping.inputs[index].val = selected['value'];
-        }else if(type === 'outputs'){
-            node.extras.mapping.outputs[index].val = selected['value'];
-        }
+          if (type === "inputs") {
+            node.extras.mapping.inputs[index].val = selected["value"];
+          } else if (type === "outputs") {
+            node.extras.mapping.outputs[index].val = selected["value"];
+          }
 
-        this.setState({
+          this.setState({
             node: node
-        });
+          });
+        } else {
+          localStorage.setItem("tab", "variables");
+          this.props.openVarTab("variables");
+        }
     }
 
     render() {
@@ -79,10 +87,15 @@ class Module extends Component {
                                         className="map-box"
                                         classNamePrefix="variable-box"
                                         placeholder="Variable"
+                                        styles={selectStyles}
+                                        components={{ Option: variableComponent }}
                                         value={v.val ? {label: '{' + v.val + '}', value: v.val} : null}
                                         onChange={(select) => this.selectVariable(select, i, 'outputs')}
-                                        options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                            return {label: '{' + variable + '}', value: variable }
+                                        options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                                            if (idx === this.props.variables.length-1){
+                                                return { label: variable, value: variable, openVar: this.props.openVarTab }
+                                            }
+                                            return { label: '{' + variable + '}', value: variable }
                                         }) : null}
                                     />
                                     <i className="far fa-arrow-right"/>
@@ -99,4 +112,10 @@ class Module extends Component {
     }
 }
 
-export default Module;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(null,mapDispatchToProps)(Module);

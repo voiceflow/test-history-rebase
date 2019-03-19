@@ -25,6 +25,8 @@ import LOCALE_MAP from '../../../services/LocaleMap'
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
 import { updateSkill, updateEntireSkill } from "./../../../actions/skillActions"
+import { setConfirm, setError } from 'actions/modalActions'
+
 const _ = require('lodash');
 
 const stage_title = {
@@ -740,7 +742,7 @@ class Skill extends Component {
                                 <div>
                                     <MUIButton variant="contained" className="white-btn" href={alexaDashboardUrl} target="_blank">Visit Dashboard</MUIButton>
                                     <MUIButton variant="contained" className="purple-btn ml-3" onClick={()=>{
-                                        this.props.onConfirm({
+                                        this.props.setConfirm({
                                             text: "Are you sure you want to withdraw this Skill?",
                                             confirm: this.onWithdraw
                                         })
@@ -996,7 +998,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
         updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-        updateEntireSkill: (val) => dispatch(updateEntireSkill(val))
+        updateEntireSkill: (val) => dispatch(updateEntireSkill(val)),
+        setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+        setError: err => dispatch(setError(err)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Skill);

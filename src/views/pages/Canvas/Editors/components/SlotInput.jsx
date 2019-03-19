@@ -3,7 +3,8 @@ import { Collapse } from 'reactstrap';
 import Select from 'react-select'
 import {Tooltip} from 'react-tippy'
 import { connect } from 'react-redux'
-import { SingleValueOption, SlotOption, SlotDiabled, SlotSynonyms } from './SlotComponents'
+import SlotSynonyms, { SingleValueOption, SlotOption, SlotDiabled } from './SlotComponents'
+import { setError } from 'actions/modalActions'
 
 class SlotInput extends Component {
     constructor(props) {
@@ -63,7 +64,7 @@ class SlotInput extends Component {
         if(this.state.name === this.props.slot.name){
             return
         }else if(this.state.name_error){
-            this.props.onError(this.state.name_error)
+            this.props.setError(this.state.name_error)
             this.setState({
                 name: this.props.slot.name,
                 name_error: null
@@ -74,7 +75,7 @@ class SlotInput extends Component {
             })
         }else if(this.props.nameExists(this.state.name)){
             // save name with error callback
-            this.props.onError('An slot already exists with this name')
+            this.props.setError('An slot already exists with this name')
             this.setState({
                 name: this.props.slot.name
             })
@@ -141,11 +142,10 @@ class SlotInput extends Component {
                                 isDisabled={this.props.live_mode}
                             />
                         </div>
-                        <hr className="mt-1 mb-2"/>
+                        <hr className={`mt-1 ${this.props.slot.inputs && this.props.slot.inputs.length > 0 ? 'mb-0' : 'mb-2'}`}/>
                         <SlotSynonyms
                             inputs={this.props.slot.inputs}
-                            update={this.update}
-                            onError={this.props.onError}
+                            update={() => this.forceUpdate()}
                         />
                     </div>
                 </Collapse>
@@ -157,4 +157,10 @@ class SlotInput extends Component {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode
 })
-export default connect(mapStateToProps)(SlotInput);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SlotInput);

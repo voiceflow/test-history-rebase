@@ -53,7 +53,9 @@
     transition: transform 300ms ease-in-out, opacity 300ms ease-in;
 }
 .close-warning {
-    color: #e6ebf3d1;
+    color: #8da2b570;
+    cursor: pointer;
+    text-align: right;
 }
 
 .canvas-warnings {
@@ -71,7 +73,11 @@
 }
 
 .canvas-warning{
-    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 15px;
+    width: 400px;
     background-color: white;
     border-radius:5px;
     box-shadow: 0 0 1px 1px rgba(17, 49, 96, .06),
@@ -1772,6 +1778,12 @@ label {
 }
 .srd-default-node__title {
     padding: 0 !important;
+    background-color: transparent;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 15px;
+    color: #132042 !important;
 }
 
 .srd-default-node.comment .srd-default-node__name {
@@ -2014,7 +2026,7 @@ label {
 }
 
 .srd-default-node__name > span {
-    max-width: 120px;
+    max-width: 115px;
     display: block;
     white-space: nowrap; 
     overflow: hidden;
@@ -2027,15 +2039,6 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 auto;
-}
-
-.srd-default-node__title {
-    background-color: transparent;
-    font-weight: bold;
-    text-align: center;
-    padding-bottom: 5px;
-    font-size: 15px;
-    color: #132042 !important;
 }
 
 /* button.close{
@@ -3168,4 +3171,8 @@ button.close:hover{
     width: 20px;
     height: 20px;
     z-index: 16777271;
+}
+
+.create-variable{
+    border-top: 5px solid red;
 }

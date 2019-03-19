@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
+import { connect } from "react-redux";
 import Expression from './Expression';
 import Expressionfy from './Expressionfy';
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class SetExpression extends Component {
     render() {
@@ -17,10 +20,15 @@ class SetExpression extends Component {
                         classNamePrefix="variable-box"
                         placeholder="Variable Name"
                         className="variable-box"
+                        styles={selectStyles}
+                        components={{ Option: variableComponent }}
                         value={block.variable ? {label: '{' + block.variable + '}', value: block.variable} : null}
                         onChange={this.props.onSelection}
-                        options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                            return {label: '{' + variable + '}', value: variable}
+                        options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                            if (idx === this.props.variables.length - 1) {
+                                return { label: variable, value: variable, openVar: this.props.openVarTab }
+                            }
+                            return { label: '{' + variable + '}', value: variable }
                         }) : null}
                     />
                     <span>To:</span>
@@ -32,4 +40,10 @@ class SetExpression extends Component {
     }
 }
 
-export default SetExpression;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SetExpression);

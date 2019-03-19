@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
 import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
@@ -7,6 +8,7 @@ import { Input, Col, Row, FormGroup } from 'reactstrap';
 import AceEditor from 'react-ace';
 
 import { addEmail, updateEmail } from './../../../actions/emailActions'
+import { setError } from 'actions/modalActions'
 import 'brace/mode/html';
 import 'brace/theme/monokai';
 import 'brace/ext/language_tools';
@@ -73,7 +75,7 @@ class Template extends Component {
                 }
             }).catch(err => {
                 console.error(err)
-                this.props.onError('Unable to Retrieve Template',)
+                this.props.setError('Unable to Retrieve Template',)
             })
         }else{
             this.setState({
@@ -90,7 +92,7 @@ class Template extends Component {
     save() {
         if(this.state.saved) return;
         if(!this.state.title){
-            this.props.onError('Empty Template Title')
+            this.props.setError('Empty Template Title')
             return
         }
 
@@ -123,7 +125,7 @@ class Template extends Component {
                 this.setState({
                     saving: false
                 })
-                this.props.onError('Unable to save new template')
+                this.props.setError('Unable to save new template')
             })
         }else{
             axios.patch(`/email/template/${this.state.template_id}?skill_id=${this.props.skill_id}`, payload)
@@ -140,7 +142,7 @@ class Template extends Component {
                 this.setState({
                     saving: false
                 })
-                this.props.onError('Unable to save template')
+                this.props.setError('Unable to save template')
             });
         }
     }
@@ -260,4 +262,9 @@ class Template extends Component {
     }
 }
 
-export default Template;
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(null, mapDispatchToProps)(Template);

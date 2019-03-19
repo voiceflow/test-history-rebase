@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
+import { connect } from 'react-redux'
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent} from 'views/components/VariableSelect'
 
 const _ = require('lodash')
 
@@ -33,10 +36,15 @@ class SlotMappings extends Component {
     }
 
     handleSelection(i, arg, value) {
-        if(this.props.arguments[i][arg] !== value){
-            this.props.arguments[i][arg] = value
-            
-            this.props.update()
+        if (value !== "Create Variable") {
+          if (this.props.arguments[i][arg] !== value) {
+            this.props.arguments[i][arg] = value;
+
+            this.props.update();
+          }
+        } else {
+          localStorage.setItem("tab", "variables");
+          this.props.openVarTab("variables");
         }
     }
 
@@ -93,12 +101,17 @@ class SlotMappings extends Component {
                             <Select
                                 classNamePrefix="variable-box"
                                 className="map-box"
+                                styles={selectStyles}
+                                components={{Option: variableComponent}}
                                 value={argument.variable ? {label: '{' + argument.variable + '}', variable: argument.variable} : null}
                                 onChange={(selected)=>this.handleSelection(i, 'variable', selected.value)}
                                 placeholder={this.props.variables.length > 0 ? "Variable" : "No Variables Exist [!]"}
-                                options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                    return {label: '{' + variable + '}', value: variable}
-                                }) : []}
+                                options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                                    if (idx === this.props.variables.length-1){
+                                        return { label: variable, value: variable, openVar: this.props.openVarTab }
+                                    }
+                                    return { label: '{' + variable + '}', value: variable }
+                                }) : null}
                             />
                         </div>
                         <div className="close pl-2" onClick={() => this.handleRemoveMap(i)}>&times;</div>
@@ -112,4 +125,10 @@ class SlotMappings extends Component {
     }
 }
 
-export default SlotMappings;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SlotMappings);

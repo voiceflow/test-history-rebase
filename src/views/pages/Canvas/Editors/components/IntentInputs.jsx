@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Input, Alert } from 'reactstrap'
+import { connect } from 'react-redux'
 import IntentInput from './IntentInput'
 import './IntentInputs.css'
 import randomstring from 'randomstring'
 import converter from 'number-to-words'
+import { setConfirm } from 'actions/modalActions'
 const _getIndex = (index) => {
     return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')
 }
@@ -41,7 +43,7 @@ class IntentInputs extends Component {
     }
 
     handleRemoveIntent(key) {
-        this.props.onConfirm({
+        this.props.setConfirm({
             text: <Alert color="warning" className="mb-0">Make sure this Intent isn't used in any Command or Intent blocks<br/>-<br/>Deleting may cause unexpected behavior</Alert>,
             confirm: () => {
                 let i = this.props.intents.findIndex(i => i.key === key)
@@ -106,7 +108,6 @@ class IntentInputs extends Component {
                         key={intent.key}
                         slots={this.props.slots}
                         intent={intent}
-                        onError={this.props.onError}
                         utteranceExists={this.checkUtterances}
                         nameExists={this.checkName}
                         removeIntent={this.handleRemoveIntent}
@@ -121,11 +122,16 @@ class IntentInputs extends Component {
         return (
             <div className="w-100">
                 {length > 4 && <Input type="search" onChange={this.onSearchChange} id="searchIntents" className="form-control-border mb-3 search-input" placeholder="Search Intents" value={this.state.search_value}></Input>}
-                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.handleAddIntent} disabled={this.props.live_mode}><i className="far fa-plus"></i>Add Intent</button>}
+                {length < 251 && <button className="btn btn-clear btn-lg btn-block mb-3" onClick={this.handleAddIntent} disabled={this.props.live_mode}><i className="far fa-plus"></i> Add Intent</button>}
                 {reverse}
             </div>
         );
     }
 }
 
-export default IntentInputs
+const mapDispatchToProps = dispatch => {
+    return {
+        setConfirm: (confirm) => dispatch(setConfirm(confirm))
+    }
+}
+export default connect(null, mapDispatchToProps)(IntentInputs)

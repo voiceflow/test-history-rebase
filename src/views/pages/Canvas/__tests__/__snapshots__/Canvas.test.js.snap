@@ -6,9 +6,6 @@ exports[`Canvas render canvas 1`] = `
     message={[Function]}
     when={true}
   />
-  <ErrorModal
-    dismiss={[Function]}
-  />
   <DefaultModal
     content={
       <MultiPlatformModalContent

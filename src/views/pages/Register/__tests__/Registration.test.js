@@ -1,6 +1,7 @@
 require('dotenv').config({path:'./.env.test'})
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { mountWrap, shallowWrap } from '../TestHelper/ContextWrapper';
 import { mount, shallow, render } from 'enzyme';
 import Account from '../index';
@@ -33,7 +34,7 @@ describe('Onboarding', () => {
     expect(app.exists('#signup-form')).toBe(true);
   });
   it('creates accounts on signup', () => {
-    const app = mountWrap(<Account location={location} />);
+    const app = mountWrap(<Router><Account location={location} /></Router>);
     app.find('#signup-form input[name="r_name"]')
       .simulate('change', {target: {value:'Voiceflow Tester'}});
     app.find('#signup-form input[name="r_email"]')
@@ -47,7 +48,7 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('disallows duplicate accounts', () => {
-    const app = mountWrap(<Account location={location} />);
+    const app = mountWrap(<Router><Account location={location} /></Router>);
     app.find('#signup-form input[name="r_name"]')
       .simulate('change', {target: {value:'Voiceflow Tester'}});
     app.find('#signup-form input[name="r_email"]')
@@ -61,7 +62,7 @@ describe('Onboarding', () => {
     }, 500);
   });
   it('onboards on first login', () => {
-    const app = mountWrap(<Account location={location} />);
+    const app = mountWrap(<Router><Account location={location} /></Router>);
     app.find('#login-form input[name="email"]')
       .simulate('change', {target: {value:'tests@getvoiceflow.com'}});
     app.find('#login-form input[name="password"]')

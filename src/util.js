@@ -47,7 +47,7 @@ const formatName = (name) => {
 
 const getSlotType = (slot, platform) => {
 	let type = slot.name
-	if (slot.type.value.toLowerCase() !== 'custom') {
+	if (slot.type.value && slot.type.value.toLowerCase() !== 'custom') {
 		let default_slot = find(SLOT_TYPES, (s => s.label.toLowerCase() === slot.type.value.toLowerCase()))
 		if (!default_slot) {
 			type = slot.type.value  //Platform specific slot
@@ -112,6 +112,12 @@ const getSlotsForKeys = (keys, slots, platform) => {
 			type: formatted_type
 		}
 	})
+}
+
+const findSlot = (slot_type, platform) => {
+  const built_in_slot = find(SLOT_TYPES, { label: slot_type })
+  if(built_in_slot) return built_in_slot.type[platform] 
+  return null
 }
 
 const replacer = (match, inner, slots, extracted) => {
@@ -183,6 +189,7 @@ exports.utteranceToIntentName = (utterance, existing) => {
 // 	exports.LANGUAGE_SET = LANGUAGE_SET
 // }
 
+exports.findSlot = findSlot
 exports.getUtterancesWithSlotNames = getUtterancesWithSlotNames
 exports.formatName = formatName
 exports.getSlotsForKeysAndFormat = getSlotsForKeysAndFormat

@@ -35,7 +35,7 @@ const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
-const Mail = require('./routes/mail.js');
+const Team = require('./routes/team.js')
 const {copySkill} = require('./routes/skill_util')
 const Track = require('./routes/track.js')
 const ProductUpdates = require('./routes/product_updates.js')
@@ -182,6 +182,10 @@ app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
+
+// TEAM RESTful CRUD STUFF
+app.post('/team', ensureLoggedIn(), Team.addTeam)
+app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)

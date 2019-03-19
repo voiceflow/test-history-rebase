@@ -8,9 +8,42 @@ body {
     color: #132144;
     width: 100%;
 }
+.rounded {
+  border-radius: 5px !important;
+}
+.text-skinny {
+  text-transform: uppercase;
+  letter-spacing: 1px
+  /* font-weight: 400 */
+}
+
+.input-wrap-wrap {
+  position: relative;
+}
+
+.input-wrap-wrap>.close {
+  position: absolute;
+  right: -24px;
+  top: 6px;
+}
+.input-wrap {
+  padding: 0 !important;
+  overflow: hidden;
+  align-items: center;
+  display: flex !important;
+  text-align: left;
+}
+.input-wrap>input {
+  border: none;
+  padding: .375rem .75rem;
+  outline: none;
+  height: 100%;
+}
+.mt-45, .my-45 {
+  margin-top: 2rem !important;
+}
 .my-45 {
-    margin-top: 2rem !important;
-    margin-bottom: 2rem !important;
+  margin-bottom: 2rem !important;
 }
 .mb--4 {
   margin-bottom: -1.2rem !important;
@@ -66,7 +99,7 @@ body {
 .pt-6 {
     padding-top: 4rem !important;
 }
-.form-control:focus{
+.form-control:focus, .input-wrap:focus-within{
     border: 1px solid #42a5ff !important;
     box-shadow: rgba(50, 50, 93, 0.03) 0px 4px 6px, rgba(0, 0, 0, 0.03) 0px 1px 3px !important;
 }
@@ -228,7 +261,10 @@ button:focus{
     color: #8da2b5 !important;
 }
 .text-lg{
-    font-size: 3rem;
+  font-size: 3rem;
+}
+.text-sm{
+  font-size: 12px;
 }
 audio {
     width: 275px;
@@ -513,6 +549,7 @@ hr.full-width {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 11px;
+    cursor: pointer;
 }
 .close:hover{
     color: #8da2b5 !important;
@@ -730,8 +767,7 @@ border-radius: 0px 5px 5px 0px !important;
     border-radius: 40px !important;
 }
 .purple-btn{
-    font-family: 'Open Sans', sans-serif !important;
-    padding: 10px 22px 11px !important;
+    padding: 11px 21px 11px 20px !important;
     color: #fff !important;
     font-weight: normal !important;
     background: linear-gradient(to bottom,#49A4FF,#0F88FF) !important;
@@ -743,7 +779,7 @@ border-radius: 0px 5px 5px 0px !important;
     border: none !important;
     box-shadow: 0 0 4px 0 rgba(17,49,96,.08), 0 4px 8px 0 rgba(17,49,96,.16) !important;
     transition: all 0.2s ease !important;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
 }
 .purple-btn:hover{
     transform: translateY(-1px);

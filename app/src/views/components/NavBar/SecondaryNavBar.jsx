@@ -30,11 +30,12 @@ class SecondaryNavBar extends Component {
               this.props.dev_skill.diagram,
               this.props.skill_id,
               false
-          )
-          this.setState({
+          ).then(() => {
+            this.setState({
               loading: false
+            })
+            this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
           })
-          this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
         } else {
             axios.get(`/skill/${this.props.live_version}`)
             .then((res) => {
@@ -46,11 +47,12 @@ class SecondaryNavBar extends Component {
                   res.data.diagram,
                   res.data.skill_id,
                   true
-              )
-              this.setState({
+              ).then(() => {
+                this.setState({
                   loading: false
+                })
+                this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
               })
-              this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
             })
             .catch((err) => {
               console.error(err)

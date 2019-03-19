@@ -6,6 +6,17 @@
     padding: 0px;
 }
 
+.grey-box {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  background-color: #f0f3f7;
+  border-radius: 5px;
+  color: #8da2b5;
+  text-align: center;
+}
+
 .light-canvas-modal .modal-content {
     background: #F7F9FB;
 }
@@ -42,6 +53,7 @@
     padding: 50px;
     min-height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 #name-box {

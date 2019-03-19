@@ -5,10 +5,17 @@ export const resetProjects = () => ({
   type: "RESET_PROJECTS"
 })
 
-export const updateTeam = team => ({
-  type: "UPDATE_TEAM",
-  payload: team
-})
+export const updateTeam = team => {
+  return async (dispatch, getState) => {
+    if(team !== getState().projects.team){
+      dispatch({
+        type: "UPDATE_TEAM",
+        payload: team
+      })
+      dispatch(fetchProjects(team))
+    }
+  }
+}
 
 export const updateProjects = projects => ({
   type: 'UPDATE_PROJECTS',
@@ -25,6 +32,7 @@ export const fetchTeams = () => {
     try{
       let res = await axios.get('/teams')
       dispatch(updateTeams(res.data))
+      return Promise.resolve()
     }catch(err){
       console.error(err)
     }
@@ -39,6 +47,7 @@ export const fetchProjects = team_id => {
       if(team_id !== -1) url = `/team/${team_id}/skills`
       let res = await axios.get(url)
       dispatch(updateProjects(res.data))
+      return Promise.resolve()
     }catch(err){
       console.error(err)
     }

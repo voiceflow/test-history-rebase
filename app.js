@@ -186,6 +186,8 @@ app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 // TEAM RESTful CRUD STUFF
 app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
+app.get('/teams', ensureLoggedIn(), Team.getTeams)
+app.get('/team/:team_id/skills', ensureLoggedIn(), Team.getSkills)
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)
@@ -243,7 +245,8 @@ app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefau
 app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
-app.post('/analytics/track_canvas_time', ensureLoggedIn(), Track.trackCanvasTime)
+app.post('/analytics/track_session_time', ensureLoggedIn(), Track.trackSessionTime)
+app.post('/analytics/track_active_canvas', ensureLoggedIn(), Track.trackCanvasTime)
 app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackFirstSessionUpload)
 app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)

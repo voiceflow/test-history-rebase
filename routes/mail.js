@@ -1,5 +1,9 @@
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
+const {
+  writeToLogs
+} = require('./../services')
+
 
 exports.sendOnboarding = (email, name, cb) => {
   if (typeof name !== 'string') {
@@ -103,5 +107,9 @@ exports.sendTeamInvite = async (inviter, team_name, team_id, email) => {
     }]
   }
 
-  await sgMail.send(data)
+  try{
+    await sgMail.send(data)
+  }catch(err){
+    writeToLogs('INVITE_EMAIL_ERROR', err)
+  }
 }

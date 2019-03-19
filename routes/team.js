@@ -25,24 +25,24 @@ const createTeam = async (name, image, creator) => {
 
 // Add Team Members/Seats to the team
 const populateTeam = async (team_id, creator, invites) => {
-    // insert owner first with owner status
-    let query = `INSERT INTO team_members (team_id, creator_id, status, email) VALUES ($1, $2, $3, $4)`
-    let insert = [team_id, creator.id, 100, creator.email]
-    let members = []
+  // insert owner first with owner status
+  let query = `INSERT INTO team_members (team_id, creator_id, status, email) VALUES ($1, $2, $3, $4)`
+  let insert = [team_id, creator.id, 100, creator.email]
+  let members = []
 
-    let i = 1
-    invites.forEach(invite => {
-      if (validateEmail(invite)) {
-        let mod = i * 4
-        query = query + `, ($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod})`
-        insert.push(...[team_id, null, 0, invite])
-        members.push(invite)
-        i++
-      }
-    })
-    await pool.query(query, insert)
+  let i = 1
+  invites.forEach(invite => {
+    if (validateEmail(invite)) {
+      let mod = i * 4
+      query = query + `, ($${1 + mod}, $${2 + mod}, $${3 + mod}, $${4 + mod})`
+      insert.push(...[team_id, null, 0, invite])
+      members.push(invite)
+      i++
+    }
+  })
+  await pool.query(query, insert)
 
-    return members
+  return members
 }
 
 // Creating a free team (under 2 people)
@@ -72,13 +72,14 @@ exports.checkout = async (req, res) => {
     return res.sendStatus(400)
   }
 
-  let team_id
+  var team_id
+  var customer
+  var subscription
   try {
     let seats = (req.body.invites.length + 1)
     team_id = await createTeam(req.body.name, req.body.image_url, req.user)
-    let members = await populateTeam(team_id, req.user, req.body.invites)
 
-    const customer = await stripe.customers.create({
+    customer = await stripe.customers.create({
       email: req.user.email,
       metadata: {
         id: team_id,
@@ -87,24 +88,72 @@ exports.checkout = async (req, res) => {
       source: req.body.source.id
     })
 
-    await pool.query('UPDATE teams SET stripe_id = $1 WHERE team_id = $2', [customer.id, team_id])
-
-    const subscription = stripe.subscriptions.create({
+    subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{
         plan: 'TEAM_PLAN_MO',
         quantity: seats
-      }],
+      }]
     })
 
-    await pool.query('UPDATE teams SET stripe_sub_id = $1 WHERE team_id = $2', [subscription.id, team_id])
-    res.sendStatus(200)
+    await pool.query('UPDATE teams SET stripe_id = $1, stripe_sub_id = $2 WHERE team_id = $3', [customer.id, subscription.id, team_id])
 
+    let members = await populateTeam(team_id, req.user, req.body.invites)
     team_id = team_hash.encode(team_id)
+    res.status(200).send(team_id)
     // send out emails to all valid members
     members.forEach(email => sendTeamInvite(req.user.name, req.body.name, team_id, email))
   } catch (err) {
     writeToLogs('PAYMENT ERROR', err)
-    return res.sendStatus(400)
+
+    res.status(400).send(err)
+
+    // clean up
+    if (customer && customer.id) {
+      await stripe.customers.del(customer.id)
+    }
+    if (team_id) {
+      await pool.query('DELETE FROM teams WHERE team_id = $1', [team_id])
+    }
+  }
+}
+
+exports.getTeams = async (req, res) => {
+  try {
+    let teams = (await pool.query('SELECT t.*, MAX(tm.status) FROM teams t INNER JOIN team_members tm ON t.team_id = tm.team_id WHERE tm.creator_id = $1 GROUP BY t.team_id', [req.user.id])).rows
+    res.send(teams.map(t => {
+      t.team_id = team_hash.encode(t.team_id)
+      return t
+    }))
+  } catch (e) {
+    res.sendStatus(500)
+  }
+}
+
+exports.getSkills = async (req, res) => {
+  try {
+    let team_id = team_hash.decode(req.params.team_id)[0]
+
+    if(!team_id) return res.sendStatus(404)
+
+    let skills = (await pool.query(`
+      SELECT
+        s.skill_id,
+        s.name,
+        s.large_icon
+      FROM
+        skills s
+        INNER JOIN teams t ON s.team_id = t.team_id
+        INNER JOIN team_members tm ON tm.team_id = t.team_id
+        WHERE
+          team_id = $1
+          AND tm.creator_id = $2
+        GROUP BY
+          s.skill_id
+    `, [team_id, req.user.id])).rows
+    res.send(skills)
+  } catch (err) {
+    writeToLogs('GET TEAM SKILLS', err)
+    res.sendStatus(500)
   }
 }

@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import LightCanvas from '../../Canvas/LightCanvas'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 // import _ from 'lodash'
 
 import { Spinner } from 'views/components/Spinner'
+import { setConfirm } from 'actions/modalActions'
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{
@@ -70,7 +72,7 @@ class BackupSettings extends Component{
     }
 
     confirmRestore(skill_id, canonical_skill_id, skill) {
-        this.props.onConfirm({
+        this.props.setConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, will delete all your current work since your last backup, and will not change your skill's Amazon endpoint. </Alert>,
             confirm: this.props.onSwapVersions,
@@ -166,4 +168,9 @@ class BackupSettings extends Component{
     }
 }
 
-export default BackupSettings
+const mapDispatchToProps = dispatch => {
+    return {
+        setConfirm: (confirm) => dispatch(setConfirm(confirm))
+    }
+}
+export default connect(null, mapDispatchToProps)(BackupSettings)

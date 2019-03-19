@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { pushVariable, setVariables } from './../../../../actions/variableActions'
 import { updateSkill } from './../../../../actions/skillActions'
+import { setError } from 'actions/modalActions'
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
 import {Tooltip} from 'react-tippy'
 import isVarName from 'is-var-name'
@@ -77,7 +78,7 @@ export class Variables extends PureComponent {
                 new_global: ""
             })
         }else{
-            this.props.onError('Invalid Variable: Variables can\'t have the same name and must start with a character and can not contain spaces or special characters');
+            this.props.setError('Invalid Variable: Variables can\'t have the same name and must start with a character and can not contain spaces or special characters');
         }
         return false
     }
@@ -181,6 +182,7 @@ const mapDispatchToProps = dispatch => {
         addVariable: variable => dispatch(pushVariable(variable)),
         setVariables: variables => dispatch(setVariables(variables)),
         updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        setError: err => dispatch(setError(err)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Variables);

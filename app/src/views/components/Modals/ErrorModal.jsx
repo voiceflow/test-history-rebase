@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, Alert } from 'reactstrap';
+import { clearModal } from 'actions/modalActions'
 
-class ErrorModal extends Component {
+export class ErrorModal extends Component {
 
   render() {
     if(!this.props.error) return null;
@@ -35,4 +37,13 @@ class ErrorModal extends Component {
   }
 }
 
-export default ErrorModal;
+const mapStateToProps = state => ({
+  error: state.modal.errorModal
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dismiss: () => dispatch(clearModal())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorModal);

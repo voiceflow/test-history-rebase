@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
+import { setConfirm } from './modalActions'
 
 export const fetchDiagramsBegin = () => ({
   type: "FETCH_DIAGRAMS_BEGIN"
@@ -70,12 +71,12 @@ export const renameDiagram = (flow_id, name) => {
         if (index !== -1){
             let flow = getState().diagrams.diagrams.find(d => d.name === name)
             if (flow && flow.name !== name) {
-                return this.props.onConfirm({
+                return dispatch(setConfirm({
                     text: 'Flow names must be unique',
                     confirm: () => this.setState({
                         confirm: null
                     })
-                })
+                }))
             }
             return axios.post(`/diagram/${flow_id}/name`, {
                 name: name

@@ -151,7 +151,7 @@ const verify = (auth, cb) => {
 const cloudWatchLogs = new AWS.CloudWatchLogs();
 const writeToLogs = async (log_group, msg_details) => {
     if(/development/.test(process.env.NODE_ENV)){
-        console.log(msg_details)
+        console.log(log_group, msg_details)
         return
     }
     try {

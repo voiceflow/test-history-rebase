@@ -2,7 +2,7 @@
 
 exports[`SetEditor render set block editor 1`] = `
 <div>
-  <SetExpression
+  <Connect(SetExpression)
     block={
       Object {
         "expressions": Object {},

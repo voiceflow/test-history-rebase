@@ -11,7 +11,7 @@ import Line from './Editors/Line';
 import Choice from './Editors/Choice';
 import Intent from './Editors/Intent'
 import Interaction from './Editors/Interaction';
-import Story from './Editors/Story';
+// import Story from './Editors/Story';
 import Random from './Editors/Random';
 import Variable from './Editors/Variable';
 import SetBlock from './Editors/Set';
@@ -237,7 +237,7 @@ class Editor extends Component {
     BlockViewer(variables) {
         switch(this.state.node.extras.type) {
             case 'story':
-                return <Story/>;
+                return;
             case 'choice':
             case 'choicenew':
                 return <Choice
@@ -250,8 +250,6 @@ class Editor extends Component {
                         updateLinter={this.props.updateLinter}
                         slot_types={this.getSlotTypes(this.props.locales)}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
-                        onError={this.props.onError}
-                        onConfirm={this.props.onConfirm}
                         history={this.props.history}
                         diagram_level_intents={this.props.diagram_level_intents}
                         platform={this.props.platform}
@@ -265,11 +263,9 @@ class Editor extends Component {
                         slot_types={this.getSlotTypes(this.props.locales)}
                         updateLinter={this.props.updateLinter}
                         built_ins={(this.props.platform === 'google') ? GOOGLE_BUILT_INS : ALEXA_BUILT_INS}
-                        onError={this.props.onError}
                         repaint={this.props.repaint}
                         createDiagram={this.props.createDiagram}
                         enterFlow={this.props.enterFlow}
-                        onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         diagram_level_intents={this.props.diagram_level_intents}
                     />
@@ -294,8 +290,6 @@ class Editor extends Component {
                         ? GOOGLE_BUILT_INS
                         : ALEXA_BUILT_INS
                     }
-                    onError={this.props.onError}
-                    onConfirm={this.props.onConfirm}
                     platform={this.props.platform}
                   />
                 );
@@ -339,12 +333,11 @@ class Editor extends Component {
                     node={this.state.node}
                     onUpdate={this.props.onUpdate} 
                     variables={variables}
-                    onError={this.props.onError}
                 />
             case 'flow':
                 return <Diagram node={this.state.node}
                     onUpdate={this.props.onUpdate}
-                    variables={this.props.variables}
+                    variables={variables}
                     createDiagram={this.props.createDiagram}
                     enterFlow={this.props.enterFlow}
                 />
@@ -355,13 +348,11 @@ class Editor extends Component {
                     history={this.props.history}
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
-                    onError={this.showErrorPopup}
                 />
             case 'cancel':
                 return <CancelPayment
                     createProduct={this.props.createProduct}
                     editProduct={this.props.editProduct}
-                    onError={this.showErrorPopup}
                 />
             case 'module':
                 return <Module user_modules={this.props.user_modules}/>
@@ -438,6 +429,7 @@ class Editor extends Component {
 
     EditorRender(){
         let variables = this.props.global_variables.concat(this.props.variables)
+        variables = variables.concat(['Create Variable'])
         return <React.Fragment>
             {this.BlockViewer(variables) && React.cloneElement(this.BlockViewer(variables),{
                 node: this.state.node,

@@ -8,13 +8,30 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 2125
 }
 
+const MODULE_COLOURS = [
+	'F86683|FEF2F4',
+	'5891FB|EFF5FF',
+	'E29C42|FCF5EC',
+	'36B4D2|ECF8FA',
+	'42B761|EDF8F0',
+	'E760D4|FCEFFB',
+	'26A69A|EBF7F5',
+	'8DA2B5|F2F5F7',
+	'D58B5F|FAF2ED',
+	'697986|EEF0F1'
+]
+
 const module_limit = 10;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){
-		rows[i].skill_id = hashids.encode(rows[i].skill_id);
-		rows[i].module_id = hashids.encode(rows[i].module_id);
-		rows[i].creator_id = hashids.encode(rows[i].creator_id);
+		rows[i].skill_id = hashids.encode(rows[i].skill_id)
+		rows[i].module_id = hashids.encode(rows[i].module_id)
+		rows[i].creator_id = hashids.encode(rows[i].creator_id)
 	}
+}
+
+const getModuleColour = () => {
+	return MODULE_COLOURS[Math.floor(Math.random() * MODULE_COLOURS.length)]
 }
 
 const getModules = async (req, res) => {
@@ -22,11 +39,11 @@ const getModules = async (req, res) => {
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules 
-			INNER JOIN (SELECT DISTINCT module_id FROM versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
-				ON modules.module_id = distinct_versions.module_id 
+			INNER JOIN (SELECT DISTINCT canonical_skill_id FROM skill_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
+				ON modules.skill_id = distinct_versions.canonical_skill_id 
 			INNER JOIN creators 
 				ON creators.creator_id = modules.creator_id LIMIT $1
-		`), [module_limit]).rows
+		`, [module_limit])).rows
 		hashIds(module_data)
 		res.send(module_data)
 	} catch (err) {
@@ -73,16 +90,19 @@ const cancelCertification = async (req, res) => {
 }
 
 const saveCertification = async (req, res) => {
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0];
+	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
 
 	const createNewModule = async (skill_id) => {
 		// Leaving module icon in for now, but not using it anymore
 		req.body.module_icon = null
 
+		// Randomly choose module colour
+		let colour = getModuleColour()
+
 		try{
 			await pool.query(
 			`INSERT INTO modules (title, descr, creator_id, skill_id, tags, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
-			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output])
+			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, colour, req.body.input, req.body.output])
 			res.sendStatus(200)
 		} catch (err) {
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -100,8 +120,8 @@ const saveCertification = async (req, res) => {
 											[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id])
 			res.sendStatus(200)
 		} catch (err) {
-			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-			res.sendStatus(500);
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+			res.sendStatus(500)
 		}
 	}
 
@@ -159,13 +179,13 @@ const requestCertification = async (req, res) => {
 }
 
 const certStatus = (req, res) => {
-	let skill_id = hashids.decode(req.params.skill_id)[0];
+	let skill_id = hashids.decode(req.params.skill_id)[0]
 
 	pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL`, [skill_id],
 		(err, data) => {
 			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
+				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+				res.sendStatus(500)
 			}else{
 				if(data.rows.length > 0){
 					res.send(true)
@@ -177,76 +197,50 @@ const certStatus = (req, res) => {
 	);
 }
 
-const removeAccess = (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0];
-	let user_id = req.user.id;
-	pool.query(
-		`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2`,
-		[user_id, module_id],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
-			}else{
-				res.sendStatus(200);
-			}
-		}
-	)
+const removeAccess = async (req, res) => {
+	let module_id = hashids.decode(req.params.module_id)[0]
+	let user_id = req.user.id
+
+	try{
+		await pool.query(`DELETE FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])
+		res.sendStatus(200)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
-const hasAccess = (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0];
-	let user_id = req.user.id;
+const hasAccess = async (req, res) => {
+	let module_id = hashids.decode(req.params.module_id)[0]
+	let user_id = req.user.id
 	
-	pool.query(
-		`SELECT * FROM user_modules WHERE creator_id = $1 AND module_id = $2`,
-		[user_id, module_id],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
-			}else{
-				if(data.rows.length > 0){
-					res.send(true);
-				}else{
-					res.send(false);
-				}
-			}
+	try{
+		let user_module_data = (await pool.query(`SELCT * FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])).rows
+		if(user_module_data.length > 0){
+			res.send(true)
 		}
-	)
+		res.send(false)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
-const giveAccess = (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0];
-	let creator_id = req.user.id;
+const giveAccess = async (req, res) => {
+	let module_id = hashids.decode(req.params.module_id)[0]
+	let creator_id = req.user.id
 	
-	pool.query(
-		`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2`,
-		[module_id, creator_id],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
-			}else{
-				if(data.rows.length > 0){
-					res.sendStatus(400);
-				}else{
-					pool.query(
-						`INSERT INTO user_modules (creator_id, module_id) VALUES ($1, $2)`,
-						[creator_id, module_id],
-						(err, data) => {
-							if(err){
-								writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-								res.sendStatus(500);
-							}else{
-								res.sendStatus(200);
-							}
-						}
-					)
-				}
-			}
+	try{
+		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id=$2`, [module_id, creator_id])).rows
+		if(user_module_data.length > 0){
+			res.sendStatus(400)
 		}
-	);
+		await pool.query(`INSERT INTO user_modules (creator_id, module_id) VALUES ($1, $2)`, [creator_id, module_id])
+		res.sendStatus(200)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
 const getModule = (req, res) => {
@@ -267,7 +261,7 @@ const getModule = (req, res) => {
 }
 
 const getCertModule = (req, res) => {
-	let skill_id = hashids.decode(req.params.skill_id)[0];
+	let skill_id = hashids.decode(req.params.skill_id)[0]
 
 	const retrieveVariables = (row) => {
 		pool.query(
@@ -275,8 +269,8 @@ const getCertModule = (req, res) => {
 			[skill_id],
 			(err, data) =>{
 				if(err){
-					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					res.sendStatus(500);
+					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+					res.sendStatus(500)
 				}else{
 					if(data.rows.length > 0){
 						let params = {
@@ -285,67 +279,80 @@ const getCertModule = (req, res) => {
 					    };
 					    docClient.get(params, (err, data) => {
 					        if (err) {
-					            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-					            res.sendStatus(err.statusCode);
+					            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+					            res.sendStatus(err.statusCode)
 					        } else if (data.Item) {
-					            let diagram = data.Item;
+					            let diagram = data.Item
 
-					            row.variables = diagram.variables;
-					            res.send(row);
+					            row.variables = diagram.variables
+					            res.send(row)
 					        } else {
-					            res.sendStatus(404);
+					            res.sendStatus(404)
 					        }
-					    });
+					    })
 					}else{
-						res.send(row);
+						res.send(row)
 					}
 				}
 			}
-		);
+		)
 	}
 
 	pool.query(`SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
 		if(err){
-			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-			res.sendStatus(500);
+			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+			res.sendStatus(500)
 		}else{
 			if(data.rows.length > 0){
 				//res.send(data.rows[0]);
-				retrieveVariables(data.rows[0]);
+				retrieveVariables(data.rows[0])
 			}else{
-				res.send(false);
+				res.send(false)
 			}
 		}
 	});
 }
 
-const getUserModules = (req, res) => {
+const getUserModules = async (req, res) => {
 	let user_id = req.user.id;
 
-	pool.query(
-		`
-		 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
-		 		ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type
-		 FROM 
-		 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
-		 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
-		 		INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
-		 	) AS ultimate_versions  
-		 INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
-		 INNER JOIN user_modules ON modules.module_id = user_modules.module_id
-		 WHERE user_modules.creator_id = $1
-		`,
-		[user_id],
-		(err, data) => {
-			if(err){
-				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-				res.sendStatus(500);
-			}else{
-				hashIds(data.rows);
-				res.send(data.rows);
-			}
-		}
-	);
+	try{
+		let user_modules = (await pool.query(`
+			SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, modules.color
+			FROM modules 
+			INNER JOIN user_modules ON modules.module_id = user_modules.module_id
+			WHERE user_modules.creator_id = $1
+		`, [user_id])).rows
+		res.send(user_modules)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
+
+	// pool.query(
+	// 	`
+	// 	 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
+	// 	 		ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type
+	// 	 FROM 
+	// 	 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
+	// 	 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
+	// 	 		INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
+	// 	 	) AS ultimate_versions  
+	// 	 INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
+	// 	 INNER JOIN user_modules ON modules.module_id = user_modules.module_id
+	// 	 WHERE user_modules.creator_id = $1
+	// 	`,
+	// 	[user_id],
+	// 	(err, data) => {
+	// 		if(err){
+	// 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
+	// 			res.sendStatus(500);
+	// 		}else{
+	// 			hashIds(data.rows);
+	// 			res.send(data.rows);
+	// 		}
+	// 	}
+	// );
 }
 
 const retrieveTemplate = (req, res) => {

@@ -26,9 +26,13 @@ import {
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
+const getTeamFromURL = (computedMatch) => {
+  return computedMatch && computedMatch.params && computedMatch.params.team_id
+}
+
 class DashBoard extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       confirm: false,
@@ -36,28 +40,27 @@ class DashBoard extends Component {
       filter_text: "",
       loading_modal: false,
       show_updates_modal: false
-    }
+    };
 
-    this.openProject = this.openProject.bind(this)
-    this.deleteProject = this.deleteProject.bind(this)
-    this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this)
-    this.renderProjects = this.renderProjects.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.copyProject = this.copyProject.bind(this)
+    this.openProject = this.openProject.bind(this);
+    this.deleteProject = this.deleteProject.bind(this);
+    this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this);
+    this.renderProjects = this.renderProjects.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.copyProject = this.copyProject.bind(this);
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
-    })
+    });
   }
 
   copyProject(project_id) {
-    this.setState({loading_modal: true})
-    this.props.copyProject(project_id)
-    .then(() => {
-      this.setState({loading_modal: false})
-    })
+    this.setState({ loading_modal: true });
+    this.props.copyProject(project_id).then(() => {
+      this.setState({ loading_modal: false });
+    });
   }
 
   deleteProject(project_id, project_name) {
@@ -71,8 +74,8 @@ class DashBoard extends Component {
         ),
         warning: true,
         confirm: () => {
-          this.props.deleteProject(project_id)
-          this.setState({confirm: null})
+          this.props.deleteProject(project_id);
+          this.setState({ confirm: null });
         }
       }
     });
@@ -84,9 +87,19 @@ class DashBoard extends Component {
     }, 100);
   }
 
+  componentDidUpdate() {
+    const new_team = getTeamFromURL(this.props.computedMatch)
+    if(this.props.team_id !== new_team){
+      this.props.updateTeam(new_team)
+    }
+  }
+
   componentDidMount() {
-    this.props.fetchTeams()
-    this.props.fetchProjects(this.props.team)
+    this.props.fetchTeams().then(() => {
+      if(this.props.teams.length > 0){
+        this.props.updateTeam(getTeamFromURL(this.props.computedMatch) || this.props.teams[0].team_id)
+      }
+    })
 
     let last_update_seen = localStorage.getItem(
       "last_update_seen_" + window.user_detail.id
@@ -131,8 +144,11 @@ class DashBoard extends Component {
   }
 
   renderProjects() {
-    const filtered_projects = this.state.filter_text.trim() ? 
-      this.props.projects.filter(p => p.name.toLowerCase().contains(this.state.filter_text.toLowerCase())) : this.props.projects;
+    const filtered_projects = this.state.filter_text.trim()
+      ? this.props.projects.filter(p =>
+          p.name.toLowerCase().contains(this.state.filter_text.toLowerCase())
+        )
+      : this.props.projects;
     return (
       <React.Fragment>
         <Masonry elementType="div" className="skills-container">
@@ -152,7 +168,7 @@ class DashBoard extends Component {
             } else {
               name = project.name;
             }
-            name = name.substring(0, 3)
+            name = name.substring(0, 3);
 
             return (
               <VoiceCards
@@ -184,13 +200,26 @@ class DashBoard extends Component {
   render() {
     return (
       <>
-        <LoadingModal 
-          open={this.state.loading_modal}
-        />
+        <LoadingModal open={this.state.loading_modal} />
         <div id="secondary-nav">
           <div>
-            <div className="nav-item active">Personal</div>
-            <Link className="nav-item" to="/team/new"><i className="fal fa-plus"/> New Team</Link>
+            <div className="nav-item">Personal</div>
+            {this.props.teams.map(team => {
+              return (
+                <Link
+                  key={team.team_id}
+                  className="nav-item"
+                  to={`/team/${team.team_id}`}
+                >
+                  {team.name}
+                </Link>
+              );
+            })}
+            {this.props.teams.length < 3 && (
+              <Link className="nav-item" to="/team/new">
+                <i className="fal fa-plus" /> New Team
+              </Link>
+            )}
           </div>
         </div>
         <div id="app" className="secondary-padding dashboard">

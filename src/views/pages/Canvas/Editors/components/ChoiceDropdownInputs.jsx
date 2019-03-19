@@ -3,6 +3,7 @@ import { Collapse, Alert } from 'reactstrap'
 import Select, { components } from 'react-select'
 import { connect } from 'react-redux'
 import SlotMappings from '../../Editors/components/SlotMappings' 
+import { setError } from 'actions/modalActions'
 
 const _ = require('lodash')
 
@@ -72,7 +73,7 @@ class ChoiceDropdownInputs extends Component {
         // check if this choice is already used
         for(var choice of this.state.choices ){
             if(choice.intent && choice.intent.label === target.label){
-                this.props.onError('This intent has already been used in this intent block')
+                this.props.setError('This intent has already been used in this intent block')
                 return
             }
         }
@@ -207,4 +208,10 @@ class ChoiceDropdownInputs extends Component {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode
 })
-export default connect(mapStateToProps)(ChoiceDropdownInputs);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ChoiceDropdownInputs);

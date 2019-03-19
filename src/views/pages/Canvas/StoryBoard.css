@@ -3172,3 +3172,7 @@ button.close:hover{
     height: 20px;
     z-index: 16777271;
 }
+
+.create-variable{
+    border-top: 5px solid red;
+}

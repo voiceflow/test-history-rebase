@@ -7,16 +7,11 @@ import Image from "views/components/Uploads/Image";
 import update from "immutability-helper";
 import { Spinner } from "views/components/Spinner";
 import moment from "moment";
-// import StripeCheckout from "react-stripe-checkout";
+import StripeHandler from "views/HOC/StripeHandler";
 
-const MAX_POLL_COUNT = 15;
-const POLL_INTERVAL = 1000;
-
-// SECRET
-const STRIPE_KEY =
-  process.env.NODE_ENV === "production"
-    ? "pk_live_9QXjJjWc0sjk8VSwbQT3viub"
-    : "pk_test_G3o7CC0pvrW2cIbIU1bLkMSR";
+import { compose } from "recompose";
+import { connect } from "react-redux";
+import { setError, setConfirm } from "actions/modalActions";
 
 const WrapForm = props => (
   <div className={"form-control input-wrap " + (props.className || "")}>
@@ -33,6 +28,17 @@ const WrapForm = props => (
   </div>
 );
 
+const PurchaseStatus = props => (
+  <div>
+    {props.loading && (
+      <div className="mb-2">
+        <span className="loader text-lg" />
+      </div>
+    )}
+    {props.children}
+  </div>
+);
+
 class NewTeam extends Component {
   constructor(props) {
     super(props);
@@ -43,8 +49,7 @@ class NewTeam extends Component {
       image_url: "",
       error: null,
       invites: [],
-      free: true,
-      stripe_load: true
+      free: true
     };
 
     this.renderBody = this.renderBody.bind(this);
@@ -52,54 +57,30 @@ class NewTeam extends Component {
     this.saveTeam = this.saveTeam.bind(this);
     this.addInvite = this.addInvite.bind(this);
     this.confirmInvite = this.confirmInvite.bind(this);
-    this.onSource = this.onSource.bind(this);
     this.goBack = this.goBack.bind(this);
-    this.openStripe = this.openStripe.bind(this)
+    this.renderBox = this.renderBox.bind(this);
+    this.nextStep = this.nextStep.bind(this)
   }
 
-  componentDidMount() {
-    const CONFIG = {
-      name:"Voiceflow", 
-      description:"Team Plan Monthly",
-      image:"https://s3.amazonaws.com/com.getstoryflow.api.images/logo.png",
-      email: window.user_detail.email,
-      zipCode: true,
-      key: STRIPE_KEY,
-      source: this.onSource
-    }
-
-    if(!window.StripeCheckout){
-      const script = document.createElement('script')
-      script.src = 'https://checkout.stripe.com/checkout.js'
-      script.onload = () => {
-        this.stripeHandler = window.StripeCheckout.configure(CONFIG)
-        this.setState({ stripe_load: false })
-      }
-      document.body.appendChild(script)
-      this.script = script
-    }else{
-      this.stripeHandler = window.StripeCheckout.configure(CONFIG)
+  componentDidUpdate(prevProps) {
+    const change = this.props.stripe_state !== prevProps.stripe_state;
+    if (this.props.stripe_state === -3 && change) {
+      this.props.setError({
+        message:
+          ( !this.props.stripe_error || this.props.stripe_error === "Payment Failed" )
+            ? "Unable to Create Team - Please try again later or contact support"
+            : this.props.stripe_error
+      });
+      this.props.resetStripe();
+    } else if (this.props.stripe_state === 3 && change) {
+      this.nextStep()
     }
   }
 
-  componentWillUnmount() {
-    if(this.stripeHandler) this.stripeHandler.close()
-    if(this.script) document.body.removeChild(this.script)
-  }
-
-  openStripe(e) {
-    e.preventDefault()
-    if(this.stripeHandler && !this.state.stripe_load){
-      this.setState({stripe_load: true})
-      this.stripeHandler.open({
-        closed: () => {
-          this.setState({stripe_load: false})
-          console.log("closed", this)
-          let gtfo = document.getElementsByClassName("stripe_checkout_app")
-          if(gtfo && gtfo.length !== 0) gtfo[0].parentNode.removeChild(gtfo[0])
-        }
-      })
-    }
+  nextStep() {
+    this.team_id
+    ? this.props.history.push(`/team/${this.team_id}`)
+    : this.props.history.push(`/dashboard`);
   }
 
   addInvite() {
@@ -142,111 +123,62 @@ class NewTeam extends Component {
     }
   }
 
-  resetError() {
-    if (this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ error: null }), 3000);
-  }
-
   saveTeam() {
+    const resetError = () => {
+      if (this.timeout) clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => this.setState({ error: null }), 3000);
+    };
     if (this.state.name.length > 32) {
       this.setState({ error: "Team Name Too Long - 32 Characters Max" });
-      this.resetError();
+      resetError();
     } else if (!this.state.name.trim()) {
       this.setState({ error: "Please Fill in Team Name" });
-      this.resetError();
+      resetError();
     } else {
       this.setState({ stage: 1 });
     }
   }
 
-  onSource(source) {
-    axios
-      .post("/team/checkout", {
-        source: source,
-        invites: this.state.invites,
-        name: this.state.name,
-        image_url: this.state.image_url
-      })
-      .then(() => {
-        axios.get(`https://api.stripe.com/v1/sources/${source.id}`, {
-          params: {
-            client_secret: source.client_secret,
-            key: STRIPE_KEY
-          }
-        })
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  }
-
-  async handlePayment(source = null) {
-    this.setState({ stage: 2 });
-    let body = {
-      plan: this.props.selected
-    };
-    if (source) {
-      body.source = source;
+  renderBox(seats, price) {
+    switch (this.props.stripe_state) {
+      case 1:
+        return <PurchaseStatus loading>Creating Team</PurchaseStatus>;
+      case 2:
+        return <PurchaseStatus loading>Verifying Payment</PurchaseStatus>;
+      case 3:
+        return <Alert className="h-100 w-100 super-center mb-0">Success</Alert>;
+      case -2:
+        return (
+          <div className="px-4">
+            <Alert color="danger" className="small">
+              Payment is deferred - You will receive an email when the charge comes through
+            </Alert>
+            <Button onClick={this.nextStep}>Continue Anyways</Button>
+          </div>
+        );
+      default:
+        return (
+          <div className="space-between w-100 px-5">
+            <div className="text-left">
+              <div>
+                <span className="grey-box mr-1">{seats}</span> <b>Seats</b>{" "}
+                billed monthly
+              </div>
+              {/* <div className="mt-3">> Unlimited Projects</div> */}
+            </div>
+            <div className="price">
+              <span className="text-pricing">${price}</span>/
+              {this.state.period || "mo"}
+            </div>
+          </div>
+        );
     }
-    if (
-      typeof this.state.promo === "string" &&
-      this.state.promo.length === 12 &&
-      !this.promo_invalid
-    ) {
-      body.promo = this.state.promo;
-    }
-    axios
-      .post("/customer/subscription", body)
-      .then(res => {
-        let that = this;
-        if (source) {
-          that.setState({ stage: 3 });
-          let pollCount = 0;
-          let pollForSourceStatus = () => {
-            that.props.stripe
-              .retrieveSource({
-                id: source.id,
-                client_secret: source.client_secret
-              })
-              .then(result => {
-                // Depending on the Charge status, show your customer the relevant message.
-                var temp_source = result.source;
-                if (temp_source.status === "chargeable") {
-                  setTimeout(() => that.setState({ stage: 4 }), 5000);
-                } else if (
-                  temp_source.status === "pending" &&
-                  pollCount < MAX_POLL_COUNT
-                ) {
-                  // Try again in a second, if the Source is still `pending`:
-                  pollCount += 1;
-                  setTimeout(pollForSourceStatus, POLL_INTERVAL);
-                } else {
-                  that.setState({
-                    error: `Payment is deferred - You will receieve an email and will be 
-                                    updated when the charge comes through`
-                  });
-                }
-              });
-          };
-          pollForSourceStatus();
-        } else {
-          setTimeout(() => that.setState({ stage: 4 }), 5000);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        let error = "Payment Failed";
-        if (err.response && err.response.data && err.response.data.message) {
-          console.log(err.response.data);
-          error = err.response.data.message;
-        }
-        this.setState({ error: error });
-      });
   }
 
   renderBody() {
     let name = this.state.name || "New Team";
     let seats = this.state.invites.length + 1;
+
     switch (this.state.stage) {
       case 3:
         return React.createElement(Spinner, { message: "Creating Team" });
@@ -258,37 +190,56 @@ class NewTeam extends Component {
             <div className="my-5 pt-4 pb-5">
               <span className="text-skinny text-muted">Confirm Team Plan</span>
               <div
-                className="space-between mx-auto mt-4 py-4 px-5 border rounded"
+                className="super-center mx-auto mt-4 border rounded"
                 style={{
-                  maxWidth: 600
+                  maxWidth: 600,
+                  height: 140
                 }}
               >
-                <div className="text-left">
-                  <div>
-                    <span className="grey-box mr-1">{seats}</span> <b>Seats</b>{" "}
-                    billed monthly
+                {this.renderBox(seats, price)}
+              </div>
+              {this.props.stripe_state === 0 && (
+                <>
+                  <Button
+                    className="purple-btn mt-5 mb-4"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.props.openStripe(
+                        source => ({
+                          method: "POST",
+                          url: "/team/checkout",
+                          data: {
+                            source: source,
+                            invites: this.state.invites,
+                            name: this.state.name,
+                            image_url: this.state.image_url
+                          }
+                        }),
+                        team_id => (this.team_id = team_id)
+                      );
+                    }}
+                    style={{ width: 144 }}
+                    disabled={this.props.stripe_load}
+                  >
+                    {this.props.stripe_load ? (
+                      <span className="loader" />
+                    ) : (
+                      "Start Free Trial"
+                    )}
+                  </Button>
+                  <div className="text-muted text-sm">
+                    Your trial will end on{" "}
+                    <span className="text-dark">
+                      {moment()
+                        .add(14, "days")
+                        .format("MMMM Qo, YYYY")}
+                    </span>
+                    <br />
+                    at which point you will be charged{" "}
+                    <span className="text-dark">${price}/mo</span>
                   </div>
-                  {/* <div className="mt-3">> Unlimited Projects</div> */}
-                </div>
-                <div className="price">
-                  <span className="text-pricing">${price}</span>/
-                  {this.state.period || "mo"}
-                </div>
-              </div>
-              <Button className="purple-btn mt-5 mb-4" onClick={this.openStripe} style={{width: 144}} disabled={ this.state.stripe_load }>
-                { this.state.stripe_load ? <span className="loader"/> : 'Start Free Trial' }
-              </Button>
-              <div className="text-muted text-sm">
-                Your trial will end on{" "}
-                <span className="text-dark">
-                  {moment()
-                    .add(14, "days")
-                    .format("MMMM Qo, YYYY")}
-                </span>
-                <br />
-                at which point you will be charged{" "}
-                <span className="text-dark">${price}/mo</span>
-              </div>
+                </>
+              )}
             </div>
           </div>
         );
@@ -427,4 +378,35 @@ class NewTeam extends Component {
   }
 }
 
-export default NewTeam;
+const mapStateToProps = state => {
+  return {
+    skill: state.skills.skill,
+    diagram_id: state.skills.skill.diagram,
+    diagrams: state.diagrams.diagrams,
+    diagram_error: state.diagrams.error,
+    root_id: state.diagrams.root_id,
+    error: state.skills.error,
+    variables: state.variables.localVariables,
+    diagram_set: new Set(state.diagrams.diagrams.map(d => d.id)),
+    diagram: _.find(
+      state.diagrams.diagrams,
+      d => d.id === state.skills.skill.diagram
+    ),
+    canvasError: state.userSetting.canvasError
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setError: err => dispatch(setError(err)),
+    setConfirm: confirm => dispatch(setConfirm(confirm))
+  };
+};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  StripeHandler
+)(NewTeam);

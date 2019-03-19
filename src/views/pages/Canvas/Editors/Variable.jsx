@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
+import { connect } from "react-redux";
 import Expression from './components/Expression'
 import Expressionfy from './components/Expressionfy';
+import { openTab } from "actions/userActions";
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class SetBlock extends Component {
     constructor(props) {
@@ -32,12 +35,20 @@ class SetBlock extends Component {
     }
 
     handleSelection(selected){
-        let node = this.state.node;
-        node.extras.variable = selected.value;
+        if (selected.value !== 'Create Variable') {
+            let node = this.state.node;
+            node.extras.variable = selected.value;
 
-        this.setState({
-            node: node
-        }, this.props.onUpdate);
+            this.setState({
+                node: node
+            }, this.props.onUpdate);
+        } else {
+            localStorage.setItem(
+                "tab",
+                "variables"
+            );
+            this.props.openVarTab("variables");
+        }
     }
 
     onUpdate(){
@@ -55,12 +66,17 @@ class SetBlock extends Component {
                     <span>Set </span>
                     <Select
                         classNamePrefix="variable-box"
+                        styles={selectStyles}
+                        components={{ Option: variableComponent }}
                         placeholder={this.props.variables.length > 0 ? "Variable Name" : "No Variables Exist [!]"}
                         className="variable-box"
                         value={this.state.node.extras.variable ? {label: '{' + this.state.node.extras.variable + '}', value: this.state.node.extras.variable} : null}
                         onChange={this.handleSelection}
-                        options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                            return {label: '{' + variable + '}', value: variable}
+                        options={Array.isArray(this.props.variables) ? this.props.variables.map((variable, idx) => {
+                            if (idx === this.props.variables.length - 1) {
+                                return { label: variable, value: variable, openVar: this.props.openVarTab }
+                            }
+                            return { label: '{' + variable + '}', value: variable }
                         }) : null}
                     />
                     <span> to:</span>
@@ -72,4 +88,10 @@ class SetBlock extends Component {
     }
 }
 
-export default SetBlock;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SetBlock);

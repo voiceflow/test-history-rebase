@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { deleteDisplay } from './../../../actions/displayActions'
+import { setConfirm } from 'actions/modalActions'
 
 import { Alert } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button';
@@ -26,7 +27,7 @@ class Multimodal extends Component {
     }
 
     deleteDisplay(id) {
-        this.props.onConfirm({
+        this.props.setConfirm({
             text: <Alert color="warning" className="mb-0">Deleting this display will delete it from your project and all versions of it.</Alert>,
             confirm: () => this.props.deleteDisplay(id)
         })
@@ -97,6 +98,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
         deleteDisplay: display_id => dispatch(deleteDisplay(display_id)),
+        setConfirm: (confirm) => dispatch(setConfirm(confirm))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Multimodal);

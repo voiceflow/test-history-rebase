@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Button, Collapse } from 'reactstrap';
 // import { Button, Collapse, ButtonGroup } from 'reactstrap';
 import {getSections, checkBlockDisabledLive} from './../Blocks'
+import axios from 'axios';
 // const TABS = ['blocks', 'modules']
 
 export class Blocks extends PureComponent {
@@ -21,7 +22,8 @@ export class Blocks extends PureComponent {
                 logic: false,
                 advanced: false,
                 functional: false,
-                business: false
+                business: false,
+                symbols: false
             }
         } else {
             show = JSON.parse(show)
@@ -37,14 +39,61 @@ export class Blocks extends PureComponent {
         }
 
         this.toggleBlockSection = this.toggleBlockSection.bind(this)
+        this.loadUserModules = this.loadUserModules.bind(this)
     }
 
     componentWillReceiveProps(props){
         if(props.type_counter !== this.props.type_counter){
+            let sections = getSections(props.type_counter)
+            if(this.state.module_section){
+                sections.push(this.state.module_section)
+            }
             this.setState({
-                sections: getSections(props.type_counter)
+                sections: sections
             })
         }
+    }
+
+    loadUserModules(){
+        axios.get(`/marketplace/user_module`)
+        .then(res => {
+            let module_section = res.data.map(module => {
+                let name = module.title.match(/\b(\w)/g)
+                if(name) { name = name.join('') }
+                else { name = module.title }
+                name = name.substring(0,3)
+                
+                let module_colors = module.color.split('|')
+                if(module_colors.length === 1){
+                    module_colors = ['F86683', 'FEF2F4']
+                }
+
+                let icon_style = {
+                    backgroundColor: `#${module_colors[1]}`,
+                    color: `#${module_colors[0]}`
+                }
+                
+                let icon = <div className="no-image module-image" style={icon_style}><h1>{name}</h1></div>
+
+                return {
+                    text: module.title,
+                    type: 'symbol',
+                    icon: icon,
+                    tip: module.descr
+                }
+            })
+
+            this.setState({
+                module_section: {title: 'Flows', items: module_section}
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    componentDidMount(){
+        this.loadUserModules()
     }
 
     toggleBlockSection(section_title){

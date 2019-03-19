@@ -22,7 +22,7 @@ import DefaultModal from './views/components/Modals/DefaultModal'
 import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
 import AuthenticationService from './services/Authentication'
-import Marketplace from './views/pages/Marketplace/Marketplace';
+import Marketplace from './views/pages/Marketplace';
 
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>

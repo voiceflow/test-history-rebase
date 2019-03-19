@@ -40,8 +40,6 @@ class FlowMarket extends Component {
   showModuleDetailView(targ_module){
     this.setState({
       curr_module: targ_module
-    }, () => {
-      console.log('hello', targ_module, this.state.curr_module, this.state.curr_module !== null)
     })  
   }
 
@@ -54,7 +52,6 @@ class FlowMarket extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className="marketplace-window">
         <ModuleModal

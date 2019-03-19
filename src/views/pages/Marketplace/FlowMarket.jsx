@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import axios from 'axios';
-import ModuleCard from './ModuleCard';
-import BannerCarousel from './BannerCarousel';
-import Masonry from 'react-masonry-component';
-import './Marketplace.css';
-import { ButtonGroup } from 'reactstrap';
+import axios from 'axios'
+import ModuleCard from './ModuleCard'
+import Masonry from 'react-masonry-component'
+import './Marketplace.css'
+import ModuleModal from './../../components/Modals/ModuleModal'
 
 class FlowMarket extends Component {
   constructor(props){
@@ -12,24 +11,12 @@ class FlowMarket extends Component {
 
     this.state = {
       modules: [],
-      templates: [],
-      featured_modules: [
-        { title: '',
-          descr:'',
-                  module_icon: '',
-                  module_id: ''},
-        { title: '',
-          descr:'',
-                  module_icon: '',
-                  module_id: ''}
-      ],
-        loading: false,
-        user_modules: new Set(),
-        curr_state: "FLOW"
+      curr_module: null
     }
 
     this.onLoadModules = this.onLoadModules.bind(this)
     this.showModuleDetailView = this.showModuleDetailView.bind(this)
+    this.toggleModalView = this.toggleModalView.bind(this)
   }
 
   onLoadModules(){
@@ -44,46 +31,36 @@ class FlowMarket extends Component {
     .catch(err => {
       console.log(err)
     })
-
-    axios.get('/marketplace/featured')
-    .then(res => {
-        this.setState({
-            featured_modules: res.data,
-            loading: false
-        })
-    })
-    .catch(error => {
-        console.log(error)
-    })
-
-    axios.get('/marketplace/user_module')
-    .then(res => {
-      let user_modules = new Set(user_modules)
-      this.setState({
-        user_modules: user_modules,
-        loading: false
-      })
-    })
-    .catch(err => {
-      console.log(err)
-    })
   }
 
   componentDidMount(){
     this.onLoadModules()
   }
 
-  showModuleDetailView(){
-    console.log('k')
+  showModuleDetailView(targ_module){
+    this.setState({
+      curr_module: targ_module
+    }, () => {
+      console.log('hello', targ_module, this.state.curr_module, this.state.curr_module !== null)
+    })  
+  }
+
+  toggleModalView(){
+    if(this.state.curr_module){
+      this.setState({
+        curr_module: null
+      })
+    }
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="marketplace-window">
-        <BannerCarousel
-          featured_modules={this.state.featured_modules}
-          ownership={this.state.user_modules}
-          onOwnershipChange={this.handleOwnershipChange}
+        <ModuleModal
+          isOpen={this.state.curr_module !== null} 
+          toggle={this.toggleModalView}
+          module={this.state.curr_module}
         />
         <Masonry elementType='div' className="skills-container">
           {this.state.modules.map((module, i) => 

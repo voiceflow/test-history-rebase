@@ -482,7 +482,7 @@ class PublishMarket extends Component {
                                     </div>
                                 </div>
 
-                                <div className="big-settings-alignment-div">
+                                {/* <div className="big-settings-alignment-div">
                                     <div className="mb-4 mt-5"><b>Flow Variables</b></div>
                                     <div className="big-settings-content">
                                         <div className="row mb-4">
@@ -519,7 +519,7 @@ class PublishMarket extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </Form>
                             {!this.state.in_review &&
                             <div className="text-center">

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 // import moment from 'moment'
 // import 'react-table/react-table.css'
 import AuthenticationService from './../../../services/Authentication';
@@ -8,13 +9,13 @@ import Masonry from 'react-masonry-component'
 import {Tooltip} from 'react-tippy'
 import './DashBoard.css'
 import axios from 'axios'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import WarningModal from './../../components/Modals/WarningModal'
 import UpdatesModal from './../../components/Modals/UpdatesModal'
 import VoiceCards from 'views/components/Cards/VoiceCards'
 import EmptyCard from 'views/components/Cards/EmptyCard'
 import {Alert, Input} from 'reactstrap'
 
+import { setConfirm, setError } from 'actions/modalActions'
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
 class DashBoard extends Component {
@@ -22,7 +23,6 @@ class DashBoard extends Component {
         super(props)
 
         this.state = {
-            confirm: false,
             loading: false,
             skills: null,
             filter_skills: null,
@@ -46,29 +46,25 @@ class DashBoard extends Component {
     }
 
     deleteSkill(skill_id, skill_name){
-        this.setState({
-            confirm: {
-                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{skill_name}</i> and all flows can not be recovered</Alert>,
-                warning: true,
-                confirm: () => {
-                    axios.delete(`/skill/${skill_id}`)
-                    .then(() => {
-                        let skills = this.state.skills
-                        skills = skills.filter(s => s.skill_id !== skill_id)
-                        this.setState({
-                            confirm: null,
-                            skills: skills,
-                            filter_skills: _.filter(this.state.filter_skills, s => s.skill_id !== skill_id)
-                        })
+        this.props.setConfirm({
+            text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{skill_name}</i> and all flows can not be recovered</Alert>,
+            warning: true,
+            confirm: () => {
+                axios.delete(`/skill/${skill_id}`)
+                .then(() => {
+                    let skills = this.state.skills
+                    skills = skills.filter(s => s.skill_id !== skill_id)
+                    this.setState({
+                        skills: skills,
+                        filter_skills: _.filter(this.state.filter_skills, s => s.skill_id !== skill_id)
                     })
-                    .catch(err => {
-                        console.log(err)
-                        this.setState({
-                            confirm: null,
-                            error: 'Error Deleting Skill'
-                        })
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.props.setError({
+                        error: 'Error Deleting Skill'
                     })
-                }
+                })
             }
         })
     }
@@ -332,7 +328,6 @@ class DashBoard extends Component {
                         </Link>
                     </div>
                 </div>
-                <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
                 {!(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&
                     <div className="my-5 pt-5 container">
@@ -352,4 +347,10 @@ class DashBoard extends Component {
     }
 }
 
-export default DashBoard;
+const mapDispatchToProps = dispatch => {
+    return {
+        setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+        setError: (err) => dispatch(setError(err))
+    }
+}
+export default connect(null, mapDispatchToProps)(DashBoard);

@@ -7,7 +7,7 @@ import { Button, ButtonGroup } from 'reactstrap'
 import ChoiceDropdownInputs from './components/ChoiceDropdownInputs'
 import randomstring from 'randomstring'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
-import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
+import { updateIntents, setCanFulfill } from "./../../../../actions/versionActions";
 
 export class Interaction extends Component {
     constructor(props) {

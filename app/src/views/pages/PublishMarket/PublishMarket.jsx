@@ -328,16 +328,6 @@ class PublishMarket extends Component {
                     </div>
                 </span>
 
-                <ConfirmModal 
-                    confirm = {this.state.displayingConfirmWithdraw}
-                    toggle = {this.toggleConfirmWithdraw}
-                />
-
-                <ConfirmModal 
-                    confirm = {this.state.displayingConfirmSubmission}
-                    toggle = {this.toggleConfirmSubmission}
-                />
-
                 <div className="subheader-page-container">
                     <div>
                         <div className="container pt-3">

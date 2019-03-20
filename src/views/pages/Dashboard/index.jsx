@@ -36,7 +36,7 @@ class DashBoard extends Component {
 
         this.onLoadSkills = this.onLoadSkills.bind(this)
         this.openSkill = this.openSkill.bind(this)
-        this.copyProject = this.copyProject.bind(this)
+        this.copySkill = this.copySkill.bind(this)
         this.deleteProject = this.deleteProject.bind(this)
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
@@ -45,7 +45,7 @@ class DashBoard extends Component {
         this.renderSkills = this.renderSkills.bind(this)
     }
 
-    deleteProject(project_id){
+    deleteProject(project_id, skill_name){
         this.setState({
             confirm: {
                 text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{skill_name}</i> and all flows can not be recovered</Alert>,
@@ -54,11 +54,11 @@ class DashBoard extends Component {
                     axios.delete(`/project/${project_id}`)
                     .then(() => {
                         let skills = this.state.skills
-                        skills = skills.filter(s => s.skill_id !== skill_id)
+                        skills = skills.filter(s => s.project_id !== project_id)
                         this.setState({
                             confirm: null,
                             skills: skills,
-                            filter_skills: _.filter(this.state.filter_skills, s => s.skill_id !== skill_id)
+                            filter_skills: _.filter(this.state.filter_skills, s => s.project_id !== project_id)
                         })
                     })
                     .catch(err => {
@@ -169,7 +169,7 @@ class DashBoard extends Component {
         });
     }
 
-    copyProject(project_id) {
+    copySkill(skill_id) {
         axios.post(`/skill/${skill_id}/${window.user_detail.id}/copy`)
         .then(res => {
             let skills = this.state.skills.slice()
@@ -287,7 +287,7 @@ class DashBoard extends Component {
                                 name={skill.name}
                                 placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
                                 onDelete={this.deleteProject}
-                                onCopy={this.copyProject}
+                                onCopy={this.copySkill}
                                 deleteLabel="Delete Project"
                                 copyLabel="Copy Project"
                                 onClick={this.openSkill}

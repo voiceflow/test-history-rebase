@@ -121,7 +121,7 @@ class GooglePublish extends Component {
 
       this.setState({ stage: 2 });
 
-      axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'google', project_id: s.project_id })
+      axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'google', project: this.props.project_id, project_id: s.project_id })
         .then(res => {
           this.setState({ stage: 3 });
           let new_version_data = res.data
@@ -743,7 +743,8 @@ class GooglePublish extends Component {
 }
 
 const mapStateToProps = state => ({
-  skill: state.skills.skill.skill_id
+  skill: state.skills.skill.skill_id,
+  project_id: state.skills.skill.project_id
 })
 
 const mapDispatchToProps = dispatch => {

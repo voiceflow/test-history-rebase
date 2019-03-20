@@ -490,7 +490,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
             if(options.request_cert){ 
               await pool.query(
                 `INSERT INTO project_versions (project_id, version_id, cert_requested, version) VALUES ($1, $2, now(), $3)`, 
-                [options.canonical_skill_id, copy_skill.skill_id, options.version])
+                [options.project_id, copy_skill.skill_id, options.version])
             } else {
               await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
             

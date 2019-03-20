@@ -25,6 +25,7 @@ const module_limit = 10;
 const hashIds = (rows) => {
 	for(var i=0;i<rows.length;i++){
 		rows[i].skill_id = hashids.encode(rows[i].skill_id)
+		rows[i].project_id = hashids.encode(rows[i].project_id)
 		rows[i].module_id = hashids.encode(rows[i].module_id)
 		rows[i].creator_id = hashids.encode(rows[i].creator_id)
 	}
@@ -39,8 +40,8 @@ const getModules = async (req, res) => {
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM modules 
-			INNER JOIN (SELECT DISTINCT canonical_skill_id FROM skill_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
-				ON modules.skill_id = distinct_versions.canonical_skill_id 
+			INNER JOIN (SELECT DISTINCT project_id FROM project_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
+				ON modules.skill_id = distinct_versions.project_id 
 			INNER JOIN creators 
 				ON creators.creator_id = modules.creator_id LIMIT $1
 		`, [module_limit])).rows
@@ -69,19 +70,19 @@ const getFeaturedModules = async (req, res) => {
 }
 
 const cancelCertification = async (req, res) => {
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 
 	try{
 		let deleted_row = (await pool.query(`
-			DELETE FROM skill_versions
+			DELETE FROM project_versions
 			WHERE 
-				canonical_skill_id = $1
+				project_id = $1
 				AND cert_requested IS NOT NULL
 				AND cert_approved IS NULL
 			RETURNING *
-		`, [decoded_skill_id])).rows[0]
+		`, [project_id])).rows[0]
 
-		await deleteSkillPromise(ADMIN_MARKETPLACE_ACC, deleted_row.skill_id, {delete_all_versions: false})
+		await deleteProjectPromise(ADMIN_MARKETPLACE_ACC, deleted_row.project_id, {delete_all_versions: false})
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -90,9 +91,9 @@ const cancelCertification = async (req, res) => {
 }
 
 const saveCertification = async (req, res) => {
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 
-	const createNewModule = async (skill_id) => {
+	const createNewModule = async () => {
 		// Leaving module icon in for now, but not using it anymore
 		req.body.module_icon = null
 
@@ -126,11 +127,11 @@ const saveCertification = async (req, res) => {
 	}
 
 	try{
-		let module_data = (await pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [decoded_skill_id])).rows
+		let module_data = (await pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [project_id])).rows
 		if(module_data.length > 0){
 			updateModule(module_data[0].module_id)
 		} else {
-			createNewModule(decoded_skill_id)
+			createNewModule()
 		}
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -141,12 +142,12 @@ const saveCertification = async (req, res) => {
 
 
 const giveCertification = async (req, res) => {
-	let skill_id = hashids.decode(req.params.skill_id)[0];
+	let project_id = hashids.decode(req.params.project_id)[0];
 
 	try{
 		await pool.query(
-			`UPDATE skill_versions SET cert_approved = now() WHERE skill_id = $1 AND cert_approved IS NULL AND cert_requested IS NOT NULL`,
-			[skill_id])
+			`UPDATE project_versions SET cert_approved = now() WHERE project_id = $1 AND cert_approved IS NULL AND cert_requested IS NOT NULL`,
+			[project_id])
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -155,10 +156,10 @@ const giveCertification = async (req, res) => {
 }
 
 const requestCertification = async (req, res) => {
-	let decoded_skill_id = hashids.decode(req.params.skill_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 
 	try{
-		let versions_data = (await pool.query(`SELECT min(version) FROM skill_versions WHERE canonical_skill_id = $1`, [decoded_skill_id])).rows[0].min
+		let versions_data = (await pool.query(`SELECT min(version) FROM project_versions WHERE project_id = $1`, [project_id])).rows[0].min
 		
 		if(versions_data === null){
 			versions_data = -1
@@ -169,7 +170,7 @@ const requestCertification = async (req, res) => {
 		// Creates a new version of the skill at this pt
 		req.params.id = req.params.skill_id
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
-		copySkill(req, res, {user_copy: true, request_cert: true, canonical_skill_id: decoded_skill_id, version: versions_data}, () => {
+		copySkill(req, res, {user_copy: true, request_cert: true, project_id: project_id, version: versions_data}, () => {
 			res.sendStatus(200)	
 		})
 	} catch (err) {
@@ -179,9 +180,9 @@ const requestCertification = async (req, res) => {
 }
 
 const certStatus = (req, res) => {
-	let skill_id = hashids.decode(req.params.skill_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 
-	pool.query(`SELECT * FROM skill_versions WHERE canonical_skill_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL`, [skill_id],
+	pool.query(`SELECT * FROM project_versions WHERE project_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL`, [project_id],
 		(err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -231,7 +232,7 @@ const giveAccess = async (req, res) => {
 	let creator_id = req.user.id
 	
 	try{
-		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id=$2`, [module_id, creator_id])).rows
+		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2`, [module_id, creator_id])).rows
 		if(user_module_data.length > 0){
 			res.sendStatus(400)
 		}
@@ -261,7 +262,7 @@ const getModule = (req, res) => {
 }
 
 const getCertModule = (req, res) => {
-	let skill_id = hashids.decode(req.params.skill_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 
 	const retrieveVariables = (row) => {
 		pool.query(
@@ -397,9 +398,9 @@ const getPendingModules = async (req, res) => {
 	try{ 
 		let module_data = (await pool.query(`
 			SELECT * 
-			FROM skill_versions 
-				JOIN modules ON skill_versions.canonical_skill_id = modules.skill_id 
-				JOIN skills ON skill_versions.skill_id = skills.skill_id
+			FROM project_versions 
+				JOIN modules ON project_versions.version_id = modules.skill_id 
+				JOIN skills ON project_versions.version_id = skills.skill_id
 			WHERE cert_approved IS NULL AND cert_requested IS NOT NULL`)).rows
 		hashIds(module_data)
 		res.status(200).send(module_data)

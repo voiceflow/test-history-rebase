@@ -483,6 +483,9 @@ exports.copySkill = async (req, res, options, cb = false) => {
               res.sendStatus(500)
             }
           })
+
+          copy_skill.project_id = new_project_data.project_id
+
           if(process.env.NODE_ENV !== 'test'){
             analytics.track({
               userId: req.user.id,

@@ -578,7 +578,7 @@ const copyDefaultTemplate = (req, res) => {
 		})
 	}
 
-	const updateSkill = (skill) => {
+	const updateSkill = async (skill) => {
 		if(req.body.name && Array.isArray(req.body.locales)){
 			let name = req.body.name
 			let invs = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
@@ -591,6 +591,8 @@ const copyDefaultTemplate = (req, res) => {
 				locales = req.body.locales
 			}
 		
+			await pool.query(`UPDATE projects SET name = $1 WHERE project_id = $2`, [name, skill.project_id])
+
 			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8, platform=$9 WHERE skill_id = $10`,
 					[name, sum, desc, invs, name, JSON.stringify(locales), 
 						`https://creator.getvoiceflow.com/creator/privacy_policy?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
@@ -610,7 +612,8 @@ const copyDefaultTemplate = (req, res) => {
 			res.send(skill)
 		}
 	}
-	pool.query(`SELECT * FROM versions INNER JOIN modules ON versions.module_id = modules.module_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
+
+	pool.query(`SELECT * FROM project_versions INNER JOIN modules ON project_versions.version_id = modules.skill_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
 		[module_id],
 		(err, data) => {
 			if(err){
@@ -618,7 +621,7 @@ const copyDefaultTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-					let template_skill_id = hashids.encode(data.rows[0].template_skill_id)
+					let template_skill_id = hashids.encode(data.rows[0].version_id)
 					req.params.id = template_skill_id
 					req.params.target_creator = req.user.id
 					req.user.id = ADMIN_MARKETPLACE_ACC

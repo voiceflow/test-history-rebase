@@ -416,7 +416,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
   resolve(google_versions_to_update)
 })
 
-const publish = (req, res) => {
+const publish = async (req, res) => {
   if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
     return res.sendStatus(401)
   }
@@ -428,15 +428,13 @@ const publish = (req, res) => {
     if (req.body.project_id) {
       // TODO: Secure this against TEAM/CREATOR
       // just check it exists for now
-      project_id = (
-        await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [req.body.project_id])
-      ).rows[0].project_id
+      project_id = (await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [req.body.project_id]))
+      .rows[0].project_id
       // project_id = await pool.query('SELECT * FROM projects WHERE project_id = $1 AND creator_id = $2', [req.user.id])
     } else {
       // DEPRECATE SHOULD HAVE PROJECT_ID IN THE FUTURE
-      project_id = (
-        await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id])
-      ).rows[0].project_id
+      project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id]))
+      .rows[0].project_id
     }
     if (!project_id) throw new Error('Invalid Project')
   } catch (err) {

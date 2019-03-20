@@ -24,8 +24,8 @@ class DashBoard extends Component {
         this.state = {
             confirm: false,
             loading: false,
-            projects: null,
-            filter_projects: null,
+            skills: null,
+            filter_skills: null,
             modal: false,
             onboarding: false,
             error: null,
@@ -34,38 +34,38 @@ class DashBoard extends Component {
             show_updates_modal: false
         }
 
-        this.onLoadProjects = this.onLoadProjects.bind(this)
-        this.openProject = this.openProject.bind(this)
+        this.onLoadSkills = this.onLoadSkills.bind(this)
+        this.openSkill = this.openSkill.bind(this)
         this.copyProject = this.copyProject.bind(this)
         this.deleteProject = this.deleteProject.bind(this)
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
         this.logout = this.logout.bind(this)
         this.toggleUpdatesModal = this.toggleUpdatesModal.bind(this)
-        this.renderProjects = this.renderProjects.bind(this)
+        this.renderSkills = this.renderSkills.bind(this)
     }
 
-    deleteProject(project_id, project_name){
+    deleteProject(project_id){
         this.setState({
             confirm: {
-                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{project_name}</i> and all flows can not be recovered</Alert>,
+                text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{skill_name}</i> and all flows can not be recovered</Alert>,
                 warning: true,
                 confirm: () => {
                     axios.delete(`/project/${project_id}`)
                     .then(() => {
-                        let projects = this.state.projects
-                        projects = projects.filter(s => s.project_id !== project_id)
+                        let skills = this.state.skills
+                        skills = skills.filter(s => s.skill_id !== skill_id)
                         this.setState({
                             confirm: null,
-                            projects: projects,
-                            filter_projects: _.filter(this.state.filter_projects, s => s.project_id !== project_id)
+                            skills: skills,
+                            filter_skills: _.filter(this.state.filter_skills, s => s.skill_id !== skill_id)
                         })
                     })
                     .catch(err => {
                         console.log(err)
                         this.setState({
                             confirm: null,
-                            error: 'Error Deleting Project'
+                            error: 'Error Deleting Skill'
                         })
                     })
                 }
@@ -73,14 +73,14 @@ class DashBoard extends Component {
         })
     }
 
-    openProject(project, diagram){
+    openSkill(skill, diagram){
         setTimeout(() => {
-            this.props.history.push(`/canvas/${project}/${diagram}`);
+            this.props.history.push(`/canvas/${skill}/${diagram}`);
         }, 100);
     }
 
     componentDidMount() {
-        this.onLoadProjects()
+        this.onLoadSkills()
 
         let last_update_seen = localStorage.getItem('last_update_seen_' + window.user_detail.id)
 
@@ -119,18 +119,18 @@ class DashBoard extends Component {
     }
 
     switchTab(tab){
-        let filter_projects = this.state.projects;
+        let filter_skills = this.state.skills;
         if (tab === "Published"){
-          filter_projects = _.filter(filter_projects, project => project.live || project.review)
+          filter_skills = _.filter(filter_skills, skill => skill.live || skill.review)
         } else if (tab === "Development") {
-          filter_projects = _.filter(filter_projects, project => !project.live || !project.review)
+          filter_skills = _.filter(filter_skills, skill => !skill.live || !skill.review)
         }
-        filter_projects = _.filter(filter_projects, project =>
-          _.includes(_.toLower(project.name), _.toLower(this.state.filter_text))
+        filter_skills = _.filter(filter_skills, skill =>
+          _.includes(_.toLower(skill.name), _.toLower(this.state.filter_text))
         )
         if(tab !== this.state.tab){
             this.setState({
-                filter_projects: filter_projects,
+                filter_skills: filter_skills,
                 filter_tab: tab
             })
         }
@@ -143,12 +143,12 @@ class DashBoard extends Component {
         });
         return false;
     }
-    onLoadProjects() {
+    onLoadSkills() {
         axios.get('/projects')
         .then(res => {
             this.setState({
-                projects: res.data,
-                filter_projects: res.data,
+                skills: res.data,
+                filter_skills: res.data,
                 loading: false
             }, ()=>{
                 if(!res.data.length){
@@ -170,56 +170,56 @@ class DashBoard extends Component {
     }
 
     copyProject(project_id) {
-        axios.post(`/project/${project_id}/${window.user_detail.id}/copy`)
+        axios.post(`/skill/${skill_id}/${window.user_detail.id}/copy`)
         .then(res => {
-            let projects = this.state.projects.slice()
-            let filter_projects = this.state.filter_projects.slice()
+            let skills = this.state.skills.slice()
+            let filter_skills = this.state.filter_skills.slice()
 
-            projects.push(res.data)
-            filter_projects.push(res.data)
+            skills.push(res.data)
+            filter_skills.push(res.data)
 
             this.setState({
-                projects: projects,
-                filter_projects: filter_projects,
+                skills: skills,
+                filter_skills: filter_skills,
             })
         })
         .catch(err => {
             this.setState({
-                error: 'Error copying project'
+                error: 'Error copying skill'
             })
         })
     }
 
     onFilter(property, e=null) {
-      let filtered_projects = this.state.projects;
+      let filtered_skills = this.state.skills;
       if (e) {
-        filtered_projects = _.filter(filtered_projects, project =>
-          _.includes(_.toLower(project[property]), _.toLower(e.value))
+        filtered_skills = _.filter(filtered_skills, skill =>
+          _.includes(_.toLower(skill[property]), _.toLower(e.value))
         )
       }
       if (this.state.filter_tab === "Published"){
-        filtered_projects = _.filter(filtered_projects, project => project.live || project.review)
+        filtered_skills = _.filter(filtered_skills, skill => skill.live || skill.review)
       } else if (this.state.filter_tab === "Development") {
-        filtered_projects = _.filter(filtered_projects, project => !project.live || !project.review)
+        filtered_skills = _.filter(filtered_skills, skill => !skill.live || !skill.review)
       }
       this.setState({
-        filter_projects: filtered_projects,
+        filter_skills: filtered_skills,
         filter_text: e.value
       })
     }
 
-    renderProjects(){
-        let projects;
+    renderSkills(){
+        let skills;
 
-        if(this.state.filter_projects === null){
-            projects = <div id="loading-diagram">
+        if(this.state.filter_skills === null){
+            skills = <div id="loading-diagram">
                 <div className="text-center">
-                    <h5 className="text-muted mb-2">Loading Projects</h5>
+                    <h5 className="text-muted mb-2">Loading Skills</h5>
                     <span className="loader"/>
                 </div>
             </div>
-        }else if(this.state.filter_projects.length === 0 && this.state.projects.length === 0){
-            projects = <div className="super-center w-100 text-muted d-flex">
+        }else if(this.state.filter_skills.length === 0 && this.state.skills.length === 0){
+            skills = <div className="super-center w-100 text-muted d-flex">
                 <div className="horizontal-center align-self-center mt-5">
                     <div className="">
                       <div className="card-body p-4">
@@ -228,7 +228,7 @@ class DashBoard extends Component {
                         </div>
                         <br/>
                         <Link to="/templates" className="no-underline super-center">
-                            <button varient="contained" className="purple-btn" id="createproject">New Project</button>
+                            <button varient="contained" className="purple-btn" id="createskill">New Project</button>
                         </Link>
                             <small>
                                 <a href="https://intercom.help/vfu" className="text-muted super-center mt-3" target="_blank" rel="noopener noreferrer">
@@ -241,7 +241,7 @@ class DashBoard extends Component {
                 </div>
              </div>
         }else{
-            projects = <React.Fragment>
+            skills = <React.Fragment>
                     <div className="search-header">
                     {/* <div className="searchBar w-25">
                         <Input className='form-control-white mb-2 mt-3 search-input form-control' placeholder="Search" onChange={(e) => this.onFilter("name", e.target)}/>
@@ -263,34 +263,35 @@ class DashBoard extends Component {
                     </div> */}
                   </div>
                   <Masonry elementType='div' className="skills-container">
-                    {this.state.filter_projects.map((project, i) => {
+                    {this.state.filter_skills.map((skill, i) => {
                         let icon
-                        let smallIcon = project.small_icon
-                        let largeIcon = project.large_icon
+                        let smallIcon = skill.small_icon
+                        let largeIcon = skill.large_icon
                         if (!_.isNull(largeIcon)) {
                             icon = largeIcon
                         } else if (!_.isNull(smallIcon)) {
                             icon = smallIcon
                         }
 
-                        let name = project.name.match(/\b(\w)/g)
+                        let name = skill.name.match(/\b(\w)/g)
                         if(name) { name = name.join('') }
-                        else { name = project.name }
+                        else { name = skill.name }
                         name = name.substring(0,3)
                         
                         return(
                             <VoiceCards
                                 key={i}
-                                id={project.project_id}
+                                id={skill.skill_id}
+                                project_id={skill.project_id}
                                 icon={icon}
-                                name={project.name}
+                                name={skill.name}
                                 placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
                                 onDelete={this.deleteProject}
                                 onCopy={this.copyProject}
                                 deleteLabel="Delete Project"
                                 copyLabel="Copy Project"
-                                onClick={this.openProject}
-                                extension={project.diagram}
+                                onClick={this.openSkill}
+                                extension={skill.diagram}
                                 buttonLabel="Edit Project"
                             />
                         )
@@ -301,7 +302,7 @@ class DashBoard extends Component {
                 </Masonry>
             </React.Fragment>
         }
-        return projects
+        return skills
     }
 
     render() {
@@ -312,7 +313,7 @@ class DashBoard extends Component {
                 <UpdatesModal show_update_modal={this.state.show_updates_modal} toggle={this.toggleUpdatesModal} product_updates={this.state.product_updates}/>
                 <div id="navbar-top-left">
                     <div className="searchBar ml-4">
-                        <Input className='search-input form-control-2' placeholder="Search Projects" onChange={(e) => this.onFilter("name", e.target)}/>
+                        <Input className='search-input form-control-2' placeholder="Search Skills" onChange={(e) => this.onFilter("name", e.target)}/>
                     </div>
                 </div>
                 <div className="title-group no-select pr-2">
@@ -334,15 +335,15 @@ class DashBoard extends Component {
                 </div>
                 <ConfirmModal confirm={this.state.confirm} toggle={()=>this.setState({confirm: null})}/>
                 <WarningModal error={this.state.error} dismiss={()=>this.setState({error: null})}/>
-                {!(this.state.filter_projects && this.state.filter_projects.length === 0 && this.state.projects.length === 0) &&
+                {!(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&
                     <div className="my-5 pt-5 container">
-                        {this.renderProjects()}
+                        {this.renderSkills()}
                     </div>
                 }
-                {(this.state.filter_projects && this.state.filter_projects.length === 0 && this.state.projects.length === 0) &&   
+                {(this.state.filter_skills && this.state.filter_skills.length === 0 && this.state.skills.length === 0) &&   
                     <div className="h-100 d-flex justify-content-center">
                         <div className="align-self-center">
-                            {this.renderProjects()}
+                            {this.renderSkills()}
                         </div>
                     </div>
                 }

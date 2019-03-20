@@ -35,6 +35,7 @@ class VoiceCards extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div key={this.props.id} className="product-card">
         <Card key={this.props.id} onClick={()=>{
@@ -51,11 +52,11 @@ class VoiceCards extends Component {
                     </DropdownToggle>
                     <DropdownMenu right>
                       {this.props.copyLabel &&
-                        <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onCopy(this.props.id)}}>
+                        <DropdownItem onClick={(e) => {e.stopPropagation(); this.props.onCopy(this.props.project_id)}}>
                           {this.props.copyLabel}
                         </DropdownItem>
                       }
-                      <DropdownItem onClick={(e) => { e.stopPropagation(); this.props.onDelete(this.props.id, this.props.name) }}>
+                      <DropdownItem onClick={(e) => { e.stopPropagation(); this.props.onDelete(this.props.project_id) }}>
                         {this.props.deleteLabel}
                       </DropdownItem>
                     </DropdownMenu>

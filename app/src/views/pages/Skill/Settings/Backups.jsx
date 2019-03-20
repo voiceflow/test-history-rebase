@@ -29,7 +29,7 @@ class BackupSettings extends Component{
     }
 
     componentDidMount(){
-        axios.get(`/skill/${this.props.skill.skill_id}/live_version`)
+        axios.get(`/project/${this.props.skill.project_id}/live_version`)
         .then(res => {
             let live_version = res.data.live_version
             axios.get(`/skill/${this.props.skill.skill_id}/versions`)

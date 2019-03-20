@@ -104,48 +104,6 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
-exports.getSkills = async (req, res) => {
-  if (!req.user) {
-    res.sendStatus(401)
-    return
-  }
-  if (req.query.user && req.user.admin < 100) {
-    res.sendStatus(401)
-    return
-  }
-  
-  let userId = req.query.user ? req.query.user : req.user.id
-  let query = `
-    SELECT * 
-    FROM skills
-    INNER JOIN skill_versions
-    ON skills.skill_id = skill_versions.skill_id
-    WHERE version IS NULL AND creator_id = $1`
-
-  // Get dev + live versions
-  if(req.query.user){
-    query = `
-      SELECT * 
-      FROM skills
-      INNER JOIN skill_versions
-      ON skills.skill_id = skill_versions.skill_id
-      WHERE (version IS NULL OR skills.live = true) AND creator_id = $1`
-  } 
-
-  try{
-    let skills_data = (await pool.query(query, [userId])).rows
-    res.send(skills_data.map(skill => {
-      skill.skill_id = hashids.encode(skill.skill_id)
-      return skill
-    }))
-  } catch(err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
-    res.sendStatus(500)
-  }
-}
-
 exports.getSkill = async (req, res) => {
   if (!req.params.id) {
     res.sendStatus(401)
@@ -785,7 +743,7 @@ exports.buildSkill = async (req, res) => {
 
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
-            let products = await pool.query("SELECT * FROM products WHERE skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)", [r.skill_id]);
+            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
               for (row of products.rows) {
@@ -921,7 +879,7 @@ exports.buildSkill = async (req, res) => {
                           Authorization: token
                         }
                       })
-                      .then(response => {
+                      .then(async response => {
                         if (response.hasOwnProperty('violations')) {
                           getSkillStatus(depth + 1)
                         } else {
@@ -936,20 +894,22 @@ exports.buildSkill = async (req, res) => {
                             }
                           })
 
-                          // Update canonical skill id's amzn id
-                          pool.query(`
-                            UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
-                            [amzn_id, id],
-                            (err) => {
-                              if (err) {
-                                writeToLogs('CREATOR_BACKEND_ERRORS', {
-                                  err: err
-                                })
-                                res.sendStatus(500)
-                              } else {
-                                res.send(amzn_id)
-                              }
-                            })
+                          if(r.amzn_id !== amzn_id){
+                            // Update canonical skill id's amzn id
+                            try{
+                              await pool.query(`
+                              UPDATE skills SET amzn_id = $1 WHERE skill_id = (
+                                SELECT dev_version FROM projects p
+                                INNER JOIN project_versions pv ON p.project_id = pv.project_id
+                                WHERE skill_id = $2 LIMIT 1)`, 
+                              [amzn_id, id])
+                            }catch(err){
+                              writeToLogs('CREATOR_BACKEND_ERRORS', {err})
+                              return res.sendStatus(500)
+                            }
+                          }
+
+                          res.send(amzn_id)
                         }
                       })
                       .catch(err => {
@@ -1484,74 +1444,4 @@ exports.getGoogleSkill = async (req, res) => {
       }
     }
   });
-}
-
-exports.getLiveVersion = async (req, res) => {
-  let skill_id = hashids.decode(req.params.id)[0]
-  try {
-    let live_version_data = await pool.query(`
-      SELECT s.skill_id AS sid, s.diagram AS sdia, sv.canonical_skill_id
-      FROM skills s 
-      INNER JOIN skill_versions sv ON s.skill_id = sv.skill_id
-      WHERE sv.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1)
-        AND s.live = TRUE  
-        AND creator_id = $2
-      LIMIT 1
-    `, [skill_id, req.user.id])
-    if (live_version_data.rows.length > 0) {
-      res.send({
-        live_version: hashids.encode(live_version_data.rows[0].sid)
-      })
-    } else {
-      res.send({
-        live_version: null
-      })
-    }
-  } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
-  }
-}
-
-exports.getDevVersion = async (req, res) => {
-  let skill_id = hashids.decode(req.params.id)[0]
-  try {
-    let dev_version_data = await pool.query(`
-      SELECT * FROM skills WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1) AND creator_id = $2 LIMIT 1
-    `, [skill_id, req.user.id])
-    if (dev_version_data.rows.length > 0) {
-      dev_version_data.rows[0].skill_id = hashids.encode(dev_version_data.rows[0].skill_id)
-      res.send(dev_version_data.rows[0])
-    } else {
-      res.sendStatus(404)
-    }
-  } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
-  }
-}
-
-exports.getSkillInfo = async (req, res) => {
-  let skill = {}
-  if(req.query.encoded){
-    skill.id = hashids.decode(req.params.id)[0]
-    skill.encoded = req.params.id
-  }else{
-    skill.encoded = hashids.encode(req.params.id)
-    skill.id = req.params.id
-  }
-  try {
-    let find = await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1 LIMIT 1`, [skill.id])
-    if(find.rows.length === 0){
-      res.sendStatus(404)
-      return
-    }
-    skill.canonical_skill_id = find.rows[0].canonical_skill_id
-    skill.skills = (await pool.query(`SELECT * FROM skills s INNER JOIN skill_versions sv ON sv.skill_id = s.skill_id WHERE sv.canonical_skill_id = $1`, [skill.canonical_skill_id])).rows
-    skill.skill = _.find(skill.skills, s => s.skill_id = skill.id)
-    res.send(skill)
-  }catch(e){
-    console.error(e)
-    res.status(500).send(e)
-  }
 }

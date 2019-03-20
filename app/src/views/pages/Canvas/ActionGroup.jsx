@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { updateSkill } from './../../../actions/skillActions'
+import { updateVersion } from './../../../actions/versionActions'
 import { setError } from 'actions/modalActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
@@ -992,7 +992,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
         setError: err => dispatch(setError(err))
     }
 }

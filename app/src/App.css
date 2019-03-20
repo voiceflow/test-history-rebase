@@ -478,6 +478,13 @@ audio {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.plain-input{
+    background: none;
+    border: none;
+    outline: none;
+    text-align: center;
+    width: 100px;
+}
 .fa-rotate--90{
     -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);

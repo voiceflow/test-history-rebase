@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
-<<<<<<< HEAD
 import { connect } from 'react-redux'
-import { FormGroup, Label, Input } from 'reactstrap'
-=======
 import { FormGroup, Label, Input, Form } from 'reactstrap'
->>>>>>> marketplace_rd2
 import MUIButton from '@material-ui/core/Button'
 import moment from 'moment'
 import Textarea from 'react-textarea-autosize'
@@ -31,11 +27,6 @@ class PublishMarket extends Component {
             in_review: false,
             title: '',
             module_icon: null,
-<<<<<<< HEAD
-=======
-            displayingConfirmWithdraw: false,
-            displayingConfirmSubmission: false,
->>>>>>> marketplace_rd2
             color: '',
             input: [],
             output: [],

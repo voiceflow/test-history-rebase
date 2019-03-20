@@ -395,7 +395,7 @@ export class ActionGroup extends PureComponent {
               return
           }
       }
-      axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
+      axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa', project: this.props.skill.project_id })
           .then(res => {
               let new_version_data = res.data
               this.updateAlexaStage(11, () => {
@@ -447,7 +447,7 @@ export class ActionGroup extends PureComponent {
 
     this.updateGoogleStage(3)
 
-    axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+    axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`, { platform: 'google', project: this.props.skill.project_id, project_id: p.skill.google_publish_info.project_id })
     .then(res => {
       this.updateGoogleStage(4)
       let new_version_data = res.data

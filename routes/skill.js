@@ -171,57 +171,29 @@ exports.getSkill = async (req, res) => {
   if (req.query.preview) {
     // expose as little information as possible if previewing
     sql = `
-          SELECT
-              name,
-              preview,
-              diagram,
-              intents,
-              slots
-          FROM
-              skills
-          WHERE
-              skill_id = $1 LIMIT 1`;
-    params = [id];
-  } else if (req.query.simple) {
-    sql = `
       SELECT
         name,
-        amzn_id,
-        review,
-        live,
-        diagram,
-        locales,
-        restart,
-        global,
-        intents,
-        slots,
-        inv_name,
         preview,
-        account_linking,
-        resume_prompt,
-        error_prompt,
-        fulfillment,
-        alexa_events,
-        created,
-        platform,
-        google_publish_info,
-        repeat
-    FROM
-      skills
-    WHERE
-      skill_id = $1
-      AND creator_id = $2
-    LIMIT 1`;
-    params = [id, req.user.id]
+        diagram,
+        intents,
+        slots
+      FROM
+        skills
+      WHERE
+        skill_id = $1 LIMIT 1`;
+    params = [id];
   } else {
     sql = `
-          SELECT
-              *
-          FROM
-              skills
-          WHERE
-              skill_id = $1 AND
-              creator_id = $2 LIMIT 1`;
+      SELECT
+        s.*,
+        pv.project_id
+      FROM
+        skills s
+        INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+        WHERE
+          skill_id = $1
+          AND creator_id = $2
+        LIMIT 1`;
     params = [id, req.user.id]
   }
 

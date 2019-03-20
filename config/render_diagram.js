@@ -741,6 +741,9 @@ const renderDiagram = (user, diagram_id, skill_id, options={}, depth = 0, platfo
           }
         } else if (node.extras.type === 'display') {
           options.interfaces.add('ALEXA_PRESENTATION_APL')
+          options.interfaces.add('AUDIO_PLAYER')
+            // In case the APL contains a video
+
           let id = hashids.decode(node.extras.display_id)
           story.lines[node.id] = {
             display_id: id[0],

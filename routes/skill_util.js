@@ -471,7 +471,8 @@ exports.copySkill = async (req, res, options, cb = false) => {
       .then(async () => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
-          pool.query(`INSERT INTO skill_versions (canonical_skill_id, skill_id) VALUES ($1, $2)`, [copy_skill.skill_id, copy_skill.skill_id], (err) => {
+          let new_project_data = (await pool.query(`INSERT INTO projects (name, creator_id, dev_version) VALUES ($1, $2, $3) RETURNING *`, [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
+          pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id], (err) => {
             if (err) {
               writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
               res.sendStatus(500)
@@ -482,7 +483,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
               userId: req.user.id,
               event: 'Project Created',
               properties: {
-                skill_id: copy_skill.skill_id,
+                project_id: new_project_data.project_id,
                 original_skill_id: id
               }
             })

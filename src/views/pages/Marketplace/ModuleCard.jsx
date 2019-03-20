@@ -1,57 +1,9 @@
-import React, { Component } from 'react';
-import { Card, CardBody } from 'reactstrap';
-import './Marketplace.css';
-import axios from 'axios';
+import React, { Component } from 'react'
+import { Card, CardBody } from 'reactstrap'
+import './Marketplace.css'
 import withRenderModuleIcon from '../../HOC/ModuleIcon'
 
 class ModuleCard extends Component{
-	constructor(props){
-		super(props)
-
-		this.state = {
-			hover: false
-		}
-
-		this.handleModuleView = this.handleModuleView.bind(this)
-		this.handleAddRemove = this.handleAddRemove.bind(this)
-	}
-
-	handleModuleView() {
-		this.props.history.push(`/marketplace/${this.props.skill_id}/${this.props.module.module_id}`)
-	}
-    	
-
-	handleAddRemove() {
-		if(!this.props.ownership.has(this.props.module.module_id)){
-			axios.post(`/marketplace/user_module/${this.props.module.module_id}`)
-			.then(res => {
-				if(res.status === 200){
-					let ownership = this.props.ownership
-					ownership.add(this.props.module.module_id)
-					this.props.onOwnershipChange(ownership)
-				}else{
-					//TODO: add error modal
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			});
-		} else {
-			axios.delete(`/marketplace/user_module/${this.props.module.module_id}`)
-			.then(res => {
-				if(res.status === 200){
-					let ownership = this.props.ownership;
-					ownership.delete(this.props.module.module_id);
-					this.props.onOwnershipChange(ownership);
-				}else{
-					//TODO: add error modal
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			});
-		}
-	}
 
 	render(){
 		return (

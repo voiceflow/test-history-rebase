@@ -1257,7 +1257,7 @@ export class Canvas extends Component {
         }
     }
     
-    generateBlockMenu = (e) => {
+    generateBlockMenu = (e, combineNode = null) => {
       if(this.props.preview){
         this.props.setBlockMenu(null)
         return
@@ -1274,19 +1274,28 @@ export class Canvas extends Component {
             <React.Fragment>
                 <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
                     <ListGroup>
-                        <ListGroupItem onClick={(e) => {
-                            // e.stopPropagation();
-                            node.setLocked(true);
-                            node.selected = true;
-                            node.edit = true;
-                            this.props.setBlockMenu(null)
-                        }}>Rename</ListGroupItem>
+                        {!combineNode && 
+                            <ListGroupItem onClick={(e) => {
+                                node.setLocked(true);
+                                node.selected = true;
+                                node.edit = true;
+                                this.props.setBlockMenu(null)
+                            }}>Rename</ListGroupItem>
+                        }
                         <ListGroupItem onClick={() => {
-                            this.copyNode(node)
+                            if (combineNode){
+                                this.appendCombineNode(combineNode)
+                            } else {
+                                this.copyNode(node)
+                            }
                             this.props.setBlockMenu(null)
                         }}>Copy Block</ListGroupItem>
                         <ListGroupItem onClick={() => {
-                            this.removeNode(node)
+                            if (combineNode){
+                                this.removeCombineNode(combineNode);
+                            } else {
+                                this.removeNode(node)
+                            }
                             this.props.setBlockMenu(null)
                         }}>Delete Block</ListGroupItem>
                     </ListGroup>
@@ -1657,6 +1666,7 @@ export class Canvas extends Component {
                     removeNode: this.removeNode,
                     diagram: this.props.diagram,
                     removeCombineNode: this.removeCombineNode,
+                    generateBlockMenu: this.generateBlockMenu,
                     disabled: !!this.props.preview
                   }}
                   removeHandler={node => {

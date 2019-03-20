@@ -2,7 +2,6 @@ const {
   docClient,
   pool,
   hashids,
-  validateEmail,
   writeToLogs
 } = require('./../services');
 const {
@@ -127,10 +126,10 @@ const setDiagram = async (req, res) => {
   }
 
   let DIAGRAM_ID = diagram.id || data.id
-  if(!DIAGRAM_ID) return res.status(500).send('Empty Project')
+  if (!DIAGRAM_ID) return res.status(500).send('Empty Project')
 
-  try{
-      let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
+  try {
+    let result = await pool.query('SELECT creator_id FROM skills WHERE skill_id = $1 LIMIT 1', [diagram.skill])
 
     if (result.rows.length > 0 && result.rows[0].creator_id !== req.user.id && req.user.admin < 100) {
       return res.sendStatus(403)
@@ -145,14 +144,14 @@ const setDiagram = async (req, res) => {
   }
 
   let params = {
-      TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
-      Item: {
-          id: DIAGRAM_ID,
-          variables: diagram.variables,
-          data: diagram.data,
-          skill: diagram.skill,
-          creator: diagram.creator
-      }
+    TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+    Item: {
+      id: DIAGRAM_ID,
+      variables: diagram.variables,
+      data: diagram.data,
+      skill: diagram.skill,
+      creator: diagram.creator
+    }
   }
 
   let global_string
@@ -293,7 +292,9 @@ const copyDiagram = async (req, res) => {
       res.sendStatus(404)
     }
   } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+    writeToLogs('CREATOR_BACKEND_ERRORS', {
+      err: err
+    })
     res.sendStatus(500)
   }
 }
@@ -376,8 +377,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       resolve(attached_google_versions)
     })
 
-    // WINSTON PLS HALP
-    const data = await pool.query('SELECT google_versions FROM skill_versions WHERE skill_id = $1', [skill_id])
+    const data = await pool.query('SELECT google_versions FROM project_versions WHERE version_id = $1', [skill_id])
 
     let existing_google_versions = data.rows[0].google_versions
     let highest_existing_version = 0
@@ -402,8 +402,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       existing_google_versions[version] = all_google_versions[version]
     })
 
-    // WINSTON PLS HALP
-    if (existing_google_versions) await pool.query('UPDATE skill_versions SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
+    if (existing_google_versions) await pool.query('UPDATE project_versions SET google_versions = $2 WHERE version_id = $1', [skill_id, existing_google_versions])
   } catch (e) {
     await new Promise((resolve, reject) => {
       del([dir]).then(resolve()).catch(e => reject(e))
@@ -422,7 +421,28 @@ const publish = (req, res) => {
     return res.sendStatus(401)
   }
 
+  // check that the owner actually owns this project
   let skill_id = hashids.decode(req.params.skill_id)[0]
+  let project_id
+  try {
+    if (req.body.project_id) {
+      // TODO: Secure this against TEAM/CREATOR
+      // just check it exists for now
+      project_id = (
+        await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [req.body.project_id])
+      ).rows[0].project_id
+      // project_id = await pool.query('SELECT * FROM projects WHERE project_id = $1 AND creator_id = $2', [req.user.id])
+    } else {
+      // DEPRECATE SHOULD HAVE PROJECT_ID IN THE FUTURE
+      project_id = (
+        await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id])
+      ).rows[0].project_id
+    }
+    if (!project_id) throw new Error('Invalid Project')
+  } catch (err) {
+    return res.sendStatus(401)
+  }
+
   let platform = req.body.platform || 'alexa'
   let google_project_id
 
@@ -440,38 +460,22 @@ const publish = (req, res) => {
         const token = await _getGoogleAccessToken(req.user.id)
         google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
         if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
-        // WINSTON PLS HALP
+
         const versions = await pool.query(`
           SELECT
-            skill_id
+            version_id
           FROM
-            skill_versions
+            project_versions
           WHERE
-            canonical_skill_id = (
-              SELECT
-                COALESCE(canonical_skill_id, $2)
-              FROM
-                skill_versions
-              WHERE
-                skill_id = $1)
-              AND published_platform = $3
-              AND version = (
-                SELECT
-                  MAX(version)
-                FROM
-                  skill_versions
-                WHERE
-                  canonical_skill_id = (
-                    SELECT
-                      COALESCE(canonical_skill_id, $2)
-                    FROM
-                      skill_versions
-                    WHERE
-                      skill_id = $1)
-                    AND published_platform = $3)`, [skill_id, new_skill_id_decoded, platform])
+            project_id = $1
+            AND platform = $2
+          ORDER BY
+            created DESC
+          LIMIT 1`,
+        [skill_id, new_skill_id_decoded, platform])
 
         if (versions.rows && versions.rows.length > 0) {
-          let latest_version_skill_id = versions.rows[0].skill_id
+          let latest_version_skill_id = versions.rows[0].version_id
           await pool.query('UPDATE project_versions SET google_versions = $2 where version_id = $1', [latest_version_skill_id, google_versions_to_update])
         }
       } catch (e) {
@@ -480,23 +484,16 @@ const publish = (req, res) => {
       }
     }
 
-    let version_query = `
-      INSERT INTO project_versions (project_id, version_id, platform)
-      SELECT
-        project_id, $1, $2
-      FROM
-        project_versions
-      WHERE
-        version_id = $3`
+    let version_query = `INSERT INTO project_versions (project_id, version_id, platform) VALUES ( $1, $2, $3 )`
 
-    pool.query(version_query, [new_skill_id_decoded, platform, skill_id], async (err, data) => {
+    pool.query(version_query, [project_id, new_skill_id_decoded, platform], async (err, data) => {
       if (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {
           err: err
         })
         res.sendStatus(500)
       } else {
-        new_skill_row.canonical_skill_id = hashids.encode(data.rows[0].canonical_skill_id)
+        new_skill_row.project_id = project_id
         res.send({
           new_skill: new_skill_row
         })
@@ -552,13 +549,16 @@ const publishTest = async (req, res) => {
 const rerenderDiagram = async (req, res) => {
   let skill_id = hashids.decode(req.params.skill_id)[0]
   let diagram_id = req.params.diagram_id
-  try{
+  try {
     let skill_data = (await pool.query(`SELECT * FROM skills WHERE skill_id = $1 AND creator_id = $2`, [skill_id, req.user.id])).rows
     let skill = skill_data[0]
     let intents = {}
     let slots = {}
     // CONVERT ARRAY TO OBJECTS
-    let used_intents = new Set(), used_choices = [], permissions = new Set(), interfaces = new Set()
+    let used_intents = new Set(),
+      used_choices = [],
+      permissions = new Set(),
+      interfaces = new Set()
     if (Array.isArray(skill.intents)) {
       skill.intents.forEach(intent => {
         if (intent.key) intents[intent.key] = intent.name
@@ -570,7 +570,14 @@ const rerenderDiagram = async (req, res) => {
       })
     }
 
-    await renderDiagram(req.user, diagram_id, skill_id, {permissions, interfaces, used_intents, used_choices, intents, slots})
+    await renderDiagram(req.user, diagram_id, skill_id, {
+      permissions,
+      interfaces,
+      used_intents,
+      used_choices,
+      intents,
+      slots
+    })
     res.sendStatus(200)
   } catch (err) {
     console.trace(err)

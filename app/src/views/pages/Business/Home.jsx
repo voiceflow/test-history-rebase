@@ -128,7 +128,7 @@ class Home extends Component {
 
   loadData() {
     // Retrieve user data
-    axios.get(`/analytics/${this.props.skill_id}/users`)
+    axios.get(`/analytics/${this.props.project_id}/users`)
       .then(res => {
         this.setState({
           users_data: res.data,
@@ -143,7 +143,7 @@ class Home extends Component {
         })
       })
 
-    axios.get(`/analytics/${this.props.skill_id}`)
+    axios.get(`/analytics/${this.props.project_id}`)
       .then(res => {
         this.setState({
           users: res.data.users,

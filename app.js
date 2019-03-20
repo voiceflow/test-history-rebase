@@ -35,7 +35,7 @@ const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
-const Mail = require('./routes/mail.js');
+const Project = require('./routes/project.js');
 const {copySkill} = require('./routes/skill_util')
 const Track = require('./routes/track.js')
 const ProductUpdates = require('./routes/product_updates.js')
@@ -158,6 +158,8 @@ app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
 app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
 app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
+app.get('/projects', ensureLoggedIn(), Project.getProjects);
+
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/:id/info', ensureAdmin(), Skill.getSkillInfo);
@@ -245,9 +247,9 @@ app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackF
 app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
-app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
-app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
-app.get('/analytics/:skill_id', ensureLoggedIn(), Analytics.getStats)
+app.get('/analytics/:project_id/users', ensureLoggedIn(), Analytics.getUsersData)
+app.get('/analytics/:project_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

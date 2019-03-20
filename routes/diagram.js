@@ -376,6 +376,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       resolve(attached_google_versions)
     })
 
+    // WINSTON PLS HALP
     const data = await pool.query('SELECT google_versions FROM skill_versions WHERE skill_id = $1', [skill_id])
 
     let existing_google_versions = data.rows[0].google_versions
@@ -401,6 +402,7 @@ const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise
       existing_google_versions[version] = all_google_versions[version]
     })
 
+    // WINSTON PLS HALP
     if (existing_google_versions) await pool.query('UPDATE skill_versions SET google_versions = $2 WHERE skill_id = $1', [skill_id, existing_google_versions])
   } catch (e) {
     await new Promise((resolve, reject) => {
@@ -438,13 +440,39 @@ const publish = (req, res) => {
         const token = await _getGoogleAccessToken(req.user.id)
         google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
         if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
-
-        const versions = await pool.query('SELECT skill_id from skill_versions where canonical_skill_id = (SELECT COALESCE(canonical_skill_id, $2) FROM skill_versions WHERE skill_id = $1) AND published_platform = $3 AND version = (SELECT MAX(version) from skill_versions where canonical_skill_id = (SELECT COALESCE(canonical_skill_id, $2) FROM skill_versions WHERE skill_id = $1) AND published_platform = $3)', [skill_id, new_skill_id_decoded, platform])
-
+        // WINSTON PLS HALP
+        const versions = await pool.query(`
+          SELECT
+            skill_id
+          FROM
+            skill_versions
+          WHERE
+            canonical_skill_id = (
+              SELECT
+                COALESCE(canonical_skill_id, $2)
+              FROM
+                skill_versions
+              WHERE
+                skill_id = $1)
+              AND published_platform = $3
+              AND version = (
+                SELECT
+                  MAX(version)
+                FROM
+                  skill_versions
+                WHERE
+                  canonical_skill_id = (
+                    SELECT
+                      COALESCE(canonical_skill_id, $2)
+                    FROM
+                      skill_versions
+                    WHERE
+                      skill_id = $1)
+                    AND published_platform = $3)`, [skill_id, new_skill_id_decoded, platform])
 
         if (versions.rows && versions.rows.length > 0) {
           let latest_version_skill_id = versions.rows[0].skill_id
-          await pool.query('UPDATE skill_versions SET google_versions = $2 where skill_id = $1', [latest_version_skill_id, google_versions_to_update])
+          await pool.query('UPDATE project_versions SET google_versions = $2 where version_id = $1', [latest_version_skill_id, google_versions_to_update])
         }
       } catch (e) {
         console.error(e)
@@ -453,20 +481,15 @@ const publish = (req, res) => {
     }
 
     let version_query = `
-          INSERT INTO skill_versions (canonical_skill_id, version, skill_id, published_platform)
-          SELECT canonical_skill_id, COALESCE(
-            (
-              SELECT MAX(version) from skill_versions
-              WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
-              AND published_platform = '${platform}'
-            ) + 1, 1), ${new_skill_id_decoded}, '${platform}'
-          FROM skill_versions
-          WHERE canonical_skill_id = (SELECT COALESCE(canonical_skill_id, ${new_skill_id_decoded}) FROM skill_versions WHERE skill_id = ${skill_id})
-          GROUP BY canonical_skill_id
-          RETURNING *
-          `
+      INSERT INTO project_versions (project_id, version_id, platform)
+      SELECT
+        project_id, $1, $2
+      FROM
+        project_versions
+      WHERE
+        version_id = $3`
 
-    pool.query(version_query, [], async (err, data) => {
+    pool.query(version_query, [new_skill_id_decoded, platform, skill_id], async (err, data) => {
       if (err) {
         writeToLogs('CREATOR_BACKEND_ERRORS', {
           err: err

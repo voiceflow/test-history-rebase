@@ -123,8 +123,26 @@ class Speak extends Component {
                                         className="speak-box ml-2"
                                         classNamePrefix="select-box"
                                         value={{label: d.voice, value: d.voice}}
-                                        onChange={(selected) => {d.voice = selected.value; this.onUpdate()}}
-                                        options={VOICES}
+                                        onChange={(selected) => {
+                                            d.voice = selected.value;
+                                            this.onUpdate()
+                                            if (localStorage.getItem('recent_speak')) {
+                                                let recent_speaks = JSON.parse(localStorage.getItem('recent_speak'))
+                                                if (!recent_speaks instanceof Array) recent_speaks = [recent_speaks]
+                                                let idx = _.findIndex(recent_speaks, s => s.value === selected.value)
+                                                if (idx === -1) {
+                                                    recent_speaks.push(selected)
+                                                    if (recent_speaks.length > 3){
+                                                        recent_speaks.shift()
+                                                    }
+                                                    localStorage.setItem('recent_speak', JSON.stringify(recent_speaks))
+                                                }
+                                            } else {
+                                                localStorage.setItem('recent_speak', JSON.stringify([selected]))
+                                            }
+                                        }}
+                                        // options={VOICES}
+                                        options={localStorage.getItem('recent_speak') ? [{ label: 'Recent', options: JSON.parse(localStorage.getItem('recent_speak')) }].concat(VOICES) : VOICES}
                                     />
                                 </div>
                                 <button className="close" onClick={() => {this.handleRemoveBlock(i)}}>&times;</button>

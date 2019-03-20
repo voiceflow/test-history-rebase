@@ -1172,14 +1172,26 @@ exports.getSkillVersions = (req, res) => {
 exports.restoreSkillVersion = async (req, res) => {
   // Get canonical skill id
   let canonical_skill_id
+  let restore_id = hashids.decode(req.params.restore_id)[0]
   try {
-    canonical_skill_id = (await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1`, [hashids.decode(req.params.restore_id)[0]])).rows[0].canonical_skill_id
+    canonical_skill_id = (await pool.query(`
+      SELECT dev_version FROM projects p 
+      INNER JOIN project_versions pv ON p.project_id = pv.project_id
+      WHERE pv.version_id = $1`, 
+      [restore_id])
+    ).rows[0].dev_version
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err: err
     })
     res.sendStatus(500)
   }
+
+  if (canonical_skill_id === restore_id){
+    return res.sendStatus(409)
+  }
+
+  // important to set it to the undecoded version
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
   // Make a copy of the verision

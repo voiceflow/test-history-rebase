@@ -299,7 +299,10 @@ const getCertModule = (req, res) => {
 		)
 	}
 
-	pool.query(`SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
+	pool.query(`
+		SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output 
+		FROM modules, creators 
+		WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [project_id], (err, data) => {
 		if(err){
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			res.sendStatus(500)
@@ -329,31 +332,6 @@ const getUserModules = async (req, res) => {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
 	}
-
-	// pool.query(
-	// 	`
-	// 	 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
-	// 	 		ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type
-	// 	 FROM 
-	// 	 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
-	// 	 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
-	// 	 		INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
-	// 	 	) AS ultimate_versions  
-	// 	 INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
-	// 	 INNER JOIN user_modules ON modules.module_id = user_modules.module_id
-	// 	 WHERE user_modules.creator_id = $1
-	// 	`,
-	// 	[user_id],
-	// 	(err, data) => {
-	// 		if(err){
-	// 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-	// 			res.sendStatus(500);
-	// 		}else{
-	// 			hashIds(data.rows);
-	// 			res.send(data.rows);
-	// 		}
-	// 	}
-	// );
 }
 
 const retrieveTemplate = (req, res) => {
@@ -361,7 +339,11 @@ const retrieveTemplate = (req, res) => {
 
 	pool.query(
 		`
-		SELECT * FROM versions WHERE module_id = $1 AND cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = $1)
+		SELECT * 
+		FROM project_versions 
+			INNER JOIN modules ON project_versions.project_id = modules.skill_id
+		WHERE module_id = $1 AND cert_approved = (
+			SELECT max(cert_approved) FROM versions WHERE module_id = $1)
 		`,
 		[module_id],
 		(err, data) => {
@@ -413,15 +395,10 @@ const getPendingModules = async (req, res) => {
 const getDefaultTemplates = (req, res) => {
 	pool.query(
 		`
-		SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
-			ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type, ultimate_versions.template_skill_id
-		FROM 
-		(SELECT versions.module_id, versions.version_id, versions.diagram_id, versions.template_skill_id FROM 
-			(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
-			INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
-		) AS ultimate_versions  
-		INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
-		WHERE modules.template_index > 0 ORDER BY modules.template_index DESC
+			SELECT * 
+			FROM modules 
+				INNER JOIN project_versions ON modules.skill_id = project_versions.project_id
+			WHERE modules.template_index > 0 ORDER BY modules.template_index DESC
 		`,
 		[],
 		(err, data) => {

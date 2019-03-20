@@ -1,3 +1,9 @@
+.marketplace-window{
+    padding-top: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
 .card-container{
     width: calc(100%  /4);
     padding: 10px;
@@ -5,6 +11,10 @@
 
 .card-link{
     cursor: pointer;
+    margin-left: 0px !important;
+    font-weight: 900 !important;
+    color: #42A5FF !important;
+    margin-bottom: 5px !important;
 }
 
 .sidenav {
@@ -328,4 +338,13 @@
     border-radius: 8px !important;
     padding-left: 50px !important;
     padding-right: 50px !important;
+}
+
+.module-card-text {
+    margin-bottom: 35px !important;
+}
+
+.card-link {
+    text-decoration: none;
+    font-weight: 400 !important;
 }

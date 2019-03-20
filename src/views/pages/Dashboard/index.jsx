@@ -144,7 +144,7 @@ class DashBoard extends Component {
         return false;
     }
     onLoadSkills() {
-        axios.get('/skills')
+        axios.get('/projects')
         .then(res => {
             this.setState({
                 skills: res.data,

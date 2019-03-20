@@ -104,6 +104,7 @@ class Business extends Component {
 }
 const mapStateToProps = state => ({
     skill_id: state.skills.skill.skill_id,
+    project_id: state.skills.project_id
 })
 
 export default connect(mapStateToProps)(Business);

@@ -2,6 +2,7 @@
 import _ from 'lodash'
 import { BlockNodeModel } from './../../components/SRD/models/BlockNodeModel'
 import { Toolkit } from "./../../components/SRD/Toolkit";
+import randomstring from "randomstring";
 
 const toolkit = new Toolkit()
 ;
@@ -167,6 +168,13 @@ const createDropNode = (event, engine, type, name) => {
                 choices: [],
                 inputs: []
             };
+            node.extras.inputs.push('');
+            node.extras.choices.push({
+                open: true,
+                key: randomstring.generate(5)
+            })
+            let test = node.addOutPort(node.extras.inputs.length);
+            test.setMaximumLinks(1);
         } else if (type === 'exit') {
             node.addInPort(' ')
         } else if (type === 'interaction') {

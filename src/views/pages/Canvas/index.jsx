@@ -1636,6 +1636,8 @@ export class Canvas extends Component {
                     preview={this.props.preview}
                     diagram={this.props.diagram}
                     root_id={this.props.root_id}
+                    setBlockMenu={this.props.setBlockMenu}
+                    engine={this.state.engine}
                   />
                 )}
                 {this.props.blockMenu}

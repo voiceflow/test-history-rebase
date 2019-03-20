@@ -351,7 +351,7 @@ export class BlockNodeWidget extends BaseWidget {
 										value={this.state.name}
 										onChange={this.handleChange}
 										onKeyDown={(e) => e.keyCode===13 && this.close()}
-										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
+										className='plain-input'
 										autoFocus
 									/>:
 							< span > {

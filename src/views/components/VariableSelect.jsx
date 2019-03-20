@@ -13,6 +13,9 @@ export const selectStyles = {
                 borderTop: '1px solid #dce5e8',
                 textAlign: 'center',
                 color: '#42a5ff',
+                bottom: -5,
+                position: 'sticky',
+                backgroundColor: 'white',
             }
         }
         return {

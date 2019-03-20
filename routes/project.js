@@ -4,6 +4,10 @@ const {
   writeToLogs
 } = require('./../services')
 
+const {
+  deleteProjectPromise
+} = require('./skill_util')
+
 // Get all of a users project - used in dashboard
 exports.getProjects = async (req, res) => {
   if (!req.user) {

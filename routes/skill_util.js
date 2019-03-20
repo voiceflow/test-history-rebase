@@ -104,25 +104,25 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
         INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE creator_id = $1 AND projects.project_id = $2
+      WHERE projects.creator_id = $1 AND projects.project_id = $2
       `
       delete_query = `
         DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT version_id FROM project_versions WHERE project_id = $1)`
+        (SELECT version_id FROM project_versions WHERE project_id = $2)`
     } else {
       select_query = `
       SELECT * FROM projects
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id 
       WHERE creator_id = $1 AND projects.project_id = $2`
-      delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
+      delete_query = `DELETE FROM skills WHERE projects.creator_id = $1 AND skill_id = $2`
     }
 
     try{
       if(!opts.diagram_updated){
-        let project_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
+        let project_data_rows = (await pool.query(select_query, [creator_id, project_id])).rows
         if(project_data_rows.length === 0){
-          console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
+          console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, project_id)
           return resolve()
         }
 
@@ -147,6 +147,7 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
         }
 
         await pool.query(delete_query, [creator_id, project_id])
+        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         let diagram_delete_promises = []
         for(let i=0;i < project_data_rows.length;i++){
           // To0 f4st for 4mzn

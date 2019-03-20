@@ -104,25 +104,25 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
         INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE creator_id = $1 AND projects.project_id = $2
+      WHERE projects.creator_id = $1 AND projects.project_id = $2
       `
       delete_query = `
         DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT version_id FROM project_versions WHERE project_id = $1)`
+        (SELECT version_id FROM project_versions WHERE project_id = $2)`
     } else {
       select_query = `
       SELECT * FROM projects
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id 
       WHERE creator_id = $1 AND projects.project_id = $2`
-      delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
+      delete_query = `DELETE FROM skills WHERE projects.creator_id = $1 AND skill_id = $2`
     }
 
     try{
       if(!opts.diagram_updated){
-        let project_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
+        let project_data_rows = (await pool.query(select_query, [creator_id, project_id])).rows
         if(project_data_rows.length === 0){
-          console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
+          console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, project_id)
           return resolve()
         }
 
@@ -147,6 +147,7 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
         }
 
         await pool.query(delete_query, [creator_id, project_id])
+        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         let diagram_delete_promises = []
         for(let i=0;i < project_data_rows.length;i++){
           // To0 f4st for 4mzn
@@ -445,7 +446,10 @@ exports.copySkill = async (req, res, options, cb = false) => {
   }
 
   try {
-    let copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
+    let copy_skill
+    if(!options.diagrams_only){
+      copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
+    }
     // Copy products, displays, and email templates on sql and store new ids for remapping
     if(options.user_copy) {
       try{
@@ -475,22 +479,35 @@ exports.copySkill = async (req, res, options, cb = false) => {
       .then(async () => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
-          let new_project_data = (await pool.query(`INSERT INTO projects (name, creator_id, dev_version) VALUES ($1, $2, $3) RETURNING *`, [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
-          pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id], (err) => {
-            if (err) {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-              res.sendStatus(500)
-            }
-          })
-          if(process.env.NODE_ENV !== 'test'){
-            analytics.track({
-              userId: req.user.id,
-              event: 'Project Created',
-              properties: {
-                project_id: new_project_data.project_id,
-                original_skill_id: id
+          try{
+            let new_project_data = (await pool.query(`
+              INSERT INTO projects (name, creator_id, dev_version) 
+              VALUES ($1, $2, $3) 
+              RETURNING *`, 
+            [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
+            copy_skill.project_id = new_project_data.project_id
+
+            if(options.request_cert){ 
+              await pool.query(
+                `INSERT INTO project_versions (project_id, version_id, cert_requested, version) VALUES ($1, $2, now(), $3)`, 
+                [options.canonical_skill_id, copy_skill.skill_id, options.version])
+            } else {
+              await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
+            
+              if(process.env.NODE_ENV !== 'test'){
+                analytics.track({
+                  userId: req.user.id,
+                  event: 'Project Created',
+                  properties: {
+                    skill_id: copy_skill.skill_id,
+                    original_skill_id: id
+                  }
+                })
               }
-            })
+            } 
+          } catch (err) {
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+            res.sendStatus(500)
           }
         }
 
@@ -515,3 +532,67 @@ exports.copySkill = async (req, res, options, cb = false) => {
     res.sendStatus(500)
   }
 }
+
+// exports.copyDiagramFromSkill = async (skill_id, new_user, target_skill_id) => {
+//   // skill_id = hashids.decode(skill_id)[0]
+//   // if(target_skill_id){
+//   //   target_skill_id = hashids.decode(target_skill_id)[0]
+//   // }
+
+//   const copyDynamo = (diagram_id) => {
+//     let get_params = {
+//       TableName: process.env.DIAGRAMS_DYNAMO_TABLE,
+//       Key: {
+//         'id': diagram_id
+//       }
+//     }
+
+//     try{
+//       let data = await docClient.get(get_params).promise()
+//       if(data.Item){
+//         remapDiagramIds(data.Item)
+//       } else {
+//         return null
+//       }
+
+//     } catch (err){
+//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+//       return null
+//     }
+//   }
+
+//   const copyDiagram = (diagram_row, user) => {
+//     if(user === undefined){
+//       user = 185 // TODO: set to marketplace user
+//     }
+
+//     return new Promise((resolve, reject) => {
+//       let new_diagram_id = copyDynamo()
+
+//       // Copy on SQL
+//     })
+//   }
+
+//   try{
+//     let diagram_data = (await pool.query(`SELECT * FROM diagrams WHERE skill_id = $1`, [skill_id])).rows
+//     let copied_diagram_promises = []
+//     for(let i in diagram_data){
+//       copied_diagram_promises.push(copyDiagram(diagram_data[i], new_user))
+//     }
+
+//     Promise.all(copied_diagram_promises)
+//     .then(() => {
+//       console.log('goteem')
+//       return 200
+//     })
+//     .catch(err => {
+//       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+//       return 500
+//     })
+
+//     return 500
+//   } catch (err) {
+//     writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+//     return 500
+//   }
+// }

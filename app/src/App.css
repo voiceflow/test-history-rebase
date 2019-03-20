@@ -478,6 +478,13 @@ audio {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+.plain-input{
+    background: none;
+    border: none;
+    outline: none;
+    text-align: center;
+    width: 100px;
+}
 .fa-rotate--90{
     -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);
@@ -1952,4 +1959,43 @@ kbd {
 }
 .modal-text{
     color:  #8da2b5;
+}
+
+.module-image {
+    background-repeat: repeat !important;
+    background-size: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.module-image h1{
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.MenuItem .module-icon{
+    padding-top:0px;
+}
+
+.module-card-icon {
+    width: 80px;
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.module-card-icon .module-image h1 {
+    font-size: 24px;
+}
+
+.module-card-icon .module-image {
+    -webkit-box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
+    box-shadow: 0 0 5px 0 rgba(17,49,96,.3);
 }

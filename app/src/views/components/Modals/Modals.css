@@ -7,3 +7,17 @@
   overflow: hidden;
   height: 10em;
 }
+
+.module-modal-icon {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  top: -80px;
+}
+
+.module-modal-author {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}

@@ -159,6 +159,7 @@ app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay
 app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/projects', ensureLoggedIn(), Project.getProjects);
+app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject);
 
 app.get('/skills', ensureLoggedIn(), Skill.getSkills);
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
@@ -183,7 +184,7 @@ app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
-app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
+// app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)

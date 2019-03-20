@@ -410,27 +410,6 @@ exports.deleteProduct = async (req, res) => {
   }
 }
 
-exports.deleteSkill = async (req, res) => {
-  if (!req.user || !req.params.id) {
-    res.sendStatus(401)
-    return
-  }
-  let id = hashids.decode(req.params.id)[0]
-
-  try {
-    await deleteSkillPromise(req.user.id, id, {
-      delete_all_versions: true,
-      diagram_updated: false
-    })
-    res.sendStatus(200)
-  } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
-    res.sendStatus(500)
-  }
-}
-
 exports.patchSkill = async (req, res) => {
   if (!req.user || !req.params.id || !req.body) {
     res.sendStatus(401)

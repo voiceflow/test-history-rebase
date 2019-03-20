@@ -93,45 +93,48 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
  * delete_all_versions: bool
  * diagram_updated: bool (when the diagram's skill_id was changed)
  */
-exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
+exports.deleteProjectPromise = (creator_id, project_id, opts) => {
   return new Promise(async (resolve, reject) => {
     let select_query
     let delete_query
 
     if (opts.delete_all_versions) {
       select_query = `
-      SELECT * FROM skills 
-        INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
+      SELECT * FROM projects 
+        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
+        INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE creator_id = $1 AND skill_versions.canonical_skill_id = 
-        (SELECT min(canonical_skill_id) FROM skill_versions WHERE skill_versions.skill_id = $2)
+      WHERE creator_id = $1 AND projects.project_id = $2
       `
       delete_query = `
         DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT skill_id FROM skill_versions WHERE canonical_skill_id = 
-          (SELECT min(canonical_skill_id) FROM skill_versions WHERE skill_versions.skill_id = $2))`
+        (SELECT version_id FROM project_versions WHERE project_id = $1)`
     } else {
-      select_query = `SELECT * FROM skills INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id WHERE creator_id = $1 AND skills.skill_id = $2`
+      select_query = `
+      SELECT * FROM projects
+        INNER JOIN skills ON project_versions.version_id = skills.skill_id
+        INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id 
+      WHERE creator_id = $1 AND projects.project_id = $2`
       delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
     }
 
     try{
       if(!opts.diagram_updated){
-        let skill_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
-        if(skill_data_rows.length === 0){
+        let project_data_rows = (await pool.query(select_query, [creator_id, skill_id])).rows
+        if(project_data_rows.length === 0){
           console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, skill_id)
           return resolve()
         }
 
         // Only if deleting the whole project
-        if(skill_data_rows[0] && skill_data_rows[0].amzn_id && opts.delete_all_versions){
+        if(project_data_rows[0] && project_data_rows[0].amzn_id && opts.delete_all_versions){
           AccessToken(creator_id, token => {
             if (token === null) {
               return;
             }
     
             axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${skill_data_rows[0].amzn_id}`,
+                url: `https://api.amazonalexa.com/v1/skills/${project_data_rows[0].amzn_id}`,
                 method: 'DELETE',
                 headers: {
                   Authorization: token
@@ -143,11 +146,11 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
           })
         }
 
-        await pool.query(delete_query, [creator_id, skill_id])
+        await pool.query(delete_query, [creator_id, project_id])
         let diagram_delete_promises = []
-        for(let i=0;i < skill_data_rows.length;i++){
+        for(let i=0;i < project_data_rows.length;i++){
           // To0 f4st for 4mzn
-          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
+          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(project_data_rows[i].id))}, 20)
         }
 
         Promise.all(diagram_delete_promises)
@@ -159,7 +162,8 @@ exports.deleteSkillPromise = (creator_id, skill_id, opts) => {
           reject(err)
         })
       } else {
-        await pool.query(delete_query, [creator_id, skill_id])
+        await pool.query(delete_query, [creator_id, project_id])
+        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         resolve()
       }
     } catch (err) {

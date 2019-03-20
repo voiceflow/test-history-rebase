@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { FormGroup, Label, Input } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import moment from 'moment'
 import Textarea from 'react-textarea-autosize'
 import Image from './../../components/Uploads/Image'
 import Select from 'react-select'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import VariableMap from './VariableMap'
 
 import axios from 'axios'
 import '../Skill/Skill.css'
 import './PublishMarket.css'
 import types from './../../../services/Types'
+import { setConfirm, clearModal } from 'actions/modalActions'
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -26,7 +27,6 @@ class PublishMarket extends Component {
             in_review: false,
             title: '',
             module_icon: null,
-            displayingConfirmWithdraw: false,
             color: '',
             input: [],
             output: [],
@@ -197,8 +197,8 @@ class PublishMarket extends Component {
         .then(res => {
         	this.setState({
         		in_review: false,
-        		displayingConfirmWithdraw: false
-        	})
+            })
+            this.props.clearModal()
         })
         .catch(err => {
         	console.log(err);
@@ -209,17 +209,13 @@ class PublishMarket extends Component {
     }
 
     toggleConfirmWithdraw() {
-        if(!this.state.displayingConfirmWithdraw){
-            this.setState({
-                displayingConfirmWithdraw: {
-                    text: "Are you sure you want to withdraw this Skill?",
-                    confirm: this.onWithdraw
-                }
+        if(!this.props.confirmModal){
+            this.props.setConfirm({
+                text: "Are you sure you want to withdraw this Skill?",
+                confirm: this.onWithdraw
             });
         }else{
-            this.setState({
-                displayingConfirmWithdraw: false
-            }); 
+            this.props.clearModal()
         }
     }
 
@@ -269,11 +265,6 @@ class PublishMarket extends Component {
                     	}
                     </div>
                 </div>
-
-                <ConfirmModal 
-                    confirm = {this.state.displayingConfirmWithdraw}
-                    toggle = {this.toggleConfirmWithdraw}
-                />
 
                 <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
                     <div className="row justify-content-center">
@@ -612,4 +603,14 @@ class PublishMarket extends Component {
 	}
 }
 
-export default PublishMarket;
+const mapStateToProps = state => ({
+    confirmModal: state.modal.confirmModal
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+        clearModal: () => dispatch(clearModal()),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PublishMarket);

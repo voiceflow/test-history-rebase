@@ -1,13 +1,13 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import Dashboard from '../index.jsx';
+import { DashBoard } from '../index.jsx';
 import toJson from 'enzyme-to-json';
 
 const clickFn = jest.fn()
 
 describe('Dashboard', () => {
     it('render dashboard', () => {
-        const component = shallow(<Dashboard />);
+        const component = shallow( <DashBoard / > );
         expect(toJson(component)).toMatchSnapshot()
     });
 })
@@ -23,7 +23,7 @@ describe('dashboard create skill', () => {
             name: "Jason Zhao",
             verified: null,
         }
-        const component = shallow(<Dashboard onClick={clickFn} />)
+        const component = shallow(<DashBoard onClick={clickFn} />)
         component.find('button.btn').simulate('keydown', {keyCode: 32})
         expect(component.props().id).toEqual('app')
         component.unmount()

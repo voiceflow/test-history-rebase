@@ -27,7 +27,6 @@ class ModuleModal extends React.Component {
   }
 
   render() {
-    console.log(this.props.module)
     return (
       <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} centered size="lg">
         <ModalBody>

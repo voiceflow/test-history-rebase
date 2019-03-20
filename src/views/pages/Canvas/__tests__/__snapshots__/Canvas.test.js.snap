@@ -303,6 +303,7 @@ exports[`Canvas render canvas 1`] = `
             "diagram": undefined,
             "disabled": false,
             "enterFlow": [Function],
+            "generateBlockMenu": [Function],
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],

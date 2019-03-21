@@ -6,15 +6,16 @@ const {
 
 const {
   _getGoogleAccessToken
-} = require('../routes/authentication')
+} = require('./../routes/authentication')
 
 const {
-  copySkill
-} = require('./skill_util')
-
-const {
+  copySkill,
   deleteProjectPromise
 } = require('./skill_util')
+
+const {
+  checkGactionsVersionChanged
+} = require('./../config/ga_actions')
 
 exports.getProjectFromSkill = async (req, res, next) => {
   try{

@@ -529,7 +529,7 @@ const checkVersions = (user, project_id, platform, options) => {
           // Check for live version
           let current_live = !!data.rows.find(s => s.live)
           let live_ids = []
-          let dev_version_row = data.rows.find(version => version.skill_id === dev_version)
+          let dev_version_row = data.rows.find(version => version.version_id === dev_version)
 
           try {
             // If so, we wanna know what version the live skill is pointing to rn
@@ -574,10 +574,10 @@ const checkVersions = (user, project_id, platform, options) => {
 
               const all_google_versions = dev_version_row.google_versions
               for (const row of data.rows) {
-                if (row.skill_id !== dev_version && row.google_versions) {
+                if (row.version_id !== dev_version && row.google_versions) {
                   const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
                   if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
-                    live_ids.push(row.skill_id)
+                    live_ids.push(row.version_id)
                   }
                 }
               }
@@ -594,8 +594,8 @@ const checkVersions = (user, project_id, platform, options) => {
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].skill_id !== dev_version) {
-              deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].skill_id))
+            if (!live_ids.includes(data.rows[i].version_id) && data.rows[i].version_id !== dev_version) {
+              deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].version_id))
               num_versions_to_delete -= 1
             }
             i += 1

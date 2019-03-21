@@ -72,27 +72,28 @@ const getFeaturedModules = async (req, res) => {
 const cancelCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 	let skill_id = hashids.decode(req.params.skill_id)[0]
-
-	try{
-		let deleted_row = (await pool.query(`
-			DELETE FROM project_versions
-			WHERE 
-				project_id = 
-					(
-						SELECT module_project_id 
-						FROM modules 
-						WHERE project_id = $1
-					)
-				AND cert_requested IS NOT NULL
-				AND cert_approved IS NULL
-			RETURNING *
-		`, [project_id])).rows[0]
-		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id)
-		res.sendStatus(200)
-	} catch (err) {
-		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-		res.sendStatus(500)
-	}
+	console.log(project_id)
+	return
+	// try{
+	// 	let deleted_row = (await pool.query(`
+	// 		DELETE FROM project_versions
+	// 		WHERE 
+	// 			project_id = 
+	// 				(
+	// 					SELECT module_project_id 
+	// 					FROM modules 
+	// 					WHERE project_id = $1
+	// 				)
+	// 			AND cert_requested IS NOT NULL
+	// 			AND cert_approved IS NULL
+	// 		RETURNING *
+	// 	`, [project_id])).rows[0]
+	// 	await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
+	// 	res.sendStatus(200)
+	// } catch (err) {
+	// 	writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+	// 	res.sendStatus(500)
+	// }
 }
 
 const saveCertification = async (req, res) => {

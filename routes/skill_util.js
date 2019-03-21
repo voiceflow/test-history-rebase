@@ -95,7 +95,7 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
 exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
   if(!opts) opts = {}
   if(opts.delete_diagrams === undefined) opts.delete_diagrams = true
-  
+
   return new Promise(async (resolve, reject) => {
     let delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
     let select_query = `SELECT * FROM diagrams WHERE skill_id = $1`
@@ -108,19 +108,18 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
         } 
 
         await pool.query(delete_query, [creator_id, skill_id])
-        let diagram_delete_promises = []
-        for(let i in skill_data_rows){
-          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
+
+        for(let i=0; i < skill_data_rows.length; i++){
+          setTimeout(()=>{
+            try {
+              exports.deleteDynamoDiagramPromise(skill_data_rows[i].id)
+            }catch(err){
+              writeToLogs('DELETE DYNAMO ERROR', err)
+            }
+          }, 20 * i )
         }
 
-        Promise.all(diagram_delete_promises)
-        .then(() => {
-          resolve()
-        })
-        .catch((err) => {
-          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, context: 'deleteVersionPromise'})
-          reject(err)
-        })
+        resolve()
       } else {
         await pool.query(delete_query, [creator_id, skill_id])
       }
@@ -174,20 +173,19 @@ exports.deleteProjectPromise = (creator_id, project_id) => {
 
       await pool.query(delete_query, [creator_id, project_id])
       await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
-      let diagram_delete_promises = []
-      for(let i=0;i < project_data_rows.length;i++){
+
+      for(let i=0; i < project_data_rows.length; i++){
         // To0 f4st for 4mzn
-        setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(project_data_rows[i].id))}, 20)
+        setTimeout(() => {
+          try{
+            exports.deleteDynamoDiagramPromise(project_data_rows[i].id)
+          }catch(err){
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+          }
+        }, 20 * i)
       }
 
-      Promise.all(diagram_delete_promises)
-      .then(() => {
-        resolve()
-      })
-      .catch((err) => {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-        reject(err)
-      })
+      resolve()
     } catch (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       reject(err)

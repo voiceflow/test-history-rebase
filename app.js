@@ -163,12 +163,14 @@ app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject)
 app.get('/project/:project_id/live_version', ensureLoggedIn(), Project.getLiveVersion)
 app.get('/project/:project_id/dev_version', ensureLoggedIn(), Project.getDevVersion)
 app.get('/project/:project_id/versions', ensureLoggedIn(), Project.getProjectVersions)
+app.post('/project/:project_id/publish', ensureLoggedIn(), Project.publish)
 
-// DEPRECATE ASAP
+// DEPRECATE ASAP (OLD SKILL ROUTES CONVERTED TO PROJECT)
 app.get('/skills', ensureLoggedIn(), Project.getProjects)
 app.get('/skill/:skill_id/live_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getLiveVersion)
 app.get('/skill/:skill_id/dev_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getDevVersion)
 app.get('/skill/:skill_id/versions', ensureLoggedIn(), Project.getProjectFromSkill, Project.getProjectVersions)
+app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.publish);
 
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
@@ -203,7 +205,6 @@ app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);
 app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
-app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
 /*

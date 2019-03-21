@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Button, Alert} from 'reactstrap';
+import {Button, Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import { setConfirm } from 'actions/modalActions'
 
 import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
 import DiagramVariables from './components/DiagramVariables';
@@ -105,7 +106,21 @@ class DiagramBlock extends Component {
                 {!this.state.node.extras.diagram_id ? 
                     <React.Fragment>
                         <label>Create a New Flow</label>
-                        <Button block className="btn-lg" onClick={() => this.props.createDiagram(this.state.node)}>
+                        <Button block className="btn-lg" onClick={() => {
+                            this.props.setConfirm({
+                                text: <>
+                                    <div className="mb-2">Name your flow</div>
+                                    <Input className="form-bg mb-3"
+                                        placeholder={`Enter flow name`}
+                                        value={this.state.newFlowName}
+                                        onChange={e => this.setState({
+                                            newFlowName: e.target.value
+                                        })}
+                                    />
+                                </>,
+                                confirm: () => this.props.createDiagram(this.state.node, this.state.newFlowName)
+                            })
+                        }}>
                           <i className="fas fa-clone mr-1"/> Create New Flow
                         </Button>
                         <hr className="mb-1"/>
@@ -177,4 +192,9 @@ const mapStateToProps = state => ({
     diagramVariables: state.diagramVariables.diagramVariables
 })
 
-export default connect(mapStateToProps)(DiagramBlock);
+const mapDispatchToProps = dispatch => {
+    return {
+      setConfirm: confirm => dispatch(setConfirm(confirm))
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(DiagramBlock);

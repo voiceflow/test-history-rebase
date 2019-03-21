@@ -105,10 +105,6 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
 }
 
 exports.getSkill = async (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(401)
-    return
-  }
 
   let project_id = hashids.decode(req.params.project_id)[0]
   let id = hashids.decode(req.params.skill_id)[0]
@@ -161,7 +157,7 @@ exports.getSkill = async (req, res) => {
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
-      skill_data.skill_id = req.params.id
+      skill_data.skill_id = req.params.skill_id
       skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)
     }
@@ -506,11 +502,10 @@ const checkVersions = (user, project_id, platform, options) => {
   return new Promise(async (resolve, reject) => {
 
     // get the project id and dev version from this skill
-    let project_id, dev_version
+    let dev_version
     try{
       const project = await pool.query(`
-        SELECT p.project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])
-      project_id = project.rows[0].project_id
+        SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])
       dev_version = project.rows[0].dev_version
     }catch(err){
       return reject(err)

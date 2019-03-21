@@ -428,7 +428,7 @@ const publish = async (req, res) => {
     if (req.body.project) {
       // TODO: Secure this against TEAM/CREATOR
       // just check it exists for now
-      project_id = (await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [req.body.project]))
+      project_id = (await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [hashids.decode(req.body.project)[0]]))
       .rows[0].project_id
       // project_id = await pool.query('SELECT * FROM projects WHERE project_id = $1 AND creator_id = $2', [req.user.id])
     } else {
@@ -438,6 +438,7 @@ const publish = async (req, res) => {
     }
     if (!project_id) throw new Error('Invalid Project')
   } catch (err) {
+    console.log(err)
     return res.sendStatus(401)
   }
 

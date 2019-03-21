@@ -513,7 +513,7 @@ const checkVersions = (req, id, token, platform) => {
     pool.query(`
       SELECT * FROM skills s 
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-      WHERE pv.project_id = $1 AND platform = $2 ORDER BY pv.created ASC`,
+      WHERE pv.project_id = $1 AND pv.platform = $2 ORDER BY pv.created ASC`,
       [project_id, platform],
       async (err, data) => {
         if (err) {

@@ -87,7 +87,7 @@ const cancelCertification = async (req, res) => {
 				AND cert_approved IS NULL
 			RETURNING *
 		`, [project_id])).rows[0]
-		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: false})
+		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

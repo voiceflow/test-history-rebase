@@ -147,7 +147,7 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
           })
         }
 
-        await pool.query(delete_query, [creator_id, (options.skill_id ? options.skill_id : project_id)])
+        await pool.query(delete_query, [creator_id, (opts.skill_id ? opts.skill_id : project_id)])
         await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         let diagram_delete_promises = []
         for(let i=0;i < project_data_rows.length;i++){
@@ -164,8 +164,8 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
           reject(err)
         })
       } else {
-        await pool.query(delete_query, [creator_id, project_id])
-        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, (options.skill_id ? options.skill_id : project_id)])
+        await pool.query(delete_query, [creator_id, (opts.skill_id ? opts.skill_id : project_id)])
+        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         resolve()
       }
     } catch (err) {

@@ -523,8 +523,7 @@ const checkVersions = (req, id, token, platform) => {
           reject(err)
         } else {
           // Check for live version
-          let current_live = data.rows.find(s => s.live)
-          if(current_live) current_live = current_live.skill_id
+          let current_live = !!data.rows.find(s => s.live)
           let live_ids = []
 
           try {
@@ -543,7 +542,7 @@ const checkVersions = (req, id, token, platform) => {
 
               try {
                 // RESET LIVE IF THERE IS A LIVE
-                if(currentlive) {
+                if(current_live) {
                   await pool.query(`
                     UPDATE skills s SET live = FALSE
                     FROM project_versions pv

@@ -1,18 +1,18 @@
 import {
-  FETCH_SKILLS_BEGIN,
-  FETCH_SKILLS_SUCCESS,
-  FETCH_SKILLS_FAILURE,
-  FETCH_LIVE_SKILLS_SUCCESS,
-  FETCH_DEV_SKILLS_SUCCESS,
-  RESET_SKILL,
+  FETCH_VERSION_BEGIN,
+  FETCH_VERSION_SUCCESS,
+  FETCH_VERSION_FAILURE,
+  FETCH_LIVE_VERSION_SUCCESS,
+  FETCH_DEV_VERSION_SUCCESS,
+  RESET_VERSION,
   SET_LIVE_MODE_MODAL,
   TOGGLE_LIVE,
-  UPDATE_SKILL,
+  UPDATE_VERSION,
   UPDATE_FULFILLMENT,
   REMOVE_FULFILLMENT,
-  UPDATE_SKILL_MERGE,
-  UPDATE_ENTIRE_SKILL
-} from '../actions/skillActions';
+  UPDATE_VERSION_MERGE,
+  UPDATE_ENTIRE_VERSION
+} from '../actions/versionActions';
 
 import update from 'immutability-helper';
 
@@ -24,27 +24,27 @@ const initialState = {
 
 export default function skillReducer(state = initialState, action) {
   switch(action.type) {
-    case FETCH_SKILLS_BEGIN:
+    case FETCH_VERSION_BEGIN:
       return {
         ...state,
         loading: true,
         error: null
       };
 
-    case FETCH_SKILLS_SUCCESS:
+    case FETCH_VERSION_SUCCESS:
       return {
         ...state,
         loading: false,
         skill: action.payload.skills
       };
-    case RESET_SKILL:
+    case RESET_VERSION:
       return {
         ...state,
         loading: false,
         error: null,
         skill: {}
       }
-    case FETCH_LIVE_SKILLS_SUCCESS:
+    case FETCH_LIVE_VERSION_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -52,13 +52,13 @@ export default function skillReducer(state = initialState, action) {
         live_mode: action.payload.show,
         show_live_mode_modal: action.payload.show
       }
-    case FETCH_DEV_SKILLS_SUCCESS:
+    case FETCH_DEV_VERSION_SUCCESS:
       return {
         ...state,
         loading: false,
         dev_skill: action.payload.dev_skill
       }
-    case FETCH_SKILLS_FAILURE:
+    case FETCH_VERSION_FAILURE:
       return {
         ...state,
         loading: false,
@@ -73,7 +73,7 @@ export default function skillReducer(state = initialState, action) {
         live_version: action.payload.live_version,
         live_mode: action.payload.live_mode
       }
-    case UPDATE_SKILL:
+    case UPDATE_VERSION:
       return {
         ...state,
         skill: update(state.skill, { [action.payload.type]: {$set: action.payload.val }})
@@ -89,12 +89,12 @@ export default function skillReducer(state = initialState, action) {
         ...state,
         skill: update(state.skill, { fulfillment: {$unset: [action.payload.intent_key]}})
       }
-    case UPDATE_ENTIRE_SKILL:
+    case UPDATE_ENTIRE_VERSION:
       return {
         ...state,
         skill: update(state.skill, {$merge: action.payload.skill })
       }
-    case UPDATE_SKILL_MERGE:
+    case UPDATE_VERSION_MERGE:
       return {
         ...state,
         skill: update(state.skill, { [action.payload.type]: {$merge: action.payload.val }})

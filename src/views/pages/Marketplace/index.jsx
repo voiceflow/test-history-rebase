@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'reactstrap'
 import { connect } from 'react-redux'
-import { updateSkill } from './../../../actions/skillActions'
+// import { updateVersion } from './../../../actions/versionActions'
 import FlowMarket from './FlowMarket'
 
 const updateLink = (link, skill_id) => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { ButtonGroup, Button } from 'reactstrap'
 import { connect } from 'react-redux'
-import { updateSkill } from './../../../../actions/skillActions'
+import { updateVersion } from './../../../../actions/versionActions'
 
 // SETTING PAGES
 import BasicAdvancedSettings from './BasicAdvanced'
@@ -108,7 +108,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val))
+        updateSkill: (type, val) => dispatch(updateVersion(type, val))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)

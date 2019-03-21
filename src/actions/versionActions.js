@@ -1,40 +1,40 @@
 import React from 'react'
 import axios from 'axios';
 import {Alert} from 'reactstrap'
-import { getSlotsForKeys } from './../util'
-import { getIntentSlots } from './../Helper'
+import { getSlotsForKeys } from '../util'
+import { getIntentSlots } from '../Helper'
 import _ from 'lodash'
 
-export const fetchSkillsBegin = () => ({
-  type: "FETCH_SKILL_BEGIN"
+export const fetchVersionBegin = () => ({
+  type: "FETCH_VERSION_BEGIN"
 });
 
-export const fetchSkillsSuccess = skills => ({
-  type: "FETCH_SKILLS_SUCCESS",
+export const fetchVersionSuccess = skills => ({
+  type: "FETCH_VERSION_SUCCESS",
   payload: { skills }
 });
 
-export const fetchSkillsBlocked = message => ({
-    type: "FETCH_SKILLS_BLOCKED",
+export const fetchVersionBlocked = message => ({
+    type: "FETCH_VERSION_BLOCKED",
     payload: { message }
 })
 
-export const resetSkill = () => ({
-    type: "RESET_SKILL",
+export const resetVersion = () => ({
+    type: "RESET_VERSION",
 })
 
-export const fetchSkillsFailure = error => ({
-  type: "FETCH_SKILLS_FAILURE",
+export const fetchVersionFailure = error => ({
+  type: "FETCH_VERSION_FAILURE",
   payload: { error }
 });
 
-export const fetchLiveSkillsSuccess = (live, show) => ({
-    type: "FETCH_LIVE_SKILLS_SUCCESS",
+export const fetchLiveVersionSuccess = (live, show) => ({
+    type: "FETCH_LIVE_VERSION_SUCCESS",
     payload: { live, show }
 })
 
-export const fetchDevSkillsSuccess = (dev_skill) => ({
-    type: "FETCH_DEV_SKILLS_SUCCESS",
+export const fetchDevVersionSuccess = (dev_skill) => ({
+    type: "FETCH_DEV_VERSION_SUCCESS",
     payload: { dev_skill }
 })
 
@@ -43,21 +43,21 @@ export const setLiveModeModal = isLive => ({
     payload: { isLive }
 })
 
-export const updateSkill = (type, val) => dispatch => {
+export const updateVersion = (type, val) => dispatch => {
     dispatch({
-        type: "UPDATE_SKILL",
+        type: "UPDATE_VERSION",
         payload: { type, val }
     })
     return Promise.resolve()
 }
 
-export const updateEntireSkill = (skill) => ({
-    type: "UPDATE_ENTIRE_SKILL",
+export const updateEntireVersion = (skill) => ({
+    type: "UPDATE_ENTIRE_VERSION",
     payload: { skill }
 })
 
-export const updateSkillMerge = (type, val) => ({
-    type: "UPDATE_SKILL_MERGE",
+export const updateVersionMerge = (type, val) => ({
+    type: "UPDATE_VERSION_MERGE",
     payload: { type, val }
 })
 
@@ -101,7 +101,7 @@ export const updateIntents = () => {
             if (is_alexa && !is_google) platform = 'alexa'
             intents[i]._platform = platform
         })
-        dispatch(updateSkill('intents', intents))
+        dispatch(updateVersion('intents', intents))
     }
 }
 
@@ -126,9 +126,9 @@ export const setCanFulfill = (intent_key, new_value) => {
     }
 }
 
-export const fetchSkills = (skill_id, preview, diagram_id) => {
+export const fetchVersion = (skill_id, preview, diagram_id) => {
     return dispatch => {
-        dispatch(fetchSkillsBegin());
+        dispatch(fetchVersionBegin());
         return axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}`, {
                 headers: {
                     Pragma: 'no-cache'
@@ -137,7 +137,8 @@ export const fetchSkills = (skill_id, preview, diagram_id) => {
             .then(res => {
                 let skill = res.data
                 if (preview && !skill.preview) {
-                    dispatch(fetchSkillsBlocked(<Alert color="danger">Preview not enabled for this skill</Alert>))
+                    dispatch(fetchVersionBlocked(<Alert color="danger">Preview not enabled for this skill</Alert>))
+                    return
                 }
 
                 // TODO: this function is horrible and needs to die
@@ -165,58 +166,63 @@ export const fetchSkills = (skill_id, preview, diagram_id) => {
                 if (diagram_id && skill.diagram !== diagram_id){
                     skill.diagram = diagram_id
                 }
-                dispatch(fetchDevSkillsSuccess(skill))
-                dispatch(fetchLiveSkills(skill_id))
-                dispatch(fetchSkillsSuccess(skill))
-            })
-            .catch(err => {
-                dispatch(fetchSkillsFailure('Unable to load project'))
-            })
-    }
-}
 
-export const fetchLiveSkills = skill_id => {
-    return dispatch => {
-        dispatch(fetchSkillsBegin());
-        return axios.get(`/skill/${skill_id}/live_version`)
-            .then(res => {
-                if (skill_id === res.data.live_version){
-                    dispatch(fetchDevSkills(skill_id))
+                if(!preview){
+                  dispatch(fetchDevVersionSuccess(skill))
+                  dispatch(fetchLiveVersion(skill.project_id))
                 }
-                dispatch(fetchLiveSkillsSuccess(res.data.live_version, skill_id === res.data.live_version))
+                
+                dispatch(fetchVersionSuccess(skill))
             })
             .catch(err => {
-                console.error(err)
-                dispatch(fetchSkillsFailure('Unable to load live versions'))
+                dispatch(fetchVersionFailure('Unable to load project'))
             })
     }
 }
 
-export const fetchDevSkills = skill_id => {
-    return dispatch => {
-        dispatch(fetchSkillsBegin());
-        return axios.get(`/skill/${skill_id}/dev_version`)
+export const fetchLiveVersion = project_id => {
+    return (dispatch, getStore) => {
+        dispatch(fetchVersionBegin());
+        return axios.get(`/project/${project_id}/live_version`)
             .then(res => {
-                dispatch(fetchDevSkillsSuccess(res.data))
+                let skill_id = getStore().skills.skill.project_id
+                if (skill_id === res.data.live_version){
+                    dispatch(fetchDevVersion(project_id))
+                }
+                dispatch(fetchLiveVersionSuccess(res.data.live_version, skill_id === res.data.live_version))
             })
             .catch(err => {
                 console.error(err)
-                dispatch(fetchSkillsFailure('Unable to fetch dev skills'))
+                dispatch(fetchVersionFailure('Unable to load live versions'))
             })
     }
 }
 
-export const FETCH_SKILLS_BEGIN = 'FETCH_SKILLS_BEGIN';
-export const FETCH_SKILLS_SUCCESS = 'FETCH_SKILLS_SUCCESS';
-export const FETCH_LIVE_SKILLS_SUCCESS = 'FETCH_LIVE_SKILLS_SUCCESS'
-export const FETCH_DEV_SKILLS_SUCCESS = 'FETCH_DEV_SKILLS_SUCCESS'
-export const FETCH_SKILLS_FAILURE = 'FETCH_SKILLS_FAILURE';
-export const FETCH_SKILLS = 'FETCH_SKILLS';
+export const fetchDevVersion = project_id => {
+    return dispatch => {
+        dispatch(fetchVersionBegin());
+        return axios.get(`/skill/${project_id}/dev_version`)
+            .then(res => {
+                dispatch(fetchDevVersionSuccess(res.data))
+            })
+            .catch(err => {
+                console.error(err)
+                dispatch(fetchVersionFailure('Unable to fetch dev skills'))
+            })
+    }
+}
+
+export const FETCH_VERSION_BEGIN = 'FETCH_VERSION_BEGIN';
+export const FETCH_VERSION_SUCCESS = 'FETCH_VERSION_SUCCESS';
+export const FETCH_LIVE_VERSION_SUCCESS = 'FETCH_LIVE_VERSION_SUCCESS'
+export const FETCH_DEV_VERSION_SUCCESS = 'FETCH_DEV_VERSION_SUCCESS'
+export const FETCH_VERSION_FAILURE = 'FETCH_VERSION_FAILURE';
+export const FETCH_VERSION = 'FETCH_VERSION';
 export const TOGGLE_LIVE = 'TOGGLE_LIVE'
-export const UPDATE_SKILL = 'UPDATE_SKILL'
-export const UPDATE_ENTIRE_SKILL = 'UPDATE_ENTIRE_SKILL'
-export const UPDATE_SKILL_MERGE = 'UPDATE_SKILL_MERGE'
+export const UPDATE_VERSION = 'UPDATE_VERSION'
+export const UPDATE_ENTIRE_VERSION = 'UPDATE_ENTIRE_VERSION'
+export const UPDATE_VERSION_MERGE = 'UPDATE_VERSION_MERGE'
 export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
 export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
-export const RESET_SKILL = 'RESET_SKILL'
+export const RESET_VERSION = 'RESET_VERSION'

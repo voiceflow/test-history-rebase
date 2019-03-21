@@ -2,11 +2,13 @@ import _ from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux'
 import ProductDescriptionForm from './ProductDescriptionForm';
 import PhrasesForm from './PhrasesForm';
 import PricingForm from './PricingForm';
 import IconsForm from './IconsForm';
 import { addProduct, updateProduct } from './../../../../actions/productActions'
+import { setError } from 'actions/modalActions'
 import ProductDetailsForm from './ProductDetailsForm';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -133,7 +135,7 @@ class EditProduct extends React.Component {
               }
           }).catch(err => {
               console.error(err)
-              this.props.onError('Unable to Retrieve Template')
+              this.props.setError('Unable to Retrieve Template')
           })
       }else{
           this.setState({
@@ -223,7 +225,7 @@ class EditProduct extends React.Component {
         .catch(err => {
             console.log(err.response)
             this.setState({saving: false})
-            this.props.onError('Unable to create new Product')
+            this.props.setError('Unable to create new Product')
         })
       } else {
         let curr = this.state.data;
@@ -237,7 +239,7 @@ class EditProduct extends React.Component {
         .catch(err => {
             console.log(err.response)
             this.setState({saving: false})
-            this.props.onError('Unable to update Product')
+            this.props.setError('Unable to update Product')
         })
       }
   }
@@ -272,7 +274,7 @@ class EditProduct extends React.Component {
   invalidSubmit(event, errors, values) {
     console.log(values);
     console.log(errors);
-    this.props.onError('Invalid Product - ' + JSON.stringify(errors))
+    this.props.setError('Invalid Product - ' + JSON.stringify(errors))
   }
   renderForm(){
     switch(this.state.stage) {
@@ -378,5 +380,9 @@ class EditProduct extends React.Component {
   }
 }
 
-
-export default EditProduct;
+const mapDispatchToProps = dispatch => {
+  return {
+    setError: err => dispatch(setError(err))
+  }
+}
+export default connect(null, mapDispatchToProps)(EditProduct);

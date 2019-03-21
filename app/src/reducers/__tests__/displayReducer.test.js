@@ -10,9 +10,9 @@ describe('Test Diagram Reducer', () => {
         })
     });
 
-    it('should handle FETCH_DIAGRAM_BEGIN', () => {
+    it('should handle FETCH_DIAGRAMS_BEGIN', () => {
         const beginFetch = {
-            type: actions.FETCH_DIAGRAM_BEGIN
+            type: actions.FETCH_DIAGRAMS_BEGIN
         }
         expect(diagramReducer(undefined, beginFetch)).toEqual({
             diagrams: [],
@@ -44,9 +44,9 @@ describe('Test Diagram Reducer', () => {
         })
     })
 
-    it('should handle FETCH_DIAGRAM_FAILURE', () => {
+    it('should handle FETCH_DIAGRAMS_FAILURE', () => {
         const fail = {
-            type: actions.FETCH_DIAGRAM_FAILURE,
+            type: actions.FETCH_DIAGRAMS_FAILURE,
             payload: { error: true }
         }
         expect(diagramReducer({}, fail)).toEqual({

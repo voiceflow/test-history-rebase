@@ -6,6 +6,7 @@ import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
 import Prompt from 'views/components/Uploads/Prompt'
 import AceEditor from 'react-ace';
 import { updateSkill, updateSkillMerge } from "./../../../../actions/skillActions";
+import { setConfirm, setError } from 'actions/modalActions'
 import DefaultModal from './../../../components/Modals/DefaultModal'
 import Toggle from 'react-toggle'
 
@@ -70,7 +71,7 @@ class BasicAdvancedSettings extends Component{
     }
 
     confirmDelete() {
-        this.props.onConfirm({
+        this.props.setConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{this.props.skill.name}</i> and all flows can not be recovered</Alert>,
             confirm: this.onDelete
@@ -84,7 +85,7 @@ class BasicAdvancedSettings extends Component{
             })
             .catch(err => {
                 console.log(err)
-                this.props.onError('Error Deleting Skill')
+                this.props.setError('Error Deleting Skill')
             })
     }
     
@@ -115,7 +116,7 @@ class BasicAdvancedSettings extends Component{
           try{
               JSON.parse(this.props.skill.alexa_events)
           }catch(err){
-              this.props.onError('Invalid JSON For Skill Events: '+ err.message)
+              this.props.setError('Invalid JSON For Skill Events: '+ err.message)
               return
           }
       }else{
@@ -124,7 +125,7 @@ class BasicAdvancedSettings extends Component{
 
       axios.patch(`/skill/${this.props.skill.skill_id}?settings=1`, this.props.skill)
       .catch(err => {
-          this.props.onError('Settings Save Error')
+          this.props.setError('Settings Save Error')
       })
     }
 
@@ -138,7 +139,7 @@ class BasicAdvancedSettings extends Component{
     }
 
     confirmOverwrite() {
-        this.props.onConfirm({
+        this.props.setConfirm({
             warning: true,
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone and will replace your development version completely with your live version. </Alert>,
             confirm: this.props.onSwapVersions,
@@ -325,7 +326,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
         updateSkill: (type, val) => dispatch(updateSkill(type,val)),
-        updateSkillMerge: (type, val) => dispatch(updateSkillMerge(type,val))
+        updateSkillMerge: (type, val) => dispatch(updateSkillMerge(type,val)),
+        setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+        setError: err => dispatch(setError(err))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BasicAdvancedSettings)

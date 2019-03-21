@@ -1,9 +1,12 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 
 import React from 'react'
+import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 
-class ConfirmModal extends React.Component {
+import { clearModal } from 'actions/modalActions'
+
+export class ConfirmModal extends React.Component {
   // TODO this class is pure cancer
   render() {
     if(!this.props.confirm){
@@ -15,13 +18,15 @@ class ConfirmModal extends React.Component {
           {this.props.confirm.text}
         </ModalBody>
         <ModalFooter className="justify-content-center">
-          <Button color={this.props.confirm.warning ? "warning" : "primary"} 
+          <Button className="previous-btn" color="clear" onClick={this.props.toggle}>Cancel</Button>
+          <Button className="faux-purple-btn" color={this.props.confirm.warning ? "warning" : "primary"} 
             onClick={() => {
               if(this.props.confirm.params){
                 this.props.confirm.confirm(...this.props.confirm.params)
               } else {
                 this.props.confirm.confirm()
               }
+              this.props.toggle()
             }}>
             Confirm
           </Button>{' '}
@@ -31,4 +36,13 @@ class ConfirmModal extends React.Component {
   }
 }
 
-export default ConfirmModal
+const mapStateToProps = state => ({
+  confirm: state.modal.confirmModal
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggle: () => dispatch(clearModal())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmModal)

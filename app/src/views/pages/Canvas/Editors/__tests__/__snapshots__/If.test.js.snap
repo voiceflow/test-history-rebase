@@ -25,7 +25,7 @@ exports[`IfEditor render if block editor 1`] = `
         If 
       </span>
     </div>
-    <Expression
+    <Connect(Expression)
       expression={
         Object {
           "depth": 0,

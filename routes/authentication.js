@@ -66,6 +66,11 @@ const trackUser = async (data, analytics_data) => {
 				'os': analytics_data.device.os,
 				'browser': analytics_data.device.browser
 			}
+		}, () => {
+			analytics.track({
+				userId: id,
+				event: "Signed up"
+			})
 		})
 	}
 }
@@ -331,7 +336,9 @@ const googleLogin = async(req, res) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                   res.status(500).send('Something went wrong with existing email');
-                } else {
+                } else if (data.rows.length === 0){
+										return res.sendStatus(404)
+								} else {
 									let row = data.rows[0];
                   createLogin({
                     id: row.creator_id,

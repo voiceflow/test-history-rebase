@@ -44,11 +44,12 @@ export const appendValidator = node => {
     }
 }
 
-export const combineValidation = (current, target) => {
+export const combineValidation = (current, target, setError) => {
     if (current.parentCombine || target.parentCombine) {
         return false;
     }
     if (current.extras.type === 'god' && target.extras.type === 'god'){
+        setError('cannot combine two combine blocks')
         return false;
     }
     if (!_.isEmpty(target.combines) && _.last(target.combines) !== 'temp') {

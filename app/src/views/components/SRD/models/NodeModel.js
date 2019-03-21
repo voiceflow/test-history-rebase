@@ -78,12 +78,14 @@ export class NodeModel extends BaseModel{
 	}
 
 	remove() {
-		super.remove();
-		_.forEach(this.ports, port => {
-			_.forEach(port.getLinks(), link => {
-				link.remove();
+		if (this.extras.type !== 'story'){
+			super.remove();
+			_.forEach(this.ports, port => {
+				_.forEach(port.getLinks(), link => {
+					link.remove();
+				});
 			});
-		});
+		}
 	}
 
 	getPortFromID(id) {

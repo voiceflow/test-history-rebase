@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as _ from "lodash";
-
 //Helpers
 import { combineValidation, combineAppendValidation, appendValidator } from './../../../helpers/combineHelper'
 import {Toolkit}from './../Toolkit'
@@ -142,7 +141,10 @@ export class BlockNodeWidget extends BaseWidget {
 	combineNode(e = null) {
 		let current = this.props.diagramEngine.getSuperSelect();
 		let target_node = this.props.node
-		if (combineValidation(current, target_node) && (combineAppendValidation(current) || (combineAppendValidation(target_node)))) {
+		if ((!combineAppendValidation(target_node) && !combineAppendValidation(current))) {
+			this.props.nodeProps.setCanvasError(`Cannot combine blocks of type ${current.extras.type} and ${target_node.extras.type}`)
+		}
+		if (combineValidation(current, target_node, this.props.nodeProps.setCanvasError) && (combineAppendValidation(current) || (combineAppendValidation(target_node)))) {
 			let selected = this.props.diagramEngine.getSuperSelect()
 			let engine = this.props.diagramEngine
 			let targetNode = target_node
@@ -216,7 +218,12 @@ export class BlockNodeWidget extends BaseWidget {
 	render() {
 		if(this.props.node.extras.type === 'comment'){
 			return <div className={`srd-default-node ${this.props.node.extras.type}`}>
-              	<Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate();}} />
+        <Textarea value={this.props.node.name} readOnly={this.props.locked} onChange={e => {this.props.node.name = e.target.value; this.forceUpdate()}} onBlur={()=>{
+          if(!this.props.node.name.trim()){
+            this.props.diagramEngine.getDiagramModel().removeNode(this.props.node)
+            this.forceUpdate()
+          }
+        }}/>
 			</div>
 		}
 		const fade = this.props.node.fade ? " faded-node" : ""
@@ -257,6 +264,13 @@ export class BlockNodeWidget extends BaseWidget {
 					if (!_.isEmpty(this.props.node.combines) && this.props.diagramEngine.getSuperSelect() && !this.props.diagramEngine.getSuperSelect().parentCombine){
 						_.remove(this.props.node.combines, c => c === 'temp')
 						this.forceUpdate()
+					}
+				}}
+				onContextMenu={(e) => {
+					if (this.props.node.parentCombine){
+						this.props.nodeProps.generateBlockMenu(e, this.props.node)
+						e.preventDefault()
+						e.stopPropagation()
 					}
 				}}
 				key={this.props.node.id}
@@ -344,7 +358,7 @@ export class BlockNodeWidget extends BaseWidget {
 										value={this.state.name}
 										onChange={this.handleChange}
 										onKeyDown={(e) => e.keyCode===13 && this.close()}
-										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
+										className='plain-input'
 										autoFocus
 									/>:
 							< span > {
@@ -361,7 +375,7 @@ export class BlockNodeWidget extends BaseWidget {
 										className="btn btn-black btn-sm"
 										onMouseDown={(e) => e.stopPropagation()}
 										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
-										Enter Flow
+										<i className="fas fa-clone mr-1"/>Enter Flow
 									</button>
 								</div>
 							}
@@ -431,10 +445,10 @@ export class BlockNodeWidget extends BaseWidget {
 							</React.Fragment>
 					}
 					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
-						className="btn btn-black btn-sm mt-1"
+						className="btn btn-black btn-sm mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
-						Enter Flow
+						<i className="fas fa-clone mr-1"/>Enter Flow
 					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
@@ -456,9 +470,3 @@ export class BlockNodeWidget extends BaseWidget {
 		);
 	}
 }
-
-// const mapDispatchToProps = dispatch => ({
-// 	renameFlow: (id, name) => dispatch(renameDiagram(id, name))
-// })
-
-// export default connect(null, mapDispatchToProps)(BlockNodeWidget)

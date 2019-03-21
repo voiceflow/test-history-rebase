@@ -4,6 +4,7 @@ import {
   FETCH_SKILLS_FAILURE,
   FETCH_LIVE_SKILLS_SUCCESS,
   FETCH_DEV_SKILLS_SUCCESS,
+  RESET_SKILL,
   SET_LIVE_MODE_MODAL,
   TOGGLE_LIVE,
   UPDATE_SKILL,
@@ -36,7 +37,13 @@ export default function skillReducer(state = initialState, action) {
         loading: false,
         skill: action.payload.skills
       };
-
+    case RESET_SKILL:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        skill: {}
+      }
     case FETCH_LIVE_SKILLS_SUCCESS:
       return {
         ...state,
@@ -64,7 +71,7 @@ export default function skillReducer(state = initialState, action) {
         skill: action.payload.skill,
         diagram_id: action.payload.skill_id,
         live_version: action.payload.live_version,
-        live_mode: action.payload.live_mode,
+        live_mode: action.payload.live_mode
       }
     case UPDATE_SKILL:
       return {

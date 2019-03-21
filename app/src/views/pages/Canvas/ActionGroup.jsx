@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import { updateSkill } from './../../../actions/skillActions'
+import { setError } from 'actions/modalActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
     ModalHeader, ModalBody, Button
@@ -76,10 +77,10 @@ const LOADING_STAGES = {
   google: []
 }
 
-const ERROR_STAGES = {
-  alexa: [4, 9],
-  google: [2]
-}
+// const ERROR_STAGES = {
+//   alexa: [4, 9],
+//   google: [2]
+// }
 
 const ENDING_STAGES = {
   alexa: [2, 4, 9, 10],
@@ -269,15 +270,15 @@ export class ActionGroup extends PureComponent {
 
   updateAlexaStage(stage, cb, props) {
       if(SHOW_PROMPT_ALEXA.includes(stage)) this.showUploadPrompt()
-      if(!this.state.is_first_upload){
-        if((ERROR_STAGES[this.props.platform].includes(stage) || stage === 2) && !this.timeout){
-          this.timeout = setTimeout(() => {
-            this.setState({show_upload_prompt: false})
-            this.reset()
-            this.timeout = null
-          }, 8000)
-        }
-      }
+      // if(!this.state.is_first_upload){
+      //   if((ERROR_STAGES[this.props.platform].includes(stage) || stage === 2) && !this.timeout){
+      //     this.timeout = setTimeout(() => {
+      //       this.setState({show_upload_prompt: false})
+      //       this.reset()
+      //       this.timeout = null
+      //     }, 8000)
+      //   }
+      // }
       if(STAGE_PERCENTAGES.alexa[stage]){
         let range = STAGE_PERCENTAGES.alexa[stage]
         if(this.loading_timeout) clearTimeout(this.loading_timeout)
@@ -311,9 +312,10 @@ export class ActionGroup extends PureComponent {
   }
 
   openUpdateLive() {
-      this.setState({
-          updateLiveModal: true
-      })
+    this.setState({
+      updateLiveModal: true
+    })
+    this.props.onSave()
   }
 
   checkVendor() {
@@ -460,11 +462,11 @@ export class ActionGroup extends PureComponent {
               })
               this.updateGoogleStage(2)
               const error_msg = err.response && err.response.data ? err.response.data : err
-              p.onError(error_msg)
+              p.setError(error_msg)
           })
     })
     .catch(err => {
-        p.onError(err)
+        p.setError(err)
     })
   }
 
@@ -506,7 +508,7 @@ export class ActionGroup extends PureComponent {
               allowPreview: !this.state.allowPreview,
               togglingPreview: false
           })
-          this.props.onError('Unable to toggle preview')
+          this.props.setError('Unable to toggle preview')
       })
     })
   }
@@ -558,7 +560,7 @@ export class ActionGroup extends PureComponent {
               })
           })
           .catch(err => {
-              this.props.onError('Error updating live version')
+              this.props.setError('Error updating live version')
           })
   }
 
@@ -578,7 +580,12 @@ export class ActionGroup extends PureComponent {
               <div className="modal-txt text-center mt-2 mb-3">This may take a few minutes to be reflected on your device.</div>
           </React.Fragment>
       } else if (this.state.live_update_stage === 1) {
-          return loading('Rendering Flows')
+          return <div className="pb-4 mb-2">
+            <div className={"text-center my-3"}>
+              <div className="loader text-lg"/>
+            </div>
+            {loading('Rendering Flows')}
+          </div>
       } else {
           return <React.Fragment>
               <img className="modal-img-small mb-4 mt-3 mx-auto" src="/live.svg" alt="Upload" />
@@ -779,6 +786,12 @@ export class ActionGroup extends PureComponent {
                   </div>
               </div>
           default:
+              if (this.state.is_first_upload) {
+                  axios.post('/analytics/track_dev_account')
+                      .catch(err => {
+                          console.error(err)
+                      })
+              }
               return <div>
                   <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
                   <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
@@ -825,6 +838,12 @@ export class ActionGroup extends PureComponent {
               </React.Fragment>
           }
       } else {
+          if (this.state.is_first_upload) {
+              axios.post('/analytics/track_dev_account')
+                  .catch(err => {
+                      console.error(err)
+                  })
+          }
           modal_content = <div>
               <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
               <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
@@ -973,7 +992,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val))
+        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        setError: err => dispatch(setError(err))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

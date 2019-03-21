@@ -6,9 +6,6 @@ exports[`Canvas render canvas 1`] = `
     message={[Function]}
     when={true}
   />
-  <ErrorModal
-    dismiss={[Function]}
-  />
   <DefaultModal
     content={
       <MultiPlatformModalContent
@@ -57,7 +54,7 @@ exports[`Canvas render canvas 1`] = `
       unfocus={[Function]}
     />
     <Spinner
-      name="Diagram"
+      name="Flow"
     />
     <Connect(withStateHandlers(withStateHandlers(Editor)))
       appendCombineNode={[Function]}
@@ -132,6 +129,7 @@ exports[`Canvas render canvas 1`] = `
         }
       }
       enterFlow={[Function]}
+      finished={[Function]}
       node={null}
       onUpdate={[Function]}
       removeCombineNode={[Function]}
@@ -150,6 +148,18 @@ exports[`Canvas render canvas 1`] = `
       onDrop={[Function]}
       onMouseLeave={[Function]}
     >
+      <div
+        className="canvas-warnings"
+      >
+        <CSSTransitionGroup
+          transitionAppear={false}
+          transitionEnter={true}
+          transitionEnterTimeout={500}
+          transitionLeave={true}
+          transitionLeaveTimeout={300}
+          transitionName="fade"
+        />
+      </div>
       <WidgetBar
         engine={
           DiagramEngine {
@@ -293,10 +303,11 @@ exports[`Canvas render canvas 1`] = `
             "diagram": undefined,
             "disabled": false,
             "enterFlow": [Function],
+            "generateBlockMenu": [Function],
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],
-            "renameFlow": undefined,
+            "setCanvasError": undefined,
           }
         }
         onDeleteIntentNode={[Function]}

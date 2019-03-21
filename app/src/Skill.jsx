@@ -4,8 +4,8 @@ import { compose } from 'recompose'
 
 import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
 
-import { fetchSkills, setLiveModeModal, updateSkill } from './actions/skillActions'
-import { fetchDiagram } from './actions/diagramActions'
+import { fetchSkills, setLiveModeModal, updateSkill, resetSkill } from './actions/skillActions'
+import { fetchDiagrams } from './actions/diagramActions'
 import { fetchProducts } from "./actions/productActions";
 import { fetchDisplays } from "./actions/displayActions";
 import { fetchEmails } from "./actions/emailActions";
@@ -52,6 +52,7 @@ class Skill extends Component {
             linter: [],
             upgrade_modal: false,
             selected_plan: 1,
+            load_skill: true
         }
 
         this.time_mounted = null
@@ -74,7 +75,7 @@ class Skill extends Component {
     trackCanvasTime(){
         let time_unmounted = new Date()
         if(!!this.props.skill){
-            axios.post('/analytics/track_canvas_time', {
+            axios.post('/analytics/track_session_time', {
                 duration: time_unmounted - this.time_mounted,
                 skill_id: this.props.skill.skill_id
             })
@@ -91,40 +92,41 @@ class Skill extends Component {
         this.setState({
             mounted: true,
         })
-                 window.addEventListener(
-                   "beforeunload",
-                   this.componentGracefulUnmount
-                 );
+        window.addEventListener(
+          "beforeunload",
+          this.componentGracefulUnmount
+        )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
-            this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
-                if (!this.props.preview){
-                    if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
-                        // LOAD EMAIL TEMPLATES IF ON PLAN > 1
-                        try {
-                            this.props.getEmails(this.props.skill.skill_id)
-                        } catch (err) {
-                            console.error(err)
-                        }
-                    }
-
-                    // LOAD MULTIMODAL/VISUAL TEMPLATES
-                    try {
-                        this.props.getDisplays(this.props.skill.skill_id)
-                    } catch (err) {
-                        console.error(err)
-                    }
-
-                    // LOAD PRODUCTS
-                    if (this.props.skill.locales && this.props.skill.locales.includes('en-US')) {
-                        try {
-                            this.props.getProducts(this.props.skill.skill_id)
-                        } catch (err) {
-                            console.error(err)
-                        }
-                    }
+          this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
+            this.setState({load_skill: false})
+            if (!this.props.preview){
+              if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
+                // LOAD EMAIL TEMPLATES IF ON PLAN > 1
+                try {
+                    this.props.getEmails(this.props.skill.skill_id)
+                } catch (err) {
+                    console.error(err)
                 }
-            })
-            this.props.getDiagrams(this.props.computedMatch.params.skill_id)
+              }
+
+              // LOAD MULTIMODAL/VISUAL TEMPLATES
+              try {
+                this.props.getDisplays(this.props.skill.skill_id)
+              } catch (err) {
+                console.error(err)
+              }
+
+              // LOAD PRODUCTS
+              if (this.props.skill.locales && this.props.skill.locales.includes('en-US')) {
+                try {
+                  this.props.getProducts(this.props.skill.skill_id)
+                } catch (err) {
+                  console.error(err)
+                }
+              }
+            }
+          })
+          this.props.getDiagrams(this.props.computedMatch.params.skill_id)
         }else{
             this.setState({
                 load_skill: false,
@@ -137,6 +139,7 @@ class Skill extends Component {
         if(this.props.skill){
             this.trackCanvasTime()
         }
+        this.props.resetSkill()
 
         document.removeEventListener(visibilityChange, this.handleVisibilityChange)
         this.componentGracefulUnmount()
@@ -166,9 +169,9 @@ class Skill extends Component {
                     {...this.props} 
                     live_mode={this.props.live_mode}
                     ref={this.child_canvas}
-                    setOnSave={save => this.onSave = save}
                     linter={this.state.linter}
-                    toggleUpgrade={this.toggleUpgrade}/>
+                    toggleUpgrade={this.toggleUpgrade}
+                />
             case 'business':
                 return <Business
                   {...this.props}
@@ -209,30 +212,29 @@ class Skill extends Component {
             </div>
         }
 
-        if((this.props.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)){
-            return React.createElement(Spinner,  {name: 'Skill'})
-        }
-
         return <React.Fragment>
-            {!this.props.preview && <SecondaryNavBar page={this.props.page} onSave={this.onSave} history={this.props.history}/>}
-
-            <div className="skill-name-top-left fixed-top">
+          {!this.props.preview && <SecondaryNavBar page={this.props.page} history={this.props.history}/>}
+          <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
+          <div className="skill-name-top-left fixed-top">
             <Link to="/" className="mx-2">
                 <img src={"/back.svg"} alt="back" className="mr-3" />
             </Link>
-            {this.props.skill ? this.props.skill.name : "New Skill"}
-            </div>
-            <DefaultModal open={this.props.show_live_mode_modal} toggle={()=>{this.props.setLiveModal(false)}} content={live_modal_content} header="Live Mode Disclaimer" close_button_text="Confirm"></DefaultModal>
-            <div id="app" className={(!this.props.preview ? "secondary-padding " : "") + this.props.page}>
-            {this.renderPage()}
-            </div>
-          </React.Fragment>;
+            {this.props.skill && this.props.skill.name ? this.props.skill.name : "Loading Skill"}
+          </div>
+          {((this.state.load_skill || this.props.load_diagram || this.props.loadSession) || ((!this.props.skill || !this.props.skill.skill_id) && !this.props.new)) ? 
+            React.createElement(Spinner,  {name: 'Skill'}) :
+            <>
+              <div id="app" className={(!this.props.preview ? "secondary-padding " : "") + this.props.page}>
+                {this.renderPage()}
+              </div>
+            </>
+          }
+        </React.Fragment>
     }
 }
 
 const mapStateToProps = state => ({
     skill: state.skills.skill,
-    load_skill: state.skills.loading,
     load_diagram: state.diagrams.loading,
     error: state.skills.error,
     show_live_mode_modal: state.skills.show_live_mode_modal,
@@ -241,20 +243,21 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getDiagrams: (skill_id) => dispatch(fetchDiagram(skill_id)),
-        getSkills: (skill_id, preview, diagram_id) => dispatch(fetchSkills(skill_id, preview, diagram_id)),
-        setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
-        getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
-        getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
-        getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-    }
+  return {
+    getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
+    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchSkills(skill_id, preview, diagram_id)),
+    setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
+    getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
+    getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
+    getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
+    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+    resetSkill: () => dispatch(resetSkill())
+  }
 }
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    errorScreen,
-    loadSession,
-    socketCheck,
+  connect(mapStateToProps, mapDispatchToProps),
+  errorScreen,
+  loadSession,
+  socketCheck,
 )(Skill)

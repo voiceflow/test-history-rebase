@@ -17,13 +17,13 @@ import { checkBlockDisabledLive } from "./../../../pages/Canvas/Blocks"
 const toolkit = new Toolkit();
 
 const reorder = (list, newIndex, item) => {
-  const remainingItems = _.filter(list, i => i.id !== item.id);
+	const remainingItems = _.filter(list, i => i.id !== item.id);
 
-  return [
-    ...remainingItems.slice(0, newIndex),
-    item,
-    ...remainingItems.slice(newIndex)
-  ];
+	return [
+		...remainingItems.slice(0, newIndex),
+		item,
+		...remainingItems.slice(newIndex)
+	];
 };
 export class DiagramWidget extends BaseWidget {
 	constructor(props) {
@@ -92,7 +92,7 @@ export class DiagramWidget extends BaseWidget {
 			renderedNodes: true,
 			diagramEngineListener: this.props.diagramEngine.addListener({
 				repaintCanvas: (clear_entities) => {
-					if(clear_entities){
+					if (clear_entities) {
 						this.repaint = true
 					}
 					this.forceUpdate();
@@ -118,13 +118,13 @@ export class DiagramWidget extends BaseWidget {
 		var element = toolkit.closest(target, ".port[data-name]");
 		if (element) {
 			var nodeElement = toolkit.closest(target, ".node[data-nodeid]");
-			if (!diagramModel.getNode(nodeElement.getAttribute("data-nodeid"))){
+			if (!diagramModel.getNode(nodeElement.getAttribute("data-nodeid"))) {
 				let combine_nodes = []
 				_.forEach(diagramModel.nodes, node => {
 					combine_nodes = combine_nodes.concat(node.combines);
 				})
 				let newNode = combine_nodes[nodeElement.getAttribute("data-nodeid")]
-				if (newNode){
+				if (newNode) {
 					newNode = newNode.ports[element.getAttribute("data-name")];
 					return {
 						model: newNode,
@@ -140,7 +140,7 @@ export class DiagramWidget extends BaseWidget {
 			let port = diagramModel
 				.getNode(nodeElement.getAttribute("data-nodeid"))
 				.getPort(element.getAttribute("data-name"))
-			if (!port){
+			if (!port) {
 				port = _.find(diagramModel.getNode(nodeElement.getAttribute("data-nodeid")).ports, dp => dp.name === element.getAttribute("data-name"));
 			}
 			return {
@@ -207,16 +207,21 @@ export class DiagramWidget extends BaseWidget {
 		let engine = this.props.diagramEngine
 		let selected = engine.getDiagramModel().getSelectedItems("node")
 		if (!_.isEmpty(selected) && _.first(selected).extras && _.first(selected).extras.type === 'story') {
-			selected = [engine.getSuperSelect()]
+			if (engine.getSuperSelect().extras.type !== 'story'){
+				selected = [engine.getSuperSelect()]
+			}
 		}
 		if (selected.length === 1 && selected[0]) {
 			if (selected[0].extras.type === 'comment') {
 				this.diagram_focus = false
-			} else {
+			} else if (selected[0].extras.type !== 'story') {
 				this.props.setOpen(true)
 				if (selected[0].combines && selected[0].combines.length === 0) {
 					engine.setSuperSelect(selected[0])
 				}
+			}
+			else {
+				this.props.setOpen(false)
 			}
 		} else if (selected.length === 0) {
 			engine.setSuperSelect(null)
@@ -230,7 +235,7 @@ export class DiagramWidget extends BaseWidget {
 			}
 		}
 		this.props.setBlockMenu(null)
-	}
+	} 
 
 	onMouseMove(event) {
 		var diagramModel = this.props.diagramEngine.getDiagramModel();
@@ -292,32 +297,32 @@ export class DiagramWidget extends BaseWidget {
 						// Update combines
 						let current = model.model;
 						let target_node = current.parentCombine;
-						if (Math.abs(amountX) > 2 || Math.abs(amountY) > 2){
+						if (Math.abs(amountX) > 2 || Math.abs(amountY) > 2) {
 							current.isMoving = true;
 						}
-						if (current && target_node && (Math.abs(amountX) > 5 || Math.abs(amountY) > 5)){
+						if (current && target_node && (Math.abs(amountX) > 5 || Math.abs(amountY) > 5)) {
 							_.remove(target_node.combines, (n, idx) => {
-								if (n.id === current.id){
-									target_node.combines.splice(idx+1, 0, 'temp')
+								if (n.id === current.id) {
+									target_node.combines.splice(idx + 1, 0, 'temp')
 									return true;
 								}
 							})
 							current.isMoveInside = true;
 							this.props.diagramEngine.getDiagramModel().addNode(current);
-							let overlapX = (current.x >= target_node.x && current.x <= (target_node.x+target_node.width/amountZoom)) || (current.x+220 >= target_node.x && current.x+220 <= target_node.x+(target_node.width/amountZoom));
-		         			let overlapY = (current.y >= target_node.y && current.y <= target_node.y+target_node.height/amountZoom) || (current.y+35 >= target_node.y && current.y+35 <= target_node.y+target_node.height/amountZoom);
-							if (!overlapX || !overlapY){
+							let overlapX = (current.x >= target_node.x && current.x <= (target_node.x + target_node.width / amountZoom)) || (current.x + 220 >= target_node.x && current.x + 220 <= target_node.x + (target_node.width / amountZoom));
+							let overlapY = (current.y >= target_node.y && current.y <= target_node.y + target_node.height / amountZoom) || (current.y + 35 >= target_node.y && current.y + 35 <= target_node.y + target_node.height / amountZoom);
+							if (!overlapX || !overlapY) {
 								current.isMoveInside = false;
 								if (target_node.combines.length <= 2) {
 									let nodeCount = 0;
 									let firstNode = 0;
 									_.forEach(target_node.combines, (c, idx) => {
-										if (c.id){
-											nodeCount ++;
+										if (c.id) {
+											nodeCount++;
 											firstNode = idx;
 										}
 									});
-									if (nodeCount === 1){
+									if (nodeCount === 1) {
 										// console.log(target_node.combines[firstNode])
 										let removed = new BlockNodeModel().deSerialize(target_node.combines[firstNode], this.props.diagramEngine);
 										this.props.diagramEngine.getDiagramModel().addNode(removed)
@@ -328,14 +333,14 @@ export class DiagramWidget extends BaseWidget {
 								}
 								let tempIdx;
 								_.remove(target_node.combines, (c, idx) => {
-									if(c==='temp'){
+									if (c === 'temp') {
 										tempIdx = idx;
 										return true;
 									}
 								})
-								if (tempIdx === current.parentCombine.combines.length){
+								if (tempIdx === current.parentCombine.combines.length) {
 									_.forEach(current.parentCombine.ports, cp => {
-										if (cp && !cp.in){
+										if (cp && !cp.in) {
 											current.parentCombine.removePort(current.parentCombine.ports[cp.name]);
 										}
 									})
@@ -343,18 +348,18 @@ export class DiagramWidget extends BaseWidget {
 									let lastNode = _.last(current.parentCombine.combines)
 									lastNode = new BlockNodeModel().deSerialize(lastNode, this.props.diagramEngine);
 									_.forEach(lastNode.ports, lp => {
-										if (!lp.in){
+										if (!lp.in) {
 											lp.parent = current.parentCombine
 											current.parentCombine.ports[lp.name] = lp;
 										}
 									})
 								} else {
 									_.map(current.parentCombine.getOutPorts(), port => {
-										if (!_.isEmpty(port.links) && port instanceof PortModel){
+										if (!_.isEmpty(port.links) && port instanceof PortModel) {
 											let pointIdx = _.findIndex(_.first(_.values(port.links)).points, p => p.parent.sourcePort.id === port.id)
 											let point = _.first(_.values(port.links)).points[pointIdx]
 											if (point instanceof PointModel && current.parentCombine.ports[port.name]) {
-												current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({x: point.x, y: point.y - 40});
+												current.parentCombine.ports[port.name].links[point.parent.id].points[pointIdx].updateLocation({ x: point.x, y: point.y - 40 });
 											}
 										}
 									})
@@ -367,18 +372,18 @@ export class DiagramWidget extends BaseWidget {
 							} else {
 								let nodeIdx = _.findIndex(target_node.combines, c => c === 'temp')
 								if (nodeIdx >= 0 && current.extras.type !== 'exit' && current.extras.type !== 'choice' && current.extras.type !== 'stream' && current.extras.type !== 'random' && current.extras.type !== 'interaction' && current.extras.type !== 'if') {
-									if (nodeIdx !== 0){
+									if (nodeIdx !== 0) {
 										let prevNode = target_node.combines[nodeIdx - 1]
 										if ((current.y < prevNode.y) && (prevNode !== 'temp')) {
 											prevNode.y = prevNode.y + current.height / amountZoom;
 											target_node.combines = reorder(target_node.combines, nodeIdx - 1, 'temp');
 											this.props.diagramEngine.enableRepaintEntities([target_node]);
 											this.props.diagramEngine.repaintCanvas(false)
-										} 
+										}
 									}
-									if (nodeIdx !== target_node.combines.length-1){
+									if (nodeIdx !== target_node.combines.length - 1) {
 										let nextNode = target_node.combines[nodeIdx + 1];
-										if ((current.y > nextNode.y) && (nextNode!== 'temp')
+										if ((current.y > nextNode.y) && (nextNode !== 'temp')
 											&& (nextNode.extras.type !== 'choice' && nextNode.extras.type !== 'exit' && nextNode.extras.type !== 'stream' && nextNode.extras.type !== 'random' && nextNode.extras.type !== 'interaction' && nextNode.extras.type !== 'if')) {
 											nextNode.y = nextNode.y - current.height / amountZoom;
 											target_node.combines = reorder(target_node.combines, nodeIdx + 1, 'temp');
@@ -430,14 +435,14 @@ export class DiagramWidget extends BaseWidget {
 
 	onDeleteConfirm = (selectedItems) => {
 		_.forEach(selectedItems, element => {
-			if (!this.props.diagramEngine.isModelLocked(element) && !element.locked ){
+			if (!this.props.diagramEngine.isModelLocked(element) && !element.locked) {
 				let elements_to_not_delete = []
 				// let inPorts = _.filter(element.ports, p => !p.in)
 				// Filter which elements to not delete and deserialize
-				for(let i in element.combines){
+				for (let i in element.combines) {
 					let new_node = new BlockNodeModel().deSerialize(element.combines[i], this.props.diagramEngine)
 					// new_node.getInPorts().links = inPorts.links
-					if(checkBlockDisabledLive(!this.props.live_mode, new_node.extras.type)){
+					if (checkBlockDisabledLive(!this.props.live_mode, new_node.extras.type)) {
 						elements_to_not_delete.push(new_node)
 					}
 				}
@@ -456,49 +461,49 @@ export class DiagramWidget extends BaseWidget {
 			let first = selectedItems[0]
 			let super_select = diagramEngine.getSuperSelect()
 			if (first && first.extras && first.combines && first.combines.length !== 0 && super_select && super_select.parentCombine
-			&& super_select.extras && super_select.combines && super_select.combines !== 0) {
+				&& super_select.extras && super_select.combines && super_select.combines !== 0) {
 				diagramEngine.getDiagramModel().clearSelection()
 				selectedItems = [diagramEngine.getSuperSelect()]
 				this.props.nodeProps.removeCombineNode(super_select)
 			}
-			if (!_.some(selectedItems, { locked: true })){
+			if (selectedItems && selectedItems.length > 0 && !_.some(selectedItems, { locked: true })) {
 				this.props.removeHandler(selectedItems)
-					_.forEach(selectedItems, element => {
-						if (
-							!element.isLocked()
-						) {
+				_.forEach(selectedItems, element => {
+					if (
+						!element.isLocked()
+					) {
+						diagramEngine.setSuperSelect(null)
+						this.props.forceRepaint()
+						if (element instanceof BlockNodeModel && element.extras.type === 'story') {
 							diagramEngine.setSuperSelect(null)
 							this.props.forceRepaint()
-							if (element instanceof BlockNodeModel && element.extras.type === 'story'){
-								diagramEngine.setSuperSelect(null)
-								this.props.forceRepaint()
+						}
+						if (element.extras && (element.extras.type === 'comment' || element.extras.type === 'story')) {
+							element.clearListeners()
+							element.addListener({ entityRemoved: e => e.stopPropagation() })
+						} else if (element.extras && element.extras.type === 'intent') {
+							this.props.onDeleteIntentNode(element);
+						} else if (element.extras && element.extras.type === 'god') {
+							this.props.onConfirm({
+								warning: true,
+								text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
+								confirm: this.onDeleteConfirm,
+								params: [selectedItems, element]
+							})
+						} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)) {
+							if (element.extras.type !== 'story') {
+								diagramEngine.setSuperSelect(null);
+								element.remove()
 							}
-							if (element.extras && (element.extras.type === 'comment' || element.extras.type === 'story')) {
-								element.clearListeners()
-								element.addListener({ entityRemoved: e => e.stopPropagation() })
-							} else if (element.extras && element.extras.type === 'intent'){
-								this.props.onDeleteIntentNode(element);
-							} else if (element.extras && element.extras.type === 'god'){
-								this.props.onConfirm({
-									warning: true,
-									text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{element.name}</i> can not be recovered</Alert>,
-									confirm: this.onDeleteConfirm,
-									params: [selectedItems, element]
-								})
-							} else if (element instanceof BlockNodeModel && element.extras && !checkBlockDisabledLive(this.props.live_mode, element.extras.type)){
-								if (element.extras.type !== 'story'){
-									diagramEngine.setSuperSelect(null);
-									element.remove()
-								}
-							} else if (!(element instanceof BlockNodeModel)){
-								if (element instanceof PointModel && (element.parent.sourcePort.parent && (element.parent.sourcePort.parent.extras.type !== 'story' || element.parent.points.length > 2))){
-									element.remove()
-								}
+						} else if (!(element instanceof BlockNodeModel)) {
+							if (element instanceof PointModel && (element.parent.sourcePort.parent && (element.parent.sourcePort.parent.extras.type !== 'story' || element.parent.points.length > 2))) {
+								element.remove()
 							}
 						}
-			   });
+					}
+				});
+				this.forceUpdate();
 			}
-			this.forceUpdate();
 		}
 	}
 
@@ -513,7 +518,7 @@ export class DiagramWidget extends BaseWidget {
 			_.forEach(this.state.action.selectionModels, model => {
 				//only care about points connecting to things
 				if (model.model instanceof BlockNodeModel) {
-					if (!model.model.isMoving ||this.props.editorOpen) {
+					if (!model.model.isMoving || this.props.editorOpen) {
 						this.clickDiagram()
 					}
 					model.element.style.pointerEvents = 'all';
@@ -635,7 +640,7 @@ export class DiagramWidget extends BaseWidget {
 		diagramEngine.setSmartRoutingStatus(this.props.smartRouting);
 		var diagramModel = diagramEngine.getDiagramModel();
 
-		if(this.repaint){
+		if (this.repaint) {
 			diagramEngine.clearRepaintEntities()
 			diagramEngine.stopMove()
 			this.repaint = false
@@ -650,51 +655,51 @@ export class DiagramWidget extends BaseWidget {
 					}
 				}}
 				onWheel={event => {
-						diagramEngine.clearRepaintEntities();
-						diagramEngine.startMove();
+					diagramEngine.clearRepaintEntities();
+					diagramEngine.startMove();
 
 					// if (this.props.allowCanvasZoom) {
-						event.preventDefault();
-						event.stopPropagation();
-						const oldZoomFactor = diagramModel.getZoomLevel() / 100;
-						let scrollDelta = this.props.inverseZoom ? -event.deltaY : event.deltaY;
-						//check if it is pinch gesture
-						if (event.ctrlKey && scrollDelta % 1 !== 0) {
-							/*Chrome and Firefox sends wheel event with deltaY that
-                have fractional part, also `ctrlKey` prop of the event is true
-                though ctrl isn't pressed
-              */
-							scrollDelta /= 3;
-						} else {
-							scrollDelta /= 60;
-						}
-						if (diagramModel.getZoomLevel() + scrollDelta > 10) {
-							diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta);
-						}
+					event.preventDefault();
+					event.stopPropagation();
+					const oldZoomFactor = diagramModel.getZoomLevel() / 100;
+					let scrollDelta = this.props.inverseZoom ? -event.deltaY : event.deltaY;
+					//check if it is pinch gesture
+					if (event.ctrlKey && scrollDelta % 1 !== 0) {
+						/*Chrome and Firefox sends wheel event with deltaY that
+							have fractional part, also `ctrlKey` prop of the event is true
+							though ctrl isn't pressed
+						*/
+						scrollDelta /= 3;
+					} else {
+						scrollDelta /= 60;
+					}
+					if (diagramModel.getZoomLevel() + scrollDelta > 10) {
+						diagramModel.setZoomLevel(diagramModel.getZoomLevel() + scrollDelta);
+					}
 
-						const zoomFactor = diagramModel.getZoomLevel() / 100;
+					const zoomFactor = diagramModel.getZoomLevel() / 100;
 
-						const boundingRect = event.currentTarget.getBoundingClientRect();
-						const clientWidth = boundingRect.width;
-						const clientHeight = boundingRect.height;
-						// compute difference between rect before and after scroll
-						const widthDiff = clientWidth * zoomFactor - clientWidth * oldZoomFactor;
-						const heightDiff = clientHeight * zoomFactor - clientHeight * oldZoomFactor;
-						// compute mouse coords relative to canvas
-						const clientX = event.clientX - boundingRect.left;
-						const clientY = event.clientY - boundingRect.top;
+					const boundingRect = event.currentTarget.getBoundingClientRect();
+					const clientWidth = boundingRect.width;
+					const clientHeight = boundingRect.height;
+					// compute difference between rect before and after scroll
+					const widthDiff = clientWidth * zoomFactor - clientWidth * oldZoomFactor;
+					const heightDiff = clientHeight * zoomFactor - clientHeight * oldZoomFactor;
+					// compute mouse coords relative to canvas
+					const clientX = event.clientX - boundingRect.left;
+					const clientY = event.clientY - boundingRect.top;
 
-						// compute width and height increment factor
-						const xFactor = (clientX - diagramModel.getOffsetX()) / oldZoomFactor / clientWidth;
-						const yFactor = (clientY - diagramModel.getOffsetY()) / oldZoomFactor / clientHeight;
+					// compute width and height increment factor
+					const xFactor = (clientX - diagramModel.getOffsetX()) / oldZoomFactor / clientWidth;
+					const yFactor = (clientY - diagramModel.getOffsetY()) / oldZoomFactor / clientHeight;
 
-						diagramModel.setOffset(
-							diagramModel.getOffsetX() - widthDiff * xFactor,
-							diagramModel.getOffsetY() - heightDiff * yFactor
-						);
+					diagramModel.setOffset(
+						diagramModel.getOffsetX() - widthDiff * xFactor,
+						diagramModel.getOffsetY() - heightDiff * yFactor
+					);
 
-						// diagramEngine.enableRepaintEntities([]);
-						this.forceUpdate();
+					// diagramEngine.enableRepaintEntities([]);
+					this.forceUpdate();
 					// }
 				}}
 				onMouseDown={event => {
@@ -750,11 +755,11 @@ export class DiagramWidget extends BaseWidget {
 					} else {
 						diagramEngine.enableRepaintEntities(diagramModel.getSelectedItems());
 						//its some or other element, probably want to move it
-							if (!event.shiftKey && model.model && !model.model.isSelected()) {
-								diagramModel.clearSelection();
-							}
-							model.model.setSelected(true);
-							this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked));
+						if (!event.shiftKey && model.model && !model.model.isSelected()) {
+							diagramModel.clearSelection();
+						}
+						model.model.setSelected(true);
+						this.startFiringAction(new MoveItemsAction(event.clientX, event.clientY, diagramEngine, event, this.props.locked));
 					}
 					this.state.document.addEventListener("mousemove", this.onMouseMove);
 					this.state.document.addEventListener("mouseup", this.onMouseUp);

@@ -8,6 +8,8 @@ import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
 import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
+import { setError } from 'actions/modalActions'
+
 const _ = require('lodash')
 
 export class Command extends Component {
@@ -44,7 +46,7 @@ export class Command extends Component {
         }
 
         if (diagram_intents.has(selected.key)) {
-            this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
+            this.props.setError(`The ${selected.label} intent is already being handled by another Block within this flow!`)
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -174,8 +176,8 @@ export class Command extends Component {
                     .filter(diagram => (diagram.name !== 'ROOT' && diagram.id !== this.props.current))
                     .map(diagram => {
                         return {
-                            value: diagram.id,
-                            label: diagram.name
+                            value: diagram.id + "::" + diagram.name,
+                            label: <><i className="fas fa-clone mr-2 text-muted"/>{diagram.name}</>
                         }
                     })
             }
@@ -221,8 +223,10 @@ export class Command extends Component {
                 {extras.diagram_id ?
                     <React.Fragment>
                         {diagram_name ? <React.Fragment>
-                            <h5><span className="text-muted"><i className="fas fa-long-arrow-right mr-2" />{diagram_name}</span></h5>
-                            <Button block className="mt-3" onClick={() => this.props.enterFlow(extras.diagram_id)}>Enter Flow</Button>
+                            <h5 className="text-muted"><i className="fas fa-long-arrow-right mr-2" />{diagram_name}</h5>
+                            <Button block className="mt-3" onClick={() => this.props.enterFlow(extras.diagram_id)}>
+                              <i className="fas fa-clone mr-1"/> Enter Flow
+                            </Button>
                         </React.Fragment> : <Alert color="danger" className="text-center">
                                 <i className="fas fa-exclamation-triangle fa-2x mb-2" /><br />
                                 Unable to Retrieve Flow - This Flow may be broken or deleted
@@ -238,23 +242,24 @@ export class Command extends Component {
                         </Button>
                     </React.Fragment> :
                     <React.Fragment>
-                        <h5 className="mb-0">Command Flow</h5>
-                        <label>Create a New Flow</label>
-                        <Button className="btn-primary btn-block btn-lg" onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
-                            Create New Flow <i className="fas fa-sign-in" />
+                        <h5 className="mb-3 text-muted">Link Command Flow</h5>
+                        <Button block onClick={() => this.props.createDiagram(this.state.node, (this.state.node.name ? this.state.node.name : 'Command Flow'), null, true)}>
+                          <i className="fas fa-clone mr-1"/> Create New Flow
                         </Button>
                         <hr className="mb-1" />
                         {this.props.diagrams && this.props.diagrams.length > 0 ?
                             <React.Fragment>
                                 <label>Select Existing Flow</label>
                                 <Select
+                                    placeholder={<><i className="fas fa-clone mr-1"/> Select Flow</>}
                                     classNamePrefix="select-box"
                                     onChange={(selected) => {
+                                        let diagram_id = selected.value.substring(0, selected.value.indexOf("::"))
                                         PLATFORMS.forEach(p => {
                                             let extras = this.state.node.extras[p]
-                                            extras.diagram_id = selected.value;
+                                            extras.diagram_id = diagram_id;
                                         })
-                                        this.props.enterFlow(selected.value);
+                                        this.props.enterFlow(diagram_id);
                                     }}
                                     options={options}
                                 />
@@ -293,9 +298,7 @@ export class Command extends Component {
                         onAdd={this.props.handleAddIntent}
                         onRemove={this.props.handleRemoveIntent}
                         slots={this.props.slots}
-                        onError={this.props.onError}
                         update={this.update}
-                        onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
                         setCanFulfill={this.props.setCanFulfill}
@@ -310,7 +313,6 @@ export class Command extends Component {
                         intents={this.props.intents}
                         slots={this.props.slots}
                         slot_types={this.props.slot_types}
-                        onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
@@ -348,6 +350,7 @@ const mapDispatchToProps = dispatch => {
     return {
         updateIntents: () => dispatch(updateIntents()),
         setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+        setError: err => dispatch(setError(err))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Command)

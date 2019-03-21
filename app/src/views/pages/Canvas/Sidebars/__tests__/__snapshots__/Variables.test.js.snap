@@ -55,6 +55,7 @@ exports[`Sidebar Variables render variable sidebar on global 1`] = `
         tag="div"
       >
         <Input
+          autoFocus={true}
           className="form-control-border left"
           maxLength="16"
           name="new_global"
@@ -432,6 +433,7 @@ exports[`Sidebar Variables render variable sidebar on local 1`] = `
         tag="div"
       >
         <Input
+          autoFocus={true}
           className="form-control-border left"
           maxLength="16"
           name="new_global"

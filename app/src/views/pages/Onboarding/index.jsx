@@ -15,6 +15,7 @@ const PROG_XP = (xp) => {
 	}
 }
 
+const SHOW_CALENDLY_NUMBER = 20
 class Onboarding extends Component{
 	constructor(props){
 		super(props);
@@ -64,11 +65,11 @@ class Onboarding extends Component{
 			})
 			.then(res => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.props.history.push('/')
+				this.props.history.push("/templates");
 			})
 			.catch(err => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.props.history.push('/')
+				this.props.history.push("/templates");
 			})
     }
 
@@ -137,7 +138,7 @@ class Onboarding extends Component{
 				</React.Fragment>
 			case 'purpose_stage':
 				return <React.Fragment key={this.state.stage}>
-					<StepProgressBar num_stages={6} stage={(this.state.company_size >= 10 ? 4: 5)} classes={"onboarding-progress"}/>
+					<StepProgressBar num_stages={6} stage={(this.state.company_size >= SHOW_CALENDLY_NUMBER ? 4: 5)} classes={"onboarding-progress"}/>
 						<p className="modal-bg-txt text-center mb-5 mt-4">What best describes you?</p>
 						<div className="row justify-content-center mb-3">
 							<button className={(this.state.purpose === 'EXPLORING' ? "btn-info-onboarding-selected": "btn-info-onboarding")} onClick={() => {this.setState({purpose: 'EXPLORING'})}}>I'm interested in voice and want to explore</button>
@@ -147,12 +148,12 @@ class Onboarding extends Component{
 						</div>
 						<div className="justify-content-center">
 							<button className={"purple-btn" + (!['EXPLORING', 'IDEA'].includes(this.state.purpose) ? ' disabled': '')} disabled={!['EXPLORING', 'IDEA'].includes(this.state.purpose)} onClick={() => {
-								if(this.state.company_size >= 10){
+								if(this.state.company_size >= SHOW_CALENDLY_NUMBER){
 									this.setState({stage: 'calendly'})
 								} else {
 									this.submitSurvey()
 								}
-							}}>{this.state.company_size >= 10 ? 'Next Question' : 'Complete'}</button>
+							}}>{this.state.company_size >= SHOW_CALENDLY_NUMBER ? 'Next Question' : 'Complete'}</button>
 						</div>
 					</React.Fragment>
 			case 'code_stage':

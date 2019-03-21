@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Tooltip } from 'react-tippy'
 import { sampleUtteranceRegex } from 'services/Regex'
 import { getUtterancesWithSlotNames } from '../../../../../util'
+import { setError } from 'actions/modalActions'
 
 class IntentInput extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class IntentInput extends Component {
             name: (this.props.intent && this.props.intent.name) ? this.props.intent.name : "",
             text: "",
             name_error: null,
-            text_error: null
+            text_error: null,
+            intent: this.props.intent
         }
         this.handleKeyPress = this.handleKeyPress.bind(this)
         this.onTextChange = this.onTextChange.bind(this)
@@ -28,7 +30,7 @@ class IntentInput extends Component {
 
     toggleCollapse(){
         this.props.intent.open = !this.props.intent.open
-        this.props.update()
+        this.forceUpdate()
     }
 
     _getSlotKeys(input) {
@@ -71,7 +73,7 @@ class IntentInput extends Component {
         }
 
         if(this.props.utteranceExists(newValue)){
-            return this.props.onError('Duplicate utterances are not allowed')
+            return this.props.setError('Duplicate utterances are not allowed')
         }
 
         const slot_keys= this._getSlotKeys(newValue)
@@ -92,7 +94,11 @@ class IntentInput extends Component {
 
     deleteUtterance(e, i) {
         e.preventDefault()
-        this.props.intent.inputs.splice(i, 1)
+        const intent = this.state.intent
+        intent.inputs.splice(i, 1)
+        this.setState({
+            intent: intent
+        })
         this.props.update()
     }
 
@@ -126,7 +132,7 @@ class IntentInput extends Component {
         if(this.state.name === this.props.intent.name){
             return
         }else if (this.state.name_error){
-            this.props.onError(this.state.name_error)
+            this.props.setError(this.state.name_error)
             this.setState({
                 name: this.props.intent.name,
                 name_error: null
@@ -137,7 +143,7 @@ class IntentInput extends Component {
             })
         }else if(this.props.nameExists(this.state.name)){
             // save name with error callback
-            this.props.onError('An intent already exists with this name')
+            this.props.setError('An intent already exists with this name')
             this.setState({
                 name: this.props.intent.name
             })
@@ -234,4 +240,10 @@ class IntentInput extends Component {
 const mapStateToProps = state => ({
     live_mode: state.skills.live_mode
 })
-export default connect(mapStateToProps)(IntentInput);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(IntentInput);

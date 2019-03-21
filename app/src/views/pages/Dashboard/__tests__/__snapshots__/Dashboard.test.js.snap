@@ -4,6 +4,10 @@ exports[`Dashboard render dashboard 1`] = `
 <div
   id="app"
 >
+  <UpdatesModal
+    show_update_modal={false}
+    toggle={[Function]}
+  />
   <div
     id="navbar-top-left"
   >
@@ -88,10 +92,6 @@ exports[`Dashboard render dashboard 1`] = `
       </Link>
     </div>
   </div>
-  <ConfirmModal
-    confirm={false}
-    toggle={[Function]}
-  />
   <WarningModal
     dismiss={[Function]}
     error={null}

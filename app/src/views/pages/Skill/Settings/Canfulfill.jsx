@@ -72,7 +72,7 @@ class Canfulfill extends PureComponent {
 
             </button>
             <Collapse className="slot-collapse" isOpen={this.state.open[i]}>
-              <FulfillInput onInputUpdate={() => {this.forceUpdate(); this.props.save()}} onError={this.props.onError} slot={slot} slot_config={slot_config} />
+              <FulfillInput onInputUpdate={() => {this.forceUpdate(); this.props.save()}} slot={slot} slot_config={slot_config} />
             </Collapse>
           </div>
         </div>

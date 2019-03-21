@@ -19,6 +19,10 @@ export const fetchSkillsBlocked = message => ({
     payload: { message }
 })
 
+export const resetSkill = () => ({
+    type: "RESET_SKILL",
+})
+
 export const fetchSkillsFailure = error => ({
   type: "FETCH_SKILLS_FAILURE",
   payload: { error }
@@ -60,9 +64,8 @@ export const updateSkillMerge = (type, val) => ({
 export const toggleLive = (skill, diagram_id, live_version, live_mode) => dispatch => {
     dispatch({
         type: "TOGGLE_LIVE",
-        payload: { skill, diagram_id, live_version, live_mode}
+        payload: { skill, diagram_id, live_version, live_mode }
     })
-    return Promise.resolve()
 }
 
 export const removeFulfillment = intent_key => ({
@@ -162,6 +165,7 @@ export const fetchSkills = (skill_id, preview, diagram_id) => {
                 if (diagram_id && skill.diagram !== diagram_id){
                     skill.diagram = diagram_id
                 }
+                dispatch(fetchDevSkillsSuccess(skill))
                 dispatch(fetchLiveSkills(skill_id))
                 dispatch(fetchSkillsSuccess(skill))
             })
@@ -215,3 +219,4 @@ export const UPDATE_SKILL_MERGE = 'UPDATE_SKILL_MERGE'
 export const SET_LIVE_MODE_MODAL = 'SET_LIVE_MODE_MODAL';
 export const REMOVE_FULFILLMENT = 'REMOVE_FULFILLMENT'
 export const UPDATE_FULFILLMENT = 'UPDATE_FULFILLMENT'
+export const RESET_SKILL = 'RESET_SKILL'

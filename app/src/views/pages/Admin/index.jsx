@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './Admin.css';
 import Home from './Home';
 import Copy from './Copy';
+import ProductUpdates from './ProductUpdates'
 
 import {ButtonGroup} from 'reactstrap'
 
@@ -17,6 +18,11 @@ const tabs = [
         display: <React.Fragment><i className="fal fa-copy"/> Copy</React.Fragment>,
         match: ['copy'],
         link: '/admin/copy'
+    }, 
+    {
+        display: <React.Fragment><i className="fal fa-scroll"/> Product Updates</React.Fragment>,
+        match: ['updates'],
+        link: '/admin/updates'
     }
 ]
 
@@ -25,6 +31,9 @@ class Admin extends Component {
     render() {
         let page;
         switch(this.props.page){
+            case 'updates':
+                page = <ProductUpdates {...this.props}/>
+                break;
             case 'copy':
                 page = <Copy {...this.props}/>
                 break;

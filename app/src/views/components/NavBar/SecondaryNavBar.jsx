@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
-import { toggleLive } from './../../../actions/skillActions'
+import { toggleLive, setLiveModeModal } from "./../../../actions/skillActions";
+import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
 const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
 
 class SecondaryNavBar extends Component {
@@ -19,45 +20,42 @@ class SecondaryNavBar extends Component {
         this.toggleLiveMode = this.toggleLiveMode.bind(this)
     }
 
-    toggleLiveMode(disableCb) {
+    toggleLiveMode() {
         if (this.props.live_mode) {
-            this.props.toggleLive(
-                this.props.dev_skill,
-                this.props.dev_skill.diagram,
-                this.props.skill_id,
-                false
-            ).then(() => {
-                this.setState({
-                    loading: false
-                })
-                this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
-            })
-            this.props.onSave()
+          this.props.updateDiagramRoot(this.props.dev_skill.diagram)
+          this.props.fetchDiagrams(this.props.dev_skill.skill_id)
+          this.props.setLiveModal(false)
+          this.props.toggleLive(
+              this.props.dev_skill,
+              this.props.dev_skill.diagram,
+              this.props.skill_id,
+              false
+          )
+          this.setState({
+              loading: false
+          })
+          this.props.history.push(`/canvas/${this.props.dev_skill.skill_id}/${this.props.dev_skill.diagram}`)
         } else {
             axios.get(`/skill/${this.props.live_version}`)
-                .then((res) => {
-                    this.props.toggleLive(
-                        res.data,
-                        res.data.diagram,
-                        this.props.skill_id,
-                        true
-                    ).then(() => {
-                        this.setState({
-                            loading: false
-                        })
-                        this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
-                    })
-                    this.props.onSave()
-                })
-                .catch((err) => {
-                    console.log(err)
-
-                    console.log(this.state)
-                    setTimeout(
-                        () => { disableCb() },
-                        1000
-                    )
-                })
+            .then((res) => {
+              this.props.updateDiagramRoot(res.data.diagram)
+              this.props.fetchDiagrams(res.data.skill_id)
+              this.props.setLiveModal(true)
+              this.props.toggleLive(
+                  res.data,
+                  res.data.diagram,
+                  res.data.skill_id,
+                  true
+              )
+              this.setState({
+                  loading: false
+              })
+              this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+            })
+            .catch((err) => {
+              console.error(err)
+              alert("Unable to fetch live skill")
+            })
         }
     }
 
@@ -110,7 +108,7 @@ class SecondaryNavBar extends Component {
                                     </div>
                                 }
                                 <Toggle
-                                    defaultChecked={this.props.live_mode}
+                                    checked={this.props.live_mode}
                                     icons={false}
                                     onChange={() => {
                                         this.setState({loading: true})
@@ -122,7 +120,6 @@ class SecondaryNavBar extends Component {
                             :
                             null
                         }
-
                         {this.props.page === 'logs' ?
                             <div className="nav-item">
                                 <img src={'/logs.svg'} alt="logs" width="18"/>
@@ -156,7 +153,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive))
+        toggleLive: (dev_skill, diagram, live_version, isLive) => dispatch(toggleLive(dev_skill, diagram, live_version, isLive)),
+        updateDiagramRoot: (root_id) => dispatch(updateDiagramRoot(root_id)),
+        fetchDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
+        setLiveModal: (isLive) => dispatch(setLiveModeModal(isLive)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SecondaryNavBar)

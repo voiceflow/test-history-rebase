@@ -1,6 +1,6 @@
 const { hashids, analytics } = require('./../services')
 
-exports.trackCanvasTime = (req, res) => {
+exports.trackSessionTime = (req, res) => {
     analytics.track({
         userId: req.user.id,
         event: 'Canvas Session',
@@ -9,6 +9,20 @@ exports.trackCanvasTime = (req, res) => {
             duration: req.body.duration / 1000
         }
     })
+    res.sendStatus(200)
+}
+
+exports.trackCanvasTime = (req, res) => {
+    if (req.body.duration) {
+        analytics.track({
+            userId: req.user.id,
+            event: 'Active Canvas Session',
+            properties: {
+                skill_id: hashids.decode(req.body.skill_id)[0],
+                duration: req.body.duration / 1000
+            }
+        })
+    }
     res.sendStatus(200)
 }
 
@@ -27,6 +41,22 @@ exports.trackFirstSessionUpload = (req, res) => {
     analytics.track({
         userId: req.user.id,
         event: 'First Session Upload'
+    })
+    res.sendStatus(200)
+}
+
+exports.trackFirstProject = (req, res) => {
+    analytics.track({
+        userId: req.user.id,
+        event: 'Started First Project'
+    })
+    res.sendStatus(200)
+}
+
+exports.trackDevAccount = (req, res) => {
+    analytics.track({
+        userId: req.user.id,
+        event: 'Dev Account Setup'
     })
     res.sendStatus(200)
 }

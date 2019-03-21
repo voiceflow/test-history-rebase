@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import * as SRD from './../../components/SRD/main.js'
 import axios from 'axios'
 // import Loader from './Loader'
@@ -8,6 +9,7 @@ import './StoryBoard.css'
 import new_template from './../../../assets/templates/new'
 import { ButtonGroup } from 'reactstrap'
 import {convertDiagram} from './util'
+import { setError } from 'actions/modalActions'
 
 import { BlockLinkFactory } from './../../components/SRD/factories/BlockLinkFactory'
 import { BlockPortFactory } from './../../components/SRD/factories/BlockPortFactory'
@@ -190,7 +192,7 @@ class LightCanvas extends Component {
 
             this.setState({ saved: true })
         } else {
-            this.props.onError('Could Not Open Project - Corrupted File')
+            this.props.setError('Could Not Open Project - Corrupted File')
         }
     }
 
@@ -220,7 +222,7 @@ class LightCanvas extends Component {
         })
         .catch(err => {
             console.error(err.response)
-            this.props.onError('Could Not Retrieve Project Diagrams')
+            this.props.setError('Could Not Retrieve Project Diagrams')
         })
     }
 
@@ -285,4 +287,9 @@ class LightCanvas extends Component {
     }
 }
 
-export default LightCanvas
+const mapDispatchToProps = dispatch => {
+    return {
+        setError: err => dispatch(setError(err))
+    }
+}
+export default connect(null, mapDispatchToProps)(LightCanvas)

@@ -47,7 +47,6 @@ class FlowButton extends Component {
     render() {
 
         let active = this.props.active === this.props.flow.id;
-
         return (
             this.state.edit ? 
                 <InputGroup className="diagram-block">

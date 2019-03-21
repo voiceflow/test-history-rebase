@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { compose } from 'recompose'
 
-import { error } from './../../HOC/onError'
-
-import ErrorModal from './../../components/Modals/ErrorModal';
 import PublishAmazon from './PublishAmazon'
 import PublishMarket from '../PublishMarket/PublishMarket'
 import PublishGoogle from './PublishGoogle'
@@ -95,7 +91,6 @@ class Publish extends Component {
 
         return (
             <div id="business">
-                <ErrorModal error={this.props.onError} dismiss={() => this.props.clearError()} />
                 <div md="3" className="sidebar-nav">
                     {this.state.tabs.map((tab, i) => {
                         let res
@@ -126,10 +121,6 @@ class Publish extends Component {
 const mapStateToProps = state => ({
     skill_id: state.skills.skill.skill_id,
     platform: state.skills.skill.platform,
-    onError: state.skills.error
 })
 
-export default compose(
-    connect(mapStateToProps),
-    error
-)(Publish)
+export default connect(mapStateToProps)(Publish)

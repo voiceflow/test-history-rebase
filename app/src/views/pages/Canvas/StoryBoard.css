@@ -33,6 +33,61 @@
     background-color: #fff !important;
 }
 
+.fade-enter {
+    opacity: 0.01;
+    transform: translateY(-100%);
+}
+
+.fade-enter.fade-enter-active {
+    transform: translateY(0%);
+    opacity: 1;
+    transition: transform 500ms ease-in-out, opacity 500ms ease-in;
+}
+.fade-leave{
+    transform: translateY(0%);
+    opacity: 1;
+}
+.fade-leave.fade-leave-active{
+    transform: translateY(-100%);
+    opacity: 0.01;
+    transition: transform 300ms ease-in-out, opacity 300ms ease-in;
+}
+.close-warning {
+    color: #8da2b570;
+    cursor: pointer;
+    text-align: right;
+}
+
+.canvas-warnings {
+    /* text-align:center; */
+    justify-content: center;
+    font-size: 12px;
+    top: 25px;
+    z-index: 5;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    margin-left: -150px;
+    left:50%;
+    position: absolute;
+}
+
+.canvas-warning{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 15px;
+    width: 400px;
+    background-color: white;
+    border-radius:5px;
+    box-shadow: 0 0 1px 1px rgba(17, 49, 96, .06),
+    0 2px 4px 0 rgba(17, 49, 96, .08);
+}
+
+.warning-text{
+    text-align: center;
+}
+
 #loading-diagram {
     display: flex;
     justify-content: center;
@@ -1576,15 +1631,16 @@ label {
     border-color: #ffc870 !important;
 }
 /* BUSINESS BLOCKS */
-.srd-default-node.payment, .srd-default-node.cancel, .srd-default-node.mail, .srd-default-node.link_account, .srd-default-node.permissions{
-    border-top: 6px solid #2fd0c1;
+.srd-default-node.payment, .srd-default-node.cancel, .srd-default-node.mail, .srd-default-node.reminder,
+.srd-default-node.link_account, .srd-default-node.permission, .srd-default-node.permissions{
+    border-top: 6px solid #2fd0c1 !important;
     border-color: #2fd0c1 !important;
 }
 /* FUNCTIONAL BLOCKS */
 .srd-default-node.line, .srd-default-node.audio, .srd-default-node.multiline, .srd-default-node.combine, .srd-default-node.exit{
     background-color: #fff;
-    border-top: 6px solid #ff9f8d;
-    border-color: #ff9f8d !important;
+    border-top: 6px solid #7dbee2;
+    border-color: #7dbee2 !important;
 }
 /* LOGIC BLOCKS */
 .srd-default-node.random, .srd-default-node.set, .srd-default-node.variable, .srd-default-node.if, .srd-default-node.capture {
@@ -1722,6 +1778,12 @@ label {
 }
 .srd-default-node__title {
     padding: 0 !important;
+    background-color: transparent;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 15px;
+    color: #132042 !important;
 }
 
 .srd-default-node.comment .srd-default-node__name {
@@ -1964,7 +2026,7 @@ label {
 }
 
 .srd-default-node__name > span {
-    max-width: 120px;
+    max-width: 115px;
     display: block;
     white-space: nowrap; 
     overflow: hidden;
@@ -1977,15 +2039,6 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 auto;
-}
-
-.srd-default-node__title {
-    background-color: transparent;
-    font-weight: bold;
-    text-align: center;
-    padding-bottom: 5px;
-    font-size: 15px;
-    color: #132042 !important;
 }
 
 /* button.close{
@@ -2112,9 +2165,9 @@ button.close:hover{
 }
 
 .block.exit {
-    background-color: #ff9f8d36;
-    color: #ff9f8d;
-    border: 1px solid #ff9f8d50;
+    background-color: #7dbee235;
+    color: #7dbee2;
+    border: 1px solid #7dbee235;
     font-size: 15px;
 }
 
@@ -2125,7 +2178,16 @@ button.close:hover{
     font-size: 15px;
 }
 
-.block.stream {
+.block.card,
+.block.display {
+    background-color: #ffc87035;
+    color: #ffc870;
+    border: 1px solid #ffc87050;
+    font-size: 15px;
+}
+
+.block.stream,
+.block.code {
     background-color: #7dbee235;
     color: #7dbee2;
     border: 1px solid #7dbee250;
@@ -2161,7 +2223,11 @@ button.close:hover{
 }
 
 .block.permissions,
-.block.permission {
+.block.permission,
+.block.mail,
+.block.payment,
+.block.cancel,
+.block.reminder {
     border: 1px solid #2fd0c150;
     background-color: #2fd0c136;
     color: #2fd0c1;
@@ -2847,6 +2913,7 @@ button.close:hover{
 .dropdown-item{
     cursor: pointer;
 }
+
 #widget-bar {
     position: absolute;
     bottom: 13px;
@@ -2855,7 +2922,6 @@ button.close:hover{
     display: flex;
     vertical-align: middle;
 }
-
 #home-button {
     position: absolute;
     z-index: 5;
@@ -3105,4 +3171,8 @@ button.close:hover{
     width: 20px;
     height: 20px;
     z-index: 16777271;
+}
+
+.create-variable{
+    border-top: 5px solid red;
 }

@@ -10,7 +10,7 @@ import './Intent.css'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
-import { updateIntents, setCanFulfill } from './../../../../actions/skillActions'
+import { updateIntents, setCanFulfill } from './../../../../actions/versionActions'
 import { setConfirm, setError } from 'actions/modalActions'
 
 const _ = require('lodash')

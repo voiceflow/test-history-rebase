@@ -507,7 +507,10 @@ const checkVersions = (req, id, token, platform) => {
     // get the project id and dev version from this skill
     let project_id, dev_version
     try{
-      const project = await pool.query('SELECT project_id, dev_version FROM project_versions WHERE version_id = $1 LIMIT 1', [id])
+      const project = await pool.query(`
+        SELECT p.project_id, dev_version FROM project_versions pv
+        INNER JOIN projects p ON p.project_id = pv.project_id
+        WHERE version_id = $1 LIMIT 1`, [id])
       project_id = project.rows[0].project_id
       dev_version = project.rows[0].dev_version
     }catch(err){
@@ -595,7 +598,7 @@ const checkVersions = (req, id, token, platform) => {
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
             if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].skill_id !== dev_version) {
-              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {
+              deletion_promises.push(deleteProjectPromise(req.user.id, data.rows[i].skill_id, {
                 delete_all_versions: false,
                 diagram_updated: false
               }))

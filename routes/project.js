@@ -157,12 +157,10 @@ exports.publish = async (req, res) => {
   // check that the owner actually owns this project
   let project_id = hashids.decode(req.params.project_id)[0]
   try {
-    if (req.body.project) {
-      project_id = (await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [hashids.decode(req.body.project)[0]]))
-      .rows[0].project_id
-      // project_id = await pool.query('SELECT * FROM projects WHERE project_id = $1 AND creator_id = $2', [req.user.id])
-    }
-    if (!project_id) throw new Error('Invalid Project')
+    project_query = (await pool.query('SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1', [project_id]))
+    if (project_query.rows.length === 0) throw new Error('Invalid Project')
+
+    skill_id = project_query.rows[0].dev_version
   } catch (err) {
     return res.sendStatus(401)
   }

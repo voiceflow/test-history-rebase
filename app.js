@@ -160,15 +160,18 @@ app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDi
 
 app.get('/projects', ensureLoggedIn(), Project.getProjects);
 app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject);
+app.get('/project/:project_id/live_version', ensureLoggedIn(), Project.getLiveVersion)
+app.get('/project/:project_id/dev_version', ensureLoggedIn(), Project.getDevVersion)
 
-app.get('/skills', ensureLoggedIn(), Skill.getSkills);
+// DEPRECATE ASAP
+app.get('/skills', ensureLoggedIn(), Project.getProjects);
+app.get('/skill/:skill_id/live_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getLiveVersion)
+app.get('/skill/:skill_id/dev_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getDevVersion)
+
 app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
-app.get('/skill/:id/info', ensureAdmin(), Skill.getSkillInfo);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
-app.get('/skill/:id/live_version', ensureLoggedIn(), Skill.getLiveVersion)
-app.get('/skill/:id/dev_version', ensureLoggedIn(), Skill.getDevVersion)
 app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)

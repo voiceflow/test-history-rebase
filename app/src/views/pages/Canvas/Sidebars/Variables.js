@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { pushVariable, setVariables } from './../../../../actions/variableActions'
-import { updateSkill } from './../../../../actions/skillActions'
+import { updateVersion } from './../../../../actions/versionActions'
 import { setError } from 'actions/modalActions'
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
 import {Tooltip} from 'react-tippy'
@@ -181,7 +181,7 @@ const mapDispatchToProps = dispatch => {
     return {
         addVariable: variable => dispatch(pushVariable(variable)),
         setVariables: variables => dispatch(setVariables(variables)),
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
         setError: err => dispatch(setError(err)),
     }
 }

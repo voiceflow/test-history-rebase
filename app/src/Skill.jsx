@@ -4,7 +4,7 @@ import { compose } from 'recompose'
 
 import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
 
-import { fetchSkills, setLiveModeModal, updateSkill, resetSkill } from './actions/skillActions'
+import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from './actions/versionActions'
 import { fetchDiagrams } from './actions/diagramActions'
 import { fetchProducts } from "./actions/productActions";
 import { fetchDisplays } from "./actions/displayActions";
@@ -251,13 +251,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
-    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchSkills(skill_id, preview, diagram_id)),
+    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchVersion(skill_id, preview, diagram_id)),
     setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
     getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
     getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
-    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-    resetSkill: () => dispatch(resetSkill())
+    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
+    resetSkill: () => dispatch(resetVersion())
   }
 }
 

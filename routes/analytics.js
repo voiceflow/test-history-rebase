@@ -30,7 +30,7 @@ exports.getUsersData = (req, res) => {
     checkUserOwnsSkill(req, res, async () => {
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT skills.skill_id 
+            SELECT s.skill_id 
             FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
             WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
         
@@ -64,7 +64,7 @@ exports.getDAU = (req, res) => {
     checkUserOwnsSkill(req, res, async () => {
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT skills.skill_id 
+            SELECT s.skill_id 
             FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
             WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
 
@@ -118,7 +118,7 @@ exports.getStats = async (req, res) => {
     try{
         let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT skills.skill_id 
+            SELECT s.skill_id 
             FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
             WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
 

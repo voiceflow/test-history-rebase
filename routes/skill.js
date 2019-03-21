@@ -503,17 +503,25 @@ exports.enableSkill = async (req, res) => {
 
 const checkVersions = (req, id, token, platform) => {
   return new Promise(async (resolve, reject) => {
-    let project_id
+
+    // get the project id and dev version from this skill
+    let project_id, dev_version
     try{
-      project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [id])).rows[0].project_id
+      const project = await pool.query('SELECT project_id, dev_version FROM project_versions WHERE version_id = $1 LIMIT 1', [id])
+      project_id = project.rows[0].project_id
+      dev_version = project.rows[0].dev_version
     }catch(err){
       return reject(err)
     }
 
     pool.query(`
-      SELECT * FROM skills s 
+      SELECT s.*, pv.* FROM skills s 
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-      WHERE pv.project_id = $1 AND pv.platform = $2 ORDER BY pv.created ASC`,
+      INNER JOIN projects p ON p.project_id = pv.project_id 
+      WHERE pv.project_id = $1 
+        AND pv.platform = $2 
+        AND p.dev_version != s.skill_id
+        ORDER BY pv.created ASC`,
       [project_id, platform],
       async (err, data) => {
         if (err) {
@@ -521,7 +529,7 @@ const checkVersions = (req, id, token, platform) => {
             err: err
           })
           reject(err)
-        } else {
+        } else if (data.rows.length > 0){
           // Check for live version
           let current_live = !!data.rows.find(s => s.live)
           let live_ids = []
@@ -593,7 +601,7 @@ const checkVersions = (req, id, token, platform) => {
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].version) {
+            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].skill_id !== dev_version) {
               deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {
                 delete_all_versions: false,
                 diagram_updated: false

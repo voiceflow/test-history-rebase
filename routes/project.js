@@ -19,8 +19,10 @@ const {
 
 exports.getProjectFromSkill = async (req, res, next) => {
   try{
-    let project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [req.params.skill_id])).rows[0].project_id
+    let skill_id =  hashids.decode(req.params.skill_id)[0]
+    let project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id])).rows[0].project_id
     req.params.project_id = hashids.encode(project_id)
+    req.params.version_id = req.params.skill_id
     next()
   }catch(e){
     res.sendStatus(404)
@@ -153,7 +155,7 @@ exports.getDevVersion = async (req, res) => {
   }
 }
 
-exports.publish = async (req, res) => {
+exports.render = async (req, res) => {
   // check that the owner actually owns this project
   let project_id = hashids.decode(req.params.project_id)[0]
   try {

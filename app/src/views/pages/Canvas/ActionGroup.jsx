@@ -395,11 +395,11 @@ export class ActionGroup extends PureComponent {
               return
           }
       }
-      axios.post(`/project/${this.props.skill.project_id}/publish`, { platform: 'alexa' })
+      axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'alexa' })
           .then(res => {
               let new_version_data = res.data
               this.updateAlexaStage(11, () => {
-                  axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
+                  axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
                       .then(res => {
                           this.props.updateSkill('amzn_id', res.data)
                           this.checkInteractionModel()
@@ -447,11 +447,11 @@ export class ActionGroup extends PureComponent {
 
     this.updateGoogleStage(3)
 
-    axios.post(`/project/${this.props.skill.project_id}/publish`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
     .then(res => {
       this.updateGoogleStage(4)
       let new_version_data = res.data
-      axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
+      axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
           .then(res => {
               // They completed their first upload successfully
               this.uploadSuccess('google', res.data.project_id)

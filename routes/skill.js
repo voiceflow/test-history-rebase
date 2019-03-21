@@ -110,7 +110,8 @@ exports.getSkill = async (req, res) => {
     return
   }
 
-  let id = hashids.decode(req.params.id)[0]
+  let project_id = hashids.decode(req.params.project_id)[0]
+  let id = hashids.decode(req.params.skill_id)[0]
   let sql
   let params
 
@@ -119,7 +120,7 @@ exports.getSkill = async (req, res) => {
   AccessToken(req.user.id, async (token) => {
     if (token !== null) {
       try {
-        await checkVersions(req, id, token)
+        await checkVersions(req.user, project_id, 'alexa', {token: token})
       } catch (err) {
         logAxiosError(err, 'GET SKILL')
       }
@@ -501,16 +502,14 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (req, id, token, platform) => {
+const checkVersions = (user, project_id, platform, options) => {
   return new Promise(async (resolve, reject) => {
 
     // get the project id and dev version from this skill
     let project_id, dev_version
     try{
       const project = await pool.query(`
-        SELECT p.project_id, dev_version FROM project_versions pv
-        INNER JOIN projects p ON p.project_id = pv.project_id
-        WHERE version_id = $1 LIMIT 1`, [id])
+        SELECT p.project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])
       project_id = project.rows[0].project_id
       dev_version = project.rows[0].dev_version
     }catch(err){
@@ -522,8 +521,9 @@ const checkVersions = (req, id, token, platform) => {
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id
       WHERE pv.project_id = $1 
         AND pv.platform = $2
+        AND pv.version_id != $3
         ORDER BY pv.created ASC`,
-      [project_id, platform],
+      [project_id, platform, dev_version],
       async (err, data) => {
         if (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -539,11 +539,13 @@ const checkVersions = (req, id, token, platform) => {
           try {
             // If so, we wanna know what version the live skill is pointing to rn
             if (platform === 'alexa' && dev_version_row.amzn_id) {
+              if(!options.token) throw new Error('No Token')
+
               let request = await axios.request({
                 url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
                 method: 'GET',
                 headers: {
-                  Authorization: token
+                  Authorization: options.token
                 }
               })
               // Delete the oldest version that isn't live
@@ -590,7 +592,7 @@ const checkVersions = (req, id, token, platform) => {
           }
 
           let i = 0
-          let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 4 : data.rows.length - 6
+          let num_versions_to_delete = user.admin >= 100 ? data.rows.length - 4 : data.rows.length - 6
           let deletion_promises = []
           if (live_ids) {
             num_versions_to_delete -= live_ids.length
@@ -598,7 +600,7 @@ const checkVersions = (req, id, token, platform) => {
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
             if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].skill_id !== dev_version) {
-              deletion_promises.push(deleteProjectPromise(req.user.id, data.rows[i].skill_id, {
+              deletion_promises.push(deleteProjectPromise(user.id, data.rows[i].skill_id, {
                 delete_all_versions: false,
                 diagram_updated: false
               }))
@@ -623,9 +625,10 @@ const checkVersions = (req, id, token, platform) => {
 }
 
 exports.buildSkill = async (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(401)
-  }
+  let project_id = hashids.decode(req.params.project_id)[0];
+  let id = hashids.decode(req.params.version_id)[0];
+  let original_id = req.params.version_id
+
   try {
     incrementTimesPublishedIntercom(req.user.id);
   } catch (err) {
@@ -633,10 +636,6 @@ exports.buildSkill = async (req, res) => {
       err: err
     })
   }
-
-
-  let id = hashids.decode(req.params.id)[0];
-  let original_id = req.params.id
 
   AccessToken(req.user.id, token => {
     if (token === null) {
@@ -647,7 +646,7 @@ exports.buildSkill = async (req, res) => {
     }
 
     // Asynchronously check version logic, doesn't affect publishing
-    checkVersions(req, id, token, 'alexa')
+    checkVersions(req.user, project_id, 'alexa', {token: token})
 
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
@@ -1232,11 +1231,10 @@ exports.restoreSkillVersion = async (req, res) => {
 }
 
 exports.buildGoogleSkill = async (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(401)
-  }
-  let id = hashids.decode(req.params.id)[0];
-  let original_id = req.params.id
+
+  let vf_project_id = hashids.decode(req.params.project_id)[0];
+  let id = hashids.decode(req.params.version_id)[0];
+  let original_id = req.params.version_id
 
   try {
     const skill_info = await new Promise((resolve, reject) => {
@@ -1282,7 +1280,7 @@ exports.buildGoogleSkill = async (req, res) => {
       throw ('Credentials not found')
     }
 
-    checkVersions(req, id, '', 'google')
+    checkVersions(req.user, vf_project_id, 'google')
 
     const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 

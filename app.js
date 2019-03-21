@@ -159,20 +159,26 @@ app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay
 app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/projects', ensureLoggedIn(), Project.getProjects)
+app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
 app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject)
 app.get('/project/:project_id/live_version', ensureLoggedIn(), Project.getLiveVersion)
 app.get('/project/:project_id/dev_version', ensureLoggedIn(), Project.getDevVersion)
 app.get('/project/:project_id/versions', ensureLoggedIn(), Project.getProjectVersions)
-app.post('/project/:project_id/publish', ensureLoggedIn(), Project.publish)
+app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
+app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
+app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
 
 // DEPRECATE ASAP (OLD SKILL ROUTES CONVERTED TO PROJECT)
+app.get('/skill/:skill_id', ensureLoggedIn(), Project.getProjectFromSkill, Skill.getSkill);
 app.get('/skills', ensureLoggedIn(), Project.getProjects)
 app.get('/skill/:skill_id/live_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getLiveVersion)
 app.get('/skill/:skill_id/dev_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getDevVersion)
 app.get('/skill/:skill_id/versions', ensureLoggedIn(), Project.getProjectFromSkill, Project.getProjectVersions)
-app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.publish);
+app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.render);
+app.post('/skill/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildSkill);
+app.post('/skill/:skill_id/publishgoogle', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildGoogleSkill);
+// DELETE BEFORE APRIL 2019
 
-app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
@@ -184,8 +190,6 @@ app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:id/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
-app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
-app.post('/skill/:id/publishgoogle', ensureLoggedIn(), Skill.buildGoogleSkill);
 app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);

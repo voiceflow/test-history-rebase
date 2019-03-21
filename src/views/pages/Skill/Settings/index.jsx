@@ -3,6 +3,7 @@ import axios from 'axios'
 import { ButtonGroup, Button } from 'reactstrap'
 import { connect } from 'react-redux'
 import { updateVersion } from './../../../../actions/versionActions'
+import { updateDiagramRoot } from './../../../../actions/diagramActions' 
 
 // SETTING PAGES
 import BasicAdvancedSettings from './BasicAdvanced'
@@ -35,6 +36,7 @@ class Settings extends Component {
         }
 
         if (!cb) {
+          this.props.updateDiagramRoot(res.data.diagram)
           this.props.history.push(
             `/canvas/${res.data.skill_id}/${res.data.diagram}`
           );
@@ -108,7 +110,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateVersion(type, val))
+        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
+        updateDiagramRoot: (val) => dispatch(updateDiagramRoot(val))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)

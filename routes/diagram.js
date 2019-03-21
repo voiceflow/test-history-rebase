@@ -8,27 +8,14 @@ const {
   delay
 } = require('../util')
 const {
-  copySkill,
   deleteDynamoDiagramPromise
 } = require('./skill_util')
 const {
   renderDiagram
 } = require('./../config/render_diagram.js')
 
-const {
-  _getGoogleAccessToken
-} = require('../routes/authentication')
-
 const del = require('del');
 const spawn = require('child_process').spawn
-
-const mkdirp = require('mkdirp');
-const _ = require('lodash')
-
-const fs = require('fs');
-const GACTIONS_CLI_ROOT = './gactions_cli'
-
-const uuid = require('uuid/v4')
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {
@@ -299,217 +286,6 @@ const copyDiagram = async (req, res) => {
   }
 }
 
-const checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise(async (resolve, reject) => {
-  let random_id = uuid()
-  let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-  while (fs.existsSync(dir)) {
-    random_id = uuid()
-    dir = `${GACTIONS_CLI_ROOT}/${random_id}`
-  }
-
-  let google_versions_to_update = {}
-  let all_google_versions
-
-  try {
-    await new Promise((resolve, reject) => {
-      mkdirp(dir, function (err) {
-        if (err) reject(err)
-        else resolve()
-      })
-    })
-
-    const cli_filename = /production/.test(process.env.NODE_ENV) || /staging/.test(process.env.NODE_ENV) ? 'gactions_linux' : 'gactions'
-
-    await new Promise((resolve, reject) => {
-      fs.copyFile(`${GACTIONS_CLI_ROOT}/${cli_filename}`, `${dir}/gactions`, (err) => {
-        if (err) reject(err)
-        resolve()
-      })
-    })
-
-    await new Promise((resolve, reject) => {
-      fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    })
-
-    all_google_versions = await new Promise(async (resolve, reject) => {
-      const gactions = spawn('./gactions', ['list', `--project=${project_id}`], {
-        cwd: dir
-      })
-
-      let output = ''
-
-      gactions.stdout.on('data', (data) => {
-        output += data.toString()
-      });
-
-      gactions.stderr.on('data', (data) => {
-        reject(data.toString())
-      })
-
-      await delay(4000)
-
-      const attached_google_versions = {}
-      const lines = output.split('\n').filter(Boolean)
-
-      lines.forEach(line => {
-        const words = line.split('  ').filter(Boolean)
-        const version = words[0]
-        const create_time = words[1]
-        const update_time = words[2]
-        const approval = words[3]
-        const deployment_status = words[4]
-
-        if (/.-\[[^\[\]]+\]\S+/.test(version)) {
-          attached_google_versions[version] = {
-            create_time,
-            update_time,
-            approval,
-            deployment_status
-          }
-        }
-      })
-      resolve(attached_google_versions)
-    })
-
-    const data = await pool.query('SELECT google_versions FROM project_versions WHERE version_id = $1', [skill_id])
-
-    let existing_google_versions = data.rows[0].google_versions
-    let highest_existing_version = 0
-
-    if (existing_google_versions && Object.keys(existing_google_versions).length > 0) {
-      highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
-        const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
-        const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
-
-        return aVersion - bVersion
-      })
-      highest_existing_version = +highest_existing_version[highest_existing_version.length - 1].match(/.-\[([^\[\]]+)\]\S+/)[1]
-    } else {
-      existing_google_versions = {}
-    }
-
-    Object.keys(all_google_versions).forEach(version => {
-      const version_number = +version.match(/.-\[([^\[\]]+)\]\S+/)[1]
-      if (version_number > highest_existing_version) {
-        google_versions_to_update[version] = all_google_versions[version]
-      }
-      existing_google_versions[version] = all_google_versions[version]
-    })
-
-    if (existing_google_versions) await pool.query('UPDATE project_versions SET google_versions = $2 WHERE version_id = $1', [skill_id, existing_google_versions])
-  } catch (e) {
-    await new Promise((resolve, reject) => {
-      del([dir]).then(resolve()).catch(e => reject(e))
-    })
-    console.error(e)
-    reject(`Unable to check Google Actions version! Does the project ${project_id} belong to the same google account that you used for authentication?`)
-  }
-  await new Promise((resolve, reject) => {
-    del([dir]).then(resolve()).catch(e => reject(e))
-  })
-  resolve(google_versions_to_update)
-})
-
-const publish = async (req, res) => {
-  if (!req.user || !req.params.skill_id || !req.params.diagram_id) {
-    return res.sendStatus(401)
-  }
-
-  // check that the owner actually owns this project
-  let skill_id = hashids.decode(req.params.skill_id)[0]
-  let project_id
-  try {
-    if (req.body.project) {
-      // TODO: Secure this against TEAM/CREATOR
-      // just check it exists for now
-      project_id = (await pool.query('SELECT project_id FROM projects WHERE project_id = $1 LIMIT 1', [hashids.decode(req.body.project)[0]]))
-      .rows[0].project_id
-      // project_id = await pool.query('SELECT * FROM projects WHERE project_id = $1 AND creator_id = $2', [req.user.id])
-    } else {
-      // DEPRECATE SHOULD HAVE PROJECT_ID IN THE FUTURE
-      project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id]))
-      .rows[0].project_id
-    }
-    if (!project_id) throw new Error('Invalid Project')
-  } catch (err) {
-    return res.sendStatus(401)
-  }
-
-  let platform = req.body.platform || 'alexa'
-  let google_project_id
-
-  if (platform === 'google') {
-    google_project_id = req.body.project_id
-    if (!google_project_id) return res.sendStatus(401)
-  }
-
-  // Copy the skill, making sure it points to the same canonical skill point
-  const updateVersion = async (new_skill_id_decoded, skill_id, new_skill_row) => {
-
-    let google_versions_to_update
-    if (platform === 'google') {
-      try {
-        const token = await _getGoogleAccessToken(req.user.id)
-        google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
-        if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
-
-        const versions = await pool.query(`
-          SELECT
-            version_id
-          FROM
-            project_versions
-          WHERE
-            project_id = $1
-            AND platform = $2
-          ORDER BY
-            created DESC
-          LIMIT 1`,
-        [skill_id, new_skill_id_decoded, platform])
-
-        if (versions.rows && versions.rows.length > 0) {
-          let latest_version_skill_id = versions.rows[0].version_id
-          await pool.query('UPDATE project_versions SET google_versions = $2 where version_id = $1', [latest_version_skill_id, google_versions_to_update])
-        }
-      } catch (e) {
-        console.error(e)
-        return res.status(400).send(e)
-      }
-    }
-
-    let version_query = `INSERT INTO project_versions (project_id, version_id, platform) VALUES ( $1, $2, $3 )`
-
-    pool.query(version_query, [project_id, new_skill_id_decoded, platform], async (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        })
-        res.sendStatus(500)
-      } else {
-        new_skill_row.project_id = project_id
-        res.send({
-          new_skill: new_skill_row
-        })
-      }
-    })
-  }
-
-  // Spoof the request cause we don't use it anymore
-  req.params.id = hashids.encode(skill_id)
-  req.params.target_creator = req.user.id
-  copySkill(req, res, {
-    renderDiagram: true
-  }, (new_skill_row) => {
-    let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
-    updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
-  })
-}
-
 const publishTest = async (req, res) => {
   if (!req.user || !req.params.diagram_id) {
     return res.sendStatus(401)
@@ -589,7 +365,6 @@ module.exports = {
   getDiagram: getDiagram,
   deleteDiagram: deleteDiagram,
   setDiagram: setDiagram,
-  publish: publish,
   publishTest: publishTest,
   copyDiagram: copyDiagram,
   rerenderDiagram: rerenderDiagram

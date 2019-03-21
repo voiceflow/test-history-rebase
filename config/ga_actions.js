@@ -1,0 +1,126 @@
+const { pool } = require('./../services')
+
+const fs = require('fs');
+const GACTIONS_CLI_ROOT = './gactions_cli'
+
+const uuid = require('uuid/v4')
+
+const mkdirp = require('mkdirp');
+const _ = require('lodash')
+
+exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise(async (resolve, reject) => {
+  let random_id = uuid()
+  let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+  while (fs.existsSync(dir)) {
+    random_id = uuid()
+    dir = `${GACTIONS_CLI_ROOT}/${random_id}`
+  }
+
+  let google_versions_to_update = {}
+  let all_google_versions
+
+  try {
+    await new Promise((resolve, reject) => {
+      mkdirp(dir, function (err) {
+        if (err) reject(err)
+        else resolve()
+      })
+    })
+
+    const cli_filename = /production/.test(process.env.NODE_ENV) || /staging/.test(process.env.NODE_ENV) ? 'gactions_linux' : 'gactions'
+
+    await new Promise((resolve, reject) => {
+      fs.copyFile(`${GACTIONS_CLI_ROOT}/${cli_filename}`, `${dir}/gactions`, (err) => {
+        if (err) reject(err)
+        resolve()
+      })
+    })
+
+    await new Promise((resolve, reject) => {
+      fs.writeFile(`${dir}/creds.data`, creds, 'utf8', (err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+
+    all_google_versions = await new Promise(async (resolve, reject) => {
+      const gactions = spawn('./gactions', ['list', `--project=${project_id}`], {
+        cwd: dir
+      })
+
+      let output = ''
+
+      gactions.stdout.on('data', (data) => {
+        output += data.toString()
+      });
+
+      gactions.stderr.on('data', (data) => {
+        reject(data.toString())
+      })
+
+      await delay(4000)
+
+      const attached_google_versions = {}
+      const lines = output.split('\n').filter(Boolean)
+
+      lines.forEach(line => {
+        const words = line.split('  ').filter(Boolean)
+        const version = words[0]
+        const create_time = words[1]
+        const update_time = words[2]
+        const approval = words[3]
+        const deployment_status = words[4]
+
+        if (/.-\[[^\[\]]+\]\S+/.test(version)) {
+          attached_google_versions[version] = {
+            create_time,
+            update_time,
+            approval,
+            deployment_status
+          }
+        }
+      })
+      resolve(attached_google_versions)
+    })
+
+    const data = await pool.query('SELECT google_versions FROM project_versions WHERE version_id = $1', [skill_id])
+
+    let existing_google_versions = data.rows[0].google_versions
+    let highest_existing_version = 0
+
+    if (existing_google_versions && Object.keys(existing_google_versions).length > 0) {
+      highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
+        const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
+        const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
+
+        return aVersion - bVersion
+      })
+      highest_existing_version = +highest_existing_version[highest_existing_version.length - 1].match(/.-\[([^\[\]]+)\]\S+/)[1]
+    } else {
+      existing_google_versions = {}
+    }
+
+    Object.keys(all_google_versions).forEach(version => {
+      const version_number = +version.match(/.-\[([^\[\]]+)\]\S+/)[1]
+      if (version_number > highest_existing_version) {
+        google_versions_to_update[version] = all_google_versions[version]
+      }
+      existing_google_versions[version] = all_google_versions[version]
+    })
+
+    if (existing_google_versions) await pool.query('UPDATE project_versions SET google_versions = $2 WHERE version_id = $1', [skill_id, existing_google_versions])
+  } catch (e) {
+    await new Promise((resolve, reject) => {
+      del([dir]).then(resolve()).catch(e => reject(e))
+    })
+    console.error(e)
+    reject(`Unable to check Google Actions version! Does the project ${project_id} belong to the same google account that you used for authentication?`)
+  }
+  await new Promise((resolve, reject) => {
+    del([dir]).then(resolve()).catch(e => reject(e))
+  })
+  resolve(google_versions_to_update)
+})

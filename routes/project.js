@@ -5,8 +5,17 @@ const {
 } = require('./../services')
 
 const {
+  _getGoogleAccessToken
+} = require('./../routes/authentication')
+
+const {
+  copySkill,
   deleteProjectPromise
 } = require('./skill_util')
+
+const {
+  checkGactionsVersionChanged
+} = require('./../config/ga_actions')
 
 exports.getProjectFromSkill = async (req, res, next) => {
   try{
@@ -141,4 +150,81 @@ exports.getDevVersion = async (req, res) => {
     console.trace(err)
     res.sendStatus(500)
   }
+}
+
+exports.publish = async (req, res) => {
+  // check that the owner actually owns this project
+  let project_id = hashids.decode(req.params.project_id)[0]
+  try {
+    project_query = (await pool.query('SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1', [project_id]))
+    if (project_query.rows.length === 0) throw new Error('Invalid Project')
+
+    skill_id = project_query.rows[0].dev_version
+  } catch (err) {
+    return res.sendStatus(401)
+  }
+
+  let platform = req.body.platform || 'alexa'
+  let google_project_id
+
+  if (platform === 'google') {
+    google_project_id = req.body.project_id
+    if (!google_project_id) return res.sendStatus(401)
+  }
+
+  // Copy the skill, making sure it points to the same canonical skill point
+  const updateVersion = async (new_skill_id_decoded, skill_id, new_skill_row) => {
+
+    let google_versions_to_update
+    if (platform === 'google') {
+      try {
+        const token = await _getGoogleAccessToken(req.user.id)
+        google_versions_to_update = await checkGactionsVersionChanged(token, google_project_id, skill_id)
+        if (Object.keys(google_versions_to_update).length === 0) google_versions_to_update = null
+
+        const versions = await pool.query(`
+          SELECT version_id FROM project_versions
+          WHERE project_id = $1
+            AND platform = $2
+          ORDER BY
+            created DESC
+          LIMIT 1`,
+        [skill_id, new_skill_id_decoded, platform])
+
+        if (versions.rows.length > 0) {
+          let latest_version_skill_id = versions.rows[0].version_id
+          await pool.query('UPDATE project_versions SET google_versions = $2 where version_id = $1', [latest_version_skill_id, google_versions_to_update])
+        }
+      } catch (e) {
+        console.error(e)
+        return res.status(400).send(e)
+      }
+    }
+
+    let version_query = `INSERT INTO project_versions (project_id, version_id, platform) VALUES ( $1, $2, $3 )`
+
+    pool.query(version_query, [project_id, new_skill_id_decoded, platform], async (err, data) => {
+      if (err) {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {
+          err: err
+        })
+        res.sendStatus(500)
+      } else {
+        new_skill_row.project_id = project_id
+        res.send({
+          new_skill: new_skill_row
+        })
+      }
+    })
+  }
+
+  // Spoof the request cause we don't use it anymore
+  req.params.id = hashids.encode(skill_id)
+  req.params.target_creator = req.user.id
+  copySkill(req, res, {
+    renderDiagram: true
+  }, (new_skill_row) => {
+    let new_skill_id_decoded = hashids.decode(new_skill_row.skill_id)[0]
+    updateVersion(new_skill_id_decoded, skill_id, new_skill_row)
+  })
 }

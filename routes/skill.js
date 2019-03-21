@@ -503,17 +503,26 @@ exports.enableSkill = async (req, res) => {
 
 const checkVersions = (req, id, token, platform) => {
   return new Promise(async (resolve, reject) => {
-    let project_id
+
+    // get the project id and dev version from this skill
+    let project_id, dev_version
     try{
-      project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [id])).rows[0].project_id
+      const project = await pool.query(`
+        SELECT p.project_id, dev_version FROM project_versions pv
+        INNER JOIN projects p ON p.project_id = pv.project_id
+        WHERE version_id = $1 LIMIT 1`, [id])
+      project_id = project.rows[0].project_id
+      dev_version = project.rows[0].dev_version
     }catch(err){
       return reject(err)
     }
 
     pool.query(`
-      SELECT * FROM skills s 
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-      WHERE pv.project_id = $1 AND pv.platform = $2 ORDER BY pv.created ASC`,
+      SELECT s.amzn_id, pv.* FROM skills s 
+      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+      WHERE pv.project_id = $1 
+        AND pv.platform = $2
+        ORDER BY pv.created ASC`,
       [project_id, platform],
       async (err, data) => {
         if (err) {
@@ -521,16 +530,17 @@ const checkVersions = (req, id, token, platform) => {
             err: err
           })
           reject(err)
-        } else {
+        } else if (data.rows.length > 0){
           // Check for live version
           let current_live = !!data.rows.find(s => s.live)
           let live_ids = []
+          let dev_version_row = data.rows.find(version => version.skill_id === dev_version)
 
           try {
             // If so, we wanna know what version the live skill is pointing to rn
-            if (platform === 'alexa' && data.rows[0].amzn_id) {
+            if (platform === 'alexa' && dev_version_row.amzn_id) {
               let request = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
                 method: 'GET',
                 headers: {
                   Authorization: token
@@ -564,16 +574,10 @@ const checkVersions = (req, id, token, platform) => {
               // Get the latest list of versions from skill_versions table
               // Compare with each skill's attached versions
               // If no matches, then it is ok to delete
-              let current_skill
+
+              const all_google_versions = dev_version_row.google_versions
               for (const row of data.rows) {
-                if (!row.version) {
-                  current_skill = row
-                  break
-                }
-              }
-              const all_google_versions = current_skill.google_versions
-              for (const row of data.rows) {
-                if (row.version && row.google_versions) {
+                if (row.skill_id !== dev_version && row.google_versions) {
                   const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
                   if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
                     live_ids.push(row.skill_id)
@@ -593,8 +597,8 @@ const checkVersions = (req, id, token, platform) => {
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].version) {
-              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {
+            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].skill_id !== dev_version) {
+              deletion_promises.push(deleteProjectPromise(req.user.id, data.rows[i].skill_id, {
                 delete_all_versions: false,
                 diagram_updated: false
               }))

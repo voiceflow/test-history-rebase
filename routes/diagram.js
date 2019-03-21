@@ -438,7 +438,6 @@ const publish = async (req, res) => {
     }
     if (!project_id) throw new Error('Invalid Project')
   } catch (err) {
-    console.log(err)
     return res.sendStatus(401)
   }
 

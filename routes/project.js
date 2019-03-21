@@ -77,10 +77,11 @@ exports.deleteProject = async (req, res) => {
 
 exports.getProjectVersions = (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0]
+  console.log('yeet')
   pool.query(`
-      SELECT s.* FROM skills
+      SELECT s.* FROM skills s
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id
-      INNER JOIN project p ON p.project_id = pv.project_id
+      INNER JOIN projects p ON p.project_id = pv.project_id
       WHERE pv.project_id = $1 AND p.dev_version != s.skill_id
       ORDER BY pv.created DESC`, [project_id],
     (err, data) => {

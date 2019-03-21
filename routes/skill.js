@@ -1212,7 +1212,7 @@ exports.restoreSkillVersion = async (req, res) => {
         WHERE skill_id = $2
       `, [canonical_skill_id, new_skill_id])
       // Delete the new copy's skill row
-      await deleteSkillPromise(req.user.id, new_skill_id, {
+      await deleteProjectPromise(req.user.id, new_skill_id, {
         delete_all_versions: false,
         diagram_updated: true
       })

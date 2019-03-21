@@ -277,7 +277,7 @@ class Skill extends Component {
         })
         this.setState({ stage: 3 });
 
-        axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'alexa', project: this.props.project_id })
+        axios.post(`/project/${this.props.project_id}/publish`, { platform: 'alexa' })
             .then(res => {
                 this.setState({ stage: 4 });
                 let new_version_data = res.data

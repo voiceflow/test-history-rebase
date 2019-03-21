@@ -136,6 +136,7 @@ exports.getSkills = async (req, res) => {
     let skills_data = (await pool.query(query, [userId])).rows
     res.send(skills_data.map(skill => {
       skill.skill_id = hashids.encode(skill.skill_id)
+      skill.project_id = hashids.encode(skill.project_id)
       return skill
     }))
   } catch(err) {
@@ -203,6 +204,7 @@ exports.getSkill = async (req, res) => {
       res.sendStatus(404)
     } else {
       skill_data.skill_id = req.params.id
+      skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)
     }
   } catch (err){

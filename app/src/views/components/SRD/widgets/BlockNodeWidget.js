@@ -266,6 +266,13 @@ export class BlockNodeWidget extends BaseWidget {
 						this.forceUpdate()
 					}
 				}}
+				onContextMenu={(e) => {
+					if (this.props.node.parentCombine){
+						this.props.nodeProps.generateBlockMenu(e, this.props.node)
+						e.preventDefault()
+						e.stopPropagation()
+					}
+				}}
 				key={this.props.node.id}
 			>
 				{this.props.node.linter && this.props.node.linter.length > 0 &&
@@ -351,7 +358,7 @@ export class BlockNodeWidget extends BaseWidget {
 										value={this.state.name}
 										onChange={this.handleChange}
 										onKeyDown={(e) => e.keyCode===13 && this.close()}
-										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
+										className='plain-input'
 										autoFocus
 									/>:
 							< span > {
@@ -368,7 +375,7 @@ export class BlockNodeWidget extends BaseWidget {
 										className="btn btn-black btn-sm"
 										onMouseDown={(e) => e.stopPropagation()}
 										onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras['alexa'].diagram_id)}>
-										Enter Flow
+										<i className="fas fa-clone mr-1"/>Enter Flow
 									</button>
 								</div>
 							}
@@ -438,10 +445,10 @@ export class BlockNodeWidget extends BaseWidget {
 							</React.Fragment>
 					}
 					{ this.props.node.extras.type === 'flow' && this.props.nodeProps.hasFlow(this.props.node.extras.diagram_id) && <button
-						className="btn btn-black btn-sm mt-1"
+						className="btn btn-black btn-sm mt-1 mx-2"
 						onMouseDown={(e) => e.stopPropagation()}
 						onMouseUp={()=>this.props.nodeProps.enterFlow(this.props.node.extras.diagram_id)}>
-						Enter Flow
+						<i className="fas fa-clone mr-1"/>Enter Flow
 					</button>}
 					<div className={`${this.bem("__out")} ${this.props.node.extras.type !== 'card' && this.props.node.extras.type}`}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}

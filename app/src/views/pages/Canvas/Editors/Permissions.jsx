@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Permission from './components/Permission'
 import { connect } from 'react-redux'
 import {Alert} from 'reactstrap'
+import { openTab } from "actions/userActions";
 const _ = require('lodash')
 
 const permission_options = [
@@ -82,14 +83,22 @@ export class Permissions extends Component {
     }
 
     handleSelectPermission(i, selected) {
-        let node = this.state.node;
+        if (selected.value !== 'Create Variable') {
+            let node = this.state.node;
 
-        if(node.extras.permissions[i].selected !== selected){
-            node.extras.permissions[i].selected = selected
+            if(node.extras.permissions[i].selected !== selected){
+                node.extras.permissions[i].selected = selected
 
-            this.setState({
-                node: node
-            }, this.props.onUpdate);
+                this.setState({
+                    node: node
+                }, this.props.onUpdate);
+            }
+        } else {
+            localStorage.setItem(
+                "tab",
+                "variables"
+            );
+            this.props.openVarTab("variables");
         }
     }
 
@@ -150,6 +159,12 @@ export class Permissions extends Component {
 }
 
 const mapStateToProps = state => ({
-    live_mode: state.skills.live_mode
+    live_mode: state.skills.live_mode,
 })
-export default connect(mapStateToProps)(Permissions);
+
+const mapDispatchToProps = dispatch => {
+    return {
+      openVarTab: tab => dispatch(openTab(tab))
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Permissions);

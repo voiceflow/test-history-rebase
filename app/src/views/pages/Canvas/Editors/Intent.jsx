@@ -11,6 +11,7 @@ import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
 import { updateIntents, setCanFulfill } from './../../../../actions/skillActions'
+import { setConfirm, setError } from 'actions/modalActions'
 
 const _ = require('lodash')
 
@@ -46,7 +47,7 @@ export class Intent extends Component {
             return
         }
         if (diagram_intents.has(selected.key)) {
-            this.props.onError(`The ${selected.label} intent is already being handled by another Block within this flow`)
+            this.props.setError(`The ${selected.label} intent is already being handled by another Block within this flow`)
         } else {
             if (intent) diagram_intents.delete(intent.key)
             extras.intent = selected
@@ -126,7 +127,7 @@ export class Intent extends Component {
                     })
                 }
             }
-            this.props.onConfirm(confirm_info)
+            this.props.setConfirm(confirm_info)
         } else {
             this.props.setCanFulfill(intent_key, !fulfilled)
             this.props.updateIntents()
@@ -275,9 +276,7 @@ export class Intent extends Component {
                         onAdd={this.props.handleAddIntent}
                         onRemove={this.props.handleRemoveIntent}
                         slots={this.props.slots}
-                        onError={this.props.onError}
                         update={this.update}
-                        onConfirm={this.props.onConfirm}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
                         setCanFulfill={this.props.setCanFulfill}
@@ -292,7 +291,6 @@ export class Intent extends Component {
                         intents={this.props.intents}
                         slots={this.props.slots}
                         slot_types={this.props.slot_types}
-                        onError={this.props.onError}
                         update={this.update}
                         platform={this.props.platform}
                         live_mode={this.props.live_mode}
@@ -367,6 +365,8 @@ const mapDispatchToProps = dispatch => {
     return {
         updateIntents: () => dispatch(updateIntents()),
         setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),
+        setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+        setError: err => dispatch(setError(err)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Intent)

@@ -80,6 +80,7 @@ exports[`Dashboard render dashboard 1`] = `
       </Tooltip>
       <Link
         className="no-underline ml-1"
+        replace={false}
         to="/templates"
       >
         <button
@@ -91,10 +92,6 @@ exports[`Dashboard render dashboard 1`] = `
       </Link>
     </div>
   </div>
-  <ConfirmModal
-    confirm={false}
-    toggle={[Function]}
-  />
   <WarningModal
     dismiss={[Function]}
     error={null}

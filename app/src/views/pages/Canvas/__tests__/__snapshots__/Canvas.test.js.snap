@@ -4,9 +4,7 @@ exports[`Canvas render canvas 1`] = `
 <Fragment>
   <Prompt
     message={[Function]}
-  />
-  <ErrorModal
-    dismiss={[Function]}
+    when={true}
   />
   <DefaultModal
     content={
@@ -305,6 +303,7 @@ exports[`Canvas render canvas 1`] = `
             "diagram": undefined,
             "disabled": false,
             "enterFlow": [Function],
+            "generateBlockMenu": [Function],
             "hasFlow": [Function],
             "removeCombineNode": [Function],
             "removeNode": [Function],

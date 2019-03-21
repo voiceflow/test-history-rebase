@@ -1,6 +1,8 @@
 
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import Textarea from 'react-textarea-autosize';
+import { setError } from 'actions/modalActions'
 
 class FulfillInput extends PureComponent {
   constructor(props) {
@@ -42,7 +44,7 @@ class FulfillInput extends PureComponent {
     }
 
     if (slot_config.includes(newValue)) {
-      return this.props.onError('Duplicate value in slot')
+      return this.props.setError('Duplicate value in slot')
     }
 
     if (newValue) {
@@ -100,4 +102,9 @@ class FulfillInput extends PureComponent {
   }
 }
 
-export default FulfillInput
+const mapDispatchToProps = dispatch => {
+  return {
+    setError: err => dispatch(setError(err))
+  }
+}
+export default connect(null, mapDispatchToProps)(FulfillInput)

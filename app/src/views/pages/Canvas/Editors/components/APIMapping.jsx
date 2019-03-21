@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Select from 'react-select';
 import VariableInput from './VariableInput';
+import { openTab } from 'actions/userActions'
+import { selectStyles, variableComponent } from 'views/components/VariableSelect'
 
 class APIMapping extends Component {
 
@@ -21,12 +24,14 @@ class APIMapping extends Component {
                                     <VariableInput className="form-control no-radius form-control-border" placeholder="object path" updateRaw={e => this.props.onChange(e, i, 'path')} variables={this.props.variables} raw={choice.path}/>
                                     <Select
                                         classNamePrefix="variable-box"
+                                        styles={selectStyles}
                                         placeholder="Variable"
                                         className="variable-box right"
+                                        components={{ Option: variableComponent }}
                                         value={this.props.pairs[i]['var'] ? {value: this.props.pairs[i]['var'], label: this.props.pairs[i]['var']} : null}
                                         onChange={e => this.props.onChange(e.value, i, 'var')} 
                                         options={Array.isArray(this.props.variables) ? this.props.variables.map(variable => {
-                                            return {label: variable, value: variable}
+                                            return {label: variable, value: variable, openVar: this.props.openVarTab}
                                         }) : null}
                                     />
                                             <button className="btn-float" onClick={e => this.props.onRemove(e, i)}>&times;</button>
@@ -43,4 +48,10 @@ class APIMapping extends Component {
     }
 }
 
-export default APIMapping;
+const mapDispatchToProps = dispatch => {
+    return {
+        openVarTab: (tab) => dispatch(openTab(tab)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(APIMapping);

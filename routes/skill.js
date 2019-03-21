@@ -161,6 +161,7 @@ exports.getSkill = async (req, res) => {
       res.sendStatus(404)
     } else {
       skill_data.skill_id = req.params.id
+      skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)
     }
   } catch (err){

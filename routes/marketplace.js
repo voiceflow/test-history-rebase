@@ -1,5 +1,5 @@
 const { pool, hashids, docClient, writeToLogs } = require('./../services')
-const { copySkill, copyDiagramFromSkill, deleteSkillPromise } = require('./skill_util')
+const { copySkill, copyDiagramFromSkill, deleteProjectPromise } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -41,7 +41,7 @@ const getModules = async (req, res) => {
 			SELECT * 
 			FROM modules 
 			INNER JOIN (SELECT DISTINCT project_id FROM project_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
-				ON modules.skill_id = distinct_versions.project_id 
+				ON modules.project_id = distinct_versions.project_id 
 			INNER JOIN creators 
 				ON creators.creator_id = modules.creator_id LIMIT $1
 		`, [module_limit])).rows
@@ -71,6 +71,7 @@ const getFeaturedModules = async (req, res) => {
 
 const cancelCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
+	let skill_id = hashids.decode(req.params.skill_id)[0]
 
 	try{
 		let deleted_row = (await pool.query(`
@@ -81,8 +82,7 @@ const cancelCertification = async (req, res) => {
 				AND cert_approved IS NULL
 			RETURNING *
 		`, [project_id])).rows[0]
-
-		await deleteProjectPromise(ADMIN_MARKETPLACE_ACC, deleted_row.project_id, {delete_all_versions: false})
+		await deleteProjectPromise(ADMIN_MARKETPLACE_ACC, deleted_row.project_id, {delete_all_versions: false, skill_id: skill_id})
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -102,8 +102,8 @@ const saveCertification = async (req, res) => {
 
 		try{
 			await pool.query(
-			`INSERT INTO modules (title, descr, creator_id, skill_id, tags, type, overview, module_icon, color, input, output) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
-			[req.body.title, req.body.descr, req.body.creator_id, skill_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, colour, req.body.input, req.body.output])
+			`INSERT INTO modules (title, descr, creator_id, tags, type, overview, module_icon, color, input, output, project_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
+			[req.body.title, req.body.descr, req.body.creator_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, colour, req.body.input, req.body.output, project_id])
 			res.sendStatus(200)
 		} catch (err) {
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -127,7 +127,7 @@ const saveCertification = async (req, res) => {
 	}
 
 	try{
-		let module_data = (await pool.query(`SELECT * FROM modules WHERE skill_id = $1`, [project_id])).rows
+		let module_data = (await pool.query(`SELECT * FROM modules WHERE project_id = $1`, [project_id])).rows
 		if(module_data.length > 0){
 			updateModule(module_data[0].module_id)
 		} else {
@@ -159,18 +159,10 @@ const requestCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 
 	try{
-		let versions_data = (await pool.query(`SELECT min(version) FROM project_versions WHERE project_id = $1`, [project_id])).rows[0].min
-		
-		if(versions_data === null){
-			versions_data = -1
-		} else {
-			versions_data -= 1
-		}
-
 		// Creates a new version of the skill at this pt
 		req.params.id = req.params.skill_id
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
-		copySkill(req, res, {user_copy: true, request_cert: true, project_id: project_id, version: versions_data}, () => {
+		copySkill(req, res, {user_copy: true, request_cert: true, project_id: project_id}, () => {
 			res.sendStatus(200)	
 		})
 	} catch (err) {
@@ -267,7 +259,7 @@ const getCertModule = (req, res) => {
 	const retrieveVariables = (row) => {
 		pool.query(
 			`SELECT diagram FROM skills WHERE skill_id = $1`, 
-			[skill_id],
+			[row.skill_id],
 			(err, data) =>{
 				if(err){
 					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -299,7 +291,11 @@ const getCertModule = (req, res) => {
 		)
 	}
 
-	pool.query(`SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output FROM modules, creators WHERE skill_id = $1 AND modules.creator_id = creators.creator_id`, [skill_id], (err, data) => {
+	pool.query(`
+		SELECT title, descr, name, email, tags, type, overview, module_icon, color, input, output 
+		FROM modules
+			INNER JOIN creators ON modules.creator_id = creators.creator_id
+		WHERE project_id = $1`, [project_id], (err, data) => {
 		if(err){
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 			res.sendStatus(500)
@@ -329,31 +325,6 @@ const getUserModules = async (req, res) => {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
 	}
-
-	// pool.query(
-	// 	`
-	// 	 SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
-	// 	 		ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type
-	// 	 FROM 
-	// 	 	(SELECT versions.module_id, versions.version_id, versions.diagram_id FROM 
-	// 	 		(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
-	// 	 		INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
-	// 	 	) AS ultimate_versions  
-	// 	 INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
-	// 	 INNER JOIN user_modules ON modules.module_id = user_modules.module_id
-	// 	 WHERE user_modules.creator_id = $1
-	// 	`,
-	// 	[user_id],
-	// 	(err, data) => {
-	// 		if(err){
-	// 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
-	// 			res.sendStatus(500);
-	// 		}else{
-	// 			hashIds(data.rows);
-	// 			res.send(data.rows);
-	// 		}
-	// 	}
-	// );
 }
 
 const retrieveTemplate = (req, res) => {
@@ -361,7 +332,11 @@ const retrieveTemplate = (req, res) => {
 
 	pool.query(
 		`
-		SELECT * FROM versions WHERE module_id = $1 AND cert_approved = (SELECT max(cert_approved) FROM versions WHERE module_id = $1)
+		SELECT * 
+		FROM project_versions 
+			INNER JOIN modules ON project_versions.project_id = modules.project_id
+		WHERE module_id = $1 AND cert_approved = (
+			SELECT max(cert_approved) FROM versions WHERE module_id = $1)
 		`,
 		[module_id],
 		(err, data) => {
@@ -399,7 +374,7 @@ const getPendingModules = async (req, res) => {
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM project_versions 
-				JOIN modules ON project_versions.version_id = modules.skill_id 
+				JOIN modules ON project_versions.project_id = modules.project_id 
 				JOIN skills ON project_versions.version_id = skills.skill_id
 			WHERE cert_approved IS NULL AND cert_requested IS NOT NULL`)).rows
 		hashIds(module_data)
@@ -413,15 +388,12 @@ const getPendingModules = async (req, res) => {
 const getDefaultTemplates = (req, res) => {
 	pool.query(
 		`
-		SELECT modules.module_id, modules.descr, modules.title, modules.module_icon, ultimate_versions.version_id, 
-			ultimate_versions.diagram_id, modules.color, modules.input, modules.output, modules.type, ultimate_versions.template_skill_id
-		FROM 
-		(SELECT versions.module_id, versions.version_id, versions.diagram_id, versions.template_skill_id FROM 
-			(SELECT module_id, max(version_id) AS version_id FROM versions GROUP BY module_id) AS max_versions 
-			INNER JOIN versions ON max_versions.module_id = versions.module_id AND max_versions.version_id = versions.version_id
-		) AS ultimate_versions  
-		INNER JOIN modules ON ultimate_versions.module_id = modules.module_id 
-		WHERE modules.template_index > 0 ORDER BY modules.template_index DESC
+			SELECT * 
+			FROM modules 
+				INNER JOIN project_versions ON modules.project_id = project_versions.project_id
+			WHERE modules.template_index > 0 
+				AND cert_approved IS NOT NULL
+			ORDER BY modules.template_index DESC
 		`,
 		[],
 		(err, data) => {
@@ -498,7 +470,13 @@ const copyDefaultTemplate = (req, res) => {
 		}
 	}
 
-	pool.query(`SELECT * FROM project_versions INNER JOIN modules ON project_versions.version_id = modules.skill_id WHERE modules.module_id = $1 ORDER BY cert_approved DESC LIMIT 1`,
+	pool.query(`
+		SELECT * 
+		FROM project_versions 
+			INNER JOIN modules ON project_versions.project_id = modules.project_id 
+		WHERE modules.module_id = $1 AND cert_approved IS NOT NULL
+		ORDER BY cert_approved 
+		DESC LIMIT 1`,
 		[module_id],
 		(err, data) => {
 			if(err){

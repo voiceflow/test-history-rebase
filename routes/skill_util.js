@@ -112,9 +112,10 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
     } else {
       select_query = `
       SELECT * FROM projects
+        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id 
-      WHERE creator_id = $1 AND projects.project_id = $2`
+      WHERE projects.creator_id = $1 AND projects.project_id = $2`
       delete_query = `DELETE FROM skills WHERE projects.creator_id = $1 AND skill_id = $2`
     }
 
@@ -146,7 +147,7 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
           })
         }
 
-        await pool.query(delete_query, [creator_id, project_id])
+        await pool.query(delete_query, [creator_id, (options.skill_id ? options.skill_id : project_id)])
         await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         let diagram_delete_promises = []
         for(let i=0;i < project_data_rows.length;i++){
@@ -164,7 +165,7 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
         })
       } else {
         await pool.query(delete_query, [creator_id, project_id])
-        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
+        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, (options.skill_id ? options.skill_id : project_id)])
         resolve()
       }
     } catch (err) {
@@ -480,18 +481,17 @@ exports.copySkill = async (req, res, options, cb = false) => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
           try{
-            let new_project_data = (await pool.query(`
-              INSERT INTO projects (name, creator_id, dev_version) 
-              VALUES ($1, $2, $3) 
-              RETURNING *`, 
-            [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
-            copy_skill.project_id = new_project_data.project_id
-
             if(options.request_cert){ 
               await pool.query(
-                `INSERT INTO project_versions (project_id, version_id, cert_requested, version) VALUES ($1, $2, now(), $3)`, 
-                [options.project_id, copy_skill.skill_id, options.version])
+                `INSERT INTO project_versions (project_id, version_id, cert_requested) VALUES ($1, $2, now())`, 
+                [options.project_id, copy_skill.skill_id])
             } else {
+              let new_project_data = (await pool.query(`
+                INSERT INTO projects (name, creator_id, dev_version) 
+                VALUES ($1, $2, $3) 
+                RETURNING *`, 
+              [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
+              copy_skill.project_id = new_project_data.project_id
               await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
             
               if(process.env.NODE_ENV !== 'test'){

@@ -100,7 +100,7 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
     let delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
     let select_query = `SELECT * FROM diagrams WHERE skill_id = $1`
     try{
-      if(opts.dont_delete_diagrams){
+      if(opts.delete_diagrams){
         let skill_data_rows = (await pool.query(select_query, [skill_id])).rows
         if(skill_data_rows.length === 0){
           console.trace('DELETE VERSION, EMPTY ROWS', select_query, skill_id)

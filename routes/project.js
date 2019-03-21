@@ -74,8 +74,7 @@ exports.deleteProject = async (req, res) => {
 
   try {
     await deleteProjectPromise(req.user.id, project_id, {
-      delete_all_versions: true,
-      diagram_updated: false
+      delete_all_versions: true
     })
     res.sendStatus(200)
   } catch (err) {

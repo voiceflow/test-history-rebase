@@ -89,69 +89,25 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
   })
 }
 
-/**
- * delete_all_versions: bool
- * diagram_updated: bool (when the diagram's skill_id was changed)
+/*
+ * delete_diagrams: set to true if you wanna delete the diagrams of the version, false if not
  */
-exports.deleteProjectPromise = (creator_id, project_id, opts) => {
+exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
   return new Promise(async (resolve, reject) => {
-    let select_query
-    let delete_query
-
-    if (opts.delete_all_versions) {
-      select_query = `
-      SELECT * FROM projects 
-        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
-        INNER JOIN skills ON project_versions.version_id = skills.skill_id
-        INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE projects.creator_id = $1 AND projects.project_id = $2
-      `
-      delete_query = `
-        DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT version_id FROM project_versions WHERE project_id = $2)`
-    } else {
-      select_query = `
-      SELECT * FROM projects
-        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
-        INNER JOIN skills ON project_versions.version_id = skills.skill_id
-        INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id 
-      WHERE projects.creator_id = $1 AND projects.project_id = $2`
-      delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
-    }
-
+    let delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
+    let select_query = `SELECT * FROM diagrams WHERE skill_id = $1`
     try{
-      if(!opts.diagram_updated){
-        let project_data_rows = (await pool.query(select_query, [creator_id, project_id])).rows
-        if(project_data_rows.length === 0){
-          console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, project_id)
+      if(!opts.delete_diagrams){
+        let skill_data_rows = (await pool.query(select_query, [skill_id])).rows
+        if(skill_data_rows.length === 0){
+          console.trace('DELETE VERSION, EMPTY ROWS', select_query, skill_id)
           return resolve()
-        }
+        } 
 
-        // Only if deleting the whole project
-        if(project_data_rows[0] && project_data_rows[0].amzn_id && opts.delete_all_versions){
-          AccessToken(creator_id, token => {
-            if (token === null) {
-              return;
-            }
-    
-            axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${project_data_rows[0].amzn_id}`,
-                method: 'DELETE',
-                headers: {
-                  Authorization: token
-                }
-              })
-              .catch(err => {
-                logAxiosError(err, 'DELETE SKILL')
-              })
-          })
-        }
-        await pool.query(delete_query, [creator_id, (opts.skill_id ? opts.skill_id : project_id)])
-        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
+        await pool.query(delete_query, [creator_id, skill_id])
         let diagram_delete_promises = []
-        for(let i=0;i < project_data_rows.length;i++){
-          // To0 f4st for 4mzn
-          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(project_data_rows[i].id))}, 20)
+        for(let i in skill_data_rows){
+          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
         }
 
         Promise.all(diagram_delete_promises)
@@ -159,14 +115,76 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
           resolve()
         })
         .catch((err) => {
-          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, context: 'deleteVersionPromise'})
           reject(err)
         })
       } else {
-        await pool.query(delete_query, [creator_id, (opts.skill_id ? opts.skill_id : project_id)])
-        await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
-        resolve()
+        await pool.query(delete_query, [creator_id, skill_id])
       }
+    } catch (err) {
+      writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, context: 'deleteVersionPromise'})
+      reject(err)
+    }
+  })
+
+}
+
+exports.deleteProjectPromise = (creator_id, project_id) => {
+  return new Promise(async (resolve, reject) => {
+    let select_query = `
+      SELECT * FROM projects 
+        INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
+        INNER JOIN skills ON project_versions.version_id = skills.skill_id
+        INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
+      WHERE projects.creator_id = $1 AND projects.project_id = $2
+      `
+    let delete_query = `
+        DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
+        (SELECT version_id FROM project_versions WHERE project_id = $2)`
+
+    try{
+      let project_data_rows = (await pool.query(select_query, [creator_id, project_id])).rows
+      if(project_data_rows.length === 0){
+        console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, project_id)
+        return resolve()
+      }
+
+      // Only if deleting the whole project
+      if(project_data_rows[0] && project_data_rows[0].amzn_id){
+        AccessToken(creator_id, token => {
+          if (token === null) {
+            return;
+          }
+  
+          axios.request({
+              url: `https://api.amazonalexa.com/v1/skills/${project_data_rows[0].amzn_id}`,
+              method: 'DELETE',
+              headers: {
+                Authorization: token
+              }
+            })
+            .catch(err => {
+              logAxiosError(err, 'DELETE SKILL')
+            })
+        })
+      }
+
+      await pool.query(delete_query, [creator_id, project_id])
+      await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
+      let diagram_delete_promises = []
+      for(let i=0;i < project_data_rows.length;i++){
+        // To0 f4st for 4mzn
+        setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(project_data_rows[i].id))}, 20)
+      }
+
+      Promise.all(diagram_delete_promises)
+      .then(() => {
+        resolve()
+      })
+      .catch((err) => {
+        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+        reject(err)
+      })
     } catch (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
       reject(err)

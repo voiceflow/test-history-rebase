@@ -139,37 +139,38 @@ class PublishMarket extends Component {
     	});
     }
 
-    save(){
-        const s = this.state;
+    save = () => new Promise(async (resolve, reject) => {
+        const s = this.state
         // const type = (s.type && s.type.value ? s.type.value : null);
         const type = 'FLOW'
-        axios.patch('/marketplace/cert/' + this.props.project_id, {
-            title: s.title,
-            descr: s.descr,
-            creator_id: this.props.user.id,
-            tags: JSON.stringify(s.tags),
-            type: type,
-            overview: s.overview,
-            module_icon: s.module_icon,
-            color: s.color,
-            input: JSON.stringify(s.input),
-            output: JSON.stringify(s.output),
-        })
-        .then(res => {
+        try{
+            await axios.patch('/marketplace/cert/' + this.props.project_id, {
+                title: s.title,
+                descr: s.descr,
+                creator_id: this.props.user.id,
+                tags: JSON.stringify(s.tags),
+                type: type,
+                overview: s.overview,
+                module_icon: s.module_icon,
+                color: s.color,
+                input: JSON.stringify(s.input),
+                output: JSON.stringify(s.output),
+            })
             this.setState({
                 saved: true
-            });
-        })
-        .catch(err => {
-            console.log(err);
+            })
+            resolve()
+        } catch (err) {
+            console.log(err)
             this.setState({
                 error: 'Save Error, updates not saved'
-            });
-        });
-    }
+            })
+            reject()
+        }
+    })
 
-    publish(){
-        this.save()
+    publish = async () => {
+        await this.save()
         let s = this.state
         // if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
         if (s.title && s.descr && s.overview){

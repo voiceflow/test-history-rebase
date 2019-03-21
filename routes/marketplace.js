@@ -1,5 +1,5 @@
 const { pool, hashids, docClient, writeToLogs } = require('./../services')
-const { copySkill, copyDiagramFromSkill, deleteProjectPromise } = require('./skill_util')
+const { copySkill, deleteVersionPromise, deleteProjectPromise } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -77,12 +77,17 @@ const cancelCertification = async (req, res) => {
 		let deleted_row = (await pool.query(`
 			DELETE FROM project_versions
 			WHERE 
-				project_id = $1
+				project_id = 
+					(
+						SELECT module_project_id 
+						FROM modules 
+						WHERE project_id = $1
+					)
 				AND cert_requested IS NOT NULL
 				AND cert_approved IS NULL
 			RETURNING *
 		`, [project_id])).rows[0]
-		await deleteProjectPromise(ADMIN_MARKETPLACE_ACC, deleted_row.project_id, {delete_all_versions: false, skill_id: skill_id})
+		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: false})
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -101,9 +106,14 @@ const saveCertification = async (req, res) => {
 		let colour = getModuleColour()
 
 		try{
+			let new_module_data = (await pool.query(`INSERT INTO projects (name, creator_id) VALUES ($1, $2) RETURNING *`, [req.body.title, ADMIN_MARKETPLACE_ACC])).rows[0]
 			await pool.query(
-			`INSERT INTO modules (title, descr, creator_id, tags, type, overview, module_icon, color, input, output, project_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, 
-			[req.body.title, req.body.descr, req.body.creator_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, colour, req.body.input, req.body.output, project_id])
+			`INSERT INTO modules 
+				(title, descr, creator_id, tags, type, overview, module_icon, color, input, output, module_project_id, project_id) 
+			VALUES 
+				($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`, 
+			[req.body.title, req.body.descr, req.body.creator_id, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, 
+			 colour, req.body.input, req.body.output, new_module_data.project_id, project_id])
 			res.sendStatus(200)
 		} catch (err) {
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -117,8 +127,8 @@ const saveCertification = async (req, res) => {
 
 		try{
 			await pool.query(
-											`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
-											[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id])
+				`UPDATE modules SET title = $1, descr = $2, tags = $3, type = $4, overview = $5, module_icon = $6, color = $7, input = $8, output = $9 WHERE module_id = $10`, 
+				[req.body.title, req.body.descr, req.body.tags, req.body.type, req.body.overview, req.body.module_icon, req.body.color, req.body.input, req.body.output, module_id])
 			res.sendStatus(200)
 		} catch (err) {
 			writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
@@ -157,12 +167,19 @@ const giveCertification = async (req, res) => {
 
 const requestCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
+	let module_project_id
 
 	try{
+		let module_data = (await pool.query(`
+			SELECT * 
+			FROM modules
+			WHERE project_id = $1`, [project_id])).rows
+		module_project_id = module_data[0].module_project_id
+	
 		// Creates a new version of the skill at this pt
 		req.params.id = req.params.skill_id
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
-		copySkill(req, res, {user_copy: true, request_cert: true, project_id: project_id}, () => {
+		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
 			res.sendStatus(200)	
 		})
 	} catch (err) {
@@ -174,8 +191,12 @@ const requestCertification = async (req, res) => {
 const certStatus = (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
 
-	pool.query(`SELECT * FROM project_versions WHERE project_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL`, [project_id],
-		(err, data) => {
+	pool.query(`
+		SELECT *
+		FROM modules
+			INNER JOIN project_versions pv ON modules.module_project_id = pv.project_id
+		WHERE modules.project_id = $1 AND cert_requested IS NOT NULL AND cert_approved IS NULL
+	`, [project_id], (err, data) => {
 			if(err){
 				writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 				res.sendStatus(500)

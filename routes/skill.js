@@ -20,7 +20,7 @@ const {
   generateDialogflowPackage
 } = require('./../config/gactions_package')
 const {
-  deleteSkillPromise,
+  deleteProjectPromise,
   copySkill,
   deleteSkillDiagramsPromise
 } = require('./skill_util')
@@ -1162,16 +1162,17 @@ copyAllDisplays = (id, new_skill_id) => {
 }
 
 exports.restoreSkillVersion = async (req, res) => {
-  // Get canonical skill id
-  let canonical_skill_id
+  // Get dev version
+  let dev_version
   let restore_id = hashids.decode(req.params.restore_id)[0]
   try {
-    canonical_skill_id = (await pool.query(`
+    let data = (await pool.query(`
       SELECT dev_version FROM projects p 
       INNER JOIN project_versions pv ON p.project_id = pv.project_id
       WHERE pv.version_id = $1`, 
       [restore_id])
-    ).rows[0].dev_version
+    ).rows[0]
+    dev_version = data.dev_version
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err: err
@@ -1179,7 +1180,7 @@ exports.restoreSkillVersion = async (req, res) => {
     res.sendStatus(500)
   }
 
-  if (canonical_skill_id === restore_id){
+  if (dev_version === restore_id){
     return res.sendStatus(409)
   }
 
@@ -1192,7 +1193,7 @@ exports.restoreSkillVersion = async (req, res) => {
   }, async (row) => {
     try {
       // Delete the canonical skill's old diagrams
-      await deleteSkillDiagramsPromise(canonical_skill_id)
+      await deleteSkillDiagramsPromise(dev_version)
       let new_skill_id = hashids.decode(row.skill_id)[0]
       // Set canonical's field to new version
       await pool.query(`
@@ -1210,20 +1211,20 @@ exports.restoreSkillVersion = async (req, res) => {
               account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
               FROM skills WHERE skill_id = $1) AS sq
         WHERE skills.skill_id = $2
-      `, [new_skill_id, canonical_skill_id])
+      `, [new_skill_id, dev_version])
 
       // Update diagram to point to new skill
       await pool.query(`
         UPDATE diagrams
         SET skill_id = $1
         WHERE skill_id = $2
-      `, [canonical_skill_id, new_skill_id])
+      `, [dev_version, new_skill_id])
       // Delete the new copy's skill row
       await deleteProjectPromise(req.user.id, new_skill_id, {
         delete_all_versions: false,
         diagram_updated: true
       })
-      row.skill_id = hashids.encode(canonical_skill_id)
+      row.skill_id = hashids.encode(dev_version)
       res.send(row)
     } catch (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {

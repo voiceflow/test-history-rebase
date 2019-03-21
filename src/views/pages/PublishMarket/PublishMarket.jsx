@@ -106,7 +106,7 @@ class PublishMarket extends Component {
     }
 
     onLoad(){
-    	axios.get('/marketplace/cert/' + this.state.skill_id)
+    	axios.get('/marketplace/cert/' + this.props.project_id)
     	.then(res => {
     		if(res.data.type){
     			for(var j=0;j<types.length;j++){
@@ -129,7 +129,7 @@ class PublishMarket extends Component {
     		// Non-existant keep default vals
     	});
 
-    	axios.get('/marketplace/cert/status/' + this.state.skill_id)
+    	axios.get('/marketplace/cert/status/' + this.props.project_id)
     	.then(res => {
     		this.setState({
     			in_review: res.data
@@ -143,7 +143,7 @@ class PublishMarket extends Component {
         const s = this.state;
         // const type = (s.type && s.type.value ? s.type.value : null);
         const type = 'FLOW'
-        axios.patch('/marketplace/cert/' + this.state.skill_id, {
+        axios.patch('/marketplace/cert/' + this.props.project_id, {
             title: s.title,
             descr: s.descr,
             creator_id: this.props.user.id,
@@ -173,33 +173,30 @@ class PublishMarket extends Component {
         let s = this.state
         // if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
         if (s.title && s.descr && s.overview){
-        	axios.post('/marketplace/cert/' + this.state.skill_id)
+        	axios.post(`/marketplace/cert/${this.state.skill_id}/${this.props.project_id}`)
             .then(res => {
                 this.setState({
                     saved: true,
                     in_review: true,
-                    show_incomp_alert: false,
-                    displayingConfirmSubmission: false
+                    show_incomp_alert: false
                 })
             })
             .catch(err => {
                 console.log(err);
                 this.setState({
                     error: 'Publish Error, failed to publish',
-                    show_incomp_alert: false,
-                    displayingConfirmSubmission: false
+                    show_incomp_alert: false
                 })
             })
         } else {
             this.setState({
-                show_incomp_alert: true,
-                displayingConfirmSubmission: false
+                show_incomp_alert: true
             })
         }
     }
 
     onWithdraw(){
-        axios.delete('/marketplace/cert/' + this.state.skill_id)
+        axios.delete(`/marketplace/cert/${this.props.skill_id}/${this.props.project_id}`)
         .then(res => {
         	this.setState({
         		in_review: false,
@@ -215,31 +212,17 @@ class PublishMarket extends Component {
     }
 
     toggleConfirmWithdraw() {
-        if(!this.state.displayingConfirmWithdraw){
-            this.setState({
-                displayingConfirmWithdraw: {
-                    text: "Are you sure you want to withdraw this flow?",
-                    confirm: this.onWithdraw
-                }
-            });
-        }else{
-            this.props.clearModal()
-        }
+        this.props.setConfirm({
+            text: "Are you sure you want to withdraw this flow?",
+            confirm: this.onWithdraw
+        })
     }
 
     toggleConfirmSubmission(){
-        if(!this.state.displayingConfirmSubmission){
-            this.setState({
-                displayingConfirmSubmission: {
-                    text: "Are you sure you want to publish this flow?",
-                    confirm: this.publish
-                }
-            });
-        }else{
-            this.setState({
-                displayingConfirmSubmission: false
-            }); 
-        }
+        this.props.setConfirm({
+            text: "Are you sure you want to publish this flow?",
+            confirm: this.publish
+        })
     }
 
     componentDidMount() {
@@ -524,7 +507,9 @@ class PublishMarket extends Component {
 }
 
 const mapStateToProps = state => ({
-    confirmModal: state.modal.confirmModal
+    confirmModal: state.modal.confirmModal,
+    skill_id: state.skills.skill.skill_id,
+    project_id: state.skills.skill.project_id
 })
 
 const mapDispatchToProps = dispatch => {

@@ -116,7 +116,7 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON diagrams.skill_id = skills.skill_id 
       WHERE projects.creator_id = $1 AND projects.project_id = $2`
-      delete_query = `DELETE FROM skills WHERE projects.creator_id = $1 AND skill_id = $2`
+      delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
     }
 
     try{
@@ -146,7 +146,6 @@ exports.deleteProjectPromise = (creator_id, project_id, opts) => {
               })
           })
         }
-
         await pool.query(delete_query, [creator_id, (opts.skill_id ? opts.skill_id : project_id)])
         await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
         let diagram_delete_promises = []

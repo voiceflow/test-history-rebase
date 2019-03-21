@@ -77,7 +77,6 @@ exports.deleteProject = async (req, res) => {
 
 exports.getProjectVersions = (req, res) => {
   let project_id = hashids.decode(req.params.project_id)[0]
-  console.log('yeet')
   pool.query(`
       SELECT s.* FROM skills s
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id

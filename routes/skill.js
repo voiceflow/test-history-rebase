@@ -515,12 +515,10 @@ const checkVersions = (req, id, token, platform) => {
     }
 
     pool.query(`
-      SELECT s.*, pv.* FROM skills s 
-      INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
-      INNER JOIN projects p ON p.project_id = pv.project_id 
+      SELECT s.amzn_id, pv.* FROM skills s 
+      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
       WHERE pv.project_id = $1 
-        AND pv.platform = $2 
-        AND p.dev_version != s.skill_id
+        AND pv.platform = $2
         ORDER BY pv.created ASC`,
       [project_id, platform],
       async (err, data) => {
@@ -533,12 +531,13 @@ const checkVersions = (req, id, token, platform) => {
           // Check for live version
           let current_live = !!data.rows.find(s => s.live)
           let live_ids = []
+          let dev_version_row = data.rows.find(version => version.skill_id === dev_version)
 
           try {
             // If so, we wanna know what version the live skill is pointing to rn
-            if (platform === 'alexa' && data.rows[0].amzn_id) {
+            if (platform === 'alexa' && dev_version_row.amzn_id) {
               let request = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
                 method: 'GET',
                 headers: {
                   Authorization: token
@@ -572,16 +571,10 @@ const checkVersions = (req, id, token, platform) => {
               // Get the latest list of versions from skill_versions table
               // Compare with each skill's attached versions
               // If no matches, then it is ok to delete
-              let current_skill
+
+              const all_google_versions = dev_version_row.google_versions
               for (const row of data.rows) {
-                if (!row.version) {
-                  current_skill = row
-                  break
-                }
-              }
-              const all_google_versions = current_skill.google_versions
-              for (const row of data.rows) {
-                if (row.version && row.google_versions) {
+                if (row.skill_id !== dev_version && row.google_versions) {
                   const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
                   if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
                     live_ids.push(row.skill_id)

@@ -1,5 +1,5 @@
 const { pool, hashids, docClient, writeToLogs } = require('./../services')
-const { copySkill, deleteVersionPromise, deleteProjectPromise } = require('./skill_util')
+const { copySkill, deleteVersionPromise } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -87,7 +87,7 @@ const cancelCertification = async (req, res) => {
 				AND cert_approved IS NULL
 			RETURNING *
 		`, [project_id])).rows[0]
-		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
+		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id)
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

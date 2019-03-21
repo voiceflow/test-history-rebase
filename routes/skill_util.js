@@ -93,9 +93,9 @@ exports.deleteSkillDiagramsPromise = (skill_id) => {
  * delete_diagrams: set to true if you wanna delete the diagrams of the version, false if not
  */
 exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
-  if(opts === undefined || opts.delete_diagrams === undefined){
-    opts = {delete_diagrams: true}
-  }
+  if(!opts) opts = {}
+  if(opts.delete_diagrams === undefined) opts.delete_diagrams = true
+  
   return new Promise(async (resolve, reject) => {
     let delete_query = `DELETE FROM skills WHERE creator_id = $1 AND skill_id = $2`
     let select_query = `SELECT * FROM diagrams WHERE skill_id = $1`

@@ -595,10 +595,7 @@ const checkVersions = (user, project_id, platform, options) => {
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
             if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].skill_id !== dev_version) {
-              deletion_promises.push(deleteProjectPromise(user.id, data.rows[i].skill_id, {
-                delete_all_versions: false,
-                diagram_updated: false
-              }))
+              deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].skill_id))
               num_versions_to_delete -= 1
             }
             i += 1

@@ -110,7 +110,16 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
         await pool.query(delete_query, [creator_id, skill_id])
         let diagram_delete_promises = []
         for(let i in skill_data_rows){
-          setTimeout(() => {diagram_delete_promises.push(exports.deleteDynamoDiagramPromise(skill_data_rows[i].id))}, 20)
+          diagram_delete_promises.push(new Promise((resolve) => {
+            setTimeout(() => {
+              try{
+                exports.deleteDynamoDiagramPromise(skill_data_rows[i].id)
+                resolve()
+              } catch (err) {
+                reject(err)
+              }
+            }, 20 * i)
+          }))
         }
 
         Promise.all(diagram_delete_promises)

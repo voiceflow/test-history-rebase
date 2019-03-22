@@ -109,8 +109,8 @@ class DiagramBlock extends Component {
                         <Button block className="btn-lg" onClick={() => {
                             this.props.setConfirm({
                                 text: <>
-                                    <div className="mb-2">Name your flow</div>
-                                    <Input className="form-bg mb-3"
+                                    <div className="mb-2">Name New Flow</div>
+                                    <Input className="form-bg mb-1"
                                         placeholder={`Enter flow name`}
                                         value={this.state.newFlowName}
                                         onChange={e => this.setState({

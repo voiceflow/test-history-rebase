@@ -23,6 +23,7 @@ class DiagramBlock extends Component {
         this.handleAddMap = this.handleAddMap.bind(this);
         this.handleRemoveMap = this.handleRemoveMap.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.getDiagramVariables = this.getDiagramVariables.bind(this);
     }
 
     componentWillMount() {
@@ -34,7 +35,7 @@ class DiagramBlock extends Component {
         // diagram_id = '5f33383b-a9a8-4a85-9fa5-16bdad17b37f';
 
         if(diagram_id){
-            this.props.dispatch(fetchDiagramVariables(diagram_id));
+            this.props.fetchDiagramVariables(diagram_id)
         }
     }
 
@@ -109,8 +110,8 @@ class DiagramBlock extends Component {
                         <Button block className="btn-lg" onClick={() => {
                             this.props.setConfirm({
                                 text: <>
-                                    <div className="mb-2">Name your flow</div>
-                                    <Input className="form-bg mb-3"
+                                    <div className="mb-2">Name New Flow</div>
+                                    <Input className="form-bg mb-1"
                                         placeholder={`Enter flow name`}
                                         value={this.state.newFlowName}
                                         onChange={e => this.setState({
@@ -194,7 +195,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-      setConfirm: confirm => dispatch(setConfirm(confirm))
+      setConfirm: confirm => dispatch(setConfirm(confirm)),
+      fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DiagramBlock);

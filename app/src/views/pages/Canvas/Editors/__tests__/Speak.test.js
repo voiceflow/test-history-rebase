@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow, render } from 'enzyme';
-import Speak from './../Speak';
+import {Speak} from './../Speak';
 import {defaultNode} from '../__mock__/defaultNode';
 import toJson from 'enzyme-to-json';
 
@@ -42,7 +42,5 @@ describe('SpeakEditor', () => {
         const component = shallow(<Speak node={node} clearRedo={jest.fn()} updateEvents={jest.fn()} onUpdate={jest.fn()}/>)
         component.find('button.btn-clear').first().simulate('click')
         expect(addSpeech).toBeCalled()
-        component.find('button.close').first().simulate('click')
-        expect(removeSpeech).toBeCalled()
     });
 })

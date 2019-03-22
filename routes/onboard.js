@@ -60,7 +60,10 @@ const submitOnboardSurvey = (req, res) => {
 	}, () => {
 		analytics.track({
 			userId: req.user.id,
-			event: 'Completed onboarding survey'
+			event: 'Completed onboarding survey',
+			properties: {
+				hasIdea: req.body.purpose === 'IDEA',
+			},
 		})
 	})
 

@@ -499,6 +499,8 @@ exports.enableSkill = async (req, res) => {
 }
 
 const checkVersions = (user, project_id, platform, options) => {
+  if(!options) options = {}
+  
   return new Promise(async (resolve, reject) => {
 
     // get the project id and dev version from this skill

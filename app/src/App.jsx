@@ -5,8 +5,6 @@ import AuthenticationService from './services/Authentication';
 import ReactGA from 'react-ga';
 import {StripeProvider} from 'react-stripe-elements'
 import { store, history } from './containers/store'
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import { Alert } from 'reactstrap'
 
 // Import Dependent CSS
@@ -270,4 +268,4 @@ class App extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(App);
+export default App;

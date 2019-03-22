@@ -294,11 +294,11 @@ export class ActionGroup extends PureComponent {
   updateGoogleStage(stage) {
     if([2,5].includes(stage) && !this.state.is_first_upload){
       this.showUploadPrompt()
-      this.timeout = setTimeout(() => {
-        this.setState({show_upload_prompt: false})
-        this.reset()
-        this.timeout = null
-      }, 8000)
+      // this.timeout = setTimeout(() => {
+      //   this.setState({show_upload_prompt: false})
+      //   this.reset()
+      //   this.timeout = null
+      // }, 8000)
     }
     if(STAGE_PERCENTAGES.google[stage]){
       let range = STAGE_PERCENTAGES.google[stage]

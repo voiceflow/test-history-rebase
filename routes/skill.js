@@ -116,7 +116,7 @@ exports.getSkill = async (req, res) => {
   AccessToken(req.user.id, async (token) => {
     if (token !== null) {
       try {
-        await checkVersions(req.user, project_id, 'alexa', {token: token})
+        await checkVersions(req.user, project_id, 'alexa', {token: token, check_only: true})
       } catch (err) {
         logAxiosError(err, 'GET SKILL')
       }
@@ -515,10 +515,9 @@ const checkVersions = (user, project_id, platform, options) => {
       SELECT s.amzn_id, pv.* FROM skills s 
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id
       WHERE pv.project_id = $1 
-        AND pv.platform = $2
-        AND pv.version_id != $3
+        AND ( pv.platform = $2 OR pv.platform IS NULL )
         ORDER BY pv.created ASC`,
-      [project_id, platform, dev_version],
+      [project_id, platform],
       async (err, data) => {
         if (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -585,16 +584,18 @@ const checkVersions = (user, project_id, platform, options) => {
           } catch (err) {
             live_ids = []
           }
+          // No need to delete on just the check
+          if(options.check_only) return resolve()
 
           let i = 0
-          let num_versions_to_delete = user.admin >= 100 ? data.rows.length - 4 : data.rows.length - 6
+          let num_versions_to_delete = user.admin >= 100 ? data.rows.length - 10 : data.rows.length - 5
           let deletion_promises = []
           if (live_ids) {
             num_versions_to_delete -= live_ids.length
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].version_id) && data.rows[i].version_id !== dev_version) {
+            if (!live_ids.includes(data.rows[i].version_id) && data.rows[i].version_id !== dev_version && data.rows[i].platform === platform) {
               deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].version_id))
               num_versions_to_delete -= 1
             }
@@ -606,9 +607,7 @@ const checkVersions = (user, project_id, platform, options) => {
               resolve()
             })
             .catch((err) => {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {
-                err: err
-              })
+              writeToLogs('DELETE_CHECK_VERSION_ERRORS', {err})
               reject(err)
             })
         }
@@ -905,11 +904,11 @@ exports.buildSkill = async (req, res) => {
                             // Update canonical skill id's amzn id
                             try{
                               await pool.query(`
-                              UPDATE skills SET amzn_id = $1 WHERE skill_id = (
+                              UPDATE skills SET amzn_id = $2 WHERE skill_id = (
                                 SELECT dev_version FROM projects p
                                 INNER JOIN project_versions pv ON p.project_id = pv.project_id
-                                WHERE skill_id = $2 LIMIT 1)`, 
-                              [amzn_id, id])
+                                WHERE version_id = $1 LIMIT 1)`, 
+                              [id, amzn_id])
                             }catch(err){
                               writeToLogs('CREATOR_BACKEND_ERRORS', {err})
                               return res.sendStatus(500)

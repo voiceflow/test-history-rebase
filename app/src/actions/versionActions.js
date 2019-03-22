@@ -129,6 +129,7 @@ export const setCanFulfill = (intent_key, new_value) => {
 export const fetchVersion = (skill_id, preview, diagram_id) => {
     return dispatch => {
         dispatch(fetchVersionBegin());
+        // TODO UPDATE THIS ROUTE
         return axios.get(`/skill/${skill_id}?${preview ? 'preview=1' : 'simple=1'}`, {
                 headers: {
                     Pragma: 'no-cache'

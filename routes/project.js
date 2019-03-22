@@ -19,7 +19,7 @@ const {
 
 exports.getProjectFromSkill = async (req, res, next) => {
   try{
-    let skill_id =  hashids.decode(req.params.skill_id)[0]
+    let skill_id = hashids.decode(req.params.skill_id)[0]
     let project_id = (await pool.query('SELECT project_id FROM project_versions WHERE version_id = $1 LIMIT 1', [skill_id])).rows[0].project_id
     req.params.project_id = hashids.encode(project_id)
     req.params.version_id = req.params.skill_id

@@ -509,7 +509,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
                 VALUES ($1, $2, $3) 
                 RETURNING *`, 
               [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
-              copy_skill.project_id = new_project_data.project_id
+              copy_skill.project_id = hashids.encode(new_project_data.project_id)
               await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
             
               if(process.env.NODE_ENV !== 'test'){

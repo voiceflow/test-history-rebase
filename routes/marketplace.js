@@ -413,7 +413,7 @@ const getDefaultTemplates = (req, res) => {
 		`
 			SELECT * 
 			FROM modules 
-				INNER JOIN project_versions ON modules.project_id = project_versions.project_id
+				INNER JOIN project_versions ON modules.module_project_id = project_versions.project_id
 			WHERE modules.template_index > 0 
 				AND cert_approved IS NOT NULL
 			ORDER BY modules.template_index DESC
@@ -466,12 +466,13 @@ const copyDefaultTemplate = (req, res) => {
 			let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
 			let locales = ['en-US']
 			let platform = req.body.platform || 'alexa'
+			let new_project_id = hashids.decode(skill.project_id)[0]
 		
 			if (req.body.locales) {
 				locales = req.body.locales
 			}
 		
-			await pool.query(`UPDATE projects SET name = $1 WHERE project_id = $2`, [name, skill.project_id])
+			await pool.query(`UPDATE projects SET name = $1 WHERE project_id = $2`, [name, new_project_id])
 
 			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8, platform=$9 WHERE skill_id = $10`,
 					[name, sum, desc, invs, name, JSON.stringify(locales), 

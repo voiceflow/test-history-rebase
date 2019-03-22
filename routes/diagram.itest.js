@@ -222,6 +222,7 @@ describe('Diagram', () => {
         .set('cookie', `auth=${token}`)
         .expect(200)
         .end((err, res) => {
+          console.log('url', diagram_id)
           if(err) throw err
           done()
         })

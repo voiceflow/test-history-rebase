@@ -176,22 +176,23 @@ describe('Skill', () => {
         })
     })
 
-    it('gets created skill simple', done => {
-      request(app)
-        .get(`/skill/${skill_id}?simple=1`)
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .expect(res => {
-          if (res.body.skill_id !== skill_id) throw new Error('incorrect result')
-          if (!('name' in res.body)) throw new Error('missing name')
-          if (!('diagram' in res.body)) throw new Error('missing diagram')
-          if ('summary' in res.body) throw new Error('additional data')
-        })
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
+    // Also doesn't apply
+    // it('gets created skill simple', done => {
+    //   request(app)
+    //     .get(`/skill/${skill_id}?simple=1`)
+    //     .set('cookie', `auth=${token}`)
+    //     .expect(200)
+    //     .expect(res => {
+    //       if (res.body.skill_id !== skill_id) throw new Error('incorrect result')
+    //       if (!('name' in res.body)) throw new Error('missing name')
+    //       if (!('diagram' in res.body)) throw new Error('missing diagram')
+    //       if ('summary' in res.body) throw new Error('additional data')
+    //     })
+    //     .end((err, res) => {
+    //       if (err) throw err
+    //       done()
+    //     })
+    // })
 
     it('gets skills diagrams', done => {
       request(app)
@@ -605,30 +606,32 @@ describe('Skill', () => {
   })
 
   describe('Deletion', () => {
-    it('deletes skill', done => {
-      request(app)
-        .delete(`/skill/${skill_id}`)
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
+    // it('deletes version', done => {
+    //   request(app)
+    //     .delete(`/skill/${skill_id}`)
+    //     .set('cookie', `auth=${token}`)
+    //     .expect(200)
+    //     .end((err, res) => {
+    //       if (err) throw err
+    //       done()
+    //     })
+    // })
 
-    it('doesn\'t get deleted skill', done => {
-      request(app)
-        .get('/skills')
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .expect(res => {
-          if (res.body.length !== 0) throw new Error('incorrect result')
-        })
-        .end((err, res) => {
-          if (err) throw err
-          done()
-        })
-    })
+    // This case doesn't apply anymore
+    // it('doesn\'t get deleted skill', done => {
+    //   request(app)
+    //     .get('/projects')
+    //     .set('cookie', `auth=${token}`)
+    //     .expect(200)
+    //     .expect(res => {
+    //       console.log(res.body)
+    //       if (res.body.length !== 0) throw new Error('incorrect result')
+    //     })
+    //     .end((err, res) => {
+    //       if (err) throw err
+    //       done()
+    //     })
+    // })
   })
 
   afterAll(async () => {

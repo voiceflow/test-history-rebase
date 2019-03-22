@@ -512,7 +512,7 @@ const checkVersions = (user, project_id, platform, options) => {
     }
 
     pool.query(`
-      SELECT s.amzn_id, pv.* FROM skills s 
+      SELECT s.amzn_id, s.live, pv.* FROM skills s 
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id
       WHERE pv.project_id = $1 
         AND ( pv.platform = $2 OR pv.platform IS NULL )
@@ -526,7 +526,7 @@ const checkVersions = (user, project_id, platform, options) => {
           reject(err)
         } else if (data.rows.length > 0){
           // Check for live version
-          let current_live = !!data.rows.find(s => s.live)
+          let current_live = data.rows.filter(v => !!v.live).map(v => v.version_id)
           let live_ids = []
           let dev_version_row = data.rows.find(version => version.version_id === dev_version)
 
@@ -548,7 +548,7 @@ const checkVersions = (user, project_id, platform, options) => {
 
               try {
                 // RESET LIVE IF THERE IS A LIVE
-                if(current_live) {
+                if(live_ids[0] && !current_live.includes(live_ids[0])) {
                   await pool.query(`
                     UPDATE skills s SET live = FALSE
                     FROM project_versions pv
@@ -556,8 +556,7 @@ const checkVersions = (user, project_id, platform, options) => {
                       AND pv.project_id = $1
                       AND pv.platform = $2
                   `, [project_id, platform])
-                }
-                if (live_ids[0]) {
+
                   await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
                 }
               } catch (err) {
@@ -582,7 +581,9 @@ const checkVersions = (user, project_id, platform, options) => {
               }
             }
           } catch (err) {
-            live_ids = []
+            if(Array.isArray(current_live)){
+              live_ids = live_ids.concat(current_live)
+            }
           }
           // No need to delete on just the check
           if(options.check_only) return resolve()

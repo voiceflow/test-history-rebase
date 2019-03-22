@@ -48,28 +48,45 @@ exports.seed = function(knex, Promise) {
               "skill_id": 1
             }
           ]).then(() => {
-            return knex('modules').insert([
+            return knex('projects').insert([
               {
-                "skill_id": 1,
-                "creator_id": 2125,
-                "type": "TEMPLATES"
+                "name": "Default Project",
+                "dev_version": 1,
+                "creator_id": 2125
               }
             ]).then(() => {
-              return knex('versions').insert([
+              return knex('project_versions').insert([
                 {
-                  "module_id": 1,
-                  "diagram_id": "b000cc30e8be511b9d5bd2b8d4aa40da",
-                  "version_id": 1,
-                  "template_skill_id": 1
+                  "project_id": 1,
+                  "version_id": 1
+                }
+              ])
+            }).then(() => {
+              return knex('modules').insert([
+                {
+                  "skill_id": 1,
+                  "creator_id": 2125,
+                  "type": "TEMPLATES",
+                  "template_index": 1,
+                  "module_project_id": 1
                 }
               ]).then(() => {
-                return knex('products').insert([
+                return knex('versions').insert([
                   {
-                    "skill_id": 1,
-                    "name": "tons of mula",
-                    "data": "{}"
+                    "module_id": 1,
+                    "diagram_id": "b000cc30e8be511b9d5bd2b8d4aa40da",
+                    "version_id": 1,
+                    "template_skill_id": 1
                   }
-                ])
+                ]).then(() => {
+                  return knex('products').insert([
+                    {
+                      "skill_id": 1,
+                      "name": "tons of mula",
+                      "data": "{}"
+                    }
+                  ])
+                })
               })
             })
           })

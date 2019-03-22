@@ -496,7 +496,7 @@ const copyDefaultTemplate = (req, res) => {
 	pool.query(`
 		SELECT * 
 		FROM project_versions 
-			INNER JOIN modules ON project_versions.project_id = modules.project_id 
+			INNER JOIN modules ON project_versions.project_id = modules.module_project_id 
 		WHERE modules.module_id = $1 AND cert_approved IS NOT NULL
 		ORDER BY cert_approved 
 		DESC LIMIT 1`,

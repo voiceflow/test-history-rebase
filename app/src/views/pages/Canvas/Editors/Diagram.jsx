@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Button, Alert} from 'reactstrap';
+import {Button, Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
+import { setConfirm } from 'actions/modalActions'
 
 import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
 import DiagramVariables from './components/DiagramVariables';
@@ -22,6 +23,7 @@ class DiagramBlock extends Component {
         this.handleAddMap = this.handleAddMap.bind(this);
         this.handleRemoveMap = this.handleRemoveMap.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.getDiagramVariables = this.getDiagramVariables.bind(this);
     }
 
     componentWillMount() {
@@ -33,7 +35,7 @@ class DiagramBlock extends Component {
         // diagram_id = '5f33383b-a9a8-4a85-9fa5-16bdad17b37f';
 
         if(diagram_id){
-            this.props.dispatch(fetchDiagramVariables(diagram_id));
+            this.props.fetchDiagramVariables(diagram_id)
         }
     }
 
@@ -105,7 +107,21 @@ class DiagramBlock extends Component {
                 {!this.state.node.extras.diagram_id ? 
                     <React.Fragment>
                         <label>Create a New Flow</label>
-                        <Button block className="btn-lg" onClick={() => this.props.createDiagram(this.state.node)}>
+                        <Button block className="btn-lg" onClick={() => {
+                            this.props.setConfirm({
+                                text: <>
+                                    <div className="mb-2">Name New Flow</div>
+                                    <Input className="form-bg mb-1"
+                                        placeholder={`Enter flow name`}
+                                        value={this.state.newFlowName}
+                                        onChange={e => this.setState({
+                                            newFlowName: e.target.value
+                                        })}
+                                    />
+                                </>,
+                                confirm: () => this.props.createDiagram(this.state.node, this.state.newFlowName)
+                            })
+                        }}>
                           <i className="fas fa-clone mr-1"/> Create New Flow
                         </Button>
                         <hr className="mb-1"/>
@@ -177,4 +193,10 @@ const mapStateToProps = state => ({
     diagramVariables: state.diagramVariables.diagramVariables
 })
 
-export default connect(mapStateToProps)(DiagramBlock);
+const mapDispatchToProps = dispatch => {
+    return {
+      setConfirm: confirm => dispatch(setConfirm(confirm)),
+      fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id))
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(DiagramBlock);

@@ -1,4 +1,4 @@
-const { hashids, analytics } = require('./../services')
+const { pool, hashids, analytics, writeToLogs } = require('./../services')
 
 exports.trackSessionTime = (req, res) => {
     analytics.track({
@@ -54,9 +54,23 @@ exports.trackFirstProject = (req, res) => {
 }
 
 exports.trackDevAccount = (req, res) => {
+    let isQualified = false;
+    pool.query(`SELECT * FROM user_info WHERE creator_id = $1`, [req.user.id], (err, data) => {
+        if (err){
+            writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+        }
+        if (data.rows.length > 0 && data.rows[0].creator_id === req.user.id){
+            if (data.rows[0].purpose === 'IDEA'){
+                isQualified = true;
+            }
+        }
+    })
     analytics.track({
         userId: req.user.id,
-        event: 'Dev Account Setup'
+        event: 'Dev Account Setup',
+        properties: {
+            isQualified: isQualified
+        },
     })
     res.sendStatus(200)
 }

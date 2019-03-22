@@ -58,7 +58,9 @@ exports.seed = function(knex, Promise) {
               return knex('project_versions').insert([
                 {
                   "project_id": 1,
-                  "version_id": 1
+                  "version_id": 1,
+                  "cert_requested": "2018-12-31 22:09:47.856129",
+                  "cert_approved": "2018-12-31 22:09:47.856129"
                 }
               ])
             }).then(() => {

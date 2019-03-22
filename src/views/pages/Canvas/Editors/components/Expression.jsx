@@ -206,9 +206,9 @@ class Expression extends Component {
             default:
                 render = 
                     <div className={'expression-block ' + type}>
-                        <Expression expression={this.state.expression.value[0]} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                        <Expression expression={this.state.expression.value[0]} openVarTab={this.props.openVarTab} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
                         <div className="operator">{symbols[type]}{dropdown}</div>
-                        <Expression expression={this.state.expression.value[1]} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
+                        <Expression expression={this.state.expression.value[1]} openVarTab={this.props.openVarTab} variables={this.props.variables} onUpdate={this.props.onUpdate}/>
                     </div>
         }
 

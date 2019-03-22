@@ -35,7 +35,7 @@ class DiagramBlock extends Component {
         // diagram_id = '5f33383b-a9a8-4a85-9fa5-16bdad17b37f';
 
         if(diagram_id){
-            this.props.dispatch(fetchDiagramVariables(diagram_id));
+            this.props.fetchDiagramVariables(diagram_id)
         }
     }
 
@@ -195,7 +195,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-      setConfirm: confirm => dispatch(setConfirm(confirm))
+      setConfirm: confirm => dispatch(setConfirm(confirm)),
+      fetchDiagramVariables: diagram_id => dispatch(fetchDiagramVariables(diagram_id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DiagramBlock);

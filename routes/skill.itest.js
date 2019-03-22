@@ -36,6 +36,7 @@ describe('Skill', () => {
   var token = ''
   let diagram_id = generateID()
   let skill_id
+  let project_id
   new_diagram.id = diagram_id
 
   let accessMock
@@ -81,13 +82,15 @@ describe('Skill', () => {
         .end((err, res) => {
           if (err) throw err
           skill_id = res.body.skill_id
+          project_id = res.body.project_id
           done()
         })
     })
 
     it('creates a new version', done => {
       request(app)
-        .post(`/diagram/${diagram_id}/${skill_id}/publish`)
+        // .post(`/diagram/${diagram_id}/${skill_id}/publish`)
+        .post(`/project/${project_id}/render`)
         .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(async (res) => {
@@ -118,9 +121,9 @@ describe('Skill', () => {
   })
 
   describe('Retrieval', () => {
-    it('gets skills, no params', done => {
+    it('gets projects, no params', done => {
       request(app)
-        .get('/skills')
+        .get('/projects')
         .set('cookie', `auth=${token}`)
         .expect(200)
         .expect(res => {

@@ -24,7 +24,7 @@ export class LinkModel extends BaseModel {
 			return p;
 		});
 
-		if (ob.target) {
+		if (ob.target && this.getParent().getNode(ob.target)) {
 			this.setTargetPort(
 				this.getParent()
 					.getNode(ob.target)

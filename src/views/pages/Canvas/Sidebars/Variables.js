@@ -108,7 +108,7 @@ export class Variables extends PureComponent {
                     <FormGroup className="mb-0">
                         <Label className='section-title mt-3'>Add New Global Variable</Label>
                         <InputGroup>
-                            <Input className="form-control-border left" readOnly={this.props.locked} name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
+                            <Input autoFocus className="form-control-border left" readOnly={this.props.locked} name="new_global" value={this.state.new_global} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
                             <InputGroupAddon addonType="append"><Button type="submit" disabled={this.props.locked} className="new_var"><i className="fas fa-plus"/></Button></InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
@@ -136,7 +136,7 @@ export class Variables extends PureComponent {
                     <FormGroup className="mb-0">
                         <Label className='section-title mt-3'>Add New Local Variable</Label>
                         <InputGroup>
-                            <Input className="form-control-border left"  readOnly={this.props.locked} name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
+                            <Input autoFocus className="form-control-border left"  readOnly={this.props.locked} name="new_var" value={this.state.new_var} onChange={this.handleChange} maxLength="16" placeholder="Variable Name"/>
                             <InputGroupAddon addonType="append"><Button type="submit" className="new_var" disabled={this.props.locked}><i className="fas fa-plus"/></Button></InputGroupAddon>
                         </InputGroup>
                     </FormGroup>

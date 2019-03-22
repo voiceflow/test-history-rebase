@@ -23,6 +23,7 @@ class DiagramBlock extends Component {
         this.handleAddMap = this.handleAddMap.bind(this);
         this.handleRemoveMap = this.handleRemoveMap.bind(this);
         this.handleSelection = this.handleSelection.bind(this);
+        this.getDiagramVariables = this.getDiagramVariables.bind(this);
     }
 
     componentWillMount() {

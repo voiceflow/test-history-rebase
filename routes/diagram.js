@@ -5,17 +5,11 @@ const {
   writeToLogs
 } = require('./../services');
 const {
-  delay
-} = require('../util')
-const {
   deleteDynamoDiagramPromise
 } = require('./skill_util')
 const {
   renderDiagram
 } = require('./../config/render_diagram.js')
-
-const del = require('del');
-const spawn = require('child_process').spawn
 
 const generateID = () => {
   return "xxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, c => {

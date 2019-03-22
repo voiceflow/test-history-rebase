@@ -191,7 +191,7 @@ exports.render = async (req, res) => {
           ORDER BY
             created DESC
           LIMIT 1`,
-        [skill_id, new_skill_id_decoded, platform])
+        [project_id, platform])
 
         if (versions.rows.length > 0) {
           let latest_version_skill_id = versions.rows[0].version_id

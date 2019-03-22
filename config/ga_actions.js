@@ -8,6 +8,13 @@ const uuid = require('uuid/v4')
 const mkdirp = require('mkdirp');
 const _ = require('lodash')
 
+const {
+  delay
+} = require('../util')
+
+const del = require('del');
+const spawn = require('child_process').spawn
+
 exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise(async (resolve, reject) => {
   let random_id = uuid()
   let dir = `${GACTIONS_CLI_ROOT}/${random_id}`

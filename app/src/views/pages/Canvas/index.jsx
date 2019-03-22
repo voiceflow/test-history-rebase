@@ -1600,10 +1600,7 @@ export class Canvas extends Component {
                 id="diagram"
                 className={this.props.preview ? " no-padding" : ""}
                 onDrop={this.onDrop}
-                onDragOver={e => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                }}
+                onDragOver={e => e.preventDefault()}
                 onMouseLeave={() => (this.diagram_focus = false)}
                 onContextMenu={this.generateBlockMenu}
               >

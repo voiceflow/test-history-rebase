@@ -41,7 +41,7 @@ const getModules = async (req, res) => {
 			SELECT * 
 			FROM modules 
 			INNER JOIN (SELECT DISTINCT project_id FROM project_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
-				ON modules.project_id = distinct_versions.project_id 
+				ON modules.module_project_id = distinct_versions.project_id 
 			INNER JOIN creators 
 				ON creators.creator_id = modules.creator_id LIMIT $1
 		`, [module_limit])).rows
@@ -71,29 +71,26 @@ const getFeaturedModules = async (req, res) => {
 
 const cancelCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0]
-	let skill_id = hashids.decode(req.params.skill_id)[0]
-	console.log(project_id)
-	return
-	// try{
-	// 	let deleted_row = (await pool.query(`
-	// 		DELETE FROM project_versions
-	// 		WHERE 
-	// 			project_id = 
-	// 				(
-	// 					SELECT module_project_id 
-	// 					FROM modules 
-	// 					WHERE project_id = $1
-	// 				)
-	// 			AND cert_requested IS NOT NULL
-	// 			AND cert_approved IS NULL
-	// 		RETURNING *
-	// 	`, [project_id])).rows[0]
-	// 	await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
-	// 	res.sendStatus(200)
-	// } catch (err) {
-	// 	writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-	// 	res.sendStatus(500)
-	// }
+	try{
+		let skill_id = (await pool.query(`
+			SELECT version_id
+			FROM project_versions
+			WHERE
+				project_id = 
+					(
+						SELECT module_project_id 
+						FROM modules 
+						WHERE project_id = $1
+					)
+				AND cert_requested IS NOT NULL
+				AND cert_approved IS NULL
+		`, [project_id])).rows[0].version_id
+		await deleteVersionPromise(ADMIN_MARKETPLACE_ACC, skill_id, {delete_diagrams: true})
+		res.sendStatus(200)
+	} catch (err) {
+		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+		res.sendStatus(500)
+	}
 }
 
 const saveCertification = async (req, res) => {
@@ -156,8 +153,12 @@ const giveCertification = async (req, res) => {
 	let project_id = hashids.decode(req.params.project_id)[0];
 
 	try{
-		await pool.query(
-			`UPDATE project_versions SET cert_approved = now() WHERE project_id = $1 AND cert_approved IS NULL AND cert_requested IS NOT NULL`,
+		await pool.query(`
+			UPDATE project_versions 
+			SET cert_approved = now() 
+			WHERE project_id = (SELECT module_project_id FROM modules WHERE project_id = $1) 
+				AND cert_approved IS NULL 
+				AND cert_requested IS NOT NULL`,
 			[project_id])
 		res.sendStatus(200)
 	} catch (err) {
@@ -396,7 +397,7 @@ const getPendingModules = async (req, res) => {
 		let module_data = (await pool.query(`
 			SELECT * 
 			FROM project_versions 
-				JOIN modules ON project_versions.project_id = modules.project_id 
+				JOIN modules ON project_versions.project_id = modules.module_project_id 
 				JOIN skills ON project_versions.version_id = skills.skill_id
 			WHERE cert_approved IS NULL AND cert_requested IS NOT NULL`)).rows
 		hashIds(module_data)

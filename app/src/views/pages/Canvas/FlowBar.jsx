@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem, Input } from "reactstrap";
 import { setConfirm } from 'actions/modalActions'
 import { renameDiagram } from "actions/diagramActions";
 

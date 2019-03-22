@@ -8,37 +8,250 @@ exports[`SpeakEditor render speak block editor 1`] = `
     }
   }
 >
-  <DropTarget(DragSource(SpeakElement))
-    d={
-      Object {
-        "index": "temp",
-        "open": false,
-        "rawContent": Object {},
-        "voice": "Alexa",
-      }
-    }
-    handleRemoveBlock={[Function]}
-    id="temp"
-    index={0}
+  <div
+    className="multiline mb-2"
     key="temp"
-    onUpdate={[Function]}
-    properties={
-      Object {
-        "dialogs": Array [
-          Object {
-            "index": "temp",
-            "open": false,
-            "rawContent": Object {},
-            "voice": "Alexa",
-          },
-        ],
-        "randomize": false,
-        "type": "speak",
-      }
-    }
-    reorder={[Function]}
-    toggleOpen={[Function]}
-  />
+  >
+    <div
+      className="multi-title-block mb-2"
+    >
+      <div
+        className="multi-title"
+      >
+        <span
+          className="text-muted"
+          onClick={[Function]}
+        >
+          <i
+            className="fas fa-caret-right"
+          />
+          1
+        </span>
+      </div>
+      <div
+        className="super-center flex-hard mr-5"
+      >
+        Speaking As
+        <StateManager
+          className="speak-box ml-2"
+          classNamePrefix="select-box"
+          defaultInputValue=""
+          defaultMenuIsOpen={false}
+          defaultValue={null}
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "Default",
+                "options": Array [
+                  Object {
+                    "label": "Alexa",
+                    "value": "Alexa",
+                  },
+                ],
+              },
+              Object {
+                "label": "English US",
+                "options": Array [
+                  Object {
+                    "label": "Ivy",
+                    "value": "Ivy",
+                  },
+                  Object {
+                    "label": "Joanna",
+                    "value": "Joanna",
+                  },
+                  Object {
+                    "label": "Joey",
+                    "value": "Joey",
+                  },
+                  Object {
+                    "label": "Justin",
+                    "value": "Justin",
+                  },
+                  Object {
+                    "label": "Kendra",
+                    "value": "Kendra",
+                  },
+                  Object {
+                    "label": "Kimberly",
+                    "value": "Kimberly",
+                  },
+                  Object {
+                    "label": "Matthew",
+                    "value": "Matthew",
+                  },
+                  Object {
+                    "label": "Salli",
+                    "value": "Salli",
+                  },
+                ],
+              },
+              Object {
+                "label": "English AU",
+                "options": Array [
+                  Object {
+                    "label": "Nicole",
+                    "value": "Nicole",
+                  },
+                  Object {
+                    "label": "Russell",
+                    "value": "Russell",
+                  },
+                ],
+              },
+              Object {
+                "label": "English GB",
+                "options": Array [
+                  Object {
+                    "label": "Amy",
+                    "value": "Amy",
+                  },
+                  Object {
+                    "label": "Brian",
+                    "value": "Brian",
+                  },
+                  Object {
+                    "label": "Emma",
+                    "value": "Emma",
+                  },
+                ],
+              },
+              Object {
+                "label": "English IN",
+                "options": Array [
+                  Object {
+                    "label": "Aditi",
+                    "value": "Aditi",
+                  },
+                  Object {
+                    "label": "Raveena",
+                    "value": "Raveena",
+                  },
+                ],
+              },
+              Object {
+                "label": "German",
+                "options": Array [
+                  Object {
+                    "label": "Hans",
+                    "value": "Hans",
+                  },
+                  Object {
+                    "label": "Marlene",
+                    "value": "Marlene",
+                  },
+                  Object {
+                    "label": "Vicki",
+                    "value": "Vicki",
+                  },
+                ],
+              },
+              Object {
+                "label": "Spanish",
+                "options": Array [
+                  Object {
+                    "label": "Conchita",
+                    "value": "Conchita",
+                  },
+                  Object {
+                    "label": "Enrique",
+                    "value": "Enrique",
+                  },
+                ],
+              },
+              Object {
+                "label": "Italian",
+                "options": Array [
+                  Object {
+                    "label": "Carla",
+                    "value": "Carla",
+                  },
+                  Object {
+                    "label": "Giorgio",
+                    "value": "Giorgio",
+                  },
+                ],
+              },
+              Object {
+                "label": "Japanese",
+                "options": Array [
+                  Object {
+                    "label": "Mizuki",
+                    "value": "Mizuki",
+                  },
+                  Object {
+                    "label": "Takumi",
+                    "value": "Takumi",
+                  },
+                ],
+              },
+              Object {
+                "label": "French",
+                "options": Array [
+                  Object {
+                    "label": "Celine",
+                    "value": "Celine",
+                  },
+                  Object {
+                    "label": "Lea",
+                    "value": "Lea",
+                  },
+                  Object {
+                    "label": "Mathieu",
+                    "value": "Mathieu",
+                  },
+                ],
+              },
+            ]
+          }
+          value={
+            Object {
+              "label": "Alexa",
+              "value": "Alexa",
+            }
+          }
+        />
+      </div>
+      <button
+        className="close"
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+    <Collapse
+      appear={false}
+      enter={true}
+      exit={true}
+      in={false}
+      isOpen={false}
+      mountOnEnter={false}
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onEntering={[Function]}
+      onExit={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      tag="div"
+      timeout={350}
+      unmountOnExit={false}
+    >
+      <VariableText
+        className="editor form-control auto-height"
+        placeholder={
+          <React.Fragment>
+            Tell Alexa what to say
+            <br />
+            Use {variable} to add Variables
+          </React.Fragment>
+        }
+        raw={Object {}}
+        updateRaw={[Function]}
+      />
+    </Collapse>
+    <hr />
+  </div>
   <div
     className="d-flex my-3"
   >

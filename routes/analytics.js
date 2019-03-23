@@ -28,12 +28,11 @@ const checkUserOwnsSkill = (req, res, cb) => {
 
 exports.getUsersData = (req, res) => {
     checkUserOwnsSkill(req, res, async () => {
-        let skill_id = hashids.decode(req.params.skill_id)[0]
+        let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT skills.skill_id 
-            FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
-            WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-              AND live = TRUE`, [skill_id])).rows[0]
+            SELECT s.skill_id 
+            FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
+            WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
         
         if(live_skill_id){
             live_skill_id = live_skill_id.skill_id
@@ -63,12 +62,11 @@ exports.getUsersData = (req, res) => {
 
 exports.getDAU = (req, res) => {
     checkUserOwnsSkill(req, res, async () => {
-        let skill_id = hashids.decode(req.params.skill_id)[0]
+        let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT skills.skill_id 
-            FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
-            WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-              AND live = TRUE`, [skill_id])).rows[0]
+            SELECT s.skill_id 
+            FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
+            WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
 
         if(live_skill_id){
             live_skill_id = live_skill_id.skill_id
@@ -118,12 +116,11 @@ exports.getDAU = (req, res) => {
 
 exports.getStats = async (req, res) => {
     try{
-        let skill_id = hashids.decode(req.params.skill_id)[0]
+        let project_id = hashids.decode(req.params.project_id)[0]
         let live_skill_id = (await pool.query(`
-            SELECT skills.skill_id 
-            FROM skills INNER JOIN skill_versions ON skills.skill_id = skill_versions.skill_id 
-            WHERE skill_versions.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-              AND live = TRUE`, [skill_id])).rows[0]
+            SELECT s.skill_id 
+            FROM skills s INNER JOIN project_versions pv ON pv.version_id = s.skill_id 
+            WHERE pv.project_id = $1 AND live = TRUE`, [project_id])).rows[0]
 
         if(live_skill_id) {
             live_skill_id = live_skill_id.skill_id

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import { updateSkill } from './../../../actions/skillActions'
+import { updateVersion } from './../../../actions/versionActions'
 import { setError } from 'actions/modalActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
@@ -294,11 +294,11 @@ export class ActionGroup extends PureComponent {
   updateGoogleStage(stage) {
     if([2,5].includes(stage) && !this.state.is_first_upload){
       this.showUploadPrompt()
-      this.timeout = setTimeout(() => {
-        this.setState({show_upload_prompt: false})
-        this.reset()
-        this.timeout = null
-      }, 8000)
+      // this.timeout = setTimeout(() => {
+      //   this.setState({show_upload_prompt: false})
+      //   this.reset()
+      //   this.timeout = null
+      // }, 8000)
     }
     if(STAGE_PERCENTAGES.google[stage]){
       let range = STAGE_PERCENTAGES.google[stage]
@@ -395,11 +395,11 @@ export class ActionGroup extends PureComponent {
               return
           }
       }
-      axios.post(`/diagram/${this.props.skill.diagram}/${this.props.skill.skill_id}/publish`, { platform: 'alexa' })
+      axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'alexa' })
           .then(res => {
               let new_version_data = res.data
               this.updateAlexaStage(11, () => {
-                  axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
+                  axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
                       .then(res => {
                           this.props.updateSkill('amzn_id', res.data)
                           this.checkInteractionModel()
@@ -447,11 +447,11 @@ export class ActionGroup extends PureComponent {
 
     this.updateGoogleStage(3)
 
-    axios.post(`/diagram/${p.skill.diagram}/${p.skill.skill_id}/publish`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
+    axios.post(`/project/${this.props.skill.project_id}/render`, { platform: 'google', project_id: p.skill.google_publish_info.project_id })
     .then(res => {
       this.updateGoogleStage(4)
       let new_version_data = res.data
-      axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
+      axios.post(`/project/${this.props.skill.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
           .then(res => {
               // They completed their first upload successfully
               this.uploadSuccess('google', res.data.project_id)
@@ -992,7 +992,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
         setError: err => dispatch(setError(err))
     }
 }

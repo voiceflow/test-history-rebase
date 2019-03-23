@@ -7,7 +7,6 @@ export class ErrorModal extends Component {
 
   render() {
     if(!this.props.error) return null;
-
     return (
         <Modal isOpen={!!this.props.error} centered size="sm">
           <ModalBody className="text-center">
@@ -26,7 +25,7 @@ export class ErrorModal extends Component {
                 }
               </React.Fragment> :
               <Alert color="danger">
-                {this.props.error}
+                {this.props.error.error}
               </Alert>
             }
             <hr/>

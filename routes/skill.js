@@ -1201,7 +1201,6 @@ exports.restoreSkillVersion = async (req, res) => {
               FROM skills WHERE skill_id = $1) AS sq
         WHERE skills.skill_id = $2
       `, [new_skill_id, dev_version])
-
       // Update diagram to point to new skill
       await pool.query(`
         UPDATE diagrams

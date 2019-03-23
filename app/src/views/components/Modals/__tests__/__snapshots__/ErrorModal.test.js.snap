@@ -61,9 +61,7 @@ exports[`Error Modal Test render error modal 1`] = `
           "unmountOnExit": true,
         }
       }
-    >
-      <Component />
-    </Alert>
+    />
     <hr />
     <Button
       color="primary"

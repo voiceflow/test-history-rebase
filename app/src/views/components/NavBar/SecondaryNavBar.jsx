@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 
-import { toggleLive, setLiveModeModal } from "./../../../actions/skillActions";
+import { toggleLive, setLiveModeModal } from "./../../../actions/versionActions";
 import { updateDiagramRoot, fetchDiagrams } from './../../../actions/diagramActions'
-const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish']
+const PAGES = ['canvas', 'settings', 'visuals', 'business', 'publish', 'market']
 
 class SecondaryNavBar extends Component {
     constructor(props){

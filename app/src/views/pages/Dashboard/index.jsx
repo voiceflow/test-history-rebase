@@ -37,7 +37,7 @@ export class DashBoard extends Component {
         this.onLoadSkills = this.onLoadSkills.bind(this)
         this.openSkill = this.openSkill.bind(this)
         this.copySkill = this.copySkill.bind(this)
-        this.deleteSkill = this.deleteSkill.bind(this)
+        this.deleteProject = this.deleteProject.bind(this)
         this.onFilter = this.onFilter.bind(this)
         this.switchTab = this.switchTab.bind(this)
         this.logout = this.logout.bind(this)
@@ -45,18 +45,19 @@ export class DashBoard extends Component {
         this.renderSkills = this.renderSkills.bind(this)
     }
 
-    deleteSkill(skill_id, skill_name){
+    deleteProject(project_id, skill_name){
         this.props.setConfirm({
             text: <Alert color="danger" className="mb-0">WARNING: This action can not be undone, <i>{skill_name}</i> and all flows can not be recovered</Alert>,
             warning: true,
             confirm: () => {
-                axios.delete(`/skill/${skill_id}`)
+                axios.delete(`/projects/${project_id}`)
                 .then(() => {
                     let skills = this.state.skills
-                    skills = skills.filter(s => s.skill_id !== skill_id)
+                    skills = skills.filter(s => s.project_id !== project_id)
                     this.setState({
+                        confirm: null,
                         skills: skills,
-                        filter_skills: _.filter(this.state.filter_skills, s => s.skill_id !== skill_id)
+                        filter_skills: _.filter(this.state.filter_skills, s => s.project_id !== project_id)
                     })
                 })
                 .catch(err => {
@@ -140,7 +141,7 @@ export class DashBoard extends Component {
         return false;
     }
     onLoadSkills() {
-        axios.get('/skills')
+        axios.get('/projects')
         .then(res => {
             this.setState({
                 skills: res.data,
@@ -278,10 +279,11 @@ export class DashBoard extends Component {
                             <VoiceCards
                                 key={i}
                                 id={skill.skill_id}
+                                project_id={skill.project_id}
                                 icon={icon}
                                 name={skill.name}
                                 placeholder={<div className='no-image card-image'><h1>{name}</h1></div>}
-                                onDelete={this.deleteSkill}
+                                onDelete={this.deleteProject}
                                 onCopy={this.copySkill}
                                 deleteLabel="Delete Project"
                                 copyLabel="Copy Project"

@@ -1,5 +1,5 @@
 import React from 'react'
-import cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from 'lodash/cloneDeep'
 
 const FAVORITE_SECTION_MAX = 3;
 
@@ -73,7 +73,7 @@ const SECTIONS = [{
 }]
 
 const getSections = (type_counter) => {
-    let sections = cloneDeep(SECTIONS);
+    let sections = cloneDeep(SECTIONS)
 
     // Check whether we want a favourites section
     let sortable = []

@@ -34,7 +34,7 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
       })
     })
 
-    const cli_filename = /production/.test(process.env.NODE_ENV) || /staging/.test(process.env.NODE_ENV) ? 'gactions_linux' : 'gactions'
+    const cli_filename = /darwin/.test(process.env.npm_config_user_agent) ?  'gactions' : 'gactions_linux'
 
     await new Promise((resolve, reject) => {
       fs.copyFile(`${GACTIONS_CLI_ROOT}/${cli_filename}`, `${dir}/gactions`, (err) => {

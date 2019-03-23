@@ -205,28 +205,28 @@ describe('Diagram', () => {
         })
     })
 
-    it('publishes test version', done => {
-      request(app)
-        .post(`/diagram/${diagram_id}/test/publish`)
-        .send({
-          slots: [ { name: 'slot_one',
-            inputs: [ 'dog', 'cow', 'cat', 'horse' ],
-            type: { label: 'CUSTOM', value: 'CUSTOM' },
-            key: 'sYCbueQF1wRW',
-            open: true } ],
-          intents: [ { name: 'intent_one',
-            inputs: [ [Object], [Object], [Object] ],
-            key: '1yWbnwrRcYIo',
-            open: true } ]
-        })
-        .set('cookie', `auth=${token}`)
-        .expect(200)
-        .end((err, res) => {
-          console.log('url', diagram_id)
-          if(err) throw err
-          done()
-        })
-    })
+    // it('publishes test version', done => {
+    //   request(app)
+    //     .post(`/diagram/${diagram_id}/test/publish`)
+    //     .send({
+    //       slots: [ { name: 'slot_one',
+    //         inputs: [ 'dog', 'cow', 'cat', 'horse' ],
+    //         type: { label: 'CUSTOM', value: 'CUSTOM' },
+    //         key: 'sYCbueQF1wRW',
+    //         open: true } ],
+    //       intents: [ { name: 'intent_one',
+    //         inputs: [ [Object], [Object], [Object] ],
+    //         key: '1yWbnwrRcYIo',
+    //         open: true } ]
+    //     })
+    //     .set('cookie', `auth=${token}`)
+    //     .expect(200)
+    //     .end((err, res) => {
+    //       console.log('url', diagram_id)
+    //       if(err) throw err
+    //       done()
+    //     })
+    // })
 
     it('doesn\'t publish without diagram id', done => {
       request(app)

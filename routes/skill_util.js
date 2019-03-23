@@ -118,17 +118,15 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
             }
           }, 20 * i )
         }
-
-        resolve()
       } else {
         await pool.query(delete_query, [creator_id, skill_id])
       }
+      resolve()
     } catch (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {err: err, context: 'deleteVersionPromise'})
       reject(err)
     }
   })
-
 }
 
 exports.deleteProjectPromise = (creator_id, project_id) => {

@@ -1,6 +1,6 @@
 import skillReducer from '../versionReducer'
 import * as actions from '../../actions/versionActions'
-import { testSkill } from './../../views/pages/Canvas/__mock__/MockSkill'
+import { testSkill } from '../../views/pages/Canvas/__mock__/MockSkill'
 
 const initialState = {
     skill: {},
@@ -14,9 +14,9 @@ describe('Test Skill Reducer', () => {
         expect(skillReducer(undefined, {})).toEqual(initialState);
     });
 
-    it('should handle FETCH_SKILLS_BEGIN', () => {
+    it('should handle FETCH_VERSION_BEGIN', () => {
         const startFetch = {
-            type: actions.FETCH_SKILLS_BEGIN
+            type: actions.FETCH_VERSION_BEGIN
         };
         expect(skillReducer(initialState, startFetch)).toEqual({
             loading: true,
@@ -25,9 +25,9 @@ describe('Test Skill Reducer', () => {
         })
     });
 
-    it('should handle FETCH_SKILLS_SUCCESS', () => {
+    it('should handle FETCH_VERSION_SUCCESS', () => {
         const successFetch = {
-            type: actions.FETCH_SKILLS_SUCCESS,
+            type: actions.FETCH_VERSION_SUCCESS,
             payload: {skills: skill},
         }
         expect(skillReducer({}, successFetch)).toEqual({
@@ -36,9 +36,9 @@ describe('Test Skill Reducer', () => {
         })
     })
 
-    it('should handle FETCH_LIVE_SKILLS_SUCCESS', () => {
+    it('should handle FETCH_LIVE_VERSION_SUCCESS', () => {
         const fetchLiveSkill = {
-            type: actions.FETCH_LIVE_SKILLS_SUCCESS,
+            type: actions.FETCH_LIVE_VERSION_SUCCESS,
             payload: {
                 live: skill,
                 show: true
@@ -55,7 +55,7 @@ describe('Test Skill Reducer', () => {
     it('should handle FETCH_DEV_SKILL_SUCCESS', () => {
         const dev_skill = skill
         const fetchDevSkill = {
-            type: actions.FETCH_DEV_SKILLS_SUCCESS,
+            type: actions.FETCH_DEV_VERSION_SUCCESS,
             payload: {dev_skill},
         }
         expect(skillReducer({}, fetchDevSkill)).toEqual({
@@ -64,9 +64,9 @@ describe('Test Skill Reducer', () => {
         })
     })
 
-    it('should handle FETCH_SKILLS_FAILURE', () => {
+    it('should handle FETCH_VERSION_FAILURE', () => {
         const fetchSkillFail = {
-            type: actions.FETCH_SKILLS_FAILURE,
+            type: actions.FETCH_VERSION_FAILURE,
             payload: {error: true}
         }
         expect(skillReducer(initialState, fetchSkillFail)).toEqual({loading: false, error: true, skill: {}})

@@ -22,7 +22,7 @@ import CanvasWarning from './components/CanvasWarning'
 //Helpers
 import { combineAppendValidation } from './../../helpers/combineHelper'
 
-import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
+import { updateVersion, updateIntents, setCanFulfill } from "./../../../actions/versionActions";
 import { setVariables } from './../../../actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
@@ -1691,7 +1691,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     setVariables: (variable) => dispatch(setVariables(variable)),
     updateIntents: () => dispatch(updateIntents()),
     setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),

@@ -5,7 +5,7 @@ import axios from 'axios'
 import {Alert, FormGroup, Label, Button, Input, Collapse} from 'reactstrap'
 import Prompt from 'views/components/Uploads/Prompt'
 import AceEditor from 'react-ace';
-import { updateSkill, updateSkillMerge } from "./../../../../actions/skillActions";
+import { updateVersion, updateVersionMerge } from "./../../../../actions/versionActions";
 import { setConfirm, setError } from 'actions/modalActions'
 import DefaultModal from './../../../components/Modals/DefaultModal'
 import Toggle from 'react-toggle'
@@ -325,8 +325,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type,val)),
-        updateSkillMerge: (type, val) => dispatch(updateSkillMerge(type,val)),
+        updateSkill: (type, val) => dispatch(updateVersion(type,val)),
+        updateSkillMerge: (type, val) => dispatch(updateVersionMerge(type,val)),
         setConfirm: (confirm) => dispatch(setConfirm(confirm)),
         setError: err => dispatch(setError(err))
     }

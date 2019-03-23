@@ -35,7 +35,7 @@ const Multimodal = require('./routes/multimodal/multimodal')
 const Onboard = require('./routes/onboard.js');
 const Logs = require('./routes/logs.js')
 const Analytics = require('./routes/analytics.js')
-const Mail = require('./routes/mail.js');
+const Project = require('./routes/project.js');
 const {copySkill} = require('./routes/skill_util')
 const Track = require('./routes/track.js')
 const ProductUpdates = require('./routes/product_updates.js')
@@ -158,14 +158,29 @@ app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
 app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
 app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
-app.get('/skills', ensureLoggedIn(), Skill.getSkills);
-app.get('/skill/:id', ensureLoggedIn(), Skill.getSkill);
-app.get('/skill/:id/info', ensureAdmin(), Skill.getSkillInfo);
+app.get('/projects', ensureLoggedIn(), Project.getProjects)
+app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
+app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject)
+app.get('/project/:project_id/live_version', ensureLoggedIn(), Project.getLiveVersion)
+app.get('/project/:project_id/dev_version', ensureLoggedIn(), Project.getDevVersion)
+app.get('/project/:project_id/versions', ensureLoggedIn(), Project.getProjectVersions)
+app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
+app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
+app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
+
+// DEPRECATE ASAP (OLD SKILL ROUTES CONVERTED TO PROJECT)
+app.get('/skill/:skill_id', ensureLoggedIn(), Project.getProjectFromSkill, Skill.getSkill);
+app.get('/skills', ensureLoggedIn(), Project.getProjects)
+app.get('/skill/:skill_id/live_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getLiveVersion)
+app.get('/skill/:skill_id/dev_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getDevVersion)
+app.get('/skill/:skill_id/versions', ensureLoggedIn(), Project.getProjectFromSkill, Project.getProjectVersions)
+app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.render);
+app.post('/skill/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildSkill);
+app.post('/skill/:skill_id/publishgoogle', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildGoogleSkill);
+// DELETE BEFORE APRIL 2019
+
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
-app.get('/skill/:id/versions', ensureLoggedIn(), Skill.getSkillVersions)
-app.get('/skill/:id/live_version', ensureLoggedIn(), Skill.getLiveVersion)
-app.get('/skill/:id/dev_version', ensureLoggedIn(), Skill.getDevVersion)
 app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
@@ -175,13 +190,11 @@ app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:id/product/:pid', ensureLoggedIn(), Skill.getProduct);
 // app.post('/skill', ensureLoggedIn(), Skill.setSkill);
-app.post('/skill/:id/publish', ensureLoggedIn(), Skill.buildSkill);
-app.post('/skill/:id/publishgoogle', ensureLoggedIn(), Skill.buildGoogleSkill);
 app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
-app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
+// app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)
@@ -196,47 +209,46 @@ app.delete('/diagram/:id', ensureLoggedIn(), Diagram.deleteDiagram);
 app.post('/diagram', ensureLoggedIn(), Diagram.setDiagram);
 app.post('/diagram/:id/name', ensureLoggedIn(), Diagram.updateName);
 app.post('/diagram/:diagram_id/test/publish', ensureLoggedIn(), Diagram.publishTest);
-app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Diagram.publish);
 app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 
 /*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
-// app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
-// app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
-// app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
-// app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)
-// app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
-// app.get('/marketplace/cert/status/:skill_id', ensureLoggedIn(), Marketplace.certStatus)
-// app.get('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.getCertModule)
-// app.post('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.requestCertification)
-// app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification)
-// app.delete('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.cancelCertification)
-// app.patch('/marketplace/cert/:skill_id', ensureLoggedIn(), Marketplace.saveCertification)
-// app.post('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
-// app.get('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.hasAccess)
-// app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
-// app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
-// app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
-// app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
-
-app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
+app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
 app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
-app.get('/marketplace/featured', ensureAdmin(), Marketplace.getFeaturedModules)
-app.get('/marketplace/user_module', ensureAdmin(), Marketplace.getUserModules)
+app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
+app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
-app.get('/marketplace/cert/status/:skill_id', ensureAdmin(), Marketplace.certStatus)
-app.get('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.getCertModule)
-app.post('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.requestCertification)
-app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification)
-app.delete('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.cancelCertification)
-app.patch('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.saveCertification)
-app.post('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.giveAccess)
-app.get('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.hasAccess)
-app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.removeAccess)
-app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
+app.get('/marketplace/cert/status/:project_id', ensureLoggedIn(), Marketplace.certStatus)
+app.get('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.getCertModule)
+app.post('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.requestCertification)
+app.put('/marketplace/cert/:project_id', ensureAdmin(), Marketplace.giveCertification)
+app.delete('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
+app.patch('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.saveCertification)
+app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
+app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.hasAccess)
+app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
+app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
-app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
+app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
+
+// app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
+// app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
+// app.get('/marketplace/featured', ensureAdmin(), Marketplace.getFeaturedModules)
+// app.get('/marketplace/user_module', ensureAdmin(), Marketplace.getUserModules)
+// app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)
+// app.get('/marketplace/cert/status/:skill_id', ensureAdmin(), Marketplace.certStatus)
+// app.get('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.getCertModule)
+// app.post('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.requestCertification)
+// app.put('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.giveCertification)
+// app.delete('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.cancelCertification)
+// app.patch('/marketplace/cert/:skill_id', ensureAdmin(), Marketplace.saveCertification)
+// app.post('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.giveAccess)
+// app.get('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.hasAccess)
+// app.delete('/marketplace/user_module/:module_id', ensureAdmin(), Marketplace.removeAccess)
+// app.get('/marketplace/template/:module_id', ensureAdmin(), Marketplace.retrieveTemplate)
+// app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+// app.get('/marketplace/:module_id', ensureAdmin(), Marketplace.getModule)
 
 app.post('/analytics/track_onboarding', ensureLoggedIn(), Track.trackOnboarding)
 app.post('/analytics/track_session_time', ensureLoggedIn(), Track.trackSessionTime)
@@ -245,9 +257,9 @@ app.post('/analytics/track_first_session_upload', ensureLoggedIn(), Track.trackF
 app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstProject)
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
-app.get('/analytics/:skill_id/users', ensureLoggedIn(), Analytics.getUsersData)
-app.get('/analytics/:skill_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
-app.get('/analytics/:skill_id', ensureLoggedIn(), Analytics.getStats)
+app.get('/analytics/:project_id/users', ensureLoggedIn(), Analytics.getUsersData)
+app.get('/analytics/:project_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);
 app.post('/onboard', ensureLoggedIn(), Onboard.submitOnboardSurvey);

@@ -9,7 +9,6 @@ exports[`DisplayEditor render display block editor 1`] = `
   </span>
   <Link
     className="btn btn-clear btn-block mt-2"
-    replace={false}
     to="/visuals/undefined"
   >
     Add Displays

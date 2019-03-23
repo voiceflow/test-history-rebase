@@ -14,7 +14,7 @@ import VoiceCards from "views/components/Cards/VoiceCards";
 import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import { Alert, Input } from "reactstrap";
-
+import { setConfirm, setError } from 'actions/modalActions'
 import { connect } from "react-redux";
 import {
   fetchProjects,
@@ -103,7 +103,7 @@ class DashBoard extends Component {
 
     let last_update_seen = localStorage.getItem(
       "last_update_seen_" + window.user_detail.id
-    );
+    )
 
     if (!last_update_seen) {
       last_update_seen = Date.now();
@@ -342,9 +342,12 @@ const mapDispatchToProps = dispatch => {
     fetchTeams: () => dispatch(fetchTeams()),
     updateTeam: team_id => dispatch(updateTeam(team_id)),
     deleteProject: project_id => dispatch(deleteProject(project_id)),
-    copyProject: project_id => dispatch(copyProject(project_id))
+    copyProject: project_id => dispatch(copyProject(project_id)),
+    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+    setError: (err) => dispatch(setError(err))
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

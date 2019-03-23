@@ -336,7 +336,9 @@ const googleLogin = async(req, res) => {
                 if (err) {
                   writeToLogs('CREATOR_BACKEND_ERRORS', {err: err});
                   res.status(500).send('Something went wrong with existing email');
-                } else {
+                } else if (data.rows.length === 0){
+										return res.sendStatus(404)
+								} else {
 									let row = data.rows[0];
                   createLogin({
                     id: row.creator_id,
@@ -841,7 +843,7 @@ const deleteGoogleAccessToken = async (req, res) => {
 	try {
 		await pool.query('UPDATE creators SET gactions_token = NULL WHERE creator_id = $1', [creator_id])
 		await pool.query('UPDATE skills SET dialogflow_token = NULL, google_publish_info=$2 WHERE creator_id = $1', [creator_id, {}])
-		await pool.query('UPDATE skill_versions AS sv SET google_versions = NULL FROM skills AS sk WHERE sv.skill_id = sk.skill_id AND sk.creator_id = $1', [creator_id])
+		await pool.query('UPDATE project_versions AS pv SET google_versions = NULL FROM skills AS sk WHERE pv.version_id = sk.skill_id AND sk.creator_id = $1', [creator_id])
 
 		res.sendStatus(200)
 	} catch (e) {

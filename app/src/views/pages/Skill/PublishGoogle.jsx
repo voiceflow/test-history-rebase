@@ -8,7 +8,6 @@ import axios from 'axios'
 
 import { Form, FormGroup, Label, Input, Modal, ModalBody, Collapse, Button, ButtonGroup, Alert, ModalHeader } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
-import ConfirmModal from '../../components/Modals/ConfirmModal'
 import GoogleAuth from '../../components/Modals/GoogleAuthenticationModalContent'
 import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
@@ -122,11 +121,11 @@ class GooglePublish extends Component {
 
       this.setState({ stage: 2 });
 
-      axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'google', project_id: s.project_id })
+      axios.post(`/project/${this.props.project_id}/render`, { platform: 'google', project_id: s.project_id })
         .then(res => {
           this.setState({ stage: 3 });
           let new_version_data = res.data
-          axios.post(`/skill/${new_version_data.new_skill.skill_id}/publishgoogle`)
+          axios.post(`/project/${this.props.project_id}/version/${new_version_data.new_skill.skill_id}/google`)
             .then(res => {
               this.setState({
                 stage: 4,
@@ -486,10 +485,6 @@ class GooglePublish extends Component {
             </div>
           </ModalBody>
         </Modal>
-        <ConfirmModal
-          confirm={this.state.displayingConfirmWithdraw}
-          toggle={this.toggleConfirmWithdraw}
-        />
 
         <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
           <div className="row justify-content-center">
@@ -748,7 +743,8 @@ class GooglePublish extends Component {
 }
 
 const mapStateToProps = state => ({
-  skill: state.skills.skill.skill_id
+  skill: state.skills.skill.skill_id,
+  project_id: state.skills.skill.project_id
 })
 
 const mapDispatchToProps = dispatch => {

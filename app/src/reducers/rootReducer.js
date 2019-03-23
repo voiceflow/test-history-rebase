@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router'
-import skills from './skillReducer';
+import skills from './versionReducer';
 import diagramVariables from './diagramVariablesReducer';
 import variables from './variableReducer'
 import diagrams from './diagramReducer'

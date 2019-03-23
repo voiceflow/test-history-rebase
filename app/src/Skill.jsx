@@ -4,7 +4,7 @@ import { compose } from 'recompose'
 
 import { loadSession, errorScreen, socketCheck } from './views/HOC/socketCheck'
 
-import { fetchSkills, setLiveModeModal, updateSkill, resetSkill } from './actions/skillActions'
+import { fetchVersion, setLiveModeModal, updateVersion, resetVersion } from './actions/versionActions'
 import { fetchDiagrams } from './actions/diagramActions'
 import { fetchProducts } from "./actions/productActions";
 import { fetchDisplays } from "./actions/displayActions";
@@ -22,6 +22,7 @@ import DefaultModal from './views/components/Modals/DefaultModal'
 import { Spinner } from './views/components/Spinner'
 import { Link } from 'react-router-dom';
 import AuthenticationService from './services/Authentication'
+import Marketplace from './views/pages/Marketplace';
 
 const live_modal_content = <div className="text-center">
     <img className="modal-img-small mb-4 mt-3" src="/warning.svg" alt="Upload"/>
@@ -198,6 +199,11 @@ class Skill extends Component {
                   {...this.props}
                   page={this.props.secondaryPage}
                 />
+            case 'market':
+                return <Marketplace
+                  {...this.props}
+                  page={this.props.secondaryPage}
+                />
             default:
                 return null
         }
@@ -245,13 +251,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
-    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchSkills(skill_id, preview, diagram_id)),
+    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchVersion(skill_id, preview, diagram_id)),
     setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
     getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),
     getEmails: (skill_id) => dispatch(fetchEmails(skill_id)),
-    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-    resetSkill: () => dispatch(resetSkill())
+    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
+    resetSkill: () => dispatch(resetVersion())
   }
 }
 

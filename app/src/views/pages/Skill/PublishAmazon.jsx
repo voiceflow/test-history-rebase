@@ -24,7 +24,7 @@ import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
-import { updateSkill, updateEntireSkill } from "./../../../actions/skillActions"
+import { updateVersion, updateEntireVersion } from "./../../../actions/versionActions"
 import { setConfirm, setError } from 'actions/modalActions'
 
 const _ = require('lodash');
@@ -277,11 +277,11 @@ class Skill extends Component {
         })
         this.setState({ stage: 3 });
 
-        axios.post(`/diagram/${this.state.diagram}/${this.props.skill_id}/publish`, { platform: 'alexa' })
+        axios.post(`/project/${this.props.project_id}/render`, { platform: 'alexa' })
             .then(res => {
                 this.setState({ stage: 4 });
                 let new_version_data = res.data
-                axios.post(`/skill/${new_version_data.new_skill.skill_id}/publish`)
+                axios.post(`/project/${this.props.project_id}/version/${new_version_data.new_skill.skill_id}/alexa`)
                     .then(res => {
                         this.setState({
                             stage: 8,
@@ -993,12 +993,13 @@ class Skill extends Component {
 }
 
 const mapStateToProps = state => ({
-    skill_id: state.skills.skill.skill_id
+    skill_id: state.skills.skill.skill_id,
+    project_id: state.skills.skill.project_id
 })
 const mapDispatchToProps = dispatch => {
     return {
-        updateSkill: (type, val) => dispatch(updateSkill(type, val)),
-        updateEntireSkill: (val) => dispatch(updateEntireSkill(val)),
+        updateSkill: (type, val) => dispatch(updateVersion(type, val)),
+        updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
         setConfirm: (confirm) => dispatch(setConfirm(confirm)),
         setError: err => dispatch(setError(err)),
     }

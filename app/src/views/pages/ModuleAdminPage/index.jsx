@@ -27,8 +27,8 @@ class ModuleAdminPage extends Component {
         })
     }
 
-    approveModule(skill_id, title, i){
-        axios.put(`/marketplace/cert/${skill_id}`)
+    approveModule(project_id, title, i){
+        axios.put(`/marketplace/cert/${project_id}`)
         .then(res => {
             let curr_modules = this.state.modules
             curr_modules.splice(i, 1)
@@ -76,16 +76,16 @@ class ModuleAdminPage extends Component {
                 </div>
             }
         }
-
+        console.log(this.state.modules)
         return(
             <div className='Window'>
                 {content}
                 <Masonry elementType='div'>
                     {this.state.modules.map((module, i) => 
                         <Card key={i}>
-                            <img src={module.module_icon} style={styles} alt="module icon"></img>
-                            <a href={"https://creator.getvoiceflow.com/preview/" + module.skill_id + "/" + module.diagram_id}>{module.title}</a>
-                            <Button onClick={() => {this.approveModule(module.skill_id, module.title, i)}}>Approve</Button>
+                            {/* <img src={module.module_icon} style={styles} alt="module icon"></img> */}
+                            <a href={"https://creator.getvoiceflow.com/preview/" + module.skill_id + "/" + module.diagram} className="mb-4 mt-4">{module.title}</a>
+                            <Button onClick={() => {this.approveModule(module.project_id, module.title, i)}}>Approve</Button>
                         </Card>
                     )}
                 </Masonry>

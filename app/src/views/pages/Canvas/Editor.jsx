@@ -11,7 +11,6 @@ import Line from './Editors/Line';
 import Choice from './Editors/Choice';
 import Intent from './Editors/Intent'
 import Interaction from './Editors/Interaction';
-// import Story from './Editors/Story';
 import Random from './Editors/Random';
 import Variable from './Editors/Variable';
 import SetBlock from './Editors/Set';

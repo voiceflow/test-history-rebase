@@ -43,7 +43,7 @@ export const fetchProjects = team_id => {
   return async dispatch => {
     dispatch(resetProjects())
     try{
-      let url = `/skills`
+      let url = `/projects`
       if(team_id !== -1) url = `/team/${team_id}/skills`
       let res = await axios.get(url)
       dispatch(updateProjects(res.data))
@@ -71,7 +71,7 @@ export const copyProject = project_id => {
 export const deleteProject = project_id => {
   return async (dispatch, getState) => {
     try{
-      await axios.delete(`/skill/${project_id}`)
+      await axios.delete(`/projects/${project_id}`)
       let projects = getState().projects.projects
       projects = projects.filter(s => s.skill_id !== project_id)
       dispatch(updateProjects(projects))

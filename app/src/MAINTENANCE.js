@@ -8,7 +8,7 @@ const MAINTENANCE = false
 // MAINTENANCE SETTINGS
 
 // ISO standard time in GMT
-const MAINTENANCE_START='2019-03-04T23:00:00Z'
+const MAINTENANCE_START='2019-03-23T16:00:00Z'
 // downtime in minutes
 const MAINTENANCE_TIME=120
 // how many minutes out to do warnings

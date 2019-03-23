@@ -20,7 +20,7 @@ const {
   generateDialogflowPackage
 } = require('./../config/gactions_package')
 const {
-  deleteSkillPromise,
+  deleteVersionPromise,
   copySkill,
   deleteSkillDiagramsPromise
 } = require('./skill_util')
@@ -104,55 +104,10 @@ const incrementTimesPublishedSuccessfulIntercom = (id) => {
   })
 }
 
-exports.getSkills = async (req, res) => {
-  if (!req.user) {
-    res.sendStatus(401)
-    return
-  }
-  if (req.query.user && req.user.admin < 100) {
-    res.sendStatus(401)
-    return
-  }
-  
-  let userId = req.query.user ? req.query.user : req.user.id
-  let query = `
-    SELECT * 
-    FROM skills
-    INNER JOIN skill_versions
-    ON skills.skill_id = skill_versions.skill_id
-    WHERE version IS NULL AND creator_id = $1`
-
-  // Get dev + live versions
-  if(req.query.user){
-    query = `
-      SELECT * 
-      FROM skills
-      INNER JOIN skill_versions
-      ON skills.skill_id = skill_versions.skill_id
-      WHERE (version IS NULL OR skills.live = true) AND creator_id = $1`
-  } 
-
-  try{
-    let skills_data = (await pool.query(query, [userId])).rows
-    res.send(skills_data.map(skill => {
-      skill.skill_id = hashids.encode(skill.skill_id)
-      return skill
-    }))
-  } catch(err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
-    res.sendStatus(500)
-  }
-}
-
 exports.getSkill = async (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(401)
-    return
-  }
 
-  let id = hashids.decode(req.params.id)[0]
+  let project_id = hashids.decode(req.params.project_id)[0]
+  let id = hashids.decode(req.params.skill_id)[0]
   let sql
   let params
 
@@ -161,7 +116,7 @@ exports.getSkill = async (req, res) => {
   AccessToken(req.user.id, async (token) => {
     if (token !== null) {
       try {
-        await checkVersions(req, id, token)
+        await checkVersions(req.user, project_id, 'alexa', {token: token, check_only: true})
       } catch (err) {
         logAxiosError(err, 'GET SKILL')
       }
@@ -171,57 +126,29 @@ exports.getSkill = async (req, res) => {
   if (req.query.preview) {
     // expose as little information as possible if previewing
     sql = `
-          SELECT
-              name,
-              preview,
-              diagram,
-              intents,
-              slots
-          FROM
-              skills
-          WHERE
-              skill_id = $1 LIMIT 1`;
-    params = [id];
-  } else if (req.query.simple) {
-    sql = `
       SELECT
         name,
-        amzn_id,
-        review,
-        live,
-        diagram,
-        locales,
-        restart,
-        global,
-        intents,
-        slots,
-        inv_name,
         preview,
-        account_linking,
-        resume_prompt,
-        error_prompt,
-        fulfillment,
-        alexa_events,
-        created,
-        platform,
-        google_publish_info,
-        repeat
-    FROM
-      skills
-    WHERE
-      skill_id = $1
-      AND creator_id = $2
-    LIMIT 1`;
-    params = [id, req.user.id]
+        diagram,
+        intents,
+        slots
+      FROM
+        skills
+      WHERE
+        skill_id = $1 LIMIT 1`;
+    params = [id];
   } else {
     sql = `
-          SELECT
-              *
-          FROM
-              skills
-          WHERE
-              skill_id = $1 AND
-              creator_id = $2 LIMIT 1`;
+      SELECT
+        s.*,
+        pv.project_id
+      FROM
+        skills s
+        INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+        WHERE
+          skill_id = $1
+          AND creator_id = $2
+        LIMIT 1`;
     params = [id, req.user.id]
   }
 
@@ -230,7 +157,8 @@ exports.getSkill = async (req, res) => {
     if(skill_data === undefined){
       res.sendStatus(404)
     } else {
-      skill_data.skill_id = req.params.id
+      skill_data.skill_id = req.params.skill_id
+      skill_data.project_id = hashids.encode(skill_data.project_id)
       res.send(skill_data)
     }
   } catch (err){
@@ -410,27 +338,6 @@ exports.deleteProduct = async (req, res) => {
   }
 }
 
-exports.deleteSkill = async (req, res) => {
-  if (!req.user || !req.params.id) {
-    res.sendStatus(401)
-    return
-  }
-  let id = hashids.decode(req.params.id)[0]
-
-  try {
-    await deleteSkillPromise(req.user.id, id, {
-      delete_all_versions: true,
-      diagram_updated: false
-    })
-    res.sendStatus(200)
-  } catch (err) {
-    writeToLogs('CREATOR_BACKEND_ERRORS', {
-      err: err
-    })
-    res.sendStatus(500)
-  }
-}
-
 exports.patchSkill = async (req, res) => {
   if (!req.user || !req.params.id || !req.body) {
     res.sendStatus(401)
@@ -591,30 +498,50 @@ exports.enableSkill = async (req, res) => {
   })
 }
 
-const checkVersions = (req, id, token, platform) => {
+const checkVersions = (user, project_id, platform, options) => {
+  if(!options) options = {}
+
   return new Promise(async (resolve, reject) => {
+
+    // get the project id and dev version from this skill
+    let dev_version
+    try{
+      const project = await pool.query(`
+        SELECT project_id, dev_version FROM projects WHERE project_id = $1 LIMIT 1`, [project_id])
+      dev_version = project.rows[0].dev_version
+    }catch(err){
+      return reject(err)
+    }
+
     pool.query(`
-    SELECT * FROM skill_versions INNER JOIN skills ON skill_versions.skill_id = skills.skill_id 
-    WHERE canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1) 
-    AND (published_platform = $2 OR version is NULL) AND creator_id = $3 ORDER BY version ASC`,
-      [id, platform, req.user.id],
+      SELECT s.amzn_id, s.live, pv.* FROM skills s 
+      INNER JOIN project_versions pv ON pv.version_id = s.skill_id
+      WHERE pv.project_id = $1 
+        AND ( pv.platform = $2 OR pv.platform IS NULL )
+        ORDER BY pv.created ASC`,
+      [project_id, platform],
       async (err, data) => {
         if (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', {
             err: err
           })
           reject(err)
-        } else {
+        } else if (data.rows.length > 0){
           // Check for live version
+          let current_live = data.rows.filter(v => !!v.live).map(v => v.version_id)
           let live_ids = []
+          let dev_version_row = data.rows.find(version => version.version_id === dev_version)
+
           try {
             // If so, we wanna know what version the live skill is pointing to rn
-            if (platform === 'alexa' && data.rows[0].amzn_id) {
+            if (platform === 'alexa' && dev_version_row.amzn_id) {
+              if(!options.token) throw new Error('No Token')
+
               let request = await axios.request({
-                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(data.rows[0].amzn_id)}/stages/live/manifest`,
+                url: `https://api.amazonalexa.com/v1/skills/${encodeURI(dev_version_row.amzn_id)}/stages/live/manifest`,
                 method: 'GET',
                 headers: {
-                  Authorization: token
+                  Authorization: options.token
                 }
               })
               // Delete the oldest version that isn't live
@@ -622,16 +549,17 @@ const checkVersions = (req, id, token, platform) => {
               live_ids.push(hashids.decode(split_uri[split_uri.length - 1])[0])
 
               try {
-                await pool.query(`
-                UPDATE skills s SET live = FALSE 
-                FROM skill_versions sv
-                WHERE s.skill_id = sv.skill_id
-                  AND sv.published_platform = $3
-                  AND sv.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1) 
-                  AND creator_id = $2`, [id, req.user.id, platform])
-                if (live_ids[0]) {
+                // RESET LIVE IF THERE IS A LIVE
+                if(live_ids[0] && !current_live.includes(live_ids[0])) {
                   await pool.query(`
-                  UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
+                    UPDATE skills s SET live = FALSE
+                    FROM project_versions pv
+                    WHERE pv.version_id = s.skill_id
+                      AND pv.project_id = $1
+                      AND pv.platform = $2
+                  `, [project_id, platform])
+
+                  await pool.query(`UPDATE skills s SET live = TRUE WHERE skill_id = $1`, [live_ids[0]])
                 }
               } catch (err) {
                 writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -643,40 +571,35 @@ const checkVersions = (req, id, token, platform) => {
               // Get the latest list of versions from skill_versions table
               // Compare with each skill's attached versions
               // If no matches, then it is ok to delete
-              let current_skill
+
+              const all_google_versions = dev_version_row.google_versions
               for (const row of data.rows) {
-                if (!row.version) {
-                  current_skill = row
-                  break
-                }
-              }
-              const all_google_versions = current_skill.google_versions
-              for (const row of data.rows) {
-                if (row.version && row.google_versions) {
+                if (row.version_id !== dev_version && row.google_versions) {
                   const approvals = Object.keys(row.google_versions).map(key => all_google_versions[key].approval)
                   if (approvals.length > 0 && approvals.filter(e => e !== 'DENIED').length > 0) {
-                    live_ids.push(row.skill_id)
+                    live_ids.push(row.version_id)
                   }
                 }
               }
             }
           } catch (err) {
-            live_ids = []
+            if(Array.isArray(current_live)){
+              live_ids = live_ids.concat(current_live)
+            }
           }
+          // No need to delete on just the check
+          if(options.check_only) return resolve()
 
           let i = 0
-          let num_versions_to_delete = req.user.admin >= 100 ? data.rows.length - 4 : data.rows.length - 6
+          let num_versions_to_delete = user.admin >= 100 ? data.rows.length - 10 : data.rows.length - 5
           let deletion_promises = []
           if (live_ids) {
             num_versions_to_delete -= live_ids.length
           }
 
           while (i < data.rows.length && num_versions_to_delete > 0) {
-            if (!live_ids.includes(data.rows[i].skill_id) && data.rows[i].version) {
-              deletion_promises.push(deleteSkillPromise(req.user.id, data.rows[i].skill_id, {
-                delete_all_versions: false,
-                diagram_updated: false
-              }))
+            if (!live_ids.includes(data.rows[i].version_id) && data.rows[i].version_id !== dev_version && data.rows[i].platform === platform) {
+              deletion_promises.push(deleteVersionPromise(user.id, data.rows[i].version_id))
               num_versions_to_delete -= 1
             }
             i += 1
@@ -687,9 +610,7 @@ const checkVersions = (req, id, token, platform) => {
               resolve()
             })
             .catch((err) => {
-              writeToLogs('CREATOR_BACKEND_ERRORS', {
-                err: err
-              })
+              writeToLogs('DELETE_CHECK_VERSION_ERRORS', {err})
               reject(err)
             })
         }
@@ -698,9 +619,10 @@ const checkVersions = (req, id, token, platform) => {
 }
 
 exports.buildSkill = async (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(401)
-  }
+  let project_id = hashids.decode(req.params.project_id)[0];
+  let id = hashids.decode(req.params.version_id)[0];
+  let original_id = req.params.version_id
+
   try {
     incrementTimesPublishedIntercom(req.user.id);
   } catch (err) {
@@ -708,10 +630,6 @@ exports.buildSkill = async (req, res) => {
       err: err
     })
   }
-
-
-  let id = hashids.decode(req.params.id)[0];
-  let original_id = req.params.id
 
   AccessToken(req.user.id, token => {
     if (token === null) {
@@ -722,7 +640,7 @@ exports.buildSkill = async (req, res) => {
     }
 
     // Asynchronously check version logic, doesn't affect publishing
-    checkVersions(req, id, token, 'alexa')
+    checkVersions(req.user, project_id, 'alexa', {token: token})
 
     pool.query('SELECT * FROM skills WHERE skills.skill_id = $1 LIMIT 1', [id], async (err, data) => {
       if (err) {
@@ -834,7 +752,7 @@ exports.buildSkill = async (req, res) => {
 
           // Don't even bother with products if not in US
           if (Array.isArray(r.locales) && r.locales.includes('en-US')) {
-            let products = await pool.query("SELECT * FROM products WHERE skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)", [r.skill_id]);
+            let products = await pool.query("SELECT * FROM products WHERE skill_id = $1", [r.skill_id]);
 
             if (Array.isArray(products.rows) && products.rows.length !== 0) {
               for (row of products.rows) {
@@ -970,7 +888,7 @@ exports.buildSkill = async (req, res) => {
                           Authorization: token
                         }
                       })
-                      .then(response => {
+                      .then(async response => {
                         if (response.hasOwnProperty('violations')) {
                           getSkillStatus(depth + 1)
                         } else {
@@ -985,20 +903,22 @@ exports.buildSkill = async (req, res) => {
                             }
                           })
 
-                          // Update canonical skill id's amzn id
-                          pool.query(`
-                            UPDATE skills SET amzn_id = $1 WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $2)`,
-                            [amzn_id, id],
-                            (err) => {
-                              if (err) {
-                                writeToLogs('CREATOR_BACKEND_ERRORS', {
-                                  err: err
-                                })
-                                res.sendStatus(500)
-                              } else {
-                                res.send(amzn_id)
-                              }
-                            })
+                          if(r.amzn_id !== amzn_id){
+                            // Update canonical skill id's amzn id
+                            try{
+                              await pool.query(`
+                              UPDATE skills SET amzn_id = $2 WHERE skill_id = (
+                                SELECT dev_version FROM projects p
+                                INNER JOIN project_versions pv ON p.project_id = pv.project_id
+                                WHERE version_id = $1 LIMIT 1)`, 
+                              [id, amzn_id])
+                            }catch(err){
+                              writeToLogs('CREATOR_BACKEND_ERRORS', {err})
+                              return res.sendStatus(500)
+                            }
+                          }
+
+                          res.send(amzn_id)
                         }
                       })
                       .catch(err => {
@@ -1230,45 +1150,30 @@ copyAllDisplays = (id, new_skill_id) => {
   })
 }
 
-exports.getSkillVersions = (req, res) => {
-  let id = hashids.decode(req.params.id)[0]
-  pool.query(`
-        SELECT skills.skill_id, created, version, published_platform, platform, diagram, canonical_skill_id, name, amzn_id, review, live, diagram, locales, restart, global, intents, slots, inv_name, preview, resume_prompt, error_prompt, fulfillment
-        FROM skills 
-        INNER JOIN skill_versions 
-        ON skills.skill_id = skill_versions.skill_id 
-        WHERE skill_versions.canonical_skill_id = 
-            (SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1)
-            AND version IS NOT NULL
-        ORDER BY version DESC`, [id],
-    (err, data) => {
-      if (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {
-          err: err
-        })
-        res.sendStatus(500)
-      } else {
-        for (let i = 0; i < data.rows.length; i++) {
-          data.rows[i].skill_id = hashids.encode(data.rows[i].skill_id)
-          data.rows[i].canonical_skill_id = hashids.encode(data.rows[i].canonical_skill_id)
-        }
-        res.send(data.rows)
-      }
-    }
-  )
-}
-
 exports.restoreSkillVersion = async (req, res) => {
-  // Get canonical skill id
-  let canonical_skill_id
+  // Get dev version
+  let dev_version
+  let restore_id = hashids.decode(req.params.restore_id)[0]
   try {
-    canonical_skill_id = (await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1`, [hashids.decode(req.params.restore_id)[0]])).rows[0].canonical_skill_id
+    let data = (await pool.query(`
+      SELECT dev_version FROM projects p 
+      INNER JOIN project_versions pv ON p.project_id = pv.project_id
+      WHERE pv.version_id = $1`, 
+      [restore_id])
+    ).rows[0]
+    dev_version = data.dev_version
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err: err
     })
     res.sendStatus(500)
   }
+
+  if (dev_version === restore_id){
+    return res.sendStatus(409)
+  }
+
+  // important to set it to the undecoded version
   req.params.id = req.params.restore_id
   req.params.target_creator = req.user.id
   // Make a copy of the verision
@@ -1277,7 +1182,7 @@ exports.restoreSkillVersion = async (req, res) => {
   }, async (row) => {
     try {
       // Delete the canonical skill's old diagrams
-      await deleteSkillDiagramsPromise(canonical_skill_id)
+      await deleteSkillDiagramsPromise(dev_version)
       let new_skill_id = hashids.decode(row.skill_id)[0]
       // Set canonical's field to new version
       await pool.query(`
@@ -1295,20 +1200,17 @@ exports.restoreSkillVersion = async (req, res) => {
               account_linking, fulfillment, alexa_permissions, alexa_interfaces, alexa_events, repeat
               FROM skills WHERE skill_id = $1) AS sq
         WHERE skills.skill_id = $2
-      `, [new_skill_id, canonical_skill_id])
+      `, [new_skill_id, dev_version])
 
       // Update diagram to point to new skill
       await pool.query(`
         UPDATE diagrams
         SET skill_id = $1
         WHERE skill_id = $2
-      `, [canonical_skill_id, new_skill_id])
+      `, [dev_version, new_skill_id])
       // Delete the new copy's skill row
-      await deleteSkillPromise(req.user.id, new_skill_id, {
-        delete_all_versions: false,
-        diagram_updated: true
-      })
-      row.skill_id = hashids.encode(canonical_skill_id)
+      await deleteVersionPromise(req.user.id, new_skill_id, {delete_diagrams: false})
+      row.skill_id = hashids.encode(dev_version)
       res.send(row)
     } catch (err) {
       writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -1320,11 +1222,10 @@ exports.restoreSkillVersion = async (req, res) => {
 }
 
 exports.buildGoogleSkill = async (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(401)
-  }
-  let id = hashids.decode(req.params.id)[0];
-  let original_id = req.params.id
+
+  let vf_project_id = hashids.decode(req.params.project_id)[0];
+  let id = hashids.decode(req.params.version_id)[0];
+  let original_id = req.params.version_id
 
   try {
     const skill_info = await new Promise((resolve, reject) => {
@@ -1370,7 +1271,7 @@ exports.buildGoogleSkill = async (req, res) => {
       throw ('Credentials not found')
     }
 
-    checkVersions(req, id, '', 'google')
+    checkVersions(req.user, vf_project_id, 'google')
 
     const main_client = new DialogflowClient(project_id, dialogflow_creds.private_key, dialogflow_creds.client_email)
 
@@ -1533,74 +1434,4 @@ exports.getGoogleSkill = async (req, res) => {
       }
     }
   });
-}
-
-exports.getLiveVersion = async (req, res) => {
-  let skill_id = hashids.decode(req.params.id)[0]
-  try {
-    let live_version_data = await pool.query(`
-      SELECT s.skill_id AS sid, s.diagram AS sdia, sv.canonical_skill_id
-      FROM skills s 
-      INNER JOIN skill_versions sv ON s.skill_id = sv.skill_id
-      WHERE sv.canonical_skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1)
-        AND s.live = TRUE  
-        AND creator_id = $2
-      LIMIT 1
-    `, [skill_id, req.user.id])
-    if (live_version_data.rows.length > 0) {
-      res.send({
-        live_version: hashids.encode(live_version_data.rows[0].sid)
-      })
-    } else {
-      res.send({
-        live_version: null
-      })
-    }
-  } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
-  }
-}
-
-exports.getDevVersion = async (req, res) => {
-  let skill_id = hashids.decode(req.params.id)[0]
-  try {
-    let dev_version_data = await pool.query(`
-      SELECT * FROM skills WHERE skills.skill_id = (SELECT canonical_skill_id FROM skill_versions WHERE skill_versions.skill_id = $1) AND creator_id = $2 LIMIT 1
-    `, [skill_id, req.user.id])
-    if (dev_version_data.rows.length > 0) {
-      dev_version_data.rows[0].skill_id = hashids.encode(dev_version_data.rows[0].skill_id)
-      res.send(dev_version_data.rows[0])
-    } else {
-      res.sendStatus(404)
-    }
-  } catch (err) {
-    console.trace(err)
-    res.sendStatus(500)
-  }
-}
-
-exports.getSkillInfo = async (req, res) => {
-  let skill = {}
-  if(req.query.encoded){
-    skill.id = hashids.decode(req.params.id)[0]
-    skill.encoded = req.params.id
-  }else{
-    skill.encoded = hashids.encode(req.params.id)
-    skill.id = req.params.id
-  }
-  try {
-    let find = await pool.query(`SELECT canonical_skill_id FROM skill_versions WHERE skill_id = $1 LIMIT 1`, [skill.id])
-    if(find.rows.length === 0){
-      res.sendStatus(404)
-      return
-    }
-    skill.canonical_skill_id = find.rows[0].canonical_skill_id
-    skill.skills = (await pool.query(`SELECT * FROM skills s INNER JOIN skill_versions sv ON sv.skill_id = s.skill_id WHERE sv.canonical_skill_id = $1`, [skill.canonical_skill_id])).rows
-    skill.skill = _.find(skill.skills, s => s.skill_id = skill.id)
-    res.send(skill)
-  }catch(e){
-    console.error(e)
-    res.status(500).send(e)
-  }
 }

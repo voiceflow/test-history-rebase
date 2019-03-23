@@ -22,7 +22,7 @@ import CanvasWarning from './components/CanvasWarning'
 //Helpers
 import { combineAppendValidation } from './../../helpers/combineHelper'
 
-import { updateSkill, updateIntents, setCanFulfill } from "./../../../actions/skillActions";
+import { updateVersion, updateIntents, setCanFulfill } from "./../../../actions/versionActions";
 import { setVariables } from './../../../actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
@@ -241,21 +241,6 @@ export class Canvas extends Component {
     };
     componentDidUpdate(previous_props, prev_state) {
         if(previous_props.diagram_id !== this.props.diagram_id){
-            if (!_.find(this.props.diagrams,d => d.id === this.props.diagram_id).sub_diagrams){
-                this.props.setConfirm({
-                    text: <>
-                        <div className="mb-2">Name your flow</div>
-                        <Input className="form-bg mb-3"
-                            placeholder={`Enter flow name`}
-                            value={this.state.newFlowName}
-                            onChange={e => this.setState({
-                                newFlowName: e.target.value
-                            })}
-                        />
-                    </>,
-                    confirm: () => this.props.renameFlow(this.props.diagram_id, this.state.newFlowName)
-                })
-            }
             if(this.buildDiagrams !== null){
                 this.buildDiagrams(this.props.diagram_id)
             }
@@ -1257,7 +1242,7 @@ export class Canvas extends Component {
         }
     }
     
-    generateBlockMenu = (e) => {
+    generateBlockMenu = (e, combineNode = null) => {
       if(this.props.preview){
         this.props.setBlockMenu(null)
         return
@@ -1274,19 +1259,28 @@ export class Canvas extends Component {
             <React.Fragment>
                 <div style={{top: engine.getDiagramModel().getGridPosition(e.clientY - 100), left: engine.getDiagramModel().getGridPosition(e.clientX), cursor: 'pointer', position: 'absolute', zIndex: 10}}>
                     <ListGroup>
-                        <ListGroupItem onClick={(e) => {
-                            // e.stopPropagation();
-                            node.setLocked(true);
-                            node.selected = true;
-                            node.edit = true;
-                            this.props.setBlockMenu(null)
-                        }}>Rename</ListGroupItem>
+                        {!combineNode && 
+                            <ListGroupItem onClick={(e) => {
+                                node.setLocked(true);
+                                node.selected = true;
+                                node.edit = true;
+                                this.props.setBlockMenu(null)
+                            }}>Rename</ListGroupItem>
+                        }
                         <ListGroupItem onClick={() => {
-                            this.copyNode(node)
+                            if (combineNode){
+                                this.appendCombineNode(combineNode)
+                            } else {
+                                this.copyNode(node)
+                            }
                             this.props.setBlockMenu(null)
                         }}>Copy Block</ListGroupItem>
                         <ListGroupItem onClick={() => {
-                            this.removeNode(node)
+                            if (combineNode){
+                                this.removeCombineNode(combineNode);
+                            } else {
+                                this.removeNode(node)
+                            }
                             this.props.setBlockMenu(null)
                         }}>Delete Block</ListGroupItem>
                     </ListGroup>
@@ -1636,6 +1630,8 @@ export class Canvas extends Component {
                     preview={this.props.preview}
                     diagram={this.props.diagram}
                     root_id={this.props.root_id}
+                    setBlockMenu={this.props.setBlockMenu}
+                    engine={this.state.engine}
                   />
                 )}
                 {this.props.blockMenu}
@@ -1655,6 +1651,7 @@ export class Canvas extends Component {
                     removeNode: this.removeNode,
                     diagram: this.props.diagram,
                     removeCombineNode: this.removeCombineNode,
+                    generateBlockMenu: this.generateBlockMenu,
                     disabled: !!this.props.preview
                   }}
                   removeHandler={node => {
@@ -1694,7 +1691,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateSkill: (type, val) => dispatch(updateSkill(type, val)),
+    updateSkill: (type, val) => dispatch(updateVersion(type, val)),
     setVariables: (variable) => dispatch(setVariables(variable)),
     updateIntents: () => dispatch(updateIntents()),
     setCanFulfill: (key, val) => dispatch(setCanFulfill(key, val)),

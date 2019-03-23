@@ -7,7 +7,7 @@ import Select, { components } from 'react-select'
 import SlotMappings from './components/SlotMappings'
 import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import { PLATFORMS } from '../../../../Constants'
-import { updateIntents, setCanFulfill } from "./../../../../actions/skillActions";
+import { updateIntents, setCanFulfill } from "./../../../../actions/versionActions";
 import { setError } from 'actions/modalActions'
 
 const _ = require('lodash')

@@ -14,24 +14,24 @@ import "./App.css";
 import "react-day-picker/lib/style.css";
 
 // Pages
-import Skill from "./Skill";
-import Account from "./views/pages/Account";
-import DashBoard from "./views/pages/Dashboard";
-import Admin from "./views/pages/Admin";
-import Register from "./views/pages/Register";
-import Reset from "./views/pages/Register/reset";
-import ResetPassword from "./views/pages/Register/resetPassword";
-import NavBar from "./views/components/NavBar";
-import Marketplace from "./views/pages/Marketplace/Marketplace";
-import ModulePage from "./views/pages/Marketplace/ModulePage";
-import Templates from "./views/pages/Templates";
-import Page404 from "views/pages/404";
-import Onboarding from "./views/pages/Onboarding";
-import ModuleAdminPage from "./views/pages/ModuleAdminPage";
-import ErrorBoundary from "./ErrorBoundary";
-import socket from "socket.io-client";
-import { evaluateMaintenance } from "./MAINTENANCE";
-import NewTeam from "./views/pages/Dashboard/NewTeam";
+import Skill from './Skill'
+import Account from './views/pages/Account';
+import DashBoard from './views/pages/Dashboard';
+import Admin from './views/pages/Admin';
+import Register from './views/pages/Register';
+import Reset from './views/pages/Register/reset';
+import ResetPassword from './views/pages/Register/resetPassword';
+import NavBar from './views/components/NavBar';
+import Marketplace from './views/pages/Marketplace';
+import ModulePage from './views/pages/Marketplace/ModulePage';
+import Templates from './views/pages/Templates'
+import Page404 from 'views/pages/404'
+import Onboarding from './views/pages/Onboarding';
+import ModuleAdminPage from './views/pages/ModuleAdminPage';
+import ErrorBoundary from './ErrorBoundary';
+import socket from 'socket.io-client'
+import {evaluateMaintenance} from './MAINTENANCE'
+import NewTeam from './views/pages/Dashboard/NewTeam'
 
 // GLOBAL MODALS
 import { setConfirm } from 'actions/modalActions'
@@ -244,12 +244,15 @@ class App extends Component {
                 <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
-                <PrivateRoute path="/publish/:skill_id/google" component={Skill} page="publish" secondaryPage="google"/>
-                <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} page="publish" secondaryPage="alexa"/>
-                <PrivateRoute path="/publish/:skill_id/market" component={Skill} page="publish" secondaryPage="market"/>
-                <PrivateRoute path="/publish/:skill_id" component={Skill} page="publish" secondaryPage="alexa"/>
-                <PrivateRoute path="/market/:module_id" name="Market" component={ModulePage} />
-                <PrivateRoute path="/market" name="Marketplace" component={Marketplace} />
+                <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
+                <PrivateRoute path="/publish/:skill_id/google" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="google"/>
+                <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
+                <PrivateRoute path="/publish/:skill_id/market" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="market"/>
+                <PrivateRoute path="/publish/:skill_id" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
+                {/* <PrivateRoute path="/market/:skill_id/:module_id" component={Skill} secondary={ModulePage} /> */}
+                <PrivateRoute path="/market/:skill_id/flows" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="flows"/>
+                <PrivateRoute path="/market/:skill_id/templates" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="templates"/>
+                <PrivateRoute path="/market/:skill_id" name="Market" component={Skill} onConfirm={this.onConfirm} page="market" secondaryPage="flows"/>
                 <PrivateRoute path="/onboarding" name="Onboarding" component={Onboarding} />
                 <PrivateRoute path="/stuff" name="Certification" component={ModuleAdminPage} />
                 <PrivateRoute path="/account/upgrade" name="Account" component={Account} upgrade/>

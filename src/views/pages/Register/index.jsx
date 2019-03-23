@@ -234,7 +234,7 @@ class Account extends Component {
                     <Input className="form-bg" type="password" name="password" onChange={this.handleChange} placeholder="Password" required minLength="8" value={this.state.password}/>
                   </FormGroup>
                   <Button block className="purple-btn login-btn" type="submit">Login</Button>
-                  <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}}to='/reset'>Forgot your password?</Link></div>
+                  <div className="text-center small mt-2"><Link style={{color:'#8da2b5'}} to='/reset'>Forgot your password?</Link></div>
                   <hr/>
                   <div className="text-center">Dont have an account? <a href="/signup" onClick={this.openRegister}>Sign Up</a></div>
                 </div>

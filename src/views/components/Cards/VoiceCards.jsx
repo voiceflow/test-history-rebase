@@ -55,7 +55,7 @@ class VoiceCards extends Component {
                           {this.props.copyLabel}
                         </DropdownItem>
                       }
-                      <DropdownItem onClick={(e) => { e.stopPropagation(); this.props.onDelete(this.props.id, this.props.name) }}>
+                      <DropdownItem onClick={(e) => { e.stopPropagation(); this.props.onDelete(this.props.project_id || this.props.id, this.props.name) }}>
                         {this.props.deleteLabel}
                       </DropdownItem>
                     </DropdownMenu>

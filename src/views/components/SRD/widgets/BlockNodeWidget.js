@@ -266,6 +266,13 @@ export class BlockNodeWidget extends BaseWidget {
 						this.forceUpdate()
 					}
 				}}
+				onContextMenu={(e) => {
+					if (this.props.node.parentCombine){
+						this.props.nodeProps.generateBlockMenu(e, this.props.node)
+						e.preventDefault()
+						e.stopPropagation()
+					}
+				}}
 				key={this.props.node.id}
 			>
 				{this.props.node.linter && this.props.node.linter.length > 0 &&
@@ -351,7 +358,7 @@ export class BlockNodeWidget extends BaseWidget {
 										value={this.state.name}
 										onChange={this.handleChange}
 										onKeyDown={(e) => e.keyCode===13 && this.close()}
-										style={{background: 'none', border: 'none', outline: 'none', textAlign: 'center', width: '100px'}}
+										className='plain-input'
 										autoFocus
 									/>:
 							< span > {

@@ -16,7 +16,7 @@ const centerDiagram = ( engine, setOpen ) => {
     let nodes = model.getNodes()
     for (let key in nodes) {
         if (nodes[key].extras && nodes[key].extras.type === 'story') {
-            engine.setSuperSelect(nodes[key])
+            // engine.setSuperSelect(nodes[key])
             nodes[key].setSelected()
             setOpen(true)
             model.setZoomLevel(80)

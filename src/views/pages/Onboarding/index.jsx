@@ -65,11 +65,11 @@ class Onboarding extends Component{
 			})
 			.then(res => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.props.history.push('/')
+				this.props.history.push("/templates");
 			})
 			.catch(err => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.props.history.push('/')
+				this.props.history.push("/templates");
 			})
     }
 

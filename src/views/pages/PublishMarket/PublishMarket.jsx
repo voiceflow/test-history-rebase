@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-import { FormGroup, Label, Input } from 'reactstrap'
+import { connect } from 'react-redux'
+import { FormGroup, Label, Input, Form } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button'
 import moment from 'moment'
 import Textarea from 'react-textarea-autosize'
 import Image from './../../components/Uploads/Image'
 import Select from 'react-select'
-import ConfirmModal from './../../components/Modals/ConfirmModal'
 import VariableMap from './VariableMap'
 
 import axios from 'axios'
 import '../Skill/Skill.css'
 import './PublishMarket.css'
 import types from './../../../services/Types'
+import { setConfirm, clearModal } from 'actions/modalActions'
 
 class PublishMarket extends Component {
 	constructor(props){
@@ -26,7 +27,6 @@ class PublishMarket extends Component {
             in_review: false,
             title: '',
             module_icon: null,
-            displayingConfirmWithdraw: false,
             color: '',
             input: [],
             output: [],
@@ -38,6 +38,7 @@ class PublishMarket extends Component {
 
         this.handleTypeSelection = this.handleTypeSelection.bind(this)
         this.toggleConfirmWithdraw = this.toggleConfirmWithdraw.bind(this)
+        this.toggleConfirmSubmission = this.toggleConfirmSubmission.bind(this)
         this.onWithdraw = this.onWithdraw.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.save = this.save.bind(this)
@@ -105,7 +106,7 @@ class PublishMarket extends Component {
     }
 
     onLoad(){
-    	axios.get('/marketplace/cert/' + this.state.skill_id)
+    	axios.get('/marketplace/cert/' + this.props.project_id)
     	.then(res => {
     		if(res.data.type){
     			for(var j=0;j<types.length;j++){
@@ -128,7 +129,7 @@ class PublishMarket extends Component {
     		// Non-existant keep default vals
     	});
 
-    	axios.get('/marketplace/cert/status/' + this.state.skill_id)
+    	axios.get('/marketplace/cert/status/' + this.props.project_id)
     	.then(res => {
     		this.setState({
     			in_review: res.data
@@ -138,53 +139,56 @@ class PublishMarket extends Component {
     	});
     }
 
-    save(){
-        const s = this.state;
-        const type = (s.type && s.type.value ? s.type.value : null);
-        axios.patch('/marketplace/cert/' + this.state.skill_id, {
-            title: s.title,
-            descr: s.descr,
-            creator_id: this.props.user.id,
-            tags: JSON.stringify(s.tags),
-            type: type,
-            overview: s.overview,
-            module_icon: s.module_icon,
-            color: s.color,
-            input: JSON.stringify(s.input),
-            output: JSON.stringify(s.output),
-        })
-        .then(res => {
+    save = () => new Promise(async (resolve, reject) => {
+        const s = this.state
+        // const type = (s.type && s.type.value ? s.type.value : null);
+        const type = 'FLOW'
+        try{
+            await axios.patch('/marketplace/cert/' + this.props.project_id, {
+                title: s.title,
+                descr: s.descr,
+                creator_id: this.props.user.id,
+                tags: JSON.stringify(s.tags),
+                type: type,
+                overview: s.overview,
+                module_icon: s.module_icon,
+                color: s.color,
+                input: JSON.stringify(s.input),
+                output: JSON.stringify(s.output),
+            })
             this.setState({
                 saved: true
-            });
-        })
-        .catch(err => {
-            console.log(err);
+            })
+            resolve()
+        } catch (err) {
+            console.log(err)
             this.setState({
                 error: 'Save Error, updates not saved'
-            });
-        });
-    }
+            })
+            reject()
+        }
+    })
 
-    publish(){
-        this.save();
-        let s = this.state;
-        if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
-        	axios.post('/marketplace/cert/' + this.state.skill_id)
+    publish = async () => {
+        await this.save()
+        let s = this.state
+        // if (s.title && s.descr && s.tags && s.type && s.overview && s.module_icon){
+        if (s.title && s.descr && s.overview){
+        	axios.post(`/marketplace/cert/${this.state.skill_id}/${this.props.project_id}`)
             .then(res => {
                 this.setState({
                     saved: true,
                     in_review: true,
                     show_incomp_alert: false
-                });
+                })
             })
             .catch(err => {
                 console.log(err);
                 this.setState({
                     error: 'Publish Error, failed to publish',
                     show_incomp_alert: false
-                });
-            });
+                })
+            })
         } else {
             this.setState({
                 show_incomp_alert: true
@@ -193,12 +197,12 @@ class PublishMarket extends Component {
     }
 
     onWithdraw(){
-        axios.delete('/marketplace/cert/' + this.state.skill_id)
+        axios.delete(`/marketplace/cert/${this.props.skill_id}/${this.props.project_id}`)
         .then(res => {
         	this.setState({
         		in_review: false,
-        		displayingConfirmWithdraw: false
-        	})
+            })
+            this.props.clearModal()
         })
         .catch(err => {
         	console.log(err);
@@ -209,18 +213,17 @@ class PublishMarket extends Component {
     }
 
     toggleConfirmWithdraw() {
-        if(!this.state.displayingConfirmWithdraw){
-            this.setState({
-                displayingConfirmWithdraw: {
-                    text: "Are you sure you want to withdraw this Skill?",
-                    confirm: this.onWithdraw
-                }
-            });
-        }else{
-            this.setState({
-                displayingConfirmWithdraw: false
-            }); 
-        }
+        this.props.setConfirm({
+            text: "Are you sure you want to withdraw this flow?",
+            confirm: this.onWithdraw
+        })
+    }
+
+    toggleConfirmSubmission(){
+        this.props.setConfirm({
+            text: "Are you sure you want to publish this flow?",
+            confirm: this.publish
+        })
     }
 
     componentDidMount() {
@@ -250,31 +253,7 @@ class PublishMarket extends Component {
 
 	render(){
 		return(
-			<div className="Window skill">
-                <div className="subheader">
-                    <div className="container space-between">
-                        <span className="text-muted">
-                            <span className="text-secondary">{this.props.skill.name}</span>{' '}
-                            <small> / created {moment(this.props.skill.created).fromNow()}</small>
-                        </span>
-                        {
-                        	this.state.in_review?
-                        	null
-                        	:
-	                        <div className="subheader-right">
-
-	                            <MUIButton variant="contained" className="white-btn mr-3" onClick={this.save}>Save Draft{this.state.saved ? '':'*'}</MUIButton>
-	                            <MUIButton variant="contained" className="purple-btn" onClick={this.publish}>Submit to Marketplace <i className="fas fa-store-alt ml-2"/></MUIButton>
-	                        </div>
-                    	}
-                    </div>
-                </div>
-
-                <ConfirmModal 
-                    confirm = {this.state.displayingConfirmWithdraw}
-                    toggle = {this.toggleConfirmWithdraw}
-                />
-
+            <React.Fragment>
                 <span className="container position-fixed bg-white mt-3 ml-2 mr-2 border p-3 pb-0 rounded" id="publish-status">
                     <div className="row justify-content-center">
                         <h3>Status</h3>
@@ -292,6 +271,19 @@ class PublishMarket extends Component {
                             <p>Title</p>
                         </div>
                     </div>
+                    {/* <hr className="mt-0"></hr>
+                    <div className="row">
+                        <div className="col-2">
+                            {this.state.module_icon?
+                                <i className="fal fa-check-circle text-success"></i>
+                                :
+                                <i className="fal fa-times-circle text-danger"></i>
+                            }
+                        </div>
+                        <div className="col-10">
+                            <p>Icon</p>
+                        </div>
+                    </div> */}
                     <hr className="mt-0"></hr>
                     <div className="row">
                         <div className="col-2">
@@ -318,298 +310,213 @@ class PublishMarket extends Component {
                             <p>Overview</p>
                         </div>
                     </div>
-                    <hr className="mt-0"></hr>
-                    <div className="row">
-                        <div className="col-2">
-                            {this.state.module_icon?
-                                <i className="fal fa-check-circle text-success"></i>
-                                :
-                                <i className="fal fa-times-circle text-danger"></i>
-                            }
-                        </div>
-                        <div className="col-10">
-                            <p>Icon</p>
-                        </div>
-                    </div>
-                    <hr className="mt-0"></hr>
-                    <div className="row">
-                        <div className="col-2">
-                            {this.state.type?
-                                <i className="fal fa-check-circle text-success"></i>
-                                :
-                                <i className="fal fa-times-circle text-danger"></i>
-                            }
-                        </div>
-                        <div className="col-10">
-                            <p>Type</p>
-                        </div>
-                    </div>
-                    <hr className="mt-0"></hr>
-                    <div className="row">
-                        <div className="col-2">
-                            {this.state.tags?
-                                <i className="fal fa-check-circle text-success"></i>
-                                :
-                                <i className="fal fa-times-circle text-danger"></i>
-                            }
-                        </div>
-                        <div className="col-10">
-                            <p>Tags</p>
-                        </div>
-                    </div>
                 </span>
 
-				<div className="container mt-3">
-					{this.state.in_review?
-		                <div className="alert alert-success mb-4" role="alert">
-		                    <div className="d-flex justify-content-between align-items-center">
-		                        <h5 className="mb-0">This skill is currently being reviewed for the Marketplace.</h5>
-		                        <div>
-		                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
-		                        </div>
-		                    </div>
-		                </div>
-		            	:
-		            	null
-		            }
+                <div className="subheader-page-container">
+                    <div>
+                        <div className="container pt-3">
 
-                    {this.state.show_incomp_alert?
-                        <div className="alert alert-danger mb-4" role="alert">
-                            <div className="d-flex justify-content-between align-items-center">
-                                <h5 className="mb-0">Missing essential information about your {this.state.type === 'FLOW'? "flow": "template"}.</h5>
-                            </div>
-                        </div>
-                        :
-                        null
-                    }
+                            {this.state.in_review?
+                                <div className="alert alert-success mb-4" role="alert">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <span>This skill is currently being reviewed for the Marketplace.</span>
+                                        <div>
+                                            <MUIButton variant="contained" className="purple-btn ml-3" onClick={this.toggleConfirmWithdraw}>Withdraw Submission</MUIButton>
+                                        </div>
+                                    </div>
+                                </div>
+                                :
+                                null
+                            }
 
-					<FormGroup>
-						<div className="row">
-                            <div className="col-3 publish-info"></div>
-                            <div className="col-9">
-                                <Label><b>Title </b>*</Label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 publish-info">
-                                <p className="mb-0 text-secondary"><b>Title</b> is what we display for your skill on the Marketplace.</p>
-                            </div>
-                            <div className="col-9">
-                                <Input type="text" name="title" placeholder="Storyflow - Interactive Story Adventures" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange}/>
-                            </div>
-                        </div>
-					</FormGroup>
+                            <Form>
+                                <div className="big-settings-alignment-div">
+                                    <div className="mb-4 mt-5"><b>Basic Skill Info</b></div>
+                                    <div className="big-settings-content">
+                                        <FormGroup>
+                                            <div className="row">
+                                                <div className="col-3 publish-info">
+                                                    <p className="mb-0 helper-text"><b>Title</b> is what we display for your flow on the Marketplace and can be 20 characters at most.</p>
+                                                </div>
+                                                <div className="col-9">
+                                                    <Label className="publish-label">Title *</Label>
+                                                    <Input className="form-bg" type="text" name="title" placeholder="Storyflow - Interactive Story Adventures" value={this.state.title} disabled={this.state.in_review} onChange={this.handleChange} maxLength={20}/>
+                                                </div>
+                                            </div>
+                                        </FormGroup>
 
-					<FormGroup>
-						<div className="row">
-                            <div className="col-3 publish-info"></div>
-                            <div className="col-9">
-                                <Label><b>Description </b>*</Label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 publish-info">
-                                <p className="text-secondary">
-                                    <b>Description</b> is a summary of your {this.state.type === 'FLOW'? "flow": "template"} that shows on your {this.state.type === 'FLOW'? "flow": "template"}'s card on the Marketplace. 
-                                </p>
-                            </div>
-                            <div className="col-9">
-                                <Textarea
-                                    name="descr"
-                                    className="form-control"
-                                    disabled={this.state.in_review}
-                                    value={this.state.descr}
-                                    onChange={this.handleChange}
-                                    minRows={3}
-                                    placeholder="Module description"
-                                />
-                            </div>
-                        </div>
-					</FormGroup>
+                                        {/* <div className="d-flex row">
+                                            <div className="col-3 helper-text">
+                                                <p className="text-secondary mt-5"><b>Icon</b> will be displayed for your {this.state.type === 'FLOW'? "flow": "template"} in the Voiceflow editor.</p>
+                                            </div>
+                                            <div className="col-9 d-flex">
+                                                <div>
+                                                    <label className="mt-0"><b>Icon</b> *</label>
+                                                    <Image
+                                                        className="icon-image large-icon"
+                                                        path='/large_icon'
+                                                        max_size={512*1024}
+                                                        isDisabled={this.state.in_review}
+                                                        image={this.state.module_icon} 
+                                                        update={(url) => this.setState({module_icon: url})}/>
+                                                </div>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                </div>
 
-					<FormGroup>
-						<div className="row">
-                            <div className="col-3 publish-info"></div>
-                            <div className="col-9">
-                                <Label><b>Overview </b>*</Label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 publish-info">
-                                <p className="text-secondary">
-                                    <b>Overview</b> is a detailed description of your {this.state.type === 'FLOW'? "flow": "template"}. Feel free to put as much information in this section! If you're using variables, writing
-                                    detailed descriptions is essential for your user's understanding. 
-                                </p>
-                            </div>
-                            <div className="col-9">
-                                <Textarea
-                                    name="overview"
-                                    className="form-control"
-                                    disabled={this.state.in_review}
-                                    value={this.state.overview}
-                                    onChange={this.handleChange}
-                                    minRows={3}
-                                    placeholder="Module overview"
-                                />
-                            </div>
-                        </div>
-					</FormGroup>
+                                <div className="big-settings-alignment-div">
+                                    <div className="mb-4 mt-5"><b>Flow Description</b></div>
+                                    <div className="big-settings-content">
+                                        <FormGroup>
+                                            <div className="row">
+                                                <div className="col-3 publish-info">
+                                                    <p className="mb-0 helper-text">
+                                                        <b>Description</b> is a summary of your flow that shows on its card in the Marketplace. 
+                                                    </p>
+                                                </div>
+                                                <div className="col-9">
+                                                    <Label className="publish-label">Description *</Label>
+                                                    <Textarea
+                                                        name="descr"
+                                                        className="form-control"
+                                                        disabled={this.state.in_review}
+                                                        value={this.state.descr}
+                                                        onChange={this.handleChange}
+                                                        minRows={3}
+                                                        placeholder="Module description"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </FormGroup>
 
-                    <div className="d-flex row">
-                        <div className="col-3 publish-info">
-                            <p className="text-secondary mt-5"><b>Icon</b> will be displayed for your {this.state.type === 'FLOW'? "flow": "template"} in the Voiceflow editor.</p>
-                        </div>
-                        <div className="col-9 d-flex">
-                            <div>
-                                <label className="mt-0"><b>Icon</b> *</label>
-                                <Image
-                                    path='/large_icon'
-                                    max_size={512*1024}
-                                    isDisabled={this.state.in_review}
-                                    image={this.state.module_icon} 
-                                    update={(url) => this.setState({module_icon: url})}/>
+                                        <FormGroup>
+                                            <div className="row">
+                                                <div className="col-3 publish-info">
+                                                    <p className="mb-0 helper-text">
+                                                        <b>Overview</b> is a detailed description of your flow. If you're using variables, writing a
+                                                        detailed description is essential for your users' understanding. 
+                                                    </p>
+                                                </div>
+                                                <div className="col-9">
+                                                    <Label className="publish-label">Overview *</Label>
+                                                    <Textarea
+                                                        name="overview"
+                                                        className="form-control"
+                                                        disabled={this.state.in_review}
+                                                        value={this.state.overview}
+                                                        onChange={this.handleChange}
+                                                        minRows={3}
+                                                        placeholder="Module overview"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </FormGroup>
+
+                                        <FormGroup>
+                                            <div className="row">
+                                                <div className="col-3 publish-info">
+                                                    <p className="mb-0 helper-text">
+                                                        Your flow's <b>tags</b> are a comma-separated list of tags that helps users find your flow more easily.
+                                                    </p>
+                                                </div>
+                                                <div className="col-9">
+                                                    <Label className="publish-label">Tags</Label>
+                                                    {this.state.tags.length > 0 ? 
+                                                        <div className="mb-3">
+                                                            {this.state.tags.map((tag, i) => 
+                                                            <span key={i} className="publish-tag mr-2">
+                                                                {tag} <i className="fal fa-times ml-1" onClick={() => {this.handleDeleteTag(i)}}></i>
+                                                            </span>)}
+                                                        </div>
+                                                        :
+                                                        null
+                                                    }
+                                                    {
+                                                        this.state.failed_tag_add?
+                                                        <div className="alert alert-danger pt-1 pb-1 mt-2" role="alert">
+                                                            You can have 3 tags at most.
+                                                        </div>
+                                                        :
+                                                        null
+                                                    }
+                                                    <Input type="text" 
+                                                        name="tags_input" 
+                                                        placeholder="Add tags" 
+                                                        value={this.state.tags_input} 
+                                                        disabled={this.state.in_review} 
+                                                        onChange={this.handleChange}
+                                                        onKeyPress={this.handleKeyPress}/>
+                                                </div>
+                                            </div>
+                                        </FormGroup>
+                                    </div>
+                                </div>
+
+                                {/* <div className="big-settings-alignment-div">
+                                    <div className="mb-4 mt-5"><b>Flow Variables</b></div>
+                                    <div className="big-settings-content">
+                                        <div className="row mb-4">
+                                            <div className="col-3 publish-info">
+                                                <p className="mb-0 helper-text"><b>Input variables</b> are the variables that will be available for input mapping when users use your flow.</p>
+                                            </div>
+                                            <div className="col-9">
+                                                <Label className="publish-label">Input Variables</Label>
+                                                <VariableMap
+                                                    pairs={this.state.input}
+                                                    onAdd={(e, type) => this.handleAddVar('input')}
+                                                    onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
+                                                    onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
+                                                    type='input'
+                                                    variables={this.state.variables}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-3 publish-info">
+                                                <p className="mb-0 helper-text"><b>Output variables</b> are the variables that will be available for output mapping when users use your flow.</p>
+                                            </div>
+                                            <div className="col-9">
+                                                <Label className="publish-label">Output Variables</Label>
+                                                <VariableMap
+                                                    pairs={this.state.output}
+                                                    onAdd={(e, type) => this.handleAddVar('output')}
+                                                    onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
+                                                    onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
+                                                    type='output'
+                                                    variables={this.state.variables}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> */}
+                            </Form>
+                            {!this.state.in_review &&
+                            <div className="text-center">
+                                <button variant="contained" className="purple-btn" onClick={this.toggleConfirmSubmission}>
+                                    Submit Flow
+                                </button>
                             </div>
+                            }
                         </div>
                     </div>
-
-                    <FormGroup>
-                        <div className="row">
-                            <div className="col-3 publish-info"></div>
-                            <div className="col-9">
-                                <Label><b>Type *</b></Label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 publish-info">
-                                <p className="text-secondary">
-                                    Your skill can be one of two <b>types</b>, either a flow or a template. If another creator users your flow, they won't be able to look into your flow diagram, whereas with a template they can.
-                                </p>
-                            </div>
-                            <div className="col-9">
-                                <Select
-                                    className="input-select"
-                                    name="type"
-                                    isDisabled={this.state.in_review}
-                                    value={this.state.type}
-                                    onChange={this.handleTypeSelection}
-                                    options={types}
-                                />
-                            </div>
-                        </div>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <div className="row">
-                            <div className="col-3 publish-info"></div>
-                            <div className="col-9">
-                                <Label><b>Tags *</b></Label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 publish-info">
-                                <p className="text-secondary">
-                                    <b>Tags</b> is a comma-separated list of tags that helps users find your {this.state.type === 'FLOW'? "flow": "template"} more easily.
-                                </p>
-                            </div>
-                            <div className="col-9">
-                                {this.state.tags.map((tag, i) => 
-                                    <span key={i} className="publish-tag">
-                                        {tag} <i className="fal fa-times ml-1" onClick={() => {this.handleDeleteTag(i)}}></i>
-                                    </span>
-                                )}
-                                {
-                                    this.state.failed_tag_add?
-                                    <div className="alert alert-danger pt-1 pb-1 mt-2" role="alert">
-                                        3 tag maximum
-                                    </div>
-                                    :
-                                    null
-                                }
-                                <Input type="text" 
-                                    name="tags_input" 
-                                    placeholder="Add tags" 
-                                    value={this.state.tags_input} 
-                                    disabled={this.state.in_review} 
-                                    onChange={this.handleChange}
-                                    onKeyPress={this.handleKeyPress}/>
-                            </div>
-                        </div>
-                    </FormGroup>
-
-                    {/*
-                    <FormGroup>
-                        <div className="row">
-                            <div className="col-3 publish-info"></div>
-                            <div className="col-9">
-                                <Label><b>Block Color </b>*</Label>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-3 publish-info">
-                                <p className="mb-0 text-secondary"><b>Block color</b> is the hexcode color your block will appear as.</p>
-                            </div>
-                            <div className="col-9">
-                                <Input type="text" name="color" placeholder="6CD132" value={this.state.color} disabled={this.state.in_review} onChange={this.handleChange}/>
-                            </div>
-                        </div>
-                    </FormGroup>
-                    */}
-
-                    {this.state.type && this.state.type.value === 'FLOW'?
-                        <React.Fragment>
-                            <div className="row">
-                                <div className="col-3 publish-info"></div>
-                                <div className="col-9">
-                                    <Label>Input Variables</Label>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="mb-0 text-secondary"><b>Input variables</b> are the variables that will be available for input mapping when users use your module.</p>
-                                </div>
-                                <div className="col-9">
-                                    <VariableMap
-                                        pairs={this.state.input}
-                                        onAdd={(e, type) => this.handleAddVar('input')}
-                                        onRemove={(e, i, type) => this.handleRemoveVar(i, 'input')}
-                                        onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'input')}
-                                        type='input'
-                                        variables={this.state.variables}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-3 publish-info"></div>
-                                <div className="col-9">
-                                    <Label>Output Variables</Label>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3 publish-info">
-                                    <p className="mb-0 text-secondary"><b>Output variables</b> are the variables that will be available for output mapping when users use your module.</p>
-                                </div>
-                                <div className="col-9">
-                                    <VariableMap
-                                        pairs={this.state.output}
-                                        onAdd={(e, type) => this.handleAddVar('output')}
-                                        onRemove={(e, i, type) => this.handleRemoveVar(i, 'output')}
-                                        onChange={(e, val, i, type) => this.handleVarChange(e, val, i, 'output')}
-                                        type='output'
-                                        variables={this.state.variables}
-                                    />
-                                </div>
-                            </div>
-                        </React.Fragment>
-                        :
-                        null
-                    }
-                    
-                    
-				</div>
-			</div>
-		);
-	}
+                </div>
+            </React.Fragment>
+        )
+    }
 }
 
-export default PublishMarket;
+const mapStateToProps = state => ({
+    confirmModal: state.modal.confirmModal,
+    skill_id: state.skills.skill.skill_id,
+    project_id: state.skills.skill.project_id
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setConfirm: (confirm) => dispatch(setConfirm(confirm)),
+        clearModal: () => dispatch(clearModal()),
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PublishMarket);

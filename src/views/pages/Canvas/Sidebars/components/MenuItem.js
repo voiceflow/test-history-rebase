@@ -27,7 +27,7 @@ class MenuItem extends Component {
                         }
                     }}
                 >
-                    <div className="MenuIcon">
+                    <div className={"MenuIcon" + (this.props.item.type === 'symbol' ? ' module-icon' : '')}>
                         {this.props.item.icon}
                     </div>
                     <div className="MenuText">

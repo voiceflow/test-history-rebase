@@ -92,10 +92,6 @@ exports[`Dashboard render dashboard 1`] = `
       </Link>
     </div>
   </div>
-  <Connect(ConfirmModal)
-    confirm={false}
-    toggle={[Function]}
-  />
   <WarningModal
     dismiss={[Function]}
     error={null}

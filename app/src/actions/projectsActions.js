@@ -44,7 +44,7 @@ export const fetchProjects = team_id => {
     dispatch(resetProjects())
     try{
       let url = `/projects`
-      if(team_id !== -1) url = `/team/${team_id}/skills`
+      if(team_id !== -1) url = `/team/${team_id}/projects`
       let res = await axios.get(url)
       dispatch(updateProjects(res.data))
       return Promise.resolve()

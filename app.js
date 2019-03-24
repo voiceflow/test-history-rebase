@@ -159,7 +159,6 @@ app.patch('/multimodal/display/:id', ensureLoggedIn(), Multimodal.setDisplay);
 app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay);
 app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
-app.get('/projects', ensureLoggedIn(), Project.getProjects)
 app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
 app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject)
 app.get('/project/:project_id/live_version', ensureLoggedIn(), Project.getLiveVersion)
@@ -168,17 +167,6 @@ app.get('/project/:project_id/versions', ensureLoggedIn(), Project.getProjectVer
 app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
 app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
 app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
-
-// DEPRECATE ASAP (OLD SKILL ROUTES CONVERTED TO PROJECT)
-app.get('/skill/:skill_id', ensureLoggedIn(), Project.getProjectFromSkill, Skill.getSkill);
-app.get('/skills', ensureLoggedIn(), Project.getProjects)
-app.get('/skill/:skill_id/live_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getLiveVersion)
-app.get('/skill/:skill_id/dev_version', ensureLoggedIn(), Project.getProjectFromSkill, Project.getDevVersion)
-app.get('/skill/:skill_id/versions', ensureLoggedIn(), Project.getProjectFromSkill, Project.getProjectVersions)
-app.post('/diagram/:diagram_id/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Project.render);
-app.post('/skill/:skill_id/publish', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildSkill);
-app.post('/skill/:skill_id/publishgoogle', ensureLoggedIn(), Project.getProjectFromSkill, Skill.buildGoogleSkill);
-// DELETE BEFORE APRIL 2019
 
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
@@ -201,7 +189,8 @@ app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
 app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 app.get('/teams', ensureLoggedIn(), Team.getTeams)
-app.get('/team/:team_id/skills', ensureLoggedIn(), Team.getSkills)
+app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
+app.get('/team/:team_id/copy/module/:module_id', ensureLoggedIn(), Team.verifyTeam, Team.copyModule)
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)

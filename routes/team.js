@@ -6,6 +6,10 @@ const {
 } = require('./../services')
 
 const {
+  copySkill
+} = require('./skill_util')
+
+const {
   sendTeamInvite
 } = require('./mail')
 
@@ -21,6 +25,20 @@ const createTeam = async (name, image, creator) => {
     "INSERT INTO teams (name, image_url, creator_id) VALUES ($1, $2, $3) RETURNING team_id",
     [name, image, creator.id])
   return result.rows[0].team_id
+}
+
+exports.verifyTeam = async (req, res, next) => {
+  try {
+    let team_id = team_hash.decode(req.params.team_id)[0]
+    if(!team_id) throw new Error("No Team")
+    let result = await pool.query(
+      "SELECT 1 FROM team_members WHERE team_id = $1 AND creator_id = $2 LIMIT 1", [team_id, req.user.id]
+    )
+    if(result.rows.length === 0) throw new Error("No Access")
+  } catch(err) {
+    return res.sendStatus(401)
+  }
+  next()
 }
 
 // Add Team Members/Seats to the team
@@ -130,30 +148,31 @@ exports.getTeams = async (req, res) => {
   }
 }
 
-exports.getSkills = async (req, res) => {
+exports.getProjects = async (req, res) => {
   try {
     let team_id = team_hash.decode(req.params.team_id)[0]
 
     if(!team_id) return res.sendStatus(404)
 
-    let skills = (await pool.query(`
-      SELECT
-        s.skill_id,
-        s.name,
-        s.large_icon
-      FROM
-        skills s
-        INNER JOIN teams t ON s.team_id = t.team_id
-        INNER JOIN team_members tm ON tm.team_id = t.team_id
-        WHERE
-          team_id = $1
-          AND tm.creator_id = $2
-        GROUP BY
-          s.skill_id
+    let projects = (await pool.query(`
+      SELECT s.*, p.project_id
+      FROM projects p
+      INNER JOIN skills s ON p.dev_version = s.skill_id
+      INNER JOIN team_members tm ON tm.team_id = p.team_id
+      WHERE tm.team_id = $1 AND tm.creator_id = $2
     `, [team_id, req.user.id])).rows
-    res.send(skills)
+
+    res.send(projects.map(project => {
+      project.skill_id = hashids.encode(project.skill_id)
+      project.project_id = hashids.encode(project.project_id)
+      return project
+    }))
   } catch (err) {
     writeToLogs('GET TEAM SKILLS', err)
     res.sendStatus(500)
   }
+}
+
+exports.copyModule = async (req, res) => {
+
 }

@@ -9,6 +9,7 @@ import './Template.css'
 import LightCanvas from './../Canvas/LightCanvas'
 import MUIButton from '@material-ui/core/Button';
 import { Spinner } from 'views/components/Spinner'
+import { connect } from "react-redux";
 
 class Templates extends Component {
     constructor(props) {
@@ -100,7 +101,7 @@ class Templates extends Component {
         this.loadDefaultTemplates()
     }
 
-    createSkill(module_id) {
+    createProject(module_id) {
         this.setState({ loading: true })
 
         if(localStorage.getItem('is_first_session') === 'true'){
@@ -110,10 +111,10 @@ class Templates extends Component {
             })
         }
 
-        axios.post(`/marketplace/template/${module_id}/copy`, {
-            name: this.state.name,
-            locales: this.state.locales,
-            platform: this.state.google ? 'google' : 'alexa'
+        axios.post(`/team/${this.props.team_id}/copy/module/${module_id}`, {
+          name: this.state.name,
+          locales: this.state.locales,
+          platform: this.state.google ? 'google' : 'alexa'
         })
             .then(res => {
                 if (res.data.skill_id && res.data.diagram) {
@@ -185,7 +186,7 @@ class Templates extends Component {
                                 <TemplateCard
                                     key={template.module_id}
                                     template={template}
-                                    createSkill={this.createSkill}
+                                    createProject={this.createProject}
                                     previewTemplate={this.previewTemplate}
                                 />)}
                         </div>
@@ -282,4 +283,8 @@ class Templates extends Component {
     }
 }
 
-export default Templates
+const mapStateToProps = state => ({
+  team: state.projects.team,
+})
+
+export default connect(mapStateToProps)(Templates)

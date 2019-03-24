@@ -517,9 +517,9 @@ const checkVersions = (user, project_id, platform, options) => {
       SELECT s.amzn_id, s.live, pv.* FROM skills s 
       INNER JOIN project_versions pv ON pv.version_id = s.skill_id
       WHERE pv.project_id = $1 
-        AND ( pv.platform = $2 OR pv.platform IS NULL )
+        AND ( pv.platform = $2 OR pv.platform IS NULL OR pv.version_id = $3)
         ORDER BY pv.created ASC`,
-      [project_id, platform],
+      [project_id, platform, dev_version],
       async (err, data) => {
         if (err) {
           writeToLogs('CREATOR_BACKEND_ERRORS', {

@@ -15,6 +15,11 @@ const {
 const del = require('del');
 const spawn = require('child_process').spawn
 
+const VALID_VERSION_REGEXES = [
+  new RegExp('Version (\\d+)'),
+  new RegExp('.-\\[([^\\[\\]]+)\\]\\S+')
+]
+
 exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promise(async (resolve, reject) => {
   let random_id = uuid()
   let dir = `${GACTIONS_CLI_ROOT}/${random_id}`
@@ -81,7 +86,7 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
         const approval = words[3]
         const deployment_status = words[4]
 
-        if (/.-\[[^\[\]]+\]\S+/.test(version)) {
+        if (_.some(VALID_VERSION_REGEXES, (regex) => regex.test(version))) {
           attached_google_versions[version] = {
             create_time,
             update_time,
@@ -90,6 +95,9 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
           }
         }
       })
+      if (lines.length > 1 && Object.keys(attached_google_versions) === 0) {
+        reject('Unable to verify Google Actions Version')
+      }
       resolve(attached_google_versions)
     })
 
@@ -100,18 +108,27 @@ exports.checkGactionsVersionChanged = (creds, project_id, skill_id) => new Promi
 
     if (existing_google_versions && Object.keys(existing_google_versions).length > 0) {
       highest_existing_version = Object.keys(existing_google_versions).sort((a, b) => {
-        const aVersion = +a.match(/.-\[([^\[\]]+)\]\S+/)[1]
-        const bVersion = +b.match(/.-\[([^\[\]]+)\]\S+/)[1]
+        const aVersion = +(_.find(VALID_VERSION_REGEXES.map(regex => 
+          a.match(regex)
+        )))[1]
+        const bVersion = +(_.find(VALID_VERSION_REGEXES.map(regex => 
+          b.match(regex)
+        )))[1]
 
         return aVersion - bVersion
       })
-      highest_existing_version = +highest_existing_version[highest_existing_version.length - 1].match(/.-\[([^\[\]]+)\]\S+/)[1]
+      highest_existing_version = +(_.find(VALID_VERSION_REGEXES.map(regex => 
+        highest_existing_version[highest_existing_version.length - 1].match(regex)
+      )))[1]
+      
     } else {
       existing_google_versions = {}
     }
 
     Object.keys(all_google_versions).forEach(version => {
-      const version_number = +version.match(/.-\[([^\[\]]+)\]\S+/)[1]
+      const version_number = +(_.find(VALID_VERSION_REGEXES.map(regex => 
+        version.match(regex)
+      )))[1]
       if (version_number > highest_existing_version) {
         google_versions_to_update[version] = all_google_versions[version]
       }

@@ -63,7 +63,11 @@ class DashBoard extends Component {
     });
   }
 
-  deleteProject(project_id, project_name) {
+  deleteProject(skill_id, project_name) {
+    let project = this.props.projects.find(p => p.skill_id === skill_id)
+    if(!project) return
+    console.log("FOUND")
+    let project_id = project.project_id
     this.setState({
       confirm: {
         text: (

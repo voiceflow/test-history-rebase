@@ -5,14 +5,13 @@ export const resetProjects = () => ({
   type: "RESET_PROJECTS"
 })
 
-export const updateTeam = team => {
+export const updateCurrentTeam = team_id => {
   return async (dispatch, getState) => {
-    if(team !== getState().projects.team){
+    if(team_id !== getState().projects.team_id){
       dispatch({
-        type: "UPDATE_TEAM",
-        payload: team
+        type: "UPDATE_CURRENT_TEAM",
+        payload: team_id
       })
-      dispatch(fetchProjects(team))
     }
   }
 }
@@ -26,6 +25,17 @@ export const updateTeams = teams => ({
   type: 'UPDATE_TEAMS',
   payload: teams
 })
+
+export const deleteTeam = team_id => {
+  return async dispatch => {
+    try{
+      await axios.delete(`/team/${team_id}`)
+    }catch(err){
+      console.error(err)
+      throw new Error("Team Delete Fail")
+    }
+  }
+}
 
 export const fetchTeams = () => {
   return async dispatch => {

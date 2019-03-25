@@ -98,7 +98,7 @@ class Skill extends Component {
           this.componentGracefulUnmount
         )
         if(this.props.computedMatch && this.props.computedMatch.params && this.props.computedMatch.params.skill_id){
-          this.props.getSkills(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
+          this.props.getVersion(this.props.computedMatch.params.skill_id, this.props.preview, this.props.computedMatch.params.diagram_id).then(() => {
             this.setState({load_skill: false})
             if (!this.props.preview){
               if (window.user_detail && window.user_detail.admin > 0 && this.props.skill) {
@@ -251,7 +251,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     getDiagrams: (skill_id) => dispatch(fetchDiagrams(skill_id)),
-    getSkills: (skill_id, preview, diagram_id) => dispatch(fetchVersion(skill_id, preview, diagram_id)),
+    getVersion: (version_id, preview, diagram_id) => dispatch(fetchVersion(version_id, preview, diagram_id)),
     setLiveModal: isLive => dispatch(setLiveModeModal(isLive)),
     getProducts: (skill_id) => dispatch(fetchProducts(skill_id)),
     getDisplays: (skill_id) => dispatch(fetchDisplays(skill_id)),

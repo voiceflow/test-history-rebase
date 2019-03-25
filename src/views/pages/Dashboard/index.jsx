@@ -7,39 +7,31 @@ import Masonry from "react-masonry-component";
 import { Tooltip } from "react-tippy";
 import "./DashBoard.css";
 import axios from "axios";
-import ConfirmModal from "./../../components/Modals/ConfirmModal";
-import WarningModal from "./../../components/Modals/WarningModal";
 import UpdatesModal from "./../../components/Modals/UpdatesModal";
 import VoiceCards from "views/components/Cards/VoiceCards";
 import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
+import TeamSettings from "./TeamSettings"
 import { Alert, Input } from "reactstrap";
 import { setConfirm, setError } from 'actions/modalActions'
 import { connect } from "react-redux";
 import {
   fetchProjects,
-  fetchTeams,
   deleteProject,
   copyProject,
-  updateTeam
 } from "actions/projectsActions";
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
-
-const getTeamFromURL = (computedMatch) => {
-  return computedMatch && computedMatch.params && computedMatch.params.team_id
-}
 
 class DashBoard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      confirm: false,
-      error: null,
       filter_text: "",
       loading_modal: false,
-      show_updates_modal: false
+      show_updates_modal: false,
+      team_settings: false
     };
 
     this.openProject = this.openProject.bind(this);
@@ -66,7 +58,7 @@ class DashBoard extends Component {
   deleteProject(skill_id, project_name) {
     let project = this.props.projects.find(p => p.skill_id === skill_id)
     if(!project) return
-    console.log("FOUND")
+
     let project_id = project.project_id
     this.setState({
       confirm: {
@@ -91,19 +83,14 @@ class DashBoard extends Component {
     }, 100);
   }
 
-  componentDidUpdate() {
-    const new_team = getTeamFromURL(this.props.computedMatch)
-    if(this.props.team_id !== new_team){
-      this.props.updateTeam(new_team)
+  componentDidUpdate(prevProps) {
+    if(prevProps.team_id !== this.props.team_id){
+      this.props.fetchProjects(this.props.team_id)
     }
   }
 
   componentDidMount() {
-    this.props.fetchTeams().then(() => {
-      if(this.props.teams.length > 0){
-        this.props.updateTeam(getTeamFromURL(this.props.computedMatch) || this.props.teams[0].team_id)
-      }
-    })
+    this.props.fetchProjects(this.props.team_id)
 
     let last_update_seen = localStorage.getItem(
       "last_update_seen_" + window.user_detail.id
@@ -195,7 +182,7 @@ class DashBoard extends Component {
               />
             );
           })}
-          <EmptyCard onClick={() => this.props.history.push(`/templates`)} />
+          <EmptyCard onClick={() => this.props.history.push(`/team/${this.props.team_id}/template`)} />
         </Masonry>
       </React.Fragment>
     );
@@ -205,10 +192,18 @@ class DashBoard extends Component {
     return (
       <>
         <LoadingModal open={this.state.loading_modal} />
+        <TeamSettings
+          open={this.state.team_settings}
+          close={()=>this.setState({team_settings: false})}
+        />
         <div id="secondary-nav">
           <div>
-            <div className="nav-item">Personal</div>
             {this.props.teams.map(team => {
+              if(team.team_id === this.props.team_id){
+                return <div key={team.team_id} className="nav-item active">
+                  {team.name}
+                </div>
+              }
               return (
                 <Link
                   key={team.team_id}
@@ -224,6 +219,30 @@ class DashBoard extends Component {
                 <i className="fal fa-plus" /> New Team
               </Link>
             )}
+          </div>
+          <div className="pr-4">
+            {this.props.team_id && <i className="fas fa-cog" onClick={() => this.setState({team_settings: true})}/>}
+          </div>
+        </div>
+        <div className="title-group no-select pr-2">
+          <div className="subheader-right">
+              <form action="https://forum.getvoiceflow.com">
+                <Tooltip
+                  distance={19}
+                  title="Join the Voiceflow forum for help and updates"
+                  position="bottom"
+                  className="ml-1 mr-4"
+                >
+                  <button className="nav-btn" type="submit">
+                    <i className="fas fa-info-circle" />
+                  </button>
+                </Tooltip>
+              </form>
+            <Link to={`/team/${this.props.team_id}/template`} className="no-underline ml-1">
+              <button varient="contained" className="btn purple-btn">
+                New Project
+              </button>
+            </Link>
           </div>
         </div>
         <div id="app" className="secondary-padding dashboard">
@@ -242,35 +261,6 @@ class DashBoard extends Component {
               />
             </div>
           </div>
-          <div className="title-group no-select pr-2">
-            <div className="subheader-right">
-              <Tooltip
-                distance={16}
-                title="Join the Voiceflow forum for help and updates"
-                position="bottom"
-                className="ml-1 mr-4"
-              >
-                <form action="https://forum.getvoiceflow.com">
-                  <button className="nav-btn" type="submit">
-                    <i className="fas fa-info-circle" />
-                  </button>
-                </form>
-              </Tooltip>
-              <Link to="/templates" className="no-underline ml-1">
-                <button varient="contained" className="btn purple-btn">
-                  New Project
-                </button>
-              </Link>
-            </div>
-          </div>
-          <ConfirmModal
-            confirm={this.state.confirm}
-            toggle={() => this.setState({ confirm: null })}
-          />
-          <WarningModal
-            error={this.state.error}
-            dismiss={() => this.setState({ error: null })}
-          />
           {this.props.loading && (
             <div id="loading-diagram">
               <div className="text-center">
@@ -296,7 +286,7 @@ class DashBoard extends Component {
                         </div>
                         <br />
                         <Link
-                          to="/templates"
+                          to={`/team/${this.props.team_id}/template`}
                           className="no-underline super-center"
                         >
                           <button
@@ -334,8 +324,6 @@ class DashBoard extends Component {
 }
 
 const mapStateToProps = state => ({
-  team: state.projects.team,
-  teams: state.projects.teams,
   projects: state.projects.projects,
   loading: state.projects.loading
 });
@@ -343,8 +331,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     fetchProjects: team_id => dispatch(fetchProjects(team_id)),
-    fetchTeams: () => dispatch(fetchTeams()),
-    updateTeam: team_id => dispatch(updateTeam(team_id)),
     deleteProject: project_id => dispatch(deleteProject(project_id)),
     copyProject: project_id => dispatch(copyProject(project_id)),
     setConfirm: (confirm) => dispatch(setConfirm(confirm)),

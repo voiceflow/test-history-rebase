@@ -78,7 +78,7 @@ export class Blocks extends PureComponent {
 
                 return {
                     text: module.title,
-                    type: 'symbol',
+                    type: 'flow',
                     icon: icon,
                     tip: module.descr
                 }

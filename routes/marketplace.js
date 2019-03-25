@@ -36,6 +36,7 @@ const getModuleColour = () => {
 }
 
 const getModules = async (req, res) => {
+	let project_id = hashids.decode(req.params.project_id)[0]
 	try{
 		let module_data = (await pool.query(`
 			SELECT * 
@@ -43,8 +44,11 @@ const getModules = async (req, res) => {
 			INNER JOIN (SELECT DISTINCT project_id FROM project_versions WHERE cert_approved IS NOT NULL) AS distinct_versions 
 				ON modules.module_project_id = distinct_versions.project_id 
 			INNER JOIN creators 
-				ON creators.creator_id = modules.creator_id LIMIT $1
-		`, [module_limit])).rows
+				ON creators.creator_id = modules.creator_id
+			WHERE modules.module_id NOT IN (
+				SELECT module_id FROM user_modules WHERE user_modules.project_id = $2 AND user_modules.creator_id = $3
+			) LIMIT $1
+		`, [module_limit, project_id, req.user.id])).rows
 		hashIds(module_data)
 		res.send(module_data)
 	} catch (err) {
@@ -244,14 +248,15 @@ const hasAccess = async (req, res) => {
 
 const giveAccess = async (req, res) => {
 	let module_id = hashids.decode(req.params.module_id)[0]
+	let project_id = hashids.decode(req.params.project_id)[0]
 	let creator_id = req.user.id
-	
+
 	try{
-		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2`, [module_id, creator_id])).rows
+		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE module_id = $1 AND creator_id = $2 AND project_id = $3`, [module_id, creator_id, project_id])).rows
 		if(user_module_data.length > 0){
 			res.sendStatus(400)
 		}
-		await pool.query(`INSERT INTO user_modules (creator_id, module_id) VALUES ($1, $2)`, [creator_id, module_id])
+		await pool.query(`INSERT INTO user_modules (creator_id, module_id, project_id) VALUES ($1, $2, $3)`, [creator_id, module_id, project_id])
 		res.sendStatus(200)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})

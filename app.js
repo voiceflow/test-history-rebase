@@ -214,7 +214,7 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
 /*
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
-app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
+app.get('/marketplace/:project_id', ensureLoggedIn(), Marketplace.getModules)
 app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
 app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)

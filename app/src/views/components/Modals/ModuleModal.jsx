@@ -1,6 +1,7 @@
 /* eslint react/no-multi-comp: 0, react/prop-types: 0 */
 import withRenderModuleIcon from '../../HOC/ModuleIcon'
 import React from 'react'
+import { connect } from 'react-redux'
 import { Modal, ModalBody } from 'reactstrap'
 import axios from 'axios'
 
@@ -17,7 +18,7 @@ class ModuleModal extends React.Component {
   }
 
   addFlow(){
-    axios.post(`/marketplace/user_module/${this.props.skill_id}/${this.props.module.module_id}`)
+    axios.post(`/marketplace/user_module/${this.props.project_id}/${this.props.module.module_id}`)
 			.then(res => {
         console.log('success')
 			})
@@ -52,4 +53,12 @@ class ModuleModal extends React.Component {
   }
 }
 
-export default withRenderModuleIcon(ModuleModal)
+const mapStateToProps = state => ({
+  project_id: state.skills.skill.project_id
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(withRenderModuleIcon(ModuleModal));

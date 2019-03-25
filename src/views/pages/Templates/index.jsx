@@ -9,7 +9,6 @@ import './Template.css'
 import LightCanvas from './../Canvas/LightCanvas'
 import MUIButton from '@material-ui/core/Button';
 import { Spinner } from 'views/components/Spinner'
-import { connect } from "react-redux";
 
 class Templates extends Component {
     constructor(props) {
@@ -28,7 +27,7 @@ class Templates extends Component {
             alexa: false
         }
 
-        this.createSkill = this.createSkill.bind(this)
+        this.createProject = this.createProject.bind(this)
         this.previewTemplate = this.previewTemplate.bind(this)
         this.renderBody = this.renderBody.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -256,7 +255,7 @@ class Templates extends Component {
 
     render() {
         if (this.state.loading) {
-            return React.createElement(Spinner, {name: 'Templates'})
+            return React.createElement(Spinner, {name: 'Template'})
         }
 
         return <div id="template-box-container">
@@ -283,8 +282,4 @@ class Templates extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-  team: state.projects.team,
-})
-
-export default connect(mapStateToProps)(Templates)
+export default Templates

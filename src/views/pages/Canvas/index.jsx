@@ -74,6 +74,7 @@ export class Canvas extends Component {
         this.onSave = this.onSave.bind(this);
         this.createDiagram = this.createDiagram.bind(this);
         this.enterFlow = this.enterFlow.bind(this);
+        this.deleteFlow = this.deleteFlow.bind(this);
         var engine = new SRD.DiagramEngine()
         engine.registerLabelFactory(new SRD.DefaultLabelFactory())
         engine.registerNodeFactory(new BlockNodeFactory())

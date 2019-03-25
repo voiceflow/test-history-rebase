@@ -3,6 +3,7 @@ import axios from 'axios'
 import ModuleCard from './ModuleCard'
 import Masonry from 'react-masonry-component'
 import './Marketplace.css'
+import { connect } from 'react-redux'
 import ModuleModal from './../../components/Modals/ModuleModal'
 
 class FlowMarket extends Component {
@@ -20,7 +21,7 @@ class FlowMarket extends Component {
   }
 
   onLoadModules(){
-    axios.get('/marketplace')
+    axios.get(`/marketplace/${this.props.project_id}`)
     .then(res => {
       let modules = res.data.filter(module => module.type === 'FLOW')
       this.setState({
@@ -76,4 +77,13 @@ class FlowMarket extends Component {
   }
 }
 
-export default FlowMarket
+const mapStateToProps = state => ({
+  project_id: state.skills.skill.project_id
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlowMarket)

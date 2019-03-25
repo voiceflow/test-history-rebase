@@ -258,7 +258,7 @@ app.post('/analytics/track_first_project', ensureLoggedIn(), Track.trackFirstPro
 app.post('/analytics/track_dev_account', ensureLoggedIn(), Track.trackDevAccount)
 
 app.get('/analytics/:project_id/users', ensureLoggedIn(), Analytics.getUsersData)
-app.get('/analytics/:project_id/:from/:to/DAU', ensureLoggedIn(), Analytics.getDAU)
+app.get('/analytics/:project_id/:from/:to/:user_tz/DAU', ensureLoggedIn(), Analytics.getDAU)
 app.get('/analytics/:project_id', ensureLoggedIn(), Analytics.getStats)
 
 app.get('/onboard', ensureLoggedIn(), Onboard.checkIfOnboarded);

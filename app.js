@@ -226,7 +226,7 @@ app.put('/marketplace/cert/:project_id', ensureAdmin(), Marketplace.giveCertific
 app.delete('/marketplace/cert/:skill_id/:project_id', ensureLoggedIn(), Marketplace.cancelCertification)
 app.patch('/marketplace/cert/:project_id', ensureLoggedIn(), Marketplace.saveCertification)
 app.post('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.giveAccess)
-app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.hasAccess)
+app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Marketplace.checkConflicts)
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)

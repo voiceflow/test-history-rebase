@@ -2,10 +2,20 @@ const { pool, hashids, docClient, writeToLogs } = require('./../services')
 const { copySkill, deleteVersionPromise } = require('./skill_util')
 const { latestSkillToIntercom, incrementSkillsCreatedIntercom } = require('./skill')
 
+const DEFAULT_VARIABLES = ['sessions', 'user_id', 'timestamp', 'platform', 'locale', 'access_token']
+
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	ADMIN_MARKETPLACE_ACC = 19
 }else{
 	ADMIN_MARKETPLACE_ACC = 2125
+}
+
+const setIntersect = (array_1, array_2, defaults) => {
+	if(defaults === undefined){
+		defaults = []
+	}
+	let set_1 = new Set(array_1)
+	return new Set([...array_2].filter(x => set_1.has(x) && defaults.indexOf(x) < 0))
 }
 
 const MODULE_COLOURS = [
@@ -151,10 +161,8 @@ const saveCertification = async (req, res) => {
 	}
 }
 
-
-
 const giveCertification = async (req, res) => {
-	let project_id = hashids.decode(req.params.project_id)[0];
+	let project_id = hashids.decode(req.params.project_id)[0]
 
 	try{
 		await pool.query(`
@@ -230,16 +238,53 @@ const removeAccess = async (req, res) => {
 	}
 }
 
-const hasAccess = async (req, res) => {
-	let module_id = hashids.decode(req.params.module_id)[0]
-	let user_id = req.user.id
+// const hasAccess = async (req, res) => {
+// 	let module_id = hashids.decode(req.params.module_id)[0]
+// 	let user_id = req.user.id
 	
-	try{
-		let user_module_data = (await pool.query(`SELCT * FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])).rows
-		if(user_module_data.length > 0){
-			res.send(true)
-		}
-		res.send(false)
+// 	try{
+// 		let user_module_data = (await pool.query(`SELECT * FROM user_modules WHERE creator_id = $1 AND module_id = $2`, [user_id, module_id])).rows
+// 		if(user_module_data.length > 0){
+// 			res.send(true)
+// 		}
+// 		res.send(false)
+// 	} catch (err) {
+// 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+// 		res.sendStatus(500)
+// 	}
+// }
+
+const checkConflicts = async (req, res) => {
+	let project_id = hashids.decode(req.params.project_id)[0]
+	let module_id = hashids.decode(req.params.module_id)[0]
+	console.log(project_id, module_id)
+	try {
+		let current_dev_data = (await pool.query(`
+			SELECT * 
+			FROM projects 
+			INNER JOIN skills ON projects.dev_version = skills.skill_id
+			WHERE projects.project_id = $1
+		`, [project_id])).rows[0]
+
+		let module_data = (await pool.query(`
+			SELECT * 
+			FROM projects
+			INNER JOIN modules ON projects.project_id = modules.module_project_id
+			INNER JOIN skills ON skills.skill_id = 
+				(SELECT max(version_id) 
+				FROM project_versions 
+				INNER JOIN modules ON project_versions.project_id = modules.module_project_id
+				WHERE project_versions.cert_approved IS NOT NULL)
+			WHERE module_id = $1
+		`, [module_id])).rows[0]
+
+		let globals_intersect = setIntersect(current_dev_data.global, module_data.global, DEFAULT_VARIABLES)
+		// console.log(globals_intersect)
+
+		// console.log(current_dev_data.intents, current_dev_data.slots)
+		// console.log('------')
+		// console.log(module_data.intents, module_data.slots)
+		res.send(globals_intersect)
 	} catch (err) {
 		writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 		res.sendStatus(500)
@@ -535,7 +580,7 @@ module.exports = {
 	saveCertification: saveCertification,
 	certStatus: certStatus,
 	giveAccess: giveAccess,
-	hasAccess: hasAccess,
+	// hasAccess: hasAccess,
 	removeAccess: removeAccess,
 	giveCertification: giveCertification,
 	getCertModule: getCertModule,
@@ -543,5 +588,6 @@ module.exports = {
 	retrieveTemplate: retrieveTemplate,
 	getPendingModules: getPendingModules,
 	getDefaultTemplates: getDefaultTemplates,
-	copyDefaultTemplate: copyDefaultTemplate
+	copyDefaultTemplate: copyDefaultTemplate,
+	checkConflicts: checkConflicts
 }

@@ -277,6 +277,7 @@ copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async
 
 exports.copySkill = async (req, res, options, cb = false) => {
 
+  if(!options) options = {}
   let id = hashids.decode(req.params.id)[0]
   let new_creator_id = req.params.target_creator
   let diagram_mapping = {}
@@ -502,11 +503,13 @@ exports.copySkill = async (req, res, options, cb = false) => {
                 `INSERT INTO project_versions (project_id, version_id, cert_requested) VALUES ($1, $2, now())`, 
                 [options.project_id, copy_skill.skill_id])
             } else {
+              if(options.append_copy_str) options.name = copy_skill.name
+
               let new_project_data = (await pool.query(`
-                INSERT INTO projects (name, creator_id, dev_version) 
-                VALUES ($1, $2, $3) 
+                INSERT INTO projects (name, creator_id, dev_version, team_id) 
+                VALUES ($1, $2, $3, $4) 
                 RETURNING *`, 
-              [copy_skill.name, copy_skill.creator_id, copy_skill.skill_id])).rows[0]
+              [options.name, copy_skill.creator_id, copy_skill.skill_id, options.team_id])).rows[0]
               copy_skill.project_id = hashids.encode(new_project_data.project_id)
               await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
             

@@ -168,6 +168,8 @@ app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
 app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
 app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
 
+// VERSION STUFF
+app.get('/skill/:skill_id', ensureLoggedIn(), Project.getProjectFromSkill, Skill.getSkill);
 app.get('/skill/google/:id', ensureLoggedIn(), Skill.getGoogleSkill);
 app.get('/skill/:id/diagrams', ensureLoggedIn(), Skill.getDiagrams);
 app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
@@ -178,19 +180,18 @@ app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), (req, res) => copy
 app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:id/product/:pid', ensureLoggedIn(), Skill.getProduct);
-// app.post('/skill', ensureLoggedIn(), Skill.setSkill);
 app.post('/amazon/:id/:amzn_id/certify', ensureLoggedIn(), Skill.certifySkill);
 app.post('/amazon/:amzn_id/withdraw', ensureLoggedIn(), Skill.withdrawSkill);
 app.patch('/skill/:id', ensureLoggedIn(), Skill.patchSkill);
 app.delete('/skill/:id/product/:pid', ensureLoggedIn(), Skill.deleteProduct);
-// app.delete('/skill/:id', ensureLoggedIn(), Skill.deleteSkill);
 
 // TEAM RESTful CRUD STUFF
 app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 app.get('/teams', ensureLoggedIn(), Team.getTeams)
 app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
-app.get('/team/:team_id/copy/module/:module_id', ensureLoggedIn(), Team.verifyTeam, Team.copyModule)
+app.post('/team/:team_id/copy/module/:module_id', ensureLoggedIn(), Team.verifyTeam, Marketplace.copyDefaultTemplate)
+app.delete('/team/:team_id', Team.deleteTeam)
 
 // STRIPE PAYMENT ENDPOINTS
 app.get('/customer', ensurePlan(1), Customer.checkStatus)
@@ -211,7 +212,6 @@ app.get('/diagram/copy/:diagram_id', ensureLoggedIn(), Diagram.copyDiagram)
     COMMENT OUT ACTUAL MARKETPLACE ROUTES FOR MASTER
 */
 app.get('/marketplace', ensureLoggedIn(), Marketplace.getModules)
-app.post('/marketplace/template/:module_id/copy', ensureLoggedIn(), Marketplace.copyDefaultTemplate)
 app.get('/marketplace/featured', ensureLoggedIn(), Marketplace.getFeaturedModules)
 app.get('/marketplace/user_module', ensureLoggedIn(), Marketplace.getUserModules)
 app.get('/marketplace/cert/pending', ensureAdmin(), Marketplace.getPendingModules)

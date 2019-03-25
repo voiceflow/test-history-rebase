@@ -15,16 +15,15 @@ import "react-day-picker/lib/style.css";
 
 // Pages
 import Skill from './Skill'
+import Team from './Team'
 import Account from './views/pages/Account';
-import DashBoard from './views/pages/Dashboard';
 import Admin from './views/pages/Admin';
 import Register from './views/pages/Register';
 import Reset from './views/pages/Register/reset';
 import ResetPassword from './views/pages/Register/resetPassword';
 import NavBar from './views/components/NavBar';
-import Marketplace from './views/pages/Marketplace';
-import ModulePage from './views/pages/Marketplace/ModulePage';
-import Templates from './views/pages/Templates'
+// import Marketplace from './views/pages/Marketplace';
+// import ModulePage from './views/pages/Marketplace/ModulePage';
 import Page404 from 'views/pages/404'
 import Onboarding from './views/pages/Onboarding';
 import ModuleAdminPage from './views/pages/ModuleAdminPage';
@@ -214,13 +213,12 @@ class App extends Component {
                 <PublicRoute exact path="/reset/:id" name="Reset Password" component={ResetPassword} />
                 <PublicRoute exact path="/reset" name="Reset" component={Reset} />
                 <PublicRoute exact path="/login" name="Login" login component={Register} />
-                <PublicRoute exact path="/signup" name="SignUp" component={Register} />
-                {/* Template Routes */}
-                <PrivateRoute exact path="/templates" component={Templates}/>
+                <PublicRoute exact path="/signup" name="SignUp" component={Register} />                
                 {/* Team routes */}
-                <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
+                <PrivateRoute path="/dashboard" name="Dashboard" component={Team}/>
                 <PrivateRoute exact path="/team/new" component={NewTeam}/>
-                <PrivateRoute exact path="/team/:team_id" component={DashBoard}/>
+                <PrivateRoute exact path="/team/:team_id/template" component={Team} page="template"/>
+                <PrivateRoute exact path="/team/:team_id" component={Team}/>
                 {/* Canvas Routes */}
                 <PrivateRoute path="/preview/:skill_id/:diagram_id" component={Skill} page="canvas" preview/>
                 <PrivateRoute path="/canvas/:skill_id/:diagram_id" component={Skill} page="canvas"/>
@@ -244,7 +242,6 @@ class App extends Component {
                 <PrivateRoute path="/admin/updates" name="Admin" component={Admin} page='updates'/>
                 <PrivateRoute path="/admin/copy" name="Admin" component={Admin} page='copy'/>
                 <PrivateRoute path="/admin" name="Admin" component={Admin} page='default'/>
-                <PrivateRoute path="/dashboard" name="Dashboard" component={DashBoard}/>
                 <PrivateRoute path="/publish/:skill_id/google" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="google"/>
                 <PrivateRoute path="/publish/:skill_id/alexa" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="alexa"/>
                 <PrivateRoute path="/publish/:skill_id/market" component={Skill} onConfirm={this.onConfirm} page="publish" secondaryPage="market"/>

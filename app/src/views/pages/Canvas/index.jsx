@@ -32,7 +32,7 @@ import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'
 import TestModal from './Test/TestModal'
 import new_template from './../../../assets/templates/new'
-import { Alert, ListGroup, ListGroupItem, Input } from 'reactstrap'
+import { Alert, ListGroup, ListGroupItem } from 'reactstrap'
 
 import cloneDeep from 'lodash/cloneDeep'
 import * as util from './util'

@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 
 const initialState = {
-  team: localStorage.getItem('team') || -1,
+  team_id: localStorage.getItem('team') || -1,
   loading: true,
   teams: [],
   projects: []
@@ -9,10 +9,11 @@ const initialState = {
 
 export default function productReducer(state = initialState, action) {
   switch (action.type) {
-    case 'UPDATE_TEAM':
+    case 'UPDATE_CURRENT_TEAM':
+      localStorage.setItem('team', action.payload)
       return {
         ...state,
-        team: action.payload
+        team_id: action.payload
       }
     case 'UPDATE_TEAMS':
       if(!Array.isArray(action.payload)) return state

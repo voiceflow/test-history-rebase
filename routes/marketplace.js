@@ -433,6 +433,10 @@ const getDefaultTemplates = (req, res) => {
 
 // NEW PROJECTS CREATED HERE
 const copyDefaultTemplate = (req, res) => {
+  let team_id = req.params._team_id
+  let name = req.body.name
+  if(!team_id || !name) return res.sendStatus(400)
+
 	let module_id = hashids.decode(req.params.module_id)[0]
 	// Retrieve diagram, trying 5 times 
 	const getDiagram = (row, num_tries) => {
@@ -459,27 +463,25 @@ const copyDefaultTemplate = (req, res) => {
 	}
 
 	const updateSkill = async (skill) => {
-		if(req.body.name && Array.isArray(req.body.locales)){
-			let name = req.body.name
+		if(Array.isArray(req.body.locales)){
 			let invs = {value: [`open ${name}`,`start ${name}`, `launch ${name}`]}
 			let sum = `This is a new summary for the skill ${name}`;
 			let desc = `This is a new description for the skill ${name}\n\n Be sure to leave a 5-star review!`
 			let locales = ['en-US']
 			let platform = req.body.platform || 'alexa'
-			let new_project_id = hashids.decode(skill.project_id)[0]
 		
 			if (req.body.locales) {
 				locales = req.body.locales
 			}
-		
-			await pool.query(`UPDATE projects SET name = $1 WHERE project_id = $2`, [name, new_project_id])
 
-			pool.query(`UPDATE skills SET name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8, platform=$9 WHERE skill_id = $10`,
+      pool.query(`
+        UPDATE skills SET 
+        name = $1, summary = $2, description = $3, invocations = $4, inv_name = $5, locales = $6, privacy_policy=$7, terms_and_cond=$8, platform=$9 
+        WHERE skill_id = $10;`,
 					[name, sum, desc, invs, name, JSON.stringify(locales), 
-						`https://creator.getvoiceflow.com/creator/privacy_policy?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
-						`https://creator.getvoiceflow.com/creator/terms?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
-						platform,
-			hashids.decode(skill.skill_id)[0]], (err) => {
+          `https://creator.getvoiceflow.com/creator/privacy_policy?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
+          `https://creator.getvoiceflow.com/creator/terms?name=${encodeURI(req.user.name)}&skill=${encodeURI(name)}`,
+					platform, hashids.decode(skill.skill_id)[0]], (err) => {
 				if(err){
 					writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
 					res.sendStatus(500)
@@ -512,7 +514,7 @@ const copyDefaultTemplate = (req, res) => {
 					req.params.id = template_skill_id
 					req.params.target_creator = req.user.id
 					req.user.id = ADMIN_MARKETPLACE_ACC
-					copySkill(req, res, {copying_default_template: true}, updateSkill)
+					copySkill(req, res, {copying_default_template: true, team_id, name}, updateSkill)
 				} else {
 					res.sendStatus(500)
 				}

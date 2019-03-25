@@ -2,12 +2,9 @@
 const {
   pool,
   writeToLogs,
-  validateEmail
+  validateEmail,
+  hashids
 } = require('./../services')
-
-const {
-  copySkill
-} = require('./skill_util')
 
 const {
   sendTeamInvite
@@ -35,6 +32,9 @@ exports.verifyTeam = async (req, res, next) => {
       "SELECT 1 FROM team_members WHERE team_id = $1 AND creator_id = $2 LIMIT 1", [team_id, req.user.id]
     )
     if(result.rows.length === 0) throw new Error("No Access")
+
+    // _team_id means decoded team_id
+    req.params._team_id = team_id
   } catch(err) {
     return res.sendStatus(401)
   }
@@ -148,6 +148,28 @@ exports.getTeams = async (req, res) => {
   }
 }
 
+exports.deleteTeam = async (req, res) => {
+  try {
+    let team_id = team_hash.decode(req.params.team_id)[0]
+    if(!team_id) return res.sendStatus(404)
+
+    // verify this user has the permissions to delete the team and ALL of its projects
+    let projects = await pool.query(`
+      SELECT p.project_id FROM teams t
+      LEFT JOIN projects p ON p.team_id = t.team_id
+      WHERE t.creator_id = $1 AND t.team_id = $2
+    `, [req.user.id, team_id])
+
+    // user either doesn't have permission or team doesn't exist
+    if(projects.rows.length === 0) return res.sendStatus(404)
+
+    res.sendStatus(200)
+  } catch (err) {
+    writeToLogs('DELETE TEAMS', err)
+    res.sendStatus(500)
+  }
+}
+
 exports.getProjects = async (req, res) => {
   try {
     let team_id = team_hash.decode(req.params.team_id)[0]
@@ -171,8 +193,4 @@ exports.getProjects = async (req, res) => {
     writeToLogs('GET TEAM SKILLS', err)
     res.sendStatus(500)
   }
-}
-
-exports.copyModule = async (req, res) => {
-
 }

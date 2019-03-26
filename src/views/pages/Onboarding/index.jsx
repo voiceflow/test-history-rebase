@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import "./onboarding.css"
 import axios from 'axios'
 import StepProgressBar from './../../components/StepProgressBar'
-import { Form, FormGroup, Input} from 'reactstrap'
+import { Form, FormGroup, Input, Button} from 'reactstrap'
 import Select from 'react-select'
 
 const PROG_XP = (xp) => {
@@ -47,8 +47,10 @@ class Onboarding extends Component{
 			company_size: '',
 			type: '',
 			experience: '',
+			templates: [],
 			design: false,
-			build: false
+			build: false,
+			loading: false,
 		}
 
 		this.handleChange = this.handleChange.bind(this)
@@ -71,8 +73,55 @@ class Onboarding extends Component{
         });
     }
 
+	createSkill = () => {
+		axios.post(`/marketplace/template/${this.state.templates[0].module_id}/copy`, {
+			name: 'My First Project',
+			locales: ['en-US'],
+			platform: 'alexa'
+		})
+			.then(res => {
+				if (res.data.skill_id && res.data.diagram) {
+					setTimeout(() => {
+						this.props.history.push(`/canvas/${res.data.skill_id}/${res.data.diagram}`)
+					}, 3000)
+				} else {
+					throw new Error('Invalid Response Format')
+				}
+			})
+			.catch(err => {
+				console.error(err)
+				alert('unable to create skill')
+			})
+	}
+
+	loadDefaultTemplates = () => {
+		axios.get('/marketplace/initial_template')
+			.then(res => {
+				if (Array.isArray(res.data)) {
+					this.setState({
+						templates: res.data
+					})
+					// preload images for performance
+					this.images = []
+					res.data.forEach((template, i) => {
+						this.images[i] = new Image()
+						this.images[i].src = template.module_icon
+					})
+				} else {
+					throw new Error('Malformed Response')
+				}
+			})
+			.catch(err => {
+				console.log(err.response)
+				alert('Unable to Retrieve Templates')
+			})
+	}
+
     submitSurvey(prog_xp){
 			var s = this.state;
+			this.setState({
+				loading: true
+			})
 			axios.post('/onboard', {
 				usage_type: s.type,
 				programming: s.experience,
@@ -86,11 +135,11 @@ class Onboarding extends Component{
 			})
 			.then(res => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.props.history.push("/templates");
+				this.createSkill()
 			})
 			.catch(err => {
 				localStorage.setItem('onboarding', PROG_XP(s.experience))
-				this.props.history.push("/templates");
+				this.createSkill()
 			})
     }
 
@@ -123,6 +172,7 @@ class Onboarding extends Component{
       img.src = picture.fileName;
     })
 		// this.trackOnboardingPage('Initial Page')
+		this.loadDefaultTemplates()
 	}
 
 	componentWillUnmount() {
@@ -154,8 +204,12 @@ class Onboarding extends Component{
 					<div className="calendly-outer">
 						<div className="calendly-inline-widget" id="calendly" data-url="https://calendly.com/voiceflow"/>
 					</div>
-
+					{this.state.loading ? 
+						<Button id="submit-calendly" variant="contained" className="purple-btn" disabled>
+							<p className="loading-btn m-0 p-0">Loading</p>
+						</Button> :
 					<button id="submit-calendly" className="purple-btn" onClick={this.submitSurvey}>Complete</button>
+					}
 				</React.Fragment>
 			case 'purpose_stage':
 				return <React.Fragment key={this.state.stage}>
@@ -177,13 +231,18 @@ class Onboarding extends Component{
 							</button>
 						</div>
 						<div className="justify-content-center">
-						<button className={"purple-btn" + (!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose) ? ' disabled' : '')} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
+						{this.state.loading ? 
+							<Button variant="contained" className="purple-btn" disabled>
+								<p className="loading-btn m-0 p-0">Loading</p>
+							</Button>:
+							<button className={"purple-btn" + (!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose) ? ' disabled' : '')} disabled={!['EXPLORING', 'BUILDING', 'BUILT'].includes(this.state.purpose)} onClick={() => {
 								if(this.state.company_size >= SHOW_CALENDLY_NUMBER){
 									this.setState({stage: 'calendly'})
 								} else {
 									this.submitSurvey()
 								}
 							}}>{this.state.company_size >= SHOW_CALENDLY_NUMBER ? 'Next Question' : 'Complete'}</button>
+						}
 						</div>
 					</React.Fragment>
 			case 'code_stage':
@@ -204,15 +263,21 @@ class Onboarding extends Component{
 							<p className={this.state.experience === 'expert' ? "" : "text-muted"}>A lot</p>
 						</div>
 					</div>
+					{this.state.loading ? 
+						<Button variant="contained" width={200} className="purple-btn" disabled>
+							<p className="loading-btn m-0 p-0">Loading</p>
+						</Button> :
 					<div className="justify-content-center">
 						<button className={"purple-btn" + (!(['beginner', 'intermediate', 'expert'].includes(this.state.experience)) ? ' disabled': '')} disabled={!(['beginner', 'intermediate', 'expert'].includes(this.state.experience))} onClick={() => {
 							if (this.state.type === 'WORK') {
 								this.setState({ stage: 'purpose_stage' })
 							} else {
+								this.setState({ loading: true })
 								this.submitSurvey()
 							}
 						}}>{this.state.type === 'WORK' ? 'Next Question' : 'Complete'}</button>
 					</div>
+					}
 				</React.Fragment>
 			case 'work_plan':
 				return <React.Fragment key={this.state.stage}>
@@ -228,15 +293,21 @@ class Onboarding extends Component{
 							<p className={this.state.build ? "" : "text-muted"}>Build & Publish</p>
 						</div>
 					</div>
+					{this.state.loading ?
+						<Button variant="contained" width={200} className="purple-btn" disabled>
+							<p className="loading-btn m-0 p-0">Loading</p>
+						</Button> :
 					<div className="justify-content-center">
 						<button className={"purple-btn" + (!(this.state.design || this.state.build) ? ' disabled' : '')} disabled={!(this.state.design || this.state.build)} onClick={() => {
 							if (this.state.type === 'WORK') {
 								this.setState({ stage: 'purpose_stage' })
 							} else {
+								this.setState({ loading: true })
 								this.submitSurvey()
 							}
 						}}>{this.state.type === 'WORK' ? 'Next Question' : 'Complete'}</button>
 					</div>
+					}
 				</React.Fragment>
 			case 'work_name':
 				return <React.Fragment key={this.state.stage}>

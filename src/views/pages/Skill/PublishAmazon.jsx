@@ -24,7 +24,7 @@ import LOCALE_MAP from '../../../services/LocaleMap'
 
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
-import { updateVersion, updateEntireVersion } from "./../../../actions/versionActions"
+import { updateVersion, updateEntireVersion, updateSkillDB } from "./../../../actions/versionActions"
 import { setConfirm, setError } from 'actions/modalActions'
 
 const _ = require('lodash');
@@ -1002,6 +1002,7 @@ const mapDispatchToProps = dispatch => {
         updateEntireSkill: (val) => dispatch(updateEntireVersion(val)),
         setConfirm: (confirm) => dispatch(setConfirm(confirm)),
         setError: err => dispatch(setError(err)),
+        save: (publish, cb) => dispatch(updateSkillDB(publish, cb))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Skill);

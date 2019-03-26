@@ -6,7 +6,7 @@ import { BUILT_IN_INTENTS_ALEXA } from 'Constants'
 // import { Discovery } from 'aws-sdk';
 import { intentHasSlots } from 'Helper'
 import { FormGroup, Label, Alert } from 'reactstrap'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import axios from 'axios'
 
 const BUILT_INS = BUILT_IN_INTENTS_ALEXA.map(intent => {

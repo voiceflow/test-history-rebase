@@ -11,7 +11,7 @@ import PlatformTooltip from '../../../components/Tooltips/PlatformTooltip';
 import Toggle from 'react-toggle'
 
 import { updateIntents, setCanFulfill } from './../../../../actions/versionActions'
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
 
 const _ = require('lodash')
 

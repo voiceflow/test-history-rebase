@@ -9,7 +9,7 @@ import axios from 'axios';
 import MUIButton from '@material-ui/core/Button';
 import { Nav, NavItem, NavLink, Input } from 'reactstrap';
 
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
  const clientAuthScheme = [
   {value: 'HTTP_BASIC', label: 'HTTP Basic(recommended)'},

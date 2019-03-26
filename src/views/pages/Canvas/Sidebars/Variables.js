@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { pushVariable, setVariables } from './../../../../actions/variableActions'
 import { updateVersion } from './../../../../actions/versionActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import { InputGroup, Input, InputGroupAddon, Button, FormGroup, Label, ButtonGroup } from 'reactstrap';
 import {Tooltip} from 'react-tippy'
 import isVarName from 'is-var-name'

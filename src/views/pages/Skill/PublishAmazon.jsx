@@ -25,7 +25,7 @@ import LOCALE_MAP from '../../../services/LocaleMap'
 import { AMAZON_CATEGORIES } from '../../../services/Categories'
 
 import { updateVersion, updateEntireVersion } from "./../../../actions/versionActions"
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
 
 const _ = require('lodash');
 

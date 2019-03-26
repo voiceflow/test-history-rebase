@@ -8,7 +8,7 @@ import { Input, Col, Row, FormGroup } from 'reactstrap';
 import AceEditor from 'react-ace';
 
 import { addEmail, updateEmail } from './../../../actions/emailActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import 'brace/mode/html';
 import 'brace/theme/monokai';
 import 'brace/ext/language_tools';

@@ -26,7 +26,7 @@ import { updateVersion, updateIntents, setCanFulfill } from "./../../../actions/
 import { setVariables } from './../../../actions/variableActions'
 import { setCanvasError } from 'actions/userActions'
 import { renameDiagram } from 'actions/diagramActions'
-import { setError, setConfirm } from 'actions/modalActions'
+import { setError, setConfirm } from 'ducks/modal'
 
 import ActionGroup from './ActionGroup'
 import HelpModal from './HelpModal'

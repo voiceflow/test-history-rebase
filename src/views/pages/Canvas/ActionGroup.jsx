@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
 import { updateVersion } from './../../../actions/versionActions'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
     ModalHeader, ModalBody, Button

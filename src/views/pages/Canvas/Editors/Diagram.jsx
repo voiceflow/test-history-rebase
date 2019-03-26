@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Button, Alert, Input} from 'reactstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 
 import { fetchDiagramVariables } from './../../../../actions/diagramVariablesAction';
 import DiagramVariables from './components/DiagramVariables';

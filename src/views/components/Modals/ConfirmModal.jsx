@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap'
 
-import { clearModal } from 'actions/modalActions'
+import { clearModal } from 'ducks/modal'
 
 export class ConfirmModal extends React.Component {
   // TODO this class is pure cancer

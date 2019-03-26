@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { ListGroup, ListGroupItem } from "reactstrap";
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import { renameDiagram } from "actions/diagramActions";
 
 import {UncontrolledDropdown, DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap'

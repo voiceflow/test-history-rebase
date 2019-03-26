@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { deleteDisplay } from './../../../actions/displayActions'
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 
 import { Alert } from 'reactstrap'
 import MUIButton from '@material-ui/core/Button';

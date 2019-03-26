@@ -13,13 +13,15 @@ import EmptyCard from "views/components/Cards/EmptyCard";
 import LoadingModal from "views/components/Modals/LoadingModal";
 import TeamSettings from "./TeamSettings"
 import { Alert, Input } from "reactstrap";
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
 import { connect } from "react-redux";
+import Members from './members'
 import {
   fetchProjects,
   deleteProject,
   copyProject,
-} from "actions/projectsActions";
+} from "ducks/project";
+import { unnormalize } from "ducks/util"
 
 // const FILTER_OPTIONS = ["All", "Published", "Development"];
 
@@ -50,36 +52,34 @@ class DashBoard extends Component {
 
   copyProject(project_id) {
     this.setState({ loading_modal: true });
-    this.props.copyProject(project_id).then(() => {
+    this.props.copyProject(project_id, this.props.team_id).then(() => {
       this.setState({ loading_modal: false });
     });
   }
 
-  deleteProject(skill_id, project_name) {
-    let project = this.props.projects.find(p => p.skill_id === skill_id)
-    if(!project) return
-
-    let project_id = project.project_id
-    this.setState({
-      confirm: {
-        text: (
-          <Alert color="danger" className="mb-0">
-            WARNING: This action can not be undone, <i>{project_name}</i> and
-            all flows can not be recovered
-          </Alert>
-        ),
-        warning: true,
-        confirm: () => {
-          this.props.deleteProject(project_id);
-          this.setState({ confirm: null });
-        }
+  deleteProject(project_id, project_name) {
+    this.props.setConfirm({
+      text: (
+        <Alert color="danger" className="mb-0">
+          WARNING: This action can not be undone, <i>{project_name}</i> and
+          all flows can not be recovered
+        </Alert>
+      ),
+      warning: true,
+      confirm: () => {
+        this.props.deleteProject(project_id);
+        this.setState({ confirm: null });
       }
     });
   }
 
-  openProject(project, diagram) {
+  openProject(project_id, diagram) {
+    let project = this.props.projects.byId[project_id]
+    if(!project) return
+
+    let skill_id = project.skill_id
     setTimeout(() => {
-      this.props.history.push(`/canvas/${project}/${diagram}`);
+      this.props.history.push(`/canvas/${skill_id}/${diagram}`);
     }, 100);
   }
 
@@ -136,10 +136,10 @@ class DashBoard extends Component {
 
   renderProjects() {
     const filtered_projects = this.state.filter_text.trim()
-      ? this.props.projects.filter(p =>
+      ? this.props.projects_array.filter(p =>
           p.name.toLowerCase().contains(this.state.filter_text.toLowerCase())
         )
-      : this.props.projects;
+      : this.props.projects_array;
     return (
       <React.Fragment>
         <Masonry elementType="div" className="skills-container">
@@ -164,7 +164,7 @@ class DashBoard extends Component {
             return (
               <VoiceCards
                 key={i}
-                id={project.skill_id}
+                id={project.project_id}
                 icon={icon}
                 name={project.name}
                 placeholder={
@@ -198,7 +198,8 @@ class DashBoard extends Component {
         />
         <div id="secondary-nav">
           <div>
-            {this.props.teams.map(team => {
+            {this.props.teams.allIds.map(team_id => {
+              const team = this.props.teams.byId[team_id]
               if(team.team_id === this.props.team_id){
                 return <div key={team.team_id} className="nav-item active">
                   {team.name}
@@ -214,14 +215,17 @@ class DashBoard extends Component {
                 </Link>
               );
             })}
-            {this.props.teams.length < 3 && (
+            {this.props.teams.allIds.length < 3 && (
               <Link className="nav-item" to="/team/new">
                 <i className="fal fa-plus" /> New Team
               </Link>
             )}
           </div>
-          <div className="pr-4">
-            {this.props.team_id && <i className="fas fa-cog" onClick={() => this.setState({team_settings: true})}/>}
+          <div className="pr-4 super-center">
+            {this.props.team && <>
+              <Members members={this.props.team.members}/>
+              <i className="fas fa-cog" onClick={() => this.setState({team_settings: true})}/>
+            </>}
           </div>
         </div>
         <div className="title-group no-select pr-2">
@@ -269,7 +273,7 @@ class DashBoard extends Component {
               </div>
             </div>
           )}
-          {!this.props.loading && this.props.projects.length === 0 ? (
+          {!this.props.loading && this.props.projects_array.length === 0 ? (
             <div className="h-100 d-flex justify-content-center">
               <div className="align-self-center">
                 <div className="super-center w-100 text-muted d-flex">
@@ -324,17 +328,18 @@ class DashBoard extends Component {
 }
 
 const mapStateToProps = state => ({
-  projects: state.projects.projects,
-  loading: state.projects.loading
+  projects_array: unnormalize(state.project),
+  projects: state.project,
+  loading: state.project.loading
 });
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchProjects: team_id => dispatch(fetchProjects(team_id)),
     deleteProject: project_id => dispatch(deleteProject(project_id)),
-    copyProject: project_id => dispatch(copyProject(project_id)),
-    setConfirm: (confirm) => dispatch(setConfirm(confirm)),
-    setError: (err) => dispatch(setError(err))
+    copyProject: (project_id, team_id) => dispatch(copyProject(project_id, team_id)),
+    setConfirm: confirm => dispatch(setConfirm(confirm)),
+    setError: err => dispatch(setError(err))
   };
 };
 

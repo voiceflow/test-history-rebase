@@ -7,7 +7,7 @@ import axios from 'axios'
 // import _ from 'lodash'
 
 import { Spinner } from 'views/components/Spinner'
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import {Modal, ModalFooter, FormGroup, Label, Alert, Table, Button} from 'reactstrap'
 
 class BackupSettings extends Component{

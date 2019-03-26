@@ -1,6 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { setConfirm } from './modalActions'
+import { setConfirm } from 'ducks/modal'
 
 export const fetchDiagramsBegin = () => ({
   type: "FETCH_DIAGRAMS_BEGIN"

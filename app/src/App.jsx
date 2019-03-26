@@ -33,7 +33,7 @@ import {evaluateMaintenance} from './MAINTENANCE'
 import NewTeam from './views/pages/Dashboard/NewTeam'
 
 // GLOBAL MODALS
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import ConfirmModal from "./views/components/Modals/ConfirmModal"
 import ErrorModal from './views/components/Modals/ErrorModal'
 

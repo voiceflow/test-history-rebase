@@ -160,13 +160,16 @@ app.delete('/multimodal/display/:id', ensureLoggedIn(), Multimodal.deleteDisplay
 app.post('/multimodal/display/render/:id', ensureLoggedIn(), Multimodal.renderDisplay);
 
 app.get('/project/:project_id/version/:version_id', ensureLoggedIn(), Skill.getSkill)
-app.delete('/projects/:project_id', ensureLoggedIn(), Project.deleteProject)
+app.delete('/projects/:project_id', ensureLoggedIn(), Team.verifyProjectAccess, Project.deleteProject)
 app.get('/project/:project_id/live_version', ensureLoggedIn(), Project.getLiveVersion)
 app.get('/project/:project_id/dev_version', ensureLoggedIn(), Project.getDevVersion)
 app.get('/project/:project_id/versions', ensureLoggedIn(), Project.getProjectVersions)
 app.post('/project/:project_id/render', ensureLoggedIn(), Project.render)
 app.post('/project/:project_id/version/:version_id/alexa', ensureLoggedIn(), Skill.buildSkill);
 app.post('/project/:project_id/version/:version_id/google', ensureLoggedIn(), Skill.buildGoogleSkill);
+
+app.post('/version/:version_id/copy/team/:team_id', ensureLoggedIn(), Team.verifyTeam, 
+(req, res) => copySkill(req, res, {append_copy_str: true, user_copy: true}))
 
 // VERSION STUFF
 app.get('/skill/:skill_id', ensureLoggedIn(), Project.getProjectFromSkill, Skill.getSkill);
@@ -176,7 +179,6 @@ app.post('/skill/:restore_id/restore', ensurePlan(1), Skill.restoreSkillVersion)
 app.get('/interaction_model/:amzn_id/status', ensureLoggedIn(), Skill.checkInterationModel)
 app.put('/interaction_model/:amzn_id/enable', ensureLoggedIn(), Skill.enableSkill)
 app.post('/skill/:id/:pid/:target_creator/copy', ensureLoggedIn(), Skill.copyProduct)
-app.post('/skill/:id/:target_creator/copy', ensureLoggedIn(), (req, res) => copySkill(req, res, {append_copy_str: true, user_copy: true}))
 app.post('/skill/product', ensureLoggedIn(), Skill.setProduct);
 app.get('/skill/:id/products', ensureLoggedIn(), Skill.getProducts);
 app.get('/skill/:id/product/:pid', ensureLoggedIn(), Skill.getProduct);
@@ -190,6 +192,7 @@ app.post('/team', ensureLoggedIn(), Team.addTeam)
 app.post('/team/checkout', ensureLoggedIn(), Team.checkout)
 app.get('/teams', ensureLoggedIn(), Team.getTeams)
 app.get('/team/:team_id/projects', ensureLoggedIn(), Team.getProjects)
+app.get('/team/:team_id/members', ensureLoggedIn(), Team.getMembers)
 app.post('/team/:team_id/copy/module/:module_id', ensureLoggedIn(), Team.verifyTeam, Marketplace.copyDefaultTemplate)
 app.delete('/team/:team_id', Team.deleteTeam)
 

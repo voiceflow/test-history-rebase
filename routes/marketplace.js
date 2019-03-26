@@ -179,7 +179,8 @@ const requestCertification = async (req, res) => {
 		module_project_id = module_data[0].module_project_id
 	
 		// Creates a new version of the skill at this pt
-		req.params.id = req.params.skill_id
+    req.params.version_id = req.params.skill_id
+    // TODO FIX THIS TO CENTRAL TEAM
 		req.params.target_creator = ADMIN_MARKETPLACE_ACC
 		copySkill(req, res, {user_copy: true, request_cert: true, project_id: module_project_id}, () => {
 			res.sendStatus(200)	
@@ -510,11 +511,9 @@ const copyDefaultTemplate = (req, res) => {
 				res.sendStatus(500)
 			} else {
 				if(data.rows.length > 0){
-					let template_skill_id = hashids.encode(data.rows[0].version_id)
-					req.params.id = template_skill_id
-					req.params.target_creator = req.user.id
-					req.user.id = ADMIN_MARKETPLACE_ACC
-					copySkill(req, res, {copying_default_template: true, team_id, name}, updateSkill)
+          req.params._version_id = data.rows[0].version_id
+          req.params._team_id = team_id
+					copySkill(req, res, {copying_default_template: true, name}, updateSkill)
 				} else {
 					res.sendStatus(500)
 				}

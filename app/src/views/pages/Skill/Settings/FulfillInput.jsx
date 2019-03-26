@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Textarea from 'react-textarea-autosize';
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 class FulfillInput extends PureComponent {
   constructor(props) {

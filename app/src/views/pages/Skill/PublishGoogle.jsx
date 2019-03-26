@@ -13,7 +13,7 @@ import Dropzone from 'react-dropzone'
 import { GOOGLE_LOCALES } from 'Constants'
 import { Tooltip } from 'react-tippy';
 
-import { setConfirm, setError } from 'actions/modalActions'
+import { setConfirm, setError } from 'ducks/modal'
 
 const MAX_SIZE = 10 * 1024 * 1024
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateTeam, deleteTeam } from "actions/projectsActions";
+import { updateTeam, deleteTeam } from "ducks/team";
 import { Modal, ModalBody, Alert, Input } from "reactstrap"
 
 // SETTING STATES: GENERAL, DELETE
@@ -17,6 +17,7 @@ class TeamSettings extends Component {
     this.reset = this.reset.bind(this)
     this.renderBody = this.renderBody.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.deleteTeam = this.deleteTeam.bind(this)
   }
 
   handleChange(event) {
@@ -29,6 +30,17 @@ class TeamSettings extends Component {
     this.setState({state: "GENERAL"})
   }
 
+  deleteTeam() {
+    this.setState({state: 'DELETING'})
+    this.props.deleteTeam(this.props.team.team_id)
+    .then(() => {
+      this.props.close()
+    })
+    .catch(() => {
+      this.props.close()
+    })
+  }
+
   renderBody() {
     switch(this.state.state){
       case "DELETE":
@@ -38,13 +50,16 @@ class TeamSettings extends Component {
           <Alert color="danger">Deleting a Team will Permenantly Delete all of its Projects and Live Voice Applications</Alert>
           <label>Enter this team's name to confirm</label>
           <Input name="input" onChange={this.handleChange} value={this.state.input}/>
-          <button className={"btn btn-danger" + (equal ? "" : " disabled")} disabled={!equal}>
+          <button className={"btn btn-danger" + (equal ? "" : " disabled")} disabled={!equal} onClick={this.deleteTeam}>
             Permenantly Delete Team
           </button>
         </>
       default:
         return <>
           <h1>{this.props.team.name}</h1>
+          {this.props.team.members.map(m => {
+            return <div key={m.creator_id}>{m.name}</div>
+          })}
           <button className="btn btn-danger" onClick={()=>this.setState({state: "DELETE", input: ""})}>Delete Team</button>
         </>
     }
@@ -62,13 +77,13 @@ class TeamSettings extends Component {
 }
 
 const mapStateToProps = state => ({
-  team: state.projects.teams.find(team => team.team_id === state.projects.team_id)
+  team: state.team.byId[state.team.team_id]
 });
 
 const mapDispatchToProps = dispatch => {
   return {
     updateTeam: (team_id, payload) => dispatch(updateTeam(team_id, payload)),
-    deleteTeam: team_id => dispatch(deleteTeam(team_id))
+    deleteTeam: team_id => dispatch(deleteTeam(team_id)),
   };
 };
 

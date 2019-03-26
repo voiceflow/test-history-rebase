@@ -11,7 +11,7 @@ import StripeHandler from "views/HOC/StripeHandler";
 
 import { compose } from "recompose";
 import { connect } from "react-redux";
-import { setError, setConfirm } from "actions/modalActions";
+import { setError, setConfirm } from "ducks/modal";
 
 const WrapForm = props => (
   <div className={"form-control input-wrap " + (props.className || "")}>
@@ -100,7 +100,10 @@ class NewTeam extends Component {
           name: this.state.name,
           image_url: this.state.image_url
         })
-        .then(() => {});
+        .then((res) => {
+          this.team_id = res.data
+          this.nextStep()
+        });
     }
   }
 

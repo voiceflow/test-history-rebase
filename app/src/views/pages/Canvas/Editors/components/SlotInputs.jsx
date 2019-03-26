@@ -4,7 +4,7 @@ import { Input } from 'reactstrap'
 import SlotInput from './SlotInput'
 import randomstring from 'randomstring'
 import converter from 'number-to-words'
-import { setError } from 'actions/modalActions'
+import { setError } from 'ducks/modal'
 
 const _getIndex = (index) => {
     return converter.toWords(index).replace(/\s/g, '_').replace(/,/g,'').replace(/-/g,'_')

@@ -1152,21 +1152,22 @@ copyAllDisplays = (id, new_skill_id) => {
 
 exports.restoreSkillVersion = async (req, res) => {
   // Get dev version
-  let dev_version
+  let dev_version, team_id
   let restore_id = hashids.decode(req.params.restore_id)[0]
   try {
     let data = (await pool.query(`
-      SELECT dev_version FROM projects p 
+      SELECT dev_version, team_id FROM projects p 
       INNER JOIN project_versions pv ON p.project_id = pv.project_id
       WHERE pv.version_id = $1`, 
       [restore_id])
     ).rows[0]
     dev_version = data.dev_version
+    team_id = data.team_id
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
       err: err
     })
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 
   if (dev_version === restore_id){
@@ -1174,8 +1175,8 @@ exports.restoreSkillVersion = async (req, res) => {
   }
 
   // important to set it to the undecoded version
-  req.params.id = req.params.restore_id
-  req.params.target_creator = req.user.id
+  req.params._version_id = restore_id
+  req.params._team_id = team_id
   // Make a copy of the verision
   copySkill(req, res, {
     complete_copy: true

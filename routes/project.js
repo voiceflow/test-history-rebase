@@ -30,16 +30,13 @@ exports.getProjectFromSkill = async (req, res, next) => {
 }
 
 exports.deleteProject = async (req, res) => {
-  if (!req.user || !req.params.project_id) {
+  if (!req.user || !req.params._project_id) {
     res.sendStatus(401)
     return
   }
-  let project_id = hashids.decode(req.params.project_id)[0]
 
   try {
-    await deleteProjectPromise(req.user.id, project_id, {
-      delete_all_versions: true
-    })
+    await deleteProjectPromise(req.params._project_id)
     res.sendStatus(200)
   } catch (err) {
     writeToLogs('CREATOR_BACKEND_ERRORS', {
@@ -185,8 +182,8 @@ exports.render = async (req, res) => {
   }
 
   // Spoof the request cause we don't use it anymore
-  req.params.id = hashids.encode(skill_id)
-  req.params.target_creator = req.user.id
+  req.params._version_id = skill_id
+
   copySkill(req, res, {
     renderDiagram: true
   }, (new_skill_row) => {

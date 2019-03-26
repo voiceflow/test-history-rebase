@@ -1,3 +1,14 @@
+.member-icon {
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 30px;
+  border: 1px solid #fff;
+  box-shadow: 0 0 0 1px #fff, 0 1px 2px 1px rgba(17,49,96,.16);
+  margin-left: -4px;
+}
+
 .add-skill {
   background-image: linear-gradient( 89.8deg,  rgba(39,115,255,1) 4.3%, rgba(62,211,232,1) 101.4% ) !important;
 /*  background-color: #8EC5FC !important;

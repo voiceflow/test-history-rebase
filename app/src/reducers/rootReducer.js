@@ -8,8 +8,9 @@ import products from './productReducer'
 import displays from './displayReducer'
 import emails from './emailReducer'
 import userSetting from './userReducer'
-import projects from './projectsReducer'
-import modal from './modalReducer'
+import project from 'ducks/project'
+import modal from 'ducks/modal'
+import team from 'ducks/team'
 
 export default (history) => combineReducers({
     router: connectRouter(history),
@@ -21,6 +22,7 @@ export default (history) => combineReducers({
     variables,
     userSetting,
     diagramVariables,
-    projects,
-    modal
+    project,
+    modal,
+    team
 })

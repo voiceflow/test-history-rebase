@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import AuthenticationService from './../../../services/Authentication'
-import { setConfirm } from 'actions/modalActions'
+import { setConfirm } from 'ducks/modal'
 import {Button, Alert} from 'reactstrap'
 import moment from 'moment'
 import axios from 'axios'
 import './Account.css'
+import Image from 'views/components/Uploads/Image'
 
 const UNLINKED = 0
 const LOADING = 1
@@ -151,17 +152,6 @@ class Account extends Component {
 
   render() {
     return <div id="app" className="pt-6">
-              <div className="subheader">
-                  <div className="container space-between">
-                      <span className="subheader-title">
-                          Account
-                          <div className="hr-label">
-                              <small><i className="far fa-user mr-1"></i></small>{' '}
-                              {this.props.user.name}{' '}
-                          </div>
-                      </span>
-                  </div>
-              </div>
               <div className="container my-5 pt-4">
                 <h5 className="ml-3">Status</h5>
                 <div className="card mb-5">

@@ -129,29 +129,29 @@ exports.deleteVersionPromise = (creator_id, skill_id, opts) => {
   })
 }
 
-exports.deleteProjectPromise = (creator_id, project_id) => {
+exports.deleteProjectPromise = (project_id) => {
   return new Promise(async (resolve, reject) => {
     let select_query = `
       SELECT * FROM projects 
         INNER JOIN project_versions ON projects.project_id = project_versions.project_id 
         INNER JOIN skills ON project_versions.version_id = skills.skill_id
         INNER JOIN diagrams ON skills.skill_id = diagrams.skill_id
-      WHERE projects.creator_id = $1 AND projects.project_id = $2
-      `
+      WHERE projects.project_id = $1`
+
     let delete_query = `
-        DELETE FROM skills WHERE creator_id = $1 AND skill_id IN 
-        (SELECT version_id FROM project_versions WHERE project_id = $2)`
+      DELETE FROM skills WHERE skill_id IN 
+      (SELECT version_id FROM project_versions WHERE project_id = $1)`
 
     try{
-      let project_data_rows = (await pool.query(select_query, [creator_id, project_id])).rows
+      let project_data_rows = (await pool.query(select_query, [project_id])).rows
       if(project_data_rows.length === 0){
-        console.trace('DELETE SKILL, EMPTY ROWS', select_query, creator_id, project_id)
+        console.trace('DELETE SKILL, EMPTY ROWS', select_query, project_id)
         return resolve()
       }
 
       // Only if deleting the whole project
       if(project_data_rows[0] && project_data_rows[0].amzn_id){
-        AccessToken(creator_id, token => {
+        AccessToken(project_data_rows[0].creator_id, token => {
           if (token === null) {
             return;
           }
@@ -164,13 +164,13 @@ exports.deleteProjectPromise = (creator_id, project_id) => {
               }
             })
             .catch(err => {
-              logAxiosError(err, 'DELETE SKILL')
+              logAxiosError(err, 'DELETE AMAZON SKILL')
             })
         })
       }
 
-      await pool.query(delete_query, [creator_id, project_id])
-      await pool.query(`DELETE FROM projects WHERE creator_id = $1 AND project_id = $2`, [creator_id, project_id])
+      await pool.query(delete_query, [project_id])
+      await pool.query('DELETE FROM projects WHERE project_id = $1', [project_id])
 
       for(let i=0; i < project_data_rows.length; i++){
         // To0 f4st for 4mzn
@@ -278,18 +278,16 @@ copyDisplays = (old_skill_id, new_skill_id, new_creator_id) => new Promise(async
 exports.copySkill = async (req, res, options, cb = false) => {
 
   if(!options) options = {}
-  let id = hashids.decode(req.params.id)[0]
-  let new_creator_id = req.params.target_creator
+
+  let id = req.params._version_id || hashids.decode(req.params.version_id)[0]
+  let new_creator_id = options.creator_id || req.user.id
+  let team_id = req.params._team_id
   let diagram_mapping = {}
   let remapped_products = {}
   let remapped_emails = {}
   let remapped_displays = {}
   let diagram_names = {}
   let root_diagram_id = generateID()
-
-  if (new_creator_id === 'me') {
-    new_creator_id = req.user.id
-  }
 
   const retrieveDiagram = (diagram_id, new_skill_id, platform) => {
     const uploadNewDiagram = (data) => new Promise(async (resolve, reject)=>{
@@ -467,16 +465,17 @@ exports.copySkill = async (req, res, options, cb = false) => {
     let copy_skill
     if(!options.diagrams_only){
       copy_skill = (await pool.query(copy_query, [root_diagram_id, new_creator_id, id])).rows[0]
-    }
-    // Copy products, displays, and email templates on sql and store new ids for remapping
-    if(options.user_copy) {
-      try{
-        remapped_products = await copyProducts(id, copy_skill.skill_id)
-        remapped_emails = await copyEmailTemplates(id, copy_skill.skill_id, new_creator_id)
-        remapped_displays = await copyDisplays(id, copy_skill.skill_id, new_creator_id)
-      } catch (err) {
-        writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-        res.sendStatus(500)
+      if(!copy_skill) throw new Error('Unable to Create Version')
+      // Copy products, displays, and email templates on sql and store new ids for remapping
+      if(options.user_copy) {
+        try{
+          remapped_products = await copyProducts(id, copy_skill.skill_id)
+          remapped_emails = await copyEmailTemplates(id, copy_skill.skill_id, new_creator_id)
+          remapped_displays = await copyDisplays(id, copy_skill.skill_id, new_creator_id)
+        } catch (err) {
+          writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
+          return res.sendStatus(500)
+        }
       }
     }
 
@@ -498,18 +497,18 @@ exports.copySkill = async (req, res, options, cb = false) => {
         // Add working version to table
         if (options.copying_default_template || options.user_copy) {
           try{
-            if(options.request_cert){ 
+            if (options.request_cert && copy_skill){ 
               await pool.query(
                 `INSERT INTO project_versions (project_id, version_id, cert_requested) VALUES ($1, $2, now())`, 
                 [options.project_id, copy_skill.skill_id])
-            } else {
+            } else if (copy_skill) {
               if(options.append_copy_str) options.name = copy_skill.name
 
               let new_project_data = (await pool.query(`
                 INSERT INTO projects (name, creator_id, dev_version, team_id) 
                 VALUES ($1, $2, $3, $4) 
                 RETURNING *`, 
-              [options.name, copy_skill.creator_id, copy_skill.skill_id, options.team_id])).rows[0]
+              [options.name, copy_skill.creator_id, copy_skill.skill_id, team_id])).rows[0]
               copy_skill.project_id = hashids.encode(new_project_data.project_id)
               await pool.query(`INSERT INTO project_versions (project_id, version_id) VALUES ($1, $2)`, [new_project_data.project_id, copy_skill.skill_id])
             
@@ -526,7 +525,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
             } 
           } catch (err) {
             writeToLogs('CREATOR_BACKEND_ERRORS', {err: err})
-            res.sendStatus(500)
+            return res.sendStatus(500)
           }
         }
 
@@ -539,7 +538,7 @@ exports.copySkill = async (req, res, options, cb = false) => {
         if (cb && cb.name !== 'next') {
           cb(copy_skill)
         } else {
-          res.send(copy_skill)
+          return res.send(copy_skill)
         }
       })
       .catch((err) => {

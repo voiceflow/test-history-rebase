@@ -7,6 +7,10 @@ const {
 } = require('./../services')
 
 const {
+  deleteProjectPromise
+} = require('./skill_util')
+
+const {
   sendTeamInvite
 } = require('./mail')
 
@@ -28,13 +32,44 @@ exports.verifyTeam = async (req, res, next) => {
   try {
     let team_id = team_hash.decode(req.params.team_id)[0]
     if(!team_id) throw new Error("No Team")
-    let result = await pool.query(
-      "SELECT 1 FROM team_members WHERE team_id = $1 AND creator_id = $2 LIMIT 1", [team_id, req.user.id]
-    )
-    if(result.rows.length === 0) throw new Error("No Access")
+
+    if(req.user.admin < 100) {
+      let result = await pool.query(
+        "SELECT 1 FROM team_members WHERE team_id = $1 AND creator_id = $2 LIMIT 1", [team_id, req.user.id]
+      )
+      if(result.rows.length === 0) throw new Error("No Access")
+    }
 
     // _team_id means decoded team_id
     req.params._team_id = team_id
+  } catch(err) {
+    return res.sendStatus(401)
+  }
+  next()
+}
+
+exports.verifyProjectAccess = async (req, res, next) => {
+  try {
+    let project_id = hashids.decode(req.params.project_id)[0]
+    if(!project_id) throw new Error("Invalid Project")
+
+    let result
+    if(req.user.admin < 100) {
+      result = await pool.query(`
+        SELECT t.team_id FROM projects p
+        INNER JOIN teams t ON t.team_id = p.team_id
+        INNER JOIN team_members tm ON tm.team_id = t.team_id
+        WHERE tm.creator_id = $1 AND p.project_id = $2 LIMIT 1  
+      `, [req.user.id, project_id])
+    }else{
+      result = await pool.query(`
+        SELECT team_id FROM projects
+        WHERE project_id = $1
+      `, [project_id])
+    }
+    if(result.rows.length === 0) throw new Error("No Access")
+
+    req.params._project_id = project_id
   } catch(err) {
     return res.sendStatus(401)
   }
@@ -138,12 +173,40 @@ exports.checkout = async (req, res) => {
 
 exports.getTeams = async (req, res) => {
   try {
-    let teams = (await pool.query('SELECT t.*, MAX(tm.status) FROM teams t INNER JOIN team_members tm ON t.team_id = tm.team_id WHERE tm.creator_id = $1 GROUP BY t.team_id', [req.user.id])).rows
+    let teams = (await pool.query(
+      'SELECT t.*, MAX(tm.status) FROM teams t INNER JOIN team_members tm ON t.team_id = tm.team_id WHERE tm.creator_id = $1 GROUP BY t.team_id', 
+    [req.user.id])).rows
     res.send(teams.map(t => {
       t.team_id = team_hash.encode(t.team_id)
       return t
     }))
   } catch (e) {
+    res.sendStatus(500)
+  }
+}
+
+exports.getMembers = async (req, res) => {
+  try {
+    let team_id = team_hash.decode(req.params.team_id)[0]
+    if(!team_id) return res.sendStatus(404)
+
+    let members = (await pool.query(`
+      SELECT c.name, c.email, c.image FROM teams t
+      INNER JOIN team_members tm ON t.team_id = tm.team_id
+      INNER JOIN creators c ON c.creator_id = tm.creator_id
+      WHERE 
+        tm.creator_id IS NOT NULL AND 
+        t.team_id IN (SELECT team_id FROM team_members WHERE team_id = $1 AND creator_id = $2)
+    `,
+    [team_id, req.user.id])).rows
+
+    if(members.length === 0){
+      res.sendStatus(401)
+    }else{
+      res.send(members)
+    }
+  } catch (err) {
+    writeToLogs('TEAM MEMBERS', err)
     res.sendStatus(500)
   }
 }
@@ -163,6 +226,13 @@ exports.deleteTeam = async (req, res) => {
     // user either doesn't have permission or team doesn't exist
     if(projects.rows.length === 0) return res.sendStatus(404)
 
+    // Delete all the projects
+    for(project of projects.rows){
+      if(project.project_id) await deleteProjectPromise(project.project_id)
+    }
+
+    // Delete team
+    await pool.query('DELETE FROM teams WHERE team_id = $1 AND creator_id = $2', [team_id, req.user.id])
     res.sendStatus(200)
   } catch (err) {
     writeToLogs('DELETE TEAMS', err)

@@ -349,7 +349,7 @@ class Onboarding extends Component{
 			case 'work_type':
 				return <React.Fragment key={this.state.stage}>
 					<StepProgressBar num_stages={6} stage={0} classes={"onboarding-progress"}/>
-					<p className="modal-bg-txt text-center mb-5 mt-4">Are you using Voiceflow for work?</p>
+					<p className="modal-bg-txt text-center mb-5 mt-4">What are you using Voiceflow for?</p>
 					<div className="row justify-content-center mb-3">
 						<div className="col-s mr-4">
 							<button className="void-button mb-2" onClick={() => {this.setState({type: "PERSONAL"})}}><img id="design" alt="selected" src={this.state.type === 'PERSONAL' ? "/selected.png" : "/unselected.png"}/></button>

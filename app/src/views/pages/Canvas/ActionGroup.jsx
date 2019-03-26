@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import LOCALE_MAP from "./../../../services/LocaleMap";
 
-import { updateVersion } from './../../../actions/versionActions'
+import { updateVersion, updateLocales, updateSkillDB } from './../../../actions/versionActions'
 import { setError } from 'actions/modalActions'
 import {
     Popover, PopoverHeader, PopoverBody, InputGroup, InputGroupAddon, Input, Alert, Modal,
@@ -535,8 +536,8 @@ export class ActionGroup extends PureComponent {
   displayUploadPrompt() {
     if(this.state.show_upload_prompt){
       return  <div className="upload-success-popup">
+        <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
           {this.renderBody(false)}
-          <button className="close close-upload-success-popup" onClick={this.closePrompt}>&times;</button>
       </div>
     } 
     return
@@ -622,8 +623,7 @@ export class ActionGroup extends PureComponent {
                           <div className="load-spinner pt-1">
                               <span className="save-loader-white"/>
                           </div>
-                      </div>
-                  </Button>
+                      </div> </Button>
           } else {
               return <Tooltip
                   html={<div style={{ width: 155 }}>{(this.props.platform === 'google') ? 'Test your skill on your own Google device, or in the Google Actions console' : 'Test your skill on your own Alexa device, or in the Alexa developer console'}</div>}
@@ -791,6 +791,33 @@ export class ActionGroup extends PureComponent {
                       .catch(err => {
                           console.error(err)
                       })
+                  return <div id="name-box" className="text-center">
+                      <div className="mb-5 mt-3">
+                          <input
+                              id="skill-name"
+                              className="input-underline"
+                              type="text"
+                              name="name"
+                              value={this.props.skill.name}
+                              onChange={e => { this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value) }}
+                              placeholder="Enter your project name"
+                              autoFocus
+                              required
+                          />
+                      </div>
+                      <div className="text-muted mt-4 mb-3">Select Regions</div>
+                      <div className="grid-col-3 mx--1">
+                          {LOCALE_MAP.map((locale, i) => {
+                              const active = this.props.skill.locales.includes(locale.value) ? "active" : "";
+                              return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.props.updateSkillLocale(locale.value) }}>
+                                  <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
+                              </button>
+                          })}
+                      </div>
+                      <div className="mt-5 mb-3">
+                          <Button varient="contained" className="purple-btn" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
+                      </div>
+                  </div>
               }
               return <div>
                   <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
@@ -843,21 +870,49 @@ export class ActionGroup extends PureComponent {
                   .catch(err => {
                       console.error(err)
                   })
-          }
-          modal_content = <div>
-              <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
-              <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
-              <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
-              {(this.props.skill.live || this.props.skill.review) && <hr />}
-              <div>
-                  {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
-                  {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
-              </div>
+              modal_content = <div id="name-box" className="text-center">
+                      <div className="mb-5 mt-3">
+                          <input
+                              id="skill-name"
+                              className="input-underline"
+                              type="text"
+                              name="name"
+                              value={this.props.skill.name}
+                              onChange={e => {this.props.updateSkill('name', e.target.value); this.props.updateSkill('inv_name', e.target.value)}}
+                              placeholder="Enter your project name"
+                              required
+                              autoFocus
+                          />
+                      </div>
+                      <div className="text-muted mt-4 mb-3">Select Regions</div>
+                      <div className="grid-col-3 mx--1">
+                          {LOCALE_MAP.map((locale, i) => {
+                              const active = this.props.skill.locales.includes(locale.value) ? "active" : "";
+                              return <button className={`country-checkbox btn-darken ${active}`} key={i} onClick={() => { this.props.updateSkillLocale(locale.value) }}>
+                                  <span>{locale.name}</span><img src={`/images/icons/countries/${locale.value}.svg`} alt={locale.name}></img>
+                              </button>
+                          })}
+                      </div>
+                      <div className="mt-5 mb-3">
+                          <Button varient="contained" className="purple-btn" onClick={(e) => {this.updateAlexa(); this.props.saveSkill()}}>Upload</Button>
+                      </div>
+                  </div>
+          } else {
+            modal_content = <div>
+                <img className="modal-img mb-3 mx-auto" src="/upload.svg" alt="Upload" />
+                <div className="modal-bg-txt text-center mt-2"> Upload your skill for testing</div>
+                <div className="modal-txt text-center mt-2"> Updating to Google will allow you to test on your Google device or the Google Actions Console.</div>
+                {(this.props.skill.live || this.props.skill.review) && <hr />}
+                <div>
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.live && <Alert color="danger">This skill is in production, updating will change the flow for all production users</Alert>}
+                    {this.props.skill.google_publish_info && this.props.skill.google_publish_info.review && <Alert color="danger">This skill is under review, updating will change the flow during the review process</Alert>}
+                </div>
 
-              <div className="super-center mb-3 mt-3">
-                  <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
-              </div>
-          </div>
+                <div className="super-center mb-3 mt-3">
+                    <button className="purple-btn" onClick={this.updateGoogle}>Confirm Upload</button>
+                </div>
+            </div>
+          }
       }
       return modal_content
   }
@@ -878,8 +933,8 @@ export class ActionGroup extends PureComponent {
                       delay: 0
                   }}/>
               </div>}
-              <Modal isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
-                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4"/>
+              <Modal size={this.state.stage === 0 && "lg"} isOpen={this.state.updateModal && this.state.is_first_upload} toggle={()=>this.setState({updateModal: false})} onClosed={this.shouldReset} className="stage_modal">
+                  <ModalHeader toggle={()=>this.setState({updateModal: false})} className="pb-0 mb--4">Upload Project</ModalHeader>
                   <ModalBody className="modal-info" style={{padding: '1rem 2rem'}}>
                       <div>
                           {this.renderBody(true)}
@@ -993,7 +1048,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
         updateSkill: (type, val) => dispatch(updateVersion(type, val)),
-        setError: err => dispatch(setError(err))
+        setError: err => dispatch(setError(err)),
+        updateSkillLocale: (val) => dispatch(updateLocales(val)),
+        saveSkill: (publish, cb) => dispatch(updateSkillDB(publish, cb))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActionGroup);

@@ -109,7 +109,6 @@ class Templates extends Component {
                 console.error(err)
             })
         }
-
         axios.post(`/marketplace/template/${module_id}/copy`, {
             name: this.state.name,
             locales: this.state.locales,

@@ -24,6 +24,7 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
     onClosed={[Function]}
     onOpened={[Function]}
     role="dialog"
+    size="lg"
     toggle={[Function]}
     zIndex={1050}
   >
@@ -34,7 +35,9 @@ exports[`ActionGroup render action group/top nav bar 1`] = `
       tag="h5"
       toggle={[Function]}
       wrapTag="div"
-    />
+    >
+      Upload Project
+    </ModalHeader>
     <ModalBody
       className="modal-info"
       style={

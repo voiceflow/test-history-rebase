@@ -230,6 +230,7 @@ app.get('/marketplace/user_module/:project_id/:module_id', ensureLoggedIn(), Mar
 app.delete('/marketplace/user_module/:module_id', ensureLoggedIn(), Marketplace.removeAccess)
 app.get('/marketplace/template/:module_id', ensureLoggedIn(), Marketplace.retrieveTemplate)
 app.get('/marketplace/default_templates', ensureLoggedIn(), Marketplace.getDefaultTemplates)
+app.get('/marketplace/initial_template', ensureLoggedIn(), Marketplace.getInitialTemplate)
 app.get('/marketplace/:module_id', ensureLoggedIn(), Marketplace.getModule)
 
 // app.get('/marketplace', ensureAdmin(), Marketplace.getModules)
